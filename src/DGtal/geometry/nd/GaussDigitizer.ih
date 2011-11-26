@@ -150,26 +150,6 @@ template <typename TSpace, typename TEuclideanShape>
 inline
 bool
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
-::isInside( const RealPoint & p ) const
-{
-  ASSERT( myEShape != 0 );
-  return (myEShape->orientation( p ) == INSIDE);
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TEuclideanShape>
-inline
-bool
-DGtal::GaussDigitizer<TSpace,TEuclideanShape>
-::isInside( const Point & p ) const
-{
-  ASSERT( myEShape != 0 );
-  return (myEShape->orientation( embed( p ) ) == INSIDE);
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace, typename TEuclideanShape>
-inline
-bool
-DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::operator()( const Point & p ) const
 {
   ASSERT( myEShape != 0 );

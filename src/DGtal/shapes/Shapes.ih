@@ -223,25 +223,21 @@ template <typename TDomain>
 template <typename TDigitalSet, typename ShapeFunctor>
 void
 DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
-                                         const ShapeFunctor & aFunctor)
+                                         const ShapeFunctor & aFunctor,
+                                         const double h)
 {
-  typedef DGtal::HyperRectDomain<Space> LocalDomain;
   
   BOOST_CONCEPT_ASSERT((CEuclideanBoundedShape<ShapeFunctor>));
   BOOST_CONCEPT_ASSERT((CEuclideanOrientedShape<ShapeFunctor>));
 
-  //Implicit cast RealPoint->Point
-  Point pLow = aFunctor.getLowerBound();
-  Point pUpp = aFunctor.getUpperBound();
-
-  LocalDomain implicitDomain( pLow, pUpp );
-  for ( typename LocalDomain::ConstIterator it = implicitDomain.begin(); 
-        it != implicitDomain.end(); 
-        ++it )
-    {
-      if ( aFunctor.orientation( *it ) == INSIDE)
-        aSet.insert( *it );
-    }
+  RealPoint pLow = aFunctor.getLowerBound();
+  RealPoint pUpp = aFunctor.getUpperBound();
+  GaussDigitizer<Space,ShapeFunctor> dig;  
+  dig.attach( aFunctor ); // attaches the shape.
+  dig.init( pLow, pUpp, h); 
+  
+  // Creates a set from the digitizer.
+  Shapes<Domain>::digitalShaper( aSet, dig );
 }
 
 

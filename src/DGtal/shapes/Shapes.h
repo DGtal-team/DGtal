@@ -52,7 +52,7 @@
 #include "DGtal/shapes/CDigitalBoundedShape.h"
 #include "DGtal/shapes/CEuclideanOrientedShape.h"
 #include "DGtal/shapes/CEuclideanBoundedShape.h"
-
+#include "DGtal/geometry/nd/GaussDigitizer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -77,6 +77,7 @@ namespace DGtal
   public:
     typedef TDomain Domain;
     typedef typename TDomain::Space Space;
+    typedef typename TDomain::Space::RealPoint RealPoint;
     typedef typename TDomain::Point Point;
     typedef typename TDomain::Vector Vector;
     typedef typename TDomain::Predicate Predicate;
@@ -95,6 +96,9 @@ namespace DGtal
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
+     * @tparam TDigitalSet a model of CDigitalSet.
+     * @tparam TShapeFunctor a model of CDigitalBoundedShape and
+     * CDigitalOrientedShape.
      */
     template <typename TDigitalSet, typename TShapeFunctor>
     static void digitalShaper( TDigitalSet & aSet,
@@ -104,15 +108,21 @@ namespace DGtal
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
      * an instance of ShapeFunctor.The shape functor must be a model
      * of CEuclideanOrientedShape and CEuclideanBoundedShape. The
-     * underlying digitization process is a Gauss Digitizer and we
-     * recommand to use GaussDigitizer framework.
+     * underlying digitization process is a Gauss Digitizer with grid
+     * step h.
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
+     * @param h grid step for the Gauss digitization.
+     *
+     * @tparam TDigitalSet a model of CDigitalSet.
+     * @tparam TShapeFunctor a model of CEuclideanBoundedShape and
+     * CEuclideanOrientedShape.
      */
     template <typename TDigitalSet, typename TShapeFunctor>
     static void euclideanShaper( TDigitalSet & aSet,
-                                 const TShapeFunctor & aFunctor);
+                                 const TShapeFunctor & aFunctor,
+                                 const double h = 1.0);
     
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
