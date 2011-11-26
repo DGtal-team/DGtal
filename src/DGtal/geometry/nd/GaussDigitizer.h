@@ -60,8 +60,7 @@ namespace DGtal
      Description of template class 'GaussDigitizer' <p> \brief Aim: A
      class for computing the Gauss digitization of some Euclidean
      shape, i.e. its intersection with some \f$ h_1 Z \times h_2 Z
-     \times \cdots \times h_n Z \f$. It is also a model of
-     CPointPredicate and of CShape. Note that the real point (0,...,0)
+     \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
      GaussDigitizer is a model of CDigitalEucldieanShape and CDigitalBoundedShape.

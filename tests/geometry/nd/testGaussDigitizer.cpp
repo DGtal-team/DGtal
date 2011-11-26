@@ -78,6 +78,7 @@ testDigitization( const Shape & aShape, double h,
   typedef typename DigitalSetSelector
     < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
 
+//! [DigitizerDoc]
   // Creates a digitizer on the window (xLow, xUp).
   RealPoint xLow( -5.3, -4.3 );
   RealPoint xUp( 7.4, 4.7 );
@@ -87,10 +88,11 @@ testDigitization( const Shape & aShape, double h,
   
   // The domain size is given by the digitizer according to the window
   // and the step.
-  Domain domain = dig.getDomain(); // ( dig.getLowerBound(), dig.getUpperBound() );
+  Domain domain = dig.getDomain();
   MySet aSet( domain );
   // Creates a set from the digitizer.
   Shapes<Domain>::digitalShaper( aSet, dig );
+//! [DigitizerDoc]
   
   // Create cellular space
   typedef Z2i::KSpace KSpace;
