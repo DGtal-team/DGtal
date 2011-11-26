@@ -642,7 +642,7 @@ namespace DGtal
        * @param key The key.
        * @return the pointer to the node corresponding to the key.
        */
-      inline Node* getNode(const HashKey key)  const  // very used !! // public because Display2DFactory, todo: accessors
+      inline Node* getNode(const HashKey key)  const  // very used !! // public because Display2DFactory !!!
       {
 	Node* iter = myData[getIntermediateKey(key)];
 	while (iter != 0)
@@ -713,7 +713,7 @@ namespace DGtal
 
 
     public:
-      Point myOrigin; // public because Display2DFactory, todo: accessors
+      Point myOrigin; // public because Display2DFactory !!!
     protected:
 
       /**
@@ -724,7 +724,7 @@ namespace DGtal
 
     public:
       ///The morton code computer.
-      Morton<HashKey, Point> myMorton; // public because Display2DFactory, todo: accessors
+      Morton<HashKey, Point> myMorton; // public because Display2DFactory !!!
     protected:
 
     };

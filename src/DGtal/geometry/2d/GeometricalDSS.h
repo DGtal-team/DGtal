@@ -205,7 +205,18 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getParameters(double& alpha, double& beta, double& gamma) const;
-
+    
+    /**
+     * Projects the point ( @a x , @a y ) onto the 
+     * straight line of parameters ( @a alpha , @a beta , @a gamma )
+     * @param x  (returned) x-coordinate of the point
+     * @param y  (returned) y-coordinate of the point
+     * @param alpha  x-component of the direction vector
+     * @param beta  y-component of the direction vector
+     * @param gamma  intercept
+     */
+    void projects(double& x, double& y, 
+                const double& alpha, const double& beta, const double& gamma) const;
 
     // ----------------------- growth operations --------------------------------------
 
@@ -265,16 +276,14 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-  public:
     /**
      * segment begin iterator.
      */
-    ConstIterator myBegin; // public because Display2DFactory, todo: accessors
+    ConstIterator myBegin;
     /**
      * segment end iterator.
      */
-    ConstIterator myEnd; // public because Display2DFactory, todo: accessors
-  private:
+    ConstIterator myEnd;
     /**
      * Pointer to the preimage.
      */
@@ -295,20 +304,8 @@ namespace DGtal
 
 
   private:
-  public:
 
-    /**
-     * Projects the point ( @a x , @a y ) onto the 
-     * straight line of parameters ( @a alpha , @a beta , @a gamma )
-     * @param x  (returned) x-coordinate of the point
-     * @param y  (returned) y-coordinate of the point
-     * @param alpha  x-component of the direction vector
-     * @param beta  y-component of the direction vector
-     * @param gamma  intercept
-     */
-    void projects(double& x, double& y, 
-                const double& alpha, const double& beta, const double& gamma) const; // public because Display2DFactory, todo: accessors
-  private:
+    
 
     // ------------------------- Internals ------------------------------------
   private:

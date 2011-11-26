@@ -268,6 +268,21 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     * @return the list where each vertex of the FP is stored.
+     */
+    Polygon polygon() const
+    {
+      return myPolygon;
+    };
+    
+    /**
+     * @return true if the list has to be consider as circular.
+     */
+    bool flagIsClosed() const
+    {
+      return myFlagIsClosed;
+    };
 
 
     /**
@@ -302,19 +317,17 @@ namespace DGtal
     
     // ------------------------- Private Datas --------------------------------
   private:
-    
-  public:
 
     /*
     * list where each vertex of the FP is stored
     */
-    Polygon myPolygon; // public because Display2DFactory, todo: accessors
+    Polygon myPolygon;
 
     /*
     * bool equal to 'true' if the list has to be consider as circular
     * 'false' otherwise
     */
-    bool myFlagIsClosed; // public because Display2DFactory, todo: accessors
+    bool myFlagIsClosed;
 
     // ------------------------- Hidden services ------------------------------
   protected:
