@@ -41,36 +41,29 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-//#include "DGtal/geometry/2d/GridCurve.h"
-#include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/FP.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
-#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
-#include "DGtal/topology/Object.h"
-#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/math/AngleLinearMinimizer.h"
-
+#include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/CircleFrom2Points.h"
 #include "DGtal/geometry/2d/CircleFrom3Points.h"
-
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
-
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+#include "DGtal/geometry/2d/FP.h"
+#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/2d/GeometricalDSS.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/Object.h"
+#include "DGtal/kernel/PointVector.h"
+#include "DGtal/geometry/2d/Preimage2D.h"
+#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 
-#include "DGtal/geometry/2d/GeometricalDSS.h"
 
+// TODO
+// rename styleName to className ? -> see object.styleName() in Board2D.ih for example
+// TODO
 
-// TODO: begin
-// valeur des struct pour les defaultStyle
-// styleName en className
-
-// verif "virtual void selfDraw" avec const derrière important pour les exemples et tests
-// TODO: end
 
 //////////////////////////////////////////////////////////////////////////////
 

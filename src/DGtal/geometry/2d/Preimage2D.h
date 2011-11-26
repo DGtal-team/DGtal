@@ -280,6 +280,30 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
+    
+    /**
+     * @return the shape used to separate the input points.
+     */
+    Shape shape() const
+    {
+      return myShape;
+    };
+    
+    /**
+     * @return the lower part of the preimage.
+     */
+    Container pHull() const
+    {
+      return myPHull;
+    };
+    
+    /**
+     * @return the upper part of the preimage.
+     */
+    Container qHull() const
+    {
+      return myQHull;
+    };
 
     //------------------ display -------------------------------
     /**
@@ -305,25 +329,23 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    
-  public:
 
     /**
      * Shape used to separate the input points
      */
-    Shape myShape; // public because Display2DFactory, todo: accessors
+    Shape myShape;
   
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
      * (whose vertices are Pi points)
      */
-    Container myPHull; // public because Display2DFactory, todo: accessors
+    Container myPHull;
     /**
      * Upper part of the preimage.
      * (whose vertices are Qi points)
      */
-    Container myQHull; // public because Display2DFactory, todo: accessors
+    Container myQHull;
 
     // ------------------------- Hidden services ------------------------------
   protected:

@@ -40,31 +40,20 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+
+
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 #include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
-#include "DGtal/topology/Object.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/Object.h"
+#include "DGtal/kernel/PointVector.h"
 
-// TODO: begin
-// (1) write (if necessary ?) new concepts in CDrawableWithDisplay3D (because don't know how to do...)
-
-// (2) here, at the end of the file -> struct DefaultDrawStyleDisplay3D : public DrawableWithDisplay3D ? necessary or not used ? (really not sure writing is good...)
-
-// (3)
-// port struct DrawPavingVoxel and DrawGridVoxel from PointVector ? necessary or not used ? same as (2) ?
-// port struct DrawPavingVoxel3D and DrawGridVoxel3D from HyperRectDomain ? necessary or not used ? same as (2) ?
-// port struct DefaultDrawStyle3D from KS ? necessary or not used ? same as (2) ?
-
-// (4)
-// verif all examples
-// TODO: end
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -78,6 +67,7 @@ namespace DGtal
    */
   struct Display3DFactory
   {
+    
     // ArithmeticalDSS3d
     /**
       * Default drawing style object.
@@ -95,56 +85,6 @@ namespace DGtal
     template <typename TIterator, typename TInteger, int connectivity>
     static void draw( Display3D & display, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
     // ArithmeticalDSS3d
-    
-    
-    // PointVector
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    template<Dimension dim, typename TComponent>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::PointVector<dim,TComponent> & );
-    
-    template<Dimension dim, typename TComponent>
-    static void drawAsGrid( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
-
-    template<Dimension dim, typename TComponent>
-    static void drawAsPaving( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
-
-    template<Dimension dim, typename TComponent>
-    static void drawAsPavingWired( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
-
-    template<Dimension dim, typename TComponent>
-    static void draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
-    
-    template<Dimension dim, typename TComponent>
-    static void draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & , const DGtal::PointVector<dim,TComponent> & );
-    // PointVector
-    
-    
-    // HyperRectDomain
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    template<typename TSpace>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::HyperRectDomain<TSpace> & );
-    
-    template<typename TSpace>
-    static void drawAsBoundingBox( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
-    
-    template<typename TSpace>
-    static void drawAsGrid( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
-    
-    template<typename TSpace>
-    static void drawAsPavingPoints( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
-    
-    template<typename TSpace>
-    static void drawAsPaving( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
-    
-    template<typename TSpace>
-    static void draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
-    // HyperRectDomain
     
     
     // DigitalSetBySTLSet
@@ -191,16 +131,29 @@ namespace DGtal
     // DigitalSetBySTLVector
     
     
-    // Object
-    template <typename TDigitalTopology, typename TDigitalSet>
-    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
-
-    template <typename TDigitalTopology, typename TDigitalSet>
-    static void drawWithAdjacencies( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
-
-    template <typename TDigitalTopology, typename TDigitalSet>
-    static void draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
-    // Object
+    // HyperRectDomain
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    template<typename TSpace>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::HyperRectDomain<TSpace> & );
+    
+    template<typename TSpace>
+    static void drawAsBoundingBox( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    
+    template<typename TSpace>
+    static void drawAsGrid( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    
+    template<typename TSpace>
+    static void drawAsPavingPoints( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    
+    template<typename TSpace>
+    static void drawAsPaving( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    
+    template<typename TSpace>
+    static void draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & );
+    // HyperRectDomain
     
     
     // KhalimskyCell
@@ -215,6 +168,44 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & );
     // KhalimskyCell
     
+    
+    // Object
+    template <typename TDigitalTopology, typename TDigitalSet>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+
+    template <typename TDigitalTopology, typename TDigitalSet>
+    static void drawWithAdjacencies( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+
+    template <typename TDigitalTopology, typename TDigitalSet>
+    static void draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+    // Object
+    
+    
+    // PointVector
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    template<Dimension dim, typename TComponent>
+    static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::PointVector<dim,TComponent> & );
+    
+    template<Dimension dim, typename TComponent>
+    static void drawAsGrid( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
+
+    template<Dimension dim, typename TComponent>
+    static void drawAsPaving( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
+
+    template<Dimension dim, typename TComponent>
+    static void drawAsPavingWired( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
+
+    template<Dimension dim, typename TComponent>
+    static void draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & );
+    
+    template<Dimension dim, typename TComponent>
+    static void draw( Display3D & display, const DGtal::PointVector<dim,TComponent> & , const DGtal::PointVector<dim,TComponent> & );
+    // PointVector
+    
+    
     // SignedKhalimskyCell
     /**
       * Default drawing style object.
@@ -227,34 +218,9 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
     // SignedKhalimskyCell
     
-    //
-    
-    /** 
-     * Default style.
-     */    
-    struct DefaultDrawStyleDisplay3D : public DrawableWithDisplay3D 
-    {
-      // TODO (for DigitalSetBySTLSet but not used int .ih ?)
-      template <typename Domain>
-      /*virtual*/static void draw( Display3D & display, const DGtal::DigitalSetBySTLSet<Domain> & s )
-      {
-	display.myModes[ "DigitalSetBySTLSet" ] = "";
-      }
-
-      template<typename Domain>
-      /*virtual*/static void draw( Display3D & display, const DGtal::DigitalSetBySTLVector<Domain> & v )
-      {
-	display.myModes[ "DigitalSetBySTLVector" ] = "";
-      }
-      
-      template <typename TDigitalTopology, typename TDigitalSet>
-      /*virtual*/static void draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
-      {
-	display.myModes[ "Object" ] = "";
-      }
-    };
     
     //
+    
     
     static void draw( Display3D & display, const DGtal::SetMode3D & );
     static void draw( Display3D & display, const DGtal::CustomStyle3D & );

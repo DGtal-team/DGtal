@@ -34,6 +34,34 @@
 // Implementation of inline functions and external operators                 //
 
 
+// AngleLinearMinimizer
+inline
+void draw( DGtal::Board2D & board,
+           const DGtal::AngleLinearMinimizer & a )
+{
+  double distance=5.0;
+  board.setLineWidth(3.0);
+  board.setPenColor(Color(20,20,200));
+  // now with accessor
+  for(int i=0; i< (int)a.size(); i++){
+    board.drawArc(0.0, 0.0, distance, a.ro(i).min, a.ro(i).max, false, 1);
+    board.drawDot(cos(a.ro(i).value)*distance, sin(a.ro(i).value)*distance );
+    distance+=a.ro(i).distToNext;
+  }
+  distance=5.0;
+  double distanceNext;
+  // now with accessor
+  for(int i=0; i< (int) (a.size()-1); i++){
+    distanceNext= distance+ a.ro(i).distToNext;
+    board.setPenColor(Color(200,20,20));
+    board.drawLine(cos(a.ro(i).value)*distance, sin(a.ro(i).value)*distance, 
+                   cos(a.ro(i+1).value)*distanceNext, sin(a.ro(i+1).value)*distanceNext);
+    distance=distanceNext;
+  } 
+}
+// AngleLinearMinimizer
+
+
 // ArithmeticalDSS
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -115,6 +143,257 @@ void draw( DGtal::Board2D & board,
 // ArithmeticalDSS
 
 
+// CircleFrom2Points
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
+{
+    // now with accessor
+    CircleFrom3Points<TPoint> c(cf2p.pole(),cf2p.p(),cf2p.q()); 
+    drawArc(aBoard,c,cf2p.p(),cf2p.q());  
+}
+// CircleFrom2Points
+
+
+// CircleFrom3Points
+template <typename Point>
+inline
+void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
+    // now with accessor
+        Vector u(cf3p.p() - cf3p.q());
+          Vector v(cf3p.r() - cf3p.p());
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename Point>
+inline
+void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;
+    // now with accessor
+        Vector u(cf3p.p() - cf3p.q());
+          Vector v(cf3p.r() - cf3p.p());
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //sector drawing
+    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                   cx, cy ); 
+    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
+                   cx, cy ); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename Point>
+inline
+void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w )
+{
+  typedef typename Point::Coordinate Coordinate;
+  typedef Point Vector;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    //circle parameters
+    cf3p.getParameters(cx, cy, radius);
+    //angle parameters
+    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
+    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
+                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2; 
+    // now with accessor
+        Vector u(cf3p.p() - cf3p.q());
+          Vector v(cf3p.r() - cf3p.p());
+        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //inner arc
+    aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
+    //outer arc
+    aBoard.drawArc (cx, cy, radius+w, alpha1, alpha2, orientation); 
+    //first segment
+    double ifx = cx + (radius-w)*std::cos(alpha1);
+    double ify = cy + (radius-w)*std::sin(alpha1);
+    double ofx = cx + (radius+w)*std::cos(alpha1);
+    double ofy = cy + (radius+w)*std::sin(alpha1);
+    aBoard.drawLine(ifx, ify, ofx, ofy); 
+    //second segment
+    double ilx = cx + (radius-w)*std::cos(alpha2);
+    double ily = cy + (radius-w)*std::sin(alpha2);
+    double olx = cx + (radius+w)*std::cos(alpha2);
+    double oly = cy + (radius+w)*std::sin(alpha2);
+    aBoard.drawLine(ilx, ily, olx, oly); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
+                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+  } 
+}
+
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
+{
+  typedef typename TPoint::Coordinate Coordinate;
+  
+  double cx = 0, cy = 0, radius = 1;
+  try
+  {
+    cf3p.getParameters(cx,cy,radius);
+    aBoard.drawCircle (cx,cy,radius); 
+  } 
+  catch ( InfiniteNumberException e )
+  {
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(cf3p.myP[0]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[0]),
+                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[1]) );
+  } 
+}
+// CircleFrom3Points
+
+
+// DigitalSetBySTLSet
+template<typename Domain>
+inline
+void draw( DGtal::Board2D & board, 
+           const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
+    
+  ASSERT(Domain::Space::dimension == 2);
+  for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
+    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+}
+// DigitalSetBySTLSet
+
+
+// DigitalSetBySTLVector
+template<typename Domain>
+inline
+void draw( DGtal::Board2D & board, 
+           const DGtal::DigitalSetBySTLVector<Domain> & v )
+{
+  typedef typename Domain::Point Point;
+  typedef typename std::vector<Point>::const_iterator ConstIterator;
+    
+  if (Domain::dimension == 2)
+  {
+    for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
+      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+  }
+  else
+    ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
+}
+// DigitalSetBySTLVector
+
+
+// FP
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void drawAsPolygon( DGtal::Board2D & aBoard, 
+           const DGtal::FP<TIterator,TInteger,connectivity> & fp )
+{
+  typedef DGtal::PointVector<2,TInteger> Point;
+  typedef std::list<Point> Polygon;
+  
+  typedef typename Polygon::const_iterator ConstIterator;
+  
+  //polyline to draw
+  vector<LibBoard::Point> polyline;
+
+  // now with accessor
+  ConstIterator i = fp.polygon().begin();
+  for ( ;i != fp.polygon().end();++i) {
+      Point p = (*i);
+      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      polyline.push_back(LibBoard::Point(xp,yp));
+  }
+
+  // now with accessor
+  if (fp.flagIsClosed()) {
+      Point p = (*fp.polygon().begin());
+      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      polyline.push_back(LibBoard::Point(xp,yp));
+  }
+  aBoard.drawPolyline(polyline);
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void draw( DGtal::Board2D & board, 
+           const DGtal::FP<TIterator,TInteger,connectivity> & fp )
+{
+  std::string mode = board.getMode( fp.styleName() );
+  if ( mode == "Polygon" )
+    drawAsPolygon( board, fp );
+  else if ( ( mode == "Both" ) || ( mode == "" ) )
+    {
+      drawAsPolygon( board, fp );
+    }
+  else
+    {
+      mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & fp ): Unknown mode "+mode;
+      ASSERT2(false,  mode  );
+    }
+}
+// FP
+
+
 // FreemanChain
 template <typename TInteger>
 inline
@@ -175,109 +454,51 @@ void draw( DGtal::Board2D & aBoard,
 // FreemanChain
 
 
+// GeometricalDSS
+template <typename TConstIterator>
+inline
+void draw(DGtal::Board2D & aBoard,
+          const DGtal::GeometricalDSS<TConstIterator> & g)
+{
+  typedef TConstIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+  typedef typename Pair::first_type Point;
+    
+  double alpha, beta, gamma; 
+  g.getParameters(alpha, beta, gamma); 
+
+  typedef typename Point::Coordinate Coordinate; 
+
+  // now with accessor
+  Pair firstPair( *g.begin() ); 
+  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+  double fx = (fx1+fx2)/2.0; 
+  double fy = (fy1+fy2)/2.0; 
+  g.projects(fx, fy, alpha, beta, gamma);
+
+  // now with accessor
+  ConstIterator it (g.end()); 
+  --it;
+  Pair lastPair( *it );  
+  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+  double lx = (lx1+lx2)/2.0; 
+  double ly = (ly1+ly2)/2.0; 
+  g.projects(lx, ly, alpha, beta, gamma);
+
+  aBoard.drawLine(fx,fy,lx,ly);
+}
+// GeometricalDSS
+
+
 // GridCurve
 // we use selfDraw because of inner classes
 // GridCurve
-
-
-// Preimage2D
-template <typename Shape>
-inline
-void draw( DGtal::Board2D & aBoard,
-	   const DGtal::Preimage2D<Shape> & p )
-{
-  typedef typename Shape::Point Point;
-  typedef typename std::list<Point>::const_iterator ConstForwardIterator;
-  
-  Shape s( p.myShape ); 
-  ConstForwardIterator i = p.myPHull.begin();
-  Point pt(*i);
-  ++i;
-  while ( i != p.myPHull.end() ) {
-    s.init(pt, *i);
-    draw(aBoard, s); //s.selfDraw(aBoard);
-    pt = Point(*i);
-    ++i;
-  }
-
-  i = p.myQHull.begin();
-  pt = Point(*i);
-  ++i;
-  while ( i != p.myQHull.end() ) {
-    s.init(pt, *i);
-    draw(aBoard, s); //s.selfDraw(aBoard);
-    pt = Point(*i);
-    ++i;
-  }
-
-  Point Pf(*p.myPHull.begin());
-  Point Pl(*p.myPHull.rbegin());
-  Point Qf(*p.myQHull.begin());
-  Point Ql(*p.myQHull.rbegin());
-
-  s.init(Pf, Ql);
-  draw(aBoard, s); //s.selfDraw(aBoard);
-  s.init(Qf, Pl);
-  draw(aBoard, s); //s.selfDraw(aBoard);
-}
-// Preimage2D
-
-
-// PointVector
-template<Dimension dim, typename TComponent>
-inline
-void drawAsPaving( DGtal::Board2D & board, 
-           const DGtal::PointVector<dim,TComponent> & p )
-{
-  ASSERT(dim == 2);
-  board.drawRectangle( (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]) - 0.5f, 
-            (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]) + 0.5f, 1, 1 );     
-}
-
-template<Dimension dim, typename TComponent>
-inline
-void drawAsGrid( DGtal::Board2D & board, 
-           const DGtal::PointVector<dim,TComponent> & p )
-{
-  ASSERT(dim == 2);
-  board.setPenColor(Color::Black);
-  board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
-       (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
-}
-  
-template<Dimension dim, typename TComponent>
-inline
-void draw( DGtal::Board2D & board, 
-	   const DGtal::PointVector<dim,TComponent> & p )
-{
-  std::string mode = board.getMode( p.styleName() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
-    ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & p ): Unknown mode "+mode)==""  );
-
-  if ( mode == "Paving"  || ( mode == "" )  )
-    drawAsPaving( board, p );
-  else if ( mode == "Grid" )
-    drawAsGrid( board, p );
-  else if ( ( mode == "Both" ))
-    {
-      drawAsPaving( board, p );
-      drawAsGrid( board, p );
-    }
-}
-
-template<Dimension dim, typename TComponent>
-inline
-void draw( DGtal::Board2D & board, 
-          const DGtal::PointVector<dim,TComponent> & p, 
-          const DGtal::PointVector<dim,TComponent> & apoint )
-{
-  ASSERT(dim == 2);
-
-  board.drawArrow((float)apoint[0], (float) apoint[1],
-      (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
-      true);
-}
-// PointVector
 
 
 // HyperRectDomain
@@ -340,7 +561,7 @@ void drawAsPaving( DGtal::Board2D & aboard,
 template<typename TSpace>
 inline
 void draw( DGtal::Board2D & board, 
-	   const DGtal::HyperRectDomain<TSpace> & h )
+           const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = board.getMode( h.styleName() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
@@ -355,386 +576,6 @@ void draw( DGtal::Board2D & board,
 // HyperRectDomain
 
 
-// DigitalSetBySTLSet
-template<typename Domain>
-inline
-void draw( DGtal::Board2D & board, 
-	   const DGtal::DigitalSetBySTLSet<Domain> & s )
-{
-  typedef typename Domain::Point Point;
-  typedef typename std::set<Point>::const_iterator ConstIterator;
-    
-  ASSERT(Domain::Space::dimension == 2);
-  for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
-}
-// DigitalSetBySTLSet
-
-
-// DigitalSetBySTLVector
-template<typename Domain>
-inline
-void draw( DGtal::Board2D & board, 
-	   const DGtal::DigitalSetBySTLVector<Domain> & v )
-{
-  typedef typename Domain::Point Point;
-  typedef typename std::vector<Point>::const_iterator ConstIterator;
-    
-  if (Domain::dimension == 2)
-  {
-    for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
-  }
-  else
-    ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
-}
-// DigitalSetBySTLVector
-
-
-// Object
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-void drawWithAdjacencies( DGtal::Board2D & aBoard, 
-           const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
-{
-  typedef TDigitalSet DigitalSet;
-  typedef typename DigitalSet::Point Point;
-  
-  typedef TDigitalTopology DigitalTopology;
-  typedef typename DigitalSet::Domain Domain;
-  typedef
-      typename DigitalSetSelector < Domain,
-      SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
-  typedef Object<DigitalTopology, SmallSet> SmallObject;
-  
-  Point p;
-  
-  for (typename TDigitalSet::ConstIterator it = o.pointSet().begin();
-      it != o.pointSet().end();
-      ++it)
-  {
-    //Brute-force scan of the neighborhood.
-    SmallObject neig = o.properNeighborhood(*it);
-    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
-        it2 != neig.pointSet().end();
-        ++it2)
-    {
-      p = (*it2) - (*it);
-      draw(aBoard, p, (*it));
-    }
-  }
-}
-
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-void draw( DGtal::Board2D & board, 
-	   const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
-{
-  std::string mode = board.getMode( o.styleName() );
-  if ( mode == "" )
-    draw( board, o.pointSet() );
-  else
-    if ( mode == "DrawAdjacencies" )
-    {
-      draw( board, o.pointSet() );
-      drawWithAdjacencies( board, o );
-    }
-    else
-      ASSERT(false && (("draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
-}
-// Object
-
-
-// KhalimskyCell
-template < Dimension dim, typename TInteger >
-inline
-void draw( DGtal::Board2D & board,
-	   const DGtal::KhalimskyCell<dim, TInteger> & k )
-{
-  ASSERT( dim == 2 );
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1 );
-  float retract = 0.05f;
-  bool xodd = ( k.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( k.myCoordinates[ 1 ] & 1 );
-  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
-           !yodd ? y + retract - 0.5 : y - retract + 0.5,
-           dx, dy );
-}
-// KhalimskyCell
-
-// SignedKhalimskyCell
-template < Dimension dim, typename TInteger >
-inline
-void draw( DGtal::Board2D & board,
-	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
-{
-  ASSERT( dim == 2 );
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[1] ) >> 1 );
-  float retract = 0.05f;
-  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
-  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
-           !yodd ? y + retract - 0.5 : y - retract + 0.5,
-           dx, dy );
-}
-// SignedKhalimskyCell
-
-
-// AngleLinearMinimizer
-inline
-void draw( DGtal::Board2D & board,
-	   const DGtal::AngleLinearMinimizer & a )
-{
-  double distance=5.0;
-  board.setLineWidth(3.0);
-  board.setPenColor(Color(20,20,200));
-  for(int i=0; i< (int)a.mySize; i++){
-    board.drawArc(0.0, 0.0, distance, a.myValues[i].min, a.myValues[i].max, false, 1);
-    board.drawDot(cos(a.myValues[i].value)*distance, sin(a.myValues[i].value)*distance );
-    distance+=a.myValues[i].distToNext;
-  }
-  distance=5.0;
-  double distanceNext;
-  for(int i=0; i< (int) (a.mySize-1); i++){
-    distanceNext= distance+ a.myValues[i].distToNext;
-    board.setPenColor(Color(200,20,20));
-    board.drawLine(cos(a.myValues[i].value)*distance, sin(a.myValues[i].value)*distance, 
-                   cos(a.myValues[i+1].value)*distanceNext, sin(a.myValues[i+1].value)*distanceNext);
-    distance=distanceNext;
-  } 
-}
-// AngleLinearMinimizer
-
-
-// FP
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void drawAsPolygon( DGtal::Board2D & aBoard, 
-           const DGtal::FP<TIterator,TInteger,connectivity> & fp )
-{
-  typedef DGtal::PointVector<2,TInteger> Point;
-  typedef std::list<Point> Polygon;
-  
-  typedef typename Polygon::const_iterator ConstIterator;
-  
-  //polyline to draw
-  vector<LibBoard::Point> polyline;
-
-  ConstIterator i = fp.myPolygon.begin();
-  for ( ;i != fp.myPolygon.end();++i) {
-      Point p = (*i);
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-      polyline.push_back(LibBoard::Point(xp,yp));
-  }
-
-  if (fp.myFlagIsClosed) {
-      Point p = (*fp.myPolygon.begin());
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-      polyline.push_back(LibBoard::Point(xp,yp));
-  }
-  aBoard.drawPolyline(polyline);
-}
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void draw( DGtal::Board2D & board, 
-	   const DGtal::FP<TIterator,TInteger,connectivity> & fp )
-{
-  std::string mode = board.getMode( fp.styleName() );
-  if ( mode == "Polygon" )
-    drawAsPolygon( board, fp );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
-    {
-      drawAsPolygon( board, fp );
-    }
-  else
-    {
-      mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & fp ): Unknown mode "+mode;
-      ASSERT2(false,  mode  );
-    }
-}
-// FP
-
-
-// CircleFrom2Points
-template <typename TPoint>
-inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
-{
-    CircleFrom3Points<TPoint> c(cf2p.myPole,cf2p.myP,cf2p.myQ); 
-    drawArc(aBoard,c,cf2p.myP,cf2p.myQ);  
-}
-// CircleFrom2Points
-
-
-// CircleFrom3Points
-template <typename Point>
-inline
-void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
-{
-  typedef typename Point::Coordinate Coordinate;
-  typedef Point Vector;
-  
-  double cx = 0, cy = 0, radius = 1;
-  try
-  {
-    //circle parameters
-    cf3p.getParameters(cx, cy, radius);
-    //angle parameters
-    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
-    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
-    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
-    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-        Vector u(cf3p.myP - cf3p.myQ);
-          Vector v(cf3p.myR - cf3p.myP);
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
-    //drawing
-    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
-  } 
-  catch ( InfiniteNumberException e )
-  {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
-  } 
-}
-
-template <typename Point>
-inline
-void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2 )
-{
-  typedef typename Point::Coordinate Coordinate;
-  typedef Point Vector;
-  
-  double cx = 0, cy = 0, radius = 1;
-  try
-  {
-    //circle parameters
-    cf3p.getParameters(cx, cy, radius);
-    //angle parameters
-    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
-    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
-    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
-    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-        Vector u(cf3p.myP - cf3p.myQ);
-          Vector v(cf3p.myR - cf3p.myP);
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
-    //sector drawing
-    aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                   cx, cy ); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
-                   cx, cy ); 
-  } 
-  catch ( InfiniteNumberException e )
-  {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
-  } 
-}
-
-template <typename Point>
-inline
-void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w )
-{
-  typedef typename Point::Coordinate Coordinate;
-  typedef Point Vector;
-  
-  double cx = 0, cy = 0, radius = 1;
-  try
-  {
-    //circle parameters
-    cf3p.getParameters(cx, cy, radius);
-    //angle parameters
-    double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
-    alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
-    double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
-    alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-        Vector u(cf3p.myP - cf3p.myQ);
-          Vector v(cf3p.myR - cf3p.myP);
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
-    //inner arc
-    aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
-    //outer arc
-    aBoard.drawArc (cx, cy, radius+w, alpha1, alpha2, orientation); 
-    //first segment
-    double ifx = cx + (radius-w)*std::cos(alpha1);
-    double ify = cy + (radius-w)*std::sin(alpha1);
-    double ofx = cx + (radius+w)*std::cos(alpha1);
-    double ofy = cy + (radius+w)*std::sin(alpha1);
-    aBoard.drawLine(ifx, ify, ofx, ofy); 
-    //second segment
-    double ilx = cx + (radius-w)*std::cos(alpha2);
-    double ily = cy + (radius-w)*std::sin(alpha2);
-    double olx = cx + (radius+w)*std::cos(alpha2);
-    double oly = cy + (radius+w)*std::sin(alpha2);
-    aBoard.drawLine(ilx, ily, olx, oly); 
-  } 
-  catch ( InfiniteNumberException e )
-  {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
-  } 
-}
-
-template <typename TPoint>
-inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
-{
-  typedef typename TPoint::Coordinate Coordinate;
-  
-  double cx = 0, cy = 0, radius = 1;
-  try
-  {
-    cf3p.getParameters(cx,cy,radius);
-    aBoard.drawCircle (cx,cy,radius); 
-  } 
-  catch ( InfiniteNumberException e )
-  {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(cf3p.myP[0]),
-                     NumberTraits<Coordinate>::castToDouble(cf3p.myP[1]),
-                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[0]),
-                     NumberTraits<Coordinate>::castToDouble(cf3p.myR[1]) );
-  } 
-}
-// CircleFrom3Points
-
-
-// StraightLineFrom2Points
-template <typename TPoint>
-inline
-void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p)
-{
-  aBoard.drawLine(slf2p.myP[0],slf2p.myP[1],slf2p.myQ[0],slf2p.myQ[1]);
-}
-// StraightLineFrom2Points
-
-    
 // ImageContainerByHashTree
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
@@ -746,6 +587,10 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
       LibBoard::Board & board,
       const C& cmap )
 {
+  // temp -> TODO -> cf. if(0) below
+  return;
+  // temp -> TODO -> cf. if(0) below
+  
   static const typename Domain::Space::Dimension dim = Domain::dimension;
   
   //
@@ -848,47 +693,227 @@ void drawImage( DGtal::Board2D & board,
 // ImageContainerBySTLVector
 
 
-// GeometricalDSS
-template <typename TConstIterator>
+// KhalimskyCell
+template < Dimension dim, typename TInteger >
 inline
-void draw(DGtal::Board2D & aBoard,
-          const DGtal::GeometricalDSS<TConstIterator> & g)
+void draw( DGtal::Board2D & board,
+           const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
-  typedef TConstIterator ConstIterator;
-  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
-  typedef typename Pair::first_type Point;
-    
-  double alpha, beta, gamma; 
-  g.getParameters(alpha, beta, gamma); 
-
-  typedef typename Point::Coordinate Coordinate; 
-
-  Pair firstPair( *g.myBegin ); 
-  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
-  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
-  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
-  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
-  double fx = (fx1+fx2)/2.0; 
-  double fy = (fy1+fy2)/2.0; 
-  g.projects(fx, fy, alpha, beta, gamma);
-
-  ConstIterator it (g.myEnd); 
-  --it;
-  Pair lastPair( *it );  
-  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
-  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
-  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
-  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
-  double lx = (lx1+lx2)/2.0; 
-  double ly = (ly1+ly2)/2.0; 
-  g.projects(lx, ly, alpha, beta, gamma);
-
-  aBoard.drawLine(fx,fy,lx,ly);
+  ASSERT( dim == 2 );
+  float x = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
+  float y = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[1] ) >> 1 );
+  float retract = 0.05f;
+  bool xodd = ( k.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( k.myCoordinates[ 1 ] & 1 );
+  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
+           !yodd ? y + retract - 0.5 : y - retract + 0.5,
+           dx, dy );
 }
-// GeometricalDSS
+// KhalimskyCell
+
+
+// Object
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void drawWithAdjacencies( DGtal::Board2D & aBoard, 
+           const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+{
+  typedef TDigitalSet DigitalSet;
+  typedef typename DigitalSet::Point Point;
+  
+  typedef TDigitalTopology DigitalTopology;
+  typedef typename DigitalSet::Domain Domain;
+  typedef
+      typename DigitalSetSelector < Domain,
+      SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+  typedef Object<DigitalTopology, SmallSet> SmallObject;
+  
+  Point p;
+  
+  for (typename TDigitalSet::ConstIterator it = o.pointSet().begin();
+      it != o.pointSet().end();
+      ++it)
+  {
+    //Brute-force scan of the neighborhood.
+    SmallObject neig = o.properNeighborhood(*it);
+    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
+        it2 != neig.pointSet().end();
+        ++it2)
+    {
+      p = (*it2) - (*it);
+      draw(aBoard, p, (*it));
+    }
+  }
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void draw( DGtal::Board2D & board, 
+           const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
+{
+  std::string mode = board.getMode( o.styleName() );
+  if ( mode == "" )
+    draw( board, o.pointSet() );
+  else
+    if ( mode == "DrawAdjacencies" )
+    {
+      draw( board, o.pointSet() );
+      drawWithAdjacencies( board, o );
+    }
+    else
+      ASSERT(false && (("draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
+}
+// Object
+
+
+// PointVector
+template<Dimension dim, typename TComponent>
+inline
+void drawAsPaving( DGtal::Board2D & board, 
+           const DGtal::PointVector<dim,TComponent> & p )
+{
+  ASSERT(dim == 2);
+  board.drawRectangle( (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]) - 0.5f, 
+            (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]) + 0.5f, 1, 1 );     
+}
+
+template<Dimension dim, typename TComponent>
+inline
+void drawAsGrid( DGtal::Board2D & board, 
+           const DGtal::PointVector<dim,TComponent> & p )
+{
+  ASSERT(dim == 2);
+  board.setPenColor(Color::Black);
+  board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
+       (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
+}
+  
+template<Dimension dim, typename TComponent>
+inline
+void draw( DGtal::Board2D & board, 
+           const DGtal::PointVector<dim,TComponent> & p )
+{
+  std::string mode = board.getMode( p.styleName() );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
+    ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & p ): Unknown mode "+mode)==""  );
+
+  if ( mode == "Paving"  || ( mode == "" )  )
+    drawAsPaving( board, p );
+  else if ( mode == "Grid" )
+    drawAsGrid( board, p );
+  else if ( ( mode == "Both" ))
+    {
+      drawAsPaving( board, p );
+      drawAsGrid( board, p );
+    }
+}
+
+template<Dimension dim, typename TComponent>
+inline
+void draw( DGtal::Board2D & board, 
+          const DGtal::PointVector<dim,TComponent> & p, 
+          const DGtal::PointVector<dim,TComponent> & apoint )
+{
+  ASSERT(dim == 2);
+
+  board.drawArrow((float)apoint[0], (float) apoint[1],
+      (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
+      true);
+}
+// PointVector
+
+
+// Preimage2D
+template <typename Shape>
+inline
+void draw( DGtal::Board2D & aBoard,
+	   const DGtal::Preimage2D<Shape> & p )
+{
+  typedef typename Shape::Point Point;
+  typedef typename std::list<Point>::const_iterator ConstForwardIterator;
+  
+  // now with accessor
+  Shape s( p.shape() ); 
+  ConstForwardIterator i = p.pHull().begin();
+  Point pt(*i);
+  ++i;
+  while ( i != p.pHull().end() ) {
+    s.init(pt, *i);
+    draw(aBoard, s); //s.selfDraw(aBoard);
+    pt = Point(*i);
+    ++i;
+  }
+
+  i = p.qHull().begin();
+  pt = Point(*i);
+  ++i;
+  while ( i != p.qHull().end() ) {
+    s.init(pt, *i);
+    draw(aBoard, s); //s.selfDraw(aBoard);
+    pt = Point(*i);
+    ++i;
+  }
+
+  Point Pf(*p.pHull().begin());
+  Point Pl(*p.pHull().rbegin());
+  Point Qf(*p.qHull().begin());
+  Point Ql(*p.qHull().rbegin());
+
+  s.init(Pf, Ql);
+  draw(aBoard, s); //s.selfDraw(aBoard);
+  s.init(Qf, Pl);
+  draw(aBoard, s); //s.selfDraw(aBoard);
+}
+// Preimage2D
+
+
+// SignedKhalimskyCell
+template < Dimension dim, typename TInteger >
+inline
+void draw( DGtal::Board2D & board,
+	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+  ASSERT( dim == 2 );
+  float x = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
+  float y = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[1] ) >> 1 );
+  float retract = 0.05f;
+  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
+  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
+           !yodd ? y + retract - 0.5 : y - retract + 0.5,
+           dx, dy );
+}
+// SignedKhalimskyCell
+
+
+// StraightLineFrom2Points
+template <typename TPoint>
+inline
+void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p)
+{
+  // now with accessor
+  aBoard.drawLine(slf2p.p()[0],slf2p.p()[1],slf2p.q()[0],slf2p.q()[1]);
+}
+// StraightLineFrom2Points
 
 
 //
+
+
+inline
+void draw( DGtal::Board2D & board,
+           const DGtal::CustomStyle & cs )
+{
+  board.myStyles[ cs.myClassname ] = cs.myStyle;
+}
 
 inline
 void draw( DGtal::Board2D & board, 
@@ -897,19 +922,6 @@ void draw( DGtal::Board2D & board,
   board.myModes[ sm.myClassname ] = sm.myMode;
 }
 
-inline
-void draw( DGtal::Board2D & board,
-	   const DGtal::CustomStyle & cs )
-{
-  board.myStyles[ cs.myClassname ] = cs.myStyle;
-}
-
-/*inline
-void draw( Display3D & display, const DGtal::CustomColors3D & cc3d )
-{
-  display.setFillColor(cc3d.myFillColor);
-  display.setLineColor(cc3d.myPenColor);
-}*/
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

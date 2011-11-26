@@ -147,6 +147,30 @@ namespace DGtal
      * @param r  returned radius of the circle
      */
     void getParameters(double& cx, double& cy, double& r) const;
+    
+    /**
+     * @return the first point through which the circle passes.
+     */
+    Point p() const
+    {
+      return myP;
+    };
+    
+    /**
+     * @return the second point through which the circle passes.
+     */
+    Point q() const
+    {
+      return myQ;
+    };
+    
+    /**
+     * @return the third point through which the circle passes.
+     */
+    Point r() const
+    {
+      return myR;
+    };
 
     //------------------ display -------------------------------
     /**
@@ -199,21 +223,19 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-  public:
     //the three points that uniquely define the circle
     /**
        First point through which the circle passes
     */
-    Point myP; // public because Display2DFactory, todo: accessors
+    Point myP;
     /**
        Second point through which the circle passes
     */
-    Point myQ; // public because Display2DFactory, todo: accessors
+    Point myQ;
     /**
        Third point through which the circle passes
     */
-    Point myR; // public because Display2DFactory, todo: accessors
-  private:
+    Point myR;
     // ------------------------- Hidden services ------------------------------
   protected:
 

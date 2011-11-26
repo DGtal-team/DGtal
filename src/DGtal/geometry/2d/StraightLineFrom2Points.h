@@ -139,6 +139,22 @@ namespace DGtal
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
+    
+    /**
+     * @return the first point through which the straight line passes.
+     */
+    Point p() const
+    {
+      return myP;
+    };
+    
+    /**
+     * @return the second point through which the straight line passes.
+     */
+    Point q() const
+    {
+      return myQ;
+    };
 
     //------------------ display -------------------------------
     /**
@@ -164,17 +180,15 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-  public:
     //the two points that uniquely define the straight line
     /**
        First point through which the straight line passes
     */
-    Point myP; // public because Display2DFactory, todo: accessors
+    Point myP;
     /**
        Second point through which the straight line passes
     */
-    Point myQ; // public because Display2DFactory, todo: accessors
-  private:
+    Point myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
 
