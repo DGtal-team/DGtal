@@ -64,6 +64,8 @@ namespace DGtal
      CPointPredicate and of CShape. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
+     GaussDigitizer is a model of CDigitalEucldieanShape and CDigitalBoundedShape.
+
      @tparam TSpace the type of digital Space where the digitized
      object lies.
 
@@ -160,26 +162,13 @@ namespace DGtal
     Point round( const RealPoint & p ) const;
 
     /**
-       @param p any digital point in the digital space.
-       @return its centroid embedding in the Euclidean space.
-    */
+     * Map a digital point to its corresponding point in the Eucldiean
+     * space.
+     *
+     *   @param p any digital point in the digital space.
+     *   @return its centroid embedding in the Euclidean space.
+     */
     RealPoint embed( const Point & p ) const;
-
-    /**
-     * @param p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const RealPoint & p ) const;
-
-    /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const Point & p ) const;
 
     /** 
      * Orientation method to match with CDigitalOrientedShape concept.
@@ -190,7 +179,9 @@ namespace DGtal
      * 0 if it is on the shape and positive orientation otherwise.
      */
     Orientation orientation(const Point &p) const
-    { return myEShape->orientation(p);}
+    { 
+      return myEShape->orientation(embed(p));
+    }
 
     /**
      * @param p any point in the digital plane.

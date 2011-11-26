@@ -40,6 +40,9 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/shapes/CDigitalOrientedShape.h"
+#include "DGtal/shapes/CDigitalBoundedShape.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,6 +51,22 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class GaussDigitizer.
 ///////////////////////////////////////////////////////////////////////////////
+
+
+/** 
+ * 
+ * Gaussdigitizer is a model of CDigitalBoundedShape and
+ * CDigitalOrientedShape.
+ * 
+ */
+bool testConcept()
+{
+  typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig; 
+  BOOST_CONCEPT_ASSERT((CDigitalBoundedShape<Dig>));
+  BOOST_CONCEPT_ASSERT((CDigitalOrientedShape<Dig>));
+}
+
+
 template <typename Space, typename Shape>
 bool
 testDigitization( const Shape & aShape, double h,
@@ -171,7 +190,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testGaussDigitizer(); // && ... other tests
+  bool res = testConcept() && testGaussDigitizer(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
