@@ -67,9 +67,9 @@ int main()
                Board2D::Shape::RoundCap,
                Board2D::Shape::RoundJoin ) )
   << p3;
-  board.saveSVG("dgtalboard-3-custom-classes.svg");
-  board.saveEPS("dgtalboard-3-custom-classes.eps");
-  board.saveTikZ("dgtalboard-3-custom-classes.tikz");
+  board.saveSVG("dgtalBoard2D-3-custom-classes.svg");
+  board.saveEPS("dgtalBoard2D-3-custom-classes.eps");
+  board.saveTikZ("dgtalBoard2D-3-custom-classes.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.pdf", Board2D::CairoPDF);

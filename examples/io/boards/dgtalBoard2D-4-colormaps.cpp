@@ -83,9 +83,9 @@ int main()
                 cmap_grad( d ) ) )
       << *it;
     }
-  board.saveSVG( "dgtalboard-4-colormaps.svg");
-  board.saveEPS( "dgtalboard-4-colormaps.eps");
-  board.saveTikZ( "dgtalboard-4-colormaps.tikz");
+  board.saveSVG( "dgtalBoard2D-4-colormaps.svg");
+  board.saveEPS( "dgtalBoard2D-4-colormaps.eps");
+  board.saveTikZ( "dgtalBoard2D-4-colormaps.tikz");
 
 #ifdef WITH_CAIRO
   board.saveCairo("dgtalBoard2D-4-colormaps-cairo.pdf", Board2D::CairoPDF);
