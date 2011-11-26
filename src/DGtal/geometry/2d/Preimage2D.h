@@ -284,7 +284,7 @@ namespace DGtal
     /**
      * @return the shape used to separate the input points.
      */
-    Shape shape() const
+    const Shape & shape() const
     {
       return myShape;
     };
@@ -292,7 +292,7 @@ namespace DGtal
     /**
      * @return the lower part of the preimage.
      */
-    Container pHull() const
+    const Container & pHull() const
     {
       return myPHull;
     };
@@ -300,7 +300,7 @@ namespace DGtal
     /**
      * @return the upper part of the preimage.
      */
-    Container qHull() const
+    const Container & qHull() const
     {
       return myQHull;
     };

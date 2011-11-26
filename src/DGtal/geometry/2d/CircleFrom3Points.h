@@ -151,7 +151,7 @@ namespace DGtal
     /**
      * @return the first point through which the circle passes.
      */
-    Point p() const
+    const Point & p() const
     {
       return myP;
     };
@@ -159,7 +159,7 @@ namespace DGtal
     /**
      * @return the second point through which the circle passes.
      */
-    Point q() const
+    const Point & q() const
     {
       return myQ;
     };
@@ -167,7 +167,7 @@ namespace DGtal
     /**
      * @return the third point through which the circle passes.
      */
-    Point r() const
+    const Point & r() const
     {
       return myR;
     };
