@@ -143,7 +143,7 @@ namespace DGtal
     /**
      * @return the first point through which the straight line passes.
      */
-    Point p() const
+    const Point & p() const
     {
       return myP;
     };
@@ -151,7 +151,7 @@ namespace DGtal
     /**
      * @return the second point through which the straight line passes.
      */
-    Point q() const
+    const Point & q() const
     {
       return myQ;
     };

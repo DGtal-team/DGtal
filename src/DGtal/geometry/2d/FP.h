@@ -271,7 +271,7 @@ namespace DGtal
     /**
      * @return the list where each vertex of the FP is stored.
      */
-    Polygon polygon() const
+    const Polygon & polygon() const
     {
       return myPolygon;
     };
