@@ -117,12 +117,10 @@ These shapes are either parametric or implicit ones (see
 simple access to all shapes, just include the "shapes/ShapeFactory.h"
 header file.
 
-
-
 @note In dimension 2,
 parametric shapes provide fine approximation of differential
 quantities (length, tangent, curvature,...). These information can be used to
-evalute digital differential estimators.
+evaluate digital differential estimators.
 
 
 */
