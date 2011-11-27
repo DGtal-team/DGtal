@@ -63,12 +63,6 @@
 
 #include "DGtal/io/boards/Board2D.h"
 
-
-// TODO
-// ImageContainerByHashTree: pb Node (ligne 590 à 599) de DisplayFactory.ih
-// TODO
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 
