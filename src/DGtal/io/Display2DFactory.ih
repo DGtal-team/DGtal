@@ -587,10 +587,6 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
       LibBoard::Board & board,
       const C& cmap )
 {
-  // temp -> TODO -> cf. if(0) below
-  return;
-  // temp -> TODO -> cf. if(0) below
-  
   static const typename Domain::Space::Dimension dim = Domain::dimension;
   
   //
@@ -599,18 +595,16 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
   
   double np[2], nlen;
 
-#if(0)
-  Node* n = i.getNode ( key );
-  if ( n )
+  //Node* n = i.getNode ( key );
+  if ( i.getNode ( key ) )
   {
     Color c;
-    c = cmap ( n->getObject() );
+    c = cmap ( i.getNode ( key )->getObject() );
     board.setFillColorRGBi ( c.red(), c.green(), c.blue() );
 
     board.drawRectangle ( p[0], p[1], len, len );
   }
   else
-#endif
   {
     HashKey children[4];
     i.myMorton.childrenKeys ( key, children );

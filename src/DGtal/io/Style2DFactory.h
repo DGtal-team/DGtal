@@ -59,12 +59,6 @@
 #include "DGtal/geometry/2d/Preimage2D.h"
 #include "DGtal/geometry/2d/StraightLineFrom2Points.h"
 
-
-// TODO
-// rename styleName to className ? -> see object.styleName() in Board2D.ih for example
-// TODO
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 
