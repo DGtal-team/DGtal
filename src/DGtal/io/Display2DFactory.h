@@ -112,6 +112,9 @@
     template <typename Point>
     void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0);
     
+    template <typename Point>
+    void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
     template <typename TPoint>
     void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
     // CircleFrom3Points
