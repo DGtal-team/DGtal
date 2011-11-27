@@ -64,6 +64,7 @@ bool testConcept()
   typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig; 
   BOOST_CONCEPT_ASSERT((CDigitalBoundedShape<Dig>));
   BOOST_CONCEPT_ASSERT((CDigitalOrientedShape<Dig>));
+  return true;
 }
 
 
