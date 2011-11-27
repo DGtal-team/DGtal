@@ -96,7 +96,7 @@ namespace DGtal
     inline
     double operator()(const RealPoint &aPoint) const
     {
-      return  (aPoint - myCenter ).norm(RealPoint::L_infty);
+      return  myHalfWidth - (aPoint - myCenter ).norm(RealPoint::L_infty);
     }
 
 
