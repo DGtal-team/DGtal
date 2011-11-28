@@ -17,38 +17,40 @@
 #pragma once
 
 /**
- * @file GeometricalDSS.h
+ * @file GeometricalDCA.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/09/26
  *
- * Header file for module GeometricalDSS.cpp
+ * @brief Header file for module GeometricalDCA.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GeometricalDSS_RECURSES)
-#error Recursive header files inclusion detected in GeometricalDSS.h
-#else // defined(GeometricalDSS_RECURSES)
+#if defined(GeometricalDCA_RECURSES)
+#error Recursive header files inclusion detected in GeometricalDCA.h
+#else // defined(GeometricalDCA_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GeometricalDSS_RECURSES
+#define GeometricalDCA_RECURSES
 
-#if !defined GeometricalDSS_h
+#if !defined GeometricalDCA_h
 /** Prevents repeated inclusion of headers. */
-#define GeometricalDSS_h
+#define GeometricalDCA_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include <boost/static_assert.hpp>
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
 
+#include "DGtal/geometry/2d/GeometricalDSS.h"
+#include "DGtal/geometry/2d/CircleFrom2Points.h"
 #include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
+#include "DGtal/geometry/2d/CircleFrom3Points.h"
+#include "DGtal/geometry/2d/Point2ShapePredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -56,75 +58,99 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class GeometricalDSS
+  // template class GeometricalDCA
   /**
    * @brief Aim:
-   * On-line recognition of a digital straight segment (DSS)
+   * On-line recognition of a digital circular arcs (DCA)
    * defined as a sequence of connected grid edges such that 
-   * there is at least one straight line that separates the centers 
+   * there is at least one (Euclidean) circle that separates the centers 
    * of the two incident pixels of each grid edge. 
    *
-   * @note On either side, the pixels centers are included. 
-   * The class of segments considered here is thus larger
-   * than the one considered in ArithmeticalDSS 
-   * (the equivalence would be true if the pixels centers 
-   * were included on one side but excluded on the other side)
+   * The algorithm iteratively calls a routine (@ref isCircularlySeparable)
+   * that uses Preimage2D in order to compute the whole set of 
+   * separating (Euclidean) circles passing through a given point. 
+   * It returns 'false' if the set is empty and 'true' otherwise. 
    *
-   * The algorithm computes and maintains the preimage
-   * of the whole set of separating straight lines in linear time
-   * using Preimage2D and the algorithm of O'Rourke (1981). 
-   *
-   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+   * The algorithm may be divided into two steps:
+  
+  - The first one consists in the on-line recognition of a DSS
+  using GeometricalDSS (using at its turn Preimage2D). 
+  Once the recogntion stops, the main routine is run. 
+  The two incident pixels of each grid edge are scanned
+  a second time in order to compute the whole set of 
+  separating (Euclidean) circles passing through 
+  the point that made the recognition stop. If the set is not
+  empty, one of the separating circles is chosen as a solution. 
+  
+  - The second step consists in checking if the centers of the two incident pixels 
+  of the next grid edge are lying on either side of the current solution circle. 
+  If it turns out that a point is outside of the current solution circle instead of 
+  being inside or conversely, the main routine is run. 
+  The two incident pixels of each grid edge are scanned
+  a new time in order to compute the whole set of separating (Euclidean) circles 
+  passing through the point that made the current solution circle not separating.
+  If the set is not empty, one of the separating circles is chosen as a new solution
+  and so on. 
+  
+  For a DCA of @f$ n @f$ grid edges, a trivial upper bound of this algorithm is @f$ O(n^2) @f$ 
+  because the linear-time routine may be possibly called @f$ n @f$ times. But we observed in practice
+  that the routine is called only a few times and that the algorithm is fast. 
+  
    *
    * This class is a model of the concept CBidirectionalSegmentComputer. 
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
-   * @snippet geometry/exampleGeometricalDSS.cpp GeometricalDSSUsage
+   *
+   * @snippet geometry/exampleGeometricalDCA.cpp GeometricalDCAUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *
-   * @see testGeometricalDSS.cpp  exampleGeometricalDSS.cpp  Preimage2D ArithmeticalDSS
+   * @see testGeometricalDCA.cpp  exampleGeometricalDCA.cpp testGeometricalDSS.cpp  exampleGeometricalDSS.cpp 
    */
   template <typename TConstIterator>
-  class GeometricalDSS
+  class GeometricalDCA
   {
 
   public:
 
     //requiered types
     typedef TConstIterator ConstIterator;
-    typedef GeometricalDSS<ConstIterator> Self; 
-    typedef GeometricalDSS<std::reverse_iterator<ConstIterator> > Reverse;
+    typedef GeometricalDCA<ConstIterator> Self; 
+    typedef GeometricalDCA<std::reverse_iterator<ConstIterator> > Reverse;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
-    typedef typename Pair::first_type Point;
-
     //Pair::first_type and Pair::second_type should be the same type;
-    BOOST_STATIC_ASSERT( ( ConceptUtils::SameType
-                           < typename Pair::first_type, typename Pair::second_type >
-                           ::value ) );
-
-    //preimage
-    typedef StraightLineFrom2Points<Point> StraightLine; 
-    typedef Preimage2D<StraightLine> Preimage; 
-    typedef CowPtr<Preimage> PreimagePtr; 
-
+    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<typename Pair::first_type, typename Pair::second_type >::value ));
+    typedef typename Pair::first_type Point;
+    BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
+  
+  private: 
+    
+    //other types used for the recognition
+    typedef CowPtr<GeometricalDSS<ConstIterator> > GeometricalDSSPtr; 
+    typedef CircleFrom3Points<Point> Circle; 
+      
+    //Predicates used to decide whether the current circle is still seperating or not
+    typedef Point2ShapePredicate<Circle,false,true> 
+      PInCirclePred; 
+    typedef Point2ShapePredicate<Circle,true,true> 
+      QInCirclePred; 
+  
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor.
      */
-    GeometricalDSS();
+    GeometricalDCA();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    GeometricalDSS ( const Self& other );
+    GeometricalDCA ( const Self& other );
 
     /**
      * Assignment.
@@ -136,12 +162,14 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GeometricalDSS();
+    ~GeometricalDCA();
 
     /**
     *  Equality operator
     * @param other the object to compare with.
     * @return 'true' if equal, 'false' otherwise
+    *
+    * NB: linear in the size of the segment
     */
     bool operator==( const Self & other) const;
 
@@ -149,6 +177,8 @@ namespace DGtal
     *  Difference operator
     * @param other the object to compare with.
     * @return 'true' if not equal, 'false' otherwise.
+    *
+    * NB: linear in the size of the segment
     */
     bool operator!=( const Self & other) const;
 
@@ -176,42 +206,13 @@ namespace DGtal
      */
     ConstIterator end() const;
 
-    // ----------------------- accessors --------------------------------------
-
+    //------------------ accessors -------------------------------
+    
     /**
-     * @return first upper leaning point.
+     * @return a separating circle.
      */
-    Point getUf() const;
-
-    /**
-     * @return last upper leaning point.
-     */
-    Point getUl() const;
-
-    /**
-     * @return first lower leaning point.
-     */
-    Point getLf() const;
-
-    /**
-     * @return last lower leaning point.
-     */
-    Point getLl() const;
-
-    /**
-     * @return 'true' if CW, 'false' if CCW
-     */
-    bool isClockwiseOriented() const;
-
-    /**
-     * Get the parameters of one separating straight line
-     * @param alpha  (returned) x-component of the normal
-     * @param beta  (returned) y-component of the normal
-     * @param gamma  (returned) intercept
-     */
-    void getParameters(double& alpha, double& beta, double& gamma) const;
-
-
+    Circle getSeparatingCircle() const;
+    
     // ----------------------- growth operations --------------------------------------
 
     /**
@@ -223,78 +224,30 @@ namespace DGtal
     /**
      * Forward extension of the segment.
      *
-     * @return 'true' if the segment is extended
-     * and 'false' otherwise.
+     * NB: linear in the size of the segment is the worst case
      */
     bool extend();
 
     /**
      * Forward extension test.
      *
-     * @return 'true' if the segment can be extended
-     * and 'false' otherwise.
+     * NB: linear in the size of the segment is the worst case
      */
     bool isExtendable();
 
     /**
-     * Decide whether the extension of the segment
-     * would result in a concave part or not.
-     *
-     * @return 'true' if the extension of the segment
-     * results in a concave part and 'false' otherwise.
-     *
-     * NB: a true returned value implies that isExtendable() returns 'false'
-     */
-    bool isConcave();
-
-    /**
-     * Decide whether the extension of the segment
-     * would result in a convex part or not.
-     *
-     * @return 'true' if the extension of the segment
-     * results in a convex part and 'false' otherwise.
-     *
-     * NB: a true returned value implies that isExtendable() returns 'false'
-     */
-    bool isConvex();
-
-    /**
      * Backward extension of the segment.
      *
-     * @return 'true' if the segment is extended
-     * and 'false' otherwise.
+     * NB: linear in the size of the segment is the worst case
      */
     bool extendOppositeEnd();
 
     /**
      * Backward extension test.
      *
-     * @return 'true' if the segment can be extended
-     * and 'false' otherwise.
+     * NB: linear in the size of the segment is the worst case
      */
     bool isOppositeEndExtendable();
-
-    /**
-     * Decide whether the extension of the segment
-     * would result in a concave part or not.
-     *
-     * @return 'true' if the extension of the segment
-     * results in a concave part and 'false' otherwise.
-     *
-     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
-     */
-    bool isOppositeEndConcave();
-
-    /**
-     * Decide whether the extension of the segment
-     * would result in a convex part or not.
-     *
-     * @return 'true' if the extension of the segment
-     * results in a convex part and 'false' otherwise.
-     *
-     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
-     */
-    bool isOppositeEndConvex();
 
     //------------------ display -------------------------------
     /**
@@ -333,19 +286,18 @@ namespace DGtal
      */
     ConstIterator myEnd;
     /**
-     * Pointer to the preimage.
+     * Pointer to the geometrical DSS.
      */
-    PreimagePtr myPreimagePtr; 
+    GeometricalDSSPtr mySegPtr; 
     /**
-     * Flag equal to 'true' if the segment contains at least two pairs 
-     * (the orientation is known) and 'false' otherwise. 
+     * Separating circle.
+     */
+    Circle myCircle; 
+    /**
+     * Flag equal to 'true' if @a mySegPtr has finished its extension 
+     * 'false' otherwise. 
      */
     bool myFlagIsInit; 
-    /**
-     * Flag equal to 'true' if the pairs of points are clockwise oriented, 
-     * 'false' otherwise.
-     */
-    bool myFlagIsCW; 
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -353,31 +305,44 @@ namespace DGtal
 
   private:
 
-    /**
-     * Projects the point ( @a x , @a y ) onto the 
-     * straight line of parameters ( @a alpha , @a beta , @a gamma )
-     * @param x  (returned) x-coordinate of the point
-     * @param y  (returned) y-coordinate of the point
-     * @param alpha  x-component of the direction vector
-     * @param beta  y-component of the direction vector
-     * @param gamma  intercept
-     */
-    void projects(double& x, double& y, 
-                const double& alpha, const double& beta, const double& gamma) const;
 
     // ------------------------- Internals ------------------------------------
   private:
     
+    /**
+     * Check if the two sets of points can be separated by circles
+     * passing through the given point @a aPole. 
+     * If yes, return the four points of support of the partial preimage.
+     * The pole and either @a Pf and @a Ql or @a Qf and @a Pl 
+     * implicitely describe a separating circle. 
+     *
+     * @param itb begin iterator on STL pairs of 2D points.
+     * @param ite end iterator on STL pairs of 2D points.
+     * @param aPole the point the circles pass through.
+     * @param Pf  (returned) first inner point of support.
+     * @param Pl  (returned) last inner point of support.
+     * @param Qf  (returned) first outer point of support.
+     * @param Ql  (returned) last outer point of support.
+     *
+     * @tparam TIterator type of iterator (normal or reverse type)
+     * 
+     * @return 'true' if the sets of points can be separated, 'false' otherwise
+     */
+    template <typename TIterator>
+    bool isCircularlySeparable(const TIterator& itb, const TIterator& ite, 
+                                              const Point& aPole, 
+                                              Point& Pf, Point& Pl, Point& Qf, Point& Ql);  
+  
     // ------------------------- Private Datas --------------------------------
   private:
 
     /**
-     * Default drawing style for GeometricalDSS.
+     * Default drawing style for GeometricalDCA.
      */
     struct DefaultDrawStyle : public DrawableWithBoard2D
     {
       /**
-       * Draw the GeometricalDSS on a board
+       * Draw the GeometricalDCA on a board
        * @param board the output board where the object is drawn.
        */
       virtual void selfDraw(Board2D & aBoard) const
@@ -389,30 +354,30 @@ namespace DGtal
       }
     };
 
-  }; // end of class GeometricalDSS
+  }; // end of class GeometricalDCA
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'GeometricalDSS'.
+   * Overloads 'operator<<' for displaying objects of class 'GeometricalDCA'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'GeometricalDSS' to write.
+   * @param object the object of class 'GeometricalDCA' to write.
    * @return the output stream after the writing.
    */
   template <typename TConstIterator>
   std::ostream&
-  operator<< ( std::ostream & out, const GeometricalDSS<TConstIterator> & object );
+  operator<< ( std::ostream & out, const GeometricalDCA<TConstIterator> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/GeometricalDSS.ih"
+#include "DGtal/geometry/2d/GeometricalDCA.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GeometricalDSS_h
+#endif // !defined GeometricalDCA_h
 
-#undef GeometricalDSS_RECURSES
-#endif // else defined(GeometricalDSS_RECURSES)
+#undef GeometricalDCA_RECURSES
+#endif // else defined(GeometricalDCA_RECURSES)

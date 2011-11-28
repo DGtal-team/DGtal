@@ -107,12 +107,12 @@ inline
 typename DGtal::CircleFrom3Points<TPoint>::Distance
 DGtal::CircleFrom3Points<TPoint>::signedDistance(const Point& aP) const
 {
-	Vector u( (myP[0]-aP[0])*(myR[1]-aP[1])-(myR[0]-aP[0])*(myP[1]-aP[1]), 
-									(myR[0]-aP[0])*(myR[0]-myP[0])+(myR[1]-aP[1])*(myR[1]-myP[1]) );
-	Vector v( (myP[0]-aP[0])*(myQ[1]-aP[1])-(myQ[0]-aP[0])*(myP[1]-aP[1]), 
-									(myQ[0]-aP[0])*(myQ[0]-myP[0])+(myQ[1]-aP[1])*(myQ[1]-myP[1]) );
+  Vector u( (myP[0]-aP[0])*(myR[1]-aP[1])-(myR[0]-aP[0])*(myP[1]-aP[1]), 
+                  (myR[0]-aP[0])*(myR[0]-myP[0])+(myR[1]-aP[1])*(myR[1]-myP[1]) );
+  Vector v( (myP[0]-aP[0])*(myQ[1]-aP[1])-(myQ[0]-aP[0])*(myP[1]-aP[1]), 
+                  (myQ[0]-aP[0])*(myQ[0]-myP[0])+(myQ[1]-aP[1])*(myQ[1]-myP[1]) );
 
-	return -( (u[0] * v[1]) - (u[1] * v[0]) );
+  return -( (u[0] * v[1]) - (u[1] * v[0]) );
 }
 
 template <typename TPoint>
@@ -120,47 +120,95 @@ inline
 void
 DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& r) const
 {
-	Vector u(myP - myQ);
-	Vector v(myR - myP);
+  Vector u(myP - myQ);
+  Vector v(myR - myP);
 
-	Coordinate area = (u[0] * v[1]) - (u[1] * v[0]);
+  Coordinate area = (u[0] * v[1]) - (u[1] * v[0]);
 
-	if (area == 0) {
-		std::cerr << "Infinite radius detected in method getParameters() of CircleFrom3Points" << std::endl;
-		throw InfiniteNumberException();
-	} else {
+  if (area == 0) {
+    std::cerr << "Infinite radius detected in method getParameters() of CircleFrom3Points" << std::endl;
+    throw InfiniteNumberException();
+  } else {
 
-		//center
+    //center
     double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
-		double pz, qz, rz;
-		pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 )/areaD 
+    double pz, qz, rz;
+    pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 )/areaD 
         + std::pow( NumberTraits<Coordinate>::castToDouble(myP[1]),2.0 )/areaD;
-		qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 )/areaD 
+    qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 )/areaD 
         + std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]),2.0 )/areaD;
-		rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 )/areaD 
+    rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 )/areaD 
         + std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]),2.0 )/areaD;
 
-		cx = NumberTraits<Coordinate>::castToDouble(myP[1])*(qz-rz)
+    cx = NumberTraits<Coordinate>::castToDouble(myP[1])*(qz-rz)
         -NumberTraits<Coordinate>::castToDouble(myQ[1])*(pz-rz)
         +NumberTraits<Coordinate>::castToDouble(myR[1])*(pz-qz);
-		cy = -NumberTraits<Coordinate>::castToDouble(myP[0])*(qz-rz)
+    cy = -NumberTraits<Coordinate>::castToDouble(myP[0])*(qz-rz)
          +NumberTraits<Coordinate>::castToDouble(myQ[0])*(pz-rz)
          -NumberTraits<Coordinate>::castToDouble(myR[0])*(pz-qz);
 
-		//radius
-		double a, b, c; 
-		a = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]-myP[0]),2.0 )
+    //radius
+    double a, b, c; 
+    a = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]-myP[1]),2.0 );
-		b = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myQ[0]),2.0 )
+    b = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myQ[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myQ[1]),2.0 );
-		c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
+    c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
 
-		r = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
-	}	
+    r = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
+  }
 
 }
 
+template <typename TPoint>
+inline
+double
+DGtal::CircleFrom3Points<TPoint>::getCurvature() const
+{
+  Vector u(myP - myQ);
+  Vector v(myR - myP);
+
+  //4 times the area of the triangle 
+  Coordinate area = (u[0] * v[1]) - (u[1] * v[0]);
+  double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+  
+  //length of the sides of the triangle 
+  double a, b, c; 
+  a = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]-myP[0]),2.0 )
+     +std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]-myP[1]),2.0 );
+  b = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myQ[0]),2.0 )
+     +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myQ[1]),2.0 );
+  c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
+     +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
+
+  //curvature
+  return ( areaD/std::sqrt(a)*std::sqrt(b)*std::sqrt(c) );
+}
+
+template <typename TPoint>
+inline
+typename DGtal::CircleFrom3Points<TPoint>::Point
+DGtal::CircleFrom3Points<TPoint>::getP() const
+{
+  return myP; 
+}
+
+template <typename TPoint>
+inline
+typename DGtal::CircleFrom3Points<TPoint>::Point
+DGtal::CircleFrom3Points<TPoint>::getQ() const
+{
+  return myQ; 
+}
+
+template <typename TPoint>
+inline
+typename DGtal::CircleFrom3Points<TPoint>::Point
+DGtal::CircleFrom3Points<TPoint>::getR() const
+{
+  return myR; 
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
@@ -195,6 +243,10 @@ DGtal::CircleFrom3Points<TPoint>::selfDraw(Board2D & aBoard) const
   {
     aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myP[0]),
                      NumberTraits<Coordinate>::castToDouble(myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]),
                      NumberTraits<Coordinate>::castToDouble(myR[0]),
                      NumberTraits<Coordinate>::castToDouble(myR[1]) );
   } 
@@ -203,44 +255,54 @@ DGtal::CircleFrom3Points<TPoint>::selfDraw(Board2D & aBoard) const
 template <typename TPoint>
 inline
 void 
-DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const
+DGtal::CircleFrom3Points<TPoint>::drawArc(Board2D & aBoard, 
+         const Point& aPoint1, const Point& aPoint2, 
+         bool anOrientation ) const
 {
-  double cx = 0, cy = 0, radius = 1;
+
   try
   {
     //circle parameters
+    double cx = 0, cy = 0, radius = 1;
     getParameters(cx, cy, radius);
-    //angle parameters
+    //angles
     double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
+                                                  NumberTraits<Coordinate>::castToDouble(aPoint1[0])-cx );
     alpha1 = (alpha1<0)?(alpha1+2.0*M_PI):alpha1;  
     double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
-                                NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
+                                                  NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-  	Vector u(myP - myQ);
-	  Vector v(myR - myP);
-  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    //orientation 
+    Vector u(myP - myQ);
+    Vector v(myR - myP);
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
     //drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
   } 
   catch ( InfiniteNumberException e )
   {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myP[0]),
+                     NumberTraits<Coordinate>::castToDouble(myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]),
+                     NumberTraits<Coordinate>::castToDouble(myR[0]),
+                     NumberTraits<Coordinate>::castToDouble(myR[1]) );
   } 
+  
 }
 
 template <typename TPoint>
 inline
 void 
-DGtal::CircleFrom3Points<TPoint>::drawSector(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const
+DGtal::CircleFrom3Points<TPoint>::drawSector(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2, bool anOrientation ) const
 {
-  double cx = 0, cy = 0, radius = 1;
+
   try
   {
     //circle parameters
+    double cx = 0, cy = 0, radius = 1;
     getParameters(cx, cy, radius);
     //angle parameters
     double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
@@ -249,36 +311,44 @@ DGtal::CircleFrom3Points<TPoint>::drawSector(Board2D & aBoard, const Point& aPoi
     double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-  	Vector u(myP - myQ);
-	  Vector v(myR - myP);
-  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
-    //sector drawing
+    Vector u(myP - myQ);
+    Vector v(myR - myP);
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
+    //arc drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                   cx, cy ); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
-                   cx, cy ); 
+    //draw the segments tied to the center
+    double fx = cx + radius*std::cos(alpha1);
+    double fy = cy + radius*std::sin(alpha1);
+    double lx = cx + radius*std::cos(alpha2);
+    double ly = cy + radius*std::sin(alpha2);
+    aBoard.drawLine(fx, fy, cx, cy ); 
+    aBoard.drawLine(lx, ly, cx, cy ); 
   } 
   catch ( InfiniteNumberException e )
   {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myP[0]),
+                     NumberTraits<Coordinate>::castToDouble(myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]),
+                     NumberTraits<Coordinate>::castToDouble(myR[0]),
+                     NumberTraits<Coordinate>::castToDouble(myR[1]) );
   } 
 }
 
 template <typename TPoint>
 inline
 void 
-DGtal::CircleFrom3Points<TPoint>::drawAnnulus(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2, const double& w ) const
+DGtal::CircleFrom3Points<TPoint>::drawAnnulus(Board2D & aBoard, 
+          const Point& aPoint1, const Point& aPoint2, 
+          bool anOrientation, const double& w ) const
 {
-  double cx = 0, cy = 0, radius = 1;
+
   try
   {
     //circle parameters
+    double cx = 0, cy = 0, radius = 1;
     getParameters(cx, cy, radius);
     //angle parameters
     double alpha1 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint1[1])-cy, 
@@ -287,9 +357,9 @@ DGtal::CircleFrom3Points<TPoint>::drawAnnulus(Board2D & aBoard, const Point& aPo
     double alpha2 = std::atan2( NumberTraits<Coordinate>::castToDouble(aPoint2[1])-cy, 
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
-  	Vector u(myP - myQ);
-	  Vector v(myR - myP);
-  	bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    Vector u(myP - myQ);
+    Vector v(myR - myP);
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
     //inner arc
     aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
     //outer arc
@@ -309,10 +379,14 @@ DGtal::CircleFrom3Points<TPoint>::drawAnnulus(Board2D & aBoard, const Point& aPo
   } 
   catch ( InfiniteNumberException e )
   {
-    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                     NumberTraits<Coordinate>::castToDouble(aPoint2[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myP[0]),
+                     NumberTraits<Coordinate>::castToDouble(myP[1]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]) );
+    aBoard.drawLine( NumberTraits<Coordinate>::castToDouble(myQ[0]),
+                     NumberTraits<Coordinate>::castToDouble(myQ[1]),
+                     NumberTraits<Coordinate>::castToDouble(myR[0]),
+                     NumberTraits<Coordinate>::castToDouble(myR[1]) );
   } 
 }
 
