@@ -24,13 +24,13 @@ IF(@WITH_MAGICK@ AND @MAGICK++_FOUND@)
   ADD_DEFINITIONS("-DWITH_MAGICK ")
 ENDIF(@WITH_MAGICK@ AND @MAGICK++_FOUND@)
 
-IF(@WITH_ITK@ AND @ITK_FOUND@)
+IF(@WITH_ITK@ AND @ITK_FOUND_DGTAL@)
   ADD_DEFINITIONS("-DWITH_ITK ")
   #--------------------------------------------
   #ITK bugfix (we need explicit link_directory)
   #--------------------------------------------
   link_directories( @ITK_LIBRARY_DIRS@)
-ENDIF(@WITH_ITK@ AND @ITK_FOUND@)
+ENDIF(@WITH_ITK@ AND @ITK_FOUND_DGTAL@)
 
 IF(@WITH_CAIRO@ AND @CAIRO_FOUND@)
   ADD_DEFINITIONS("-DWITH_CAIRO ")
