@@ -59,8 +59,6 @@
 #include "DGtal/io/Color.h"
 //#include "DGtal/io/Display3D.h"
 
-//#include "DGtal/io/Style2DFactory.h"
-
 
 
 

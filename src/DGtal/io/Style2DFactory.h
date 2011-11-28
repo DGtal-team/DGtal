@@ -19,7 +19,7 @@
 /**
  * @file   Style2DFactory.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
- * @date   mercredi 24 octobre 2011
+ * @date   lundi 24 octobre 2011
  * 
  * @brief
  *

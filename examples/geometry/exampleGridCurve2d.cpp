@@ -37,7 +37,6 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/io/Display2DFactory.h"
 #include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
