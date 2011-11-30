@@ -122,6 +122,49 @@ parametric shapes provide fine approximation of differential
 quantities (length, tangent, curvature,...). These information can be used to
 evaluate digital differential estimators.
 
+The following pictures illustrate some of the shapes defined in
+digital in dimension 2 (note that shapes are defined from a set of
+parameters which are not specified in the captions).
+
+
+
+@image html flower1.png  "Flower h=1"
+@image html flower01.png  "Flower h=0.1"
+@image html flower01.png  "Flower h=0.01"
+@image html accflower1.png  "Accelerated flower h=1"
+@image html accflower01.png  "Acceleratred flower h=0.1"
+@image html accflower01.png  "Acceleratred flower h=0.01"
+@image html triangle1.png  "Triangle h=1"
+@image html triangle01.png  "Triangle h=0.1"
+@image html triangle01.png  "Triangle h=0.01"
+@image html circle1.png  "Circle h=1"
+@image html circle01.png  "Circle h=0.1"
+@image html circle01.png  "Circle h=0.01"
+@image html square1.png  "Square h=1"
+@image html square01.png  "Square h=0.1"
+@image html square01.png  "Square h=0.01"
+@image html ellipse1.png  "Ellipse h=1"
+@image html ellipse01.png  "Ellipse h=0.1"
+@image html ellipse01.png  "Ellipse h=0.01"
+@image html flower1.png  "Flower h=1"
+@image html flower01.png  "Flower h=0.1"
+@image html flower01.png  "Flower h=0.01"
+@image latex accflower1.png  "Accelerated flower h=1" width=5cm
+@image latex accflower01.png  "Acceleratred flower h=0.1" width=5cm
+@image latex accflower01.png  "Acceleratred flower h=0.01" width=5cm
+@image latex triangle1.png  "Triangle h=1" width=5cm
+@image latex triangle01.png  "Triangle h=0.1" width=5cm
+@image latex triangle01.png  "Triangle h=0.01" width=5cm
+@image latex circle1.png  "Circle h=1" width=5cm
+@image latex circle01.png  "Circle h=0.1" width=5cm
+@image latex circle01.png  "Circle h=0.01" width=5cm
+@image latex square1.png  "Square h=1" width=5cm
+@image latex square01.png  "Square h=0.1" width=5cm
+@image latex square01.png  "Square h=0.01" width=5cm
+@image latex ellipse1.png  "Ellipse h=1" width=5cm
+@image latex ellipse01.png  "Ellipse h=0.1" width=5cm
+@image latex ellipse01.png  "Ellipse h=0.01" width=5cm
+
 
 */
 
