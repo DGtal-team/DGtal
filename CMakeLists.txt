@@ -26,7 +26,7 @@ message(STATUS "----------------------------------------------------------------
 MESSAGE(STATUS "DGtal Version ${PROJECT_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
-message(STATUS "Binary DIR is ${PROJECT_BINARY_DIR}")
+message(STATUS "Binary/Build DIR is ${PROJECT_BINARY_DIR}")
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 message(STATUS "Installation prefix directory is " ${CMAKE_INSTALL_PREFIX})
 message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE_HOST_SYSTEM_PROCESSOR})
@@ -112,7 +112,7 @@ ADD_CUSTOM_TARGET(benchmark COMMAND echo "Benchmarks launched.....")
 # Configuration of the Config.h
 #------------------------------------------------------------------------------
 CONFIGURE_FILE(${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h.in
-  ${PROJECT_SOURCE_DIR}/src/DGtal/base/Config.h)
+  ${PROJECT_BINARY_DIR}/src/DGtal/base/Config.h)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
@@ -186,5 +186,7 @@ ENDIF(BUILD_EXAMPLES)
 
 #--- Headers installation
 install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/" 
+  DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
+install(DIRECTORY "${PROJECT_BINARY_DIR}/src" 
   DESTINATION "${INSTALL_INCLUDE_DIR}/" PATTERN "[A-Za-z0-9]+.*h")
 INCLUDE(${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake)
