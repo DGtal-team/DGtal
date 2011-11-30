@@ -415,20 +415,55 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
     
      \subsection dgtal_dgtalboard_sec21 Overview of the Board2D principle
     
-     Following the concept paradigm adopted in DGtal, the Board2D object may only displayed instances of classes that realize the concept CDrawableWithBoard2D. A drawable element must specify his classname and a default style under the form of a (simple) DrawableWithBoard2D object. For instance, the default style structure for a PointVector is:
+     Following the concept paradigm adopted in DGtal, the Board2D object may only displayed instances of classes that realize the concept CDrawableWithBoard2D. A drawable element must specify in the Style2DFactory files (.h/.ih) its classname in a global \c defaultStyle function and a (simple) DrawableWithBoard2D derivated object with a \c selfDraw function. This object is dynamically allocated from the \c defaultStyle function.
+
+     For instance, here is below an example of the DefaultDrawStylePaving structure for a PointVector and its \c defaultStyle function.
      
+     Here, the DrawableWithBoard2D is just an interface that specifies a virtual method \c selfDraw for the style.
    \code
-   struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-   {
-     virtual void selfDraw( Board2D & aBoard ) const
-     {
-       aBoard.setPenColor(Board2D::Color::Black);
-       aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-     }
-   };
+    struct DefaultDrawStylePaving_PointVector : public DrawableWithBoard2D
+    {
+      virtual void selfDraw( Board2D & aBoard ) const
+      {
+        aBoard.setPenColorRGBi(160,160,160);
+        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+        aBoard.setFillColorRGBi(220,220,220);
+        aBoard.setLineWidth(1);
+      }
+    };
+   \endcode
+
+    The dynamically allocated instance of the default style for the drawable element. It may eventually be tuned for a specific mode given as a string.
+   \code
+    template<Dimension dim, typename TComponent>
+    inline
+    DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode = "")
+    {
+      if ( ( mode == "" ) || ( mode == "Paving" ) ) 
+        return new DefaultDrawStylePaving_PointVector;
+      else ...
+    }
    \endcode
     
-     A DrawableWithBoard2D is just an interface that specifies a virtual method \c selfDraw. Last but not least, the drawable element defines a (non-virtual) method \c selfDraw which contains the drawing commands.
+    Last but not least, the drawable element defines a "pure" global \c draw function (not in the DGtal namespace) in the Display2DFactory files (.h/.ih) which contains the drawing commands.
+
+    For instance, here is below an drawing example for a PointVector object drawing as an arrow.
+
+    This method draws the drawable element on the given Board2D instance. The style has been applied automatically before.
+   \code
+    template<Dimension dim, typename TComponent>
+    inline
+    void draw( DGtal::Board2D & board, 
+              const DGtal::PointVector<dim,TComponent> & p, 
+              const DGtal::PointVector<dim,TComponent> & apoint )
+    {
+      ASSERT(dim == 2);
+
+      board.drawArrow((float)apoint[0], (float) apoint[1],
+          (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
+          true);
+    }
+   \endcode
     
      The Board2D class operates as an output stream for drawable elements. It inherits from LibBoard::Board. This base class holds the drawing capabilities for several export formats. You must look at this class to see the drawing possibilities. 
     
@@ -438,11 +473,9 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
     
      \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithBoard2D
     
-     The concept CDrawableWithBoard2D requires that the three following methods are defined:
+     The concept CDrawableWithBoard2D requires that the following method is defined:
     
      - std::string styleName() const: name of the style for this drawable element, generally the name of the class.
-     - DrawableWithBoard2D* defaultStyle( const std::string & mode = "" ) const: a dynamically allocated instance of the default style for this drawable element. It may eventually be tuned for a specific mode given as a string. 
-     - void selfDraw( Board2D & ) const: this methods draws the drawable element on the given Board2D instance. The style has been applied automatically before. 
     
      \subsection dgtal_dgtalboard_sec23 Developing a new drawable element
     
