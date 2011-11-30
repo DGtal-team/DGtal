@@ -35,7 +35,7 @@ CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in
 
 add_executable(dgtal-config ${PROJECT_BINARY_DIR}/tools/dgtal-config.cpp)
 target_link_libraries (dgtal-config ${LIBDGTAL_NAME}  ${DGtalLibDependencies} )
-install(TARGETS ${FILE} 
+install(TARGETS dgtal-config 
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib)
