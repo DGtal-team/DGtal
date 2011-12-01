@@ -105,13 +105,13 @@ bool testDomain()
     
     Board2D board;
     
-    board << SetMode( myDomain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/ << myDomain;
+    board << SetMode( myDomain.className(), "Grid" ) /*<< DrawDomainGrid()*/ << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     board.saveTikZ( "domain-grid.tikz" );
     
     Board2D b2;
-    b2 << SetMode( myDomain.styleName(), "Paving" ) /*<< DrawDomainPaving()*/ << myDomain;
+    b2 << SetMode( myDomain.className(), "Paving" ) /*<< DrawDomainPaving()*/ << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
     b2.saveTikZ( "domain-paving.tikz" );

@@ -739,7 +739,7 @@ namespace DGtal
   template <typename Domain, typename Value, typename HashKey  >
   inline
   std::string
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::styleName() const
+  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::className() const
   {
     return "ImageContainerByHashTree";
   }

@@ -135,8 +135,8 @@ bool testSimpleExpander()
 
   //Border=4 Filling=4
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
-  board << SetMode( house4.styleName(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << house4;
+  board << SetMode( domain.className(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
+  board << SetMode( house4.className(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
   while (!expander.finished())
   {
@@ -147,13 +147,13 @@ bool testSimpleExpander()
 
     expander.nextLayer();
   }
-  board << CustomStyle(expander.core().styleName(), new MyStyleCustom) << expander.core();
+  board << CustomStyle(expander.core().className(), new MyStyleCustom) << expander.core();
   board.saveSVG("house4-4.svg");
 
   //Border=4 Filling=8
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
-  board << SetMode( house4.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house4;
+  board << SetMode( domain.className(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
+  board << SetMode( house4.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house4;
   ObjectExpander expander8(houseCompl8, Point(0, 0));
   while (!expander8.finished())
   {
@@ -164,13 +164,13 @@ bool testSimpleExpander()
 
     expander8.nextLayer();
   }
-  board << CustomStyle(expander8.core().styleName(), new MyStyleCustom) << expander8.core();
+  board << CustomStyle(expander8.core().className(), new MyStyleCustom) << expander8.core();
   board.saveSVG("house4-8.svg");
 
   //Border=8 Filling=8
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
-  board << SetMode( house8.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house8;
+  board << SetMode( domain.className(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
+  board << SetMode( house8.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house8;
   ObjectExpander expander88(houseCompl8, Point(0, 0));
   while (!expander88.finished())
   {
@@ -181,13 +181,13 @@ bool testSimpleExpander()
 
     expander88.nextLayer();
   }
-  board << CustomStyle(expander88.core().styleName(), new MyStyleCustom) << expander88.core();
+  board << CustomStyle(expander88.core().className(), new MyStyleCustom) << expander88.core();
   board.saveSVG("house8-8.svg");
 
   //Border=8 Filling=4
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
-  board << SetMode( house8.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house8;
+  board << SetMode( domain.className(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
+  board << SetMode( house8.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house8;
   ObjectExpanderReverseTopo expander84(houseCompl4, Point(0, 0));
   while (!expander84.finished())
   {
@@ -198,7 +198,7 @@ bool testSimpleExpander()
 
     expander84.nextLayer();
   }
-  board << CustomStyle(expander.core().styleName(), new MyStyleCustom) << expander84.core();
+  board << CustomStyle(expander.core().className(), new MyStyleCustom) << expander84.core();
   board.saveSVG("house8-4.svg");
 
 
@@ -264,10 +264,10 @@ bool testLayers()
 
   //Border=4 Filling=4
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
-  board << SetMode( house4.styleName(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << house4;
+  board << SetMode( domain.className(), "Grid" ) << domain /*<<  DrawDomainGrid()*/ << domain;
+  board << SetMode( house4.className(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
-  board << CustomStyle( expander.core().styleName(), 
+  board << CustomStyle( expander.core().className(), 
       new CustomFillColor( cmap_grad( 0 ) ) )
   << expander.core();
   while (!expander.finished())
@@ -276,7 +276,7 @@ bool testLayers()
       it != expander.end();
       ++it )
   std::cout << " " << *it;
-      board << CustomStyle( expander.layer().styleName(), 
+      board << CustomStyle( expander.layer().className(), 
           new CustomFillColor
           ( cmap_grad( expander.distance() ) ) )
       << expander.layer();
@@ -287,10 +287,10 @@ bool testLayers()
 
   //Border=4 Filling=8
   board.clear();
-  board << SetMode( domain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/ << domain;
-  board << SetMode( house4.styleName(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house4;
+  board << SetMode( domain.className(), "Grid" ) /*<< DrawDomainGrid()*/ << domain;
+  board << SetMode( house4.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/ << house4;
   ObjectExpander expander8(houseCompl8, Point(0, 0));
-  board << CustomStyle( expander.core().styleName(), 
+  board << CustomStyle( expander.core().className(), 
       new CustomFillColor( cmap_grad( 0 ) ) )
   << expander8.core();
   while (!expander8.finished())
@@ -300,7 +300,7 @@ bool testLayers()
       ++it )
   std::cout << " " << *it;
       
-      board << CustomStyle( expander8.layer().styleName(), 
+      board << CustomStyle( expander8.layer().className(), 
           new CustomFillColor
           ( cmap_grad( expander8.distance() ) ) )
       << expander8.layer();

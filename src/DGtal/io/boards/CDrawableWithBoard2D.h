@@ -62,7 +62,7 @@ namespace DGtal
    * 
    \code
    Board2D board;
-   board << CustomStyle( x.styleName(), x.defaultStyle() )
+   board << CustomStyle( x.className(), x.defaultStyle() )
          << x;
    \endcode 
    *
@@ -88,11 +88,11 @@ namespace DGtal
    *  <td> </td>
    * </tr>
    * <tr>
-   * <td> the name of the model X</td> <td> x.styleName() </td> <td></td><td> std::string </td> <td> </td> <td> returns a string telling the name of the model X </td><td> </td>
+   * <td> the name of the model X</td> <td> x.className() </td> <td></td><td> std::string </td> <td> </td> <td> returns a string telling the name of the model X </td><td> </td>
    *  <td> </td>
    * </tr>
    * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.selfDraw(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
+   * <td> the way the object \t x is drawn</td> <td> x.setStyle(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
    *  <td> </td>
    * </tr>
    * </table>
@@ -103,7 +103,7 @@ namespace DGtal
    * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    *
    * <p> Notes <br>
-   * @todo ImageContainerByHashTree does not implement selfDraw(Board2D &).
+   * @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
@@ -113,14 +113,12 @@ namespace DGtal
   public:
     BOOST_CONCEPT_USAGE( CDrawableWithBoard2D )
     {
-      //Drawable model should have a defaultStyle() returning a DrawableWithBoard2D*
-      //ConceptUtils::sameType( myD, myT.defaultStyle() );
-      //Drawable model should have a defaultStyle( string ) returning a DrawableWithBoard2D*
-      //ConceptUtils::sameType( myD, myT.defaultStyle( myS ) );
-      //Drawable model should have a styleName() returning a string
-      ConceptUtils::sameType( myS, myT.styleName() );
-      //Drawable model should have a selfDraw()
-      //myT.selfDraw( myB );
+      //Drawable model should have a className() returning a string
+      ConceptUtils::sameType( myS, myT.className() );
+
+      //Drawable model should be associated to global functions draw and defaultStyle.
+      draw(myB, myT);
+      ConceptUtils::sameType( myD, defaultStyle( myT) );
     }
 
     // ------------------------- Private Datas --------------------------------

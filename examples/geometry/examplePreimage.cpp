@@ -123,7 +123,7 @@ int main( int argc, char** argv )
   //display
   Board2D board;
   board.setUnit(Board2D::UCentimeter);
-  board << r << SetMode(pole.styleName(),"Grid") << pole << thePreimage; 
+  board << r << SetMode(pole.className(),"Grid") << pole << thePreimage; 
   board.saveEPS( "PreimageExample2.eps" );
   board.saveSVG( "PreimageExample2.svg" );  
 #ifdef WITH_CAIRO

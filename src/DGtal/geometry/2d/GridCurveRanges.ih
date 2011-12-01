@@ -159,7 +159,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "SCellsRange";
   }
@@ -384,7 +384,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "PointsRange";
   }
@@ -399,7 +399,7 @@ public:
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
       {
-	aBoard << SetMode(it->styleName(),"Grid")
+	aBoard << SetMode(it->className(),"Grid")
 	       << *it;
       }
   }
@@ -609,7 +609,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "MidPointsRange";
   }
@@ -842,7 +842,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "ArrowsRange";
   }
@@ -859,7 +859,7 @@ public:
       {
 	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
 	typename Modifier::Vector shift( pair.second );
-	aBoard << CustomStyle( shift.styleName(), 
+	aBoard << CustomStyle( shift.className(), 
 			       new CustomPen( Color::Black, Color::Black, 1.0, 
 					      Board2D::Shape::SolidStyle,
 					      Board2D::Shape::RoundCap,
@@ -1075,7 +1075,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "InnerPointsRange";
   }
@@ -1090,8 +1090,8 @@ public:
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
       {
-	aBoard << SetMode( it->styleName(), "Both" )
-	       << CustomStyle( it->styleName(), 
+	aBoard << SetMode( it->className(), "Both" )
+	       << CustomStyle( it->className(), 
 			       new CustomFillColor( Color::Blue ) )
 	       << *it;
       }
@@ -1303,7 +1303,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "OuterPointsRange";
   }
@@ -1318,8 +1318,8 @@ public:
     ConstIterator itEnd ( this->end() ); 
     for( ; it != itEnd; ++it)
       {
-	aBoard << SetMode( it->styleName(), "Both" )
-	       << CustomStyle( it->styleName(), 
+	aBoard << SetMode( it->className(), "Both" )
+	       << CustomStyle( it->className(), 
 			       new CustomFillColor( Color::Green ) )
 	       << *it;
       }
@@ -1537,7 +1537,7 @@ public:
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const
+  std::string className() const
   {
     return "IncidentPointsRange";
   }
@@ -1553,11 +1553,11 @@ public:
     for( ; it != itEnd; ++it)
       {
 	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-	aBoard << SetMode( pair.first.styleName(), "Both" )
-	       << CustomStyle( pair.first.styleName(), 
+	aBoard << SetMode( pair.first.className(), "Both" )
+	       << CustomStyle( pair.first.className(), 
 			       new CustomFillColor( Color::Blue ) )
 	       << pair.first 
-	       << CustomStyle( pair.second.styleName(), 
+	       << CustomStyle( pair.second.className(), 
 			       new CustomFillColor( Color::Green ) )
 	       << pair.second; 
       }

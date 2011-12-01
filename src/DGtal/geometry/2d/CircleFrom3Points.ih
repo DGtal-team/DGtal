@@ -177,7 +177,7 @@ DGtal::CircleFrom3Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
 template <typename TPoint>
 inline
 std::string
-DGtal::CircleFrom3Points<TPoint>::styleName() const
+DGtal::CircleFrom3Points<TPoint>::className() const
 {
   return "CircleFrom3Points";
 }

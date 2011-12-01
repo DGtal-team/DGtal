@@ -57,16 +57,16 @@ int main()
   DigitalSet shape_set( domain );
 
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
-  board << SetMode3D( shape_set.styleName(), "Both" );
+  board << SetMode3D( shape_set.className(), "Both" );
   board << shape_set;
   board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
-  board << SetMode3D( p1.styleName(), "Paving" );
+  board << SetMode3D( p1.className(), "Paving" );
   
   board << CameraPosition(10.000000, 10.000000, 41.682465)
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  //board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-6.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //

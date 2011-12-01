@@ -69,191 +69,195 @@
 //namespace DGtal
 //{
 
-  /////////////////////////////////////////////////////////////////////////////
-  // struct Display2DFactory
-  /**
-   * Description of struct 'Display2DFactory' <p>
-   * \brief Factory for Display2D:
-   */
-  //  namespace Display2DFactory
-  // {
+/////////////////////////////////////////////////////////////////////////////
+// struct Display2DFactory
+/**
+ * Description of struct 'Display2DFactory' <p>
+ * \brief Factory for Display2D:
+ */
+//  namespace Display2DFactory
+// {
 
     
-    // AngleLinearMinimizer
-    void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
-    // AngleLinearMinimizer
+// AngleLinearMinimizer
+void draw( DGtal::Board2D & board, const DGtal::AngleLinearMinimizer & );
+// AngleLinearMinimizer
     
     
-    // ArithmeticalDSS
-    template <typename TIterator, typename TInteger, int connectivity>
-    void drawAsBoundingBox( DGtal::Board2D & aBoard, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+// ArithmeticalDSS
+template <typename TIterator, typename TInteger, int connectivity>
+  void drawAsBoundingBox( DGtal::Board2D & aBoard, 
+			  const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
 
-    template <typename TIterator, typename TInteger, int connectivity>
-    void drawAsDigitalPoints( DGtal::Board2D & aBoard, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+template <typename TIterator, typename TInteger, int connectivity>
+  void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+			    const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
 
-    template <typename TIterator, typename TInteger, int connectivity>
-    void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
-    // ArithmeticalDSS
+template <typename TIterator, typename TInteger, int connectivity>
+  void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & );
+// ArithmeticalDSS
     
     
-    // CircleFrom2Points
-    template <typename TPoint>
-    void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & );
-    // CircleFrom2Points
-
-
-    // CircleFrom3Points
-    template <typename Point>
-    void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
-    
-    template <typename Point>
-    void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
-    
-    template <typename Point>
-    void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0);
-    
-    template <typename Point>
-    void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
-    
-    template <typename TPoint>
-    void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
-    // CircleFrom3Points
-    
-    
-    // DigitalSetBySTLSet
-    template<typename Domain>
-    void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
-    // DigitalSetBySTLSet
-    
-    
-    // DigitalSetBySTLVector
-    template<typename Domain>
-    void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLVector<Domain> & );
-    // DigitalSetBySTLVector
-    
-    
-    // FP
-    template <typename TIterator, typename TInteger, int connectivity>
-    void drawAsPolygon( DGtal::Board2D & aBoard, const DGtal::FP<TIterator,TInteger,connectivity> & );
-
-    template <typename TIterator, typename TInteger, int connectivity>
-    void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
-    // FP
-    
-    
-    // FreemanChain
-    template <typename TInteger>
-    void drawAsGrid( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
-    
-    template <typename TInteger>
-    void drawAsInterGrid( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
-    
-    template <typename TInteger>
-    void draw( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
-    // FreemanChain
-    
-    
-    // GeometricalDSS
-    template <typename TConstIterator>
-    void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
-    // GeometricalDSS
-    
-    
-    // GridCurve
-    // we use selfDraw because of inner classes
-    // GridCurve
-    
-    
-    // HyperRectDomain
-    template<typename TSpace>
-    void drawAsGrid( DGtal::Board2D & aboard, const DGtal::HyperRectDomain<TSpace> & );
-
-    template<typename TSpace>
-    void drawAsPaving( DGtal::Board2D & aboard, const DGtal::HyperRectDomain<TSpace> & );
-
-    template<typename TSpace>
-    void draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & );
-    // HyperRectDomain
-    
-    
-    // ImageContainerByHashTree
-    template <typename C, typename Domain, typename Value, typename HashKey>
-    void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-        HashKey key,
-        const double p[2],
-        const double len,
-        LibBoard::Board & board,
-        const C& cmap );
-
-    template <typename C, typename Domain, typename Value, typename HashKey>
-    void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );
-    // ImageContainerByHashTree
+// CircleFrom2Points
+template <typename TPoint>
+void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & );
+// CircleFrom2Points
 
 
-    // ImageContainerBySTLVector
-    template <typename Colormap, typename D, typename V>
-    void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
-    // ImageContainerBySTLVector
+// CircleFrom3Points
+template <typename Point>
+void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
+template <typename Point>
+void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
+template <typename Point>
+void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0);
+    
+template <typename Point>
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+    
+template <typename TPoint>
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
+// CircleFrom3Points
     
     
-    // KhalimskyCell
-    template < Dimension dim, typename TInteger >
-    void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
-    // KhalimskyCell
+// DigitalSetBySTLSet
+template<typename Domain>
+void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLSet<Domain> & );
+// DigitalSetBySTLSet
     
     
-    // Object
-    template <typename TDigitalTopology, typename TDigitalSet>
-    void drawWithAdjacencies( DGtal::Board2D & aBoard, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+// DigitalSetBySTLVector
+template<typename Domain>
+void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLVector<Domain> & );
+// DigitalSetBySTLVector
+    
+    
+// FP
+template <typename TIterator, typename TInteger, int connectivity>
+  void drawAsPolygon( DGtal::Board2D & aBoard, const DGtal::FP<TIterator,TInteger,connectivity> & );
 
-    template <typename TDigitalTopology, typename TDigitalSet>
-    void draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
-    // Object
+template <typename TIterator, typename TInteger, int connectivity>
+  void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
+// FP
     
     
-    // PointVector
-    template<Dimension dim, typename TComponent>
-    void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+// FreemanChain
+template <typename TInteger>
+void drawAsGrid( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
+    
+template <typename TInteger>
+void drawAsInterGrid( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
+    
+template <typename TInteger>
+void draw( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
+// FreemanChain
+    
+    
+// GeometricalDSS
+template <typename TConstIterator>
+void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
+// GeometricalDSS
+    
+    
+// GridCurve
+// we use setStyle because of inner classes
+// GridCurve
+    
+    
+// HyperRectDomain
+template<typename TSpace>
+void drawAsGrid( DGtal::Board2D & aboard, const DGtal::HyperRectDomain<TSpace> & );
 
-    template<Dimension dim, typename TComponent>
-    void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<typename TSpace>
+void drawAsPaving( DGtal::Board2D & aboard, const DGtal::HyperRectDomain<TSpace> & );
 
-    template<Dimension dim, typename TComponent>
-    void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+template<typename TSpace>
+void draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & );
+// HyperRectDomain
+    
+    
+// ImageContainerByHashTree
+template <typename C, typename Domain, typename Value, typename HashKey>
+  void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+			   HashKey key,
+			   const double p[2],
+			   const double len,
+			   LibBoard::Board & board,
+			   const C& cmap );
 
-    template<Dimension dim, typename TComponent>
-    void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> &, const DGtal::PointVector<dim,TComponent> & );
-    // PointVector
+template <typename C, typename Domain, typename Value, typename HashKey>
+  void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );
+// ImageContainerByHashTree
+
+
+// ImageContainerBySTLVector
+template <typename Colormap, typename D, typename V>
+  void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
+// ImageContainerBySTLVector
     
     
-    // Preimage2D
-    template <typename Shape>
-    void draw( DGtal::Board2D & aBoard, const DGtal::Preimage2D<Shape> & );
-    // Preimage2D
+// KhalimskyCell
+template < Dimension dim, typename TInteger >
+  void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
+// KhalimskyCell
     
     
-    // SignedKhalimskyCell
-    template < Dimension dim, typename TInteger >
-    void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
-    // SignedKhalimskyCell
+// Object
+template <typename TDigitalTopology, typename TDigitalSet>
+  void drawWithAdjacencies( DGtal::Board2D & aBoard, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+
+template <typename TDigitalTopology, typename TDigitalSet>
+  void draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & );
+// Object
     
     
-    // StraightLineFrom2Points
-    template <typename TPoint>
-    void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & );
-    // StraightLineFrom2Points
+// PointVector
+template<Dimension dim, typename TComponent>
+  void drawAsPaving( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+
+template<Dimension dim, typename TComponent>
+  void drawAsGrid( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+
+template<Dimension dim, typename TComponent>
+  void draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & );
+
+template<Dimension dim, typename TComponent>
+  void draw( DGtal::Board2D & board, 
+	     const DGtal::PointVector<dim,TComponent> &, 
+	     const DGtal::PointVector<dim,TComponent> & );
+// PointVector
+    
+    
+// Preimage2D
+template <typename Shape>
+void draw( DGtal::Board2D & aBoard, const DGtal::Preimage2D<Shape> & );
+// Preimage2D
+    
+    
+// SignedKhalimskyCell
+template < Dimension dim, typename TInteger >
+  void draw( DGtal::Board2D & board, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
+// SignedKhalimskyCell
+    
+    
+// StraightLineFrom2Points
+template <typename TPoint>
+void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & );
+// StraightLineFrom2Points
   
     
-    //
+//
     
     
-    void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
-    void draw( DGtal::Board2D & board, const DGtal::SetMode & );
+void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
+void draw( DGtal::Board2D & board, const DGtal::SetMode & );
 
     
-  //  }; // end of struct Display2DFactory
+//  }; // end of struct Display2DFactory
 
-  //} // namespace DGtal
+//} // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////

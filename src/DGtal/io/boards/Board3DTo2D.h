@@ -83,7 +83,7 @@ namespace DGtal
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const
+    std::string className() const
     {
       return "Board3DTo2D";
     }
@@ -161,7 +161,7 @@ namespace DGtal
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithDisplay3D, which requires for instance a
-     * method selfDraw( Board3DTo2D & ).
+     * method setStyle( Board3DTo2D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.

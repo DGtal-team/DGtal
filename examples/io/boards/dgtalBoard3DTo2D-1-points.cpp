@@ -61,7 +61,7 @@ int main()
 
   //board << CameraZNearFar(4.578200, 22.578199);
 
-  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-1-points.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 
 }

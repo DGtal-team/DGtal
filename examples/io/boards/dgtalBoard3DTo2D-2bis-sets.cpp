@@ -60,7 +60,7 @@ int main()
   shape_set.erase(Point(6,6,6));
   
   // example with wireframe mode
-  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board << SetMode3D(board.className(), "WireFrameMode");
 
   board << shape_set;
   

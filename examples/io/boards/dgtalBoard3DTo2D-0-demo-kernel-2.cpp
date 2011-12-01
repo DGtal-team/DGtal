@@ -62,7 +62,7 @@ int main()
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //

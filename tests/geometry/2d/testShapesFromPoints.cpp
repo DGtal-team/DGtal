@@ -103,18 +103,18 @@ bool testCircleFrom3Points()
   }
 
   Board2D board; 
-  board << SetMode(o.styleName(), "Grid") << o; 
+  board << SetMode(o.className(), "Grid") << o; 
   {
     c.init( Point(8,4), Point(9,3), Point(10,0) ); 
     trace.info() << "arc drawing" << endl;
     
-    board << SetMode( c.styleName(), "Arc" );
+    board << SetMode( c.className(), "Arc" );
     draw(board, c, Point(5,10), Point(8,4));
     
-    board << SetMode( c.styleName(), "Sector" );
+    board << SetMode( c.className(), "Sector" );
     draw(board, c, Point(9,3), Point(10,0) );
     
-    board << SetMode( c.styleName(), "Annulus" );
+    board << SetMode( c.className(), "Annulus" );
     draw(board, c, Point(5,-10), Point(2,-4) );
     
     board.saveEPS("arcDisplay.eps");

@@ -728,7 +728,7 @@ DGtal::PointVector<dim, TComponent>::defaultStyle( std::string mode) const
 template<Dimension dim, typename TComponent>
 inline
 std::string
-DGtal::PointVector<dim, TComponent>::styleName() const
+DGtal::PointVector<dim, TComponent>::className() const
 {
   return "PointVector";
 }
@@ -760,7 +760,7 @@ inline
 void
 DGtal::PointVector<dim,TComponent>::selfDraw( Board2D & board ) const
 {
-  std::string mode = board.getMode( this->styleName() );
+  std::string mode = board.getMode( this->className() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
     ("DGtal::ArithmeticalDSS<TDSS>::selfDraw: Unknown mode "+mode)==""  );
 
@@ -839,7 +839,7 @@ DGtal::PointVector<dim,TComponent>::selfDrawDisplay3D( Display3D & display ) con
 {
   ASSERT(dim == 3);
  
-  std::string mode = display.getMode( this->styleName() );
+  std::string mode = display.getMode( this->className() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="PavingWired"|| mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )

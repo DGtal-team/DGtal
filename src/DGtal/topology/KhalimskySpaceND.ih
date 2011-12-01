@@ -148,7 +148,7 @@ template < Dimension dim, typename TInteger >
 inline
 std::string
 DGtal::KhalimskyCell<dim, TInteger>::
-styleName() const
+className() const
 {
   return "KhalimskyCell";
 }
@@ -158,7 +158,7 @@ template < Dimension dim, typename TInteger >
 inline
 void
 DGtal::KhalimskyCell<dim, TInteger>::
-selfDraw( Board2D & board ) const
+setStyle( Board2D & board ) const
 {
   ASSERT( dim == 2 );
   float x = (float) 
@@ -191,13 +191,13 @@ selfDraw( Board2D & board ) const
 template < Dimension dim, typename TInteger >
 inline
 void
-DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
+DGtal::KhalimskyCell<dim, TInteger>::setStyleDisplay3D( Display3D & display ) const
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( this->styleName() );
+  std::string mode = display.getMode( this->className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
-   ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
+   ("DGtal::KhalimskyCell::setStyle: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   float factorVolSurfel=1.0;
   bool basicMode=false;
@@ -254,7 +254,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
 
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( this->styleName() );
+  std::string mode = display.getMode( this->className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
     ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
@@ -418,7 +418,7 @@ template < Dimension dim, typename TInteger >
 inline
 std::string
 DGtal::SignedKhalimskyCell<dim, TInteger>::
-styleName() const
+className() const
 {
   return "SignedKhalimskyCell";
 }

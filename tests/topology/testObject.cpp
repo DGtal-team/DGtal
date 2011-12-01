@@ -482,7 +482,7 @@ bool testDraw()
   Board2D board;
   board.setUnit(Board::UCentimeter);
 
-  board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
+  board << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
   board << disk_object;
   
   board.saveSVG("disk-object.svg");
@@ -490,16 +490,16 @@ bool testDraw()
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
 
-  board2 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board2);
-  board2 << SetMode( disk_object.styleName(), "DrawAdjacencies" ) << disk_object; //disk_object.selfDrawWithAdjacencies(board2);
+  board2 << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid(board2);
+  board2 << SetMode( disk_object.className(), "DrawAdjacencies" ) << disk_object; //disk_object.selfDrawWithAdjacencies(board2);
   
   board2.saveSVG("disk-object-adj.svg");
 
   Board2D board3;
   board3.setUnit(Board::UCentimeter);
 
-  board3 << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board3);
-  board3 << SetMode( disk_object2.styleName(), "DrawAdjacencies" ) << disk_object2; //disk_object2.selfDrawWithAdjacencies(board3);
+  board3 << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid(board3);
+  board3 << SetMode( disk_object2.className(), "DrawAdjacencies" ) << disk_object2; //disk_object2.selfDrawWithAdjacencies(board3);
   
   board3.saveSVG("disk-object-adj-bis.svg");
   trace.endBlock();
@@ -573,11 +573,11 @@ bool testSimplePoints2D()
   //cmap_grad.addColor( Color( 220, 130, 25 ) );
   Board2D board;
   board.setUnit(Board::UCentimeter);
-  board << SetMode( domain.styleName(), "Paving" ) // DrawDomainPaving()
+  board << SetMode( domain.className(), "Paving" ) // DrawDomainPaving()
   << domain;
   Board2D board2;
   board2.setUnit(Board::UCentimeter);
-  board2 << SetMode( domain.styleName(), "Grid" ) // DrawDomainGrid()
+  board2 << SetMode( domain.className(), "Grid" ) // DrawDomainGrid()
    << domain;
 
   // Greedy thinning.
@@ -598,7 +598,7 @@ bool testSimplePoints2D()
     Q.pop();
     if ( shape.isSimple( *it ) )
       {
-        board << CustomStyle( it->styleName(), 
+        board << CustomStyle( it->className(), 
                    new MyDrawStyleCustomFillColor
                    ( cmap_grad( layer ) ) )
         << *it;
@@ -628,7 +628,7 @@ bool testSimplePoints2D()
     Q.pop();
     if ( shape2.isSimple( *it ) )
       {
-        board2 << CustomStyle( it->styleName(), 
+        board2 << CustomStyle( it->className(), 
                    new MyDrawStyleCustomFillColor
              ( cmap_grad( layer ) ) )
          << *it;
@@ -641,12 +641,12 @@ bool testSimplePoints2D()
   while ( nb_simple != 0 );
   trace.endBlock();
   
-  board  << CustomStyle( shape.styleName(), new MyDrawStyleCustomRed )
+  board  << CustomStyle( shape.className(), new MyDrawStyleCustomRed )
   << shape;
   board.saveSVG( "shape-thinning-4-8.svg");
   board.clear();
 
-  board2 << CustomStyle( shape2.styleName(), new MyDrawStyleCustomRed )
+  board2 << CustomStyle( shape2.className(), new MyDrawStyleCustomRed )
    << shape2;
   board2.saveSVG( "shape-thinning-8-4.svg");
   board2.clear();

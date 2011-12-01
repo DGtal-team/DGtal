@@ -813,7 +813,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::defaultStyle( std::string ) const
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 std::string
-DGtal::Object<TDigitalTopology, TDigitalSet>::styleName() const
+DGtal::Object<TDigitalTopology, TDigitalSet>::className() const
 {
   return "Object";
 }
@@ -832,7 +832,7 @@ inline
 void
 DGtal::Object<TDigitalTopology, TDigitalSet>::selfDraw( Board2D & board ) const
 {
-  std::string mode = board.getMode( this->styleName() );
+  std::string mode = board.getMode( this->className() );
   if ( mode == "" )
     pointSet().selfDraw( board );
   else
@@ -899,7 +899,7 @@ inline
 void
 DGtal::Object<TDigitalTopology, TDigitalSet>::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = display.getMode( this->styleName() );
+  std::string mode = display.getMode( this->className() );
   if ( mode == "" )
     pointSet().selfDrawDisplay3D( display );
   else if ( mode == "PavingTransp" ){

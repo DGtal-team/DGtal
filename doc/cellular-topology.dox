@@ -599,7 +599,7 @@ namespace DGtal {
    @code  
        Board2D board;
        board << image.domain() << set2d; // display domain and set
-       board << CustomStyle( aCell.styleName(), new CustomColors(  Board2D::Color( 255, 0, 0 ),
+       board << CustomStyle( aCell.className(), new CustomColors(  Board2D::Color( 255, 0, 0 ),
        							           Board2D::Color( 192, 0, 0 ) ));
        board << aCell;
     @endcode  
@@ -625,7 +625,7 @@ namespace DGtal {
      unsigned int d=0;
      std::vector<Z2i::SCell>::iterator it;
      for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
-     	  board<< CustomStyle((*it).styleName() ,
+     	  board<< CustomStyle((*it).className() ,
 	           	      new CustomColors( Board2D::Color::Black,
 				                cmap_grad( d )))<< *it;
           d++;
@@ -667,7 +667,7 @@ namespace DGtal {
    To see both initial surfel and the surfel set, we can use the transparent mode:
 
    @code
-   viewer << SetMode3D((*(vectBdrySCellALL.begin())).styleName(), "Transparent");
+   viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
    @endcode
    	
    To avoid surfel superposition we need to increase with a small

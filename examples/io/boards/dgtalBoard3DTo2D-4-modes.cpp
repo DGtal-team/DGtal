@@ -57,18 +57,18 @@ int main()
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  //board << SetMode3D( p1.styleName(), "Grid" );
+  //board << SetMode3D( p1.className(), "Grid" );
 
   board << p1 << p2 << p3 << p4 << p5 << p6 << p0;
 
-  //board << SetMode3D(domain.styleName(), "PavingGrids");
+  //board << SetMode3D(domain.className(), "PavingGrids");
   board << domain;
   
   board << CameraPosition(0.500000, 0.500000, 11.274194)
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  //board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-4-modes.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //

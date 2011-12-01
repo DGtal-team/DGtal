@@ -67,11 +67,11 @@ int main()
 
   // Creating board.
   Board2D board;
-  board << SetMode( domain.styleName(), "Paving" )
+  board << SetMode( domain.className(), "Paving" )
   << domain
-  << SetMode( p1.styleName(), "Paving" );
+  << SetMode( p1.className(), "Paving" );
   // This is the name of the style for a Point in mode "Paving".
-  string specificStyle =  p1.styleName() + "/Paving";
+  string specificStyle =  p1.className() + "/Paving";
   for ( DigitalSet::ConstIterator it = shape_set.begin();
   it != shape_set.end();
   ++it )

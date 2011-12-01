@@ -125,7 +125,7 @@ DGtal::StraightLineFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) con
 template <typename TPoint>
 inline
 std::string
-DGtal::StraightLineFrom2Points<TPoint>::styleName() const
+DGtal::StraightLineFrom2Points<TPoint>::className() const
 {
   return "StraightLineFrom2Points";
 }

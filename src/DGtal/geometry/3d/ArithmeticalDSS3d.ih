@@ -323,7 +323,7 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::styleName() const
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::className() const
 {
   return "ArithmeticalDSS3d";
 }
@@ -528,7 +528,7 @@ void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
         ::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = display.getMode( styleName() );
+  std::string mode = display.getMode( className() );
   if ( mode == "BoundingBox" )
     selfDrawAsBoundingBoxDisplay3D( display );
   else if ( mode == "Points" )

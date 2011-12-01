@@ -74,11 +74,11 @@ int main()
   
   Board2D board;
   board << domain 
-  << CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
+  << CustomStyle( p1.className(), new MyDrawStyleCustomColor( red, dred ) )
   << p1
-  << CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+  << CustomStyle( p2.className(), new MyDrawStyleCustomColor( green, dgreen ) )
   << p2
-  << CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+  << CustomStyle( p3.className(), new MyDrawStyleCustomColor( blue, dblue ) )
   << p3;
   board.saveSVG("dgtalBoard2D-3-custom-points.svg");
   board.saveEPS("dgtalBoard2D-3-custom-points.eps");

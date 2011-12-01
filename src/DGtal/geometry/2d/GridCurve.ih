@@ -287,7 +287,7 @@ DGtal::GridCurve<TKSpace>::defaultStyle( std::string /*mode*/ ) const
 template <typename TKSpace>
 inline
 std::string
-DGtal::GridCurve<TKSpace>::styleName() const
+DGtal::GridCurve<TKSpace>::className() const
 {
   return "GridCurve";
 }

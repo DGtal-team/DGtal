@@ -168,7 +168,7 @@ namespace DGtal
   
     /**
      * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
+     * with a 'object.className()').
      *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
@@ -333,7 +333,7 @@ namespace DGtal
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
-     * method selfDraw( Viewer3D & ).
+     * method setStyle( Viewer3D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
