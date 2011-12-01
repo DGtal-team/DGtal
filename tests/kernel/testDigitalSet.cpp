@@ -76,7 +76,7 @@ using namespace LibBoard;
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
-  virtual void selfDraw(Board2D & aboard) const
+  virtual void setStyle(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
@@ -113,13 +113,13 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << SetMode( domain.className(), "Grid" ) /*<< DrawDomainGrid()*/ << domain << mySet;
+  board << SetMode( domain.className(), "Grid" ) << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << SetMode( domain.className(), "Paving" ) /*<< DrawDomainPaving()*/ << domain;
+  board << SetMode( domain.className(), "Paving" ) << domain;
   board << mySet;
   board.saveSVG("simpleSet-paving.svg");
 
@@ -231,7 +231,7 @@ bool testDigitalSetDraw()
   //Board export test
   trace.beginBlock("SVG Export");
   Board2D board;
-  board << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
+  board << SetMode( domain.className(), "Grid" ) << domain;
   board << disk;
 
   board.scale(10);

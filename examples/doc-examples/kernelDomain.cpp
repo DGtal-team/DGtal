@@ -124,7 +124,7 @@ int main()
        ++it, ++itPrec)
     {
       shift =   (*it) -(*itPrec);
-      draw(board, shift, (*itPrec)); //shift.selfDraw(board, (*itPrec));
+      draw(board, shift, (*itPrec));
     }
   board.saveSVG("kernel-domain-it-arrow.svg");
 

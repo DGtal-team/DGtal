@@ -184,14 +184,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-
-#if(0)
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
-#endif
     
     // ------------------------- Protected Datas ------------------------------
   private:

@@ -263,14 +263,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-    
-#if(0)
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
-#endif
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -312,26 +304,6 @@ namespace DGtal
     
     // ------------------------- Private Datas --------------------------------
   private:
-
-#if(0)
-    /**
-     * Default drawing style for GeometricalDSS.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the GeometricalDSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
-#endif
 
   }; // end of class GeometricalDSS
 

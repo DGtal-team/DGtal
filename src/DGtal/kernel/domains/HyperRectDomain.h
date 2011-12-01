@@ -527,35 +527,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-#if(0)
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStylePaving : public DrawableWithBoard2D
-    {
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setPenColorRGBi(160, 160, 160);
-        aBoard.setFillColorRGBi(255, 255, 255);
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setLineWidth( 1 );
-      }
-    };
 
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setPenColorRGBi(160, 160, 160);
-        aBoard.setFillColorRGBi(160, 160, 160);
-        aBoard.setLineStyle(Board2D::Shape::DashStyle);
-        aBoard.setLineWidth( 1 );
-      }
-    };
-#endif
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -570,51 +542,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-
-#if(0)
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
-
-
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     */
-    void selfDrawAsGrid( Board2D & board) const;
-
-    
-    /**
-     * Draw the object (as a Grid) on a LiBoard board.
-     * @param board the output board where the object is drawn.
-     * @param asGrid to choose between paving vs. grid representation.
-     */
-    void selfDrawAsPaving( Board2D & board ) const;
-#endif
-    
-
-
-#if(0)
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-    
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawDisplay3D(  Display3D & display ) const;
-    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
-    void selfDrawAsPavingPointsDisplay3D( Display3D & display ) const;
-    void selfDrawAsBoundingBoxDisplay3D ( Display3D & display) const;
-#endif
-    
 
     
     /**
@@ -649,30 +576,6 @@ namespace DGtal
     ConstIterator myIteratorEnd;
   }; // end of class HyperRectDomain
 
-
-#if(0)
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-
-
-
-  struct DrawPavingVoxel3D : public DrawableWithDisplay3D {
-    void selfDrawDisplay3D( Display3D & display ) const
-    {
-      display.myModes[ "HyperRectDomain" ] = "Paving";
-    }
-  };
-  
-  
-  struct DrawGridVoxel3D : public DrawableWithDisplay3D {
-    void selfDrawDisplay3D( Display3D & display ) const
-    {
-      display.myModes[ "HyperRectDomain" ] = "Grid";
-    }
-  };
-#endif
   
   /**
    * Overloads 'operator<<' for displaying objects of class 'HyperRectDomain'.
@@ -684,29 +587,6 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream& out, const HyperRectDomain<TSpace> & object );
 
-#if(0)
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawDomainGrid : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "HyperRectDomain" ] = "Grid";
-    }
-  };
-
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawDomainPaving : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "HyperRectDomain" ] = "Paving";
-    }
-  };
-#endif  
 
 } // namespace DGtal
 

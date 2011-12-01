@@ -471,20 +471,6 @@ namespace DGtal
     protected:
 
     private:
-
-#if(0)
-      /**
-       * Default style.
-       */
-      struct DefaultDrawStyle : public DrawableWithBoard2D
-      {
-        virtual void selfDraw(Board2D & aBoard) const
-        {
-          aBoard.setFillColorRGBi(160, 160, 160);
-          aBoard.setPenColorRGBi(80, 80, 80);
-        }
-      };
-#endif
     
 
     
@@ -503,68 +489,9 @@ namespace DGtal
        */
       std::string className() const;
 
-#if(0)
-      /**
-       * Draw the object on a Board2D board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDraw( Board2D & board ) const;
-
-
-
-      /**
-       * Draw the object (with Adjacency relationships) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       * @tparam Functor a Functor to specialize the Board style
-       */
-      template<typename Functor>
-      void selfDrawWithAdjacencies(Board2D & board ) const;
-
-      /**
-       * Draw the object (with Adjacency relationships) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDrawWithAdjacencies(Board2D & board ) const;
-#endif
-
     
 
   private:
-#if(0)
-       /**
-       * Default style.
-       */
-    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
-    {
-        virtual void selfDrawDisplay3D(Display3D & display) const
-        {
-    display.myModes[ "Object" ] = "";
-         }
-      };
-
-  public:
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithDisplay3D * defaultStyleDisplay3D( std::string mode = "" ) const;
-    
-       /**
-       * Draw the object on a Board2D board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDrawDisplay3D( Display3D & display ) const;
-
-
-      template<typename Functor>
-      void selfDrawWithAdjacenciesDisplay3D( Display3D & display ) const;
-
-      /**
-       * Draw the object (with Adjacency relationships) on a LiBoard board.
-       * @param board the output board where the object is drawn.
-       */
-      void selfDrawWithAdjacenciesDisplay3D( Display3D & display ) const;
-#endif
 
       // ------------------------- internals ------------------------------------
     private:
@@ -583,23 +510,6 @@ namespace DGtal
   operator<< ( std::ostream & out,
       const Object<TDigitalTopology, TDigitalSet> & object );
 
-#if(0)
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawObjectAdjacencies : public DrawWithBoardModifier
-  {
-    DrawObjectAdjacencies( bool drawAdj = true )
-        : myDrawAdj( drawAdj )
-    {}
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "Object" ] = myDrawAdj ? "DrawAdjacencies" : "";
-    }
-    bool myDrawAdj;
-  };
-#endif
 
 
 } // namespace DGtal

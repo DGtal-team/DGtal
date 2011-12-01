@@ -280,20 +280,6 @@ public:
    */
   std::string className() const;
 
-#if(0)
-  /**
-   * Draw the object on a Board2D board.
-   * @param board the output board where the object is drawn.
-   */
-  void selfDraw( Board2D & board ) const;
-#endif  
-  
-  
-
-
-
-
-
   // ----------------------- Interface --------------------------------------
 public:
 
@@ -350,26 +336,7 @@ private:
    * Max of all the absolute displacements of the last optimisation step.
    */
   double myMax;
-  
-  
-#if(0)
-  /**
-   * Default styles.
-   */
-  struct DefaultDrawStyleCircular : public DrawableWithBoard2D
-  {
-    virtual void selfDraw( Board2D & aBoard ) const
-    {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi(220,220,220);
-	aBoard.setLineWidth(1);
-      }
-  };
-#endif
-  
-  
-  
+
   // ------------------------- Hidden services ------------------------------
 
   

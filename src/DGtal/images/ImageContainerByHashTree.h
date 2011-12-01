@@ -490,16 +490,7 @@ namespace DGtal
 
       // ------------- realization CDrawableWithBoard2D --------------------
     private:
-#if(0)
-      struct DefaultDrawStyle : public DrawableWithBoard2D
-      {
-	virtual void selfDraw(Board2D & aboard)
-	{
-	  aboard.setPenColorRGBi(60, 60, 60);
-	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
-	}
-      };
-#endif
+
 
     public:
       /**
@@ -512,18 +503,6 @@ namespace DGtal
        * @return the style name used for drawing this object.
        */
       std::string className() const;
-
-#if(0)
-      /**
-       * Draw the object on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       * @param minValue the minimum value contained in the image (used in the colormap settings)
-       * @param maxValue the maximum value contained in the image (used in the colormap settings)
-       * @tparam Coloramp any models of CColormap.
-       */
-      template<typename Colormap>
-      void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
-#endif
         
     protected:
 

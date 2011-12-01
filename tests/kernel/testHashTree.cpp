@@ -171,10 +171,10 @@ bool testGetSetVal()
   trace.info() << myImage;
   trace.info() << myImageV;
 
-  drawImage<HueTwice>(board, myImage, 0, 255); //myImage.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImage, 0, 255);
   board.saveSVG( "hashtree.svg" );
   board.clear();
-  drawImage<HueTwice>(board, myImageV, 0, 255); //myImageV.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImageV, 0, 255);
   board.saveSVG( "hashtree-vector.svg" );
   
 
