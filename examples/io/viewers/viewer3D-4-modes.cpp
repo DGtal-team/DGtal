@@ -63,12 +63,12 @@ int main( int argc, char** argv )
  Point p6( 0, 0, 0 );
  Point p0( 0, 2, 1 );
  
- // viewer <<  SetMode3D( p1.styleName(), "Grid" );
+ // viewer <<  SetMode3D( p1.className(), "Grid" );
 
  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
   
 
- //viewer << SetMode3D(domain.styleName(), "PavingGrids");
+ //viewer << SetMode3D(domain.className(), "PavingGrids");
  viewer << domain << Display3D::updateDisplay;
  
 

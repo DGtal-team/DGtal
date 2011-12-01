@@ -53,17 +53,17 @@ int main()
   MyPoint p3( 2, 3, 4 );
   MyDomain domain( p1, p2 );
 
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
-  viewer << domain;  
-  viewer << p1 << p2 << p3;
+  board << domain;  
+  board << p1 << p2 << p3;
   
-  viewer << CameraPosition(2.500000, 2.500000, 16.078199)
+  board << CameraPosition(2.500000, 2.500000, 16.078199)
    << CameraDirection(0.000000, 0.000000, -1.000000)
    << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);
+  board << SetMode3D(board.className(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-0-demo-kernel-2.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

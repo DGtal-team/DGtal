@@ -280,24 +280,42 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
+    
+    /**
+     * @return the shape used to separate the input points.
+     */
+    const Shape & shape() const
+    {
+      return myShape;
+    };
+    
+    /**
+     * @return the lower part of the preimage.
+     */
+    const Container & pHull() const
+    {
+      return myPHull;
+    };
+    
+    /**
+     * @return the upper part of the preimage.
+     */
+    const Container & qHull() const
+    {
+      return myQHull;
+    };
 
     //------------------ display -------------------------------
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
+    std::string className() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

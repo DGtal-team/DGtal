@@ -437,65 +437,11 @@ DGtal::FP<TIterator,TInteger,connectivity>
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void 
-DGtal::FP<TIterator,TInteger,connectivity>::selfDrawAsPolygon( Board2D & aBoard) const
-{
-  //polyline to draw
-  vector<LibBoard::Point> polyline;
-
-  typename Polygon::const_iterator i = myPolygon.begin();
-  for ( ;i != myPolygon.end();++i) {
-      Point p = (*i);
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-      polyline.push_back(LibBoard::Point(xp,yp));
-  }
-
-  if (myFlagIsClosed) {
-      Point p = (*myPolygon.begin());
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
-      polyline.push_back(LibBoard::Point(xp,yp));
-  }
-  aBoard.drawPolyline(polyline);
-
-}
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::FP<TIterator,TInteger,connectivity>::defaultStyle( std::string  ) const
-{
-  return new DefaultDrawStyle;
-}
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
 std::string
-DGtal::FP<TIterator,TInteger,connectivity>::styleName() const
+DGtal::FP<TIterator,TInteger,connectivity>::className() const
 {
   return "FP";
-}
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void
-DGtal::FP<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
-{
-  std::string mode = board.getMode( styleName() );
-  if ( mode == "Polygon" )
-    selfDrawAsPolygon( board );
-  else if ( ( mode == "Both" ) || ( mode == "" ) )
-    {
-      selfDrawAsPolygon( board );
-    }
-  else
-    {
-      mode = "DGtal::FP<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode;
-      ASSERT2(false,  mode  );
-    }
-}
-  
+} 
 
 
 template <typename TIterator, typename TInteger, int connectivity>

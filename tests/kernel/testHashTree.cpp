@@ -31,7 +31,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
@@ -172,10 +171,10 @@ bool testGetSetVal()
   trace.info() << myImage;
   trace.info() << myImageV;
 
-  myImage.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImage, 0, 255);
   board.saveSVG( "hashtree.svg" );
   board.clear();
-  myImageV.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImageV, 0, 255);
   board.saveSVG( "hashtree-vector.svg" );
   
 

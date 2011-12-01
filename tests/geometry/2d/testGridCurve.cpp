@@ -306,7 +306,7 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   PointVector<2,int> up(3,3);
   if (aDomainMode == "Paving") up = PointVector<2,int>(4,4);
   HyperRectDomain< SpaceND<2,int> > aDomain( low,up );
-  aBoard << SetMode(aDomain.styleName(), aDomainMode) << aDomain; 
+  aBoard << SetMode(aDomain.className(), aDomainMode) << aDomain; 
   //displaying range
   aBoard << aRange; 
   //save

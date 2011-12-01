@@ -268,6 +268,21 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /**
+     * @return the list where each vertex of the FP is stored.
+     */
+    const Polygon & polygon() const
+    {
+      return myPolygon;
+    };
+    
+    /**
+     * @return true if the list has to be consider as circular.
+     */
+    bool flagIsClosed() const
+    {
+      return myFlagIsClosed;
+    };
 
 
     /**
@@ -299,13 +314,14 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
+    
     // ------------------------- Private Datas --------------------------------
   private:
 
     /*
     * list where each vertex of the FP is stored
     */
-    Polygon myPolygon; 
+    Polygon myPolygon;
 
     /*
     * bool equal to 'true' if the list has to be consider as circular
@@ -385,26 +401,6 @@ namespace DGtal
     // ------------------------- Display ------------------------------------
   public: 
 
-
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-        /**
-         * Drawing method.
-         * @param board the output board where the object is drawn.
-         */
-        virtual void selfDraw(Board2D & aBoard) const
-        {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(2);
-        aBoard.setFillColor(Color::None);
-        }
-    };
-
     /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -420,28 +416,12 @@ namespace DGtal
      * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-
-    /**
-     * Draw the vertices of the FP as a polygonal line 
-     * @param board the output board where the object is drawn.
-     *
-     */
-    void selfDraw(Board2D & board ) const;
-
-
-    /**
-     * Draw the FP on a board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsPolygon( Board2D & board ) const;
-
-
+    std::string className() const;
 
   }; // end of class FP
 

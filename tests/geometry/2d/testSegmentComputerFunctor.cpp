@@ -38,6 +38,8 @@
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
 #include "DGtal/geometry/2d/SegmentComputerFunctor.h"
 
+#include "DGtal/io/boards/Board2D.h"
+
 
 #include "ConfigTest.h"
 

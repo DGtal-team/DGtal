@@ -49,7 +49,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleComputer.h" 
 #include "DGtal/math/arithmetic/ModuloComputer.h" 
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -273,25 +273,12 @@ public:
    * Default drawing style object.
    * @return the dyn. alloc. default style for this object.
    */
-  DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+  //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
   
   /**
    * @return the style name used for drawing this object.
    */
-  std::string styleName() const;
-  
-  /**
-   * Draw the object on a Board2D board.
-   * @param board the output board where the object is drawn.
-   */
-  void selfDraw( Board2D & board ) const;
-  
-  
-  
-
-
-
-
+  std::string className() const;
 
   // ----------------------- Interface --------------------------------------
 public:
@@ -317,23 +304,23 @@ protected:
    */
   bool myIsCurveOpen;
   
-private:
-  
   /**
    * The dynamically allocated array of values and the associated constraints.
    */
   ValueInfo* myValues;
   
   /**
-   * The size of the array @a myValues, ie the maximal number of valid values.
-   */
-  unsigned int myMaxSize;
-
-  /**
    * The meaningful size of the array [myValues], ie the number of
    * valid entries.
    */
   unsigned int mySize;
+
+private:
+  
+  /**
+   * The size of the array @a myValues, ie the maximal number of valid values.
+   */
+  unsigned int myMaxSize;
 
 
 
@@ -349,24 +336,7 @@ private:
    * Max of all the absolute displacements of the last optimisation step.
    */
   double myMax;
-  
-  
-  /**
-   * Default styles.
-   */
-  struct DefaultDrawStyleCircular : public DrawableWithBoard2D
-  {
-    virtual void selfDraw( Board2D & aBoard ) const
-    {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi(220,220,220);
-	aBoard.setLineWidth(1);
-      }
-  };
-  
-  
-  
+
   // ------------------------- Hidden services ------------------------------
 
   

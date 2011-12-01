@@ -160,7 +160,7 @@ public:
   /**
    * Draws the drawable [object] in this board. It should satisfy
    * the concept CDrawableWithViewer3D, which requires for instance a
-   * method selfDraw( Viewer3D & ).
+   * method setStyle( Viewer3D & ).
    *
    * @param object any drawable object.
    * @return a reference on 'this'.

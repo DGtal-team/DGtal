@@ -118,7 +118,7 @@ bool testBIGINTEGERSpace()
 
   Domain domain( p1, p2 );
   Board2D aBoard;
-  aBoard << SetMode( domain.styleName(), "Grid" )
+  aBoard << SetMode( domain.className(), "Grid" )
    << domain
    << theContour
    << segment;
