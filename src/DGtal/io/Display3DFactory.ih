@@ -206,7 +206,7 @@ inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
-  std::string mode = display.getMode( a.styleName() );
+  std::string mode = display.getMode( a.className() );
   if ( mode == "BoundingBox" )
     drawAsBoundingBox( display, a );
   else if ( mode == "Points" )
@@ -294,7 +294,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   ASSERT(Domain::Space::dimension == 3);
   
-  std::string mode = display.getMode( s.styleName() );
+  std::string mode = display.getMode( s.className() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
@@ -385,7 +385,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   ASSERT(Domain::Space::dimension == 3);
   
- std::string mode = display.getMode( v.styleName() );
+ std::string mode = display.getMode( v.className() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
@@ -630,7 +630,7 @@ inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
                                     const DGtal::HyperRectDomain<TSpace> & h )
 {
-  std::string mode = display.getMode( h.styleName() );
+  std::string mode = display.getMode( h.className() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
     mode=="BoundingBox")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
@@ -668,7 +668,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( k.styleName() );
+  std::string mode = display.getMode( k.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
@@ -752,7 +752,7 @@ inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
                                     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
-  std::string mode = display.getMode( o.styleName() );
+  std::string mode = display.getMode( o.className() );
   if ( mode == "" )
     draw( display, o.pointSet() );
   else if ( mode == "PavingTransp" ){
@@ -814,7 +814,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   ASSERT(dim == 3);
  
-  std::string mode = display.getMode( p.styleName() );
+  std::string mode = display.getMode( p.className() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="PavingWired"|| mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
@@ -859,7 +859,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( sk.styleName() );
+  std::string mode = display.getMode( sk.className() );
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.

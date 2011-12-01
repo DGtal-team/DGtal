@@ -64,7 +64,7 @@
 
 void draw( DGtal::Board2D & aBoard, DGtal::DrawableWithBoard2D *style )
 {
-    style->selfDraw(aBoard);
+    style->setStyle(aBoard);
 }
 
 

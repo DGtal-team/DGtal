@@ -324,7 +324,7 @@ DGtal::Preimage2D<Shape>::defaultStyle( std::string /*mode*/ ) const
 template <typename Shape>
 inline
 std::string
-DGtal::Preimage2D<Shape>::styleName() const
+DGtal::Preimage2D<Shape>::className() const
 {
   return "Preimage2D";
 }

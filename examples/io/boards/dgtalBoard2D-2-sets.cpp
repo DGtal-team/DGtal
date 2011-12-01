@@ -72,7 +72,7 @@ int main( )
   // Object with couple (4,8) of adjacency.
   Object4_8 shape( dt4_8, shape_set );
   board << domain // display domain
-  << SetMode( shape.styleName(), "DrawAdjacencies" )
+  << SetMode( shape.className(), "DrawAdjacencies" )
   << shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalBoard2D-2-sets-2.svg");
   board.saveEPS( "dgtalBoard2D-2-sets-2.eps");
@@ -90,7 +90,7 @@ int main( )
   // Object with couple (8,4) of adjacency.
   Object8_4 shape2( dt8_4, shape_set );
   board << domain // display domain
-  << SetMode( shape2.styleName(), "DrawAdjacencies" )
+  << SetMode( shape2.className(), "DrawAdjacencies" )
   << shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalBoard2D-2-sets-3.svg");
   board.saveEPS( "dgtalBoard2D-2-sets-3.eps");

@@ -57,11 +57,11 @@ int main()
   
   Board2D board;
   board << domain 
-  << CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
+  << CustomStyle( p1.className(), new CustomColors( red, dred ) )
   << p1
-  << CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
+  << CustomStyle( p2.className(), new CustomFillColor( dgreen ) )
   << p2
-  << CustomStyle( p3.styleName(), 
+  << CustomStyle( p3.className(), 
       new CustomPen( blue, dblue, 6.0, 
                Board2D::Shape::SolidStyle,
                Board2D::Shape::RoundCap,

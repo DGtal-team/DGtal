@@ -126,7 +126,7 @@ inline
 void draw( DGtal::Board2D & board, 
 	   const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
 {
-  std::string mode = board.getMode( a.styleName() );
+  std::string mode = board.getMode( a.className() );
   if ( mode == "BoundingBox" )
     drawAsBoundingBox( board, a );
   else if ( mode == "Points" )
@@ -285,7 +285,7 @@ template <typename Point>
 inline
 void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2)
 {
-  std::string mode = aBoard.getMode( cf3p.styleName() );
+  std::string mode = aBoard.getMode( cf3p.className() );
   ASSERT( (mode=="Arc" || mode=="" || mode=="Sector"|| mode=="Annulus") ||
     ("draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2): Unknown mode "+mode)==""  );
   
@@ -394,7 +394,7 @@ inline
 void draw( DGtal::Board2D & board, 
            const DGtal::FP<TIterator,TInteger,connectivity> & fp )
 {
-  std::string mode = board.getMode( fp.styleName() );
+  std::string mode = board.getMode( fp.className() );
   if ( mode == "Polygon" )
     drawAsPolygon( board, fp );
   else if ( ( mode == "Both" ) || ( mode == "" ) )
@@ -458,7 +458,7 @@ inline
 void draw( DGtal::Board2D & aBoard,
 	   const DGtal::FreemanChain<TInteger> & f )
 {
-  std::string mode = aBoard.getMode( f.styleName() );
+  std::string mode = aBoard.getMode( f.className() );
   ASSERT( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
     ("draw( DGtal::Board2D & board, const DGtal::FreemanChain<TInteger> & f ): Unknown mode "+mode)==""  );
   
@@ -513,7 +513,7 @@ void draw(DGtal::Board2D & aBoard,
 
 
 // GridCurve
-// we use selfDraw because of inner classes
+// we use setStyle because of inner classes
 // GridCurve
 
 
@@ -579,7 +579,7 @@ inline
 void draw( DGtal::Board2D & board, 
            const DGtal::HyperRectDomain<TSpace> & h )
 {
-  std::string mode = board.getMode( h.styleName() );
+  std::string mode = board.getMode( h.className() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
    ("draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
   
@@ -765,7 +765,7 @@ inline
 void draw( DGtal::Board2D & board, 
            const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
-  std::string mode = board.getMode( o.styleName() );
+  std::string mode = board.getMode( o.className() );
   if ( mode == "" )
     draw( board, o.pointSet() );
   else
@@ -807,7 +807,7 @@ inline
 void draw( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
-  std::string mode = board.getMode( p.styleName() );
+  std::string mode = board.getMode( p.className() );
   ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
     ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & p ): Unknown mode "+mode)==""  );
 
@@ -853,7 +853,7 @@ void draw( DGtal::Board2D & aBoard,
   ++i;
   while ( i != p.pHull().end() ) {
     s.init(pt, *i);
-    draw(aBoard, s); //s.selfDraw(aBoard);
+    draw(aBoard, s); //s.setStyle(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -863,7 +863,7 @@ void draw( DGtal::Board2D & aBoard,
   ++i;
   while ( i != p.qHull().end() ) {
     s.init(pt, *i);
-    draw(aBoard, s); //s.selfDraw(aBoard);
+    draw(aBoard, s); //s.setStyle(aBoard);
     pt = Point(*i);
     ++i;
   }
@@ -874,9 +874,9 @@ void draw( DGtal::Board2D & aBoard,
   Point Ql(*p.qHull().rbegin());
 
   s.init(Pf, Ql);
-  draw(aBoard, s); //s.selfDraw(aBoard);
+  draw(aBoard, s); //s.setStyle(aBoard);
   s.init(Qf, Pl);
-  draw(aBoard, s); //s.selfDraw(aBoard);
+  draw(aBoard, s); //s.setStyle(aBoard);
 }
 // Preimage2D
 

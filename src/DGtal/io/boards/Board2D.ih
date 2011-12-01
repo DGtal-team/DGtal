@@ -56,7 +56,7 @@ DGtal::Board2D::getMode( const std::string & objectName ) const
 /**
  * Draws the drawable [object] in this board. It should satisfy
  * the concept CDrawableWithBoard2D, which requires for instance a
- * method selfDraw( LibBoard::Board ).
+ * method setStyle( LibBoard::Board ).
  *
  * @param domain any domain.
  * @return a reference on 'this'.
@@ -71,7 +71,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 
   CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) /*object.defaultStyle()*/ );
 #ifdef DEBUG_VERBOSE
-  trace.info() << "[operator<<] " << object.styleName();
+  trace.info() << "[operator<<] " << object.className();
 #endif
 
   // Apply default style
@@ -80,20 +80,20 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
-      draw(*this, style.get()); //style->selfDraw( *this );
+      draw(*this, style.get()); //style->setStyle( *this );
     }
   // Apply Customized style
-  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
+  StyleMapping::const_iterator it = myStyles.find( object.className() );
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
 #ifdef DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
-  draw(*this, it->second.get()); //it->second->selfDraw( *this );
+  draw(*this, it->second.get()); //it->second->setStyle( *this );
       }
   // Check for specific mode.
-  ModeMapping::const_iterator itm = myModes.find( object.styleName() );
+  ModeMapping::const_iterator itm = myModes.find( object.className() );
   if ( itm != myModes.end() )
     {
       #ifdef DEBUG_VERBOSE
@@ -108,10 +108,10 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
-    draw(*this, style_mode.get()); //style_mode->selfDraw( *this );
+    draw(*this, style_mode.get()); //style_mode->setStyle( *this );
   }
       // Apply customized style for specific mode.
-      std::string specific_style = object.styleName() + "/" + itm->second;
+      std::string specific_style = object.className() + "/" + itm->second;
       it = myStyles.find( specific_style );
       if ( it != myStyles.end() ) 
   if ( it->second.get() != 0 )
@@ -120,14 +120,14 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
       trace.info() << " [specific style for mode: " 
           << specific_style << "]";
 #endif
-      draw(*this, it->second.get()); //it->second->selfDraw( *this );
+      draw(*this, it->second.get()); //it->second->setStyle( *this );
     }
     }
 #ifdef DEBUG_VERBOSE
   trace.info() << "  [draw]";
 #endif
 
-  //object.selfDraw( *this );
+  //object.setStyle( *this );
   draw(*this, object);
 #ifdef DEBUG_VERBOSE
   std::cerr << std::endl;

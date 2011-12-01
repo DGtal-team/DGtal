@@ -411,7 +411,7 @@ DGtal::GeometricalDSS<TConstIterator>::defaultStyle( std::string /*mode*/ ) cons
 template <typename TConstIterator>
 inline
 std::string
-DGtal::GeometricalDSS<TConstIterator>::styleName() const
+DGtal::GeometricalDSS<TConstIterator>::className() const
 {
   return "GeometricalDSS";
 }

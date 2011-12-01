@@ -60,9 +60,9 @@ int main( int argc, char** argv )
   Z2i::Point pup(3,2);
   
   Z2i::Domain dom (plow, pup);
-  boardScan1 << SetMode( dom.styleName(), "Paving" )
+  boardScan1 << SetMode( dom.className(), "Paving" )
         << dom;
-  boardScan2 << SetMode( dom.styleName(), "Paving" )
+  boardScan2 << SetMode( dom.className(), "Paving" )
         << dom;
   
   K.init( dom.lowerBound(),dom.upperBound(), true );

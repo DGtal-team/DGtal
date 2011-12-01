@@ -197,7 +197,7 @@ DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
 
 INLINE
 std::string
-DGtal::AngleLinearMinimizer::styleName() const
+DGtal::AngleLinearMinimizer::className() const
 {
   return "AngleLinearMinimizer";
 }

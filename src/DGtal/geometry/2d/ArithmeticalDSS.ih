@@ -1059,7 +1059,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::stri
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::styleName() const
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::className() const
 {
   return "ArithmeticalDSS";
 }
@@ -1075,7 +1075,7 @@ inline
 void
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
 {
-  std::string mode = board.getMode( styleName() );
+  std::string mode = board.getMode( className() );
   if ( mode == "BoundingBox" )
     selfDrawAsBoundingBox( board );
   else if ( mode == "Points" )

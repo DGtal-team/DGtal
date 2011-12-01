@@ -117,7 +117,7 @@ namespace DGtal
 
     /**
      * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
+     * with a 'object.className()').
      *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
@@ -127,7 +127,7 @@ namespace DGtal
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithBoard2D, which requires for instance a
-     * method selfDraw( Board2D & ).
+     * method setStyle( Board2D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
@@ -207,7 +207,7 @@ namespace DGtal
    * @todo merge DrawableWithBoard2D and DrawWithBoardModifier 
    */
   struct DrawWithBoardModifier {
-    std::string styleName() const
+    std::string className() const
     {
       return "DrawWithBoardModifier";
     }
@@ -217,7 +217,7 @@ namespace DGtal
       return 0;
     }*/
 
-    /*virtual void selfDraw( Board2D &  ) const 
+    /*virtual void setStyle( Board2D &  ) const 
     {}*/
   };
 
@@ -238,12 +238,12 @@ namespace DGtal
       : myClassname( classname ), myStyle( style )
     {}
 
-    std::string styleName() const
+    std::string className() const
     {
       return "CustomStyle";
     }
 
-    /*void selfDraw( Board2D & board ) const
+    /*void setStyle( Board2D & board ) const
     {
       board.myStyles[ myClassname ] = myStyle;
     }*/
@@ -268,7 +268,7 @@ namespace DGtal
       : myClassname( classname ), myMode( mode )
     {}
     
-    /*void selfDraw( Board2D & board ) const
+    /*void setStyle( Board2D & board ) const
     {
       board.myModes[ myClassname ] = myMode;
     }*/
@@ -304,7 +304,7 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor);
       aboard.setPenColor( myPenColor );
@@ -335,7 +335,7 @@ namespace DGtal
       : myPenColor( penColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
     }
@@ -365,7 +365,7 @@ namespace DGtal
       : myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor );
     }
@@ -421,7 +421,7 @@ namespace DGtal
   myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
       aboard.setFillColor( myFillColor );

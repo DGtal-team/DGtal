@@ -178,7 +178,7 @@ DGtal::HyperRectDomain<TSpace>::defaultStyle( std::string mode ) const
 template<typename TSpace>
 inline
 std::string
-DGtal::HyperRectDomain<TSpace>::styleName() const
+DGtal::HyperRectDomain<TSpace>::className() const
 {
   return "HyperRectDomain";
 }
@@ -189,7 +189,7 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDraw( Board2D & board ) const
 {
-  std::string mode = board.getMode( this->styleName() );
+  std::string mode = board.getMode( this->className() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
    ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");
   
@@ -264,7 +264,7 @@ inline
 void
 DGtal::HyperRectDomain<TSpace>::selfDrawDisplay3D( Display3D & display ) const
 {
-  std::string mode = display.getMode( this->styleName() );
+  std::string mode = display.getMode( this->className() );
   ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
     mode=="BoundingBox")||
    ("DGtal::HyperRectDomain<TSpace>::selfDraw: Unknown mode "+mode)=="");

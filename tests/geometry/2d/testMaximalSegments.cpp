@@ -210,14 +210,14 @@ bool testClosedCurves(const bool& aFlag)
           << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
 
       DSS4 segment(*i);
       cout << segment << endl;
-      aBoard << CustomStyle( styleName, 
+      aBoard << CustomStyle( className, 
                              new CustomPenColor( Color::Blue ) )
              << segment; // draw each segment
 

@@ -113,13 +113,13 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << SetMode( domain.styleName(), "Grid" ) /*<< DrawDomainGrid()*/ << domain << mySet;
+  board << SetMode( domain.className(), "Grid" ) /*<< DrawDomainGrid()*/ << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << SetMode( domain.styleName(), "Paving" ) /*<< DrawDomainPaving()*/ << domain;
+  board << SetMode( domain.className(), "Paving" ) /*<< DrawDomainPaving()*/ << domain;
   board << mySet;
   board.saveSVG("simpleSet-paving.svg");
 
@@ -127,7 +127,7 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << CustomStyle( mySet.styleName(), new MyDomainStyleCustomRed );
+  board << CustomStyle( mySet.className(), new MyDomainStyleCustomRed );
   board << mySet;
   board.saveSVG("simpleSet-color.svg");
 
@@ -231,7 +231,7 @@ bool testDigitalSetDraw()
   //Board export test
   trace.beginBlock("SVG Export");
   Board2D board;
-  board << SetMode( domain.styleName(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
+  board << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid(board);
   board << disk;
 
   board.scale(10);

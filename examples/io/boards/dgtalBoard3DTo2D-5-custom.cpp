@@ -58,24 +58,24 @@ int main()
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  board << SetMode3D( p1.styleName(), "PavingWired" );
+  board << SetMode3D( p1.className(), "PavingWired" );
   board << p1 << p2 << p3;
 
-  //board << SetMode3D( p1.styleName(), "Grid" );
+  //board << SetMode3D( p1.className(), "Grid" );
   board << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   board << p4 << p5 ;
-  board << SetMode3D( p1.styleName(), "Both" );
+  board << SetMode3D( p1.className(), "Both" );
   board << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
   board << p6;
   board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   board << p0;
 
-  board << SetMode3D(domain.styleName(), "Paving");
+  board << SetMode3D(domain.className(), "Paving");
   board << domain;
-  board << SetMode3D(board.styleName(), "WireFrameMode");
+  board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-5-custom-wireframe.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
   
-  board << SetMode3D(board.styleName(), "SolidMode");
+  board << SetMode3D(board.className(), "SolidMode");
   board.saveCairo("dgtalBoard3DTo2D-5-custom.png", Board3DTo2D::CairoPNG, 600*2, 400*2);
 }
 //                                                                           //

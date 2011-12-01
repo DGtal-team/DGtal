@@ -803,7 +803,7 @@ Steps:
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
+    std::string className() const;
 
 #if(0)
     /**

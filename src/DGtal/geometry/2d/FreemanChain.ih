@@ -1314,7 +1314,7 @@ DGtal::FreemanChain<TInteger>::defaultStyle( std::string mode ) const
 template <typename TInteger>
 inline
 std::string
-DGtal::FreemanChain<TInteger>::styleName() const
+DGtal::FreemanChain<TInteger>::className() const
 {
   return "FreemanChain";
 }
@@ -1325,7 +1325,7 @@ inline
 void 
 DGtal::FreemanChain<TInteger>::selfDraw(Board2D & aBoard) const
 {
-  std::string mode = aBoard.getMode( this->styleName() );
+  std::string mode = aBoard.getMode( this->className() );
   ASSERT( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
     ("DGtal::FreemanChain<Integer>::selfDraw: Unknown mode "+mode)==""  );
   

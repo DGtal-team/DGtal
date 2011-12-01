@@ -518,7 +518,7 @@ DGtal::DigitalSetBySTLVector<Domain>::defaultStyle( std::string ) const
 template<typename Domain>
 inline
 std::string
-DGtal::DigitalSetBySTLVector<Domain>::styleName() const
+DGtal::DigitalSetBySTLVector<Domain>::className() const
 {
   return "DigitalSetBySTLVector";
 }
@@ -637,7 +637,7 @@ DGtal::DigitalSetBySTLVector<Domain>::selfDrawDisplay3D( Display3D & display ) c
 {
   ASSERT(Domain::Space::dimension == 3);
   
- std::string mode = display.getMode( this->styleName() );
+ std::string mode = display.getMode( this->className() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )

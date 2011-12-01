@@ -130,7 +130,7 @@ DGtal::ImageContainerBySTLVector<D, V>::defaultStyle() const
 template <typename D, typename V>
 inline
 std::string
-DGtal::ImageContainerBySTLVector<D, V>::styleName() const
+DGtal::ImageContainerBySTLVector<D, V>::className() const
 {
   return "ImageContainerBySTLVector";
 }
