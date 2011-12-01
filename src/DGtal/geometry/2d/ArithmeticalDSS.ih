@@ -974,88 +974,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::projectedSegmentLength(
 }
 
 
-
-#if(0)
-/**
- * Draw the bounding box of the DSS on a LiBoard board
- * @param board the output board where the object is drawn.
- */
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsBoundingBox( Board2D & aBoard) const
-{
-  
-
-  //draw bounding box
-  PointD topLeft = project(*myF, myUf);
-  PointD bottomLeft = project(*myF,myLf);
-  PointD bottomRight = project(*myL, myLf);
-  PointD topRight = project(*myL,myUf);
-  
-
-  LibBoard::Point topLeftBoard(topLeft[0],topLeft[1]);
-  LibBoard::Point bottomLeftBoard(bottomLeft[0],bottomLeft[1]);
-  LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
-  LibBoard::Point topRightBoard(topRight[0],topRight[1]);
-  
-  vector<LibBoard::Point> bb;
-  bb.push_back(topLeftBoard);
-  bb.push_back(bottomLeftBoard);
-  bb.push_back(bottomRightBoard);
-  bb.push_back(topRightBoard);
-  
-  aBoard.drawClosedPolyline(bb);  
-     
-
-}
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDrawAsDigitalPoints( Board2D & aBoard) const
-{
-
-  ConstIterator itend = myL; ++itend;
-
-  // Draw a linking polygonal line if the pixels are drawn as points. 
-  if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
-    {
-
-      vector<LibBoard::Point> contour;
-      for (ConstIterator i = myF; i != itend; ++i) {
-        Point p = *i;
-        double xp = NumberTraits<TInteger>::castToDouble(p[0]);
-        double yp = NumberTraits<TInteger>::castToDouble(p[1]);
-        contour.push_back(LibBoard::Point(xp,yp));
-      }
-      aBoard.drawPolyline(contour);
-    }
-
-  // Draw points
-  for (ConstIterator i = myF; i != itend; ++i) {
-    Point p = *i;
-    aBoard << p;
-  }
- 
-
-}
-#endif
-
-#if(0)
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::defaultStyle( std::string mode ) const
-{
-  if ( ( mode == "" ) || ( mode == "BoundingBox" ) ) 
-    return new DefaultDrawStyleBB;
-  else // mode == "Points"
-    return new DefaultDrawStylePoints;
-}
-#endif
-
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 std::string
@@ -1063,35 +981,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::className() const
 {
   return "ArithmeticalDSS";
 }
-
-#if(0)
-/**
- * Draw the object on a LibBoard board.
- * @param board the output board where the object is drawn.
- */
-
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-void
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw( Board2D & board ) const
-{
-  std::string mode = board.getMode( className() );
-  if ( mode == "BoundingBox" )
-    selfDrawAsBoundingBox( board );
-  else if ( mode == "Points" )
-    selfDrawAsDigitalPoints( board );
-  else if ( ( mode == "" ) )
-    {
-      selfDrawAsDigitalPoints( board );
-      selfDrawAsBoundingBox( board );
-    }
-  else
-    ASSERT(false && ("DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDraw: Unknown mode "+mode)==""  );
-
-}
-#endif
-
-
 
 /**
  * Writes/Displays the object on an output stream.

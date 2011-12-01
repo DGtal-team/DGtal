@@ -727,68 +727,13 @@ Steps:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ;
-
-#if(0)
-    /**
-     * Draw the digital points of the DSS 
-     * (possibly linked into a polygonal line) on a board
-     * @param board the output board where the object is drawn.
-     */
-    
-    void selfDrawAsDigitalPoints( Board2D & board ) const;
-    
-    
-    /**
-     * Draw the bounding box of the DSS on a board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsBoundingBox( Board2D & board ) const;
-#endif    
+    void selfDisplay ( std::ostream & out ) ; 
     
     
     // ------------------------- Private Datas --------------------------------
   private:
 
-#if(0)
-    /**
-     * Default style for the bounding box mode.
-     */
-    struct DefaultDrawStyleBB : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
-    
-    /**
-     * Default style for the points mode.
-     */
-    struct DefaultDrawStylePoints : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-	// Set board style
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineWidth(2);
-	aBoard.setFillColor(Color::None);
-      }
-    };
-#endif
+
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -805,42 +750,9 @@ Steps:
      */
     std::string className() const;
 
-#if(0)
-    /**
-     * Draw the DSS on a board as its bounding box and the
-     * polyline of its points 
-     * @param board the output board where the object is drawn.
-     *
-     */
-    void selfDraw(Board2D & board ) const;
-#endif
-    
     
   }; // end of class ArithmeticalDSS
 
-#if(0)
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSBoundingBox : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
-  }
-};
- 
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSPoints : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "Points";
-  }
-};
-#endif
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.

@@ -69,7 +69,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
  
   BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
-  CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) /*object.defaultStyle()*/ );
+  CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) );
 #ifdef DEBUG_VERBOSE
   trace.info() << "[operator<<] " << object.className();
 #endif
@@ -80,7 +80,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
-      draw(*this, style.get()); //style->setStyle( *this );
+      draw(*this, style.get());
     }
   // Apply Customized style
   StyleMapping::const_iterator it = myStyles.find( object.className() );
@@ -90,7 +90,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
-  draw(*this, it->second.get()); //it->second->setStyle( *this );
+  draw(*this, it->second.get());
       }
   // Check for specific mode.
   ModeMapping::const_iterator itm = myModes.find( object.className() );
@@ -102,13 +102,13 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 
       // Apply default style for specific mode.
       CountedPtr<DrawableWithBoard2D> style_mode
-  ( defaultStyle(object, itm->second) /*object.defaultStyle( itm->second )*/ );
+  ( defaultStyle(object, itm->second) );
       if ( style_mode.get() )
   {
 #ifdef DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
-    draw(*this, style_mode.get()); //style_mode->setStyle( *this );
+    draw(*this, style_mode.get());
   }
       // Apply customized style for specific mode.
       std::string specific_style = object.className() + "/" + itm->second;
@@ -120,14 +120,13 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
       trace.info() << " [specific style for mode: " 
           << specific_style << "]";
 #endif
-      draw(*this, it->second.get()); //it->second->setStyle( *this );
+      draw(*this, it->second.get());
     }
     }
 #ifdef DEBUG_VERBOSE
   trace.info() << "  [draw]";
 #endif
 
-  //object.setStyle( *this );
   draw(*this, object);
 #ifdef DEBUG_VERBOSE
   std::cerr << std::endl;

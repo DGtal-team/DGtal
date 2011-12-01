@@ -85,47 +85,6 @@ ImageContainerBySTLVector<Domain, T>::extent() const
   return one;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// libBoard export
-#if(0)
-template <typename D, typename V>
-template<typename Colormap>
-inline
-void
-DGtal::ImageContainerBySTLVector<D, V>::selfDraw(Board2D & board,
-             const V &minV,
-             const V &maxV ) const
-{
-  ASSERT(D::dimension == 2);
-
-  Colormap colormap(minV, maxV);
-  Color c;
-  V val;
-  D ldomain(myLowerBound, myUpperBound);
-
-  for (typename D::ConstIterator it =  ldomain.begin();
-       it != ldomain.end(); ++it)
-  {
-    val = this->operator()( (*it) );
-    c = colormap( val );
-    board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[0]) - 0.5, 
-       NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[1]) + 0.5, 1, 1);
-  }
-}
-#endif
-//------------------------------------------------------------------------------
-#if(0)
-template <typename D, typename V>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::ImageContainerBySTLVector<D, V>::defaultStyle() const
-{
-  return new DefaultDrawStyle;
-}
-#endif
 //------------------------------------------------------------------------------
 template <typename D, typename V>
 inline

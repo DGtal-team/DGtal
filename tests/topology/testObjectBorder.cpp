@@ -58,14 +58,14 @@ using namespace LibBoard;
 
 struct MyObjectStyleCustom : public DrawableWithBoard2D
 {
-    virtual void selfDraw ( Board2D & aboard ) const
+    virtual void setStyle ( Board2D & aboard ) const
     {
         aboard.setFillColorRGBi ( 0, 169, 0 );
     }
 };
 struct MyObjectStyleCustomRed : public DrawableWithBoard2D
 {
-    virtual void selfDraw ( Board2D & aboard ) const
+    virtual void setStyle ( Board2D & aboard ) const
     {
         aboard.setFillColorRGBi ( 169, 0, 0 );
     }
@@ -73,7 +73,7 @@ struct MyObjectStyleCustomRed : public DrawableWithBoard2D
 
 struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 {
-    virtual void selfDraw ( Board2D & aboard ) const
+    virtual void setStyle ( Board2D & aboard ) const
     {
         aboard.setFillColorRGBi ( 169, 150, 150 );
         aboard.setPenColorRGBi ( 0, 0, 0 );
@@ -84,7 +84,7 @@ struct MyDrawStyleCustomRed : public DrawableWithBoard2D
 
 struct MyDrawStyleCustomBlue : public DrawableWithBoard2D
 {
-    virtual void selfDraw ( Board2D & aboard ) const
+    virtual void setStyle ( Board2D & aboard ) const
     {
         aboard.setFillColorRGBi ( 150, 150, 250 );
         aboard.setPenColorRGBi ( 0, 0, 200 );
@@ -95,7 +95,7 @@ struct MyDrawStyleCustomBlue : public DrawableWithBoard2D
 
 struct MyDrawStyleCustomGreen : public DrawableWithBoard2D
 {
-    virtual void selfDraw ( Board2D & aboard ) const
+    virtual void setStyle ( Board2D & aboard ) const
     {
         aboard.setFillColorRGBi ( 150, 150, 160 );
         aboard.setPenColorRGBi ( 150, 150, 160 );
@@ -167,11 +167,11 @@ bool testObjectBorder()
     Board2D board;
     board.setUnit ( Board::UCentimeter );
 
-    board << SetMode( domain.className(), "Grid" ) /*<< DrawDomainGrid()*/ <<  domain << bubble_set;
+    board << SetMode( domain.className(), "Grid" ) <<  domain << bubble_set;
     board.saveSVG ( "bubble-set.svg" );
 
-    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/
-          << CustomStyle ( bubbleBorder.className()/*"Object"*/, new MyObjectStyleCustom )
+    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
+          << CustomStyle ( bubbleBorder.className(), new MyObjectStyleCustom )
           << bubbleBorder;
     board.saveSVG ( "bubble-object-border.svg" );
 
@@ -191,10 +191,10 @@ bool testObjectBorder()
     else
         trace.info() << "The object (4,8) border is not connected." << endl;
 
-    board << SetMode( domain.className(), "Grid" ) << domain; //domain.selfDrawAsGrid ( board );
+    board << SetMode( domain.className(), "Grid" ) << domain;
     board << bubble_set
-          << SetMode( bubbleBorder2.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies()*/
-          << CustomStyle ( bubbleBorder2.className()/*"Object"*/, new MyObjectStyleCustom )
+          << SetMode( bubbleBorder2.className(), "DrawAdjacencies" )
+          << CustomStyle ( bubbleBorder2.className(), new MyObjectStyleCustom )
           << bubbleBorder2;
 
     board.saveSVG ( "bubble-object-border-48.svg" );
@@ -212,9 +212,9 @@ bool testObjectBorder()
     for ( unsigned int k = 0;k < nbComponents ; k++ )
     {
         if ( flag )
-            board << SetMode( borders[k].className(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( borders[k].className()/*"Object"*/, new MyObjectStyleCustom ) << borders[k];
+            board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
         else
-            board << SetMode( borders[k].className(), "DrawAdjacencies" ) /*<<  DrawObjectAdjacencies()*/ << CustomStyle ( borders[k].className()/*"Object"*/, new MyObjectStyleCustom ) << borders[k];
+            board << SetMode( borders[k].className(), "DrawAdjacencies" ) << CustomStyle ( borders[k].className(), new MyObjectStyleCustom ) << borders[k];
         flag = !flag;
     }
 
@@ -287,14 +287,14 @@ bool testBoard2D()
     Board2D board;
     board.setUnit ( Board::UCentimeter );
 
-    board << SetMode( domain.className(), "Grid" ) /*<< DrawDomainGrid()*/
+    board << SetMode( domain.className(), "Grid" )
     << CustomStyle ( domain.className(), new MyDrawStyleCustomGreen )
     << domain
     << CustomStyle ( bubble_set.className(), new MyDrawStyleCustomRed )
     << bubble_set;
     board.saveSVG ( "bubble-set-dgtalboard.svg" );
 
-    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" ) /*<< DrawObjectAdjacencies ( true )*/
+    board << SetMode( bubbleBorder.className(), "DrawAdjacencies" )
     << CustomStyle ( bubbleBorder.className(), new MyDrawStyleCustomBlue )
     << bubbleBorder;
     board.saveSVG ( "bubble-object-border-dgtalboard.svg" );

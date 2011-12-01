@@ -401,27 +401,6 @@ namespace DGtal
     // ------------------------- Display ------------------------------------
   public: 
 
-#if(0)
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-        /**
-         * Drawing method.
-         * @param board the output board where the object is drawn.
-         */
-        virtual void selfDraw(Board2D & aBoard) const
-        {
-          // Set board style
-          aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-          aBoard.setPenColor(Color::Red);
-          aBoard.setLineWidth(2);
-          aBoard.setFillColor(Color::None);
-        }
-    };
-#endif
-
     /*
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -443,23 +422,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-
-#if(0)
-    /**
-     * Draw the vertices of the FP as a polygonal line 
-     * @param board the output board where the object is drawn.
-     *
-     */
-    void selfDraw(Board2D & board ) const;
-
-
-    /**
-     * Draw the FP on a board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsPolygon( Board2D & board ) const;
-#endif
-
 
   }; // end of class FP
 

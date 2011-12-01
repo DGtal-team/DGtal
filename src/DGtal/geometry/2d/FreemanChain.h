@@ -1128,37 +1128,6 @@ public:
      */
     std::string className() const;
 
-#if(0)
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    template<typename Functor>
-    void selfDraw(Board2D & board ) const;
-
-    
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(Board2D & board ) const; 
-
-
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsGrid(Board2D & board ) const;
-
-     
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsInterGrid(Board2D & board ) const;
-#endif
-
     // ------------------------- Public Datas ------------------------------
 
   public:
@@ -1207,48 +1176,6 @@ public:
 
   public:
 
-#if(0)
-    /**
-     * Default Style Functor for selfDraw methods
-     *
-     * @param aBoard
-     */
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(Board2D & aBoard)
-      {
-        aBoard.setFillColor(Color::None);
-        aBoard.setPenColor(Color::Black);
-      }
-    };
-
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
-
-    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
-
-    struct DefaultDrawStyleInterGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
-#endif
 
   }; // end of class FreemanChain
 

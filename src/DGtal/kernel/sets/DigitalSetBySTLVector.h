@@ -306,34 +306,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-#if(0)
-    /** 
-     * Default Style Functor for selfDraw methods
-     * 
-     * @param aBoard 
-     */
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(Board2D & aBoard) 
-      {
-        aBoard.setFillColorRGBi(160,160,160);
-        aBoard.setPenColorRGBi(80,80,80);
-      }
-    };
 
-  public:
-    /** 
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setFillColorRGBi(160,160,160);
-        aBoard.setPenColorRGBi(80,80,80);
-      }
-    };
-#endif
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -349,59 +322,8 @@ namespace DGtal
      */
     std::string className() const;
 
-#if(0)
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(Board2D & board ) const;
-#endif
-
-
-
-#if(0)
-         /** 
-     * Default style.
-     */
-    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
-    {
-       virtual void selfDrawDisplay3D(Display3D & display) const
-        {
-    display.myModes[ "DigitalSetBySTLVector" ] = "";
-  }
-
-    };
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-  DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawDisplay3D(  Display3D & display ) const;
-    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
-    void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
-#endif
-
-
-
-
   public:
 
-#if(0)
-    /**
-     * Draw the object on a LiBoard board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    template<typename Functor>
-    void selfDraw(Board2D & board ) const;
-#endif
 
     // ------------------------- Hidden services ------------------------------
   protected:

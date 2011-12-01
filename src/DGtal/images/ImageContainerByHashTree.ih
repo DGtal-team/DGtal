@@ -721,20 +721,6 @@ namespace DGtal
     return count;
   }
 
-
-
-
-
-//------------------------------------------------------------------------------
-#if(0)
-  template <typename Domain, typename Value, typename HashKey  >
-  inline
-  DGtal::DrawableWithBoard2D*
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::defaultStyle() const
-  {
-    return new DefaultDrawStyle;
-  }
-#endif
 //------------------------------------------------------------------------------
   template <typename Domain, typename Value, typename HashKey  >
   inline
@@ -743,74 +729,6 @@ namespace DGtal
   {
     return "ImageContainerByHashTree";
   }
-
-#if(0)
-  template <typename Domain, typename Value, typename HashKey  >
-  template <typename C>
-  void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::selfDraw ( Board2D & board, const Value &minV, const Value &maxV ) const
-  {
-    ASSERT ( dim == 2 );
-
-    C colormap ( minV, maxV );
-
-    double p[2];
-    double len;
-
-    p[0] = myOrigin[0];
-    p[1] = myOrigin[1] + getSpanSize();
-
-    len = getSpanSize();
-
-    recursiveDraw<C> ( ROOT_KEY, p, len, board, colormap );
-  }
-
-  template <typename Domain, typename Value, typename HashKey  >
-  template <typename C>
-  void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::recursiveDraw ( HashKey key,
-      const double p[2],
-      const double len,
-      LibBoard::Board & board,
-      const C& cmap ) const
-  {
-    ASSERT ( dim == 2 );
-    Node* n = getNode ( key );
-    double np[2], nlen;
-    if ( n )
-    {
-      Color c;
-      c = cmap ( n->getObject() );
-      board.setFillColorRGBi ( c.red(), c.green(), c.blue() );
-
-      board.drawRectangle ( p[0], p[1], len, len );
-    }
-    else
-    {
-      HashKey children[4];
-      myMorton.childrenKeys ( key, children );
-
-      nlen = len / 2.0;
-
-      np[0] = p[0];
-      np[1] = p[1] - nlen;
-      recursiveDraw ( children[0], np, nlen, board, cmap );
-
-      np[0] = p[0] + nlen;
-      np[1] = p[1] - nlen;
-      recursiveDraw ( children[1], np, nlen, board, cmap );
-
-      np[0] = p[0];
-      np[1] = p[1];
-      recursiveDraw ( children[2], np, nlen, board, cmap );
-
-      np[0] = p[0] + nlen;
-      np[1] = p[1];
-      recursiveDraw ( children[3], np, nlen, board, cmap );
-    }
-  }
-#endif
-
 
   template <typename Domain, typename Value, typename HashKey  >
   Value

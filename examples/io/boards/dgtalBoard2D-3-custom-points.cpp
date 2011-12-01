@@ -49,7 +49,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
-  virtual void selfDraw( Board2D & aboard) const
+  virtual void setStyle( Board2D & aboard) const
   {
     aboard.setFillColor( myFillColor);
     aboard.setPenColor( myPenColor );

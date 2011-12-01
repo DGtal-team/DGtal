@@ -227,30 +227,6 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) ;
 
-    
- 
-
-#if(0)
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object with QGLViewer
-     * @param viewer the output where the object is drawn.
-     */
-    void selfDrawDisplay3D ( Display3D & display ) const;
-    void selfDrawAsPointsDisplay3D( Display3D & display ) const;
-    void selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const;
-#endif 
-
-
-
-
-
-
     // ------------------------- Protected Datas ------------------------------
   protected:
 

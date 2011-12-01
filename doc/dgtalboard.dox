@@ -5,7 +5,7 @@
 namespace DGtal {
 
   /**
-     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly
+     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola.
 
      @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
     
@@ -34,9 +34,6 @@ namespace DGtal {
       -# \ref dgtal_dgtalboard_sec2
         -# \ref dgtal_dgtalboard_sec21
         -# \ref dgtal_dgtalboard_sec22
-        -# \ref dgtal_dgtalboard_sec23
-        -# \ref dgtal_dgtalboard_sec24
-        -# \ref dgtal_dgtalboard_sec25
     
      \section dgtal_dgtalboard_sec1 User guide to Board2D
     
@@ -421,12 +418,11 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
   std::string myD.className()
 @endcode
 
-- be associated to at least two global functions @a draw and @a defaultStyle
+- be associated to at least two global functions @a draw and @a defaultStyle (Note that there's an exception: for a class with inner classes, this 2 functions are member functions, see for example GridCurve.h and its inner classes...)
  
-Global @a defaultStyle functions are specified in  Style2DFactory.h and Style2DFactory.ih. This function must return a pointer to a CDrawableWithBoard2D model.
+Global @a defaultStyle functions are specified in Style2DFactory.h and Style2DFactory.ih.
 
-
-For instance, here is below an example of the DefaultDrawStylePaving structure for a PointVector and its \c defaultStyle function.
+The @a defaultStyle function must return a pointer to a DrawableWithBoard2D object. For instance, here is below an example of the \c defaultStyle function (and its DefaultDrawStylePaving structure associated) for a PointVector.
      
      Here, the DrawableWithBoard2D is just an interface that specifies a virtual method \c setStyle for the style.
    \code
@@ -442,7 +438,7 @@ For instance, here is below an example of the DefaultDrawStylePaving structure f
     };
    \endcode
 
-    The dynamically allocated instance of the default style for the drawable element. It may eventually be tuned for a specific mode given as a string.
+    The dynamically allocated instance of the default style for the drawable element may eventually be tuned for a specific mode given as a string.
    \code
     template<Dimension dim, typename TComponent>
     inline
@@ -454,9 +450,9 @@ For instance, here is below an example of the DefaultDrawStylePaving structure f
     }
    \endcode
     
-    Last but not least, the drawable element defines a "pure" global \c draw function (not in the DGtal namespace) in the Display2DFactory.h and Display2DFactory.ih files  which contains the drawing commands.
+    "Pure" (not in the DGtal namespace) global \c draw functions are specified in the Display2DFactory.h and Display2DFactory.ih.
 
-    For instance, here is below an drawing example for a PointVector object drawing as an arrow.
+    The \c draw function contains the drawing commands. For instance, here is below a drawing example for a PointVector object drawn as an arrow.
 
     This method draws the drawable element on the given Board2D instance. The style has been applied automatically before.
    \code
@@ -481,9 +477,7 @@ For instance, here is below an example of the DefaultDrawStylePaving structure f
      The Board2D remembers what is the current style for a given drawable element type. Furthermore, it can remember its current mode. Last, it remembers also the specific style associated for this mode. Generally, as a developer, you do not have to take care at how user chooses their new style or new mode. You will only prepare in your class if you wish to have modes, and how you draw the object depending on the current mode.
     
     
-     \subsection dgtal_dgtalboard_sec24 Managing possible drawing modes 
-    
-     \subsection dgtal_dgtalboard_sec25 Short overview of the LibBoard library
+     \subsection dgtal_dgtalboard_sec22 Short overview of the LibBoard library
     
       LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
    

@@ -124,50 +124,6 @@ namespace DGtal
     */
     bool operator<( const KhalimskyCell & other ) const;
 
-#if(0)
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setPenColorRGBi( 50, 50, 50 );
-        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-        aBoard.setFillColorRGBi( 80, 80, 80 );
-        aBoard.setLineWidth( 1 );
-      }
-    };
-#endif
-
-    
-
-#if(0)
-     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-    
-    void selfDrawDisplay3D ( Display3D & display ) const;
-    
-
-    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
-      virtual void selfDrawDisplay3D( Display3D & display ) const
-      {
-
-  //aBoard.setPenColor(Color::Black);
-      //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-      
-
-    };
-#endif
-
-
-    
-
-
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
@@ -181,14 +137,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
- 
-#if(0)
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
-#endif
 
   }; 
 
@@ -264,44 +212,6 @@ namespace DGtal
     */
     bool operator<( const SignedKhalimskyCell & other ) const;
 
-#if(0)
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setPenColorRGBi( 50, 50, 50 );
-        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-        aBoard.setFillColorRGBi( 80, 80, 80 );
-        aBoard.setLineWidth( 1 );
-      }
-    };
-#endif
-
-    
-
-#if(0)
-     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    void selfDrawDisplay3D ( Display3D & display ) const;
-
-    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
-      virtual void selfDrawDisplay3D( Display3D & display ) const
-      {
-  //aBoard.setPenColor(Color::Black);
-  //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-    };
-#endif  
-
-
-
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
@@ -315,14 +225,6 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
-
-#if(0)
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
-#endif
 
   }; 
 
