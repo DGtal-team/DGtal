@@ -111,20 +111,20 @@ namespace DGtal
        * @param aDSS
        */
       Adapter4ConvexPart(ArithmeticalDSS& aDSS)
-      {
-        this->myDSS = &aDSS;
+    {
+      this->myDSS = &aDSS;
       }
       /**
        *  @return the first upper leaning point
        */
-      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
+    typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getUf();
       }
       /**
        *  @return the last upper leaning point
        */
-      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
+    typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getUl();
       }
@@ -160,14 +160,14 @@ namespace DGtal
       /**
        *  @return the first lower leaning point
        */
-      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const 
+    typename ArithmeticalDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getLf();
       }
       /**
        *  @return the last lower leaning point
        */
-      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const
+    typename ArithmeticalDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getLl();
       }
