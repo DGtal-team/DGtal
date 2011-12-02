@@ -118,7 +118,7 @@ DGtal::CircleFrom3Points<TPoint>::signedDistance(const Point& aP) const
 template <typename TPoint>
 inline
 void
-DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& r) const
+DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& rr) const
 {
 	Vector u(myP - myQ);
 	Vector v(myR - myP);
@@ -156,7 +156,7 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
 		c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
 
-		r = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
+		rr = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
 	}	
 
 }
