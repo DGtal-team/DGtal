@@ -197,6 +197,10 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
       isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
                                                                 (firstMS,adapterAtBack,back);
 
+      ASSERT(adapterAtFront);
+      ASSERT(adapterAtBack);
+      
+
       //first point 
       if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
         myPolygon.push_back(adapterAtFront->lastLeaningPoint());
@@ -254,6 +258,8 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
         isConvex = initConvexityConcavity<DSSComputer,Adapter<DSSComputer> >
                                                        (longestDSS,adapter,i);
   
+	ASSERT(adapter);
+	
         if (isConvex) myPolygon = vTmpU;
         else myPolygon = vTmpL;
 
