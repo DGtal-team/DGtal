@@ -166,132 +166,138 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
 {
 
   TIterator i = itb;
-  if (i != ite) {
+  if (i != ite) 
+    {
+      if (myFlagIsClosed) 
+	{ /////////////////////////// closed
+	  //first maximal DSS
+	  Circulator<TIterator> citb(i,itb,ite);
+	  //DSSComputerInLoop firstMS(citb);
+	  DSSComputerInLoop *firstMS=new DSSComputerInLoop(citb); //init
 
-    if (myFlagIsClosed) 
-      { /////////////////////////// closed
-	//first maximal DSS
-	Circulator<TIterator> citb(i,itb,ite);
-	DSSComputerInLoop firstMS(citb); //init
+	  ASSERT(firstMS);
 	
-	//backward extension
-	Circulator<TIterator> back( citb );
-	do {
-	  --back; 
-	} while (firstMS.extendOppositeEnd(back));
-	//forward extension
-	Circulator<TIterator> front( citb );
-	do {
-	  ++front; 
-	} while (firstMS.extend(front));
+	  //backward extension
+	  Circulator<TIterator> back( citb );
+	  do {
+	    --back; 
+	  } while (firstMS->extendOppositeEnd(back));
+	  //forward extension
+	  Circulator<TIterator> front( citb );
+	  do {
+	    ++front; 
+	  } while (firstMS->extend(front));
 
-	//local convexity
-	bool isConvexAtFront; 
-	Adapter<DSSComputerInLoop>* adapterAtFront;   
+	  //local convexity
+	  bool isConvexAtFront; 
+	  Adapter<DSSComputerInLoop>* adapterAtFront;   
 	
-	isConvexAtFront = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
-	  (firstMS,adapterAtFront,front);
+	  isConvexAtFront = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
+	    (*firstMS,adapterAtFront,front);
 	
-	bool isConvexAtBack; 
-	Adapter<DSSComputerInLoop>* adapterAtBack;  
+	  bool isConvexAtBack; 
+	  Adapter<DSSComputerInLoop>* adapterAtBack;  
 	
-	isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
-	  (firstMS,adapterAtBack,back);
+	  isConvexAtBack = initConvexityConcavity<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
+	    (*firstMS,adapterAtBack,back);
 	
-	ASSERT(adapterAtFront);
-	ASSERT(adapterAtBack);
+	  ASSERT(adapterAtFront);
+	  ASSERT(adapterAtBack);
 	
 	
-	//first point 
-	if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
-	  myPolygon.push_back(adapterAtFront->lastLeaningPoint());
-	}
+	  //first point 
+	  if (adapterAtFront->firstLeaningPoint() == adapterAtFront->lastLeaningPoint()) {
+	    myPolygon.push_back(adapterAtFront->lastLeaningPoint());
+	  }
 	
-	//set end iterator
-	typename DSSComputerInLoop::Point leaningPoint; 
-	if ( ( (isConvexAtFront)&&(isConvexAtBack) ) 
-	     || ( (!isConvexAtFront)&&(!isConvexAtBack) ) ) {
-	  leaningPoint = adapterAtFront->lastLeaningPoint();
-	} else {
-	  leaningPoint = adapterAtBack->firstLeaningPoint(); 
-	}
-	do {
+	  //set end iterator
+	  typename DSSComputerInLoop::Point leaningPoint; 
+	  if ( ( (isConvexAtFront)&&(isConvexAtBack) ) 
+	       || ( (!isConvexAtFront)&&(!isConvexAtBack) ) ) {
+	    leaningPoint = adapterAtFront->lastLeaningPoint();
+	  } else {
+	    leaningPoint = adapterAtBack->firstLeaningPoint(); 
+	  }
+	  do {
+	    ++back;
+	  } while (*back != leaningPoint);
 	  ++back;
-	} while (*back != leaningPoint);
-	++back;
 	
-	//call main algo
-	mainAlgorithm<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
-	  (firstMS,adapterAtFront,isConvexAtFront,front,back);
+	  //call main algo
+	  mainAlgorithm<DSSComputerInLoop,Adapter<DSSComputerInLoop> >
+	    (*firstMS,adapterAtFront,isConvexAtFront,front,back);
 	
-	ASSERT(adapterAtFront);
-	ASSERT(adapterAtBack);
+	  ASSERT(adapterAtFront);
+	  ASSERT(adapterAtBack);
 	
-	delete (adapterAtFront);
-	delete (adapterAtBack);
+	  //delete (adapterAtFront);
+	  //delete (adapterAtBack);
+	  delete (firstMS);
+	  //remove the last point
+	  myPolygon.pop_back();
 	
-	//remove the last point
-	myPolygon.pop_back();
-	
-      } 
-    else 
-      { /////////////////////////////////////// open 
-	//list of successive upper (U) and lower (L)
-	// leaning points. 
-	std::list<Point> vTmpU, vTmpL;
-	vTmpU.push_back(*i);
-	vTmpL.push_back(*i);
+	} 
+      else 
+	{ /////////////////////////////////////// open 
+	  //list of successive upper (U) and lower (L)
+	  // leaning points. 
+	  std::list<Point> vTmpU, vTmpL;
+	  vTmpU.push_back(*i);
+	  vTmpL.push_back(*i);
 
-	//longest DSS
-	DSSComputer longestDSS(i); //longest DSS
-	++i; //move forward
-	while ( (i != ite)&&(longestDSS.extend(i)) ) 
-	  {
-	    //store the first upper leaning point
-	    if (longestDSS.getUf() != vTmpU.back()) {
-	      vTmpU.push_back(longestDSS.getUf());
+	  //longest DSS
+	  DSSComputer *longestDSS= new DSSComputer(i); //longest DSS
+	  
+	  ASSERT(longestDSS);
+
+	  ++i; //move forward
+	  while ( (i != ite)&&(longestDSS->extend(i)) ) 
+	    {
+	      //store the first upper leaning point
+	      if (longestDSS->getUf() != vTmpU.back()) {
+		vTmpU.push_back(longestDSS->getUf());
+	      }
+	      //store the first lower leaning point
+	      if (longestDSS->getLf() != vTmpL.back()) {
+		vTmpL.push_back(longestDSS->getLf());
+	      }
+	      ++i; //move forward
 	    }
-	    //store the first lower leaning point
-	    if (longestDSS.getLf() != vTmpL.back()) {
-	      vTmpL.push_back(longestDSS.getLf());
+	
+	  bool isConvex; //TRUE if longestDSS begins a convex part, FALSE otherwise
+	  Adapter<DSSComputer>* adapter; //adapter for the current DSS
+	
+	  if (i != ite) 
+	    {
+	      isConvex = initConvexityConcavity<DSSComputer,Adapter<DSSComputer> >
+		(*longestDSS,adapter,i);
+	    
+	      ASSERT(adapter);
+	    
+	      if (isConvex) myPolygon = vTmpU;
+	      else myPolygon = vTmpL;
+	    
+	      //call main algo
+	      mainAlgorithm<DSSComputer,Adapter<DSSComputer> >
+		(*longestDSS,adapter,isConvex,i,ite);
+	    
+	      ASSERT(adapter);
+	      //delete (adapter);
+	      delete (longestDSS);
+	    } 
+	  else 
+	    {
+	      //the part is assumed to be convex
+	      //if it is straight
+	      myPolygon = vTmpU;
+	      isConvex = true;
+	      adapter = new Adapter4ConvexPart<DSSComputer>(*longestDSS);
+	      ASSERT(adapter);
 	    }
-	    ++i; //move forward
-	  }
 	
-	bool isConvex; //TRUE if longestDSS begins a convex part, FALSE otherwise
-	Adapter<DSSComputer>* adapter; //adapter for the current DSS
-	
-	if (i != ite) 
-	  {
-	    isConvex = initConvexityConcavity<DSSComputer,Adapter<DSSComputer> >
-	      (longestDSS,adapter,i);
-	    
-	    ASSERT(adapter);
-	    
-	    if (isConvex) myPolygon = vTmpU;
-	    else myPolygon = vTmpL;
-	    
-	    //call main algo
-	    mainAlgorithm<DSSComputer,Adapter<DSSComputer> >
-	      (longestDSS,adapter,isConvex,i,ite);
-	    
-	    ASSERT(adapter);
-	    delete (adapter);
-	    
-	  } 
-	else 
-	  {
-	    //the part is assumed to be convex
-	    //if it is straight
-	    myPolygon = vTmpU;
-	    isConvex = true;
-	    adapter = new Adapter4ConvexPart<DSSComputer>(longestDSS);
-	    ASSERT(adapter);
-	  }
-	
-      }//end closed/open test
+	}//end closed/open test
     
-  } //end itb == ite test
+    } //end itb == ite test
   
 }
 
