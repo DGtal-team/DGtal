@@ -146,7 +146,7 @@ namespace DGtal
      * @param cy  returned y-coordinate of the circle
      * @param r  returned radius of the circle
      */
-    void getParameters(double& cx, double& cy, double& r) const;
+    void getParameters(double& cx, double& cy, double& rr) const;
     
     /**
      * @return the first point through which the circle passes.
