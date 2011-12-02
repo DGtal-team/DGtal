@@ -46,7 +46,7 @@ using namespace Z2i;
 
 int main()
 {
-  trace.beginBlock ( "Example dgtalboard-4-colormaps" );
+  trace.beginBlock ( "Example dgtalBoard2D-4-colormaps" );
 
   Point p1( -10, -7 );
   Point p2( 10, 7 );
@@ -67,11 +67,11 @@ int main()
 
   // Creating board.
   Board2D board;
-  board << SetMode( domain.styleName(), "Paving" )
+  board << SetMode( domain.className(), "Paving" )
   << domain
-  << SetMode( p1.styleName(), "Paving" );
+  << SetMode( p1.className(), "Paving" );
   // This is the name of the style for a Point in mode "Paving".
-  string specificStyle =  p1.styleName() + "/Paving";
+  string specificStyle =  p1.className() + "/Paving";
   for ( DigitalSet::ConstIterator it = shape_set.begin();
   it != shape_set.end();
   ++it )
@@ -83,15 +83,15 @@ int main()
                 cmap_grad( d ) ) )
       << *it;
     }
-  board.saveSVG( "dgtalboard-4-colormaps.svg");
-  board.saveEPS( "dgtalboard-4-colormaps.eps");
-  board.saveTikZ( "dgtalboard-4-colormaps.tikz");
+  board.saveSVG( "dgtalBoard2D-4-colormaps.svg");
+  board.saveEPS( "dgtalBoard2D-4-colormaps.eps");
+  board.saveTikZ( "dgtalBoard2D-4-colormaps.tikz");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-4-colormaps-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-4-colormaps-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-4-colormaps-cairo.svg", Board2D::CairoSVG);
 #endif
 
   trace.endBlock();

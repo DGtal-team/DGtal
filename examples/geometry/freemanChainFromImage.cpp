@@ -94,8 +94,8 @@ int main()
   for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
     //  Constructing and displaying FreemanChains from contours. 
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
-    aBoard << SetMode( fc.styleName(), "InterGrid" );
-    aBoard<< CustomStyle( fc.styleName(), 
+    aBoard << SetMode( fc.className(), "InterGrid" );
+    aBoard<< CustomStyle( fc.className(), 
             new CustomColors(  cmap_grad(i),  Color::None ) );    
     
     

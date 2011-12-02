@@ -122,8 +122,8 @@ int main()
     DGtal::Board2D aBoard;
     aBoard << SetMode("PointVector", "Grid");
     for ( ; i != end; ++i) {
-      aBoard << SetMode(i->styleName(), "Points") << *i; 
-      aBoard << SetMode(i->styleName(), "BoundingBox") << *i; 
+      aBoard << SetMode(i->className(), "Points") << *i; 
+      aBoard << SetMode(i->className(), "BoundingBox") << *i; 
     } 
     aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
   

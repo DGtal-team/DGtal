@@ -5,7 +5,7 @@
 namespace DGtal {
 
   /**
-     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly
+     @writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola.
 
      @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
     
@@ -34,9 +34,6 @@ namespace DGtal {
       -# \ref dgtal_dgtalboard_sec2
         -# \ref dgtal_dgtalboard_sec21
         -# \ref dgtal_dgtalboard_sec22
-        -# \ref dgtal_dgtalboard_sec23
-        -# \ref dgtal_dgtalboard_sec24
-        -# \ref dgtal_dgtalboard_sec25
     
      \section dgtal_dgtalboard_sec1 User guide to Board2D
     
@@ -124,7 +121,7 @@ namespace DGtal {
     
      You may choose a \b mode for a drawable element by outputing on
      the stream a SetMode object. You just have to specify the
-     classname (the easiest way is to call the method \c styleName()
+     classname (the easiest way is to call the method \c className()
      on an instance of the correct type) and the desired mode (a
      string). An Object is sensitive to the mode "" (default, just the
      set is displayed) and to the mode "DrawAdjacencies" (the graph is
@@ -135,7 +132,7 @@ namespace DGtal {
   // Object with couple (4,8) of adjacency.
   Object4_8 shape( dt4_8, shape_set );
   board << domain // display domain
-	<< SetMode( shape.styleName(), "DrawAdjacencies" )
+	<< SetMode( shape.className(), "DrawAdjacencies" )
 	<< shape; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-2.svg");
   board.saveTikZ( "dgtalboard-2-sets-2.tikz");
@@ -144,7 +141,7 @@ namespace DGtal {
   // Object with couple (8,4) of adjacency.
   Object8_4 shape2( dt8_4, shape_set );
   board << domain // display domain
-	<< SetMode( shape2.styleName(), "DrawAdjacencies" )
+	<< SetMode( shape2.className(), "DrawAdjacencies" )
 	<< shape2; // and object with mode "DrawAdjacencies"
   board.saveSVG( "dgtalboard-2-sets-3.svg");
   board.saveTikZ( "dgtalboard-2-sets-3.tikz");
@@ -178,14 +175,14 @@ namespace DGtal {
      For instance, to change the drawing mode for the next object \c dss of type
      ArithmeticalDSS, you may use the line
    \code
-   board << SetMode( dss.styleName(), "BoundingBox" );
+   board << SetMode( dss.className(), "BoundingBox" );
    \endcode
 
    If you wish to display both the points of a DSS an its bounding
    box, you must draw it twice, as follows:
    \code
-   board << SetMode( dss.styleName(), "BoundingBox" ) << dss
-         << SetMode( dss.styleName(), "Points" ) << dss;
+   board << SetMode( dss.className(), "BoundingBox" ) << dss
+         << SetMode( dss.className(), "Points" ) << dss;
    \endcode
     
      \subsection dgtal_dgtalboard_sec15 Changing the style for displaying drawable elements.
@@ -219,11 +216,11 @@ namespace DGtal {
   
   Board2D board;
   board << domain 
-	<< CustomStyle( p1.styleName(), new CustomColors( red, dred ) )
+	<< CustomStyle( p1.className(), new CustomColors( red, dred ) )
 	<< p1
-	<< CustomStyle( p2.styleName(), new CustomFillColor( dgreen ) )
+	<< CustomStyle( p2.className(), new CustomFillColor( dgreen ) )
 	<< p2
-	<< CustomStyle( p3.styleName(), 
+	<< CustomStyle( p3.className(), 
 			new CustomPen( blue, dblue, 3.0, 
 				       Board2D::Shape::SolidStyle,
 				       Board2D::Shape::RoundCap,
@@ -257,7 +254,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
-  virtual void selfDraw( Board2D & aboard) const
+  virtual void setStyle( Board2D & aboard) const
   {
     aboard.setFillColor( myFillColor); // specifies the fill color.
     aboard.setPenColor( myPenColor );  // specifies the pen color.
@@ -270,11 +267,11 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
    \code
    // same shape as above
   board << domain 
-	<< CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
+	<< CustomStyle( p1.className(), new MyDrawStyleCustomColor( red, dred ) )
 	<< p1
-	<< CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+	<< CustomStyle( p2.className(), new MyDrawStyleCustomColor( green, dgreen ) )
 	<< p2
-	<< CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+	<< CustomStyle( p3.className(), new MyDrawStyleCustomColor( blue, dblue ) )
 	<< p3;
   board.saveSVG("dgtalboard-3-custom-points.svg");
   board.saveTikZ("dgtalboard-3-custom-points.tikz");
@@ -301,11 +298,11 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 
   // Creating board.
   Board2D board;
-  board << SetMode( domain.styleName(), "Paving" )
+  board << SetMode( domain.className(), "Paving" )
 	<< domain
-	<< SetMode( p1.styleName(), "Paving" );
+	<< SetMode( p1.className(), "Paving" );
   // This is the name of the style for a Point in mode "Paving".
-  string specificStyle =  p1.styleName() + "/Paving";
+  string specificStyle =  p1.className() + "/Paving";
   for ( DigitalSet::ConstIterator it = shape_set.begin();
 	it != shape_set.end();
 	++it )
@@ -336,7 +333,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
      Therefore, if you change the drawing \b mode of a drawable element and if you wish to have a specific behavior, you must attach the custom style to the mode style of your object. For instance, if your object is \c p and the mode is "Special", there is some line:
     
    \code
-   board << CustomStyle( p.styleName() +"/Special", new ... );
+   board << CustomStyle( p.className() +"/Special", new ... );
    \endcode
     
      Another example involving ArithmeticDSS is <a
@@ -415,20 +412,63 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
     
      \subsection dgtal_dgtalboard_sec21 Overview of the Board2D principle
     
-     Following the concept paradigm adopted in DGtal, the Board2D object may only displayed instances of classes that realize the concept CDrawableWithBoard2D. A drawable element must specify his classname and a default style under the form of a (simple) DrawableWithBoard2D object. For instance, the default style structure for a PointVector is:
+     Following the concept paradigm adopted in DGtal, the Board2D object may only displayed instances of classes that realize the concept CDrawableWithBoard2D. For short, a drawable element @a D must:
+     - have a method defining his name: 
+@code
+  std::string myD.className()
+@endcode
+
+- be associated to at least two global functions @a draw and @a defaultStyle (Note that there's an exception: for a class with inner classes, this 2 functions are member functions, see for example GridCurve.h and its inner classes...)
+ 
+Global @a defaultStyle functions are specified in Style2DFactory.h and Style2DFactory.ih.
+
+The @a defaultStyle function must return a pointer to a DrawableWithBoard2D object. For instance, here is below an example of the \c defaultStyle function (and its DefaultDrawStylePaving structure associated) for a PointVector.
      
+     Here, the DrawableWithBoard2D is just an interface that specifies a virtual method \c setStyle for the style.
    \code
-   struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-   {
-     virtual void selfDraw( Board2D & aBoard ) const
-     {
-       aBoard.setPenColor(Board2D::Color::Black);
-       aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-     }
-   };
+    struct DefaultDrawStylePaving_PointVector : public DrawableWithBoard2D
+    {
+      virtual void setStyle( Board2D & aBoard ) const
+      {
+        aBoard.setPenColorRGBi(160,160,160);
+        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+        aBoard.setFillColorRGBi(220,220,220);
+        aBoard.setLineWidth(1);
+      }
+    };
+   \endcode
+
+    The dynamically allocated instance of the default style for the drawable element may eventually be tuned for a specific mode given as a string.
+   \code
+    template<Dimension dim, typename TComponent>
+    inline
+    DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode = "")
+    {
+      if ( ( mode == "" ) || ( mode == "Paving" ) ) 
+        return new DefaultDrawStylePaving_PointVector;
+      else ...
+    }
    \endcode
     
-     A DrawableWithBoard2D is just an interface that specifies a virtual method \c selfDraw. Last but not least, the drawable element defines a (non-virtual) method \c selfDraw which contains the drawing commands.
+    "Pure" (not in the DGtal namespace) global \c draw functions are specified in the Display2DFactory.h and Display2DFactory.ih.
+
+    The \c draw function contains the drawing commands. For instance, here is below a drawing example for a PointVector object drawn as an arrow.
+
+    This method draws the drawable element on the given Board2D instance. The style has been applied automatically before.
+   \code
+    template<Dimension dim, typename TComponent>
+    inline
+    void draw( DGtal::Board2D & board, 
+              const DGtal::PointVector<dim,TComponent> & p, 
+              const DGtal::PointVector<dim,TComponent> & apoint )
+    {
+      ASSERT(dim == 2);
+
+      board.drawArrow((float)apoint[0], (float) apoint[1],
+          (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
+          true);
+    }
+   \endcode
     
      The Board2D class operates as an output stream for drawable elements. It inherits from LibBoard::Board. This base class holds the drawing capabilities for several export formats. You must look at this class to see the drawing possibilities. 
     
@@ -436,22 +476,11 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
     
      The Board2D remembers what is the current style for a given drawable element type. Furthermore, it can remember its current mode. Last, it remembers also the specific style associated for this mode. Generally, as a developer, you do not have to take care at how user chooses their new style or new mode. You will only prepare in your class if you wish to have modes, and how you draw the object depending on the current mode.
     
-     \subsection dgtal_dgtalboard_sec22 The concept CDrawableWithBoard2D
     
-     The concept CDrawableWithBoard2D requires that the three following methods are defined:
-    
-     - std::string styleName() const: name of the style for this drawable element, generally the name of the class.
-     - DrawableWithBoard2D* defaultStyle( const std::string & mode = "" ) const: a dynamically allocated instance of the default style for this drawable element. It may eventually be tuned for a specific mode given as a string. 
-     - void selfDraw( Board2D & ) const: this methods draws the drawable element on the given Board2D instance. The style has been applied automatically before. 
-    
-     \subsection dgtal_dgtalboard_sec23 Developing a new drawable element
-    
-     \subsection dgtal_dgtalboard_sec24 Managing possible drawing modes 
-    
-     \subsection dgtal_dgtalboard_sec25 Short overview of the LibBoard library
+     \subsection dgtal_dgtalboard_sec22 Short overview of the LibBoard library
     
       LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
-    
+   
      @image html logo_Board.png 
      @image latex logo_Board.png  "LibBoard Logo" width=4cm
      (Copyleft, LGPL) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
@@ -508,7 +537,7 @@ pdflatex -jobname ${basename $@} -shell-escape -interaction nonstopmode "\docume
     
      This example shows you how to modify the style of each drawable
      elements. It is a matter of creating a custom style class which
-     gives in its method \c selfDraw the specific style
+     gives in its method \c setStyle the specific style
      parameters. Then, you attach this style to your drawable elements
      with an instance of CustomStyle outputed in the Board2D
      stream.

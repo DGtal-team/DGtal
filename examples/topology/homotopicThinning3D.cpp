@@ -106,11 +106,11 @@ int main( int argc, char** argv )
 
   // Display by using two different list to manage OpenGL transparency.
 
-  viewer << SetMode3D( shape_set.styleName(), "Paving" );
+  viewer << SetMode3D( shape_set.className(), "Paving" );
   viewer << CustomColors3D(Color(25,25,255, 255), Color(25,25,255, 255));
   viewer << S ; 
 
-  viewer << SetMode3D( shape_set.styleName(), "PavingTransp" );
+  viewer << SetMode3D( shape_set.className(), "PavingTransp" );
   viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
   viewer << shape_set;
 

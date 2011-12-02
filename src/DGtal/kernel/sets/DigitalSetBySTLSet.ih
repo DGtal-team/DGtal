@@ -443,13 +443,6 @@ DGtal::DigitalSetBySTLSet<Domain>::isValid() const
  * Default drawing style object.
  * @return the dyn. alloc. default style for this object. 
  */
-template<typename Domain>
-inline
-DGtal::DrawableWithBoard2D* 
-DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
-{
-  return new DefaultDrawStyle;
-}
 
 /**
  * @return the style name used for drawing this object.
@@ -457,107 +450,10 @@ DGtal::DigitalSetBySTLSet<Domain>::defaultStyle( std::string ) const
 template<typename Domain>
 inline
 std::string
-DGtal::DigitalSetBySTLSet<Domain>::styleName() const
+DGtal::DigitalSetBySTLSet<Domain>::className() const
 {
   return "DigitalSetBySTLSet";
 }
-
-/**
- * Draw the object on a LibBoard board.
- * @param board the output board where the object is drawn.
- */
-template<typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDraw( Board2D & board ) const
-{
-  ASSERT(Domain::Space::dimension == 2);
-  for(ConstIterator it =  this->begin(); it != this->end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
-}
-
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-//    3D SelfDisplay
-///////////////////////////////////////////////////////////////////////////////
-
-
-
-template <typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const
-{  
-  ASSERT(Domain::Space::dimension == 3);
-  display.createNewVoxelList(false);
-  for (  ConstIterator it = this->begin(); 
-   it != this->end();
-   ++it )
-    {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
-    }
-
-}
-
-
-template <typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsPavingDisplay3D( Display3D & display ) const
-{   
-  ASSERT(Domain::Space::dimension == 3);
-  display.createNewVoxelList(true);
-  for (  ConstIterator it = this->begin(); 
-   it != this->end();
-   ++it )
-    {
-      display.addVoxel((*it)[0], (*it)[1],(*it)[2], display.getFillColor());
-    }
-
-}
-//------------------------------------------------------------------------------
-template<typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawAsGridDisplay3D( Display3D & display ) const
-{
-  ASSERT(Domain::Space::dimension == 3);
-  for ( ConstIterator it = this->begin(); 
-  it != this->end();
-        ++it )
-    {
-      display.addPoint((*it)[0],(*it)[1], (*it)[2], display.getFillColor());
-    }
-
-}
-
-
-template<typename Domain>
-inline
-void
-DGtal::DigitalSetBySTLSet<Domain>::selfDrawDisplay3D( Display3D & display ) const
-{
-  ASSERT(Domain::Space::dimension == 3);
-  
-  std::string mode = display.getMode( this->styleName() );
-  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
-
-  if ( mode == "Paving" || ( mode == "" ) )
-    selfDrawAsPavingDisplay3D( display );
-  else if ( mode == "PavingTransp" )
-    selfDrawAsPavingTransparentDisplay3D( display );
-  else if ( mode == "Grid" )
-    selfDrawAsGridDisplay3D( display );
-  else if ( ( mode == "Both" ) )
-    {
-      selfDrawAsPavingDisplay3D(display);
-      selfDrawAsGridDisplay3D( display );
-    }
-  
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline function                                         //

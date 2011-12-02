@@ -48,26 +48,24 @@
 namespace DGtal
 {
 
-
  /**
    *@brief Base class specifying the methods for classes which intend to
    * modify a Viewer3D stream.
    * 
    */
   struct DrawWithDisplay3DModifier {
-    std::string styleName() const
+    std::string className() const
     {
       return "DrawWithDisplay3DModifier";
     }
 
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string = "" ) const
+    /*DrawableWithDisplay3D* defaultStyleDisplay3D( std::string = "" ) const
     {
       return 0;
-    }
+    }*/
 
-    virtual void selfDrawDisplay3D( Display3D &  ) const 
-    {}
-    
+    /*virtual void setStyleDisplay3D( Display3D &  ) const 
+    {}*/
   };
 
 
@@ -90,11 +88,12 @@ namespace DGtal
     SetMode3D( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDrawDisplay3D( Display3D & display ) const
+    
+    /*void setStyleDisplay3D( Display3D & display ) const
     {
       display.myModes[ myClassname ] = myMode;
-    }
-  private:
+    }*/
+    
     std::string myClassname;
     std::string myMode;
   };
@@ -118,16 +117,16 @@ namespace DGtal
       : myClassname( classname ), myStyle( style )
     {}
 
-    std::string styleName() const
+    std::string className() const
     {
       return "CustomStyle3D";
     }
 
-    void selfDrawDisplay3D( Display3D & display ) const
+    /*void setStyleDisplay3D( Display3D & display ) const
     {
       display.myStyles[ myClassname ] = myStyle;
-    }
-  private:
+    }*/
+
     std::string myClassname;
     CountedPtr<DrawableWithDisplay3D> myStyle;
   };
@@ -164,11 +163,11 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDrawDisplay3D( Display3D & display) const
+    /*virtual void setStyleDisplay3D( Display3D & display) const
     {
       display.setFillColor(myFillColor);
       display.setLineColor(myPenColor);
-    }
+    }*/
   };
 
 
@@ -189,10 +188,13 @@ namespace DGtal
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
-    void selfDrawViewer3D( Display3D & display ) const
+    
+    // MT: why setStyleViewer3D here and not setStyleDisplay3D ???
+    /*void setStyleViewer3D( Display3D & display ) const
     {
       display.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-    }
+    }*/
+    
     double * getEquation(){
       double *r = new double[4];
       r[0] = myA;
@@ -202,7 +204,6 @@ namespace DGtal
       return r;
     } 
     
-  private:
     double myA;
     double myB;
     double myC;
@@ -228,12 +229,11 @@ namespace DGtal
       eyex=x; eyey=y; eyez=z;
     }
     
-    void selfDrawDisplay3D( Display3D & display) const
+    /*void setStyleDisplay3D( Display3D & display) const
     {
       display.setCameraPosition(eyex, eyey, eyez);
-    }
+    }*/
     
-    private:
       double eyex, eyey, eyez;
   };
   
@@ -254,12 +254,11 @@ namespace DGtal
       dirx=x; diry=y; dirz=z;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & display) const
+    /*virtual void setStyleDisplay3D( Display3D & display) const
     {
       display.setCameraDirection(dirx, diry, dirz);
-    }
+    }*/
     
-    private:
       double dirx, diry, dirz;
   };
   
@@ -280,12 +279,11 @@ namespace DGtal
       upx=x; upy=y; upz=z;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    /*virtual void setStyleDisplay3D( Display3D & viewer) const
     {
       viewer.setCameraUpVector(upx, upy, upz);
-    }
+    }*/
     
-    private:
       double upx, upy, upz;
   };
   
@@ -305,12 +303,11 @@ namespace DGtal
       ZNear=near; ZFar=far;
     }
     
-    virtual void selfDrawDisplay3D( Display3D & viewer) const
+    /*virtual void setStyleDisplay3D( Display3D & viewer) const
     {
       viewer.setNearFar(ZNear, ZFar);
-    }
+    }*/
     
-    private:
       double ZNear, ZFar;
   };
 

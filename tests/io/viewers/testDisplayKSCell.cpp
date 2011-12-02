@@ -89,7 +89,7 @@ int main( int argc, char** argv )
  K.init( plow, pup, true );
   
   
- //viewer << SetMode3D( domain.styleName(), "Paving" );
+ //viewer << SetMode3D( domain.className(), "Paving" );
  // viewer << domain; 
 
 
