@@ -12,7 +12,7 @@ SET(DGTAL_EXAMPLES_SRC
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} )
+  target_link_libraries (${FILE} DGtal DGtalIO )
 ENDFOREACH(FILE)
 
 
@@ -23,7 +23,7 @@ IF(MAGICK++_FOUND)
     )
   FOREACH(FILE ${DGTALE_EXAMPLES_IO_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${LIBBOARD_NAME} ${MAGICK++_LIBRARIES})
+    target_link_libraries (${FILE} DGtal DGtalIO)
   ENDFOREACH(FILE)
 ENDIF(MAGICK++_FOUND)
 
@@ -34,8 +34,7 @@ if (  WITH_VISU3D_QGLVIEWER )
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME}
-                            ${DGtalLibDependencies})   
+    target_link_libraries ( ${FILE} DGtalIO DGtal)   
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )

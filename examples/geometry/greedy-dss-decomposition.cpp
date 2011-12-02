@@ -70,19 +70,19 @@ int main( )
   Point p2( 31, 31 );
   Domain domain( p1, p2 );
   Board2D aBoard;
-  aBoard << SetMode( domain.styleName(), "Grid" )
+  aBoard << SetMode( domain.className(), "Grid" )
    << domain
    << SetMode( "PointVector", "Grid" )
    << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentComputerIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
       DSS4 segment(*i);
       std::cout << segment << std::endl;
-      aBoard << CustomStyle( styleName, 
+      aBoard << CustomStyle( className, 
            new CustomPenColor( Color::Blue ) )
        << segment; // draw each segment
       

@@ -129,7 +129,6 @@ namespace DGtal
     class SegmentIterator
     {
 
-
          // ------------------------- private data -----------------------
     private:
       
@@ -137,7 +136,7 @@ namespace DGtal
       /**
        * Pointer to the cover of maximal segments
        */
-  MaximalSegments<TSegment> *myCov;
+      MaximalSegments<Segment> *myCov;
 
       /**
        * An iterator of the sequence
@@ -182,7 +181,7 @@ namespace DGtal
 
       // ------------------------- Standard services -----------------------
     public:
-       friend class MaximalSegments<TSegment>;
+       friend class MaximalSegments<Segment>;
          
       /**
        * Constructor.
@@ -191,9 +190,9 @@ namespace DGtal
        * @param aCov the set of maximal segments
        * @param aBack an iterator at the back of the first segment
        */
-      SegmentIterator( MaximalSegments<TSegment> *aCov,
-                     const typename TSegment::ConstIterator& aBack,
-                     const TSegment& aSegment);
+      SegmentIterator( MaximalSegments<Segment> *aCov,
+		       const Iterator& aBack,
+		       const Segment& aSegment);
 
 
       /**

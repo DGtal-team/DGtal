@@ -58,9 +58,7 @@
 #include "DGtal/base/Circulator.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
-
 #include "DGtal/io/boards/Board2D.h"
-
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -181,11 +179,7 @@ namespace DGtal
     typedef typename KSpace::Point Vector;
 
     typedef typename KSpace::SCell SCell;
-    typedef typename std::vector<SCell> Storage;
-
-
-
-
+    typedef typename std::vector<SCell> Storage; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -311,24 +305,34 @@ namespace DGtal
      */
     DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
+    friend DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GridCurve<TKSpace> &aGC, std::string mode = "" )
+    {
+      return aGC.defaultStyle(mode);
+    }
+    
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
+    std::string className() const;
+
+
     /**
        Draw the object on a Board2D board
        @param board the output board where the object is drawn.
     */
     void selfDraw(Board2D & board ) const;
 
-
+    friend void draw(Board2D & aBoard, const DGtal::GridCurve<TKSpace> &aGC)
+    {
+      aGC.selfDraw(aBoard);
+    }
+    
     // ------------------------- inner classes --------------------------------
 
   public: 
 
     ///////////////////////////////////////////////////////////////////////////////
-    // Includes range types.
+    // Includes range inner types.
     #include "DGtal/geometry/2d/GridCurveRanges.ih"
 
     /**

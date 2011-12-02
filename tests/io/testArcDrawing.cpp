@@ -1,5 +1,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/boards/Board2D.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -103,10 +103,8 @@ namespace DGtal
 
   class Board2D;
 
-
-
-
   class Display3D;
+
   /**
    * Interface that specifies that an object can draw itself on a
    *  3DDisplay
@@ -118,7 +116,7 @@ namespace DGtal
      *
      * @param display3D any object of type Display3D.
      */
-    virtual void selfDraw( Display3D &  ) const {}
+    virtual void setStyle( Display3D &  ) const {}
   };
 
   
@@ -135,7 +133,7 @@ namespace DGtal
      *
      * @param board any object of type Board.
      */
-    virtual void selfDraw( Board2D &  ) const {}
+    virtual void setStyle( Board2D &  ) const {}
   };
   
 } // namespace DGtal

@@ -98,16 +98,16 @@ testDigitization( const Shape & aShape, double h,
   // Display all
   Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
-  board << SetMode( domain.styleName(), "Paving" )
+  board << SetMode( domain.className(), "Paving" )
     << domain << aSet;
 
-  board << SetMode( gridcurve.styleName(), "Edges" )
-  << CustomStyle( bel.styleName(), 
+  board << SetMode( gridcurve.className(), "Edges" )
+  << CustomStyle( bel.className(), 
       new CustomColors( DGtal::Color( 0, 0, 0 ),
             DGtal::Color( 0, 192, 0 ) ) )
   << gridcurve;
-  board << SetMode( gridcurve.styleName(), "Points" )
-  << CustomStyle( bel.styleName(), 
+  board << SetMode( gridcurve.className(), "Points" )
+  << CustomStyle( bel.className(), 
       new CustomColors( DGtal::Color( 255, 0, 0 ),
             DGtal::Color( 200, 0, 0 ) ) )
   << gridcurve;

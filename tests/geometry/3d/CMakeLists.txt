@@ -6,7 +6,7 @@ SET(GEO3D_TESTS_SRC
 
 FOREACH(FILE ${GEO3D_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME})
+  target_link_libraries (${FILE} DGtal DGtalIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -20,7 +20,7 @@ if (  WITH_VISU3D_QGLVIEWER )
 
   FOREACH(FILE ${GEO3D_TESTS_WITH_QGLVIEWER_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} ${LIBDGTALVISU3D_NAME} ${LIBDGTAL_NAME})
+    target_link_libraries (${FILE} DGtalIO DGtal)
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_QGLVIEWER   )

@@ -205,7 +205,18 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getParameters(double& alpha, double& beta, double& gamma) const;
-
+    
+    /**
+     * Projects the point ( @a x , @a y ) onto the 
+     * straight line of parameters ( @a alpha , @a beta , @a gamma )
+     * @param x  (returned) x-coordinate of the point
+     * @param y  (returned) y-coordinate of the point
+     * @param alpha  x-component of the direction vector
+     * @param beta  y-component of the direction vector
+     * @param gamma  intercept
+     */
+    void projects(double& x, double& y, 
+                const double& alpha, const double& beta, const double& gamma) const;
 
     // ----------------------- growth operations --------------------------------------
 
@@ -246,18 +257,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
+    std::string className() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -292,41 +297,13 @@ namespace DGtal
 
   private:
 
-    /**
-     * Projects the point ( @a x , @a y ) onto the 
-     * straight line of parameters ( @a alpha , @a beta , @a gamma )
-     * @param x  (returned) x-coordinate of the point
-     * @param y  (returned) y-coordinate of the point
-     * @param alpha  x-component of the direction vector
-     * @param beta  y-component of the direction vector
-     * @param gamma  intercept
-     */
-    void projects(double& x, double& y, 
-                const double& alpha, const double& beta, const double& gamma) const;
+    
 
     // ------------------------- Internals ------------------------------------
   private:
     
     // ------------------------- Private Datas --------------------------------
   private:
-
-    /**
-     * Default drawing style for GeometricalDSS.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the GeometricalDSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
 
   }; // end of class GeometricalDSS
 

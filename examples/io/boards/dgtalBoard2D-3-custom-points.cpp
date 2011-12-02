@@ -49,7 +49,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
     : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
-  virtual void selfDraw( Board2D & aboard) const
+  virtual void setStyle( Board2D & aboard) const
   {
     aboard.setFillColor( myFillColor);
     aboard.setPenColor( myPenColor );
@@ -58,7 +58,7 @@ struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 
 int main()
 {
-  trace.beginBlock ( "Example dgtalboard-3-custom-points" );
+  trace.beginBlock ( "Example dgtalBoard2D-3-custom-points" );
 
   Point p1( -3, -2 );
   Point p2( 7, 3 );
@@ -74,21 +74,21 @@ int main()
   
   Board2D board;
   board << domain 
-  << CustomStyle( p1.styleName(), new MyDrawStyleCustomColor( red, dred ) )
+  << CustomStyle( p1.className(), new MyDrawStyleCustomColor( red, dred ) )
   << p1
-  << CustomStyle( p2.styleName(), new MyDrawStyleCustomColor( green, dgreen ) )
+  << CustomStyle( p2.className(), new MyDrawStyleCustomColor( green, dgreen ) )
   << p2
-  << CustomStyle( p3.styleName(), new MyDrawStyleCustomColor( blue, dblue ) )
+  << CustomStyle( p3.className(), new MyDrawStyleCustomColor( blue, dblue ) )
   << p3;
-  board.saveSVG("dgtalboard-3-custom-points.svg");
-  board.saveEPS("dgtalboard-3-custom-points.eps");
-  board.saveTikZ("dgtalboard-3-custom-points.tikz");
+  board.saveSVG("dgtalBoard2D-3-custom-points.svg");
+  board.saveEPS("dgtalBoard2D-3-custom-points.eps");
+  board.saveTikZ("dgtalBoard2D-3-custom-points.tikz");
 
 #ifdef WITH_CAIRO
-  board.saveCairo("dgtalboard-3-custom-points-cairo.pdf", Board2D::CairoPDF);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.png", Board2D::CairoPNG);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.ps", Board2D::CairoPS);
-  board.saveCairo("dgtalboard-3-custom-points-cairo.svg", Board2D::CairoSVG);
+  board.saveCairo("dgtalBoard2D-3-custom-points-cairo.pdf", Board2D::CairoPDF);
+  board.saveCairo("dgtalBoard2D-3-custom-points-cairo.png", Board2D::CairoPNG);
+  board.saveCairo("dgtalBoard2D-3-custom-points-cairo.ps", Board2D::CairoPS);
+  board.saveCairo("dgtalBoard2D-3-custom-points-cairo.svg", Board2D::CairoSVG);
 #endif
   
   trace.endBlock();

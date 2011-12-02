@@ -79,7 +79,7 @@ void draw(const Iterator& itb, const Iterator& ite, Board& aBoard)
      
     typename Iterator::SegmentComputer segment(*i); 
 
-    aBoard << SetMode(segment.styleName(), "BoundingBox" )
+    aBoard << SetMode(segment.className(), "BoundingBox" )
            << segment; // draw bounding box
   
   } 

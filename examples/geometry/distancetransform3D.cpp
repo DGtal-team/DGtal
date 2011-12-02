@@ -162,7 +162,7 @@ int main( int argc, char** argv )
   gradient.addColor(Color::Red);  
  
 
-  viewer << SetMode3D( (*(domain.begin())).styleName(), "Paving" );
+  viewer << SetMode3D( (*(domain.begin())).className(), "Paving" );
   
   for(TDomain::ConstIterator it = domain.begin(), itend=domain.end();
      it!=itend;
