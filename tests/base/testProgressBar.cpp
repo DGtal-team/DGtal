@@ -49,9 +49,9 @@ bool testProgressBar()
   
   trace.beginBlock ( "Testing progress ..." );
   
-  for(unsigned int i=0; i <= 60  ; ++i)
+  for(unsigned int i=0; i <= 10  ; ++i)
     {
-      trace.progressBar(i,60);
+      trace.progressBar(i,10);
       sleep(1);
     }
   trace.info() << std::endl;
