@@ -4,6 +4,7 @@ SET(DGTAL_TESTS_SRC
    testCirculator
    testConstIteratorAdapter
    testModifier
+   testProgressBar
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
