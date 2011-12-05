@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CPointPredicate.h
+ * @file CSurfelPredicate.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/10
  *
- * Header file for concept CPointPredicate.cpp
+ * Header file for concept CSurfelPredicate.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPointPredicate_RECURSES)
-#error Recursive header files inclusion detected in CPointPredicate.h
-#else // defined(CPointPredicate_RECURSES)
+#if defined(CSurfelPredicate_RECURSES)
+#error Recursive header files inclusion detected in CSurfelPredicate.h
+#else // defined(CSurfelPredicate_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPointPredicate_RECURSES
+#define CSurfelPredicate_RECURSES
 
-#if !defined CPointPredicate_h
+#if !defined CSurfelPredicate_h
 /** Prevents repeated inclusion of headers. */
-#define CPointPredicate_h
+#define CSurfelPredicate_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,42 +49,38 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPointPredicate
+  // class CSurfelPredicate
   /**
-     Description of \b concept '\b CPointPredicate' <p>
+     Description of \b concept '\b CSurfelPredicate' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a point. 
+     \brief Aim: Defines a predicate on a surfel.
      
-     Associates a boolean to points.
+     Associates a boolean to surfels.
 
-     <p> Refinement of CPredicate< T, T::Point >.
+     <p> Refinement of CPredicate< T, T::Surfel >.
     
      <p> Associated types :
 
-     - Point : specifies the type for an element of the domain (inner
+     - Surfel : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
      <p> Models <br>
-    
-     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
-    
+        
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointPredicate : CPredicate< T, typename T::Point> 
+  struct CSurfelPredicate : CPredicate< T, typename T::Surfel> 
   {
-  }; // end of concept CPointPredicate
+  }; // end of concept CSurfelPredicate
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPointPredicate_h
+#endif // !defined CSurfelPredicate_h
 
-#undef CPointPredicate_RECURSES
-#endif // else defined(CPointPredicate_RECURSES)
+#undef CSurfelPredicate_RECURSES
+#endif // else defined(CSurfelPredicate_RECURSES)
