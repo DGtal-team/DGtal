@@ -1,0 +1,261 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DigitalSurface.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2011/09/01
+ *
+ * Implementation of inline methods defined in DigitalSurface.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/topology/CVertexPredicate.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::~DigitalSurface()
+{
+  ASSERT( myTracker != 0 );
+  delete myTracker;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( const DigitalSurface & other )
+  : myContainer( other.myContainer ),
+    myTracker( new DigitalSurfaceTracker( *other.myTracker ) )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( const TDigitalSurfaceContainer & aContainer )
+  : myContainer( new DigitalSurfaceContainer( aContainer ) )
+{
+  if ( ! myContainer->empty() )
+    {
+      Surfel s = *( myContainer->begin() );
+      myTracker = myContainer->newTracker( s ); 
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
+( TDigitalSurfaceContainer* containerPtr )
+  : myContainer( containerPtr )
+{
+  if ( ! myContainer->empty() )
+    {
+      Surfel s = *( myContainer->begin() );
+      myTracker = myContainer->newTracker( s );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+DGtal::DigitalSurface<TDigitalSurfaceContainer> &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
+( const DigitalSurface & other )
+{
+  if ( this != &other )
+    {
+      myContainer = other.myContainer;
+      ASSERT( myTracker != 0 );
+      delete myTracker;
+      myTracker = new DigitalSurfaceTracker( *other.myTracker );
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+const TDigitalSurfaceContainer &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::container() const
+{
+  return *myContainer;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+TDigitalSurfaceContainer &
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::container()
+{
+  return *myContainer;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::begin() const
+{
+  return myContainer->begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ConstIterator
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::end() const
+{
+  return myContainer->end();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::size() const
+{
+  return myContainer->nbSurfels();
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::bestCapacity() const
+{
+  return KSpace::dimension*2 - 2;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Size
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::degree
+( const Vertex & v ) const
+{
+  Size d = 0;
+  Vertex s;
+  myTracker->move( v );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( v );
+        q != 0; ++q )
+    {
+      if ( myTracker->adjacent( s, *q, true ) )
+        ++d;
+      if ( myTracker->adjacent( s, *q, false ) )
+        ++d;
+    }
+  return d;
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+template <typename OutputIterator>
+inline
+void
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v ) const
+{
+  Vertex s;
+  myTracker->move( v );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( v );
+        q != 0; ++q )
+    {
+      if ( myTracker->adjacent( s, *q, true ) )
+        *it++ = s;
+      if ( myTracker->adjacent( s, *q, false ) )
+        *it++ = s;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+template <typename OutputIterator, typename VertexPredicate>
+inline
+void
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v,
+                const VertexPredicate & pred ) const
+{
+  BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
+  Vertex s;
+  myTracker->move( v );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( v );
+        q != 0; ++q )
+    {
+      if ( myTracker->adjacent( s, *q, true ) )
+        {
+          if ( pred( s ) ) *it++ = s;
+        }
+      if ( myTracker->adjacent( s, *q, false ) )
+        {
+          if ( pred( s ) ) *it++ = s;
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TDigitalSurfaceContainer>
+inline
+void
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[DigitalSurface]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TDigitalSurfaceContainer>
+inline
+bool
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TDigitalSurfaceContainer>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const DigitalSurface<TDigitalSurfaceContainer> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

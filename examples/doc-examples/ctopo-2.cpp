@@ -107,10 +107,11 @@ int main( int /*argc*/, char** /*argv*/ )
 
   // Extract all boundaries:
   std::set<Z2i::SCell> bdry;
-  Z2i::Cell low = ks.uFirst(ks.uSpel(ks.lowerBound()));
-  Z2i::Cell upp = ks.uLast(ks.uSpel(ks.upperBound()));
-  Surfaces<Z2i::KSpace>::sMakeBoundary( bdry,
-          ks, set2dPredicate, low, upp  );
+  // Z2i::Cell low = ks.uFirst(ks.uSpel(ks.lowerBound()));
+  // Z2i::Cell upp = ks.uLast(ks.uSpel(ks.upperBound()));
+  Surfaces<Z2i::KSpace>::sMakeBoundary
+    ( bdry,
+      ks, set2dPredicate, ks.lowerBound(), ks.upperBound() );
 
   
   std::set<Z2i::SCell>::iterator itB;
