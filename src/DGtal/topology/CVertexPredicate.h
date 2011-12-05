@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CPointPredicate.h
+ * @file CVertexPredicate.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/07/10
  *
- * Header file for concept CPointPredicate.cpp
+ * Header file for concept CVertexPredicate.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPointPredicate_RECURSES)
-#error Recursive header files inclusion detected in CPointPredicate.h
-#else // defined(CPointPredicate_RECURSES)
+#if defined(CVertexPredicate_RECURSES)
+#error Recursive header files inclusion detected in CVertexPredicate.h
+#else // defined(CVertexPredicate_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPointPredicate_RECURSES
+#define CVertexPredicate_RECURSES
 
-#if !defined CPointPredicate_h
+#if !defined CVertexPredicate_h
 /** Prevents repeated inclusion of headers. */
-#define CPointPredicate_h
+#define CVertexPredicate_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,42 +49,38 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPointPredicate
+  // class CVertexPredicate
   /**
-     Description of \b concept '\b CPointPredicate' <p>
+     Description of \b concept '\b CVertexPredicate' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a point. 
+     \brief Aim: Defines a predicate on a vertex.
      
-     Associates a boolean to points.
+     Associates a boolean to vertices.
 
-     <p> Refinement of CPredicate< T, T::Point >.
+     <p> Refinement of CPredicate< T, T::Vertex >.
     
      <p> Associated types :
 
-     - Point : specifies the type for an element of the domain (inner
+     - Vertex : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
      <p> Models <br>
-    
-     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
-    
+        
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointPredicate : CPredicate< T, typename T::Point> 
+  struct CVertexPredicate : CPredicate< T, typename T::Vertex> 
   {
-  }; // end of concept CPointPredicate
+  }; // end of concept CVertexPredicate
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPointPredicate_h
+#endif // !defined CVertexPredicate_h
 
-#undef CPointPredicate_RECURSES
-#endif // else defined(CPointPredicate_RECURSES)
+#undef CVertexPredicate_RECURSES
+#endif // else defined(CVertexPredicate_RECURSES)
