@@ -159,6 +159,10 @@ namespace DGtal
     typedef typename KSpace::Size Size;
     // Model of CPointPredicate
     typedef TPointPredicate PointPredicate;
+    
+    // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
+
     // -------------------- specific types ------------------------------
     typedef typename std::vector<Surfel> SurfelStorage;
     typedef typename SurfelStorage::const_iterator SurfelConstIterator;

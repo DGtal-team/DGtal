@@ -34,6 +34,7 @@
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/topology/ExplicitDigitalSurface.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////

@@ -35,6 +35,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/ImageSelector.h"
+#include "DGtal/topology/CSurfelPredicate.h"
 #include "DGtal/helpers/StdDefs.h"
 
 
@@ -225,6 +226,59 @@ trackBoundary( SCellSet & surface,
             }
           // ----- 2nd pass with negative orientation ------
           if ( SN.getAdjacentOnPointPredicate( bn, pp, track_dir, false ) )
+            {
+              if ( surface.find( bn ) == surface.end() )
+                {
+                  surface.insert( bn );
+                  qbels.push( bn );
+                }
+            }
+        } // for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+    } // while ( ! qbels.empty() )
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SCellSet, typename SurfelPredicate >
+void
+DGtal::Surfaces<TKSpace>::
+trackSurface( SCellSet & surface,
+              const KSpace & K,
+              const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+              const SurfelPredicate & sp,
+              const SCell & start_surfel )
+{
+  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+
+  SCell b;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  surface.clear(); // boundary being extracted.
+
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  std::queue<SCell> qbels;
+  qbels.push( start_surfel );
+  surface.insert( start_surfel );
+  // For all pending bels
+  while ( ! qbels.empty() )
+    {
+      b = qbels.front();
+      qbels.pop();
+      SN.setSurfel( b );
+      for ( DirIterator q = K.sDirs( b ); q != 0; ++q )
+        {
+          Dimension track_dir = *q;
+          // ----- 1st pass with positive orientation ------
+          if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir, true ) )
+            {
+              if ( surface.find( bn ) == surface.end() )
+                {
+                  surface.insert( bn );
+                  qbels.push( bn );
+                }
+            }
+          // ----- 2nd pass with negative orientation ------
+          if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir, false ) )
             {
               if ( surface.find( bn ) == surface.end() )
                 {
