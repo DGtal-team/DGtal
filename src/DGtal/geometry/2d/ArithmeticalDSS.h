@@ -764,7 +764,7 @@ Steps:
         // Set board style
         aBoard.setLineStyle(Board2D::Shape::SolidStyle);
         aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1);
+        aBoard.setLineWidth(1.5);
         aBoard.setFillColor(Color::None);
       }
     };

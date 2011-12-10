@@ -89,7 +89,7 @@ namespace DGtal
      */
     template <typename TDigitalSet, typename TShapeFunctor>
     static void shaper( TDigitalSet & aSet,
-                        const TShapeFunctor & aFunctor);
+			const TShapeFunctor & aFunctor);
     
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
@@ -103,8 +103,8 @@ namespace DGtal
      */
     template<typename TDigitalSet>
     static void addNorm1Ball( TDigitalSet & aSet,
-                              const Point & aCenter, 
-                              UnsignedInteger aRadius );
+			      const Point & aCenter, 
+			      UnsignedInteger aRadius );
     
     /**
      * Adds the discrete ball (norm-2) of center [aCenter] and radius
@@ -118,8 +118,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void addNorm2Ball( TDigitalSet & aSet,
-                              const Point & aCenter, 
-                              UnsignedInteger aRadius );
+			      const Point & aCenter, 
+			      UnsignedInteger aRadius );
 
     /**
      * Removes the discrete ball (norm-1) of center [aCenter] and radius
@@ -132,8 +132,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm1Ball( TDigitalSet & aSet,
-                                 const Point & aCenter, 
-                                 UnsignedInteger aRadius );
+				 const Point & aCenter, 
+				 UnsignedInteger aRadius );
  
     /**
      * Removes the discrete ball (norm-2) of center [aCenter] and radius
@@ -146,8 +146,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm2Ball( TDigitalSet & aSet,
-                                 const Point & aCenter, 
-                                 UnsignedInteger aRadius );
+				 const Point & aCenter, 
+				 UnsignedInteger aRadius );
 
 
     // ----------------------- Standard services ------------------------------

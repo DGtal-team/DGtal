@@ -45,6 +45,15 @@ const char * xFigDashStylesSVG[] = {
     "stroke-dasharray:4.5,1.8,1.5,1.4,1.5,1.4,1.5,1.8;stroke-dashoffset:0" // DashDotDotDotStyle
 };
 
+const char * xFigDashStylesTikZ[] = {
+    "", // SolidStyle
+    "dash pattern=on 1pt off 1pt,", // DashStyle
+    "dotted,", // DotStyle
+    "dashdotted,", // DashDotStyle
+    "dashdotdotted,", // DashDotDotStyle
+    "dash pattern=on 2pt off 3pt on 4pt off 4pt," // DashDotDotDotStyle
+};
+
 #ifdef WITH_CAIRO
 // cairo
 cairo_line_cap_t cairoLineCap[] = {
@@ -159,6 +168,23 @@ Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
     }
 }
 #endif
+
+std::string
+Shape::tikzProperties( const TransformTikZ & transform ) const
+{
+    static const char * capStrings[3] = { "" /* initial value "butt" */, "line cap=round,", "line cap=rect," };
+    static const char * joinStrings[3] = { "" /* initial value "miter" */, "line join=round", "line join=bevel" };
+
+    std::stringstream str;
+    str << "fill=" << _fillColor.tikz() << ',';
+    str << "draw=" << _penColor.tikz() << ',';
+    str << "line width=" << transform.mapWidth( _lineWidth ) << "mm,";
+    str << xFigDashStylesTikZ[ _lineStyle ];
+    str << capStrings[ _lineCap ];
+    str << joinStrings[ _lineJoin ];
+
+    return str.str();
+}
 
 void
 Shape::depth( int d )
@@ -335,6 +361,15 @@ Dot::flushCairo( cairo_t *cr,
     cairo_restore (cr);
 }
 #endif
+
+void
+Dot::flushTikZ( std::ostream & stream,
+                const TransformTikZ & /*transform*/ ) const
+
+{
+  // FIXME: unimplemented
+  stream << "% FIXME: Dot::flushTikZ unimplemented" << endl;
+}
 
 Rect
 Dot::boundingBox() const
@@ -550,6 +585,17 @@ Line::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Line::flushTikZ( std::ostream & stream,
+                 const TransformTikZ & transform ) const
+{
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+    << transform.mapX( _x1 ) << ',' << transform.mapY( _y1 )
+    << ") -- ("
+    << transform.mapX( _x2 ) << ',' << transform.mapY( _y2 )
+    << ");" << std::endl;
+}
+
 Rect
 Line::boundingBox() const
 {
@@ -659,6 +705,19 @@ Image::flushCairo( cairo_t *cr,
   cairo_restore (cr);
 }
 #endif
+
+void
+Image::flushTikZ( std::ostream & stream,
+                const TransformTikZ & transform ) const
+
+{
+  stream << "\\node [below right=0pt] at ("
+         << transform.mapX( _path[0].x ) << "pt,"
+         << transform.mapY( _path[0].y ) << "pt) {\\pgfimage["
+	 << "width=" << transform.scale( (_path[1] - _path[0]).norm() ) << "pt,"
+	 << "height=" << transform.scale( (_path[0] - _path[3]).norm() ) << "pt,"
+         << "]{" << _filename << "}};" << endl;
+}
 
 /*
  * Arrow
@@ -935,6 +994,18 @@ Arrow::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Arrow::flushTikZ( std::ostream & stream,
+                  const TransformTikZ & transform ) const
+{
+    //stream << "\\path[-triangle 45," << tikzProperties(transform) << "] (" // Requires \usetikzlibrary{arrows}
+    stream << "\\path[-latex," << tikzProperties(transform) << "] ("
+    << transform.mapX( _x1 ) << ',' << transform.mapY( _y1 )
+    << ") -- ("
+    << transform.mapX( _x2 ) << ',' << transform.mapY( _y2 )
+    << ");" << std::endl;
+}
+
 /*
  * Ellipse
  */
@@ -1196,6 +1267,22 @@ Ellipse::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Ellipse::flushTikZ( std::ostream & stream,
+		    const TransformTikZ & transform ) const
+{
+  // FIXME: unimplemented
+  stream << "% FIXME: Ellipse::flushTikZ unimplemented" << endl;
+  stream << "\\path[" << tikzProperties(transform) << "] ("
+	 << transform.mapX( _center.x ) << ','
+	 << transform.mapY( _center.y ) << ')'
+	 << " circle [x radius=" << transform.scale( _xRadius ) << ','
+         <<          "y radius=" << transform.scale( _yRadius ) << ','
+	 <<          "rotate=" << -(_angle*180/M_PI)
+	 << "];"
+	 << std::endl;
+}
+
 Rect
 Ellipse::boundingBox() const
 {
@@ -1377,6 +1464,21 @@ Circle::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Circle::flushTikZ( std::ostream & stream,
+                   const TransformTikZ & transform ) const
+{
+    if ( ! _circle )
+        Ellipse::flushTikZ( stream, transform );
+    else {
+	stream << "\\path[" << tikzProperties(transform) << "] ("
+	<< transform.mapX( _center.x ) << ','
+        << transform.mapY( _center.y ) << ')'
+	<< " circle (" << transform.scale( _xRadius ) << ");"
+        << std::endl;
+    }
+}
+
 /*
  * Arc
  */
@@ -1513,6 +1615,17 @@ stream << " " << transform.mapX( lx );
 stream << "," << transform.mapY( ly );
 stream << "' />";
 
+}
+
+void
+Arc::flushTikZ( std::ostream & stream,
+		const TransformTikZ & transform ) const
+{
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+	   << transform.mapX( _center.x ) << ',' << transform.mapY( _center.y ) << ')'	// center
+	   << " +(" << -_angle1/M_PI*180. << ':' << transform.scale( _xRadius) << ')'	// first point of arc
+           << " arc (" << -_angle1/M_PI*180. << ':' << -_angle2/M_PI*180. + _negative * 360. << ':' << transform.scale( _xRadius ) << ");"
+	   << std::endl;
 }
 
 /*
@@ -1729,6 +1842,23 @@ Polyline::flushCairo( cairo_t *cr,
 }
 #endif
 
+void
+Polyline::flushTikZ( std::ostream & stream,
+                     const TransformTikZ & transform ) const
+{
+    if ( _path.empty() )
+        return;
+
+    stream << "\\path[" << tikzProperties(transform) << "] ";
+    //stream << svgProperties( transform ) << std::endl;
+
+    _path.flushTikZPoints( stream, transform );
+
+    if ( _path.closed() )
+        stream << " -- cycle";
+    stream << ";" << std::endl;
+}
+
 Rect
 Polyline::boundingBox() const
 {
@@ -1932,6 +2062,42 @@ Rectangle::flushCairo( cairo_t *cr,
     cairo_restore (cr);
 }
 #endif
+
+void
+Rectangle::flushTikZ( std::ostream & stream,
+                      const TransformTikZ & transform ) const
+{
+    Polyline::flushTikZ( stream, transform );
+    return;
+
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+      << _path[0].x << ',' << _path[0].y << ')'
+      << " rectangle ("
+      << _path[1].x << ',' << _path[3].y << ");" << std::endl;
+/*
+    if ( _path[0].y == _path[1].y ) {
+        stream << "<rect x=\"" << transform.mapX( _path[0].x ) << '"'
+        << " y=\"" << transform.mapY( _path[0].y )  << '"'
+        << " width=\"" << transform.scale( _path[1].x - _path[0].x ) << '"'
+        << " height=\"" << transform.scale( _path[0].y - _path[3].y ) << '"'
+        << svgProperties( transform )
+        << " />" << std::endl;
+    } else {
+        Point v = _path[1] - _path[0];
+        v /= v.norm();
+        double angle = ( _path[1].y > _path[0].y ) ? acos( v * Point(1,0) ) : -acos( v * Point( 1, 0 ) );
+        angle = ( angle * 180 ) / M_PI;
+        stream << "<rect x=\"" << transform.mapX( _path[0].x ) << '"'
+        << " y=\"" << transform.mapY( _path[0].y )  << '"'
+        << " width=\"" << transform.scale( (_path[1] - _path[0]).norm() ) << '"'
+        << " height=\"" << transform.scale( (_path[0] - _path[3]).norm() ) << '"'
+        << svgProperties( transform ) << ' '
+        << " transform=\"rotate(" << -angle << ", "
+        << transform.mapX( _path[0].x ) << ", " << transform.mapY( _path[0].y ) << ") \" "
+        << " />" << std::endl;
+    }
+ */
+}
 
 /*
  * GouraudTriangle
@@ -2156,6 +2322,14 @@ GouraudTriangle::flushCairo( cairo_t */*cr*/,
 }
 #endif
 
+void
+GouraudTriangle::flushTikZ( std::ostream & stream,
+			    const TransformTikZ & /*transform*/ ) const
+{
+  // FIXME: unimplemented
+  stream << "% FIXME: GouraudTriangle::flushTikZ unimplemented" << endl;
+}
+
 /*
  * Triangle
  */
@@ -2374,6 +2548,64 @@ Text::flushCairo( cairo_t */*cr*/,
 {
 }
 #endif
+
+void
+Text::flushTikZ( std::ostream & stream,
+		 const TransformTikZ & transform ) const
+{
+  // FIXME: honor font-size
+#define BOLD_FONT	0x01
+#define ITALIC_FONT	0x02
+#define MONOSPACE_FONT	0x04
+#define SANSSERIF_FONT	0x08
+    char fontTraits[] = {
+	0,						// TimesRoman,
+	ITALIC_FONT,					// TimesItalic,
+	BOLD_FONT,					// TimesBold,
+	BOLD_FONT | ITALIC_FONT,			// TimesBoldItalic,
+	SANSSERIF_FONT,					// AvantGardeBook,
+	SANSSERIF_FONT | ITALIC_FONT,			// AvantGardeBookOblique,
+	SANSSERIF_FONT,					// AvantGardeDemi,
+	SANSSERIF_FONT | ITALIC_FONT,			// AvantGardeDemiOblique,
+	0,						// BookmanLight,
+	ITALIC_FONT,					// BookmanLightItalic,
+	0,						// BookmanDemi,
+	ITALIC_FONT,					// BookmanDemiItalic,
+	MONOSPACE_FONT,					// Courier,
+	MONOSPACE_FONT | ITALIC_FONT,			// CourierOblique,
+	MONOSPACE_FONT | BOLD_FONT,			// CourierBold,
+	MONOSPACE_FONT | BOLD_FONT | ITALIC_FONT,	// CourierBoldOblique,
+	SANSSERIF_FONT,					// Helvetica,
+	SANSSERIF_FONT | ITALIC_FONT,			// HelveticaOblique,
+	SANSSERIF_FONT | BOLD_FONT,			// HelveticaBold,
+	SANSSERIF_FONT | BOLD_FONT | ITALIC_FONT,	// HelveticaBoldOblique,
+	SANSSERIF_FONT,					// HelveticaNarrow,
+	SANSSERIF_FONT | ITALIC_FONT,			// HelveticaNarrowOblique,
+	SANSSERIF_FONT | BOLD_FONT,			// HelveticaNarrowBold,
+	SANSSERIF_FONT | BOLD_FONT | ITALIC_FONT,	// HelveticaNarrowBoldOblique,
+	0,						// NewCenturySchoolbookRoman,
+	ITALIC_FONT,					// NewCenturySchoolbookItalic,
+	BOLD_FONT,					// NewCenturySchoolbookBold,
+	BOLD_FONT | ITALIC_FONT,			// NewCenturySchoolbookBoldItalic,
+	0,						// PalatinoRoman,
+	ITALIC_FONT,					// PalatinoItalic,
+	BOLD_FONT,					// PalatinoBold,
+	BOLD_FONT | ITALIC_FONT,			// PalatinoBoldItalic,
+	0,						// Symbol,
+	ITALIC_FONT,					// ZapfChanceryMediumItalic,
+	0						// ZapfDingbats
+    };
+
+    stream << "\\path[" << tikzProperties(transform) << "] ("
+	   << transform.mapX( _position.x ) << ',' << transform.mapY( _position.y )
+	   << ") node {"
+	   << (fontTraits[ _font ] & ITALIC_FONT ? "\\itshape " : "")
+	   << (fontTraits[ _font ] & BOLD_FONT ? "\\bfseries " : "")
+	   << (fontTraits[ _font ] & MONOSPACE_FONT ? "\\ttfamily " : "")
+	   << (fontTraits[ _font ] & SANSSERIF_FONT ? "\\sffamily " : "")
+           << _text
+           << "};" << std::endl;
+}
 
 Rect
 Text::boundingBox() const

@@ -36,7 +36,6 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include <QtGui/qapplication.h>
 #include "DGtal/io/boards/Board3DTo2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -52,7 +51,7 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
   KSpace K;
   Point plow(0,0,0);  
@@ -60,13 +59,13 @@ int main()
   Domain domain( plow, pup );
   K.init( plow, pup, true );
 
-  //viewer << SetMode3D( domain.styleName(), "Paving" );
-  //viewer << domain; 
+  //board << SetMode3D( domain.styleName(), "Paving" );
+  //board << domain; 
 
   // Drawing cell of dimension 3
   Cell voxelA = K.uCell(Point(1,1,1));
   SCell voxelB = K.sCell(Point(1,1,3));
-  viewer << voxelB << voxelA;
+  board << voxelB << voxelA;
 
   // drawing cells of dimension 2
   SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); 
@@ -74,44 +73,44 @@ int main()
   Cell surfelC = K.uCell( Point( 1, 2, 1 ) ); 
   SCell surfelD = K.sCell( Point( 1, 1, 0 ) );
   Cell surfelE = K.uCell( Point( 1, 1, 2 ) ); 
-  viewer << surfelA << surfelB << surfelC << surfelD << surfelE;
+  board << surfelA << surfelB << surfelC << surfelD << surfelE;
 
   Cell linelA = K.uCell(Point(2,1 ,2));
   SCell linelB = K.sCell(Point(2,2 ,1));
   SCell linelC = K.sCell(Point(1,2 ,2), false);
-  viewer << linelA << linelB << linelC;
+  board << linelA << linelB << linelC;
 
   Cell center(Point(5,5,5));
   // Testing display of oriented surfels:
   SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 
   SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false ); 
   SCell ssurfelZY = K.sCell( Point( 6, 5, 5 ), false ); 
-  viewer << center;
+  board << center;
 
   SCell ssurfelXZo = K.sCell( Point( 5, 4, 5 ), false ); 
   SCell ssurfelXYo = K.sCell( Point( 5, 5, 4 ), false ); 
   SCell ssurfelZYo = K.sCell( Point( 4, 5, 5 ), false );  
 
-  viewer << ssurfelXZ << ssurfelXY << ssurfelZY;
-  viewer << ssurfelXZo << ssurfelXYo << ssurfelZYo;
+  board << ssurfelXZ << ssurfelXY << ssurfelZY;
+  board << ssurfelXZo << ssurfelXYo << ssurfelZYo;
 
   // Testing display oriented pointels
   Cell pointelA = K.uCell(Point(2, 2, 2));
   SCell pointelB = K.sCell(Point(4, 4, 4), true);
   SCell pointelC = K.sCell(Point(6, 4, 4), false);
   SCell linelAC = K.sCell(Point(5, 4, 4), false);
-  viewer << pointelA << pointelB << pointelC << linelAC;
+  board << pointelA << pointelB << pointelC << linelAC;
 
-  /*viewer << CameraPosition(2.69044, 1.73705, -1.89961)
+  /*board << CameraPosition(2.69044, 1.73705, -1.89961)
     << CameraDirection(-0.515153, -0.212857, 0.830247)
     << CameraUpVector(0.48806, -0.869135, 0.0800053);*/
     
-  viewer << CameraPosition(3.49239, 3.04746, -1.40276)
+  board << CameraPosition(3.49239, 3.04746, -1.40276)
     << CameraDirection(-0.605129, -0.454197, 0.653853)
     << CameraUpVector(0.516135, -0.84913, -0.112173);
 
-  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D::CairoPNG, 600, 400);
+  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

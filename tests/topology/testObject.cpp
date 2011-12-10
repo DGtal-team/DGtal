@@ -277,7 +277,7 @@ bool testObject3D()
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
   Point c( 0, 0, 0 );
-  Point d( 10, 2, 0 );
+  Point d( 5, 2, 0 );
 
   trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
   trace.info() << "Creating diamond (r=15)" << endl;
@@ -285,7 +285,7 @@ bool testObject3D()
   DigitalSet diamond_set( domain );
   for ( DomainConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
-      if ( (*it - c ).norm1() <= 45 ) diamond_set.insertNew( *it );
+      if ( (*it - c ).norm1() <= 15 ) diamond_set.insertNew( *it );
     }
   ObjectType diamond( dt6_18, diamond_set );
   trace.info() << "Cloning diamond" << endl;
@@ -309,7 +309,7 @@ bool testObject3D()
      << " = " << *it << endl;
 
   INBLOCK_TEST( objects[ 0 ].size() == ( objects[ 1 ].size() + 2 ) );
-  INBLOCK_TEST( objects[ 0 ].size() == 125671 );
+  INBLOCK_TEST( objects[ 0 ].size() == 4991 );
   trace.endBlock();
 
   trace.beginBlock ( "Testing connected component extraction  ..." );
@@ -337,7 +337,7 @@ bool testObject3D()
      << " = " << *it << endl;
   INBLOCK_TEST( objects2[ 0 ].size() == objects2[ 1 ].size() );
   INBLOCK_TEST( objects2[ 2 ].size() == objects2[ 3 ].size() );
-  INBLOCK_TEST( objects2[ 0 ].size() == 15848 );
+  INBLOCK_TEST( objects2[ 0 ].size() == 1688 );
   INBLOCK_TEST( objects2[ 2 ].size() == 18 );
 
   trace.endBlock();

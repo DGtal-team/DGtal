@@ -134,6 +134,58 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
 
 template <typename TKSpace>
 inline
+bool
+DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException)
+{
+
+  my0SCells.clear(); 
+  my1SCells.clear(); 
+  
+  //create sequence of grid points and grid edges
+  //aVectorOfSCells is assumed to be counter-clockwise oriented
+  typename std::vector<SCell>::const_iterator it, itEnd; 
+  it = aVectorOfSCells.begin();
+  itEnd = aVectorOfSCells.end();
+  SCell currentSCell; 
+
+  //first scell
+  if (it != itEnd)
+  {
+    currentSCell = *it;
+    SCell firstPointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    
+    my0SCells.push_back( firstPointel );
+    my1SCells.push_back( currentSCell );
+
+    //other scells
+    for (++it; it != itEnd; ++it) {
+
+      SCell expectedPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+      currentSCell = *it; 
+      SCell pointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+
+      if ( myK.sKCoords(pointel) != myK.sKCoords(expectedPointel) ) { //disconnected !
+        throw ConnectivityException(); 
+      }
+
+      my0SCells.push_back( pointel );
+      my1SCells.push_back( currentSCell );
+    }
+
+    //if open, add a pointel
+    SCell lastPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    if ( lastPointel != firstPointel )
+    {
+      my0SCells.push_back( lastPointel ); 
+    }
+
+    return true;
+  } else return false; //empty range
+
+}
+
+template <typename TKSpace>
+inline
 void
 DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out ) 
 {
