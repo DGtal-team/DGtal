@@ -181,6 +181,9 @@ bool testImplicitDigitalSurface()
   return nbok == nb;
 }
 
+//-----------------------------------------------------------------------------
+// Testing LightImplicitDigitalSurface
+//-----------------------------------------------------------------------------
 bool testLightImplicitDigitalSurface()
 {
   using namespace Z3i;
@@ -238,6 +241,118 @@ bool testLightImplicitDigitalSurface()
   trace.endBlock();
   return nbok == nb;
 }
+
+//-----------------------------------------------------------------------------
+// Testing ExplicitDigitalSurface
+//-----------------------------------------------------------------------------
+template <typename KSpace, typename Image>
+struct FrontierPredicate {
+
+  typedef typename KSpace::Surfel Surfel;
+  typedef typename KSpace::Point Point;
+  typedef typename KSpace::SCell SCell;
+  typedef typename Image::Value Value;
+  // KSpace::Point same type as Image::Point
+
+  FrontierPredicate( const KSpace & aSpace, const Image & anImage,
+                     const Value & l1, const Value & l2 )
+    : mySpace( aSpace ), myImage( anImage ),
+      myLabel1( l1 ), myLabel2( l2 )
+  {}
+  
+  bool operator()( const Surfel & s ) const
+  {
+    Dimension orthDir = mySpace.sOrthDir( s );
+    bool orthDirect = mySpace.sDirect( s, orthDir );
+    SCell int_spel = mySpace.sIncident( orthDir, orthDirect );
+    Point int_p = mySpace.sCoords( int_spel );
+    Point out_p = int_p;
+    out_p[ orthDir ] +=  orthDirect ? -1 : 1;
+    return myImage( int_p ) == myLabel1 ) && ( myImage( out_p ) == myLabel2 );
+  }
+
+  const KSpace & mySpace;
+  const Image & myImage;
+  Value myLabel1;
+  Value myLabel2;
+}
+
+
+//-----------------------------------------------------------------------------
+// Testing ExplicitDigitalSurface
+//-----------------------------------------------------------------------------
+bool testExplicitDigitalSurface()
+{
+  using namespace Z3i;
+  typedef ImageContainerBySTLVector<Domain,uint8_t> Image;
+  typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
+  typedef ExplicitDigitalSurface<KSpace,SurfelPredicate> Boundary;
+  typedef Boundary::SurfelConstIterator ConstIterator;
+  typedef Boundary::Tracker Tracker;
+  typedef Boundary::Surfel Surfel;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block ... LightImplicitDigitalSurface" );
+  Point p1( -5, -5, -5 );
+  Point p2( 5, 5, 5 );
+  KSpace K;
+  nbok += K.init( p1, p2, true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  Image image( p1, p2 );
+  for ( int z = -5; z <= 5; ++z )
+    for ( int y = -5; y <= 5; ++y )
+      for ( int x = -5; x <= 5; ++x )
+        image.setValue( Point(x,y,z), 0 );
+  for ( int z = -1; z <= 1; ++z )
+    for ( int y = -1; y <= 1; ++y )
+      for ( int x = -1; x <= 1; ++x )
+        image.setValue( Point(x,y,z), 1 );
+  for ( int z = -1; z <= 1; ++z )
+    image.setValue( Point(0,0,z), 2 );
+
+  ImplicitDigitalEllipse ellipse( 6.0, 4.5, 3.4 );
+  Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
+  Boundary boundary( K, ellipse, 
+                     SurfelAdjacency<KSpace::dimension>( true ), bel );
+  unsigned int nbsurfels = 0;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      ++nbsurfels;
+    }
+  trace.info() << nbsurfels << " surfels found." << std::endl;
+  trace.beginBlock ( "Checks if adjacent surfels are part of the surface." );
+
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      Tracker* ptrTracker = boundary.newTracker( *it );
+      Surfel s = ptrTracker->current();
+      Dimension trackDir = * K.sDirs( s );
+      Surfel s1, s2;
+      unsigned int m1 = ptrTracker->adjacent( s1, trackDir, true ); 
+      unsigned int m2 = ptrTracker->adjacent( s2, trackDir, false ); 
+      // trace.info() << "s = " << s << std::endl;
+      // trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
+      // trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
+      nb++, nbok += boundary.isInside( s1 ) ? 1 : 0;
+      // trace.info() << "(" << nbok << "/" << nb << ") "
+      //              << "boundary.isInside( s1 )" << std::endl;
+      nb++, nbok += boundary.isInside( s2 ) ? 1 : 0;
+      // trace.info() << "(" << nbok << "/" << nb << ") "
+      //              << "boundary.isInside( s2 )" << std::endl;
+      delete ptrTracker;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") isInside tests." << std::endl;
+  trace.endBlock();
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
 
 template <typename KSpace>
 bool testDigitalSurface()
