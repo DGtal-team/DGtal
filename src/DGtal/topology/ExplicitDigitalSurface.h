@@ -292,7 +292,7 @@ namespace DGtal
   private:
     /// a reference to the cellular space.
     const KSpace & myKSpace;
-    /// a reference to the point predicate defining the shape.
+    /// a reference to the surfel predicate defining the shape.
     const SurfelPredicate & mySurfelPredicate;
     /// the surfel adjacency used to determine neighbors. 
     Adjacency mySurfelAdjacency;
