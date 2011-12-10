@@ -297,12 +297,14 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
   lf2 = n2 = slope2;
   nb = 1;
   //cerr << "input : " << w << endl;
-  bool convex = true;
+  
+  // Convex is not used so I comment it
+  ///bool convex;
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
 
     //cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
     //  << q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
-    //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;
+    //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;g
 
     //This 'if/else if' is added to compute the vector defined by
     //the Christoffel word, this is usefull in order to compute the
@@ -324,7 +326,7 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
       ++i;
     } else {
       if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) ) {
-        convex = false;
+	//   convex = false;
         break;
       }
       index_t tmp = p; 

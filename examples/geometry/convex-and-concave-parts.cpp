@@ -147,7 +147,7 @@ int main( int argc, char** argv )
 
   string codes; 
   if (argc >= 2) codes = argv[1];
-  else codes = "0300303303033030303000010101011010110100000303303033030303000010101101010110100000333"; 
+  else codes = "030030330303303030300001010101101011010000030330303303030300001010110101011010000033"; 
 
   stringstream ss(stringstream::in | stringstream::out);
   ss << "0 0 " << codes << endl;

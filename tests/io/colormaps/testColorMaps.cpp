@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/CColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -58,11 +58,11 @@ void addColorMapSample( const char * name,
 
   typedef typename TColorMap::Value Value;
   board.translate( 0, 15 );
+  board.setPenColor(Color::Black);
+  board.setFont( LibBoard::Fonts::Courier, 12 );  // todo with Cairo
+  board.drawText( -150, 0, name );      // todo with Cairo
+  board.setPenColor(Color::None);
   for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
-    board.setPenColor(Color::Black);
-    board.setFont( LibBoard::Fonts::Courier, 12 );  // todo with Cairo
-    board.drawText( -150, 0, name );      // todo with Cairo
-    board.setPenColor(Color::None);
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
        10,
@@ -214,6 +214,8 @@ int main()
   addColorMapSample( "Random", cmap_random, 1, board );  
 
   board.saveEPS( "colormaps.eps" );
+  board.saveSVG( "colormaps.svg" );
+  board.saveTikZ( "colormaps.tikz" );
   
 #ifdef WITH_CAIRO
   board.saveCairo("colormaps-cairo.ps", Board2D::CairoPS);

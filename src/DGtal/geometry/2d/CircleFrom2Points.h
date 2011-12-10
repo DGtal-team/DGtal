@@ -17,29 +17,27 @@
 #pragma once
 
 /**
- * @file StraightLine.h
- * @brief Representation of a StraightLine uniquely defined by two 2D points.
+ * @file CircleFrom2Points.h
+ * @brief Representation of a CircleFrom2Points uniquely defined by two 2D points.
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/10/27
+ * @date 2011/09/22
  *
- * Header file for module StraightLine.cpp
+ * @brief Header file for module CircleFrom2Points.cpp
  *
  * This file is part of the DGtal library.
- *
- * @see testHalfPlane.cpp
  */
 
-#if defined(StraightLine_RECURSES)
-#error Recursive header files inclusion detected in StraightLine.h
-#else // defined(StraightLine_RECURSES)
+#if defined(CircleFrom2Points_RECURSES)
+#error Recursive header files inclusion detected in CircleFrom2Points.h
+#else // defined(CircleFrom2Points_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define StraightLine_RECURSES
+#define CircleFrom2Points_RECURSES
 
-#if !defined StraightLine_h
+#if !defined CircleFrom2Points_h
 /** Prevents repeated inclusion of headers. */
-#define StraightLine_h
+#define CircleFrom2Points_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -47,8 +45,9 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/geometry/2d/CircleFrom3Points.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,58 +55,69 @@ namespace DGtal
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class StraightLine
+  // template class CircleFrom2Points
   /**
-   * Description of template class 'StraightLine' <p>
-   * \brief Aim: Represents a StraightLine uniquely
-   * defined by two 2D points and that is able
-   * to return for each 2D point of the domain
-   * its signed distance to itself 
+   * \brief Aim: Represents a circle that passes through a given point
+   * and that is thus uniquely defined by two other points. It is able
+   * to return for any given point its signed distance to itself 
    *
-   * @tparam TInteger a model for CInteger.
+   * @tparam TPoint  a type of points.
    */
-  template <typename TInteger>
-  class StraightLine
+  template <typename TPoint>
+  class CircleFrom2Points
   {
 
     // ----------------------- associated types ------------------------------
   public:
 
-    //2D point and 2D vector
-    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    typedef TInteger Coordinate;
-    typedef TInteger Distance; 
-    typedef DGtal::PointVector<2,Coordinate> Point;
-    typedef DGtal::PointVector<2,Coordinate> Vector;
+    typedef typename TPoint::Coordinate Coordinate;
+    typedef Coordinate Distance; //to promote
+    typedef TPoint Point;
+    typedef TPoint Vector;
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
      * Constructor.
-     * @param firstPoint, secondPoint two points
-     * that uniquely define the StraightLine
+     * @param aPole  a point
      */
-    StraightLine(const Point& aFirstPoint, const Point& aSecondPoint);
+    CircleFrom2Points(const Point& aPole);
+
+
+    /**
+     * Constructor with initialization.
+     * @param aPole  a point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
+     */
+    CircleFrom2Points(const Point& aPole, const Point& aFirstPoint, const Point& aSecondPoint);
+
+    /**
+     * Init.
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  a second point
+     */
+    void init(const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    StraightLine ( const StraightLine & other );
+    CircleFrom2Points ( const CircleFrom2Points & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    StraightLine & operator= ( const StraightLine & other );
+    CircleFrom2Points & operator= ( const CircleFrom2Points & other );
 
 
     /**
      * Destructor. Does nothing
      */
-    ~StraightLine();
+    ~CircleFrom2Points();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -125,11 +135,19 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Computes the signed distance of [aP] to the StraightLine
-     * @param aP, the point to be tested.
+     * Computes the signed distance of @aP to the circle
+     * @param aP the point to be tested.
      * @return the signed distance.
      */
-    Coordinate signedDistance(const Point& aP) const;
+    Distance signedDistance(const Point& aP) const;
+
+    /**
+     * Computes the parameters of the circle
+     * @param cx  returned x-coordinate of the circle
+     * @param cy  returned y-coordinate of the circle
+     * @param r  returned radius of the circle
+     */
+    void getParameters(double& cx, double& cy, double& r) const;
 
     //------------------ display -------------------------------
     /**
@@ -153,8 +171,19 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    //the two points that uniquely define the StraightLine
-    Point myP, myQ;
+    //the three points that uniquely define the circle
+    /**
+       First (and not mutable) point through which the circle passes
+    */
+    Point myPole;
+    /**
+       Second point through which the circle passes
+    */
+    Point myP;
+    /**
+       Third point through which the circle passes
+    */
+    Point myQ;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -169,14 +198,20 @@ namespace DGtal
 
 
 
-  }; // end of class StraightLine
+  }; // end of class CircleFrom2Points
 
 
-  template <typename TInteger>
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'CircleFrom2Points'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'CircleFrom2Points' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPoint>
   inline
   std::ostream&
   operator<< ( std::ostream & out, 
-        const StraightLine<TInteger> & object )
+        const CircleFrom2Points<TPoint> & object )
   {
     object.selfDisplay( out );
     return out;
@@ -188,12 +223,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/StraightLine.ih"
+#include "DGtal/geometry/2d/CircleFrom2Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined StraightLine_h
+#endif // !defined CircleFrom2Points_h
 
-#undef StraightLine_RECURSES
-#endif // else defined(StraightLine_RECURSES)
+#undef CircleFrom2Points_RECURSES
+#endif // else defined(CircleFrom2Points_RECURSES)

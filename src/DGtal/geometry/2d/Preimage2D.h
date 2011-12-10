@@ -68,7 +68,7 @@ namespace DGtal
    * the 2D plane into two disjoint parts (e.g. straight lines, 
    * circles passing through a given point). Consequently, the 
    * points Pi and the points Qi are assumed to lie in either 
-   * side of the shape (Pi in the interior, Qi in the exterior).
+   * side of the shape.
    *
    * The user of this class has to decide from its input set 
    * of segments and the shape used whether a linear-time algorithm 
@@ -80,6 +80,9 @@ namespace DGtal
    *
    * You can define your preimage type from a given shape type as follows:
    * @snippet geometry/examplePreimage.cpp PreimageTypedefFromStraightLine
+   *
+   * Here is another example:
+   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromCircle
    *
    * Then, here is the basic usage of this class:
    * @snippet geometry/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
@@ -113,16 +116,19 @@ namespace DGtal
       PHullBackQHullFrontPred; 
     typedef Point2ShapePredicate<Shape,true,true> 
       QHullBackPHullFrontPred; 
+    typedef Point2ShapePredicate<Shape,true,true> 
+      PHullFrontQHullBackPred; 
+    typedef Point2ShapePredicate<Shape,false,true> 
+      QHullFrontPHullBackPred; 
     //Predicates used to update the hulls
     typedef Point2ShapePredicate<Shape,true,false> 
-      PHullUpdateForPAddingPred; 
+      FrontPHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,false,false> 
-      QHullUpdateForQAddingPred; 
+      FrontQHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,false,false> 
-      QHullUpdateForPAddingPred; 
+      BackPHullUpdatePred; 
     typedef Point2ShapePredicate<Shape,true,false> 
-      PHullUpdateForQAddingPred; 
-
+      BackQHullUpdatePred; 
     
 
 
@@ -133,8 +139,9 @@ namespace DGtal
      * Constructor.
      * @param firstPoint  the end point of the first straight segment expected to lie in the interior of the separating shapes
      * @param secondPoint  the end point of the first straight segment expected to lie in the exterior of the separating shapes
+     * @param sShape  any shape
      */
-    Preimage2D(const Point & firstPoint, const Point & secondPoint);
+    Preimage2D(const Point & firstPoint, const Point & secondPoint, const Shape & aShape );
 
     /**
      * Destructor. Does nothing.
@@ -142,11 +149,68 @@ namespace DGtal
     ~Preimage2D();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Preimage2D ( const Preimage2D & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Preimage2D & operator= ( const Preimage2D & other );
+
+    /**
+    *  Equality operator
+    * @param other the object to compare with.
+    * @return 'true' if the points of @a myPHull
+    * match to those of @a other.myPHull and if 
+    * the points of @a myQHull match to those of 
+    * @a other.myQHull, 'false' otherwise.
+    *
+    * NB: linear in the size of @a myPHull and @a myQHull
+    */
+    bool operator==( const Preimage2D & other) const;
+
+    /**
+    *  Difference operator
+    * @param other the object to compare with.
+    * @return 'true' if not equal, 'false' otherwise.
+    */
+    bool operator!=( const Preimage2D & other) const;
+
+    /**
+     * Decide whether a new constraint can be added at the front
+     * (with respect to a clockwise-oriented scan)
+     * without making the preimage empty or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the new constraint make the preimage empty
+     * 'true' otherwise.
+     */
+    bool canBeAddedAtTheFront(const Point & aP, const Point & aQ);
+
+    /**
+     * Decide whether a new constraint can be added at the back
+     * (with respect to a clockwise-oriented scan)
+     * without making the preimage empty or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the new constraint make the preimage empty
+     * 'true' otherwise.
+     */
+    bool canBeAddedAtTheBack(const Point & aP, const Point & aQ);
+    
+    /**
      * Updates the current preimage with 
      * the constraints involved by the two 
      * end points of a new segment
-     * (adding to the front of the sequence of 
-     * segments with respect to the scan orientaion)
+     * (adding to the front with respect to a clockwise-oriented scan)
      *
      * Nb: in O(n)
      *
@@ -158,6 +222,21 @@ namespace DGtal
      */
     bool addFront(const Point & aP, const Point & aQ);
 
+    /**
+     * Updates the current preimage with 
+     * the constraints involved by the two 
+     * end points of a new segment
+     * (adding to the back with respect to a clockwise-oriented scan)
+     *
+     * Nb: in O(n)
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'false' if the updated preimage is empty, 
+     * 'true' otherwise.
+     */
+    bool addBack(const Point & aP, const Point & aQ);
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -173,6 +252,34 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+  
+    /**
+     * @return first upper leaning point.
+     */
+    Point getUf() const;
+
+    /**
+     * @return last upper leaning point.
+     */
+    Point getUl() const;
+
+    /**
+     * @return first lower leaning point.
+     */
+    Point getLf() const;
+
+    /**
+     * @return last lower leaning point.
+     */
+    Point getLl() const;
+    
+    /**
+     * Get the parameters of one separating straight line
+     * @param alpha  (returned) y-component of the normal
+     * @param beta  (returned) x-component of the normal
+     * @param gamma  (returned) intercept
+     */
+    void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
 
     //------------------ display -------------------------------
     /**
@@ -197,6 +304,11 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
+    /**
+     * Shape used to separate the input points
+     */
+    Shape myShape;
+  
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
@@ -212,11 +324,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Preimage2D();
 
   private:
 
@@ -241,21 +348,6 @@ namespace DGtal
                 const Iterator & anEndIterator);
 
 
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Preimage2D ( const Preimage2D & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Preimage2D & operator= ( const Preimage2D & other );
 
     // ------------------------- Internals ------------------------------------
   private:
