@@ -232,7 +232,7 @@ DGtal::Trace::progressBar(const int currentValue, const int maximumValue) const
     // part  that's full already
     for ( ; ii < dotz;ii++) 
       {
-        myWriter.outputStream()<< "%";
+        myWriter.outputStream()<< "#";
       }
     // remaining part (spaces)
     for ( ; ii < totaldotz;ii++) 
