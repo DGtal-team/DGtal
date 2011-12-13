@@ -61,8 +61,14 @@ namespace DGtal
    * shapes can thus be parameterized by an angle 't' turning around
    * the center.
    *
+   * StarShaped2D and its derived classes are models of
+   * CEuclideanBoundedShape and CEuclideanOrientedShape. 
+   *
    * NB: A backport from <a
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   *
+   *  
+   * @tparam TSpace space in which the shape is defined.
    */
   template <typename TSpace>
   class StarShaped2D
@@ -72,8 +78,8 @@ namespace DGtal
     typedef TSpace Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
-    
-    /**
+     
+   /**
      * Constructor.
      */
     StarShaped2D()
@@ -101,13 +107,13 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    virtual Point getLowerBound() const = 0;
+    virtual RealPoint getLowerBound() const = 0;
     
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    virtual Point getUpperBound() const = 0;
+    virtual RealPoint getUpperBound() const = 0;
     
 
     /**
@@ -167,6 +173,16 @@ namespace DGtal
      */
     bool isInside( const Point & p ) const;
 
+
+    /** 
+     * Return the orienatation of a point with respect to a shape.
+     * 
+     * @param p input point
+     * 
+     * @return the orientation of the point (<0 means inside, ...)
+     */
+    Orientation orientation( const RealPoint &p) const;
+    
     
     /**
      * @param t any angle between 0 and 2*Pi.

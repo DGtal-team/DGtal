@@ -46,6 +46,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/shapes/CEuclideanOrientedShape.h"
+#include "DGtal/shapes/CEuclideanBoundedShape.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,15 +60,15 @@ namespace DGtal
      Description of template class 'GaussDigitizer' <p> \brief Aim: A
      class for computing the Gauss digitization of some Euclidean
      shape, i.e. its intersection with some \f$ h_1 Z \times h_2 Z
-     \times \cdots \times h_n Z \f$. It is also a model of
-     CPointPredicate and of CShape. Note that the real point (0,...,0)
+     \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
+     GaussDigitizer is a model of CDigitalEucldieanShape and CDigitalBoundedShape.
+
      @tparam TSpace the type of digital Space where the digitized
      object lies.
 
-     @tparam TEuclideanShape a model of CEuclideanShape, i.e. a class
-     having a method @code bool isInside( const RealPoint & p ) const
+     @tparam TEuclideanShape a model of CEuclideanOrientedShape and CEuclideanBoundedShape
      @endcode.
    */
   template <typename TSpace, typename TEuclideanShape>
@@ -82,6 +85,11 @@ namespace DGtal
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
 
+    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
+    
+    BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
+
+    
     /**
      * Destructor.
      */
@@ -110,7 +118,7 @@ namespace DGtal
        adjacent digital points) identical in every direction.
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
-         typename RealVector::Component gridStep );
+               typename RealVector::Component gridStep );
 
     /**
        Initializes the digital bounds of the digitizer so as to cover
@@ -153,26 +161,26 @@ namespace DGtal
     Point round( const RealPoint & p ) const;
 
     /**
-       @param p any digital point in the digital space.
-       @return its centroid embedding in the Euclidean space.
-    */
+     * Map a digital point to its corresponding point in the Eucldiean
+     * space.
+     *
+     *   @param p any digital point in the digital space.
+     *   @return its centroid embedding in the Euclidean space.
+     */
     RealPoint embed( const Point & p ) const;
 
-    /**
-     * @param p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
+    /** 
+     * Orientation method to match with CDigitalOrientedShape concept.
+     * 
+     * @param p  a digital point
+     * 
+     * @return negative orientation if the point is inside the shape,
+     * 0 if it is on the shape and positive orientation otherwise.
      */
-    bool isInside( const RealPoint & p ) const;
-
-    /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const Point & p ) const;
+    Orientation orientation(const Point &p) const
+    { 
+      return myEShape->orientation(embed(p));
+    }
 
     /**
      * @param p any point in the digital plane.
