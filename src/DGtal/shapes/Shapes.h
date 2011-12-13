@@ -42,9 +42,17 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/shapes/CShape.h"
-
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/shapes/CDigitalOrientedShape.h"
+#include "DGtal/shapes/CDigitalBoundedShape.h"
+#include "DGtal/shapes/CEuclideanOrientedShape.h"
+#include "DGtal/shapes/CEuclideanBoundedShape.h"
+#include "DGtal/geometry/nd/GaussDigitizer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -69,6 +77,7 @@ namespace DGtal
   public:
     typedef TDomain Domain;
     typedef typename TDomain::Space Space;
+    typedef typename TDomain::Space::RealPoint RealPoint;
     typedef typename TDomain::Point Point;
     typedef typename TDomain::Vector Vector;
     typedef typename TDomain::Predicate Predicate;
@@ -82,14 +91,38 @@ namespace DGtal
 
     /** 
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
-     * an instance of ShapeFunctor.
+     * an instance of ShapeFunctor. The shape functor must be a model
+     * of CDigitalOrientedShape and CDigitalBoundedShape.
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
+     * @tparam TDigitalSet a model of CDigitalSet.
+     * @tparam TShapeFunctor a model of CDigitalBoundedShape and
+     * CDigitalOrientedShape.
      */
     template <typename TDigitalSet, typename TShapeFunctor>
-    static void shaper( TDigitalSet & aSet,
-			const TShapeFunctor & aFunctor);
+    static void digitalShaper( TDigitalSet & aSet,
+                               const TShapeFunctor & aFunctor);
+    
+    /** 
+     * Adds to the (perhaps non empty) set [aSet] an shape defined by
+     * an instance of ShapeFunctor.The shape functor must be a model
+     * of CEuclideanOrientedShape and CEuclideanBoundedShape. The
+     * underlying digitization process is a Gauss Digitizer with grid
+     * step h.
+     * 
+     * @param aSet the set (modified) which will contain the shape.
+     * @param aFunctor a functor defining the shape.
+     * @param h grid step for the Gauss digitization.
+     *
+     * @tparam TDigitalSet a model of CDigitalSet.
+     * @tparam TShapeFunctor a model of CEuclideanBoundedShape and
+     * CEuclideanOrientedShape.
+     */
+    template <typename TDigitalSet, typename TShapeFunctor>
+    static void euclideanShaper( TDigitalSet & aSet,
+                                 const TShapeFunctor & aFunctor,
+                                 const double h = 1.0);
     
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
@@ -103,8 +136,8 @@ namespace DGtal
      */
     template<typename TDigitalSet>
     static void addNorm1Ball( TDigitalSet & aSet,
-			      const Point & aCenter, 
-			      UnsignedInteger aRadius );
+                              const Point & aCenter, 
+                              UnsignedInteger aRadius );
     
     /**
      * Adds the discrete ball (norm-2) of center [aCenter] and radius
@@ -118,8 +151,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void addNorm2Ball( TDigitalSet & aSet,
-			      const Point & aCenter, 
-			      UnsignedInteger aRadius );
+                              const Point & aCenter, 
+                              UnsignedInteger aRadius );
 
     /**
      * Removes the discrete ball (norm-1) of center [aCenter] and radius
@@ -132,8 +165,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm1Ball( TDigitalSet & aSet,
-				 const Point & aCenter, 
-				 UnsignedInteger aRadius );
+                                 const Point & aCenter, 
+                                 UnsignedInteger aRadius );
  
     /**
      * Removes the discrete ball (norm-2) of center [aCenter] and radius
@@ -146,8 +179,8 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm2Ball( TDigitalSet & aSet,
-				 const Point & aCenter, 
-				 UnsignedInteger aRadius );
+                                 const Point & aCenter, 
+                                 UnsignedInteger aRadius );
 
 
     // ----------------------- Standard services ------------------------------

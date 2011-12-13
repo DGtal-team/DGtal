@@ -40,6 +40,9 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/shapes/CDigitalOrientedShape.h"
+#include "DGtal/shapes/CDigitalBoundedShape.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,6 +51,23 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class GaussDigitizer.
 ///////////////////////////////////////////////////////////////////////////////
+
+
+/** 
+ * 
+ * Gaussdigitizer is a model of CDigitalBoundedShape and
+ * CDigitalOrientedShape.
+ * 
+ */
+bool testConcept()
+{
+  typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig; 
+  BOOST_CONCEPT_ASSERT((CDigitalBoundedShape<Dig>));
+  BOOST_CONCEPT_ASSERT((CDigitalOrientedShape<Dig>));
+  return true;
+}
+
+
 template <typename Space, typename Shape>
 bool
 testDigitization( const Shape & aShape, double h,
@@ -59,6 +79,7 @@ testDigitization( const Shape & aShape, double h,
   typedef typename DigitalSetSelector
     < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type MySet;
 
+//! [DigitizerDoc]
   // Creates a digitizer on the window (xLow, xUp).
   RealPoint xLow( -5.3, -4.3 );
   RealPoint xUp( 7.4, 4.7 );
@@ -68,10 +89,11 @@ testDigitization( const Shape & aShape, double h,
   
   // The domain size is given by the digitizer according to the window
   // and the step.
-  Domain domain = dig.getDomain(); // ( dig.getLowerBound(), dig.getUpperBound() );
+  Domain domain = dig.getDomain();
   MySet aSet( domain );
   // Creates a set from the digitizer.
-  Shapes<Domain>::shaper( aSet, dig );
+  Shapes<Domain>::digitalShaper( aSet, dig );
+//! [DigitizerDoc]
   
   // Create cellular space
   typedef Z2i::KSpace KSpace;
@@ -171,7 +193,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testGaussDigitizer(); // && ... other tests
+  bool res = testConcept() && testGaussDigitizer(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

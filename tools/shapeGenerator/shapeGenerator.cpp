@@ -377,7 +377,7 @@ int main( int argc, char** argv )
       Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
       Z2i::DigitalSet aSet(domain);
       
-      Shapes<Z2i::Domain>::shaper(aSet, ball);
+      Shapes<Z2i::Domain>::euclideanShaper(aSet, ball);
       Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
       
       if (vm.count("signature"))
@@ -395,7 +395,7 @@ int main( int argc, char** argv )
 	Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
 	Z2i::DigitalSet aSet(domain);
   
-	Shapes<Z2i::Domain>::shaper(aSet, object);
+	Shapes<Z2i::Domain>::euclideanShaper(aSet, object);
 	Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 	if (vm.count("signature"))
@@ -418,7 +418,7 @@ int main( int argc, char** argv )
 	  Z2i::Domain domain(ball.getLowerBound(), ball.getUpperBound());
 	  Z2i::DigitalSet aSet(domain);
     
-	  Shapes<Z2i::Domain>::shaper(aSet, ball);
+	  Shapes<Z2i::Domain>::euclideanShaper(aSet, ball);
 	  Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 	  if (vm.count("signature"))
@@ -445,7 +445,7 @@ int main( int argc, char** argv )
 	    Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 	    Z2i::DigitalSet aSet(domain);
       
-	    Shapes<Z2i::Domain>::shaper(aSet, flower);
+	    Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 	    Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 	    if (vm.count("signature"))
@@ -467,7 +467,7 @@ int main( int argc, char** argv )
 	      Z2i::Domain domain(object.getLowerBound(), object.getUpperBound());
 	      Z2i::DigitalSet aSet(domain);
         
-	      Shapes<Z2i::Domain>::shaper(aSet, object);
+	      Shapes<Z2i::Domain>::euclideanShaper(aSet, object);
 	      Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 	      if (vm.count("signature"))
@@ -491,7 +491,7 @@ int main( int argc, char** argv )
 		Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
 		Z2i::DigitalSet aSet(domain);
         
-		Shapes<Z2i::Domain>::shaper(aSet, flower);
+		Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 		if (vm.count("signature"))
@@ -513,7 +513,7 @@ int main( int argc, char** argv )
 		Z2i::Domain domain(ell.getLowerBound(), ell.getUpperBound());
 		Z2i::DigitalSet aSet(domain);
         
-		Shapes<Z2i::Domain>::shaper(aSet, ell);
+		Shapes<Z2i::Domain>::euclideanShaper(aSet, ell);
 		Exporter<Z2i::DigitalSet,Image>::save(aSet,outputName,outputFormat);
   
 		if (vm.count("signature"))
