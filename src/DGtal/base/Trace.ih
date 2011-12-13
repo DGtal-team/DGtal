@@ -232,7 +232,7 @@ DGtal::Trace::progressBar(const int currentValue, const int maximumValue) const
     // part  that's full already
     for ( ; ii < dotz;ii++) 
       {
-        myWriter.outputStream()<< "=";
+        myWriter.outputStream()<< "%";
       }
     // remaining part (spaces)
     for ( ; ii < totaldotz;ii++) 
@@ -240,7 +240,7 @@ DGtal::Trace::progressBar(const int currentValue, const int maximumValue) const
         myWriter.outputStream()<< " ";
       }
     // and back to line begin - do not forget the fflush to avoid output buffering problems!
-    myWriter.outputStream()<< "] - "<< (int)(fraction*100)<<"/100\r";
+    myWriter.outputStream()<< "]  "<< (int)(fraction*100)<<"/100\r";
     myWriter.outputStream().flush();
 }
 
