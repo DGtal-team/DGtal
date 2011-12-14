@@ -43,10 +43,7 @@ using namespace DGtal;
  *
  */
 bool testProgressBar()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
+{  
   trace.beginBlock ( "Testing progress ..." );
   
   for(unsigned int i=0; i <= 10  ; ++i)
