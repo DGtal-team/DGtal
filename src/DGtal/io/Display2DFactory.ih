@@ -651,12 +651,9 @@ void drawImage( Board2D & board,
                 const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
-  static const typename Domain::Space::Dimension dim = Domain::dimension;
-  static const HashKey ROOT_KEY = static_cast<HashKey>(1);
+   static const HashKey ROOT_KEY = static_cast<HashKey>(1);
   
-  //
-  
-  ASSERT ( dim == 2 );
+  ASSERT ( Domain::dimension == 2 );
 
   C colormap ( minV, maxV );
 
