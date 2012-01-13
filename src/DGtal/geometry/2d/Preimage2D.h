@@ -181,6 +181,58 @@ namespace DGtal
     bool operator!=( const Preimage2D & other) const;
 
     /**
+     * Decide whether a new constraint that is added at the front
+     * (with respect to a clockwise-oriented scan)
+     * makes the preimage empty because of point @a aP or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'true' if the new constraint makes the preimage empty
+     * because of point @a aP and 'false' otherwise.
+     */
+    bool isLeftExteriorAtTheFront(const Point & aP, const Point & aQ);
+
+    /**
+     * Decide whether a new constraint that is added at the back
+     * (with respect to a clockwise-oriented scan)
+     * makes the preimage empty because of point @a aQ or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'true' if the new constraint makes the preimage empty
+     * because of point @a aQ and 'false' otherwise.
+     */
+    bool isLeftExteriorAtTheBack(const Point & aP, const Point & aQ);
+
+    /**
+     * Decide whether a new constraint that is added at the front
+     * (with respect to a clockwise-oriented scan)
+     * makes the preimage empty because of point @a aQ or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'true' if the new constraint makes the preimage empty
+     * because of point @a aQ and 'false' otherwise.
+     */
+    bool isRightExteriorAtTheFront(const Point & aP, const Point & aQ);
+
+    /**
+     * Decide whether a new constraint that is added at the front
+     * (with respect to a clockwise-oriented scan)
+     * makes the preimage empty because of point @a aP or not
+     *
+     * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
+     * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
+     *
+     * @return 'true' if the new constraint makes the preimage empty
+     * because of point @a aP and 'false' otherwise.
+     */
+    bool isRightExteriorAtTheBack(const Point & aP, const Point & aQ);
+
+    /**
      * Decide whether a new constraint can be added at the front
      * (with respect to a clockwise-oriented scan)
      * without making the preimage empty or not

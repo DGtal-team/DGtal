@@ -199,6 +199,11 @@ namespace DGtal
     Point getLl() const;
 
     /**
+     * @return 'true' if CW, 'false' if CCW
+     */
+    bool isClockwiseOriented() const;
+
+    /**
      * Get the parameters of one separating straight line
      * @param alpha  (returned) x-component of the normal
      * @param beta  (returned) y-component of the normal
@@ -228,23 +233,79 @@ namespace DGtal
 
     /**
      * Forward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
-    bool extend();
+    bool extendForward();
 
     /**
      * Forward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
-    bool isExtendable();
+    bool isExtendableForward();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     */
+    bool isConcave();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     */
+    bool isConvex();
 
     /**
      * Backward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
-    bool extendOppositeEnd();
+    bool extendBackward();
 
     /**
      * Backward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
-    bool isOppositeEndExtendable();
+    bool isExtendableBackward();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     */
+    bool isOppositeEndConcave();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     */
+    bool isOppositeEndConvex();
 
     //------------------ display -------------------------------
     /**

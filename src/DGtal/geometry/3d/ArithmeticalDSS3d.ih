@@ -171,33 +171,33 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extend(const ConstIterator& it)
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward(const ConstIterator& it)
 {
 
 //projection on xy-plane
   XYIteratorAdapter XYit(it); 
   bool XYflag = true;
   if (myXYalgo.getFrontPoint() != *XYit) {
-    XYflag = myXYalgo.isExtendable(XYit);
+    XYflag = myXYalgo.isExtendableForward(XYit);
   }
 //projection on xz-plane
   XZIteratorAdapter XZit(it); 
   bool XZflag = true;
   if (myXZalgo.getFrontPoint() != *XZit) {
-    XZflag = myXZalgo.isExtendable(XZit);
+    XZflag = myXZalgo.isExtendableForward(XZit);
   }
 //projection on yz-plane
   YZIteratorAdapter YZit(it); 
   bool YZflag = true;
   if (myYZalgo.getFrontPoint() != *YZit) {
-    YZflag = myYZalgo.isExtendable(YZit);
+    YZflag = myYZalgo.isExtendableForward(YZit);
   }
 
 
   if ( (XYflag)&&(XZflag)&&(YZflag) ) {
-    myXYalgo.extend(XYit);
-    myXZalgo.extend(XZit);
-    myYZalgo.extend(YZit);
+    myXYalgo.extendForward(XYit);
+    myXZalgo.extendForward(XZit);
+    myYZalgo.extendForward(YZit);
     myL = it;
     return true;
   } else return false;

@@ -150,7 +150,7 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
 {
     // now with accessor
     CircleFrom3Points<TPoint> c(cf2p.pole(),cf2p.p(),cf2p.q()); 
-    drawArc(aBoard,c,cf2p.p(),cf2p.q());  
+    drawArc(aBoard,c,cf2p.p(),cf2p.q(),true);  
 }
 // CircleFrom2Points
 
@@ -158,7 +158,7 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
 // CircleFrom3Points
 template <typename Point>
 inline
-void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2)
+void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -176,9 +176,9 @@ void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, con
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;  
     // now with accessor
-        Vector u(cf3p.p() - cf3p.q());
-          Vector v(cf3p.r() - cf3p.p());
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    Vector u(cf3p.p() - cf3p.q());
+    Vector v(cf3p.r() - cf3p.p());
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
     //drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
   } 
@@ -193,7 +193,7 @@ void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, con
 
 template <typename Point>
 inline
-void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2)
+void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -211,17 +211,19 @@ void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, 
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2;
     // now with accessor
-        Vector u(cf3p.p() - cf3p.q());
-          Vector v(cf3p.r() - cf3p.p());
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
-    //sector drawing
+    Vector u(cf3p.p() - cf3p.q());
+    Vector v(cf3p.r() - cf3p.p());
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
+    //arc drawing
     aBoard.drawArc (cx, cy, radius, alpha1, alpha2, orientation); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint1[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint1[1]),
-                   cx, cy ); 
-    aBoard.drawLine(NumberTraits<Coordinate>::castToDouble(aPoint2[0]),
-                   NumberTraits<Coordinate>::castToDouble(aPoint2[1]),
-                   cx, cy ); 
+    //draw the segments tied to the center
+    double fx = cx + radius*std::cos(alpha1);
+    double fy = cy + radius*std::sin(alpha1);
+    double lx = cx + radius*std::cos(alpha2);
+    double ly = cy + radius*std::sin(alpha2);
+    aBoard.drawLine(fx, fy, cx, cy ); 
+    aBoard.drawLine(lx, ly, cx, cy ); 
+
   } 
   catch ( InfiniteNumberException e )
   {
@@ -234,7 +236,7 @@ void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, 
 
 template <typename Point>
 inline
-void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w)
+void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -252,9 +254,9 @@ void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p,
                                 NumberTraits<Coordinate>::castToDouble(aPoint2[0])-cx );
     alpha2 = (alpha2<0)?(alpha2+2.0*M_PI):alpha2; 
     // now with accessor
-        Vector u(cf3p.p() - cf3p.q());
-          Vector v(cf3p.r() - cf3p.p());
-        bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?false:true;
+    Vector u(cf3p.p() - cf3p.q());
+    Vector v(cf3p.r() - cf3p.p());
+    bool orientation = ( ( (u[0] * v[1]) - (u[1] * v[0]) ) < 0 )?(!anOrientation):anOrientation;
     //inner arc
     aBoard.drawArc (cx, cy, radius-w, alpha1, alpha2, orientation); 
     //outer arc
@@ -283,18 +285,18 @@ void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p,
 
 template <typename Point>
 inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2)
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   std::string mode = aBoard.getMode( cf3p.className() );
   ASSERT( (mode=="Arc" || mode=="" || mode=="Sector"|| mode=="Annulus") ||
     ("draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2): Unknown mode "+mode)==""  );
   
   if ( mode == "Arc"  || ( mode == "" )  )
-    drawArc( aBoard, cf3p, aPoint1, aPoint2);
+    drawArc( aBoard, cf3p, aPoint1, aPoint2, anOrientation);
   else if ( mode == "Sector" )
-    drawSector( aBoard, cf3p, aPoint1, aPoint2);
+    drawSector( aBoard, cf3p, aPoint1, aPoint2, anOrientation);
   else if ( mode == "Annulus" )
-    drawAnnulus( aBoard, cf3p, aPoint1, aPoint2);
+    drawAnnulus( aBoard, cf3p, aPoint1, aPoint2, anOrientation);
 }
 
 template <typename TPoint>
@@ -511,6 +513,75 @@ void draw(DGtal::Board2D & aBoard,
 }
 // GeometricalDSS
 
+// GeometricalDCA
+template <typename TConstIterator>
+inline
+void draw(DGtal::Board2D & aBoard,
+          const DGtal::GeometricalDCA<TConstIterator> & g)
+{
+
+  typedef TConstIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+  typedef typename Pair::first_type Point;
+
+  if (g.isValid())
+    {
+      if (!g.isStraight()) 
+	{
+	  typedef typename Point::Coordinate Coordinate; 
+      
+	  //points
+	  Pair firstPair( *g.begin() ); 
+	  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+	  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+	  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+	  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+	  PointVector<2,double> p1( (fx1+fx2)/2.0, (fy1+fy2)/2.0 ); 
+      
+	  ConstIterator it (g.end()); 
+	  --it;
+	  Pair lastPair( *it );  
+	  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+	  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+	  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+	  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+	  PointVector<2,double> p2( (lx1+lx2)/2.0, (ly1+ly2)/2.0 ); 
+
+	  //circle
+	  CircleFrom3Points<Point> separatingCircle = g.getSeparatingCircle(); 
+	  double px = NumberTraits<Coordinate>::castToDouble(separatingCircle.p()[0]);
+	  double py = NumberTraits<Coordinate>::castToDouble(separatingCircle.p()[1]);
+	  double qx = NumberTraits<Coordinate>::castToDouble(separatingCircle.q()[0]);
+	  double qy = NumberTraits<Coordinate>::castToDouble(separatingCircle.q()[1]);
+	  double rx = NumberTraits<Coordinate>::castToDouble(separatingCircle.r()[0]);
+	  double ry = NumberTraits<Coordinate>::castToDouble(separatingCircle.r()[1]);
+	  CircleFrom3Points<PointVector<2,double> > circleToDraw; 
+	  circleToDraw.init( PointVector<2,double>(px,py), 
+			     PointVector<2,double>(qx,qy), 
+			     PointVector<2,double>(rx,ry) ); 
+      
+	  //orientation
+	  ASSERT( g.getGeometricalDSSPtr().get() != 0 ); 
+	  bool orientation = g.getGeometricalDSSPtr()->isClockwiseOriented(); 
+
+	  //mode
+	  std::string mode = aBoard.getMode( g.className() );
+	  if ( mode == "Sector" ) 
+	    drawSector( aBoard, circleToDraw, p1, p2, orientation );
+	  else if ( mode == "Annulus" )
+	    drawAnnulus( aBoard, circleToDraw, p1, p2, orientation );
+	  else 
+	    drawArc( aBoard, circleToDraw, p1, p2, orientation );
+	}
+      else 
+	{
+	  ASSERT( g.getGeometricalDSSPtr().get() != 0 ); 
+	  aBoard << ( *(g.getGeometricalDSSPtr()) );
+	} 
+    }
+
+}
+// GeometricalDCA
 
 // GridCurve
 // we use setStyle because of inner classes
