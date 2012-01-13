@@ -51,7 +51,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::doesIntersectNext
     Segment tmpSegment;
     Iterator previousIt = it; --previousIt;
     tmpSegment.init(previousIt);
-    return tmpSegment.extend(it);
+    return tmpSegment.extendForward(it);
 }
 
 /**
@@ -123,14 +123,14 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegmen
         if (myCov->isClosed) { //if processed as closed 
           //while my segment can be extended at the beginning
           myFront = myCov->myBegin;
-          while (mySegment.extend(myFront)) {
+          while (mySegment.extendForward(myFront)) {
             ++myFront;
           }
           //overlap
           if (myFront == myCov->myBegin) { 
             Iterator tmpIt = myCov->myEnd; --tmpIt;
             Segment tmpSegment; tmpSegment.init(tmpIt);
-            myFlagIntersectNext = tmpSegment.extend(myFront);
+            myFlagIntersectNext = tmpSegment.extendForward(myFront);
           } else {
             myFlagIntersectNext = doesIntersectNext(myFront);
           }
@@ -178,7 +178,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::nextMaximalSegmen
       if (myFront == myCov->myBegin) { 
         Iterator tmpIt = myCov->myEnd; --tmpIt;
         Segment tmpSegment; tmpSegment.init(tmpIt);
-        myFlagIntersectNext = tmpSegment.extend(myFront);
+        myFlagIntersectNext = tmpSegment.extendForward(myFront);
       } else {
         myFlagIntersectNext = doesIntersectNext(myFront);
       }
@@ -206,7 +206,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::
     do {
       ++it;
     } while ( (it != end) && 
-            (aSeg.extend(it)) );
+            (aSeg.extendForward(it)) );
 }
 
 
@@ -223,7 +223,7 @@ DGtal::deprecated::MaximalSegments<TSegment>::SegmentIterator::extension(TypeSeg
 {
   do {
     ++it;
-  } while (aSeg.extend(it));
+  } while (aSeg.extendForward(it));
 }
 
 
@@ -241,13 +241,13 @@ inline
    do {
      ++it;
    } while ( (it != end) && 
-	     (aSeg.extend(it)) );
+	     (aSeg.extendForward(it)) );
     //if it is one-element-past-the end, 
     //go on at the beginning
    if (it == end) {
       it = begin;
       while ( (it != end) && 
-              (aSeg.extend(it)) ) {
+              (aSeg.extendForward(it)) ) {
         ++it;
       }     
     }

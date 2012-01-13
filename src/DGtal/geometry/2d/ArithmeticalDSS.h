@@ -283,7 +283,7 @@ Steps:
      
     /**
      * @deprecated
-     * @see isExtendable()
+     * @see isExtendableForward()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -292,25 +292,25 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable(const ConstIterator & itf);
+    bool isExtendableForward(const ConstIterator & itf);
 
     /**
      * Tests whether the current DSS can be extended at the front.
      *  
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool isExtendable();
+    bool isExtendableForward();
 
     /**
      * Tests whether the current DSS can be extended at the back.
      *  
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool isOppositeEndExtendable();
+    bool isExtendableBackward();
 
     /**
      * @deprecated
-     * @see extend()
+     * @see extendForward()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -321,11 +321,11 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const ConstIterator & itf);
+    bool extendForward(const ConstIterator & itf);
 
     /**
      * @deprecated
-     * @see extendOppositeEnd()
+     * @see extendBackward()
      *
      * Tests whether the union between a point 
      * (adding to the back of the DSS 
@@ -336,35 +336,35 @@ Steps:
      * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendOppositeEnd(const ConstIterator & itb);
+    bool extendBackward(const ConstIterator & itb);
 
     /**
      * Tests whether the current DSS can be extended at the front.
      * Computes the parameters of the extended DSS if yes.
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extend();
+    bool extendForward();
 
     /**
      * Tests whether the current DSS can be extended at the back.
      * Computes the parameters of the extended DSS if yes.
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendOppositeEnd();
+    bool extendBackward();
 
     /**
      * Removes the first point of the DSS (at back) 
      * if it has more than two points
      * @return 'true' if the first point is removed, 'false' otherwise.
      */
-    bool retract();
+    bool retractForward();
 
     /**
      * Removes the last point of the DSS (at front)
      * if it has more than two points
      * @return 'true' if the last point is removed, 'false' otherwise.
      */
-    bool retractOppositeEnd();
+    bool retractBackward();
 
 
 
@@ -542,7 +542,7 @@ Steps:
      *
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable( const Point & lastPoint, 
+    bool isExtendableForward( const Point & lastPoint, 
                                    const Vector & lastMove );
 
     /**
@@ -561,7 +561,7 @@ Steps:
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend( const ConstIterator & it, 
+    bool extendForward( const ConstIterator & it, 
                           ConstIterator & lastIt, 
                           const Vector & lastMove,
                           Point & Uf,  Point & Ul,
@@ -582,7 +582,7 @@ Steps:
      *
      * @return 'true'.
      */
-    bool retract( ConstIterator & firstIt,
+    bool retractForward( ConstIterator & firstIt,
                         ConstIterator & lastIt,
                         ConstIterator & nextIt,       
                         Point & Uf,  Point & Ul,

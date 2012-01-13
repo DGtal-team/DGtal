@@ -75,6 +75,20 @@ namespace DGtal
   CBidirectionalSegmentComputer<T>, 
   CDynamicSegmentComputer<T>
   {
+    // ----------------------- Concept checks ------------------------------
+  public:
+    // Methods
+    BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
+    {
+      ConceptUtils::sameType( myB, myX.retractBackward() );
+    }
+    // ------------------------- Private Datas --------------------------------
+  private:
+    T myX; // only if T is default constructible.
+    bool myB; 
+  
+    // ------------------------- Internals ------------------------------------
+  private:
   }; // end of concept CDynamicBidirectionalSegmentComputer
   
 } // namespace DGtal

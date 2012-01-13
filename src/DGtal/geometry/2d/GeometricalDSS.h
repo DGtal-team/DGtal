@@ -237,7 +237,7 @@ namespace DGtal
      * @return 'true' if the segment is extended
      * and 'false' otherwise.
      */
-    bool extend();
+    bool extendForward();
 
     /**
      * Forward extension test.
@@ -245,7 +245,7 @@ namespace DGtal
      * @return 'true' if the segment can be extended
      * and 'false' otherwise.
      */
-    bool isExtendable();
+    bool isExtendableForward();
 
     /**
      * Decide whether the extension of the segment
@@ -254,7 +254,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a concave part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendable() returns 'false'
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
      */
     bool isConcave();
 
@@ -265,7 +265,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a convex part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isExtendable() returns 'false'
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
      */
     bool isConvex();
 
@@ -275,7 +275,7 @@ namespace DGtal
      * @return 'true' if the segment is extended
      * and 'false' otherwise.
      */
-    bool extendOppositeEnd();
+    bool extendBackward();
 
     /**
      * Backward extension test.
@@ -283,7 +283,7 @@ namespace DGtal
      * @return 'true' if the segment can be extended
      * and 'false' otherwise.
      */
-    bool isOppositeEndExtendable();
+    bool isExtendableBackward();
 
     /**
      * Decide whether the extension of the segment
@@ -292,7 +292,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a concave part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
      */
     bool isOppositeEndConcave();
 
@@ -303,7 +303,7 @@ namespace DGtal
      * @return 'true' if the extension of the segment
      * results in a convex part and 'false' otherwise.
      *
-     * NB: a true returned value implies that isOppositeEndExtendable() returns 'false'
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
      */
     bool isOppositeEndConvex();
 

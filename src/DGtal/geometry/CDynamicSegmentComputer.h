@@ -81,7 +81,7 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> retraction  </td> 
-        <td class=CExpression> x.retract()     </td>
+        <td class=CExpression> x.retractForward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
@@ -107,7 +107,7 @@ namespace DGtal
     // Methods
     BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.retract() );
+      ConceptUtils::sameType( myB, myX.retractForward() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

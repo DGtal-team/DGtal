@@ -74,7 +74,7 @@ bool testTangentFromDSS(
     dss.init(i);
     ++i;
     while ( (i!=end)
-          &&(dss.extend(i)) ) {
+          &&(dss.extendForward(i)) ) {
       ++i;
     }
   }

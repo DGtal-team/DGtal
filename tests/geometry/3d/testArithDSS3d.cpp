@@ -95,7 +95,7 @@ bool testDSSreco()
 
 
     while ( (i!=sequence.end())
-          &&(algo.extend(i)) ) {
+          &&(algo.extendForward(i)) ) {
       trace.info() << "extended with " << (*i) << std::endl;
       ++i;
     }

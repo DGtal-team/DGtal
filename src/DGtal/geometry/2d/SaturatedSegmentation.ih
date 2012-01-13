@@ -65,7 +65,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
     --previousIt;
     SegmentComputer tmpSegmentComputer;
     tmpSegmentComputer.init(previousIt);
-    return tmpSegmentComputer.extend();
+    return tmpSegmentComputer.extendForward();
   } 
   else 
     {
@@ -94,7 +94,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::doesInt
 
     SegmentComputer tmpSegmentComputer;
     tmpSegmentComputer.init(previousIt);
-    return tmpSegmentComputer.extend();
+    return tmpSegmentComputer.extendForward();
 }
 
 
