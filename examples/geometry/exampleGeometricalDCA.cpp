@@ -71,7 +71,7 @@ int main( int argc, char** argv )
   //extension
   s.init( r.begin() );
   while ( ( s.end() != itEnd )
-        &&( s.extend() ) ) {}
+        &&( s.extendForward() ) ) {}
   //! [GeometricalDCAUsage]
 
   trace.info() << s << endl;  

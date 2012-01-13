@@ -173,7 +173,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-     ::extend( const ConstIterator & it, 
+     ::extendForward( const ConstIterator & it, 
                      ConstIterator & lastIt, 
                const Vector & lastMove,
                      Point & Uf,  Point & Ul,
@@ -325,10 +325,10 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const ConstIterator& it)
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward(const ConstIterator& it)
 {
 
-  return extend(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
+  return extendForward(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
 
 }
 
@@ -337,10 +337,10 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend(const ConstItera
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const ConstIterator& it)
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward(const ConstIterator& it)
 {
 
-  return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
+  return extendForward(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
 
 }
 
@@ -349,11 +349,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd(const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendForward()
 {
 
   ConstIterator it(myL); ++it;
-  return extend(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
+  return extendForward(it, myL, (Point(*it) - Point(*myL)), myUf, myUl, myLf, myLl); 
 
 }
 
@@ -361,11 +361,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extend()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendOppositeEnd()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::extendBackward()
 {
 
   ConstIterator it(myF); --it;
-  return extend(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
+  return extendForward(it, myF, (Point(*myF) - Point(*it)), myUl, myUf, myLl, myLf); 
 
 }
 
@@ -375,7 +375,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-     ::retract( ConstIterator & firstIt,
+     ::retractForward( ConstIterator & firstIt,
                 ConstIterator & lastIt,
                 ConstIterator & nextIt,       
                  Point & Uf,  Point & Ul,
@@ -490,7 +490,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractForward()
 {
 
   Vector v = Point(*myL)-Point(*myF);
@@ -498,7 +498,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
     return false;
   } else {                           //otherwise
     ConstIterator next(myF); ++next;
-    return retract(myF, myL, next, myUf, myUl, myLf, myLl, 1);
+    return retractForward(myF, myL, next, myUf, myUl, myLf, myLl, 1);
   }
 }
 
@@ -507,7 +507,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retract()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractBackward()
 {
 
   Vector v = Point(*myL)-Point(*myF);
@@ -515,7 +515,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
     return false;
   } else {                           //otherwise
     ConstIterator previous(myL); --previous;
-    return retract(myL, myF, previous, myUl, myUf, myLl, myLf, -1);
+    return retractForward(myL, myF, previous, myUl, myUf, myLl, myLf, -1);
   }
 }
 
@@ -524,7 +524,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::retractOppositeEnd()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const ConstIterator& it)
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(const ConstIterator& it)
 {
 
   Point lastPoint(*it);
@@ -593,11 +593,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(const Cons
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward()
 {
 
   ConstIterator it(myL); ++it;
-  return isExtendable(*it, (Point(*it) - Point(*myL)) ); 
+  return isExtendableForward(*it, (Point(*it) - Point(*myL)) ); 
 
 }
 
@@ -605,18 +605,18 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable()
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isOppositeEndExtendable()
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableBackward()
 {
 
   ConstIterator it(myF); --it;
-  return isExtendable(*it, (Point(*myF) - Point(*it)) ); 
+  return isExtendableForward(*it, (Point(*myF) - Point(*it)) ); 
 
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendable(
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
    const Point & lastPoint, 
    const Vector & lastMove )
 {

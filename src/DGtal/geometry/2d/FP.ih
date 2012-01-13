@@ -84,9 +84,9 @@ DGtal::FP<TIterator,TInteger,connectivity>
     }
 
     //removing step
-    while (!currentDSS.isExtendable(i)) {
+    while (!currentDSS.isExtendableForward(i)) {
       //remove a point from the back
-      if ( currentDSS.retract() ) {
+      if ( currentDSS.retractForward() ) {
         //store the last leaning point
         if (adapter->lastLeaningPoint() != myPolygon.back()) {
           myPolygon.push_back(adapter->lastLeaningPoint());
@@ -105,7 +105,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
     }    
 
     //adding step
-    while ( (i != end)&&(currentDSS.extend(i)) ) {
+    while ( (i != end)&&(currentDSS.extendForward(i)) ) {
       //store the first leaning point
       if (adapter->firstLeaningPoint() != myPolygon.back()) {
         myPolygon.push_back(adapter->firstLeaningPoint());
@@ -137,7 +137,7 @@ DGtal::FP<TIterator,TInteger,connectivity>
   //std::cerr << currentDSS << std::endl;
 
   //last removing step
-  while (currentDSS.retract()) {
+  while (currentDSS.retractForward()) {
     //store the last leaning point
     if (adapter->lastLeaningPoint() != myPolygon.back()) {
       myPolygon.push_back(adapter->lastLeaningPoint());
@@ -181,12 +181,12 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
 	  Circulator<TIterator> back( citb );
 	  do {
 	    --back; 
-	  } while (firstMS->extendOppositeEnd(back));
+	  } while (firstMS->extendBackward(back));
 	  //forward extension
 	  Circulator<TIterator> front( citb );
 	  do {
 	    ++front; 
-	  } while (firstMS->extend(front));
+	  } while (firstMS->extendForward(front));
 
 	  //local convexity
 	  bool isConvexAtFront; 
@@ -251,7 +251,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::FP(
 	  ASSERT(longestDSS);
 
 	  ++i; //move forward
-	  while ( (i != ite)&&(longestDSS->extend(i)) ) 
+	  while ( (i != ite)&&(longestDSS->extendForward(i)) ) 
 	    {
 	      //store the first upper leaning point
 	      if (longestDSS->getUf() != vTmpU.back()) {

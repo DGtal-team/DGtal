@@ -62,7 +62,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
   --previousIt;
   SegmentComputer tmpSegmentComputer;
   tmpSegmentComputer.init(previousIt);
-  return tmpSegmentComputer.extend();
+  return tmpSegmentComputer.extendForward();
       } 
     else 
       {
@@ -89,7 +89,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
   
   SegmentComputer tmpSegmentComputer;
   tmpSegmentComputer.init(previousIt);
-  return tmpSegmentComputer.extend();
+  return tmpSegmentComputer.extendForward();
 }
 
 
@@ -103,7 +103,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
 
   //while my segmentComputer can be extended
   while ( (mySegmentComputer.end() != myS->myStop)
-    &&(mySegmentComputer.extend()) ) {} 
+    &&(mySegmentComputer.extendForward()) ) {} 
 
   //if the end is reached
   if (mySegmentComputer.end() == myS->myStop) {
@@ -114,10 +114,10 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
     //last extension
     if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) { 
       if (myS->myMode == "Truncate+1") {
-        mySegmentComputer.extend(); 
+        mySegmentComputer.extendForward(); 
       }
       if (myS->myMode == "DoNotTruncate") {
-        while ( (mySegmentComputer.extend())
+        while ( (mySegmentComputer.extendForward())
              && (mySegmentComputer.end() != myS->myEnd) ) {} 
       }
     }

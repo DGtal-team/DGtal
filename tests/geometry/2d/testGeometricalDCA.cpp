@@ -231,13 +231,13 @@ bool testGeometricalDCA(const TCurve& curve)
     ConstIterator itEnd (r.end()); 
 
     s.init( itBegin );
-    while ( (s.end() != itEnd) && (s.isExtendable()) && (s.extend()) ) {}
+    while ( (s.end() != itEnd) && (s.isExtendableForward()) && (s.extendForward()) ) {}
     trace.info() << s << endl; 
 
     ConstIterator itLast (s.end()); --itLast;
       
     t.init( itLast ); 
-    while ( (t.begin() != itBegin) && (t.extendOppositeEnd()) ) {}
+    while ( (t.begin() != itBegin) && (t.extendBackward()) ) {}
     trace.info() << t << endl; 
     
     trace.info() << "backward extension " << endl; 
@@ -247,14 +247,14 @@ bool testGeometricalDCA(const TCurve& curve)
     ConstReverseIterator ritEnd ( itBegin ); 
       
     rs.init( ritBegin );
-    while ( (rs.end() != ritEnd) && (rs.isExtendable()) && (rs.extend()) ) {}
+    while ( (rs.end() != ritEnd) && (rs.isExtendableForward()) && (rs.extendForward()) ) {}
     trace.info() << rs << endl; 
     
     ConstReverseIterator ritLast (rs.end()); --ritLast;
       
     typename GeometricalDCA<ConstIterator>::Reverse rt = t.getReverse(); 
     rt.init( ritLast ); 
-    while ( (rt.begin() != ritBegin) && (rt.extendOppositeEnd()) ) {}
+    while ( (rt.begin() != ritBegin) && (rt.extendBackward()) ) {}
     trace.info() << rt << endl; 
     
     trace.info() << "comparison... " << endl; 

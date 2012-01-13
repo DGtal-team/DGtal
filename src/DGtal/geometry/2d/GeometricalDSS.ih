@@ -337,7 +337,7 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConvex()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isExtendable()
+DGtal::GeometricalDSS<TConstIterator>::isExtendableForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -365,7 +365,7 @@ DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extend()
+DGtal::GeometricalDSS<TConstIterator>::extendForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -404,7 +404,7 @@ DGtal::GeometricalDSS<TConstIterator>::extend()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
+DGtal::GeometricalDSS<TConstIterator>::isExtendableBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -434,7 +434,7 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
+DGtal::GeometricalDSS<TConstIterator>::extendBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
