@@ -134,7 +134,7 @@ namespace DGtal
 
     /**
      * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
+     * with a 'object.className()').
      *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.

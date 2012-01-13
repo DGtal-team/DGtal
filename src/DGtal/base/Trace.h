@@ -145,6 +145,15 @@ namespace DGtal
      */
     std::ostream &  emphase() const;
 
+    /** 
+     * Display a progress bar in the terminal.
+     * 
+     * @param currentValue current step of the progress bar
+     * @param maximalValue expected maximal value
+     */
+    void progressBar(const int currentValue, const int maximalValue) const;
+    
+
    // ----------------------- Interface --------------------------------------
   public:
 

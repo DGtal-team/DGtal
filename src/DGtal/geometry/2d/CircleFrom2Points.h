@@ -148,24 +148,42 @@ namespace DGtal
      * @param r  returned radius of the circle
      */
     void getParameters(double& cx, double& cy, double& r) const;
+    
+    /**
+     * @return the first (and not mutable) point through which the circle passes.
+     */
+    const Point & pole() const
+    {
+      return myPole;
+    };
+    
+    /**
+     * @return the second point through which the circle passes.
+     */
+    const Point & p() const
+    {
+      return myP;
+    };
+    
+    /**
+     * @return the third point through which the circle passes.
+     */
+    const Point & q() const
+    {
+      return myQ;
+    };
 
     //------------------ display -------------------------------
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
+    std::string className() const;
     
     // ------------------------- Protected Datas ------------------------------
   private:

@@ -114,28 +114,11 @@ DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
 
 template <typename TPoint>
 inline
-DGtal::DrawableWithBoard2D*
-DGtal::StraightLineFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DrawableWithBoard2D; 
-}
-
-template <typename TPoint>
-inline
 std::string
-DGtal::StraightLineFrom2Points<TPoint>::styleName() const
+DGtal::StraightLineFrom2Points<TPoint>::className() const
 {
   return "StraightLineFrom2Points";
 }
-
-template <typename TPoint>
-inline
-void 
-DGtal::StraightLineFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
-{
-  aBoard.drawLine(myP[0],myP[1],myQ[0],myQ[1]);
-}
-
 
 template <typename TPoint>
 inline

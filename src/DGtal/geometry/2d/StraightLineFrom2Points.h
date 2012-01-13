@@ -139,25 +139,35 @@ namespace DGtal
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
+    
+    /**
+     * @return the first point through which the straight line passes.
+     */
+    const Point & p() const
+    {
+      return myP;
+    };
+    
+    /**
+     * @return the second point through which the straight line passes.
+     */
+    const Point & q() const
+    {
+      return myQ;
+    };
 
     //------------------ display -------------------------------
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
-    
+    std::string className() const;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------

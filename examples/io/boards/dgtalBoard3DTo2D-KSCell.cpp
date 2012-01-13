@@ -59,7 +59,7 @@ int main()
   Domain domain( plow, pup );
   K.init( plow, pup, true );
 
-  //board << SetMode3D( domain.styleName(), "Paving" );
+  //board << SetMode3D( domain.className(), "Paving" );
   //board << domain; 
 
   // Drawing cell of dimension 3
@@ -109,7 +109,7 @@ int main()
     << CameraDirection(-0.605129, -0.454197, 0.653853)
     << CameraUpVector(0.516135, -0.84913, -0.112173);
 
-  //board << SetMode3D(board.styleName(), "WireFrameMode");
+  //board << SetMode3D(board.className(), "WireFrameMode");
   board.saveCairo("dgtalBoard3DTo2D-KSCell.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //

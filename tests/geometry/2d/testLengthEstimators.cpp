@@ -111,7 +111,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   if ( ! ok )
     {
       std::cerr << " "
-    << " error in creating KSpace." << std::endl;
+                << " error in creating KSpace." << std::endl;
       return false;
     }
   try {
@@ -152,19 +152,19 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     trace.info() << "#Estimations" <<std::endl;
     trace.info() << "#h true naive 1-sqrt(2) BLUE RosenProffitt DSS MLP FP " <<std::endl;
     trace.info() << h << " " << trueValue  
-     << " " << l1length.eval() 
-     << " " << locallength.eval() 
-     << " " << BLUElength.eval() 
-     << " " << RosenProffittlength.eval() 
-     <<  " " << DSSlength.eval() 
-     << " " << MLPlength.eval() 
-     <<  " " << FPlength.eval() << std::endl;
+                 << " " << l1length.eval() 
+                 << " " << locallength.eval() 
+                 << " " << BLUElength.eval() 
+                 << " " << RosenProffittlength.eval() 
+                 <<  " " << DSSlength.eval() 
+                 << " " << MLPlength.eval() 
+                 <<  " " << FPlength.eval() << std::endl;
 
   }    
   catch ( InputException e )
     {
       std::cerr << " "
-    << " error in finding a bel." << std::endl;
+                << " error in finding a bel." << std::endl;
       return false;
     }
 
@@ -173,17 +173,18 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   return true;
 }
 
-/*
+
+
 bool testDisplay(double radius, double h)
 {
 
   // Types
-  typedef Ball2D<Space> Shape;
-  typedef Space::Point Point;
-  typedef Space::RealPoint RealPoint;
-  typedef Space::Integer Integer;
-  typedef HyperRectDomain<Space> Domain;
-  typedef KhalimskySpaceND<Space::dimension,Integer> KSpace;
+  typedef Ball2D<Z2i::Space> Shape;
+  typedef Z2i::Space::Point Point;
+  typedef Z2i::Space::RealPoint RealPoint;
+  typedef Z2i::Space::Integer Integer;
+  typedef HyperRectDomain<Z2i::Space> Domain;
+  typedef KhalimskySpaceND<Z2i::Space::dimension,Integer> KSpace;
   typedef KSpace::SCell SCell;
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
@@ -199,7 +200,7 @@ bool testDisplay(double radius, double h)
   // Window for the estimation
   RealPoint xLow ( -radius-1, -radius-1 );
   RealPoint xUp( radius+1, radius+1 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Z2i::Space,Shape> dig;  
   dig.attach( aShape ); // attaches the shape.
   dig.init( xLow, xUp, h ); 
   // The domain size is given by the digitizer according to the window
@@ -211,11 +212,11 @@ bool testDisplay(double radius, double h)
   if ( ! ok )
     {
       std::cerr << " "
-    << " error in creating KSpace." << std::endl;
+                << " error in creating KSpace." << std::endl;
       return false;
     }
   try {
-
+      
     // Extracts shape boundary
     SurfelAdjacency<KSpace::dimension> SAdj( true );
     SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
@@ -227,17 +228,16 @@ bool testDisplay(double radius, double h)
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromVector( points );
     trace.info() << "#grid curve created, h=" << h << endl;
-
+    
     //ranges
     ArrowsRange ra = gridcurve.getArrowsRange(); 
     PointsRange rp = gridcurve.getPointsRange(); 
     SCellsRange rc = gridcurve.get1SCellsRange(); 
-  
+    
     //Explicit reshaping for drawing purposes
     Z2i::DigitalSet set(domain);
-    Shapes<Z2i::Domain>::shaper( set,
-         Shape(Point(0,0), radius/h));
- 
+    Shapes<Z2i::Domain>::euclideanShaper( set, Shape(Point(0,0), radius/h));
+         
     Board2D board;
     
     board << domain << set;
@@ -247,7 +247,7 @@ bool testDisplay(double radius, double h)
     board << domain;
     
     for( PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
-  it != ite; ++it)
+         it != ite; ++it)
       board << (*it);
     board.saveSVG( "Ranges-Points.svg" );
     
@@ -256,21 +256,21 @@ bool testDisplay(double radius, double h)
     board << domain;
     
     for( SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
-  it != ite; ++it)
+         it != ite; ++it)
       board << (*it);
     board.saveSVG( "Ranges-SCells.svg" );
     
 
     board.clear();
     board << domain;
-    Space::Vector shift;
+    Z2i::Space::Vector shift;
     board.setPenColor( Color::Black );
     for(  ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
-   it != itend;   
-   ++it)
+          it != itend;   
+          ++it)
       {
-  shift =   (*it).second ;
-  shift.selfDraw(board, (*it).first );
+        shift =   (*it).second ;
+        draw(board, shift, (*it).first );
       }
 
     board.saveSVG( "Ranges-Arrows.svg" );
@@ -279,7 +279,7 @@ bool testDisplay(double radius, double h)
   catch ( InputException e )
     {
       std::cerr << " "
-    << " error in finding a bel." << std::endl;
+                << " error in finding a bel." << std::endl;
       return false;
     }
 
@@ -287,8 +287,6 @@ bool testDisplay(double radius, double h)
 
   return true;
 }
-
-*/
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -306,8 +304,8 @@ int main( int argc, char** argv )
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)
     && testLengthEstimatorsOnBall(r,0.001)
-    //&& testDisplay(r,0.9);
-;
+    && testDisplay(r,0.9);
+  ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

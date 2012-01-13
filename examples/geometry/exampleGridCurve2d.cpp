@@ -37,6 +37,7 @@
 #include "DGtal/geometry/2d/GridCurve.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -168,7 +169,7 @@ int main( int argc, char** argv )
       
       trace.info() << r << endl;
       
-      aBoard << SetMode(aDomain.styleName(), "Grid") << aDomain; 
+      aBoard << SetMode(aDomain.className(), "Grid") << aDomain; 
       aBoard << r; 
       aBoard.saveEPS( "My1CellsRange.eps", Board2D::BoundingBox, 5000 );
       aBoard.clear(); 
@@ -179,7 +180,7 @@ int main( int argc, char** argv )
       
       trace.info() << r << endl;
       
-      aBoard << SetMode(aDomain.styleName(), "Grid") << aDomain; 
+      aBoard << SetMode(aDomain.className(), "Grid") << aDomain; 
       aBoard << r; 
       aBoard.saveEPS( "MyIncidentPointsRange.eps", Board2D::BoundingBox, 5000 );
       //! [GridCurveIncidentPointsRangeIO]

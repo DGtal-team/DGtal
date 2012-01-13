@@ -64,7 +64,7 @@ int main(int argc, char **argv)
   
   DGtal::Z3i::DigitalSet mySet(domain);
   
-  DGtal::Shapes<DGtal::Z3i::Domain>::shaper( mySet, myCube);
+  DGtal::Shapes<DGtal::Z3i::Domain>::euclideanShaper( mySet, myCube);
 
 
   viewer.show();
