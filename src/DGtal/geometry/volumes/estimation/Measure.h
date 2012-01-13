@@ -180,7 +180,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/estimations/Measure.ih"
+#include "DGtal/geometry/volumes/estimation/Measure.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

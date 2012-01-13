@@ -34,7 +34,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/ShapeFactory.h"
 
-#include "DGtal/geometry/volumes/estimations/Measure.h"
+#include "DGtal/geometry/volumes/estimation/Measure.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
