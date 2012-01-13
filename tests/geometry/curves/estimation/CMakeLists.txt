@@ -1,22 +1,8 @@
 SET(DGTAL_TESTS_SRC
-  testArithDSS
-  testFreemanChain
-  testDecomposition  
-  testSegmentation
-  testHalfPlane
-  testPreimage
-  testMaximalSegments
-  testFP
-  testGridCurve
   testLengthEstimators
   testTrueLocalEstimator
   testSegmentComputerFunctor
   testMostCenteredMSEstimator
-  testBinomialConvolver
-  testCombinDSS
-  testShapesFromPoints
-  testGeometricalDSS
-  testGeometricalDCA
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
