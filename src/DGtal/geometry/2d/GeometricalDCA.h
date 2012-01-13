@@ -207,6 +207,19 @@ namespace DGtal
     ConstIterator end() const;
 
     //------------------ accessors -------------------------------
+
+    /**
+     * @return boolean equal to 'true' is the segment is
+     * straight (infinite radius) and 'false' otherwise.
+     */
+    bool isStraight() const;
+
+    /**
+     * @return a cow pointer on the GeometricalDSS used
+     * during the initialization step.
+     * @see isStraight
+     */
+    GeometricalDSSPtr getGeometricalDSSPtr() const;
     
     /**
      * @return a separating circle.
@@ -256,22 +269,12 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
-     * @return the style name used for drawing this object.
+     * @return the name of the class.
      */
-    std::string styleName() const;
+    std::string className() const;
     
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -336,23 +339,6 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    /**
-     * Default drawing style for GeometricalDCA.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the GeometricalDCA on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
 
   }; // end of class GeometricalDCA
 

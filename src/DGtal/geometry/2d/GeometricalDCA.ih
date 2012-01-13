@@ -175,6 +175,22 @@ DGtal::GeometricalDCA<TConstIterator>::end() const
 
 template <typename TConstIterator>
 inline
+bool
+DGtal::GeometricalDCA<TConstIterator>::isStraight() const
+{
+  return !myFlagIsInit; 
+}
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDCA<TConstIterator>::GeometricalDSSPtr
+DGtal::GeometricalDCA<TConstIterator>::getGeometricalDSSPtr() const
+{
+  return mySegPtr; 
+}
+
+template <typename TConstIterator>
+inline
 typename DGtal::GeometricalDCA<TConstIterator>::Circle
 DGtal::GeometricalDCA<TConstIterator>::getSeparatingCircle() const
 {
@@ -590,84 +606,75 @@ DGtal::GeometricalDCA<TConstIterator>::selfDisplay ( std::ostream & out ) const
   out << "[end of GeometricalDCA]" << std::endl;
 }
 
-
-template <typename TConstIterator>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::GeometricalDCA<TConstIterator>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DefaultDrawStyle(); 
-}
-
 template <typename TConstIterator>
 inline
 std::string
-DGtal::GeometricalDCA<TConstIterator>::styleName() const
+DGtal::GeometricalDCA<TConstIterator>::className() const
 {
   return "GeometricalDCA";
 }
 
-template <typename TConstIterator>
-inline
-void 
-DGtal::GeometricalDCA<TConstIterator>::selfDraw(Board2D & aBoard) const
-{
+// template <typename TConstIterator>
+// inline
+// void 
+// DGtal::GeometricalDCA<TConstIterator>::selfDraw(Board2D & aBoard) const
+// {
 
-  if (isValid())
-  {
-    if (myFlagIsInit) 
-    {
-      typedef typename Point::Coordinate Coordinate; 
+//   if (isValid())
+//   {
+//     if (myFlagIsInit) 
+//     {
+//       typedef typename Point::Coordinate Coordinate; 
       
-      //points
-      Pair firstPair( *myBegin ); 
-      double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
-      double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
-      double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
-      double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
-      PointVector<2,double> p1( (fx1+fx2)/2.0, (fy1+fy2)/2.0 ); 
+//       //points
+//       Pair firstPair( *myBegin ); 
+//       double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
+//       double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
+//       double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
+//       double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
+//       PointVector<2,double> p1( (fx1+fx2)/2.0, (fy1+fy2)/2.0 ); 
       
-      ConstIterator it (myEnd); 
-      --it;
-      Pair lastPair( *it );  
-      double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
-      double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
-      double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
-      double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
-      PointVector<2,double> p2( (lx1+lx2)/2.0, (ly1+ly2)/2.0 ); 
+//       ConstIterator it (myEnd); 
+//       --it;
+//       Pair lastPair( *it );  
+//       double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
+//       double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
+//       double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
+//       double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
+//       PointVector<2,double> p2( (lx1+lx2)/2.0, (ly1+ly2)/2.0 ); 
 
-      //circle
-      double px = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[0]);
-      double py = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[1]);
-      double qx = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[0]);
-      double qy = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[1]);
-      double rx = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[0]);
-      double ry = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[1]);
-      CircleFrom3Points<PointVector<2,double> > circleToDraw; 
-      circleToDraw.init( PointVector<2,double>(px,py), 
-                                  PointVector<2,double>(qx,qy), 
-                                  PointVector<2,double>(rx,ry) ); 
+//       //circle
+//       double px = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[0]);
+//       double py = NumberTraits<Coordinate>::castToDouble(myCircle.getP()[1]);
+//       double qx = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[0]);
+//       double qy = NumberTraits<Coordinate>::castToDouble(myCircle.getQ()[1]);
+//       double rx = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[0]);
+//       double ry = NumberTraits<Coordinate>::castToDouble(myCircle.getR()[1]);
+//       CircleFrom3Points<PointVector<2,double> > circleToDraw; 
+//       circleToDraw.init( PointVector<2,double>(px,py), 
+//                                   PointVector<2,double>(qx,qy), 
+//                                   PointVector<2,double>(rx,ry) ); 
       
-      //orientation
-      ASSERT( mySegPtr.get() != 0 ); 
-      bool orientation = mySegPtr->isClockwiseOriented(); 
+//       //orientation
+//       ASSERT( mySegPtr.get() != 0 ); 
+//       bool orientation = mySegPtr->isClockwiseOriented(); 
       
-      //mode
-      std::string mode = aBoard.getMode( styleName() );
-      if ( mode == "Sector" ) 
-        circleToDraw.drawSector( aBoard, p1, p2, orientation );
-      else if ( mode == "Annulus" )
-        circleToDraw.drawAnnulus( aBoard, p1, p2, orientation );
-      else 
-        circleToDraw.drawArc( aBoard, p1, p2, orientation );
-    }
-    else 
-    {
-      ASSERT( mySegPtr.get() != 0 ); 
-      aBoard << (*mySegPtr);
-    } 
-  }
-}
+//       //mode
+//       std::string mode = aBoard.getMode( styleName() );
+//       if ( mode == "Sector" ) 
+//         circleToDraw.drawSector( aBoard, p1, p2, orientation );
+//       else if ( mode == "Annulus" )
+//         circleToDraw.drawAnnulus( aBoard, p1, p2, orientation );
+//       else 
+//         circleToDraw.drawArc( aBoard, p1, p2, orientation );
+//     }
+//     else 
+//     {
+//       ASSERT( mySegPtr.get() != 0 ); 
+//       aBoard << (*mySegPtr);
+//     } 
+//   }
+// }
 
 
 ///////////////////////////////////////////////////////////////////////////////

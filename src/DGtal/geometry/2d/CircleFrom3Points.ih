@@ -156,9 +156,9 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
     c = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
 
-		rr = ( ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c)) );
+    rr = ( ( std::sqrt(a)/std::abs(areaD) )*std::sqrt(b)*std::sqrt(c) );
 
-
+  }
 }
 
 template <typename TPoint>
@@ -186,29 +186,7 @@ DGtal::CircleFrom3Points<TPoint>::getCurvature() const
   return ( areaD/std::sqrt(a)*std::sqrt(b)*std::sqrt(c) );
 }
 
-template <typename TPoint>
-inline
-typename DGtal::CircleFrom3Points<TPoint>::Point
-DGtal::CircleFrom3Points<TPoint>::getP() const
-{
-  return myP; 
-}
 
-template <typename TPoint>
-inline
-typename DGtal::CircleFrom3Points<TPoint>::Point
-DGtal::CircleFrom3Points<TPoint>::getQ() const
-{
-  return myQ; 
-}
-
-template <typename TPoint>
-inline
-typename DGtal::CircleFrom3Points<TPoint>::Point
-DGtal::CircleFrom3Points<TPoint>::getR() const
-{
-  return myR; 
-}
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

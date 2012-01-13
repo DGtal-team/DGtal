@@ -145,6 +145,11 @@ namespace DGtal
      */
 
     void getParameters(double& cx, double& cy, double& rr) const;
+
+    /**
+     * @return circle curvature
+     */
+    double getCurvature() const;
     
     /**
      * @return the first point through which the circle passes.
@@ -172,11 +177,12 @@ namespace DGtal
 
 
     //------------------ display -------------------------------
+
     /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
      */
-    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    void selfDisplay ( std::ostream & out ) const;
     
     /**
      * @return the style name used for drawing this object.

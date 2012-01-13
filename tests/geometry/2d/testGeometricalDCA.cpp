@@ -356,7 +356,7 @@ bool testSegmentation(const TCurve& curve)
     unsigned int n = 0; 
     unsigned int suml = 0; 
     for ( ; it != itEnd; ++it, ++n) {
-      board << SetMode(SegmentComputer().styleName(), "Sector")
+      board << SetMode(SegmentComputer().className(), "Sector")
                 << (*it); 
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
         suml += 1; 
@@ -386,7 +386,7 @@ bool testSegmentation(const TCurve& curve)
     unsigned int n = 0; 
     unsigned int suml = 0; 
     for ( ; it != itEnd; ++it, ++n) {
-      board << SetMode(SegmentComputer().styleName(), "Annulus")
+      board << SetMode(SegmentComputer().className(), "Annulus")
                 << (*it); 
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
         suml += 1; 
