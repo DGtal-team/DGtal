@@ -40,7 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

@@ -34,8 +34,8 @@
 #include <iostream>
 #include <fstream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/CombinatorialDSS.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/CombinatorialDSS.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "ConfigTest.h"
 #include <time.h>
 

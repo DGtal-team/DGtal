@@ -43,8 +43,8 @@
 #include <iostream>
 #include <list>
 
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
-#include "DGtal/geometry/2d/MaximalSegments.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/representation/MaximalSegments.h"
 
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
@@ -196,7 +196,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.ih"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

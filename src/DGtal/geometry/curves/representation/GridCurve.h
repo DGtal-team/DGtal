@@ -333,7 +333,7 @@ namespace DGtal
 
     ///////////////////////////////////////////////////////////////////////////////
     // Includes range inner types.
-    #include "DGtal/geometry/2d/GridCurveRanges.ih"
+    #include "DGtal/geometry/curves/representation/GridCurveRanges.ih"
 
     /**
      * Accessor to the range of signed 0-cells
@@ -426,7 +426,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/2d/GridCurve.ih"
+#include "DGtal/geometry/curves/representation/GridCurve.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

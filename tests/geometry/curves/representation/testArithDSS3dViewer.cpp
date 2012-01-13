@@ -46,9 +46,9 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "../examples/ConfigExamples.h"
 
-#include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
-#include "DGtal/geometry/2d/MaximalSegments.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/representation/MaximalSegments.h"
 
 
 using namespace std;

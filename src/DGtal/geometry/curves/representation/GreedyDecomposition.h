@@ -430,7 +430,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/GreedyDecomposition.ih"
+#include "DGtal/geometry/curves/representation/GreedyDecomposition.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

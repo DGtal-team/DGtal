@@ -53,7 +53,7 @@
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
-#include "DGtal/geometry/2d/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -775,7 +775,7 @@ operator<< ( std::ostream & out,  ArithmeticalDSS<TIterator,TInteger,connectivit
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/2d/ArithmeticalDSS.ih"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

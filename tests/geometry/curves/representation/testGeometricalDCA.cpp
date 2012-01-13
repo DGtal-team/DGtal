@@ -40,18 +40,18 @@
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/nd/GaussDigitizer.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 //Segment computer and DCA
-#include "DGtal/geometry/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
-#include "DGtal/geometry/2d/GeometricalDCA.h"
+#include "DGtal/geometry/curves/representation/GeometricalDCA.h"
 
-#include "DGtal/geometry/2d/SegmentComputerUtils.h"
-#include "DGtal/geometry/2d/GreedySegmentation.h"
-#include "DGtal/geometry/2d/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
 
 #include "ConfigTest.h"

@@ -45,8 +45,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/OrderedAlphabet.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -525,7 +525,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/CombinatorialDSS.ih"
+#include "DGtal/geometry/curves/representation/CombinatorialDSS.ih"
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

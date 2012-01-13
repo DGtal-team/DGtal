@@ -35,7 +35,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "ConfigTest.h"

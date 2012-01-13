@@ -45,8 +45,8 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/geometry/3d/ArithmeticalDSS3d.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
 
 using namespace DGtal;
 using namespace std;

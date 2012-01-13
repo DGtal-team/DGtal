@@ -45,10 +45,10 @@
 #include <boost/static_assert.hpp>
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/geometry/2d/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
 
-#include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
+#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -384,7 +384,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/GeometricalDSS.ih"
+#include "DGtal/geometry/curves/representation/GeometricalDSS.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -47,7 +47,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/geometry/2d/CircleFrom3Points.h"
+#include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -241,7 +241,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/CircleFrom2Points.ih"
+#include "DGtal/shapes/fromPoints/CircleFrom2Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

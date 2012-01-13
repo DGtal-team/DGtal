@@ -220,7 +220,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/StraightLineFrom2Points.ih"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

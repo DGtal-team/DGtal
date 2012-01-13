@@ -32,15 +32,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
-#include "DGtal/geometry/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
-#include "DGtal/geometry/2d/GeometricalDSS.h"
+#include "DGtal/geometry/curves/representation/GeometricalDSS.h"
 
-#include "DGtal/geometry/2d/GreedySegmentation.h"
-#include "DGtal/geometry/2d/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
 
 #include "ConfigTest.h"

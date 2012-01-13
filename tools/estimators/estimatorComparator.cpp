@@ -51,21 +51,21 @@
 #include "DGtal/topology/helpers/Surfaces.h"
 
 //Digitizer
-#include "DGtal/geometry/nd/GaussDigitizer.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 
 //Estimators
-#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/geometry/2d/BinomialConvolver.h"
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/evolution/BinomialConvolver.h"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 
 using namespace DGtal;
 

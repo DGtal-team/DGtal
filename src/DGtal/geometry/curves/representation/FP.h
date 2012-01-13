@@ -44,7 +44,7 @@
 #include <list>
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
@@ -441,7 +441,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/FP.ih"
+#include "DGtal/geometry/curves/representation/FP.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

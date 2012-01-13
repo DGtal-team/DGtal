@@ -51,14 +51,14 @@
 //! [imageGridCurveEstimator-trackingIncludes]
 
 //! [imageGridCurveEstimator-estimatorIncludes]
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/DSSLengthEstimator.h"
 //! [imageGridCurveEstimator-estimatorIncludes]
 
 //display
 #include "DGtal/io/boards/Board2D.h"
 
 //segmentation
-#include "DGtal/geometry/2d/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

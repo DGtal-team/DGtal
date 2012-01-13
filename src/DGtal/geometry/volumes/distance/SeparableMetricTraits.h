@@ -370,7 +370,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.ih"
+#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

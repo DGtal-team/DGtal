@@ -34,7 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/io/boards/Board2D.h"

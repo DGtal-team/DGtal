@@ -44,13 +44,13 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/geometry/2d/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
 
-#include "DGtal/geometry/2d/GeometricalDSS.h"
-#include "DGtal/geometry/2d/CircleFrom2Points.h"
-#include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/CircleFrom3Points.h"
-#include "DGtal/geometry/2d/Point2ShapePredicate.h"
+#include "DGtal/geometry/curves/representation/GeometricalDSS.h"
+#include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
+#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
+#include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -358,7 +358,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/GeometricalDCA.ih"
+#include "DGtal/geometry/curves/representation/GeometricalDCA.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
