@@ -35,7 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/2d/GeometricalDCA.h"
+#include "DGtal/geometry/curves/representation/GeometricalDCA.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 

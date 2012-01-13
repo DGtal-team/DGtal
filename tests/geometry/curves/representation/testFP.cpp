@@ -34,8 +34,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/FP.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/FP.h"
 #include "DGtal/io/boards/Board2D.h"
 
 #include "ConfigTest.h"

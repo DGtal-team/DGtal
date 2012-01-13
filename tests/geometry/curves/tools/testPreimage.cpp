@@ -48,11 +48,11 @@
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
-#include "DGtal/geometry/2d/Preimage2D.h"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/geometry/curves/tools/Preimage2D.h"
 
 
 #include "ConfigTest.h"

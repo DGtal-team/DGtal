@@ -45,7 +45,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/io/boards/Board2D.h"
 
 using namespace DGtal;

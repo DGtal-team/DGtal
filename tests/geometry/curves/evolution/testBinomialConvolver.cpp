@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/2d/BinomialConvolver.h"
+#include "DGtal/geometry/curves/evolution/BinomialConvolver.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

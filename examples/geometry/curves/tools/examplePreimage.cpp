@@ -34,9 +34,9 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
-#include "DGtal/geometry/2d/CircleFrom2Points.h"
+#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 
 #include "DGtal/io/boards/Board2D.h"
 

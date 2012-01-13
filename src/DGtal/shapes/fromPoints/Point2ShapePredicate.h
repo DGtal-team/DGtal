@@ -288,7 +288,7 @@ operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/Point2ShapePredicate.ih"
+#include "DGtal/shapes/fromPoints/Point2ShapePredicate.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

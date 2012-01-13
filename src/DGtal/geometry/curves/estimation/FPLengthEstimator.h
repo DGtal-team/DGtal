@@ -48,7 +48,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/FP.h"
+#include "DGtal/geometry/curves/representation/FP.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -179,7 +179,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/estimators/FPLengthEstimator.ih"
+#include "DGtal/geometry/curves/estimation/FPLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -50,8 +50,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -185,7 +185,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.ih"
+#include "DGtal/geometry/curves/estimation/DSSLengthEstimator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

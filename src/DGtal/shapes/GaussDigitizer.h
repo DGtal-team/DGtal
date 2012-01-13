@@ -284,7 +284,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/GaussDigitizer.ih"
+#include "DGtal/shapes/GaussDigitizer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

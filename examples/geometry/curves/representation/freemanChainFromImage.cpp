@@ -40,7 +40,7 @@
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
 #include "DGtal/base/BasicTypes.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"

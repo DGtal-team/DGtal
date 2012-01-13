@@ -43,8 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/2d/SegmentComputerUtils.h"
-#include "DGtal/geometry/CForwardSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/representation/CForwardSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -527,7 +527,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/SaturatedSegmentation.ih"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

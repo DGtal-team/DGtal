@@ -36,9 +36,9 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
 #include "ConfigExamples.h"
 

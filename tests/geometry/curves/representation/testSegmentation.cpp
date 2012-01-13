@@ -49,10 +49,10 @@
 
 #include "DGtal/base/Circulator.h"
 
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GreedySegmentation.h"
-#include "DGtal/geometry/2d/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
 
 #include "ConfigTest.h"

@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/CTrivialSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CTrivialSegmentComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

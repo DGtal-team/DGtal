@@ -51,7 +51,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/base/Modifier.h"
 
@@ -271,7 +271,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/3d/ArithmeticalDSS3d.ih"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

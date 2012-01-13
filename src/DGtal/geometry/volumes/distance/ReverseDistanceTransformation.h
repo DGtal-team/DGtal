@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/images/CImageContainer.h"
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -224,7 +224,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/volumetric/ReverseDistanceTransformation.ih"
+#include "DGtal/geometry/volumes/distance/ReverseDistanceTransformation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

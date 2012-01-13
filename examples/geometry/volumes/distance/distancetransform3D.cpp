@@ -47,8 +47,8 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 
 #include "ConfigExamples.h"

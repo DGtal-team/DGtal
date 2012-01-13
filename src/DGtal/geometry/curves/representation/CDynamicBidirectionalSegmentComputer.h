@@ -42,8 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/CBidirectionalSegmentComputer.h"
-#include "DGtal/geometry/CDynamicSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CDynamicSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

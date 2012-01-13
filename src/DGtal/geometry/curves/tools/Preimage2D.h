@@ -44,7 +44,7 @@
 #include <list>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/OpInSTLContainers.h"
-#include "DGtal/geometry/2d/Point2ShapePredicate.h"
+#include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -441,7 +441,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/Preimage2D.ih"
+#include "DGtal/geometry/curves/tools/Preimage2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

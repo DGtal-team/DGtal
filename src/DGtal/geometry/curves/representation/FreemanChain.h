@@ -1198,7 +1198,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods.
-#include "DGtal/geometry/2d/FreemanChain.ih"
+#include "DGtal/geometry/curves/representation/FreemanChain.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

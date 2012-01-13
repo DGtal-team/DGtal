@@ -246,7 +246,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/2d/CircleFrom3Points.ih"
+#include "DGtal/shapes/fromPoints/CircleFrom3Points.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

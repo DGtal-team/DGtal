@@ -52,7 +52,7 @@
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -275,7 +275,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.ih"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

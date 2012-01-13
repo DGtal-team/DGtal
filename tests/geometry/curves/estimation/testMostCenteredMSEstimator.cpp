@@ -46,9 +46,9 @@
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
-#include "DGtal/geometry/2d/GridCurve.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 
 
 #include "ConfigTest.h"
