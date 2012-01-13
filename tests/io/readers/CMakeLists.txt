@@ -7,7 +7,7 @@ SET(DGTAL_TESTS_SRC_IO_READERS
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${LIBBOARD_NAME})
+  target_link_libraries (${FILE} DGtal DGtalIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -20,7 +20,7 @@ IF(MAGICK++_FOUND)
 
   FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_Magick})
     add_executable(${FILE} ${FILE})
-    target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
+    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
     add_test(${FILE} ${FILE})
   ENDFOREACH(FILE)
 

@@ -102,18 +102,18 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    Point getLowerBound() const
+    RealPoint2D getLowerBound() const
     {
-      return Point(myCenter[0] - myRadius, myCenter[1] - myRadius);
+      return RealPoint2D(myCenter[0] - myRadius, myCenter[1] - myRadius);
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    Point getUpperBound() const
+    RealPoint2D getUpperBound() const
     {
-      return Point(myCenter[0] + myRadius, myCenter[1] + myRadius);
+      return RealPoint2D(myCenter[0] + myRadius, myCenter[1] + myRadius);
     }
 
     /**

@@ -157,12 +157,12 @@ This example should provides a comparable visualization.
 *
 * \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
 *
-*  As for Board2D, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c styleName() on an instance of the correct type and the desired mode (a string).
+*  As for Board2D, a mode can be choosed to display elements (\c SetMode3D). You just have to specify the classname (the easiest way is to call the method  \c className() on an instance of the correct type and the desired mode (a string).
 *
 *
 *@code
  Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.styleName(), "DrawAdjacencies" );
+ viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
  viewer << shape;
 @endcode
 * 
@@ -170,7 +170,7 @@ This example should provides a comparable visualization.
 *
 @code
  Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
+ viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
  viewer << shape2;
 @endcode
 
@@ -235,7 +235,7 @@ without mode change (see image (a)):
 We can change the mode for displaying the domain (see image (b)):
 @code
  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
- viewer << SetMode3D(domain.styleName(), "PavingGrids");
+ viewer << SetMode3D(domain.className(), "PavingGrids");
  viewer << domain;
 @endcode
 (Note that to avoid transparency displaying artifacts, we need to
@@ -245,7 +245,7 @@ display the domain after the voxel elements included in the domain)
 It is also possible to change the mode for displaying the voxels: (see image (c))
 @code 
 viewer << domain;
-viewer <<  SetMode3D( p1.styleName(), "Grid" );
+viewer <<  SetMode3D( p1.className(), "Grid" );
 viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 @endcode
 *

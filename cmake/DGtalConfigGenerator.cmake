@@ -1,9 +1,9 @@
 
 
-export(TARGETS  ${LIBDGTAL_NAME} FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
+export(TARGETS  DGtal FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 
 if ( WITH_VISU3D )
-  export(TARGETS  ${LIBDGTALVISU3D_NAME} APPEND FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
+  export(TARGETS   DGtalIO APPEND FILE "${PROJECT_BINARY_DIR}/DGtalLibraryDepends.cmake")
 endif( WITH_VISU3D )
 
 # Export the package for use from the build-tree

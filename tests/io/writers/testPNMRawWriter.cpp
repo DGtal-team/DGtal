@@ -40,7 +40,7 @@
 
 #include "DGtal/io/writers/PNMWriter.h"
 #include "DGtal/io/writers/RawWriter.h"
-
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -96,7 +96,7 @@ bool testPNMWriter()
   //test Image export with libboard
   Board2D  board;
   board.setUnit(LibBoard::Board::UCentimeter);
-  image.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, image, (unsigned char)0, (unsigned char)255);
   board.saveSVG("export-hue-twice.svg");
 
   trace.endBlock();

@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
@@ -211,7 +211,7 @@ Steps:
     //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
-    typedef DGtal::PointVector<2,double> PointD;  
+    typedef PointVector<2,double> PointD;  
 
 
     // ----------------------- Standard services ------------------------------
@@ -642,8 +642,22 @@ Steps:
     * Number of lower patterns ( @a myLf = @a myNbLowPat . ( @a myB , @a myA ) + @a myLl )
     */
     Integer myNbLowPat; 
+
     
-    //leaning points
+    /**
+    * Steps of the DSS (eg. right and up in the first octant)
+    */
+    std::vector<Vector> mySteps;
+    
+    // ------------------------- Private Datas --------------------------------
+  
+  private:
+
+
+    // ------------------ Display ------------------------------------------
+
+  public:
+    //leaning points (here because Display2DFactory, todo: accessors)
     /**
     * First upper leaning point ( of remainder @a myMu )
     */
@@ -660,9 +674,8 @@ Steps:
     * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
     */
     Point myLl;
-  
-
-    //Iterators to the first (at the back) and last (at the front) points of the DSS
+    
+    //Iterators to the first (at the back) and last (at the front) points of the DSS  (here because Display2DFactory, todo: accessors)
     /**
     * ConstIterator pointing to the back of the DSS
     */
@@ -671,20 +684,7 @@ Steps:
     * ConstIterator pointing to the front of the DSS
     */
     ConstIterator myL;
-
-    /**
-    * Steps of the DSS (eg. right and up in the first octant)
-    */
-    std::vector<Vector> mySteps;
     
-    // ------------------------- Private Datas --------------------------------
-  
-  private:
-
-
-    // ------------------ Display ------------------------------------------
-
-  public:
     /**
      * Projects the point @a m onto the straight line of slope ( @a myA / @a myB) 
      * and intercept @a myMu + ( @a myOmega - 1 )/2 ).
@@ -727,66 +727,13 @@ Steps:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ;
-
-    
-    /**
-     * Draw the digital points of the DSS 
-     * (possibly linked into a polygonal line) on a board
-     * @param board the output board where the object is drawn.
-     */
-    
-    void selfDrawAsDigitalPoints( Board2D & board ) const;
-    
-    
-    /**
-     * Draw the bounding box of the DSS on a board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsBoundingBox( Board2D & board ) const;
-    
+    void selfDisplay ( std::ostream & out ) ; 
     
     
     // ------------------------- Private Datas --------------------------------
   private:
 
-    /**
-     * Default style for the bounding box mode.
-     */
-    struct DefaultDrawStyleBB : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
-    
-    /**
-     * Default style for the points mode.
-     */
-    struct DefaultDrawStylePoints : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Black);
-        aBoard.setLineWidth(2);
-        aBoard.setFillColor(Color::None);
-      }
-    };
+
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -796,46 +743,16 @@ Steps:
      * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
+    std::string className() const;
 
-    /**
-     * Draw the DSS on a board as its bounding box and the
-     * polyline of its points 
-     * @param board the output board where the object is drawn.
-     *
-     */
-    void selfDraw(Board2D & board ) const;
-    
     
   }; // end of class ArithmeticalDSS
 
-
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSBoundingBox : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
-  }
-};
- 
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSPoints : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "Points";
-  }
-};
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.

@@ -14,7 +14,7 @@
  *
  **/
 
-/**
+/*licenses*
  * @file testSimpleBoard.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
@@ -80,7 +80,7 @@ bool testSimpleBoard()
   board << apoint;
 
   board.setPenColorRGBi( 255, 0, 0 );
-  apoint.selfDraw(board,p2);
+  draw(board, apoint, p2);
 
   board.scale(10);
 
@@ -105,13 +105,13 @@ bool testDomain()
     
     Board2D board;
     
-    board << DrawDomainGrid() << myDomain;
+    board << SetMode( myDomain.className(), "Grid" ) << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     board.saveTikZ( "domain-grid.tikz" );
     
     Board2D b2;
-    b2 << DrawDomainPaving() << myDomain;
+    b2 << SetMode( myDomain.className(), "Paving" ) << myDomain;
     b2.scale(10);
     b2.saveSVG( "domain-paving.svg" );
     b2.saveTikZ( "domain-paving.tikz" );
@@ -121,7 +121,7 @@ bool testDomain()
 
     PointVector<3,int> pl;
     //An assert should be raised 
-    //pl.selfDraw(b2);
+    //draw(b2, pl);
 
     return true;
 }

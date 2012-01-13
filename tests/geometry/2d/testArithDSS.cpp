@@ -97,13 +97,13 @@ bool testDSS4drawing()
   Board2D board;
   board.setUnit(Board::UCentimeter);
     
-  board << SetMode(domain.styleName(), "Grid")
+  board << SetMode(domain.className(), "Grid")
   << domain;    
   board << SetMode("PointVector", "Grid");
 
-  board << SetMode(theDSS4.styleName(), "Points") 
+  board << SetMode(theDSS4.className(), "Points") 
   << theDSS4;
-  board << SetMode(theDSS4.styleName(), "BoundingBox") 
+  board << SetMode(theDSS4.className(), "BoundingBox") 
   << theDSS4;
     
   board.saveSVG("DSS4.svg");
@@ -157,13 +157,13 @@ bool testDSS8drawing()
     board.setUnit(Board::UCentimeter);
     
 
-    board << SetMode(domain.styleName(), "Paving")
+    board << SetMode(domain.className(), "Paving")
     << domain;    
     board << SetMode("PointVector", "Both");
 
-    board << SetMode(theDSS8.styleName(), "Points") 
+    board << SetMode(theDSS8.className(), "Points") 
     << theDSS8;
-    board << SetMode(theDSS8.styleName(), "BoundingBox") 
+    board << SetMode(theDSS8.className(), "BoundingBox") 
     << theDSS8;
     
     

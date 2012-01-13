@@ -385,59 +385,11 @@ DGtal::Preimage2D<Shape>::update(
 
 template <typename Shape>
 inline
-DGtal::DrawableWithBoard2D*
-DGtal::Preimage2D<Shape>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DrawableWithBoard2D; 
-}
-
-template <typename Shape>
-inline
 std::string
-DGtal::Preimage2D<Shape>::styleName() const
+DGtal::Preimage2D<Shape>::className() const
 {
   return "Preimage2D";
 }
-
-template <typename Shape>
-inline
-void 
-DGtal::Preimage2D<Shape>::selfDraw(Board2D & aBoard) const
-{
-
-  Shape s( myShape ); 
-  ConstForwardIterator i = myPHull.begin();
-  Point pt(*i);
-  ++i;
-  while ( i != myPHull.end() ) {
-    s.init(pt, *i);
-    s.selfDraw(aBoard);
-    pt = Point(*i);
-    ++i;
-  }
-
-  i = myQHull.begin();
-  pt = Point(*i);
-  ++i;
-  while ( i != myQHull.end() ) {
-    s.init(pt, *i);
-    s.selfDraw(aBoard);
-    pt = Point(*i);
-    ++i;
-  }
-
-  Point Pf(*myPHull.begin());
-  Point Pl(*myPHull.rbegin());
-  Point Qf(*myQHull.begin());
-  Point Ql(*myQHull.rbegin());
-
-  s.init(Pf, Ql);
-  s.selfDraw(aBoard);
-  s.init(Qf, Pl);
-  s.selfDraw(aBoard);
-
-}
-
 
 template <typename Shape>
 inline

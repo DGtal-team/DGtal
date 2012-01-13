@@ -123,29 +123,11 @@ DGtal::CircleFrom2Points<TPoint>::getParameters(double& cx, double& cy, double& 
 
 template <typename TPoint>
 inline
-DGtal::DrawableWithBoard2D*
-DGtal::CircleFrom2Points<TPoint>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DrawableWithBoard2D; 
-}
-
-template <typename TPoint>
-inline
 std::string
-DGtal::CircleFrom2Points<TPoint>::styleName() const
+DGtal::CircleFrom2Points<TPoint>::className() const
 {
   return "CircleFrom2Points";
 }
-
-template <typename TPoint>
-inline
-void 
-DGtal::CircleFrom2Points<TPoint>::selfDraw(Board2D & aBoard) const
-{
-	CircleFrom3Points<Point> c(myPole,myP,myQ); 
-  c.drawArc(aBoard,myP,myQ);  
-}
-
 
 template <typename TPoint>
 inline

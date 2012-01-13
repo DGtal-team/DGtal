@@ -143,87 +143,45 @@ namespace DGtal
      * @param cy  returned y-coordinate of the circle
      * @param r  returned radius of the circle
      */
-    void getParameters(double& cx, double& cy, double& r) const;
+
+    void getParameters(double& cx, double& cy, double& rr) const;
     
     /**
-     * @return circle curvature
+     * @return the first point through which the circle passes.
      */
-    double getCurvature() const;
+    const Point & p() const
+    {
+      return myP;
+    };
     
     /**
-     * @return first point the circle passes through
+     * @return the second point through which the circle passes.
      */
-    Point getP() const;
-  
-    /**
-     * @return first point the circle passes through
-     */
-    Point getQ() const;
+    const Point & q() const
+    {
+      return myQ;
+    };
     
     /**
-     * @return first point the circle passes through
+     * @return the third point through which the circle passes.
      */
-    Point getR() const;
+    const Point & r() const
+    {
+      return myR;
+    };
+
 
     //------------------ display -------------------------------
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
     /**
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param aBoard the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & aBoard ) const;
-
-    /**
-       Draw a circular arc between @a alpha1 and @a alpha2 on a Board2D board
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-       @param anOrientation  arc orientation (true by default)
-    */
-    void drawArc(Board2D & aBoard, 
-                          const Point& aPoint1, const Point& aPoint2, 
-                          bool anOrientation = true ) const;
-
-
-    /**
-       Draw a sector between @a alpha1 and @a alpha2 on a Board2D board 
-       (the circular arc is tied with the circle center)
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-       @param anOrientation  arc orientation (true by default)
-    */
-    void drawSector(Board2D & aBoard, 
-                          const Point& aPoint1, const Point& aPoint2, 
-                          bool anOrientation = true ) const;
-
-    /**
-       Draw an annulus of width 2 @a w between @a alpha1 and @a alpha2 on a Board2D board 
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-       @param anOrientation  arc orientation (true by default)
-       @param w  the annulus half-width (1 by default)
-    */
-    void drawAnnulus(Board2D & aBoard, 
-                          const Point& aPoint1, const Point& aPoint2, 
-                          bool anOrientation = true, const double& w = 1.0 ) const;
+    std::string className() const;
 
     
     // ------------------------- Protected Datas ------------------------------

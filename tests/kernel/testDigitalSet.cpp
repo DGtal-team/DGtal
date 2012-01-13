@@ -53,6 +53,8 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/helpers/StdDefs.h"
 
+#include "DGtal/io/boards/Board2D.h"
+
 
 using namespace DGtal;
 using namespace std;
@@ -74,7 +76,7 @@ using namespace LibBoard;
 
 struct MyDomainStyleCustomRed : public DrawableWithBoard2D
 {
-  void selfDraw(Board2D & aboard) const
+  virtual void setStyle(Board2D & aboard) const
   {
     aboard.setFillColorRGBi(255, 0, 0);
     aboard.setPenColorRGBi(0, 255, 0);
@@ -111,13 +113,13 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << DrawDomainGrid() << domain << mySet;
+  board << SetMode( domain.className(), "Grid" ) << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << DrawDomainPaving() << domain;
+  board << SetMode( domain.className(), "Paving" ) << domain;
   board << mySet;
   board.saveSVG("simpleSet-paving.svg");
 
@@ -125,7 +127,7 @@ bool testDigitalSetBoardSnippet()
   board.clear();
 
   board.setUnit(Board::UCentimeter);
-  board << CustomStyle( mySet.styleName(), new MyDomainStyleCustomRed );
+  board << CustomStyle( mySet.className(), new MyDomainStyleCustomRed );
   board << mySet;
   board.saveSVG("simpleSet-color.svg");
 
@@ -229,8 +231,8 @@ bool testDigitalSetDraw()
   //Board export test
   trace.beginBlock("SVG Export");
   Board2D board;
-  domain.selfDrawAsGrid(board);
-  disk.selfDraw(board);
+  board << SetMode( domain.className(), "Grid" ) << domain;
+  board << disk;
 
   board.scale(10);
   board.saveSVG( "disk-set.svg" );
