@@ -162,7 +162,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   s << "DTbyFMM-" << size << "-" << area << "-" << distance; 
   draw(map.begin(), map.end(), s.str());
 
-  return true; 
+  return fmm.isValid(); 
 }
 
 
