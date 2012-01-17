@@ -73,6 +73,17 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::~FMM()
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>::compute()
+{
+  while ( addNewAcceptedPoint() )
+    {    }
+}
+
+
 template <typename TMetricComputer, typename TPointPredicate>
 inline
 bool
@@ -102,14 +113,36 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::init()
 {
+  typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+  typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+  for ( ; it != itEnd; ++it)
+    {
+      update(it->first); 
+    }
 }
 
 template <typename TMetricComputer, typename TPointPredicate>
 inline
 bool
-DGtal::FMM<TMetricComputer, TPointPredicate>::addNew()
+DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
 {
-  return false; 
+  //pair of min distance
+  typename CandidatePointsSet::iterator begin = myCandidatePoints.begin();  
+  std::pair<Point, Distance> pair = *begin; 
+
+  if ( (pair.second < myDistanceThreshold) 
+       && (myAcceptedPoints.size() < myAreaThreshold) ) 
+    {
+      //the point of min distance is the new accepted point
+      myAcceptedPoints.insert( std::pair<Distance, Point>( pair.second, pair.first ) ); 
+      //it is removed from the set of candidates
+      myCandidatePoints.erase(begin); 
+      //the set of candidates is updated with the neigbors of the new accepted point
+      update( pair.first ); 
+      
+      return true; 
+    }
+  else return false; 
 }
 
 template <typename TMetricComputer, typename TPointPredicate>
@@ -117,8 +150,67 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::update(const Point& aPoint)
 {
+  std::cerr << "update with " << aPoint  << std::endl;
+ 
+  //neigbors
+  Point neighbor = aPoint; 
+  for (Dimension k = 0; k < dimension; ++k)
+    {
+      typename Point::Coordinate c = neighbor.at(k); 
+      neighbor.at(k) = (c+1); 
+      addNewCandidate(neighbor); 
+      neighbor.at(k) = (c-1); 
+      addNewCandidate(neighbor); 
+      neighbor.at(k) = c; 
+    }
 }
 
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+bool
+DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoint)
+{
+  //if not yet accepted and within the computation domain
+  if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
+       && (myPointPredicate(aPoint)) ) 
+    {
+
+      //neigbors distance
+      Distances distanceList; 
+
+      Point neighbor1 = aPoint; 
+      Point neighbor2 = aPoint; 
+      for (Dimension k = 0; k < dimension; ++k)
+	{
+	  typename Point::Coordinate c = aPoint.at(k); 
+	  //
+	  neighbor1.at(k) = (c+1); 
+	  Distance d1 = myMC.infinity();
+	  typename AcceptedPointsSet::iterator it1 = myAcceptedPoints.find(neighbor1);  
+	  if ( it1 != myAcceptedPoints.end() ) //if found
+	    d1 = it1->second; 
+	  neighbor1.at(k) = c; 
+	  //
+	  neighbor2.at(k) = (c-1); 
+	  Distance d2 = myMC.infinity();
+	  typename AcceptedPointsSet::iterator it2 = myAcceptedPoints.find(neighbor2);  
+	  if ( it2 != myAcceptedPoints.end() ) //if found
+	    d2 = it2->second; 
+	  neighbor2.at(k) = c; 
+	  //
+	  distanceList.at(k) = std::min(d1,d2);
+
+	}
+
+      //computation of the new distance
+      Distance d = myMC.compute(distanceList);
+      //insert the new candidate
+      myCandidatePoints.insert( std::pair<Distance, Point>( d, aPoint ) ); 
+
+      return true; 
+
+    } else return false; 
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
