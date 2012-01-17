@@ -89,6 +89,33 @@ inline
 bool
 DGtal::FMM<TMetricComputer, TPointPredicate>::isValid() const
 {
+  //area threshold
+  if (myAcceptedPoints.size() >= myAreaThreshold) return false;
+
+  //distance threshold
+  Distance max = 0; 
+  {
+    typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+    typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+    for ( ; it != itEnd; ++it)
+      {
+	if (it->second > max) max = it->second; 
+      }
+  }
+  if (max >= myDistanceThreshold) return false; 
+
+  //point predicate
+  bool flagIsOk = true;  
+  {
+    typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+    typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+    for ( ; ( (it != itEnd)&&(flagIsOk == true) ); ++it)
+      {
+	if (myPointPredicate(it->first) == false) flagIsOk = false;  
+      }
+  }
+  if (!flagIsOk) return false; 
+
   return true; 
 }
 
@@ -97,11 +124,22 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::selfDisplay ( std::ostream & out ) const
 {
-   out << "[FMM]" << std::endl;
+   out << "\t [FMM]" << std::endl;
    out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")" << std::endl; 
    out << myCandidatePoints.size() << " candidates " << std::endl; 
-   //min and max distance ?
-   out << "[/FMM]" << std::endl; 
+   //min and max distance
+   Distance min = myMC.infinity(); 
+   Distance max = 0; 
+  typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+  typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+  for ( ; it != itEnd; ++it)
+    {
+      if (it->second < min) min = it->second; 
+      if (it->second > max) max = it->second; 
+    }
+  out << "min at " << min << std::endl; 
+  out << "max at " << max << " (< " << myDistanceThreshold << ")" << std::endl;
+   out << "\t [/FMM]" << std::endl; 
 }
 
 
@@ -135,7 +173,7 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
       std::pair<Distance, Point> pair = *begin; 
 
       if ( (pair.first < myDistanceThreshold) 
-	   && (myAcceptedPoints.size() < myAreaThreshold) ) 
+	   && ((myAcceptedPoints.size()+1) < myAreaThreshold) ) 
 	{
 
 	  //std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
