@@ -79,8 +79,9 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::compute()
 {
-  while ( addNewAcceptedPoint() )
-    {    }
+  unsigned int c = 0; 
+  while ( addNewAcceptedPoint() && (c<500) )
+    { ++c;   }
 }
 
 
@@ -126,21 +127,30 @@ inline
 bool
 DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
 {
-  //pair of min distance
-  typename CandidatePointsSet::iterator begin = myCandidatePoints.begin();  
-  std::pair<Point, Distance> pair = *begin; 
 
-  if ( (pair.second < myDistanceThreshold) 
-       && (myAcceptedPoints.size() < myAreaThreshold) ) 
-    {
-      //the point of min distance is the new accepted point
-      myAcceptedPoints.insert( std::pair<Distance, Point>( pair.second, pair.first ) ); 
-      //it is removed from the set of candidates
-      myCandidatePoints.erase(begin); 
-      //the set of candidates is updated with the neigbors of the new accepted point
-      update( pair.first ); 
+  typename CandidatePointsSet::iterator begin = myCandidatePoints.begin();  
+  if (begin != myCandidatePoints.end() )
+    { //if there are candidates
+
+      //pair of min distance
+      std::pair<Distance, Point> pair = *begin; 
+
+      if ( (pair.first < myDistanceThreshold) 
+	   && (myAcceptedPoints.size() < myAreaThreshold) ) 
+	{
+
+	  std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
+
+	  //the point of min distance is the new accepted point
+	  myAcceptedPoints.insert( std::pair<Point, Distance>( pair.second, pair.first ) ); 
+	  //it is removed from the set of candidates
+	  myCandidatePoints.erase(begin); 
+	  //the set of candidates is updated with the neigbors of the new accepted point
+	  update( pair.second ); 
       
-      return true; 
+	  return true; 
+	}
+      else return false; 
     }
   else return false; 
 }
@@ -170,10 +180,14 @@ inline
 bool
 DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoint)
 {
-  //if not yet accepted and within the computation domain
+
+  //if it is not already accepted 
+  //and if it lies within the computation domain
   if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
        && (myPointPredicate(aPoint)) ) 
     {
+
+      std::cerr << "add new candidate " << aPoint  << std::endl;
 
       //neigbors distance
       Distances distanceList; 
@@ -204,12 +218,25 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
 
       //computation of the new distance
       Distance d = myMC.compute(distanceList);
-      //insert the new candidate
-      myCandidatePoints.insert( std::pair<Distance, Point>( d, aPoint ) ); 
+      //test if aPoint is already candidate
+      bool flagExists = false; 
+      typedef typename CandidatePointsSet::iterator Iterator; 
+      std::pair<Iterator,Iterator> range = myCandidatePoints.equal_range(d);
+      Iterator it = range.first; 
+      for ( ; ( (it != range.second) && (flagExists == false) ); ++it) 
+      	{
+      	  if (it->second == aPoint) 
+      	    flagExists = true; 
+      	}
+      if (flagExists == false) 
+	{//insert if it is not already candidate
+	  myCandidatePoints.insert( std::pair<Distance, Point>( d, aPoint ) ); 
+	  return true; 
+	}
+      else return false; 
 
-      return true; 
-
-    } else return false; 
+    } 
+  else return false; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////

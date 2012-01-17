@@ -31,29 +31,53 @@
 #include <iomanip>
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 
+//FMM
 #include "DGtal/geometry/volumes/distance/IncrementalMetricComputers.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
+//Display
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/boards/Board2D.h"
+
 /*
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/images/ImageSelector.h"
-#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"
-#include "DGtal/io/boards/Board2D.h"
 */
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
+template< typename TIterator >
+void draw( const TIterator& itb, const TIterator& ite, std::string basename) 
+{
+  typedef typename std::iterator_traits<TIterator>::value_type Pair; 
+  typedef typename Pair::first_type Point; 
+  typedef typename Pair::second_type Value; 
+  GradientColorMap<Value, DGtal::CMAP_GRAYSCALE> colorMap(0,10); 
+
+  Board2D b; 
+  b.setUnit ( LibBoard::Board::UCentimeter );
+
+  TIterator it = itb; 
+  for ( ; it != ite; ++it)
+    {
+      Point p = it->first;
+      b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
+      b << p;
+    }
+
+  std::stringstream s; 
+  s << basename << ".eps"; 
+  b.saveEPS(s.str().c_str());
+} 
 
 /**
  * Example of a test. To be completed.
@@ -84,7 +108,7 @@ bool testFMM()
   std::map<Point, Distance> map; 
   map.insert( std::pair<Point, Distance>( Point(0,0), 0.0 ) );
  
-  FMM<MetricComputer, DGtal::TruePointPredicate<Point> > f(map, m); 
+  FMM<MetricComputer, TruePointPredicate<Point> > f(map, m); 
 
   trace.info() << f << std::endl; 
 
@@ -94,6 +118,48 @@ bool testFMM()
   return nbok == nb;
 }
 
+/**
+ * Simple 2d distance transform
+ *
+ */
+bool testDisplay2dDT()
+{
+
+  static const DGtal::Dimension dimension = 2; 
+
+  //type definitions 
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point;
+ 
+  typedef IncrementalEuclideanMetricComputer<dimension> MetricComputer; 
+  typedef MetricComputer::Distance Distance;  
+
+  typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+
+  //init
+  Point c(0,0); 
+  Point up(5, 5); 
+  Point low(-5,-5); 
+
+  std::map<Point, Distance> map; 
+  map.insert( std::pair<Point, Distance>( c, 0.0 ) );
+
+  MetricComputer mc; 
+  Domain d(low, up); 
+  DomainPredicate<Domain> dp(d);
+
+  //computation
+  trace.beginBlock ( "Testing FMM " );
+ 
+  FMM fmm(map, mc, dp); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
+
+  trace.endBlock();
+
+  //display
+  draw(map.begin(), map.end(), "DTbyFMM");
+}
 
 
 
@@ -114,6 +180,7 @@ int main ( int argc, char** argv )
   trace.info() << endl;
 
   bool res =  testFMM()
+    && testDisplay2dDT()
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
