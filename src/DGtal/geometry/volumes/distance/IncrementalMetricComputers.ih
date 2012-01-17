@@ -1,0 +1,158 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file IncrementalMetricComputers.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/01/16
+ *
+ * Header file for module IncrementalMetricComputers.cpp
+ * Implementation of inline methods defined in IncrementalMetricComputers.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+
+template <DGtal::Dimension dim>
+inline
+DGtal::IncrementalEuclideanMetricComputer<dim>
+::IncrementalEuclideanMetricComputer(const double& aGridStep)
+  : myInfinity( numeric_limits<Distance>::max() )
+{
+  for (Dimension k = 0; k < dimension; ++k)
+    myGridStepsVector[k] = aGridStep; 
+}
+
+template <DGtal::Dimension dim>
+inline
+DGtal::IncrementalEuclideanMetricComputer<dim>
+::IncrementalEuclideanMetricComputer(const DGtal::PointVector<dimension, double>& aGridStepsVector)
+  : myGridStepsVector(aGridStepsVector), 
+    myInfinity( numeric_limits<Distance>::max() )
+{
+}
+
+template <DGtal::Dimension dim>
+inline
+DGtal::IncrementalEuclideanMetricComputer<dim>
+::~IncrementalEuclideanMetricComputer()
+{
+}
+
+template <DGtal::Dimension dim>
+inline
+typename DGtal::IncrementalEuclideanMetricComputer<dim>::Distance
+DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistanceList) const
+{
+  Dimensions relevantDimensions;
+ 
+  for(Dimension k = 0; k < dimension; ++k)
+    {
+      if ( aDistanceList[k] != infinity() )
+	  relevantDimensions.insert(k); 
+    }
+
+  return compute(aDistanceList, relevantDimensions); 
+}
+
+template <DGtal::Dimension dim>
+inline
+typename DGtal::IncrementalEuclideanMetricComputer<dim>::Distance
+DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistanceList, Dimensions& aDimensionList) const
+{
+
+  unsigned int c = aDimensionList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Dimension k = *aDimensionList.begin(); 
+      return aDistanceList.at(k) + myGridStepsVector.at(k); 
+    } 
+  else 
+    {
+      //max computation
+      typename Dimensions::const_iterator it = aDimensionList.begin();  
+      typename Dimensions::const_iterator itEnd = aDimensionList.end();  
+      typename Dimensions::const_iterator itMax = it;  
+      double max = 0;
+      for ( ; it != itEnd; ++it)
+	{
+	  Distance d = aDistanceList.at(*it); 
+	  if (d > 0) 
+	    {
+	      max = d;
+	      itMax = it; 
+	    }
+	}
+      //function computation
+      if ( gradientNorm( max, aDistanceList ) > 1 )
+	{
+	  aDimensionList.erase(itMax); 
+	  return compute(aDistanceList, aDimensionList); 
+	}
+      else 
+	{ //resolution
+	  double a = 0; 
+	  double b = 0; 
+	  double c = -1; 
+	  it = aDimensionList.begin();  
+	  for ( ; it != itEnd; ++it)
+	    {
+	      double step = myGridStepsVector.at(*it);
+	      Distance d = aDistanceList.at(*it); 
+	      a += ( 1 / (step*step) ); 
+	      b -= ( (2*d) / (step*step) );
+	      c += ( (d*d) / (step*step) ); 
+	    }
+	  //std::cerr << a << " " << b << " " << c  << std::endl; 
+	  double disc = b*b - 4*a*c;
+	  //std::cerr << disc << std::endl; 
+	  //greatest solution
+	  return ( ( -b + std::sqrt(disc) ) / (2*a) ); 
+	}
+    }
+}
+
+template <DGtal::Dimension dim>
+inline
+double
+DGtal::IncrementalEuclideanMetricComputer<dim>::gradientNorm(const Distance& aDistance, const Distances& aDistanceList) const
+{
+  double sum = 0; 
+  for(Dimension k = 0; k < dimension; ++k)
+    {
+      sum += ( std::pow(aDistance - aDistanceList[k], 2.0) / myGridStepsVector[k] ); 
+    }
+  return sum; 
+}
+
+template <DGtal::Dimension dim>
+inline
+typename DGtal::IncrementalEuclideanMetricComputer<dim>::Distance
+DGtal::IncrementalEuclideanMetricComputer<dim>::infinity() const
+{
+  return myInfinity; 
+}
