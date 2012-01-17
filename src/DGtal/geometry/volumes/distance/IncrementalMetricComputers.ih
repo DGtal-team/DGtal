@@ -58,6 +58,17 @@ DGtal::IncrementalEuclideanMetricComputer<dim>
 template <DGtal::Dimension dim>
 inline
 DGtal::IncrementalEuclideanMetricComputer<dim>
+::IncrementalEuclideanMetricComputer(const IncrementalEuclideanMetricComputer& other)
+  : myGridStepsVector(other.myGridStepsVector), 
+    myInfinity(other.myInfinity)
+{
+}
+
+    
+
+template <DGtal::Dimension dim>
+inline
+DGtal::IncrementalEuclideanMetricComputer<dim>
 ::~IncrementalEuclideanMetricComputer()
 {
 }

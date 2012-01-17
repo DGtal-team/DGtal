@@ -66,9 +66,6 @@ namespace DGtal
 
   public: 
     //space
-    // typedef TSpace Space; 
-    // typedef typename Space::Point Point; 
-    // typedef typename Space::Vector Vector; 
     typedef DGtal::Dimension Dimension;
     static const Dimension dimension = dim;
 
@@ -92,6 +89,12 @@ namespace DGtal
      * Constructor.
      */
     IncrementalEuclideanMetricComputer(const DGtal::PointVector<dimension, double>& aGridStepsVector);
+
+    /**
+     * Copy.
+     */
+    IncrementalEuclideanMetricComputer(const IncrementalEuclideanMetricComputer& other);
+
 
     /**
      * Destructor.
