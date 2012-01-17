@@ -123,7 +123,10 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     
-
+    /** 
+     * Computes the distance map
+     */
+    void compute();
  
     /**
      * Writes/Displays the object on an output stream.
@@ -207,7 +210,7 @@ namespace DGtal
      * @return 'true' if the point of min distance is accepted
      * 'false' otherwise.
      */
-    bool addNew();
+    bool addNewAcceptedPoint();
 
     /** 
      * Update the set of candidate points with the neigbors of @a aPoint. 
@@ -216,6 +219,18 @@ namespace DGtal
      */
     void update(const Point& aPoint);
 
+    /** 
+     * Test a new point. If it is not yet accepted 
+     * and if the point predicate return 'true', 
+     * compute its distance and insert it into the set 
+     * candidate points. 
+     *
+     * @param aPoint any point
+     *
+     * @return 'true' if inserted,
+     * 'false' otherwise.
+     */
+    bool addNewCandidate(const Point& aPoint);
 
 
   }; // end of class FMM
