@@ -86,7 +86,11 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::selfDisplay ( std::ostream & out ) const
 {
-   out << "[FMM]" << std::endl; 
+   out << "[FMM]" << std::endl;
+   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")" << std::endl; 
+   out << myCandidatePoints.size() << " candidates " << std::endl; 
+   //min and max distance ?
+   out << "[/FMM]" << std::endl; 
 }
 
 
