@@ -79,50 +79,50 @@ void draw( const TIterator& itb, const TIterator& ite, std::string basename)
   b.saveEPS(s.str().c_str());
 } 
 
-/**
- * Example of a test. To be completed.
- *
- */
-bool testFMM()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
+// /**
+//  * Example of a test. To be completed.
+//  *
+//  */
+// bool testFMM()
+// {
+//   unsigned int nbok = 0;
+//   unsigned int nb = 0;
 
-  typedef PointVector<2,int> Point; 
-  typedef double Distance;  
-  typedef PointVector<2,Distance> Distances;  
-  typedef IncrementalEuclideanMetricComputer<2> MetricComputer; 
+//   typedef PointVector<2,int> Point; 
+//   typedef double Distance;  
+//   typedef PointVector<2,Distance> Distances;  
+//   typedef IncrementalEuclideanMetricComputer<2> MetricComputer; 
 
-  trace.beginBlock ( "Testing metric computer " );
+//   trace.beginBlock ( "Testing metric computer " );
  
-  MetricComputer m; 
-  trace.info() << m.compute( Distances(0,m.infinity()) ) << std::endl; 
-  trace.info() << m.compute( Distances(1,m.infinity()) ) << std::endl; 
-  trace.info() << m.compute( Distances(1,1) ) << std::endl; 
-  trace.info() << m.compute( Distances(std::sqrt(2),2) ) << std::endl; 
+//   MetricComputer m; 
+//   trace.info() << m.compute( Distances(0,m.infinity()) ) << std::endl; 
+//   trace.info() << m.compute( Distances(1,m.infinity()) ) << std::endl; 
+//   trace.info() << m.compute( Distances(1,1) ) << std::endl; 
+//   trace.info() << m.compute( Distances(std::sqrt(2),2) ) << std::endl; 
 
-  trace.endBlock();
+//   trace.endBlock();
 
-  trace.beginBlock ( "Testing FMM " );
+//   trace.beginBlock ( "Testing FMM " );
  
-  std::map<Point, Distance> map; 
-  map.insert( std::pair<Point, Distance>( Point(0,0), 0.0 ) );
+//   std::map<Point, Distance> map; 
+//   map.insert( std::pair<Point, Distance>( Point(0,0), 0.0 ) );
  
-  FMM<MetricComputer, TruePointPredicate<Point> > f(map, m); 
+//   FMM<MetricComputer, TruePointPredicate<Point> > f(map, m); 
 
-  trace.info() << f << std::endl; 
+//   trace.info() << f << std::endl; 
 
-  trace.endBlock();
+//   trace.endBlock();
 
 
-  return nbok == nb;
-}
+//   return nbok == nb;
+// }
 
 /**
  * Simple 2d distance transform
  *
  */
-bool testDisplay2dDT()
+bool testDisplayDT2d(int size, int area, double distance)
 {
 
   static const DGtal::Dimension dimension = 2; 
@@ -138,8 +138,8 @@ bool testDisplay2dDT()
 
   //init
   Point c(0,0); 
-  Point up(5, 5); 
-  Point low(-5,-5); 
+  Point up(size, size); 
+  Point low(-size,-size); 
 
   std::map<Point, Distance> map; 
   map.insert( std::pair<Point, Distance>( c, 0.0 ) );
@@ -151,14 +151,18 @@ bool testDisplay2dDT()
   //computation
   trace.beginBlock ( "Testing FMM " );
  
-  FMM fmm(map, mc, dp); 
+  FMM fmm(map, mc, dp, area, distance); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
   trace.endBlock();
 
   //display
-  draw(map.begin(), map.end(), "DTbyFMM");
+  std::stringstream s; 
+  s << "DTbyFMM-" << size << "-" << area << "-" << distance; 
+  draw(map.begin(), map.end(), s.str());
+
+  return true; 
 }
 
 
@@ -179,8 +183,12 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testFMM()
-    && testDisplay2dDT()
+  int size = 49; 
+  bool res =  
+    //testFMM()
+    testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
+&& testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
+&& testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
