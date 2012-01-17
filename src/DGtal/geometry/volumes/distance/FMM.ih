@@ -79,9 +79,8 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::compute()
 {
-  unsigned int c = 0; 
-  while ( addNewAcceptedPoint() && (c<500) )
-    { ++c;   }
+  while ( addNewAcceptedPoint() )
+    {   }
 }
 
 
@@ -139,7 +138,7 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
 	   && (myAcceptedPoints.size() < myAreaThreshold) ) 
 	{
 
-	  std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
+	  //std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
 
 	  //the point of min distance is the new accepted point
 	  myAcceptedPoints.insert( std::pair<Point, Distance>( pair.second, pair.first ) ); 
@@ -160,7 +159,7 @@ inline
 void
 DGtal::FMM<TMetricComputer, TPointPredicate>::update(const Point& aPoint)
 {
-  std::cerr << "update with " << aPoint  << std::endl;
+  //std::cerr << "update with " << aPoint  << std::endl;
  
   //neigbors
   Point neighbor = aPoint; 
@@ -186,8 +185,6 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
   if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
        && (myPointPredicate(aPoint)) ) 
     {
-
-      std::cerr << "add new candidate " << aPoint  << std::endl;
 
       //neigbors distance
       Distances distanceList; 
