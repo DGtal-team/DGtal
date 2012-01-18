@@ -98,7 +98,7 @@ However, for closed (or circular) structures, [i,j) should always be a valid ran
 As a consequence, iterating over all the elements or dealing with empty ranges is 
 different. The chosen solution is the same as the one used in 
 <a href="http://www.cgal.org/Manual/3.3/doc_html/cgal_manual/Circulator/Chapter_main.html">CGAL</a>.
-Circular iterators (or <em>circulators</em> for short) are used instead classic iterators. 
+Circular iterators (or <em>circulators</em> for short) are used instead of classic iterators. 
 They behave like classic iterators but they have a specific state in the empty range case. 
 As long as i != j, the range [i,j) behaves like a classic iterator range 
 and could be used in STL algorithms. The range [i,i) is used to iterate over
@@ -273,8 +273,8 @@ CTrivialSegmentComputer is a refinement of CSegment and should provide
 in addition the following two methods: 
 
  - void init ( const Iterator& it ) : set the segment to the element pointed to by it.
- - bool extend () : return 'true' and extend the segment to the element pointed to by end() if it is possible, return 'false' and does not extend the segment otherwise. 
- - bool isExtendable () : return 'true' if the segment can be extended to the element pointed to by end() and 'false' otherwise (no extension is performed).
+ - bool extendForward () : return 'true' and extend the segment to the element pointed to by end() if it is possible, return 'false' and does not extend the segment otherwise. 
+ - bool isExtendableForward () : return 'true' if the segment can be extended to the element pointed to by end() and 'false' otherwise (no extension is performed).
 
 Detecting a segment in a range looks like this: 
 
@@ -282,7 +282,7 @@ Detecting a segment in a range looks like this:
     //s is a segment computer
     //[begin,end) is a range
 		s.init( begin );
-    while ( (s.end() != end) && (s.extend()) ) {} 
+    while ( (s.end() != end) && (s.extendForward()) ) {} 
  @endcode
 
 If the underlying structure is closed, 
@@ -292,7 +292,7 @@ infinite loops are avoided as follows:
     //s is a segment computer
     //c is a circulator
 		s.init( c );
-    while ( (s.end() != s.begin()) && (s.extend()) ) {} 
+    while ( (s.end() != s.begin()) && (s.extendForward()) ) {} 
  @endcode
  
 Segment computers are based on iterators. This is a useful feature since it provides
@@ -310,22 +310,26 @@ reverse copy of a segment computer, the following method should be defined:
 
 As the name suggests, forward segment computers can only extend themselves in the forward
 direction, but this direction is relative to the direction of the underlying iterators. 
-They cannot extend themselves in two directions at the same time contrary to bidirectional
- segment computers. 
+They cannot extend themselves in two directions at the same time around an element 
+contrary to bidirectional segment computers. 
 
 Any model of CBidirectionalSegmentComputer, which is a refinement of CForwardSegmentComputer, 
 should define the following methods:
 
- - bool extendOppositeEnd () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
- - bool isOppositeEndExtendable () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
+ - bool extendBackward () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
+ - bool isExtendableBackward () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
+
+GeometricalDSS and GeometricalDCA are both models of CBidirectionalSegmentComputer. 
 
 The concept CDynamicSegmentComputer is another refinement of CForwardSegmentComputer. 
 Any model of this concept should define the following method: 
 
- - bool retract () : return 'true' and move the beginning of the segment to ++begin() if ++begin() != end(), return 'false' otherwise. 
+ - bool retractForward () : return 'true' and move the beginning of the segment to ++begin() if ++begin() != end(), return 'false' otherwise. 
 
 Finally, the concept CDynamicBidirectionalSegmentComputer is a refinement of both 
-CBidirectionalSegmentComputer and CDynamicSegmentComputer. 
+CBidirectionalSegmentComputer and CDynamicSegmentComputer and the define this extra method:
+ 
+ - bool retractBackward () : return 'true' and move the end of the segment to --end() if begin() != --end(), return 'false' otherwise. 
 
 
 A model of CDynamicBidirectionalSegmentComputer is the class ArithmeticalDSS, 
@@ -363,7 +367,7 @@ That's why many generic functions are provided in @href SegmentComputerUtils.h:
  - firstMaximalSegment, lastMaximalSegment, mostCenteredMaximalSegment,
  - previousMaximalSegment, nextMaximalSegment,
 
-These functions are used in the segmentation algorithms. 
+These functions are used in the segmentation algorithms introduced below. 
 
  \section geometrySegmentsExtraction Segments Extraction.
 
@@ -491,7 +495,7 @@ The resulting segmentations are shown in the figures below:
 
 
 The complexity of the greedy segmentation algorithm relies on the 
-complexity of the extend() method of the segment computer. If it
+complexity of the extendForward() method of the segment computer. If it
 runs in (possibly amortized) constant time, then the complexity 
 of the segmentation is linear in the length of the range. 
 

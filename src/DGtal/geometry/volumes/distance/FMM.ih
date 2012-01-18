@@ -1,0 +1,293 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FMM.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ *
+ * @date 2012/01/17
+ *
+ * @brief Implementation of inline methods defined in FMM.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+DGtal::FMM<TMetricComputer, TPointPredicate>::FMM(AcceptedPointsSet& aSet, const MetricComputer& aMC, const PointPredicate& aPointPredicate): 
+myAcceptedPoints( aSet ), myMC( aMC ), myPointPredicate( aPointPredicate ), 
+myAreaThreshold( std::numeric_limits<Area>::max() ), 
+myDistanceThreshold( std::numeric_limits<Distance>::max() )
+{
+ init(); 
+}
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+DGtal::FMM<TMetricComputer, TPointPredicate>::FMM(AcceptedPointsSet& aSet, const MetricComputer& aMC, const PointPredicate& aPointPredicate, const Area& aAreaThreshold, const Distance& aDistanceThreshold): 
+myAcceptedPoints( aSet ), myMC( aMC ), myPointPredicate( aPointPredicate ), 
+myAreaThreshold( aAreaThreshold ), 
+myDistanceThreshold( aDistanceThreshold )
+{
+ init();
+}
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+DGtal::FMM<TMetricComputer, TPointPredicate>::~FMM()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>::compute()
+{
+  while ( addNewAcceptedPoint() )
+    {   }
+}
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+bool
+DGtal::FMM<TMetricComputer, TPointPredicate>::isValid() const
+{
+  //area threshold
+  if (myAcceptedPoints.size() >= myAreaThreshold) return false;
+
+  //distance threshold
+  Distance max = 0; 
+  {
+    typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+    typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+    for ( ; it != itEnd; ++it)
+      {
+	if (it->second > max) max = it->second; 
+      }
+  }
+  if (max >= myDistanceThreshold) return false; 
+
+  //point predicate
+  bool flagIsOk = true;  
+  {
+    typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+    typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+    for ( ; ( (it != itEnd)&&(flagIsOk == true) ); ++it)
+      {
+	if (myPointPredicate(it->first) == false) flagIsOk = false;  
+      }
+  }
+  if (!flagIsOk) return false; 
+
+  return true; 
+}
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>::selfDisplay ( std::ostream & out ) const
+{
+   out << "\t [FMM]" << std::endl;
+   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")" << std::endl; 
+   out << myCandidatePoints.size() << " candidates " << std::endl; 
+   //min and max distance
+   Distance min = myMC.infinity(); 
+   Distance max = 0; 
+  typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+  typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+  for ( ; it != itEnd; ++it)
+    {
+      if (it->second < min) min = it->second; 
+      if (it->second > max) max = it->second; 
+    }
+  out << "min at " << min << std::endl; 
+  out << "max at " << max << " (< " << myDistanceThreshold << ")" << std::endl;
+   out << "\t [/FMM]" << std::endl; 
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>::init()
+{
+  typename AcceptedPointsSet::const_iterator it = myAcceptedPoints.begin(); 
+  typename AcceptedPointsSet::const_iterator itEnd = myAcceptedPoints.end(); 
+  for ( ; it != itEnd; ++it)
+    {
+      update(it->first); 
+    }
+}
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+bool
+DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
+{
+
+  typename CandidatePointsSet::iterator begin = myCandidatePoints.begin();  
+  if (begin != myCandidatePoints.end() )
+    { //if there are candidates
+
+      //pair of min distance
+      std::pair<Distance, Point> pair = *begin; 
+
+      if ( (pair.first < myDistanceThreshold) 
+	   && ((myAcceptedPoints.size()+1) < myAreaThreshold) ) 
+	{
+
+	  //std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
+
+	  //the point of min distance is the new accepted point
+	  myAcceptedPoints.insert( std::pair<Point, Distance>( pair.second, pair.first ) ); 
+	  //it is removed from the set of candidates
+	  myCandidatePoints.erase(begin); 
+	  //the set of candidates is updated with the neigbors of the new accepted point
+	  update( pair.second ); 
+      
+	  return true; 
+	}
+      else return false; 
+    }
+  else return false; 
+}
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>::update(const Point& aPoint)
+{
+  //std::cerr << "update with " << aPoint  << std::endl;
+ 
+  //neigbors
+  Point neighbor = aPoint; 
+  for (Dimension k = 0; k < dimension; ++k)
+    {
+      typename Point::Coordinate c = neighbor.at(k); 
+      neighbor.at(k) = (c+1); 
+      addNewCandidate(neighbor); 
+      neighbor.at(k) = (c-1); 
+      addNewCandidate(neighbor); 
+      neighbor.at(k) = c; 
+    }
+}
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+bool
+DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoint)
+{
+
+  //if it is not already accepted 
+  //and if it lies within the computation domain
+  if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
+       && (myPointPredicate(aPoint)) ) 
+    {
+
+      //neigbors distance
+      Distances distanceList; 
+
+      Point neighbor1 = aPoint; 
+      Point neighbor2 = aPoint; 
+      for (Dimension k = 0; k < dimension; ++k)
+	{
+	  typename Point::Coordinate c = aPoint.at(k); 
+	  //
+	  neighbor1.at(k) = (c+1); 
+	  Distance d1 = myMC.infinity();
+	  typename AcceptedPointsSet::iterator it1 = myAcceptedPoints.find(neighbor1);  
+	  if ( it1 != myAcceptedPoints.end() ) //if found
+	    d1 = it1->second; 
+	  neighbor1.at(k) = c; 
+	  //
+	  neighbor2.at(k) = (c-1); 
+	  Distance d2 = myMC.infinity();
+	  typename AcceptedPointsSet::iterator it2 = myAcceptedPoints.find(neighbor2);  
+	  if ( it2 != myAcceptedPoints.end() ) //if found
+	    d2 = it2->second; 
+	  neighbor2.at(k) = c; 
+	  //
+	  distanceList.at(k) = std::min(d1,d2);
+
+	}
+
+      //computation of the new distance
+      Distance d = myMC.compute(distanceList);
+      //test if aPoint is already candidate
+      bool flagExists = false; 
+      typedef typename CandidatePointsSet::iterator Iterator; 
+      std::pair<Iterator,Iterator> range = myCandidatePoints.equal_range(d);
+      Iterator it = range.first; 
+      for ( ; ( (it != range.second) && (flagExists == false) ); ++it) 
+      	{
+      	  if (it->second == aPoint) 
+      	    flagExists = true; 
+      	}
+      if (flagExists == false) 
+	{//insert if it is not already candidate
+	  myCandidatePoints.insert( std::pair<Distance, Point>( d, aPoint ) ); 
+	  return true; 
+	}
+      else return false; 
+
+    } 
+  else return false; 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+      const FMM<TMetricComputer, TPointPredicate> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

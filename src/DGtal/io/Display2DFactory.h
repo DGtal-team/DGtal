@@ -44,22 +44,23 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/math/AngleLinearMinimizer.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/CircleFrom2Points.h"
-#include "DGtal/geometry/2d/CircleFrom3Points.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
+#include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
-#include "DGtal/geometry/2d/FP.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GeometricalDSS.h"
+#include "DGtal/geometry/curves/representation/FP.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/GeometricalDSS.h"
+#include "DGtal/geometry/curves/representation/GeometricalDCA.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/2d/Preimage2D.h"
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
+#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -106,16 +107,16 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & );
 
 // CircleFrom3Points
 template <typename Point>
-void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true);
     
 template <typename Point>
-void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true);
     
 template <typename Point>
-void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0);
+void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, const double& w = 1.0, bool anOrientation = true);
     
 template <typename Point>
-void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &);
+void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> &, const Point &, const Point &, bool anOrientation = true);
     
 template <typename TPoint>
 void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & );
@@ -160,6 +161,11 @@ template <typename TConstIterator>
 void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
 // GeometricalDSS
     
+// GeometricalDCA
+template <typename TConstIterator>
+void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIterator> & );
+// GeometricalDCA
+
     
 // GridCurve
 // we use setStyle because of inner classes
