@@ -153,7 +153,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   DomainPredicate<Domain> dp(d);
 
   //computation
-  trace.beginBlock ( "Testing FMM " );
+  trace.beginBlock ( "Display FMM results " );
  
   FMM fmm(map, mc, dp, area, distance); 
   fmm.compute(); 
@@ -188,11 +188,18 @@ bool testComparison(int size, int area, double distance)
   Point c(0,0,0); 
   Point up(size, size, size); 
   Point low(-size,-size,-size); 
+  Domain d(low, up); 
 
   //image construction
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image (low, up);
-  image.setValue(c, 128); 
+  Domain::Iterator dit = d.begin(); 
+  Domain::Iterator ditEnd = d.end(); 
+  for ( ; dit != ditEnd; ++dit)
+    {
+      image.setValue(*dit, 128); 
+    }
+  image.setValue(c, 0); 
 
   //computation
   trace.beginBlock ( " FMM " ); 
@@ -206,7 +213,6 @@ bool testComparison(int size, int area, double distance)
   map.insert( std::pair<Point, Distance>( c, 0 ) );
 
   MetricComputer mc; 
-  Domain d(low, up); 
   DomainPredicate<Domain> dp(d);
 
   FMM fmm(map, mc, dp, area, distance); 
@@ -224,15 +230,15 @@ bool testComparison(int size, int area, double distance)
 
   trace.endBlock();
 
-  trace.beginBlock ( " Comparison " );
   bool flagIsOk = true; 
-  //all point of map have same distance in resultImage
+
+  trace.beginBlock ( " Comparison " );
+  //all points of map must have same distance in resultImage
   std::map<Point, Distance>::const_iterator it = map.begin(); 
   std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-  for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+    for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
     {
-      std::cerr << it->first << " "
-                << it->second << " " << resultImage(it->first) << std::endl; 
+      //std::cerr << it->first << " " << it->second << " " << resultImage(it->first) << std::endl; 
       if (it->second != resultImage(it->first))
         flagIsOk = false; 
     }
@@ -263,7 +269,7 @@ int main ( int argc, char** argv )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
 
-   size = 3; 
+   size = 10; 
    res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
 ;
   //&& ... other tests
