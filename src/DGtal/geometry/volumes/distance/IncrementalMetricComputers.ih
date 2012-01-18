@@ -167,3 +167,94 @@ DGtal::IncrementalEuclideanMetricComputer<dim>::infinity() const
 {
   return myInfinity; 
 }
+
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>
+::IncrementalLInfinityMetricComputer(const Distance& aGridStep)
+  : myInfinity( numeric_limits<Distance>::max() )
+{
+  for (Dimension k = 0; k < dimension; ++k)
+    myGridStepsVector[k] = aGridStep; 
+}
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>
+::IncrementalLInfinityMetricComputer(const DGtal::PointVector<dimension, Distance>& aGridStepsVector)
+  : myGridStepsVector(aGridStepsVector), 
+    myInfinity( numeric_limits<Distance>::max() )
+{
+}
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>
+::IncrementalLInfinityMetricComputer(const IncrementalLInfinityMetricComputer& other)
+  : myGridStepsVector(other.myGridStepsVector), 
+    myInfinity(other.myInfinity)
+{
+}
+
+    
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>
+::~IncrementalLInfinityMetricComputer()
+{
+}
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+typename DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::Distance
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::compute(const Distances& aDistanceList) const
+{
+  Dimensions relevantDimensions;
+ 
+  for(Dimension k = 0; k < dimension; ++k)
+    {
+      if ( aDistanceList[k] != infinity() )
+	  relevantDimensions.insert(k); 
+    }
+
+  return compute(aDistanceList, relevantDimensions); 
+}
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+typename DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::Distance
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::compute(const Distances& aDistanceList, Dimensions& aDimensionList) const
+{
+
+  unsigned int c = aDimensionList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Dimension k = *aDimensionList.begin(); 
+      return aDistanceList.at(k) + myGridStepsVector.at(k); 
+    } 
+  else 
+    {
+      //max computation
+      Distance max = 0;
+      typename set<Dimension>::const_iterator it = aDimensionList.begin(); 
+      typename set<Dimension>::const_iterator itEnd = aDimensionList.end(); 
+      for ( ; it != itEnd; ++it) 
+          {
+          Distance d = aDistanceList.at(*it);  
+          if (d > max) max = d; 
+          }   
+      return max; 
+    }
+}
+
+
+template <DGtal::Dimension dim, typename TDistance>
+inline
+typename DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::Distance
+DGtal::IncrementalLInfinityMetricComputer<dim, TDistance>::infinity() const
+{
+  return myInfinity; 
+}

@@ -167,7 +167,56 @@ bool testDisplayDT2d(int size, int area, double distance)
 
 
 
+/**
+ * Comparison with the separable distance transform
+ *
+ */
+bool testComparison(int size, int area, double distance)
+{
 
+  static const DGtal::Dimension dimension = 3; 
+
+  //type definitions 
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point;
+
+  //init
+  Point c(0,0,0); 
+  Point up(size, size, size); 
+  Point low(-size,-size,-size); 
+
+  //computation
+  trace.beginBlock ( " FMM " ); 
+ 
+  typedef IncrementalLInfinityMetricComputer<dimension, int> MetricComputer; 
+  typedef MetricComputer::Distance Distance;  
+
+  typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+
+  std::map<Point, Distance> map; 
+  map.insert( std::pair<Point, Distance>( c, 0 ) );
+
+  MetricComputer mc; 
+  Domain d(low, up); 
+  DomainPredicate<Domain> dp(d);
+
+  FMM fmm(map, mc, dp, area, distance); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
+
+  trace.endBlock();
+
+  trace.beginBlock ( " DT " );
+
+  trace.endBlock();
+
+  trace.beginBlock ( " Comparison " );
+
+  trace.endBlock();
+
+  return true; 
+
+}
 
 
 
@@ -185,10 +234,13 @@ int main ( int argc, char** argv )
 
   int size = 49; 
   bool res =  
-    //testFMM()
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
 && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+;
+
+   size = 5; 
+   res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
