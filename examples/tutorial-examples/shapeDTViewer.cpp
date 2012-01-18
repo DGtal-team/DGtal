@@ -46,7 +46,7 @@
 #include "DGtal/io/viewers/Viewer3D.h" 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 //!  [shapeDTViewer-basicIncludes]
 ///////////////////////////////////////////////////////////////////////////////

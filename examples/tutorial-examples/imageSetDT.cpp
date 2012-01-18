@@ -39,7 +39,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"

@@ -52,7 +52,7 @@
 #include "DGtal/shapes/CDigitalBoundedShape.h"
 #include "DGtal/shapes/CEuclideanOrientedShape.h"
 #include "DGtal/shapes/CEuclideanBoundedShape.h"
-#include "DGtal/geometry/nd/GaussDigitizer.h"
+#include "DGtal/shapes/GaussDigitizer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
