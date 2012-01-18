@@ -57,7 +57,7 @@ namespace DGtal
    * \brief Aim: Basic functor computing the Euclidean metric in
    * the fast marching method on nd isothetic grids. 
    *
-   * @tparam TSpace type of space where the distance transform is performed
+   * @tparam  dim the space dimension
    */
   template <DGtal::Dimension dim>
   class IncrementalEuclideanMetricComputer
@@ -158,6 +158,118 @@ namespace DGtal
      * Distance used as infinity
      */
       Distance myInfinity; 
+
+      }; // end of class IncrementalEuclideanMetricComputer
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class IncrementalLInfinityMetricComputer
+  /**
+   * Description of template class 'IncrementalLInfinityMetricComputer' <p>
+   * \brief Aim: Basic functor computing the Linfinity metric in
+   * the fast marching method on nd isothetic grids.
+   *
+   * @tparam  dim the space dimension
+   * @tparam TDistance  distance type
+   */
+  template <DGtal::Dimension dim, typename TDistance>
+  class IncrementalLInfinityMetricComputer
+  {
+    // ----------------------- Types ------------------------------
+
+  public:
+    //space
+    typedef DGtal::Dimension Dimension;
+    static const Dimension dimension = dim;
+
+    //distance
+    typedef TDistance Distance;
+    typedef DGtal::PointVector<dimension, Distance> Distances;
+    
+  private:
+    typedef std::set<Dimension> Dimensions;
+ 
+    // ----------------------- Standard services ------------------------------
+
+  public:
+
+    /**
+     * Constructor.
+     */
+    IncrementalLInfinityMetricComputer(const Distance& aGridStep = 1);
+
+    /**
+     * Constructor.
+     */
+    IncrementalLInfinityMetricComputer(const DGtal::PointVector<dimension, Distance>& aGridStepsVector);
+
+    /**
+     * Copy.
+     */
+    IncrementalLInfinityMetricComputer(const IncrementalLInfinityMetricComputer& other);
+
+
+    /**
+     * Destructor.
+     */
+    ~IncrementalLInfinityMetricComputer();
+
+    /**
+     * Returns the distance used as infinity
+     *
+     * @return the infinity distance.
+     */
+    Distance infinity() const;
+
+
+    /**
+     * Returns the Linfinity distance at some point, 
+     * knowing the distance of its neighbors
+     *
+     * @param aDistanceList  the distance of the neighbors (one per dimension)
+     *
+     * @return the computed distance.
+     */
+    Distance compute(const Distances& aDistanceList) const;
+
+
+    // ----------------------- Internals -------------------------------------
+
+      private:
+
+    /**
+     * Returns the Linfinity distance at some point, 
+     * knowing the distance of its neighbors
+     *
+     * @param aDistanceList  the distance of the neighbors (one per dimension)
+     * @param aDimensionList  the list of relevant dimensions for the computation
+     *
+     * @return the computed distance.
+     */
+    Distance compute(const Distances& aDistanceList, Dimensions& aDimensionList) const;
+
+
+    /**
+     * Returns the squared euclidean norme of the gradient
+     * of the distance function
+     *
+     * @param aDistance  the distance of the point where the gradient is computed
+     * @param aDistanceList  the distance of the neighbors (one per dimension)
+     *
+     * @return the computed gradient norm.
+     */
+    double gradientNorm(const Distance& aDistance, const Distances& aDistanceList) const;
+
+    // ----------------------- Members -------------------------------------
+
+    /**
+     * Grid steps for each dimension from 0 to dimension
+     */
+      DGtal::PointVector<dimension, double> myGridStepsVector;
+
+    /**
+     * Distance used as infinity
+     */
+      Distance myInfinity;
 
       }; // end of class IncrementalMetricComputers
 
