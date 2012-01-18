@@ -37,6 +37,10 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 
+//DT
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+
 //FMM
 #include "DGtal/geometry/volumes/distance/IncrementalMetricComputers.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
@@ -185,6 +189,11 @@ bool testComparison(int size, int area, double distance)
   Point up(size, size, size); 
   Point low(-size,-size,-size); 
 
+  //image construction
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  Image image (low, up);
+  image.setValue(c, 128); 
+
   //computation
   trace.beginBlock ( " FMM " ); 
  
@@ -208,13 +217,28 @@ bool testComparison(int size, int area, double distance)
 
   trace.beginBlock ( " DT " );
 
+  typedef DistanceTransformation<Image, 0> DT; 
+  DT dt;
+  DT::OutputImage resultImage = dt.compute ( image );
+  trace.info() << resultImage << std::endl; 
+
   trace.endBlock();
 
   trace.beginBlock ( " Comparison " );
-
+  bool flagIsOk = true; 
+  //all point of map have same distance in resultImage
+  std::map<Point, Distance>::const_iterator it = map.begin(); 
+  std::map<Point, Distance>::const_iterator itEnd = map.end(); 
+  for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+    {
+      std::cerr << it->first << " "
+                << it->second << " " << resultImage(it->first) << std::endl; 
+      if (it->second != resultImage(it->first))
+        flagIsOk = false; 
+    }
   trace.endBlock();
 
-  return true; 
+  return flagIsOk; 
 
 }
 
@@ -239,7 +263,7 @@ int main ( int argc, char** argv )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
 
-   size = 5; 
+   size = 3; 
    res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
 ;
   //&& ... other tests
