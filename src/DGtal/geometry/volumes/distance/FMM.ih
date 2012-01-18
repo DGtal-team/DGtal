@@ -170,20 +170,20 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
     { //if there are candidates
 
       //pair of min distance
-      std::pair<Distance, Point> pair = *begin; 
+      PointDistance pair = *begin; 
 
-      if ( (pair.first < myDistanceThreshold) 
+      if ( (pair.second < myDistanceThreshold) 
 	   && ((myAcceptedPoints.size()+1) < myAreaThreshold) ) 
 	{
 
-	  //std::cerr << "add new point " << pair.second << " at " << pair.first << std::endl; 
+	  //std::cerr << "add new point " << pair.first << " at " << pair.second << std::endl; 
 
 	  //the point of min distance is the new accepted point
-	  myAcceptedPoints.insert( std::pair<Point, Distance>( pair.second, pair.first ) ); 
+	  myAcceptedPoints.insert(pair); 
 	  //it is removed from the set of candidates
 	  myCandidatePoints.erase(begin); 
 	  //the set of candidates is updated with the neigbors of the new accepted point
-	  update( pair.second ); 
+	  update(pair.first); 
       
 	  return true; 
 	}
@@ -253,23 +253,15 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
 
       //computation of the new distance
       Distance d = myMC.compute(distanceList);
-      //test if aPoint is already candidate
-      bool flagExists = false; 
-      typedef typename CandidatePointsSet::iterator Iterator; 
-      std::pair<Iterator,Iterator> range = myCandidatePoints.equal_range(d);
-      Iterator it = range.first; 
-      for ( ; ( (it != range.second) && (flagExists == false) ); ++it) 
-      	{
-      	  if (it->second == aPoint) 
-      	    flagExists = true; 
-      	}
-      if (flagExists == false) 
-	{//insert if it is not already candidate
-	  myCandidatePoints.insert( std::pair<Distance, Point>( d, aPoint ) ); 
+      PointDistance newPair(aPoint, d); 
+      if ( myCandidatePoints.find(newPair) == myCandidatePoints.end() )
+        {//insert aPoint if is not already candidate
+          myCandidatePoints.insert(newPair); 
 	  return true; 
-	}
-      else return false; 
-
+        }
+      else 
+        return false; 
+      
     } 
   else return false; 
 }
