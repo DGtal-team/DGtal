@@ -221,8 +221,7 @@ namespace DGtal
     void init();
     
     /** 
-     * Test the candidate point of min distance. 
-     * If successfully tested, insert it into the set 
+     * Insert the candidate of min distance into the set 
      * of accepted points and update the set of candidate points. 
      *
      * @return 'true' if the point of min distance is accepted
@@ -238,10 +237,11 @@ namespace DGtal
     void update(const Point& aPoint);
 
     /** 
-     * Test a new point. If it is not yet accepted 
+     * Test a new point as a candidate. 
+     * If it is not yet accepted 
      * and if the point predicate return 'true', 
-     * compute its distance and insert it into the set 
-     * candidate points. 
+     * compute its distance and insert it 
+     * into the set candidate points. 
      *
      * @param aPoint any point
      *
@@ -250,6 +250,15 @@ namespace DGtal
      */
     bool addNewCandidate(const Point& aPoint);
 
+    /** 
+     * Computes the distance of @a aPoint , 
+     * using @a myMC
+     *
+     * @param aPoint any point
+     *
+     * @return the distance.
+     */
+    Distance distance(const Point& aPoint);
 
   }; // end of class FMM
 

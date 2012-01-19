@@ -237,37 +237,7 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
   if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
        && (myPointPredicate(aPoint)) ) 
     {
-
-      //neigbors distance
-      Distances distanceList; 
-
-      Point neighbor1 = aPoint; 
-      Point neighbor2 = aPoint; 
-      for (Dimension k = 0; k < dimension; ++k)
-	{
-	  typename Point::Coordinate c = aPoint.at(k); 
-	  //
-	  neighbor1.at(k) = (c+1); 
-	  Distance d1 = myMC.infinity();
-	  typename AcceptedPointsSet::iterator it1 = myAcceptedPoints.find(neighbor1);  
-	  if ( it1 != myAcceptedPoints.end() ) //if found
-	    d1 = it1->second; 
-	  neighbor1.at(k) = c; 
-	  //
-	  neighbor2.at(k) = (c-1); 
-	  Distance d2 = myMC.infinity();
-	  typename AcceptedPointsSet::iterator it2 = myAcceptedPoints.find(neighbor2);  
-	  if ( it2 != myAcceptedPoints.end() ) //if found
-	    d2 = it2->second; 
-	  neighbor2.at(k) = c; 
-	  //
-	  distanceList.at(k) = std::min(d1,d2);
-
-	}
-
-      //computation of the new distance
-      Distance d = myMC.compute(distanceList);
-      PointDistance newPair(aPoint, d); 
+      PointDistance newPair( aPoint, distance(aPoint) ); 
       //insert the new candidate with its distance
       std::pair<typename CandidatePointsSet::iterator, bool> 
 	result = myCandidatePoints.insert(newPair);
@@ -276,6 +246,43 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
   else return false; 
 }
 
+template <typename TMetricComputer, typename TPointPredicate>
+inline
+typename DGtal::FMM<TMetricComputer, TPointPredicate>::Distance
+DGtal::FMM<TMetricComputer, TPointPredicate>::distance(const Point& aPoint)
+{
+
+  //neigbors distance
+  Distances distanceList; 
+
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint; 
+  for (Dimension k = 0; k < dimension; ++k)
+    {
+      typename Point::Coordinate c = aPoint.at(k); 
+      //
+      neighbor1.at(k) = (c+1); 
+      Distance d1 = myMC.infinity();
+      typename AcceptedPointsSet::iterator it1 = myAcceptedPoints.find(neighbor1);  
+      if ( it1 != myAcceptedPoints.end() ) //if found
+	d1 = it1->second; 
+      neighbor1.at(k) = c; 
+      //
+      neighbor2.at(k) = (c-1); 
+      Distance d2 = myMC.infinity();
+      typename AcceptedPointsSet::iterator it2 = myAcceptedPoints.find(neighbor2);  
+      if ( it2 != myAcceptedPoints.end() ) //if found
+	d2 = it2->second; 
+      neighbor2.at(k) = c; 
+      //
+      distanceList.at(k) = std::min(d1,d2);
+
+    }
+
+  //computation of the new distance
+  return myMC.compute(distanceList);
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
