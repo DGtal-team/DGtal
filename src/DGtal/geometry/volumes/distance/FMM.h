@@ -56,6 +56,23 @@
 namespace DGtal
 {
 
+  namespace details
+  {
+    template<typename T>
+    class PointDistanceCompare {
+    public: 
+      bool operator()(const T& a, const T& b) 
+        {
+          if (a.second == b.second) 
+            { //point comparison
+              return (a.first < b.first); 
+            }
+          else //distance comparison
+            return (a.second < b.second); 
+        }
+    };
+  }
+
   /////////////////////////////////////////////////////////////////////////////
   // template class FMM
   /**
@@ -94,10 +111,11 @@ namespace DGtal
   private: 
 
     //intern data types
-    typedef unsigned long Area;
+    typedef std::pair<Point, Distance> PointDistance; 
+    typedef std::set<PointDistance,details::PointDistanceCompare<PointDistance> > CandidatePointsSet; 
     typedef std::map<Point, Distance> AcceptedPointsSet; 
-    typedef std::multimap<Distance, Point> CandidatePointsSet; 
- 
+    typedef unsigned long Area;
+
     // ----------------------- Standard services ------------------------------
   public:
 
