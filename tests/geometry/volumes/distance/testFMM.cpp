@@ -233,17 +233,17 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
 
   //init
   std::map<Point, Distance> map; 
-  GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
+  GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
   //typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
   typedef FMM<MetricComputer, BallPredicate<Point> > FMM;
-  FMM::initIncidentPoints(r.begin(), r.end(), map, 0.5, true); 
+  FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
 
   //computation
   MetricComputer mc; 
   //DomainPredicate<Domain> dp(d);
   BallPredicate<Point> bp(0,0,radius); 
   FMM fmm(map, mc, bp, area, distance); 
-  //fmm.compute(); 
+  fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
   trace.endBlock();
