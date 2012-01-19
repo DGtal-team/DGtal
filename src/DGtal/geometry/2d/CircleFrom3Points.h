@@ -66,6 +66,8 @@ namespace DGtal
   class CircleFrom3Points
   {
 
+    BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+    
     // ----------------------- associated types ------------------------------
   public:
 
@@ -122,76 +124,70 @@ namespace DGtal
   public:
 
     /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    /**
      * Computes the signed distance of @aP to the circle
      * @param aP the point to be tested.
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
 
+    //------------------ accessors -------------------------------
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+  
     /**
      * Computes the parameters of the circle
      * @param cx  returned x-coordinate of the circle
      * @param cy  returned y-coordinate of the circle
      * @param r  returned radius of the circle
      */
-    void getParameters(double& cx, double& cy, double& r) const;
+
+    void getParameters(double& cx, double& cy, double& rr) const;
+
+    /**
+     * @return circle curvature
+     */
+    double getCurvature() const;
+    
+    /**
+     * @return the first point through which the circle passes.
+     */
+    const Point & p() const
+    {
+      return myP;
+    };
+    
+    /**
+     * @return the second point through which the circle passes.
+     */
+    const Point & q() const
+    {
+      return myQ;
+    };
+    
+    /**
+     * @return the third point through which the circle passes.
+     */
+    const Point & r() const
+    {
+      return myR;
+    };
+
 
     //------------------ display -------------------------------
+
     /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    void selfDisplay ( std::ostream & out ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param aBoard the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & aBoard ) const;
-
-    /**
-       Draw a circular arc between @a alpha1 and @a alpha2 on a Board2D board
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-    */
-    void drawArc(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const;
-
-
-    /**
-       Draw a sector between @a alpha1 and @a alpha2 on a Board2D board 
-       (the circular arc is tied with the circle center)
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-    */
-    void drawSector(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2 ) const;
-
-    /**
-       Draw an annulus of width 2 @a w between @a alpha1 and @a alpha2 on a Board2D board 
-       @param aBoard the output board where the object is drawn.
-       @param aPoint1  a point at angle @a alpha1 of the x-axis when the origin is at the circle center
-       @param aPoint2  a point at angle @a alpha2 of the x-axis when the origin is at the circle center
-       @param w  the annulus half-width
-    */
-    void drawAnnulus(Board2D & aBoard, const Point& aPoint1, const Point& aPoint2, const double& w = 1.0 ) const;
+    std::string className() const;
 
     
     // ------------------------- Protected Datas ------------------------------

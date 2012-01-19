@@ -87,7 +87,7 @@ int main( int argc, char** argv )
  Domain domain( p1, p2 );
  
  viewer << CustomColors3D(Color(20, 20, 20, 50),Color(20, 0,250,30));
- viewer << SetMode3D(domain.styleName(), "Grid");
+ viewer << SetMode3D(domain.className(), "Grid");
  viewer << domain;  
  
  DigitalSet shape_set( domain );
@@ -119,21 +119,21 @@ int main( int argc, char** argv )
   Point pp0( 0, 2, 1 );
   
   //viewer<< m;
-  viewer <<  SetMode3D( pp1.styleName(), "Paving" );
+  viewer <<  SetMode3D( pp1.className(), "Paving" );
   viewer << pp1 << pp2 << pp3;
   
-  //viewer <<  SetMode3D( pp1.styleName(), "Grid" );
+  //viewer <<  SetMode3D( pp1.className(), "Grid" );
   viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
-  viewer <<  SetMode3D( pp1.styleName(), "PavingWired" );
+  viewer <<  SetMode3D( pp1.className(), "PavingWired" );
   viewer << pp4 << pp5 ;
-  viewer <<  SetMode3D( pp1.styleName(), "Both" );
+  viewer <<  SetMode3D( pp1.className(), "Both" );
   viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
   viewer << pp6;
   viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
   viewer << pp0;
 
 
-  viewer << SetMode3D(domain.styleName(), "Paving");
+  viewer << SetMode3D(domain.className(), "Paving");
   viewer << domain2 << Display3D::updateDisplay;
  
 

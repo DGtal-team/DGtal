@@ -1,0 +1,27 @@
+SET(DGTAL_TUTO_EXAMPLES_SRC
+  imageSetDT
+  fileGridCurveRanges
+  imageGridCurveEstimator
+  shapeGridCurveEstimator
+)
+
+
+FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
+  add_executable(${FILE} ${FILE})
+  target_link_libraries (${FILE} DGtal DGtalIO )
+ENDFOREACH(FILE)
+
+#########
+
+if (  WITH_VISU3D_QGLVIEWER )
+   SET(DGTAL_TUTO_EXAMPLES_QGL_SRC
+   shapeDTViewer	
+   )
+  FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC}) 
+   add_executable(${FILE} ${FILE})
+    target_link_libraries ( ${FILE} DGtal DGtalIO
+                            ${DGtalLibDependencies})   
+  ENDFOREACH(FILE)
+
+endif ( WITH_VISU3D_QGLVIEWER   )
+

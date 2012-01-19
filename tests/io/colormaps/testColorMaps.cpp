@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/CColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -152,7 +152,7 @@ int main()
   ColorBrightnessColorMap<int, DGTAL_RGB2INT(0,0,255) > cmap_blue( 0, 500 );
   addColorMapSample( "Bright (Blue)", cmap_blue, 1, board );
 
-  HueShadeColorMap<int,1> cmap_hsv( 0, 500);
+  HueShadeColorMap<int,2> cmap_hsv( 0, 500);
   addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
   HueShadeColorMap<int,2> cmap_cyclic5( 0, 500 );

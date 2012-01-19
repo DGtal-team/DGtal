@@ -71,7 +71,7 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint2D;
     typedef typename Space::RealVector RealVector2D;
-   
+    
     /**
      * Destructor.
      */
@@ -128,18 +128,20 @@ namespace DGtal
      * @return the lower bound of the shape bounding box.
      *
      */
-    Point getLowerBound() const
+    RealPoint2D getLowerBound() const
     {
-      return Point(myCenter[0] - myRadius - myVarRadius, myCenter[1] - myRadius - myVarRadius);
+      return RealPoint2D(myCenter[0] - myRadius - myVarRadius, 
+                         myCenter[1] - myRadius - myVarRadius);
     }
 
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
-    Point getUpperBound() const
+    RealPoint2D getUpperBound() const
     {
-      return Point(myCenter[0] + myRadius + myVarRadius, myCenter[1] + myRadius + myVarRadius);
+      return RealPoint2D(myCenter[0] + myRadius + myVarRadius,
+                         myCenter[1] + myRadius + myVarRadius);
     }
 
     /**

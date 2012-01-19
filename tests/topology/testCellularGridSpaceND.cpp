@@ -310,7 +310,7 @@ bool testSurfelAdjacency()
     {
       Board2D board;
       board.setUnit( LibBoard::Board::UCentimeter );
-      board << SetMode( domain.styleName(), "Paving" )
+      board << SetMode( domain.className(), "Paving" )
       << domain;
       for ( typename std::set<SCell>::const_iterator it = bdry_direct.begin(),
         it_end = bdry_direct.end(); it != it_end; ++it )
@@ -345,7 +345,7 @@ bool testCellDrawOnBoard()
   Domain domain( low, high );
   Board2D board;
   board.setUnit( LibBoard::Board::UCentimeter );
-  board << SetMode( domain.styleName(), "Paving" )
+  board << SetMode( domain.className(), "Paving" )
   << domain;
   int spel[ 2 ] = { 1, 1 }; // pixel 0,0
   Point kp( spel );
@@ -357,7 +357,7 @@ bool testCellDrawOnBoard()
   int spel2[ 2 ] = { 5, 1 }; // pixel 2,0
   Point kp2( spel2 );
   SCell sspel2 = K.sCell( kp2, K.POS );
-  board << CustomStyle( sspel2.styleName(), 
+  board << CustomStyle( sspel2.className(), 
       new CustomPen( Color( 200, 0, 0 ), 
                Color( 255, 100, 100 ),
                2.0, 
@@ -372,15 +372,15 @@ bool testCellDrawOnBoard()
   board << domain;
   SCell slinel0 = K.sIncident( sspel2, 0, K.sDirect( sspel2, 0 ) );
   SCell spointel01 = K.sIncident( slinel0, 1, K.sDirect( slinel0, 1 ) );
-  board << CustomStyle( sspel2.styleName(), 
+  board << CustomStyle( sspel2.className(), 
       new CustomColors( Color( 200, 0, 0 ), 
             Color( 255, 100, 100 ) ) )
   << sspel2
-  << CustomStyle( slinel0.styleName(), 
+  << CustomStyle( slinel0.className(), 
       new CustomColors( Color( 0, 200, 0 ), 
             Color( 100, 255, 100 ) ) )
   << slinel0
-  << CustomStyle( spointel01.styleName(), 
+  << CustomStyle( spointel01.className(), 
       new CustomColors( Color( 0, 0, 200 ), 
             Color( 100, 100, 255 ) ) )
   << spointel01;

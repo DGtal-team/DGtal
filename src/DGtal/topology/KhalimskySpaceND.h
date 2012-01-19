@@ -47,10 +47,10 @@
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 
 
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ namespace DGtal
      Khalimsky coordinates.
    */
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+	     typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
 
@@ -124,49 +124,6 @@ namespace DGtal
     */
     bool operator<( const KhalimskyCell & other ) const;
 
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-  aBoard.setPenColorRGBi( 50, 50, 50 );
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-  aBoard.setFillColorRGBi( 80, 80, 80 );
-  aBoard.setLineWidth( 1 );
-      }
-    };
-
-
-    
-
-
-     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-    
-    void selfDrawDisplay3D ( Display3D & display ) const;
-    
-
-    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
-      virtual void selfDrawDisplay3D( Display3D & display ) const
-      {
-
-  //aBoard.setPenColor(Color::Black);
-      //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-      
-
-    };
-
-
-
-    
-
-
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
@@ -174,18 +131,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
+    std::string className() const;
 
   }; 
 
@@ -261,43 +212,6 @@ namespace DGtal
     */
     bool operator<( const SignedKhalimskyCell & other ) const;
 
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-  aBoard.setPenColorRGBi( 50, 50, 50 );
-  aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-  aBoard.setFillColorRGBi( 80, 80, 80 );
-  aBoard.setLineWidth( 1 );
-      }
-    };
-
-
-    
-
-
-     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    void selfDrawDisplay3D ( Display3D & display ) const;
-
-    struct DefaultDrawStyle3D : public DrawableWithDisplay3D {
-      virtual void selfDrawDisplay3D( Display3D & display ) const
-      {
-  //aBoard.setPenColor(Color::Black);
-  //aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-    };
-  
-
-
-
     // --------------- CDrawableWithBoard2D realization -------------------
   public:
 
@@ -305,18 +219,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
+    std::string className() const;
 
   }; 
 
@@ -466,7 +374,7 @@ namespace DGtal
     static const Sign NEG = false;
 #else
     // static constants
-    static const Dimension dimension;
+    static const Dimension dimension = dim;
     static const Dimension DIM;
     static const Sign POS;
     static const Sign NEG;

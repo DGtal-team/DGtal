@@ -216,6 +216,35 @@ DGtal::Trace::info() const
   return  myWriter.outputStream();
 }
 
+inline void
+DGtal::Trace::progressBar(const int currentValue, const int maximumValue) const
+{
+   // how wide you want the progress meter to be
+    int totaldotz=60;
+    double fraction = currentValue /(double) maximumValue;
+
+    // part of the progressmeter that's already "full"
+    int dotz = floor(fraction * totaldotz);
+
+    // create the "meter"
+    int ii=0;
+    myWriter.outputStream() << myCurrentPrefix<<"[";
+    // part  that's full already
+    for ( ; ii < dotz;ii++) 
+      {
+        myWriter.outputStream()<< "#";
+      }
+    // remaining part (spaces)
+    for ( ; ii < totaldotz;ii++) 
+      {
+        myWriter.outputStream()<< " ";
+      }
+    // and back to line begin - do not forget the fflush to avoid output buffering problems!
+    myWriter.outputStream()<< "]  "<< (int)(fraction*100)<<"/100\r";
+    myWriter.outputStream().flush();
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //

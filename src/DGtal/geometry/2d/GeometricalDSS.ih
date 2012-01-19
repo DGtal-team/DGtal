@@ -197,6 +197,15 @@ DGtal::GeometricalDSS<TConstIterator>::getLl() const
 
 template <typename TConstIterator>
 inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isClockwiseOriented() const
+{
+  return myFlagIsCW;
+}
+
+
+template <typename TConstIterator>
+inline
 void
 DGtal::GeometricalDSS<TConstIterator>::getParameters(double& alpha, double& beta, double& gamma) const
 {
@@ -235,7 +244,100 @@ DGtal::GeometricalDSS<TConstIterator>::init(const ConstIterator& anIt)
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isExtendable()
+DGtal::GeometricalDSS<TConstIterator>::isConcave()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  Pair aPair( *myEnd ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isLeftExteriorAtTheFront( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isRightExteriorAtTheBack( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isConvex()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  Pair aPair( *myEnd ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isRightExteriorAtTheFront( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isLeftExteriorAtTheBack( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConcave()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isRightExteriorAtTheBack( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isLeftExteriorAtTheFront( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isOppositeEndConvex()
+{
+  ASSERT( myPreimagePtr.get() != 0 ); 
+  ConstIterator it( myBegin ); 
+  --it; 
+  Pair aPair( *it ); 
+  bool isExterior = false; 
+
+  if (myFlagIsInit)
+  { //initialized
+    
+    if (myFlagIsCW) 
+      isExterior = myPreimagePtr->isLeftExteriorAtTheBack( aPair.first, aPair.second ); 
+    else
+      isExterior = myPreimagePtr->isRightExteriorAtTheFront( aPair.first, aPair.second ); 
+    
+  }
+
+  return isExterior; 
+}
+
+
+template <typename TConstIterator>
+inline
+bool
+DGtal::GeometricalDSS<TConstIterator>::isExtendableForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -263,7 +365,7 @@ DGtal::GeometricalDSS<TConstIterator>::isExtendable()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extend()
+DGtal::GeometricalDSS<TConstIterator>::extendForward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   Pair aPair( *myEnd ); 
@@ -302,7 +404,7 @@ DGtal::GeometricalDSS<TConstIterator>::extend()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
+DGtal::GeometricalDSS<TConstIterator>::isExtendableBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -332,7 +434,7 @@ DGtal::GeometricalDSS<TConstIterator>::isOppositeEndExtendable()
 template <typename TConstIterator>
 inline
 bool
-DGtal::GeometricalDSS<TConstIterator>::extendOppositeEnd()
+DGtal::GeometricalDSS<TConstIterator>::extendBackward()
 {
   ASSERT( myPreimagePtr.get() != 0 ); 
   ConstIterator it( myBegin ); 
@@ -398,56 +500,13 @@ DGtal::GeometricalDSS<TConstIterator>::selfDisplay ( std::ostream & out ) const
   out << "[end of GeometricalDSS]" << std::endl;
 }
 
-
-template <typename TConstIterator>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::GeometricalDSS<TConstIterator>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DefaultDrawStyle(); 
-}
-
 template <typename TConstIterator>
 inline
 std::string
-DGtal::GeometricalDSS<TConstIterator>::styleName() const
+DGtal::GeometricalDSS<TConstIterator>::className() const
 {
   return "GeometricalDSS";
 }
-
-template <typename TConstIterator>
-inline
-void 
-DGtal::GeometricalDSS<TConstIterator>::selfDraw(Board2D & aBoard) const
-{
-  double alpha, beta, gamma; 
-  getParameters(alpha, beta, gamma); 
-
-  typedef typename Point::Coordinate Coordinate; 
-
-  Pair firstPair( *myBegin ); 
-  double fx1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[0]);
-  double fx2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[0]);
-  double fy1 = NumberTraits<Coordinate>::castToDouble(firstPair.first[1]);
-  double fy2 = NumberTraits<Coordinate>::castToDouble(firstPair.second[1]);
-  double fx = (fx1+fx2)/2.0; 
-  double fy = (fy1+fy2)/2.0; 
-  projects(fx, fy, alpha, beta, gamma);
-
-  ConstIterator it (myEnd); 
-  --it;
-  Pair lastPair( *it );  
-  double lx1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[0]);
-  double lx2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[0]);
-  double ly1 = NumberTraits<Coordinate>::castToDouble(lastPair.first[1]);
-  double ly2 = NumberTraits<Coordinate>::castToDouble(lastPair.second[1]);
-  double lx = (lx1+lx2)/2.0; 
-  double ly = (ly1+ly2)/2.0; 
-  projects(lx, ly, alpha, beta, gamma);
-
-  aBoard.drawLine(fx,fy,lx,ly); 
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

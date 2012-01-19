@@ -117,12 +117,13 @@ template <typename TInteger>
 inline
 bool DGtal::CombinatorialDSS<TInteger>::operator==( const Self & other ) const
 {
-  return ( ( myFC == other.myFC ) && (
-         ( myFirstLetter == other.myFirstLetter ) 
-      && ( myLastLetter  == other.myLastLetter  ) )
-      || (
-         ( myFirstLetter == other.myLastLetter  ) 
-      && ( myLastLetter  == other.myFirstLetter ) ) );
+  return ( ( myFC == other.myFC ) 
+	   && (
+	       (( myFirstLetter == other.myFirstLetter ) && ( myLastLetter  == other.myLastLetter ))
+       || 
+         (( myFirstLetter == other.myLastLetter  ) && ( myLastLetter  == other.myFirstLetter )) 
+       ) 
+     );
 }
 
 
@@ -181,18 +182,18 @@ DGtal::CombinatorialDSS<TInteger>::operator!=( const ArithmeticalDSS & other) co
  */
 template <typename TInteger>
 inline
-bool DGtal::CombinatorialDSS<TInteger>::extend(ConstIterator it)
+bool DGtal::CombinatorialDSS<TInteger>::extendForward(ConstIterator it)
 {
   // Normal cases
   if ( (Index) it.getPosition() == myLastLetter + 1) 
-    return extend();
+    return extendForward();
   if ( (Index) it.getPosition() == myFirstLetter - 1) 
-    return extendOppositeEnd();
+    return extendBackward();
   if ( (Index) it.getPosition() == (myLastLetter+1) % (Size) myFC->size() ) 
-    return extend();
+    return extendForward();
   if ( (Index) it.getPosition() == (myFirstLetter-1) % (Size) myFC->size() ) 
-    return extendOppositeEnd();
-  ASSERT(false && "[CombinatorialDSS::extend(ConstIterator it)] iterator 'it' is not valid");
+    return extendBackward();
+  ASSERT(false && "[CombinatorialDSS::extendForward(ConstIterator it)] iterator 'it' is not valid");
 }
 
 
@@ -201,14 +202,14 @@ bool DGtal::CombinatorialDSS<TInteger>::extend(ConstIterator it)
  */
 template <typename TInteger>
 inline
-bool DGtal::CombinatorialDSS<TInteger>::extend()
+bool DGtal::CombinatorialDSS<TInteger>::extendForward()
 {
   if (myLastPoint == *(myFC->end()))
     return false;
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
 
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::extend()]\n";
+  //cout << "[DGtal::CombinatorialDSS<TInteger>::extendForward()]\n";
   //cout << "letterRead = getCode(" << myLastLetter+1 << ") = " << letterRead << endl;
   //cout << "letterExpected = getCode(" << myNextAfter << ") = " << letterExpected << endl;
   // Test if the new letter forms a longer prefix of the main pattern
@@ -275,12 +276,12 @@ bool DGtal::CombinatorialDSS<TInteger>::extend()
  */
 template <typename TInteger>
 inline
-bool DGtal::CombinatorialDSS<TInteger>::extendOppositeEnd()
+bool DGtal::CombinatorialDSS<TInteger>::extendBackward()
 {
   Code letterRead = getCode( myFirstLetter - 1);
   Code letterExpected = getCode( myNextBefore );
 
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::extendOppositeEnd()]\n";
+  //cout << "[DGtal::CombinatorialDSS<TInteger>::extendBackward()]\n";
   //cout << "letterRead = getCode(" << myFirstLetter-1 << ") = " << letterRead << endl;
   //cout << "letterExpected = getCode(" << myNextBefore << ") = " << letterExpected << endl;
 
@@ -372,9 +373,9 @@ bool DGtal::CombinatorialDSS<TInteger>::extendOppositeEnd()
  */
 template <typename TInteger>
 inline
-bool DGtal::CombinatorialDSS<TInteger>::retract()
+bool DGtal::CombinatorialDSS<TInteger>::retractForward()
 {
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::retract(" << myFirstLetter << ")]" << endl;
+  //cout << "[DGtal::CombinatorialDSS<TInteger>::retractForward(" << myFirstLetter << ")]" << endl;
 
   if ( myNextBefore != myPatternEnd ) {
     //Normal case
@@ -459,9 +460,9 @@ bool DGtal::CombinatorialDSS<TInteger>::retract()
  */
 template <typename TInteger>
 inline
-bool DGtal::CombinatorialDSS<TInteger>::retractOppositeEnd()
+bool DGtal::CombinatorialDSS<TInteger>::retractBackward()
 {
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::retractOppositeEnd(" << myLastPoint << ")]" << endl;
+  //cout << "[DGtal::CombinatorialDSS<TInteger>::retractBackward(" << myLastPoint << ")]" << endl;
 
   if ( myNextAfter != myPatternBegin ) {
     // Normal case

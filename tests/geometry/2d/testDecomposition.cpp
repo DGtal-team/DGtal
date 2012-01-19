@@ -239,7 +239,7 @@ bool testDisconnectedCurve()
     trace.info() << i.intersectPrevious() << " - " << i.intersectNext() << std::endl;
     PrimitiveType segment(*i);     
     trace.info() << segment << std::endl;  //standard output
-    aBoard << SetMode( segment.styleName(), "BoundingBox" )
+    aBoard << SetMode( segment.className(), "BoundingBox" )
            << segment; // draw each segment    
   } 
 
@@ -281,13 +281,13 @@ bool testClosedCurvesProcessedAsClosed()
           << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
 
       DSS4 segment(*i);
-      aBoard << CustomStyle( styleName, 
+      aBoard << CustomStyle( className, 
                              new CustomPenColor( Color::Blue ) )
              << segment; // draw each segment
 
@@ -328,13 +328,13 @@ bool testClosedCurvesProcessedAsOpen()
           << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
 
       DSS4 segment(*i);
-      aBoard << CustomStyle( styleName, 
+      aBoard << CustomStyle( className, 
                              new CustomPenColor( Color::Blue ) )
              << segment; // draw each segment
 
@@ -375,13 +375,13 @@ bool testOpenCurvesProcessedAsClosed()
           << theContour;
   //for each segment
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
-  string styleName = "ArithmeticalDSS/BoundingBox";
+  string className = "ArithmeticalDSS/BoundingBox";
   for ( Decomposition4::SegmentIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {
 
       DSS4 segment(*i);
-      aBoard << CustomStyle( styleName, 
+      aBoard << CustomStyle( className, 
                              new CustomPenColor( Color::Blue ) )
              << segment; // draw each segment
 

@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/io/writers/LongvolWriter.h"
 #include "DGtal/io/readers/LongvolReader.h"

@@ -45,8 +45,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-
 //////////////////////////////////////////////////////////////////////////////
+
+
 
 namespace DGtal
 {
@@ -116,7 +117,7 @@ namespace DGtal
 
     /**
      * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
+     * with a 'object.className()').
      *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
@@ -126,7 +127,7 @@ namespace DGtal
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithBoard2D, which requires for instance a
-     * method selfDraw( Board2D & ).
+     * method setStyle( Board2D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.
@@ -188,15 +189,6 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
   }; // end of class Board2D
 
 
@@ -215,18 +207,18 @@ namespace DGtal
    * @todo merge DrawableWithBoard2D and DrawWithBoardModifier 
    */
   struct DrawWithBoardModifier {
-    std::string styleName() const
+    std::string className() const
     {
       return "DrawWithBoardModifier";
     }
 
-    DrawableWithBoard2D* defaultStyle( std::string = "" ) const
+    /*DrawableWithBoard2D* defaultStyle( std::string = "" ) const
     {
       return 0;
-    }
+    }*/
 
-    virtual void selfDraw( Board2D &  ) const 
-    {}
+    /*virtual void setStyle( Board2D &  ) const 
+    {}*/
   };
 
 
@@ -246,16 +238,16 @@ namespace DGtal
       : myClassname( classname ), myStyle( style )
     {}
 
-    std::string styleName() const
+    std::string className() const
     {
       return "CustomStyle";
     }
 
-    void selfDraw( Board2D & board ) const
+    /*void setStyle( Board2D & board ) const
     {
       board.myStyles[ myClassname ] = myStyle;
-    }
-  private:
+    }*/
+
     std::string myClassname;
     CountedPtr<DrawableWithBoard2D> myStyle;
   };
@@ -275,11 +267,12 @@ namespace DGtal
     SetMode( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    void selfDraw( Board2D & board ) const
+    
+    /*void setStyle( Board2D & board ) const
     {
       board.myModes[ myClassname ] = myMode;
-    }
-  private:
+    }*/
+    
     std::string myClassname;
     std::string myMode;
   };
@@ -311,7 +304,7 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor);
       aboard.setPenColor( myPenColor );
@@ -342,7 +335,7 @@ namespace DGtal
       : myPenColor( penColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
     }
@@ -372,7 +365,7 @@ namespace DGtal
       : myFillColor( fillColor )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor );
     }
@@ -428,7 +421,7 @@ namespace DGtal
   myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
     
-    virtual void selfDraw( Board2D & aboard) const
+    virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
       aboard.setFillColor( myFillColor );
@@ -444,8 +437,10 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/boards/Board2D.ih"
 
+#include "DGtal/io/Display2DFactory.h"
+#include "DGtal/io/Style2DFactory.h"
+#include "DGtal/io/boards/Board2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

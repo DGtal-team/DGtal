@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CShape.h
+ * @file CDigitalBoundedShape.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/03/22
  *
- * Header file for concept CShape.cpp
+ * Header file for concept CDigitalBoundedShape.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CShape_RECURSES)
-#error Recursive header files inclusion detected in CShape.h
-#else // defined(CShape_RECURSES)
+#if defined(CDigitalBoundedShape_RECURSES)
+#error Recursive header files inclusion detected in CDigitalBoundedShape.h
+#else // defined(CDigitalBoundedShape_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CShape_RECURSES
+#define CDigitalBoundedShape_RECURSES
 
-#if !defined CShape_h
+#if !defined CDigitalBoundedShape_h
 /** Prevents repeated inclusion of headers. */
-#define CShape_h
+#define CDigitalBoundedShape_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,18 +52,20 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CShape
+  // class CDigitalBoundedShape
   /**
-   * Description of \b concept '\b CShape' <p>
+   * Description of \b concept '\b CDigitalBoundedShape' <p>
    * @ingroup Concepts
-   * Aim: designs the concept of constructible shapes in DGtal.
+   * Aim: designs the concept of bounded shapes in DGtal (shape for
+   * which upper and lower bounding bounds are available).
    * 
-   * <p> Refinement of
+   * <p> Refinement of 
    *
    * <p> Associated types :
+   *   - Point: type for points (to characterize upper/lower bounds).
    *
    * <p> Notation
-   * - \t X : A type that is a model of CShape
+   * - \t X : A type that is a model of CDigitalBoundedShape
    * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
@@ -74,53 +76,62 @@ namespace DGtal
    * <td> \b Precondition </td> <td> \b Semantics </td> 
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
+   <tr> 
+        <td class=CName> Lower bound        </td> 
+        <td class=CExpression> x.getLowerBound()      </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType> Point     </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics> compute and return the lower bound of
+   * the shape bounding box      </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+  <tr> 
+        <td class=CName> Upper bound        </td> 
+        <td class=CExpression> x.getUpperBound()      </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType> Point     </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics> compute and return the upper bound of
+   * the shape bounding box      </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+    
+      </table>
    *
    * <p> Invariants <br>
    *
    * <p> Models <br>
+   * 
+   *   Implicit and Parametric shapes of the shape factory.
    *
-   * All models of CShape are specified in the ShapeFactory.
    *
    * <p> Notes <br>
    */
   template <typename TShape>
-  struct CShape
+  struct CDigitalBoundedShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
     
-    typedef typename TShape::Space::Point Point;
-    typedef typename TShape::Space Space;
+    typedef typename TShape::Point Point;
     
-    BOOST_CONCEPT_ASSERT((CSpace<Space>));
-
- 
-    BOOST_CONCEPT_USAGE( CShape )
+     BOOST_CONCEPT_USAGE( CDigitalBoundedShape )
     {
       // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
       // Shape should have a getLowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getLowerBound() );
-      // Shape should have a operator() returning a double.
-      //    ConceptUtils::sameType( aDouble, myT(myP) );
-      // Shape should have an isInside() function returning a bool.
-      ConceptUtils::sameType( aBool, myT.isInside(myP) );
-      
+      ConceptUtils::sameType( myP, myT.getLowerBound() );    
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     TShape myT;
     Point myP;
-    bool aBool;
-    double aDouble;
     
-  }; // end of concept CShape
+  }; // end of concept CDigitalBoundedShape
   
 } // namespace DGtal
 
@@ -128,7 +139,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CShape_h
+#endif // !defined CDigitalBoundedShape_h
 
-#undef CShape_RECURSES
-#endif // else defined(CShape_RECURSES)
+#undef CDigitalBoundedShape_RECURSES
+#endif // else defined(CDigitalBoundedShape_RECURSES)

@@ -34,7 +34,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,14 +64,14 @@ bool testImplicitShape()
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
   
-  Shapes<Z2i::Domain>::shaper( set,
+  Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitBall<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitball.svg");
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::shaper( set,
+  Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitHyperCube<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitcube.svg");
@@ -79,14 +79,14 @@ bool testImplicitShape()
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::shaper( set,
+  Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitNorm1Ball<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitlosange.svg");
   
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::shaper( set,
+  Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 1));
   board << set;
   board.saveSVG("implicitrounded-1.svg");
@@ -94,7 +94,7 @@ bool testImplicitShape()
 
   set.clear();
   board.clear();
-  Shapes<Z2i::Domain>::shaper( set,
+  Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 2.5));
   board << set;
   board.saveSVG("implicitrounded-2.5.svg");
@@ -129,7 +129,7 @@ bool testImplicitShape3D()
   Image image(domain);
   Z3i::DigitalSet set(domain);
 
-  Shapes<Z3i::Domain>::shaper( set,
+  Shapes<Z3i::Domain>::euclideanShaper( set,
              ImplicitRoundedHyperCube<Z3i::Space>( c, 10, 2.5));
 
   for(Z3i::DigitalSet::ConstIterator it=set.begin(), itend=set.end();

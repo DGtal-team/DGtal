@@ -185,21 +185,21 @@ namespace DGtal
        * the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extend(ConstIterator it);
+      bool extendForward(ConstIterator it);
 
       /**
        * Tests whether the current DSS can be extended at the front.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extend();
+      bool extendForward();
 
       /**
        * Tests whether the current DSS can be extended at the back.
        * Computes the parameters of the extended DSS if yes.
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendOppositeEnd();
+      bool extendBackward();
 
       /**
        * Removes the first point of the DSS (at back). 
@@ -208,7 +208,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
-      bool retract();
+      bool retractForward();
 
       /**
        * Removes the last point of the DSS (at front).
@@ -217,7 +217,7 @@ namespace DGtal
        * a Freeman Chain code.  
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
-      bool retractOppositeEnd();
+      bool retractBackward();
 
       /**
        * Initializes the DSS with the longest Christoffel word

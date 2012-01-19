@@ -199,13 +199,29 @@ namespace DGtal
     Point getLl() const;
 
     /**
+     * @return 'true' if CW, 'false' if CCW
+     */
+    bool isClockwiseOriented() const;
+
+    /**
      * Get the parameters of one separating straight line
      * @param alpha  (returned) x-component of the normal
      * @param beta  (returned) y-component of the normal
      * @param gamma  (returned) intercept
      */
     void getParameters(double& alpha, double& beta, double& gamma) const;
-
+    
+    /**
+     * Projects the point ( @a x , @a y ) onto the 
+     * straight line of parameters ( @a alpha , @a beta , @a gamma )
+     * @param x  (returned) x-coordinate of the point
+     * @param y  (returned) y-coordinate of the point
+     * @param alpha  x-component of the direction vector
+     * @param beta  y-component of the direction vector
+     * @param gamma  intercept
+     */
+    void projects(double& x, double& y, 
+                const double& alpha, const double& beta, const double& gamma) const;
 
     // ----------------------- growth operations --------------------------------------
 
@@ -217,23 +233,79 @@ namespace DGtal
 
     /**
      * Forward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
-    bool extend();
+    bool extendForward();
 
     /**
      * Forward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
-    bool isExtendable();
+    bool isExtendableForward();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     */
+    bool isConcave();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableForward() returns 'false'
+     */
+    bool isConvex();
 
     /**
      * Backward extension of the segment.
+     *
+     * @return 'true' if the segment is extended
+     * and 'false' otherwise.
      */
-    bool extendOppositeEnd();
+    bool extendBackward();
 
     /**
      * Backward extension test.
+     *
+     * @return 'true' if the segment can be extended
+     * and 'false' otherwise.
      */
-    bool isOppositeEndExtendable();
+    bool isExtendableBackward();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a concave part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a concave part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     */
+    bool isOppositeEndConcave();
+
+    /**
+     * Decide whether the extension of the segment
+     * would result in a convex part or not.
+     *
+     * @return 'true' if the extension of the segment
+     * results in a convex part and 'false' otherwise.
+     *
+     * NB: a true returned value implies that isExtendableBackward() returns 'false'
+     */
+    bool isOppositeEndConvex();
 
     //------------------ display -------------------------------
     /**
@@ -246,18 +318,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-       Draw the object on a Board2D board
-       @param board the output board where the object is drawn.
-    */
-    void selfDraw(Board2D & board ) const;
+    std::string className() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:
@@ -292,41 +358,13 @@ namespace DGtal
 
   private:
 
-    /**
-     * Projects the point ( @a x , @a y ) onto the 
-     * straight line of parameters ( @a alpha , @a beta , @a gamma )
-     * @param x  (returned) x-coordinate of the point
-     * @param y  (returned) y-coordinate of the point
-     * @param alpha  x-component of the direction vector
-     * @param beta  y-component of the direction vector
-     * @param gamma  intercept
-     */
-    void projects(double& x, double& y, 
-                const double& alpha, const double& beta, const double& gamma) const;
+    
 
     // ------------------------- Internals ------------------------------------
   private:
     
     // ------------------------- Private Datas --------------------------------
   private:
-
-    /**
-     * Default drawing style for GeometricalDSS.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the GeometricalDSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
 
   }; // end of class GeometricalDSS
 

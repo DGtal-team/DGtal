@@ -52,7 +52,6 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/base/Modifier.h"
 
@@ -192,7 +191,7 @@ namespace DGtal
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const ConstIterator & it);
+    bool extendForward(const ConstIterator & it);
 
 
     // ------------------------- Accessors ------------------------------
@@ -220,37 +219,13 @@ namespace DGtal
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
+    std::string className() const;
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) ;
-
-    
- 
-
-    
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object with QGLViewer
-     * @param viewer the output where the object is drawn.
-     */
-    void selfDrawDisplay3D ( Display3D & display ) const;
-    void selfDrawAsPointsDisplay3D( Display3D & display ) const;
-    void selfDrawAsBoundingBoxDisplay3D( Display3D & display ) const;
- 
-
-
-
-
-
 
     // ------------------------- Protected Datas ------------------------------
   protected:

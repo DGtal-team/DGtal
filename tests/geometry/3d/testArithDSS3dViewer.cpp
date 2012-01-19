@@ -85,15 +85,15 @@ int main( int argc, char** argv )
   viewer.show();
 
   Point p;
-  viewer  << SetMode3D(p.styleName(), "Grid");
+  viewer  << SetMode3D(p.className(), "Grid");
 
     unsigned int c = 0;
     Decomposition::SegmentIterator i = theDecomposition.begin();
     for ( ; i != theDecomposition.end(); ++i) {
       SegmentComputer currentSegmentComputer(*i);
-       viewer << SetMode3D(currentSegmentComputer.styleName(), "Points"); 
+       viewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
       viewer << currentSegmentComputer;  
-       viewer << SetMode3D(currentSegmentComputer.styleName(), "BoundingBox"); 
+       viewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
       viewer << currentSegmentComputer;  
       //cerr << currentSegmentComputer << endl;
       

@@ -46,13 +46,13 @@ using namespace Z3i;
 
 int main()
 {
-  Board3DTo2D viewer;
+  Board3DTo2D board;
 
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
 
-  viewer << domain;
+  board << domain;
 
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
@@ -60,14 +60,14 @@ int main()
 
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
-  viewer << shape_set;
+  board << shape_set;
   
-  viewer << CameraPosition(5.000000, 5.000000, 29.893368)
+  board << CameraPosition(5.000000, 5.000000, 29.893368)
   << CameraDirection(0.000000, 0.000000, -1.000000)
   << CameraUpVector(0.000000, 1.000000, 0.000000);
   
-  //viewer << SetMode3D(viewer.styleName(), "WireFrameMode");
-  viewer.saveCairo("dgtalCairo-2-sets.png", Board3DTo2D::CairoPNG, 600, 400);
+  //board << SetMode3D(board.className(), "WireFrameMode");
+  board.saveCairo("dgtalBoard3DTo2D-2-sets.png", Board3DTo2D::CairoPNG, 600, 400);
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

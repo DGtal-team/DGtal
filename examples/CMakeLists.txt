@@ -19,14 +19,15 @@ include_directories (${PROJECT_BINARY_DIR}/examples/)
 link_directories (${PROJECT_BINARY_DIR})
 
 
-# ConfigTest.h instanciation.
+# ConfigExamples.h instanciation.
 configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in 
-  ${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h)
+  ${PROJECT_BINARY_DIR}/examples/ConfigExamples.h)
 
-#------TESTS subdirectories ------
+#------Examples subdirectories ------
 
 add_subdirectory(io)
 add_subdirectory(geometry)
 add_subdirectory(doc-examples)
+add_subdirectory(tutorial-examples)
 add_subdirectory(topology)
 

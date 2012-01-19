@@ -35,7 +35,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
@@ -97,7 +97,7 @@ bool testMagickReader()
 
   board.setUnit(LibBoard::Board::UCentimeter);
 
-  img.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, img, (unsigned char)0, (unsigned char)255);
   board.saveSVG("testMagick-export.svg");
     
   trace.endBlock();

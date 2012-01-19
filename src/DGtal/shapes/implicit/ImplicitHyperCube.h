@@ -49,9 +49,9 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of template class 'ImplicitHyperCube' <p>
-   * \brief Aim: model of CImplicitShape concept to create an
-   * hypercube in  nD..
+   * Description of template class 'ImplicitHyperCube' <p> \brief Aim:
+   * model of CEuclideanOrientedShape and CEuclideanBoundedShape
+   * concepts to create an hypercube in nD..
    *
    * @tparam TSpace the Digital space definition.
    */
@@ -61,10 +61,8 @@ namespace DGtal
 
   public:
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::Integer Integer;
+    typedef typename Space::RealPoint RealPoint;
     
-   
     /** 
      * Constructor. Contructs a ball with center aCenter and width
      * aWidth.
@@ -72,8 +70,9 @@ namespace DGtal
      * @param aCenter the cube center. 
      * @param aHalfWidth the cube half-width.
      */
-    ImplicitHyperCube(const Point &aCenter, const Integer &aHalfWidth): myCenter(aCenter),
-                myHalfWidth(aHalfWidth)
+    ImplicitHyperCube(const RealPoint &aCenter, const double &aHalfWidth): 
+      myCenter(aCenter),
+      myHalfWidth(aHalfWidth)
     {};
     
     /** 
@@ -91,14 +90,13 @@ namespace DGtal
      * the function value at p. In Shapes, positive values are used to
      * construct a set.
      * 
-     * @param aPoint the point to evalute the function at.
+     * @param aRealPoint the point to evalute the function at.
      * @return the distance of aPoint to the ball center.
      */
     inline
-    double operator()(const Point &aPoint) const
+    double operator()(const RealPoint &aPoint) const
     {
-      return NumberTraits<Integer>::castToDouble(myHalfWidth) - 
-  (aPoint - myCenter ).norm(Point::L_infty);
+      return  myHalfWidth - (aPoint - myCenter ).norm(RealPoint::L_infty);
     }
 
 
@@ -109,9 +107,22 @@ namespace DGtal
      * @return the distance of aPoint to the ball center.
      */
     inline
-    bool isInside(const Point &aPoint) const
+    bool isInside(const RealPoint &aPoint) const
     {
       return this->operator()(aPoint) >0.0;
+    }
+
+
+    inline
+    Orientation orientation(const RealPoint &aPoint) const
+    {
+      if (this->operator()(aPoint) > 0.0)
+        return INSIDE;
+      else
+        if (this->operator()(aPoint) < 0.0)
+          return OUTSIDE;
+        else
+          return ON;
     }
 
     /** 
@@ -121,9 +132,9 @@ namespace DGtal
      * @return the lower bound point.
      */
     inline
-    Point getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return (myCenter - Point::diagonal(myHalfWidth));
+      return (myCenter - RealPoint::diagonal(myHalfWidth));
     }
     
     /** 
@@ -133,9 +144,9 @@ namespace DGtal
      * @return the upper bound point.
      */
     inline
-    Point getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return (myCenter + Point::diagonal(myHalfWidth)); 
+      return (myCenter + RealPoint::diagonal(myHalfWidth)); 
     }
     
 
@@ -160,10 +171,10 @@ namespace DGtal
   private:
    
     ///Ball center
-    Point myCenter;
+    RealPoint myCenter;
 
     ///Ball HalfWidth
-    Integer myHalfWidth;
+    double myHalfWidth;
    
     // ------------------------- Hidden services ------------------------------
   protected:
