@@ -233,15 +233,29 @@ bool testComparison(int size, int area, double distance)
   bool flagIsOk = true; 
 
   trace.beginBlock ( " Comparison " );
-  //all points of map must have same distance in resultImage
-  std::map<Point, Distance>::const_iterator it = map.begin(); 
-  std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-    for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
-    {
-      //std::cerr << it->first << " " << it->second << " " << resultImage(it->first) << std::endl; 
-      if (it->second != resultImage(it->first))
-        flagIsOk = false; 
-    }
+  // //all points of map must have same distance in resultImage
+  // std::map<Point, Distance>::const_iterator it = map.begin(); 
+  // std::map<Point, Distance>::const_iterator itEnd = map.end(); 
+  //   for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+  //   {
+  //     //std::cerr << it->first << " " << it->second << " " << resultImage(it->first) << std::endl; 
+  //     if (it->second != resultImage(it->first))
+  //       flagIsOk = false; 
+  //   }
+  //all points of result must be in map and have the same distance
+  Domain::ConstIterator it = d.begin(); 
+  Domain::ConstIterator itEnd = d.end(); 
+     for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+       {
+	 std::map<Point, Distance>::iterator itMap = map.find(*it); 
+	 if (itMap == map.end())
+	   flagIsOk = false; 
+	 else 
+	   {
+	     if (resultImage(*it) != itMap->second)
+	       flagIsOk = false; 
+	   }
+       }
   trace.endBlock();
 
   return flagIsOk; 
@@ -262,15 +276,15 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  int size = 49; 
+  int size = 50; 
   bool res =  
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
 && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
 
-   size = 19; 
-   res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
+   size = 20; 
+   res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
