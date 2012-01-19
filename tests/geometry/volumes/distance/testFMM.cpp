@@ -269,7 +269,7 @@ int main ( int argc, char** argv )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
 
-   size = 10; 
+   size = 19; 
    res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
 ;
   //&& ... other tests
