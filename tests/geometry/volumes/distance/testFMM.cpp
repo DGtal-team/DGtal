@@ -49,15 +49,88 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 
-/*
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/helpers/StdDefs.h"
+//shape and digitizer
 #include "DGtal/shapes/ShapeFactory.h"
-*/
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+
+//////////////////////////////////////////////////////////////////////////////
+// digital circle generator
+template <typename TPoint>
+class BallPredicate 
+{
+  public:
+    typedef TPoint Point;
+
+public: 
+
+  BallPredicate(double aCx, double aCy, double aR ): 
+    myCx(aCx), myCy(aCy), myR(aR)
+  { ASSERT(myR > 0); }; 
+
+  bool operator()(const TPoint& aPoint) const 
+  {
+    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
+			  + std::pow( (myCy-aPoint[1] ), 2) );  
+    if (d <= myR) return true; 
+    else return false; 
+  };
+private: 
+  double myCx, myCy, myR; 
+};
+
+template<typename TKSpace>
+void
+ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSpace>& gc)
+{
+
+  ASSERT( aR < (double) size ); 
+ 
+  // Types
+  typedef TKSpace KSpace;  
+  typedef typename KSpace::SCell SCell;
+  typedef GridCurve<KSpace> GridCurve; 
+  typedef typename KSpace::Space Space;  
+  typedef typename Space::Point Point;
+
+  KSpace K;
+  bool ok = K.init( Point(-size,-size), Point(size,size), true );
+  if ( ! ok )
+    {
+      std::cerr << " error in creating KSpace." << std::endl;
+    }
+  try 
+    {
+      BallPredicate<Point> dig(aCx, aCy, aR); 
+      // Extracts shape boundary
+      SurfelAdjacency<KSpace::dimension> SAdj( true );
+      SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
+      // Getting the consecutive surfels of the 2D boundary
+      std::vector<Point> points;
+      Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
+      gc.initFromVector(points); 
+    }
+  catch ( InputException e )
+    {
+      std::cerr << " error in finding a bel." << std::endl;
+    }
+}
+
+// template<typename TKSpace>
+// void
+// ballGenerator(const int& size, GridCurve<TKSpace>& gc)
+// {
+//   double radius = (rand()%size);
+//   trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
+//   ballGenerator<TKSpace>( size, 0.0, 0.0, radius, gc ); 
+// }
 
 template< typename TIterator >
 void draw( const TIterator& itb, const TIterator& ite, std::string basename) 
@@ -83,44 +156,6 @@ void draw( const TIterator& itb, const TIterator& ite, std::string basename)
   b.saveEPS(s.str().c_str());
 } 
 
-// /**
-//  * Example of a test. To be completed.
-//  *
-//  */
-// bool testFMM()
-// {
-//   unsigned int nbok = 0;
-//   unsigned int nb = 0;
-
-//   typedef PointVector<2,int> Point; 
-//   typedef double Distance;  
-//   typedef PointVector<2,Distance> Distances;  
-//   typedef IncrementalEuclideanMetricComputer<2> MetricComputer; 
-
-//   trace.beginBlock ( "Testing metric computer " );
- 
-//   MetricComputer m; 
-//   trace.info() << m.compute( Distances(0,m.infinity()) ) << std::endl; 
-//   trace.info() << m.compute( Distances(1,m.infinity()) ) << std::endl; 
-//   trace.info() << m.compute( Distances(1,1) ) << std::endl; 
-//   trace.info() << m.compute( Distances(std::sqrt(2),2) ) << std::endl; 
-
-//   trace.endBlock();
-
-//   trace.beginBlock ( "Testing FMM " );
- 
-//   std::map<Point, Distance> map; 
-//   map.insert( std::pair<Point, Distance>( Point(0,0), 0.0 ) );
- 
-//   FMM<MetricComputer, TruePointPredicate<Point> > f(map, m); 
-
-//   trace.info() << f << std::endl; 
-
-//   trace.endBlock();
-
-
-//   return nbok == nb;
-// }
 
 /**
  * Simple 2d distance transform
@@ -163,12 +198,64 @@ bool testDisplayDT2d(int size, int area, double distance)
 
   //display
   std::stringstream s; 
-  s << "DTbyFMM-" << size << "-" << area << "-" << distance; 
+  s << "DTFromPoint-" << size << "-" << area << "-" << distance; 
   draw(map.begin(), map.end(), s.str());
 
   return fmm.isValid(); 
 }
 
+bool testDispalyDTFromCircle(int size, int area, double distance)
+{
+
+  static const DGtal::Dimension dimension = 2; 
+
+  //type definitions 
+  typedef KhalimskySpaceND<dimension,int> KSpace; 
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point;
+ 
+  typedef IncrementalEuclideanMetricComputer<dimension> MetricComputer; 
+  typedef MetricComputer::Distance Distance;  
+
+  //init domain
+  Point c(0,0); 
+  Point up(size, size); 
+  Point low(-size,-size); 
+  Domain d(low, up); 
+
+  //generate digital circle
+  GridCurve<KSpace> gc;   
+  double radius = (rand()%size);
+  trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
+  ballGenerator<KSpace>( size, 0, 0, radius, gc ); 
+
+  trace.beginBlock ( "Display FMM results " );
+
+  //init
+  std::map<Point, Distance> map; 
+  GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
+  //typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+  typedef FMM<MetricComputer, BallPredicate<Point> > FMM;
+  FMM::initIncidentPoints(r.begin(), r.end(), map, 0.5, true); 
+
+  //computation
+  MetricComputer mc; 
+  //DomainPredicate<Domain> dp(d);
+  BallPredicate<Point> bp(0,0,radius); 
+  FMM fmm(map, mc, bp, area, distance); 
+  //fmm.compute(); 
+  trace.info() << fmm << std::endl; 
+
+  trace.endBlock();
+
+  //display
+  std::stringstream s; 
+  s << "DTFromCircle-" << size << "-" << area << "-" << distance; 
+  draw(map.begin(), map.end(), s.str());
+
+  return fmm.isValid(); 
+
+}
 
 
 /**
@@ -233,15 +320,6 @@ bool testComparison(int size, int area, double distance)
   bool flagIsOk = true; 
 
   trace.beginBlock ( " Comparison " );
-  // //all points of map must have same distance in resultImage
-  // std::map<Point, Distance>::const_iterator it = map.begin(); 
-  // std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-  //   for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
-  //   {
-  //     //std::cerr << it->first << " " << it->second << " " << resultImage(it->first) << std::endl; 
-  //     if (it->second != resultImage(it->first))
-  //       flagIsOk = false; 
-  //   }
   //all points of result must be in map and have the same distance
   Domain::ConstIterator it = d.begin(); 
   Domain::ConstIterator itEnd = d.end(); 
@@ -264,7 +342,6 @@ bool testComparison(int size, int area, double distance)
 
 
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -282,6 +359,8 @@ int main ( int argc, char** argv )
 && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
+
+  res = res && testDispalyDTFromCircle(size, size*size, size);   
 
    size = 20; 
    res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )

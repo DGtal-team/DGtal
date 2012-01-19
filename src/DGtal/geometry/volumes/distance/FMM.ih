@@ -71,6 +71,48 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::~FMM()
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+// Static functions :
+
+
+template <typename TMetricComputer, typename TPointPredicate>
+template <typename TIteratorOnPoints>
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>
+::initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
+		  AcceptedPointsSet& aMap, 
+		  const Distance& aDistance)
+{
+  TIteratorOnPoints it = itb; 
+  for ( ; it != ite; ++it) 
+    {
+      aMap.insert( Pair(*it,aDistance) ); 
+    }
+}
+
+template <typename TMetricComputer, typename TPointPredicate>
+template <typename TIteratorOnPairs>
+void
+DGtal::FMM<TMetricComputer, TPointPredicate>
+::initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
+		     AcceptedPointsSet& aMap, 
+		     const Distance& aDistance, 
+		     bool aFlagIsPositive)
+{
+  Distance k = -1; 
+  if (aFlagIsPositive) k = 1; 
+
+  TIteratorOnPairs it = itb; 
+  for ( ; it != ite; ++it) 
+    {
+      Point inner( it->first ); 
+      Point outer( it->second ); 
+      aMap.insert( PointDistance(inner,k*aDistance) ); 
+      aMap.insert( PointDistance(outer,-k*aDistance) ); 
+      std::cerr << aMap.size() << std::endl; 
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
 

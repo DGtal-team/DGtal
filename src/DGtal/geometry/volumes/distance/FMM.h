@@ -158,6 +158,54 @@ namespace DGtal
      */
     bool isValid() const;
 
+      // ------------------------- static functions for init --------------------
+
+    /**
+     * Initialize @a aMap from the inner boundary of the set of points P
+     * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
+     * for each P of the set.
+     * Assign a distance equal to @a aDistance
+     */
+    template <typename TDomainIterator, typename TImplicitObject>
+    static void initInnerPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
+					const TImplicitObject& aPredicate, 
+					AcceptedPointsSet& aMap, 
+					const Distance& aDistance);
+
+    /**
+     * Initialize @a aMap from the inner and outer boundaries of the set of points P
+     * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
+     * for each P of the set.
+     * Assign a distance equal to - @a aDistance if aFlagIsPositive is 'false' (default)
+     * to the inner points, but @a aDistance otherwise, and conversely for the outer points.  
+     */
+    template <typename TDomainIterator, typename TImplicitObject>
+    static void initIncidentPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
+					     const TImplicitObject& aPredicate, 
+					     AcceptedPointsSet& aMap, 
+					     const Distance& aDistance, 
+					     bool aFlagIsPositive = false);
+
+    /**
+     * Initialize @a aMap from the points of the range [@a itb , @a ite ) 
+     * Assign a distance equal to @a aDistance  
+     */
+    template <typename TIteratorOnPoints>
+    static void initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
+					AcceptedPointsSet& aMap, 
+					const Distance& aDistance);
+
+    /**
+     * Initialize @a aMap from the inner and outer points of the range [@a itb , @a ite ) 
+     * Assign a distance equal to - @a aDistance if aFlagIsPositive is 'false' (default)
+     * to the inner points, but @a aDistance otherwise, and conversely for the outer points.  
+     */
+    template <typename TIteratorOnPairs>
+    static void initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
+					     AcceptedPointsSet& aMap, 
+					     const Distance& aDistance, 
+					     bool aFlagIsPositive = false);
+
       // ------------------------- Private Datas --------------------------------
   private:
     
