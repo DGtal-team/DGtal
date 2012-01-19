@@ -152,7 +152,7 @@ int main()
   ColorBrightnessColorMap<int, DGTAL_RGB2INT(0,0,255) > cmap_blue( 0, 500 );
   addColorMapSample( "Bright (Blue)", cmap_blue, 1, board );
 
-  HueShadeColorMap<int,1> cmap_hsv( 0, 500);
+  HueShadeColorMap<int,2> cmap_hsv( 0, 500);
   addColorMapSample( "HueShade", cmap_hsv, 1, board );
 
   HueShadeColorMap<int,2> cmap_cyclic5( 0, 500 );

@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <unistd.h>
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -49,7 +50,7 @@ bool testProgressBar()
   for(unsigned int i=0; i <= 10  ; ++i)
     {
       trace.progressBar(i,10);
-      sleep(1);
+      usleep(50000);
     }
   trace.info() << std::endl;
   trace.endBlock();
