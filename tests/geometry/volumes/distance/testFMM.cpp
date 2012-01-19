@@ -37,6 +37,10 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 
+//DT
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+
 //FMM
 #include "DGtal/geometry/volumes/distance/IncrementalMetricComputers.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
@@ -149,7 +153,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   DomainPredicate<Domain> dp(d);
 
   //computation
-  trace.beginBlock ( "Testing FMM " );
+  trace.beginBlock ( "Display FMM results " );
  
   FMM fmm(map, mc, dp, area, distance); 
   fmm.compute(); 
@@ -167,7 +171,82 @@ bool testDisplayDT2d(int size, int area, double distance)
 
 
 
+/**
+ * Comparison with the separable distance transform
+ *
+ */
+bool testComparison(int size, int area, double distance)
+{
 
+  static const DGtal::Dimension dimension = 3; 
+
+  //type definitions 
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point;
+
+  //init
+  Point c(0,0,0); 
+  Point up(size, size, size); 
+  Point low(-size,-size,-size); 
+  Domain d(low, up); 
+
+  //image construction
+  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  Image image (low, up);
+  Domain::Iterator dit = d.begin(); 
+  Domain::Iterator ditEnd = d.end(); 
+  for ( ; dit != ditEnd; ++dit)
+    {
+      image.setValue(*dit, 128); 
+    }
+  image.setValue(c, 0); 
+
+  //computation
+  trace.beginBlock ( " FMM " ); 
+ 
+  typedef IncrementalLInfinityMetricComputer<dimension, int> MetricComputer; 
+  typedef MetricComputer::Distance Distance;  
+
+  typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+
+  std::map<Point, Distance> map; 
+  map.insert( std::pair<Point, Distance>( c, 0 ) );
+
+  MetricComputer mc; 
+  DomainPredicate<Domain> dp(d);
+
+  FMM fmm(map, mc, dp, area, distance); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
+
+  trace.endBlock();
+
+  trace.beginBlock ( " DT " );
+
+  typedef DistanceTransformation<Image, 0> DT; 
+  DT dt;
+  DT::OutputImage resultImage = dt.compute ( image );
+  trace.info() << resultImage << std::endl; 
+
+  trace.endBlock();
+
+  bool flagIsOk = true; 
+
+  trace.beginBlock ( " Comparison " );
+  //all points of map must have same distance in resultImage
+  std::map<Point, Distance>::const_iterator it = map.begin(); 
+  std::map<Point, Distance>::const_iterator itEnd = map.end(); 
+    for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+    {
+      //std::cerr << it->first << " " << it->second << " " << resultImage(it->first) << std::endl; 
+      if (it->second != resultImage(it->first))
+        flagIsOk = false; 
+    }
+  trace.endBlock();
+
+  return flagIsOk; 
+
+}
 
 
 
@@ -185,10 +264,13 @@ int main ( int argc, char** argv )
 
   int size = 49; 
   bool res =  
-    //testFMM()
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
 && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+;
+
+   size = 10; 
+   res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1), size+1 )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
