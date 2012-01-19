@@ -49,25 +49,25 @@ namespace DGtal
   {
     virtual void setStyle( Board2D & aBoard ) const
     {
-        aBoard.setPenColorRGBi(160,160,160);
-        aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-        aBoard.setFillColorRGBi(220,220,220);
-        aBoard.setLineWidth(1);
-      }
+      aBoard.setPenColorRGBi(160,160,160);
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColorRGBi(220,220,220);
+      aBoard.setLineWidth(1);
+    }
   };
   // AngleLinearMinimizer
   
   
   // ArithmeticalDSS
   /**
-    * Default style for the bounding box mode.
-    */
+   * Default style for the bounding box mode.
+   */
   struct DefaultDrawStyleBB_ArithmeticalDSS : public DrawableWithBoard2D
   {
     /**
-      * Draw the DSS on a board
-      * @param board the output board where the object is drawn.
-      */
+     * Draw the DSS on a board
+     * @param board the output board where the object is drawn.
+     */
     virtual void setStyle(Board2D & aBoard) const
     {
       // Set board style
@@ -79,14 +79,14 @@ namespace DGtal
   };
   
   /**
-    * Default style for the points mode.
-    */
+   * Default style for the points mode.
+   */
   struct DefaultDrawStylePoints_ArithmeticalDSS : public DrawableWithBoard2D
   {
     /**
-      * Draw the DSS on a board
-      * @param board the output board where the object is drawn.
-      */
+     * Draw the DSS on a board
+     * @param board the output board where the object is drawn.
+     */
     virtual void setStyle(Board2D & aBoard) const
     {
       // Set board style
@@ -109,8 +109,8 @@ namespace DGtal
   
   // DigitalSetBySTLSet
   /** 
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_DigitalSetBySTLSet : public DrawableWithBoard2D
   {
     virtual void setStyle(Board2D & aBoard) const
@@ -124,8 +124,8 @@ namespace DGtal
 
   // DigitalSetBySTLVector
   /** 
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_DigitalSetBySTLVector : public DrawableWithBoard2D
   {
     virtual void setStyle(Board2D & aBoard) const
@@ -139,14 +139,14 @@ namespace DGtal
   
   // FP
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_FP : public DrawableWithBoard2D
   {
     /**
-      * Drawing method.
-      * @param board the output board where the object is drawn.
-      */
+     * Drawing method.
+     * @param board the output board where the object is drawn.
+     */
     virtual void setStyle(Board2D & aBoard) const
     {
       // Set board style
@@ -182,14 +182,14 @@ namespace DGtal
   
   // GeometricalDSS
   /**
-    * Default drawing style for GeometricalDSS.
-    */
+   * Default drawing style for GeometricalDSS.
+   */
   struct DefaultDrawStyle_GeometricalDSS : public DrawableWithBoard2D
   {
     /**
-      * Draw the GeometricalDSS on a board
-      * @param board the output board where the object is drawn.
-      */
+     * Draw the GeometricalDSS on a board
+     * @param board the output board where the object is drawn.
+     */
     virtual void setStyle(Board2D & aBoard) const
     {
       aBoard.setLineStyle(Board2D::Shape::SolidStyle);
@@ -200,6 +200,26 @@ namespace DGtal
   };
   // GeometricalDSS
 
+  //GeometricalDCA
+  /**
+   * Default drawing style for GeometricalDCA.
+   */
+  struct DefaultDrawStyle_GeometricalDCA : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the GeometricalDCA on a board
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(1.5);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+
+  //GeometricalDCA
 
   // GridCurve
   // we use friend because of inner classes
@@ -208,8 +228,8 @@ namespace DGtal
   
   // HyperRectDomain
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStylePaving_HyperRectDomain : public DrawableWithBoard2D
   {
     virtual void setStyle(Board2D & aBoard) const
@@ -222,8 +242,8 @@ namespace DGtal
   };
 
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyleGrid_HyperRectDomain : public DrawableWithBoard2D
   {
     virtual void setStyle(Board2D & aBoard) const
@@ -251,8 +271,8 @@ namespace DGtal
 
   // ImageContainerBySTLVector
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_ImageContainerBySTLVector : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
@@ -266,8 +286,8 @@ namespace DGtal
   
   // KhalimskyCell
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_KhalimskyCell : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
@@ -283,8 +303,8 @@ namespace DGtal
   
   // Object
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_Object : public DrawableWithBoard2D
   {
     virtual void setStyle(Board2D & aBoard) const
@@ -298,8 +318,8 @@ namespace DGtal
   
   // PointVector
   /**
-    * Default styles.
-    */
+   * Default styles.
+   */
   struct DefaultDrawStylePaving_PointVector : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
@@ -312,8 +332,8 @@ namespace DGtal
   };
 
   /**
-    *  Style based in grid representation.
-    */
+   *  Style based in grid representation.
+   */
   struct DefaultDrawStyleGrid_PointVector : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
@@ -331,8 +351,8 @@ namespace DGtal
   
   // SignedKhalimskyCell
   /**
-    * Default style.
-    */
+   * Default style.
+   */
   struct DefaultDrawStyle_SignedKhalimskyCell : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
@@ -458,6 +478,15 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstItera
 }
 // GeometricalDSS
 
+// GeometricalDCA
+template <typename TConstIterator>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/, std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DefaultDrawStyle_GeometricalDCA; 
+}
+// GeometricalDCA
 
 // GridCurve
 // we use friend because of inner classes

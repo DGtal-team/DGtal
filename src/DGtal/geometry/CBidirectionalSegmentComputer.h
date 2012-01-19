@@ -80,7 +80,7 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> extension test  </td> 
-        <td class=CExpression> x.isOppositeEndExtendable()     </td>
+        <td class=CExpression> x.isExtendableBackward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
@@ -90,7 +90,7 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> extension </td> 
-        <td class=CExpression> x.extendOppositeEnd()     </td>
+        <td class=CExpression> x.extendBackward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
@@ -116,8 +116,8 @@ namespace DGtal
     // Methods
     BOOST_CONCEPT_USAGE( CBidirectionalSegmentComputer )
     {
-      ConceptUtils::sameType( myB, myX.isOppositeEndExtendable() );
-      ConceptUtils::sameType( myB, myX.extendOppositeEnd() );
+      ConceptUtils::sameType( myB, myX.isExtendableBackward() );
+      ConceptUtils::sameType( myB, myX.extendBackward() );
     }
     // ------------------------- Private Datas --------------------------------
   private:

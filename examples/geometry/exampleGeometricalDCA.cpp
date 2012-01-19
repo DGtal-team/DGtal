@@ -15,15 +15,15 @@
  **/
 
 /**
- * @file exampleGeometricalDSS.cpp
+ * @file exampleGeometricalDCA.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/21
+ * @date 2011/10/06
  *
- * @brief An example file for GeometricalDSS.
- * @see testGeometricalDSS examplePreimage
+ * @brief An example file for GeometricalDCA.
+ * @see testGeometricalDCA examplePreimage
  *
  * This file is part of the DGtal library.
  */
@@ -35,7 +35,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/2d/GeometricalDSS.h"
+#include "DGtal/geometry/2d/GeometricalDCA.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -47,13 +47,13 @@ using namespace Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example for GeometricalDSS" );
+  trace.beginBlock ( "Example for GeometricalDCA" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   
-  std::string filename = examplesPath + "samples/DSS.dat";
+  std::string filename = examplesPath + "samples/DCA.dat";
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   
@@ -63,16 +63,16 @@ int main( int argc, char** argv )
 
   trace.beginBlock("Simple example");
 
-  //! [GeometricalDSSUsage]
+  //! [GeometricalDCAUsage]
   Curve::IncidentPointsRange r = c.getIncidentPointsRange(); 
   Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
 
-  GeometricalDSS<Curve::IncidentPointsRange::ConstIterator> s; 
+  GeometricalDCA<Curve::IncidentPointsRange::ConstIterator> s; 
   //extension
   s.init( r.begin() );
   while ( ( s.end() != itEnd )
         &&( s.extendForward() ) ) {}
-  //! [GeometricalDSSUsage]
+  //! [GeometricalDCAUsage]
 
   trace.info() << s << endl;  
 

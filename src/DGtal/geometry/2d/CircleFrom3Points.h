@@ -66,6 +66,8 @@ namespace DGtal
   class CircleFrom3Points
   {
 
+    BOOST_STATIC_ASSERT(( TPoint::dimension == 2 ));
+    
     // ----------------------- associated types ------------------------------
   public:
 
@@ -122,31 +124,32 @@ namespace DGtal
   public:
 
     /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    /**
      * Computes the signed distance of @aP to the circle
      * @param aP the point to be tested.
      * @return the signed distance.
      */
     Distance signedDistance(const Point& aP) const;
 
+    //------------------ accessors -------------------------------
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+  
     /**
      * Computes the parameters of the circle
      * @param cx  returned x-coordinate of the circle
      * @param cy  returned y-coordinate of the circle
      * @param r  returned radius of the circle
      */
+
     void getParameters(double& cx, double& cy, double& rr) const;
+
+    /**
+     * @return circle curvature
+     */
+    double getCurvature() const;
     
     /**
      * @return the first point through which the circle passes.
@@ -172,17 +175,20 @@ namespace DGtal
       return myR;
     };
 
+
     //------------------ display -------------------------------
+
     /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
      */
-    //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    void selfDisplay ( std::ostream & out ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
+
     
     // ------------------------- Protected Datas ------------------------------
   private:

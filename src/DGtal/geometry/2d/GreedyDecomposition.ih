@@ -76,7 +76,7 @@ DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::SegmentIterat
         //check is the first and last element form a valid segment
         Iterator tmpIt = myDec->myEnd; --tmpIt;
         Segment tmpSegment; tmpSegment.init(tmpIt);
-        myFlagIntersectPrevious = tmpSegment.extend(myDec->myBegin);
+        myFlagIntersectPrevious = tmpSegment.extendForward(myDec->myBegin);
       } else {              //if processed as open
         myFlagIntersectPrevious = false;
       }
@@ -215,7 +215,7 @@ DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::doesIntersect
     Segment tmpSegment;
     Iterator previousIt = it; --previousIt;
     tmpSegment.init(previousIt);
-    return tmpSegment.extend(it);
+    return tmpSegment.extendForward(it);
 }
 
 /**
@@ -232,7 +232,7 @@ DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::longestSegmen
 
     //while my segment can be extended at the front
     while ( (myFront != myDec->myEnd) && 
-            (mySegment.extend(myFront)) ) {
+            (mySegment.extendForward(myFront)) ) {
       ++myFront;
     }
 
@@ -241,7 +241,7 @@ DGtal::deprecated::GreedyDecomposition<TSegment>::SegmentIterator::longestSegmen
       //if the sequence is processed as a closed one
       //the first element of the sequence is added if possible
       if (myDec->isClosed) {
-        myFlagIntersectNext = mySegment.extend(myDec->myBegin);
+        myFlagIntersectNext = mySegment.extendForward(myDec->myBegin);
       } else {
         myFlagIntersectNext = false;
       } 
