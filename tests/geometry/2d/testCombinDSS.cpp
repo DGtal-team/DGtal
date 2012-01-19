@@ -78,8 +78,8 @@ bool testCombinatorialDSS()
     //cout << "=================================" << theContour.size()  << endl;
     //cout << C << endl;
     //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
-    if ( ! C.extend() )  {
-      C.retract();
+    if ( ! C.extendForward() )  {
+      C.retractForward();
       ++nbRetract;
     }
     //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
@@ -111,7 +111,7 @@ bool CompareToArithmetical()
   for (int i=0; i<10; i++) it++;
   CombinatorialDSS<int> C(it);
   ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
-  A.extend(); 
+  A.extendForward(); 
   int nbPts = 2;
   bool a,c;
   bool res = true;
@@ -120,18 +120,18 @@ bool CompareToArithmetical()
   while ( C.getLastPoint() != theContour.lastPoint() ) {
     double d = ((double) rand()) / ((double) RAND_MAX );
     if ( (d < 0.15)  && (nbPts > 2) ) {
-      a = A.retract();
-      c = C.retract();
+      a = A.retractForward();
+      c = C.retractForward();
       if (a && c) --nbPts;
     }
     else if ( (d < 0.30)  && (nbPts > 2) ) {
-      a = A.retractOppositeEnd();
-      c = C.retractOppositeEnd();
+      a = A.retractBackward();
+      c = C.retractBackward();
       if (a && c) --nbPts;
     }
     else  {
-      a = A.extend();
-      c = C.extend();
+      a = A.extendForward();
+      c = C.extendForward();
       if (a && c) ++nbPts;
     }
     if ( ((!C.isValid()) || (a ^ c)) || (C != A) ) {

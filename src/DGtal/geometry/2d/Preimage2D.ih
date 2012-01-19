@@ -106,6 +106,78 @@ DGtal::Preimage2D<Shape>::operator!=( const Preimage2D & other ) const
 template <typename Shape>
 inline
 bool
+DGtal::Preimage2D<Shape>::isLeftExteriorAtTheFront(
+    const Point & aP, 
+    const Point & /*aQ*/)
+{
+  //critical points
+  BackwardIterator PHullBack = myPHull.rbegin();
+  ForwardIterator QHullFront = myQHull.begin();
+
+  //predicates definition from critical shapes
+  myShape.init(*PHullBack, *QHullFront);
+  PHullBackQHullFrontPred p1( myShape );
+
+  return (!p1(aP)); 
+}
+
+template <typename Shape>
+inline
+bool
+DGtal::Preimage2D<Shape>::isLeftExteriorAtTheBack(
+    const Point & /*aP*/, 
+    const Point & aQ)
+{
+  //critical points
+  ForwardIterator QHullFront = myQHull.begin();
+  BackwardIterator PHullBack = myPHull.rbegin();
+  
+  //predicates definition from critical shapes
+  myShape.init(*QHullFront, *PHullBack);
+  QHullFrontPHullBackPred p2( myShape );
+
+  return (!p2(aQ));
+}
+
+template <typename Shape>
+inline
+bool
+DGtal::Preimage2D<Shape>::isRightExteriorAtTheFront(
+    const Point & /*aP*/, 
+    const Point & aQ)
+{
+  //critical points
+  BackwardIterator QHullBack = myQHull.rbegin();
+  ForwardIterator PHullFront = myPHull.begin();
+
+  //predicates definition from critical shapes
+  myShape.init(*QHullBack, *PHullFront);
+  QHullBackPHullFrontPred p2( myShape );
+
+  return (!p2(aQ)); 
+}
+
+template <typename Shape>
+inline
+bool
+DGtal::Preimage2D<Shape>::isRightExteriorAtTheBack(
+    const Point & aP, 
+    const Point & /*aQ*/)
+{
+  //critical points
+  ForwardIterator PHullFront = myPHull.begin();
+  BackwardIterator QHullBack = myQHull.rbegin();
+  
+  //predicates definition from critical shapes
+  myShape.init(*PHullFront, *QHullBack);
+  PHullFrontQHullBackPred p1( myShape );
+
+  return (!p1(aP)); 
+}
+
+template <typename Shape>
+inline
+bool
 DGtal::Preimage2D<Shape>::canBeAddedAtTheFront(
     const Point & aP, 
     const Point & aQ)

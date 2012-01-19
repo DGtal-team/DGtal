@@ -92,7 +92,7 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> extension test  </td> 
-        <td class=CExpression> x.isExtendable()     </td>
+        <td class=CExpression> x.isExtendableForward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
@@ -102,7 +102,7 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> extension </td> 
-        <td class=CExpression> x.extend()     </td>
+        <td class=CExpression> x.extendForward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
@@ -132,8 +132,8 @@ namespace DGtal
       typename T::ConstIterator i(myI);
       myX.init(myI);
 
-      ConceptUtils::sameType( myB, myX.isExtendable() );
-      ConceptUtils::sameType( myB, myX.extend() );
+      ConceptUtils::sameType( myB, myX.isExtendableForward() );
+      ConceptUtils::sameType( myB, myX.extendForward() );
     }
     // ------------------------- Private Datas --------------------------------
   private:
