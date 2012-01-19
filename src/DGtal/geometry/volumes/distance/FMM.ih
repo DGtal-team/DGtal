@@ -85,7 +85,7 @@ DGtal::FMM<TMetricComputer, TPointPredicate>
   TIteratorOnPoints it = itb; 
   for ( ; it != ite; ++it) 
     {
-      aMap.insert( Pair(*it,aDistance) ); 
+      aMap.insert( PointDistance(*it,aDistance) ); 
     }
 }
 
@@ -108,7 +108,6 @@ DGtal::FMM<TMetricComputer, TPointPredicate>
       Point outer( it->second ); 
       aMap.insert( PointDistance(inner,k*aDistance) ); 
       aMap.insert( PointDistance(outer,-k*aDistance) ); 
-      std::cerr << aMap.size() << std::endl; 
     }
 }
 
