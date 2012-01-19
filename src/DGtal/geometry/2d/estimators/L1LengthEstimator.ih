@@ -68,14 +68,12 @@ template <typename T>
 inline
 void
 DGtal::L1LengthEstimator<T>::init(const double h, 
-          const ConstIterator& itb, 
-          const ConstIterator& ite, 
-          const bool& isClosed)
+				  const ConstIterator& itb, 
+				  const ConstIterator& ite)
 {
   myH = h;
   myBeginIt = itb;
   myEndIt = ite;
-  myIsClosed = isClosed;
   myIsInitBefore = true;
 }
 
@@ -86,14 +84,21 @@ DGtal::L1LengthEstimator<T>::eval() const
 {
   ASSERT(myH > 0);
   ASSERT(myIsInitBefore);
-  ASSERT(myBeginIt != myEndIt);
-
+  
   Quantity val = 0;
   
-  ConstIterator i = myBeginIt;
-  for ( ; i != myEndIt; ++i) 
-    val += 1.0;
+  if ( DGtal::isNotEmpty(myBeginIt,myEndIt) )
+    {
+      ConstIterator i = myBeginIt;
+      do
+	{
+	  val += 1.0;
+	  ++i;
+	} 
+      while (i != myEndIt);
+    }
   
+
   return val*myH;
 }
 

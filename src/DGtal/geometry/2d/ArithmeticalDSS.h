@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/2d/SegmentComputerUtils.h"
@@ -211,7 +211,7 @@ Steps:
     //BOOST_CONCEPT_ASSERT(( CPointVector<Point> ));
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
 
-    typedef DGtal::PointVector<2,double> PointD;  
+    typedef PointVector<2,double> PointD;  
 
 
     // ----------------------- Standard services ------------------------------
@@ -283,7 +283,7 @@ Steps:
      
     /**
      * @deprecated
-     * @see isExtendable()
+     * @see isExtendableForward()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -292,25 +292,25 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable(const ConstIterator & itf);
+    bool isExtendableForward(const ConstIterator & itf);
 
     /**
      * Tests whether the current DSS can be extended at the front.
      *  
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool isExtendable();
+    bool isExtendableForward();
 
     /**
      * Tests whether the current DSS can be extended at the back.
      *  
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool isOppositeEndExtendable();
+    bool isExtendableBackward();
 
     /**
      * @deprecated
-     * @see extend()
+     * @see extendForward()
      *
      * Tests whether the union between a point 
      * (adding to the front of the DSS 
@@ -321,11 +321,11 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend(const ConstIterator & itf);
+    bool extendForward(const ConstIterator & itf);
 
     /**
      * @deprecated
-     * @see extendOppositeEnd()
+     * @see extendBackward()
      *
      * Tests whether the union between a point 
      * (adding to the back of the DSS 
@@ -336,35 +336,35 @@ Steps:
      * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendOppositeEnd(const ConstIterator & itb);
+    bool extendBackward(const ConstIterator & itb);
 
     /**
      * Tests whether the current DSS can be extended at the front.
      * Computes the parameters of the extended DSS if yes.
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extend();
+    bool extendForward();
 
     /**
      * Tests whether the current DSS can be extended at the back.
      * Computes the parameters of the extended DSS if yes.
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendOppositeEnd();
+    bool extendBackward();
 
     /**
      * Removes the first point of the DSS (at back) 
      * if it has more than two points
      * @return 'true' if the first point is removed, 'false' otherwise.
      */
-    bool retract();
+    bool retractForward();
 
     /**
      * Removes the last point of the DSS (at front)
      * if it has more than two points
      * @return 'true' if the last point is removed, 'false' otherwise.
      */
-    bool retractOppositeEnd();
+    bool retractBackward();
 
 
 
@@ -542,7 +542,7 @@ Steps:
      *
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendable( const Point & lastPoint, 
+    bool isExtendableForward( const Point & lastPoint, 
                                    const Vector & lastMove );
 
     /**
@@ -561,7 +561,7 @@ Steps:
      * 
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extend( const ConstIterator & it, 
+    bool extendForward( const ConstIterator & it, 
                           ConstIterator & lastIt, 
                           const Vector & lastMove,
                           Point & Uf,  Point & Ul,
@@ -582,7 +582,7 @@ Steps:
      *
      * @return 'true'.
      */
-    bool retract( ConstIterator & firstIt,
+    bool retractForward( ConstIterator & firstIt,
                         ConstIterator & lastIt,
                         ConstIterator & nextIt,       
                         Point & Uf,  Point & Ul,
@@ -642,8 +642,22 @@ Steps:
     * Number of lower patterns ( @a myLf = @a myNbLowPat . ( @a myB , @a myA ) + @a myLl )
     */
     Integer myNbLowPat; 
+
     
-    //leaning points
+    /**
+    * Steps of the DSS (eg. right and up in the first octant)
+    */
+    std::vector<Vector> mySteps;
+    
+    // ------------------------- Private Datas --------------------------------
+  
+  private:
+
+
+    // ------------------ Display ------------------------------------------
+
+  public:
+    //leaning points (here because Display2DFactory, todo: accessors)
     /**
     * First upper leaning point ( of remainder @a myMu )
     */
@@ -660,9 +674,8 @@ Steps:
     * Last lower leaning point ( of remainder @a myMu + @a myOmega - 1 )
     */
     Point myLl;
-  
-
-    //Iterators to the first (at the back) and last (at the front) points of the DSS
+    
+    //Iterators to the first (at the back) and last (at the front) points of the DSS  (here because Display2DFactory, todo: accessors)
     /**
     * ConstIterator pointing to the back of the DSS
     */
@@ -671,20 +684,7 @@ Steps:
     * ConstIterator pointing to the front of the DSS
     */
     ConstIterator myL;
-
-    /**
-    * Steps of the DSS (eg. right and up in the first octant)
-    */
-    std::vector<Vector> mySteps;
     
-    // ------------------------- Private Datas --------------------------------
-  
-  private:
-
-
-    // ------------------ Display ------------------------------------------
-
-  public:
     /**
      * Projects the point @a m onto the straight line of slope ( @a myA / @a myB) 
      * and intercept @a myMu + ( @a myOmega - 1 )/2 ).
@@ -727,66 +727,13 @@ Steps:
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) ;
-
-    
-    /**
-     * Draw the digital points of the DSS 
-     * (possibly linked into a polygonal line) on a board
-     * @param board the output board where the object is drawn.
-     */
-    
-    void selfDrawAsDigitalPoints( Board2D & board ) const;
-    
-    
-    /**
-     * Draw the bounding box of the DSS on a board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsBoundingBox( Board2D & board ) const;
-    
+    void selfDisplay ( std::ostream & out ) ; 
     
     
     // ------------------------- Private Datas --------------------------------
   private:
 
-    /**
-     * Default style for the bounding box mode.
-     */
-    struct DefaultDrawStyleBB : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Red);
-        aBoard.setLineWidth(1.5);
-        aBoard.setFillColor(Color::None);
-      }
-    };
-    
-    /**
-     * Default style for the points mode.
-     */
-    struct DefaultDrawStylePoints : public DrawableWithBoard2D
-    {
-      /**
-       * Draw the DSS on a board
-       * @param board the output board where the object is drawn.
-       */
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-        // Set board style
-        aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-        aBoard.setPenColor(Color::Black);
-        aBoard.setLineWidth(2);
-        aBoard.setFillColor(Color::None);
-      }
-    };
+
 
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
@@ -796,46 +743,16 @@ Steps:
      * @param mode the drawing mode.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
+    std::string className() const;
 
-    /**
-     * Draw the DSS on a board as its bounding box and the
-     * polyline of its points 
-     * @param board the output board where the object is drawn.
-     *
-     */
-    void selfDraw(Board2D & board ) const;
-    
     
   }; // end of class ArithmeticalDSS
 
-
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSBoundingBox : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "BoundingBox";
-  }
-};
- 
-/**
- * Modifier class in a Board2D stream. Realizes the concept
- * CDrawableWithBoard2D.
- */
-struct DrawDSSPoints : public DrawWithBoardModifier {
-  void selfDraw( Board2D & board ) const
-  {
-    board.myModes[ "ArithmeticalDSS" ] = "Points";
-  }
-};
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'ArithmeticalDSS'.

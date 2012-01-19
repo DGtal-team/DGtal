@@ -68,7 +68,7 @@ namespace DGtal
    * segments (4-connected DSS, 8-connected DSS, thick segment, etc.)
    * 'TSegment' must have an internal type 'ConstIterator' that is a means of 
    * of accessing the sequence elements. 
-   * 'TSegment' must have the methods init() and extend() taking as input
+   * 'TSegment' must have the methods init() and extendForward() taking as input
    * a parameter of type 'Iterator'. The extend method must return a boolean
    * equal to TRUE if the extension is possible and has been successfully
    * performed and FALSE otherwise.

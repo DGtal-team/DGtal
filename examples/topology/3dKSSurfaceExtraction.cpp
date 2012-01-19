@@ -106,7 +106,7 @@ int main( int argc, char** argv )
   Viewer3D viewer;
   viewer.show(); 
    
-  //viewer << SetMode3D( vectConnectedSCell.at(0).at(0).styleName(), "Basic" );
+  //viewer << SetMode3D( vectConnectedSCell.at(0).at(0).className(), "Basic" );
 
 
   // Each connected compoments are simply displayed with a specific color.

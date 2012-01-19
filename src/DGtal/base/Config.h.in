@@ -96,12 +96,14 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref ImagePackage
 
 @section manuals_dgtal Helpers and tools
-  
+  - \ref tutorials
   - \ref dgtal_dgtalboard
   - \ref threeD_visu
-  - \ref freemanChainFromImage
-  - \ref Tools3dVolViewer
+
   
+  
+
+
    
 @section manueldev Manual pages for DGtal developers
   - \ref FAQDGtalCmake

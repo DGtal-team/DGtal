@@ -36,7 +36,7 @@
 #include <iomanip>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
@@ -96,7 +96,7 @@ int main()
   //Input shape output
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  image.selfDraw<Gray> ( board , 0, 129);
+  drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
   board.saveSVG("inputShape.svg");
 
   typedef  DistanceTransformation<Image, 2> DTL2;
@@ -127,17 +127,17 @@ int main()
   
   trace.warning() << resultL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
-  resultL2.selfDraw<HueTwice> ( board , 0, maxv2 + 1 );
+  drawImage<HueTwice>(board, resultL2, (DGtal::int64_t)0, (DGtal::int64_t)maxv2 + 1);
   board.saveSVG ( "example-DT-L2.svg" );
 
   trace.warning() << resultL1 << " maxValue= "<<maxv1<< endl;
   board.clear();
-  resultL1.selfDraw<HueTwice> ( board , 0, maxv1 + 1 );
+  drawImage<HueTwice>(board, resultL1, (DGtal::int64_t)0, (DGtal::int64_t)maxv1 + 1);
   board.saveSVG ( "example-DT-L1.svg" );
 
   trace.warning() << resultLinf << " maxValue= "<<maxv<< endl;
   board.clear();
-  resultLinf.selfDraw<HueTwice> ( board , 0, maxv + 1 );
+  drawImage<HueTwice>(board, resultLinf, (DGtal::int64_t)0, (DGtal::int64_t)maxv + 1);
   board.saveSVG ( "example-DT-Linf.svg" );
 
   trace.endBlock();

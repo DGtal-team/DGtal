@@ -33,6 +33,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -59,9 +60,9 @@ int main( int argc, char** argv )
   Z2i::Point pup(3,2);
   
   Z2i::Domain dom (plow, pup);
-  boardScan1 << SetMode( dom.styleName(), "Paving" )
+  boardScan1 << SetMode( dom.className(), "Paving" )
         << dom;
-  boardScan2 << SetMode( dom.styleName(), "Paving" )
+  boardScan2 << SetMode( dom.className(), "Paving" )
         << dom;
   
   K.init( dom.lowerBound(),dom.upperBound(), true );
@@ -87,7 +88,7 @@ int main( int argc, char** argv )
      // Drawing the scan arrows
      boardScan1.setPenColor( Color( 30, 30, 200 ));
      shift =   K.uCoords(p)-K.uCoords(prec);  
-     shift.selfDraw(boardScan1, K.uCoords(prec) );
+      draw(boardScan1, shift, K.uCoords(prec));
      prec=p;     
    }
  while ( K.uNext( p, K.uFirst(p), K.uLast(p) ) ); 
@@ -111,7 +112,7 @@ int main( int argc, char** argv )
     // Drawing the scan arrows
     shiftq =   K.uCoords(q)-K.uCoords(precq);  
     boardScan2.setPenColor( Color( 30, 30, 200 ));
-    shiftq.selfDraw(boardScan2, K.uCoords(precq) );
+    draw(boardScan2, shiftq, K.uCoords(precq));
     precq=q;       
   }
   

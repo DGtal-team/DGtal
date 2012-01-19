@@ -95,7 +95,7 @@ Afterwards the set is thresholded in ]0,255[:
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   Viewer3D viewer;
   viewer.show(); 
-  viewer << SetMode3D(image.domain().styleName(), "BoundingBox");
+  viewer << SetMode3D(image.domain().className(), "BoundingBox");
   viewer << set3d << image.domain()  << Viewer3D::updateDisplay;
 @endcode
 

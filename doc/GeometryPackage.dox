@@ -55,7 +55,8 @@ or digital objects.
  - \ref geometry2d
  - \ref moduleEsimators
  - \ref volpackage
- - \ref moduleShapesDigitizer
+ - \ref moduleShape
+
 
 
 

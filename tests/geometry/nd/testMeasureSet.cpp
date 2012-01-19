@@ -71,8 +71,8 @@ bool testMeasure()
   Z3i::Domain domain(a,b);
   Z3i::DigitalSet set(domain);
   
-  Shapes<Z3i::Domain>::shaper( set,
-             ImplicitBall<Z3i::Space>( c, 10));
+  Shapes<Z3i::Domain>::euclideanShaper( set,
+                                        ImplicitBall<Z3i::Space>( c, 10));
   
   Measure< Z3i::DigitalSet> measure;
 

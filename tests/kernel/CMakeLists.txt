@@ -14,7 +14,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_KERNEL})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
@@ -30,6 +30,6 @@ ENDIF(GMP_FOUND)
 
 FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME} ${DGtalLibDependencies})
+  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)

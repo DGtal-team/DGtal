@@ -88,7 +88,7 @@ bool testDSS4drawing()
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
   while ( (theDSS4.end() != contour.end())
-    &&(theDSS4.extend()) ) {}
+    &&(theDSS4.extendForward()) ) {}
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
@@ -97,13 +97,13 @@ bool testDSS4drawing()
   Board2D board;
   board.setUnit(Board::UCentimeter);
     
-  board << SetMode(domain.styleName(), "Grid")
+  board << SetMode(domain.className(), "Grid")
   << domain;    
   board << SetMode("PointVector", "Grid");
 
-  board << SetMode(theDSS4.styleName(), "Points") 
+  board << SetMode(theDSS4.className(), "Points") 
   << theDSS4;
-  board << SetMode(theDSS4.styleName(), "BoundingBox") 
+  board << SetMode(theDSS4.className(), "BoundingBox") 
   << theDSS4;
     
   board.saveSVG("DSS4.svg");
@@ -145,7 +145,7 @@ bool testDSS8drawing()
   {
 
     while ( (theDSS8.end()!=boundary.end())
-      &&(theDSS8.extend()) ) {}
+      &&(theDSS8.extendForward()) ) {}
 
     trace.info() << theDSS8 << " " << theDSS8.isValid() << std::endl;
 
@@ -157,13 +157,13 @@ bool testDSS8drawing()
     board.setUnit(Board::UCentimeter);
     
 
-    board << SetMode(domain.styleName(), "Paving")
+    board << SetMode(domain.className(), "Paving")
     << domain;    
     board << SetMode("PointVector", "Both");
 
-    board << SetMode(theDSS8.styleName(), "Points") 
+    board << SetMode(theDSS8.className(), "Points") 
     << theDSS8;
-    board << SetMode(theDSS8.styleName(), "BoundingBox") 
+    board << SetMode(theDSS8.className(), "BoundingBox") 
     << theDSS8;
     
     
@@ -180,7 +180,7 @@ bool testDSS8drawing()
  * checking consistency between extension and retractation.
  *
  */
-bool testExtendRetract()
+bool testExtendretractForward()
 {
 
 
@@ -214,7 +214,7 @@ bool testExtendRetract()
   trace.info() << "forward scan" << std::endl;
 
   while ( (newDSS4 != contour.end())
-    &&(newDSS4.extend()) ) {
+    &&(newDSS4.extendForward()) ) {
     v1.push_back(newDSS4);
   }
 
@@ -227,15 +227,15 @@ bool testExtendRetract()
   reverseDSS4.init(i);
 
   while ( (reverseDSS4.begin()!=contour.begin())
-          &&(reverseDSS4.extendOppositeEnd()) ) {
+          &&(reverseDSS4.extendBackward()) ) {
   }
-  reverseDSS4.extendOppositeEnd(contour.begin());
+  reverseDSS4.extendBackward(contour.begin());
 
   trace.info() << "removing" << std::endl;
 
   //removing step, store each DSS4 for comparison
   v2.push_front(reverseDSS4);
-  while (reverseDSS4.retractOppositeEnd()) {
+  while (reverseDSS4.retractBackward()) {
     v2.push_front(reverseDSS4);
   }    
     
@@ -295,7 +295,7 @@ bool testBIGINTEGER()
   DSS4 theDSS4;
   theDSS4.init( contour.begin() );
   while ( (theDSS4.end() != contour.end())
-          &&(theDSS4.extend()) ) {}
+          &&(theDSS4.extendForward()) ) {}
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
@@ -337,8 +337,8 @@ bool testCorner()
 
   DSS8 theDSS8;
   theDSS8.init(boundary.begin());
-  theDSS8.extend();
-  return ( !theDSS8.extend() );
+  theDSS8.extendForward();
+  return ( !theDSS8.extendForward() );
 
 }
 
@@ -355,7 +355,7 @@ int main(int argc, char **argv)
 
   bool res = testDSS4drawing() 
     && testDSS8drawing()
-    && testExtendRetract()
+    && testExtendretractForward()
     && testCorner()
 #ifdef WITH_BIGINTEGER
     && testBIGINTEGER()

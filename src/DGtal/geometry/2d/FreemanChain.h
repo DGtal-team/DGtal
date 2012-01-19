@@ -1120,44 +1120,13 @@ public:
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
  
 
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-
-    
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    template<typename Functor>
-    void selfDraw(Board2D & board ) const;
-
-    
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(Board2D & board ) const; 
-
-
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsGrid(Board2D & board ) const;
-
-     
-    /**
-     * Draw the object on a Board2D board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsInterGrid(Board2D & board ) const;
-
+    std::string className() const;
 
     // ------------------------- Public Datas ------------------------------
 
@@ -1207,48 +1176,6 @@ public:
 
   public:
 
-
-    /**
-     * Default Style Functor for selfDraw methods
-     *
-     * @param aBoard
-     */
-    struct SelfDrawStyle
-    {
-      SelfDrawStyle(Board2D & aBoard)
-      {
-        aBoard.setFillColor(Color::None);
-        aBoard.setPenColor(Color::Black);
-      }
-    };
-
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
-
-    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
-
-    struct DefaultDrawStyleInterGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-        aBoard.setLineStyle (LibBoard::Shape::SolidStyle );
-        aBoard.setFillColor(Color::None);
-      }
-    };
 
   }; // end of class FreemanChain
 

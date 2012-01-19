@@ -103,7 +103,7 @@ int main( int argc, char** argv )
   
   
   // Displaying all the surfels in transparent mode
-  viewer << SetMode3D((*(vectBdrySCellALL.begin())).styleName(), "Transparent");
+  viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
   for( std::set<Z3i::SCell>::iterator it=vectBdrySCellALL.begin(); 
        it!= vectBdrySCellALL.end(); it++){
     viewer<< *it;
@@ -117,7 +117,7 @@ int main( int argc, char** argv )
   
   // Need to avoid surfel superposition (the surfel size in increased)
   viewer << Viewer3D::shiftSurfelVisu; 
-  viewer << SetMode3D((*(vectBdrySCell2.begin())).styleName(), "");
+  viewer << SetMode3D((*(vectBdrySCell2.begin())).className(), "");
   viewer.setFillColor(Color(180, 200, 25, 255));
   
   int d=0;

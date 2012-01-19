@@ -46,9 +46,10 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -123,9 +124,8 @@ namespace DGtal
 
     protected:
       class Node;
-      template <int X, unsigned int exponent> struct POW;
-
-
+  
+ 
     public:
 
       BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
@@ -407,12 +407,12 @@ namespace DGtal
 
       // -------------------------------------------------------------
       /*  Iterator inner-class
-      *
-      *  @brief Buil-in iterator on an HashTree. This iterator visits
-      *  all node in the tree.
-      *
-      * -------------------------------------------------------------
-      */
+       *
+       *  @brief Buil-in iterator on an HashTree. This iterator visits
+       *  all node in the tree.
+       *
+       * -------------------------------------------------------------
+       */
       class Iterator
       {
       public:
@@ -490,43 +490,25 @@ namespace DGtal
 
       // ------------- realization CDrawableWithBoard2D --------------------
     private:
-      struct DefaultDrawStyle : public DrawableWithBoard2D
-      {
-	virtual void selfDraw(Board2D & aboard)
-	{
-	  aboard.setPenColorRGBi(60, 60, 60);
-	  aboard.setLineStyle(Board2D::Shape::SolidStyle);
-	}
-      };
+
 
     public:
       /**
        * Default drawing style object.
        * @return the dyn. alloc. default style for this object.
        */
-      DrawableWithBoard2D* defaultStyle() const;
+      //DrawableWithBoard2D* defaultStyle() const;
 
       /**
        * @return the style name used for drawing this object.
        */
-      std::string styleName() const;
-
-
-      /**
-       * Draw the object on a LibBoard board.
-       * @param board the output board where the object is drawn.
-       * @param minValue the minimum value contained in the image (used in the colormap settings)
-       * @param maxValue the maximum value contained in the image (used in the colormap settings)
-       * @tparam Coloramp any models of CColormap.
-       */
-      template<typename Colormap>
-      void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
+      std::string className() const;
         
     protected:
 
       template <typename C>
       void
-      recursiveDraw(HashKey key, const double p1[2], const double len, LibBoard::Board & board, const C& cmap) const;
+      recursiveDraw(HashKey key, const double p1[2], const double len, Board2D & board, const C& cmap) const;
 
 
       // -------------------------------------------------------------
@@ -596,21 +578,7 @@ namespace DGtal
       };// -----------------------------------------------------------
 
 
-        /**
-         * Template metaprogrammed power function.  To compute at
-         * compilation time the number of children per node (N) and save
-         * runtime calculations
-         */
-      template <int X, unsigned int exponent> struct POW
-      {
-	enum { VALUE = X * POW < X, exponent - 1 >::VALUE};
-      };
-      template <int X > struct POW<X, 1>
-      {
-	enum { VALUE = X };
-      };
-      
-      /**
+     /**
        * This is part of the hash function. It is called whenever a key
        * is accessed.  The mask used to compute the result is
        * precomputed in the constructor for efficiency.
@@ -645,6 +613,7 @@ namespace DGtal
 	return n;
       }
 
+    public:
       /**
        * Returns a pointer to the node corresponding to the key. If it
        * does'nt exist, returns 0.  This method is called VERY often,
@@ -652,7 +621,7 @@ namespace DGtal
        * @param key The key.
        * @return the pointer to the node corresponding to the key.
        */
-      inline Node* getNode(const HashKey key)  const  // very used !!
+      inline Node* getNode(const HashKey key)  const  // very used !! // public because Display2DFactory !!!
       {
 	Node* iter = myData[getIntermediateKey(key)];
 	while (iter != 0)
@@ -663,6 +632,7 @@ namespace DGtal
           }
 	return 0;
       }
+    protected:
 
       /**
        * Remove the node corresponding to a key. Returns false if the
@@ -716,7 +686,14 @@ namespace DGtal
 
       unsigned int mySpanSize;
 
-      Point myOrigin;
+
+      // myN is number of children per node.
+      static const unsigned int myN=POW<2,dim>::VALUE;
+
+
+    public:
+      Point myOrigin; // public because Display2DFactory !!!
+    protected:
 
       /**
        * Precoputed masks to avoid recalculating it all the time
@@ -724,8 +701,10 @@ namespace DGtal
       HashKey myDepthMask;
       HashKey myPreComputedIntermediateMask; // ~((~0) << _keySize)
 
+    public:
       ///The morton code computer.
-      Morton<HashKey, Point> myMorton;
+      Morton<HashKey, Point> myMorton; // public because Display2DFactory !!!
+    protected:
 
     };
 

@@ -33,6 +33,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
+
+#include "DGtal/io/Display3DFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -153,7 +155,8 @@ DGtal::Display3D::createNewLineList()
 
 inline
 void
-DGtal::Display3D::addVoxel(int x, int y, int z, DGtal::Color aColor, double width, bool withWire)
+DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
+			   DGtal::Color aColor, double width, bool withWire)
 {
   updateBoundingBox(x, y, z);    
   voxelD3D v;
@@ -656,7 +659,7 @@ DGtal::Display3D::operator<<( const TDrawableWithDisplay3D & object )
 {
   //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
   
-  object.selfDrawDisplay3D( *this );
+  DGtal::Display3DFactory::draw(*this, object);
   return *this;
 }
 

@@ -131,14 +131,15 @@ DGtal::AccFlower2D<T>::parameter( const RealPoint2D & pp ) const
 template <typename T>
 inline
 typename DGtal::AccFlower2D<T>::RealPoint2D 
-DGtal::AccFlower2D<T>::x( double t ) const
+DGtal::AccFlower2D<T>::x(const double t ) const
 {
-  while ( t >= M_PI ) t -= 2 * M_PI; 
-  while ( t < -M_PI ) t += 2 * M_PI;
+  double tt =t;
+  while ( tt >= M_PI ) tt -= 2 * M_PI; 
+  while ( tt < -M_PI ) tt += 2 * M_PI;
   
-  double ktn = myKp * t * t * t;
+  double ktn = myKp * tt * tt * tt;
   double r = myRadius + myVarRadius * cos( ktn );
-  RealPoint2D c( r * cos( t ), r * sin( t ) );
+  RealPoint2D c( r * cos( tt ), r * sin( tt ) );
   c += myCenter;
   return c;
 }

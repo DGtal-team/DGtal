@@ -34,7 +34,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/parametric/Ball2D.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/colormaps/GrayScaleColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -64,8 +64,8 @@ bool testParametricShape()
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
   
-  Shapes<Z2i::Domain>::shaper( set,
-             Ball2D<Z2i::Space>( cc, 10));
+  Shapes<Z2i::Domain>::euclideanShaper( set,
+                                        Ball2D<Z2i::Space>( cc, 10));
   
   Z2i::Point lower,upper;
   set.computeBoundingBox(lower,upper);

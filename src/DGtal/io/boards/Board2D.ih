@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -55,7 +56,7 @@ DGtal::Board2D::getMode( const std::string & objectName ) const
 /**
  * Draws the drawable [object] in this board. It should satisfy
  * the concept CDrawableWithBoard2D, which requires for instance a
- * method selfDraw( LibBoard::Board ).
+ * method setStyle( LibBoard::Board ).
  *
  * @param domain any domain.
  * @return a reference on 'this'.
@@ -65,11 +66,12 @@ inline
 DGtal::Board2D & 
 DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 {
+ 
   BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
-  CountedPtr<DrawableWithBoard2D> style( object.defaultStyle() );
+  CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) );
 #ifdef DEBUG_VERBOSE
-  trace.info() << "[operator<<] " << object.styleName();
+  trace.info() << "[operator<<] " << object.className();
 #endif
 
   // Apply default style
@@ -78,20 +80,20 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
-      style->selfDraw( *this );
+      draw(*this, style.get());
     }
   // Apply Customized style
-  StyleMapping::const_iterator it = myStyles.find( object.styleName() );
+  StyleMapping::const_iterator it = myStyles.find( object.className() );
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
 #ifdef DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
-  it->second->selfDraw( *this );
+  draw(*this, it->second.get());
       }
   // Check for specific mode.
-  ModeMapping::const_iterator itm = myModes.find( object.styleName() );
+  ModeMapping::const_iterator itm = myModes.find( object.className() );
   if ( itm != myModes.end() )
     {
       #ifdef DEBUG_VERBOSE
@@ -100,16 +102,16 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 
       // Apply default style for specific mode.
       CountedPtr<DrawableWithBoard2D> style_mode
-  ( object.defaultStyle( itm->second ) );
+  ( defaultStyle(object, itm->second) );
       if ( style_mode.get() )
   {
 #ifdef DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
-    style_mode->selfDraw( *this );
+    draw(*this, style_mode.get());
   }
       // Apply customized style for specific mode.
-      std::string specific_style = object.styleName() + "/" + itm->second;
+      std::string specific_style = object.className() + "/" + itm->second;
       it = myStyles.find( specific_style );
       if ( it != myStyles.end() ) 
   if ( it->second.get() != 0 )
@@ -118,14 +120,14 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
       trace.info() << " [specific style for mode: " 
           << specific_style << "]";
 #endif
-      it->second->selfDraw( *this );
+      draw(*this, it->second.get());
     }
     }
 #ifdef DEBUG_VERBOSE
   trace.info() << "  [draw]";
 #endif
 
-  object.selfDraw( *this );
+  draw(*this, object);
 #ifdef DEBUG_VERBOSE
   std::cerr << std::endl;
 #endif

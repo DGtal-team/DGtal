@@ -86,7 +86,7 @@ int main( int /*argc*/, char** /*argv*/ )
   Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
             ks, SAdj, set2dPredicate, aCell );
   
-  board << CustomStyle( (*(vectBdrySCell.begin())).styleName(), 
+  board << CustomStyle( (*(vectBdrySCell.begin())).className(), 
       new CustomColors(  Color( 255, 255, 0 ),
              Color( 192, 192, 0 ) ));
   
@@ -98,7 +98,7 @@ int main( int /*argc*/, char** /*argv*/ )
   unsigned int d=0;
   std::vector<Z2i::SCell>::iterator it;
   for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
-    board<< CustomStyle((*it).styleName() ,
+    board<< CustomStyle((*it).className() ,
       new CustomColors( Color::Black,
             cmap_grad( d )))<< *it;
     d++;
@@ -115,7 +115,7 @@ int main( int /*argc*/, char** /*argv*/ )
   
   std::set<Z2i::SCell>::iterator itB;
   for ( itB=bdry.begin() ; itB != bdry.end(); itB++ ){
-    board2<< CustomStyle((*itB).styleName() ,
+    board2<< CustomStyle((*itB).className() ,
        new CustomColors( Color::Black,
              cmap_grad( d )))<< *itB;
     d++;
@@ -136,7 +136,7 @@ int main( int /*argc*/, char** /*argv*/ )
   for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     d++;
     for(unsigned int j=0; j< vectContoursBdrySCell.at(i).size(); j++){
-      board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).styleName() ,
+      board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).className() ,
          new CustomColors( Color::Black,
                cmap_grad3( d )))<<vectContoursBdrySCell.at(i).at(j) ;
       

@@ -220,6 +220,8 @@ int main( int argc, char** argv )
   getType< vector<int>::iterator > ( v.begin() ); 
   getType< Circulator<vector<int>::iterator> > ( c2 ); 
 
+
+
   trace.info() << "Tags for pointers" << endl;
   int t[5] = {1, 2, 3, 4, 5};
   getGeneralTag< int* > ( t ); 

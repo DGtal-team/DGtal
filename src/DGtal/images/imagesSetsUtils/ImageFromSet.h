@@ -87,9 +87,9 @@ namespace DGtal
     template <typename Set>
     static
     Image create(const Set &aSet, const Value &defaultValue,
-     const bool addBorder,
-     typename Set::ConstIterator itBegin, 
-     typename Set::ConstIterator itEnd);
+                 const bool addBorder,
+                 typename Set::ConstIterator itBegin, 
+                 typename Set::ConstIterator itEnd);
 
     /** 
      * Create an Image from a DigitalSet. The size of the output image
@@ -127,10 +127,9 @@ namespace DGtal
     template<typename Set>
     static
     void append(Image &aImage, const Value &defaultValue,
-    typename Set::ConstIterator itBegin, 
-    typename Set::ConstIterator itEnd);
-
-
+                typename Set::ConstIterator itBegin, 
+                typename Set::ConstIterator itEnd);
+    
     /** 
      * Append a Set to an existing image. Only points in the Set
      * contained in the image domain are considered. 

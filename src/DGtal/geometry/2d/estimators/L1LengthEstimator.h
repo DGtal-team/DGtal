@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Circulator.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -98,7 +99,7 @@ namespace DGtal
      * @param ite end iterator
      * @param closed true if the input range is closed.
      */
-    void init( const double h, const ConstIterator& itb, const ConstIterator& ite, const bool& isClosed);
+    void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
     
 
     /** 
@@ -135,9 +136,6 @@ namespace DGtal
 
     ///Boolean to make sure that init() has been called before eval().
     bool myIsInitBefore;
-
-    ///True if the contour is closed.
-    bool myIsClosed;
 
     
   private:
