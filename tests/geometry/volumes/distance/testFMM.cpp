@@ -29,6 +29,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iomanip>
+#include <functional>
+
 #include "DGtal/base/Common.h"
 
 #include "DGtal/kernel/SpaceND.h"
@@ -195,7 +197,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   return fmm.isValid(); 
 }
 
-bool testDispalyDTFromCircle(int size, int area, double distance)
+bool testDispalyDTFromCircle(int size)
 {
 
   static const DGtal::Dimension dimension = 2; 
@@ -232,7 +234,7 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
 
     //computation
     Predicate bp(0,0,radius); 
-    FMM fmm(map, mc, bp, area, distance); 
+    FMM fmm(map, mc, bp); 
     fmm.compute(); 
     trace.info() << fmm << std::endl; 
     nbok += (fmm.isValid()?1:0); 
@@ -240,14 +242,16 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
 
     //display
     std::stringstream s; 
-    s << "DTInCircle-" << size << "-" << area << "-" << distance; 
+    s << "DTInCircle-" << size; 
     draw(map.begin(), map.end(), s.str());
   }
   trace.endBlock();
 
   trace.beginBlock ( "Exterior " );
   {
-    typedef NotPointPredicate<BallPredicate<Point> > Predicate; 
+    typedef NotPointPredicate<BallPredicate<Point> > PointPredicate; 
+    typedef BinaryPointPredicate<PointPredicate, 
+      DomainPredicate<Domain> > Predicate; 
     typedef FMM<MetricComputer, Predicate > FMM;
 
     //init
@@ -256,8 +260,10 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
     FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
 
     //computation
-    Predicate bp( BallPredicate<Point>(0,0,radius) ); 
-    FMM fmm(map, mc, bp, area, distance); 
+    DomainPredicate<Domain> dp( Domain(Point(-size,-size), Point(size,size)) ); 
+    PointPredicate bp( BallPredicate<Point>(0,0,radius) );
+    Predicate pred( bp, dp, andBF2 ); 
+    FMM fmm(map, mc, pred); 
     fmm.compute(); 
     trace.info() << fmm << std::endl; 
     nbok += (fmm.isValid()?1:0); 
@@ -265,7 +271,7 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
 
     //display
     std::stringstream s; 
-    s << "DTOutCircle-" << size << "-" << area << "-" << distance; 
+    s << "DTOutCircle-" << size; 
     draw(map.begin(), map.end(), s.str());
   }
   trace.endBlock();
@@ -377,7 +383,7 @@ int main ( int argc, char** argv )
 && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
 ;
 
-  res = res && testDispalyDTFromCircle(size, size*size, size);   
+  res = res && testDispalyDTFromCircle(size);   
 
    size = 20; 
    res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
