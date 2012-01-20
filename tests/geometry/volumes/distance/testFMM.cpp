@@ -229,14 +229,14 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
   trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
   ballGenerator<KSpace>( size, 0, 0, radius, gc ); 
 
-  trace.beginBlock ( "Display FMM results " );
+  trace.beginBlock ( "Interior " );
 
   //init
   std::map<Point, Distance> map; 
-  GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
+  GridCurve<KSpace>::OuterPointsRange rin = gc.getOuterPointsRange();
   //typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
   typedef FMM<MetricComputer, BallPredicate<Point> > FMM;
-  FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
+  FMM::initInnerPoints(rin.begin(), rin.end(), map, 0.5); 
 
   //computation
   MetricComputer mc; 
@@ -246,12 +246,12 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
-  trace.endBlock();
-
   //display
   std::stringstream s; 
   s << "DTFromCircle-" << size << "-" << area << "-" << distance; 
   draw(map.begin(), map.end(), s.str());
+
+  trace.endBlock();
 
   return fmm.isValid(); 
 
