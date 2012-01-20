@@ -49,7 +49,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/kernel/CSpace.h"
+#include "DGtal/base/Exceptions.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

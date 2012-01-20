@@ -46,7 +46,7 @@
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
 //Display
-#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 
 //shape and digitizer
@@ -129,7 +129,7 @@ void draw( const TIterator& itb, const TIterator& ite, std::string basename)
   typedef typename std::iterator_traits<TIterator>::value_type Pair; 
   typedef typename Pair::first_type Point; 
   typedef typename Pair::second_type Value; 
-  GradientColorMap<Value, DGtal::CMAP_GRAYSCALE> colorMap(0,10); 
+  HueShadeColorMap<unsigned char, 2> colorMap(0,100);
 
   Board2D b; 
   b.setUnit ( LibBoard::Board::UCentimeter );
