@@ -123,15 +123,6 @@ ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSp
     }
 }
 
-// template<typename TKSpace>
-// void
-// ballGenerator(const int& size, GridCurve<TKSpace>& gc)
-// {
-//   double radius = (rand()%size);
-//   trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
-//   ballGenerator<TKSpace>( size, 0.0, 0.0, radius, gc ); 
-// }
-
 template< typename TIterator >
 void draw( const TIterator& itb, const TIterator& ite, std::string basename) 
 {
@@ -209,51 +200,77 @@ bool testDispalyDTFromCircle(int size, int area, double distance)
 
   static const DGtal::Dimension dimension = 2; 
 
-  //type definitions 
+  //space and domain 
   typedef KhalimskySpaceND<dimension,int> KSpace; 
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
   typedef Domain::Point Point;
  
+  //MetricComputer
   typedef IncrementalEuclideanMetricComputer<dimension> MetricComputer; 
   typedef MetricComputer::Distance Distance;  
+  MetricComputer mc; 
 
-  //init domain
-  Point c(0,0); 
-  Point up(size, size); 
-  Point low(-size,-size); 
-  Domain d(low, up); 
-
-  //generate digital circle
+  //Digital circle generation
   GridCurve<KSpace> gc;   
   double radius = (rand()%size);
   trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
   ballGenerator<KSpace>( size, 0, 0, radius, gc ); 
 
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
   trace.beginBlock ( "Interior " );
+  {
+    typedef BallPredicate<Point> Predicate; 
+    typedef FMM<MetricComputer, Predicate > FMM;
 
-  //init
-  std::map<Point, Distance> map; 
-  GridCurve<KSpace>::OuterPointsRange rin = gc.getOuterPointsRange();
-  //typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
-  typedef FMM<MetricComputer, BallPredicate<Point> > FMM;
-  FMM::initInnerPoints(rin.begin(), rin.end(), map, 0.5); 
+    //init
+    std::map<Point, Distance> map; 
+    GridCurve<KSpace>::OuterPointsRange r = gc.getOuterPointsRange();
+    FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
 
-  //computation
-  MetricComputer mc; 
-  //DomainPredicate<Domain> dp(d);
-  BallPredicate<Point> bp(0,0,radius); 
-  FMM fmm(map, mc, bp, area, distance); 
-  fmm.compute(); 
-  trace.info() << fmm << std::endl; 
+    //computation
+    Predicate bp(0,0,radius); 
+    FMM fmm(map, mc, bp, area, distance); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl; 
+    nbok += (fmm.isValid()?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
 
-  //display
-  std::stringstream s; 
-  s << "DTFromCircle-" << size << "-" << area << "-" << distance; 
-  draw(map.begin(), map.end(), s.str());
-
+    //display
+    std::stringstream s; 
+    s << "DTInCircle-" << size << "-" << area << "-" << distance; 
+    draw(map.begin(), map.end(), s.str());
+  }
   trace.endBlock();
 
-  return fmm.isValid(); 
+  trace.beginBlock ( "Exterior " );
+  {
+    typedef NotPointPredicate<BallPredicate<Point> > Predicate; 
+    typedef FMM<MetricComputer, Predicate > FMM;
+
+    //init
+    std::map<Point, Distance> map; 
+    GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
+    FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
+
+    //computation
+    Predicate bp( BallPredicate<Point>(0,0,radius) ); 
+    FMM fmm(map, mc, bp, area, distance); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl; 
+    nbok += (fmm.isValid()?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
+
+    //display
+    std::stringstream s; 
+    s << "DTOutCircle-" << size << "-" << area << "-" << distance; 
+    draw(map.begin(), map.end(), s.str());
+  }
+  trace.endBlock();
+
+  return (nb == nbok); 
 
 }
 
