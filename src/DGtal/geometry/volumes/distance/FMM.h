@@ -63,12 +63,14 @@ namespace DGtal
     public: 
       bool operator()(const T& a, const T& b) 
         {
-          if (a.second == b.second) 
+          if ( std::abs(a.second) == std::abs(b.second) ) 
             { //point comparison
               return (a.first < b.first); 
             }
           else //distance comparison
-            return (a.second < b.second); 
+	    //(in absolute value in order to deal with
+	    //signed distance values) 
+            return ( std::abs(a.second) < std::abs(b.second) ); 
         }
     };
   }

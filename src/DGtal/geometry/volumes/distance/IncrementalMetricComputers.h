@@ -130,10 +130,11 @@ namespace DGtal
      * 
      * @param aDistanceList  the distance of the neighbors (one per dimension)
      * @param aDimensionList  the list of relevant dimensions for the computation
-     *
+     * @param aCoeff a value equal to 1 if all distances are positive, -1 otherwise
      * @return the computed distance.
      */
-    Distance compute(const Distances& aDistanceList, Dimensions& aDimensionList) const; 
+    Distance compute(const Distances& aDistanceList, 
+		     Dimensions& aDimensionList) const; 
 
 
     /**

@@ -220,7 +220,7 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewAcceptedPoint()
 	  //pair of min distance
 	  PointDistance minPair = *it; 
 
-	  if ( minPair.second < myDistanceThreshold ) 
+	  if ( std::abs(minPair.second) < myDistanceThreshold ) 
 	    { //if distance below a given threshold
 
 	      //the point of min distance is removed from the set of candidates
@@ -282,7 +282,8 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::addNewCandidate(const Point& aPoin
   if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
        && (myPointPredicate(aPoint)) ) 
     {
-      PointDistance newPair( aPoint, distance(aPoint) ); 
+      Distance d = distance(aPoint); 
+      PointDistance newPair( aPoint, d ); 
       //insert the new candidate with its distance
       std::pair<typename CandidatePointsSet::iterator, bool> 
 	result = myCandidatePoints.insert(newPair);
@@ -299,6 +300,11 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::distance(const Point& aPoint)
 
   //neigbors distance
   Distances distanceList; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
 
   Point neighbor1 = aPoint; 
   Point neighbor2 = aPoint; 
@@ -319,13 +325,34 @@ DGtal::FMM<TMetricComputer, TPointPredicate>::distance(const Point& aPoint)
       if ( it2 != myAcceptedPoints.end() ) //if found
 	d2 = it2->second; 
       neighbor2.at(k) = c; 
-      //
-      distanceList.at(k) = std::min(d1,d2);
-
+      //min
+      if (std::abs(d1) < std::abs(d2))
+	distanceList[k] = d1;
+      else 
+	distanceList[k] = d2; 
+      //test
+      Distance d = distanceList[k]; 
+      if (d != myMC.infinity())
+	{
+	  nb++; 
+	  if ( d >= 0 )
+	      nbPos++;
+	  else
+	      distanceList[k] = (-d); 
+	}
     }
 
   //computation of the new distance
-  return myMC.compute(distanceList);
+  if (nbPos == nb) 
+    return myMC.compute(distanceList); 
+  else if (nbPos == 0)
+    return -myMC.compute(distanceList);
+  else 
+    { //there should not be neighbors having distance values
+      //of different signs
+      std::cerr << "Error: Distance values of different signs" << std::endl; 
+      throw InputException();
+    } 
 
 }
 ///////////////////////////////////////////////////////////////////////////////
