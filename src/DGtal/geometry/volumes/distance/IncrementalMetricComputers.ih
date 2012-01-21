@@ -78,14 +78,16 @@ inline
 typename DGtal::IncrementalEuclideanMetricComputer<dim>::Distance
 DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistanceList) const
 {
+  //extract the dimensions where the value is initialized
   Dimensions relevantDimensions;
- 
+
   for(Dimension k = 0; k < dimension; ++k)
     {
       if ( aDistanceList[k] != infinity() )
+	{
 	  relevantDimensions.insert(k); 
+	}
     }
-
   return compute(aDistanceList, relevantDimensions); 
 }
 
@@ -100,7 +102,10 @@ DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistan
   if ( c == 1 )
     {
       Dimension k = *aDimensionList.begin(); 
-      return aDistanceList.at(k) + myGridStepsVector.at(k); 
+      Distance d = aDistanceList.at(k); 
+      Distance dres = d + myGridStepsVector.at(k);
+      ASSERT(dres > 0); 
+      return dres; 
     } 
   else 
     {
@@ -112,7 +117,7 @@ DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistan
       for ( ; it != itEnd; ++it)
 	{
 	  Distance d = aDistanceList.at(*it); 
-	  if (d > 0) 
+	  if (d > max) 
 	    {
 	      max = d;
 	      itMax = it; 
@@ -133,16 +138,19 @@ DGtal::IncrementalEuclideanMetricComputer<dim>::compute(const Distances& aDistan
 	  for ( ; it != itEnd; ++it)
 	    {
 	      double step = myGridStepsVector.at(*it);
-	      Distance d = aDistanceList.at(*it); 
+	      Distance d = aDistanceList.at(*it);
 	      a += ( 1 / (step*step) ); 
 	      b -= ( (2*d) / (step*step) );
 	      c += ( (d*d) / (step*step) ); 
 	    }
 	  //std::cerr << a << " " << b << " " << c  << std::endl; 
 	  double disc = b*b - 4*a*c;
+	  ASSERT(disc >= 0); 
 	  //std::cerr << disc << std::endl; 
 	  //greatest solution
-	  return ( ( -b + std::sqrt(disc) ) / (2*a) ); 
+	  Distance dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
+	  ASSERT(dres > 0); 
+	  return dres; 
 	}
     }
 }
@@ -155,7 +163,8 @@ DGtal::IncrementalEuclideanMetricComputer<dim>::gradientNorm(const Distance& aDi
   double sum = 0; 
   for(Dimension k = 0; k < dimension; ++k)
     {
-      sum += ( std::pow(aDistance - aDistanceList[k], 2.0) / myGridStepsVector[k] ); 
+      sum += ( std::pow(std::abs(aDistance - aDistanceList[k]), 2.0) 
+	       / myGridStepsVector[k] ); 
     }
   return sum; 
 }
