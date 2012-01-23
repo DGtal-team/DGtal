@@ -299,6 +299,88 @@ DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>::unknownValue() c
   return myUnknownValue; 
 }
 
+template <DGtal::Dimension dim, typename TValue>
+inline
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>
+::L1FirstOrderIncrementalMetricHelper(const Value& aGridStep)
+  : myUnknownValue( numeric_limits<Value>::max() )
+{
+  for (Dimension k = 0; k < dimension; ++k)
+    myGridStepsVector[k] = aGridStep; 
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>
+::L1FirstOrderIncrementalMetricHelper(const boost::array<Value, dimension>& aGridStepsVector)
+  : myGridStepsVector(aGridStepsVector), 
+    myUnknownValue( numeric_limits<Value>::max() )
+{
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>
+::L1FirstOrderIncrementalMetricHelper(const L1FirstOrderIncrementalMetricHelper& other)
+  : myGridStepsVector(other.myGridStepsVector), 
+    myUnknownValue(other.myUnknownValue)
+{
+}
+
+    
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>
+::~L1FirstOrderIncrementalMetricHelper()
+{
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+typename DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::Value
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::compute(const Values& aValueList) const
+{
+  //min computation
+  Value min = unknownValue(); //used as max
+  Dimension kmin = 0; 
+  for (Dimension k = 0 ; k < dimension; ++k) 
+    {
+      Value d = aValueList.at(k);  
+      if (d < min) 
+	{
+	  min = d;
+	  kmin = k; 
+	}
+    }   
+
+  return min + myGridStepsVector.at(kmin); 
+}
+
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+bool
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::isValid () const
+{
+  return true; 
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+void
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::selfDisplay ( std::ostream & out ) const
+{
+   out << "L1"; 
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+typename DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::Value
+DGtal::L1FirstOrderIncrementalMetricHelper<dim, TValue>::unknownValue() const
+{
+  return myUnknownValue; 
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -320,6 +402,16 @@ inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
 		    const LInfinityFirstOrderIncrementalMetricHelper<dim, TValue> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+template <DGtal::Dimension dim, typename TValue>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const L1FirstOrderIncrementalMetricHelper<dim, TValue> & object )
 {
   object.selfDisplay( out );
   return out;
