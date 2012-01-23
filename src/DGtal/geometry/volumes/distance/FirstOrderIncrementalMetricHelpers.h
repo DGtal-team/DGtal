@@ -44,6 +44,7 @@
 #include <iostream>
 #include <limits>
 #include <set>
+#include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +75,7 @@ namespace DGtal
 
     //distance
     typedef double Value; 
-    typedef DGtal::PointVector<dimension, Value> Values;   
+    typedef boost::array<dimension, Value> Values;   
     
   private: 
     typedef std::set<Dimension> Dimensions;
@@ -91,7 +92,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    L2FirstOrderIncrementalMetricHelper(const DGtal::PointVector<dimension, double>& aGridStepsVector);
+    L2FirstOrderIncrementalMetricHelper(const boost::array<dimension, double>& aGridStepsVector);
 
     /**
      * Copy.
@@ -166,7 +167,7 @@ namespace DGtal
     /**
      * Grid steps for each dimension from 0 to dimension-1
      */
-      DGtal::PointVector<dimension, double> myGridStepsVector; 
+      boost::array<dimension, double> myGridStepsVector; 
 
     /**
      * Unknown value
@@ -212,7 +213,8 @@ namespace DGtal
 
     //distance
     typedef TValue Value;
-    typedef DGtal::PointVector<dimension, Value> Values;
+    BOOST_STATIC_ASSERT( std::numeric_limits<Value>::has_infinity ); 
+    typedef boost::array<dimension, Value> Values;
     
   private:
     typedef std::set<Dimension> Dimensions;
@@ -229,7 +231,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    LInfinityFirstOrderIncrementalMetricHelper(const DGtal::PointVector<dimension, Value>& aGridStepsVector);
+    LInfinityFirstOrderIncrementalMetricHelper(const boost::array<dimension, Value>& aGridStepsVector);
 
     /**
      * Copy.
@@ -294,7 +296,7 @@ namespace DGtal
     /**
      * Grid steps for each dimension from 0 to dimension
      */
-      DGtal::PointVector<dimension, double> myGridStepsVector;
+      boost::array<dimension, double> myGridStepsVector;
 
     /**
      * Unknown value

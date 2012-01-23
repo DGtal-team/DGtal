@@ -86,7 +86,6 @@ namespace DGtal
     typedef TMetricHelper MetricHelper; 
     typedef typename TMetricHelper::Value Value; 
     BOOST_STATIC_ASSERT(( MetricHelper::dimension == Point::dimension )); 
-    typedef DGtal::PointVector<dimension, Value> Values;   
 
 
   private: 

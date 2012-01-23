@@ -49,7 +49,7 @@ DGtal::L2FirstOrderIncrementalMetricHelper<dim>
 template <DGtal::Dimension dim>
 inline
 DGtal::L2FirstOrderIncrementalMetricHelper<dim>
-::L2FirstOrderIncrementalMetricHelper(const DGtal::PointVector<dimension, double>& aGridStepsVector)
+::L2FirstOrderIncrementalMetricHelper(const boost::array<dimension, double>& aGridStepsVector)
   : myGridStepsVector(aGridStepsVector), 
     myUnknownValue( numeric_limits<Value>::max() )
 {
@@ -207,7 +207,7 @@ DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>
 template <DGtal::Dimension dim, typename TValue>
 inline
 DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>
-::LInfinityFirstOrderIncrementalMetricHelper(const DGtal::PointVector<dimension, Value>& aGridStepsVector)
+::LInfinityFirstOrderIncrementalMetricHelper(const boost::array<dimension, Value>& aGridStepsVector)
   : myGridStepsVector(aGridStepsVector), 
     myUnknownValue( numeric_limits<Value>::max() )
 {
