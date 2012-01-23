@@ -88,14 +88,14 @@ DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::operator()(const Poin
       typename Point::Coordinate c = aPoint.at(k); 
       //
       neighbor1.at(k) = (c+1); 
-      Value d1 = myMH.infinity();
+      Value d1 = myMH.unknownValue();
       typename AcceptedPointSet::iterator it1 = aMap.find(neighbor1);  
       if ( it1 != aMap.end() ) //if found
 	d1 = it1->second; 
       neighbor1.at(k) = c; 
       //
       neighbor2.at(k) = (c-1); 
-      Value d2 = myMH.infinity();
+      Value d2 = myMH.unknownValue();
       typename AcceptedPointSet::iterator it2 = aMap.find(neighbor2);  
       if ( it2 != aMap.end() ) //if found
 	d2 = it2->second; 
@@ -107,7 +107,7 @@ DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::operator()(const Poin
 	values[k] = d2; 
       //sign test
       Value d = values[k]; 
-      if (d != myMH.infinity())
+      if (d != myMH.unknownValue())
 	{
 	  nb++; 
 	  if ( d >= 0 )
