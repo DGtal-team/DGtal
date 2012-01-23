@@ -44,7 +44,7 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 //FMM
-#include "DGtal/geometry/volumes/distance/IncrementalMetricComputers.h"
+#include "DGtal/geometry/volumes/distance/FirstOrderIncrementalMetric.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
 //Display
@@ -163,10 +163,10 @@ bool testDisplayDT2d(int size, int area, double distance)
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
   typedef Domain::Point Point;
  
-  typedef IncrementalEuclideanMetricComputer<dimension> MetricComputer; 
-  typedef MetricComputer::Distance Distance;  
+  typedef FirstOrderIncrementalMetric<Point> Metric; 
+  typedef Metric::Value Distance;  
 
-  typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+  typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
 
   //init
   Point c(0,0); 
@@ -176,7 +176,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   std::map<Point, Distance> map; 
   map.insert( std::pair<Point, Distance>( c, 0.0 ) );
 
-  MetricComputer mc; 
+  Metric mc; 
   Domain d(low, up); 
   DomainPredicate<Domain> dp(d);
 
@@ -207,10 +207,10 @@ bool testDispalyDTFromCircle(int size)
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
   typedef Domain::Point Point;
  
-  //MetricComputer
-  typedef IncrementalEuclideanMetricComputer<dimension> MetricComputer; 
-  typedef MetricComputer::Distance Distance;  
-  MetricComputer mc; 
+  //Metric
+  typedef FirstOrderIncrementalMetric<Point> Metric; 
+  typedef Metric::Value Distance;  
+  Metric mc; 
 
   //Digital circle generation
   GridCurve<KSpace> gc;   
@@ -226,7 +226,7 @@ bool testDispalyDTFromCircle(int size)
   trace.beginBlock ( "Interior " );
   {
     typedef BallPredicate<Point> Predicate; 
-    typedef FMM<MetricComputer, Predicate > FMM;
+    typedef FMM<Metric, Predicate > FMM;
 
     //init
     std::map<Point, Distance> map; 
@@ -265,7 +265,7 @@ bool testDispalyDTFromCircle(int size)
     typedef NotPointPredicate<BallPredicate<Point> > PointPredicate; 
     typedef BinaryPointPredicate<PointPredicate, 
       DomainPredicate<Domain> > Predicate; 
-    typedef FMM<MetricComputer, Predicate > FMM;
+    typedef FMM<Metric, Predicate > FMM;
 
     //init
     std::map<Point, Distance> map; 
@@ -305,7 +305,7 @@ bool testDispalyDTFromCircle(int size)
   trace.beginBlock ( "Both " );
   {
     typedef DomainPredicate<Domain> Predicate; 
-    typedef FMM<MetricComputer, Predicate > FMM;
+    typedef FMM<Metric, Predicate > FMM;
 
     //init
     std::map<Point, Distance> map; 
@@ -386,15 +386,16 @@ bool testComparison(int size, int area, double distance)
   //computation
   trace.beginBlock ( " FMM " ); 
  
-  typedef IncrementalLInfinityMetricComputer<dimension, int> MetricComputer; 
-  typedef MetricComputer::Distance Distance;  
+  typedef FirstOrderIncrementalMetric<Point, 
+    LInfinityFirstOrderIncrementalMetricHelper<dimension> > Metric; 
+  typedef Metric::Value Distance;  
 
-  typedef FMM<MetricComputer, DomainPredicate<Domain> > FMM; 
+  typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
 
   std::map<Point, Distance> map; 
   map.insert( std::pair<Point, Distance>( c, 0 ) );
 
-  MetricComputer mc; 
+  Metric mc; 
   DomainPredicate<Domain> dp(d);
 
   FMM fmm(map, mc, dp, area, distance); 

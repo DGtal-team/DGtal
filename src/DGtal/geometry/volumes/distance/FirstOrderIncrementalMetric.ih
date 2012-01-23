@@ -1,0 +1,174 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FirstOrderIncrementalMetric.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ *
+ * @date 2012/01/23
+ *
+ * @brief Implementation of inline methods defined in FirstOrderIncrementalMetric.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+template <typename TPoint, typename TMetricHelper>
+inline
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::FirstOrderIncrementalMetric(const MetricHelper& aMH): 
+myMH( aMH )
+{
+}
+
+template <typename TPoint, typename TMetricHelper>
+inline
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::FirstOrderIncrementalMetric(const FirstOrderIncrementalMetric& other): 
+myMH( other.myMH )
+{
+}
+
+
+template <typename TPoint, typename TMetricHelper>
+inline
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::~FirstOrderIncrementalMetric()
+{
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+template <typename TPoint, typename TMetricHelper>
+inline
+typename DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::Value
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::operator()(const Point& aPoint, AcceptedPointSet& aMap)
+{
+
+  //neigbors distance
+  Values values; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint; 
+  for (Dimension k = 0; k < dimension; ++k)
+    {
+      typename Point::Coordinate c = aPoint.at(k); 
+      //
+      neighbor1.at(k) = (c+1); 
+      Value d1 = myMH.infinity();
+      typename AcceptedPointSet::iterator it1 = aMap.find(neighbor1);  
+      if ( it1 != aMap.end() ) //if found
+	d1 = it1->second; 
+      neighbor1.at(k) = c; 
+      //
+      neighbor2.at(k) = (c-1); 
+      Value d2 = myMH.infinity();
+      typename AcceptedPointSet::iterator it2 = aMap.find(neighbor2);  
+      if ( it2 != aMap.end() ) //if found
+	d2 = it2->second; 
+      neighbor2.at(k) = c; 
+      //min
+      if (std::abs(d1) < std::abs(d2))
+	values[k] = d1;
+      else 
+	values[k] = d2; 
+      //sign test
+      Value d = values[k]; 
+      if (d != myMH.infinity())
+	{
+	  nb++; 
+	  if ( d >= 0 )
+	      nbPos++;
+	  else
+	      values[k] = (-d); 
+	}
+    }
+
+  //computation of the new value
+  if (nbPos == nb) 
+    return myMH.compute(values); 
+  else if (nbPos == 0)
+    return -myMH.compute(values);
+  else 
+    { //there should not be neighbors having values
+      //of different signs in aMap
+      trace.error() << "Metric values of different signs" 
+		    << "in DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>"
+		    << std::endl;  
+      throw InputException();
+    } 
+
+}
+
+template <typename TPoint, typename TMetricHelper>
+inline
+bool
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::isValid () const
+{
+  return true; 
+}
+
+template <typename TPoint, typename TMetricHelper>
+inline
+void
+DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::selfDisplay ( std::ostream & out ) const
+{
+  out << "\t [FirstOrderIncrementalMetric] "; 
+  myMH.selfDisplay(out); 
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TPoint, typename TMetricHelper>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+      const FirstOrderIncrementalMetric<TPoint, TMetricHelper> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

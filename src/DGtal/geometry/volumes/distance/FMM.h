@@ -59,7 +59,7 @@ namespace DGtal
   namespace details
   {
     template<typename T>
-    class PointDistanceCompare {
+    class PointMetricValueCompare {
     public: 
       bool operator()(const T& a, const T& b) 
         {
@@ -81,10 +81,10 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM).
    *
-   * @tparam TMetricComputer  any model of CIncrementalMetricComputer 
+   * @tparam TMetric  any model of CIncrementalMetric
    * @tparam TPointPredicate  any model of CPointPredicate
    */
-  template <typename TMetricComputer, typename TPointPredicate >
+  template <typename TMetric, typename TPointPredicate >
   class FMM
   {
 
@@ -93,29 +93,29 @@ namespace DGtal
 
 
     //concept assert
-    //BOOST_CONCEPT_ASSERT(( CIncrementalMetricComputer<TMetricComputer> )); concept TODO
+    //BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TMetric> )); concept TODO
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
     //point predicate
     typedef TPointPredicate PointPredicate; 
     typedef typename PointPredicate::Point Vector;
     typedef typename PointPredicate::Point Point;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TMetric::Point >::value ));
+
     typedef typename Point::Dimension Dimension;
     static const Dimension dimension = Point::dimension;
 
     //distance
-    typedef TMetricComputer MetricComputer; 
-    typedef typename TMetricComputer::Distance Distance; 
-    BOOST_STATIC_ASSERT(( MetricComputer::dimension == Point::dimension )); 
-    typedef DGtal::PointVector<dimension, Distance> Distances;   
+    typedef TMetric Metric; 
+    typedef typename TMetric::Value MetricValue; 
 
 
   private: 
 
     //intern data types
-    typedef std::pair<Point, Distance> PointDistance; 
-    typedef std::set<PointDistance,details::PointDistanceCompare<PointDistance> > CandidatePointsSet; 
-    typedef std::map<Point, Distance> AcceptedPointsSet; 
+    typedef std::pair<Point, MetricValue> PointMetricValue; 
+    typedef std::set<PointMetricValue,details::PointMetricValueCompare<PointMetricValue> > CandidatePointSet; 
+    typedef std::map<Point, MetricValue> AcceptedPointSet; 
     typedef unsigned long Area;
 
     // ----------------------- Standard services ------------------------------
@@ -124,15 +124,15 @@ namespace DGtal
     /**
      * Constructor.
      */
-    FMM(AcceptedPointsSet& aSet, const MetricComputer& aMC, 
+    FMM(AcceptedPointSet& aSet, const Metric& aM, 
 	const PointPredicate& aPointPredicate = PointPredicate() );
     
     /**
      * Constructor.
      */
-    FMM(AcceptedPointsSet& aSet, const MetricComputer& aMC, 
+    FMM(AcceptedPointSet& aSet, const Metric& aM, 
 	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const Distance& aDistanceThreshold);
+	const Area& aAreaThreshold, const MetricValue& aMetricValueThreshold);
     
     /**
      * Destructor.
@@ -148,6 +148,17 @@ namespace DGtal
      */
     void compute();
  
+    /** 
+     * Insert the candidate of min distance into the set 
+     * of accepted points and update the set of candidate points. 
+     *
+     * @return 'true' if the point of min distance is accepted
+     * 'false' otherwise.
+     *
+     * @see addNewAcceptedPoint
+     */
+    bool computeOneStep();
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -166,46 +177,46 @@ namespace DGtal
     //  * Initialize @a aMap from the inner boundary of the set of points P
     //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
     //  * for each P of the set.
-    //  * Assign a distance equal to @a aDistance
+    //  * Assign a distance equal to @a aMetricValue
     //  */
     // template <typename TDomainIterator, typename TImplicitObject>
     // static void initInnerPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
     // 					const TImplicitObject& aPredicate, 
-    // 					AcceptedPointsSet& aMap, 
-    // 					const Distance& aDistance);
+    // 					AcceptedPointSet& aMap, 
+    // 					const MetricValue& aMetricValue);
 
     // /**
     //  * Initialize @a aMap from the inner and outer boundaries of the set of points P
     //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
     //  * for each P of the set.
-    //  * Assign a distance equal to - @a aDistance if aFlagIsPositive is 'false' (default)
-    //  * to the inner points, but @a aDistance otherwise, and conversely for the outer points.  
+    //  * Assign a distance equal to - @a aMetricValue if aFlagIsPositive is 'false' (default)
+    //  * to the inner points, but @a aMetricValue otherwise, and conversely for the outer points.  
     //  */
     // template <typename TDomainIterator, typename TImplicitObject>
     // static void initIncidentPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
     // 					     const TImplicitObject& aPredicate, 
-    // 					     AcceptedPointsSet& aMap, 
-    // 					     const Distance& aDistance, 
+    // 					     AcceptedPointSet& aMap, 
+    // 					     const MetricValue& aMetricValue, 
     // 					     bool aFlagIsPositive = false);
 
     /**
      * Initialize @a aMap from the points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to @a aDistance  
+     * Assign a distance equal to @a aMetricValue  
      */
     template <typename TIteratorOnPoints>
     static void initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
-					AcceptedPointsSet& aMap, 
-					const Distance& aDistance);
+					AcceptedPointSet& aMap, 
+					const MetricValue& aMetricValue);
 
     /**
      * Initialize @a aMap from the inner and outer points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to - @a aDistance if aFlagIsPositive is 'false' (default)
-     * to the inner points, but @a aDistance otherwise, and conversely for the outer points.  
+     * Assign a distance equal to - @a aMetricValue if aFlagIsPositive is 'false' (default)
+     * to the inner points, but @a aMetricValue otherwise, and conversely for the outer points.  
      */
     template <typename TIteratorOnPairs>
     static void initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
-					     AcceptedPointsSet& aMap, 
-					     const Distance& aDistance, 
+					     AcceptedPointSet& aMap, 
+					     const MetricValue& aMetricValue, 
 					     bool aFlagIsPositive = false);
 
       // ------------------------- Private Datas --------------------------------
@@ -214,18 +225,18 @@ namespace DGtal
     /**
      * Reference on the set of accepted points
      */
-    AcceptedPointsSet& myAcceptedPoints; 
+    AcceptedPointSet& myAcceptedPoints; 
 
     /**
      * Set of candidate points
      */
-    CandidatePointsSet myCandidatePoints; 
+    CandidatePointSet myCandidatePoints; 
 
     /**
      * Metric computer used to deduce the distance of a new point
      * from the distance of its neighbors
      */
-    MetricComputer myMC; 
+    Metric myM; 
 
     /**
      * Constant reference on a point predicate that returns 
@@ -241,9 +252,9 @@ namespace DGtal
     Area myAreaThreshold; 
 
     /**
-     * Distance threshold above which the propagation stops
+     * MetricValue threshold above which the propagation stops
      */
-    Distance myDistanceThreshold; 
+    MetricValue myMetricValueThreshold; 
 
   private:
 
@@ -300,15 +311,6 @@ namespace DGtal
      */
     bool addNewCandidate(const Point& aPoint);
 
-    /** 
-     * Computes the distance of @a aPoint , 
-     * using @a myMC
-     *
-     * @param aPoint any point
-     *
-     * @return the distance.
-     */
-    Distance distance(const Point& aPoint);
 
   }; // end of class FMM
 
@@ -319,9 +321,9 @@ namespace DGtal
    * @param object the object of class 'FMM' to write.
    * @return the output stream after the writing.
    */
-  template <typename TMetricComputer, typename TPointPredicate>
+  template <typename TMetric, typename TPointPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const FMM<TMetricComputer, TPointPredicate> & object );
+  operator<< ( std::ostream & out, const FMM<TMetric, TPointPredicate> & object );
 
 } // namespace DGtal
 
