@@ -64,6 +64,22 @@ using namespace std;
 using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
+// 
+template <Dimension dim, int norm>
+struct MetricTraits
+{
+  typedef FirstOrderIncrementalMetric<PointVector<dim,int>, 
+    LInfinityFirstOrderIncrementalMetricHelper<dim,int> > Metric;  
+};
+//partial specialization
+template <Dimension dim>
+struct MetricTraits<dim, 1>
+{
+  typedef FirstOrderIncrementalMetric<PointVector<dim,int>, 
+    L1FirstOrderIncrementalMetricHelper<dim,int> > Metric;  
+};
+
+//////////////////////////////////////////////////////////////////////////////
 // digital circle generator
 template <typename TPoint>
 class BallPredicate 
@@ -357,11 +373,11 @@ bool testDispalyDTFromCircle(int size)
  * Comparison with the separable distance transform
  *
  */
-template<typename TMetric>
+template<Dimension dim, int norm>
 bool testComparison(int size, int area, double distance)
 {
 
-  static const DGtal::Dimension dimension = TMetric::dimension; 
+  static const DGtal::Dimension dimension = dim; 
 
   //type definitions 
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
@@ -387,7 +403,7 @@ bool testComparison(int size, int area, double distance)
   //computation
   trace.beginBlock ( " FMM computation " ); 
  
-  typedef TMetric Metric; 
+  typedef typename MetricTraits<dimension,norm>::Metric Metric; 
   typedef typename Metric::Value Distance;  
   typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
 
@@ -405,7 +421,7 @@ bool testComparison(int size, int area, double distance)
 
   trace.beginBlock ( " DT computation " );
 
-  typedef DistanceTransformation<Image, 0> DT; 
+  typedef DistanceTransformation<Image, norm> DT; 
   DT dt;
   typename DT::OutputImage resultImage = dt.compute ( image );
   trace.info() << resultImage << std::endl; 
@@ -420,7 +436,6 @@ bool testComparison(int size, int area, double distance)
   typename Domain::ConstIterator itEnd = d.end(); 
      for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
        {
-	 std::cerr << *it;  
 	 typename std::map<Point, Distance>::iterator itMap = map.find(*it); 
 	 if (itMap == map.end())
 	   flagIsOk = false; 
@@ -428,7 +443,6 @@ bool testComparison(int size, int area, double distance)
 	   {
 	     if (resultImage(*it) != itMap->second)
 	       flagIsOk = false;
-	     std::cerr << " " << resultImage(*it) << std::endl; 
 	   }
        }
   trace.endBlock();
@@ -459,16 +473,10 @@ int main ( int argc, char** argv )
     && testDispalyDTFromCircle(size);   
 
   //3d L1 and Linf comparison
-  size = 5; 
-  static const Dimension dimension = 3; 
-  typedef FirstOrderIncrementalMetric<PointVector<dimension,int>, 
-    L1FirstOrderIncrementalMetricHelper<dimension,int> > L1;  
-  typedef FirstOrderIncrementalMetric<PointVector<dimension,int>, 
-    LInfinityFirstOrderIncrementalMetricHelper<dimension,int> > Linf; 
-
+  size = 20; 
   res = res  
-    && testComparison<L1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size*size )
-    && testComparison<Linf>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
+    && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
+    && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
