@@ -117,7 +117,7 @@ namespace DGtal
      * Returns an approximation of the Euclidean distance 
      * at some point, knowing the distance of its neighbors
      * 
-     * @param aValueList  the distance of the neighbors (one per dimension)
+     * @param aValueList  the (positive) distance of the neighbors (one per dimension)
      *
      * @return the computed distance.
      */
@@ -213,7 +213,6 @@ namespace DGtal
 
     //distance
     typedef TValue Value;
-    BOOST_STATIC_ASSERT( std::numeric_limits<Value>::has_infinity ); 
     typedef boost::array<Value, dimension> Values;
     
   private:
@@ -256,7 +255,7 @@ namespace DGtal
      * Returns the Linfinity distance at some point, 
      * knowing the distance of its neighbors
      *
-     * @param aValueList  the distance of the neighbors (one per dimension)
+     * @param aValueList  the (positive) distance of the neighbors (one per dimension)
      *
      * @return the computed distance.
      */
@@ -316,6 +315,120 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, 
 	       const LInfinityFirstOrderIncrementalMetricHelper<dim, TValue> & object );
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class L1FirstOrderIncrementalMetricHelper
+  /**
+   * Description of template class 'L1FirstOrderIncrementalMetricHelper' <p>
+   * \brief Aim: Basic functor computing the L1 metric in
+   * the fast marching method on nd isothetic grids.
+   *
+   * @tparam  dim the space dimension
+   * @tparam TValue  value type for the metric
+   *
+   * @see FirstOrderIncrementalMetric
+   * @see FMM
+   */
+  template <DGtal::Dimension dim, typename TValue = double>
+  class L1FirstOrderIncrementalMetricHelper
+  {
+    // ----------------------- Types ------------------------------
+
+  public:
+    //space
+    typedef DGtal::Dimension Dimension;
+    static const Dimension dimension = dim;
+
+    //distance
+    typedef TValue Value;
+    typedef boost::array<Value, dimension> Values;
+    
+ 
+    // ----------------------- Standard services ------------------------------
+
+  public:
+
+    /**
+     * Constructor.
+     */
+    L1FirstOrderIncrementalMetricHelper(const Value& aGridStep = 1);
+
+    /**
+     * Constructor.
+     */
+    L1FirstOrderIncrementalMetricHelper(const boost::array<Value, dimension>& aGridStepsVector);
+
+    /**
+     * Copy.
+     */
+    L1FirstOrderIncrementalMetricHelper(const L1FirstOrderIncrementalMetricHelper& other);
+
+
+    /**
+     * Destructor.
+     */
+    ~L1FirstOrderIncrementalMetricHelper();
+
+    /**
+     * Returns the value used when not yet computed
+     *
+     * @return unkown value.
+     */
+    Value unknownValue() const;
+
+
+    /**
+     * Returns the L1 distance at some point, 
+     * knowing the distance of its neighbors
+     *
+     * @param aValueList  the (positive) distance of the neighbors (one per dimension)
+     *
+     * @return the computed distance.
+     */
+    Value compute(const Values& aValueList) const;
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() const;
+
+    // ----------------------- Internals -------------------------------------
+
+      private:
+
+
+    // ----------------------- Members -------------------------------------
+
+    /**
+     * Grid steps for each dimension from 0 to dimension
+     */
+      boost::array<double, dimension> myGridStepsVector;
+
+    /**
+     * Unknown value
+     */
+      Value myUnknownValue;
+
+      }; // end of class FirstOrderIncrementalMetricHelpers
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'FirstOrderIncrementalMetric'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'FirstOrderIncrementalMetric' to write.
+   * @return the output stream after the writing.
+   */
+  template <DGtal::Dimension dim, typename TValue>
+  std::ostream&
+  operator<< ( std::ostream & out, 
+	       const L1FirstOrderIncrementalMetricHelper<dim, TValue> & object );
 
 
 } // namespace DGtal

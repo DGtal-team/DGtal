@@ -357,26 +357,27 @@ bool testDispalyDTFromCircle(int size)
  * Comparison with the separable distance transform
  *
  */
+template<typename TMetric>
 bool testComparison(int size, int area, double distance)
 {
 
-  static const DGtal::Dimension dimension = 3; 
+  static const DGtal::Dimension dimension = TMetric::dimension; 
 
   //type definitions 
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-  typedef Domain::Point Point;
+  typedef typename Domain::Point Point;
 
   //init
-  Point c(0,0,0); 
-  Point up(size, size, size); 
-  Point low(-size,-size,-size); 
+  Point c = Point::diagonal(0); 
+  Point up = Point::diagonal(size); 
+  Point low = Point::diagonal(-size); 
   Domain d(low, up); 
 
   //image construction
-  typedef ImageSelector<Domain, unsigned int>::Type Image;
+  typedef typename ImageSelector<Domain, unsigned int>::Type Image;
   Image image (low, up);
-  Domain::Iterator dit = d.begin(); 
-  Domain::Iterator ditEnd = d.end(); 
+  typename Domain::Iterator dit = d.begin(); 
+  typename Domain::Iterator ditEnd = d.end(); 
   for ( ; dit != ditEnd; ++dit)
     {
       image.setValue(*dit, 128); 
@@ -384,12 +385,10 @@ bool testComparison(int size, int area, double distance)
   image.setValue(c, 0); 
 
   //computation
-  trace.beginBlock ( " FMM " ); 
+  trace.beginBlock ( " FMM computation " ); 
  
-  typedef FirstOrderIncrementalMetric<Point, 
-    LInfinityFirstOrderIncrementalMetricHelper<dimension> > Metric; 
-  typedef Metric::Value Distance;  
-
+  typedef TMetric Metric; 
+  typedef typename Metric::Value Distance;  
   typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
 
   std::map<Point, Distance> map; 
@@ -404,11 +403,11 @@ bool testComparison(int size, int area, double distance)
 
   trace.endBlock();
 
-  trace.beginBlock ( " DT " );
+  trace.beginBlock ( " DT computation " );
 
   typedef DistanceTransformation<Image, 0> DT; 
   DT dt;
-  DT::OutputImage resultImage = dt.compute ( image );
+  typename DT::OutputImage resultImage = dt.compute ( image );
   trace.info() << resultImage << std::endl; 
 
   trace.endBlock();
@@ -417,17 +416,19 @@ bool testComparison(int size, int area, double distance)
 
   trace.beginBlock ( " Comparison " );
   //all points of result must be in map and have the same distance
-  Domain::ConstIterator it = d.begin(); 
-  Domain::ConstIterator itEnd = d.end(); 
+  typename Domain::ConstIterator it = d.begin(); 
+  typename Domain::ConstIterator itEnd = d.end(); 
      for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
        {
-	 std::map<Point, Distance>::iterator itMap = map.find(*it); 
+	 std::cerr << *it;  
+	 typename std::map<Point, Distance>::iterator itMap = map.find(*it); 
 	 if (itMap == map.end())
 	   flagIsOk = false; 
 	 else 
 	   {
 	     if (resultImage(*it) != itMap->second)
-	       flagIsOk = false; 
+	       flagIsOk = false;
+	     std::cerr << " " << resultImage(*it) << std::endl; 
 	   }
        }
   trace.endBlock();
@@ -449,17 +450,25 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
+  //2d L2 tests
   int size = 50; 
   bool res =   
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
-&& testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
-&& testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
-;
+    && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
+    && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+    && testDispalyDTFromCircle(size);   
 
-  res = res && testDispalyDTFromCircle(size);   
+  //3d L1 and Linf comparison
+  size = 5; 
+  static const Dimension dimension = 3; 
+  typedef FirstOrderIncrementalMetric<PointVector<dimension,int>, 
+    L1FirstOrderIncrementalMetricHelper<dimension,int> > L1;  
+  typedef FirstOrderIncrementalMetric<PointVector<dimension,int>, 
+    LInfinityFirstOrderIncrementalMetricHelper<dimension,int> > Linf; 
 
-  size = 20; 
-  res = res && testComparison( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
+  res = res  
+    && testComparison<L1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size*size )
+    && testComparison<Linf>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
 ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

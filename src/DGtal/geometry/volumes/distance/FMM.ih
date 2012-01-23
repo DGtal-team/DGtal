@@ -136,16 +136,18 @@ DGtal::FMM<TMetric, TPointPredicate>::isValid() const
   if (myAcceptedPoints.size() >= myAreaThreshold) return false;
 
   //distance threshold
-  MetricValue max = 0; 
-  {
-    typename AcceptedPointSet::const_iterator it = myAcceptedPoints.begin(); 
-    typename AcceptedPointSet::const_iterator itEnd = myAcceptedPoints.end(); 
-    for ( ; it != itEnd; ++it)
-      {
-	if (it->second > max) max = it->second; 
-      }
-  }
-  if (max >= myMetricValueThreshold) return false; 
+   //min and max distance
+   MetricValue min = std::numeric_limits<MetricValue>::max(); 
+   MetricValue max = 0; 
+  typename AcceptedPointSet::const_iterator it = myAcceptedPoints.begin(); 
+  typename AcceptedPointSet::const_iterator itEnd = myAcceptedPoints.end(); 
+  for ( ; it != itEnd; ++it)
+    {
+      if (it->second < min) min = it->second; 
+      if (it->second > max) max = it->second; 
+    }
+  if ( (std::abs(min) >= myMetricValueThreshold)
+       || (max >= myMetricValueThreshold) ) return false; 
 
   //point predicate
   bool flagIsOk = true;  
@@ -172,7 +174,7 @@ DGtal::FMM<TMetric, TPointPredicate>::selfDisplay ( std::ostream & out ) const
    out << myCandidatePoints.size() << " candidates " << std::endl; 
    out << myM << " metric " << std::endl; 
    //min and max distance
-   MetricValue min = std::numeric_limits<MetricValue>::infinity(); 
+   MetricValue min = std::numeric_limits<MetricValue>::max(); 
    MetricValue max = 0; 
   typename AcceptedPointSet::const_iterator it = myAcceptedPoints.begin(); 
   typename AcceptedPointSet::const_iterator itEnd = myAcceptedPoints.end(); 
