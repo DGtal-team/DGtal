@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/images/CImageContainer.h"
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/geometry/nd/volumetric/SeparableMetricHelper.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -94,7 +94,7 @@ namespace DGtal
     typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
   
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricTraits<  IntegerShort ,  Integer , p > SeparableMetric;
+    typedef SeparableMetricHelper<  IntegerShort ,  Integer , p > SeparableMetric;
   
 
     /**

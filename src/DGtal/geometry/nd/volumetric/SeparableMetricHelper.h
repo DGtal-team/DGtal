@@ -17,29 +17,29 @@
 #pragma once
 
 /**
- * @file SeparableMetricTraits.h
+ * @file SeparableMetricHelper.h
  * @brief Basic functions associated to metrics used by separable volumetric algorithms.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/08/01
  *
- * Header file for module SeparableMetricTraits.cpp
+ * Header file for module SeparableMetricHelper.cpp
  *
  * This file is part of the DGtal library.
  *
  * @see testDistanceTransformationND.cpp
  */
 
-#if defined(SeparableMetricTraits_RECURSES)
-#error Recursive header files inclusion detected in SeparableMetricTraits.h
-#else // defined(SeparableMetricTraits_RECURSES)
+#if defined(SeparableMetricHelper_RECURSES)
+#error Recursive header files inclusion detected in SeparableMetricHelper.h
+#else // defined(SeparableMetricHelper_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SeparableMetricTraits_RECURSES
+#define SeparableMetricHelper_RECURSES
 
-#if !defined SeparableMetricTraits_h
+#if !defined SeparableMetricHelper_h
 /** Prevents repeated inclusion of headers. */
-#define SeparableMetricTraits_h
+#define SeparableMetricHelper_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -55,9 +55,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class SeparableMetricTraits
+  // template class SeparableMetricHelper
   /**
-   * Description of template class 'SeparableMetricTraits' <p>
+   * Description of template class 'SeparableMetricHelper' <p>
    * \brief Aim: Implements basic functions associated to metrics used
    * by separable volumetric algorithms.
    *
@@ -72,7 +72,7 @@ namespace DGtal
    * @todo Fix the integer type problems.
    */
   template <typename TAbscissa, typename TInternalValue, DGtal::uint32_t tp>
-  struct SeparableMetricTraits
+  struct SeparableMetricHelper
   {
     // ----------------------- Standard services ------------------------------
 
@@ -185,7 +185,7 @@ namespace DGtal
     }
 
 
-  }; // end of class SeparableMetricTraits
+  }; // end of class SeparableMetricHelper
 
   // ------------------------------------------------------------------------
   // -----------------------  Specializations   ------------------------------
@@ -196,7 +196,7 @@ namespace DGtal
    *
    */
   template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricTraits<TAbscissa, TInternalValue, 2>
+  struct SeparableMetricHelper<TAbscissa, TInternalValue, 2>
   {
     typedef TInternalValue InternalValue;
     typedef TAbscissa Abscissa;
@@ -250,7 +250,7 @@ namespace DGtal
    *
    */
   template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricTraits<TAbscissa, TInternalValue, 1>
+  struct SeparableMetricHelper<TAbscissa, TInternalValue, 1>
   {
 
     typedef TInternalValue InternalValue;
@@ -305,14 +305,14 @@ namespace DGtal
       return (InternalValue) abs(i);
     }
 
-  }; // end of class SeparableMetricTraits
+  }; // end of class SeparableMetricHelper
 
   /**
    * L_infinity specialization
    *
    */
   template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricTraits<TAbscissa, TInternalValue, 0>
+  struct SeparableMetricHelper<TAbscissa, TInternalValue, 0>
   {
     typedef TAbscissa Abscissa;
     typedef TInternalValue InternalValue;
@@ -362,20 +362,16 @@ namespace DGtal
       return (InternalValue) abs(i);
     }
 
-  }; // end of class SeparableMetricTraits
+  }; // end of class SeparableMetricHelper
 
 
 } // namespace DGtal
 
 
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.ih"
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SeparableMetricTraits_h
+#endif // !defined SeparableMetricHelper_h
 
-#undef SeparableMetricTraits_RECURSES
-#endif // else defined(SeparableMetricTraits_RECURSES)
+#undef SeparableMetricHelper_RECURSES
+#endif // else defined(SeparableMetricHelper_RECURSES)
