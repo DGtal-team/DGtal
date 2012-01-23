@@ -49,7 +49,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/base/Exceptions.h"
+#include "DGtal/geometry/volumes/distance/CIncrementalMetric.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -93,7 +93,7 @@ namespace DGtal
 
 
     //concept assert
-    //BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TMetric> )); concept TODO
+    BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TMetric> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
     //point predicate

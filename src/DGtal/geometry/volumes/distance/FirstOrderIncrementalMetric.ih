@@ -74,7 +74,7 @@ DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::operator()(const Poin
 {
 
   //neigbors distance
-  boost::array<dimension, Values> values; 
+  boost::array<Value, dimension> values; 
 
   //count the number of positive and negative 
   //distance values
