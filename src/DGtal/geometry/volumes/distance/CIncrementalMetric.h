@@ -55,7 +55,9 @@ namespace DGtal
      @brief Aim: Defines the concept describing a metric,  
     which can be incrementally computed, ie. computed at a point, 
     knowing the value of (some of) its 1-neighbors.  
-     
+
+     <p> Refinement : 
+     - \t boost::CopyConstructible
    
      <p> Nested types : 
      - \t Point 
@@ -89,7 +91,7 @@ namespace DGtal
         <td class=CPrecondition>    </td> 
         <td class=CSemantics> computes the metric value at p, knowing the values of its 1-neigbors stored in m </td> 
         <td class=CPostCondition>       </td> 
-        <td class=CComplexity>  logarithmic in the size of s    </td>
+        <td class=CComplexity>  logarithmic in the size of m    </td>
       </tr>
      </table>
     
