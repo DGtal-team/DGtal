@@ -146,8 +146,7 @@ inline
 void
 DGtal::FirstOrderIncrementalMetric<TPoint, TMetricHelper>::selfDisplay ( std::ostream & out ) const
 {
-  out << "\t [FirstOrderIncrementalMetric] "; 
-  myMH.selfDisplay(out); 
+  out << "[FirstOrderIncrementalMetric] " << myMH; 
 }
 
 

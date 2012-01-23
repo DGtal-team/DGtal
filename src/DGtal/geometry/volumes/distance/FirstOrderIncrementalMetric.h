@@ -48,6 +48,7 @@
 #include <limits>
 #include <map>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/volumes/distance/CIncrementalMetricHelper.h"
 #include "DGtal/geometry/volumes/distance/FirstOrderIncrementalMetricHelpers.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -66,7 +67,8 @@ namespace DGtal
    * @tparam TPoint type of point
    * @tparam TMetricHelper  any model of CFirstOrderIncrementalMetricHelper 
    */
-  template <typename TPoint, typename TMetricHelper = L2FirstOrderIncrementalMetricHelper<TPoint::dimension> >
+  template <typename TPoint, typename TMetricHelper 
+	    = L2FirstOrderIncrementalMetricHelper<TPoint::dimension> >
   class FirstOrderIncrementalMetric
   {
 
@@ -75,7 +77,7 @@ namespace DGtal
 
 
     //concept assert
-    //BOOST_CONCEPT_ASSERT(( CIncrementalMetricHelper<TMetricHelper> )); concept TODO
+    BOOST_CONCEPT_ASSERT(( CIncrementalMetricHelper<TMetricHelper> ));
 
     //point predicate
     typedef TPoint Point;

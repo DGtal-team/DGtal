@@ -167,9 +167,10 @@ inline
 void
 DGtal::FMM<TMetric, TPointPredicate>::selfDisplay ( std::ostream & out ) const
 {
-   out << "\t [FMM]" << std::endl;
+   out << "[FMM]" << std::endl;
    out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")" << std::endl; 
    out << myCandidatePoints.size() << " candidates " << std::endl; 
+   out << myM << " metric " << std::endl; 
    //min and max distance
    MetricValue min = std::numeric_limits<MetricValue>::infinity(); 
    MetricValue max = 0; 
@@ -180,9 +181,9 @@ DGtal::FMM<TMetric, TPointPredicate>::selfDisplay ( std::ostream & out ) const
       if (it->second < min) min = it->second; 
       if (it->second > max) max = it->second; 
     }
-  out << "min at " << min << std::endl; 
-  out << "max at " << max << " (< " << myMetricValueThreshold << ")" << std::endl;
-   out << "\t [/FMM]" << std::endl; 
+  out << "min: " << min << " (abs < " << myMetricValueThreshold << ")" << std::endl; 
+  out << "max: " << max << " (abs < " << myMetricValueThreshold << ")" << std::endl;
+  out << "[/FMM]" << std::endl;
 }
 
 
