@@ -105,11 +105,11 @@ namespace DGtal
     ~L2FirstOrderIncrementalMetricHelper();
 
     /**
-     * Returns the value used as infinity
+     * Returns the value used  when not yet computed
      * 
-     * @return the infinity value.
+     * @return unknown value.
      */
-    Value infinity() const;
+    Value unknownValue() const;
 
 
     /**
@@ -169,9 +169,9 @@ namespace DGtal
       DGtal::PointVector<dimension, double> myGridStepsVector; 
 
     /**
-     * Value used as infinity
+     * Unknown value
      */
-      Value myInfinity; 
+      Value myUnknownValue; 
 
       }; // end of class L2FirstOrderIncrementalMetricHelper
 
@@ -243,11 +243,11 @@ namespace DGtal
     ~LInfinityFirstOrderIncrementalMetricHelper();
 
     /**
-     * Returns the value used as infinity
+     * Returns the value used when not yet computed
      *
-     * @return the infinity value.
+     * @return unkown value.
      */
-    Value infinity() const;
+    Value unknownValue() const;
 
 
     /**
@@ -297,9 +297,9 @@ namespace DGtal
       DGtal::PointVector<dimension, double> myGridStepsVector;
 
     /**
-     * Value used as infinity
+     * Unknown value
      */
-      Value myInfinity;
+      Value myUnknownValue;
 
       }; // end of class FirstOrderIncrementalMetricHelpers
 
