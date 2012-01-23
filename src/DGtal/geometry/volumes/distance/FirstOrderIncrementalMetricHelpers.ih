@@ -49,7 +49,7 @@ DGtal::L2FirstOrderIncrementalMetricHelper<dim>
 template <DGtal::Dimension dim>
 inline
 DGtal::L2FirstOrderIncrementalMetricHelper<dim>
-::L2FirstOrderIncrementalMetricHelper(const boost::array<dimension, double>& aGridStepsVector)
+::L2FirstOrderIncrementalMetricHelper(const boost::array<double, dimension>& aGridStepsVector)
   : myGridStepsVector(aGridStepsVector), 
     myUnknownValue( numeric_limits<Value>::max() )
 {
@@ -188,7 +188,7 @@ DGtal::L2FirstOrderIncrementalMetricHelper<dim>::gradientNorm(const Value& aValu
 template <DGtal::Dimension dim>
 inline
 typename DGtal::L2FirstOrderIncrementalMetricHelper<dim>::Value
-DGtal::L2FirstOrderIncrementalMetricHelper<dim>::infinity() const
+DGtal::L2FirstOrderIncrementalMetricHelper<dim>::unknownValue() const
 {
   return myUnknownValue; 
 }
@@ -207,7 +207,7 @@ DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>
 template <DGtal::Dimension dim, typename TValue>
 inline
 DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>
-::LInfinityFirstOrderIncrementalMetricHelper(const boost::array<dimension, Value>& aGridStepsVector)
+::LInfinityFirstOrderIncrementalMetricHelper(const boost::array<Value, dimension>& aGridStepsVector)
   : myGridStepsVector(aGridStepsVector), 
     myUnknownValue( numeric_limits<Value>::max() )
 {
@@ -294,7 +294,7 @@ DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>::selfDisplay ( st
 template <DGtal::Dimension dim, typename TValue>
 inline
 typename DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>::Value
-DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>::infinity() const
+DGtal::LInfinityFirstOrderIncrementalMetricHelper<dim, TValue>::unknownValue() const
 {
   return myUnknownValue; 
 }
