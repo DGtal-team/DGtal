@@ -38,8 +38,8 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/2d/CircleFrom3Points.h"
-#include "DGtal/geometry/2d/CircleFrom2Points.h"
+#include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
+#include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
