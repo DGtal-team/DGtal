@@ -34,7 +34,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
