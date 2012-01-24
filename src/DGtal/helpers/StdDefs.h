@@ -46,7 +46,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/geometry/volumes/distance/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
