@@ -48,8 +48,8 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/2d/StraightLineFrom2Points.h"
-#include "DGtal/geometry/2d/Point2ShapePredicate.h"
+#include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
   
 
 using namespace DGtal;
