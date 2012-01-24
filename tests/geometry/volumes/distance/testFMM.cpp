@@ -185,9 +185,9 @@ bool testDisplayDT2d(int size, int area, double distance)
   typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
 
   //init
-  Point c(0,0); 
-  Point up(size, size); 
-  Point low(-size,-size); 
+  Point c = Point::diagonal(0); 
+  Point up = Point::diagonal(size); 
+  Point low = Point::diagonal(-size); 
 
   std::map<Point, Distance> map; 
   map.insert( std::pair<Point, Distance>( c, 0.0 ) );
@@ -197,7 +197,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   DomainPredicate<Domain> dp(d);
 
   //computation
-  trace.beginBlock ( "Display FMM results " );
+  trace.beginBlock ( "Display 2d FMM results " );
  
   FMM fmm(map, mc, dp, area, distance); 
   fmm.compute(); 
@@ -207,8 +207,74 @@ bool testDisplayDT2d(int size, int area, double distance)
 
   //display
   std::stringstream s; 
-  s << "DTFromPoint-" << size << "-" << area << "-" << distance; 
+  s << "DTFrom2dPt-" << size << "-" << area << "-" << distance; 
   draw(map.begin(), map.end(), size, s.str());
+
+  return fmm.isValid(); 
+}
+
+/**
+ * Simple 3d distance transform
+ * and slice display
+ */
+bool testDisplayDT3d(int size, int area, double distance)
+{
+
+  static const DGtal::Dimension dimension = 3; 
+
+  //type definitions 
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point;
+ 
+  typedef FirstOrderIncrementalMetric<Point> Metric; 
+  typedef Metric::Value Distance;  
+
+  typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
+
+  //init
+  Point c = Point::diagonal(0); 
+  Point up = Point::diagonal(size); 
+  Point low = Point::diagonal(-size); 
+
+  std::map<Point, Distance> map; 
+  map.insert( std::pair<Point, Distance>( c, 0.0 ) );
+
+  Metric mc; 
+  Domain d(low, up); 
+  DomainPredicate<Domain> dp(d);
+
+  //computation
+  trace.beginBlock ( "Display 3d FMM results " );
+ 
+  FMM fmm(map, mc, dp, area, distance); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
+
+  trace.endBlock();
+
+  {  //display
+    HueShadeColorMap<unsigned char, 2> colorMap(0,2*size);
+
+    Board2D b; 
+    b.setUnit ( LibBoard::Board::UCentimeter );
+
+    std::map<Point,Distance>::iterator it = map.begin(); 
+    for ( ; it != map.end(); ++it)
+      {
+	Point p3 = it->first;
+	if (p3[2] == 0)
+	  {
+	    PointVector<2,Point::Coordinate> p2(p3[0], p3[1]); 
+	    b << CustomStyle( p2.className(), new CustomFillColor( colorMap( it->second) ) )
+	      << p2;
+	  }
+      }
+
+    std::stringstream s; 
+    s << "DTFrom3dPt-" << size << "-" << area << "-" << distance
+      << ".eps"; 
+    b.saveEPS(s.str().c_str());
+  }
 
   return fmm.isValid(); 
 }
@@ -471,6 +537,11 @@ int main ( int argc, char** argv )
     && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
     && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
     && testDispalyDTFromCircle(size);   
+
+  size = 50; 
+  //3d L2 test
+  res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
+    ; 
 
   //3d L1 and Linf comparison
   size = 20; 
