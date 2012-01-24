@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/2d/FreemanChain.h" 
+#include "DGtal/geometry/curves/representation/FreemanChain.h" 
 
 #include "ConfigTest.h"
 

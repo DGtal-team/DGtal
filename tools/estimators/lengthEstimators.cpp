@@ -54,20 +54,20 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
-#include "DGtal/geometry/nd/GaussDigitizer.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 //estimators
-#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 
-#include "DGtal/geometry/2d/estimators/L1LengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/BLUELocalLengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/RosenProffittLocalLengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/MLPLengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/FPLengthEstimator.h"
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/L1LengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/BLUELocalLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/RosenProffittLocalLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/MLPLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/FPLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/DSSLengthEstimator.h"
 
 
 using namespace DGtal;
