@@ -674,11 +674,8 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
       LibBoard::Board & board,
       const C& cmap )
 {
-  static const typename Domain::Space::Dimension dim = Domain::dimension;
   
-  //
-  
-  ASSERT ( dim == 2 );
+  ASSERT ( Domain::dimension == 2 );
   
   double np[2], nlen;
 
