@@ -52,7 +52,7 @@
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/geometry/nd/volumetric/SeparableMetricHelper.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -111,7 +111,7 @@ namespace DGtal
     typedef typename Image::Domain::Space::Point::Coordinate Abscissa;
  
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricTraits<  Abscissa ,  IntegerLong , p > SeparableMetric;
+    typedef SeparableMetricHelper<  Abscissa ,  IntegerLong , p > SeparableMetric;
   
 
     /**
