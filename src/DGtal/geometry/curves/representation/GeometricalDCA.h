@@ -333,8 +333,8 @@ namespace DGtal
      */
     template <typename TIterator>
     bool isCircularlySeparable(const TIterator& itb, const TIterator& ite, 
-                                              const Point& aPole, 
-                                              Point& Pf, Point& Pl, Point& Qf, Point& Ql);  
+			       const Point& aPole, 
+			       Point& Pf, Point& Pl, Point& Qf, Point& Ql);  
   
     // ------------------------- Private Datas --------------------------------
   private:

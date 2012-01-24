@@ -50,7 +50,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
@@ -543,8 +542,8 @@ Steps:
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool isExtendableForward( const Point & lastPoint, 
-                                   const Vector & lastMove );
-
+			      const Vector & lastMove );
+    
     /**
      * Tests whether the union between a point 
      * (pointing to by @a it) and the DSS is a DSS. 
@@ -562,18 +561,19 @@ Steps:
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
     bool extendForward( const ConstIterator & it, 
-                          ConstIterator & lastIt, 
-                          const Vector & lastMove,
-                          Point & Uf,  Point & Ul,
-                          Point & Lf,  Point & Ll );
-
+			ConstIterator & lastIt, 
+			const Vector & lastMove,
+			Point & Uf,  Point & Ul,
+			Point & Lf,  Point & Ll );
+    
     /**
      * Removes the end point of a DSS
      * (pointing to by @a firstIt)
      *
      * @param firstIt  an iterator pointing to the end of the DSS 
      * @param lastIt  an iterator pointing to the other end of the DSS 
-     * @param nextIt  an iterator pointing to the point of the DSS close to the one pointing to by @a firstIt
+     * @param nextIt  an iterator pointing to the point of the DSS close
+     to the one pointing to by @a firstIt
      * @param Uf  first upper leaning point  
      * @param Ul  last upper leaning point 
      * @param Lf  first lower leaning point  
@@ -675,7 +675,8 @@ Steps:
     */
     Point myLl;
     
-    //Iterators to the first (at the back) and last (at the front) points of the DSS  (here because Display2DFactory, todo: accessors)
+    //Iterators to the first (at the back) and last (at the front) 
+    //points of the DSS  (here because Display2DFactory, todo: accessors)
     /**
     * ConstIterator pointing to the back of the DSS
     */

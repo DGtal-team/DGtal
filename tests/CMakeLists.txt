@@ -36,5 +36,6 @@ add_subdirectory(io)
 
 add_subdirectory(images)
 add_subdirectory(helpers)
+add_subdirectory(shapes)
 
 
