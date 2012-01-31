@@ -61,6 +61,7 @@ namespace DGtal
    * - \t Value: the type of values stored in the image, model of
    * concept CValue
    * - \t Domain: type of the image domain, model of concept CDomain
+   *
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
    * - \t x, \t y  : Object of type X
@@ -116,6 +117,20 @@ namespace DGtal
         <td class=CComplexity> Container dependent   </td>
       </tr>
       
+    
+      <tr> 
+      <td class=CName> Set a value           </td> 
+      <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
+      <td class=CRequirements> @c aPoint of type Point and @c aValue of
+      type Value   </td> 
+      <td class=CReturnType>  void    </td>
+      <td class=CPrecondition> @c aPoint must be valid (inside the image domain)  </td> 
+      <td class=CSemantics>  associate the value @c aValue with the
+      point  @aPoint     </td> 
+      <td class=CPostCondition>   </td> 
+      <td class=CComplexity>  Container dependent    </td>
+      </tr>
+        
       <tr> 
       <td class=CName> Set a value           </td> 
       <td class=CExpression>  x.setValue(@c anIterator, @c aValue)    </td>
@@ -145,7 +160,18 @@ namespace DGtal
 
      	<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x(@c aIterator)    </td>
+        <td class=CExpression>  x.getValue(@c aPoint)    </td>
+        <td class=CRequirements> @c aPoint of type Point    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c aPoint must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr>
+     	<tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  aIterator.operator*() or (*aIterator)   </td>
         <td class=CRequirements> @c aIterator of type Iterator    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aIterator must be valide (inside the image domain)  </td> 
@@ -156,7 +182,7 @@ namespace DGtal
       </tr>
      	<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x(@c aConstIterator)    </td>
+        <td class=CExpression>  aConstIterator.operator*() or (*aConstIterator) </td>
         <td class=CRequirements> @c aConstIterator of type ConstIterator    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aConstIterator must be valide (inside the image domain)  </td> 
@@ -167,7 +193,7 @@ namespace DGtal
       </tr>
      	<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x(@c aReverseIterator)    </td>
+        <td class=CExpression>   aReverseIterator.operator*() or (*aReverseIterator)    </td>
         <td class=CRequirements> @c aReverseIterator of type ReverseIterator    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
@@ -178,7 +204,8 @@ namespace DGtal
       </tr>
      	<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x(@c aConstReverseIterator)    </td>
+        <td class=CExpression>  aConstReverseIterator.operator*() or
+        (*aConstReverseIterator)   </td>
         <td class=CRequirements> @c aConstReverseIterator of type ConstReverseIterator    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aConstReverseIterator must be valide (inside the image domain)  </td> 
@@ -224,11 +251,11 @@ namespace DGtal
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
       //Accessors
-      ConceptUtils::sameType(image(a), v);
-      ConceptUtils::sameType(image(it), v);
-      ConceptUtils::sameType(image(itconst), v);
-      ConceptUtils::sameType(image(itrev), v);
-      ConceptUtils::sameType(image(itconstrev), v);
+      ConceptUtils::sameType(image.getValue(a), v);
+      ConceptUtils::sameType(image.getValue(it), v);
+      ConceptUtils::sameType(image.getValue(itconst), v);
+      ConceptUtils::sameType(image.getValue(itrev), v);
+      ConceptUtils::sameType(image.getValue(itconstrev), v);
       
       //API
       ConceptUtils::sameType(image.domain(), d); 
@@ -236,14 +263,9 @@ namespace DGtal
       image.setValue(a, v);  //set a value at a Point
       image.setValue(it, v); //set a value at an Iterator
       image.setValue(a, v);  //set a value at a Point
-      image.setValue(itrev, v); //set a value at an ConstIterator
+      image.setValue(itrev, v); //set a value at an ReverseIterator
+      image.setValue(itconstrev, v); //set a value at an ConstReverstIterator
       
-      ConceptUtils::sameType(image.operator()(itconst), v);       // get the value from a ConstIterator
-      ConceptUtils::sameType(image.operator()(it), v);       // get the value from a ConstIterator
-      ConceptUtils::sameType(image.operator()(itconstrev), v);       // get the value from a ConstIterator
-      ConceptUtils::sameType(image.operator()(itrev), v);       // get the value from a ConstIterator
-      ConceptUtils::sameType(image.operator()(a), v);       //get the value from a point
-
     }
 
   private:

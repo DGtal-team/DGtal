@@ -112,7 +112,7 @@ namespace DGtal
     /** 
      * Destructor.
      $
-     */
+    */
     ~ImageContainerBySTLVector();
 
   
@@ -128,7 +128,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    Value operator()(ConstIterator &it) const
+    Value getValue(ConstIterator &it) const
     {
       return (*it);
     };
@@ -143,7 +143,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    Value operator()(Iterator &it) const
+    Value getValue(Iterator &it) const
     {
       return (*it);
     };
@@ -157,7 +157,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    Value operator()(ConstReverseIterator &it) const
+    Value getValue(ConstReverseIterator &it) const
     {
       return (*it);
     };
@@ -172,7 +172,7 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    Value operator()(ReverseIterator &it) const
+    Value getValue(ReverseIterator &it) const
     {
       return (*it);
     };
@@ -208,7 +208,7 @@ namespace DGtal
     }
 
    
-     /////////////////// Interface //////////////////
+    /////////////////// Interface //////////////////
 
 
     /**
@@ -503,7 +503,7 @@ namespace DGtal
      * @param it position given by a SpanIterator.
      * @return an object of type Value.
      */
-    Value operator()(SpanIterator &it)
+    Value getValue(SpanIterator &it)
     {
       return (*it);
     };
