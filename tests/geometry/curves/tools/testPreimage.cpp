@@ -52,7 +52,7 @@
 #include "DGtal/io/boards/Board2D.h"
 
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
-#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/geometry/tools/Preimage2D.h"
 
 
 #include "ConfigTest.h"
