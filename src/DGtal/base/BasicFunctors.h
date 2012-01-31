@@ -192,7 +192,7 @@ namespace DGtal
 
 
   /**
-   * Description of template class 'FunctorComposer' <p>
+   * Description of template class 'Composer' <p>
    * \brief Aim: Define a new Functor from the composition of two other functors
    *
    * @tparam TFunctor1 first functor
@@ -200,7 +200,7 @@ namespace DGtal
    * @tparam ReturnType
    */
   template <typename TFunctor1, typename TFunctor2, typename ReturnType >
-  class FunctorComposer
+  class Composer
   {
   public:
     /** 
@@ -208,21 +208,17 @@ namespace DGtal
      * @param aF1 any Functor
      * @param aF2 any Functor
      */
-    FunctorComposer(const TFunctor1& aF1, const TFunctor2& aF2):myF1(aF1), myF2(aF2) {};
+    Composer(TFunctor1& aF1, TFunctor2& aF2);
     /** 
      * Copy Operator
      * @param other object to copy
      */
-    FunctorComposer(const FunctorComposer& other):myF1(other.myF1), myF2(other.myF2) {};
+    Composer(const Composer& other);
     /** 
      * Assignement Operator
      * @param other object to copy
      */
-    FunctorComposer& operator=(const FunctorComposer& other)
-    {
-      myF1 = other.myF1; 
-      myF2 = other.myF2; 
-    };
+    Composer& operator=(const Composer& other);
 
     /** 
      * Operator ()
@@ -247,12 +243,37 @@ namespace DGtal
     /** 
      * First Functor.
      */
-    TFunctor1 myF1;
+    TFunctor1& myF1;
     /** 
      * Second Functor.
      */
-    TFunctor2 myF2;
+    TFunctor2& myF2;
   };
+
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>
+::Composer(TFunctor1& aF1, TFunctor2& aF2)
+ :myF1(aF1), myF2(aF2) 
+{};
+
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>
+::Composer(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
+ :myF1(other.myF1), myF2(other.myF2)
+{};
+
+
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>&
+Composer<TFunctor1, TFunctor2, ReturnType>
+::operator=(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
+{
+  myF1 = other.myF1; 
+  myF2 = other.myF2; 
+};
 
   /**
    * Description of template class 'BinaryToUnaryFunctor' <p>
