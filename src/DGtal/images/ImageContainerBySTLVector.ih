@@ -58,7 +58,7 @@ ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 template <typename Domain, typename T>
 inline
 T
-ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
+ImageContainerBySTLVector<Domain, T>::getValue(const Point &aPoint) const
 {
   ASSERT(this->domain().isInside(aPoint));
   return this->operator[](linearized( aPoint ) );
