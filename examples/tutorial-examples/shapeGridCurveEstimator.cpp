@@ -44,21 +44,21 @@
 //shape and digitizer
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/ShapeFactory.h"
-#include "DGtal/geometry/nd/GaussDigitizer.h"
+#include "DGtal/shapes/GaussDigitizer.h"
 //! [shapeGridCurveEstimator-shapeIncludes]
 
 //! [shapeGridCurveEstimator-trackingIncludes]
 //tracking grid curve
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 //! [shapeGridCurveEstimator-trackingIncludes]
 
 //! [shapeGridCurveEstimator-estimationIncludes]
 //length estimation knowing the shape
-#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 //length estimation based on a DSS segmentation
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/DSSLengthEstimator.h"
 //! [shapeGridCurveEstimator-estimationIncludes]
 
 #include "DGtal/io/boards/Board2D.h"

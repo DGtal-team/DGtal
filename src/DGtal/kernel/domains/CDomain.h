@@ -111,7 +111,7 @@ namespace DGtal
    * <tr> 
    * <td> inside domain predicate object</td> <td> x.predicate() </td> 
    * <td> </td> <td> const Predicate & </td>
-   * <td> </td> <td> return a reference to the predicate object equivalent to the isinside(p) test.</td> <td> </td> <td>  </td>
+   * <td> </td> <td> return a reference to the predicate object equivalent to the isInside(p) test.</td> <td> </td> <td>  </td>
    * </tr>
    * </table>
    *
