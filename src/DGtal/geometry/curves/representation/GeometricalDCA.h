@@ -48,7 +48,7 @@
 
 #include "DGtal/geometry/curves/representation/GeometricalDSS.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
-#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
 
