@@ -49,7 +49,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 
 namespace DGtal
 {
