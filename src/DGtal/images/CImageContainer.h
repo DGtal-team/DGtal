@@ -42,6 +42,7 @@
 
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/CBidirectionalRange.h"
+#include "DGtal/base/CReadableIterator.h"
 #include "DGtal/images/CValue.h"
 
 namespace DGtal
@@ -61,6 +62,10 @@ namespace DGtal
    * - \t Value: the type of values stored in the image, model of
    * concept CValue
    * - \t Domain: type of the image domain, model of concept CDomain
+   * - \t Iterator: type of an image iterator (model of CIterator)
+   * - \t ConstIterator: type of an image const iterator (model of CIterator)
+   * - \t ReverseIterator: type of an image reverse iterator (model of CIterator)
+   * - \t ConstReverseIterator: type of an image  const reverse iterator (model of CIterator)
    *
    * <p> Notation
    * - \t X : A type that is a model of CImageContainer
@@ -133,8 +138,8 @@ namespace DGtal
         
       <tr> 
       <td class=CName> Set a value           </td> 
-      <td class=CExpression>  x.setValue(@c anIterator, @c aValue)    </td>
-      <td class=CRequirements> @c anIterator of type Iterator and @c aValue of
+      <td class=CExpression> template &lt;typename AnIterator&gt; x.setValue(@c anIterator, @c aValue)    </td>
+      <td class=CRequirements> @c anIterator of type AnIterator (model of CIterator) and @c aValue of
       type Value   </td> 
       <td class=CReturnType>  void    </td>
       <td class=CPrecondition> @c anIterator must be valid (inside the image domain)  </td> 
@@ -145,22 +150,9 @@ namespace DGtal
       </tr>
         
         
-        <tr> 
-        <td class=CName> Set a value           </td> 
-        <td class=CExpression>  x.setValue(@c aReverseIterator, @c aValue)    </td>
-        <td class=CRequirements> @c aReverseIterator of type ReverseIterator and @c aValue of
-        type Value   </td> 
-        <td class=CReturnType>  void    </td>
-        <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
-        <td class=CSemantics>  associate the value @c aValue with the
-        point  referenced by the itertor @aReverseIterator     </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-        </tr>
-
      	<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  x.getValue(@c aPoint)    </td>
+        <td class=CExpression>  x(@c aPoint)    </td>
         <td class=CRequirements> @c aPoint of type Point    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aPoint must be valide (inside the image domain)  </td> 
@@ -169,10 +161,20 @@ namespace DGtal
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>  Container dependent    </td>
       </tr>
-     	<tr> 
+     		<tr> 
         <td class=CName> Accessor           </td> 
-        <td class=CExpression>  aIterator.operator*() or (*aIterator)   </td>
-        <td class=CRequirements> @c aIterator of type Iterator    </td> 
+        <td class=CExpression>  template &lt;typename AnIterator&gt; x.(anIterator)   </td>
+        <td class=CRequirements> @c anIterator of type Iterator (model of CIterator, e.g. Iterator, ConstIterator, ReverseIterator or ConstReverseIterator)    </td> 
+        <td class=CReturnType>  Value    </td>
+        <td class=CPrecondition> @c anIterator must be valide (inside the image domain)  </td> 
+        <td class=CSemantics> returns the value associated to the
+        point referenced by the iterator anIterator</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>  Container dependent    </td>
+      </tr><tr> 
+        <td class=CName> Accessor           </td> 
+        <td class=CExpression>  template &lt;typename AnIterator&gt; aIterator.operator*() or (*aIterator)   </td>
+        <td class=CRequirements> @c aIterator of type Iterator (model of CIterator, either Iterator, ConstIterator, ReverseIterator, ConstReverseIterator)    </td> 
         <td class=CReturnType>  Value    </td>
         <td class=CPrecondition> @c aIterator must be valide (inside the image domain)  </td> 
         <td class=CSemantics> returns the value associated to the
@@ -180,41 +182,8 @@ namespace DGtal
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>  Container dependent    </td>
       </tr>
-     	<tr> 
-        <td class=CName> Accessor           </td> 
-        <td class=CExpression>  aConstIterator.operator*() or (*aConstIterator) </td>
-        <td class=CRequirements> @c aConstIterator of type ConstIterator    </td> 
-        <td class=CReturnType>  Value    </td>
-        <td class=CPrecondition> @c aConstIterator must be valide (inside the image domain)  </td> 
-        <td class=CSemantics> returns the value associated to the
-        point referenced by the iterator aConstIterator</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-      </tr>
-     	<tr> 
-        <td class=CName> Accessor           </td> 
-        <td class=CExpression>   aReverseIterator.operator*() or (*aReverseIterator)    </td>
-        <td class=CRequirements> @c aReverseIterator of type ReverseIterator    </td> 
-        <td class=CReturnType>  Value    </td>
-        <td class=CPrecondition> @c aReverseIterator must be valide (inside the image domain)  </td> 
-        <td class=CSemantics> returns the value associated to the
-        point referenced by the iterator aReverseIterator</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-      </tr>
-     	<tr> 
-        <td class=CName> Accessor           </td> 
-        <td class=CExpression>  aConstReverseIterator.operator*() or
-        (*aConstReverseIterator)   </td>
-        <td class=CRequirements> @c aConstReverseIterator of type ConstReverseIterator    </td> 
-        <td class=CReturnType>  Value    </td>
-        <td class=CPrecondition> @c aConstReverseIterator must be valide (inside the image domain)  </td> 
-        <td class=CSemantics> returns the value associated to the
-        point referenced by the iterator aConstReverseIterator</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>  Container dependent    </td>
-      </tr>
-</table>   
+
+    </table>   
 
    *
    * <p> Invariants <br>
@@ -246,16 +215,22 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT((CValue<Value>));
     BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+    ///@todo must check writable iterators
+    BOOST_CONCEPT_ASSERT((CReadableIterator<Iterator,Value>));
+    BOOST_CONCEPT_ASSERT((CReadableIterator<ConstIterator,Value>));
+    BOOST_CONCEPT_ASSERT((CReadableIterator<ReverseIterator,Value>));
+    BOOST_CONCEPT_ASSERT((CReadableIterator<ConstReverseIterator,Value>));
+
 
     
     BOOST_CONCEPT_USAGE(CImageContainer)
     {
       //Accessors
-      ConceptUtils::sameType(image.getValue(a), v);
-      ConceptUtils::sameType(image.getValue(it), v);
-      ConceptUtils::sameType(image.getValue(itconst), v);
-      ConceptUtils::sameType(image.getValue(itrev), v);
-      ConceptUtils::sameType(image.getValue(itconstrev), v);
+      ConceptUtils::sameType(image(a), v);
+      ConceptUtils::sameType(image(it), v);
+      ConceptUtils::sameType(image(itconst), v);
+      ConceptUtils::sameType(image(itrev), v);
+      ConceptUtils::sameType(image(itconstrev), v);
       
       //API
       ConceptUtils::sameType(image.domain(), d); 

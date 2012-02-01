@@ -58,7 +58,7 @@ ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 template <typename Domain, typename T>
 inline
 T
-ImageContainerBySTLVector<Domain, T>::getValue(const Point &aPoint) const
+ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
 {
   ASSERT(this->domain().isInside(aPoint));
   return this->operator[](linearized( aPoint ) );
@@ -66,34 +66,12 @@ ImageContainerBySTLVector<Domain, T>::getValue(const Point &aPoint) const
 
 template <typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain, T>::ConstIterator
-ImageContainerBySTLVector<Domain, T>::getConstItrerator(const Point &aPoint) const
-{
-  return ConstIterator(linearized( aPoint ) );
-}
-
-template <typename Domain, typename T>
-inline
 typename ImageContainerBySTLVector<Domain, T>::Iterator
-ImageContainerBySTLVector<Domain, T>::getItrerator(const Point &aPoint) const
+ImageContainerBySTLVector<Domain, T>::getIterator(const Point &aPoint) const
 {
   return Iterator(linearized( aPoint ) );
 }
-template <typename Domain, typename T>
-inline
-typename ImageContainerBySTLVector<Domain, T>::ReverseIterator
-ImageContainerBySTLVector<Domain, T>::getReverseItrerator(const Point &aPoint) const
-{
-  return ReverseIterator(linearized( aPoint ) );
-}
 
-template <typename Domain, typename T>
-inline
-typename ImageContainerBySTLVector<Domain, T>::ConstReverseIterator
-ImageContainerBySTLVector<Domain, T>::getConstReverseItrerator(const Point &aPoint) const
-{
-  return ConstReverseIterator(linearized( aPoint ) );
-}
 
 template <typename Domain, typename T>
 inline

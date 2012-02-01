@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
-//#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/base/CReadableIterator.h"
 #include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -118,22 +118,6 @@ namespace DGtal
   
     /////////////////// Accessors //////////////////
 
-
-    /**
-     * Get the value of an image at a given position given
-     * by a ConstIterator.
-     *
-     * @pre it must reference a point in the image domain.
-     *
-     * @param it  position in the image.
-     * @return the value at aPoint.
-     */
-    Value getValue(ConstIterator &it) const
-    {
-      return (*it);
-    };
-
-
     /**
      * Get the value of an image at a given position given
      * by a Iterator.
@@ -143,43 +127,37 @@ namespace DGtal
      * @param it  position in the image.
      * @return the value at aPoint.
      */
-    Value getValue(Iterator &it) const
+    template < typename AnIterator>
+    Value operator()(AnIterator &it) const
     {
+      BOOST_CONCEPT_ASSERT((CReadableIterator<AnIterator,Value>));
       return (*it);
     };
 
+    
     /**
      * Get the value of an image at a given position given
-     * by a ConstIterator.
+     * by a Point.
      *
-     * @pre it must reference a point in the image domain.
+     * @pre the point must be in the domain
      *
-     * @param it  position in the image.
+     * @param aPoint the point.
      * @return the value at aPoint.
      */
-    Value getValue(ConstReverseIterator &it) const
-    {
-      return (*it);
-    };
-
-
-    /**
-     * Get the value of an image at a given position given
-     * by a Iterator.
-     * 
-     * @pre it must reference a point in the image domain.
-     *
-     * @param it  position in the image.
-     * @return the value at aPoint.
-     */
-    Value getValue(ReverseIterator &it) const
-    {
-      return (*it);
-    };
-
+    Value operator()(const Point & aPoint) const;
 
 
     /////////////////// Set values //////////////////
+
+    /**
+     * Set a value on an Image at a position specified by a Point.
+     *
+     * @pre @c it must be a point in the image domain.
+     *
+     * @param aPoint the point.
+     * @param aValue the value.
+     */
+    void setValue(const Point &aPoint, const Value &aValue);
 
     /**
      * Set a value on an Image at a position specified by an Iterator.
@@ -189,25 +167,13 @@ namespace DGtal
      * @param it  iterator on the location.
      * @param aValue the value.
      */
+    template < typename AnIterator>
     void setValue(Iterator &it, const Value &aValue)
     {
+      BOOST_CONCEPT_ASSERT((CReadableIterator<AnIterator,Value>));
       (*it) = aValue;
     }  
     
-    /**
-     * Set a value on an Image at a position specified by a ReverseIterator.
-     *
-     * @pre @c it must reference a point in the image domain.
-     *
-     * @param it  a reverse iterator on the location.
-     * @param aValue the value.
-     */
-    void setValue(ReverseIterator &it, const Value &aValue)
-    {
-      (*it) = aValue;
-    }
-
-   
     /////////////////// Interface //////////////////
 
 
@@ -226,17 +192,6 @@ namespace DGtal
       return (this != NULL);
     }
 
-
-    /** 
-     * Construct a ConstIterator on the image at a position specified
-     * by @c aPoint
-     * 
-     * @param aPoint a point to construct a ConstIterator on. 
-     * 
-     * @return a ConstIterator on @c aPoint
-     */
-    ReverseIterator getReverseIterator(const Point &aPoint);
- 
     /** 
      * Construct a Iterator on the image at a position specified
      * by @c aPoint
@@ -245,27 +200,7 @@ namespace DGtal
      * 
      * @return a Iterator on @c aPoint
      */
-    ConstReverseIterator getconstReverseIterator(const Point &aPoint);
- 
-    /** 
-     * Construct a ConstIterator on the image at a position specified
-     * by @c aPoint
-     * 
-     * @param aPoint a point to construct a ConstIterator on. 
-     * 
-     * @return a ConstIterator on @c aPoint
-     */
-    ConstIterator getConstIterator(const Point &aPoint);
- 
-    /** 
-     * Construct a Iterator on the image at a position specified
-     * by @c aPoint
-     * 
-     * @param aPoint a point to construct a Iterator on. 
-     * 
-     * @return a Iterator on @c aPoint
-     */
-    Iterator getIterator(const Point &aPoint);
+    Iterator getIterator(const Point &aPoint) const;
  
     /**
      * @return the domain associated to the image.
