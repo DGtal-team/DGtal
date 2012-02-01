@@ -57,13 +57,13 @@
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/nd/GaussDigitizer.h"
-#include "DGtal/geometry/2d/GridCurve.h"
-#include "DGtal/geometry/2d/estimators/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/TrueGlobalEstimatorOnPoints.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeCurvatureFunctor.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeTangentFunctor.h"
-#include "DGtal/geometry/2d/estimators/ParametricShapeArcLengthFunctor.h"
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
+#include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
 
