@@ -54,10 +54,35 @@ namespace DGtal
      Description of template class 'DigitalSurface' <p>
 
      \brief Aim: Represents a set of n-1-cells in a nD space, together
-     with adjacency relation between these cells.
+     with adjacency relation between these cells. Therefore, a digital
+     surface is a pure cubical complex (model of CCubicalComplex),
+     made of k-cells, 0 <= k < n. This complex is generally not a
+     manifold (i.e. a kind of surface), except when it has the
+     property of being well-composed.
+
+     For geometric analysis or visualization, it is often interesting
+     to look at the "dual" of the digital surface. n-1-cells form now
+     vertices, n-2-cells are edges, n-3-cells are faces, and so on.  A
+     digital surface is thus a model of CUndirectedSimpleGraph,
+     henceforth of CUndirectedSimpleLocalGraph. The n-1-cells are then
+     seen as the vertices of the graph, while their adjacencies
+     constitutes the edges of the graph.
+
+     Furthermore, starting from 3D, a digital surface is in some sense
+     a model of combinatorial surface (closed or open). You may obtain
+     arcs (which are oriented edges) and faces (which are sequences of
+     oriented arcs turning around some pivot cell). In 3D, this dual
+     digital surface is a combinatorial 2-manifold, open or not
+     depending whether the digital surface is open or closed. For
+     instance, arcs may have 0 or 1 incident face. 
+
+     We construct this dual digital surface with umbrellas, which are
+     sequences of adjacent n-1-cells turning around a n-3-cell, called
+     the pivot of the umbrella.
 
      Proxy class to a DigitalSurfaceContainer.
 
+     @todo Should be a model of CCubicalComplex
      @todo Should be a model of CSinglePassConstRange
 
      @tparam TDigitalSurfaceContainer any model of
@@ -137,6 +162,10 @@ namespace DGtal
       }
 
     };
+
+    // ----------------------- CombinatorialSurface --------------------------
+  public:
+   
     
 
     // ----------------------- Standard services ------------------------------
