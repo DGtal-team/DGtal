@@ -47,7 +47,7 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
 
-#include "DGtal/geometry/curves/tools/Preimage2D.h"
+#include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 
 //////////////////////////////////////////////////////////////////////////////
