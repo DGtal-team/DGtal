@@ -205,6 +205,37 @@ namespace DGtal
                        const SurfelPredicate & pp,
                        const SCell & start_surfel );
 
+    /**
+       Creates a set of signed surfels whose elements represents a
+       boundary component of a digital surface described by a
+       SurfelPredicate. The algorithms tracks surfels along the
+       surface. This is an optimized version of trackSurface, which is
+       valid only when the tracked surface is closed.
+       
+       @tparam SCellSet a model of a set of SCell (e.g., std::set<SCell>).
+
+       @tparam SurfelPredicate a model of CSurfelPredicate describing
+       whether a surfel belongs or not to the surface.
+       
+       @param surface (modified) a set of cells (which are all surfels),
+       the boundary component of [spelset] which touches [start_surfel].
+       
+       @param K any space.
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+
+       @param sp an instance of a model of CSurfelPredicate.
+
+       @param start_surfel a signed surfel which should be part of the
+       surface, ie. 'sp(start_surfel)==true'.
+    */
+    template <typename SCellSet, typename SurfelPredicate >
+    static 
+    void trackClosedSurface( SCellSet & surface,
+                             const KSpace & K,
+                             const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+                             const SurfelPredicate & pp,
+                             const SCell & start_surfel );
+
 
     /**
        Creates a vector of signed surfels whose elements represents a
