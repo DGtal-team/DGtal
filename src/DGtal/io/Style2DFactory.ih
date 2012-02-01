@@ -458,7 +458,8 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FP<TIterator,TInteger,conn
 // FreemanChain
 template <typename TInteger>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FreemanChain<TInteger> & /*f*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FreemanChain<TInteger> & /*f*/, 
+					 std::string mode = "" )
 {
   if ( ( mode == "" ) || ( mode == "Grid" ) ) 
     return new DefaultDrawStyleGrid_FreemanChain;
@@ -471,7 +472,8 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FreemanChain<TInteger> & /
 // GeometricalDSS
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstIterator> & /*g*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstIterator> & /*g*/, 
+					 std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_GeometricalDSS; 
@@ -481,7 +483,8 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstItera
 // GeometricalDCA
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/,
+					 std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_GeometricalDCA; 
