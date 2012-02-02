@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -109,6 +110,9 @@ namespace DGtal
     template <typename Value> struct SurfelMap {
       typedef typename KSpace::template SurfelMap<Value>::Type Type;
     };
+
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
+    
 
     // ----------------------- UndirectedSimpleGraph --------------------------
   public:

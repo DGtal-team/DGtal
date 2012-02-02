@@ -7,6 +7,7 @@ SET(DGTAL_TESTS_SRC
    testObject
    testObjectBorder
    testSimpleExpander
+   testUmbrellaComputer
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

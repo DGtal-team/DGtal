@@ -108,7 +108,7 @@ template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::uint8_t
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
-::adjacent( Surfel & s, Dimension d, bool pos )
+::adjacent( Surfel & s, Dimension d, bool pos ) const
 {
   return static_cast<uint8_t>
     ( myNeighborhood.getAdjacentOnPointPredicate( s, surface().pointPredicate(), d, pos ) );

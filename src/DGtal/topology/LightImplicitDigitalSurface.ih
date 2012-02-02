@@ -31,6 +31,7 @@
 #include <cstdlib>
 #include <iterator>
 #include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/topology/CVertexPredicate.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -91,7 +92,7 @@ DGtal::Dimension
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 ::orthDir() const
 {
-  return myNeighborhood().orthDir();
+  return myNeighborhood.orthDir();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
@@ -108,7 +109,7 @@ template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::uint8_t
 DGtal::LightImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
-::adjacent( Surfel & s, Dimension d, bool pos )
+::adjacent( Surfel & s, Dimension d, bool pos ) const
 {
   return static_cast<uint8_t>
     ( myNeighborhood.getAdjacentOnPointPredicate( s, surface().pointPredicate(), d, pos ) );

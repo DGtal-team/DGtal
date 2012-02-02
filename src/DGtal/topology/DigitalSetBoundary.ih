@@ -91,7 +91,7 @@ DGtal::Dimension
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
 ::orthDir() const
 {
-  return myNeighborhood().orthDir();
+  return myNeighborhood.orthDir();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
@@ -108,7 +108,7 @@ template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::uint8_t
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
-::adjacent( Surfel & s, Dimension d, bool pos )
+::adjacent( Surfel & s, Dimension d, bool pos ) const
 {
   SetPredicate<DigitalSet> isInSet( surface().digitalSet() );
   return static_cast<uint8_t>

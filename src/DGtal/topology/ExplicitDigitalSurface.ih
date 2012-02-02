@@ -91,7 +91,7 @@ DGtal::Dimension
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 ::orthDir() const
 {
-  return myNeighborhood().orthDir();
+  return myNeighborhood.orthDir();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
@@ -108,7 +108,7 @@ template <typename TKSpace, typename TSurfelPredicate>
 inline
 DGtal::uint8_t
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
-::adjacent( Surfel & s, Dimension d, bool pos )
+::adjacent( Surfel & s, Dimension d, bool pos ) const
 {
   return static_cast<uint8_t>
     ( myNeighborhood.getAdjacentOnSurfelPredicate( s, surface().surfelPredicate(), d, pos ) );
