@@ -56,8 +56,9 @@ bool testUmbrellaComputer()
   typedef Boundary::SurfelConstIterator ConstIterator;
   typedef Boundary::Tracker Tracker;
   typedef Boundary::Surfel Surfel;
+  typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
   typedef DigitalSurface<Boundary> MyDigitalSurface;
-  typedef UmbrellaComputer<Boundary::DigitalSurfaceTracker> MyUmbrellaComputer;
+  typedef UmbrellaComputer<DigitalSurfaceTracker> MyUmbrellaComputer;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -76,15 +77,50 @@ bool testUmbrellaComputer()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "K.init() is ok" << std::endl;
+  // Find start surfel on surface.
   Surfel bel = Surfaces<KSpace>::findABel( K, shape, 10000 );
+  // Define surface container then surface itself.
   Boundary boundary( K, // cellular space
 		     shape, // point predicate
                      SurfelAdjacency<KSpace::dimension>( true ), // adjacency
 		     bel // starting surfel
 		     );
-  
-  MyDigitalSurface digSurf( boundary ); // cloned
+  MyDigitalSurface digSurf( boundary ); // boundary is cloned
+
+  // Get tracker on surface.
+  DigitalSurfaceTracker* ptrTracker = boundary.newTracker( bel );
   MyUmbrellaComputer umbrella;
+  KSpace::DirIterator dirIt = K.sDirs( bel );
+  Dimension k = *dirIt;
+  Dimension j = *(++dirIt);
+  trace.beginBlock ( "Testing block ... forward umbrella" );
+  umbrella.init( *ptrTracker, k, true, j );
+  unsigned int nb_forward = 0;
+  Surfel init_bel = bel;
+  do {
+    Point x = K.sKCoords( bel );
+    trace.info() << x << std::endl;
+    umbrella.next();
+    ++nb_forward;
+    bel = umbrella.surfel();
+  } while ( bel != init_bel );
+  trace.endBlock();
+  trace.beginBlock ( "Testing block ... backward umbrella" );
+  unsigned int nb_backward = 0;
+  do {
+    Point x = K.sKCoords( bel );
+    trace.info() << x << std::endl;
+    umbrella.previous();
+    ++nb_backward;
+    bel = umbrella.surfel();
+  } while ( bel != init_bel );
+  nb++, nbok += nb_forward == nb_backward ? 1 : 0;
+  
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << " nb_forward(" << nb_forward
+	       << ") == nb_backward(" << nb_backward << ")"
+	       << std::endl;
+  trace.endBlock();
 
   unsigned int nbsurfels = 0;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
@@ -94,6 +130,8 @@ bool testUmbrellaComputer()
     }
   trace.info() << nbsurfels << " surfels found." << std::endl;
   trace.endBlock();
+
+  delete ptrTracker;
   return nbok == nb;
 }
 

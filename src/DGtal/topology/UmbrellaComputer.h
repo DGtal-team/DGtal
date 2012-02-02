@@ -111,6 +111,23 @@ namespace DGtal
       bool epsilon;
       /// Track direction (j != k), j in sDirs(surfel).
       Dimension j;
+      inline bool operator==( const State & other ) const
+      {
+	return ( surfel == other.surfel ) 
+	  && ( k == other.k ) 
+	  && ( epsilon == other.epsilon )
+	  && ( j == other.j );
+      }
+      inline bool operator<( const State & other ) const
+      {
+	return ( surfel < other.surfel ) 
+	  || ( ( surfel == other.surfel ) 
+	       && ( ( k < other.k ) 
+		    || ( ( k == other.k ) 
+			 && ( ( epsilon < other.epsilon )
+			      || ( ( epsilon == other.epsilon)
+				   && ( j < other.j ) ) ) ) ) );
+      }
     };
 
     // ----------------------- Standard services ------------------------------
