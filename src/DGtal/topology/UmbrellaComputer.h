@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-
+#include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -286,7 +286,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/UmbrellaComputer.ih"
+#include "DGtal/topology/UmbrellaComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

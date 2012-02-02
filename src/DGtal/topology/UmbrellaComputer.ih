@@ -29,11 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -61,7 +56,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::UmbrellaComputer()
 template <typename TDigitalSurfaceTracker>
 inline
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::
-UmbrellaComputer( const DigitalSurfaceUmbrellaComputer & other )
+UmbrellaComputer( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
   : myTracker( 0 )
 {
   if ( other.myTracker != 0 )
@@ -103,18 +98,6 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::init
     delete myTracker;
   myTracker = new DigitalSurfaceTracker( tracker );
   myState.surfel = myTracker->current();
-  myState.k = k;
-  myState.epsilon = epsilon;
-  myState.j = j;
-}
-
-//-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceTracker>
-inline
-void 
-DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::setPivot
-( Dimension k, bool epsilon, Dimension j )
-{
   myState.k = k;
   myState.epsilon = epsilon;
   myState.j = j;
@@ -246,7 +229,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
   if ( code != 0 )
     { // Then the face has a successor.
       Dimension i = orthDir();
-      SCell s = current();
+      SCell s = myTracker->current();
       myState.j = myState.k; // m_track_dir = m_separator_dir;
       myTracker->move( sp );
       if ( code != 2 ) // s and sp are not aligned.
@@ -264,7 +247,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
 	  myState.epsilon = ! mu; // m_separator_orientation = ! mu;
 	}
     }
-  return m_tracker->lastCode();
+  return code;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>

@@ -136,7 +136,7 @@ namespace DGtal
 	 @return the move code (n=0-3). When 0: no adjacent surfel,
 	 otherwise 1-3: adjacent surfel is n-th follower.
       */
-      uint8_t adjacent( Surfel & s, Dimension d, bool pos );
+      uint8_t adjacent( Surfel & s, Dimension d, bool pos ) const;
       
     private:
       /// a reference to the digital surface container on which is the
