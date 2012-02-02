@@ -169,7 +169,7 @@ namespace DGtal
      * 
      * @return a Iterator on @c aPoint
      */
-    Iterator getIterator(const Point &aPoint) const;
+    Iterator getIterator(const Point &aPoint);
  
     /**
      * @return the domain associated to the image.
