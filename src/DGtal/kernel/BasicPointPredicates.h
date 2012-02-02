@@ -20,8 +20,11 @@
  * @file BasicPointPredicates.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- *
  * @date 2010/07/10
+ *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/02
  *
  * This files contains several basic classes representing predicates
  * on points.
@@ -216,22 +219,53 @@ namespace DGtal
   };
 
   /////////////////////////////////////////////////////////////////////////////
+  // template class EqualPointPredicate
+  /**
+   * Description of template class 'EqualPointPredicate' <p> \brief Aim:
+   * The predicate returns true when the point given as argument equals 
+   * the reference point given at construction. 
+   *
+   * @tparam TPoint point type.
+   */
+  template <typename TPoint>
+  struct EqualPointPredicate
+  {
+    typedef TPoint Point;
+
+    /**
+     * Constructor from a point.
+     */
+    EqualPointPredicate( const Point & aPoint );
+
+    /**
+     * @param p any point.
+     * @return the value of the predicate at this point.
+     */
+    bool operator()( const Point & p ) const;
+
+    /// Reference point.
+    Point myPoint;
+  };
+
+  /////////////////////////////////////////////////////////////////////////////
   // template class BinaryPointPredicate
   /**
    * Description of template class 'BinaryPointPredicate' <p> \brief
    * Aim: The predicate returns true when the given binary functor
-   * returns true for the two PointPredicate(s) given at construction.
+   * returns true for the two PointPredicates given at construction.
    *
    * @tparam PointPredicate1 the left predicate type.
    * @tparam PointPredicate2 the right predicate type.
+   * @tparam TBinaryFunctor binary functor used for comparison
    */
-  template <typename TPointPredicate1, typename TPointPredicate2>
+  template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor = BoolFunction2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
     typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
     // should be the same.
+ 	  BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
     typedef typename PointPredicate2::Point Point2;
 
     /**
@@ -244,7 +278,7 @@ namespace DGtal
      */
     BinaryPointPredicate( const PointPredicate1 & pred1,
         const PointPredicate2 & pred2,
-        const BoolFunction2 & boolFunctor );
+        const TBinaryFunctor & boolFunctor );
 
     /**
      * @param p any point.
@@ -257,7 +291,7 @@ namespace DGtal
     /// the right predicate.
     const PointPredicate2 & myPred2;
     /// the binary functor.
-    BoolFunction2 myBoolFunctor;
+    TBinaryFunctor myBoolFunctor;
   };
 
 } // namespace DGtal
