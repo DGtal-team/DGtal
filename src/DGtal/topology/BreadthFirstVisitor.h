@@ -118,6 +118,7 @@ namespace DGtal
     */
     struct NodeAccessor {
       typedef const Node value;
+      typedef const Node value_type;
       typedef const Node* pointer;
       typedef const Node& reference;
       inline
@@ -131,6 +132,7 @@ namespace DGtal
     */
     struct VertexAccessor {
       typedef const Vertex value;
+      typedef const Vertex value_type;
       typedef const Vertex* pointer;
       typedef const Vertex& reference;
       inline
@@ -147,7 +149,7 @@ namespace DGtal
 
       // stl iterator types.
       typedef std::input_iterator_tag iterator_category;
-      typedef typename Accessor::value value;
+      typedef typename Accessor::value value_type;
       typedef std::ptrdiff_t difference_type; 
       typedef typename Accessor::pointer pointer;
       typedef typename Accessor::reference reference;
