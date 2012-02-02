@@ -74,11 +74,9 @@ bool testLongvol()
   Image::ConstIterator ito = image.begin();
   for(Image::ConstIterator it = image2.begin(), itend=image2.end();
       it != itend; ++it, ++ito)
-    if ((*it) != (*ito))
-      {
-	trace.info()<< (*it) <<"  ---  "<< (*ito)<<std::endl;
-	allFine &= (*it) == (*ito);
-      }
+    if (((*it) != 0 ) || ((*ito) != 0))
+    allFine &= ( ((*it)*(*ito)) != 0);
+      
   nbok += allFine ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
