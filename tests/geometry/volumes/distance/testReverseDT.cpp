@@ -110,7 +110,7 @@ bool testReverseDT()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << result(it) << " ";
+      std::cout << (*it) << " ";
       ++it;
     }
     std::cout << std::endl;
@@ -132,7 +132,7 @@ bool testReverseDT()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)reconstruction(it2) << " ";
+      std::cout << (int)(*it2) << " ";
       ++it2;
     }
     std::cout << std::endl;
@@ -143,8 +143,8 @@ bool testReverseDT()
   ImageRDT::ConstIterator itrec = reconstruction.begin(), itend = reconstruction.end();
   Image::ConstIterator  itinit = image.begin();
   for( ; itrec != itend; ++itrec,++itinit)
-    if (reconstruction(itrec) == 0)
-      ok = ok & (image(itinit) == 0);
+    if ((*itrec) == 0)
+      ok = ok & ((*itinit) == 0);
 
   nbok += ok ? 1 : 0; 
   nb++;
@@ -194,7 +194,7 @@ bool testReverseDTL1()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)result(it) << " ";
+      std::cout << (int)(*it) << " ";
       ++it;
     }
     std::cout << std::endl;
@@ -212,7 +212,7 @@ bool testReverseDTL1()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)reconstruction(it2) << " ";
+      std::cout << (int)(*it2) << " ";
       ++it2;
     }
     std::cout << std::endl;
@@ -223,8 +223,8 @@ bool testReverseDTL1()
   ImageRDT::ConstIterator itrec = reconstruction.begin(), itend = reconstruction.end();
   Image::ConstIterator  itinit = image.begin();
   for( ; itrec != itend; ++itrec,++itinit)
-    if (reconstruction(itrec) == 0)
-      ok = ok & (image(itinit) == 0);
+    if ((*itrec) == 0)
+      ok = ok & ((*itinit) == 0);
 
   nbok += ok ? 1 : 0; 
   nb++;
@@ -265,7 +265,7 @@ bool testReverseDTL1simple()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)result(it) << " ";
+      std::cout << (int)(*it) << " ";
       ++it;
     }
     std::cout << std::endl;
@@ -283,7 +283,7 @@ bool testReverseDTL1simple()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)reconstruction(it2) << " ";
+      std::cout << (int)(*it2) << " ";
       ++it2;
     }
     std::cout << std::endl;
@@ -342,7 +342,7 @@ bool testReverseDTSet()
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << result(it) << " ";
+      std::cout << (*it) << " ";
       ++it;
     }
     std::cout << std::endl;

@@ -118,23 +118,7 @@ namespace DGtal
   
     /////////////////// Accessors //////////////////
 
-    /**
-     * Get the value of an image at a given position given
-     * by a Iterator.
-     *
-     * @pre it must reference a point in the image domain.
-     *
-     * @param it  position in the image.
-     * @return the value at aPoint.
-     */
-    template < typename AnIterator>
-    Value operator()(AnIterator &it) const
-    {
-      BOOST_CONCEPT_ASSERT((CReadableIterator<AnIterator,Value>));
-      return (*it);
-    };
-
-    
+   
     /**
      * Get the value of an image at a given position given
      * by a Point.
@@ -158,25 +142,10 @@ namespace DGtal
      * @param aValue the value.
      */
     void setValue(const Point &aPoint, const Value &aValue);
-
-    /**
-     * Set a value on an Image at a position specified by an Iterator.
-     *
-     * @pre @c it must reference a point in the image domain.
-     *
-     * @param it  iterator on the location.
-     * @param aValue the value.
-     */
-    template < typename AnIterator>
-    void setValue(Iterator &it, const Value &aValue)
-    {
-      BOOST_CONCEPT_ASSERT((CReadableIterator<AnIterator,Value>));
-      (*it) = aValue;
-    }  
+    
     
     /////////////////// Interface //////////////////
-
-
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -237,7 +206,8 @@ namespace DGtal
 
     public:
 
-      typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
+      ///\todo construct a RANDOM-ACCESS iterator
+      typedef std::bidirectional_iterator_tag iterator_category; 
       typedef Value value_type;
       typedef ptrdiff_t difference_type;
       typedef Value* pointer;

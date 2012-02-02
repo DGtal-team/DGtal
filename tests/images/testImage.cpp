@@ -76,7 +76,7 @@ bool testSimpleImage()
   for ( Image::ConstIterator it = myImage.begin();
   it != myImage.end();
   ++it)
-    trace.info() << myImage(it) <<" ";
+    trace.info() << (*it) <<" ";
   trace.info()<<std::endl;
   trace.endBlock();
     

@@ -76,7 +76,7 @@ int main()
 
   //! [imageGridCurveEstimator-prepareTracking]
   Z2i::KSpace ks;                                            //Khalimsky space 
-  ks.init( image.lowerBound(), image.upperBound(), true );
+  ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   SurfelAdjacency<2> sAdj( true );                           //adjacency
   //! [imageGridCurveEstimator-prepareTracking]
 

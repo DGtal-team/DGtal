@@ -118,7 +118,7 @@ int main( int argc, char** argv )
   trace.info() << image <<endl;
 
   // make shape.
-  Domain domain( image.lowerBound(), image.upperBound() );
+  Domain domain =  image.domain() ;
   DigitalSet shape_set( domain );
   SetPredicate<DigitalSet> shape_set_predicate( shape_set );
   for ( Domain::ConstIterator it = domain.begin(), itend = domain.end();
@@ -147,7 +147,7 @@ int main( int argc, char** argv )
   typedef KSpace::SCell SCell;
   KSpace K3;
   SurfelAdjacency<KSpace::dimension> SAdj( true );
-  K3.init( image.lowerBound(), image.upperBound(), true );
+  K3.init( image.domain().lowerBound(), image.domain().upperBound(), true );
 
   // Tracks the shape boundary.
   SCell intvoxel = K3.sSpel( first );
@@ -161,7 +161,7 @@ int main( int argc, char** argv )
   // Display surface.
   DGtalInventor<Space> inventor;
   typedef DGtalInventor<Space>::Color Color;
-  addBounds( inventor, image.lowerBound(), image.upperBound() );
+  addBounds( inventor, image.domain().lowerBound(), image.domain().upperBound() );
   for ( std::set<SCell>::const_iterator it = bdry.begin(), itend = bdry.end();
   it != itend;
   ++it )

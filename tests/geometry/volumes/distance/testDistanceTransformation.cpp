@@ -128,7 +128,7 @@ bool testDistanceTransformation()
     {
       for (unsigned int x = 2; x < 16; x++)
 	{
-	  std::cout << result(it) << " ";
+	  std::cout << (*it) << " ";
 	  ++it;
 	}
       std::cout << std::endl;
@@ -203,8 +203,8 @@ bool testDistanceTransformationNeg()
   DGtal::int64_t maxv=0;
   for(ImageLong::Iterator it = result.begin(), itend = result.end();
       it != itend ; ++it)
-    if (result(it) > maxv)
-      maxv = result(it);
+    if ((*it) > maxv)
+      maxv = (*it);
 
   for(int y=-10; y<=10;y++) 
     {
@@ -323,7 +323,7 @@ bool testDistanceTransformationBorder()
   Image image ( Domain(a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
-    image.setValue ( it, 128 );
+    *it = 128 ;
 
 
   randomSeeds(image, 19, 0);
@@ -352,7 +352,7 @@ bool testDistanceTransformationBorder()
     {
       for (unsigned int x = 0; x < 33; x++)
 	{
-	  std::cout << std::setw(4) << result(it) << " ";
+	  std::cout << std::setw(4) << (*it) << " ";
 	  ++it;
 	}
       std::cout << std::endl;
@@ -486,7 +486,7 @@ bool testChessboard()
   Image image ( Domain( a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
-    image.setValue ( it, 128 );
+    (*it) = 128;
 
 
   randomSeeds(image, 19, 0);
@@ -546,7 +546,7 @@ bool testChessboard()
 	  itend = result1.end();
 	it2 != itend; ++it2)
     {
-      if ( result1(it2) > maxv)
+      if ( *it2 > maxv)
 	maxv = (*it2);
     }
   
@@ -561,7 +561,7 @@ bool testChessboard()
   for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
 	it != itend; ++it)
     {
-      if ( result2(it) > maxv)
+      if ( (*it) > maxv)
 	maxv = (*it);
     }
   

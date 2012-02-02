@@ -112,9 +112,9 @@ namespace DGtal
 
 	<tr> 
         <td class=CName> Iterator on points            </td> 
-        <td class=CExpression>  x.getConstIterator(@c aPoint)   </td>
+        <td class=CExpression>  x.getIterator(@c aPoint)   </td>
         <td class=CRequirements> @c aPoint of type const Point   </td> 
-        <td class=CReturnType>  ConstIterator     </td>
+        <td class=CReturnType>  Iterator     </td>
         <td class=CPrecondition>    </td> 
         <td class=CSemantics>  returns a const iterator to reference
         the point @c aPoint in the image.    </td> 
@@ -227,20 +227,11 @@ namespace DGtal
     {
       //Accessors
       ConceptUtils::sameType(image(a), v);
-      ConceptUtils::sameType(image(it), v);
-      ConceptUtils::sameType(image(itconst), v);
-      ConceptUtils::sameType(image(itrev), v);
-      ConceptUtils::sameType(image(itconstrev), v);
       
       //API
       ConceptUtils::sameType(image.domain(), d); 
-      ConceptUtils::sameType(image.getConstIterator(a), itconst); 
+      ConceptUtils::sameType(image.getIterator(a), it); 
       image.setValue(a, v);  //set a value at a Point
-      image.setValue(it, v); //set a value at an Iterator
-      image.setValue(a, v);  //set a value at a Point
-      image.setValue(itrev, v); //set a value at an ReverseIterator
-      image.setValue(itconstrev, v); //set a value at an ConstReverstIterator
-      
     }
 
   private:
