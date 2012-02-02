@@ -49,7 +49,7 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename ) throw(DGtal::IOException)
+DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename ) throw(DGtal::IOException)
 {
   ifstream infile;
   DGtal::IOException dgtalio;
@@ -66,30 +66,34 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   bool isASCIImode = false;
   string str;
   getline( infile, str );
-  if ( ! infile.good() ) {
-    trace.error() << "PNMReader : can't read " << aFilename << endl;
-    throw dgtalio;
-  }
-  if ( str != "P5" &&  str != "P2"){
-    trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << endl;
-    throw dgtalio;
-  }
-  if(str== "P2"){
-    isASCIImode=true;
-  }
+  if ( ! infile.good() )
+    {
+      trace.error() << "PNMReader : can't read " << aFilename << endl;
+      throw dgtalio;
+    }
+  if ( str != "P5" &&  str != "P2")
+    {
+      trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << endl;
+      throw dgtalio;
+    }
+  if(str== "P2")
+    {
+      isASCIImode=true;
+    }
   do
     {
       getline( infile, str );
-      if ( ! infile.good() ){
-  trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
-  throw dgtalio;
-      } 
+      if ( ! infile.good() )
+	{
+	  trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+	  throw dgtalio;
+	} 
     }
   while ( str[ 0 ] == '#' || str=="");
   istringstream str_in( str );
   unsigned int w, h;
   str_in >> w >> h;
-
+  
    
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
@@ -97,49 +101,53 @@ DGtal::PNMReader<TImageContainer>::importPGMImage(const std::string & aFilename 
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
-
+  
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(firstPoint,lastPoint);
-
+  
   getline( infile, str );
   istringstream str2_in( str );
   int max_value;
   str2_in >> max_value;  
 
-  if ( ! infile.good() ){
-    trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
-    throw dgtalio;
-  } 
- 
+  if ( ! infile.good() )
+    {
+      trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+      throw dgtalio;
+    } 
+  
   unsigned int nb_read = 0;
-  if(!isASCIImode){
+  if(!isASCIImode)
     infile >> noskipws;
-  }else{
+  else
     infile >> skipws;
-  }
-
-  for(unsigned int y=0; y <h; y++){
-    for(unsigned int x=0; x <w; x++){
-      typename TImageContainer::Point pt;
-      pt[0]=x; pt[1]=h-1-y;
-      if(!isASCIImode){
-  char c; 
-  infile >> c;
-  if ( infile.good() ){ 
-  ++nb_read;
-  image.setValue( pt, c);
-  }
-      }else{
-  int c; 
-  infile >> c;
-  if ( infile.good() ){ 
-  ++nb_read;
-  image.setValue( pt, c);
-  }
+  
+  for(unsigned int y=0; y <h; y++)
+    for(unsigned int x=0; x <w; x++)
+      {
+	  typename TImageContainer::Point pt;
+	  pt[0]=x; pt[1]=y;
+	  if(!isASCIImode)
+	    {
+	      char c; 
+	      infile >> c;
+	      if ( infile.good() )
+		{ 
+		  ++nb_read;
+		  image.setValue( pt, c);
+		}
+	    }
+	  else
+	    {
+	      int c; 
+	      infile >> c;
+	      if ( infile.good() )
+		{
+		  ++nb_read;
+		  image.setValue( pt, c);
+		}
+	    }
       }
-      
-    }
-  }
   if ( infile.fail() || infile.bad() )
     {
       trace.error() << "# nbread=" << nb_read << endl;
@@ -184,8 +192,8 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
     {
       getline( infile, str );
       if ( ! infile.good() ){
-  trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
-  throw dgtalio;
+	trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+	throw dgtalio;
       } 
     }
   while ( str[ 0 ] == '#' || str=="");
@@ -220,14 +228,14 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
   for(unsigned int z=0; z <e; z++){
     for(unsigned int y=0; y <h; y++){
       for(unsigned int x=0; x <w; x++){
-  typename TImageContainer::Point pt;
-  pt[0]=x; pt[1]=h-1-y; pt[2]=z;
-  char c; 
-  infile >> c;
-  if ( infile.good() ){ 
-  ++nb_read;
-  image.setValue( pt, c);
-  }
+	typename TImageContainer::Point pt;
+	pt[0]=x; pt[1]=y; pt[2]=z;
+	char c; 
+	infile >> c;
+	if ( infile.good() ){ 
+	  ++nb_read;
+	  image.setValue( pt, c);
+	}
       }
     }
   }
