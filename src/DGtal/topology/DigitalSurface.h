@@ -45,6 +45,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
+#include "DGtal/topology/UmbrellaComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -116,7 +117,6 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
     
-
     // ----------------------- UndirectedSimpleGraph --------------------------
   public:
     /// Defines the type for a vertex.
@@ -172,7 +172,71 @@ namespace DGtal
 
     // ----------------------- CombinatorialSurface --------------------------
   public:
-   
+    
+    typedef UmbrellaComputer<DigitalSurfaceTracker> Umbrella;
+    typedef typename Umbrella::State UmbrellaState;
+
+    /// Defines an arc on the digital surface, i.e. an arrow between
+    /// two adjacent surfels.
+    struct Arc {
+      Vertex base;  ///< base surfel 
+      Dimension k;  ///< direction toward the head surfel
+      bool epsilon; ///< orientation toward the head surfel
+      inline Arc( const Vertex & _base, Dimension _k, bool _epsilon )
+	: base( _base ), k( _k ), epsilon( _epsilon ) {}
+      inline bool operator==( const Arc & other ) const
+      {
+	return ( base == other.base ) 
+	  && ( k == other.k ) && ( epsilon == other.epsilon );
+      }
+      inline bool operator<( const Arc & other ) const
+      {
+	return ( base < other.base ) 
+	  || ( ( base == other.base ) 
+	       && ( ( k < other.k ) 
+		    || ( ( k == other.k ) 
+			 && ( epsilon < other.epsilon ) ) ) );
+      }
+    };
+
+    /// Defines a face on the digital surface, i.e. an umbrella (open
+    /// or closed) around a pivot cell (n-3-cell). To be able to
+    /// compare faces, the face is characterized by its smallest
+    /// surfel.
+    struct Face {
+      UmbrellaState state; ///< stores a state from which the whole
+			   ///< umbrella can be recomputed.
+      bool closed;         ///< tells if the face is closed or open.
+      inline bool isClosed() const 
+      { return closed; }
+      inline bool operator==( const Face & other ) const
+      {
+	return state == other.state;
+      }
+      inline bool operator<( const Face & other ) const
+      {
+	return state < other.state;
+      }
+ 
+    };
+    
+
+    typedef std::vector<Arc> ArcRange;
+    typedef std::vector<Face> FaceRange;
+    typedef std::vector<Vector> VertexRange;
+    typedef std::set<Face> FaceSet;
+
+    ArcRange outArcs( const Vertex & v ) const;
+    ArcRange inArcs( const Vertex & v ) const;
+    FaceRange facesAroundVertex( const Vertex & v ) const;
+    Vertex head( const Arc & a ) const;
+    Vertex tail( const Arc & a ) const;
+    Arc opposite( const Arc & a ) const;
+    FaceRange facesAroundArc( const Arc & a ) const;
+    VertexRange verticesAroundFace( const Face & f ) const;
+    FaceSet allFaces() const;
+    FaceSet allClosedFaces() const;
+    FaceSet allOpenFaces() const;
     
 
     // ----------------------- Standard services ------------------------------

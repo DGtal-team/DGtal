@@ -891,9 +891,9 @@ namespace DGtal
        @code
        KSpace::Cell p;
        ...
-       for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
        { 
-       KSpace::Dimension dir = *q;
+         Dimension dir = *q;
        ...
        } 
        @endcode
@@ -913,9 +913,9 @@ namespace DGtal
        @code
        KSpace::SCell p;
        ...
-       for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
        { 
-       KSpace::Dimension dir = *q;
+         Dimension dir = *q;
        ...
        } 
        @endcode
@@ -935,9 +935,9 @@ namespace DGtal
        @code
        KSpace::Cell p;
        ...
-       for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
        { 
-       KSpace::Dimension dir = *q;
+         Dimension dir = *q;
        ...
        } 
        @endcode
@@ -957,9 +957,9 @@ namespace DGtal
        @code
        KSpace::SCell p;
        ...
-       for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
        { 
-       KSpace::Dimension dir = *q;
+         Dimension dir = *q;
        ...
        } 
        @endcode

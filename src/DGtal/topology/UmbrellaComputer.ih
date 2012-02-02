@@ -232,6 +232,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
       SCell s = myTracker->current();
       myState.j = myState.k; // m_track_dir = m_separator_dir;
       myTracker->move( sp );
+      myState.surfel = sp;
       if ( code != 2 ) // s and sp are not aligned.
 	{
 	  bool track_direct_orientation 

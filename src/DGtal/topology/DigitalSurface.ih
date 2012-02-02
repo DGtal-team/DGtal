@@ -213,6 +213,39 @@ writeNeighbors( OutputIterator & it,
     }
 }
 
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurfaceContainer>
+inline
+typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::ArcRange
+DGtal::DigitalSurface<TDigitalSurfaceContainer>::
+outArcs( const Vertex & v ) const
+{
+  ArcRange arcs;
+  Vertex s;
+  myTracker->move( v );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( v );
+        q != 0; ++q )
+    {
+      Dimension i = *q;
+      if ( myTracker->adjacent( s, i, true ) )
+        arcs.push_back( Arc( v, i, true ) );
+      if ( myTracker->adjacent( s, i, false ) )
+        arcs.push_back( Arc( v, i, false ) );
+    }
+  return arcs;
+}
+    ArcRange inArcs( const Vertex & v ) const;
+    FaceRange facesAroundVertex( const Vertex & v ) const;
+    Vertex head( const Arc & a ) const;
+    Vertex tail( const Arc & a ) const;
+    Arc opposite( const Arc & a ) const;
+    FaceRange facesAroundArc( const Arc & a ) const;
+    VertexRange verticesAroundFace( const Face & f ) const;
+    FaceSet allFaces() const;
+    FaceSet allClosedFaces() const;
+    FaceSet allOpenFaces() const;
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
