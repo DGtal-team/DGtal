@@ -53,7 +53,7 @@ bool testSimpleImage()
   typedef Domain::Point Point;
 
   //Default image selector = STLVector
-  typedef ImageSelector<Domain, int>::Type Image;
+  typedef ImageContainerBySTLVector<Domain, int> Image;
 
   const Integer t[ ] = { 1, 2, 3 ,4};
   const Integer t2[ ] = { 5, 5, 3 ,4};
@@ -74,70 +74,100 @@ bool testSimpleImage()
 
   trace.beginBlock("Test of built-in iterators");
   for ( Image::ConstIterator it = myImage.begin();
-  it != myImage.end();
-  ++it)
+	it != myImage.end();
+	++it)
     trace.info() << (*it) <<" ";
+ 
   trace.info()<<std::endl;
   trace.endBlock();
-    
+  
   return myImage.isValid();
 }
 
-/*
-  bool testImageContainer()
-  {
-  typedef SpaceND<int,4> Space4Type;
-  typedef Space4Type::Point Point;
-  typedef HyperRectDomain<Space4Type> TDomain;
-  typedef ImageContainerBySTLVector<Point, double> TContainerV;
-  typedef ImageContainerBySTLMap<Point, double> TContainerM;
 
-  bool res = true;
 
-  const int t[ ] = { 1, 2, 3 ,4};
-  const int t2[ ] = { 5, 5, 3 ,4};
-  const int t3[ ] = { 5, 3, 3 ,4};
+/**
+ * Simple test of Image construction.
+ *
+ **/
+template<typename Image>
+bool testImageContainer()
+{
+  typedef typename Image::Domain Domain;
+  typedef typename Image::Value Value;
+  typedef typename Domain::Coordinate Coordinate;
+  typedef typename Domain::Point Point;
+  
+  const Coordinate t[ ] = { 1, 2, 3 ,4};
+  const Coordinate t2[ ] = { 5, 5, 3 ,4};
+  const Coordinate t3[ ] = { 2, 2, 3 ,4};
   Point a ( t );
   Point b ( t2 );
-
   Point c ( t3 );
 
-  trace.beginBlock ( "Image Container" );
+  int nbPerfect=0;
+  int nbok = 0;
+
+
+  trace.beginBlock ( "Image API test" );
 
   ///Domain characterized by points a and b
-  Image<TDomain,double, TContainerV> myImageV ( a,b );
-  trace.info() << "Vector container, value at c="<<myImageV( c )<< std::endl;
-
-  ///Domain characterized by points a and b
-  Image<TDomain,double, TContainerM> myImageM ( a,b );
-
-  res = res && myImageM.isValid() && myImageV.isValid();
-
-  //We revert the bool flag to catch the exception
-  res = !res;
-
-  try {
-  trace.info() << "Map container, value at c="<<myImageM( c )<< std::endl;
-  }
-  catch (std::bad_alloc e)
-  {
-  trace.warning() << "Exception bad_alloc catched.. this is normal for the map container"<<std::endl;
-  res = !res;
-  }
+  Image myImage ( Domain( a,b ));
+  trace.info() << myImage << std::endl;
+  trace.info() << myImage.domain() << std::endl;
 
   trace.endBlock();
 
-  return res;
-  }
-*/
 
+  myImage.setValue( c, 128 );
+  typename Image::Iterator it = myImage.begin();
+  it ++;
+  nbok += ((*it) == 128);
+  nbPerfect++;
+
+  //getIterator
+  typename Image::Iterator itc = myImage.getIterator(c);
+  trace.info() << "Checking point "<<c<<".. got: "<<(*itc)<< " expected = 128"<<std::endl;
+  nbok += ((*itc) == 128);
+  nbPerfect++;
+  
+  //Pointer arithmetic
+  it += 3;
+  (*it) = 64;
+  nbok += ((*it) == 64);
+  nbPerfect++;
+
+  trace.beginBlock("Test of built-in iterators");
+  for ( typename Image::ConstIterator itconst = myImage.begin();
+	itconst != myImage.end();
+	++itconst)
+    trace.info() << (*itconst) <<" ";
+ 
+  trace.info()<<std::endl;
+  trace.endBlock();
+  
+  trace.info() << "["<<nbok<<"/"<<nbPerfect<<"]"<< std::endl;
+  return myImage.domain().isValid() && myImage.isValid() && (nbok == nbPerfect);
+}
 
 int main()
 {
-
-  if ( testSimpleImage() )//&& testImageContainer() && testBuiltInIterators() && testConcepts() )
-    return 0;
+ 
+  typedef DGtal::int64_t Integer;
+  typedef SpaceND<4, Integer > Space4Type;
+  typedef HyperRectDomain<Space4Type> Domain;
+ 
+  trace.beginBlock("Image Tests");
+  int ok;
+  
+  if ( testSimpleImage() && testImageContainer<ImageContainerBySTLVector<Domain, DGtal::uint64_t> >() )
+    ok = 0;
   else
-    return 1;
+    ok = 1;
+
+  trace.endBlock();
+  return ok;
+
+
 }
 
