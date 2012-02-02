@@ -142,7 +142,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(con
   for(typename I::ConstIterator it=aImage.begin(), itend = aImage.end();
       it != itend;
       ++it,++ito)
-    output.setValue(ito, aImage(it) );
+    (*ito) = (*it);
 
   bool isSwap = true;
 
@@ -175,10 +175,10 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::castValues(const I &input)
   itend = input.end();
       it != itend;
       ++it,++ito)
-    if ( input(it)  > 0)
-      output.setValue(ito, myForegroundValue);
+    if ( (*it)  > 0)
+      (*ito) =  myForegroundValue;
     else
-      output.setValue(ito, myBackgroundValue);
+      (*ito) =  myBackgroundValue;
   return output;
 }
 

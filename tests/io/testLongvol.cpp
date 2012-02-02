@@ -71,10 +71,14 @@ bool testLongvol()
   Image image2 =  LongvolReader<Image>::importLongvol("export-longvol.longvol");
   
   bool allFine= true;
+  Image::ConstIterator ito = image.begin();
   for(Image::ConstIterator it = image2.begin(), itend=image2.end();
-      it != itend; ++it)
-    allFine &= (image(it) == image2(it));
-
+      it != itend; ++it, ++ito)
+    if ((*it) != (*ito))
+      {
+	trace.info()<< (*it) <<"  ---  "<< (*ito)<<std::endl;
+	allFine &= (*it) == (*ito);
+      }
   nbok += allFine ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "

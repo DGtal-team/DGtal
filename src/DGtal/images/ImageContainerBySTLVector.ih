@@ -69,7 +69,7 @@ inline
 typename ImageContainerBySTLVector<Domain, T>::Iterator
 ImageContainerBySTLVector<Domain, T>::getIterator(const Point &aPoint) const
 {
-  return Iterator(linearized( aPoint ) );
+  //return this->operator[](linearized( aPoint ));
 }
 
 
