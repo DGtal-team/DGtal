@@ -110,29 +110,43 @@ bool
 DGtal::NotPointPredicate<TPointPredicate>
 ::operator()( const Point & p ) const
 {
-  // std::cerr << "NotPP.operator(" << p << ")" << std::endl;
   return ! myPred( p );
 }
-
 //------------------------------------------------------------------------------
-template <typename TPointPredicate1, typename TPointPredicate2>
+template <typename TPointPredicate>
 inline
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2>
+DGtal::EqualPointPredicate<TPointPredicate>
+::EqualPointPredicate( const Point & aPoint )
+  : myPoint( aPoint )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate>
+inline
+bool
+DGtal::EqualPointPredicate<TPointPredicate>
+::operator()( const Point & p ) const
+{
+  return (myPoint == p);
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
+inline
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 ::BinaryPointPredicate( const PointPredicate1 & pred1,
       const PointPredicate2 & pred2,
-      const BoolFunction2 & boolFunctor )
+      const TBinaryFunctor & boolFunctor )
   : myPred1( pred1 ), myPred2( pred2 ), myBoolFunctor( boolFunctor )
 {
 }
 //------------------------------------------------------------------------------
-template <typename TPointPredicate1, typename TPointPredicate2>
+template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
 inline
 bool 
-DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2>
+DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 ::operator()( const Point & p ) const
 {
   return myBoolFunctor( myPred1( p ), myPred2( p ) );
-  // return myPred1( p ) && myPred2( p );
 }
 
 
