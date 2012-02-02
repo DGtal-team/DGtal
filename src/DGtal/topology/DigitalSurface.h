@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -93,11 +94,13 @@ namespace DGtal
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
   {
+  public:
+    typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
 
     // ----------------------- types ------------------------------
   public:
-    typedef DigitalSurface<TDigitalSurfaceContainer> Self;
-    typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
+    typedef DigitalSurface<DigitalSurfaceContainer> Self;
     typedef typename DigitalSurfaceContainer::KSpace KSpace;
     typedef typename DigitalSurfaceContainer::Cell Cell;
     typedef typename DigitalSurfaceContainer::SCell SCell;
