@@ -55,7 +55,8 @@ namespace DGtal
   // template class Projector
   /**
    * Description of template class 'Projector' <p>
-   * \brief Aim: Functor that maps a point P of dimension i
+   * \brief Aim: Functor that maps 
+   * a point P of dimension i
    * to a point Q of dimension j.
    * The member @a myDims is an array containing the 
    * coordinates - (0, 1, ..., j-1) by default -
@@ -123,8 +124,8 @@ namespace DGtal
 
    private: 
     /**
-     * Array storing the dimensions for which the returned point
-     * has the same coordinates than the input point (order matters)
+     * Array storing the coordinates that are copied from 
+     * the input point to its projection (order matters)
      */
     boost::array<Dimension,dimension> myDims; 
 

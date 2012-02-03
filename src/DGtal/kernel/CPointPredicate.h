@@ -56,7 +56,7 @@ namespace DGtal
      
      Associates a boolean to points.
     
-     <p> Refinement of
+     <p> Refinement of Assignable
     
      <p> Associated types :
     
@@ -104,7 +104,7 @@ namespace DGtal
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointPredicate
+  struct CPointPredicate /*: boost::Assignable<T>*/
   {
     // ----------------------- Concept checks ------------------------------
   public:
