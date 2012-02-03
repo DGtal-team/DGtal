@@ -55,7 +55,7 @@ namespace DGtal
      
      Associates values to points.
     
-     <p> Refinement of
+     <p> Refinement of Assignable
     
      <p> Associated types :
     
@@ -103,7 +103,7 @@ namespace DGtal
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointFunctor
+  struct CPointFunctor : boost::Assignable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
