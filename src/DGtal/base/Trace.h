@@ -151,7 +151,7 @@ namespace DGtal
      * @param currentValue current step of the progress bar
      * @param maximalValue expected maximal value
      */
-    void progressBar(const int currentValue, const int maximalValue) const;
+    void progressBar(const double currentValue, const double maximalValue) const;
     
 
    // ----------------------- Interface --------------------------------------
