@@ -35,7 +35,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 template <typename S>
 inline
-DGtal::Projector<S>::Projector(): myDims()
+DGtal::Projector<S>::Projector(const Integer& aDefaultInteger)
+ : myDims(), myDefaultInteger(aDefaultInteger)
 { //default projection
   Dimension k = 0; 
   for ( ; k < dimension; ++k)
@@ -66,15 +67,15 @@ DGtal::Projector<S>::init( const TIterator& itb, const TIterator& ite )
 }
 
 template <typename S>
-template <typename TPoint>
+template <typename TInputPoint>
 inline
-typename DGtal::Projector<S>::OutputPoint
-DGtal::Projector<S>::operator()( const TPoint& aPoint ) const
+typename DGtal::Projector<S>::Point
+DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
 {
- 	BOOST_STATIC_ASSERT ((boost::is_same< typename TPoint::Coordinate, 
-   typename Space::Integer >::value));
+ 	BOOST_STATIC_ASSERT ((boost::is_same< typename TInputPoint::Coordinate, 
+   Integer >::value));
  
-  OutputPoint res; 
+  Point res; 
 
   typename boost::array<Dimension,dimension>::const_iterator it = myDims.begin(); 
   typename boost::array<Dimension,dimension>::const_iterator itEnd = myDims.end();
@@ -82,8 +83,10 @@ DGtal::Projector<S>::operator()( const TPoint& aPoint ) const
   for ( ; it != itEnd; ++it, ++k)
   {
     Dimension l = *it; 
-    if (l < TPoint::dimension) 
+    if (l < TInputPoint::dimension) 
       res[k] = aPoint.at(l); 
+    else 
+      res[k] = myDefaultInteger; 
   } 
   
   return res; 

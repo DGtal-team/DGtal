@@ -92,9 +92,10 @@ bool testProjector()
   v1.push_back(0);   v1.push_back(2); v1.push_back(1);  
   v2.push_back(1);   v2.push_back(0);
   v4.push_back(1);
-  Projector3D proj1, proj2, proj3, proj4; 
+  Projector3D proj1, proj2, proj3; 
   proj1.init(v1.begin(), v1.end()); 
-  proj2.init(v2.begin(), v2.end()); 
+  proj2.init(v2.begin(), v2.end());
+  Projector3D proj4(-1);  
   proj4.init(v4.begin(), v4.end()); 
 
   //comparison
@@ -113,8 +114,8 @@ bool testProjector()
   nbok += ( proj3(p) == res3 ) ? 1 : 0; 
   nb++;  
 
-  PointVector<3,int> res4(2,0,0);
-  trace.info() << "p " << p << " => " << proj4(p) << " == " << res4 << std::endl;
+  PointVector<3,int> res4(2,-1,-1);
+  trace.info() << "p " << p << " => " << proj4(p) << " == " << res4 << "(-1 as default value)" << std::endl;
   nbok += ( proj4(p) == res4 ) ? 1 : 0; 
   nb++;  
   }
