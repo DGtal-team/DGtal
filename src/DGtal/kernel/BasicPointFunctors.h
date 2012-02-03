@@ -45,6 +45,7 @@
 #include <iterator>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -67,7 +68,7 @@ namespace DGtal
    * is mapped to point (x,y).    
    * 
    * All kth coordinates (0 < k < j) that are greater than i, 
-   * are set to 0. 
+   * are set to a value given at construction (0 by defaut). 
    *
    * Ex: for i = 2 and j = 3, the first two coordinates 
    * (numbered 0 and 1) are copied so that point (x,y) is 
@@ -98,13 +99,13 @@ namespace DGtal
     typedef S Space; 
     typedef typename Space::Dimension Dimension; 
     static const Dimension dimension = Space::dimension;
-
-    typedef PointVector<dimension, typename Space::Integer> OutputPoint; 
+    typedef typename Space::Integer Integer; 
+    typedef typename Space::Point Point; 
 
     /**
      * Default constructor
      */
-    Projector();
+    Projector(const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
 
     /**
      * Initialization of the array of relevant dimensions 
@@ -119,8 +120,8 @@ namespace DGtal
      * @param aPoint any point.
      * @return the projected point.
      */
-    template<typename TPoint>
-    OutputPoint operator()( const TPoint& aPoint ) const;
+    template<typename TInputPoint>
+    Point operator()( const TInputPoint& aPoint ) const;
 
    private: 
     /**
@@ -128,6 +129,11 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
     boost::array<Dimension,dimension> myDims; 
+    /**
+     * Default integer set to coordinates of the projected point
+     * not in the input point
+     */
+     Integer myDefaultInteger; 
 
   }; // end of class ConstantPointFunctors
 
