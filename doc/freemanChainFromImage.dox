@@ -112,8 +112,8 @@ for(int i=0; i<vectContoursBdryPointels.size(); i++)
 Since the reconstructed freemanchain represents the inter pixels
 boundary of the digital set we can specify it by using the mode "InterGrid" as follows:
 @code
-aBoard << SetMode( fc.styleName(), "InterGrid" );
-aBoard<< CustomStyle( fc.styleName(), 
+aBoard << SetMode( fc.className(), "InterGrid" );
+aBoard<< CustomStyle( fc.className(), 
     			  new CustomColors(  cmap_grad(i),  Board2D::Color::None ) );    
 @endcode
 

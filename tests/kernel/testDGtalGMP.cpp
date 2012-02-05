@@ -32,9 +32,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
@@ -118,7 +118,7 @@ bool testBIGINTEGERSpace()
 
   Domain domain( p1, p2 );
   Board2D aBoard;
-  aBoard << SetMode( domain.styleName(), "Grid" )
+  aBoard << SetMode( domain.className(), "Grid" )
    << domain
    << theContour
    << segment;

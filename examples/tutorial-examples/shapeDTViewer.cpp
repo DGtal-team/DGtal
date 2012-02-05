@@ -46,7 +46,7 @@
 #include "DGtal/io/viewers/Viewer3D.h" 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
-#include "DGtal/geometry/nd/volumetric/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 //!  [shapeDTViewer-basicIncludes]
 ///////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
   
   DGtal::Z3i::DigitalSet mySet(domain);
   
-  DGtal::Shapes<DGtal::Z3i::Domain>::shaper( mySet, myCube);
+  DGtal::Shapes<DGtal::Z3i::Domain>::euclideanShaper( mySet, myCube);
 
 
   viewer.show();

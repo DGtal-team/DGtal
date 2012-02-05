@@ -74,7 +74,7 @@ int main()
   Z2i::Point low(-1,-1);
   Z2i::Point up(3,3);
   Z2i::Domain aDomain( low,up );
-  aBoard << SetMode(aDomain.styleName(), "Paving") << aDomain; 
+  aBoard << SetMode(aDomain.className(), "Paving") << aDomain; 
   
   //! [fileGridCurveRanges-displayCurve]
   aBoard << c;  

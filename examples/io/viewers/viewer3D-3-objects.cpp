@@ -67,11 +67,11 @@ int main( int argc, char** argv )
  viewer << shape_set;  
 
  Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.styleName(), "DrawAdjacencies" );
+ viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
  viewer << shape;
 
  Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.styleName(), "DrawAdjacencies" );
+ viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
  //viewer << shape2;
  
  viewer<< Viewer3D::updateDisplay;

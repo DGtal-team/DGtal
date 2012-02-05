@@ -36,10 +36,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #if (!defined(WIN32))
-template < Dimension dim, typename TInteger >
+/*template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::dimension = dim;
-
+*/
 template < Dimension dim, typename TInteger >
 const Dimension 
 DGtal::KhalimskySpaceND< dim, TInteger >::DIM = dim;
@@ -133,187 +133,16 @@ DGtal::operator<<( std::ostream & out,
   out << ")";
   return out;
 }
-//------------------------------------------------------------------------------
-template < Dimension dim, typename TInteger >
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::KhalimskyCell<dim, TInteger>::defaultStyle( std::string /*mode*/) const
-{
-  return new typename DGtal::KhalimskyCell<dim, TInteger>::DefaultDrawStyle;
-}
+
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
 std::string
 DGtal::KhalimskyCell<dim, TInteger>::
-styleName() const
+className() const
 {
   return "KhalimskyCell";
 }
-//------------------------------------------------------------------------------
-template < Dimension dim, typename TInteger >
-inline
-void
-DGtal::KhalimskyCell<dim, TInteger>::
-selfDraw( Board2D & board ) const
-{
-  ASSERT( dim == 2 );
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
-  float retract = 0.05f;
-  bool xodd = ( myCoordinates[ 0 ] & 1 );
-  bool yodd = ( myCoordinates[ 1 ] & 1 );
-  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
-           !yodd ? y + retract - 0.5 : y - retract + 0.5,
-           dx, dy );
-}
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//   3D DRAWING 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-    
-
-//------------------------------------------------------------------------------
-
-template < Dimension dim, typename TInteger >
-inline
-void
-DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
-{
-  ASSERT(dim == 3);
-  DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
-   ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
-  // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
-  bool basicMode=false;
-  if(mode=="Highlighted"){
-    factorVolSurfel = 1.1;
-    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
-  }else if(mode=="Transparent"){
-    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
-    basicMode=true;
-  }
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
-  float z = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
-  
-  bool xodd = ( myCoordinates[ 0 ] & 1 );
-  bool yodd = ( myCoordinates[ 1 ] & 1 );
-  bool zodd = ( myCoordinates[ 2 ] & 1 );
-  
-   
-  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-
-   
-  switch (spaceDim) {
-  case 0:  
-    display.setFillColor(DGtal::Color(200, 20, 20, 255));
-    display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
-    break;
-  case 1:
-    display.setFillColor(DGtal::Color(20, 20, 200, 255));
-    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
-    break;
-  case 2:
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
-    break;
-  case 3:
-    display.setFillColor(DGtal::Color(255, 180, 250, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
-    break; 
-  }
-  display.setFillColor(fillColorSave);
-}
-    
-    
-    
-template< Dimension dim, typename TInteger >
-inline
-void
-DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) const
-{
-
-   ASSERT(dim == 3);
-  DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( this->styleName() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
-    ("DGtal::KhalimskyCell::selfDraw: Unknown mode "+mode)=="");
-  // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
-  bool basicMode=false;
-  if(mode=="Highlighted"){
-    factorVolSurfel = 1.2;
-    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
-  }else if(mode=="Transparent"){
-    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
-    basicMode=true;
-  }
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
-  float z = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[2] ) >> 1 );
-  
-  bool xodd = ( myCoordinates[ 0 ] & 1 );
-  bool yodd = ( myCoordinates[ 1 ] & 1 );
-  bool zodd = ( myCoordinates[ 2 ] & 1 );
-    
-  
-  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  // pointel
-  switch (spaceDim) {
-    
-  case 0:
-    if( myPositive)
-      display.setFillColor(DGtal::Color(20, 20, 250, 255));
-    else
-      display.setFillColor(DGtal::Color(20, 20, 150, 255));
-    
-    display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, myPositive);
-    break;
-  case 1:
-    display.setFillColor(DGtal::Color(20, 200, 200, 255));
-    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
-          0.02, true, myPositive);
-    break;
-  case 2:
-    
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,myPositive,basicMode ); 
-    break;
-  case 3:
-    if( myPositive)
-      display.setFillColor(DGtal::Color(20, 20, 250, 255));
-    else
-      display.setFillColor(DGtal::Color(20, 20, 150, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
-    break; 
-  } 
-  display.setFillColor(fillColorSave);
-}
-
-
-
-
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // SignedKhalimskyCell
@@ -400,44 +229,15 @@ DGtal::operator<<( std::ostream & out,
   out << ")";
   return out;
 }
-//------------------------------------------------------------------------------
-template < Dimension dim, typename TInteger >
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::SignedKhalimskyCell<dim, TInteger>::
-defaultStyle( std::string ) const
-{
-  return new typename DGtal::SignedKhalimskyCell<dim, TInteger>::DefaultDrawStyle;
-}
+
 //------------------------------------------------------------------------------
 template < Dimension dim, typename TInteger >
 inline
 std::string
 DGtal::SignedKhalimskyCell<dim, TInteger>::
-styleName() const
+className() const
 {
   return "SignedKhalimskyCell";
-}
-//------------------------------------------------------------------------------
-template < Dimension dim, typename TInteger >
-inline
-void
-DGtal::SignedKhalimskyCell<dim, TInteger>::
-selfDraw( Board2D & board ) const
-{
-  ASSERT( dim == 2 );
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( myCoordinates[1] ) >> 1 );
-  float retract = 0.05f;
-  bool xodd = ( myCoordinates[ 0 ] & 1 );
-  bool yodd = ( myCoordinates[ 1 ] & 1 );
-  float dx = xodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  float dy = yodd ? 1.0f - 2.0f*retract : 2.0f*retract;
-  board.drawRectangle( !xodd ? x - retract - 0.5 : x + retract - 0.5,
-           !yodd ? y + retract - 0.5 : y - retract + 0.5,
-           dx, dy );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -52,13 +52,13 @@
 
 
 //contour
-#include "DGtal/geometry/2d/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
 
 //processing
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/GreedyDecomposition.h"
-#include "DGtal/geometry/2d/MaximalSegments.h"
-#include "DGtal/geometry/2d/FP.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/representation/MaximalSegments.h"
+#include "DGtal/geometry/curves/representation/FP.h"
 
 //boost
 #include <boost/program_options/options_description.hpp>
@@ -157,8 +157,8 @@ int main( int argc, char** argv )
   if(vm.count("FreemanChain")){
     string fileName = vm["FreemanChain"].as<string>();
     vector< FreemanChain<int> > vectFc =  PointListReader< Z2i::Point>:: getFreemanChainsFromFile<int> (fileName); 
-    //aBoard <<  SetMode( vectFc.at(0).styleName(), "InterGrid" );
-    aBoard << CustomStyle( vectFc.at(0).styleName(), 
+    //aBoard <<  SetMode( vectFc.at(0).className(), "InterGrid" );
+    aBoard << CustomStyle( vectFc.at(0).className(), 
          new CustomColors( Color::Red  ,  Color::None ) );    
     for(unsigned int i=0; i<vectFc.size(); i++){
       aBoard <<  vectFc.at(i) ;
@@ -183,13 +183,13 @@ int main( int argc, char** argv )
     DSS4 computer;
           Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
           //for each segment
-          aBoard << SetMode( computer.styleName(), "BoundingBox" );
-          string styleName = computer.styleName() + "/BoundingBox";
+          aBoard << SetMode( computer.className(), "BoundingBox" );
+          string className = computer.className() + "/BoundingBox";
           for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
     it != theDecomposition.end(); ++it ) 
             {
         DSS4 segment(*it);
-        aBoard << CustomStyle( styleName, 
+        aBoard << CustomStyle( className, 
              new CustomPenColor( DGtal::Color::Gray ) ); 
         aBoard << segment; // draw each segment
             } 
@@ -204,13 +204,13 @@ int main( int argc, char** argv )
           Decomposition4 theDecomposition( vPts.begin(),vPts.end(),computer,isClosed );
 
           //for each segment
-          aBoard << SetMode( computer.styleName(), "BoundingBox" );
-          string styleName = computer.styleName() + "/BoundingBox";
+          aBoard << SetMode( computer.className(), "BoundingBox" );
+          string className = computer.className() + "/BoundingBox";
           for ( Decomposition4::SegmentIterator it = theDecomposition.begin();
     it != theDecomposition.end(); ++it ) 
             {
         DSS4 segment(*it);
-        aBoard << CustomStyle( styleName, 
+        aBoard << CustomStyle( className, 
              new CustomPenColor( DGtal::Color::Black ) ); 
         aBoard << segment; // draw each segment
             } 
@@ -220,7 +220,7 @@ int main( int argc, char** argv )
 
     typedef FP<vector<Z2i::Point>::iterator,int,4> FP;
     FP theFP( vPts.begin(),vPts.end(),isClosed );
-          aBoard << CustomStyle( theFP.styleName(), 
+          aBoard << CustomStyle( theFP.className(), 
          new CustomPenColor( DGtal::Color::Black ) ); 
           aBoard << theFP;
 

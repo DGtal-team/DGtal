@@ -56,7 +56,7 @@ int main( int argc, char** argv )
   
   Viewer3D viewer;  
   viewer.show();
-  viewer << SetMode3D( domain.styleName(), "Paving" );
+  viewer << SetMode3D( domain.className(), "Paving" );
   
   Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
   Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)

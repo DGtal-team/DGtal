@@ -46,12 +46,12 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/geometry/nd/volumetric/SeparableMetricTraits.h"
+#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

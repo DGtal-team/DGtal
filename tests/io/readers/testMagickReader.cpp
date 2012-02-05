@@ -97,7 +97,7 @@ bool testMagickReader()
 
   board.setUnit(LibBoard::Board::UCentimeter);
 
-  img.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, img, (unsigned char)0, (unsigned char)255);
   board.saveSVG("testMagick-export.svg");
     
   trace.endBlock();

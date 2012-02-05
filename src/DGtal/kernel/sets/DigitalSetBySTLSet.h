@@ -50,7 +50,7 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 
 namespace DGtal
@@ -300,17 +300,8 @@ namespace DGtal
 
 
   public:
-    /** 
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw(Board2D & aBoard) const
-      {
-  aBoard.setFillColorRGBi(160,160,160);
-  aBoard.setPenColorRGBi(80,80,80);
-      }
-    };
+    
+
 
     // --------------- CDrawableWithBoard2D realization ---------------------
   public:
@@ -319,53 +310,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object. 
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw(Board2D & board ) const;
-
-
-
-
-     /** 
-     * Default style.
-     */
-    struct DefaultDrawStyleDisplay3D : public  DrawableWithDisplay3D 
-    {
-       virtual void selfDrawDisplay3D(Display3D & display) const
-        {
-    display.myModes[ "DigitalSetBySTLSet" ] = "";
-  }
-
-    };
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-  DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawDisplay3D(  Display3D & display ) const;
-    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
-    void selfDrawAsPavingTransparentDisplay3D( Display3D & display ) const;
-    
-    
-
-
-
+    std::string className() const;
 
 
     // ------------------------- Hidden services ------------------------------

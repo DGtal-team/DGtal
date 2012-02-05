@@ -21,7 +21,7 @@ link_directories (${PROJECT_BINARY_DIR})
 
 # ConfigTest.h instanciation.
 configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in 
-  ${PROJECT_SOURCE_DIR}/tests/ConfigTest.h)
+  ${PROJECT_BINARY_DIR}/tests/ConfigTest.h)
 
 
 #------TESTS subdirectories ------
@@ -30,13 +30,12 @@ add_subdirectory(base)
 add_subdirectory(kernel)
 add_subdirectory(math)
 add_subdirectory(utils)
-add_subdirectory(geometry/2d)
-add_subdirectory(geometry/3d)
-add_subdirectory(geometry/nd)
+add_subdirectory(geometry)
 add_subdirectory(topology)
 add_subdirectory(io)
 
 add_subdirectory(images)
 add_subdirectory(helpers)
+add_subdirectory(shapes)
 
 

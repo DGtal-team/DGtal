@@ -98,17 +98,17 @@ namespace DGtal
 
     public:
       SpanIterator( const Point & p ,
-        const Dimension aDim ,
-        ImageContainerBySTLMap<Domain,Value> *aMap ) :   
-  myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
+		    const Dimension aDim ,
+		    ImageContainerBySTLMap<Domain,Value> *aMap ) :   
+	myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
       {
-  myPos = myMap->find( p );
+	myPos = myMap->find( p );
       }
 
 
       const Value & operator*() const
       {
-  return (*myPos).second;
+	return (*myPos).second;
       }
       
       /**
@@ -117,11 +117,11 @@ namespace DGtal
        **/
       void next()
       {
-  while ((myPos != myMap->end()) && 
-         ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-    {
-      myPos++;
-    }
+	while ((myPos != myMap->end()) && 
+	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
+	  {
+	    myPos++;
+	  }
       }
 
       /**
@@ -130,11 +130,11 @@ namespace DGtal
        **/
       void prev()
       {
-  while ((myPos != myMap->end()) && 
-         ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-    {
-      myPos--;
-    }
+	while ((myPos != myMap->end()) && 
+	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
+	  {
+	    myPos--;
+	  }
       }      
 
       /**
@@ -143,8 +143,8 @@ namespace DGtal
        */
       SpanIterator &operator++()
       {
-  this->next();
-  return *this;
+	this->next();
+	return *this;
       }
 
       /**
@@ -153,9 +153,9 @@ namespace DGtal
        */
       SpanIterator &operator++ ( int )
       {
-  SpanIterator tmp = *this;
-  ++*this;
-  return tmp;
+	SpanIterator tmp = *this;
+	++*this;
+	return tmp;
       }
 
 
@@ -165,8 +165,8 @@ namespace DGtal
        */
       SpanIterator &operator--()
       {
-  this->prev();
-  return *this;
+	this->prev();
+	return *this;
       }
 
       /**
@@ -175,9 +175,9 @@ namespace DGtal
        */
       SpanIterator &operator-- ( int )
       {
-  SpanIterator tmp = *this;
-  --*this;
-  return tmp;
+	SpanIterator tmp = *this;
+	--*this;
+	return tmp;
       }
 
     private:
@@ -197,7 +197,7 @@ namespace DGtal
     };
 
     ImageContainerBySTLMap(const Point &,
-         const Point & ) {};
+			   const Point & ) {};
 
     ~ImageContainerBySTLMap() {};
 
@@ -205,26 +205,24 @@ namespace DGtal
     {
       Iterator it = this->find( aPoint );
       if ( it == this->end() )
-  throw std::bad_alloc();
+	throw std::bad_alloc();
       else
-  return (*it).second; // this->operator[]( aPoint );
+	return (*it).second; // this->operator[]( aPoint );
     }
 
 
     Value operator()(const Iterator &it) throw( std::bad_alloc )
     {
       if ( it == this->end() )
-  throw std::bad_alloc();
+	throw std::bad_alloc();
       else
-  return (*it).second;
+	return (*it).second;
     }
     
 
     void setValue(const Point &aPoint, const Value &aValue)
     {
-      Iterator it  = find( aPoint ) ;
-      if (it != this->end() )
-  (*it).second = aValue;
+      insert( aPoint, aValue ) ;
     }
 
 
@@ -248,8 +246,8 @@ namespace DGtal
     {
       Point tmp = aPoint;
       tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
-  myUpperBound.at( aDimension ) - 
-  myLowerBound.at( aDimension ) + 1;
+	myUpperBound.at( aDimension ) - 
+	myLowerBound.at( aDimension ) + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
