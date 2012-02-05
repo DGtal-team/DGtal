@@ -51,14 +51,14 @@
 //! [imageGridCurveEstimator-trackingIncludes]
 
 //! [imageGridCurveEstimator-estimatorIncludes]
-#include "DGtal/geometry/2d/estimators/DSSLengthEstimator.h"
+#include "DGtal/geometry/curves/estimation/DSSLengthEstimator.h"
 //! [imageGridCurveEstimator-estimatorIncludes]
 
 //display
 #include "DGtal/io/boards/Board2D.h"
 
 //segmentation
-#include "DGtal/geometry/2d/GreedySegmentation.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -122,8 +122,8 @@ int main()
     DGtal::Board2D aBoard;
     aBoard << SetMode("PointVector", "Grid");
     for ( ; i != end; ++i) {
-      aBoard << SetMode(i->styleName(), "Points") << *i; 
-      aBoard << SetMode(i->styleName(), "BoundingBox") << *i; 
+      aBoard << SetMode(i->className(), "Points") << *i; 
+      aBoard << SetMode(i->className(), "BoundingBox") << *i; 
     } 
     aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
   

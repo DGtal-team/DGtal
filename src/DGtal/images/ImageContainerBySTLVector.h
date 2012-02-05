@@ -46,7 +46,7 @@
 #include "DGtal/images/CValue.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -476,17 +476,6 @@ namespace DGtal
     // ------------- realization CDrawableWithBoard2D --------------------
   private:
 
-    /**
-     * Default style.
-     */
-    struct DefaultDrawStyle : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-	aBoard.setPenColorRGBi(60, 60, 60);
-	aBoard.setLineStyle(Board2D::Shape::SolidStyle);
-      }
-    };
 
   public:
 
@@ -494,23 +483,12 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle() const;
+    //DrawableWithBoard2D* defaultStyle() const;
 
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     * @param minValue the minimum value contained in the image (used in the colormap settings)
-     * @param maxValue the maximum value contained in the image (used in the colormap settings)
-     * @tparam Coloramp any models of CColormap.
-     */
-    template<typename Colormap>
-    void selfDraw(Board2D & board, const Value & minValue, const Value & maxValue ) const;
+    std::string className() const;
 
   };
 

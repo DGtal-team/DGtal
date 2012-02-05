@@ -31,20 +31,13 @@ add_subdirectory(imageTools)
 
 ##-- Cmake configuration for dgtal-config tool
 CONFIGURE_FILE( ${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp.in
-  ${PROJECT_SOURCE_DIR}/tools/dgtal-config.cpp)
+  ${PROJECT_BINARY_DIR}/tools/dgtal-config.cpp)
 
+add_executable(dgtal-config ${PROJECT_BINARY_DIR}/tools/dgtal-config.cpp)
+target_link_libraries (dgtal-config ${LIBDGTAL_NAME}  ${DGtalLibDependencies} )
+install(TARGETS dgtal-config 
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib)
 
-SET(DGTAL_TOOLS_SRC
-  dgtal-config
- )
-
-
-FOREACH(FILE ${DGTAL_TOOLS_SRC})
-  add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} ${LIBDGTAL_NAME}  ${DGtalLibDependencies} )
-  install(TARGETS ${FILE} 
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
-ENDFOREACH(FILE)
 

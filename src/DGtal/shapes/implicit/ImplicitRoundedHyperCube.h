@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    * Description of template class 'ImplicitRoundedHyperCube' <p>
-   * \brief Aim: model of CImplicitShape concept to create a rounded
+   * \brief Aim: model of  CEuclideanOrientedShape and CEuclideanBoundedShape concepts to create a rounded
    * hypercube in  nD..
    *
    * Rounded hypercubes corresponds to balls for the @f$l_p@f$ norm.
@@ -64,9 +64,7 @@ namespace DGtal
 
   public:
     typedef TSpace Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::Integer Integer;
-    
+    typedef typename Space::RealPoint RealPoint;
    
     /** 
      * Constructor. Contructs a rounded hypercube with center aCenter and width
@@ -75,9 +73,9 @@ namespace DGtal
      * @param aCenter the cube center. 
      * @param aHalfWidth the cube half-width.
      */
-    ImplicitRoundedHyperCube(const Point &aCenter,
-			     const Integer &aHalfWidth,
-			     const double aPower): 
+    ImplicitRoundedHyperCube(const RealPoint &aCenter,
+                             const double &aHalfWidth,
+                             const double aPower): 
       myCenter(aCenter),
       myHalfWidth(aHalfWidth),
       myPower(aPower)
@@ -102,15 +100,14 @@ namespace DGtal
      * @return the distance of aPoint to the ball center.
      */
     inline
-    double operator()(const Point &aPoint) const
+    double operator()(const RealPoint &aPoint) const
     {
-      Point dec = (aPoint - myCenter);
+      RealPoint dec = (aPoint - myCenter);
       double partialpower=0;
-      for(Dimension i = 0; i < Point::dimension; ++i)
-	partialpower +=  std::pow(std::abs(NumberTraits<typename Point::Coordinate>::castToDouble(dec[i])), myPower);
-      
-      return std::pow(NumberTraits<Integer>::castToDouble(myHalfWidth), myPower) - 
-        partialpower;      
+      for(Dimension i = 0; i < RealPoint::dimension; ++i)
+        partialpower +=  std::pow(std::abs((double)dec[i]),  myPower);
+    
+    return std::pow(myHalfWidth, myPower) - partialpower;      
     }
     
     /** 
@@ -120,10 +117,30 @@ namespace DGtal
      * @return true if aPoint belongs to the shape.
      */
     inline
-    bool isInside(const Point &aPoint) const
+    bool isInside(const RealPoint &aPoint) const
     {
       return this->operator()(aPoint) >0.0;
     }
+
+    /** 
+     * orientation predicate (see CEuclideanOrientedShape).
+     * 
+     * @param aPoint an input point.
+     * 
+     * @return the orientation of the point.
+     */
+    inline
+    Orientation orientation(const RealPoint &aPoint) const
+    {
+      if (this->operator()(aPoint) > 0.0)
+        return INSIDE;
+      else
+        if (this->operator()(aPoint) < 0.0)
+          return OUTSIDE;
+        else
+          return ON;
+    }
+
 
     /** 
      * Returns the lower bound of the Shape bounding box.
@@ -132,9 +149,9 @@ namespace DGtal
      * @return the lower bound point.
      */
     inline
-    Point getLowerBound() const
+    RealPoint getLowerBound() const
     {
-      return (myCenter - Point::diagonal(myHalfWidth));
+      return (myCenter - RealPoint::diagonal(myHalfWidth));
     }
     
     /** 
@@ -144,9 +161,9 @@ namespace DGtal
      * @return the upper bound point.
      */
     inline
-    Point getUpperBound() const
+    RealPoint getUpperBound() const
     {
-      return (myCenter + Point::diagonal(myHalfWidth)); 
+      return (myCenter + RealPoint::diagonal(myHalfWidth)); 
     }
     
     // ----------------------- Interface --------------------------------------
@@ -170,10 +187,10 @@ namespace DGtal
   private:
    
     ///Cube center
-    Point myCenter;
+    RealPoint myCenter;
 
     ///Cube HalfWidth
-    Integer myHalfWidth;
+    double myHalfWidth;
 
     ///Cube Power 
     double myPower;

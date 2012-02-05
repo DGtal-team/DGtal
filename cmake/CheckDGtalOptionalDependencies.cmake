@@ -123,9 +123,11 @@ ENDIF(WITH_MAGICK)
 # Look for ITK
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
+SET(ITK_FOUND_DGTAL FALSE)
 IF(WITH_ITK)
   FIND_PACKAGE(ITK REQUIRED)
   IF(ITK_FOUND)
+    SET(ITK_FOUND_DGTAL TRUE)
     INCLUDE(${ITK_USE_FILE})
     MESSAGE(STATUS "ITK found ${ITK_USE_FILE}.")
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})

@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "Board/Board.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -46,7 +46,6 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class HashTree.
@@ -104,7 +103,7 @@ bool testGetSetVal()
   typedef TDomain::Point Point;
   Board2D board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
 
 
   //Default image selector = STLVector
@@ -172,10 +171,10 @@ bool testGetSetVal()
   trace.info() << myImage;
   trace.info() << myImageV;
 
-  myImage.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImage, 0, 255);
   board.saveSVG( "hashtree.svg" );
   board.clear();
-  myImageV.selfDraw<HueTwice>(board,0,255);
+  drawImage<HueTwice>(board, myImageV, 0, 255);
   board.saveSVG( "hashtree-vector.svg" );
   
 
@@ -228,9 +227,9 @@ bool testBadKeySizes()
   typedef SpaceND<2> SpaceType;
   typedef HyperRectDomain<SpaceType> TDomain;
   typedef TDomain::Point Point;
-  Board board;
+  Board2D board;
   typedef HueShadeColorMap<unsigned char,2> HueTwice;
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(Board2D::UCentimeter);
 
 
   //Default image selector = STLVector

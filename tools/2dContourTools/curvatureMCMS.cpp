@@ -39,13 +39,13 @@
 #include "DGtal/topology/helpers/Surfaces.h"
 
 //Grid curve
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 //Estimators
-#include "DGtal/geometry/2d/ArithmeticalDSS.h"
-#include "DGtal/geometry/2d/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/2d/SegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
 
 
 #include <boost/program_options/options_description.hpp>

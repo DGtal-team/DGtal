@@ -32,7 +32,7 @@
 #include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
-#include "DGtal/geometry/nd/GaussDigitizer.h"
+#include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/UmbrellaComputer.h"

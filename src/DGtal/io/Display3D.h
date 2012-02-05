@@ -68,7 +68,7 @@ namespace DGtal
    (Board3DTo2D) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
  
-   @see Viewer3D, Board2Dto3D
+   @see Viewer3D, Board3DTo2D
   
   */
   class Display3D
@@ -168,7 +168,7 @@ namespace DGtal
   
     /**
      * @param objectName the name of the object (generally obtained
-     * with a 'object.styleName()').
+     * with a 'object.className()').
      *
      * @return the current mode for the given object name or "" if no
      * specific mode has been set.
@@ -235,7 +235,8 @@ namespace DGtal
      * @param widthWire if true add the wire representation.
      */
 
-    virtual void addVoxel(int x, int y, int z, DGtal::Color color= DGtal::Color(220, 220, 220),
+    virtual void addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z, 
+			  DGtal::Color color= DGtal::Color(220, 220, 220),
 			  double width=0.5,bool withWire=false);
     
 
@@ -332,7 +333,7 @@ namespace DGtal
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
-     * method selfDraw( Viewer3D & ).
+     * method setStyle( Viewer3D & ).
      *
      * @param object any drawable object.
      * @return a reference on 'this'.

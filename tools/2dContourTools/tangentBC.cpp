@@ -41,11 +41,11 @@
 #include "DGtal/helpers/StdDefs.h"
 
 //Grid curve
-#include "DGtal/geometry/2d/FreemanChain.h"
-#include "DGtal/geometry/2d/GridCurve.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 //Estimators
-#include "DGtal/geometry/2d/BinomialConvolver.h"
+#include "DGtal/geometry/curves/evolution/BinomialConvolver.h"
 
 using namespace DGtal;
 

@@ -7,12 +7,17 @@
 ##########################################
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-        DGtal/io/boards/Board2D
-        DGtal/io/Color )
+  DGtal/io/Color)
+
+
+SET(DGTALIO_SRC ${DGTALIO_SRC} 
+  DGtal/io/boards/Board2D
+  DGtal/io/Display2DFactory
+  DGtal/io/Display3DFactory)
 
 
 if( WITH_CAIRO )
-SET(DGTAL_SRC ${DGTAL_SRC} 
+SET(DGTALIO_SRC ${DGTALIO_SRC} 
     DGtal/io/boards/Board3DTo2D)
 endif( WITH_CAIRO )
 
@@ -22,12 +27,12 @@ endif( WITH_CAIRO )
 ##########################################
 
 if( WITH_VISU3D_IV )
-  SET(DGTALIV_SRC ${DGTALIV_SRC} 
+  SET(DGTALIO_SRC ${DGTALIO_SRC} 
     DGtal/io/viewers/IVViewer  )
 endif( WITH_VISU3D_IV )
 
 if( WITH_VISU3D_QGLVIEWER )
-SET(DGTALQGLV_SRC ${DGTALQGVL_SRC} 
+SET(DGTALIO_SRC ${DGTALIO_SRC} 
     DGtal/io/viewers/Viewer3D)
 endif( WITH_VISU3D_QGLVIEWER )
 

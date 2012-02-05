@@ -48,16 +48,16 @@
 #include <bitset>
 #include <algorithm>
 #include <boost/array.hpp>
-
+#include <vector>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CRange.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 
 
 
@@ -717,32 +717,6 @@ namespace DGtal
     // ------------------------- Private Datas -------------------------------
   private:
 
-    /**
-     * Default styles.
-     */
-    struct DefaultDrawStylePaving : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-	aBoard.setPenColorRGBi(160,160,160);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-	aBoard.setFillColorRGBi(220,220,220);
-	aBoard.setLineWidth(1);
-      }
-    };
-
-    /**
-     *  Style based in grid representation.
-     */
-    struct DefaultDrawStyleGrid : public DrawableWithBoard2D
-    {
-      virtual void selfDraw( Board2D & aBoard ) const
-      {
-	aBoard.setPenColor(Color::Black);
-	aBoard.setLineStyle( Board2D::Shape::SolidStyle );
-      }
-    };
-
 
 
     // --------------- CDrawableWithBoard2D realization -------------------
@@ -752,68 +726,17 @@ namespace DGtal
      * Default drawing style object.
      * @return the dyn. alloc. default style for this object.
      */
-    DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
+    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
 
     
     /**
      * @return the style name used for drawing this object.
      */
-    std::string styleName() const;
-    
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDraw( Board2D & board ) const;
+    std::string className() const;
 
-    
-    /**
-     * Draw a pixel as a unit square on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    
-    void selfDrawAsPaving( Board2D & board ) const;
-    
-    
-    /**
-     * Draw a pixel as a point on a LiBoard board
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawAsGrid( Board2D & board ) const;
-    
-    
-
-
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    DrawableWithDisplay3D* defaultStyleDisplay3D( std::string mode = "" ) const;
-
-    /**
-     * Draw the object on a Board2D board.
-     * @param board the output board where the object is drawn.
-     */
-    void selfDrawDisplay3D ( Display3D & display ) const;
-    void selfDrawDisplay3D ( Display3D & display, const Self &startingPoint ) const;
-    void selfDrawAsGridDisplay3D( Display3D & display  ) const;
-    void selfDrawAsPavingDisplay3D( Display3D & display ) const;
-    void selfDrawAsPavingWiredDisplay3D( Display3D & display ) const;
-
-
-    
     // ----------------------- Interface --------------------------------------
   public:
-    /**
-     * Draw the object (as a Vector from aPoint) on a Board2D board
-     *
-     * @param board the output board where the object is drawn.
-     * @param startingPoint the starting point of the vector
-     * @tparam Functor a Functor to specialize the Board style
-     */
-    void selfDraw( Board2D & board, const Self &startingPoint ) const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -831,64 +754,12 @@ namespace DGtal
     static Self zero;
     
     // ------------------------- Hidden services ------------------------------
-  protected:
+  //protected:
     
     ///Internal data-structure: boost/array with constant size.
     boost::array<Component, dimension> myArray;
     
   }; // end of class PointVector
-
-  
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawPavingPixel : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "PointVector" ] = "Paving";
-    }
-  };
-  
-  /**
-   * Modifier class in a Board2D stream. Realizes the concept
-   * CDrawableWithBoard2D.
-   */
-  struct DrawGridPixel : public DrawWithBoardModifier {
-    void selfDraw( Board2D & board ) const
-    {
-      board.myModes[ "PointVector" ] = "Grid";
-    }
-  };
-
-
-
-
-  /**
-   * Modifier class in a Display3D stream. Realizes the concept
-   * CDrawableWithDisplay3D.
-   */
-
-  struct DrawPavingVoxel : public DrawableWithDisplay3D {
-    void selfDrawDisplay3D( Display3D & viewer ) const
-    {
-      viewer.myModes[ "PointVector" ] = "Paving";
-    }
-  };
-  
-  /**
-   * Modifier class in a Display3D stream. Realizes the concept
-   * CDrawableWithDisplay3D.
-   */
-  
-  struct DrawGridVoxel : public DrawableWithDisplay3D {
-    void selfDrawDisplay3D( Display3D & viewer ) const
-    {
-      viewer.myModes[ "PointVector" ] = "Grid";
-    }
-  };
-
- 
 
   /// Operator <<
   template<Dimension dim, typename Component>
