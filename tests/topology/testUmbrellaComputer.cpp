@@ -151,16 +151,19 @@ bool testCombinatorialSurface()
   typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
   typedef DigitalSurface<Boundary> MyDigitalSurface;
   typedef UmbrellaComputer<DigitalSurfaceTracker> MyUmbrellaComputer;
+  typedef DigitalSurface<Boundary>::Face Face;
+  typedef DigitalSurface<Boundary>::Arc Arc;
+  typedef DigitalSurface<Boundary>::Vertex Vertex;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
   trace.beginBlock ( "Testing block ... Combinatorial surface" );
   // Creating shape
   Point c( 0, 0, 0 );
-  EuclideanShape ball( c, 4 ); // ball r=4
+  EuclideanShape ball( c, 8 ); // ball r=4
   DigitalShape shape;
   shape.attach( ball );
-  shape.init( RealPoint( -1.0, -1.0, -10.0 ), 
+  shape.init( RealPoint( -2.0, -3.0, -10.0 ), 
 	      RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   // Creating cellular grid space around.
   Domain domain = shape.getDomain();
@@ -194,6 +197,53 @@ bool testCombinatorialSurface()
         }
       std::cerr << std::endl;
     }
+  trace.endBlock();
+
+  // Checks that vertices of a face are in the same order as the
+  // incident arcs.
+  trace.beginBlock( "Testing block ...Check order faces/arcs" );
+  unsigned int nbvtcs = 0;
+  unsigned int nbarcs = 0;
+  unsigned int nbfaces = 0;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it, ++nbvtcs )
+    {
+      const Vertex & vtx = *it;
+      MyDigitalSurface::ArcRange arcs = digSurf.outArcs( vtx );
+      for ( unsigned int i = 0; i < arcs.size(); ++i, ++nbarcs )
+        {
+          const Arc & arc = arcs[ i ];
+          MyDigitalSurface::FaceRange 
+            faces = digSurf.facesAroundArc( arc );
+          for ( unsigned int j = 0; j < faces.size(); ++j, ++nbfaces )
+            {
+              const Face & face = faces[ j ];
+              // search vertex in face.
+              MyDigitalSurface::VertexRange
+                vertices = digSurf.verticesAroundFace( face );
+              unsigned int k = 0; 
+              while ( ( k < vertices.size() ) && ( vertices[ k ] != vtx ) )
+                ++k;
+              ++nb;
+              if ( k == vertices.size() ) 
+                trace.info() << "Error at vertex " << vtx
+                             << ". Vertex not found in incident face."
+                             << std::endl;
+              else ++nbok;
+              ++nb;
+              if ( digSurf.head( arc ) != vertices[ (k+1) % vertices.size() ] )
+                trace.info() << "Error at vertex " << vtx
+                             << ". Arc is not in incident face."
+                             << std::endl;
+              else ++nbok;
+            }
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Tested nbvtcs=" << nbvtcs
+	       << " nbarcs=" << nbarcs
+	       << " nbfaces=" << nbfaces
+               << std::endl;
   trace.endBlock();
 
   trace.beginBlock( "Testing block ... export as OFF: ex-digital-surface.off" );

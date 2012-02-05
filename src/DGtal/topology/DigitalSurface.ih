@@ -477,15 +477,15 @@ separator( const Arc & a ) const
   return container().space().sIncident( a.base, a.k, a.epsilon );
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalSurfaceContainer>
-inline
-typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
-DGtal::DigitalSurface<TDigitalSurfaceContainer>::
-separator( const Face & f ) const
-{
-  return container().space().sIncident( f.state.surfel, f.state.k, 
-                                        f.state.epsilon );
-}
+// template <typename TDigitalSurfaceContainer>
+// inline
+// typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
+// DGtal::DigitalSurface<TDigitalSurfaceContainer>::
+// separator( const Face & f ) const
+// {
+//   return container().space().sIncident( f.state.surfel, f.state.k, 
+//                                         f.state.epsilon );
+// }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 inline
@@ -493,7 +493,8 @@ typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 pivot( const Face & f ) const
 {
-  SCell sep = separator( f );
+  SCell sep = container().space().sIncident( f.state.surfel, f.state.k, 
+                                             f.state.epsilon );
   return container().space().sDirectIncident( sep, f.state.j );
 }
 
