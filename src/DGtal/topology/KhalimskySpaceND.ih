@@ -217,7 +217,7 @@ DGtal::KhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & display ) co
   bool zodd = ( myCoordinates[ 2 ] & 1 );
   
    
-  uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
    
   switch (spaceDim) {
@@ -276,7 +276,7 @@ DGtal::SignedKhalimskyCell<dim, TInteger>::selfDrawDisplay3D( Display3D & displa
   bool zodd = ( myCoordinates[ 2 ] & 1 );
     
   
-  uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   // pointel
   switch (spaceDim) {
     

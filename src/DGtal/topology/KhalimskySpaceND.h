@@ -418,11 +418,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class KhalimskySpaceND
   /**
-   * Description of template class 'KhalimskySpaceND' <p> \brief Aim:
-   * This class is a model of CCellularGridSpaceND. It represents the
-   * cubical grid as a cell complex, whose cells are defined as an
-   * array of integers. The topology of the cells is defined by the
-   * parity of the coordinates (even: closed, odd: open). 
+   * Description of template class 'KhalimskySpaceND' <p> 
+   *
+   * \brief Aim: This class is a model of CCellularGridSpaceND. It
+   * represents the cubical grid as a cell complex, whose cells are
+   * defined as an array of integers. The topology of the cells is
+   * defined by the parity of the coordinates (even: closed, odd:
+   * open).
    *
    * The space is generally finite (except for arbitrary size
    * integers). The user should choose between a closed (default) cell
