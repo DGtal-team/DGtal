@@ -100,9 +100,12 @@ DGtal::SurfelNeighborhood<TKSpace>::
 setSurfel( const SCell & aSurfel )
 {
   ASSERT( mySpace != 0 );
-  mySurfel = aSurfel;
-  myOrthDir = mySpace->sOrthDir( aSurfel );
-  myOrthDirect = mySpace->sDirect( aSurfel, myOrthDir );
+  if ( mySurfel != aSurfel )
+    {
+      mySurfel = aSurfel;
+      myOrthDir = mySpace->sOrthDir( aSurfel );
+      myOrthDirect = mySpace->sDirect( aSurfel, myOrthDir );
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

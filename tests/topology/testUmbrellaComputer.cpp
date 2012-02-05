@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <fstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/geometry/nd/GaussDigitizer.h"
@@ -65,7 +66,7 @@ bool testUmbrellaComputer()
   trace.beginBlock ( "Testing block ... UmbrellaComputer" );
   // Creating shape
   Point c( 0, 0, 0 );
-  EuclideanShape ball( c, 4 ); // ball r=4
+  EuclideanShape ball( c, 2 ); // ball r=4
   DigitalShape shape;
   shape.attach( ball );
   shape.init( RealPoint( -10.0, -10.0, -10.0 ), 
@@ -121,6 +122,88 @@ bool testUmbrellaComputer()
 	       << ") == nb_backward(" << nb_backward << ")"
 	       << std::endl;
   trace.endBlock();
+  unsigned int nbsurfels = 0;
+  for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
+        it != it_end; ++it )
+    {
+      ++nbsurfels;
+    }
+  trace.info() << nbsurfels << " surfels found." << std::endl;
+
+  trace.endBlock();
+
+  delete ptrTracker;
+  return nbok == nb;
+}
+
+bool testCombinatorialSurface()
+{
+  using namespace Z3i;
+  
+  typedef Space::RealPoint RealPoint;
+  typedef ImplicitBall<Space> EuclideanShape;
+  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
+  typedef GaussDigitizer<Space,EuclideanShape>::Domain Domain;
+  typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
+  typedef Boundary::SurfelConstIterator ConstIterator;
+  typedef Boundary::Tracker Tracker;
+  typedef Boundary::Surfel Surfel;
+  typedef Boundary::DigitalSurfaceTracker DigitalSurfaceTracker;
+  typedef DigitalSurface<Boundary> MyDigitalSurface;
+  typedef UmbrellaComputer<DigitalSurfaceTracker> MyUmbrellaComputer;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block ... Combinatorial surface" );
+  // Creating shape
+  Point c( 0, 0, 0 );
+  EuclideanShape ball( c, 4 ); // ball r=4
+  DigitalShape shape;
+  shape.attach( ball );
+  shape.init( RealPoint( -1.0, -1.0, -10.0 ), 
+	      RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
+  // Creating cellular grid space around.
+  Domain domain = shape.getDomain();
+  KSpace K;
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  // Find start surfel on surface.
+  Surfel bel = Surfaces<KSpace>::findABel( K, shape, 10000 );
+  // Define surface container then surface itself.
+  Boundary boundary( K, // cellular space
+		     shape, // point predicate
+                     SurfelAdjacency<KSpace::dimension>( true ), // adjacency
+		     bel // starting surfel
+		     );
+  MyDigitalSurface digSurf( boundary ); // boundary is cloned
+
+
+  trace.beginBlock ( "Testing block ... Digital surface faces." );
+  MyDigitalSurface::FaceSet all_faces = digSurf.allFaces();
+  for ( MyDigitalSurface::FaceSet::const_iterator it = all_faces.begin(),
+          it_end = all_faces.end(); it != it_end; ++it )
+    {
+      std::cerr << "    face=" << K.sKCoords( digSurf.pivot( *it ) ) << ":";
+      std::cerr << "(" << it->nbVertices << ")" << (it->isClosed() ? "C": "O");
+      MyDigitalSurface::VertexRange vtx = digSurf.verticesAroundFace( *it );
+      for ( unsigned int i = 0; i < vtx.size(); ++i )
+        {
+          std::cerr << " " << K.sKCoords( vtx[ i ] );
+        }
+      std::cerr << std::endl;
+    }
+  trace.endBlock();
+
+  trace.beginBlock( "Testing block ... export as OFF: ex-digital-surface.off" );
+  ofstream fout( "ex-digital-surface.off" );
+  if ( fout.good() )
+    digSurf.exportSurfaceAs3DOFF( fout );
+  fout.close();
+  trace.endBlock();
+
+
 
   unsigned int nbsurfels = 0;
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
@@ -131,7 +214,6 @@ bool testUmbrellaComputer()
   trace.info() << nbsurfels << " surfels found." << std::endl;
   trace.endBlock();
 
-  delete ptrTracker;
   return nbok == nb;
 }
 
@@ -147,7 +229,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testUmbrellaComputer(); // && ... other tests
+  bool res = testUmbrellaComputer()
+    && testCombinatorialSurface(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

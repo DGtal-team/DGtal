@@ -41,6 +41,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
@@ -81,7 +83,8 @@ namespace DGtal
 
      We construct this dual digital surface with umbrellas, which are
      sequences of adjacent n-1-cells turning around a n-3-cell, called
-     the pivot of the umbrella.
+     the pivot of the umbrella. Faces or umbrellas are computed with
+     UmbrellaComputer class.
 
      Proxy class to a DigitalSurfaceContainer.
 
@@ -108,6 +111,7 @@ namespace DGtal
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::SurfelConstIterator ConstIterator;
     typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
+    typedef typename KSpace::Point Point;
     typedef typename KSpace::SurfelSet SurfelSet;
     /// Template rebinding for defining the type that is a mapping
     /// SCell -> Value.
@@ -173,7 +177,10 @@ namespace DGtal
     // ----------------------- CombinatorialSurface --------------------------
   public:
     
+    /// This define a utility class for computing umbrellas.
     typedef UmbrellaComputer<DigitalSurfaceTracker> Umbrella;
+    /// The state of an umbrella is a triplet (surfel, separator,
+    /// pivot). Given a state, the whole umbrella can be computed.
     typedef typename Umbrella::State UmbrellaState;
 
     /// Defines an arc on the digital surface, i.e. an arrow between
@@ -182,8 +189,8 @@ namespace DGtal
       Vertex base;  ///< base surfel 
       Dimension k;  ///< direction toward the head surfel
       bool epsilon; ///< orientation toward the head surfel
-      inline Arc( const Vertex & _base, Dimension _k, bool _epsilon )
-	: base( _base ), k( _k ), epsilon( _epsilon ) {}
+      inline Arc( const Vertex & theTail, Dimension aK, bool aEpsilon )
+	: base( theTail ), k( aK ), epsilon( aEpsilon ) {}
       inline bool operator==( const Arc & other ) const
       {
 	return ( base == other.base ) 
@@ -199,14 +206,24 @@ namespace DGtal
       }
     };
 
-    /// Defines a face on the digital surface, i.e. an umbrella (open
-    /// or closed) around a pivot cell (n-3-cell). To be able to
-    /// compare faces, the face is characterized by its smallest
-    /// surfel.
+    /** 
+        Defines a face on the digital surface, i.e. an umbrella (open
+        or closed) around a pivot cell (n-3-cell). To be able to
+        compare faces, the face is characterized by one of its
+        possible states. If the face is closed, the representative
+        state is the smallest one. If the face is open, the
+        representative state is the first (applying previous() does
+        not move). 
+    */
     struct Face {
       UmbrellaState state; ///< stores a state from which the whole
 			   ///< umbrella can be recomputed.
+      unsigned int nbVertices; ///< number of vertices incident to face.
       bool closed;         ///< tells if the face is closed or open.
+      inline Face( const UmbrellaState & aState, 
+                   unsigned int nb, bool isClosed )
+        : state( aState ), nbVertices( nb ), closed( isClosed )
+      {}
       inline bool isClosed() const 
       { return closed; }
       inline bool operator==( const Face & other ) const
@@ -220,24 +237,15 @@ namespace DGtal
  
     };
     
-
+    /// The range of arcs is defined as a vector.
     typedef std::vector<Arc> ArcRange;
+    /// The range of faces is defined as a vector.
     typedef std::vector<Face> FaceRange;
-    typedef std::vector<Vector> VertexRange;
+    /// The range of vertices is defined as a vector.
+    typedef std::vector<Vertex> VertexRange;
+    /// The set of faces is defined as set.
     typedef std::set<Face> FaceSet;
 
-    ArcRange outArcs( const Vertex & v ) const;
-    ArcRange inArcs( const Vertex & v ) const;
-    FaceRange facesAroundVertex( const Vertex & v ) const;
-    Vertex head( const Arc & a ) const;
-    Vertex tail( const Arc & a ) const;
-    Arc opposite( const Arc & a ) const;
-    FaceRange facesAroundArc( const Arc & a ) const;
-    VertexRange verticesAroundFace( const Face & f ) const;
-    FaceSet allFaces() const;
-    FaceSet allClosedFaces() const;
-    FaceSet allOpenFaces() const;
-    
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -361,6 +369,91 @@ namespace DGtal
                          const Vertex & v,
                          const VertexPredicate & pred ) const;
 
+
+    // ----------------------- CombinatorialSurface --------------------------
+  public:
+
+    /**
+       @param v any vertex (surfel) of the surface.
+       @return the outgoing arcs from [v]
+    */
+    ArcRange outArcs( const Vertex & v ) const;
+
+    /**
+       @param v any vertex (surfel) of the surface.
+       @return the ingoing arcs to [v]
+    */
+    ArcRange inArcs( const Vertex & v ) const;
+
+    /**
+       @param v any vertex (surfel) of the surface.
+       @return the faces containing this vertex [v]: 0 in 2D, 4 in 3D,
+       12 in 4D, 2(n-1)(n-2) in nD.
+    */
+    FaceRange facesAroundVertex( const Vertex & v ) const;
+
+    /*
+      @param a any arc (s,t)
+      @return the vertex t
+    */
+    Vertex head( const Arc & a ) const;
+
+    /*
+      @param a any arc (s,t)
+      @return the vertex s
+    */
+    Vertex tail( const Arc & a ) const;
+
+    /**
+       @param a any arc (s,t)
+       @return the arc (t,s)
+    */
+    Arc opposite( const Arc & a ) const;
+
+    /**
+       [tail] and [head] should be adjacent surfel.
+       
+       @param tail the vertex at the tail of the arc.
+       @param head the vertex at the head of the arc.
+       @return the arc (tail, head)
+    */
+    Arc arc( const Vertex & tail, const Vertex & head ) const;
+
+    /**
+       Computes the faces incident to a given arc. Empty in 2D. 1 face
+       in 3D, 2 in 4D and so one, n-2 in nD. Returned faces may be open.
+
+       @param a any arc on the surface.
+       @return a vector containing the faces incident to this arc.
+    */
+    FaceRange facesAroundArc( const Arc & a ) const;
+
+    /**
+       If f is incident to the arcs (s,t) and (t,u) (say), then
+       (s,t,u) is a subsequence of the returned sequence.
+
+       @param f any valid face on the digital surface (open or closed ).
+
+       @return the sequence of vertices that touches this face. The
+       order follows the order of incident arcs
+    */
+    VertexRange verticesAroundFace( const Face & f ) const;
+
+    FaceSet allFaces() const;
+    FaceSet allClosedFaces() const;
+    FaceSet allOpenFaces() const;
+
+    /**
+       @param state any valid state (i.e. some pivot cell) on the surface.
+       @return the face that contains the given [state].
+    */
+    Face computeFace( UmbrellaState state ) const;
+
+    SCell separator( const Arc & a ) const;
+    SCell separator( const Face & f ) const;
+    SCell pivot( const Face & f ) const;
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -376,6 +469,12 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+       Writes/Displays the object on an output stream.
+       @param out the output stream where the object is written.
+     */
+    void exportSurfaceAs3DOFF ( std::ostream & out ) const;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -385,6 +484,8 @@ namespace DGtal
     CountedPtr<DigitalSurfaceContainer> myContainer;
     /// a pointer on a tracker.
     mutable DigitalSurfaceTracker* myTracker;
+    /// This object is used to compute umbrellas over the surface.
+    mutable UmbrellaComputer<DigitalSurfaceTracker> myUmbrellaComputer;
 
     // ------------------------- Hidden services ------------------------------
   protected:

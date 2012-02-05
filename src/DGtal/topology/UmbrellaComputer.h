@@ -51,9 +51,10 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class UmbrellaComputer
   /**
-     Description of class 'DigitalSurfaceUmbrellaComputer' <p> Aim: Useful for
-     computing umbrellas on 'DigitalSurface's, ie set of n-1 cells
-     around a n-3 cell.
+     Description of class 'DigitalSurfaceUmbrellaComputer' <p> 
+
+     \brief Aim: Useful for computing umbrellas on 'DigitalSurface's,
+     ie set of n-1 cells around a n-3 cell.
     
      The current surfel (n-1 cell), or \a face, is denoted by \a s.
      The n-3 cell is called the \a pivot and denoted by \a +p. It is
@@ -78,7 +79,7 @@ namespace DGtal
      Uses delegation with DigitalSurfaceTracker.
 
      Essentially a backport from <a
-     href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
      @tparam TDigitalSurfaceTracker the type of the domain in which shapes are created.
    */
@@ -111,6 +112,11 @@ namespace DGtal
       bool epsilon;
       /// Track direction (j != k), j in sDirs(surfel).
       Dimension j;
+      inline State(){}
+      inline State( const Surfel & _surfel, 
+                    Dimension _k, bool _epsilon, Dimension _j )
+        : surfel( _surfel ), k( _k ), epsilon( _epsilon ), j( _j )
+      {}
       inline bool operator==( const State & other ) const
       {
 	return ( surfel == other.surfel ) 
