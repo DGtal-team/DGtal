@@ -439,8 +439,23 @@ namespace DGtal
     */
     VertexRange verticesAroundFace( const Face & f ) const;
 
+    /**
+       @return the set of all faces of the digital surface (open and
+       closed faces).
+    */
     FaceSet allFaces() const;
+
+    /**
+       This set of faces is sufficient for displaying the surface.
+       @return the set of all closed faces of the digital surface.
+    */
     FaceSet allClosedFaces() const;
+
+    /**
+       This set of faces is sufficient for displaying the boundary of
+       the surface.
+       @return the set of all closed faces of the digital surface.
+    */
     FaceSet allOpenFaces() const;
 
     /**
@@ -449,8 +464,20 @@ namespace DGtal
     */
     Face computeFace( UmbrellaState state ) const;
 
+    /**
+       NB: there may be two arcs with the same separator.
+       @param a any arc.
+       @return the n-2-cell between the two surfels forming the arc.
+    */
     SCell separator( const Arc & a ) const;
-    SCell separator( const Face & f ) const;
+
+    /**
+       NB: there may be different faces with the same pivot (except on
+       the boundary of well-composed pictures).
+
+       @param f any face.
+       @return the positively oriented n-3-cell that is the pivot of the face.
+    */
     SCell pivot( const Face & f ) const;
 
 
