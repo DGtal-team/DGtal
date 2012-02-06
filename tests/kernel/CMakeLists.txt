@@ -9,6 +9,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testHashTree
    testLinearAlgebra
    testImagesSetsUtilities
+   testBasicPointFunctors
    )
 
 
