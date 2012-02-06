@@ -58,7 +58,7 @@
 
 using namespace DGtal;
 using namespace std;
-using namespace LibBoard;
+
 
 #define INBLOCK_TEST(x) \
   nbok += ( x ) ? 1 : 0; \
@@ -106,19 +106,19 @@ bool testDigitalSetBoardSnippet()
   mySet.insert( e );
 
   Board2D board;
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
   board << mySet;
   board.saveSVG("myset-export.svg");
 
   board.clear();
 
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
   board << SetMode( domain.className(), "Grid" ) << domain << mySet;
   board.saveSVG("simpleSet-grid.svg");
 
   board.clear();
 
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
   board << SetMode( domain.className(), "Paving" ) << domain;
   board << mySet;
   board.saveSVG("simpleSet-paving.svg");
@@ -126,7 +126,7 @@ bool testDigitalSetBoardSnippet()
 
   board.clear();
 
-  board.setUnit(Board::UCentimeter);
+  board.setUnit(LibBoard::Board::UCentimeter);
   board << CustomStyle( mySet.className(), new MyDomainStyleCustomRed );
   board << mySet;
   board.saveSVG("simpleSet-color.svg");
