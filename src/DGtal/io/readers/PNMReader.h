@@ -102,7 +102,7 @@ namespace DGtal
      * @param filename the file name to import.
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importPGMImage(const std::string & aFilename) throw(DGtal::IOException);
+    static  ImageContainer importPGM(const std::string & aFilename) throw(DGtal::IOException);
 
 
     /** 

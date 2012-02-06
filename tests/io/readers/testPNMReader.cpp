@@ -60,7 +60,7 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image image = PNMReader<Image>::importPGMImage( filename ); 
+  Image image = PNMReader<Image>::importPGM( filename ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
