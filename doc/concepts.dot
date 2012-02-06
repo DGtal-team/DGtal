@@ -1,0 +1,77 @@
+### Dot graph of DGtal concepts
+# D. Coeurjolly
+
+
+ 
+digraph G {
+
+  
+	subgraph cluster_0 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		CPointFunctor -> CPointPredicate;
+		CSpace;
+		CInteger -> CUnsignedInteger;
+		CCommutativeRing -> CEuclideanRing;
+		CInteger -> CSignedInteger;
+		CDomain;
+	
+		CDomainArchetype;
+		CDigitalSet;
+		CDigitalSetArchetype;
+		label = "Kernel";
+	}
+
+	subgraph cluster_1 {
+		style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		CConstSinglePassRange -> CSinglePassRange;
+		CSinglePassRange -> CBidirectionalRange;
+		CConstBidirectionalRange -> CBidirectionalRange;
+		label = "Base";
+	}
+
+	subgraph cluster_2 {
+	style=filled;
+		color=lightgrey;
+		node [style=filled,color=white];
+		CImageContainer->"CValue" [label="use",style=dashed];
+
+		label="Images";
+	}
+	
+	subgraph cluster_3 {
+	  style=filled;
+	  color=lightgrey;
+	  node [style=filled,color=white];
+	  CDigitalBoundedShape;
+	  CDigitalOrientedShape;
+	  CEuclideanBoundedShape;
+	  CEuclideanBoundedShape;
+	  
+	  label="Shapes";
+	}
+	
+  CImageContainer->"CDomain" [label="use",style=dashed];
+  CDomain->"CSpace" [label="use",style=dashed];
+
+  boost_SingePassIteratorConcept->"CConstSinglePassRange" [label="use",style=dashed];
+ boost_SingePassIteratorConcept->"CSinglePassRange" [label="use",style=dashed];
+ 
+  boost_CopyConstructible -> CDigitalSet;
+
+  boost_DefaultConstructible -> CValue;
+
+  boost_Assignable -> CDigitalSet;
+  boost_Assignable -> CValue;
+  boost_Assignable->CInteger;
+
+  boost_BirectionalIterator;
+
+  boost_EqualityComparable->CInteger;
+  boost_EqualityComparable->CValue;
+
+  boost_LessThanComparable->CInteger;
+}
