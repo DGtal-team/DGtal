@@ -56,7 +56,7 @@ int main( int /*argc*/, char** /*argv*/ )
 {
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
   std::string inputFilename = examplesPath + "samples/circleR10modif.pgm"; 
-  Image image = PNMReader<Image>::importPGMImage( inputFilename ); 
+  Image image = PNMReader<Image>::importPGM( inputFilename ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
