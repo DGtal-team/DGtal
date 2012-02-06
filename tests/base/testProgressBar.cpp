@@ -30,6 +30,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+
+#ifdef UNIX
+#include <unistd.h>
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -49,7 +54,9 @@ bool testProgressBar()
   for(unsigned int i=0; i <= 10  ; ++i)
     {
       trace.progressBar(i,10);
+#ifdef UNIX
       usleep(50000);
+#endif
     }
   trace.info() << std::endl;
   trace.endBlock();
