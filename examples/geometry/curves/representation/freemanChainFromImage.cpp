@@ -63,7 +63,7 @@ int main()
 {
   
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
-  Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/circleR10modif.pgm" ); 
+  Image image = PNMReader<Image>::importPGM( examplesPath + "samples/circleR10modif.pgm" ); 
   Z2i::KSpace ks;
   if(! ks.init( image.domain().lowerBound(), 
     image.domain().upperBound(), true )){
