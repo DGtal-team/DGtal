@@ -33,12 +33,13 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
 #include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -82,9 +83,7 @@ bool testPNMWriter()
 
   PNMWriter<Image,Hue>::exportPPM("export-hue.ppm",image,0,255);
   PNMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,0,255);
-
   PNMWriter<Image,HueTwice>::exportPGM("export-hue-twice.pgm",image,0,255);
-
   PNMWriter<Image,Gray>::exportPPM("export-gray.ppm",image,0,255);
   PNMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,0,255);
   PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
@@ -104,6 +103,44 @@ bool testPNMWriter()
   return true;
 }
 
+
+bool testRWIssue254()
+{
+   trace.beginBlock ( "Testing R/W on PPM Writer (issue 254) ..." );
+
+  typedef SpaceND<2> TSpace;
+  typedef TSpace::Point Point;
+  typedef HyperRectDomain<TSpace> Domain;
+  typedef GrayscaleColorMap<unsigned char> Gray;
+
+  Point a ( 0, 0);
+  Point b ( 15, 15);
+  typedef ImageSelector<Domain, unsigned char>::Type Image;
+  Image image(a,b);
+  for(unsigned int i=0 ; i < 256; i++)
+    image[i] = i;
+
+  PNMWriter<Image,Gray>::exportPGM("export-gray-first.pgm",image,0,255);
+  
+  Image imageRead = PNMReader<Image>::importPGM("export-gray-first.pgm");
+
+  PNMWriter<Image,Gray>::exportPGM("export-gray-second.pgm",imageRead,0,255);
+
+  trace.info() << image<<std::endl;
+  trace.info() << imageRead<<std::endl;
+  
+  
+  bool ok = true;
+  for(Image::Domain::ConstIterator it = image.domain().begin(),
+	itend = image.domain().end();
+      it != itend;
+      ++it)
+    ok = (image(*it) == imageRead(*it));
+    
+  trace.endBlock();
+  return ok;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -115,7 +152,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   
-  bool res = testPNMWriter(); // && ... other tests
+  bool res = testPNMWriter() && testRWIssue254(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
