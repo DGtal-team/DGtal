@@ -53,11 +53,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 
-#include "DGtal/base/ConstIteratorAdapter.h"
-#include "DGtal/base/Modifier.h"
 #include "DGtal/base/Circulator.h"
+#include "DGtal/base/ConstIteratorAdapter.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SCellsFunctors.h"
+
 #include "DGtal/io/boards/Board2D.h"
 
 

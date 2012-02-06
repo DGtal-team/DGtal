@@ -3,7 +3,6 @@ SET(DGTAL_TESTS_SRC
    testOrderedAlphabet
    testCirculator
    testConstIteratorAdapter
-   testModifier
    testProgressBar
    testBasicFunctors
    )
