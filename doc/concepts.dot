@@ -79,12 +79,12 @@ digraph G {
 	
   CImageContainer->"CDomain" [label="use",style=dashed];
   CDomain->"CSpace" [label="use",style=dashed];
-  CSpace->"CInteger" [label="use",style=dashed];
+  CSpace->"CInteger"  [label="use",style=dashed];
   CSpace->"CUnsignedInteger" [label="use",style=dashed];
 
 
-  boost_SingePassIteratorConcept->"CConstSinglePassRange" [label="use",style=dashed];
-  boost_SingePassIteratorConcept->"CSinglePassRange" [label="use",style=dashed];
+  "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
+  "CSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
  
   boost_CopyConstructible -> CDigitalSet;
   boost_CopyConstructible -> CSegment;
