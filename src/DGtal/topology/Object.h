@@ -48,12 +48,6 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 //////////////////////////////////////////////////////////////////////////////
 
-
-//#include "DGtal/io/Display3D.h"
-
-
-
-
 namespace DGtal
 {
 
@@ -155,6 +149,7 @@ namespace DGtal
 
       /**
        * Constructor.
+
        *
        * @param aTopology the digital topology chosen for this set, a copy of
        * which is stored in the object.
