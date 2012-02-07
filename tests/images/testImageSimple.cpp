@@ -192,7 +192,7 @@ bool testImageCopy()
   //Pointer Acq
   MyImage image2(imContainer);
   
-  MyImage::ImagePointer p = image2.getPointer();
+  const MyImage::ImagePointer p = image2.getPointer();
   trace.info() << p << std::endl;
   trace.info() << *p << std::endl;
 
