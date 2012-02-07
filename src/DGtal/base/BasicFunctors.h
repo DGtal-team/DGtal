@@ -255,14 +255,14 @@ inline
 Composer<TFunctor1, TFunctor2, ReturnType>
 ::Composer(TFunctor1& aF1, TFunctor2& aF2)
  :myF1(aF1), myF2(aF2) 
-{};
+{}
 
 template<typename TFunctor1, typename TFunctor2, typename ReturnType>
 inline
 Composer<TFunctor1, TFunctor2, ReturnType>
 ::Composer(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
  :myF1(other.myF1), myF2(other.myF2)
-{};
+{}
 
 
 template<typename TFunctor1, typename TFunctor2, typename ReturnType>
@@ -273,7 +273,7 @@ Composer<TFunctor1, TFunctor2, ReturnType>
 {
   myF1 = other.myF1; 
   myF2 = other.myF2; 
-};
+}
 
   /**
    * Description of template class 'BinaryToUnaryFunctor' <p>
