@@ -4,7 +4,7 @@
 
  
 digraph G {
-
+  rankdir=BT;
   
   subgraph cluster_0 {
     style=filled;
@@ -49,7 +49,7 @@ digraph G {
     CDigitalBoundedShape;
     CDigitalOrientedShape;
     CEuclideanBoundedShape;
-    CEuclideanBoundedShape;
+    CEuclideanOrientedShape;
 	  
     label="Shapes";
   }
