@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
@@ -95,7 +95,7 @@ namespace DGtal
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
     
 
