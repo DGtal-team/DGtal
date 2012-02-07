@@ -54,24 +54,57 @@ digraph G {
 	  label="Shapes";
 	}
 	
+	subgraph cluster_4 {
+	  style=filled;
+	  color=lightgrey;
+	  node [style=filled,color=white];
+          
+          CDigitalSurface;
+          CAdjacency -> CDomainAdjacency; 
+          
+	  label="Topology";
+	}
+	subgraph cluster_5 {
+	  style=filled;
+	  color=lightgrey;
+	  node [style=filled,color=white];
+               
+          CSegment -> CTrivialSegmentComputer -> "CForwardSegmentComputer" ->          CBidirectionalSegmentComputer; 
+          "CForwardSegmentComputer" -> CDynamicSegmentComputer;
+          CDynamicSegmentComputer -> CDynamicBidirectionalSegmentComputer;
+          CBidirectionalSegmentComputer -> CDynamicBidirectionalSegmentComputer;
+          CSeparableMetric;
+           label="Geometry";
+	}
+	
   CImageContainer->"CDomain" [label="use",style=dashed];
   CDomain->"CSpace" [label="use",style=dashed];
+  CSpace->"CInteger" [label="use",style=dashed];
+  CSpace->"CUnsignedInteger" [label="use",style=dashed];
+
 
   boost_SingePassIteratorConcept->"CConstSinglePassRange" [label="use",style=dashed];
- boost_SingePassIteratorConcept->"CSinglePassRange" [label="use",style=dashed];
+  boost_SingePassIteratorConcept->"CSinglePassRange" [label="use",style=dashed];
  
   boost_CopyConstructible -> CDigitalSet;
+  boost_CopyConstructible -> CSegment;
 
   boost_DefaultConstructible -> CValue;
+  boost_DefaultConstructible -> CSegment;
 
   boost_Assignable -> CDigitalSet;
   boost_Assignable -> CValue;
   boost_Assignable->CInteger;
-
-  boost_BirectionalIterator;
+  boost_Assignable -> CSegment;
+  boost_Assignable -> CCommutativeRing;
+  boost_Assignable -> CPointFunctor;
+  
+   boost_BirectionalIterator;
 
   boost_EqualityComparable->CInteger;
   boost_EqualityComparable->CValue;
-
+  boost_EqualityComparable->CSegment;
+  boost_EqualityComparable->CCommutativeRing;
+  boost_LessThanComparable -> CCommutativeRing;
   boost_LessThanComparable->CInteger;
 }
