@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CImageContainer.h
+ * @file CImage.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -26,15 +26,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(CImageContainerRECURSES)
-#error Recursive header files inclusion detected in CImageContainer.h
-#else // defined(CImageContainerRECURSES)
+#if defined(CImageRECURSES)
+#error Recursive header files inclusion detected in CImage.h
+#else // defined(CImageRECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CImageContainerRECURSES
+#define CImageRECURSES
 
-#if !defined CImageContainer_h
+#if !defined CImage_h
 /** Prevents repeated inclusion of headers. */
-#define CImageContainer_h
+#define CImage_h
 
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
@@ -49,9 +49,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // struct CImageContainer
+  // struct CImage
   /**
-   * Description of \b concept '\b CImageContainer' <p>
+   * Description of \b concept '\b CImage' <p>
    *
    * @ingroup Concepts
    * Aim: Defines the concept describing an image container. 
@@ -68,7 +68,7 @@ namespace DGtal
    * - \t ConstReverseIterator: type of an image  const reverse iterator (model of CIterator)
    *
    * <p> Notation
-   * - \t X : A type that is a model of CImageContainer
+   * - \t X : A type that is a model of CImage
    * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
@@ -196,7 +196,7 @@ namespace DGtal
    */
 
   template <typename ImageContainer>
-  struct CImageContainer: CBidirectionalRange<ImageContainer>
+  struct CImage: CBidirectionalRange<ImageContainer>
   {
 
   public:
@@ -223,7 +223,7 @@ namespace DGtal
 
 
     
-    BOOST_CONCEPT_USAGE(CImageContainer)
+    BOOST_CONCEPT_USAGE(CImage)
     {
       //Accessors
       ConceptUtils::sameType(image(a), v);
@@ -249,7 +249,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CImageContainer_h
+#endif // !defined CImage_h
 
-#undef CImageContainerRECURSES
-#endif // else defined(CImageContainerRECURSES)
+#undef CImageRECURSES
+#endif // else defined(CImageRECURSES)
