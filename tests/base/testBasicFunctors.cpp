@@ -33,6 +33,7 @@
 
 #include "DGtal/base/Common.h"
 
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/BasicFunctors.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,10 +45,10 @@ using namespace DGtal;
  * Concept checking
  *
  */
-template <typename TFunctor >
+template <typename TFunctor, typename TArg, typename TRes >
 void basicFunctorsConceptChecking()
 {
-  BOOST_CONCEPT_ASSERT(( boost::Assignable<TFunctor> ));
+  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
 }
 /**
  * Simple test. 
@@ -159,12 +160,12 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   //concept checking
-  basicFunctorsConceptChecking<DefaultFunctor>(); 
-  basicFunctorsConceptChecking<ConstValueFunctor<int> >(); 
-  basicFunctorsConceptChecking<CastFunctor<int> >(); 
-  basicFunctorsConceptChecking<BinaryToUnaryFunctor<int> >(); 
-  basicFunctorsConceptChecking<Thresholder<int> >(); 
-  basicFunctorsConceptChecking<Composer<ConstValueFunctor<double>,CastFunctor<int>,int> >(); 
+  basicFunctorsConceptChecking<DefaultFunctor,int,int>(); 
+  basicFunctorsConceptChecking<ConstValueFunctor<int>,int,int >(); 
+  basicFunctorsConceptChecking<CastFunctor<int>,short,int >(); 
+  basicFunctorsConceptChecking<BinaryToUnaryFunctor<int>,int,int >(); 
+  basicFunctorsConceptChecking<Thresholder<int>,int,bool >(); 
+  basicFunctorsConceptChecking<Composer<ConstValueFunctor<double>,CastFunctor<int>,int>,char,int >(); 
 
 
   //run-time tests

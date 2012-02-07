@@ -64,6 +64,7 @@ namespace DGtal
      - \t A : argument type
      - \t a : Object of type \t A
      - \t R : result type
+     - \t r : Object of type \t R
     
      <p> Definitions
     
@@ -81,11 +82,11 @@ namespace DGtal
      </tr>
      <tr> 
      <td class=CName>            Apply function </td>
-     <td class=CExpression>      \t x( \t a ) </td> 
+     <td class=CExpression>      \t r = x( \t a ) </td> 
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \c R </td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       return the value of the function \t x for argument \t a</td> 
+     <td class=CSemantics>       return the value of the function \t x on argument \t a</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -96,7 +97,7 @@ namespace DGtal
      <p> Models <br>
         
      <p> Notes <br>
-   */
+  */
   template <typename X, typename A, typename R>
   struct CUnaryFunctor : boost::Assignable<X>
   {
@@ -105,11 +106,14 @@ namespace DGtal
 
     BOOST_CONCEPT_USAGE( CUnaryFunctor )
     {
-      //pb A and R may be not default-constructible
+      // x( p ) returns myV.
+      ConceptUtils::sameType( r, x.operator() ( a ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:
-
+    X x; 
+    A a; 
+    R r; 
     // ------------------------- Internals ------------------------------------
   private:
     
