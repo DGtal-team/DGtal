@@ -7,6 +7,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testPointVector
    testLinearAlgebra
    testImagesSetsUtilities
+   testBasicPointFunctors
    )
 
 

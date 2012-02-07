@@ -67,7 +67,7 @@ int main()
   //image import
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
+  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
 
   //! [imageGridCurveEstimator-predicate] 
   //predicate from the image

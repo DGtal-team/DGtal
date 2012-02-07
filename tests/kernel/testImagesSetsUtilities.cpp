@@ -124,7 +124,7 @@ bool testSetFromImage()
   trace.beginBlock ( "Testing SetFromImage using pgm test file ..." );
   
   std::string filename = testPath + "samples/circleR10modif.pgm";
-  Image image2 = PNMReader<Image>::importPGMImage( filename ); 
+  Image image2 = PNMReader<Image>::importPGM( filename ); 
   Z2i::DigitalSet setFromImg (image2.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(setFromImg, image2, 0, 255);
 
