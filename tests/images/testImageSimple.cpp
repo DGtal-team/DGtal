@@ -30,6 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/Image.h"
@@ -81,16 +83,135 @@ bool testCreate()
   Z2i::Domain domain(a,b);
   MyImage image(domain);
 
+  trace.info()<<image<<std::endl;
+  trace.info()<<*image.getPointer()<<std::endl;
+
   nbok += image.isValid() ? 1 : 0; 
-
-
   nb++;
+
+  typedef HyperRectDomain<SpaceND <6> > Domain6;
+  typedef Image<  ImageContainerBySTLVector< Domain6, int > > MyImage6;
+
+  BOOST_CONCEPT_ASSERT(( CImage< MyImage6 > ));
+  
+  int aa[] = {0,0,0,0,0,0};
+  int bb[] = {2,2,2,2,2,2};
+  Domain6::Point A(aa);
+  Domain6::Point B(bb);
+
+  MyImage6 imageBis(Domain6(A,B));
+  trace.warning() << "Dimension 6 image"<<std::endl;
+  trace.info()<< imageBis <<std::endl;
+
+  nbok += imageBis.isValid() ? 1 : 0; 
+  nb++;
+    
+
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
   
   return nbok == nb;
 }
+
+bool testAPI()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing Image API ..." );
+  typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
+  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  
+  Z2i::Point a(0,0);
+  Z2i::Point b(32,32);
+  Z2i::Point c(12, 14);
+			
+  Z2i::Domain domain(a,b);
+  MyImage image(domain);
+  
+  trace.info()<<image<<std::endl;
+  
+
+  nbok += image.isValid() ? 1 : 0; 
+  nb++;
+  
+  image.setValue(c, 42);
+  trace.info()<< "Value at "<<c<<"  = "<< image(c)<<std::endl;
+
+  trace.warning() << "Image Iterate"<<std::endl;
+  trace.info()<<std::endl;
+  for(MyImage::ConstIterator it = image.begin(), ite=image.end();
+      it != ite; ++it)
+    std::cerr << (*it)<<" ";
+  
+  trace.info()<<std::endl;
+  
+  MyImage::Iterator it= image.getIterator(c);
+  nbok += ((*it) == 42) ? 1 : 0; 
+  nb++;
+ 
+  //Write from pointer
+  (*it)=41;
+ 
+  nbok += (image(c) == 41) ? 1 : 0; 
+  nb++;
+  
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+bool testImageCopy()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing Image API ..." );
+  typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
+  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+  
+  Z2i::Point a(0,0);
+  Z2i::Point b(32,32);
+  Z2i::Point c(12, 14);
+			
+  Z2i::Domain domain(a,b);
+  MyImage image(domain);
+  
+  trace.info()<<image<<std::endl;
+  
+  nbok += image.isValid() ? 1 : 0; 
+  nb++;
+
+  //Image pointer
+  ImageContainerBySTLVector<Z2i::Domain, int>  * imContainer = 
+    new ImageContainerBySTLVector<Z2i::Domain, int>(domain);
+  
+  //Pointer Acq
+  MyImage image2(imContainer);
+  
+  MyImage::ImagePointer p = image2.getPointer();
+  trace.info() << p << std::endl;
+  trace.info() << *p << std::endl;
+
+  nbok += (image2.isValid()) ? 1 : 0; 
+  nb++;
+
+  trace.info() << p.get() << std::endl;
+  trace.info() << imContainer << std::endl;
+  nbok += (p.get() == imContainer) ? 1 : 0; 
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -103,7 +224,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSelfCheckConcept() && testCreate(); // && ... other tests
+  bool res = testSelfCheckConcept() 
+    && testCreate()
+    && testAPI() 
+    && testImageCopy(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
