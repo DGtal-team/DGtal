@@ -33,9 +33,13 @@
 #include <sstream>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CConstRange.h"
 #include "DGtal/base/ConstRangeAdapter.h"
 
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include "DGtal/topology/SCellsFunctors.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 
 
 
@@ -62,18 +66,20 @@ bool testRange(const Range &aRange)
     typename Range::ConstIterator i = aRange.begin();
     typename Range::ConstIterator end = aRange.end();
     for ( ; i != end; ++i) {
-      cout << *i << endl;
+      cout << *i << " ";
       v1.push_back(*i); 
     }
+    cout << endl; 
   }
   {
     trace.info() << "Backward" << endl;
     typename Range::ConstReverseIterator i = aRange.rbegin();
     typename Range::ConstReverseIterator end = aRange.rend();
     for ( ; i != end; ++i) {
-      cout << *i << endl;
+      cout << *i << " ";
       v2.push_back(*i); 
     }
+    cout << endl; 
   }
   {
     trace.info() << "Circulator" << endl;
@@ -83,11 +89,12 @@ bool testRange(const Range &aRange)
       {
 	do 
 	  {
-	    cout << *c << endl;
+	    cout << *c << " ";
 	    v3.push_back(*c);
 	    c++;
 	  } while (c!=cend); 
       }
+    cout << endl; 
   }
   
   {
@@ -98,11 +105,12 @@ bool testRange(const Range &aRange)
       {
 	do 
 	  {
-	    cout << *c << endl;
+	    cout << *c << " ";
 	    v4.push_back(*c);
 	    c++;
 	  } while (c!=cend); 
       }
+    cout << endl; 
   }
 
   return ( std::equal(v1.begin(),v1.end(),v3.begin())
@@ -130,6 +138,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
+  //1) simple range of integers
   const int n = 10; 
   std::vector<int> v;
   std::back_insert_iterator<std::vector<int> > ito(v); 
@@ -139,16 +148,41 @@ int main( int argc, char** argv )
   typedef ConstRangeAdapter<std::vector<int>::iterator > SimpleRange; 
   SimpleRange r1(v.begin(), v.end()); 
 
+  //2) thresholded range of integers
   Thresholder<int> t(n/2);  
+
   typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 
   BoolRange r2(v.begin(), v.end(), t); 
 
+  //3) range of signed cells...
+  typedef KhalimskySpaceND<3> K; 
+  typedef K::Point Point3; 
+  vector<K::SCell> v3; 
+  K ks; 
+  v3.push_back(ks.sCell(Point3(1,1,0))); 
+  v3.push_back(ks.sCell(Point3(2,1,1))); 
+  v3.push_back(ks.sCell(Point3(3,1,2))); 
+  //... transformed into inner voxels,
+  //which are projected into 2d points
+  typedef SpaceND<2> S;
+  typedef S::Point Point2; 
+  SCellToInnerPoint<K> f(ks); 
+  Projector<S> p; 
+  Composer<SCellToInnerPoint<K>,Projector<S>,Point2> c(f,p); 
+
+  typedef ConstRangeAdapter<std::vector<K::SCell>::iterator, 
+    Composer<SCellToInnerPoint<K>,Projector<S>,Point2>, Point2 > PointRange; 
+  PointRange r3(v3.begin(), v3.end(), c); 
+ 
   /////////// concept checking
   testRangeConceptChecking<SimpleRange>();
   testRangeConceptChecking<BoolRange>();
+  testRangeConceptChecking<PointRange>();
 
   /////////// iterators tests
-  bool res = testRange(r1) && testRange(r2); 
+  bool res = testRange(r1) 
+    && testRange(r2) 
+    && testRange(r3); 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();  
