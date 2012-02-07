@@ -17,25 +17,25 @@
 #pragma once
 
 /**
- * @file CPointFunctor.h
+ * @file CUnaryFunctor.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- * @date 2012/02/02
+ * @date 2012/02/07
  *
- * Header file for concept CPointFunctor.cpp
+ * Header file for concept CUnaryFunctor.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPointFunctor_RECURSES)
-#error Recursive header files inclusion detected in CPointFunctor.h
-#else // defined(CPointFunctor_RECURSES)
+#if defined(CUnaryFunctor_RECURSES)
+#error Recursive header files inclusion detected in CUnaryFunctor.h
+#else // defined(CUnaryFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPointFunctor_RECURSES
+#define CUnaryFunctor_RECURSES
 
-#if !defined CPointFunctor_h
+#if !defined CUnaryFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define CPointFunctor_h
+#define CUnaryFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -47,26 +47,23 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPointFunctor
+  // class CUnaryFunctor
   /**
-     Description of \b concept '\b CPointFunctor' <p>
+     Description of \b concept '\b CUnaryFunctor' <p>
      @ingroup Concepts
-     \brief Aim: Defines a functor on points.
-     
-     Associates values to points.
+     \brief Aim: Defines a unary functor, which
+     associates arguments to results
     
      <p> Refinement of Assignable
     
      <p> Associated types :
-    
-     - Point : specifies the type for a point (inner type).
-     - Value : specifies the type for a value (inner type).
-    
+        
      <p> Notation
-     - \t X : A type that is a model of CPointFunctor
+     - \t X : a type that is a model of CUnaryFunctor
      - \t x : Object of type \t X
-     - \t p : Object of type Point
-     - \t v : Object of type Value
+     - \t A : argument type
+     - \t a : Object of type \t A
+     - \t R : result type
     
      <p> Definitions
     
@@ -84,11 +81,11 @@ namespace DGtal
      </tr>
      <tr> 
      <td class=CName>            Apply function </td>
-     <td class=CExpression>      \t x( \t p ) </td> 
+     <td class=CExpression>      \t x( \t a ) </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c v </td>
+     <td class=CReturnType>      \c R </td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value of the function \t x at point \t p</td> 
+     <td class=CSemantics>       return the value of the function \t x for argument \t a</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -97,40 +94,33 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
-    
-     - Shapes and images are models of (refinements of) this concept  
-    
+        
      <p> Notes <br>
    */
-  template <typename T>
-  struct CPointFunctor : boost::Assignable<T>
+  template <typename X, typename A, typename R>
+  struct CUnaryFunctor : boost::Assignable<X>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Point Point;
-    typedef typename T::Value Value;
 
-    BOOST_CONCEPT_USAGE( CPointFunctor )
+    BOOST_CONCEPT_USAGE( CUnaryFunctor )
     {
-      // x( p ) returns myV.
-      ConceptUtils::sameType( myV, myF.operator() ( myPoint ) );
+      //pb A and R may be not default-constructible
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    T myF;
-    Point myPoint;
-    Value myV;
+
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CPointFunctor
+  }; // end of concept CUnaryFunctor
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPointFunctor_h
+#endif // !defined CUnaryFunctor_h
 
-#undef CPointFunctor_RECURSES
-#endif // else defined(CPointFunctor_RECURSES)
+#undef CUnaryFunctor_RECURSES
+#endif // else defined(CUnaryFunctor_RECURSES)
