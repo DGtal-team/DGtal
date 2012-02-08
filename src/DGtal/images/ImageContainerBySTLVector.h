@@ -425,7 +425,7 @@ namespace DGtal
     Size linearized(const Point &aPoint) const;
 
     ///Image Domain
-    Domain myDomain;
+    const Domain &myDomain;
 
     // ------------- realization CDrawableWithBoard2D --------------------
   private:
