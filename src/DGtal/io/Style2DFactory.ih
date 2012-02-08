@@ -29,7 +29,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
@@ -484,7 +483,8 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstItera
 // GeometricalDCA
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/,
+					 std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_GeometricalDCA; 

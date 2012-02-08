@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file RawWriter.ih
+ * @file Image.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/07/22
+ * @date 2012/02/07
  *
- * Implementation of inline methods defined in RawWriter.h
+ * Implementation of inline methods defined in Image.h
  *
  * This file is part of the DGtal library.
  */
@@ -29,46 +29,55 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include <fstream>
-#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
 
-namespace DGtal {
-template<typename I,typename C>
-bool
-RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
-        const Value & minV, const Value & maxV)
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+DGtal::Image<T>::~Image()
 {
-  ///@todo  the Value of I should match with the one in C
-
-  ofstream out;
-  typename I::Domain::Vector ext = aImage.extent();
-  typename I::Domain domain = aImage.domain();
-  typename I::Value val;
-  C colormap(minV,maxV);
-  Color col;
-  
-  out.open(filename.c_str(), ios_base::binary);
-
-  //We scan the domain 
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-      val = aImage( (*it) );
-      col = colormap( val );
-      out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
-    }
-  
-  out.close(); 
-
-  ///@todo catch IOerror excpetion
-  return true;
 }
 
-}//namespace
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::Image<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Image] " << myImageContainer ;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const Image<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

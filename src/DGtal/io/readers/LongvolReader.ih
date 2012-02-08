@@ -45,7 +45,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
 
   typename T::Point firstPoint( 0, 0, 0 );
   typename T::Point lastPoint( 0, 0, 0 );
-  T nullImage( firstPoint, lastPoint );
+  T nullImage( typename T::Domain(firstPoint, lastPoint ));
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
@@ -183,7 +183,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
 
   try
   {
-    T image( firstPoint, lastPoint );
+    T image( domain);
 
     count = 0;
     DGtal::uint64_t val=0;

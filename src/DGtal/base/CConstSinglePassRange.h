@@ -17,55 +17,51 @@
 #pragma once
 
 /**
- * @file CConstRange.h
+ * @file CConstSinglePassRange.h
  * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/08/31
  *
- * Header file for concept CConstRange
+ * Header file for concept CConstSinglePassRange
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CConstRange_RECURSES)
-#error Recursive header files inclusion detected in CConstRange.h
-#else // defined(CConstRange_RECURSES)
+#if defined(CConstSinglePassRange_RECURSES)
+#error Recursive header files inclusion detected in CConstSinglePassRange.h
+#else // defined(CConstSinglePassRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CConstRange_RECURSES
+#define CConstSinglePassRange_RECURSES
 
-#if !defined CConstRange_h
+#if !defined CConstSinglePassRange_h
 /** Prevents repeated inclusion of headers. */
-#define CConstRange_h
+#define CConstSinglePassRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CConstRange
+  // class CConstSinglePassRange
   /**
-     Description of \b concept '\b CConstRange' <p>
+     Description of \b concept '\b CConstSinglePassRange' <p>
      @ingroup Concepts
     
      \brief Aim: Defines the concept describing a const range.
      
-     <p> Refinement of CSinglePassConstRange
+     <p> Refinement of
     
      <p> Provided types :
 
-<<<<<<< HEAD
      - ConstIterator: the const iterator type, a model of const iterator
-          concept.
-=======
->>>>>>> gdamiand/ranges
-     - ConstReverseIterator: the const reverse iterator type, a model of
-          const iterator concept.
+          concept (see boost concept SinglePassIteratorConcept).
 
      <table>
      <tr> 
@@ -79,20 +75,20 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() const</td> 
+     <td class=CName>            \t begin </td>
+     <td class=CExpression>      \t x.begin() </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
+     <td class=CReturnType>      ConstIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
      <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() const</td> 
+     <td class=CName>            \t end </td>
+     <td class=CExpression>      \t x.end() </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
+     <td class=CReturnType>      ConstIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -102,31 +98,27 @@ namespace DGtal
     
      <p> Invariants <br>
     
-     <p> Models <br>
-    
-     <p> Notes <br>
-
-     @tparam T the type that is checked. T should be a model of CConstRange.
+     <p> Models <br>    
 
    */
   template <typename T>
-  struct CConstRange: CSinglePassConstRange<T>
+  struct CConstSinglePassRange
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
+    typedef typename T::ConstIterator ConstIterator;
+    
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-
-    BOOST_CONCEPT_USAGE(CConstRange)
+    BOOST_CONCEPT_USAGE(CConstSinglePassRange)
     {
-      ConstReverseIterator it=i.rbegin();
-      it=i.rend();
+      ConstIterator it=i.begin();
+      it=i.end();
     };
 
   private:
     T i;
-  }; // end of concept CConstRange
+  }; // end of concept CConstSinglePassRange
   
 } // namespace DGtal
 
@@ -135,7 +127,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CConstRange_h
+#endif // !defined CConstSinglePassRange_h
 
-#undef CConstRange_RECURSES
-#endif // else defined(CConstRange_RECURSES)
+#undef CConstSinglePassRange_RECURSES
+#endif // else defined(CConstSinglePassRange_RECURSES)

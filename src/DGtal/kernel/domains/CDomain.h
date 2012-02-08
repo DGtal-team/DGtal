@@ -44,7 +44,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,7 +57,7 @@ namespace DGtal
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 
-   * <p> Refinement of CConstRange
+   * <p> Refinement of CConstBidirectionalRange
    *
    * <p> Associated types :
    * - Domain : the type itself of the CDomain model.
@@ -125,7 +125,7 @@ namespace DGtal
    * @todo Complete domain checking.
    */
   template <typename T>
-  struct CDomain //: public CConstRange<T>
+  struct CDomain : public CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

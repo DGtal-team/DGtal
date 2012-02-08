@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 //////////////////////////////////////////////////////////////////////////////

@@ -72,12 +72,12 @@ bool testDistanceTransformND()
   Point d;
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
   Domain domain(a,b);
+  Image image(domain);
 
   //We create an object image with a signle background point (set to 0)
   for (Image::Iterator it=image.begin(),itend=image.end(); it!=itend; ++it)
-    image.setValue ( it, 128 );
+    *it = 128;
   image.setValue( c , 0 );
 
 
@@ -98,7 +98,7 @@ bool testDistanceTransformND()
       d = (*itDom) - c;
       ImageLong::Value norm2=0;
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
-  norm2+= (*itd)*(*itd);
+	norm2+= (*itd)*(*itd);
 
        if ( result( (*itDom) ) != norm2)
   {
