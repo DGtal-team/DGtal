@@ -20,6 +20,8 @@
  * @file CLabel.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
  *
@@ -52,9 +54,10 @@ namespace DGtal
   /**
      Description of \b concept '\b CLabel' <p>
      @ingroup Concepts
-     @brief Aim: Define the concept of DGtal labels. Models of CLabel can be assignable and comparable.
+     @brief Aim: Define the concept of DGtal labels. 
+     Models of CLabel can be default-constructible, assignable and equality comparable.
       
-     <p> Refinement of boost::Assignable boost::CopyConstructible  and boost::EqualityComparable 
+     <p> Refinement of boost::DefaultConstructible boost::Assignable and boost::EqualityComparable 
     
      <p> Associated types :
     
@@ -83,14 +86,12 @@ namespace DGtal
     
      <p> Models <br>
 
-     A dummy model (for concept checking) is CCLabelArchetype.
-
      <p> Notes <br>
 
      @tparam T the type that should be a model of CLabel.
    */
   template <typename T> 
-  struct CLabel  : boost::Assignable<T>, boost::CopyConstructible<T>,
+  struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
     boost::EqualityComparable<T>
   {
     
