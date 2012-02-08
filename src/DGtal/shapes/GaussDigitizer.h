@@ -247,20 +247,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    GaussDigitizer ( const GaussDigitizer & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    GaussDigitizer & operator= ( const GaussDigitizer & other );
 
     // ------------------------- Internals ------------------------------------
   private:
