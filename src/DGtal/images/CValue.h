@@ -43,6 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/images/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,7 +57,7 @@ namespace DGtal
    *
    * Aim: Represents a Value.
    * 
-   * <p> Refinement of
+   * <p> Refinement of CQuantity and boost::DefaultConstructible
    *
    * <p> Associated types :
    *
@@ -85,7 +86,7 @@ namespace DGtal
    * <p> Notes <br>
    */
   template <typename T>
-    struct CValue  : boost::Assignable<T>, boost::EqualityComparable<T>, boost::DefaultConstructible<T>
+  struct CValue  :  CQuantity<T>, boost::DefaultConstructible<T>
     {
       // ----------------------- Concept checks ------------------------------
     public:

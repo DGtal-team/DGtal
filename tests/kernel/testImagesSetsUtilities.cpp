@@ -66,7 +66,7 @@ bool testImagesSetsUtilities()
   Point c(12,12);
 
   typedef ImageContainerBySTLVector<Domain,int> Image;
-  Image image(a,b);
+  Image image(Domain(a,b));
   DigitalSet aSet(Domain(a,b));
   aSet.insert(c);
   
@@ -101,7 +101,7 @@ bool testSetFromImage()
   Point c(12,12);
 
   typedef ImageContainerBySTLVector<Domain,int> Image;
-  Image image(a,b);
+  Image image(Domain(a,b));
   image.setValue(c,128);
   
   DigitalSet aSet(Domain(a,b));

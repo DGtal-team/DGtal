@@ -1,8 +1,11 @@
 SET(DGTAL_TESTS_SRC
-   testImage
-   testImageSpanIterators
-   testCheckImageConcept
-   )
+  testImageSimple
+  testImage
+  testImageSpanIterators
+  testCheckImageConcept
+  testMorton
+  testHashTree
+  )
 
 SET(DGTAL_BENCH_SRC
   testImageContainerBenchmark

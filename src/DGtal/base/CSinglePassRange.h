@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,7 +55,7 @@ namespace DGtal
     
      \brief Aim: Defines the concept describing a range.
      
-     <p> Refinement of CSinglePassConstRange
+     <p> Refinement of CConstSinglePassRange
     
      <p> Provided types:
 
@@ -64,7 +64,7 @@ namespace DGtal
 
      <p> Notation:
 
-     - x an object of a model of CSinglePassConstRange.
+     - x an object of a model of CConstSinglePassRange.
      
      <table>
      <tr> 
@@ -109,7 +109,7 @@ namespace DGtal
 
    */
   template <typename T>
-  struct CSinglePassRange :  CSinglePassConstRange<T>
+  struct CSinglePassRange :  CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

@@ -80,7 +80,7 @@ namespace DGtal
    * <td> </td> <td> </td> <td> </td> <td> </td>
    * </tr>
    * <tr> 
-   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>LibBoard::Color</td>
+   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>DGtal::Color</td>
    * <td>min &le; value &le; max </td> <td>Returns a color computed after the position of \em value \em within
    * the range [min,max]</td> <td> </td> <td> </td>
    * </tr>

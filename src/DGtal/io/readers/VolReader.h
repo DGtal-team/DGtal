@@ -117,25 +117,25 @@ namespace DGtal
     struct HeaderField {
       //! Constructor. The string are copied.
       HeaderField( const char *t, const char *v ) :
-  type( strdup(t) ), value( strdup(v) ) {}
+        type( strdup(t) ), value( strdup(v) ) {}
       ~HeaderField() {
-  free( type );
-  free( value );
+        free( type );
+        free( value );
       }
       //! Copy constructor
       HeaderField( const HeaderField &h ) :
-  type( strdup(h.type) ), value( strdup(h.value) ) {};
+        type( strdup(h.type) ), value( strdup(h.value) ) {};
       //! Default constructor
       HeaderField() : type(NULL), value(NULL) {};
       //! Assignement operator
       const HeaderField &operator = (const HeaderField &h) {
-  free( type );
-  free( value );
-  if (h.type != NULL) {
-    type = strdup( h.type );
-    value = strdup( h.value );
-  }
-  return *this;
+        free( type );
+        free( value );
+        if (h.type != NULL) {
+          type = strdup( h.type );
+          value = strdup( h.value );
+        }
+        return *this;
       }
       //! Type of field (e.g. Voxel-Size)
       char *type;

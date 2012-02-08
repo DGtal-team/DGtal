@@ -51,7 +51,7 @@
 #include <vector>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CRange.h"
+#include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
@@ -130,7 +130,7 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * PointVector is a model of CRange.
+   * PointVector is a model of CBidirectionalRange.
    * 
    * @see testPointVector.cpp
    *

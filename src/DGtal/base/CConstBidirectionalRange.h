@@ -17,51 +17,50 @@
 #pragma once
 
 /**
- * @file CSinglePassConstRange.h
+ * @file CConstBidirectionalRange.h
  * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/08/31
  *
- * Header file for concept CSinglePassConstRange
+ * Header file for concept CConstBidirectionalRange
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSinglePassConstRange_RECURSES)
-#error Recursive header files inclusion detected in CSinglePassConstRange.h
-#else // defined(CSinglePassConstRange_RECURSES)
+#if defined(CConstBidirectionalRange_RECURSES)
+#error Recursive header files inclusion detected in CConstBidirectionalRange.h
+#else // defined(CConstBidirectionalRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSinglePassConstRange_RECURSES
+#define CConstBidirectionalRange_RECURSES
 
-#if !defined CSinglePassConstRange_h
+#if !defined CConstBidirectionalRange_h
 /** Prevents repeated inclusion of headers. */
-#define CSinglePassConstRange_h
+#define CConstBidirectionalRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
-#include "DGtal/base/ConceptUtils.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CSinglePassConstRange
+  // class CConstBidirectionalRange
   /**
-     Description of \b concept '\b CSinglePassConstRange' <p>
+     Description of \b concept '\b CConstBidirectionalRange' <p>
      @ingroup Concepts
     
-     \brief Aim: Defines the concept describing a const range.
+     \brief Aim: Defines the concept describing a bidirectional const range.
      
-     <p> Refinement of
+     <p> Refinement of CConstSinglePassRange
     
      <p> Provided types :
 
-     - ConstIterator: the const iterator type, a model of const iterator
-          concept (see boost concept SinglePassIteratorConcept).
+   - ConstReverseIterator: the const reverse iterator type, a model of
+          const iterator concept.
 
      <table>
      <tr> 
@@ -75,20 +74,20 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t begin </td>
-     <td class=CExpression>      \t x.begin() </td> 
+     <td class=CName>            \t rbegin </td>
+     <td class=CExpression>      \t x.rbegin() const</td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstIterator</td>
+     <td class=CReturnType>      ConstReverseIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
      <tr> 
-     <td class=CName>            \t end </td>
-     <td class=CExpression>      \t x.end() </td> 
+     <td class=CName>            \t rend </td>
+     <td class=CExpression>      \t x.rend() const</td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstIterator</td>
+     <td class=CReturnType>      ConstReverseIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -98,27 +97,31 @@ namespace DGtal
     
      <p> Invariants <br>
     
-     <p> Models <br>    
+     <p> Models <br>
+    
+     <p> Notes <br>
+
+     @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
 
    */
   template <typename T>
-  struct CSinglePassConstRange
+  struct CConstBidirectionalRange: CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::ConstIterator ConstIterator;
-    
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
+    typedef typename T::ConstReverseIterator ConstReverseIterator;
 
-    BOOST_CONCEPT_USAGE(CSinglePassConstRange)
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
+
+    BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
     {
-      ConstIterator it=i.begin();
-      it=i.end();
+      ConstReverseIterator it=i.rbegin();
+      it=i.rend();
     };
 
   private:
     T i;
-  }; // end of concept CSinglePassConstRange
+  }; // end of concept CConstBidirectionalRange
   
 } // namespace DGtal
 
@@ -127,7 +130,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSinglePassConstRange_h
+#endif // !defined CConstBidirectionalRange_h
 
-#undef CSinglePassConstRange_RECURSES
-#endif // else defined(CSinglePassConstRange_RECURSES)
+#undef CConstBidirectionalRange_RECURSES
+#endif // else defined(CConstBidirectionalRange_RECURSES)

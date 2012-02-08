@@ -126,7 +126,7 @@ bool testImplicitShape3D()
 
   typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> Image;
 
-  Image image(a,b);
+  Image image(domain);
   Z3i::DigitalSet set(domain);
 
   Shapes<Z3i::Domain>::euclideanShaper( set,

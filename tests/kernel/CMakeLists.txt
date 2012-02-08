@@ -5,8 +5,6 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testHyperRectDomain-snippet
    testInteger
    testPointVector
-   testMorton
-   testHashTree
    testLinearAlgebra
    testImagesSetsUtilities
    testBasicPointFunctors

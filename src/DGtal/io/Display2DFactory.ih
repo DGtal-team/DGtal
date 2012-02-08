@@ -751,7 +751,7 @@ void drawImage( DGtal::Board2D & board,
   Colormap colormap(minV, maxV);
   Color c;
   V val;
-  D ldomain(i.lowerBound(), i.upperBound());
+  D ldomain(i.domain());
 
   for (typename D::ConstIterator it =  ldomain.begin();
        it != ldomain.end(); ++it)

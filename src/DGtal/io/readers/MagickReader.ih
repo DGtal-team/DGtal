@@ -76,7 +76,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   lastPoint[1] = h-1;
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer image(firstPoint,lastPoint);
+  TImageContainer image(domain);
   typename TImageContainer::Value val;
 
   //We scan the file

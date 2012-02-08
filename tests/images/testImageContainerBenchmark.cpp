@@ -91,7 +91,7 @@ bool testSuite(unsigned int dim, unsigned int n)
     trace.info() << aDomain << endl;
 
     trace.beginBlock("init");
-    Image image(a, b);
+    Image image( aDomain);
     alloc = trace.endBlock();
 
     builtinconstiter = builtinIteratorScan(image);
