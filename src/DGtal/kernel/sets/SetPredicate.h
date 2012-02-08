@@ -70,13 +70,21 @@ namespace DGtal
      * Constructor.
      * @param aSet any set.
      */
-    SetPredicate ( const DigitalSet & aSet );
+    SetPredicate ( DigitalSet & aSet );
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     SetPredicate ( const SetPredicate & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    SetPredicate & operator= ( const SetPredicate & other );
 
    /**
      * @param p any point.
@@ -94,17 +102,13 @@ namespace DGtal
     SetPredicate();
 
   private:
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    SetPredicate & operator= ( const SetPredicate & other );
 
     // ------------------------- Internals ------------------------------------
   private:
-    const DigitalSet* const mySet;
+    /**
+     * Reference on the underlying set
+     */
+    DigitalSet& mySet;
 
   }; // end of struct SetPredicate
 
