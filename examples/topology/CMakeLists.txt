@@ -9,6 +9,8 @@ if (  WITH_VISU3D_QGLVIEWER )
   3dBorderExtraction
   3dBorderExtractionImg
   3dKSSurfaceExtraction
+  volScanBoundary
+  volTrackBoundary
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
