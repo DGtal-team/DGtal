@@ -101,8 +101,11 @@ namespace DGtal
      * @param itb begin iterator.
      * @param ite end iterator.
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
+     *
+     * @tparam I iterator type, which must be castable into TInterator
      */
-    ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
+    template<typename I>
+    ConstRangeAdapter(const I& itb, const I& ite, 
 		      const TFunctor& aFunctor = TFunctor() )
       : myBegin(itb), myEnd(ite), myFunctor(aFunctor) {}
 
