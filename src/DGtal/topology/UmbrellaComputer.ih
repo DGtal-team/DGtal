@@ -61,7 +61,7 @@ UmbrellaComputer( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
 {
   if ( other.myTracker != 0 )
     {
-      myTracker = new DigitalSurfaceTracker( other.myTracker );
+      myTracker = new DigitalSurfaceTracker( *other.myTracker );
       myState = other.myState;
     }
 }
@@ -81,7 +81,7 @@ operator=( const UmbrellaComputer<TDigitalSurfaceTracker> & other )
 	}
       if ( other.myTracker != 0 )
 	{
-	  myTracker = new DigitalSurfaceTracker( other.myTracker );
+	  myTracker = new DigitalSurfaceTracker( *other.myTracker );
 	  myState = other.myState;
 	}
     }
