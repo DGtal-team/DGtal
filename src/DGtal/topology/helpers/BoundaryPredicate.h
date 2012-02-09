@@ -104,6 +104,13 @@ namespace DGtal
     BoundaryPredicate ( const BoundaryPredicate & other );
 
     /**
+     * Assignment. Required by CSurfelPredicate.
+     * @param other the object to clone.
+     * @return a reference to this object.
+     */
+    BoundaryPredicate& operator=( const BoundaryPredicate & other );
+
+    /**
        Predicate operator. 
        
        @param s any surfel
@@ -133,9 +140,9 @@ namespace DGtal
   private:
 
     /// the cellular space where lies the image.
-    const KSpace & mySpace;
+    const KSpace* myPtrSpace;
     // the image of interest
-    const Image & myImage;
+    const Image* myPtrImage;
     /// the label of the inner region that defines the boundary.
     Value myLabel1;
 

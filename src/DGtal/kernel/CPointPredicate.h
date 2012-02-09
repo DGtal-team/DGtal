@@ -75,7 +75,7 @@ namespace DGtal
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointPredicate : CPredicate< T, typename T::Point> 
+    struct CPointPredicate : CPredicate< T, typename T::Point>
   {
   }; // end of concept CPointPredicate
   

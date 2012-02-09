@@ -7,6 +7,7 @@ SET(DGTAL_TESTS_SRC
    testObject
    testObjectBorder
    testSimpleExpander
+   testSCellsFunctor
    testUmbrellaComputer
    )
 
