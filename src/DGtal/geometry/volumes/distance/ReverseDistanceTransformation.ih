@@ -81,12 +81,12 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstruction(const I & a
 
   if ( !isSwap )
     {
-      swap.translateDomain(myDisplacementVector);
+      //swap.translateDomain(myDisplacementVector);
       return castValues(swap);
     }
   else
     {
-      output.translateDomain(myDisplacementVector);
+      //output.translateDomain(myDisplacementVector);
       return castValues(output);
     }
 }
