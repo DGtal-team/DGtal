@@ -1,5 +1,5 @@
 /**
- * @file volTrackBoundary.cpp
+ * @file volBreadthFirstTraversal.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -12,7 +12,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-//! [volTrackBoundary-basicIncludes]
+//! [volBreadthFirstTraversal-basicIncludes]
 #include <iostream>
 #include <queue>
 #include <QImageReader>
@@ -26,8 +26,9 @@
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/helpers/Surfaces.h"
-//! [volTrackBoundary-basicIncludes]
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/LightImplicitDigitalSurface.h"
+//! [volBreadthFirstTraversal-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +56,7 @@ int main( int argc, char** argv )
   unsigned int minThreshold = atoi( argv[ 2 ] );
   unsigned int maxThreshold = atoi( argv[ 3 ] );
 
-  //! [volTrackBoundary-readVol]
+  //! [volBreadthFirstTraversal-readVol]
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
@@ -64,10 +65,10 @@ int main( int argc, char** argv )
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           minThreshold, maxThreshold);
   trace.endBlock();
-  //! [volTrackBoundary-readVol]
+  //! [volBreadthFirstTraversal-readVol]
   
   
-  //! [volTrackBoundary-KSpace]
+  //! [volBreadthFirstTraversal-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), 
@@ -78,37 +79,49 @@ int main( int argc, char** argv )
       return 2;
     }
   trace.endBlock();
-  //! [volTrackBoundary-KSpace]
+  //! [volBreadthFirstTraversal-KSpace]
 
-  //! [volTrackBoundary-SurfelAdjacency]
+  //! [volBreadthFirstTraversal-SurfelAdjacency]
   typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
-  //! [volTrackBoundary-SurfelAdjacency]
+  //! [volBreadthFirstTraversal-SurfelAdjacency]
 
-  //! [volTrackBoundary-ExtractingSurface]
+  //! [volBreadthFirstTraversal-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking from an initial bel." );
-  KSpace::SCellSet boundary;
+  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
+    MyDigitalSurfaceContainer;
+  typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
+  typedef BreadthFirstVisitor<MyDigitalSurface> MyBreadthFirstVisitor;
+  typedef MyBreadthFirstVisitor::Node MyNode;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
-  Surfaces<KSpace>::trackBoundary( boundary, ks, 
-                                   surfAdj,
-                                   set3dPredicate, bel );
+  MyDigitalSurfaceContainer* ptrSurfContainer = 
+    new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
+  MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
+  MyBreadthFirstVisitor visitor( digSurf, bel );
   trace.endBlock();
-  //! [volTrackBoundary-ExtractingSurface]
+  //! [volBreadthFirstTraversal-ExtractingSurface]
 
-  //! [volTrackBoundary-DisplayingSurface]
+  //! [volBreadthFirstTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
+  
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show(); 
   viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );
+  
   unsigned long nbSurfels = 0;
-  for ( KSpace::SCellSet::const_iterator it = boundary.begin(),
-          it_end = boundary.end(); it != it_end; ++it, ++nbSurfels )
-    viewer << *it;
+  MyNode node;
+  while ( ! visitor.finished() )
+    {
+      node = visitor.current();
+      viewer << ks.unsigns( node.first );
+      ++nbSurfels;
+      visitor.expand();
+    }
   viewer << Viewer3D::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
   return application.exec();
-  //! [volTrackBoundary-DisplayingSurface]
+  //! [volBreadthFirstTraversal-DisplayingSurface]
 }
 
