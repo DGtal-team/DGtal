@@ -50,7 +50,7 @@ inline
 DGtal::FrontierPredicate<TKSpace,TImage>::  
 FrontierPredicate( const KSpace & aSpace, const Image & anImage,
                    const Value & l1, const Value & l2 )
-  : mySpace( aSpace ), myImage( anImage ),
+  : myPtrSpace( &aSpace ), myPtrImage( &anImage ),
     myLabel1( l1 ), myLabel2( l2 )
 {}
 //-----------------------------------------------------------------------------
@@ -58,30 +58,46 @@ template <typename TKSpace, typename TImage>
 inline
 DGtal::FrontierPredicate<TKSpace,TImage>::  
 FrontierPredicate( const FrontierPredicate & other )
-  : mySpace( other.mySpace ), myImage( other.myImage ),
+  : myPtrSpace( other.myPtrSpace ), myPtrImage( other.myPtrImage ),
     myLabel1( other.myLabel1 ), myLabel2( other.myLabel2 )
 {}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-bool 
+DGtal::FrontierPredicate<TKSpace,TImage> &
 DGtal::FrontierPredicate<TKSpace,TImage>::  
+operator=( const FrontierPredicate & other )
+{
+  if ( this != &other )
+    {
+      myPtrSpace = other.myPtrSpace;
+      myPtrImage = other.myPtrImage;
+      myLabel1 = other.myLabel1;
+      myLabel2 = other.myLabel2;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TImage>
+inline
+bool
+DGtal::FrontierPredicate<TKSpace,TImage>::
 operator()( const Surfel & s ) const
 {
-  Dimension orthDir = mySpace.sOrthDir( s );
-  bool orthDirect = mySpace.sDirect( s, orthDir );
-  SCell int_spel = mySpace.sIncident( s, orthDir, orthDirect );
-  Point int_p = mySpace.sCoords( int_spel );
+  Dimension orthDir = myPtrSpace->sOrthDir( s );
+  bool orthDirect = myPtrSpace->sDirect( s, orthDir );
+  SCell int_spel = myPtrSpace->sIncident( s, orthDir, orthDirect );
+  Point int_p = myPtrSpace->sCoords( int_spel );
   Point out_p = int_p;
-  out_p[ orthDir ] +=  orthDirect ? -1 : 1;
-  return ( myImage( int_p ) == myLabel1 ) 
-    && ( myImage( out_p ) == myLabel2 );
+  out_p[ orthDir ] += orthDirect ? -1 : 1;
+  return ( (*myPtrImage)( int_p ) == myLabel1 )
+    && ( (*myPtrImage)( out_p ) == myLabel2 );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
 void
-DGtal::FrontierPredicate<TKSpace,TImage>::  
+DGtal::FrontierPredicate<TKSpace,TImage>::
 selfDisplay ( std::ostream & out ) const
 {
   out << "[FrontierPredicate]";
@@ -89,14 +105,12 @@ selfDisplay ( std::ostream & out ) const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-bool 
-DGtal::FrontierPredicate<TKSpace,TImage>::  
+bool
+DGtal::FrontierPredicate<TKSpace,TImage>::
 isValid() const
 {
     return true;
 }
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //

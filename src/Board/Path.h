@@ -241,7 +241,7 @@ Path::empty() const
 unsigned int
 Path::size() const
 {
-  return _points.size();
+  return (unsigned int)_points.size();
 }
 
 void

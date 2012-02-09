@@ -17,26 +17,25 @@
 #pragma once
 
 /**
- * @file CPredicate.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file CPointFunctor.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/02
  *
- * @date 2011/11/26
- *
- * Defines the concept checking class CPredicate.
+ * Header file for concept CPointFunctor.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPredicate_RECURSES)
-#error Recursive header files inclusion detected in CPredicate.h
-#else // defined(CPredicate_RECURSES)
+#if defined(CPointFunctor_RECURSES)
+#error Recursive header files inclusion detected in CPointFunctor.h
+#else // defined(CPointFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPredicate_RECURSES
+#define CPointFunctor_RECURSES
 
-#if !defined CPredicate_h
+#if !defined CPointFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define CPredicate_h
+#define CPointFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,23 +47,26 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPredicate
+  // class CPointFunctor
   /**
-     Description of \b concept '\b CPredicate' <p>
+     Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
-
-     @tparam T the type that should be a model of this predicate
-     @tparam TELement the type of an element of the predicate domain.
-
-     <p> Refinement of  boost::Assignable<T>
+     \brief Aim: Defines a functor on points.
+     
+     Associates values to points.
+    
+     <p> Refinement of Assignable
     
      <p> Associated types :
     
+     - Point : specifies the type for a point (inner type).
+     - Point : specifies the type for a value (inner type).
+    
      <p> Notation
-     - \t X : A type that is a model of CPredicate
+     - \t X : A type that is a model of CPointFunctor
      - \t x : Object of type \t X
-     - \t p : Object of type TElement
+     - \t p : Object of type Point
+     - \t v : Object of type Value
     
      <p> Definitions
     
@@ -81,12 +83,12 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            Apply predicate </td>
+     <td class=CName>            Apply function </td>
      <td class=CExpression>      \t x( \t p ) </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c bool</td>
+     <td class=CReturnType>      \c v </td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value of the predicate \t x at element \t p</td> 
+     <td class=CSemantics>       the value of the function \t x at point \t p</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -96,46 +98,39 @@ namespace DGtal
     
      <p> Models <br>
     
-     - specializations: CPointPredicate, CVertexPredicate
+     - Shapes and images are models of (refinements of) this concept  
     
      <p> Notes <br>
-
-     CPredicate allows to factor codes when writing concepts for new
-     kinds of predicates.
    */
-  template <typename T, typename TElement>
-    struct CPredicate : boost::Assignable<T>
+  template <typename T>
+  struct CPointFunctor : boost::Assignable<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef TElement Element;
+    typedef typename T::Point Point;
+    typedef typename T::Value Value;
 
-    BOOST_CONCEPT_USAGE( CPredicate )
+    BOOST_CONCEPT_USAGE( CPointFunctor )
     {
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-      // x( p ) returns bool.
-      ConceptUtils::sameType( myBool, myPred.operator() ( myElement ) );
+      // x( p ) returns myV.
+      ConceptUtils::sameType( myV, myF.operator() ( myPoint ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    T myPred;
-    Element myElement;
-    bool myBool;
+    T myF;
+    Point myPoint;
+    Value myV;
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CPredicate
+  }; // end of concept CPointFunctor
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPredicate_h
+#endif // !defined CPointFunctor_h
 
-#undef CPredicate_RECURSES
-#endif // else defined(CPredicate_RECURSES)
+#undef CPointFunctor_RECURSES
+#endif // else defined(CPointFunctor_RECURSES)

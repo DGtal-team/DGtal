@@ -50,7 +50,7 @@ inline
 DGtal::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( const KSpace & aSpace, const Image & anImage,
                    const Value & l1 )
-  : mySpace( aSpace ), myImage( anImage ),
+  : myPtrSpace( &aSpace ), myPtrImage( &anImage ),
     myLabel1( l1 )
 {}
 //-----------------------------------------------------------------------------
@@ -58,9 +58,24 @@ template <typename TKSpace, typename TImage>
 inline
 DGtal::BoundaryPredicate<TKSpace,TImage>::  
 BoundaryPredicate( const BoundaryPredicate & other )
-  : mySpace( other.mySpace ), myImage( other.myImage ),
+  : myPtrSpace( other.myPtrSpace ), myPtrImage( other.myPtrImage ),
     myLabel1( other.myLabel1 )
 {}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TImage>
+inline
+DGtal::BoundaryPredicate<TKSpace,TImage> &
+DGtal::BoundaryPredicate<TKSpace,TImage>::  
+operator=( const BoundaryPredicate & other )
+{
+  if ( this != &other )
+    {
+      myPtrSpace = other.myPtrSpace;
+      myPtrImage = other.myPtrImage;
+      myLabel1 = other.myLabel1;
+    }
+  return *this;
+}
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
@@ -68,14 +83,14 @@ bool
 DGtal::BoundaryPredicate<TKSpace,TImage>::  
 operator()( const Surfel & s ) const
 {
-  Dimension orthDir = mySpace.sOrthDir( s );
-  bool orthDirect = mySpace.sDirect( s, orthDir );
-  SCell int_spel = mySpace.sIncident( s, orthDir, orthDirect );
-  Point int_p = mySpace.sCoords( int_spel );
+  Dimension orthDir = myPtrSpace->sOrthDir( s );
+  bool orthDirect = myPtrSpace->sDirect( s, orthDir );
+  SCell int_spel = myPtrSpace->sIncident( s, orthDir, orthDirect );
+  Point int_p = myPtrSpace->sCoords( int_spel );
   Point out_p = int_p;
   out_p[ orthDir ] +=  orthDirect ? -1 : 1;
-  return ( myImage( int_p ) == myLabel1 ) 
-    && ( myImage( out_p ) != myLabel1 );
+  return ( (*myPtrImage)( int_p ) == myLabel1 ) 
+    && ( (*myPtrImage)( out_p ) != myLabel1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
