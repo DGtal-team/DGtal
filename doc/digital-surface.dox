@@ -30,6 +30,8 @@ namespace DGtal {
    - \ref dgtal_digsurf_sec3
       - \ref dgtal_digsurf_sec3_1
       - \ref dgtal_digsurf_sec3_2
+      - \ref dgtal_digsurf_sec3_3
+      - \ref dgtal_digsurf_sec3_4
 
    A complete example is given in digitalSurface3D.cpp.
 
@@ -576,7 +578,27 @@ and you will get the resulting cell display:
       not give the same response at a point/surfel depending on when
       it is called).
 
-   @subsection dgtal_digsurf_sec3_3 3.3 A digital surface is a graph
+   @subsection dgtal_digsurf_sec3_3 3.3 Relating a digital surface to some container
+
+   The following snippet shows how to create a digital surface
+   associated to a LightImplicitDigitalSurface. The
+   LightImplicitDigitalSurface is connected to a shape described by a
+   predicate on point (variable set3dPredicate of type
+   SetPredicate<DigitalSet>). The full code is in
+   volBreadthFirstTraversal.cpp.
+
+   @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
+
+   Once this is done, the object \c digSurf is a proxy to your
+   container. Here the dynamically allocated object is acquired by the
+   digital surface, which will take care of its deletion.
+
+   @note This creation of the container and the connection to a
+   digital surface takes almost no time, since the chosen container
+   (Light...) is lazy: the whole surface has not been extracted yet.
+
+
+   @subsection dgtal_digsurf_sec3_4 3.4 A digital surface is a graph, example of breadth-first traversal
 
    Any DigitalSurface is a model of CUndirectedSimpleGraph (a
    refinement of CUndirectedLocalSimpleGraph). Essentially, you have
@@ -586,6 +608,39 @@ and you will get the resulting cell display:
    the class BreadthFirstVisitor to do a breadth-first traversal of
    the digital surface.
 
+   We may extract the whole surface by doing a breadth-first traversal
+   on the graph. The snippet below shows how to do it on any kind of
+   digital surface, whatever the container.
+
+   @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-ExtractingSurface
+
+   Here, we only use it to get the maximal distance to the starting
+   bel. A second pass could be done to display cells with a color that
+   depends on the distance to the starting surfel.
+
+   @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-DisplayingSurface
+
+   We may call it as follows
+   @verbatim
+   # Commands
+   $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/lobster.vol 50 255
+   $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/Al.100.vol 0 1
+   $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/cat10.vol 1 255
+   @endverbatim
+
+   to get these pictures:
+   @image html digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface."
+   @image latex digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface." width=0.5\textwidth
+
+   @note The concepts CUndirectedLocalSimpleGraph and
+   CUndirectedSimpleGraph are susceptible to evolve to meet other
+   standards.
+
+   @note In fact, the specific container LightImplicitDigitalSurface
+   performs itself a breadth-first traversal to extract its vertices
+   by itself. Therefere, you may use a simple begin() and end() to get
+   the vertices in this order, when \b your \b container \b is \b a \b
+   LightImplicitDigitalSurface.
 
 */
 }

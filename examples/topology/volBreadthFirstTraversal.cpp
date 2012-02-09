@@ -22,6 +22,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/shapes/Shapes.h"
@@ -86,37 +87,53 @@ int main( int argc, char** argv )
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
   //! [volBreadthFirstTraversal-SurfelAdjacency]
 
-  //! [volBreadthFirstTraversal-ExtractingSurface]
-  trace.beginBlock( "Extracting boundary by tracking from an initial bel." );
+  //! [volBreadthFirstTraversal-SetUpDigitalSurface]
+  trace.beginBlock( "Set up digital surface." );
   typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
   typedef BreadthFirstVisitor<MyDigitalSurface> MyBreadthFirstVisitor;
   typedef MyBreadthFirstVisitor::Node MyNode;
+  typedef MyBreadthFirstVisitor::Size MySize;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
   MyDigitalSurfaceContainer* ptrSurfContainer = 
     new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
-  MyBreadthFirstVisitor visitor( digSurf, bel );
   trace.endBlock();
-  //! [volBreadthFirstTraversal-ExtractingSurface]
+  //! [volBreadthFirstTraversal-SetUpDigitalSurface]
 
-  //! [volBreadthFirstTraversal-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
-  
-  QApplication application(argc,argv);
-  Viewer3D viewer;
-  viewer.show(); 
-  viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );
-  
+  //! [volBreadthFirstTraversal-ExtractingSurface]
+  trace.beginBlock( "Extracting boundary by tracking from an initial bel." );
+  MyBreadthFirstVisitor visitor( digSurf, bel );
   unsigned long nbSurfels = 0;
   MyNode node;
   while ( ! visitor.finished() )
     {
       node = visitor.current();
-      viewer << ks.unsigns( node.first );
       ++nbSurfels;
       visitor.expand();
+    }
+  MySize maxDist = node.second;
+  trace.endBlock();
+  //! [volBreadthFirstTraversal-ExtractingSurface]
+
+  //! [volBreadthFirstTraversal-DisplayingSurface]
+  trace.beginBlock( "Displaying surface in Viewer3D." );
+  QApplication application(argc,argv);
+  Viewer3D viewer;
+  viewer.show(); 
+  HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
+  MyBreadthFirstVisitor visitor2( digSurf, bel );
+  viewer << CustomColors3D( Color::Black, Color::White )
+         << ks.unsigns( bel );
+  visitor2.expand();
+  while ( ! visitor2.finished() )
+    {
+      node = visitor2.current();
+      Color c = hueShade( node.second );
+      viewer << CustomColors3D( Color::Red, c )
+             << ks.unsigns( node.first );
+      visitor2.expand();
     }
   viewer << Viewer3D::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
