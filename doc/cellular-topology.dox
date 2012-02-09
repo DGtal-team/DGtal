@@ -18,27 +18,27 @@ namespace DGtal {
    from <a
    href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
-   -# \ref dgtal_ctopo_sec1
-      -# \ref dgtal_ctopo_sec1_1
-      -# \ref dgtal_ctopo_sec1_2
-      -# \ref dgtal_ctopo_sec1_3
-      -# \ref dgtal_ctopo_sec1_4
-      -# \ref dgtal_ctopo_sec1_5
-      -# \ref dgtal_ctopo_sec1_6
-      -# \ref dgtal_ctopo_sec1_7
-      -# \ref dgtal_ctopo_sec1_8
-      -# \ref dgtal_ctopo_sec1_9
-      -# \ref dgtal_ctopo_sec1_10
-      -# \ref dgtal_ctopo_sec1_11
-   -# \ref dgtal_ctopo_sec2
-      -# \ref dgtal_ctopo_sec2_1
-      -# \ref dgtal_ctopo_sec2_2
-      -# \ref dgtal_ctopo_sec2_3
-      -# \ref dgtal_ctopo_sec2_4
+   - \ref dgtal_ctopo_sec1
+      - \ref dgtal_ctopo_sec1_1
+      - \ref dgtal_ctopo_sec1_2
+      - \ref dgtal_ctopo_sec1_3
+      - \ref dgtal_ctopo_sec1_4
+      - \ref dgtal_ctopo_sec1_5
+      - \ref dgtal_ctopo_sec1_6
+      - \ref dgtal_ctopo_sec1_7
+      - \ref dgtal_ctopo_sec1_8
+      - \ref dgtal_ctopo_sec1_9
+      - \ref dgtal_ctopo_sec1_10
+      - \ref dgtal_ctopo_sec1_11
+   - \ref dgtal_ctopo_sec2
+      - \ref dgtal_ctopo_sec2_1
+      - \ref dgtal_ctopo_sec2_2
+      - \ref dgtal_ctopo_sec2_3
+      - \ref dgtal_ctopo_sec2_4
 
-   @section dgtal_ctopo_sec1 The digital space is a cubic grid
+   @section dgtal_ctopo_sec1 1. The digital space is a cubic grid
 
-   @subsection dgtal_ctopo_sec1_1 Images and digital spaces
+   @subsection dgtal_ctopo_sec1_1 1.1 Images and digital spaces
 
    2D images are often seen as two dimensional arrays, where each cell
    is a pixel with some value (a gray level, a color). If
@@ -87,7 +87,7 @@ namespace DGtal {
    @image latex cellular-grid-space-1.png "Illustration of a cellular grid space with cells of different dimensions." width=0.4\textwidth
 
 
-   @subsection dgtal_ctopo_sec1_2 Cells in the cubical grid and Khalimsky coordinates
+   @subsection dgtal_ctopo_sec1_2 1.2 Cells in the cubical grid and Khalimsky coordinates
  
    We use now the regularity of the cubical grid to represent it
    efficiently. In 1D, the cubical grid is a simple line alternating
@@ -123,7 +123,7 @@ namespace DGtal {
    \f$\mathbf{Z}^2\f$ corresponds to the 2-cell (2x+1,2y+1) of the
    cellular grid space \f$\mathbf{F}^2\f$.
 
-   @subsection dgtal_ctopo_sec1_3 Models for cellular grid spaces 
+   @subsection dgtal_ctopo_sec1_3 1.3 Models for cellular grid spaces 
 
    Instead of chosing a specific implementation of a cellular grid
    space, we keep the genericity and efficiency objective of DGtal by
@@ -164,7 +164,7 @@ namespace DGtal {
    - Incidence services
    - Interface
 
-   @subsection dgtal_ctopo_sec1_4 Creating a cellular grid space
+   @subsection dgtal_ctopo_sec1_4 1.4 Creating a cellular grid space
 
    We use hereafter the model KhalimskySpaceND. To create a 2D
    cellular grid space where cells have coordinates coded with
@@ -225,7 +225,7 @@ namespace DGtal {
    @endcode
 
 
-   @subsection dgtal_ctopo_sec1_5 Creating (unsigned) cells in a cellular grid space
+   @subsection dgtal_ctopo_sec1_5 1.5 Creating (unsigned) cells in a cellular grid space
 
    There are many ways of creating cells within a cellular grid
    space. The simplest way is certainly to give the Khalimsky
@@ -290,7 +290,7 @@ namespace DGtal {
 
  
 
-   @subsection dgtal_ctopo_sec1_6 Cells may be unsigned or signed
+   @subsection dgtal_ctopo_sec1_6 1.6 Cells may be unsigned or signed
 
    Up to now, we have only consider unsigned cells (type
    Cell). However it is often convenient to assign a sign (POS or NEG)
@@ -330,7 +330,7 @@ namespace DGtal {
 
 
 
-   @subsection dgtal_ctopo_sec1_7 Accessing and modifying cell coordinates.
+   @subsection dgtal_ctopo_sec1_7 1.7 Accessing and modifying cell coordinates.
 
    Since one does not necessarily know which model of
    CCellularGridSpaceND you may be using, you cannot access the cell
@@ -349,7 +349,7 @@ namespace DGtal {
      - KhalimskySpaceND::uSetKCoords, KhalimskySpaceND::sSetKCoords (write Khalimsky coordinates)
      - KhalimskySpaceND::uSetCoords, KhalimskySpaceND::sSetCoords (write digital coordinates)
 
-   @subsection dgtal_ctopo_sec1_8 Moving within the cellular grid space
+   @subsection dgtal_ctopo_sec1_8 1.8 Moving within the cellular grid space
 
    Note that you dispose also of a whole set of methods to determine
    cells according to different geometric queries. The following
@@ -438,7 +438,7 @@ namespace DGtal {
      KhalimskySpaceND::uTranslation and
      KhalimskySpaceND::sTranslation.
 
-   @subsection dgtal_ctopo_sec1_9 Cell topology and directions
+   @subsection dgtal_ctopo_sec1_9 1.9 Cell topology and directions
 
    As said above, the cell topology is defined by the parity of its
    Khalimsky coordinates. The number of coordinates where the cell is
@@ -481,7 +481,7 @@ namespace DGtal {
      } 
      @endcode
 
-   @subsection dgtal_ctopo_sec1_10 Cell adjacency and neighborhood
+   @subsection dgtal_ctopo_sec1_10 1.10 Cell adjacency and neighborhood
 
    You may obtain the cells of same topology which are (face-)adjacent
    to a given cell with the following methods:
@@ -496,7 +496,7 @@ namespace DGtal {
      axis is returned by KhalimskySpaceND::uAdjacent and
      KhalimskySpaceND::sAdjacent. 
 
-   @subsection dgtal_ctopo_sec1_11 Cell incidence
+   @subsection dgtal_ctopo_sec1_11 1.11 Cell incidence
 
    Cells incident to some cell touch the cell but do not have the same
    dimension. Cells lower incident to a cell have lower dimensions,
@@ -570,7 +570,7 @@ namespace DGtal {
      incident cell along some axis with
      KhalimskySpaceND::sIndirectIncident.
 
-   @section dgtal_ctopo_sec2 Surfel adjacency and digital surfaces
+   @section dgtal_ctopo_sec2 2. Surfel adjacency and digital surfaces
 
    The preceding definitions of signed cells and their incidence will
    help us to define consistently what is a digital surface and how to
@@ -578,11 +578,11 @@ namespace DGtal {
 
    
 
-   @subsection dgtal_ctopo_sec2_1 Tracking Boundary
+   @subsection dgtal_ctopo_sec2_1 2.1 Tracking Boundary
    
 
 
-   @subsection dgtal_ctopo_sec2_2 Tracking 2D Boundary
+   @subsection dgtal_ctopo_sec2_2 2.2 Tracking 2D Boundary
 
    The surfaces classes offers the possibility to extract an open or
    closed contour as a sequence of surfels obtained from a DigitalSet
@@ -645,7 +645,7 @@ namespace DGtal {
    
 
 
-   @subsection dgtal_ctopo_sec2_3 Tracking 3D Boundary
+   @subsection dgtal_ctopo_sec2_3 2.3 Tracking 3D Boundary
 
    With only few modifications we can apply the same extraction on 3D
    surfel set. The file <a
@@ -702,7 +702,7 @@ namespace DGtal {
 
 
 
-   @subsection dgtal_ctopo_sec2_4 Extracting SCell connected boundary surfels
+   @subsection dgtal_ctopo_sec2_4 2.4 Extracting SCell connected boundary surfels
 
    The class \ref Surfaces shows other usefull function to extract
    connected boundary surfels from a digital set and given a surfel
@@ -838,9 +838,6 @@ and you will get the resulting cell display:
 *</TABLE>
 */
 
-}
-
-
 
 
 
@@ -849,3 +846,7 @@ and you will get the resulting cell display:
 *   @image html KSurfelsConnectedOrientExt.png 
 * \example  3dKSSurfaceExtraction.cpp
 */
+
+}
+
+

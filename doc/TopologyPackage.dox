@@ -57,6 +57,7 @@ package, especially to define curves and surfaces.
 @b Modules
  - \ref dgtal_topology
  - \ref dgtal_cellular_topology
+ - \ref dgtal_digital_surface
 
  @b Related @b documentation @b pages
 
