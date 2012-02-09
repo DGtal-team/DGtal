@@ -26,6 +26,7 @@
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 //! [volScanBoundary-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////

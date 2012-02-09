@@ -559,12 +559,12 @@ and you will get the resulting cell display:
      Surfel -> bool: model ExplicitDigitalSurface and a start surfel.
 
    - the boundary of a region in a labelled image: model
-     ExplicitDigitalSurface and a start surfel, and a model of
-     CSurfelPredicate.
+     ExplicitDigitalSurface and a start surfel, and the class
+     BoundaryPredicate, which is model of CSurfelPredicate.
 
    - the frontier between two regions in a labelled image: model
-     ExplicitDigitalSurface and a start surfel, and a model of
-     CSurfelPredicate.
+     ExplicitDigitalSurface and a start surfel, and the class
+     FrontierPredicate, which is model of CSurfelPredicate.
 
    Light versions of containers should be preferred in mostly two
    cases:
@@ -575,6 +575,16 @@ and you will get the resulting cell display:
    -# The digital surface is likely to evolve (i.e. the predicate do
       not give the same response at a point/surfel depending on when
       it is called).
+
+   @subsection dgtal_digsurf_sec3_3 3.3 A digital surface is a graph
+
+   Any DigitalSurface is a model of CUndirectedSimpleGraph (a
+   refinement of CUndirectedLocalSimpleGraph). Essentially, you have
+   methods DigitalSurface::begin() and DigitalSurface::end() to visit
+   all the vertices, and for each vertex, you obtain its neighbors
+   with DigitalSurface::writeNeighbors. You may thus for instance use
+   the class BreadthFirstVisitor to do a breadth-first traversal of
+   the digital surface.
 
 
 */
