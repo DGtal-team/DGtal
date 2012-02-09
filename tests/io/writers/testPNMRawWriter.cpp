@@ -116,7 +116,8 @@ bool testRWIssue254()
   Point a ( 0, 0);
   Point b ( 15, 15);
   typedef ImageSelector<Domain, unsigned char>::Type Image;
-  Image image(a,b);
+  Domain domain(a,b); 
+  Image image(domain);
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 

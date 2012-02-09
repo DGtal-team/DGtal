@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/Color.h"
@@ -59,9 +59,9 @@ namespace DGtal
   /**
    * Description of class 'ImageContainerBySTLVector' <p>
    *
-   * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::vector. A linearization of nD domain points
-   * is used to build the std::vector index.
+   * Aim: Model of CImage implementing the association Point<->Value
+   * using a STL vector as container. A linearization of nD domain points
+   * is used to build the STL vector index.
    *
    * The domain can be any model of CDomain (not necessarily an
    * HyperRectDomain instance).
@@ -69,8 +69,8 @@ namespace DGtal
    * This class provides built-in iterators and fast SpanIterators
    * to perform 1D scans.
    *
-   * @tparam TDomain a type for the image domain (model of CDomain).
-   * @tparam TValue a type for image values (model of CValue).
+   * @tparam TDomain a model of CDomain.
+   * @tparam TValue at least a model of CLabel.
    *
    * @see testImage.cpp
    * @see testImageContainerBenchmark.cpp
@@ -81,20 +81,22 @@ namespace DGtal
   {
   public:
 
-    BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
+    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
       
     typedef TValue Value;
-    typedef TDomain Domain;
+
+    typedef TDomain Domain;    
+    typedef typename Domain::Point Point;
+    typedef typename Domain::Vector Vector;
+    typedef typename Domain::Integer Integer;
+    typedef typename Domain::Size Size;
+    typedef typename Domain::Dimension Dimension;
 
     // static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
-    
-    typedef typename Domain::Point Point;
-    typedef typename Domain::Vector Vector;
-    typedef typename Domain::Dimension Dimension;
-    typedef typename Domain::Integer Integer;
-    typedef typename Domain::Size Size;
+
+    // built-in iterator
     typedef typename vector<Value>::iterator Iterator;
     typedef typename vector<Value>::const_iterator ConstIterator;
     typedef typename vector<Value>::reverse_iterator ReverseIterator;
@@ -110,7 +112,7 @@ namespace DGtal
 
     /** 
      * Destructor.
-     $
+     *
     */
     ~ImageContainerBySTLVector();
 
@@ -178,13 +180,9 @@ namespace DGtal
       return myDomain;
     }
 
-    ///@todo temporary copy of translatedomain in the container
-    void translateDomain(const Vector &vec)
-    {
-      myDomain = Domain(myDomain.lowerBound() + vec, myDomain.upperBound() + vec);
-    }
-
-    ///@todo temporary copy of translatedomain in the container
+    /**
+     * @return the domain extension of the image.
+     */
     Vector extent() const
     {
       return   myDomain.upperBound() -  myDomain.lowerBound() 
