@@ -12,6 +12,7 @@ if (  WITH_VISU3D_QGLVIEWER )
   volScanBoundary
   volTrackBoundary
   volBreadthFirstTraversal
+  frontierAndBoundary
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})

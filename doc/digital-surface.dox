@@ -632,15 +632,19 @@ and you will get the resulting cell display:
    @image html digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface."
    @image latex digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface." width=0.5\textwidth
 
-   @note The concepts CUndirectedLocalSimpleGraph and
-   CUndirectedSimpleGraph are susceptible to evolve to meet other
-   standards.
-
    @note In fact, the specific container LightImplicitDigitalSurface
    performs itself a breadth-first traversal to extract its vertices
    by itself. Therefere, you may use a simple begin() and end() to get
    the vertices in this order, when \b your \b container \b is \b a \b
    LightImplicitDigitalSurface.
+
+   @todo The concepts CUndirectedLocalSimpleGraph and
+   CUndirectedSimpleGraph are susceptible to evolve to meet other
+   standards.
+
+   @subsection dgtal_digsurf_sec3_5 3.5 Boundary and frontiers as examples of digital surface
+
+   
 
 */
 }
