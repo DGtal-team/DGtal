@@ -1,0 +1,581 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+   @page dgtal_digital_surface Digital surfaces
+   
+   Documentation written by Jacques-Olivier Lachaud.
+  
+   This part of the manual describes how to define digital surfaces,
+   closed or open. A part of this documentation comes from project <a
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. A
+   lot of the ideas, concepts, algorithms, and code is also a backport
+   from <a
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+
+   - \ref dgtal_digsurf_sec1
+      - \ref dgtal_digsurf_sec1_1
+      - \ref dgtal_digsurf_sec1_2
+      - \ref dgtal_digsurf_sec1_3
+   - \ref dgtal_digsurf_sec2
+      - \ref dgtal_digsurf_sec2_1
+      - \ref dgtal_digsurf_sec2_2
+      - \ref dgtal_digsurf_sec2_3
+      - \ref dgtal_digsurf_sec2_4
+      - \ref dgtal_digsurf_sec2_5
+   - \ref dgtal_digsurf_sec3
+      - \ref dgtal_digsurf_sec3_1
+      - \ref dgtal_digsurf_sec3_2
+
+   A complete example is given in digitalSurface3D.cpp.
+
+   @section dgtal_digsurf_sec1 1. Introduction to digital surfaces
+
+   @subsection dgtal_digsurf_sec1_1 1.1 Possible definitions for digital surfaces
+
+   Although continuous surfaces are well defined as n-manifolds, a
+   digital or discrete analog of surface is more tricky to
+   define. Several methods have been explored to define consistent
+   digital surfaces. We mention three approaches here.
+
+   -# Surface as specific subsets of \f$ Z^n \f$, i.e. as sets of
+      pixels in 2D, voxels in 3D, etc, with specific properties. This
+      approach was proposed by Rosenfeld in the 70s. The set \f$ S
+      \subset Z^n \f$ is a digital surface iff \f$ Z^n \setminus S \f$
+      is composed of two \f$ \alpha \f$-connected components and if \a
+      S is thin (i.e. if any point of \a S is removed, the preceding
+      property does not hold). This approach is not too bad in 2D,
+      becomes more complex in 3D (see the work of Morgenthaler and
+      Rosenfeld or Malgouyres) and is unusable in practice. For
+      instance the border of any digital object is generally not a
+      surface.
+   -# Surface as \f$ n-1 \f$-dimensional cubical complexes. For
+      example, if a digital object is a pure \f$ n \f$-dimensional
+      cubical complex, its boundary is naturally a \f$ n-1
+      \f$-dimensional cubical complex. This seems at first sight a
+      good approach, and it works well with well-composed pictures and
+      images (see the work of Latecki et al.). The obtain complex is
+      indeed a \f$ n-1 \f$-manifold when realized in the Euclidean
+      space. However, if the object contains any \e cross configuration
+      (like two voxels connected by their edge, and the other two
+      voxels adjacent to them are not in the object) then the
+      preceding property does not hold anymore. Cubical complexes are
+      thus interesting for representing objects, but not so
+      interesting when one is interested by the geometry of its
+      boundary.
+   -# Surface as set of n-1-cells with some specific adjacencies. This
+      approach is more or less the approach of Herman, Udupa and
+      others, which was designed originally for tracking surfaces in a
+      digital space. In 2D, this correspond to an interpixel
+      approach. You choose first if you wish an interior adjacency
+      (4-connectedness) or an exterior adjacency (8-adjacency). Two
+      linels (or edges) are connected if they are point-connected and
+      in case of a cross configuration they border the same interior
+      (resp. exterior) pixel. The principle is the same in 3D, where a
+      2-cell (surfel) has edge-connected surfels with a preference in
+      case of cross configuration.
+
+
+   We focus here on the last method to define digital surfaces.
+   
+   @subsection dgtal_digsurf_sec1_2 1.2 Digital surface as a set of n-1-cells
+
+   Formally, the elements of the digital space \f$ Z^n \f$ are called
+   \e spels, and often \e pixels in 2D and \e voxels in 3D. A \e
+   surfel is a couple (u,v) of face-adjacent voxels. A \e digital \e
+   surface is a set of surfels. It is obvious that a spel is a n-cell
+   in the cellular grid decomposition of the space, while a surfel is
+   clearly some oriented n-1-cell which is incident to the two n-cells
+   u and v (see \ref dgtal_cellular_topology).
+
+   Let \e s be some surfel. It is incident to two oriented voxels. By
+   convention, its \e interior pixel is the one that is \b positively
+   oriented.
+
+   We assume from now on that you have instantiated some cellular
+   space \a K of type \a KSpace (see \ref dgtal_ctopo_sec1_4), for
+   instance with the following lines:
+
+   @code
+   KSpace K;
+   Point low( -10, -10, -10 );
+   Point high( 10, 10, 10 ); 
+   bool space_ok = K.init( low, high, true );
+   @endcode
+
+   A surfel is an oriented n-1-cell, i.e. some SCell. Surfel may be
+   obtained from spels by incidence relation. Reciprocally, you can
+   use incidence to get spels.
+
+   @code
+   typedef KSpace::SCell Surfel; // or typedef KSpace::Surfel Surfel;
+   typedef KSpace::SCell Spel; // or typedef KSpace::Surfel Surfel;
+   Spel v = K.sSpel( Point( 0, 0, 0 ), POS ); // +v
+   Surfel sx = K.sIncident( v, 0, true ); // surfel further along x
+   Surfel sy = K.sIncident( v, 1, true ); // surfel further along y
+   Surfel sz = K.sIncident( v, 2, true ); // surfel further along z
+   Spel qx = K.sDirectIncident( s, 0 ); // positive coboundary of s
+   Spel qy = K.sDirectIncident( s, 1 ); // positive coboundary of s
+   Spel qz = K.sDirectIncident( s, 2 ); // positive coboundary of s
+   ASSERT( v == qx && v == qy && v == qz ); // same as qx, qy, qz
+   @endcode
+
+   The direct orientation to some cell \e s is the one that gives a
+   positively oriented cell in the boundary or coboundary of \e s. 
+
+   You may now for instance define the digital surface that lies in
+   the boundary of some digital shape \f$ S \subset Z^n \f$ as the set
+   of oriented surfels between spels of \e S and spels not in \e
+   S. Algebraically, \e S is the formal of its positively oriented
+   spels, and its \e boundary is obtained by applying the boundary
+   operator on \e S.
+
+   @image html digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape S." 
+   @image latex digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape." width=5cm
+   @image html digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
+   @image latex digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel."  width=5cm
+   @image html digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
+   @image latex digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel."  width=5cm
+   @image html digital-surface-BdryOp-4s.png "Opposite cells cancel each other."
+   @image latex digital-surface-BdryOp-4s.png "Opposite cells cancel each other." width=5cm
+   @image html digital-surface-BdryOp-5s.png "This is the resulting set of surfels (in blue and magenta."
+   @image latex digital-surface-BdryOp-5s.png "This is the resulting set of surfels (in blue and magenta." width=5cm
+
+   Defining a digital surface as a set of surfels is not enough for
+   geometry. Indeed we need to relate surfels together so as to have a
+   topology on the digital surface. The first step is to transform the
+   digital surface into a graph.
+
+   @subsection dgtal_digsurf_sec1_3 1.3 Digital surface as a graph: adding adjacencies between surfels
+
+   The idea here is to connect surfels that share some n-2-cells. The
+   obtained adjacency relations are called \e bel \e adjacencies in
+   the terminology of Herman, Udupa and others. Generally an n-2-cell
+   is shared by at most two n-1-cells, except in "cross
+   configuration", symbolized below:
+
+   @verbatim
+   O | X    X: interior spels               O a X
+   - + -    O: exterior spels               b + c
+   X | O    - and |: surfels a,b,c,d        X d O
+            +: n-2-cell 
+   @endverbatim
+   
+   A bel adjacency make a deterministic choice to connect b to d and a
+   to c when interior, and b to a and c to d when exterior. This
+   choice has to be made along each possible pair of directions when
+   going nD. In DGtal, this is coded with the class SurfelAdjacency.
+
+   @image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" 
+   @image latex digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" width=5cm
+
+   The following snippet shows the interior surfel adjacency
+   (i.e. (6,18)-surfaces).
+
+   @snippet topology/digitalSurface3D.cpp digitalSurface3D-SurfelAdjacency
+
+   Once the adjacency has been chosen, it is possible to determine
+   what are the adjacent surfels to a given surfel. More precisely,
+   any surfel (or n-1-cell) has exactly 2n-2 adjacent surfels (for
+   closed surfaces). More precisely, it has exactly 2 adjacent surfels
+   along directions different from the orthogonal direction of the
+   surfel.
+
+   @image html digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels." 
+   @image latex digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels." width=5cm
+
+   In fact, we can be even more precise. We can use orientation to
+   orient the adjacencies consistently. Given two surfels sharing an
+   n-2-cell, this cell is positively oriented in the boundary of one
+   surfel and negatively oriented in the boundary of the other. We
+   have thus that there are n-1 adjacent cells in the direct
+   orientation (positive) and n-1 adjacent cells in the indirect
+   orientation (negative). The direct adjacent surfels look like:
+
+   @image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." 
+   @image latex digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." width=5cm
+   
+   The class SurfelNeighborhood is the base class for computing
+   adjacent surfels. You may use it as follow, but generally this
+   class is hidden for you since you will have more high-level class
+   to move on surfaces.
+
+   @code
+   // K is a KSpace, surfAdj is a SurfelAdjacency, surfel is some SCell.
+   SurfelNeighborhood<KSpace> sNeigh;
+   sNeigh.init( &K, &SAdj, surfel );
+   trace.info() << "surfel      =" << surfel << endl;
+   trace.info() << "follower1(+)=" << sNeigh.follower1( 1, true ) << endl;
+   trace.info() << "follower2(+)=" << sNeigh.follower2( 1, true ) << endl;
+   trace.info() << "follower3(+)=" << sNeigh.follower3( 1, true ) << endl;
+   trace.info() << "follower1(-)=" << sNeigh.follower1( 1, false ) << endl;
+   trace.info() << "follower2(-)=" << sNeigh.follower2( 1, false ) << endl;
+   trace.info() << "follower3(-)=" << sNeigh.follower3( 1, false ) << endl;
+   trace.endBlock();
+   @endcode
+
+   Generally, the methode SurfelNeighborhood::getAdjacentOnSpelSet,
+   SurfelNeighborhood::getAdjacentOnDigitalSet,
+   SurfelNeighborhood::getAdjacentOnPointPredicate,
+   SurfelNeighborhood::getAdjacentOnSurfelPredicate are used to find
+   adjacent surfels.
+
+   Since we have defined adjacencies between surfels of a digital
+   surface, the digital surface forms a graph (at least in theory).
+
+
+   @section dgtal_digsurf_sec2 2. Tracking digital surfaces
+
+   This section show how to extract the boundary of a digital set,
+   given some predicate telling whether we are inside or outside the
+   surface.
+
+   @subsection dgtal_digsurf_sec2_1 2.1 Constructing digital surfaces by scanning
+   
+   Given a domain and a predicate telling whether we are inside or
+   outside the object of interest, it is easy to determine the set of
+   surfels by a simple scanning of the space. This is done for you by
+   static methods Surfaces::uMakeBoundary and Surfaces::sMakeBoundary.
+
+   The following snippet shows how to get a set of surfels that is the
+   boundary of some predicate on point by a simple scanning of the
+   whole domain (see volScanBoundary.cpp).
+
+   @snippet topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
+
+   @subsection dgtal_digsurf_sec2_2 2.2 Constructing digital surfaces by tracking
+
+   In many circumstances, it is better to use the presented graph
+   structure of digital surfaces. For instance it may be used to find
+   the surface just by searching it by adjacencies. This process is
+   called \b tracking. This is done for you by
+   static method Surfaces::trackBoundary.
+
+   The following snippet shows how to get a set of surfels that is the
+   boundary of some predicate on point given only a starting surfel
+   and by tracking (see volTrackBoundary.cpp).
+
+   @snippet topology/volTrackBoundary.cpp volTrackBoundary-ExtractingSurface
+
+   On the lobser.vol volume, volScanBoundary.cpp extracts 155068 surfels
+   in 3866ms, while volTrackBoundary.cpp extracts 148364 surfels in 351ms. 
+
+   @verbatim
+   # Commands
+   $ ./examples/topology/volScanBoundary ../examples/samples/lobster.vol 50 255
+   $ ./examples/topology/volTrackBoundary ../examples/samples/lobster.vol 50 255
+   @endverbatim
+
+   @image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms."
+   @image latex volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms." width=5cm
+
+   In the case you know \b beforehands that your surface is closed
+   (i.e. without boundary), you should use preferentially
+   Surfaces::trackClosedBoundary. This technique only follows direct
+   adjacent surfels and extracts the whole surface when it is
+   closed. This process may be illustrated as follows:
+   
+   @image html suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies."
+   @image latex suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies." width=5cm
+   @image html suivi-artzy.png "Tracking a digital surface by following only direct adjacencies."
+   @image latex suivi-artzy.png "Tracking a digital surface by following only direct adjacencies." width=5cm
+
+
+   @subsection dgtal_digsurf_sec2_3 2.3 The 2D case: the boundary is a sequence of cells
+
+   The surfaces classes offers the possibility to extract an open or
+   closed contour as a sequence of surfels obtained from a DigitalSet
+   and a starting surfel. The full code of this example is available in file <a href="ctopo-2_8cpp-example.html">ctopo-2.cpp </a>. 
+   
+
+   The first step to extract the surfel boudary of a 2D digital set is
+   to obtain an initial boundary surfel:
+   @code 
+      aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);	
+   @endcode
+
+   The first surfel can also be displayed in red with Board2D:      
+   @code  
+       Board2D board;
+       board << image.domain() << set2d; // display domain and set
+       board << CustomStyle( aCell.className(), new CustomColors(  Board2D::Color( 255, 0, 0 ),
+       							           Board2D::Color( 192, 0, 0 ) ));
+       board << aCell;
+    @endcode  
+
+   @image html ctopo2a.png "Start surfel before a tracking (in red)."
+   @image latex ctopo2a.png "Start surfel before a tracking (in red)." width=0.5\textwidth
+
+    
+    Then you can extract the sequence of consecutive surfels:
+    @code 
+     std::vector<Z2i::SCell> vectBdrySCell;
+     SurfelAdjacency<2> SAdj( true );
+     Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
+	   				     ks, SAdj, set2d, aCell );
+    @endcode
+    and display it:
+    @code
+     GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
+     cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 255, 10 ) );
+   
+     unsigned int d=0;
+     std::vector<Z2i::SCell>::iterator it;
+     for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
+     	  board<< CustomStyle((*it).className() ,
+	           	      new CustomColors( Board2D::Color::Black,
+				                cmap_grad( d )))<< *it;
+          d++;
+    }
+   @endcode	
+   You will obtain the following ordered sequence of surfels: 
+
+   @image html ctopo2b.png "Tracking of a closed 2D contour."
+   @image latex ctopo2b.png "Tracking of a closed 2D contour." width=0.5\textwidth
+
+
+   The resulting sequence of surfels does not necessary present an
+   open contour (try for instance image "samples/circleR10modif.pgm"):
+
+   @image html ctopo2c.png  "Tracking of an open 2D contour."
+   @image latex ctopo2c.png  "Tracking of an open 2D contour." width=0.5\textwidth
+   
+
+
+   @subsection dgtal_digsurf_sec2_4 2.4 Further example for tracking 3D Boundary
+
+   With only few modifications we can apply the same extraction on 3D
+   surfel set. The file <a
+   href="ctopo-2-3d_8cpp-example.html">ctopo-2-3d.cpp </a> shows the
+   same previous example adapted in 3D.
+  
+   with the same code we can get a surfel boundary:
+   @code
+   Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
+   @endcode
+   
+   From this SCell all the surfel connected sets can be extracted:
+   @code
+   // Extracting all boundary surfels which are connected to the initial boundary Cell.
+   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
+                                         ks,SAdj, set3d, aCell );
+   @endcode
+
+   To see both initial surfel and the surfel set, we can use the transparent mode:
+
+   @code
+   viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
+   @endcode
+   	
+   To avoid surfel superposition we need to increase with a small
+   shift the surfel size, for this purpose you can add the following key:
+   @code 
+   viewer << Viewer3D::shiftSurfelVisu; 
+   @endcode
+   or use the special mode "Highlighted" which increase automaticly the surfel size.
+
+   You can obtain for instance the following visualisation:
+   
+   @image html ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)."
+   @image latex ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)." width=0.5\textwidth
+   
+   Since in 3D there are several choice for the direction used to
+   exctract surfel boundary, we can specify the constant direction
+   need to drive the surfel extraction:
+
+   @code
+   // Extract the boundary contour associated to the initial surfel in its first direction
+    Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
+ 	    				    ks, *(ks.sDirs( aCell )),SAdj, set3d, aCell );
+   @endcode  					    
+   
+   After extracting the two surfels cut you may obtain the following visualisation:
+   
+   @image html ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)."
+   @image latex ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)." width=0.5\textwidth
+   
+
+
+
+
+
+   @subsection dgtal_digsurf_sec2_5 2.5 Extracting SCell connected boundary surfels
+
+   The class \ref Surfaces provides other useful function to extract
+   connected boundary surfels from a digital set and given a surfel
+   adjacency definition. The example 3dKSSurfaceExtraction.cpp shows an example of such an extraction.
+
+   From a domain we construct a DigitalSet inserting points under given conditions (see.  <a
+   href="3dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> for more details)
+
+@code
+#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+...
+Domain domain( p1, p2);
+DigitalSet diamond_set( domain );
+...
+  diamond_set.insertNew( *it );
+....
+@endcode 
+   
+With this domain bounding points (p1, p2), a KhalimskySpace is
+  constructed and a SurfelAdjacency definition is introduced.
+
+@code 
+ KSpace K;
+ K.init(p1, p2, true);
+ SurfelAdjacency<3> SAdj( true );
+@endcode 
+
+
+
+Then we can extract all connected surfels from the digitalSet surface :
+
+@code 
+  SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate);
+@endcode
+
+
+After processing a simple display of each resulting connecting component you can obtain such a visualisation:
+
+
+
+@image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND"
+@image latex KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND" width=0.5\textwidth
+
+
+
+Here since the last argument is set to true, the resulting
+SignedKhalimskySpaceND are signed in order to indicate the direction
+of exterior. You can also get the SignefKhalimskySpaceND with default
+sign:
+
+
+@code 
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, false);
+@endcode
+
+
+and you will get the resulting cell display:
+
+
+
+
+@image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND."
+@image latex KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND." width=0.5\textwidth
+
+
+   @section dgtal_digsurf_sec3 3. High-level classes for digital surfaces
+
+   Digital surfaces arise in many different contexts:
+
+   - an explicit set of oriented surfels
+   - the boundary of an explicit set of spels
+   - the boundary of an explicit set of digital points
+   - the boundary of a set of digital points, defined implicitly by a
+     predicate: Point -> bool
+   - a set of oriented surfels, defined implicitly by a
+     predicate: Surfel -> bool
+   - the boundary of a region in a labelled image
+   - the frontier between two regions in a labelled image
+   - ...
+   
+   Since there are so many digital surfaces, it is necessary to
+   provide a mechanism to handle them generically. The class
+   DigitalSurface will be the common proxy to hide models of
+   CDigitalSurfaceContainer.
+
+   @subsection dgtal_digsurf_sec3_1 3.1 A common architecture for digital surfaces
+   
+   Since there may be several types of digital surfaces, there are
+   several container classes for them. All of them follow the concept
+   CDigitalSurfaceContainer. Essentially, a model of this class should
+   provide methods begin() and end() to visit all the surfels, and a
+   \e Tracker which allows to move by adjacencies on the surface. A
+   Tracker should be a model of CDigitalSurfaceTracker. The
+   architecture is sumed up below:
+
+   @image html diag-digital-surface-1.png "Class architecture of digital surfaces."
+   @image latex diag-digital-surface-1.png "Class architecture of digital surfaces." width=0.95\textwidth
+
+   @subsection dgtal_digsurf_sec3_2 3.2 Models of digital surface containers
+
+   For now, the implemented digital surface container are:
+
+   - model DigitalSetBoundary, parameterized by a cellular space and a
+     digital set. Represents the boundary of a digital set (a set of
+     digital points, considered as the set of pixels/voxels/spels of
+     the space).
+
+   - model ImplicitDigitalSurface, parameterized by a cellular space
+     and a predicate Point->bool. Represents the (connected) boundary
+     of shape defined implicitly by a predicate. Computes at
+     instanciation the set of surfels by a tracking algorithm.
+
+   - model LightImplicitDigitalSurface, parameterized by a cellular
+     space and a predicate Point->bool. Represents the (connected)
+     boundary of shape defined implicitly by a predicate. Do not
+     compute at instanciation the set of surfels, but rather visits
+     the surface on demand.
+
+   - model ExplicitDigitalSurface, parameterized by a cellular space
+     and a predicate Surfel->bool. Represents a (connected) set of
+     surfels defined implicitly by a predicate. Computes at
+     instanciation the set of surfels by a tracking algorithm.
+
+   - model LightExplicitDigitalSurface, parameterized by a cellular space
+     and a predicate Surfel->bool. Represents a (connected) set of
+     surfels defined implicitly by a predicate.  Do not
+     compute at instanciation the set of surfels, but rather visits
+     the surface on demand. To do.
+
+   Depending of what is your digital surface, you should choose your
+   container accordingly:
+
+   - an explicit set of oriented surfels: model ExplicitDigitalSurface
+     together with a model of CSurfelPredicate on your set.
+
+   - the boundary of an explicit set of spels: either convert it to a
+     DigitalSet and use model DigitalSetBoundary, or use model
+     ImplicitDigitalSurface and a CPointPredicate on your set of spels
+     (require connectedness).
+
+   - the boundary of an explicit set of digital points: model
+     DigitalSetBoundary directly
+
+   - the boundary of a set of digital points, defined implicitly by a
+     predicate Point -> bool: model ImplicitDigitalSurface and a start surfel
+
+   - a set of oriented surfels, defined implicitly by a predicate
+     Surfel -> bool: model ExplicitDigitalSurface and a start surfel.
+
+   - the boundary of a region in a labelled image: model
+     ExplicitDigitalSurface and a start surfel, and a model of
+     CSurfelPredicate.
+
+   - the frontier between two regions in a labelled image: model
+     ExplicitDigitalSurface and a start surfel, and a model of
+     CSurfelPredicate.
+
+   Light versions of containers should be preferred in mostly two
+   cases:
+
+   -# The digital surface is big and you do not wish to keep it in
+      memory. This is probably the case when tracking some implicit
+      function and outputing it in some stream.
+   -# The digital surface is likely to evolve (i.e. the predicate do
+      not give the same response at a point/surfel depending on when
+      it is called).
+
+
+*/
+}
