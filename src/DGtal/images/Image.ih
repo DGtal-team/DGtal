@@ -59,7 +59,7 @@ inline
 void
 DGtal::Image<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Image] " << myImageContainer ;
+  out << "[Image] " << myImagePointer ;
 }
 
 

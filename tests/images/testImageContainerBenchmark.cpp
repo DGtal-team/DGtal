@@ -116,7 +116,6 @@ bool testSuite(unsigned int dim, unsigned int n)
     << " n=" << n << " Alloc= XX"
     << " Constiter= XX" << endl;
     std::cout << dim << " " << n << " " << std::endl;
-    trace.endBlock();
     return false;
   }
 }
