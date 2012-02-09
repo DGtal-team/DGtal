@@ -17,28 +17,28 @@
 #pragma once
 
 /**
- * @file ConstRangeAdapter.h
+ * @file SimpleConstRange.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/06
  *
  *
- * Header file for module ConstRangeAdapter.h
+ * Header file for module SimpleConstRange.h
  *
  * This file contains the definition of basic functors.
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ConstRangeAdapter_RECURSES)
-#error Recursive header files inclusion detected in ConstRangeAdapter.h
-#else // defined(ConstRangeAdapter_RECURSES)
+#if defined(SimpleConstRange_RECURSES)
+#error Recursive header files inclusion detected in SimpleConstRange.h
+#else // defined(SimpleConstRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ConstRangeAdapter_RECURSES
+#define SimpleConstRange_RECURSES
 
-#if !defined ConstRangeAdapter_h
+#if !defined SimpleConstRange_h
 /** Prevents repeated inclusion of headers. */
-#define ConstRangeAdapter_h
+#define SimpleConstRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,7 +53,7 @@ namespace DGtal
 
 
   ///////////////////////////////////////////////////////////////////////////////
-  // class ConstRangeAdapter
+  // class SimpleConstRange
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
@@ -61,33 +61,21 @@ namespace DGtal
    * bounded by two iterators [itb, ite) and provides services to 
    * (circularly)iterate over it (in a read-only manner). 
    *
-   * @tparam TIterator the type of the iterator to adapt
+   * @tparam TConstIterator the type of the iterator to adapt
    * (at least bidirectional) 
    *
-   * Moreover, the provided (circular)iterator is adapted 
-   * with a functor f given at construction so that 
-   * operator* calls f(*it), instead of calling directly 
-   * operator* of the underlying iterator it.
-   *
-   * @tparam TFunctor the type of functor that transforms
-   * the pointed element into another one
-   *
-   * @tparam TReturnType 
-   *
-   * NB: TReturnType should be the type of the element returned by the underlying functor. 
-   *
-   * @see ConstIteratorAdapter BasicFunctors.h BasicPointFunctors.h SCellsFunctors.h
+   * @see ConstRangeAdapter
    */
-  template <typename TIterator, typename TFunctor, typename TReturnType>
-  class ConstRangeAdapter
+  template <typename TConstIterator>
+  class SimpleConstRange
   {
 
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TIterator> )); 
+    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TConstIterator> )); 
 
     // ------------------------- inner types --------------------------------
   public: 
   
-    typedef ConstIteratorAdapter<TIterator,TFunctor,TReturnType> ConstIterator; 
+    typedef TConstIterator ConstIterator; 
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     typedef Circulator<ConstIterator> ConstCirculator;
@@ -103,29 +91,27 @@ namespace DGtal
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
      *
      */
-    ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
-		      const TFunctor& aFunctor )
-      : myBegin(itb), myEnd(ite), myFunctor(&aFunctor) {}
+    SimpleConstRange(const TConstIterator& itb, const TConstIterator& ite)
+      : myBegin(itb), myEnd(ite) {}
 
     /**
      * Copy constructor.
      * @param other the iterator to clone.
      */
-    ConstRangeAdapter( const ConstRangeAdapter & other )
-      : myBegin(other.myBegin), myEnd(other.myEnd), myFunctor(other.myFunctor) {}
+    SimpleConstRange( const SimpleConstRange & other )
+      : myBegin(other.myBegin), myEnd(other.myEnd) {}
   
     /**
      * Assignment.
      * @param other the iterator to copy.
      * @return a reference on 'this'.
      */
-    ConstRangeAdapter& operator= ( const ConstRangeAdapter & other )
+    SimpleConstRange& operator= ( const SimpleConstRange & other )
     {  
       if ( this != &other )
 	{
 	  myBegin = other.myBegin;
 	  myEnd = other.myEnd;
-	  myFunctor = other.myFunctor;
 	}
       return *this;
     }
@@ -133,7 +119,7 @@ namespace DGtal
     /**
      * Destructor. Does nothing.
      */
-    ~ConstRangeAdapter() {}
+    ~SimpleConstRange() {}
 
     /**
      * Checks the validity/consistency of the object.
@@ -149,7 +135,7 @@ namespace DGtal
     void selfDisplay ( std::ostream & out ) const 
     {
       typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
-      out << "[ConstRangeAdapter]" << std::endl; 
+      out << "[SimpleConstRange]" << std::endl; 
       out << "\t"; 
       std::copy( myBegin, myEnd, ostream_iterator<Value>(out, ", ") ); 
       out << std::endl; 
@@ -160,7 +146,7 @@ namespace DGtal
      */
     std::string className() const
     {
-      return "ConstRangeAdapter";
+      return "SimpleConstRange";
     }
   
 
@@ -169,15 +155,11 @@ namespace DGtal
     /**
      * Begin underlying iterator
      */
-    TIterator myBegin; 
+    TConstIterator myBegin; 
     /**
      * End underlying iterator
      */
-    TIterator myEnd; 
-    /**
-     * (alias) pointer on the underlying functor
-     */
-    const TFunctor* myFunctor; 
+    TConstIterator myEnd; 
 
     // ------------------------- iterator services --------------------------------
   public:
@@ -187,7 +169,7 @@ namespace DGtal
      * @return begin iterator
      */
     ConstIterator begin() const {
-      return ConstIterator( myBegin, *myFunctor );
+      return ConstIterator( myBegin );
     }
 
     /**
@@ -195,7 +177,7 @@ namespace DGtal
      * @return end iterator
      */
     ConstIterator end() const {
-      return ConstIterator( myEnd, *myFunctor );
+      return ConstIterator( myEnd );
     }
 
     /**
@@ -230,14 +212,14 @@ namespace DGtal
       return ConstReverseCirculator( this->c() );
     }
 
-  }; //end class ConstRangeAdapter
+  }; //end class SimpleConstRange
 
 } // namespace DGtal
 
   ///////////////////////////////////////////////////////////////////////////////
 
 
-#endif // !defined ConstRangeAdapter_h
+#endif // !defined SimpleConstRange_h
 
-#undef ConstRangeAdapter_RECURSES
-#endif // else defined(ConstRangeAdapter_RECURSES)
+#undef SimpleConstRange_RECURSES
+#endif // else defined(SimpleConstRange_RECURSES)

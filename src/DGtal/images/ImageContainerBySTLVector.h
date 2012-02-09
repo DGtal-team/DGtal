@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/base/SimpleConstRange.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
@@ -103,7 +103,7 @@ namespace DGtal
     //range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef ConstRangeAdapter<typename vector<Value>::const_iterator > ConstRange; 
+    typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange; 
 
     /////////////////// Data members //////////////////
   private: 

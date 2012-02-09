@@ -145,13 +145,13 @@ int main( int argc, char** argv )
   for (int i = 1; i < n; ++i) 
       *ito++ = i;
 
-  typedef ConstRangeAdapter<std::vector<int>::iterator > SimpleRange; 
-  SimpleRange r1(v.begin(), v.end()); 
+  typedef ConstRangeAdapter<std::vector<int>::iterator, DefaultFunctor, int > SimpleRange; 
+  DefaultFunctor df; 
+  SimpleRange r1(v.begin(), v.end(), df); 
 
   //2) thresholded range of integers
-  Thresholder<int> t(n/2);  
-
   typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 
+  Thresholder<int> t(n/2);  
   BoolRange r2(v.begin(), v.end(), t); 
 
   //3) range of signed cells...

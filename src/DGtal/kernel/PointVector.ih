@@ -513,7 +513,7 @@ DGtal::PointVector<dim,TComponent>::operator/= ( const Component coeff )
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
-DGtal::PointVector<dim, TComponent>::dot( const Self& v )
+DGtal::PointVector<dim, TComponent>::dot( const Self& v ) const 
 {
   Component dotprod= NumberTraits<Component>::ZERO;
   for ( Dimension i = 0; i < dim; ++i )

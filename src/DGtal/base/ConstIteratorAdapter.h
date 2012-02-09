@@ -59,6 +59,7 @@ namespace DGtal
    * pointed to by the iterator.
    *
    * @tparam TIterator the type of the iterator to adapt
+   * (at least forward) 
    *
    * To achieve this goal, the adapter is based on a functor f
    * given at construction so that operator* calls f(*it), 
@@ -81,8 +82,9 @@ namespace DGtal
    */
   template <typename TIterator, typename TFunctor, typename TReturnType>
   class ConstIteratorAdapter
-
   {
+
+    BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<TIterator> )); 
 
     //--------------- inner types --------------------------------
   public: 
@@ -92,8 +94,8 @@ namespace DGtal
     typedef TFunctor Functor;
   
     typedef TReturnType value_type; 
-    typedef value_type* pointer;
-    typedef value_type& reference;
+    typedef const value_type* pointer;
+    typedef const value_type& reference;
     typedef typename iterator_traits<TIterator>::difference_type difference_type;
     typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
 
@@ -102,9 +104,9 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<value_type> ));
 
   private: 
-    //use of counted pointers to share the functor and the buffer
-    // among all the instances of the adapter 
-    typedef CountedPtr<Functor> FunctorPtr; 
+
+    typedef const Functor* FunctorPtr; 
+
     typedef CountedPtr<value_type> BufferPtr; 
   
     // ------------------------- Protected Datas ------------------------------
@@ -114,14 +116,14 @@ namespace DGtal
      */
     Iterator myCurrentIt;
     /**
-     * Pointer on a functor
+     * (Alias) pointer on a (constant) functor
      */
     FunctorPtr myFunctorPtr; 
     /**
      * Pointer on a buffer used to temporarily stored the element 
      * returned by @a myFunctor( *myCurrentIt )
      */
-    BufferPtr myBufferPtr;
+    mutable BufferPtr myBufferPtr;
   
     // ------------------------- Private Datas --------------------------------
   private:
@@ -142,7 +144,7 @@ namespace DGtal
      * the pointed element into another element
      */
     ConstIteratorAdapter(const Iterator& it, const Functor& f) 
-      : myCurrentIt(it), myFunctorPtr(new Functor(f)), myBufferPtr(new value_type()) { }
+      : myCurrentIt(it), myFunctorPtr(&f), myBufferPtr(new value_type()) { }
 
     /**
      *  Copy constructor.
@@ -195,12 +197,7 @@ namespace DGtal
      */
     reference operator*() const 
     { 
-      //hack to write in the buffer in a const method
-      BufferPtr aLocalBufferPtr = myBufferPtr; 
-      //apply functor (if allocated) 
-      if (myFunctorPtr.get() != 0)
-	*aLocalBufferPtr = myFunctorPtr->operator()(*myCurrentIt); 
-      //return reference on the element
+      *myBufferPtr = myFunctorPtr->operator()(*myCurrentIt); 
       return myBufferPtr.operator*(); 
     }
 
@@ -209,12 +206,7 @@ namespace DGtal
      */
     pointer operator->() const
     {
-      //hack to write in the buffer in a const method
-      BufferPtr aLocalBufferPtr = myBufferPtr; 
-      //apply functor (if allocated) 
-      if (myFunctorPtr.get() != 0)
-	*aLocalBufferPtr = myFunctorPtr->operator()(*myCurrentIt);
-      //return pointer on the element
+      *myBufferPtr = myFunctorPtr->operator()(*myCurrentIt);
       return myBufferPtr.operator->(); 
     }
 

@@ -512,7 +512,7 @@ namespace DGtal
      * @param v a vector that is dot-producted to *this.
      * @return the dot product of this and v.
      */
-    Component dot( const Self &v);
+    Component dot( const Self &v) const;
 
     /**
      * Addition operator with assignement.
