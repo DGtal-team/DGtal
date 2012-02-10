@@ -29,7 +29,10 @@ namespace DGtal {
       - \ref dgtal_digsurf_sec3_2
       - \ref dgtal_digsurf_sec3_3
       - \ref dgtal_digsurf_sec3_4
-      - \ref dgtal_digsurf_sec3_5
+   - \ref dgtal_digsurf_sec4
+      - \ref dgtal_digsurf_sec4_1
+      - \ref dgtal_digsurf_sec4_2
+      - \ref dgtal_digsurf_sec4_3
 
    A complete example is given in digitalSurface3D.cpp.
 
@@ -344,6 +347,10 @@ namespace DGtal {
      compute at instanciation the set of surfels, but rather visits
      the surface on demand.
 
+   - model SetOfSurfels, parameterized by a cellular space and a set
+     storing surfels. Represents an arbitrary set of surfels stored
+     explicitly.
+
    - model ExplicitDigitalSurface, parameterized by a cellular space
      and a predicate Surfel->bool. Represents a (connected) set of
      surfels defined implicitly by a predicate. Computes at
@@ -358,8 +365,10 @@ namespace DGtal {
    Depending of what is your digital surface, you should choose your
    container accordingly:
 
-   - an explicit set of oriented surfels: model ExplicitDigitalSurface
-     together with a model of CSurfelPredicate on your set.
+   - an explicit set of oriented surfels: model SetOfSurfels, or if
+     you wish to keep only one connected component, the model
+     ExplicitDigitalSurface together with a model of CSurfelPredicate
+     on your set.
 
    - the boundary of an explicit set of spels: either convert it to a
      DigitalSet and use model DigitalSetBoundary, or use model
@@ -483,6 +492,125 @@ namespace DGtal {
    @image html digital-surface-intersecting-balls.png "Frontiers and boundary of two intersecting balls. The first ball is labelled 1 (red), the second 2 (yellow), their intersection 3 (orange). The frontier between 1 and 0 is displayed in red, the frontier between 2 and 0 is displayed in yellow, the boundary of region 3 is displayed in orange."
    @image latex digital-surface-intersecting-balls.png "Frontiers and boundary of two intersecting balls. The first ball is labelled 1 (red), the second 2 (yellow), their intersection 3 (orange). The frontier between 1 and 0 is displayed in red, the frontier between 2 and 0 is displayed in yellow, the boundary of region 3 is displayed in orange." width=0.5\textwidth
 
+
+
+
+   @section dgtal_digsurf_sec4 4. The digital surface graph is a combinatorial manifold
+
+   @subsection dgtal_digsurf_sec4_1 4.1 Umbrellas and faces
+
+   We have shown before that a digital surface has a dual structure
+   that is the graph whose vertices are n-1-cells and whose arcs are
+   (almost) n-2-cells. We can gow further and use n-3-cells to define
+   faces on this graph. This is related to the concept of \b umbrellas
+   in 3D (see [Françon]). More precisely, given a start surfel, an
+   incident n-2-cell (the separator) and an incident n-3-cell (the
+   pivot), one can turn around the pivot progressively to get a
+   face. This gives precisely in 3D the dual to a digital surface that
+   is a kind of marching-cube surface (see [Lachaud:1998-icip,
+   Lachaud:2000-gmod]).
+
+   The main class for computing umbrellas is the class
+   UmbrellaComputer.  Turning around the pivot means moving the face
+   and the separator once (in the track direction), such that the
+   pivot is the same (ie \a +p), the track and separator directions
+   being updated. Repeating this process a sufficient number of times
+   brings the umbrella back in its original position, except in the
+   case when the DigitalSurface has a boundary touching the pivot. You
+   may use it to compute umbrellas given a tracker on your surface.
+
+   You may look at file testUmbrellaComputer.cpp to see how to use
+   this class directly.
+
+   @subsection dgtal_digsurf_sec4_2 4.2 Vertices, arcs and faces on a digital surface
+
+   However, it is simpler to use directly the methods defined in
+   DigitalSurface. It offers three types: DigitalSurface::Vertex,
+   DigitalSurface::Arc, DigitalSurface::Face to get the combinatorial
+   structure of the surface. An arc is an oriented edge, a face is a
+   sequence of edges that is closed when the pivot is not on the
+   boundary and open otherwise.
+
+   The following code lists the faces of a DigitalSurface object, and
+   for each face it lists the coordinates of its vertices.
+
+   @code
+   // MyDigitalSurface is a DigitalSurface realization.
+   // digSurf is any object of type MyDigitalSurface. 
+   // K is a cellular space. 
+   MyDigitalSurface::FaceSet all_faces = digSurf.allFaces();
+   for ( MyDigitalSurface::FaceSet::const_iterator it = all_faces.begin(),
+          it_end = all_faces.end(); it != it_end; ++it )
+    {
+      std::cerr << "    face=" << K.sKCoords( digSurf.pivot( *it ) ) << ":";
+      std::cerr << "(" << it->nbVertices << ")" << (it->isClosed() ? "C": "O");
+      MyDigitalSurface::VertexRange vtx = digSurf.verticesAroundFace( *it );
+      for ( unsigned int i = 0; i < vtx.size(); ++i )
+        {
+          std::cerr << " " << K.sKCoords( vtx[ i ] );
+        }
+      std::cerr << std::endl;
+    }
+   @endcode 
+
+   DigitalSurface provides you with many methods to get faces from
+   edges or vertices and reciprocally.
+
+   - DigitalSurface::outArcs (Vertex): the range of outgoing arcs from
+     the given vertex.
+   - DigitalSurface::inArcs (Vertex): the range of ingoing arcs from
+     the given vertex.
+   - DigitalSurface::facesAroundVertex (Vertex): the range of faces
+     containing this vertex [v]: 0 in 2D, 4 in 3D, 12 in 4D,
+     2(n-1)(n-2) in nD.
+   - DigitalSurface::head (Arc): the head vertex of the given arc
+   - DigitalSurface::tail (Arc): the tail vertex of the given arc
+   - DigitalSurface::opposite (Arc): the opposite arc of the given arc
+     (may not exist if the arc lies on some boundary).
+   - DigitalSurface::arc (Vertex,Vertex): the arc from the first
+     vertex toward the second.
+   - DigitalSurface::facesAroundArc (Arc): the range of faces incident
+     to a given arc. Empty in 2D. 1 face in 3D, 2 in 4D and so one,
+     n-2 in nD. Returned faces may be open.
+   - DigitalSurface::verticesAroundFace (Face): the sequence of
+     vertices that touches this face. The order follows the order of
+     incident arcs.
+   - DigitalSurface::allFaces (): the set of all faces of the digital
+     surface (open and closed faces).
+   - DigitalSurface::allClosedFaces (): the set of all closed faces of
+     the digital surface.
+   - DigitalSurface::allOpenFaces (): the set of all open faces of the
+     digital surface.
+   - DigitalSurface::computeFace ( UmbrellaComputer::State ): compute
+     the face from a given umbrella state.
+   - DigitalSurface::separator ( Arc ): the separator of a given arc
+     (the n-2-cell between the two surfels forming the arc).
+   - DigitalSurface::pivot ( Face ): the positively oriented n-3-cell
+     that is the pivot of the face.
+
+   @subsection dgtal_digsurf_sec4_3 4.3 Application to export surface in OFF format
+
+   In 3D, you may use faces to transform an arbitrary digital surface
+   into a polygonal manifold (closed or open). You can for instance
+   directly the method DigitalSurface::exportSurfaceAs3DOFF to do so,
+   or look at its code to see how it works.
+
+   The following snippets of file volToOff.cpp show how to extract all
+   surfels in an image and then how to export the surface in OFF
+   format. The output is a surface that is very much the classical \b
+   marching-cube surface, except that vertices lies in the middle of
+   the edge.
+
+   @snippet topology/volToOff.cpp volToOff-ExtractingSurface
+   @snippet topology/volToOff.cpp volToOff-makingOFF
+
+   @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
+   @image latex digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file." width=0.5\textwidth
+   @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
+   @image latex digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file." width=0.5\textwidth
+
+   
+
 */
 
 /**
@@ -541,6 +669,27 @@ namespace DGtal {
    @image latex digital-surface-intersecting-balls.png width=0.5\textwidth
    
    \example topology/frontierAndBoundary.cpp
+*/
+
+/**
+   Marching-cube like surface extracted using the combinatorial
+   manifold structure of digital surfaces.
+
+   @see \ref dgtal_digsurf_sec4_3
+
+   On the lobser.vol volume, volToOff.cpp builds an OFF surface of
+   155068 vertices, 154910 faces, 310136 edges in 3879ms+1646ms.
+
+   @verbatim
+   # Commands
+   $ ./examples/topology/volToOff ../examples/samples/cat10.vol 1 255 0
+   $ ./examples/topology/volToOff ../examples/samples/lobster.vol 50 255 0
+   @endverbatim
+
+   @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
+   @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
+
+   \example topology/volToOff.cpp
 */
 
 }
