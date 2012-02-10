@@ -208,17 +208,26 @@ namespace DGtal
      * @param aF1 any Functor
      * @param aF2 any Functor
      */
-    Composer(TFunctor1& aF1, TFunctor2& aF2);
+    Composer(const TFunctor1& aF1, const TFunctor2& aF2): myF1(&aF1), myF2(&aF2) {}
     /** 
      * Copy Operator
      * @param other object to copy
      */
-    Composer(const Composer& other);
+    Composer(const Composer& other): myF1(other.myF1), myF2(other.myF2) {}
+
     /** 
      * Assignement Operator
      * @param other object to copy
      */
-    Composer& operator=(const Composer& other);
+    Composer& operator=(const Composer& other)
+    {
+      if (this != &other)
+	{
+	  myF1 = other.myF1; 
+	  myF2 = other.myF2;
+	}
+    }
+
 
     /** 
      * Operator ()
@@ -236,91 +245,21 @@ namespace DGtal
     inline
     ReturnType operator()(const TInput& aInput) const
     {
-      return myF2( myF1 ( aInput ) );
+      return myF2->operator()( myF1->operator()( aInput ) );
     }
 
   private:
     /** 
-     * First Functor.
+     * Aliasing pointer to the first functor.
      */
-    TFunctor1& myF1;
+    const TFunctor1* myF1;
     /** 
-     * Second Functor.
+     * Aliasing pointer to the second functor.
      */
-    TFunctor2& myF2;
+    const TFunctor2* myF2;
   };
 
-template<typename TFunctor1, typename TFunctor2, typename ReturnType>
-inline
-Composer<TFunctor1, TFunctor2, ReturnType>
-::Composer(TFunctor1& aF1, TFunctor2& aF2)
- :myF1(aF1), myF2(aF2) 
-{}
 
-template<typename TFunctor1, typename TFunctor2, typename ReturnType>
-inline
-Composer<TFunctor1, TFunctor2, ReturnType>
-::Composer(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
- :myF1(other.myF1), myF2(other.myF2)
-{}
-
-
-template<typename TFunctor1, typename TFunctor2, typename ReturnType>
-inline
-Composer<TFunctor1, TFunctor2, ReturnType>&
-Composer<TFunctor1, TFunctor2, ReturnType>
-::operator=(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
-{
-  myF1 = other.myF1; 
-  myF2 = other.myF2; 
-}
-
-  /**
-   * Description of template class 'BinaryToUnaryFunctor' <p>
-   * \brief Aim: Define a simple functor that returns 
-   * the result of an operation between a given value
-   * and a threshold value (0 by default). 
-   *
-   * @tparam TValue a type that should support
-   * the operation performed by TBinaryFunctor. 
-   * @tparam TBinaryFunctor a model of binary function
-   * (default MinusFunctor)
-   */
-  template <typename TValue, typename TBinaryFunctor = MinusFunctor<TValue> >
-  class BinaryToUnaryFunctor
-  {
-  public:
-    typedef TValue Value;
-
-    /** 
-     * Constructor.
-     * @param value  the threshold value.
-     * @param aF  the binary functor.
-     */
-    BinaryToUnaryFunctor(const Value& aValue = 0, const TBinaryFunctor& aF = TBinaryFunctor() )
-      :myValue(aValue), myF(aF) {};
-    
-    /** 
-     * Operator
-     * @return binary function return value
-     * (with arguments @a aValue  and  @a myValue ).
-     */
-    Value operator()(const Value& aValue) const
-    {
-      return myF(aValue, myValue);
-    }
-
-  private:
-    /** 
-     * Threshold value
-     */
-    Value myValue;
-    /** 
-     * Binary functor
-     */
-    TBinaryFunctor myF;
-    
-  };
 
 /**
  * // template class Thresholder

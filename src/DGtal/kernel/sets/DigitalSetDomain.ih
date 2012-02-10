@@ -49,9 +49,7 @@ template <typename TDigitalSet>
 inline
 DGtal::DigitalSetDomain<TDigitalSet>
 ::DigitalSetDomain ( const DigitalSet & aSet )
-  : mySet( aSet ), myPredicate( const_cast<DigitalSet&>(aSet) )
-    //const_cast can be safely used since DigitalSetDomain is not assignable
-    //and therefore myPredicate will not changed
+  : mySet( aSet ), myPredicate( aSet )
 {
   mySet.computeBoundingBox( myLowerBound, myUpperBound );
 }
