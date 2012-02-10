@@ -121,7 +121,6 @@ namespace DGtal
       myImageContainer(anImageContainer)
     { }
 
-
     /**
      * Destructor.
      */
