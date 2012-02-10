@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 
 #include <itkImage.h>
@@ -73,7 +73,7 @@ namespace DGtal
       // ----------------------- Standard services ------------------------------
     public:
 
-      BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
+      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
       BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
 
       typedef TValue Value;

@@ -43,7 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -104,7 +104,7 @@ namespace DGtal
     
     typedef typename CMap::Value Value;
     
-    BOOST_CONCEPT_ASSERT(( CValue<Value> ));
+    BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
     
     BOOST_CONCEPT_USAGE( CColorMap )
     {

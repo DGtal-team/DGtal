@@ -43,7 +43,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
 //#include "DGtal/io/boards/Board2D.h"
@@ -128,7 +128,7 @@ namespace DGtal
  
     public:
 
-      BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
+      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
       BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
         
       typedef THashKey HashKey;
