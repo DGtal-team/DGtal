@@ -57,6 +57,19 @@ DGtal::DomainPredicate<TDomain>
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
+DGtal::DomainPredicate<TDomain>&
+DGtal::DomainPredicate<TDomain>
+::operator=( const DomainPredicate & other )
+{
+  if (this != &other)
+    {
+      myDomain = other.myDomain; 
+    }
+}
+
+//------------------------------------------------------------------------------
+template <typename TDomain>
+inline
 const TDomain & 
 DGtal::DomainPredicate<TDomain>
 ::domain() const
