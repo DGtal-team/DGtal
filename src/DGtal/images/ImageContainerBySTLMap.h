@@ -45,7 +45,7 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -69,7 +69,7 @@ namespace DGtal
 
   public:
 
-    BOOST_CONCEPT_ASSERT(( CValue<Value> ));
+    BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
     BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));    
     
     typedef typename Domain::Point Point;
