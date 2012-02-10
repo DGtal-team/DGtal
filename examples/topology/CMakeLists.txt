@@ -1,18 +1,23 @@
 SET(DGTAL_EXAMPLES_SRC
-
+  ctopo-1
+  ctopo-2
+  khalimskySpaceScanner
 )
 
 
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
-  homotopicThinning3D
-  3dBorderExtraction
-  3dBorderExtractionImg
-  3dKSSurfaceExtraction
-  volScanBoundary
-  volTrackBoundary
-  volBreadthFirstTraversal
-  frontierAndBoundary
+     homotopicThinning3D
+     3dBorderExtraction
+     3dBorderExtractionImg
+     ctopo-1-3d
+     ctopo-1s-3d
+     ctopo-2-3d
+     3dKSSurfaceExtraction
+     volScanBoundary
+     volTrackBoundary
+     volBreadthFirstTraversal
+     frontierAndBoundary
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
