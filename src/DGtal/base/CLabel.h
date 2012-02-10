@@ -17,31 +17,32 @@
 #pragma once
 
 /**
- * @file CQuantity.h
+ * @file CLabel.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
  *
- * Header file for concept CQuantity.cpp
+ * Header file for concept CLabel.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CQuantity_RECURSES)
-#error Recursive header files inclusion detected in CQuantity.h
-#else // defined(CQuantity_RECURSES)
+#if defined(CLabel_RECURSES)
+#error Recursive header files inclusion detected in CLabel.h
+#else // defined(CLabel_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CQuantity_RECURSES
+#define CLabel_RECURSES
 
-#if !defined CQuantity_h
+#if !defined CLabel_h
 /** Prevents repeated inclusion of headers. */
-#define CQuantity_h
+#define CLabel_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/images/CLabel.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -49,18 +50,19 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CQuantity
+  // class CLabel
   /**
-     Description of \b concept '\b CQuantity' <p>
+     Description of \b concept '\b CLabel' <p>
      @ingroup Concepts
-     @brief Aim: defines the concept of quantity in DGtal.
-     
-     <p> Refinement of CLabel and boost::LessThanComparable
+     @brief Aim: Define the concept of DGtal labels. 
+     Models of CLabel can be default-constructible, assignable and equality comparable.
+      
+     <p> Refinement of boost::DefaultConstructible boost::Assignable and boost::EqualityComparable 
     
      <p> Associated types :
     
      <p> Notation
-     - \t X : A type that is a model of CQuantity
+     - \t X : A type that is a model of CLabel
      - \t x, \t y : object of type X
     
      <p> Definitions
@@ -77,16 +79,6 @@ namespace DGtal
         <td class=CPostCondition> \b Postcondition </td> 
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
     
      </table>
     
@@ -94,25 +86,23 @@ namespace DGtal
     
      <p> Models <br>
 
-     A dummy model (for concept checking) is CCQuantityArchetype.
-
      <p> Notes <br>
 
-     @tparam T the type that should be a model of CQuantity.
+     @tparam T the type that should be a model of CLabel.
    */
   template <typename T> 
-  struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
+  struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
+    boost::EqualityComparable<T>
   {
-  
     
-  }; // end of concept CQuantity
+  }; // end of concept CLabel
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CQuantity_h
+#endif // !defined CLabel_h
 
-#undef CQuantity_RECURSES
-#endif // else defined(CQuantity_RECURSES)
+#undef CLabel_RECURSES
+#endif // else defined(CLabel_RECURSES)

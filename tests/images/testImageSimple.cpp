@@ -91,7 +91,6 @@ bool testCreate()
 
   typedef HyperRectDomain<SpaceND <6> > Domain6;
   typedef Image<  ImageContainerBySTLVector< Domain6, int > > MyImage6;
-
   BOOST_CONCEPT_ASSERT(( CImage< MyImage6 > ));
   
   int aa[] = {0,0,0,0,0,0};
@@ -141,20 +140,14 @@ bool testAPI()
 
   trace.warning() << "Image Iterate"<<std::endl;
   trace.info()<<std::endl;
-  for(MyImage::ConstIterator it = image.begin(), ite=image.end();
+  MyImage::ConstRange r = image.range(); 
+  for(MyImage::ConstRange::ConstIterator it =r.begin(), ite=r.end();
       it != ite; ++it)
     std::cerr << (*it)<<" ";
   
   trace.info()<<std::endl;
-  
-  MyImage::Iterator it= image.getIterator(c);
-  nbok += ((*it) == 42) ? 1 : 0; 
-  nb++;
  
-  //Write from pointer
-  (*it)=41;
- 
-  nbok += (image(c) == 41) ? 1 : 0; 
+  nbok += (image(c) == 42) ? 1 : 0; 
   nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") "

@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,12 +56,12 @@ namespace DGtal
      
      Associates values to points.
     
-     <p> Refinement of Assignable
+     <p> Refinement of CUnaryFunctor
     
      <p> Associated types :
     
      - Point : specifies the type for a point (inner type).
-     - Point : specifies the type for a value (inner type).
+     - Value : specifies the type for a value (inner type).
     
      <p> Notation
      - \t X : A type that is a model of CPointFunctor
@@ -103,23 +104,17 @@ namespace DGtal
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointFunctor : boost::Assignable<T>
+  struct CPointFunctor
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
     typedef typename T::Value Value;
 
-    BOOST_CONCEPT_USAGE( CPointFunctor )
-    {
-      // x( p ) returns myV.
-      ConceptUtils::sameType( myV, myF.operator() ( myPoint ) );
-    }
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,Value> ));
+
     // ------------------------- Private Datas --------------------------------
   private:
-    T myF;
-    Point myPoint;
-    Value myV;
     // ------------------------- Internals ------------------------------------
   private:
     

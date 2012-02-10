@@ -142,13 +142,13 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage,
   //We translate the output image to the correct position and return.
   if ( !isSwap )
     {
-      swap.translateDomain(myDisplacementVector);
+      //swap.translateDomain(myDisplacementVector);
       return swap;
     }
 
   else
     {
-      output.translateDomain(myDisplacementVector);
+      //output.translateDomain(myDisplacementVector);
       return output;
     }
 }

@@ -79,7 +79,7 @@ namespace DGtal
     ~DigitalSetDomain();
 
     /**
-     * Coonstructor from set.
+     * Constructor from set.
      * @param aSet the digital set.
      */
     DigitalSetDomain ( const DigitalSet & aSet );
