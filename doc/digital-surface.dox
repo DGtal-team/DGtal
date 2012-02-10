@@ -179,7 +179,7 @@ namespace DGtal {
    The following snippet shows the interior surfel adjacency
    (i.e. (6,18)-surfaces).
 
-   @snippet topology/digitalSurface3D.cpp digitalSurface3D-SurfelAdjacency
+   @snippet topology/volToOff.cpp volToOff-SurfelAdjacency
 
    Once the adjacency has been chosen, it is possible to determine
    what are the adjacent surfels to a given surfel. More precisely,
@@ -204,7 +204,7 @@ namespace DGtal {
    
    The class SurfelNeighborhood is the base class for computing
    adjacent surfels. You may use it as follow, but generally this
-   class is hidden for you since you will have more high-level class
+   class is hidden for you since you will have more high-level classes
    to move on surfaces.
 
    @code
@@ -221,7 +221,7 @@ namespace DGtal {
    trace.endBlock();
    @endcode
 
-   Generally, the methode SurfelNeighborhood::getAdjacentOnSpelSet,
+   Generally, the methods SurfelNeighborhood::getAdjacentOnSpelSet,
    SurfelNeighborhood::getAdjacentOnDigitalSet,
    SurfelNeighborhood::getAdjacentOnPointPredicate,
    SurfelNeighborhood::getAdjacentOnSurfelPredicate are used to find
