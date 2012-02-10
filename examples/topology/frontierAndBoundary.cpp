@@ -110,7 +110,7 @@ int main( int argc, char** argv )
   FSurfelPredicate surfPredicate20( K, image, 2, 0 );
   Frontier frontier20 =
     new FrontierContainer( K, surfPredicate20, surfAdj, bel20 );
-  // boundary of label 3 (connected part containing bel3)
+  // boundary of label 3 (connected part containing bel32)
   SCell vox3  = K.sSpel( c1 - Point( radius1 - 1, 0, 0 ), K.POS );
   SCell bel32 = K.sIncident( vox3, 0, false );
   BSurfelPredicate surfPredicate3( K, image, 3 );
@@ -124,28 +124,30 @@ int main( int argc, char** argv )
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show(); 
+  viewer << SetMode3D( domain.className(), "BoundingBox" )
+         << domain;
   Cell dummy;
-  // viewer << SetMode3D( dummy.className(), "Transparent");
-  viewer << CustomColors3D( Color::Black, Color::Red );
+  // Display frontier between 1 and 0.
   unsigned int nbSurfels10 = 0;
+  viewer << CustomColors3D( Color::Red, Color::Red );
   for ( Frontier::ConstIterator 
           it = frontier10.begin(), it_end = frontier10.end();
         it != it_end; ++it, ++nbSurfels10 )
-    viewer << K.unsigns( *it );
-  viewer << CustomColors3D( Color::Black, Color::Green );
-  // viewer << SetMode3D( dummy.className(), "Transparent");
+    viewer << *it; 
+  // Display frontier between 2 and 0.
   unsigned int nbSurfels20 = 0;
+  viewer << CustomColors3D( Color::Yellow, Color::Yellow );
   for ( Frontier::ConstIterator 
           it = frontier20.begin(), it_end = frontier20.end();
         it != it_end; ++it, ++nbSurfels20 )
-    viewer << K.unsigns( *it );
-  viewer << CustomColors3D( Color::Black, Color::Cyan );
-  // viewer << SetMode3D( dummy.className(), "Highlighted");
+    viewer << *it;
+  // Display boundary of 3.
   unsigned int nbSurfels3 = 0;
+  viewer << CustomColors3D( Color( 255, 130, 15 ), Color( 255, 130, 15 ) );
   for ( Boundary::ConstIterator 
           it = boundary3.begin(), it_end = boundary3.end();
         it != it_end; ++it, ++nbSurfels3 )
-    viewer << K.unsigns( *it );
+    viewer << *it;
   trace.info() << "nbSurfels10 = " << nbSurfels10
                << ", nbSurfels20 = " << nbSurfels20
                << ", nbSurfels3 = " << nbSurfels3 << std::endl;

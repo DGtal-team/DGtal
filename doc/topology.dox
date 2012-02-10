@@ -5,9 +5,10 @@
 namespace DGtal {
 
 /**
-   @page dgtal_topology Digital topology and digital objects
+   @page dgtal_topology I. Digital topology and digital objects
   
-   Documentation written by Jacques-Olivier Lachaud and Bertrand Kerautret.
+   Documentation written by Jacques-Olivier Lachaud and Bertrand
+   Kerautret.  Part of the \ref TopologyPackage.
   
    This part of the manual describes how to define digital
    objects. Subset of a digital sets are not really objects as long as
@@ -440,19 +441,41 @@ Finally the result can simply be displayed using Viewer3D:
 
 
 
+/**
+   Objects have a border, which are the points which touch the
+   complement in the sense of background adjacency. A border of an
+   object is itself an object, with the same topology as the object.
+   
+   @see \ref dgtal_topology_sec3_3
+
+   @image html visuBorderExtraction.png  "Border extraction visualisation" 
+
+   \example topology/3dBorderExtraction.cpp
+*/
 
 /**
-\example homotopicThinning3D.cpp
-* 
+   Objects have a border, which are the points which touch the
+   complement in the sense of background adjacency. A border of an
+   object is itself an object, with the same topology as the object.
+   
+   @see \ref dgtal_topology_sec3_3
+
+   @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
+
+   \example topology/3dBorderExtractionImg.cpp
 */
+
 /**
-\example  3dBorderExtraction.cpp
-* 
+   An homotopic thinning is an iterative removal of simple points from
+   a given digital object.
+
+   @see \ref dgtal_topology_sec3_5
+
+   @image html visuThinning.png  "Resulting 3d thinning with the 6_26 object"
+
+   \example topology/homotopicThinning3D.cpp
 */
-/**
-\example  3dBorderExtractionImg.cpp
-* 
-*/
+
 
 
 
