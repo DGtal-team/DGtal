@@ -70,7 +70,7 @@ namespace DGtal
      * Constructor.
      * @param aSet any set.
      */
-    SetPredicate ( DigitalSet & aSet );
+    SetPredicate ( const DigitalSet & aSet );
 
     /**
      * Copy constructor.
@@ -82,7 +82,6 @@ namespace DGtal
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
     SetPredicate & operator= ( const SetPredicate & other );
 
@@ -106,9 +105,9 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     /**
-     * Reference on the underlying set
+     * Aliasing pointer on the underlying set
      */
-    DigitalSet& mySet;
+    const DigitalSet* mySet;
 
   }; // end of struct SetPredicate
 
