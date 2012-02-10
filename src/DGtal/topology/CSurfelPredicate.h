@@ -68,6 +68,8 @@ namespace DGtal
 
      <p> Models <br>
         
+     - BoundaryPredicate, FrontierPredicate, SurfelSetPredicate
+
      <p> Notes <br>
    */
   template <typename T>
