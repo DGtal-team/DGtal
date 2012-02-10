@@ -114,11 +114,11 @@ bool testBasicFunctors()
   //binary to unary functor
   {
     int i = -5; 
-    BinaryToUnaryFunctor<int> b; //default: minus 0
+    std::binder2nd<std::minus<int> > b(std::minus<int>(), 0); 
     //i - 0
     nbok += ( b(i) == -5 ) ? 1 : 0; 
     nb++;
-    BinaryToUnaryFunctor<int, std::plus<int> > b2(2, std::plus<int>() );
+    std::binder2nd<std::plus<int> > b2(std::plus<int>(), 2); 
     //i + 2
     nbok += ( b2(i) == -3 ) ? 1 : 0; 
     nb++;
@@ -163,7 +163,6 @@ int main( int argc, char** argv )
   basicFunctorsConceptChecking<DefaultFunctor,int,int>(); 
   basicFunctorsConceptChecking<ConstValueFunctor<int>,int,int >(); 
   basicFunctorsConceptChecking<CastFunctor<int>,short,int >(); 
-  basicFunctorsConceptChecking<BinaryToUnaryFunctor<int>,int,int >(); 
   basicFunctorsConceptChecking<Thresholder<int>,int,bool >(); 
   basicFunctorsConceptChecking<Composer<ConstValueFunctor<double>,CastFunctor<int>,int>,char,int >(); 
 

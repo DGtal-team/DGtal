@@ -258,21 +258,21 @@ namespace DGtal
    * @tparam PointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
-  template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor = BoolFunction2 >
+  template <typename TPointPredicate1, typename TPointPredicate2, 
+	    typename TBinaryFunctor = BoolFunction2 >
   struct BinaryPointPredicate
   {
     typedef TPointPredicate1 PointPredicate1;
     typedef TPointPredicate2 PointPredicate2;
     typedef typename PointPredicate1::Point Point;
     // should be the same.
- 	  BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
+    BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
     typedef typename PointPredicate2::Point Point2;
 
     /**
        Constructor from predicates and bool Functor.
        @param pred1 the left predicate.
        @param pred2 the right predicate.
-
        @param boolFunctor the binary function used to combine pred1
        and pred2.
      */
@@ -281,17 +281,35 @@ namespace DGtal
         const TBinaryFunctor & boolFunctor );
 
     /**
+       Copy constructor.
+       @param other the object to copy
+      */
+    BinaryPointPredicate(  const BinaryPointPredicate& other );
+
+    /**
+       Assignement
+       @param other the object to copy
+       @return reference to the current object
+     */
+    BinaryPointPredicate& operator=( const BinaryPointPredicate& other );
+
+    /**
+       Destructor
+     */
+    ~BinaryPointPredicate();
+
+    /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// the left predicate.
-    const PointPredicate1 & myPred1;
-    /// the right predicate.
-    const PointPredicate2 & myPred2;
-    /// the binary functor.
-    TBinaryFunctor myBoolFunctor;
+    /// aliasing pointer to the left predicate.
+    const PointPredicate1* myPred1;
+    /// aliasing pointer to the right predicate.
+    const PointPredicate2* myPred2;
+    /// aliasing pointer to the binary functor.
+    const TBinaryFunctor* myBoolFunctor;
   };
 
 } // namespace DGtal
