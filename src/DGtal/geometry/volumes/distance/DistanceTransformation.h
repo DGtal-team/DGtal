@@ -95,7 +95,7 @@ namespace DGtal
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
     
 

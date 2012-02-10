@@ -42,7 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Circulator.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/CowPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,95 +54,118 @@ namespace DGtal
   // template class ConstIteratorAdapter
   /**
    * Description of template class 'ConstIteratorAdapter' <p>
-   * \brief Any iterator (at least forward) can be adapted
-   * so that operator* returns a modified element of a given type
-   * instead the element pointed to by the iterator. 
+   * \brief This class adapts any iterator (at least forward)
+   * so that operator* returns another element than the one
+   * pointed to by the iterator.
+   *
    * @tparam TIterator the type of the iterator to adapt
-   * @tparam TModifier the type of the object that transforms
-   * the pointed element into an element of another type
+   * (at least forward) 
    *
-   * NB: The dereference operator should be used to get the modified element or to access
+   * To achieve this goal, the adapter is based on a functor f
+   * given at construction so that operator* calls f(*it), 
+   * instead of calling directly operator* of the underlying 
+   * iterator it.
+   *
+   * @tparam TFunctor the type of functor that transforms
+   * the pointed element into another one
+   *
+   * @tparam TReturnType 
+   *
+   * NB: TReturnType should be the type of the element returned by the underlying functor. 
+   * 
+   * NB: The dereference operator should be used to get the returned element or to access
    * to its members. The indirection operator has been implemented for completeness sake, 
-   * but each time the operator is called, it stores the modified element into a buffer. As a 
-   * consequence, the indirection operator can be used without extra costs only if one want 
-   * to access to only one member of the modified element. 
+   * but each time the operator is called, the functor is applied and the returned element 
+   * is stored into a buffer. As a consequence, the indirection operator can be used 
+   * without extra costs only if one want to access to only one of its members. 
    *
-   * @see Modifier.h
    */
-  template <typename TIterator, typename TModifier>
-  class ConstIteratorAdapter //: public TIterator
-
+  template <typename TIterator, typename TFunctor, typename TReturnType>
+  class ConstIteratorAdapter
   {
 
-  //--------------- inner types --------------------------------
+    BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<TIterator> )); 
+
+    //--------------- inner types --------------------------------
   public: 
     
-    typedef ConstIteratorAdapter<TIterator, TModifier> Self;
+    typedef ConstIteratorAdapter<TIterator, TFunctor, TReturnType> Self;
     typedef TIterator Iterator;
-    typedef TModifier Modifier;
+    typedef TFunctor Functor;
   
-    typedef typename TModifier::Output value_type; 
-    typedef value_type* pointer;
-    typedef value_type& reference;
+    typedef TReturnType value_type; 
+    typedef const value_type* pointer;
+    typedef const value_type& reference;
     typedef typename iterator_traits<TIterator>::difference_type difference_type;
     typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
-  
+
+    //value_type should be default-constructible, 
+    //since an iterator is default-constructible
+    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<value_type> ));
+
+  private: 
+
+    typedef const Functor* FunctorPtr; 
+
     typedef CountedPtr<value_type> BufferPtr; 
   
-  // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Datas ------------------------------
   protected:
+    /**
+     * Underlying iterator
+     */
     Iterator myCurrentIt;
-    Modifier myModifier; 
-    BufferPtr myBufferPtr;
+    /**
+     * (Alias) pointer on a (constant) functor
+     */
+    FunctorPtr myFunctorPtr; 
+    /**
+     * Pointer on a buffer used to temporarily stored the element 
+     * returned by @a myFunctor( *myCurrentIt )
+     */
+    mutable BufferPtr myBufferPtr;
   
-  // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
   private:
     
     // ----------------------- Standard services ------------------------------
   public:
-      /**
-       *  The default constructor default-initializes the members
-      */
+    /**
+     *  The default constructor default-initializes the members
+     */
     ConstIteratorAdapter() 
-    : myCurrentIt(), myModifier(), myBufferPtr() { }
+      : myCurrentIt(), myFunctorPtr(), myBufferPtr() { }
 
-      /**
-       *  Standard constructor.
-       * @param it an iterator to adapt
-      */
-      explicit
-    ConstIteratorAdapter(Iterator it) 
-    : myCurrentIt(it), myModifier(), myBufferPtr(new value_type()) { }
     
-     /**
-       *  Constructor.
-       * @param it an iterator to adapt
-       * @param m the modifier that transforms
-       * the pointed element into an element of another type
-      */
-      explicit
-    ConstIteratorAdapter(Iterator it, Modifier m) 
-    : myCurrentIt(it), myModifier(m), myBufferPtr(new value_type()) { }
+    /**
+     *  Constructor.
+     * @param it an iterator to adapt
+     * @param f the functor that transforms
+     * the pointed element into another element
+     */
+    ConstIteratorAdapter(const Iterator& it, const Functor& f) 
+      : myCurrentIt(it), myFunctorPtr(&f), myBufferPtr(new value_type()) { }
 
     /**
      *  Copy constructor.
      * @param other an iterator adapter
      */
     ConstIteratorAdapter(const ConstIteratorAdapter& other)
-    : myCurrentIt(other.myCurrentIt), myModifier(other.myModifier), myBufferPtr(other.myBufferPtr) { }
+      : myCurrentIt(other.myCurrentIt), 
+	myFunctorPtr(other.myFunctorPtr), 
+	myBufferPtr(other.myBufferPtr) { }
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden by default.
      */
     ConstIteratorAdapter & operator= ( const ConstIteratorAdapter & other ) 
     {
       if ( this != &other )
         {
           myCurrentIt = other.myCurrentIt;
-          myModifier = other.myModifier;
+          myFunctorPtr = other.myFunctorPtr;
           myBufferPtr = other.myBufferPtr;
         }
       return *this;
@@ -168,22 +193,20 @@ namespace DGtal
     bool isValid() const { return true;}
 
     /**
-     *  @return the modified element pointed be @a myCurrentIt.
-    */
+     *  @return the modified element pointed to by @a myCurrentIt.
+     */
     reference operator*() const 
     { 
-      BufferPtr aLocalBufferPtr = myBufferPtr; 
-      *aLocalBufferPtr = myModifier.get(*myCurrentIt); //hack to write in the buffer in a const method
+      *myBufferPtr = myFunctorPtr->operator()(*myCurrentIt); 
       return myBufferPtr.operator*(); 
     }
 
     /**
      *  @return  pointer to the modified element stored in @a myBufferPtr.
-    */
+     */
     pointer operator->() const
     {
-      BufferPtr aLocalBufferPtr = myBufferPtr; 
-      *aLocalBufferPtr = myModifier.get(*myCurrentIt); //hack to write in the buffer in a const method
+      *myBufferPtr = myFunctorPtr->operator()(*myCurrentIt);
       return myBufferPtr.operator->(); 
     }
 
@@ -196,9 +219,9 @@ namespace DGtal
       return *this;
     }
 
-      /**
-      * Post-increment
-      */
+    /**
+     * Post-increment
+     */
     Self operator++(int)
     {
       Self tmp = *this;
@@ -207,18 +230,18 @@ namespace DGtal
     }
 
 
-     /**
-      *  Pre-decrement
-      */
+    /**
+     *  Pre-decrement
+     */
     Self& operator--()
     {
       --myCurrentIt;
       return *this;
     }
 
-      /**
-      * Post-decrement
-      */
+    /**
+     * Post-decrement
+     */
     Self operator--(int)
     {
       Self tmp = *this;
@@ -226,7 +249,7 @@ namespace DGtal
       return tmp;
     }
 
-        // ----------------------- Random access operators --------------------------------------
+    // ----------------------- Random access operators --------------------------------------
   public:
 
     Self& operator+=( difference_type d ) {
@@ -253,15 +276,15 @@ namespace DGtal
     }
 
     /**
-    *  Equality operator
-      */
+     *  Equality operator
+     */
     bool operator==( const Self& other) const 
     { 
       return (myCurrentIt == other.myCurrentIt);
     }
-        /**
-    *  difference_type operator
-      */
+    /**
+     *  difference_type operator
+     */
     bool operator!=( const Self& other) const 
     { 
       return !(*this == other); 
@@ -269,29 +292,29 @@ namespace DGtal
     
     // ----------------------- Comparisons operators --------------------------------------
     /**
-    *  Less operator
-      */
+     *  Less operator
+     */
     bool operator<( const Self& other) const 
     { 
       return (myCurrentIt < other.myCurrentIt);
     }
-        /**
-    *  Less or equal operator
-      */
+    /**
+     *  Less or equal operator
+     */
     bool operator<=( const Self& other) const 
     { 
       return (myCurrentIt <= other.myCurrentIt);
     }
-            /**
-    *  Greater
-      */
+    /**
+     *  Greater
+     */
     bool operator>( const Self& other) const 
     { 
       return (myCurrentIt > other.myCurrentIt);
     }
-        /**
-    *  Greater or equal operator
-      */
+    /**
+     *  Greater or equal operator
+     */
     bool operator>=( const Self& other) const 
     { 
       return (myCurrentIt >= other.myCurrentIt);
@@ -305,12 +328,12 @@ namespace DGtal
 
   }; // end of class ConstIteratorAdapter
 
-  template <typename TIterator, typename TModifier >
-  ConstIteratorAdapter<TIterator,TModifier> operator+( 
-    typename iterator_traits<TIterator>::difference_type d, 
-    ConstIteratorAdapter<TIterator,TModifier> & object )
+  template <typename TIterator, typename TFunctor, typename TReturnType >
+  ConstIteratorAdapter<TIterator,TFunctor,TReturnType> 
+  operator+(typename IteratorCirculatorTraits<TIterator>::Difference d, 
+	    ConstIteratorAdapter<TIterator,TFunctor,TReturnType> & object )
   {
-    ConstIteratorAdapter<TIterator,TModifier> tmp = object;
+    ConstIteratorAdapter<TIterator,TFunctor,TReturnType> tmp = object;
     return tmp += d;
   }
 

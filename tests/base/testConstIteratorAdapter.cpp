@@ -30,12 +30,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-
-
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
-
-
-#include "DGtal/base/Modifier.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 
 #include <boost/concept_check.hpp>
@@ -63,9 +60,11 @@ bool testProjection()
   typedef PointVector<2,int> Point2;
   typedef std::vector<Point3>::iterator Iterator3;
   typedef std::vector<Point2>::iterator Iterator2;
-  typedef Point3dTo2dXY<int> Modifier; 
-  
-  typedef ConstIteratorAdapter<Iterator3,Modifier> Adapter; 
+
+  //projector
+  typedef Projector<SpaceND<2,int> > Projector2; 
+
+  typedef ConstIteratorAdapter<Iterator3,Projector2,Point2> Adapter; 
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Adapter> ));
   
@@ -109,39 +108,34 @@ bool testProjection()
   
   trace.beginBlock ( "Testing block ..." );
 
-    //display
-    trace.info() << "3d points " << endl; 
-/*
-    Iterator3 it = r.begin();
-    Iterator3 itEnd = r.end();
-    for ( ; it != itEnd; ++it) 
-    {
-      trace.info() << *it; 
-    }
-    trace.info()  << endl;
-*/
-    trace.info() << "2d points after projection (XY)" << endl; 
-    
-    Adapter aitBegin(r.begin());
-    Adapter ait = aitBegin;    
-    Adapter aitEnd(r.end()); 
+  trace.info() << "2d points after projection (XY)" << endl; 
 
-    for ( ; ait != aitEnd; ++ait) 
+  Projector2 proj; 
+    
+  Adapter aitBegin(r.begin(),proj);
+  Adapter ait = aitBegin;    
+  Adapter aitEnd(r.end(),proj); 
+
+  for ( ; ait != aitEnd; ++ait) 
     {
-      trace.info() << *ait << "(" << ait->operator[](0) << ", " << ait->operator[](1) << ")" << endl;
+      trace.info() << *(ait.base()); 
+      trace.info() << *ait; 
+      trace.info() << "(" << ait->operator[](0) << ", " << ait->operator[](1) << ")" << endl;
     }
 
-    //comparison
-    flag1 = std::equal( rtrue.begin(), rtrue.end(), aitBegin ); 
+  //comparison
+  flag1 = std::equal( rtrue.begin(), rtrue.end(), aitBegin ); 
 
-    //random acces
-    ait = aitBegin + 3;
-    ait = 2 + ait; 
-    trace.info() << "some random access operators" << endl; 
-    trace.info() << *aitBegin << *ait << (aitBegin < ait) << endl; 
-    if (aitBegin < ait) flag2 = true;
-    else flag2 = false; 
-    
+  //random access
+  ait = (aitBegin + 3);
+  ait += 1;
+  ait = 1 + ait; 
+  trace.info() << "operations on random access operators" << endl; 
+  trace.info() << *(aitBegin.base()) << *aitBegin << endl; 
+  trace.info() << "+5" << std::endl; 
+  trace.info() << *(ait.base()) << *ait << endl; 
+  flag2 = (*ait == Point2(3,1)); 
+  trace.info() << flag2 << std::endl;   
   trace.endBlock();
 
     

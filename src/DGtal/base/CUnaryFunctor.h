@@ -17,56 +17,54 @@
 #pragma once
 
 /**
- * @file CPointPredicate.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file CUnaryFunctor.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/07
  *
- * @date 2010/07/10
- *
- * Header file for concept CPointPredicate.cpp
+ * Header file for concept CUnaryFunctor.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CPointPredicate_RECURSES)
-#error Recursive header files inclusion detected in CPointPredicate.h
-#else // defined(CPointPredicate_RECURSES)
+#if defined(CUnaryFunctor_RECURSES)
+#error Recursive header files inclusion detected in CUnaryFunctor.h
+#else // defined(CUnaryFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CPointPredicate_RECURSES
+#define CUnaryFunctor_RECURSES
 
-#if !defined CPointPredicate_h
+#if !defined CUnaryFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define CPointPredicate_h
+#define CUnaryFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CPointPredicate
+  // class CUnaryFunctor
   /**
-     Description of \b concept '\b CPointPredicate' <p>
+     Description of \b concept '\b CUnaryFunctor' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a point.
-     
-     Associates booleans to points.
+     \brief Aim: Defines a unary functor, which
+     associates arguments to results
     
-     <p> Refinement of CUnaryFunctor
+     <p> Refinement of Assignable
     
      <p> Associated types :
-    
-     - Point : specifies the type for a point (inner type).
-    
+        
      <p> Notation
-     - \t X : A type that is a model of CPointPredicate
+     - \t X : a type that is a model of CUnaryFunctor
      - \t x : Object of type \t X
-     - \t p : Object of type Point
+     - \t A : argument type
+     - \t a : Object of type \t A
+     - \t R : result type
+     - \t r : Object of type \t R
     
      <p> Definitions
     
@@ -83,12 +81,12 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            Apply predicate </td>
-     <td class=CExpression>      \t x( \t p ) </td> 
+     <td class=CName>            Apply function </td>
+     <td class=CExpression>      \t r = x( \t a ) </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c bool</td>
+     <td class=CReturnType>      \c R </td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value of the predicate \t x at point \t p</td> 
+     <td class=CSemantics>       return the value of the function \t x on argument \t a</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -97,35 +95,36 @@ namespace DGtal
      <p> Invariants <br>
     
      <p> Models <br>
-    
-     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
-    
+        
      <p> Notes <br>
-   */
-  template <typename T>
-  struct CPointPredicate
+  */
+  template <typename X, typename A, typename R>
+  struct CUnaryFunctor : boost::Assignable<X>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Point Point;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
+    BOOST_CONCEPT_USAGE( CUnaryFunctor )
+    {
+      // x( p ) returns myV.
+      ConceptUtils::sameType( r, x.operator() ( a ) );
+    }
     // ------------------------- Private Datas --------------------------------
   private:
+    X x; 
+    A a; 
+    R r; 
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CPointPredicate
+  }; // end of concept CUnaryFunctor
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CPointPredicate_h
+#endif // !defined CUnaryFunctor_h
 
-#undef CPointPredicate_RECURSES
-#endif // else defined(CPointPredicate_RECURSES)
+#undef CUnaryFunctor_RECURSES
+#endif // else defined(CUnaryFunctor_RECURSES)

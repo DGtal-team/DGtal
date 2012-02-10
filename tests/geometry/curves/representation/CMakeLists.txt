@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
   testArithDSS
-	testArithDSS3d
+	#testArithDSS3d
   testFreemanChain
   testDecomposition  
   testSegmentation
