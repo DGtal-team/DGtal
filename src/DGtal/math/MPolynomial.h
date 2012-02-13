@@ -1955,7 +1955,7 @@ public:
    */
    template<typename Ring, typename Alloc>
    MPolynomial<1, Ring, Alloc> 
-   GCD( const MPolynomial<1, Ring, Alloc> & f, 
+   gcd( const MPolynomial<1, Ring, Alloc> & f, 
         const MPolynomial<1, Ring, Alloc> & g )
    {
      if (f.isZero())
@@ -1984,10 +1984,10 @@ public:
    */
    template<typename Ring>
    MPolynomial<1, Ring, std::allocator<Ring> > 
-   GCD( const MPolynomial<1, Ring, std::allocator<Ring> > & f, 
+   gcd( const MPolynomial<1, Ring, std::allocator<Ring> > & f, 
         const MPolynomial<1, Ring, std::allocator<Ring> > & g )
    {
-     return GCD<Ring, std::allocator<Ring> >(f, g);
+     return gcd<Ring, std::allocator<Ring> >(f, g);
    }
    
    
