@@ -218,6 +218,6 @@ void
 ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Image - STLVector] size=" << this->size() << " valuetype=" 
-      << sizeof(V) << "bytes Domain=" << myDomain;
+      << sizeof(V) << "bytes Domain=" << *myDomain;
 }
 

@@ -6,6 +6,7 @@ SET(DGTAL_TESTS_SRC
    testProgressBar
    testBasicFunctors
    testConstRangeAdapter
+   testOutputIteratorAdapter
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
