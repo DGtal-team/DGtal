@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <iomanip>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/MPolynomial.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,9 +69,11 @@ durchblickC( const double & x, const double & y, const double  z )
  */
 bool testMPolynomialSpeed( double step = 0.01 )
 {
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
 
   trace.beginBlock ( "Testing block ... Evaluation speed of mpolynomials (naive)" );
-  trace.info() << "step is " << step << std::endl;
+  trace.info() << setprecision( 15 ) <<  "step is " << step << std::endl;
   trace.info() << "approximately " << 8.0/(step*step*step) << " computations." << std::endl;
   MPolynomial<3, double> P = durchblick<double>();
   double total = 0.0;
@@ -98,7 +101,7 @@ bool testMPolynomialSpeed( double step = 0.01 )
             total1 += PXY( z );
         }
     }
-  trace.info() << "Total = " << total1 << std::endl;
+  trace.info() << "Total1 = " << total1 << std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing block ... Same computation in C." );
@@ -113,8 +116,17 @@ bool testMPolynomialSpeed( double step = 0.01 )
     }
   trace.info() << "Total2 = " << total2 << std::endl;
   trace.endBlock();
+  nbok += fabs( total1 - total ) < 1e-8 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "fabs( total1 - total ) < 1e-8" << std::endl;
+  nbok += fabs( total2 - total ) < 1e-8 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "fabs( total2 - total ) < 1e-8" << std::endl;
+
   trace.info() << "For information, ImaGene::Polynomial3 takes 164ms for step=0.01 and 1604ms for step = 0.005." << std::endl;
-  return true;
+  return nbok == nb;
 }
 
 /**
@@ -137,26 +149,37 @@ bool testMPolynomial()
   trace.info() << derivative<1>(f) << std::endl;
   MPolynomial<1, int> g = f(2), h = f(3);
   trace.info() << g << " and " << h << std::endl;
-  trace.info() << GCD<double>(g, h) << std::endl; // cast polynomials to MPolynomial<1, double> first; otherwise,
+  trace.info() << gcd<double>(g, h) << std::endl; // cast polynomials to MPolynomial<1, double> first; otherwise,
   // result will be incorrect since int is not a field
-  trace.info() << GCD(g, h) << std::endl; // to prove our point, check for yourself that the result is
+  trace.info() << gcd(g, h) << std::endl; // to prove our point, check for yourself that the result is
   // X_0^5 instead of X_0^2
-  nbok += GCD<double>(g,h) == mmonomial<double>(2) ? 1 : 0; 
+  nbok += gcd<double>(g,h) == mmonomial<double>(2) ? 1 : 0; 
   nb++;
   MPolynomial<1, double> l = f(mmonomial<double>(1) - 1)(mmonomial<double>(1) - 2);
   trace.info() << l << std::endl;
   trace.info() << derivative<0>(l) << std::endl;
-  trace.info() << GCD(l, derivative<0>(l)) << " (GCD of two previous polys is 1)" << std::endl;
-  nbok += GCD(l, derivative<0>(l)) == 1 * mmonomial<double>(0) ? 1 : 0; 
+  trace.info() << gcd(l, derivative<0>(l)) << " (gcd of two previous polys is 1)" << std::endl;
+  nbok += gcd(l, derivative<0>(l)) == 1 * mmonomial<double>(0) ? 1 : 0; 
   nb++;
   trace.info() << "Durchblick (x3y+xz3+y3z+z3+5z)= " << durchblick<double>() << std::endl;
-  
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+  MPolynomial<3, double> Q = mmonomial<double>( 0, 0, 0 )
+    + mmonomial<double>( 1, 2, 0 ) + mmonomial<double>( 4, 1, 1 );
+  std::cout << "Q(x,y,z)=1+xy^2+x^4yz = " << Q << std::endl;
+  std::cout << "         degree       = " << Q.degree() << std::endl;
+  std::cout << "         leading      = " << Q.leading() << std::endl;
+  std::cout << "         Q[0]         = " << Q[ 0 ] << std::endl;
+  std::cout << "         Q[1]         = " << Q[ 1 ] << std::endl;
+  std::cout << "         Q[2]         = " << Q[ 2 ] << std::endl;
+  std::cout << "         Q[3]         = " << Q[ 3 ] << std::endl;
+  std::cout << "         Q[4]         = " << Q[ 4 ] << std::endl;
+  std::cout << "         dQ/dx        = " << derivative<0>(Q) << std::endl;
+  std::cout << "         dQ/dy        = " << derivative<1>(Q) << std::endl;
+  std::cout << "         dQ/dz        = " << derivative<2>(Q) << std::endl;
   return nbok == nb;
 }
 
