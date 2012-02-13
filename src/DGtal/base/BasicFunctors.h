@@ -380,6 +380,123 @@ struct Thresholder<T,true,true> {
 };
 
 
+  /**
+   * Description of template class 'Pair1st' <p>
+   * \brief Aim: Define a simple functor that returns 
+   * the first member of a pair. 
+   *
+   * @tparam ReturnType  type of the first member of the pair 
+   */
+  template <typename ReturnType>
+  class Pair1st
+  {
+  public:
+    
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return first member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    ReturnType operator()(const TPair& aPair) const
+    {
+      return aPair.first;
+    }
+    
+  };
+
+  /**
+   * Description of template class 'Pair2nd' <p>
+   * \brief Aim: Define a simple functor that returns 
+   * the second member of a pair. 
+   *
+   * @tparam ReturnType  type of the second member of the pair 
+   */
+  template <typename ReturnType>
+  class Pair2nd
+  {
+  public:
+    
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return second member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    ReturnType operator()(const TPair& aPair) const
+    {
+      return aPair.second;
+    }
+    
+  };
+
+  /**
+   * Description of template class 'Pair1stMutator' <p>
+   * \brief Aim: Define a simple unary functor that returns 
+   * a reference on the first member of a pair in order
+   * to update it.  
+   *
+   * @tparam ReturnType  type of the first member of the pair 
+   */
+  template <typename ReturnType>
+  class Pair1stMutator
+  {
+  public:
+    
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return reference on the first member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    ReturnType& operator()(TPair& aPair) const
+    {
+      return aPair.first;
+    }
+    
+  };
+
+  /**
+   * Description of template class 'Pair2ndMutator' <p>
+   * \brief Aim: Define a simple unary functor that returns 
+   * a reference on the first member of a pair in order
+   * to update it.  
+   *
+   * @tparam ReturnType  type of the first member of the pair 
+   */
+  template <typename ReturnType>
+  class Pair2ndMutator
+  {
+  public:
+    
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return reference on the second member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    ReturnType& operator()(TPair& aPair) const
+    {
+      return aPair.second;
+    }
+    
+  }; 
 ///////////////////////////////////////////////////////////////////////////////
 
 

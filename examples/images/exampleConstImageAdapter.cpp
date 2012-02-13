@@ -20,7 +20,7 @@
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/21
+ * @date 2012/02/13
  *
  * @brief An example file for ConstImageAdapter.
  *
@@ -82,18 +82,18 @@ int main( int argc, char** argv )
 
   //fill
   const int maximalValue = size*size; 
-  Image::iterator it = img.begin(); 
+  Image::OutputIterator it = img.output(); 
   for (int i = 0; i < maximalValue; ++i)
     *it++ = i;
 
   //display values 
-  displayRange( img.range() ); 
-  
+  Image::ConstRange r = img.range(); 
+  std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
+  cout << endl; 
   trace.endBlock();
   
 
   const int thresholdValue = maximalValue/2; 
-
   trace.beginBlock("Implicit thresholding");
 
   //! [ConstImageAdapterConstruction]
@@ -103,8 +103,12 @@ int main( int argc, char** argv )
   //! [ConstImageAdapterConstruction]
 
   //display values 
-  displayRange( a.range() ); 
-  
+  //! [ConstImageAdapterRange]
+  ConstImageAdapter<Image, Thresholder<Image::Value>, bool>::ConstRange 
+    ra = a.range(); 
+  std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
+  //! [ConstImageAdapterRange]
+  cout << endl; 
   trace.endBlock();
 
 

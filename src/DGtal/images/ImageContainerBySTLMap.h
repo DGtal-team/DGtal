@@ -24,6 +24,11 @@
  *
  * @date 2010/06/15
  *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/13
+ *
  * Header file for module ImageContainerBySTLMap.cpp
  *
  * This file is part of the DGtal library.
@@ -45,8 +50,12 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/base/OutputIteratorAdapter.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,50 +65,150 @@ namespace DGtal
   // class ImageContainerBySTLMap
   /**
    * Description of class 'ImageContainerBySTLMap' <p>
-   * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::map.
+   * Aim: Model of CImage implementing the association Point<->Value
+   * using an STL map.
    *
    *
    * @see testImage.cpp
    */
 
-  template <typename Domain, typename Value>
-  class ImageContainerBySTLMap: public map<typename Domain::Point,Value>
+  template <typename TDomain, typename TValue>
+  class ImageContainerBySTLMap: public map<typename TDomain::Point,TValue>
   {
 
   public:
 
-    BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
-    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));    
-    
+    /// domain
+    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    typedef TDomain Domain;    
     typedef typename Domain::Point Point;
+    typedef typename Domain::Vector Vector;
+    typedef typename Domain::Integer Integer;
+    typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
-    typedef typename map<Point,Value>::size_type TSize;
-    typedef typename map<Point,Value>::iterator Iterator;
-    typedef typename map<Point,Value>::const_iterator ConstIterator;
-    typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
-    typedef typename map<Point,Value>::const_reverse_iterator
-    ConstReverseIterator;
 
+    /// static constants
+    static const typename Domain::Dimension dimension = Domain::dimension;
+
+    /// range of values
+    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+    typedef TValue Value;
+    typedef ConstRangeAdapter<typename map<Point,Value>::const_iterator, 
+			      Pair2nd<Value>, Value > ConstRange; 
+
+    /// output iterator
+    typedef OutputIteratorAdapter<typename map<Point,Value>::iterator,
+				  Pair2ndMutator<Value>, Value > OutputIterator; 
+
+    /////////////////// Data members //////////////////
+  private: 
+
+    /// Aliasing pointer on the image domain
+    const Domain* myDomain;
+
+    /// Functor used for returning only the value of any pair
+    Pair2nd<Value> myInputF;
+
+    /// Functor used to update the value of any pair
+    Pair2ndMutator<Value> myOutputF;
+
+    /// Default value
+    Value myDefaultValue;
+
+    /////////////////// standard services //////////////////
+
+  public: 
+
+    /** 
+     * Constructor from a Domain
+     * 
+     * @param aDomain the image domain.
+     * @param aValue a default value associated to the domain points
+     * that are not contained in the underlying map.
+     */
+    ImageContainerBySTLMap(const Domain &aDomain, const Value& aValue = 0);
+
+
+    /** 
+     * Destructor.
+     *
+    */
+    ~ImageContainerBySTLMap();
+
+  
+    /////////////////// Interface //////////////////
+
+   
+    /**
+     * Get the value of an image at a given position given
+     * by a Point.
+     *
+     * @pre the point must be in the domain
+     *
+     * @param aPoint the point.
+     * @return the value at aPoint.
+     */
+    Value operator()(const Point & aPoint) const;
+
+    /**
+     * Set a value on an Image at a position specified by a Point.
+     *
+     * @pre @c it must be a point in the image domain.
+     *
+     * @param aPoint the point.
+     * @param aValue the value.
+     */
+    void setValue(const Point &aPoint, const Value &aValue);
+    
 
     /**
      * @return the domain associated to the image.
      */
-    Domain domain() const
-    {
-      return Domain(myLowerBound, myUpperBound);
-    }
-    
+    const Domain &domain() const; 
 
+    /**
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
+     */
+    ConstRange range() const;
+
+    /**
+     * @return an output iterator to write values.
+     */
+    OutputIterator output();
+    
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+
+    /**
+     * @return the validity of the Image
+     */
+    bool isValid() const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
+
+    /// built-in iterators
+    typedef typename map<Point,Value>::iterator Iterator;
+    typedef typename map<Point,Value>::const_iterator ConstIterator;
+    typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
+    typedef typename map<Point,Value>::const_reverse_iterator ConstReverseIterator;
     ///\todo create span iterators
     class SpanIterator: public Iterator
     {
-      friend class ImageContainerBySTLMap<Domain,Value>;
+      friend class ImageContainerBySTLMap<TDomain,TValue>;
 
     public:
       SpanIterator( const Point & p ,
 		    const Dimension aDim ,
-		    ImageContainerBySTLMap<Domain,Value> *aMap ) :   
+		    ImageContainerBySTLMap<TDomain,TValue> *aMap ) :   
 	myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
       {
 	myPos = myMap->find( p );
@@ -189,53 +298,12 @@ namespace DGtal
       Iterator myPos;
 
       /// Copy of the underlying images
-      ImageContainerBySTLMap<Domain,Value> *myMap;
+      ImageContainerBySTLMap<TDomain,TValue> *myMap;
 
       ///Dimension on which the iterator must iterate
       Dimension myDimension;
 
     };
-
-    ImageContainerBySTLMap(const Point &,
-			   const Point & ) {};
-
-    ~ImageContainerBySTLMap() {};
-
-    Value operator()(const Point &aPoint) throw( std::bad_alloc )
-    {
-      Iterator it = this->find( aPoint );
-      if ( it == this->end() )
-	throw std::bad_alloc();
-      else
-	return (*it).second; // this->operator[]( aPoint );
-    }
-
-
-    Value operator()(const Iterator &it) throw( std::bad_alloc )
-    {
-      if ( it == this->end() )
-	throw std::bad_alloc();
-      else
-	return (*it).second;
-    }
-    
-
-    void setValue(const Point &aPoint, const Value &aValue)
-    {
-      insert( aPoint, aValue ) ;
-    }
-
-
-    void setValue(SpanIterator &it, const Value &aValue)
-    {
-      ASSERT("NOT-YET-IMPLEMENTED");
-    }
-
-    void setValue(Iterator &it, const Value &aValue)
-    {
-      it->second = aValue;
-    }
-
 
     SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
     {
@@ -245,24 +313,37 @@ namespace DGtal
     SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myLowerBound.at( aDimension ) +
-	myUpperBound.at( aDimension ) - 
-	myLowerBound.at( aDimension ) + 1;
+      tmp.at( aDimension ) = myDomain->lowerBound.at( aDimension ) +
+	myDomain->upperBound.at( aDimension ) - 
+	myDomain->lowerBound.at( aDimension ) + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
-    void allocate(const std::size_t aSize) {};
-
-  private:
-    
-    Point myLowerBound;
-    Point myUpperBound;
   };
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Image'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Image' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TDomain, typename TValue>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, const ImageContainerBySTLMap<TDomain,TValue> & object )
+  {
+    object.selfDisplay ( out );
+    return out;
+  }
+
 
 } // namespace DGtal
 
 
-
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions
+#include "DGtal/images/ImageContainerBySTLMap.ih"
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

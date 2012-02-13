@@ -46,6 +46,8 @@
 #include "DGtal/base/SimpleConstRange.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/io/Color.h"
 
@@ -64,19 +66,16 @@ namespace DGtal
    * using a STL vector as container. A linearization of nD domain points
    * is used to build the STL vector index.
    *
-   * The domain can be any model of CDomain (not necessarily an
-   * HyperRectDomain instance).
-   *
    * As a model of CImage, this class provides two ways of accessing values: 
-   * - by the domain range and the operator() that takes a point and 
-   * returns the associated value. 
+   * - by the range of the domain returned by the domain() method 
+   * and the operator() that takes a point and returns the associated value. 
    * - by the range returned by the range() method, which can be used to 
    * directly iterate over the values of the image
    *
    * This class provides in addition built-in iterators and 
    * a fast span iterator to perform 1D scans.
    *
-   * @tparam TDomain a model of CDomain.
+   * @tparam TDomain a HyperRectDomain.
    * @tparam TValue at least a model of CLabel.
    *
    * @see testImage.cpp
@@ -88,7 +87,7 @@ namespace DGtal
   {
   public:
    
-    //domain
+    /// domain
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
     typedef TDomain Domain;    
     typedef typename Domain::Point Point;
@@ -97,13 +96,20 @@ namespace DGtal
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
 
-    // static constants
+    /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
 
-    //range of values
+    /// domain should be rectangular
+    BOOST_STATIC_ASSERT ((boost::is_same< Domain, 
+			  HyperRectDomain<SpaceND<dimension, Integer> > >::value));
+
+    /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
     typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange; 
+
+    /// output iterator
+    typedef typename vector<Value>::iterator OutputIterator; 
 
     /////////////////// Data members //////////////////
   private: 
@@ -170,6 +176,14 @@ namespace DGtal
     ConstRange range() const
     {
       return ConstRange( this->begin(), this->end() );
+    }
+
+    /**
+     * @return an output iterator to write values.
+     */
+    OutputIterator output()
+    {
+      return this->begin(); 
     }
 
     /**
