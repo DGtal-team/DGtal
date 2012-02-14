@@ -41,7 +41,7 @@
 
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/base/CLabel.h"
 
 namespace DGtal
@@ -139,7 +139,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT((CDomain<Domain>));
 
     typedef typename I::ConstRange Range;
-    BOOST_CONCEPT_ASSERT((CConstRange<Range>));
+    BOOST_CONCEPT_ASSERT((CConstBidirectionalRange<Range>));
 
     
     BOOST_CONCEPT_USAGE(CConstImage)
