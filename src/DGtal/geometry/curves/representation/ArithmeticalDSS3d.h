@@ -53,7 +53,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
-#include "DGtal/base/Modifier.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -88,8 +88,8 @@ namespace DGtal
 
     //requiered types
     typedef TIterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS3d<ConstIterator,TInteger,connectivity> Self; 
+    typedef ArithmeticalDSS3d<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
 
 
     //points and vectors
@@ -105,18 +105,14 @@ namespace DGtal
     typedef DGtal::PointVector<3,double> VectorD3d;
         
     // adapters for iterator
-    typedef deprecated::Point3dTo2dXY<Coordinate> XYModifier;
-    typedef deprecated::Point3dTo2dXZ<Coordinate> XZModifier;
-    typedef deprecated::Point3dTo2dYZ<Coordinate> YZModifier;
-    typedef ConstIteratorAdapter<ConstIterator,XYModifier,Point2d> XYIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,XZModifier,Point2d> XZIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,YZModifier,Point2d> YZIteratorAdapter; 
+    typedef Projector<SpaceND<2,Coordinate> > Projector2d;
+    
+    typedef ConstIteratorAdapter<ConstIterator,Projector2d,Point2d> IteratorAdapter; 
     
 
-    //2d-arithmeticalDSS recognition algorithms
-    typedef DGtal::ArithmeticalDSS<XYIteratorAdapter,TInteger,connectivity> XYArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<XZIteratorAdapter,TInteger,connectivity> XZArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<YZIteratorAdapter,TInteger,connectivity> YZArithmeticalDSS;
+    //2d-arithmeticalDSS recognition algorithm
+    typedef DGtal::ArithmeticalDSS<IteratorAdapter,TInteger,connectivity> ArithmeticalDSS2d;
+    
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -154,6 +150,11 @@ namespace DGtal
      */
     ArithmeticalDSS3d & operator= ( const ArithmeticalDSS3d & other );
 
+    /** 
+     * @return a reverse version of '*this'.
+     */
+    Reverse getReverse() const;
+
     /**
      * Equality operator.
      * @param other the object to compare with.
@@ -182,17 +183,20 @@ namespace DGtal
      
 
     /**
-     * Tests whether the union between a point 
-     * (adding to the front of the DSS 
-     * with respect to the scan orientaion) 
-     * and a DSS is a DSS. 
-     * Computes the parameters of the new DSS 
+     * Tests whether the current DSS can be extended at the front. 
+     * Computes the parameters of the extended DSS if yes. 
      * with the adding point if true.
-     * @param itf an iterator on a sequence of points
-     * @return 'true' if the union is a DSS, 'false' otherwise.
+     * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendForward(const ConstIterator & it);
-
+    bool extendForward();
+    
+    
+    /** 
+     * Tests whether the 3d DSS can be extended at the front. 
+     *
+     * @return 'true' if yes, 'false' otherwise
+     */   
+    bool isExtendableForward();
 
     // ------------------------- Accessors ------------------------------
 
@@ -211,6 +215,18 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+
+    /**
+     *  
+     * @return begin iterator of the 3d DSS range.
+     */
+    ConstIterator begin() const;
+    /**
+     * @return end iterator of the 3d DSS range.
+     */
+    ConstIterator end() const;
+
 
     // ------------------ Display ------------------------------------------
 
@@ -231,21 +247,18 @@ namespace DGtal
   protected:
 
     //2d-arithmeticalDSS recognition algorithms
-    XYArithmeticalDSS myXYalgo;
-    XZArithmeticalDSS myXZalgo;
-    YZArithmeticalDSS myYZalgo;
+    ArithmeticalDSS2d myXYalgo;
+    ArithmeticalDSS2d myXZalgo;
+    ArithmeticalDSS2d myYZalgo;
 
     //first (at the front) and last (at the back) points of the DSS
-    ConstIterator myF, myL;
-
+    ConstIterator myBegin, myEnd;
+    
     // ------------------------- Private Datas --------------------------------
 
   private:
 
-
-
-
-
+    
   }; // end of class ArithmeticalDSS3d
 
 
