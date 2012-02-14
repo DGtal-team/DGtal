@@ -198,13 +198,13 @@ namespace DGtal
     // ------------------------- Accessors ------------------------------
 
     /**
-      * Computes the parameters 
-      * (direction, intercept, thickness)
-      * of the DSS
-      * @param direction
-      * @param intercept
-      * @param thickness
-      */
+     * Computes the parameters 
+     * (direction, intercept, thickness)
+     * of the DSS
+     * @param direction
+     * @param intercept
+     * @param thickness
+     */
     void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
 
     /**
