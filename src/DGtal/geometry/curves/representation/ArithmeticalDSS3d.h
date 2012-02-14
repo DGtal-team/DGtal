@@ -74,9 +74,6 @@ namespace DGtal
   class ArithmeticalDSS3d
   {
 
-
-/* \TODO 6 and 26-connectivity */
-
     // ----------------------- Types ------------------------------
   public:
 
@@ -246,14 +243,18 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   protected:
 
-    //2d-arithmeticalDSS recognition algorithms
+    /// projectors
+    Projector2d myProjXY, myProjXZ, myProjYZ;
+
+    /// 2d-arithmeticalDSS recognition algorithms
     ArithmeticalDSS2d myXYalgo;
     ArithmeticalDSS2d myXZalgo;
     ArithmeticalDSS2d myYZalgo;
 
-    //first (at the front) and last (at the back) points of the DSS
+    /// begin and end iterators
     ConstIterator myBegin, myEnd;
     
+
     // ------------------------- Private Datas --------------------------------
 
   private:
