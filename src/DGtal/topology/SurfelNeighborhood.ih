@@ -428,7 +428,7 @@ getAdjacentOnSurfelPredicate( SCell & adj_surfel,
        ( (!pos) && ( x_track == mySpace->min( track_dir ) ) )
        )
     return 0;
-  Integer x_orth = mySpace->sCoord( surfel(), orthDir() );
+  // Integer x_orth = mySpace->sCoord( surfel(), orthDir() );
   SCell tmp_surfel = adj_surfel;
 
   // Check type of surfel adjacency.

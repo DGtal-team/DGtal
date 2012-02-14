@@ -221,8 +221,8 @@ namespace DGtal
       unsigned int nbVertices; ///< number of vertices incident to face.
       bool closed;         ///< tells if the face is closed or open.
       inline Face( const UmbrellaState & aState, 
-                   unsigned int nb, bool isClosed )
-        : state( aState ), nbVertices( nb ), closed( isClosed )
+                   unsigned int nb, bool aIsClosed )
+        : state( aState ), nbVertices( nb ), closed( aIsClosed )
       {}
       inline bool isClosed() const 
       { return closed; }

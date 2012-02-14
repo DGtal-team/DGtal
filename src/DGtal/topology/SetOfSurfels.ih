@@ -130,8 +130,8 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
 ( const SetOfSurfels & other )
   : myKSpace( other.myKSpace ), 
     mySurfelSet( other.mySurfelSet ),
-    mySurfelAdjacency( other.mySurfelAdjacency ),
-    mySurfelPredicate( other.mySurfelPredicate )
+    mySurfelPredicate( other.mySurfelPredicate ),
+    mySurfelAdjacency( other.mySurfelAdjacency )
 {
 }
 //-----------------------------------------------------------------------------
@@ -141,8 +141,9 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
 (  const KSpace & aKSpace,
    const Adjacency & adj,
    SurfelSet aSetOfSurfels )
-  : myKSpace( aKSpace ), mySurfelSet( aSetOfSurfels ), mySurfelAdjacency( adj ),
-    mySurfelPredicate( mySurfelSet )
+  : myKSpace( aKSpace ), mySurfelSet( aSetOfSurfels ), 
+    mySurfelPredicate( mySurfelSet ),
+    mySurfelAdjacency( adj )
 {
 }
 //-----------------------------------------------------------------------------

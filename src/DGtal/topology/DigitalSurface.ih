@@ -332,20 +332,20 @@ template <typename TDigitalSurfaceContainer>
 inline
 typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::Arc
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
-arc( const Vertex & tail, const Vertex & head ) const
+arc( const Vertex & t, const Vertex & h ) const
 {
   const KSpace & K = container().space();
-  Point p1 = K.sKCoords( tail );
-  Point p2 = K.sKCoords( head );
+  Point p1 = K.sKCoords( t );
+  Point p2 = K.sKCoords( h );
   p2 -= p1;
-  for ( typename KSpace::DirIterator q = K.sDirs( head );
+  for ( typename KSpace::DirIterator q = K.sDirs( h );
         q != 0; ++q )
     {
       Dimension i = *q;
-      if ( p1[ i ] != 0 ) return Arc( tail, i, p1[ i ] > 0 );
+      if ( p1[ i ] != 0 ) return Arc( t, i, p1[ i ] > 0 );
     }
   ASSERT( false && "DGtal::DigitalSurface<TDigitalSurfaceContainer>::arc( tail, head ): tail and head are not adjacent." );
-  return Arc( tail, 0, true );
+  return Arc( t, 0, true );
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -357,9 +357,9 @@ facesAroundArc( const Arc & a ) const
   FaceRange faces;
   UmbrellaState state( a.base, a.k, a.epsilon, 0 );
   myUmbrellaComputer.setState( state );
-  SCell separator = myUmbrellaComputer.separator();
+  SCell sep = myUmbrellaComputer.separator();
   // Faces are to be found along direction spanned by the separator.
-  for ( typename KSpace::DirIterator q = container().space().sDirs( separator );
+  for ( typename KSpace::DirIterator q = container().space().sDirs( sep );
         q != 0; ++q )
     {
       state.j = *q;
