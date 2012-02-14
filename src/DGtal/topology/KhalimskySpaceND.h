@@ -495,6 +495,11 @@ namespace DGtal
     */
     const Cell & upperCell() const;
 
+    /**
+       @return 'true' iff the space is closed.
+    */
+    bool isSpaceClosed() const; 
+
     // ----------------------- Cell creation services --------------------------
   public:
 

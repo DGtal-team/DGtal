@@ -97,6 +97,8 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::init
   if ( myTracker != 0 )
     delete myTracker;
   myTracker = new DigitalSurfaceTracker( tracker );
+  ASSERT( space().isSpaceClosed() 
+          && "[UmbrellaComputer] It is necessary to work with a closed cellular space since umbrellas use separators and pivots, which must exist for arbitrary surfels. Please build a closed KhalimskySpaceND for instance if you wish to work with faces in digital surfaces." );
   myState.surfel = myTracker->current();
   myState.k = k;
   myState.epsilon = epsilon;
@@ -107,20 +109,20 @@ template <typename TDigitalSurfaceTracker>
 inline
 void
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::getState
-( State & state ) const
+( State & aState ) const
 {
   ASSERT( myTracker != 0 );
-  state = myState;
+  aState = myState;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
 inline
 void
-DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::setState( const State & state )
+DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::setState( const State & aState )
 {
   ASSERT( myTracker != 0 );
-  myTracker->move( state.surfel );
-  myState = state;
+  myTracker->move( aState.surfel );
+  myState = aState;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
