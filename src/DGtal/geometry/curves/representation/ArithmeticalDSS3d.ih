@@ -125,10 +125,10 @@ void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const Const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
-  const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
-    myProjXY(other.myProjXY), myProjXZ(other.myProjXZ), myProjYZ(other.myProjYZ),
-    myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
-    myBegin(other.myBegin), myEnd(other.myEnd) {}
+									      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
+  myProjXY(other.myProjXY), myProjXZ(other.myProjXZ), myProjYZ(other.myProjYZ),
+  myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
+  myBegin(other.myBegin), myEnd(other.myEnd) {}
 
 
 /**
@@ -141,7 +141,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> &
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= ( 
-    const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) 
+								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) 
 {
 
   myProjXY = other.myProjXY;
@@ -177,7 +177,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==( 
-  const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const 
+								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity>& other ) const 
 {
   return (  (	myXYalgo == other.myXYalgo ) &&
             (	myXZalgo == other.myXZalgo ) &&
@@ -196,7 +196,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=( 
-        const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const 
+								      const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) const 
 {
   return (!(*this == other));
 }
@@ -219,12 +219,13 @@ inline
 bool 
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward()
 {
-
   if( isExtendableForward() ) {
-    myXYalgo.extendForward();
-    myXZalgo.extendForward();
-    myYZalgo.extendForward();
-    
+
+    bool XYflag = myXYalgo.extendForward();
+    bool XZflag = myXZalgo.extendForward();
+    bool YZflag = myYZalgo.extendForward();
+    ASSERT( (XYflag)&&(XZflag)&&(YZflag) );
+
     myEnd++;
     return true;
   } else return false;
@@ -304,9 +305,9 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-        ::getParameters(Point3d& direction,
-                                  PointD3d& intercept,
-                                  PointD3d& thickness) const
+::getParameters(Point3d& direction,
+		PointD3d& intercept,
+		PointD3d& thickness) const
 {
 
   //let us take the pair of projection planes for which
@@ -344,17 +345,17 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
 
       direction = Point3d(b1*a1,b1*b2,b2*c2);
 
-    Integer mu1 = myXYalgo.getMu();
-    Integer mu2 = myYZalgo.getMu();
-    double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
-    double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
-    intercept = PointD3d(x,0,z);
+      Integer mu1 = myXYalgo.getMu();
+      Integer mu2 = myYZalgo.getMu();
+      double x = (double) NumberTraits<TInteger>::castToInt64_t(mu1) / b1;
+      double z = (double) -NumberTraits<TInteger>::castToInt64_t(mu2) / b2;
+      intercept = PointD3d(x,0,z);
 
-    Integer omega1 = myXYalgo.getOmega()-1;
-    Integer omega2 = myYZalgo.getOmega()-1;
-    double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
-    double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
-    thickness = PointD3d(tx,0,tz);
+      Integer omega1 = myXYalgo.getOmega()-1;
+      Integer omega2 = myYZalgo.getOmega()-1;
+      double tx = (double) NumberTraits<TInteger>::castToInt64_t(omega1) / b1;
+      double tz = (double) -NumberTraits<TInteger>::castToInt64_t(omega2) / b2;
+      thickness = PointD3d(tx,0,tz);
 
     } else {                  
 

@@ -94,14 +94,14 @@ bool testDSSreco()
 
     while ( (algo.end() != sequence.end())
 	    && algo.extendForward()) {
-      //      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
+      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
     
     trace.info() << algo << " " << algo.isValid() << std::endl;
 
     trace.endBlock();
 
-  return true;  
+  return ( algo.isValid() && (algo.end() == (sequence.begin()+13)) );  
 }
 
 
