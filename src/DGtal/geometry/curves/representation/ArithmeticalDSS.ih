@@ -183,11 +183,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
   Point lastPoint(*it);
 
   //if the two last points 
-  //are confounded or not connected
+  //are not connected
   //return false
   Integer deviation = Tools<TInteger,connectivity>
                         ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+  if (deviation>1) return false;
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -530,11 +530,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
   Point lastPoint(*it);
   Vector lastMove = lastPoint-Point(*myL);
   //if the two last points 
-  //are confounded or not connected
+  //are not connected
   //return false
   Integer deviation = Tools<TInteger,connectivity>
                         ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+  if ( (deviation>1) ) return false;
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -622,11 +622,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 {
 
   //if the two last points 
-  //are confounded or not connected
+  //are not connected
   //return false
   Integer deviation = Tools<TInteger,connectivity>
                         ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+  if ( (deviation>1) ) return false;
   else if (mySteps.size()<2) {
 
     //initialisation stage
