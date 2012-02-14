@@ -41,6 +41,7 @@
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/shapes/LinearImplicitCellEmbedder.h"
 //! [implicitSurface-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,21 +55,28 @@ using namespace Z3i;
 
 void usage( int argc, char** argv )
 {
-  std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <int=0|ext=1>" << std::endl;
-  std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol> as an OFF geomview surface file. It is a kind of marching-cube surface, defined by duality with respect to the digital surface." << std::endl;
-  std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT <= I(v) <= maxT." << std::endl;
-  std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency." << std::endl;
+  std::cerr << "Usage: " << argv[ 0 ] << " <Px> <Py> <Pz> <Qx> <Qy> <Qz> <step>" << std::endl;
+  std::cerr << "\t - displays the boundary of a shape defined implicitly by a 3-polynomial." << std::endl;
+  std::cerr << "\t - P and Q defines the bounding box." << std::endl;
+  std::cerr << "\t - step is the grid step." << std::endl;
 }
 
 int main( int argc, char** argv )
 {
-  if ( argc < 1 )
+  if ( argc < 8 )
     {
       usage( argc, argv );
       return 1;
     }
   // std::string inputFilename = argv[ 1 ];
-  // unsigned int minThreshold = atoi( argv[ 2 ] );
+  double p1[ 3 ];
+  double p2[ 3 ];
+  for ( unsigned int i = 0; i < 3; ++i )
+    {
+      p1[ i ] = atof( argv[ 1+i ] );
+      p2[ i ] = atof( argv[ 4+i ] );
+    }
+  double step = atof( argv[ 7 ] );
   // unsigned int maxThreshold = atoi( argv[ 3 ] );
   // bool intAdjacency = atoi( argv[ 4 ] ) == 0;
 
@@ -80,18 +88,38 @@ int main( int argc, char** argv )
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
 
+  // http://www.freigeist.cc/gallery.html
+  // Durchblick
   MPolynomial<3, double> P = mmonomial<double>( 3, 1, 0 )
     + mmonomial<double>( 1, 0, 3 )
     + mmonomial<double>( 0, 3, 1 )
     + mmonomial<double>( 0, 0, 3 )
     + 5 * mmonomial<double>( 0, 0, 1 );
+  // Crixxi (y2+z2-1)2 +(x2+y2-1)3 = 0
+  // developed =
+  // y4 +2y2z2+z4-2z2 -y2
+  // + x6+3x4y2+3x2y4+y6-3x4-6x2y2-3y4+3x2
+  // MPolynomial<3, double> P = mmonomial<double>(0,4,0)
+  //   + 2 * mmonomial<double>(0,2,2)
+  //   + mmonomial<double>(0,2,0)
+  //   + mmonomial<double>(0,0,4)
+  //   - 2 * mmonomial<double>(0,0,2)
+  //   + mmonomial<double>(6,0,0)
+  //   + 3 * mmonomial<double>(4,2,0)
+  //   + 3 * mmonomial<double>(2,4,0)
+  //   + mmonomial<double>(0,6,0)
+  //   - 3 * mmonomial<double>(4,0,0)
+  //   - 6 * mmonomial<double>(2,2,0)
+  //   - 3 * mmonomial<double>(0,4,0)
+  //   + 3 * mmonomial<double>(2,0,0);
+ 
+
   ImplicitShape ishape( P );
   DigitalShape dshape;
   dshape.attach( ishape );
   // dshape.init( RealPoint( -1.0, -1.0, -1.0 ), 
   //              RealPoint( 1.0, 1.0, 1.0 ), 0.2 );
-  dshape.init( RealPoint( -10.0, -10.0, -10.0 ), 
-               RealPoint( 10.0, 10.0, 10.0 ), 0.25 );
+  dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
   Domain domain = dshape.getDomain();
   trace.endBlock();
   //! [implicitSurface-makeSurface]
@@ -103,7 +131,8 @@ int main( int argc, char** argv )
   // since umbrellas use separators and pivots, which must exist for
   // arbitrary surfels.
   bool space_ok = K.init( domain.lowerBound(), 
-                          domain.upperBound(), true );
+                          domain.upperBound(), true // necessary
+                          );
   if (!space_ok)
     {
       trace.error() << "Error in the Khamisky space construction."<<std::endl;
@@ -141,9 +170,13 @@ int main( int argc, char** argv )
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
                << std::endl;
+  typedef LinearImplicitCellEmbedder<KSpace, ImplicitShape, DigitalShape>
+    CellEmbedder;
+  CellEmbedder cellEmbedder;
+  cellEmbedder.init( K, ishape, dshape );
   ofstream out( "marching-cube.off" );
   if ( out.good() )
-    digSurf.exportSurfaceAs3DOFF( out );
+    digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );
   out.close();
   trace.endBlock();
   //! [implicitSurface-makingOFF]

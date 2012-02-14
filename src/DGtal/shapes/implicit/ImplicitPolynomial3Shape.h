@@ -71,6 +71,7 @@ namespace DGtal
     typedef typename RealPoint::Coordinate Ring;
     typedef typename Space::Integer Integer;
     typedef MPolynomial< 3, Ring > Polynomial3;
+    typedef Ring Value;
     
     BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
     

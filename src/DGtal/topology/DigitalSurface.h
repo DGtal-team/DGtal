@@ -502,6 +502,15 @@ namespace DGtal
      */
     void exportSurfaceAs3DOFF ( std::ostream & out ) const;
 
+    /**
+       Writes/Displays the object on an output stream.
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of cellular grid elements.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedSurfaceAs3DOFF ( std::ostream & out,
+                                        const CellEmbedder & cembedder ) const;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
