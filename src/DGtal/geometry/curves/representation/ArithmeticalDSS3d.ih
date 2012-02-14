@@ -72,14 +72,30 @@ inline
 void DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::init(const ConstIterator& it)
 {
 
-  myF = it;
-  myL = it;
-
-  XYIteratorAdapter XYit(it); 
+  myBegin = it;
+  myEnd = it;
+  
+  myEnd++;
+  
+  std::vector<DGtal::Dimension> v1,v2,v3;
+  v1.push_back(0);
+  v1.push_back(1);
+  v2.push_back(0);
+  v2.push_back(2);
+  v3.push_back(1);
+  v3.push_back(2);
+  Projector2d proj1, proj2, proj3;
+  
+  proj1.init(v1.begin(),v1.end());
+  IteratorAdapter XYit(it,proj1); 
   myXYalgo.init(XYit);
-  XZIteratorAdapter XZit(it); 
+  
+  proj2.init(v2.begin(),v2.end());
+  IteratorAdapter XZit(it,proj2); 
   myXZalgo.init(XZit);
-  YZIteratorAdapter YZit(it); 
+  
+  proj3.init(v3.begin(),v3.end());
+  IteratorAdapter YZit(it,proj3); 
   myYZalgo.init(YZit);
 
 }
@@ -94,7 +110,7 @@ inline
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::ArithmeticalDSS3d ( 
   const ArithmeticalDSS3d<TIterator,TInteger,connectivity> & other ) : 
     myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
-    myF(other.myF), myL(other.myL) {}
+    myBegin(other.myBegin), myEnd(other.myEnd) {}
 
 
 /**
@@ -113,11 +129,20 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= (
   myXYalgo = other.myXYalgo;
   myXZalgo = other.myXZalgo; 
   myYZalgo = other.myYZalgo;
-  myF = other.myF;
-  myL = other.myL;
+  myBegin = other.myBegin;
+  myEnd = other.myEnd;
 
   return *this;
 }
+
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::ArithmeticalDSS3d<std::reverse_iterator<TIterator>,TInteger,connectivity>
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
+  return Reverse();
+} 
+
 
 /**
  * Equality operator.
@@ -136,8 +161,8 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator==(
   return (  (	myXYalgo == other.myXYalgo ) &&
             (	myXZalgo == other.myXZalgo ) &&
             (	myYZalgo == other.myYZalgo ) &&
-            (*myF == *other.myF) &&  
-            (*myL == *other.myL) );
+            (*myBegin == *other.myBegin) &&  
+            (*myEnd == *other.myEnd) );
 }
 
 /**
@@ -171,37 +196,68 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator!=(
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward(const ConstIterator& it)
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::extendForward()
 {
 
-//projection on xy-plane
-  XYIteratorAdapter XYit(it); 
-  bool XYflag = true;
-  if (myXYalgo.getFrontPoint() != *XYit) {
-    XYflag = myXYalgo.isExtendableForward(XYit);
-  }
-//projection on xz-plane
-  XZIteratorAdapter XZit(it); 
-  bool XZflag = true;
-  if (myXZalgo.getFrontPoint() != *XZit) {
-    XZflag = myXZalgo.isExtendableForward(XZit);
-  }
-//projection on yz-plane
-  YZIteratorAdapter YZit(it); 
-  bool YZflag = true;
-  if (myYZalgo.getFrontPoint() != *YZit) {
-    YZflag = myYZalgo.isExtendableForward(YZit);
-  }
-
-
-  if ( (XYflag)&&(XZflag)&&(YZflag) ) {
-    myXYalgo.extendForward(XYit);
-    myXZalgo.extendForward(XZit);
-    myYZalgo.extendForward(YZit);
-    myL = it;
+  bool flagExtend = this->isExtendableForward();
+  
+  if(flagExtend) {
+    myXYalgo.extendForward();
+    myXZalgo.extendForward();
+    myYZalgo.extendForward();
+    
+    myEnd++;
     return true;
   } else return false;
 }
+
+
+
+/** Tests whether the 3d DSS can be extended at the front. 
+ *
+ * @return 'true' if yes, 'false' otherwise
+ */   
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+bool 
+DGtal::ArithmeticalDSS3d<TIterator, TInteger,connectivity>::isExtendableForward()
+{
+  //projection on xy-plane
+  bool XYflag = true;
+  XYflag = myXYalgo.isExtendableForward();
+  
+  //projection on xz-plane
+  bool XZflag = true;
+  XZflag = myXZalgo.isExtendableForward();
+  
+  //projection on yz-plane
+  bool YZflag = true;
+  YZflag = myYZalgo.isExtendableForward();
+  
+  if ( (XYflag)&&(XZflag)&&(YZflag) ) 
+    return true;
+  else return false;  
+}
+
+
+
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::begin() const {
+  return myBegin;
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+TIterator
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::end() const {
+  ConstIterator i(myEnd); ++i;
+  return i;
+}
+
+
 
 
 //-----------------------------------------------------------------

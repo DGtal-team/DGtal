@@ -34,7 +34,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/base/ConstRangeAdapter.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -123,7 +123,7 @@ bool testRange(const Range &aRange)
 template <typename Range>
 void testRangeConceptChecking()
 {
-  BOOST_CONCEPT_ASSERT(( CConstRange<Range> ));
+  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<Range> ));
 }
 
 /*
