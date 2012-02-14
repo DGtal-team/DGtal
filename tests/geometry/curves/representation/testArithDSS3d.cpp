@@ -91,18 +91,12 @@ bool testDSSreco()
   Iterator i = sequence.begin();  
   algo.init(i);
   trace.info() << "init with " << (*i) << std::endl;
-    ++i;
 
     while ( (algo.end() != sequence.end())
 	    && algo.extendForward()) {
-      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
+      //      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
     
-    // while ( (i!=sequence.end())
-    // 	    &&(algo.extendForward(i)) ) {
-    //   trace.info() << "extended with " << (*i) << std::endl;
-    //   ++i;
-    // }
     trace.info() << algo << " " << algo.isValid() << std::endl;
 
     trace.endBlock();
@@ -170,7 +164,7 @@ int main(int argc, char **argv)
   trace.info() << endl;
 
   bool res = testDSSreco() 
-    && testSegmentation()
+    //    && testSegmentation()
   ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
