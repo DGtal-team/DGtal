@@ -184,17 +184,17 @@ namespace DGtal
      * state must be consistent with the tracker. In particular, the
      * face of the state must lie on the same digital surface.
      *
-     * @param state a state describing the face, the separator and the pivot.
+     * @param aState a state describing the face, the separator and the pivot.
      */
-    void setState( const State & state );
+    void setState( const State & aState );
 
     /**
      * Returns the state of the umbrella in the referenced object [state]. 
      *
-     * @param state (returns) the current umbrella state describing
+     * @param aState (returns) the current umbrella state describing
      * the face, the separator and the pivot.
      */
-    void getState( State & state ) const;
+    void getState( State & aState ) const;
 
     /// Accessor to current state.
     const State & state() const;
