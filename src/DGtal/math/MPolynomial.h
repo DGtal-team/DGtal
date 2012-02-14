@@ -725,12 +725,12 @@ public:
       : myVec(allocator)
     {}
     
-    IVector( Size size, const Alloc & allocator = Alloc() )
-      : myVec( size, T(), allocator )
+    IVector( Size aSize, const Alloc & allocator = Alloc() )
+      : myVec( aSize, T(), allocator )
     {}
     
-    IVector( Size size, const T & entry, const Alloc & allocator = Alloc() )
-      : myVec(size, entry, allocator)
+    IVector( Size aSize, const T & entry, const Alloc & allocator = Alloc() )
+      : myVec(aSize, entry, allocator)
     {}
     
     Size size() const
@@ -738,9 +738,9 @@ public:
       return myVec.size();
     }
     
-    void resize( Size size, const T & entry = T() )
+    void resize( Size aSize, const T & entry = T() )
     {
-      myVec.resize(size, entry);
+      myVec.resize(aSize, entry);
     }
     
     const T & operator[] ( Size i ) const
@@ -827,16 +827,16 @@ public:
       : myAllocator(allocator), myVec(allocator)
     {}
     
-    IVector(Size size, const Alloc & allocator = Alloc())
+    IVector(Size aSize, const Alloc & allocator = Alloc())
       : myAllocator(allocator), myVec(size, allocator)
     {
-      create(0, size, T());
+      create(0, aSize, T());
     }
     
-    IVector(Size size, const T & entry, const Alloc & allocator = Alloc())
+    IVector(Size aSize, const T & entry, const Alloc & allocator = Alloc())
       : myAllocator(allocator), myVec(size, allocator)
     {
-      create(0, size, entry);
+      create(0, aSize, entry);
     }
     
     IVector(const IVector & v)
@@ -866,14 +866,14 @@ public:
       return myVec.size();
     }
     
-    void resize(Size size, const T & entry = T())
+    void resize(Size aSize, const T & entry = T())
     {
       Size oldsize = myVec.size();
-      if (oldsize > size)
-        free(size, oldsize);
-      myVec.resize(size);
-      if (oldsize < size)
-        create(oldsize, size, entry);
+      if (oldsize > aSize)
+        free(aSize, oldsize);
+      myVec.resize(aSize);
+      if (oldsize < aSize)
+        create(oldsize, aSize, entry);
     }
     
     const T & operator[] (Size i) const

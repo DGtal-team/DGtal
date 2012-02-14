@@ -49,7 +49,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-void usage( int argc, char** argv )
+void usage( int, char** argv )
 {
   std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <int=0|ext=1>" << std::endl;
   std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol> as an OFF geomview surface file. It is a kind of marching-cube surface, defined by duality with respect to the digital surface." << std::endl;
