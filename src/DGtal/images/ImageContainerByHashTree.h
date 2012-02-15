@@ -44,10 +44,12 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
+#include "DGtal/base/ConstRangeAdapter.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Bits.h"
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
+#include "DGtal/images/SetValueIterator.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -128,14 +130,24 @@ namespace DGtal
  
     public:
 
-      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+      typedef ImageContainerByHashTree<TDomain, TValue, THashKey> Self; 
         
       typedef THashKey HashKey;
-      typedef TValue Value;
+
+      /// domain
+      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
       typedef TDomain Domain;
       typedef typename Domain::Point Point;
       typedef typename Domain::Vector Vector;
+
+      /// values range
+      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+      typedef TValue Value;
+      typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
+
+      /// output iterator
+      typedef SetValueIterator<Self> OutputIterator; 
+
 
       // static constants
       static const typename TDomain::Space::Dimension dim = TDomain::dimension;
@@ -196,6 +208,24 @@ namespace DGtal
        */      
       ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& toCopy);
 
+
+      // ///assignement 
+
+      // /**
+      //  * @return the domain associated to the image.
+      //  */
+      // const Domain &domain() const; 
+
+      // /** 
+      //  * @return an instance of ConstRange 
+      //  * used to iterate over the values.
+      //  */      
+      // ConstRange output() const;
+
+      /** 
+       * @return an output iterator used to write values.
+       */      
+      OutputIterator output();
 
 
       /**
@@ -665,6 +695,10 @@ namespace DGtal
        */
       Value blendChildren(HashKey key) const;
 
+
+      //----------------------- internal data --------------------------------
+    protected: 
+
       /**
        * The array of linked lists containing all the data
        */
@@ -704,7 +738,7 @@ namespace DGtal
     public:
       ///The morton code computer.
       Morton<HashKey, Point> myMorton; // public because Display2DFactory !!!
-    protected:
+
 
     };
 
