@@ -144,12 +144,6 @@ namespace DGtal
     /// Aliasing pointer on the image domain
     const Domain* myDomain;
 
-    /// Functor used for returning only the value of any pair
-    Pair2nd<Value> myInputF;
-
-    /// Functor used to update the value of any pair
-    Pair2ndMutator<Value> myOutputF;
-
     /// Default value
     Value myDefaultValue;
 
@@ -166,6 +160,20 @@ namespace DGtal
      */
     ImageContainerBySTLMap(const Domain &aDomain, const Value& aValue = 0);
 
+    /** 
+     * Copy operator
+     * 
+     * @param other the object to copy.
+     */
+    ImageContainerBySTLMap(const ImageContainerBySTLMap& other);
+
+    /** 
+     * Assignement operator
+     * 
+     * @param other the object to copy.
+     * @return this
+     */
+    ImageContainerBySTLMap& operator=(const ImageContainerBySTLMap& other);
 
     /** 
      * Destructor.

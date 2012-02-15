@@ -81,6 +81,7 @@ namespace DGtal
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     typedef typename TImageContainer::ConstRange ConstRange; 
+    typedef typename TImageContainer::OutputIterator OutputIterator; 
 
     ///Pointer to the image container data.
     typedef CowPtr<TImageContainer> ImagePointer;
@@ -175,6 +176,17 @@ namespace DGtal
       return myImagePointer->range();
     }
         
+    /** 
+     * Returns the range of the underlying image
+     * to iterate over its values
+     * 
+     * @return a range. 
+     */
+    OutputIterator output()
+    {
+      return myImagePointer->output();
+    }
+
     /////////////////// Accessors //////////////////
 
    

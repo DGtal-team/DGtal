@@ -43,11 +43,34 @@ template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const Domain& aDomain, const Value& aValue)
-  : myDomain(&aDomain), myInputF( Pair2nd<Value>() ), 
-    myOutputF( Pair2ndMutator<Value>() ), myDefaultValue(aValue)
+  : myDomain(&aDomain), myDefaultValue(aValue)
 {
 }
 
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+DGtal::ImageContainerBySTLMap<TDomain,TValue>
+::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
+  : map<typename TDomain::Point,TValue,details::PointComparator>(other), 
+    myDomain(other.myDomain), myDefaultValue(other.myDefaultValue)
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+DGtal::ImageContainerBySTLMap<TDomain,TValue>&
+DGtal::ImageContainerBySTLMap<TDomain,TValue>
+::operator=(const ImageContainerBySTLMap& other)
+{
+  if (this != &other)
+    {
+      map<typename TDomain::Point,TValue,details::PointComparator>::operator=(other); 
+      myDomain = other.myDomain; 
+      myDefaultValue = other.myDefaultValue; 
+    }
+  return *this; 
+}
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline
