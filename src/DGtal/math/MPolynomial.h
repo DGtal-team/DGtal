@@ -794,7 +794,8 @@ public:
   {
   public:
     typedef TAlloc Alloc;
-    typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
+    // typedef typename std::vector<typename Alloc::pointer, typename Alloc::template rebind<typename Alloc::pointer>::other>::size_type Size;
+    typedef unsigned long int Size;
 
   private:
     Alloc myAllocator;
@@ -834,13 +835,13 @@ public:
     {}
     
     IVector(Size aSize, const Alloc & allocator = Alloc())
-      : myAllocator(allocator), myVec(size, allocator)
+      : myAllocator(allocator), myVec(aSize, 0, allocator)
     {
       create(0, aSize, T());
     }
     
     IVector(Size aSize, const T & entry, const Alloc & allocator = Alloc())
-      : myAllocator(allocator), myVec(size, allocator)
+      : myAllocator(allocator), myVec(aSize, 0, allocator)
     {
       create(0, aSize, entry);
     }
@@ -1002,7 +1003,7 @@ private:
     */
     inline 
     MPolynomial( bool, Size s, const Alloc & allocator)
-        : myValue(s) 
+      : myValue(s) 
     {}
     
 public:
@@ -1593,6 +1594,84 @@ public:
   // ------------------------- monomial services ----------------------------
 
   /**
+     Creates a monomial X_k^e 
+     @param k the index of the variable (X_k)
+     @param e the exponent for X_k
+     @return the 1-variable polynomial X_0^e
+     @tparam n the number of indetermionates.
+     @tparam Ring the type for the coefficent ring of the polynomial.
+     @tparam Alloc the type of allocator.
+  */
+  template <int n, typename Ring, typename Alloc>
+  class Xe_kComputer
+  {
+  public:
+    Xe_kComputer() {}
+
+    MPolynomial<n, Ring, Alloc> 
+    get( unsigned int k, unsigned int e )
+    {
+      MPolynomial<n, Ring, Alloc> p;
+      if ( k == 0 )
+        p[e] = Xe_kComputer<n-1,Ring,Alloc>().get( k-1, e ); 
+      else
+        p[0] = Xe_kComputer<n-1,Ring,Alloc>().get( k-1, e );
+      p.normalize();
+      //std::cerr << "Xe_k(" << k << "," << e << ")=" << p << std::endl;
+      return p;
+    }
+
+  };
+
+  template <typename Ring, typename Alloc>
+  class Xe_kComputer<0,Ring,Alloc>
+  {
+  public:
+    Xe_kComputer() {}
+
+    MPolynomial<0, Ring, Alloc> 
+    get( unsigned int k, unsigned int e )
+    {
+      MPolynomial<0, Ring, Alloc> p = 1;
+      return p;
+    }
+  };
+
+  /**
+     Creates a monomial X_k^e 
+     @param k the index of the variable (X_k)
+     @param e the exponent for X_k
+     @return the 1-variable polynomial X_0^e
+     @tparam n the number of indetermionates.
+     @tparam Ring the type for the coefficent ring of the polynomial.
+     @tparam Alloc the type of allocator.
+  */
+  template <int n, typename Ring, typename Alloc>
+  inline 
+  MPolynomial<n, Ring, Alloc> 
+  Xe_k( unsigned int k, unsigned int e )
+  {
+    return Xe_kComputer<n, Ring, Alloc>().get( k, e );
+  }
+
+  /**
+     Creates a monomial X_k^e 
+     @param k the index of the variable (X_k)
+     @param e the exponent for X_k
+     @return the 1-variable polynomial X_0^e
+     @tparam n the number of indetermionates.
+     @tparam Ring the type for the coefficent ring of the polynomial.
+  */
+  template <int n, typename Ring>
+  inline 
+  MPolynomial<n, Ring, std::allocator<Ring> >
+  Xe_k( unsigned int k, unsigned int e )
+  {
+    return Xe_kComputer<n, Ring, std::allocator<Ring> >().get( k, e );
+  }
+
+
+  /**
      Creates a monomial in one indeterminate.
      @param e the exponent for X_0
      @return the 1-variable polynomial X_0^e
@@ -1985,20 +2064,18 @@ public:
        }
      return d1;
    }
-
-   /**
-      Compute the monic greatest common divisor of f and g using the
-      Euclidean Algorithm.
-   */
-   template<typename Ring>
-   MPolynomial<1, Ring, std::allocator<Ring> > 
-   gcd( const MPolynomial<1, Ring, std::allocator<Ring> > & f, 
-        const MPolynomial<1, Ring, std::allocator<Ring> > & g )
-   {
-     return gcd<Ring, std::allocator<Ring> >(f, g);
-   }
-   
-   
+  
+  /**
+     Compute the monic greatest common divisor of f and g using the
+     Euclidean Algorithm.
+  */
+  template<typename Ring>
+  MPolynomial<1, Ring, std::allocator<Ring> > 
+  gcd( const MPolynomial<1, Ring, std::allocator<Ring> > & f, 
+       const MPolynomial<1, Ring, std::allocator<Ring> > & g )
+  {
+    return gcd<Ring, std::allocator<Ring> >(f, g);
+  }
 
 } // namespace DGtal
 

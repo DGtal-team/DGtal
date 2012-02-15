@@ -32,6 +32,7 @@
 #include <iomanip>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/MPolynomial.h"
+#include "DGtal/math/MPolynomialReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -180,10 +181,31 @@ bool testMPolynomial()
   std::cout << "         dQ/dx        = " << derivative<0>(Q) << std::endl;
   std::cout << "         dQ/dy        = " << derivative<1>(Q) << std::endl;
   std::cout << "         dQ/dz        = " << derivative<2>(Q) << std::endl;
+  MPolynomial<3,double> P;
+  P = Xe_k<3,double>( 2, 7 ) + Xe_k<3,double>( 1, 3 );
+  trace.info() << "P=" << P << std::endl;
   return nbok == nb;
 }
 
+bool testMPolynomialReader()
+{
+  MPolynomial<3,double,std::allocator<double> > P;
 
+  MPolynomial<2,double,std::allocator<double> > Q1;
+  MPolynomial<2,double,std::allocator<double> > Q2;
+  MPolynomial<2,double,std::allocator<double> > Q = Q1 * Q2;
+
+  MPolynomialReader<3,double> reader;
+  string s1 = "1.5 X_0^2 X_2^3 X_1^5";
+  string s2 = "2 X_0^2 X_2 X_1^5";
+  bool ok1 = reader.addMPolynomial( P, s1 );
+  // bool ok3 = reader.addMPolynomial( P, s3 );
+  trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
+  bool ok2 = reader.addMPolynomial( P, s2 );
+  trace.info() << "- Parsing " << s2 << " : " << ok2 << " " << P << std::endl;
+  // trace.info() << "- Parsing " << s3 << " : " << ok3 << std::endl;
+  return true;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -192,7 +214,8 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Testing class MPolynomial" );
 
   bool res = testMPolynomial()
-    && testMPolynomialSpeed( 0.01 );
+    //&& testMPolynomialSpeed( 0.01 )
+    && testMPolynomialReader();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
