@@ -121,7 +121,7 @@ bool testSetFromImage()
     trace.info() << *it<< " ";
   trace.info()<<endl;
 
-  nbok += ( (aSet.find(c) == aSet.end())/*&&(aSet.size()==(d.size()-1))*/ ) ? 1 : 0; 
+  nbok += ( (aSet.find(c) == aSet.end())&&(aSet.size()==(d.size()-1)) ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl; 
 

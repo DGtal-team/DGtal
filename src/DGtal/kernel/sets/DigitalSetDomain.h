@@ -117,6 +117,12 @@ namespace DGtal
     const Point &upperBound() const ;
 
     /**
+     * Returns the size.
+     *
+     **/
+    Size size() const ;
+
+    /**
      * @param p any point.
      * @return 'true' if point [p] is inside this domain.
      */

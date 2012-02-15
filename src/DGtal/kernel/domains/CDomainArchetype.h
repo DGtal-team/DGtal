@@ -137,6 +137,12 @@ namespace DGtal
     const Point &upperBound() const
     { return DummyObject<Point>::get(); }
 
+    /**
+     * Returns the size.
+     *
+     **/
+    Size size() const
+    { return DummyObject<Size>::get(); }
 
     /**
      * @param p any point.
