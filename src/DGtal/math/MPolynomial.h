@@ -18,9 +18,13 @@
 
 /**
  * @file MPolynomial.h
- * @author Felix Fontein, University of Zurich, Switzerland
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @author Felix Fontein (\c felix@fontein.de), University of Zurich,
+ * Switzerland
+ *
+ * Adapted by Jacques-Olivier Lachaud (\c
+ * jacques-olivier.lachaud@univ-savoie.fr ) Laboratory of Mathematics
+ * (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2012/02/12
  *
@@ -483,6 +487,8 @@ public:
 
      This class is a backport from <a
      href="http://spielwiese.fontein.de/">Spielwiese</a>.
+     @author Felix Fontein (\c felix@fontein.de), University of Zurich,
+     Switzerland
   */
   template < typename TRing, typename TAlloc >
   class MPolynomial< 0, TRing, TAlloc >
@@ -941,6 +947,8 @@ public:
 
      This class is a backport from <a
      href="http://spielwiese.fontein.de/">Spielwiese</a>.
+     @author Felix Fontein (\c felix@fontein.de), University of Zurich,
+     Switzerland
   */
   template < int n, typename TRing, class TAlloc >
   class MPolynomial
