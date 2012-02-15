@@ -17,9 +17,7 @@
 #pragma once
 
 /**
- * @file CImage.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @file CSetValueImage.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -28,15 +26,15 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(CImageRECURSES)
-#error Recursive header files inclusion detected in CImage.h
-#else // defined(CImageRECURSES)
+#if defined(CSetValueImageRECURSES)
+#error Recursive header files inclusion detected in CSetValueImage.h
+#else // defined(CSetValueImageRECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CImageRECURSES
+#define CSetValueImageRECURSES
 
-#if !defined CImage_h
+#if !defined CSetValueImage_h
 /** Prevents repeated inclusion of headers. */
-#define CImage_h
+#define CSetValueImage_h
 
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
@@ -49,22 +47,21 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // struct CImage
+  // struct CSetValueImage
   /**
-   * Description of \b concept '\b CImage' <p>
+   * Description of \b concept '\b CSetValueImage' <p>
    *
    * @ingroup Concepts
    * Aim: Defines the concept describing a read/write image, 
-   * having an output iterator. 
+   * which is a refinement of a read-only image. 
    *
-   * <p> Refinement of CSetValueImage
+   * <p> Refinement of CConstImage
    *
-   * <p> Associated types : the same as CSetValueImage +
-   * - \t OutputIterator : type of the output iterator
+   * <p> Associated types : the same as CConstImage
    *
    * <p> Notation
-   * - \t X : A type that is a model of CImage
-   * - \t x : Object of type X
+   * - \t X : A type that is a model of CSetValueImage
+   * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
    *
@@ -83,12 +80,14 @@ namespace DGtal
       
     
       <tr> 
-      <td class=CName> Provide an output iterator           </td> 
-      <td class=CExpression>  x.output()    </td>
-      <td class=CRequirements>        </td> 
-      <td class=CReturnType>  an instance of OutputIterator    </td>
-      <td class=CPrecondition>   </td> 
-      <td class=CSemantics>       </td> 
+      <td class=CName> Set a value           </td> 
+      <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
+      <td class=CRequirements> @c aPoint of type Point and @c aValue of
+      type Value   </td> 
+      <td class=CReturnType>  void    </td>
+      <td class=CPrecondition> @c aPoint must be valid (inside the image domain)  </td> 
+      <td class=CSemantics>  associate the value @c aValue with the
+      point  @aPoint     </td> 
       <td class=CPostCondition>   </td> 
       <td class=CComplexity>  Container dependent    </td>
       </tr>
@@ -106,28 +105,27 @@ namespace DGtal
    */
 
   template <typename I>
-  struct CImage: CConstImage<I>
+  struct CSetValueImage: CConstImage<I>
   {
-
-  typedef typename I::OutputIterator O; 
 
   public:
   
-    BOOST_CONCEPT_USAGE(CImage)
+    BOOST_CONCEPT_USAGE(CSetValueImage)
     {
-      ConceptUtils::sameType( myO, myI.output() ); //output iterator 
+      myI.setValue(myP, myV);  //set a value v at p
     }
 
   private:
     I myI;
-    O myO; 
+    typename I::Value myV;
+    typename I::Point myP;
   };
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CImage_h
+#endif // !defined CSetValueImage_h
 
-#undef CImageRECURSES
-#endif // else defined(CImageRECURSES)
+#undef CSetValueImageRECURSES
+#endif // else defined(CSetValueImageRECURSES)

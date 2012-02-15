@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CSetValueImage.h"
 
 #include <iostream>
 
@@ -59,7 +59,7 @@ namespace DGtal
    * which is able to write values in an underlying image, 
    * by calling its setValue method. 
    *
-   * @tparam TImage a model of CImage
+   * @tparam TImage a model of CSetValueImage
    *
    */
   template <typename TImage>
@@ -69,7 +69,7 @@ namespace DGtal
   public:
 
     typedef TImage Image; 
-    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CSetValueImage<Image> ));
 
     typedef std::output_iterator_tag iterator_category;
     typedef typename Image::Value           value_type;
