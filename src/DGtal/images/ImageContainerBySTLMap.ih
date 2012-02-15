@@ -96,7 +96,7 @@ inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::ConstRange
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
 {
-  return ConstRange( this->begin(), this->end(), myInputF );
+  return ConstRange( myDomain->begin(), myDomain->end(), *this );
 }
 
 //------------------------------------------------------------------------------
@@ -105,7 +105,7 @@ inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::OutputIterator
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::output()
 {
-  return OutputIterator( this->begin(), myOutputF );
+  return OutputIterator( *this );
 }
 
 //------------------------------------------------------------------------------
