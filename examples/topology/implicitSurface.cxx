@@ -68,7 +68,6 @@ int main( int argc, char** argv )
       usage( argc, argv );
       return 1;
     }
-  // std::string inputFilename = argv[ 1 ];
   double p1[ 3 ];
   double p2[ 3 ];
   for ( unsigned int i = 0; i < 3; ++i )
@@ -77,8 +76,6 @@ int main( int argc, char** argv )
       p2[ i ] = atof( argv[ 4+i ] );
     }
   double step = atof( argv[ 7 ] );
-  // unsigned int maxThreshold = atoi( argv[ 3 ] );
-  // bool intAdjacency = atoi( argv[ 4 ] ) == 0;
 
   //! [implicitSurface-makeSurface]
   trace.beginBlock( "Making polynomial surface." );
@@ -88,17 +85,15 @@ int main( int argc, char** argv )
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
 
-  // http://www.freigeist.cc/gallery.html
-  // Durchblick
+  // See http://www.freigeist.cc/gallery.html
+  // Durchblick x3y+xz3+y3z+z3+5z = 0
   MPolynomial<3, double> P = mmonomial<double>( 3, 1, 0 )
     + mmonomial<double>( 1, 0, 3 )
     + mmonomial<double>( 0, 3, 1 )
     + mmonomial<double>( 0, 0, 3 )
     + 5 * mmonomial<double>( 0, 0, 1 );
   // Crixxi (y2+z2-1)2 +(x2+y2-1)3 = 0
-  // developed =
-  // y4 +2y2z2+z4-2z2 -y2
-  // + x6+3x4y2+3x2y4+y6-3x4-6x2y2-3y4+3x2
+  // developed = y4 +2y2z2+z4-2z2 -y2 + x6+3x4y2+3x2y4+y6-3x4-6x2y2-3y4+3x2
   // MPolynomial<3, double> P = mmonomial<double>(0,4,0)
   //   + 2 * mmonomial<double>(0,2,2)
   //   + mmonomial<double>(0,2,0)
@@ -117,8 +112,6 @@ int main( int argc, char** argv )
   ImplicitShape ishape( P );
   DigitalShape dshape;
   dshape.attach( ishape );
-  // dshape.init( RealPoint( -1.0, -1.0, -1.0 ), 
-  //              RealPoint( 1.0, 1.0, 1.0 ), 0.2 );
   dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
   Domain domain = dshape.getDomain();
   trace.endBlock();
@@ -138,10 +131,6 @@ int main( int argc, char** argv )
       trace.error() << "Error in the Khamisky space construction."<<std::endl;
       return 2;
     }
-  trace.info() << "lower point = " << K.lowerBound() << std::endl;
-  trace.info() << "upper point = " << K.upperBound() << std::endl;
-  trace.info() << "lower cell  = " << K.lowerCell()  << std::endl;
-  trace.info() << "upper cell  = " << K.upperCell()  << std::endl;
   //! [implicitSurface-KSpace]
 
   //! [implicitSurface-SurfelAdjacency]
@@ -156,7 +145,8 @@ int main( int argc, char** argv )
   typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
 
-  
+  // The surfels are tracked from an initial surfel, which is found by
+  // try/error.
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
   Surfel bel = Surfaces<KSpace>::findABel( K, dshape, 100000 );
   Surfaces<KSpace>::trackBoundary( theSetOfSurfels.surfelSet(),
@@ -170,6 +160,8 @@ int main( int argc, char** argv )
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
                << std::endl;
+  // The cell embedder is used to place vertices closer to the set
+  // P(x,y,z)=0
   typedef LinearImplicitCellEmbedder<KSpace, ImplicitShape, DigitalShape>
     CellEmbedder;
   CellEmbedder cellEmbedder;
