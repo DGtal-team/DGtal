@@ -52,7 +52,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/ConstRangeAdapter.h"
-#include "DGtal/base/OutputIteratorAdapter.h"
+#include "DGtal/images/SetValueIterator.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
 
@@ -66,7 +66,7 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////
   // Helper class
     /**
-     * Class template for the comparison of the points.
+     * Class template for the comparison of the points in the map.
      */
     struct PointComparator
     {
@@ -93,18 +93,6 @@ namespace DGtal
   	  }
   	//each pair of coordinates are equal
   	return false; 
-
-	//pb static
-	// DGtal::Dimension k = T::dimension; 
-	// --k; 
-  	// while (k >= 0)
-  	//   {
-  	//     if (p[k] < q[k]) return true; 
-  	//     if (p[k] > q[k]) return false; 
-  	//     --k; 
-  	//   }
-  	// //each pair of coordinates are equal
-  	// return false; 
       }
 
     }; 
@@ -128,6 +116,8 @@ namespace DGtal
 
   public:
 
+    typedef ImageContainerBySTLMap<TDomain,TValue> Self; 
+
     /// domain
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
     typedef TDomain Domain;    
@@ -143,12 +133,10 @@ namespace DGtal
     /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef ConstRangeAdapter<typename map<Point,Value>::const_iterator, 
-			      Pair2nd<Value>, Value > ConstRange; 
+    typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
 
     /// output iterator
-    typedef OutputIteratorAdapter<typename map<Point,Value>::iterator,
-				  Pair2ndMutator<Value>, Value > OutputIterator; 
+    typedef SetValueIterator<Self> OutputIterator; 
 
     /////////////////// Data members //////////////////
   private: 

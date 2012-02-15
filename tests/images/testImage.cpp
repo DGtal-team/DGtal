@@ -19,8 +19,12 @@
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  *
- *
  * @date 2010/05/25
+ *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/13
  *
  * This file is part of the DGtal library
  */
@@ -110,10 +114,9 @@ bool testImage(const typename Image::Domain& d)
   //fill
   typename Image::Domain::ConstIterator dit = img.domain().begin(); 
   typename Image::Domain::ConstIterator ditEnd = img.domain().end(); 
-  for (int i = 0; dit != ditEnd; ++dit, ++i)
+  for (int i = 0; ( (dit != ditEnd)&&(i < 5) ); ++dit, ++i)
     {
       img.setValue(*dit, i);
-      img2.setValue(*dit, 0); 
     }
   Image img3(d); 
   img3 = img; //assign
