@@ -137,6 +137,34 @@ namespace DGtal
   // access methods
   // ---------------------------------------------------------------------
 
+// //------------------------------------------------------------------------------
+// template < typename Domain, typename Value, typename HashKey>
+// inline
+// const typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::Domain&
+// experimental::ImageContainerByHashTree<Domain, Value, HashKey >::domain() const
+// {
+//   return *myDomain;
+// }
+
+// //------------------------------------------------------------------------------
+// template < typename Domain, typename Value, typename HashKey>
+// inline
+// typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
+// experimental::ImageContainerByHashTree<Domain, Value, HashKey >::range() const
+// {
+//   return ConstRange( myDomain->begin(), myDomain->end(), *this );
+// }
+
+//------------------------------------------------------------------------------
+template < typename Domain, typename Value, typename HashKey>
+inline
+typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
+experimental::ImageContainerByHashTree<Domain, Value, HashKey >::output()
+{
+  return OutputIterator( *this );
+}
+
+
   template < typename Domain, typename Value, typename HashKey>
   inline
   void
