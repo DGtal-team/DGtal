@@ -80,17 +80,6 @@ namespace DGtal
         <td class=CPostCondition> \b Postcondition </td> 
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      <tr> 
-        <td class=CName>  Constructor          </td> 
-        <td class=CExpression> X x(@c aDomain)     </td>
-        <td class=CRequirements> @c aDomain of type Domain    </td> 
-        <td class=CReturnType> an instance of X     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> Create an image bounded by the domain @c aDomain    </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>   Container dependent   </td>
-	</tr>
-	
 
 	<tr> 
         <td class=CName> accessor to the domain            </td> 

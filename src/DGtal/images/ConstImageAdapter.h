@@ -79,6 +79,12 @@ namespace DGtal
    *
    * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterConstruction 
    *
+   * NB: the underlying image as well as the functor
+   * are stored in the adapter as aliasing pointer
+   * in order to avoid copies.  
+   * The pointed objects must exist and must not be deleted 
+   * during the use of the adapter
+   *
    * @see exampleConstImageAdapter
    */
   template <typename TImage, typename TFunctor, typename TValue>
