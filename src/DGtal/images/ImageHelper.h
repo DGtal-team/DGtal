@@ -45,13 +45,15 @@
 #include <functional>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/images/SetValueIterator.h"
 #include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/images/CConstImage.h"
+#include "DGtal/images/CImage.h"
+#include "DGtal/images/SetValueIterator.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +76,7 @@ namespace DGtal
    * @tparam P any model of CPointPredicate
    */
   template<typename I, typename O, typename P>
-  void setFromDomainAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
+  void setFromRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
 
   /**
    * Fill a set through the inserter @a ito
@@ -94,14 +96,14 @@ namespace DGtal
    * @tparam F any model of CPointFunctor
    */
   template<typename I, typename O, typename F>
-  void setFromDomainAndFunctor(const I& itb, const I& ite, 
-			       const O& ito, const F& aFunctor, 
-			       const typename F::Value& aThreshold = 0); 
+  void setFromRangeAndFunctor(const I& itb, const I& ite, 
+			      const O& ito, const F& aFunctor, 
+			      const typename F::Value& aThreshold = 0); 
 
   /**
    * Fill a set through the inserter @a ito
    * with the points lying within the domain 
-   * of the image @aImg such whose value 
+   * of the image @a aImg whose value 
    * (in the image) is less than or equal to 
    * @a aThreshold
    *
@@ -117,7 +119,83 @@ namespace DGtal
 		    const O& ito, 
 		    const typename I::Value& aThreshold = 0); 
 
-  /// to be continued 
+  /**
+   * Fill a set through the inserter @a ito
+   * with the points lying within the domain 
+   * of the image @a aImg whose value 
+   * (in the image) lies between @a low and @a up
+   * (both included) 
+   *
+   * @param aImg any image
+   * @param ito set inserter
+   * @param low lower value
+   * @param up upper value
+   *
+   * @tparam I any model of CConstImage
+   * @tparam O any model of output iterator
+   */
+  template<typename I, typename O>
+  void setFromImage(const I& aImg, 
+		    const O& ito, 
+		    const typename I::Value& low,
+		    const typename I::Value& up); 
+
+
+  /**
+   * Set the values of @a aImg at @a aValue
+   * for each points of the range [ @a itb , @a ite )
+   *
+   * @param itb begin iterator on points
+   * @param ite end iterator on points
+   * @param aImg (returned) image
+   * @param aValue any value (default: 0)
+   *
+   * @tparam It any model of forward iterator
+   * @tparam Im any model of CImage
+   */
+  template<typename It, typename Im>
+  void imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg, 
+			      const typename Im::Value& aValue = 0); 
+
+  /**
+   * Set the values of @a aImg at @a aValue
+   * for each points of the range @a aRange
+   *
+   * @param aRange any range
+   * @param aImg (returned) image
+   * @param aValue any value (default: 0)
+   *
+   * @tparam R any model of CConstSinglePassRange
+   * @tparam I any model of CImage
+   */
+  template<typename R, typename I>
+  void imageFromRangeAndValue(const R& aRange, I& aImg, 
+			      const typename I::Value& aValue = 0); 
+
+  /**
+   * In a window corresponding to the domain of @a aImg, 
+   * copy the values of @a aFun into @a aImg
+   *
+   * @param aImg (returned) image
+   * @param aFun a unary functor
+   *
+   * @tparam I any model of CImage
+   * @tparam F any model of CPointFunctor
+   */
+  template<typename I, typename F>
+  void imageFromFunctor(I& aImg, const F& aFun); 
+
+  /**
+   * Copy the values of @a aImg2 into @a aImg1 .
+   *
+   * @param aImg1 the image to fill
+   * @param aImg2 the image to copy
+   *
+   * @tparam I any model of CImage
+   */
+  template<typename I>
+  void imageFromImage(I& aImg1, const I& aImg2); 
+
 
 } // namespace DGtal
 
