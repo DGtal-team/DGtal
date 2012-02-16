@@ -49,7 +49,7 @@
 #include <functional>
 #include <cmath>
 
-#include "boost/concept_check.hpp"
+#include "BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -379,6 +379,87 @@ struct Thresholder<T,true,true> {
     Input myT;
 };
 
+  /////////////////////////////////////////////////////////////////////////////
+  // template class PredicateCombiner
+  /**
+   * Description of template class 'PredicateCombiner' <p> \brief
+   * Aim: The predicate returns true when the given binary functor
+   * returns true for the two Predicates given at construction.
+   *
+   * @tparam Predicate1 the left predicate type.
+   * @tparam Predicate2 the right predicate type.
+   * @tparam TBinaryFunctor binary functor used for comparison
+   */
+  template <typename TPredicate1, typename TPredicate2, 
+	    typename TBinaryFunctor = BoolFunction2 >
+  struct PredicateCombiner
+  {
+    typedef TPredicate1 Predicate1;
+    typedef TPredicate2 Predicate2;
+
+    /**
+       Constructor from predicates and bool Functor.
+       @param pred1 the left predicate.
+       @param pred2 the right predicate.
+       @param boolFunctor the binary function used to combine pred1
+       and pred2.
+     */
+    PredicateCombiner( const Predicate1 & pred1,
+        const Predicate2 & pred2,
+        const TBinaryFunctor & boolFunctor )
+      : myPred1( &pred1 ), myPred2( &pred2 ), myBoolFunctor( &boolFunctor )
+    {
+    }
+
+    /**
+       Copy constructor.
+       @param other the object to copy
+      */
+    PredicateCombiner(  const PredicateCombiner& other )
+      : myPred1( other.pred1 ), myPred2( other.pred2 ), myBoolFunctor( other.boolFunctor )
+    {
+    }
+
+    /**
+       Assignement
+       @param other the object to copy
+       @return reference to the current object
+     */
+    PredicateCombiner& operator=( const PredicateCombiner& other )
+    {
+      if (this != &other)
+	{
+	  myPred1 = other.myPred1; 
+	  myPred2 = other.myPred2; 
+	  myBoolFunctor = other.myBoolFunctor; 
+	}
+    }
+
+    /**
+       Destructor
+     */
+    ~PredicateCombiner() {}
+
+    /**
+     * @param t any object of type T.
+     * @tparam T any input type supported 
+     * by the two predicates to combine 
+     * @return the value of the predicate.
+     */
+    template<typename T>
+    bool operator()( const T & t ) const 
+    {
+      return myBoolFunctor->operator()( myPred1->operator()( t ), 
+					myPred2->operator()( t ) );
+    }
+
+    /// aliasing pointer to the left predicate.
+    const Predicate1* myPred1;
+    /// aliasing pointer to the right predicate.
+    const Predicate2* myPred2;
+    /// aliasing pointer to the binary functor.
+    const TBinaryFunctor* myBoolFunctor;
+  };
 
   /**
    * Description of template class 'Pair1st' <p>

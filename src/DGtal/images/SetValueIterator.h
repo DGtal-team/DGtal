@@ -63,19 +63,14 @@ namespace DGtal
    *
    */
   template <typename TImage>
-  class SetValueIterator
+  class SetValueIterator:
+    public std::iterator<std::output_iterator_tag,void,void,void,void>
   {
     // ----------------------- Types definitions ------------------------------
   public:
 
     typedef TImage Image; 
     BOOST_CONCEPT_ASSERT(( CSetValueImage<Image> ));
-
-    typedef std::output_iterator_tag iterator_category;
-    typedef typename Image::Value           value_type;
-    typedef ptrdiff_t                  difference_type;
-    typedef value_type*                        pointer;
-    typedef value_type&                      reference;
 
     typedef typename Image::Domain::ConstIterator PointIterator;
 
