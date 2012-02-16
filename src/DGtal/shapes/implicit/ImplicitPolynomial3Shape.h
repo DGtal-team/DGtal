@@ -57,6 +57,8 @@ namespace DGtal
    * \brief Aim: model of CEuclideanOrientedShape concepts to create a
    * shape from a polynomial.
    *
+   * @todo Model of CImplicitFunctionCInfinite.
+   *
    * @tparam TSpace the Digital space definition.
    */
   

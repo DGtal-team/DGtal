@@ -76,6 +76,7 @@ namespace DGtal
     typedef typename KSpace::Space Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
+    typedef typename Space::RealVector RealVector;
     typedef typename Space::Integer Integer;
     typedef typename ImplicitFunction::Value Value;
     
@@ -118,7 +119,7 @@ namespace DGtal
   public:
 
     /**
-       Maps a digital point to its corresponding point in the Eucldiean
+       Maps a digital point to its corresponding point in the Euclidean
        space.
        
        @param p any digital point in the digital space.
@@ -140,10 +141,46 @@ namespace DGtal
        space, by a linear guess of its position. NB: the signed is not
        used.
        
-       @param cell any cell in the cellular grid space.
+       @param scell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
     RealPoint embedSCell( const SCell & scell ) const;
+
+    /**
+       Maps a digital point to its corresponding embedding position
+       and gradient vector in the Euclidean space.
+       
+       @param p any digital point in the digital space.
+       @param x its embedding in the Euclidean space.
+       @param grad (returns) its gradient vector at the point given by
+       the current embedder in the Euclidean space.
+     */
+    void embed( const Point & p, RealPoint & x, RealVector & grad ) const;
+
+    /**
+       Maps a cell to its corresponding gradient vector in the
+       Euclidean space, by a linear guess of its position.
+       
+       @param cell any cell in the cellular grid space.
+       @param x its embedding in the Euclidean space.
+       @param grad (returns) its gradient vector at the point given by
+       the current embedder in the Euclidean space.
+     */
+    void embedCell( const Cell & cell, 
+                    RealPoint & x, RealVector & grad ) const;
+
+    /**
+       Maps a signed cell to its corresponding gradient vector in the
+       Euclidean space, by a linear guess of its position. NB: the
+       signed is not used.
+       
+       @param scell any cell in the cellular grid space.
+       @param x its embedding in the Euclidean space.
+       @param grad (returns) its gradient vector at the point given by
+       the current embedder in the Euclidean space.
+     */
+    void embedSCell( const SCell & scell, 
+                     RealPoint & x, RealVector & grad ) const;
     
     // ----------------------- Interface --------------------------------------
   public:
