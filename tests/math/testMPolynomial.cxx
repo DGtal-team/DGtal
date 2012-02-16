@@ -198,12 +198,16 @@ bool testMPolynomialReader()
   MPolynomialReader<3,double> reader;
   string s1 = "1.5 X_0^2 X_2^3 X_1^5";
   string s2 = "2 X_0^2 X_2 X_1^5";
+  string s3 = s1 + " * " + s2;
+  string s4 = s1 + "*" + "(" + s2 + ")";
   bool ok1 = reader.addMPolynomial( P, s1 );
-  // bool ok3 = reader.addMPolynomial( P, s3 );
   trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
   bool ok2 = reader.addMPolynomial( P, s2 );
   trace.info() << "- Parsing " << s2 << " : " << ok2 << " " << P << std::endl;
-  // trace.info() << "- Parsing " << s3 << " : " << ok3 << std::endl;
+  bool ok3 = reader.addMPolynomial( P, s3 );
+  trace.info() << "- Parsing " << s3 << " : " << ok3 << " " << P << std::endl;
+  bool ok4 = reader.addMPolynomial( P, s4 );
+  trace.info() << "- Parsing " << s4 << " : " << ok4 << " " << P << std::endl;
   return true;
 }
 ///////////////////////////////////////////////////////////////////////////////

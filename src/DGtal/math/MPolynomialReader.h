@@ -62,9 +62,20 @@ namespace DGtal
     double coef;
     std::vector<power_node> powers;
   };
-  struct polynomial {
+  struct polynomial_node {
     std::vector<monomial_node> monomials;
   };
+
+  struct top_node;
+  typedef 
+  boost::variant< boost::recursive_wrapper<top_node>, polynomial_node  >
+  expr_node;
+
+  struct top_node {
+    std::string op;
+    std::vector<expr_node> expressions;
+  };
+
 
 }
 
@@ -79,8 +90,13 @@ BOOST_FUSION_ADAPT_STRUCT(
                           (std::vector<DGtal::power_node>, powers)
 )
 BOOST_FUSION_ADAPT_STRUCT(
-                          DGtal::polynomial,
+                          DGtal::polynomial_node,
                           (std::vector<DGtal::monomial_node>, monomials)
+)
+BOOST_FUSION_ADAPT_STRUCT(
+    DGtal::top_node,
+    (std::string, op)
+    (std::vector<DGtal::expr_node>, expressions)
 )
 
 namespace DGtal
@@ -91,10 +107,10 @@ namespace DGtal
 
   template <typename Iterator>
   struct MPolynomialGrammar 
-    : qi::grammar<Iterator, polynomial(), ascii::space_type>
+    : qi::grammar<Iterator, top_node(), ascii::space_type>
   {
     MPolynomialGrammar()
-      : MPolynomialGrammar::base_type(mpolynomial)
+      : MPolynomialGrammar::base_type(top)
     {
       using qi::eps;
       using qi::lit;
@@ -106,11 +122,26 @@ namespace DGtal
       using phoenix::at_c;
       using phoenix::push_back;
 
-      mpolynomial = eps >>
-        (
-         monomial [push_back(at_c<0>(_val), _1)]
-         )
+      top = 
+        ( lit('(') [ at_c<0>(_val) = "()" ] 
+          >> expr [ push_back(at_c<1>(_val), _1) ]
+          >> lit(')') )
+        | ( expr [push_back(at_c<1>(_val), _1)] 
+            >> ( ( lit('*') [ at_c<0>(_val) = "*" ] 
+                   >> expr [ push_back( at_c<1>(_val), _1 ) ] ) // expr * expr
+                 | eps [at_c<0>(_val) = "T"] // expr
+                 ) 
+          )
         ;
+      expr = mpolynomial | top;
+      //        | ( lit('(') >> expr [ _val = _1] >> lit(')') )
+        // | ( expr [ push_back( at_c<1>(_val), _1 ) ] 
+        //     >> lit('*') [ at_c<0>(_val) = '*' ] 
+        //     >> expr [ push_back( at_c<1>(_val), _1 ) ] )
+        // | ( expr >> lit('+') >> expr );
+      mpolynomial =
+        monomial [push_back(at_c<0>(_val), _1)]
+        >> *( lit('+') >> monomial [push_back(at_c<0>(_val), _1)] );
       monomial = double_ [at_c<0>(_val) = _1]
         >> +( variable [push_back(at_c<1>(_val), _1)] );
       //>> *( variable [push_back(at_c<1>(_val), _1)] );
@@ -121,7 +152,9 @@ namespace DGtal
                       | eps [at_c<1>(_val) = 1] // X_k
                       );
     }
-    qi::rule<Iterator, polynomial(), ascii::space_type> mpolynomial;
+    qi::rule<Iterator, top_node(), ascii::space_type> top;
+    qi::rule<Iterator, expr_node(), ascii::space_type> expr;
+    qi::rule<Iterator, polynomial_node(), ascii::space_type> mpolynomial;
     qi::rule<Iterator, monomial_node(), ascii::space_type> monomial;
     qi::rule<Iterator, power_node(), ascii::space_type> variable;
 
@@ -164,7 +197,7 @@ namespace DGtal
         }
       return mnode.coef * m;
     }
-    Polynomial make( const polynomial & poly )
+    Polynomial make( const polynomial_node & poly )
     {
       Polynomial p;
       for ( unsigned int i = 0; i < poly.monomials.size(); ++i )
@@ -172,6 +205,46 @@ namespace DGtal
           if ( i != 0 ) std::cerr << "+";
           p += make( poly.monomials[ i ] );
         }
+      return p;
+    }
+    struct ExprNodeMaker : boost::static_visitor<> {
+      Polynomial myP;
+      MPolynomialReader & myPR;
+      ExprNodeMaker( MPolynomialReader & reader )
+        : myPR( reader )
+      {}
+      void operator()( const polynomial_node & polynode)
+      {
+        myP = myPR.make( polynode );
+      }
+      void operator()( const top_node & topnode)
+      {
+        myP = myPR.make( topnode );
+      }
+    };
+
+    Polynomial make( const top_node & topnode )
+    {
+      Polynomial p;
+      if ( ( topnode.op ==  "T" )
+           || ( topnode.op ==  "()" ) )
+        {
+          std::cerr << topnode.op << "-node";
+          ExprNodeMaker emaker( *this );
+          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = emaker.myP;
+        }
+      else if ( topnode.op == "*" )
+        {
+          std::cerr << "*-node";
+          ExprNodeMaker emaker( *this );
+          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = emaker.myP;
+          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
+          p *= emaker.myP;
+        }
+      else
+        std::cerr << "U-node" << topnode.op << std::endl;
       return p;
     }
                  
@@ -186,7 +259,7 @@ namespace DGtal
       std::string::const_iterator end = expr.end();
       typedef MPolynomialGrammar<std::string::const_iterator> MyGrammar;
       MyGrammar gpolynomial;
-      polynomial m;
+      top_node m;
       bool r = phrase_parse( iter, end, gpolynomial, space, m );
       if (r) p = make( m );
       if (iter != end) // fail if we did not get a full match
