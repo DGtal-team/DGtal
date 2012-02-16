@@ -92,42 +92,30 @@ namespace DGtal
 
     /** 
      * Default constructor.
-     * 
      */
     Image();
 
     /** 
-     * Constructor from a domain. 
-     * Create an instance of the container.
-     * 
-     * @param aDomain a digital domain.
+     * Constructor from a pointer on the underlying image container.
      */
-    Image(const Domain &aDomain):
-      myImagePointer(new ImageContainer(aDomain))
+    Image(ImageContainer *anImageContainer):
+      myImagePointer(anImageContainer)
     { }
-    
+
+    /**
+     * Copy.
+     * @param anImageContainerCowPointer a COW-pointer on the underlying container.
+     */
+    Image(const CowPtr<ImageContainer> &anImageContainerCowPointer):
+      myImagePointer(anImageContainerCowPointer)
+    { }
+
     /**
      * Copy.
      * @param other an object of same type to copy.
       */
     Image(const ImageContainer &other):
-      myImagePointer(new ImageContainer(other))
-    { }
-
-    /**
-     * Copy.
-     * @param anImageContainer a COW-pointer on the underlying container.
-     */
-    Image(const CowPtr<ImageContainer> &anImageContainer):
-      myImagePointer(anImageContainer)
-    { }
-
-    /**
-     * Copy.
-     * @param anImageContainer a pointer on the underlying container.
-     */
-    Image(ImageContainer *anImageContainer):
-      myImagePointer(anImageContainer)
+      myImagePointer(other)
     { }
 
    /**
@@ -147,8 +135,9 @@ namespace DGtal
 
     /**
      * Destructor.
+     * Does nothing, the cow pointer takes care of everything
      */
-    ~Image();
+    ~Image() {}
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -257,7 +246,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   protected:
 
-    ///Smart pointer on the image container
+    /// Owning smart pointer on the image container
     ImagePointer myImagePointer;
     
  
