@@ -57,7 +57,7 @@ namespace DGtal
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 
-   * <p> Refinement of CConstBidirectionalRange
+   * <p> Refinement of CConstSinglePassRange
    *
    * <p> Associated types :
    * - Domain : the type itself of the CDomain model.
@@ -130,7 +130,6 @@ namespace DGtal
     typedef typename T::Integer Integer;
     typedef typename T::Size Size;
     typedef typename T::Dimension Dimension;
-    // typedef typename T::ConstRange ConstRange;
     typedef typename T::Predicate Predicate;
     typedef typename T::ConstIterator ConstIterator;
 
