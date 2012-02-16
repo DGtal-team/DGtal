@@ -23,6 +23,11 @@
  *
  * @date 2010/06/15
  *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/16
+ *
  * Header file for module ImageContainerBySTLVector.cpp
  *
  * This file is part of the DGtal library.
@@ -63,17 +68,20 @@ namespace DGtal
    * Description of class 'ImageContainerBySTLVector' <p>
    *
    * Aim: Model of CImage implementing the association Point<->Value
-   * using a STL vector as container. A linearization of nD domain points
+   * using a STL vector as container. A linearization of domain points
    * is used to build the STL vector index.
    *
    * As a model of CImage, this class provides two ways of accessing values: 
-   * - by the range of the domain returned by the domain() method 
-   * and the operator() that takes a point and returns the associated value. 
-   * - by the range returned by the range() method, which can be used to 
-   * directly iterate over the values of the image
+   * - through the range of points returned by the domain() method 
+   * combined with the operator() that takes a point and returns its associated value. 
+   * - through the range of values returned by the range() method, 
+   * which can be used to directly iterate over the values of the image
    *
-   * This class provides in addition built-in iterators and 
-   * a fast span iterator to perform 1D scans.
+   * This class also provides a setValue() method and an output iterator, 
+   * which is returned by the output() method for writing purposes. 
+   *
+   * Lastly, built-in iterators and a fast span iterator to perform 1D scans
+   * are also provided. 
    *
    * @tparam TDomain a HyperRectDomain.
    * @tparam TValue at least a model of CLabel.
@@ -114,8 +122,11 @@ namespace DGtal
     /////////////////// Data members //////////////////
   private: 
 
-    ///Image Domain
-    const Domain* myDomain;
+    ///Image domain
+    Domain myDomain;
+
+    ///Domain extent (stored for linearization efficiency)
+    Vector myExtent; 
 
     /////////////////// standard services //////////////////
 
@@ -128,6 +139,23 @@ namespace DGtal
      * 
      */
     ImageContainerBySTLVector(const Domain &aDomain);
+
+    /** 
+     * Copy constructor
+     * 
+     * @param other the object to copy.
+     * 
+     */
+    ImageContainerBySTLVector(const ImageContainerBySTLVector & other);
+
+    /** 
+     * Assignment operator
+     * 
+     * @param other the object to copy.
+     * 
+     * @return a reference on *this
+     */
+    ImageContainerBySTLVector& operator=(const ImageContainerBySTLVector & other);
 
     /** 
      * Destructor.
@@ -160,42 +188,32 @@ namespace DGtal
      */
     void setValue(const Point &aPoint, const Value &aValue);
     
- 
-    /**
+     /**
      * @return the domain associated to the image.
      */
-    const Domain &domain() const
-    {
-      return *myDomain;
-    }
+    const Domain &domain() const;
 
     /**
      * @return the range providing begin and end
      * iterators to scan the values of image.
      */
-    ConstRange range() const
-    {
-      return ConstRange( this->begin(), this->end() );
-    }
+    ConstRange range() const;
 
     /**
      * @return an output iterator to write values.
      */
-    OutputIterator output()
-    {
-      return this->begin(); 
-    }
+    OutputIterator output();
 
     /**
      * @return the domain extension of the image.
      */
-    Vector extent() const
-    {
-      return   myDomain->upperBound() -  myDomain->lowerBound() 
-	+ Vector::diagonal();
-    }
+    Vector extent() const;
 
-
+    /**
+     * Translate the underlying domain by @a aShift
+     * @param aShift any vector
+     */
+    void translateDomain(const Vector& aShift);
 
     /**
      * Writes/Displays the object on an output stream.
@@ -207,10 +225,7 @@ namespace DGtal
     /**
      * @return the validity of the Image
      */
-    bool isValid() const
-    {
-      return (this != NULL);
-    }
+    bool isValid() const;
 
     // ------------- realization CDrawableWithBoard2D --------------------
 
@@ -274,7 +289,7 @@ namespace DGtal
     	//We compute the myShift quantity
     	myShift = 1;
     	for (Dimension k = 0; k < myDimension  ; k++)
-    	  myShift *= (aMap->myDomain->upperBound()[k] - aMap->myDomain->lowerBound()[k] + 1);
+    	  myShift *= aMap->myExtent[k];
       }
 
 
@@ -443,7 +458,7 @@ namespace DGtal
     SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp[ aDimension ] = myDomain->upperBound()[ aDimension ] + 1;
+      tmp[ aDimension ] = myDomain.upperBound()[ aDimension ] + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
