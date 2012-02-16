@@ -144,6 +144,36 @@ embedSCell( const SCell & scell ) const
     }
   return x1;
 }
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
+inline
+void
+DGtal::LinearImplicitCellEmbedder<TKSpace, TImplicitFunction, TEmbedder>::
+embed( const Point & p, RealPoint & x, RealVector & grad ) const
+{
+  x = embed( p );
+  grad = myPtrFct->gradient( x );
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
+inline
+void
+DGtal::LinearImplicitCellEmbedder<TKSpace, TImplicitFunction, TEmbedder>::
+embedCell( const Cell & cell, RealPoint & x, RealVector & grad ) const
+{
+  x = embedCell( cell );
+  grad = myPtrFct->gradient( x );
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
+inline
+void
+DGtal::LinearImplicitCellEmbedder<TKSpace, TImplicitFunction, TEmbedder>::
+embedSCell( const SCell & scell, RealPoint & x, RealVector & grad ) const
+{
+  x = embedSCell( scell );
+  grad = myPtrFct->gradient( x );
+}
 
 
 
