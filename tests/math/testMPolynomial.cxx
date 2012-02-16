@@ -202,9 +202,9 @@ bool testMPolynomialReader()
   string s2 = "2 X_0^2 X_2 X_1^5";
   string s3 = s1 + " * " + s2;
   string s4 = "(" + s2 + ")^4 * (" + s1 + ")^1 - 3 X_2^3";
-  string s5 = "x3y+xz3+y3z+z3+5z"; // Durchblick
-  string s6 = "(y2+z2-1)^2 +(x2+y2-1)^3"; // Crixxi 
-  string s7 = "(y2+z2-1)^2 Abrahamovitch"; 
+  string s5 = "x^3y+xz^3+y^3z+z^3+5z"; // Durchblick
+  string s6 = "(y^2+z^2-1)^2 +(x^2+y^2-1)^3"; // Crixxi 
+  string s7 = "(y^2+z^2-1)^2 Abrahamovitch"; 
   bool ok1 = reader.read( P, s1.begin(), s1.end() ) == s1.end();
   trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
   bool ok2 = reader.read( P, s2.begin(), s2.end() ) == s2.end();
