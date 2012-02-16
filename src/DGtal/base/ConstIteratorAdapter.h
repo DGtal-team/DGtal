@@ -69,16 +69,18 @@ namespace DGtal
    * @tparam TFunctor the type of functor that transforms
    * the pointed element into another one
    *
-   * @tparam TReturnType 
+   * @tparam TReturnType the type of the element returned by the underlying functor
    *
-   * NB: TReturnType should be the type of the element returned by the underlying functor. 
    * 
-   * NB: The dereference operator should be used to get the returned element or to access
+   * NB1: The dereference operator should be used to get the returned element or to access
    * to its members. The indirection operator has been implemented for completeness sake, 
    * but each time the operator is called, the functor is applied and the returned element 
    * is stored into a buffer. As a consequence, the indirection operator can be used 
    * without extra costs only if one want to access to only one of its members. 
    *
+   * NB: the underlying functor is stored in the adapter as aliasing pointer
+   * in order to avoid copies. As a consequence the pointed object must exist 
+   * and must not be deleted during the use of the adapter.
    */
   template <typename TIterator, typename TFunctor, typename TReturnType>
   class ConstIteratorAdapter
@@ -116,7 +118,7 @@ namespace DGtal
      */
     Iterator myCurrentIt;
     /**
-     * (Alias) pointer on a (constant) functor
+     * Aliasing pointer on a (constant) functor
      */
     FunctorPtr myFunctorPtr; 
     /**

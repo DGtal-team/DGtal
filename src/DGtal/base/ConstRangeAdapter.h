@@ -57,7 +57,7 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @brief Aim: model of CConstRange that adapts any range of elements
+   * @brief Aim: model of CConstBidirectionalRange that adapts any range of elements
    * bounded by two iterators [itb, ite) and provides services to 
    * (circularly)iterate over it (in a read-only manner). 
    *
@@ -72,9 +72,11 @@ namespace DGtal
    * @tparam TFunctor the type of functor that transforms
    * the pointed element into another one
    *
-   * @tparam TReturnType 
+   * @tparam TReturnType the type of the element returned by the underlying functor. 
    *
-   * NB: TReturnType should be the type of the element returned by the underlying functor. 
+   * NB: the underlying functor is stored in the range as aliasing pointer
+   * in order to avoid copies. As a consequence the pointed object must exist 
+   * and must not be deleted during the use of the range.
    *
    * @see ConstIteratorAdapter BasicFunctors.h BasicPointFunctors.h SCellsFunctors.h
    */
@@ -175,7 +177,7 @@ namespace DGtal
      */
     TIterator myEnd; 
     /**
-     * (alias) pointer on the underlying functor
+     * Aliasing pointer on the underlying functor
      */
     const TFunctor* myFunctor; 
 
