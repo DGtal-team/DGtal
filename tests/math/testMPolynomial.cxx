@@ -189,32 +189,37 @@ bool testMPolynomial()
 
 bool testMPolynomialReader()
 {
-  MPolynomial<3,double,std::allocator<double> > P;
 
   MPolynomial<2,double,std::allocator<double> > Q1;
   MPolynomial<2,double,std::allocator<double> > Q2;
   MPolynomial<2,double,std::allocator<double> > Q = Q1 * Q2;
 
-  MPolynomialReader<3,double> reader;
-  string s1 = "1.5 X_0^2 X_2^3 X_1^5";
+  typedef int Ring;
+  MPolynomial<3,Ring,std::allocator<Ring> > P;
+  MPolynomialReader<3,Ring> reader;
+  string s1 = "1.5 X_0^2 X_2^3 X_1^5 * (4 X_0^3 + X_1^2)^2";
+  //string s1 = "1.5 X_0^2 X_2^3 X_1^5";
   string s2 = "2 X_0^2 X_2 X_1^5";
   string s3 = s1 + " * " + s2;
   string s4 = "(" + s2 + ")^4 * (" + s1 + ")^1 - 3 X_2^3";
   string s5 = "x3y+xz3+y3z+z3+5z"; // Durchblick
   string s6 = "(y2+z2-1)^2 +(x2+y2-1)^3"; // Crixxi 
-  bool ok1 = reader.addMPolynomial( P, s1 );
+  string s7 = "(y2+z2-1)^2 Abrahamovitch"; 
+  bool ok1 = reader.read( P, s1.begin(), s1.end() ) == s1.end();
   trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
-  bool ok2 = reader.addMPolynomial( P, s2 );
+  bool ok2 = reader.read( P, s2.begin(), s2.end() ) == s2.end();
   trace.info() << "- Parsing " << s2 << " : " << ok2 << " " << P << std::endl;
-  bool ok3 = reader.addMPolynomial( P, s3 );
+  bool ok3 = reader.read( P, s3.begin(), s3.end() ) == s3.end();
   trace.info() << "- Parsing " << s3 << " : " << ok3 << " " << P << std::endl;
-  bool ok4 = reader.addMPolynomial( P, s4 );
+  bool ok4 = reader.read( P, s4.begin(), s4.end() ) == s4.end();
   trace.info() << "- Parsing " << s4 << " : " << ok4 << " " << P << std::endl;
-  bool ok5 = reader.addMPolynomial( P, s5 );
+  bool ok5 = reader.read( P, s5.begin(), s5.end() ) == s5.end();
   trace.info() << "- Parsing " << s5 << " : " << ok5 << " " << P << std::endl;
-  bool ok6 = reader.addMPolynomial( P, s6 );
+  bool ok6 = reader.read( P, s6.begin(), s6.end() ) == s6.end();
   trace.info() << "- Parsing " << s6 << " : " << ok6 << " " << P << std::endl;
-  return true;
+  bool ok7 = reader.read( P, s7.begin(), s7.end() ) == s7.end();
+  trace.info() << "- Parsing " << s7 << " : " << ok7 << " " << P << std::endl;
+  return ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && (!ok7);
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
