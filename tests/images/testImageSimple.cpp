@@ -75,13 +75,14 @@ bool testCreate()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Image Create ..." );
-  typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage; 
+  typedef Image<VImage > MyImage;
   BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
   
   Z2i::Point a(0,0);
   Z2i::Point b(128,128);
   Z2i::Domain domain(a,b);
-  MyImage image(domain);
+  MyImage image( new VImage(domain) );
 
   trace.info()<<image<<std::endl;
   trace.info()<<*image.getPointer()<<std::endl;
@@ -90,7 +91,8 @@ bool testCreate()
   nb++;
 
   typedef HyperRectDomain<SpaceND <6> > Domain6;
-  typedef Image<  ImageContainerBySTLVector< Domain6, int > > MyImage6;
+  typedef ImageContainerBySTLVector<Domain6, int> VImage6; 
+  typedef Image<VImage6 > MyImage6;
   BOOST_CONCEPT_ASSERT(( CImage< MyImage6 > ));
   
   int aa[] = {0,0,0,0,0,0};
@@ -98,7 +100,7 @@ bool testCreate()
   Domain6::Point A(aa);
   Domain6::Point B(bb);
 
-  MyImage6 imageBis(Domain6(A,B));
+  MyImage6 imageBis( new VImage6( Domain6(A,B) ) );
   trace.warning() << "Dimension 6 image"<<std::endl;
   trace.info()<< imageBis <<std::endl;
 
@@ -119,7 +121,8 @@ bool testAPI()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Image API ..." );
-  typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage; 
+  typedef Image<VImage > MyImage;
   BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
   
   Z2i::Point a(0,0);
@@ -127,7 +130,7 @@ bool testAPI()
   Z2i::Point c(12, 14);
 			
   Z2i::Domain domain(a,b);
-  MyImage image(domain);
+  MyImage image( new VImage(domain) );
   
   trace.info()<<image<<std::endl;
   
@@ -163,7 +166,8 @@ bool testImageCopy()
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Image API ..." );
-  typedef Image<ImageContainerBySTLVector<Z2i::Domain, int> > MyImage;
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage; 
+  typedef Image<VImage > MyImage;
   BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
   
   Z2i::Point a(0,0);
@@ -171,7 +175,7 @@ bool testImageCopy()
   Z2i::Point c(12, 14);
 			
   Z2i::Domain domain(a,b);
-  MyImage image(domain);
+  MyImage image( new VImage(domain) );
   
   trace.info()<<image<<std::endl;
   
@@ -179,10 +183,11 @@ bool testImageCopy()
   nb++;
 
   //Image pointer
-  ImageContainerBySTLVector<Z2i::Domain, int>  * imContainer = 
-    new ImageContainerBySTLVector<Z2i::Domain, int>(domain);
+  VImage  * imContainer = 
+    new VImage(domain);
   
-  //Pointer Acq
+  //Image through smart pointer 
+  //(that takes ownership and must free the memory)
   MyImage image2(imContainer);
   
   const MyImage::ImagePointer p = image2.getPointer();
@@ -199,6 +204,7 @@ bool testImageCopy()
 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
+
   trace.endBlock();
   
   return nbok == nb;
