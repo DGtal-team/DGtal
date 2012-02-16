@@ -39,6 +39,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/math/MPolynomial.h"
+#include "DGtal/math/MPolynomialReader.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/LinearImplicitCellEmbedder.h"
@@ -55,15 +56,17 @@ using namespace Z3i;
 
 void usage( int argc, char** argv )
 {
-  std::cerr << "Usage: " << argv[ 0 ] << " <Px> <Py> <Pz> <Qx> <Qy> <Qz> <step>" << std::endl;
-  std::cerr << "\t - displays the boundary of a shape defined implicitly by a 3-polynomial." << std::endl;
+  std::cerr << "Usage: " << argv[ 0 ] << " <Polynomial> <Px> <Py> <Pz> <Qx> <Qy> <Qz> <step>" << std::endl;
+  std::cerr << "\t - displays the boundary of a shape defined implicitly by a 3-polynomial <Polynomial>." << std::endl;
   std::cerr << "\t - P and Q defines the bounding box." << std::endl;
   std::cerr << "\t - step is the grid step." << std::endl;
+  std::cerr << "\t - You may try x3y+xz3+y3z+z3+5z or (y2+z2-1)^2 +(x2+y2-1)^3 " << std::endl;
+  std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
 
 int main( int argc, char** argv )
 {
-  if ( argc < 8 )
+  if ( argc < 9 )
     {
       usage( argc, argv );
       return 1;
@@ -72,26 +75,40 @@ int main( int argc, char** argv )
   double p2[ 3 ];
   for ( unsigned int i = 0; i < 3; ++i )
     {
-      p1[ i ] = atof( argv[ 1+i ] );
-      p2[ i ] = atof( argv[ 4+i ] );
+      p1[ i ] = atof( argv[ 2+i ] );
+      p2[ i ] = atof( argv[ 5+i ] );
     }
-  double step = atof( argv[ 7 ] );
+  double step = atof( argv[ 8 ] );
 
   //! [implicitSurface-makeSurface]
   trace.beginBlock( "Making polynomial surface." );
   typedef typename Space::RealPoint RealPoint;
   typedef typename RealPoint::Coordinate Ring;
   typedef MPolynomial<3, Ring> Polynomial3;
+  typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
 
   // See http://www.freigeist.cc/gallery.html
+  Polynomial3 P;
+  Polynomial3Reader reader;
+  std::string poly_str = argv[ 1 ];
+  std::string::const_iterator iter 
+    = reader.read( P, poly_str.begin(), poly_str.end() );
+  if ( iter != poly_str.end() )
+    {
+      std::cerr << "ERROR: I read only <" 
+                << poly_str.substr( 0, iter - poly_str.begin() )
+                << ">, and I built P=" << P << std::endl;
+      return 1;
+    }
   // Durchblick x3y+xz3+y3z+z3+5z = 0
-  MPolynomial<3, double> P = mmonomial<double>( 3, 1, 0 )
-    + mmonomial<double>( 1, 0, 3 )
-    + mmonomial<double>( 0, 3, 1 )
-    + mmonomial<double>( 0, 0, 3 )
-    + 5 * mmonomial<double>( 0, 0, 1 );
+
+    //   MPolynomial<3, double> P = mmonomial<double>( 3, 1, 0 )
+    // + mmonomial<double>( 1, 0, 3 )
+    // + mmonomial<double>( 0, 3, 1 )
+    // + mmonomial<double>( 0, 0, 3 )
+    // + 5 * mmonomial<double>( 0, 0, 1 );
   // Crixxi (y2+z2-1)2 +(x2+y2-1)3 = 0
   // developed = y4 +2y2z2+z4-2z2 -y2 + x6+3x4y2+3x2y4+y6-3x4-6x2y2-3y4+3x2
   // MPolynomial<3, double> P = mmonomial<double>(0,4,0)
@@ -107,8 +124,8 @@ int main( int argc, char** argv )
   //   - 6 * mmonomial<double>(2,2,0)
   //   - 3 * mmonomial<double>(0,4,0)
   //   + 3 * mmonomial<double>(2,0,0);
- 
-
+  
+  trace.info() << "P( X_0, X_1, X_2 ) = " << P << std::endl;
   ImplicitShape ishape( P );
   DigitalShape dshape;
   dshape.attach( ishape );

@@ -188,12 +188,12 @@ namespace DGtal
                  >> ( ( lit('^') >> int_ [at_c<1>(_val) = _1] ) // X_k^e
                       | eps [at_c<1>(_val) = 1] // X_k
                       );
-      litvariable = // x y z t x4 y5 z2 ...
+      litvariable = // x y z t x^4 y^5 z^2 ...
         ( lit('x') [at_c<0>(_val) = 0]
           | lit('y') [at_c<0>(_val) = 1] 
           | lit('z') [at_c<0>(_val) = 2] 
           | lit('t') [at_c<0>(_val) = 3] )
-        >> ( int_ [at_c<1>(_val) = _1] // x3 z4
+        >> ( ( lit('^') >> int_ [at_c<1>(_val) = _1] ) // x^3 z^4
              | eps [at_c<1>(_val) = 1] // x y z
              );
     }
