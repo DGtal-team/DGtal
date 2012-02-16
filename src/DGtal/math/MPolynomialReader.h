@@ -120,42 +120,56 @@ namespace DGtal
       using qi::_val;
       using qi::_1;
       using qi::double_;
-      //using boost::phoenix::ref;
       using phoenix::at_c;
       using phoenix::push_back;
 
-      top = 
+      top = // sum of polynomials
         mulexpr [push_back(at_c<1>(_val), _1)] 
         >> ( ( lit('+') [ at_c<0>(_val) = "+" ] 
                >> top [push_back(at_c<1>(_val), _1)]  )
+             | ( ( lit('-') [ at_c<0>(_val) = "-" ] 
+                   >> top [push_back(at_c<1>(_val), _1)]  ) )
              | eps [ at_c<0>(_val) = "T" ] );
 
-      mulexpr =
+      mulexpr = // product of polynomials
         subexpr [push_back(at_c<1>(_val), _1)] 
         >> ( ( lit('*') [ at_c<0>(_val) = "*" ] 
                >> mulexpr [push_back(at_c<1>(_val), _1)] )
              | eps [ at_c<0>(_val) = "T" ] );
 
-      subexpr = 
+      subexpr =  // polynomial or parenthesis expr.
         mpolynomial
         | expexpr;
-      expexpr = ( lit('(') [ at_c<0>(_val) = "()" ] 
-                  >> top [ push_back(at_c<1>(_val), _1) ]
-                  >> lit(')') >> ( ( lit('^') >> int_ [ at_c<2>(_val) = _1 ] )
-                                   | eps [ at_c<2>(_val) = 1 ]  ) );
+      expexpr = // ( expr ) or ( expr )^k
+        ( lit('(') [ at_c<0>(_val) = "()" ] 
+          >> top [ push_back(at_c<1>(_val), _1) ]
+          >> lit(')') >> ( ( lit('^') >> int_ [ at_c<2>(_val) = _1 ] )
+                           | eps [ at_c<2>(_val) = 1 ]  ) );
         
-      mpolynomial =
+      mpolynomial = // monomial or sum of monomials
         monomial [push_back(at_c<0>(_val), _1)]
         >> *( lit('+') >> monomial [push_back(at_c<0>(_val), _1)] );
-      monomial = double_ [at_c<0>(_val) = _1]
-        >> *( variable [push_back(at_c<1>(_val), _1)] );
-      //>> *( variable [push_back(at_c<1>(_val), _1)] );
-      variable = 
+      monomial =   // coef * power(s)*, or power(s)+
+        ( double_ [at_c<0>(_val) = _1] 
+          >> *( genvariable [push_back(at_c<1>(_val), _1)] ) )
+        | +( genvariable [push_back(at_c<1>(_val), _1)] 
+             >> eps [at_c<0>(_val) = 1] );
+
+      genvariable = litvariable | variable;
+      variable = // X_0 X_1 ... X_0^4 X_1^2 X_3^0 ...
         lit('X') >> lit('_') 
                  >> int_ [at_c<0>(_val) = _1]
                  >> ( ( lit('^') >> int_ [at_c<1>(_val) = _1] ) // X_k^e
                       | eps [at_c<1>(_val) = 1] // X_k
                       );
+      litvariable = // x y z t x4 y5 z2 ...
+        ( lit('x') [at_c<0>(_val) = 0]
+          | lit('y') [at_c<0>(_val) = 1] 
+          | lit('z') [at_c<0>(_val) = 2] 
+          | lit('t') [at_c<0>(_val) = 3] )
+        >> ( int_ [at_c<1>(_val) = _1] // x3 z4
+             | eps [at_c<1>(_val) = 1] // x y z
+             );
     }
     qi::rule<Iterator, top_node(), ascii::space_type> top;
     qi::rule<Iterator, top_node(), ascii::space_type> mulexpr;
@@ -164,6 +178,8 @@ namespace DGtal
     qi::rule<Iterator, polynomial_node(), ascii::space_type> mpolynomial;
     qi::rule<Iterator, monomial_node(), ascii::space_type> monomial;
     qi::rule<Iterator, power_node(), ascii::space_type> variable;
+    qi::rule<Iterator, power_node(), ascii::space_type> genvariable;
+    qi::rule<Iterator, power_node(), ascii::space_type> litvariable;
 
   };
 }
@@ -267,6 +283,15 @@ namespace DGtal
           boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
           p += emaker.myP;
         }
+      else if ( topnode.op == "-" )
+        {
+          std::cerr << "--node";
+          ExprNodeMaker emaker( *this );
+          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = emaker.myP;
+          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
+          p -= emaker.myP;
+        }
       else
         std::cerr << "U-node" << topnode.op << std::endl;
       return p;
@@ -287,7 +312,10 @@ namespace DGtal
       bool r = phrase_parse( iter, end, gpolynomial, space, m );
       if (r) p = make( m );
       if (iter != end) // fail if we did not get a full match
-        return false;
+        {
+          std::cerr << "[ERROR, read till " << expr.substr( 0, iter - expr.begin() ) << "]" << std::endl;
+          return false;
+        }
       return r;
     }
 
