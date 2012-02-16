@@ -199,7 +199,9 @@ bool testMPolynomialReader()
   string s1 = "1.5 X_0^2 X_2^3 X_1^5";
   string s2 = "2 X_0^2 X_2 X_1^5";
   string s3 = s1 + " * " + s2;
-  string s4 = "(" + s2 + ")^4 * (" + s1 + ")^1 + 3";
+  string s4 = "(" + s2 + ")^4 * (" + s1 + ")^1 - 3 X_2^3";
+  string s5 = "x3y+xz3+y3z+z3+5z"; // Durchblick
+  string s6 = "(y2+z2-1)^2 +(x2+y2-1)^3"; // Crixxi 
   bool ok1 = reader.addMPolynomial( P, s1 );
   trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
   bool ok2 = reader.addMPolynomial( P, s2 );
@@ -208,6 +210,10 @@ bool testMPolynomialReader()
   trace.info() << "- Parsing " << s3 << " : " << ok3 << " " << P << std::endl;
   bool ok4 = reader.addMPolynomial( P, s4 );
   trace.info() << "- Parsing " << s4 << " : " << ok4 << " " << P << std::endl;
+  bool ok5 = reader.addMPolynomial( P, s5 );
+  trace.info() << "- Parsing " << s5 << " : " << ok5 << " " << P << std::endl;
+  bool ok6 = reader.addMPolynomial( P, s6 );
+  trace.info() << "- Parsing " << s6 << " : " << ok6 << " " << P << std::endl;
   return true;
 }
 ///////////////////////////////////////////////////////////////////////////////
