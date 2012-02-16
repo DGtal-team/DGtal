@@ -41,6 +41,7 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/ImageContainerByHashTree.h"
 
 
 using namespace DGtal;
@@ -93,11 +94,11 @@ using namespace std;
 
 
 /**
- * Simple test of Image construction.
+ * Image tests.
  *
  **/
 template<typename Image>
-bool testImage(const typename Image::Domain& d)
+bool testImage(const Image& aImage1, const Image& aImage2)
 {
 
   BOOST_CONCEPT_ASSERT(( CImage<Image> )); 
@@ -108,7 +109,7 @@ bool testImage(const typename Image::Domain& d)
   ////////////////////////////////////////////////
   trace.beginBlock ( "Main services, range" );
 
-  Image img(d); //ctor
+  Image img(aImage1); 
   Image img2 = img; //copy
 
   //fill
@@ -118,8 +119,8 @@ bool testImage(const typename Image::Domain& d)
     {
       img.setValue(*dit, i);
     }
-  Image img3(d); 
-  img3 = img; //assign
+  Image img3(aImage2); 
+  img3 = img; //assignment
 
   //ranges comparison
   typename Image::ConstRange rimg = img.range(); 
@@ -192,14 +193,25 @@ int main( int argc, char** argv )
   Point q = Point::diagonal(size-1); 
   Domain d(p,q); 
 
-  /// images
+  /// image types
   typedef short Value; 
   typedef ImageContainerBySTLVector<Domain,Value> VImage; 
   typedef ImageContainerBySTLMap<Domain,Value> MImage; 
+  typedef experimental::ImageContainerByHashTree<Domain,Value> HImage; 
 
   /// tests
-  bool res = testImage<VImage>(d); 
-  res = res && testImage<MImage>(d);
+  VImage vi(d); 
+  VImage vi2(d); 
+  bool res = testImage(vi, vi2); 
+
+  MImage mi(d);
+  MImage mi2(d);
+  res = res && testImage(mi, mi2);
+
+  // TODO
+  // HImage hi(3, p, q, 0);
+  // HImage hi2(3, p, q, 1);
+  // res = res && testImage(hi, hi2);
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
