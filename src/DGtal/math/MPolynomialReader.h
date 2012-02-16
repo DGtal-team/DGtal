@@ -74,6 +74,7 @@ namespace DGtal
   struct top_node {
     std::string op;
     std::vector<expr_node> expressions;
+    int exp;
   };
 
 
@@ -97,6 +98,7 @@ BOOST_FUSION_ADAPT_STRUCT(
     DGtal::top_node,
     (std::string, op)
     (std::vector<DGtal::expr_node>, expressions)
+    (int, exp)
 )
 
 namespace DGtal
@@ -123,27 +125,30 @@ namespace DGtal
       using phoenix::push_back;
 
       top = 
-        ( lit('(') [ at_c<0>(_val) = "()" ] 
-          >> expr [ push_back(at_c<1>(_val), _1) ]
-          >> lit(')') )
-        | ( expr [push_back(at_c<1>(_val), _1)] 
-            >> ( ( lit('*') [ at_c<0>(_val) = "*" ] 
-                   >> expr [ push_back( at_c<1>(_val), _1 ) ] ) // expr * expr
-                 | eps [at_c<0>(_val) = "T"] // expr
-                 ) 
-          )
-        ;
-      expr = mpolynomial | top;
-      //        | ( lit('(') >> expr [ _val = _1] >> lit(')') )
-        // | ( expr [ push_back( at_c<1>(_val), _1 ) ] 
-        //     >> lit('*') [ at_c<0>(_val) = '*' ] 
-        //     >> expr [ push_back( at_c<1>(_val), _1 ) ] )
-        // | ( expr >> lit('+') >> expr );
+        mulexpr [push_back(at_c<1>(_val), _1)] 
+        >> ( ( lit('+') [ at_c<0>(_val) = "+" ] 
+               >> top [push_back(at_c<1>(_val), _1)]  )
+             | eps [ at_c<0>(_val) = "T" ] );
+
+      mulexpr =
+        subexpr [push_back(at_c<1>(_val), _1)] 
+        >> ( ( lit('*') [ at_c<0>(_val) = "*" ] 
+               >> mulexpr [push_back(at_c<1>(_val), _1)] )
+             | eps [ at_c<0>(_val) = "T" ] );
+
+      subexpr = 
+        mpolynomial
+        | expexpr;
+      expexpr = ( lit('(') [ at_c<0>(_val) = "()" ] 
+                  >> top [ push_back(at_c<1>(_val), _1) ]
+                  >> lit(')') >> ( ( lit('^') >> int_ [ at_c<2>(_val) = _1 ] )
+                                   | eps [ at_c<2>(_val) = 1 ]  ) );
+        
       mpolynomial =
         monomial [push_back(at_c<0>(_val), _1)]
         >> *( lit('+') >> monomial [push_back(at_c<0>(_val), _1)] );
       monomial = double_ [at_c<0>(_val) = _1]
-        >> +( variable [push_back(at_c<1>(_val), _1)] );
+        >> *( variable [push_back(at_c<1>(_val), _1)] );
       //>> *( variable [push_back(at_c<1>(_val), _1)] );
       variable = 
         lit('X') >> lit('_') 
@@ -153,7 +158,9 @@ namespace DGtal
                       );
     }
     qi::rule<Iterator, top_node(), ascii::space_type> top;
-    qi::rule<Iterator, expr_node(), ascii::space_type> expr;
+    qi::rule<Iterator, top_node(), ascii::space_type> mulexpr;
+    qi::rule<Iterator, expr_node(), ascii::space_type> subexpr;
+    qi::rule<Iterator, top_node(), ascii::space_type> expexpr;
     qi::rule<Iterator, polynomial_node(), ascii::space_type> mpolynomial;
     qi::rule<Iterator, monomial_node(), ascii::space_type> monomial;
     qi::rule<Iterator, power_node(), ascii::space_type> variable;
@@ -177,13 +184,13 @@ namespace DGtal
     
     Polynomial make( const power_node & pnode )
     {
-      std::cerr << "X_" << pnode.k << "^" << pnode.e << " ";
+      //std::cerr << "X_" << pnode.k << "^" << pnode.e << " ";
       return Xe_k<n, Ring>( pnode.k, pnode.e );
     }
     Polynomial make( const monomial_node & mnode )
     {
       Polynomial m;
-      std::cerr << mnode.coef << "*";
+      // std::cerr << mnode.coef << "*";
       if ( mnode.powers.size() != 0 )
         {
           m = make( mnode.powers[ 0 ] );
@@ -193,7 +200,7 @@ namespace DGtal
       else
         {
           power_node pnode = { 0, 0 };
-          m = make( pnode );
+          m = 1; // make( pnode );
         }
       return mnode.coef * m;
     }
@@ -202,7 +209,7 @@ namespace DGtal
       Polynomial p;
       for ( unsigned int i = 0; i < poly.monomials.size(); ++i )
         {
-          if ( i != 0 ) std::cerr << "+";
+          // if ( i != 0 ) std::cerr << "+";
           p += make( poly.monomials[ i ] );
         }
       return p;
@@ -226,13 +233,21 @@ namespace DGtal
     Polynomial make( const top_node & topnode )
     {
       Polynomial p;
-      if ( ( topnode.op ==  "T" )
-           || ( topnode.op ==  "()" ) )
+      if ( topnode.op ==  "T" )
         {
           std::cerr << topnode.op << "-node";
           ExprNodeMaker emaker( *this );
           boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
           p = emaker.myP;
+        }
+      else if ( topnode.op ==  "()" )
+        {
+          std::cerr << topnode.op << "^" << topnode.exp <<"-node";
+          ExprNodeMaker emaker( *this );
+          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = (double) 1; // emaker.myP;
+          for ( unsigned int i = 1; i <= topnode.exp; ++i )
+            p *= emaker.myP;
         }
       else if ( topnode.op == "*" )
         {
@@ -242,6 +257,15 @@ namespace DGtal
           p = emaker.myP;
           boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
           p *= emaker.myP;
+        }
+      else if ( topnode.op == "+" )
+        {
+          std::cerr << "+-node";
+          ExprNodeMaker emaker( *this );
+          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = emaker.myP;
+          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
+          p += emaker.myP;
         }
       else
         std::cerr << "U-node" << topnode.op << std::endl;

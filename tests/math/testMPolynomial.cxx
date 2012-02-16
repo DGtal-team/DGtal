@@ -199,7 +199,7 @@ bool testMPolynomialReader()
   string s1 = "1.5 X_0^2 X_2^3 X_1^5";
   string s2 = "2 X_0^2 X_2 X_1^5";
   string s3 = s1 + " * " + s2;
-  string s4 = s1 + "*" + "(" + s2 + ")";
+  string s4 = "(" + s2 + ")^4 * (" + s1 + ")^1 + 3";
   bool ok1 = reader.addMPolynomial( P, s1 );
   trace.info() << "- Parsing " << s1 << " : " << ok1 << " " << P << std::endl;
   bool ok2 = reader.addMPolynomial( P, s2 );
