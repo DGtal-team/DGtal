@@ -50,6 +50,7 @@
 #include <map>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/ConstRangeAdapter.h"
 #include "DGtal/images/SetValueIterator.h"
@@ -105,6 +106,19 @@ namespace DGtal
    * Aim: Model of CImage implementing the association Point<->Value
    * using an STL map.
    *
+   * Once constructed, the image is valid, i.e. every point of the
+   * image domain has a value, which can be read and overwritten.
+   * Note that the default value (returned for points that are not
+   * stored in the underlying STL map) can be chosen by the user. 
+   *
+   * As a model of CImage, this class provides two ways of accessing values: 
+   * - through the range of points returned by the domain() method 
+   * combined with the operator() that takes a point and returns its associated value. 
+   * - through the range of values returned by the range() method, 
+   * which can be used to directly iterate over the values of the image
+   *
+   * This class also provides a setValue() method and an output iterator, 
+   * which is returned by the output() method for writting purposes. 
    *
    * @see testImage.cpp
    */
@@ -127,6 +141,8 @@ namespace DGtal
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
 
+    typedef CountedPtr<const Domain> DomainPtr;    
+
     /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
 
@@ -141,8 +157,10 @@ namespace DGtal
     /////////////////// Data members //////////////////
   private: 
 
-    /// Aliasing pointer on the image domain
-    const Domain* myDomain;
+    /// Counted pointer on the image domain,
+    /// Since the domain is not mutable, not assignable,
+    /// it is shared by all the copies of *this
+    DomainPtr myDomainPtr;
 
     /// Default value
     Value myDefaultValue;
@@ -246,124 +264,126 @@ namespace DGtal
     typedef typename map<Point,Value>::const_iterator ConstIterator;
     typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
     typedef typename map<Point,Value>::const_reverse_iterator ConstReverseIterator;
-    ///\todo create span iterators
-    class SpanIterator: public Iterator
-    {
-      friend class ImageContainerBySTLMap<TDomain,TValue>;
+    //
+    // NB: It does not make sense for domain that are not rectangular
+    // ///\todo create span iterators
+    // class SpanIterator: public Iterator
+    // {
+    //   friend class ImageContainerBySTLMap<TDomain,TValue>;
 
-    public:
-      SpanIterator( const Point & p ,
-		    const Dimension aDim ,
-		    ImageContainerBySTLMap<TDomain,TValue> *aMap ) :   
-	myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
-      {
-	myPos = myMap->find( p );
-      }
+    // public:
+    //   SpanIterator( const Point & p ,
+    // 		    const Dimension aDim ,
+    // 		    ImageContainerBySTLMap<TDomain,TValue> *aMap ) :   
+    // 	myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
+    //   {
+    // 	myPos = myMap->find( p );
+    //   }
 
 
-      const Value & operator*() const
-      {
-	return (*myPos).second;
-      }
+    //   const Value & operator*() const
+    //   {
+    // 	return (*myPos).second;
+    //   }
       
-      /**
-       * Implements the next() method
-       *
-       **/
-      void next()
-      {
-	while ((myPos != myMap->end()) && 
-	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-	  {
-	    myPos++;
-	  }
-      }
+    //   /**
+    //    * Implements the next() method
+    //    *
+    //    **/
+    //   void next()
+    //   {
+    // 	while ((myPos != myMap->end()) && 
+    // 	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
+    // 	  {
+    // 	    myPos++;
+    // 	  }
+    //   }
 
-      /**
-       * Implements the prev() method
-       *
-       **/
-      void prev()
-      {
-	while ((myPos != myMap->end()) && 
-	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-	  {
-	    myPos--;
-	  }
-      }      
+    //   /**
+    //    * Implements the prev() method
+    //    *
+    //    **/
+    //   void prev()
+    //   {
+    // 	while ((myPos != myMap->end()) && 
+    // 	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
+    // 	  {
+    // 	    myPos--;
+    // 	  }
+    //   }      
 
-      /**
-       * Operator ++ (++it)
-       *
-       */
-      SpanIterator &operator++()
-      {
-	this->next();
-	return *this;
-      }
+    //   /**
+    //    * Operator ++ (++it)
+    //    *
+    //    */
+    //   SpanIterator &operator++()
+    //   {
+    // 	this->next();
+    // 	return *this;
+    //   }
 
-      /**
-       * Operator ++ (it++)
-       *
-       */
-      SpanIterator &operator++ ( int )
-      {
-	SpanIterator tmp = *this;
-	++*this;
-	return tmp;
-      }
+    //   /**
+    //    * Operator ++ (it++)
+    //    *
+    //    */
+    //   SpanIterator &operator++ ( int )
+    //   {
+    // 	SpanIterator tmp = *this;
+    // 	++*this;
+    // 	return tmp;
+    //   }
 
 
-      /**
-       * Operator -- (--it)
-       *
-       */
-      SpanIterator &operator--()
-      {
-	this->prev();
-	return *this;
-      }
+    //   /**
+    //    * Operator -- (--it)
+    //    *
+    //    */
+    //   SpanIterator &operator--()
+    //   {
+    // 	this->prev();
+    // 	return *this;
+    //   }
 
-      /**
-       * Operator -- (it--)
-       *
-       */
-      SpanIterator &operator-- ( int )
-      {
-	SpanIterator tmp = *this;
-	--*this;
-	return tmp;
-      }
+    //   /**
+    //    * Operator -- (it--)
+    //    *
+    //    */
+    //   SpanIterator &operator-- ( int )
+    //   {
+    // 	SpanIterator tmp = *this;
+    // 	--*this;
+    // 	return tmp;
+    //   }
 
-    private:
+    // private:
       
-      ///Copie of starting point
-      Point myStartingPoint;
+    //   ///Copie of starting point
+    //   Point myStartingPoint;
       
-      ///Current  position in the built-in iterator
-      Iterator myPos;
+    //   ///Current  position in the built-in iterator
+    //   Iterator myPos;
 
-      /// Copy of the underlying images
-      ImageContainerBySTLMap<TDomain,TValue> *myMap;
+    //   /// Copy of the underlying images
+    //   ImageContainerBySTLMap<TDomain,TValue> *myMap;
 
-      ///Dimension on which the iterator must iterate
-      Dimension myDimension;
+    //   ///Dimension on which the iterator must iterate
+    //   Dimension myDimension;
 
-    };
+    // };
 
-    SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
-    {
-      return SpanIterator ( aPoint, aDimension, this);
-    }
+    // SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
+    // {
+    //   return SpanIterator ( aPoint, aDimension, this);
+    // }
 
-    SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
-    {
-      Point tmp = aPoint;
-      tmp.at( aDimension ) = myDomain->lowerBound.at( aDimension ) +
-	myDomain->upperBound.at( aDimension ) - 
-	myDomain->lowerBound.at( aDimension ) + 1;
-      return SpanIterator( tmp, aDimension, this);
-    }
+    // SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
+    // {
+    //   Point tmp = aPoint;
+    //   tmp.at( aDimension ) = myDomain->lowerBound.at( aDimension ) +
+    // 	myDomain->upperBound.at( aDimension ) - 
+    // 	myDomain->lowerBound.at( aDimension ) + 1;
+    //   return SpanIterator( tmp, aDimension, this);
+    // }
 
   };
 
