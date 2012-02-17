@@ -32,7 +32,8 @@ functions or classes.
 A concept describes a set of types by listing their common interface
 (associated types and methods). The types that satisfy a concept are called <em>models</em>.    
 Since the types are known at compile-time, syntactical errors can be detected early, 
-generated code can be optimized and efficiency is preserved. 
+generated code can be optimized and efficiency is preserved. In DGtal, the name of the 
+concepts always begin by C. 
 
  -# \ref dgtalintroBasicConcepts
     -# \ref dgtalintroBasicConceptsSpace
@@ -49,18 +50,18 @@ generated code can be optimized and efficiency is preserved.
 
 The core of DGtal is built on a small set of concepts: 
 
- \subsection dgtalintroBasicConceptsSpace CSpace
+ \subsection dgtalintroBasicConceptsSpace Space
 
-The concept of digital space  
+CSpace: The concept of digital space  
 describes digital spaces of arbitrary dimension, with user-chosen integer types.
 The only available model of this concept is SpaceND, which defines fundamental 
 types associated to a digital space like the type of point or vector lying in the space, etc.
 The point is a key geometrical element since digital geometry algorithms often deal with
 explicit or implicit sets of points.  
 
- \subsection dgtalintroBasicConceptsExplicitSet Explicit sets of points: CDomain, CDigitalSet
+ \subsection dgtalintroBasicConceptsExplicitSet Explicit sets of points
 
-The concepts of domain and of digital set both describe
+CDomain, CDigitalSet: The concepts of domain and of digital set both describe
 sets of points that can be enumerated from a lower bound to a upper bound.  
 The difference is that the former is not-mutable, basically used to bound the space
 part where the computations have to be performed, while the latter is mutable.
@@ -72,8 +73,9 @@ various digital objects can be constructed from digital sets.
 Note that at a given time t, a digital set can be converted into a domain (DigitalSetDomain), 
 in order to construct an ad hoc domain or to bound some local computations within a subdomain.   
 
- \subsection dgtalintroBasicConceptsImplicitSet Implicit sets of points: CPointFunctor, CPointPredicate
+ \subsection dgtalintroBasicConceptsImplicitSet Implicit sets of points
 
+CPointFunctor, CPointPredicate: 
 The concept of point <em>functor</em> describe a mapping between 
 the points of a digital space and a set of values. 
 If the set of values is {0,1}, this mapping is called a point <em>predicate</em>.  
@@ -85,32 +87,34 @@ Some models of point predicate are adapters:
 - of explicit sets of points, ie. domains (DomainPredicate)
 and digital sets (SetPredicate).  
 
- \subsection dgtalintroBasicConceptsImage CImage
+ \subsection dgtalintroBasicConceptsImage Image
 
-The concept of contant image is a point functor bounded by a domain. 
+CConstImage, CImage: 
+The concept of constant image is a point functor bounded by a domain. 
 It is thus a refinement of the concept of point functor, 
 describing a mapping between points and values, but having in addition a domain, 
 returned by the method domain(), and a range of values, returned by the method range().  
 The concept of image is a refinement of the concept of constant image, 
 but with extra services to update values: a method setValue()
 and an output iterator returned by the method output(), 
-which provides a way of incrementally filling an image
+which provides a way of incrementaly filling an image
 from the lower bound to the upper bound of its domain. 
 Different models of image are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, ImageContainerByHashTree --- soon --- and
+ImageContainerBySTLMap, ImageContainerByHashTree --- coming soon --- and
  ImageContainerByITKImage, a wrapper for ITK images. 
 
- \section dgtalintroPackages Main packages. 
+ \section dgtalintroPackages Main packages 
 
 DGtal is divided into several packages, containing concepts, models and algorithms. 
 
  \section dgtalintroPackagesKernel Kernel
  
-This package contains the core concepts described above 
+This package contains the main concepts of DGtal described above 
 and used in other higher level packages. 
-For example, it defines number types and fundamental structures
+For instance, it defines number types and fundamental structures
  like digital space, domains, digital sets and basic mappings 
-between digital points and values.
+between digital points and values, 
+ie. basic point functors and point predicates
 
  \section dgtalintroPackagesTopology Topology
 
@@ -137,7 +141,15 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
  \section dgtalintroPackagesImage Image
 
-
+This package contains the concept of image and its models: 
+either containers like ImageContainerBySTLVector, 
+ImageContainerBySTLMap, ImageContainerByHashTree
+ ImageContainerByITKImage or adapters like ConstImageAdapter, 
+which provides a virtual view of the true values contained in the 
+adapted image, or Image, which is a light proxy on another image. 
+Moreover, it provides many functions for converting digital sets into images,
+conversely, images into digital sets by value comparators, 
+and filling images from point functors or other images.  
 
 
 
