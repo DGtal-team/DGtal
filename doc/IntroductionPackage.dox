@@ -48,8 +48,7 @@ also illustrate a mechanism to use DGtal in your own project.
 
 
 @b Modules
- - \ref moduleIntroduction1
- - \ref moduleIntroduction2  
+ - \ref moduleIntroduction  
  - \ref HowToUseDGtal
 
 

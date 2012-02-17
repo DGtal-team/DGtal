@@ -461,6 +461,62 @@ struct Thresholder<T,true,true> {
     const TBinaryFunctor* myBoolFunctor;
   };
 
+/**
+ * // template class IntervalThresholder
+ * \brief Aim: A small functor with an operator ()
+ * that compares one value to an interval.
+ *
+ * @tparam T  type for a value that must be equality and less-than comparable
+ */
+template <typename T>
+class IntervalThresholder 
+{
+public:
+  BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
+  BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
+
+  /// input type
+  typedef T Input; 
+
+  /// predicates type
+  typedef Thresholder<T,false,true> Tlow; 
+  typedef Thresholder<T,true,true> Tup; 
+  typedef PredicateCombiner<Tlow,Tup,AndBoolFct2 > CombinedPredicate; 
+    
+  /** 
+   * Constructor. 
+   * @param low lower threshold.
+   * @param up upper threshold.
+   */
+  IntervalThresholder(const Input& low, const Input& up)
+    : myTlow( low), myTup ( up ), 
+      myPred( myTlow, myTup, AndBoolFct2() ) {};
+
+  /**
+   * Compares  @a aI to @ myT.
+   * @param aI  any input value
+   * @return 'true' or 'false' according to @a myPred
+   */
+  bool operator()(const Input& aI) const 
+  {
+    return myPred(aI); 
+  }
+private:
+  /** 
+   * First thresholder
+   */
+  Tlow myTlow;
+  /** 
+   * Second thresholder
+   */
+  Tup myTup;
+  /** 
+   * Combined predicate
+   */
+  CombinedPredicate myPred;
+};
+
+
   /**
    * Description of template class 'Pair1st' <p>
    * \brief Aim: Define a simple functor that returns 
