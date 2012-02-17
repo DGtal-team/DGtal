@@ -182,8 +182,8 @@ DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
-::PointPredicateFromPointFunctor( const PointFunctor & aFun,
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::PointFunctorPredicate( const PointFunctor & aFun,
       const Predicate & aPred)
   : myFun( &aFun ), myPred( &aPred )
 {
@@ -191,17 +191,17 @@ DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
-::PointPredicateFromPointFunctor( const PointPredicateFromPointFunctor& other )
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::PointFunctorPredicate( const PointFunctorPredicate& other )
   : myFun( other.myFun), myPred( other.myPred )
 {
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>&
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
-::operator=( const PointPredicateFromPointFunctor& other )
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>&
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::operator=( const PointFunctorPredicate& other )
 {
   if (this != &other)
     {
@@ -212,15 +212,15 @@ DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
-::~PointPredicateFromPointFunctor()
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::~PointFunctorPredicate()
 {
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>
 inline
 bool 
-DGtal::PointPredicateFromPointFunctor<TPointFunctor, TPredicate>
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
 ::operator()( const Point & p ) const
 {
   return myPred->operator()( myFun->operator()( p ) );

@@ -228,7 +228,6 @@ called <em>segment</em>.
 More precisely, a segment is a valid and not empty range. 
 Any model of the concept CSegment, should have the following inner types: 
 
- - Self (its own type)
  - ConstIterator
 
 and the following methods: 
@@ -267,7 +266,7 @@ CDynamicSegmentComputer and CDynamicBidirectionalSegmentComputer.
  @image html segmentComputersHierarchy.png  "Hierarchy"
  @image latex segmentComputersHierarchy.png  "Hierarchy"
  
-The most restrictive kind of segment computer is CTrivialSegmentComputer, 
+The less restrictive kind of segment computer is CTrivialSegmentComputer, 
 which is only presented to smoothly introduce the next concepts.   
 CTrivialSegmentComputer is a refinement of CSegment and should provide
 in addition the following two methods: 
@@ -301,7 +300,8 @@ However the extension of a segment can be performed in only one direction (given
 To cope with this problem, the models of CForwardSegmentComputer, which is a refinement of 
 CTrivialSegmentComputer, should define the following nested type:
 
- - Reverse 
+ - Self (its own type)
+ - Reverse (like Self but based on reverse iterators) 
 
 Reverse is a type that behaves like Self but with reverse iterators. In order to get a 
 reverse copy of a segment computer, the following method should be defined:   

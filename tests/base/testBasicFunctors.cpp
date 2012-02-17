@@ -142,6 +142,23 @@ bool testBasicFunctors()
     nbok += ( t4(i) == false ) ? 1 : 0; 
     nb++;    
   }
+
+  {//interval thresholder
+    const int low = 1;
+    const int up = 5; 
+    IntervalThresholder< int > t(low, up);
+    nbok += ( t(0) == false ) ? 1 : 0; 
+    nb++;    
+    for (int i = low; i <= up; ++i)
+      {
+	nbok += ( t(i) == true ) ? 1 : 0; 
+	nb++;    
+      }
+    nbok += ( t(6) == false ) ? 1 : 0; 
+    nb++;    
+  }
+
+
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
   

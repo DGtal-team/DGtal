@@ -315,9 +315,9 @@ namespace DGtal
   };
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class PointPredicateFromPointFunctor
+  // template class PointFunctorPredicate
   /**
-   * Description of template class 'PointPredicateFromPointFunctor' <p> \brief
+   * Description of template class 'PointFunctorPredicate' <p> \brief
    * Aim: The predicate returns true when the predicate
    * returns true for the value assigned to a given point
    * in the point functor.
@@ -326,7 +326,7 @@ namespace DGtal
    * @tparam TPredicate a type of predicate on values
    */
   template <typename TPointFunctor, typename TPredicate>
-  struct PointPredicateFromPointFunctor
+  struct PointFunctorPredicate
   {
     BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));  
     BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));  
@@ -340,26 +340,26 @@ namespace DGtal
        @param aFun an point functor.
        @param aPred a predicate.
      */
-    PointPredicateFromPointFunctor( const PointFunctor & aFun,
+    PointFunctorPredicate( const PointFunctor & aFun,
         const Predicate & aPred );
 
     /**
        Copy constructor.
        @param other the object to copy
       */
-    PointPredicateFromPointFunctor(  const PointPredicateFromPointFunctor& other );
+    PointFunctorPredicate(  const PointFunctorPredicate& other );
 
     /**
        Assignement
        @param other the object to copy
        @return reference to the current object
      */
-    PointPredicateFromPointFunctor& operator=( const PointPredicateFromPointFunctor& other );
+    PointFunctorPredicate& operator=( const PointFunctorPredicate& other );
 
     /**
        Destructor
      */
-    ~PointPredicateFromPointFunctor();
+    ~PointFunctorPredicate();
 
     /**
      * @param p any point.
