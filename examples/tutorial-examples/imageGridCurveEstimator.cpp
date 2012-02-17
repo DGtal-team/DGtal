@@ -41,9 +41,10 @@
 //! [imageGridCurveEstimator-basicIncludes]
 
 //! [imageGridCurveEstimator-imageIncludes]
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 //! [imageGridCurveEstimator-imageIncludes]
 
 //! [imageGridCurveEstimator-trackingIncludes]
@@ -71,7 +72,9 @@ int main()
 
   //! [imageGridCurveEstimator-predicate] 
   //predicate from the image
-  IntervalForegroundPredicate<Image> predicate(image,0,135); 
+  typedef IntervalThresholder<Image::Value> Binarizer; 
+  Binarizer b(1, 135); 
+  PointFunctorPredicate<Image,Binarizer> predicate(image, b); 
   //! [imageGridCurveEstimator-predicate]
 
   //! [imageGridCurveEstimator-prepareTracking]
