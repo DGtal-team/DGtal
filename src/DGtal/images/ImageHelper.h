@@ -76,7 +76,7 @@ namespace DGtal
    * @tparam P any model of CPointPredicate
    */
   template<typename I, typename O, typename P>
-  void setFromRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
+  void setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
 
   /**
    * Fill a set through the inserter @a ito
@@ -96,9 +96,9 @@ namespace DGtal
    * @tparam F any model of CPointFunctor
    */
   template<typename I, typename O, typename F>
-  void setFromRangeAndFunctor(const I& itb, const I& ite, 
-			      const O& ito, const F& aFunctor, 
-			      const typename F::Value& aThreshold = 0); 
+  void setFromPointsRangeAndFunctor(const I& itb, const I& ite, 
+				    const O& ito, const F& aFunctor, 
+				    const typename F::Value& aThreshold = 0); 
 
   /**
    * Fill a set through the inserter @a ito
