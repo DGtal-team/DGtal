@@ -37,10 +37,10 @@
 template<typename I, typename O, typename P>
 inline
 void 
-DGtal::setFromRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
+DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
 {
   BOOST_CONCEPT_ASSERT(( CPointPredicate<P> )); 
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<I> ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename P::Point> ));
 
   NotPointPredicate<P> nPred( aPred ); 
@@ -51,11 +51,11 @@ DGtal::setFromRangeAndPredicate(const I& itb, const I& ite, const O& ito, const 
 template<typename I, typename O, typename F>
 inline
 void 
-DGtal::setFromRangeAndFunctor(const I& itb, const I& ite, const O& ito, 
-			      const F& aFunctor, const typename F::Value& aThreshold)
+DGtal::setFromPointsRangeAndFunctor(const I& itb, const I& ite, const O& ito, 
+				    const F& aFunctor, const typename F::Value& aThreshold)
 {
   BOOST_CONCEPT_ASSERT(( CPointFunctor<F> )); 
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<I> ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
   BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename F::Point> ));
 
   typedef Thresholder<typename F::Value,false,false> T; 
@@ -73,7 +73,7 @@ DGtal::setFromImage(const I& aImg, const O& ito, const typename I::Value& aThres
   BOOST_CONCEPT_ASSERT(( CConstImage<I> )); 
 
   typename I::Domain d = aImg.domain(); 
-  setFromRangeAndFunctor(d.begin(), d.end(), ito, aImg, aThreshold); 
+  setFromPointsRangeAndFunctor(d.begin(), d.end(), ito, aImg, aThreshold); 
 }
 
 //------------------------------------------------------------------------------
@@ -108,13 +108,15 @@ void
 DGtal::imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg, 
 			      const typename Im::Value& aValue)
 {
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<It> ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<It> ));
   BOOST_CONCEPT_ASSERT(( CImage<Im> )); 
 
-  SetValueIterator<Im> setter(aImg); //output iterator 
-  ConstValueFunctor<typename Im::Value> f(aValue); //operation
-
-  std::transform(itb, ite, setter, f ); 
+  typename Im::Domain d = aImg.domain(); 
+  for (It it = itb; it != ite; ++it)
+    {
+      if (d.isInside( *it )) 
+	aImg.setValue( *it, aValue ); 
+    }
 }
 
 //------------------------------------------------------------------------------
