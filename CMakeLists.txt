@@ -48,11 +48,6 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 
 # -----------------------------------------------------------------------------
-# Install settings
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
-
-# -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
@@ -62,3 +57,8 @@ INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 #------------------------------------------------------------------------------
 add_subdirectory (src)
 add_subdirectory (tools)
+
+# -----------------------------------------------------------------------------
+# Install settings
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
