@@ -1,8 +1,3 @@
-# The name of our project is "DGtal". CMakeLists files in this
-# project can refer to the root source directory of the project as
-# ${DGTAL_SOURCE_DIR} and to the root binary directory of the
-# project as ${DGTAL_BINARY_DIR}.
-
 # -----------------------------------------------------------------------------
 # Project definition
 # -----------------------------------------------------------------------------
@@ -12,9 +7,7 @@ cmake_minimum_required (VERSION 2.6)
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
-# Look for modules
 SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
-
 SET(DGtal_VERSION_MAJOR 0)
 SET(DGtal_VERSION_MINOR 4)
 SET(DGtal_VERSION_PATCH 1devel)
