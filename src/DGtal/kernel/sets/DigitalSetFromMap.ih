@@ -247,12 +247,13 @@ DGtal::DigitalSetFromMap<TMapImage>
 {
   if ( this != &aSet )
     {
-      Iterator itDst = end();
+      Iterator itDst = this->end();
       for ( typename TDigitalSet::ConstIterator itSrc = aSet.begin();
 	    itSrc != aSet.end();
 	    ++itSrc )
 	{
-	  itDst = myImgPtr->insert( itDst, Pair(*itSrc, myDefault) );
+	  itDst = Iterator( myImgPtr->insert( itDst.base(), Pair(*itSrc, myDefault) ), 
+			    myFun );
 	}
     }
   return *this;
