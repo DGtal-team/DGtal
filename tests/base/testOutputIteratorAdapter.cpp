@@ -35,6 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/OutputIteratorAdapter.h"
+#include "DGtal/base/IteratorAdapter.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -51,9 +52,13 @@ using namespace DGtal;
  */
 bool testPairs()
 {
+  int nb = 0; 
+  int nbok = 0; 
+
   typedef map<string,string> Map; 
   typedef pair<string,string> Pair; 
 
+  //input
   Map m; 
   m.insert( Pair("Proudhon", "Pierre-Joseph" ) ); 
   m.insert( Pair("Reclus", "Élisée" ) ); 
@@ -65,29 +70,57 @@ bool testPairs()
   v.push_back( "E." ); 
   v.push_back( "L. L." ); 
 
-  trace.beginBlock ( "Update..." );
-
-  typedef OutputIteratorAdapter<Map::iterator, Pair2ndMutator<string>, string> Adapter; 
-  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<Adapter, string> ));
-  Adapter  a( m.begin(), Pair2ndMutator<string>() ); 
-
-  copy(v.begin(), v.end(), a); 
-
-  trace.endBlock();
-
+  //result
   Map m2; 
   m2.insert( Pair("Proudhon", "P-J." ) ); 
   m2.insert( Pair("Reclus", "E.") ); 
   m2.insert( Pair("Zamenhof", "L. L." ) ); 
 
+  {//test output iterator
+  trace.beginBlock ( "OutputIteratorAdapter..." );
+
+  typedef OutputIteratorAdapter<Map::iterator, Pair2ndMutator<string>, string> Adapter; 
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<Adapter, string> ));
+  Pair2ndMutator<string> f; 
+  Adapter  a( m.begin(), f ); 
+
+  copy(v.begin(), v.end(), a); 
+
   bool flag; 
-  trace.beginBlock ( "Comparison..." );
-
   flag = std::equal( m.begin(), m.end(), m2.begin() ); 
+  nbok += (flag)?1:0;
+  nb++;  
 
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
   trace.endBlock();
-    
-  return flag;
+  }
+  
+  {//test iterator
+  trace.beginBlock ( "IteratorAdapter..." );
+
+  Pair2ndMutator<string> f; 
+
+  typedef IteratorAdapter<Map::iterator, Pair2ndMutator<string>, string> Adapter; 
+  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Adapter> ));
+
+  //writting
+  Adapter  a( m.begin(), f ); 
+  copy(v.begin(), v.end(), a); 
+  bool flag1 = std::equal( m.begin(), m.end(), m2.begin() );
+
+  //reading
+  Adapter aBegin( m.begin(), f);  
+  Adapter aEnd( m.end(), f);  
+  bool flag2 = std::equal( aBegin, aEnd, v.begin() ); 
+
+  nbok += (flag1 && flag2)?1:0;
+  nb++;  
+
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  trace.endBlock();
+  }
+  
+  return (nb == nbok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
