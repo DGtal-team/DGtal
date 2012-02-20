@@ -84,9 +84,9 @@ namespace DGtal
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
 
-    typedef Pair1stMutator<Point> Functor; 
-    typedef IteratorAdapter<typename Image::Iterator, Functor, Point> Iterator;
+    typedef Pair1st<Point> Functor; 
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
+    typedef ConstIteratorAdapter<typename Image::Iterator, Functor, Point> Iterator;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -266,6 +266,7 @@ namespace DGtal
     /**
      * set union to left.
      * @param aSet any other set.
+     * @tparam TDigitalSet a model of digital set. 
      */
     template< typename TDigitalSet >
     Self & operator+=
@@ -277,6 +278,8 @@ namespace DGtal
     /**
      * Fill a given set through the output iterator @a ito
      * with the complement of this set in the domain.
+     * @param ito the output iterator
+     * @tparam TOutputIterator a model of output iterator
      */
     template< typename TOutputIterator >
     void computeComplement(TOutputIterator& ito) const; 
@@ -285,10 +288,11 @@ namespace DGtal
      * Builds the complement in the domain of the set [other_set] in
      * this.
      *
-     * @param other_set defines the set whose complement is assigned to 'this'.
+     * @param otherSet defines the set whose complement is assigned to 'this'.
+     * @tparam TDigitalSet a model of digital set. 
      */
     template< typename TDigitalSet >
-    void assignFromComplement( const TDigitalSet & other_set ); 
+    void assignFromComplement( const TDigitalSet & otherSet ); 
     
     /**
      * Computes the bounding box of this set.

@@ -141,7 +141,7 @@ bool testDigitalSetBoardSnippet()
 template < typename DigitalSetType >
 bool testDigitalSet( const DigitalSetType& aSet )
 {
-  //  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
 
   typedef typename DigitalSetType::Domain Domain;
   typedef typename Domain::Point Point;
@@ -157,42 +157,51 @@ bool testDigitalSet( const DigitalSetType& aSet )
   << "Empty set: " << set1 << std::endl;
 
   //insertion
-  std::vector<Point> v; 
+  std::set<Point> v; 
   Coordinate t [] = { 4, 3, 3 , 4};
-  v.push_back( Point( t ) );
   Coordinate t2[] = { 2, 5, 3 , 5};
-  v.push_back( Point( t2) );
   Coordinate t3[] =  { 2, 5, 3 , 4} ;
-  v.push_back( Point( t3) );
+  Point a( t );
+  Point b( t2 );
+  Point c( t3 );
+  v.insert( a );
+  v.insert( b );
+  v.insert( c );
 
-  set1.insert( v.at(0) );
-  set1.insert( v.at(1) );
-  set1.insertNew( v.at(2) );
-  set1.insert( v.at(1) );
+  set1.insert( a );
+  set1.insert( b );
+  set1.insertNew( c );
+  set1.insert( b );
   nbok += set1.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Set (3 elements): " << set1 << std::endl;
 
   //iterate
-  // bool flag = std::equal(set1.begin(), set1.end(), v.begin() ); 
-  // nbok += (flag) ? 1 : 0;
-  // nb++;
-  // trace.info() << "Iterate: (" << nbok << "/" << nb << ") "
-  // 	       << std::endl;
+  bool flag = true; 
+  for (typename DigitalSetType::Iterator it = set1.begin(); 
+       it != set1.end(); ++it) 
+    {
+      if (v.find( *it ) == v.end())
+	flag = false; 
+    } 
+  nbok += (flag) ? 1 : 0;
+  nb++;
+  trace.info() << "Iterate: (" << nbok << "/" << nb << ") "
+  	       << std::endl;
 
   //erasure
-  set1.erase( v.at(1) ); 
+  set1.erase( b ); 
   nbok += ( (set1.size() == 2)
-  	    &&(set1.find( v.at(1) ) == set1.end()) )? 1 : 0;
+  	    &&(set1.find( b ) == set1.end()) )? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Erase one element by key (2 remain): " << set1 << std::endl;
 
-  typename DigitalSetType::Iterator it = set1.find( v.at(2) );
+  typename DigitalSetType::Iterator it = set1.find( c );
   set1.erase( it ); 
   nbok += ( (set1.size() == 1)
-  	    &&(set1.find( v.at(2) ) == set1.end()) )? 1 : 0;
+  	    &&(set1.find( c ) == set1.end()) )? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Erase one element by iterator (1 remain): " << set1 << std::endl;

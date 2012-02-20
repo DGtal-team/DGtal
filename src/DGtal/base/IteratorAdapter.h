@@ -83,9 +83,6 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<TIterator> ));
     typedef typename IteratorCirculatorTraits<TIterator>::Value TArgument;  
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, const TArgument&, const TReturnType& > )); 
-    //does not pass if the member is constant (eg. key of the value type in STL Map)
-    //BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArgument&, TReturnType& > )); 
 
     //--------------- inner types --------------------------------
   public: 
@@ -184,6 +181,7 @@ namespace DGtal
      */
     const reference operator*() const 
     { 
+      BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, const TArgument&, const TReturnType& > )); 
       return myFunctorPtr->operator()(*myCurrentIt); 
     }
 
@@ -200,6 +198,7 @@ namespace DGtal
      */
     reference operator*()
     { 
+      BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArgument&, TReturnType& > )); 
       return myFunctorPtr->operator()(*myCurrentIt); 
     }
 
