@@ -94,8 +94,8 @@ namespace DGtal
     typedef TFunctor Functor;
   
     typedef TReturnType value_type; 
-    typedef const value_type* pointer;
-    typedef const value_type& reference;
+    typedef value_type* pointer;
+    typedef value_type reference;
     typedef typename iterator_traits<TIterator>::difference_type difference_type;
     typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
 
