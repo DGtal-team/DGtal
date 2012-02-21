@@ -1,0 +1,188 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FirstOrderLocalDistance.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ *
+ * @date 2012/02/21
+ *
+ * @brief Implementation of inline methods defined in FirstOrderLocalDistance.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage, typename TPointPredicate>
+inline
+typename DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::Value
+DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
+  (const TImage& aImg, const TPointPredicate& aPred, const Point& aPoint)
+{
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  for (Dimension k = 0; k < dimension; ++k)
+    {//for each dimension
+
+      typename Point::Coordinate c = aPoint.at(k); 
+      neighbor1.at(k) = (c+1); 
+      neighbor2.at(k) = (c-1);
+
+      //neighboring values
+      Value d; 
+      bool flag1 = aPred(neighbor1); 
+      bool flag2 = aPred(neighbor2);
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+	      if (std::abs(d1) < std::abs(d2))
+		d = d1;
+	      else 
+		d = d2; 
+	    } else 
+	    {
+	      if (flag1) d = d1;
+	      if (flag2) d = d2; 
+	    }
+	  //sign test
+	  nb++; 
+	  if ( d >= 0 )
+	    nbPos++;
+	  else
+	    d = (-d);
+	  v.push(d); 
+	}
+
+      neighbor1.at(k) = c; 
+      neighbor2.at(k) = c;
+    } //end for each dimension
+
+  //computation of the new value
+  if (nbPos == nb) 
+    return this->compute(values); 
+  else if (nbPos == 0)
+    return this->compute(values);
+  else 
+    { //there should not be neighbors having values
+      //of different signs in aMap
+      trace.error() << "Metric values of different signs" 
+		    << "in DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>"
+		    << std::endl;  
+      throw InputException();
+    } 
+
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TImage, typename TPointPredicate>
+inline
+typename DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::Value
+DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
+(const Values& aValueList) const
+{
+
+  unsigned int c = aValueList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Value d = aValueList.top(); 
+      Value dres = d + 1;
+      ASSERT(dres > 0); 
+      return dres; 
+    } 
+  else 
+    {
+      //function computation
+      if ( gradientNorm( aValueList.top(), aValueList ) > 1 )
+	{
+	  aValueList.pop(); 
+	  return this->compute(aValueList); 
+	}
+      else 
+	{ //resolution
+	  double a = 0; 
+	  double b = 0; 
+	  double c = -1; 
+	  while ( aValueList.size() != 0 )
+	    {
+	      Value d = aValueList.top(); 
+	      aValueList.pop(); 
+
+	      a += 1; 
+	      b -= 2*d;
+	      c += d*d; 
+	    }
+	  //std::cerr << a << " " << b << " " << c  << std::endl;
+ 
+	  //discriminant
+	  double disc = b*b - 4*a*c;
+	  ASSERT(disc >= 0); 
+	  //greatest solution
+	  Value dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
+	  ASSERT(dres > 0); 
+	  return dres; 
+	}
+    }
+}
+
+template <DGtal::Dimension dim>
+inline
+double
+DGtal::L2FirstOrderIncrementalMetricHelper<dim>::gradientNorm(const Value& aValue, const Values& aValueList) const
+{
+  Values v(aValueList); 
+
+  double sum = 0; 
+  while ( v.size() != 0 )
+    {
+      Value d = std::abs(aValue - v.top()); 
+      v.pop(); 
+
+      sum += d*d; 
+    }
+  return sum; 
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
