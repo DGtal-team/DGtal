@@ -1,0 +1,159 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ImageHelper.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/15
+ *
+ * Implementation of inline methods defined in ImageHelper.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+//------------------------------------------------------------------------------
+template<typename I, typename O, typename P>
+inline
+void 
+DGtal::setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred)
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<P> )); 
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename P::Point> ));
+
+  NotPointPredicate<P> nPred( aPred ); 
+  std::remove_copy_if(itb, ite, ito, nPred); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I, typename O, typename F>
+inline
+void 
+DGtal::setFromPointsRangeAndFunctor(const I& itb, const I& ite, const O& ito, 
+				    const F& aFunctor, const typename F::Value& aThreshold)
+{
+  BOOST_CONCEPT_ASSERT(( CPointFunctor<F> )); 
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<I> ));
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator<O,typename F::Point> ));
+
+  typedef Thresholder<typename F::Value,false,false> T; 
+  T t( aThreshold ); 
+  Composer<F, T, bool> aPred(aFunctor, t); 
+  std::remove_copy_if(itb, ite, ito, aPred); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I, typename O>
+inline
+void 
+DGtal::setFromImage(const I& aImg, const O& ito, const typename I::Value& aThreshold)
+{
+  BOOST_CONCEPT_ASSERT(( CConstImage<I> )); 
+
+  typename I::Domain d = aImg.domain(); 
+  setFromPointsRangeAndFunctor(d.begin(), d.end(), ito, aImg, aThreshold); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I, typename O>
+inline
+void 
+DGtal::setFromImage(const I& aImg, const O& ito, 
+		    const typename I::Value& low, 
+		    const typename I::Value& up)
+{
+  BOOST_CONCEPT_ASSERT(( CConstImage<I> )); 
+  ASSERT( low < up ); 
+
+  //domain
+  typename I::Domain d = aImg.domain(); 
+  //predicate from two thresholders and an image
+  typedef Thresholder<typename I::Value,true,false> T1; 
+  T1 t1( low ); 
+  typedef Thresholder<typename I::Value,false,false> T2; 
+  T2 t2( up ); 
+  typedef PredicateCombiner<T1,T2,OrBoolFct2 > P; 
+  P p( t1, t2, OrBoolFct2() ); 
+  Composer<I, P, bool> aPred(aImg, p); 
+  //call
+  std::remove_copy_if(d.begin(), d.end(), ito, aPred); 
+}
+
+//------------------------------------------------------------------------------
+template<typename It, typename Im>
+inline
+void 
+DGtal::imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg, 
+			      const typename Im::Value& aValue)
+{
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<It> ));
+  BOOST_CONCEPT_ASSERT(( CImage<Im> )); 
+
+  typename Im::Domain d = aImg.domain(); 
+  for (It it = itb; it != ite; ++it)
+    {
+      if (d.isInside( *it )) 
+	aImg.setValue( *it, aValue ); 
+    }
+}
+
+//------------------------------------------------------------------------------
+template<typename R, typename I>
+inline
+void 
+DGtal::imageFromRangeAndValue(const R& aRange, I& aImg, 
+			      const typename I::Value& aValue)
+{
+  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange<R> ));
+  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+
+  imageFromRangeAndValue( aRange.begin(), aRange.end(), aImg, aValue); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I, typename F>
+inline
+void 
+DGtal::imageFromFunctor(I& aImg, const F& aFun)
+{
+  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( CPointFunctor<F> ));
+
+  typename I::Domain d = aImg.domain();
+
+  std::transform(d.begin(), d.end(), aImg.output(), aFun ); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I>
+inline
+void 
+DGtal::imageFromImage(I& aImg1, const I& aImg2)
+{
+  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+
+  typename I::ConstRange r = aImg2.range(); 
+  std::copy( r.begin(), r.end(), aImg1.output() ); 
+}

@@ -441,7 +441,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/curves/tools/Preimage2D.ih"
+#include "DGtal/geometry/tools/Preimage2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

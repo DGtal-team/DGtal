@@ -17,54 +17,52 @@
 #pragma once
 
 /**
- * @file CRange.h
+ * @file CBidirectionalRange.h
  * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/08/31
  *
- * Header file for concept CRange
+ * Header file for concept CBidirectionalRange
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CRange_RECURSES)
-#error Recursive header files inclusion detected in CRange.h
-#else // defined(CRange_RECURSES)
+#if defined(CBidirectionalRange_RECURSES)
+#error Recursive header files inclusion detected in CBidirectionalRange.h
+#else // defined(CBidirectionalRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CRange_RECURSES
+#define CBidirectionalRange_RECURSES
 
-#if !defined CRange_h
+#if !defined CBidirectionalRange_h
 /** Prevents repeated inclusion of headers. */
-#define CRange_h
+#define CBidirectionalRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassRange.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CRange
+  // class CBidirectionalRange
   /**
-     Description of \b concept '\b CRange' <p>
+     Description of \b concept '\b CBidirectionalRange' <p>
      @ingroup Concepts
     
-     \brief Aim: Defines the concept describing a const range.
+     \brief Aim: Defines the concept describing a bidirectional range.
      
-     <p> Refinement of CSinglePassRange
+     <p> Refinement of CConstBidirectionalRange
     
      <p> Provided types :
 
      - ReverseIterator: the reverse iterator type, a model of
           iterator concept.
-     - ConstReverseIterator: the const reverse iterator type, a model of
-          const iterator concept.
-
+ 
      <table>
      <tr> 
      <td class=CName> \b Name </td> 
@@ -125,31 +123,27 @@ namespace DGtal
     
      <p> Notes <br>
 
-     @tparam T the type that is checked. T should be a model of CRange.
+     @tparam T the type that is checked. T should be a model of CBidirectionalRange.
 
    */
   template <typename T>
-  struct CRange : public CSinglePassRange<T>
+  struct CBidirectionalRange : public CConstBidirectionalRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ReverseIterator ReverseIterator;
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
     
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
     
-    BOOST_CONCEPT_USAGE(CRange)
+    BOOST_CONCEPT_USAGE(CBidirectionalRange)
     {
-      ReverseIterator it=i.rbegin();
-      it=i.rend();
-      ConstReverseIterator it2=i.rbegin();
+      ReverseIterator it2=i.rbegin();
       it2=i.rend();
     };
 
   private:
     T i;
-  }; // end of concept CRange
+  }; // end of concept CBidirectionalRange
   
 } // namespace DGtal
 
@@ -158,7 +152,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CRange_h
+#endif // !defined CBidirectionalRange_h
 
-#undef CRange_RECURSES
-#endif // else defined(CRange_RECURSES)
+#undef CBidirectionalRange_RECURSES
+#endif // else defined(CBidirectionalRange_RECURSES)

@@ -78,6 +78,13 @@ namespace DGtal
      */
     SetPredicate ( const SetPredicate & other );
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SetPredicate & operator= ( const SetPredicate & other );
+
    /**
      * @param p any point.
      * @return true iff p is in the domain.
@@ -94,17 +101,13 @@ namespace DGtal
     SetPredicate();
 
   private:
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    SetPredicate & operator= ( const SetPredicate & other );
 
     // ------------------------- Internals ------------------------------------
   private:
-    const DigitalSet* const mySet;
+    /**
+     * Aliasing pointer on the underlying set
+     */
+    const DigitalSet* mySet;
 
   }; // end of struct SetPredicate
 

@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +60,7 @@ namespace DGtal
   class IntervalForegroundPredicate
   {
   public:
-    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     
     typedef typename Image::Value Value;
     typedef typename Image::Point Point; 

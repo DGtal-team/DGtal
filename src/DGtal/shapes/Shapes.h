@@ -103,7 +103,7 @@ namespace DGtal
     template <typename TDigitalSet, typename TShapeFunctor>
     static void digitalShaper( TDigitalSet & aSet,
                                const TShapeFunctor & aFunctor);
-    
+
     /** 
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
      * an instance of ShapeFunctor.The shape functor must be a model

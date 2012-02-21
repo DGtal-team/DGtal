@@ -150,7 +150,7 @@ namespace DGtal
       ConceptUtils::sameType( myIterator, myX.begin() );
       ConceptUtils::sameType( myIterator, myX.end() );
       ConceptUtils::sameType( myX, myX.operator+=( myX ) );
-      ConceptUtils::sameType( myX, myX.computeComplement() );
+      myX.computeComplement( myOutputIt );
       myX.assignFromComplement( myX );
       myX.computeBoundingBox( myPoint, myPoint );
       checkConstConstraints();
@@ -186,6 +186,7 @@ namespace DGtal
     Point myPoint;
     Iterator myIterator;
     ConstIterator myConstIterator;
+    Point* myOutputIt; 
     // ------------------------- Internals ------------------------------------
   private:
     

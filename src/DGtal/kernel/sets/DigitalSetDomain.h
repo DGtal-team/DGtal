@@ -79,7 +79,7 @@ namespace DGtal
     ~DigitalSetDomain();
 
     /**
-     * Coonstructor from set.
+     * Constructor from set.
      * @param aSet the digital set.
      */
     DigitalSetDomain ( const DigitalSet & aSet );
@@ -115,6 +115,12 @@ namespace DGtal
      *
      **/
     const Point &upperBound() const ;
+
+    /**
+     * Returns the size.
+     *
+     **/
+    Size size() const ;
 
     /**
      * @param p any point.

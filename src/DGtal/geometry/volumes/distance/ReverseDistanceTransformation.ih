@@ -69,23 +69,24 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstruction(const I & a
 {
   //We copy the image extent.
   myLowerBoundCopy = Point(); //(O,O,...O)
-  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
-  myDisplacementVector = aImage.lowerBound();
+  myUpperBoundCopy = aImage.domain().upperBound() - aImage.domain().lowerBound();
+  myDisplacementVector = aImage.domain().lowerBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
   
-  I output ( myLowerBoundCopy, myUpperBoundCopy );
-  I swap ( myLowerBoundCopy, myUpperBoundCopy );
+  ///@todo do something if domain is not hyperrect
+  I output ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy));
+  I swap ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy));
 
   bool isSwap = reconstructionInternal(aImage,output,swap);
 
   if ( !isSwap )
     {
-      swap.translateDomain(myDisplacementVector);
+      //swap.translateDomain(myDisplacementVector);
       return castValues(swap);
     }
   else
     {
-      output.translateDomain(myDisplacementVector);
+      //output.translateDomain(myDisplacementVector);
       return castValues(output);
     }
 }
@@ -101,14 +102,14 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionAsSet(Set &a
   
   //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
   myLowerBoundCopy = Point(); //(O,O,...O)
-  myUpperBoundCopy = aImage.upperBound() - aImage.lowerBound();
-  myDisplacementVector = aImage.lowerBound();
+  myUpperBoundCopy = aImage.domain().upperBound() - aImage.domain().lowerBound();
+  myDisplacementVector = aImage.domain().lowerBound();
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
   
   typename I::Domain domain(myLowerBoundCopy,myUpperBoundCopy);
 
-  I output ( myLowerBoundCopy, myUpperBoundCopy );
-  I swap ( myLowerBoundCopy, myUpperBoundCopy );
+  I output ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy ));
+  I swap ( typename I::Domain( myLowerBoundCopy, myUpperBoundCopy ));
 
   bool isSwap = reconstructionInternal(aImage,output,swap);
   
@@ -141,7 +142,7 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::reconstructionInternal(con
   for(typename I::ConstIterator it=aImage.begin(), itend = aImage.end();
       it != itend;
       ++it,++ito)
-    output.setValue(ito, aImage(it) );
+    (*ito) = (*it);
 
   bool isSwap = true;
 
@@ -168,16 +169,16 @@ typename DGtal::ReverseDistanceTransformation<I, p, IntShort>::OutputImage
 DGtal::ReverseDistanceTransformation<I, p, IntShort>::castValues(const I &input) const
 {
   //We threshold input values
-  OutputImage output(myLowerBoundCopy, myUpperBoundCopy);
+  OutputImage output(typename OutputImage::Domain(myLowerBoundCopy, myUpperBoundCopy));
   typename OutputImage::Iterator ito = output.begin();
   for(typename I::ConstIterator it=input.begin(),
   itend = input.end();
       it != itend;
       ++it,++ito)
-    if ( input(it)  > 0)
-      output.setValue(ito, myForegroundValue);
+    if ( (*it)  > 0)
+      (*ito) =  myForegroundValue;
     else
-      output.setValue(ito, myBackgroundValue);
+      (*ito) =  myBackgroundValue;
   return output;
 }
 

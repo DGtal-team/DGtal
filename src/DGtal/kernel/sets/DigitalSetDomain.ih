@@ -104,6 +104,15 @@ DGtal::DigitalSetDomain<TDigitalSet>
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::Size
+DGtal::DigitalSetDomain<TDigitalSet>
+::size() const
+{
+  return mySet.size();
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
 bool
 DGtal::DigitalSetDomain<TDigitalSet>
 ::isInside( const Point & p ) const

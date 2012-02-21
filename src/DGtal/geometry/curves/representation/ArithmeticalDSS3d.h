@@ -105,12 +105,12 @@ namespace DGtal
     typedef DGtal::PointVector<3,double> VectorD3d;
         
     // adapters for iterator
-    typedef Point3dTo2dXY<Coordinate> XYModifier;
-    typedef Point3dTo2dXZ<Coordinate> XZModifier;
-    typedef Point3dTo2dYZ<Coordinate> YZModifier;
-    typedef ConstIteratorAdapter<ConstIterator,XYModifier> XYIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,XZModifier> XZIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,YZModifier> YZIteratorAdapter; 
+    typedef deprecated::Point3dTo2dXY<Coordinate> XYModifier;
+    typedef deprecated::Point3dTo2dXZ<Coordinate> XZModifier;
+    typedef deprecated::Point3dTo2dYZ<Coordinate> YZModifier;
+    typedef ConstIteratorAdapter<ConstIterator,XYModifier,Point2d> XYIteratorAdapter; 
+    typedef ConstIteratorAdapter<ConstIterator,XZModifier,Point2d> XZIteratorAdapter; 
+    typedef ConstIteratorAdapter<ConstIterator,YZModifier,Point2d> YZIteratorAdapter; 
     
 
     //2d-arithmeticalDSS recognition algorithms

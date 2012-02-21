@@ -58,10 +58,11 @@ namespace DGtal
 
   template < typename Domain, typename Value, typename HashKey>
   inline
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey>::ImageContainerByHashTree ( const unsigned int hashKeySize,
-      const unsigned int depth,
-      const Value defaultValue )
-      : myKeySize ( hashKeySize )
+  experimental::ImageContainerByHashTree<Domain, Value, HashKey>
+  ::ImageContainerByHashTree ( const unsigned int hashKeySize,
+			       const unsigned int depth,
+			       const Value defaultValue )
+    : myDomain( Domain() ), myKeySize ( hashKeySize )
   {
 
     //Consistency check of the hashKeysize
@@ -72,13 +73,13 @@ namespace DGtal
 
     unsigned int acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
-    {
-      trace.error() << "ImageContainerByHashTree::Constructor: error !" << endl;
-      trace.error() << "requested depth to hight for the key type" << endl;
-      trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
+      {
+	trace.error() << "ImageContainerByHashTree::Constructor: error !" << endl;
+	trace.error() << "requested depth to hight for the key type" << endl;
+	trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
 
-      setDepth ( acceptedDepth );
-    }
+	setDepth ( acceptedDepth );
+      }
     else
       setDepth ( depth );
 
@@ -95,11 +96,12 @@ namespace DGtal
   
   template < typename Domain, typename Value, typename HashKey>
   inline
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey>::ImageContainerByHashTree ( const unsigned int hashKeySize,
-											     const Point & p1,
-											     const Point & p2,
-											     const Value defaultValue )
-    : myKeySize ( hashKeySize ), myOrigin ( p1 )
+  experimental::ImageContainerByHashTree<Domain, Value, HashKey>
+  ::ImageContainerByHashTree ( const unsigned int hashKeySize,
+			       const Point & p1,
+			       const Point & p2,
+			       const Value defaultValue )
+    : myDomain( p1, p2 ), myKeySize ( hashKeySize ), myOrigin ( p1 )
   {
     //Consistency check of the hashKeysize
     ASSERT ( hashKeySize <= sizeof ( HashKey ) *8 );
@@ -115,8 +117,10 @@ namespace DGtal
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
     {
-      trace.error() << "ImageContainerByHashTree::Constructor: error ! requested depth to hight for the key type" << endl;
-      trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
+      trace.error() << "ImageContainerByHashTree::Constructor: error !"
+		    << " requested depth to hight for the key type" << endl;
+      trace.error() << "accepted: " << acceptedDepth 
+		    << " Requested: " << depth << endl;
       setDepth ( acceptedDepth );
     }
     else
@@ -132,10 +136,37 @@ namespace DGtal
   }
 
 
-
   // ---------------------------------------------------------------------
   // access methods
   // ---------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+template < typename Domain, typename Value, typename HashKey>
+inline
+const typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::Domain&
+experimental::ImageContainerByHashTree<Domain, Value, HashKey >::domain() const
+{
+  return myDomain;
+}
+
+//------------------------------------------------------------------------------
+template < typename Domain, typename Value, typename HashKey>
+inline
+typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
+experimental::ImageContainerByHashTree<Domain, Value, HashKey >::range() const
+{
+  return ConstRange( myDomain.begin(), myDomain.end(), *this );
+}
+
+//------------------------------------------------------------------------------
+template < typename Domain, typename Value, typename HashKey>
+inline
+typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
+experimental::ImageContainerByHashTree<Domain, Value, HashKey >::output()
+{
+  return OutputIterator( *this );
+}
+
 
   template < typename Domain, typename Value, typename HashKey>
   inline

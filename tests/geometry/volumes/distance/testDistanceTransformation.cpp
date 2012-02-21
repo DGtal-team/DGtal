@@ -54,10 +54,12 @@ using namespace DGtal;
 template<typename Image>
 void randomSeeds(Image &input, const unsigned int nb, const int value)
 {
-  typename Image::Point p, low = input.lowerBound();
+  typename Image::Point p, low = input.domain().lowerBound(), up = input.domain().upperBound();
   typename Image::Vector ext;
+  
+  for (Dimension i = 0; i < Image::Domain::dimension; i++)
+      ext[i] = up[i] - low[i] + 1;
 
-  ext = input.extent();
 
   for (unsigned int k = 0 ; k < nb; k++)
     {
@@ -90,7 +92,7 @@ bool testDistanceTransformation()
   Point a ( 2, 2 );
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
 
   for ( unsigned k = 0; k < 49; k++ )
     {
@@ -126,7 +128,7 @@ bool testDistanceTransformation()
     {
       for (unsigned int x = 2; x < 16; x++)
 	{
-	  std::cout << result(it) << " ";
+	  std::cout << (*it) << " ";
 	  ++it;
 	}
       std::cout << std::endl;
@@ -164,7 +166,7 @@ bool testDistanceTransformationNeg()
   Point a ( -10, -10 );
   Point b ( 10, 10 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain( a, b ));
 
   for(int y=-10; y<=10;y++) 
     for(int x=-10; x<=10;x++)
@@ -201,8 +203,8 @@ bool testDistanceTransformationNeg()
   DGtal::int64_t maxv=0;
   for(ImageLong::Iterator it = result.begin(), itend = result.end();
       it != itend ; ++it)
-    if (result(it) > maxv)
-      maxv = result(it);
+    if ((*it) > maxv)
+      maxv = (*it);
 
   for(int y=-10; y<=10;y++) 
     {
@@ -318,10 +320,10 @@ bool testDistanceTransformationBorder()
   Point b ( 128, 128 );
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
-    image.setValue ( it, 128 );
+    *it = 128 ;
 
 
   randomSeeds(image, 19, 0);
@@ -350,7 +352,7 @@ bool testDistanceTransformationBorder()
     {
       for (unsigned int x = 0; x < 33; x++)
 	{
-	  std::cout << std::setw(4) << result(it) << " ";
+	  std::cout << std::setw(4) << (*it) << " ";
 	  ++it;
 	}
       std::cout << std::endl;
@@ -391,7 +393,7 @@ bool testDistanceTransformation3D()
   Point a ( 0, 0, 0 );
   Point b ( 15, 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
   Point c(8, 8, 8);
   Domain dom(a, b);
 
@@ -446,7 +448,7 @@ bool testTypeValidity()
   Point a ( 0, 0 );
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain(a, b ));
  
   DistanceTransformation<Image, 2> dt;
   typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
@@ -481,10 +483,10 @@ bool testChessboard()
   Point b ( 128, 128 );
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Domain( a, b ));
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
-    image.setValue ( it, 128 );
+    (*it) = 128;
 
 
   randomSeeds(image, 19, 0);
@@ -544,7 +546,7 @@ bool testChessboard()
 	  itend = result1.end();
 	it2 != itend; ++it2)
     {
-      if ( result1(it2) > maxv)
+      if ( *it2 > maxv)
 	maxv = (*it2);
     }
   
@@ -559,7 +561,7 @@ bool testChessboard()
   for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
 	it != itend; ++it)
     {
-      if ( result2(it) > maxv)
+      if ( (*it) > maxv)
 	maxv = (*it);
     }
   

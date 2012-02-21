@@ -152,7 +152,7 @@ int main( int argc, char** argv )
 
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
   string imageFileName = vm["image"].as<std::string>();
-  Image image = PNMReader<Image>::importPGMImage( imageFileName ); 
+  Image image = PNMReader<Image>::importPGM( imageFileName ); 
   Z2i::DigitalSet set2d (image.domain());
   SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
 

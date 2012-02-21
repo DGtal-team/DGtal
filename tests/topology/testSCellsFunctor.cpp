@@ -19,10 +19,9 @@
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/02
  *
- * @date 2011/09/02
- *
- * Functions for testing class Modifier.
+ * Functions for testing the functors on scells.
  *
  * This file is part of the DGtal library.
  */
@@ -30,8 +29,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 
-#include "DGtal/base/Modifier.h"
+#include "DGtal/topology/SCellsFunctors.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 
@@ -41,26 +41,46 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Modifier.
+// Functions for testing the scells functors.
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename TFunctor, typename TArg, typename TRes >
+void checkingConcepts()
+{
+  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
+}
+
+
 /**
  * Example of a test. To be completed.
  *
  */
-bool testModifier()
+bool testSCellsFunctors()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
   trace.beginBlock ( "Testing block ..." );
   
-  //scell 2 point
+  //0-scell 2 point
   {
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
     SCellToPoint<K3> m(theKSpace); 
     K3::SCell s = theKSpace.sPointel( K3::Point(3,3,4) );
-    K3::Point aPoint = m.get( s );
+    K3::Point aPoint = m( s );
+    trace.info() << s << aPoint <<std::endl;  
+    nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0; 
+    nb++;
+  }
+  //1-scell 2 point
+  {
+    typedef KhalimskySpaceND<3> K3;
+    K3 theKSpace; 
+    SCellToPoint<K3> m(theKSpace); 
+    K3::SCell s; 
+    theKSpace.sSetKCoords( s, K3::Point(7,6,8) );
+    K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0; 
     nb++;
@@ -71,9 +91,9 @@ bool testModifier()
     K2 theKSpace; 
     SCellToMidPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    PointVector<K2::dimension,double> aPoint = m.get( s );
+    K2::Space::RealPoint aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == PointVector<K2::dimension,double>(0,0.5) ) ? 1 : 0; 
+    nbok += ( aPoint == K2::Space::RealPoint(0,0.5) ) ? 1 : 0; 
     nb++;
   }  
 
@@ -83,7 +103,7 @@ bool testModifier()
     K2 theKSpace; 
     SCellToArrow<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    std::pair<K2::Point, K2::Vector> aArrow = m.get( s );
+    std::pair<K2::Point, K2::Vector> aArrow = m( s );
     trace.info() << s << aArrow.first << aArrow.second <<std::endl;  
     K2::Point p(0,1); 
     K2::Vector v(0,-1); 
@@ -97,7 +117,7 @@ bool testModifier()
     K2 theKSpace; 
     SCellToInnerPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    K2::Point aPoint = m.get( s );
+    K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K2::Point(-1,0) ) ? 1 : 0; 
     nb++;
@@ -109,7 +129,7 @@ bool testModifier()
     K2 theKSpace; 
     SCellToOuterPoint<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    K2::Point aPoint = m.get( s );
+    K2::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K2::Point(0,0) ) ? 1 : 0; 
     nb++;
@@ -121,7 +141,7 @@ bool testModifier()
     K2 theKSpace; 
     SCellToIncidentPoints<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    std::pair<K2::Point, K2::Point> aPair = m.get( s );
+    std::pair<K2::Point, K2::Point> aPair = m( s );
     trace.info() << s << aPair.first << aPair.second <<std::endl;  
     K2::Point p1(-1,0); 
     K2::Point p2(0,0); 
@@ -135,7 +155,7 @@ bool testModifier()
     K2 theKSpace; 
     SCellToCode<K2> m(theKSpace); 
     K2::SCell s = theKSpace.sCell( K2::Point(0,1) );
-    char aCode = m.get( s );
+    char aCode = m( s );
     trace.info() << s << aCode <<std::endl;  
     nbok += ( aCode == '3' ) ? 1 : 0; 
     nb++;
@@ -152,13 +172,23 @@ bool testModifier()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class Modifier" );
+  trace.beginBlock ( "Testing SCells functors" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testModifier(); // && ... other tests
+  //concepts
+  typedef KhalimskySpaceND<2> K2;
+  checkingConcepts<SCellToPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToMidPoint<K2>, K2::SCell, K2::Space::RealPoint >(); 
+  checkingConcepts<SCellToArrow<K2>, K2::SCell, std::pair<K2::Point, K2::Vector> >(); 
+  checkingConcepts<SCellToInnerPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToOuterPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToIncidentPoints<K2>, K2::SCell, std::pair<K2::Point, K2::Point> >(); 
+  checkingConcepts<SCellToCode<K2>, K2::SCell, char >(); 
+
+  bool res = testSCellsFunctors(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

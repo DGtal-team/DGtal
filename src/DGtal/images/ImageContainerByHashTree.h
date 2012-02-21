@@ -43,11 +43,15 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
+#include "DGtal/base/ConstRangeAdapter.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Bits.h"
 //#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
+#include "DGtal/images/SetValueIterator.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -128,21 +132,39 @@ namespace DGtal
  
     public:
 
-      BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
-      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+      typedef ImageContainerByHashTree<TDomain, TValue, THashKey> Self; 
         
       typedef THashKey HashKey;
-      typedef TValue Value;
+
+      /// domain
+      BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
       typedef TDomain Domain;
       typedef typename Domain::Point Point;
       typedef typename Domain::Vector Vector;
+      typedef typename Domain::Integer Integer;
+      typedef typename Domain::Size Size;
+      typedef typename Domain::Dimension Dimension;
 
-      // static constants
-      static const typename TDomain::Space::Dimension dim = TDomain::dimension;
-      static const typename TDomain::Space::Dimension dimension = TDomain::dimension;
+      /// static constants
+      static const typename Domain::Dimension dimension = Domain::dimension;
+      static const typename Domain::Dimension dim = Domain::dimension;
       static const unsigned int NbChildrenPerNode = POW<2, dimension>::VALUE;
-
       static const HashKey ROOT_KEY = static_cast<HashKey>(1);
+
+      /// domain should be rectangular 
+      //(since constructed from two points as a bounding box)
+      BOOST_STATIC_ASSERT ((boost::is_same< Domain, 
+			    HyperRectDomain<SpaceND<dimension, Integer> > >::value));
+
+      /// values range
+      BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+      typedef TValue Value;
+      typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
+
+      /// output iterator
+      typedef SetValueIterator<Self> OutputIterator; 
+
+
 
       /**
        * The constructor from a \a hashKeySize, a @a depth and a 
@@ -188,14 +210,43 @@ namespace DGtal
 			       const Point & p2,
 			       const Value defaultValue);
 
+      // TODO
+      // /** 
+      //  * Copy contructor.
+      //  * 
+      //  * @param other object to copy.
+      //  */      
+      // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
+
+      // /** 
+      //  * Assignment.
+      //  * 
+      //  * @param other object to copy.
+      //  */      
+      // ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& other);
+
+      // /** 
+      //  * Destructor
+      //  * Free the memory allocated by @a myData
+      //  */      
+      // ~ImageContainerByHashTree();
+
+
+      /**
+       * @return the domain associated to the image.
+       */
+      const Domain &domain() const; 
 
       /** 
-       * Copy contructor.
-       * 
-       * @param toCopy ImageContainer to copy.
+       * @return an instance of ConstRange 
+       * used to iterate over the values.
        */      
-      ImageContainerByHashTree(const ImageContainerByHashTree<Domain, Value>& toCopy);
+      ConstRange range() const;
 
+      /** 
+       * @return an output iterator used to write values.
+       */      
+      OutputIterator output();
 
 
       /**
@@ -665,6 +716,15 @@ namespace DGtal
        */
       Value blendChildren(HashKey key) const;
 
+
+      //----------------------- internal data --------------------------------
+    protected: 
+
+      /**
+       * The image domain
+       */
+      Domain myDomain;
+
       /**
        * The array of linked lists containing all the data
        */
@@ -704,7 +764,7 @@ namespace DGtal
     public:
       ///The morton code computer.
       Morton<HashKey, Point> myMorton; // public because Display2DFactory !!!
-    protected:
+
 
     };
 

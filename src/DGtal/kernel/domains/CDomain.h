@@ -44,7 +44,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/base/CConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,7 +57,7 @@ namespace DGtal
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 
-   * <p> Refinement of CConstRange
+   * <p> Refinement of CConstSinglePassRange
    *
    * <p> Associated types :
    * - Domain : the type itself of the CDomain model.
@@ -73,7 +73,6 @@ namespace DGtal
    * - \t X : A type that is a model of CDomain
    * - \t x  : Object of type X
    * - \t p  : Object of type Point
-   * - \t range  : Object of type ConstRange
    *
    * <p> Definitions
    *
@@ -82,16 +81,6 @@ namespace DGtal
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
    * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> Const Range \c begin</td> <td> it = x.begin() </td> 
-   * <td> </td> <td> const ConstIterator &</td>
-   * <td> </td> <td> return the iterator pointing on the first element of the domain.</td> <td> </td> <td> O(1) </td>
-   * </tr>
-   * <tr> 
-   * <td> Const Range \c end</td> <td> it = x.end() </td> 
-   * <td> </td> <td> const ConstIterator &</td>
-   * <td> </td> <td> return the iterator pointing after the last element of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
    * <tr> 
    * <td> lower bound</td> <td> x.lowerBound() </td> 
@@ -113,6 +102,11 @@ namespace DGtal
    * <td> </td> <td> const Predicate & </td>
    * <td> </td> <td> return a reference to the predicate object equivalent to the isInside(p) test.</td> <td> </td> <td>  </td>
    * </tr>
+   * <tr> 
+   * <td> size </td> <td> x.size() </td> 
+   * <td> </td> <td> Size </td>
+   * <td> </td> <td> return the number of points lying in the domain.</td> <td> </td> <td> O(1) </td>
+   * </tr>
    * </table>
    *
    * <p> Invariants <br>
@@ -125,7 +119,7 @@ namespace DGtal
    * @todo Complete domain checking.
    */
   template <typename T>
-  struct CDomain //: public CConstRange<T>
+  struct CDomain : public CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -136,7 +130,6 @@ namespace DGtal
     typedef typename T::Integer Integer;
     typedef typename T::Size Size;
     typedef typename T::Dimension Dimension;
-    // typedef typename T::ConstRange ConstRange;
     typedef typename T::Predicate Predicate;
     typedef typename T::ConstIterator ConstIterator;
 
@@ -146,14 +139,12 @@ namespace DGtal
       ConceptUtils::sameType( myP, myT.lowerBound() );
       // Domain should have an upperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.upperBound() );
+      // Domain should have a size() returning a Size.
+      ConceptUtils::sameType( mySize, myT.size() );
       // Domain should have a isInside(p) returning a bool.
       ConceptUtils::sameType( myBool, myT.isInside( myP ) );
       // Domain should have a predicate() returning a Predicate.
       ConceptUtils::sameType( myPred, myT.predicate() );
-      // Range should have a begin() returning an iterator.
-      // ConceptUtils::sameType( myIt, myT.begin() );
-      // Domain should have a end() returning an iterator.
-      // ConceptUtils::sameType( myIt, myT.end() );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -162,9 +153,7 @@ namespace DGtal
     Point myP;
     Predicate myPred;
     bool myBool;
-    // ConstRange myRange;
-    ConstIterator myIt;
-
+    Size mySize; 
     // ------------------------- Internals ------------------------------------
   private:
     
