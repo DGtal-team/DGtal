@@ -48,8 +48,11 @@
 #include <limits>
 #include <map>
 #include "DGtal/base/Common.h"
+#include "DGtal/images/CImage.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/geometry/volumes/distance/CIncrementalMetric.h"
+//#include "DGtal/geometry/volumes/distance/CLocalDistance.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -81,10 +84,12 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM).
    *
-   * @tparam TDistance  any model of CIncrementalDistance
+   * @tparam TImage  any model of CImage
+   * @tparam TSet  any model of CDigitalSet
    * @tparam TPointPredicate  any model of CPointPredicate
+   * @tparam TDistance  any model of CLocalDistance
    */
-  template <typename TDistance, typename TPointPredicate >
+  template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
   class FMM
   {
 
@@ -93,30 +98,82 @@ namespace DGtal
 
 
     //concept assert
-    BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TDistance> ));
+    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+    //    BOOST_CONCEPT_ASSERT(( CLocalDistance<TDistance> ));
 
-    //point predicate
+    typedef TImage Image; 
+    typedef TSet AcceptedPointSet; 
     typedef TPointPredicate PointPredicate; 
-    typedef typename PointPredicate::Point Vector;
-    typedef typename PointPredicate::Point Point;
-    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TDistance::Point >::value ));
 
+    //points
+    typedef typename Image::Point Vector;
+    typedef typename Image::Point Point;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename AcceptedPointSet::Point >::value ));
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename PointPredicate::Point >::value ));
+
+    //dimension
     typedef typename Point::Dimension Dimension;
     static const Dimension dimension = Point::dimension;
 
     //distance
     typedef TDistance Distance; 
-    typedef typename TDistance::Value DistanceValue; 
+    BOOST_STATIC_ASSERT(( boost::is_same< Image, typename Distance::Image >::value ));
+    typedef typename Image::Value DistanceValue; 
 
 
   private: 
 
     //intern data types
     typedef std::pair<Point, DistanceValue> PointDistanceValue; 
-    typedef std::set<PointDistanceValue,details::PointDistanceValueCompare<PointDistanceValue> > CandidatePointSet; 
-    typedef std::map<Point, DistanceValue> AcceptedPointSet; 
+    typedef std::set<PointDistanceValue,
+		     details::PointDistanceValueCompare<PointDistanceValue> > CandidatePointSet; 
     typedef unsigned long Area;
+
+      // ------------------------- Private Datas --------------------------------
+  private:
+    
+    /**
+     * Reference on the image
+     */
+    Image& myImage; 
+
+    /**
+     * Reference on the set of accepted points
+     */
+    AcceptedPointSet& myAcceptedPoints; 
+
+    /**
+     * Set of candidate points
+     */
+    CandidatePointSet myCandidatePoints; 
+
+    /**
+     * Distance computer used to deduce 
+     * the distance of a new point
+     * from the distance of its neighbors
+     */
+    Distance myDC; 
+
+    /**
+     * Constant reference on a point predicate that returns 
+     * 'true' inside the domain 
+     * where the distance transform is performed
+     */
+    const PointPredicate& myPointPredicate; 
+
+    /**
+     * Area threshold (in number of accepted points) 
+     * above which the propagation stops
+     */
+    Area myAreaThreshold; 
+
+    /**
+     * DistanceValue threshold above which the propagation stops
+     */
+    DistanceValue myDistanceValueThreshold; 
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -124,13 +181,13 @@ namespace DGtal
     /**
      * Constructor.
      */
-    FMM(AcceptedPointSet& aSet, const Distance& aM, 
-	const PointPredicate& aPointPredicate = PointPredicate() );
+    FMM(Image& aImg, AcceptedPointSet& aSet,
+	const PointPredicate& aPointPredicate );
     
     /**
      * Constructor.
      */
-    FMM(AcceptedPointSet& aSet, const Distance& aM, 
+    FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
 	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold);
     
@@ -173,88 +230,38 @@ namespace DGtal
 
       // ------------------------- static functions for init --------------------
 
-    // /**
-    //  * Initialize @a aMap from the inner boundary of the set of points P
-    //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
-    //  * for each P of the set.
-    //  * Assign a distance equal to @a aDistanceValue
-    //  */
-    // template <typename TDomainIterator, typename TImplicitObject>
-    // static void initInnerPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
-    // 					const TImplicitObject& aPredicate, 
-    // 					AcceptedPointSet& aMap, 
-    // 					const DistanceValue& aDistanceValue);
-
-    // /**
-    //  * Initialize @a aMap from the inner and outer boundaries of the set of points P
-    //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
-    //  * for each P of the set.
-    //  * Assign a distance equal to - @a aDistanceValue if aFlagIsPositive is 'false' (default)
-    //  * to the inner points, but @a aDistanceValue otherwise, and conversely for the outer points.  
-    //  */
-    // template <typename TDomainIterator, typename TImplicitObject>
-    // static void initIncidentPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
-    // 					     const TImplicitObject& aPredicate, 
-    // 					     AcceptedPointSet& aMap, 
-    // 					     const DistanceValue& aDistanceValue, 
-    // 					     bool aFlagIsPositive = false);
 
     /**
-     * Initialize @a aMap from the points of the range [@a itb , @a ite ) 
+     * Initialize @a aImg and @a aSet from the points of the range [@a itb , @a ite ) 
      * Assign a distance equal to @a aDistanceValue  
+     *
+     * @param itb begin iterator (on points)
+     * @param ite end iterator (on points)
+     * @param aImg the distance image
+     * @param aSet the set of points for which the distance has been assigned
+     * @param aDistanceValue distance default value
      */
     template <typename TIteratorOnPoints>
     static void initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
-					AcceptedPointSet& aMap, 
-					const DistanceValue& aDistanceValue);
+				Image& aImg, AcceptedPointSet& aSet, 
+				const DistanceValue& aDistanceValue);
 
     /**
-     * Initialize @a aMap from the inner and outer points of the range [@a itb , @a ite ) 
+     * Initialize @a aImg and @a aSet from the inner and outer points of the range [@a itb , @a ite ) 
      * Assign a distance equal to - @a aDistanceValue if aFlagIsPositive is 'false' (default)
      * to the inner points, but @a aDistanceValue otherwise, and conversely for the outer points.  
+     *
+     * @param itb begin iterator (on points)
+     * @param ite end iterator (on points)
+     * @param aImg the distance image
+     * @param aSet the set of points for which the distance has been assigned
+     * @param aDistanceValue distance default value
      */
     template <typename TIteratorOnPairs>
     static void initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
-					     AcceptedPointSet& aMap, 
-					     const DistanceValue& aDistanceValue, 
-					     bool aFlagIsPositive = false);
-
-      // ------------------------- Private Datas --------------------------------
-  private:
-    
-    /**
-     * Reference on the set of accepted points
-     */
-    AcceptedPointSet& myAcceptedPoints; 
-
-    /**
-     * Set of candidate points
-     */
-    CandidatePointSet myCandidatePoints; 
-
-    /**
-     * Distance computer used to deduce the distance of a new point
-     * from the distance of its neighbors
-     */
-    Distance myM; 
-
-    /**
-     * Constant reference on a point predicate that returns 
-     * 'true' inside the domain 
-     * where the distance transform is performed
-     */
-    const PointPredicate& myPointPredicate; 
-
-    /**
-     * Area threshold (in number of accepted points) 
-     * above which the propagation stops
-     */
-    Area myAreaThreshold; 
-
-    /**
-     * DistanceValue threshold above which the propagation stops
-     */
-    DistanceValue myDistanceValueThreshold; 
+				   Image& aImg, AcceptedPointSet& aSet, 
+				   const DistanceValue& aDistanceValue, 
+				   bool aFlagIsPositive = false);
 
   private:
 
@@ -321,9 +328,9 @@ namespace DGtal
    * @param object the object of class 'FMM' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDistance, typename TPointPredicate>
+  template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
   std::ostream&
-  operator<< ( std::ostream & out, const FMM<TDistance, TPointPredicate> & object );
+  operator<< ( std::ostream & out, const FMM<TImage, TSet, TPointPredicate, TDistance> & object );
 
 } // namespace DGtal
 
