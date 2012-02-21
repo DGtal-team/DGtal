@@ -191,14 +191,10 @@ bool testDisplayDT2d(int size, int area, double distance)
   typedef DigitalSetFromMap<Image> Set; 
   Set set(map); 
 
-  //Distance
-  typedef L2FirstOrderLocalDistance<Image> DistanceComputer; 
-
   //computation
   trace.beginBlock ( "Display 2d FMM results " );
  
-  typedef FMM<Image, Set, DomainPredicate<Domain>, 
-    DistanceComputer > FMM; 
+  typedef FMM<Image, Set, DomainPredicate<Domain> > FMM; 
   FMM fmm(map, set, dp, area, distance); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
@@ -235,14 +231,10 @@ bool testDisplayDT3d(int size, int area, double distance)
   typedef DigitalSetFromMap<Image> Set; 
   Set set(map); 
 
-  //Distance
-  typedef L2FirstOrderLocalDistance<Image> DistanceComputer; 
-
   //computation
   trace.beginBlock ( "Display 3d FMM results " );
  
-  typedef FMM<Image, Set, DomainPredicate<Domain>, 
-    DistanceComputer > FMM; 
+  typedef FMM<Image, Set, DomainPredicate<Domain> > FMM; 
   FMM fmm(map, set, dp, area, distance); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 

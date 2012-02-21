@@ -49,6 +49,7 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
 {
 
   BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
 
   //distance values
   Values v; 

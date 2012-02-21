@@ -52,7 +52,8 @@
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
-//#include "DGtal/geometry/volumes/distance/CLocalDistance.h"
+#include "DGtal/geometry/volumes/distance/CLocalDistance.h"
+#include "DGtal/geometry/volumes/distance/FirstOrderLocalDistance.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -89,7 +90,8 @@ namespace DGtal
    * @tparam TPointPredicate  any model of CPointPredicate
    * @tparam TDistance  any model of CLocalDistance
    */
-  template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+  template <typename TImage, typename TSet, typename TPointPredicate, 
+	    typename TDistance = L2FirstOrderLocalDistance<TImage> >
   class FMM
   {
 
@@ -101,7 +103,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    //    BOOST_CONCEPT_ASSERT(( CLocalDistance<TDistance> ));
+    BOOST_CONCEPT_ASSERT(( CLocalDistance<TDistance> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 
