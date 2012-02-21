@@ -91,19 +91,14 @@ bool testDSSreco()
   Iterator i = sequence.begin();  
   algo.init(i);
   trace.info() << "init with " << (*i) << std::endl;
-    ++i;
 
     while ( (algo.end() != sequence.end())
 	    && algo.extendForward()) {
-      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
+      //      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
     
-    // while ( (i!=sequence.end())
-    // 	    &&(algo.extendForward(i)) ) {
-    //   trace.info() << "extended with " << (*i) << std::endl;
-    //   ++i;
-    // }
-    trace.info() << algo << " " << algo.isValid() << *algo.begin() << std::endl;
+
+    trace.info() << algo << " " << algo.isValid() << std::endl;
 
     trace.endBlock();
 
