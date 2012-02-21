@@ -52,7 +52,7 @@ template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
-  : map<typename TDomain::Point,TValue,details::PointComparator>(other), 
+  : Parent(other), 
     myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
 {
 }
@@ -65,7 +65,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>
 {
   if (this != &other)
     {
-      map<typename TDomain::Point,TValue,details::PointComparator>::operator=(other); 
+      Parent::operator=(other); 
       myDomainPtr = other.myDomainPtr; 
       myDefaultValue = other.myDefaultValue; 
     }

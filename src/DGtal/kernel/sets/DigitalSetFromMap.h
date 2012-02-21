@@ -17,68 +17,94 @@
 #pragma once
 
 /**
- * @file DigitalSetBySTLSet.h
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @file DigitalSetFromMap.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et
- * Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * @date 2012/02/16
  *
- * @date 2010/07/01
- *
- * Header file for module DigitalSetBySTLSet.cpp
+ * Header file for module DigitalSetFromMap.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DigitalSetBySTLSet_RECURSES)
-#error Recursive header files inclusion detected in DigitalSetBySTLSet.h
-#else // defined(DigitalSetBySTLSet_RECURSES)
+#if defined(DigitalSetFromMap_RECURSES)
+#error Recursive header files inclusion detected in DigitalSetFromMap.h
+#else // defined(DigitalSetFromMap_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DigitalSetBySTLSet_RECURSES
+#define DigitalSetFromMap_RECURSES
 
-#if !defined DigitalSetBySTLSet_h
+#if !defined DigitalSetFromMap_h
 /** Prevents repeated inclusion of headers. */
-#define DigitalSetBySTLSet_h
+#define DigitalSetFromMap_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <set>
+#include <map>
 #include <string>
 #include "DGtal/base/Common.h"
-//////////////////////////////////////////////////////////////////////////////
 
-//#include "DGtal/io/Display3D.h"
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/base/IteratorAdapter.h"
+#include "DGtal/base/ConstIteratorAdapter.h"
+
+//////////////////////////////////////////////////////////////////////////////
 
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class DigitalSetBySTLSet
+  // template class DigitalSetFromMap
   /**
-    Description of template class 'DigitalSetBySTLSet' <p>
+     Description of template class 'DigitalSetFromMap' <p>
 
-    \brief Aim: A container class for storing sets of digital points
-    within some given domain.
+     \brief Aim: An adapter for viewing an associative image container
+     like ImageContainerBySTLMap as a simple digital set. 
+     This class is merely based on an aliasing pointer on the image, 
+     which must exists elsewhere.  
 
-    This is the most versatile implementation for a set of point, and
-    is essentially a wrapper to std::set<Point>. It added the notion
-    of domain.
+     Model of CDigitalSet.
 
-    Model of CDigitalSet.
-   */
-  template <typename TDomain>
-  class DigitalSetBySTLSet
+     @tparam TMapImage type of associative image container
+  */
+  template <typename TMapImage>
+  class DigitalSetFromMap
   {
   public:
-    typedef TDomain Domain;
+
+    typedef TMapImage Image;
+    typedef std::pair<const typename Image::Point, 
+		      typename Image::Value> Pair;
+    typedef DigitalSetFromMap<Image> Self; 
+
+    // -------------------------- required types ------------------------------
+    typedef typename Image::Domain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
-    typedef typename std::set<Point>::iterator Iterator;
-    typedef typename std::set<Point>::const_iterator ConstIterator;
+
+    typedef Pair1st<Point> Functor; 
+    typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
+    typedef ConstIteratorAdapter<typename Image::Iterator, Functor, Point> Iterator;
+
+    // ------------------------- Protected Datas ------------------------------
+  protected:
+
+    /**
+     * Aliasing pointer on the image
+     */
+    Image* myImgPtr;
+
+    /**
+     * Functor transforming pairs point-value into points
+     */
+    Functor myFun;
+
+    /**
+     * Default value for point insertion 
+     */
+    typename Image::Value myDefault;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -86,36 +112,40 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~DigitalSetBySTLSet();
+    ~DigitalSetFromMap();
 
     /**
      * Constructor.
-     * Creates the empty set in the domain [d].
+     * Link the adapter to an existing image.
      *
-     * @param d any domain.
+     * @param aImage any associative image container.
+     * @param aDefaultValue value assigned to new points 
+     * in the underlying image (0 by default). 
      */
-    DigitalSetBySTLSet( const Domain & d );
+    DigitalSetFromMap( Image& aImage, 
+		       const typename Image::Value& aDefaultValue = 0);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    DigitalSetBySTLSet ( const DigitalSetBySTLSet & other );
+    DigitalSetFromMap ( const DigitalSetFromMap & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    DigitalSetBySTLSet & operator= ( const DigitalSetBySTLSet & other );
+    DigitalSetFromMap& operator= ( const DigitalSetFromMap & other );
+
+
+    // ----------------------- Standard Set services --------------------------
+  public:
 
     /**
      * @return the embedding domain.
      */
     const Domain & domain() const;
-
-    // ----------------------- Standard Set services --------------------------
-  public:
 
     /**
      * @return the number of elements in the set.
@@ -203,6 +233,7 @@ namespace DGtal
 
     /**
      * @param p any digital point.
+     * @return a constant iterator pointing on [p] if found, otherwise end().
      */
     ConstIterator find( const Point & p ) const;
 
@@ -235,28 +266,33 @@ namespace DGtal
     /**
      * set union to left.
      * @param aSet any other set.
+     * @tparam TDigitalSet a model of digital set. 
      */
-    DigitalSetBySTLSet<Domain> & operator+=
-    ( const DigitalSetBySTLSet<Domain> & aSet );
+    template< typename TDigitalSet >
+    Self & operator+=
+    ( const TDigitalSet & aSet );
 
     // ----------------------- Other Set services -----------------------------
   public:
     
     /**
-     * Computes the complement in the domain of this set
-     * @param ito an output iterator
+     * Fill a given set through the output iterator @a ito
+     * with the complement of this set in the domain.
+     * @param ito the output iterator
      * @tparam TOutputIterator a model of output iterator
      */
-   template< typename TOutputIterator >
+    template< typename TOutputIterator >
     void computeComplement(TOutputIterator& ito) const; 
 
     /**
      * Builds the complement in the domain of the set [other_set] in
      * this.
      *
-     * @param other_set defines the set whose complement is assigned to 'this'.
+     * @param otherSet defines the set whose complement is assigned to 'this'.
+     * @tparam TDigitalSet a model of digital set. 
      */
-    void assignFromComplement( const DigitalSetBySTLSet<Domain> & other_set ); 
+    template< typename TDigitalSet >
+    void assignFromComplement( const TDigitalSet & otherSet ); 
     
     /**
      * Computes the bounding box of this set.
@@ -284,19 +320,6 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-
-    /**
-     * The associated domain;
-     */
-    const Domain & myDomain;
-
-    /**
-     * The container storing the points of the set.
-     */
-    std::set<Point> mySet;
-
 
   public:
     
@@ -304,12 +327,6 @@ namespace DGtal
 
     // --------------- CDrawableWithBoard2D realization ---------------------
   public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object. 
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
 
     /**
      * @return the style name used for drawing this object.
@@ -324,7 +341,7 @@ namespace DGtal
      * Default Constructor.
      * Forbidden since a Domain is necessary for defining a set.
      */
-    DigitalSetBySTLSet();
+    DigitalSetFromMap();
 
   private:
 
@@ -333,30 +350,30 @@ namespace DGtal
   private:
 
 
-  }; // end of class DigitalSetBySTLSet
+  }; // end of class DigitalSetFromMap
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalSetBySTLSet'.
+   * Overloads 'operator<<' for displaying objects of class 'DigitalSetFromMap'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalSetBySTLSet' to write.
+   * @param object the object of class 'DigitalSetFromMap' to write.
    * @return the output stream after the writing.
    */
-  template <typename Domain>
+  template <typename TMapImage>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSetBySTLSet<Domain> & object );
+  operator<< ( std::ostream & out, const DigitalSetFromMap<TMapImage> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/sets/DigitalSetBySTLSet.ih"
+#include "DGtal/kernel/sets/DigitalSetFromMap.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DigitalSetBySTLSet_h
+#endif // !defined DigitalSetFromMap_h
 
-#undef DigitalSetBySTLSet_RECURSES
-#endif // else defined(DigitalSetBySTLSet_RECURSES)
+#undef DigitalSetFromMap_RECURSES
+#endif // else defined(DigitalSetFromMap_RECURSES)

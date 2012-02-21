@@ -125,12 +125,15 @@ namespace DGtal
 
   template <typename TDomain, typename TValue>
   class ImageContainerBySTLMap: 
-    public map<typename TDomain::Point,TValue,details::PointComparator>
+    public std::map<typename TDomain::Point, TValue,
+		    details::PointComparator >
   {
 
   public:
 
     typedef ImageContainerBySTLMap<TDomain,TValue> Self; 
+    typedef std::map<typename TDomain::Point, TValue,
+		     details::PointComparator > Parent; 
 
     /// domain
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));

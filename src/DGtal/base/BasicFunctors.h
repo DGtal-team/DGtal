@@ -602,6 +602,21 @@ private:
     {
       return aPair.first;
     }
+
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return constant reference on the first member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    const ReturnType& operator()(const TPair& aPair) const
+    {
+      return aPair.first;
+    }
     
   };
 
@@ -629,6 +644,21 @@ private:
     template <typename TPair>
     inline
     ReturnType& operator()(TPair& aPair) const
+    {
+      return aPair.second;
+    }
+
+    /** 
+     * Operator
+     *
+     * @tparam TPair model of CPair
+     * @param aPair input pair
+     *
+     * @return constant reference on the second member of @a aPair.
+     */
+    template <typename TPair>
+    inline
+    const ReturnType& operator()(const TPair& aPair) const
     {
       return aPair.second;
     }
