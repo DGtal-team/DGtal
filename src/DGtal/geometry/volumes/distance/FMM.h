@@ -59,7 +59,7 @@ namespace DGtal
   namespace details
   {
     template<typename T>
-    class PointMetricValueCompare {
+    class PointDistanceValueCompare {
     public: 
       bool operator()(const T& a, const T& b) 
         {
@@ -81,10 +81,10 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM).
    *
-   * @tparam TMetric  any model of CIncrementalMetric
+   * @tparam TDistance  any model of CIncrementalDistance
    * @tparam TPointPredicate  any model of CPointPredicate
    */
-  template <typename TMetric, typename TPointPredicate >
+  template <typename TDistance, typename TPointPredicate >
   class FMM
   {
 
@@ -93,29 +93,29 @@ namespace DGtal
 
 
     //concept assert
-    BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TMetric> ));
+    BOOST_CONCEPT_ASSERT(( CIncrementalMetric<TDistance> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
     //point predicate
     typedef TPointPredicate PointPredicate; 
     typedef typename PointPredicate::Point Vector;
     typedef typename PointPredicate::Point Point;
-    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TMetric::Point >::value ));
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TDistance::Point >::value ));
 
     typedef typename Point::Dimension Dimension;
     static const Dimension dimension = Point::dimension;
 
     //distance
-    typedef TMetric Metric; 
-    typedef typename TMetric::Value MetricValue; 
+    typedef TDistance Distance; 
+    typedef typename TDistance::Value DistanceValue; 
 
 
   private: 
 
     //intern data types
-    typedef std::pair<Point, MetricValue> PointMetricValue; 
-    typedef std::set<PointMetricValue,details::PointMetricValueCompare<PointMetricValue> > CandidatePointSet; 
-    typedef std::map<Point, MetricValue> AcceptedPointSet; 
+    typedef std::pair<Point, DistanceValue> PointDistanceValue; 
+    typedef std::set<PointDistanceValue,details::PointDistanceValueCompare<PointDistanceValue> > CandidatePointSet; 
+    typedef std::map<Point, DistanceValue> AcceptedPointSet; 
     typedef unsigned long Area;
 
     // ----------------------- Standard services ------------------------------
@@ -124,15 +124,15 @@ namespace DGtal
     /**
      * Constructor.
      */
-    FMM(AcceptedPointSet& aSet, const Metric& aM, 
+    FMM(AcceptedPointSet& aSet, const Distance& aM, 
 	const PointPredicate& aPointPredicate = PointPredicate() );
     
     /**
      * Constructor.
      */
-    FMM(AcceptedPointSet& aSet, const Metric& aM, 
+    FMM(AcceptedPointSet& aSet, const Distance& aM, 
 	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const MetricValue& aMetricValueThreshold);
+	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold);
     
     /**
      * Destructor.
@@ -177,46 +177,46 @@ namespace DGtal
     //  * Initialize @a aMap from the inner boundary of the set of points P
     //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
     //  * for each P of the set.
-    //  * Assign a distance equal to @a aMetricValue
+    //  * Assign a distance equal to @a aDistanceValue
     //  */
     // template <typename TDomainIterator, typename TImplicitObject>
     // static void initInnerPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
     // 					const TImplicitObject& aPredicate, 
     // 					AcceptedPointSet& aMap, 
-    // 					const MetricValue& aMetricValue);
+    // 					const DistanceValue& aDistanceValue);
 
     // /**
     //  * Initialize @a aMap from the inner and outer boundaries of the set of points P
     //  * of the range [@a itb , @a ite ) such that @a aPredicate(P) returns 'true'
     //  * for each P of the set.
-    //  * Assign a distance equal to - @a aMetricValue if aFlagIsPositive is 'false' (default)
-    //  * to the inner points, but @a aMetricValue otherwise, and conversely for the outer points.  
+    //  * Assign a distance equal to - @a aDistanceValue if aFlagIsPositive is 'false' (default)
+    //  * to the inner points, but @a aDistanceValue otherwise, and conversely for the outer points.  
     //  */
     // template <typename TDomainIterator, typename TImplicitObject>
     // static void initIncidentPoints(const TDomainIterator& itb, const TDomainIterator& ite, 
     // 					     const TImplicitObject& aPredicate, 
     // 					     AcceptedPointSet& aMap, 
-    // 					     const MetricValue& aMetricValue, 
+    // 					     const DistanceValue& aDistanceValue, 
     // 					     bool aFlagIsPositive = false);
 
     /**
      * Initialize @a aMap from the points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to @a aMetricValue  
+     * Assign a distance equal to @a aDistanceValue  
      */
     template <typename TIteratorOnPoints>
     static void initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
 					AcceptedPointSet& aMap, 
-					const MetricValue& aMetricValue);
+					const DistanceValue& aDistanceValue);
 
     /**
      * Initialize @a aMap from the inner and outer points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to - @a aMetricValue if aFlagIsPositive is 'false' (default)
-     * to the inner points, but @a aMetricValue otherwise, and conversely for the outer points.  
+     * Assign a distance equal to - @a aDistanceValue if aFlagIsPositive is 'false' (default)
+     * to the inner points, but @a aDistanceValue otherwise, and conversely for the outer points.  
      */
     template <typename TIteratorOnPairs>
     static void initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 					     AcceptedPointSet& aMap, 
-					     const MetricValue& aMetricValue, 
+					     const DistanceValue& aDistanceValue, 
 					     bool aFlagIsPositive = false);
 
       // ------------------------- Private Datas --------------------------------
@@ -233,10 +233,10 @@ namespace DGtal
     CandidatePointSet myCandidatePoints; 
 
     /**
-     * Metric computer used to deduce the distance of a new point
+     * Distance computer used to deduce the distance of a new point
      * from the distance of its neighbors
      */
-    Metric myM; 
+    Distance myM; 
 
     /**
      * Constant reference on a point predicate that returns 
@@ -252,9 +252,9 @@ namespace DGtal
     Area myAreaThreshold; 
 
     /**
-     * MetricValue threshold above which the propagation stops
+     * DistanceValue threshold above which the propagation stops
      */
-    MetricValue myMetricValueThreshold; 
+    DistanceValue myDistanceValueThreshold; 
 
   private:
 
@@ -321,9 +321,9 @@ namespace DGtal
    * @param object the object of class 'FMM' to write.
    * @return the output stream after the writing.
    */
-  template <typename TMetric, typename TPointPredicate>
+  template <typename TDistance, typename TPointPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, const FMM<TMetric, TPointPredicate> & object );
+  operator<< ( std::ostream & out, const FMM<TDistance, TPointPredicate> & object );
 
 } // namespace DGtal
 
