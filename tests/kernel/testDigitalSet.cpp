@@ -52,6 +52,7 @@
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/kernel/sets/DigitalSetInserter.h"
 
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
@@ -139,7 +140,7 @@ bool testDigitalSetBoardSnippet()
 }
 
 template < typename DigitalSetType >
-bool testDigitalSet( const DigitalSetType& aSet )
+bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
 {
   BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
 
@@ -150,7 +151,7 @@ bool testDigitalSet( const DigitalSetType& aSet )
   unsigned int nb = 0;
 
   //copy, size/empty
-  DigitalSetType set1( aSet );
+  DigitalSetType set1( aSet1 );
   nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -175,7 +176,7 @@ bool testDigitalSet( const DigitalSetType& aSet )
   nbok += set1.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "Set (3 elements): " << set1 << std::endl;
+  << "Insertion (3 elements): " << set1 << std::endl;
 
   //iterate
   bool flag = true; 
@@ -207,7 +208,19 @@ bool testDigitalSet( const DigitalSetType& aSet )
   << "Erase one element by iterator (1 remain): " << set1 << std::endl;
 
   //other sets
+  DigitalSetType set2( aSet2 );
+  DigitalSetInserter<DigitalSetType> inserter(set2); 
+  set1.computeComplement(inserter); 
+  nbok += (set2.size() == (set2.domain().size()-1))? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Complement: " << set2 << std::endl;
 
+  set2 += set1; 
+  nbok += (set2.size() == (set2.domain().size()))? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Union: " << set2 << std::endl;
 
   //clear
   set1.clear(); 
@@ -215,6 +228,12 @@ bool testDigitalSet( const DigitalSetType& aSet )
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Cleared set: " << set1 << std::endl;
+
+  set1.assignFromComplement(set2); //remains empty
+  nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
 
   return nbok == nb;
 }
@@ -374,19 +393,20 @@ int main()
 
   trace.beginBlock( "DigitalSetBySTLVector" );
   bool okVector = testDigitalSet< DigitalSetBySTLVector<Domain> >
-( DigitalSetBySTLVector<Domain>(domain) );
+    ( DigitalSetBySTLVector<Domain>(domain), DigitalSetBySTLVector<Domain>(domain) );
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetBySTLSet" );
   bool okSet = testDigitalSet< DigitalSetBySTLSet<Domain> >
-( DigitalSetBySTLSet<Domain>(domain) );
+    ( DigitalSetBySTLSet<Domain>(domain), DigitalSetBySTLSet<Domain>(domain) );
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetFromMap" );
   typedef ImageContainerBySTLMap<Domain,short int> Map; 
-  Map map(domain);                        //map
-  DigitalSetFromMap<Map> setFromMap(map); //set from this map 
-  bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap );
+  Map map(domain); Map map2(domain);        //maps
+  DigitalSetFromMap<Map> setFromMap(map);   //sets from these maps 
+  DigitalSetFromMap<Map> setFromMap2(map2);  
+  bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap, setFromMap2 );
   trace.endBlock();
 
   bool okSelectorSmall = testDigitalSetSelector
