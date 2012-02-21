@@ -204,7 +204,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ReverseIterator
 DGtal::PointVector<dim, TComponent>::rbegin()
 {
-  return myArray.begin();
+  return myArray.rbegin();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -212,7 +212,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ReverseIterator
 DGtal::PointVector<dim, TComponent>::rend()
 {
-  return myArray.end();
+  return myArray.rend();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -220,7 +220,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
 DGtal::PointVector<dim, TComponent>::rbegin() const
 {
-  return myArray.begin();
+  return myArray.rbegin();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -228,7 +228,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
 DGtal::PointVector<dim, TComponent>::rend() const
 {
-  return myArray.end();
+  return myArray.rend();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
