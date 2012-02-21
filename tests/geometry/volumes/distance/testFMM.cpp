@@ -457,7 +457,7 @@ bool testComparison(int size, int area, double distance)
 
   //image construction
   typedef typename ImageSelector<Domain, unsigned int>::Type Image;
-  Image image (low, up);
+  Image image ( Domain(low, up) );
   typename Domain::Iterator dit = d.begin(); 
   typename Domain::Iterator ditEnd = d.end(); 
   for ( ; dit != ditEnd; ++dit)
