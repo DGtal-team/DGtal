@@ -59,17 +59,17 @@ namespace DGtal
   // useful function for computing local distance
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class FirstOrderIncrementalMetric
+  // template class FirstOrderLocalDistance
   /**
-   * Description of template class 'FirstOrderIncrementalMetric' <p>
-   * \brief Aim: Metric mapping a point p to a value (according to 
-   * to the available values of the 1-neighbors of p). 
-   * It is a model of CIncrementalMetric.
+   * Description of template class 'L2FirstOrderLocalDistance' <p>
+   * \brief Aim: Class for the computation of the Euclidean distance
+   * at some point p, from the available distance values of the 
+   * 1-neighborhood of p. 
+   * It is a model of CLocalDistance.
    *
-   * @tparam TPoint type of point
-   * @tparam TMetricHelper  any model of CFirstOrderIncrementalMetricHelper 
+   * @tparam TImage model of CImage used for the mapping point-distance value
    */
-  template <typename TImage, typename TPointPredicate>
+  template <typename TImage>
   class L2FirstOrderLocalDistance
   {
 
@@ -79,13 +79,10 @@ namespace DGtal
 
     //concept assert
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
     //image
     typedef TImage Image;
     typedef typename Image::Point Point;
-    typedef typename Image::Dimension Dimension;
-    static const Dimension dimension = Point::dimension;
     typedef typename Image::Value Value; 
 
   private: 
@@ -107,10 +104,10 @@ namespace DGtal
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TImage any model of CImage
      * @tparam TPointPredicate any model of CPointPredicate
      */
-    Value operator() (const TImage& aImg, const TPointPredicate& aPred, 
+    template <typename TPointPredicate>
+    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
 		      const Point& aPoint);
 
     /**
@@ -142,7 +139,7 @@ namespace DGtal
      *
      * @return the computed gradient norm.
      */
-    double gradientNorm(const Value& aValue, const Values& aValueList) const;
+    Value gradientNorm(const Value& aValue, const Values& aValueList) const;
   }; 
 
 } // namespace DGtal

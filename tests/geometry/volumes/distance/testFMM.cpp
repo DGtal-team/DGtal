@@ -192,9 +192,7 @@ bool testDisplayDT2d(int size, int area, double distance)
   Set set(map); 
 
   //Distance
-  typedef L2FirstOrderLocalDistance<Image, 
-    SetPredicate<Set> > DistanceComputer; 
-  DistanceComputer dc; 
+  typedef L2FirstOrderLocalDistance<Image> DistanceComputer; 
 
   //computation
   trace.beginBlock ( "Display 2d FMM results " );
@@ -215,71 +213,69 @@ bool testDisplayDT2d(int size, int area, double distance)
   return fmm.isValid(); 
 }
 
-// /**
-//  * Simple 3d distance transform
-//  * and slice display
-//  */
-// bool testDisplayDT3d(int size, int area, double distance)
-// {
+/**
+ * Simple 3d distance transform
+ * and slice display
+ */
+bool testDisplayDT3d(int size, int area, double distance)
+{
 
-//   static const DGtal::Dimension dimension = 3; 
+  static const DGtal::Dimension dimension = 3; 
 
-//   //type definitions 
-//   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-//   typedef Domain::Point Point;
+  //Domain
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point; 
+  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
+  DomainPredicate<Domain> dp(d);
+
+  //Image and set
+  typedef ImageContainerBySTLMap<Domain,double> Image; 
+  Image map( d, 0.0 ); 
+  map.setValue( Point::diagonal(0), 0.0 );
+  typedef DigitalSetFromMap<Image> Set; 
+  Set set(map); 
+
+  //Distance
+  typedef L2FirstOrderLocalDistance<Image> DistanceComputer; 
+
+  //computation
+  trace.beginBlock ( "Display 3d FMM results " );
  
-//   typedef FirstOrderIncrementalMetric<Point> Metric; 
-//   typedef Metric::Value Distance;  
+  typedef FMM<Image, Set, DomainPredicate<Domain>, 
+    DistanceComputer > FMM; 
+  FMM fmm(map, set, dp, area, distance); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
 
-//   typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
+  trace.endBlock();
 
-//   //init
-//   Point c = Point::diagonal(0); 
-//   Point up = Point::diagonal(size); 
-//   Point low = Point::diagonal(-size); 
+  {  //display
+    HueShadeColorMap<unsigned char, 2> colorMap(0,2*size);
 
-//   std::map<Point, Distance> map; 
-//   map.insert( std::pair<Point, Distance>( c, 0.0 ) );
+    Board2D b; 
+    b.setUnit ( LibBoard::Board::UCentimeter );
 
-//   Metric mc; 
-//   Domain d(low, up); 
-//   DomainPredicate<Domain> dp(d);
+    Domain::ConstIterator it = d.begin(); 
+    for ( ; it != d.end(); ++it)
+      {
+	Point p3 = *it;
+	if (p3[2] == 0)
+	  {
+	    PointVector<2,Point::Coordinate> p2(p3[0], p3[1]); 
+	    b << CustomStyle( p2.className(), 
+			      new CustomFillColor( colorMap(map(p3)) ) )
+	      << p2;
+	  }
+      }
 
-//   //computation
-//   trace.beginBlock ( "Display 3d FMM results " );
- 
-//   FMM fmm(map, mc, dp, area, distance); 
-//   fmm.compute(); 
-//   trace.info() << fmm << std::endl; 
+    std::stringstream s; 
+    s << "DTFrom3dPt-" << size << "-" << area << "-" << distance
+      << ".eps"; 
+    b.saveEPS(s.str().c_str());
+  }
 
-//   trace.endBlock();
-
-//   {  //display
-//     HueShadeColorMap<unsigned char, 2> colorMap(0,2*size);
-
-//     Board2D b; 
-//     b.setUnit ( LibBoard::Board::UCentimeter );
-
-//     std::map<Point,Distance>::iterator it = map.begin(); 
-//     for ( ; it != map.end(); ++it)
-//       {
-// 	Point p3 = it->first;
-// 	if (p3[2] == 0)
-// 	  {
-// 	    PointVector<2,Point::Coordinate> p2(p3[0], p3[1]); 
-// 	    b << CustomStyle( p2.className(), new CustomFillColor( colorMap( it->second) ) )
-// 	      << p2;
-// 	  }
-//       }
-
-//     std::stringstream s; 
-//     s << "DTFrom3dPt-" << size << "-" << area << "-" << distance
-//       << ".eps"; 
-//     b.saveEPS(s.str().c_str());
-//   }
-
-//   return fmm.isValid(); 
-// }
+  return fmm.isValid(); 
+}
 
 // bool testDispalyDTFromCircle(int size)
 // {
@@ -541,10 +537,10 @@ int main ( int argc, char** argv )
   //   && testDispalyDTFromCircle(size)   
     ;
 
-  // size = 50; 
-  // //3d L2 test
-  // res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
-  //   ; 
+  size = 20; 
+  //3d L2 test
+  res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
+    ; 
 
   //3d L1 and Linf comparison
 //   size = 20; 

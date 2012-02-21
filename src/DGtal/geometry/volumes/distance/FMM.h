@@ -65,16 +65,16 @@ namespace DGtal
     class PointDistanceValueCompare {
     public: 
       bool operator()(const T& a, const T& b) 
-        {
-          if ( std::abs(a.second) == std::abs(b.second) ) 
-            { //point comparison
-              return (a.first < b.first); 
-            }
-          else //distance comparison
-	    //(in absolute value in order to deal with
-	    //signed distance values) 
-            return ( std::abs(a.second) < std::abs(b.second) ); 
-        }
+      {
+	if ( std::abs(a.second) == std::abs(b.second) ) 
+	  { //point comparison
+	    return (a.first < b.first); 
+	  }
+	else //distance comparison
+	  //(in absolute value in order to deal with
+	  //signed distance values) 
+	  return ( std::abs(a.second) < std::abs(b.second) ); 
+      }
     };
   }
 
@@ -131,7 +131,7 @@ namespace DGtal
 		     details::PointDistanceValueCompare<PointDistanceValue> > CandidatePointSet; 
     typedef unsigned long Area;
 
-      // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Datas --------------------------------
   private:
     
     /**
@@ -228,7 +228,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-      // ------------------------- static functions for init --------------------
+    // ------------------------- static functions for init --------------------
 
 
     /**
