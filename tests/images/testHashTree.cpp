@@ -122,7 +122,7 @@ bool testGetSetVal()
   ///Domain characterized by points
   Image myImage ( 3, 8, 0 );
 
-  ImageVector myImageV(l,u);
+  ImageVector myImageV(TDomain(l,u));
 
   trace.info() << myImage;
   trace.endBlock();

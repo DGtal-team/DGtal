@@ -1,0 +1,100 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file BasicPointFunctors.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/02
+ *
+ * Implementation of inline methods defined in BasicPointFunctors.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+template <typename S>
+inline
+DGtal::Projector<S>::Projector(const Integer& aDefaultInteger)
+ : myDims(), myDefaultInteger(aDefaultInteger)
+{ //default projection
+  Dimension k = 0; 
+  for ( ; k < dimension; ++k)
+  {
+    myDims[k] = k; 
+  } 
+}
+
+template <typename S>
+template <typename TIterator>
+inline
+void
+DGtal::Projector<S>::init( const TIterator& itb, const TIterator& ite )
+{
+  BOOST_STATIC_ASSERT ((boost::is_same< Dimension, 
+   typename std::iterator_traits<TIterator>::value_type >::value)); 
+
+  TIterator it = itb; 
+  Dimension k = 0; 
+  for ( ; ( (k < dimension)&&(it != ite) ); ++it, ++k)
+  {
+    myDims[k] = *it; 
+  } 
+  for ( ; k < dimension; ++k)
+  {
+    myDims[k] = dimension; 
+  } 
+}
+
+template <typename S>
+template <typename TInputPoint>
+inline
+typename DGtal::Projector<S>::Point
+DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
+{
+ 	BOOST_STATIC_ASSERT ((boost::is_same< typename TInputPoint::Coordinate, 
+   Integer >::value));
+ 
+  Point res; 
+
+  typename boost::array<Dimension,dimension>::const_iterator it = myDims.begin(); 
+  typename boost::array<Dimension,dimension>::const_iterator itEnd = myDims.end();
+  Dimension k = 0; 
+  for ( ; it != itEnd; ++it, ++k)
+  {
+    Dimension l = *it; 
+    if (l < TInputPoint::dimension) 
+      res[k] = aPoint.at(l); 
+    else 
+      res[k] = myDefaultInteger; 
+  } 
+  
+  return res; 
+}
+//------------------------------------------------------------------------------
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

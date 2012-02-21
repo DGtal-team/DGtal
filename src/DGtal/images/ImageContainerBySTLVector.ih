@@ -22,6 +22,11 @@
  *
  * @date 2010/06/15
  *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/16
+ *
  * Implementation of inline methods defined in ImageContainerBySTLVector.h
  *
  * This file is part of the DGtal library.
@@ -35,20 +40,43 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+//------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
 ImageContainerBySTLVector<Domain, T>::
-ImageContainerBySTLVector(const Point &aPointA, const Point &aPointB ) :
-  myLowerBound(std::min(aPointA,aPointB)),
-  myUpperBound(std::max(aPointA,aPointB))
+ImageContainerBySTLVector(const Domain &aDomain ) :
+  myDomain(aDomain), myExtent(aDomain.extent())
 {
-  Point dec = myUpperBound - myLowerBound;
-  Size ext = 1;
-  for (Dimension k = 0;k <  Domain::dimension; k++)
-    ext = ext* (dec[k] + 1);
-  this->resize(ext);
+  this->resize( myDomain.size() );
 }
 
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+DGtal::ImageContainerBySTLVector<Domain,T>
+::ImageContainerBySTLVector(const ImageContainerBySTLVector& other)
+  : vector<T>(other), 
+    myDomain(other.myDomain), myExtent(other.myExtent)
+{
+}
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+DGtal::ImageContainerBySTLVector<Domain,T>&
+DGtal::ImageContainerBySTLVector<Domain,T>
+::operator=(const ImageContainerBySTLVector& other)
+{
+  if (this != &other)
+    {
+      vector<T>::operator=(other); 
+      myDomain = other.myDomain; 
+      myExtent = other.myExtent; 
+    }
+  return *this; 
+}
+
+
+//------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
 ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
@@ -56,34 +84,101 @@ ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 }
 
 
+//------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
 T
 ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
 {
-  return this->at( linearized( aPoint ) );
-
+  ASSERT(this->domain().isInside(aPoint));
+  return this->operator[](linearized( aPoint ) );
 }
 
+template <typename Domain, typename T>
+inline
+//------------------------------------------------------------------------------
+typename ImageContainerBySTLVector<Domain, T>::Iterator
+ImageContainerBySTLVector<Domain, T>::getIterator(const Point &aPoint)
+{
+  ASSERT(this->domain().isInside(aPoint));
+  return this->begin() + linearized( aPoint );
+}
+
+
+//------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
 void
 ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
 {
-  this->at( linearized( aPoint ) ) = V;
+  ASSERT(this->domain().isInside(aPoint));
+  this->operator[](linearized( aPoint )) = V;
 }
 
+//------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain, T>::Vector
+const typename ImageContainerBySTLVector<Domain, T>::Domain& 
+ImageContainerBySTLVector<Domain, T>::domain() const
+{
+  return myDomain;
+}
+
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+typename ImageContainerBySTLVector<Domain, T>::ConstRange
+ImageContainerBySTLVector<Domain, T>::range() const
+{
+  return ConstRange( this->begin(), this->end() );
+}
+
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+typename ImageContainerBySTLVector<Domain, T>::OutputIterator 
+ImageContainerBySTLVector<Domain, T>::output()
+{
+  return this->begin(); 
+}
+
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+typename ImageContainerBySTLVector<Domain, T>::Vector 
 ImageContainerBySTLVector<Domain, T>::extent() const
 {
-  Vector one;
-  for (Dimension i = 0; i < Domain::dimension; i++)
-    one[i] = myUpperBound[i] - myLowerBound[i] + 1;
-
-  return one;
+  return myExtent; 
 }
+
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+void
+ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShift)
+{
+  myDomain = Domain(myDomain.lowerBound()+aShift, myDomain.upperBound()+aShift); 
+}
+
+//------------------------------------------------------------------------------
+template <typename TDomain, typename V>
+inline
+void
+ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Image - STLVector] size=" << this->size() << " valuetype=" 
+      << sizeof(V) << "bytes Domain=" << myDomain;
+}
+
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+bool 
+ImageContainerBySTLVector<Domain, T>::isValid() const
+{
+  return (this != NULL);
+}
+
 
 //------------------------------------------------------------------------------
 template <typename D, typename V>
@@ -105,31 +200,33 @@ namespace
    * This class template is to be specialized for efficiency for dimensions 1,
    * 2 and 3 to prevent the use of a loop in these cases.
    *
+   * @tparam Domain an instance of HyperRectDomain
+   * @tparam dimension domain dimension
    */
-  template < typename Domain, int dimension, typename Size >
+  template < typename Domain, int dimension>
   struct linearizer
   {
 
     typedef typename Domain::Point Point;
+    typedef typename Domain::Size Size;
 
     /**
      * Compute the linearized offset of a point in a vector container.
      *
-     * @param aPoint A point
-     * @param lowerBound The lower bound of the image domain.
-     * @param upperBound The upper bound of the image domain.
+     * @param aPoint a point
+     * @param lowerBound lower bound of the image domain.
+     * @param extent extension of the image domain.
      *
-     * @return
+     * @return the index
      */
-    static Size apply( const Point & aPoint,
-        const Point & lowerBound,
-        const Point & upperBound )
+    static Size apply( const Point & aPoint, const Point & lowerBound,
+        const Point & extent )
     {
       Size pos = aPoint[ 0 ] - lowerBound[ 0 ] ;
       Size multiplier = 1;
       for (typename Domain::Dimension k = 1 ; k < dimension ; ++k)
       {
-        multiplier *= 1 + ( upperBound[ k-1  ] - lowerBound[ k-1 ] );
+        multiplier *= extent[ k-1  ];
         pos += multiplier * ( aPoint[ k ] - lowerBound[ k ] );
       }
       return pos;
@@ -140,14 +237,15 @@ namespace
    * Specialization of the linearizer class for dimension 1.
    *
    */
-  template < typename Domain, typename Size >
-  struct linearizer< Domain, 1, Size >
+  template < typename Domain >
+  struct linearizer< Domain, 1 >
   {
     typedef typename Domain::Point Point;
+    typedef typename Domain::Size Size;
 
     static Size apply( const Point & aPoint,
         const Point & lowerBound,
-        const Point & upperBound )
+        const Point & /*extent*/ )
     {
       return aPoint[ 0 ] - lowerBound[ 0 ];
     }
@@ -157,17 +255,17 @@ namespace
    * Specialization of the linearizer class for dimension 2.
    *
    */
-  template < typename Domain, typename Size >
-  struct linearizer< Domain, 2, Size >
+  template < typename Domain >
+  struct linearizer< Domain, 2 >
   {
     typedef typename Domain::Point Point;
+    typedef typename Domain::Size Size;
 
     static Size apply( const Point & aPoint,
         const Point & lowerBound,
-        const Point & upperBound )
+        const Point & extent )
     {
-      Size multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
-      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + multiplier * (aPoint[ 1 ] - lowerBound[ 1 ] );
+      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + extent[ 0 ] * (aPoint[ 1 ] - lowerBound[ 1 ] );
     }
   };
 
@@ -175,19 +273,20 @@ namespace
    * Specialization of the linearizer class for dimension 3.
    *
    */
-  template < typename Domain, typename Size >
-  struct linearizer< Domain, 3, Size >
+  template < typename Domain >
+  struct linearizer< Domain, 3 >
   {
     typedef typename Domain::Point Point;
+    typedef typename Domain::Size Size;
 
     static Size apply( const Point & aPoint,
         const Point & lowerBound,
-        const Point & upperBound )
+        const Point & extent )
     {
       Size res = aPoint[ 0 ] - lowerBound[ 0 ];
-      Size multiplier = 1 + upperBound[ 0 ] - lowerBound[ 0 ];
+      Size multiplier = extent[ 0 ];
       res += multiplier * ( aPoint[ 1 ] - lowerBound[ 1 ] );
-      multiplier *= 1 + upperBound[ 1 ] - lowerBound[ 1 ];
+      multiplier *= extent[ 1 ];
       res += multiplier * ( aPoint[ 2 ] - lowerBound[ 2 ] );
       return res;
     }
@@ -203,19 +302,10 @@ inline
 typename ImageContainerBySTLVector<Domain, T>::Size
 ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) const
 {
-  return linearizer<Domain, Point::dimension, Size >::apply( aPoint, myLowerBound, myUpperBound );
+  return linearizer<Domain, Domain::dimension >::apply( aPoint, 
+							myDomain.lowerBound(), 
+							myExtent );
 }
 
 
-/**
- * Writes/Displays the object on an output stream.
- * @param out the output stream where the object is written.
- */
-template <typename TDomain, typename V>
-inline
-void
-ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
-{
-  out << "[Image - STLVector] size=" << this->size() << " valuetype=" << sizeof(V) << "bytes lower=" << myLowerBound << " upper=" << myUpperBound;
-}
 

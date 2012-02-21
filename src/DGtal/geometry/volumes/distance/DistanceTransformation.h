@@ -46,11 +46,12 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
-#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -95,7 +96,7 @@ namespace DGtal
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
     
 
@@ -168,8 +169,11 @@ namespace DGtal
      */
     OutputImage compute(const Image & inputImage )
     {
-      return compute(inputImage, 
-		     SimpleThresholdForegroundPredicate<Image>(inputImage, 0));
+      typedef Thresholder<typename Image::Value,false,false> Binarizer; 
+      Binarizer b(0); 
+      PointFunctorPredicate<Image,Binarizer> predicate(inputImage, b);
+ 
+      return compute(inputImage, predicate);
     };
 
     /**

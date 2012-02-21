@@ -22,7 +22,7 @@
  *
  * @date 2010/11/28
  *
- * Functions for testing the models of the ImageContainer concept.
+ * Functions for testing the models of the Image concept.
  *
  * This file is part of the DGtal library.
  */
@@ -37,7 +37,7 @@
 #include "DGtal/images/ImageContainerByITKImage.h"
 #endif
 #include "DGtal/images/ImageContainerByHashTree.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -66,16 +66,16 @@ bool testCheckImageConcept()
  typedef experimental::ImageContainerByITKImage<Domain, int> ImageITK;
 #endif
 
-  //HashTree is not (yet) a model of CImageContainer
+  //HashTree is not (yet) a model of CImage
   //typedef experimental::ImageContainerByHashTree<Domain, int>  ImageHash;
 
-  BOOST_CONCEPT_ASSERT ((CImageContainer< ImageVector >));
-  BOOST_CONCEPT_ASSERT ((CImageContainer< ImageMap >));
+  //BOOST_CONCEPT_ASSERT(( CImage< ImageVector >));
+  //BOOST_CONCEPT_ASSERT(( CImage< ImageMap >));
 #ifdef WITH_ITK
-  BOOST_CONCEPT_ASSERT ((CImageContainer< ImageITK >));
+  //BOOST_CONCEPT_ASSERT(( CImage< ImageITK >));
 #endif
 
-  //BOOST_CONCEPT_ASSERT ((CImageContainer< ImageHash >));
+  ////BOOST_CONCEPT_ASSERT(( CImage< ImageHash >));
 
   nbok += true ? 1 : 0; 
   nb++;

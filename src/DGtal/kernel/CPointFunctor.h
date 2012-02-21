@@ -17,57 +17,62 @@
 #pragma once
 
 /**
- * @file CConstRange.h
- * @author Guillaume Damiand
+ * @file CPointFunctor.h
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/02
  *
- * @date 2011/08/31
- *
- * Header file for concept CConstRange
+ * Header file for concept CPointFunctor.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CConstRange_RECURSES)
-#error Recursive header files inclusion detected in CConstRange.h
-#else // defined(CConstRange_RECURSES)
+#if defined(CPointFunctor_RECURSES)
+#error Recursive header files inclusion detected in CPointFunctor.h
+#else // defined(CPointFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CConstRange_RECURSES
+#define CPointFunctor_RECURSES
 
-#if !defined CConstRange_h
+#if !defined CPointFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define CConstRange_h
+#define CPointFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CConstRange
+  // class CPointFunctor
   /**
-     Description of \b concept '\b CConstRange' <p>
+     Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
-    
-     \brief Aim: Defines the concept describing a const range.
+     \brief Aim: Defines a functor on points.
      
-     <p> Refinement of CSinglePassConstRange
+     Associates values to points.
     
-     <p> Provided types :
-
-<<<<<<< HEAD
-     - ConstIterator: the const iterator type, a model of const iterator
-          concept.
-=======
->>>>>>> gdamiand/ranges
-     - ConstReverseIterator: the const reverse iterator type, a model of
-          const iterator concept.
-
-     <table>
+     <p> Refinement of CUnaryFunctor
+    
+     <p> Associated types :
+    
+     - Point : specifies the type for a point (inner type).
+     - Value : specifies the type for a value (inner type).
+    
+     <p> Notation
+     - \t X : A type that is a model of CPointFunctor
+     - \t x : Object of type \t X
+     - \t p : Object of type Point
+     - \t v : Object of type Value
+    
+     <p> Definitions
+    
+     <p> Valid expressions and semantics <br>
+     <table> 
      <tr> 
      <td class=CName> \b Name </td> 
      <td class=CExpression> \b Expression </td>
@@ -79,22 +84,12 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() const</td> 
+     <td class=CName>            Apply function </td>
+     <td class=CExpression>      \t x( \t p ) </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
+     <td class=CReturnType>      \c v </td>
      <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() const</td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
+     <td class=CSemantics>       the value of the function \t x at point \t p</td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
@@ -104,38 +99,33 @@ namespace DGtal
     
      <p> Models <br>
     
+     - Shapes and images are models of (refinements of) this concept  
+    
      <p> Notes <br>
-
-     @tparam T the type that is checked. T should be a model of CConstRange.
-
    */
   template <typename T>
-  struct CConstRange: CSinglePassConstRange<T>
+  struct CPointFunctor
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
+    typedef typename T::Point Point;
+    typedef typename T::Value Value;
 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,Value> ));
 
-    BOOST_CONCEPT_USAGE(CConstRange)
-    {
-      ConstReverseIterator it=i.rbegin();
-      it=i.rend();
-    };
-
+    // ------------------------- Private Datas --------------------------------
   private:
-    T i;
-  }; // end of concept CConstRange
+    // ------------------------- Internals ------------------------------------
+  private:
+    
+  }; // end of concept CPointFunctor
   
 } // namespace DGtal
-
-
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CConstRange_h
+#endif // !defined CPointFunctor_h
 
-#undef CConstRange_RECURSES
-#endif // else defined(CConstRange_RECURSES)
+#undef CPointFunctor_RECURSES
+#endif // else defined(CPointFunctor_RECURSES)

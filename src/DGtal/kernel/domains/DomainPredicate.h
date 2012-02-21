@@ -84,6 +84,14 @@ namespace DGtal
      */
     DomainPredicate ( const DomainPredicate & other );
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    DomainPredicate & operator= ( const DomainPredicate & other );
+
    /**
      * @param p any point.
      * @return true iff p is in the domain.
@@ -104,20 +112,12 @@ namespace DGtal
      */
     DomainPredicate();
 
-  private:
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DomainPredicate & operator= ( const DomainPredicate & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-    /// The domain corresponding to this predicate.
-    const Domain* const myDomain;
+    /// Aliasing pointer on the domain corresponding to this predicate.
+    const Domain* myDomain;
 
   }; // end of struct DomainPredicate
 

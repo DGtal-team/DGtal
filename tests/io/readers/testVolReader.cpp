@@ -80,7 +80,7 @@ bool testVolReader()
   unsigned int nbval=0;
   for(Image::ConstIterator it=image.begin(), itend=image.end();
       it != itend;   ++it)
-    if ( image(it) != 0)
+    if ( (*it) != 0)
       nbval++;
   
   trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;

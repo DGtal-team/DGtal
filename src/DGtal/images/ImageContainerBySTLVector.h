@@ -23,6 +23,11 @@
  *
  * @date 2010/06/15
  *
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/02/16
+ *
  * Header file for module ImageContainerBySTLVector.cpp
  *
  * This file is part of the DGtal library.
@@ -43,10 +48,12 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/SimpleConstRange.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/kernel/domains/CDomain.h"
+#include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -60,123 +67,153 @@ namespace DGtal
   /**
    * Description of class 'ImageContainerBySTLVector' <p>
    *
-   * Aim: Model of CImageContainer implementing the association Point<->Value
-   * using a std::vector. A linearization of nD points
-   * is used to build an index.
+   * Aim: Model of CImage implementing the association Point<->Value
+   * using a STL vector as container. A linearization of domain points
+   * is used to build the STL vector index.
    *
-   * @code
-   typedef DGtal::int64_t Integer;
-   typedef SpaceND<4, Integer > Space4Type;
-   typedef HyperRectDomain<Space4Type> Domain;
-   typedef Domain::Point Point;
-
-   //Default image selector = STLVector
-   typedef ImageSelector<Domain, int>::Type Image;
-
-   const Integer t[ ] = { 1, 2, 3 ,4};
-   const Integer t2[ ] = { 5, 5, 3 ,4};
-   const Integer t3[ ] = { 2, 2, 3 ,4};
-   Point a ( t );
-   Point b ( t2 );
-   Point c ( t3 );
-
-   trace.beginBlock ( "Image init" );
-   ///Domain characterized by points a and b
-   Image myImage ( a,b );
-   trace.info() << myImage << std::endl;
-
-   trace.endBlock();
-
-   //We set a value
-   myImage.setValue( c, 128 );
-   * @endcode
+   * As a model of CImage, this class provides two ways of accessing values: 
+   * - through the range of points returned by the domain() method 
+   * combined with the operator() that takes a point and returns its associated value. 
+   * - through the range of values returned by the range() method, 
+   * which can be used to directly iterate over the values of the image
    *
-   * This class provides built-in iterators and fast SpanIterators
-   * to perform 1D scans.
+   * This class also provides a setValue() method and an output iterator, 
+   * which is returned by the output() method for writing purposes. 
    *
+   * Lastly, built-in iterators and a fast span iterator to perform 1D scans
+   * are also provided. 
+   *
+   * @tparam TDomain a HyperRectDomain.
+   * @tparam TValue at least a model of CLabel.
    *
    * @see testImage.cpp
    * @see testImageContainerBenchmark.cpp
    */
 
   template <typename TDomain, typename TValue>
-  class ImageContainerBySTLVector: public vector<TValue>
+  class ImageContainerBySTLVector: public std::vector<TValue>
   {
   public:
-
-    BOOST_CONCEPT_ASSERT(( CValue<TValue> ));
+   
+    /// domain
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-      
-    typedef TValue Value;
-    typedef TDomain Domain;
-
-    // static constants
-    static const typename Domain::Dimension dimension = Domain::dimension;
-    
+    typedef TDomain Domain;    
     typedef typename Domain::Point Point;
     typedef typename Domain::Vector Vector;
-    typedef typename Domain::Dimension Dimension;
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
-    typedef typename vector<Value>::iterator Iterator;
-    typedef typename vector<Value>::const_iterator ConstIterator;
+    typedef typename Domain::Dimension Dimension;
 
-    ImageContainerBySTLVector(const Point &aPointA,
-			      const Point &aPointB );
+    /// static constants
+    static const typename Domain::Dimension dimension = Domain::dimension;
 
+    /// domain should be rectangular
+    BOOST_STATIC_ASSERT ((boost::is_same< Domain, 
+			  HyperRectDomain<SpaceND<dimension, Integer> > >::value));
+
+    /// range of values
+    BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
+    typedef TValue Value;
+    typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange; 
+
+    /// output iterator
+    typedef typename vector<Value>::iterator OutputIterator; 
+
+    /////////////////// Data members //////////////////
+  private: 
+
+    ///Image domain
+    Domain myDomain;
+
+    ///Domain extent (stored for linearization efficiency)
+    Vector myExtent; 
+
+    /////////////////// standard services //////////////////
+
+  public: 
+
+    /** 
+     * Constructor from a Domain
+     * 
+     * @param aDomain the image domain.
+     * 
+     */
+    ImageContainerBySTLVector(const Domain &aDomain);
+
+    /** 
+     * Copy constructor
+     * 
+     * @param other the object to copy.
+     * 
+     */
+    ImageContainerBySTLVector(const ImageContainerBySTLVector & other);
+
+    /** 
+     * Assignment operator
+     * 
+     * @param other the object to copy.
+     * 
+     * @return a reference on *this
+     */
+    ImageContainerBySTLVector& operator=(const ImageContainerBySTLVector & other);
+
+    /** 
+     * Destructor.
+     *
+    */
     ~ImageContainerBySTLVector();
 
-    /**
-     * Get the value of an image at a given position.
-     *
-     * @param aPoint  position in the image.
-     * @return the value at aPoint.
-     */
-    Value operator()(const Point &aPoint) const;
+  
+    /////////////////// Interface //////////////////
 
+   
     /**
      * Get the value of an image at a given position given
-     * by a ConstIterator.
+     * by a Point.
      *
-     * @param it  position in the image.
+     * @pre the point must be in the domain
+     *
+     * @param aPoint the point.
      * @return the value at aPoint.
      */
-    Value operator()(ConstIterator &it) const
-    {
-      return (*it);
-    };
-
+    Value operator()(const Point & aPoint) const;
 
     /**
-     * Get the value of an image at a given position given
-     * by a Iterator.
+     * Set a value on an Image at a position specified by a Point.
      *
-     * @param it  position in the image.
-     * @return the value at aPoint.
-     */
-    Value operator()(Iterator &it) const
-    {
-      return (*it);
-    };
-
-    /**
-     * Set a value on an Image at aPoint.
+     * @pre @c it must be a point in the image domain.
      *
-     * @param aPoint location of the point to associate with aValue.
+     * @param aPoint the point.
      * @param aValue the value.
      */
     void setValue(const Point &aPoint, const Value &aValue);
+    
+     /**
+     * @return the domain associated to the image.
+     */
+    const Domain &domain() const;
 
     /**
-     * Set a value on an Image at a position specified by an Iterator.
-     *
-     * @param it  iterator on the location.
-     * @param aValue the value.
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
      */
-    void setValue(Iterator &it, const Value &aValue)
-    {
-      (*it) = aValue;
-    }
+    ConstRange range() const;
+
+    /**
+     * @return an output iterator to write values.
+     */
+    OutputIterator output();
+
+    /**
+     * @return the domain extension of the image.
+     */
+    Vector extent() const;
+
+    /**
+     * Translate the underlying domain by @a aShift
+     * @param aShift any vector
+     */
+    void translateDomain(const Vector& aShift);
 
     /**
      * Writes/Displays the object on an output stream.
@@ -188,58 +225,34 @@ namespace DGtal
     /**
      * @return the validity of the Image
      */
-    bool isValid() const
-    {
-      return (this != NULL);
-    }
+    bool isValid() const;
+
+    // ------------- realization CDrawableWithBoard2D --------------------
 
     /**
-     * Returns the extent of an Image.
-     *
-     * @return the image extent as a Vector.
+     * @return the style name used for drawing this object.
      */
-    Vector extent() const;
+    std::string className() const;
 
-    /**
-     * @return the image lower point.
-     */
-    Point lowerBound() const
-    {
-      return myLowerBound;
-    };
 
-    /**
-     * @return the image upper point.
-     */
-    Point upperBound() const
-    {
-      return myUpperBound;
-    };
-
-    /**
-     * @return the domain associated to the image.
-     */
-    Domain domain() const
-    {
-      return Domain(myLowerBound, myUpperBound);
-    }
-    
+    /////////////////////////// Iterators ////////////////////    
+    // built-in iterators
+    typedef typename vector<Value>::iterator Iterator;
+    typedef typename vector<Value>::const_iterator ConstIterator;
+    typedef typename vector<Value>::reverse_iterator ReverseIterator;
+    typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
 
     /** 
-     * Translate the underlying image domain by a given displacement
-     * vector. In other words, given a point p in the image domain, image(p)
-     * before the translation is equal to image(p+vec) after the
-     * translateDomain call.
+     * Construct a Iterator on the image at a position specified
+     * by @c aPoint
      * 
-     * @param vec a displacement vector.
+     * @param aPoint a point to construct a Iterator on. 
+     * 
+     * @return a Iterator on @c aPoint
      */
-    void translateDomain(const Vector &vec)
-    {
-      myLowerBound += vec;
-      myUpperBound += vec;
-    }
+    Iterator getIterator(const Point &aPoint);
 
-    /////////////////////////// Custom Iterators ////////////////////:
+    /////////////////////////// Custom Iterator ///////////////
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.
      *
@@ -253,7 +266,8 @@ namespace DGtal
 
     public:
 
-      typedef std::bidirectional_iterator_tag iterator_category; ///\todo construct a RANDOM-ACCESS iterator
+      ///\todo construct a RANDOM-ACCESS iterator
+      typedef std::bidirectional_iterator_tag iterator_category; 
       typedef Value value_type;
       typedef ptrdiff_t difference_type;
       typedef Value* pointer;
@@ -267,15 +281,15 @@ namespace DGtal
        * @param aMap pointer to the imageContainer
        */
       SpanIterator( const Point & p ,
-		    const Dimension aDim ,
-		    ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+    		    const Dimension aDim ,
+    		    ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
       {
-	myPos = aMap->linearized(p);
+    	myPos = aMap->linearized(p);
 
-	//We compute the myShift quantity
-	myShift = 1;
-	for (unsigned int k = 0; k < myDimension  ; k++)
-	  myShift *= (aMap->myUpperBound.at(k) - aMap->myLowerBound.at(k) + 1);
+    	//We compute the myShift quantity
+    	myShift = 1;
+    	for (Dimension k = 0; k < myDimension  ; k++)
+    	  myShift *= aMap->myExtent[k];
       }
 
 
@@ -287,7 +301,7 @@ namespace DGtal
       inline 
       void setValue(const Value aVal)
       {
-	(*myMap)[ myPos ] = aVal;
+    	(*myMap)[ myPos ] = aVal;
       }
 
       /**
@@ -298,7 +312,7 @@ namespace DGtal
       inline
       const Value & operator*() 
       {
-	return (*myMap)[ myPos ];
+    	return (*myMap)[ myPos ];
       }
 
       /**
@@ -309,7 +323,7 @@ namespace DGtal
       inline
       bool operator== ( const SpanIterator &it ) const
       {
-	return ( myPos == it.myPos );
+    	return ( myPos == it.myPos );
       }
 
       /**
@@ -320,7 +334,7 @@ namespace DGtal
       inline
       bool operator!= ( const SpanIterator &it ) const
       {
-	return ( myPos != it.myPos );
+    	return ( myPos != it.myPos );
       }
 
       /**
@@ -330,7 +344,7 @@ namespace DGtal
       inline
       void next()
       {
-	myPos += myShift;
+    	myPos += myShift;
       }
 
       /**
@@ -340,8 +354,8 @@ namespace DGtal
       inline
       void prev()
       {
-	ASSERT((long int) myPos - myShift > 0);
-	myPos -= myShift;
+    	ASSERT((long int) myPos - myShift > 0);
+    	myPos -= myShift;
       }
 
       /**
@@ -351,8 +365,8 @@ namespace DGtal
       inline
       SpanIterator &operator++()
       {
-	this->next();
-	return *this;
+    	this->next();
+    	return *this;
       }
 
       /**
@@ -362,9 +376,9 @@ namespace DGtal
       inline
       SpanIterator &operator++ ( int )
       {
-	SpanIterator tmp = *this;
-	++*this;
-	return tmp;
+    	SpanIterator tmp = *this;
+    	++*this;
+    	return tmp;
       }
 
       /**
@@ -374,8 +388,8 @@ namespace DGtal
       inline
       SpanIterator &operator--()
       {
-	this->prev();
-	return *this;
+    	this->prev();
+    	return *this;
       }
 
       /**
@@ -385,9 +399,9 @@ namespace DGtal
       inline
       SpanIterator &operator-- ( int )
       {
-	SpanIterator tmp = *this;
-	--*this;
-	return tmp;
+    	SpanIterator tmp = *this;
+    	--*this;
+    	return tmp;
       }
 
     private:
@@ -444,7 +458,7 @@ namespace DGtal
     SpanIterator spanEnd(const Point &aPoint, const Dimension aDimension)
     {
       Point tmp = aPoint;
-      tmp.at( aDimension ) = myUpperBound.at( aDimension ) + 1;
+      tmp[ aDimension ] = myDomain.upperBound()[ aDimension ] + 1;
       return SpanIterator( tmp, aDimension, this);
     }
 
@@ -454,7 +468,7 @@ namespace DGtal
      * @param it position given by a SpanIterator.
      * @return an object of type Value.
      */
-    Value operator()(SpanIterator &it)
+    Value getValue(SpanIterator &it)
     {
       return (*it);
     };
@@ -470,25 +484,7 @@ namespace DGtal
      */
     Size linearized(const Point &aPoint) const;
 
-    Point myLowerBound;
-    Point myUpperBound;
 
-    // ------------- realization CDrawableWithBoard2D --------------------
-  private:
-
-
-  public:
-
-    /**
-     * Default drawing style object.
-     * @return the dyn. alloc. default style for this object.
-     */
-    //DrawableWithBoard2D* defaultStyle() const;
-
-    /**
-     * @return the style name used for drawing this object.
-     */
-    std::string className() const;
 
   };
 

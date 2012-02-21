@@ -41,9 +41,10 @@
 //! [imageGridCurveEstimator-basicIncludes]
 
 //! [imageGridCurveEstimator-imageIncludes]
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 //! [imageGridCurveEstimator-imageIncludes]
 
 //! [imageGridCurveEstimator-trackingIncludes]
@@ -67,16 +68,18 @@ int main()
   //image import
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PNMReader<Image>::importPGMImage(filename); 
+  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
 
   //! [imageGridCurveEstimator-predicate] 
   //predicate from the image
-  IntervalForegroundPredicate<Image> predicate(image,0,135); 
+  typedef IntervalThresholder<Image::Value> Binarizer; 
+  Binarizer b(1, 135); 
+  PointFunctorPredicate<Image,Binarizer> predicate(image, b); 
   //! [imageGridCurveEstimator-predicate]
 
   //! [imageGridCurveEstimator-prepareTracking]
   Z2i::KSpace ks;                                            //Khalimsky space 
-  ks.init( image.lowerBound(), image.upperBound(), true );
+  ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   SurfelAdjacency<2> sAdj( true );                           //adjacency
   //! [imageGridCurveEstimator-prepareTracking]
 

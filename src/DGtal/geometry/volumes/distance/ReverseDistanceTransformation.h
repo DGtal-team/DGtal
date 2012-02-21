@@ -44,7 +44,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -77,7 +77,7 @@ namespace DGtal
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( CBoundedInteger<IntegerShort> ));
     
 
