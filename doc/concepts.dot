@@ -10,16 +10,21 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    CPointPredicate -> CPointFunctor ;
-    CSpace;
-    CUnsignedInteger-> CInteger;
-    CEuclideanRing->CCommutativeRing ;
+
+    CUnsignedInteger -> CInteger;
+    CEuclideanRing -> CCommutativeRing ;
     CSignedInteger ->  CInteger;
+
+    CSpace;
+    CSpace -> CInteger [label="use",style=dashed];
+    CSpace -> CUnsignedInteger[label="use",style=dashed];
+
+    CPointFunctor;
+    CPointPredicate;
+
     CDomain;
 	
-    CDomainArchetype;
     CDigitalSet;
-    CDigitalSetArchetype;
     label = "Kernel";
   }
 
@@ -27,9 +32,14 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    CSinglePassRange-> CConstSinglePassRange ;
-    CBidirectionalRange -> CSinglePassRange;
+
+    CSinglePassRange -> CConstSinglePassRange;
+    CConstBidirectionalRange -> CConstSinglePassRange;
     CBidirectionalRange -> CConstBidirectionalRange;
+    CBidirectionalRange -> CSinglePassRange;
+
+    CLabel;
+    CQuantity -> CLabel;
     label = "Base";
   }
 
@@ -37,9 +47,10 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    "CValue" -> CImageContainer [label="use",style=dashed] ;
-    CQuantity -> CValue;
-    CLabel -> CQuantity;
+
+    CConstImage -> CPointFunctor;
+    CImage -> CConstImage; 
+
     label="Images";
   }
 	
@@ -61,7 +72,7 @@ digraph G {
     node [style=filled,color=white];
           
     CDigitalSurface;
-    CDomainAdjacency -> CAdjacency ; 
+    CDomainAdjacency -> CAdjacency; 
           
     label="Topology";
   }
@@ -70,28 +81,29 @@ digraph G {
     color=lightgrey;
     node [style=filled,color=white];
                
-    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment; 
-    CDynamicSegmentComputer-> "CForwardSegmentComputer" ;
-    CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer  ;
-
+    CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment; 
+    CBidirectionalSegmentComputer -> CForwardSegmentComputer; 
+    CDynamicSegmentComputer-> CForwardSegmentComputer;
+    CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer;
     CDynamicBidirectionalSegmentComputer->          CBidirectionalSegmentComputer;
+
     CSeparableMetric;
     label="Geometry";
   }
 	
-  "CDomain" -> CImageContainer  [label="use",style=dashed];
-   CDomain -> CSpace [label="use",style=dashed];
-  "CInteger" -> CSpace  [label="use",style=dashed];
-  "CUnsignedInteger" -> CSpace [label="use",style=dashed];
+    CPointFunctor -> CLabel [label="use",style=dashed];
+    CConstImage -> CDomain [label="use",style=dashed];
+    CDomain -> CSpace [label="use",style=dashed];
 
 
-  "CConstSinglePassRange" -> boost_SinglePassIteratorConcept [label="use",style=dashed];
-  "CSinglePassRange"->  boost_SinglePassIteratorConcept [label="use",style=dashed] ;
+
+  CConstSinglePassRange -> boost_SinglePassIteratorConcept [label="use",style=dashed];
+  CSinglePassRange -> boost_SinglePassIteratorConcept [label="use",style=dashed] ;
  
   CDigitalSet -> boost_CopyConstructible;
   CSegment ->  boost_CopyConstructible ;
 
-  CValue -> boost_DefaultConstructible;
+  CLabel -> boost_DefaultConstructible;
   CSegment ->boost_DefaultConstructible;
 
   CDigitalSet -> boost_Assignable ;
@@ -100,6 +112,7 @@ digraph G {
   CSegment -> boost_Assignable;
   CCommutativeRing -> boost_Assignable;
   CPointFunctor -> boost_Assignable;
+  CPointPredicate -> boost_Assignable;
   
   boost_BirectionalIterator;
 
