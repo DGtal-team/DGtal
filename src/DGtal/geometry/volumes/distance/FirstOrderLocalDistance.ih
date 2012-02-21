@@ -40,12 +40,15 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <typename TImage, typename TPointPredicate>
+template <typename TImage>
+template <typename TPointPredicate>
 inline
-typename DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::Value
-DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
-  (const TImage& aImg, const TPointPredicate& aPred, const Point& aPoint)
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
 {
+
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
   //distance values
   Values v; 
@@ -59,12 +62,16 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
   Point neighbor1 = aPoint; 
   Point neighbor2 = aPoint;
  
-  for (Dimension k = 0; k < dimension; ++k)
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
     {//for each dimension
 
-      typename Point::Coordinate c = aPoint.at(k); 
-      neighbor1.at(k) = (c+1); 
-      neighbor2.at(k) = (c-1);
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
 
       //neighboring values
       Value d; 
@@ -94,8 +101,8 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
 	  v.push(d); 
 	}
 
-      neighbor1.at(k) = c; 
-      neighbor2.at(k) = c;
+      *it1 = c; 
+      *it2 = c;
     } //end for each dimension
 
   //computation of the new value
@@ -116,10 +123,10 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
 
 
 //-----------------------------------------------------------------------------
-template <typename TImage, typename TPointPredicate>
+template <typename TImage>
 inline
-typename DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::Value
-DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>::compute
 (Values& aValueList) const
 {
 
@@ -160,7 +167,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
 	  double disc = b*b - 4*a*c;
 	  ASSERT(disc >= 0); 
 	  //greatest solution
-	  Value dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
+	  double dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
 	  ASSERT(dres > 0); 
 	  return static_cast<Value>(dres); 
 	}
@@ -168,10 +175,10 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
 }
 
 //-----------------------------------------------------------------------------
-template <typename TImage, typename TPointPredicate>
+template <typename TImage>
 inline
-double
-DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>
 ::gradientNorm(const Value& aValue, const Values& aValueList) const
 {
   Values v(aValueList); 
@@ -182,16 +189,16 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>
       Value d = std::abs(aValue - v.top()); 
       v.pop(); 
 
-      sum += static_cast<double>(d*d); 
+      sum += (d*d); 
     }
   return sum; 
 }
 
 //-----------------------------------------------------------------------------
-template <typename TImage, typename TPointPredicate>
+template <typename TImage>
 inline
 void
-DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>
+DGtal::L2FirstOrderLocalDistance<TImage>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "L2"; 
