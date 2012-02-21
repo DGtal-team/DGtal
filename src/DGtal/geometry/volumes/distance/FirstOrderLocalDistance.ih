@@ -74,14 +74,16 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
 	{
 	  if ( flag1 && flag2 )
 	    { //take the minimal value
+	      Value d1 = aImg( neighbor1 ); 
+	      Value d2 = aImg( neighbor2 ); 
 	      if (std::abs(d1) < std::abs(d2))
 		d = d1;
 	      else 
 		d = d2; 
 	    } else 
 	    {
-	      if (flag1) d = d1;
-	      if (flag2) d = d2; 
+	      if (flag1) d = aImg( neighbor1 );
+	      if (flag2) d = aImg( neighbor2 ); 
 	    }
 	  //sign test
 	  nb++; 
@@ -98,9 +100,9 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::operator()
 
   //computation of the new value
   if (nbPos == nb) 
-    return this->compute(values); 
+    return this->compute(v); 
   else if (nbPos == 0)
-    return this->compute(values);
+    return this->compute(v);
   else 
     { //there should not be neighbors having values
       //of different signs in aMap
@@ -118,7 +120,7 @@ template <typename TImage, typename TPointPredicate>
 inline
 typename DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::Value
 DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
-(const Values& aValueList) const
+(Values& aValueList) const
 {
 
   unsigned int c = aValueList.size();
@@ -149,8 +151,8 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
 	      aValueList.pop(); 
 
 	      a += 1; 
-	      b -= 2*d;
-	      c += d*d; 
+	      b -= static_cast<double>(2*d);
+	      c += static_cast<double>(d*d); 
 	    }
 	  //std::cerr << a << " " << b << " " << c  << std::endl;
  
@@ -160,15 +162,17 @@ DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>::compute
 	  //greatest solution
 	  Value dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
 	  ASSERT(dres > 0); 
-	  return dres; 
+	  return static_cast<Value>(dres); 
 	}
     }
 }
 
-template <DGtal::Dimension dim>
+//-----------------------------------------------------------------------------
+template <typename TImage, typename TPointPredicate>
 inline
 double
-DGtal::L2FirstOrderIncrementalMetricHelper<dim>::gradientNorm(const Value& aValue, const Values& aValueList) const
+DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>
+::gradientNorm(const Value& aValue, const Values& aValueList) const
 {
   Values v(aValueList); 
 
@@ -178,9 +182,19 @@ DGtal::L2FirstOrderIncrementalMetricHelper<dim>::gradientNorm(const Value& aValu
       Value d = std::abs(aValue - v.top()); 
       v.pop(); 
 
-      sum += d*d; 
+      sum += static_cast<double>(d*d); 
     }
   return sum; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage, typename TPointPredicate>
+inline
+void
+DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "L2"; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

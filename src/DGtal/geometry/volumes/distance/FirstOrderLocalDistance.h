@@ -48,6 +48,8 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 
+#include "DGtal/images/CImage.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -79,13 +81,12 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
 
-    //point
-    typedef typename TImage::Point Point;
-    typedef typename TImage::Dimension Dimension;
+    //image
+    typedef TImage Image;
+    typedef typename Image::Point Point;
+    typedef typename Image::Dimension Dimension;
     static const Dimension dimension = Point::dimension;
-
-    //value
-    typedef typename TImage::Value Value; 
+    typedef typename Image::Value Value; 
 
   private: 
 
@@ -109,9 +110,14 @@ namespace DGtal
      * @tparam TImage any model of CImage
      * @tparam TPointPredicate any model of CPointPredicate
      */
-    Value 
-    L2FirstOrderLocalDistance(TImage& aImg, TPointPredicate& aPred, 
-                              const Point& aPoint);
+    Value operator() (const TImage& aImg, const TPointPredicate& aPred, 
+		      const Point& aPoint);
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
 
     // ----------------------- Internals -------------------------------------
 
@@ -121,12 +127,10 @@ namespace DGtal
      * Returns an approximation of the Euclidean distance 
      * at some point, knowing the distance of its neighbors
      * 
-     * @param aValueList  the distance of the neighbors (one per dimension)
-     * @param aDimensionList  the list of relevant dimensions for the computation
+     * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(const Values& aValueList, 
-		  Dimensions& aDimensionList) const; 
+    Value compute(Values& aValueList) const; 
 
 
     /**
@@ -134,7 +138,7 @@ namespace DGtal
      * of the distance function
      * 
      * @param aValue  the distance of the point where the gradient is computed
-     * @param aValueList  the distance of the neighbors (one per dimension)
+     * @param aValueList  the distance of (some of) the neighbors
      *
      * @return the computed gradient norm.
      */

@@ -35,15 +35,18 @@
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/domains/DomainPredicate.h"
-#include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
+#include "DGtal/kernel/domains/DomainPredicate.h"
+#include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/kernel/sets/DigitalSetFromMap.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
 
 //DT
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 //FMM
+#include "DGtal/geometry/volumes/distance/FirstOrderLocalDistance.h"
 #include "DGtal/geometry/volumes/distance/FirstOrderIncrementalMetric.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
@@ -175,31 +178,30 @@ bool testDisplayDT2d(int size, int area, double distance)
 
   static const DGtal::Dimension dimension = 2; 
 
-  //type definitions 
+  //Domain
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-  typedef Domain::Point Point;
- 
-  typedef FirstOrderIncrementalMetric<Point> Metric; 
-  typedef Metric::Value Distance;  
-
-  typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
-
-  //init
-  Point c = Point::diagonal(0); 
-  Point up = Point::diagonal(size); 
-  Point low = Point::diagonal(-size); 
-
-  std::map<Point, Distance> map; 
-  map.insert( std::pair<Point, Distance>( c, 0.0 ) );
-
-  Metric mc; 
-  Domain d(low, up); 
+  typedef Domain::Point Point; 
+  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
   DomainPredicate<Domain> dp(d);
+
+  //Image and set
+  typedef ImageContainerBySTLMap<Domain,double> Image; 
+  Image map( d, (size*size) ); 
+  map.setValue( Point::diagonal(0), 0.0 );
+  typedef DigitalSetFromMap<Image> Set; 
+  Set set(map); 
+
+  //Distance
+  typedef L2FirstOrderLocalDistance<Image, 
+    SetPredicate<Set> > DistanceComputer; 
+  DistanceComputer dc; 
 
   //computation
   trace.beginBlock ( "Display 2d FMM results " );
  
-  FMM fmm(map, mc, dp, area, distance); 
+  typedef FMM<Image, Set, DomainPredicate<Domain>, 
+    DistanceComputer > FMM; 
+  FMM fmm(map, set, dp, area, distance); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
@@ -534,8 +536,8 @@ int main ( int argc, char** argv )
   int size = 50; 
   bool res =   
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
-  //   && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
-  //   && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+    && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
+    && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
   //   && testDispalyDTFromCircle(size)   
     ;
 
