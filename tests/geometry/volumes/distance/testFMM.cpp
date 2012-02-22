@@ -494,24 +494,26 @@ int main ( int argc, char** argv )
 
   //2d L2 tests
   int size = 50; 
-  bool res =   
-    testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
-    && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
-    && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
-    && testDispalyDTFromCircle(size)   
-    ;
+   bool res =   
+     // testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
+    // && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
+    // && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+    // && 
+testDispalyDTFromCircle(size)   
+     ;
 
   size = 20; 
   //3d L2 test
-  res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
-    ; 
+  // res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
+  //   ; 
 
   //3d L1 and Linf comparison
-  size = 20; 
-  res = res  
-    && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
-    && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
-;
+//   size = 20; 
+//   res = res  
+//     && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
+//     && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
+// ;
+
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

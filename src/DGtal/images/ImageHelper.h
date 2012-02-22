@@ -53,7 +53,9 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/SetValueIterator.h"
+#include "DGtal/kernel/sets/DigitalSetFromMap.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -196,7 +198,95 @@ namespace DGtal
   template<typename I>
   void imageFromImage(I& aImg1, const I& aImg2); 
 
+  /**
+   * Insert @a aPoint in @a aSet and if (and only if)
+   * @a aPoint is a newly inserted point, 
+   * set @a aValue at @a aPoint in @a aImg.
+   *
+   * @param aImg an image
+   * @param aSet a digital set
+   * @param aPoint a point
+   * @param aValue a value
+   *
+   * @return 'true' if a new point was inserted in @a aSet 
+   * but 'false' if the same point already exist in @a aSet
+   *
+   * @tparam I any model of CImage
+   * @tparam S any model of CDigitalSet
+   *
+   * The general behavior is like: 
+   * @code
+   std::pair<S::Iterator, bool> res 
+     = aSet.insert( aPoint ); 
+   aImg.setValue( aPoint, aValue ); 
+   return res.second;  
+   * @endcode
+   * 
+   * However, this code is specialized if 
+   * I is an ImageContainerBySTLMap and 
+   * S is a DigitalSetFromMap<I> as follows: 
+   * @code
+  std::pair<typename I::Point, typename I::Value> 
+    pair( aPoint, aValue );  
+  std::pair<typename I::iterator, bool> res 
+    = aImg.insert( pair ); 
+  return res.second;  
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * @see insertAndAlwaysSetValue
+   */
+  template<typename I, typename S>
+  bool insertAndSetValue(I& aImg, S& aSet, 
+			 const typename I::Point& aPoint, 
+			 const typename I::Value& aValue ); 
 
+  /**
+   * Insert @a aPoint in @a aSet and 
+   * set @a aValue at @a aPoint in @a aImg.
+   *
+   * @param aImg an image
+   * @param aSet a digital set
+   * @param aPoint a point
+   * @param aValue a value
+   *
+   * @return 'true' if a new point was inserted in @a aSet 
+   * but 'false' if the same point already exist in @a aSet
+   *
+   * @tparam I any model of CImage
+   * @tparam S any model of CDigitalSet
+   *
+   * The general behavior is like: 
+   * @code
+   std::pair<S::Iterator, bool> res 
+     = aSet.insert( aPoint ); 
+   aImg.setValue( aPoint, aValue ); 
+   return res.second;  
+   * @endcode
+   * 
+   * However, this code is specialized if 
+   * I is an ImageContainerBySTLMap and 
+   * S is a DigitalSetFromMap<I> as follows: 
+   * @code
+    std::pair<typename I::Point, typename I::Value> 
+      pair( aPoint, aValue );  
+    std::pair<typename I::iterator, bool> res 
+      = aImg.insert( pair );
+    bool flag = res.second; 
+    if (flag == false) //set value even in this case
+      res.first->second = aValue;
+    return flag; 
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * @see insertAndSetValue
+   */
+  template<typename I, typename S>
+  bool insertAndAlwaysSetValue(I& aImg, S& aSet, 
+			       const typename I::Point& aPoint, 
+			       const typename I::Value& aValue ); 
+
+ 
 } // namespace DGtal
 
 

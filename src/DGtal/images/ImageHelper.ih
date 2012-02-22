@@ -157,3 +157,133 @@ DGtal::imageFromImage(I& aImg1, const I& aImg2)
   typename I::ConstRange r = aImg2.range(); 
   std::copy( r.begin(), r.end(), aImg1.output() ); 
 }
+
+//------------------------------------------------------------------------------
+template<typename I, typename S>
+struct InsertAndSetValue
+{ 
+  static bool implementation(I& aImg, S& aSet, 
+			     const typename I::Point& aPoint, 
+			     const typename I::Value& aValue)
+  {
+    BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<S> )); 
+    BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
+
+    // std::pair<typename S::Iterator, bool> res 
+    //   = aSet.insert( aPoint ); 
+    // aImg.setValue( aPoint, aValue ); 
+    // return res.second;  
+
+    bool flag = false; 
+    if ( aSet.find( aPoint ) == aSet.end() )
+      { 
+	flag = true; 
+	aSet.insert( aPoint );
+	aImg.setValue( aPoint, aValue ); 
+      }      
+
+    return flag; 
+  } 
+}; 
+//------------------------------------------------------------------------------
+//Partial specialization
+template<typename I>
+struct InsertAndSetValue<I, DigitalSetFromMap<I> >
+{ 
+  static bool implementation(I& aImg, DigitalSetFromMap<I>& /*aSet*/, 
+			     const typename I::Point& aPoint, 
+			     const typename I::Value& aValue)
+  {
+    BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+
+    std::pair<typename I::Point, typename I::Value> 
+      pair( aPoint, aValue );  
+    std::pair<typename I::iterator, bool> res 
+      = aImg.insert( pair ); 
+    return res.second;  
+  } 
+}; 
+
+//------------------------------------------------------------------------------
+template<typename I, typename S>
+inline
+bool
+DGtal::insertAndSetValue(I& aImg, S& aSet, 
+			 const typename I::Point& aPoint, 
+			 const typename I::Value& aValue ) 
+{
+  return InsertAndSetValue<I,S>::implementation(aImg, aSet, aPoint, aValue); 
+}
+
+//------------------------------------------------------------------------------
+template<typename I, typename S, typename D, typename V>
+struct InsertAndAlwaysSetValue
+{ 
+  static bool implementation(I& aImg, S& aSet, 
+			     const typename D::Point& aPoint, 
+			     const V& aValue)
+  {
+
+    // std::pair<typename S::Iterator, bool> res 
+    //   = aSet.insert( aPoint ); 
+    // aImg.setValue( aPoint, aValue ); 
+    // return res.second;  
+
+    bool flag = false; 
+    if ( aSet.find( aPoint ) == aSet.end() )
+      { 
+	flag = true; 
+	aSet.insert( aPoint );
+      }      
+    //always set value
+    aImg.setValue( aPoint, aValue ); 
+    return flag; 
+  } 
+}; 
+//------------------------------------------------------------------------------
+//Partial specialization
+template<typename D, typename V>
+struct InsertAndAlwaysSetValue<
+  ImageContainerBySTLMap<D,V>, 
+  DigitalSetFromMap<ImageContainerBySTLMap<D,V> >,
+  D, V >
+{ 
+  static bool implementation
+  (ImageContainerBySTLMap<D,V>& aImg, 
+   DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
+   const typename D::Point& aPoint, 
+   const V& aValue)
+  {
+    std::cerr << "-" << std::endl; 
+    typedef typename D::Point P; 
+    typedef typename ImageContainerBySTLMap<D,V>::iterator Iterator; 
+
+    std::pair<P, V> 
+      pair( aPoint, aValue );  
+    std::pair<Iterator, bool> res 
+      = aImg.insert( pair );
+    bool flag = res.second; 
+    if (flag == false) //set value even in this case
+      res.first->second = aValue;
+    return flag; 
+  } 
+}; 
+
+//------------------------------------------------------------------------------
+template<typename I, typename S>
+inline
+bool
+DGtal::insertAndAlwaysSetValue(I& aImg, S& aSet, 
+			       const typename I::Point& aPoint, 
+			       const typename I::Value& aValue ) 
+{
+  
+  BOOST_CONCEPT_ASSERT(( CImage<I> )); 
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<S> )); 
+  BOOST_STATIC_ASSERT(( boost::is_same< typename I::Point, typename S::Point >::value ));
+
+  typedef typename I::Domain D; 
+  typedef typename I::Value V; 
+  return InsertAndAlwaysSetValue<I,S,D,V>::implementation(aImg, aSet, aPoint, aValue); 
+}
