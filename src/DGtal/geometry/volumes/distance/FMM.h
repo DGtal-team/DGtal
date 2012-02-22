@@ -49,6 +49,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"

@@ -93,8 +93,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
   TIteratorOnPoints it = itb; 
   for ( ; it != ite; ++it) 
     {
-      aSet.insert( *it ); 
-      aImg.setValue( *it, aDistanceValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, *it, aDistanceValue ); 
     }
 }
 
@@ -115,10 +114,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
     {
       Point inner( it->first ); 
       Point outer( it->second ); 
-      aSet.insert( inner ); 
-      aImg.setValue( inner, k*aDistanceValue ); 
-      aSet.insert( outer ); 
-      aImg.setValue( outer, -k*aDistanceValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, inner, k*aDistanceValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, outer, -k*aDistanceValue ); 
     }
 }
 
@@ -263,16 +260,25 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewAcceptedPoint()
 	      //the point of min distance is removed from the set of candidates
 	      myCandidatePoints.erase(*it); 
 	      //it can be inserted into the set of accepted points
-	      Point minPoint = minPair.first; 
-	      if ( myAcceptedPoints.find( minPoint ) == myAcceptedPoints.end() )
-		{ //if it does not belong to the set
-		  //the set of candidates is updated with 
-		  //the neighbors of the new accepted point
-		  myAcceptedPoints.insert( minPoint );
-		  myImage.setValue( minPoint, minPair.second ); 
-		  update( minPoint ); 
-		  flagStop = true; 
-		}      
+	      if ( insertAndSetValue( myImage, myAcceptedPoints,
+	      			      minPair.first, minPair.second ) )
+	      	{ //if it does not belong to the set
+	      	  //the set of candidates is updated with 
+	      	  //the neighbors of the new accepted point
+	      	  update( minPair.first ); 
+	      	  flagStop = true; 
+	      	}
+	      //do not work because of the setValue that is always done
+	      // Point minPoint = minPair.first; 
+	      // if ( myAcceptedPoints.find( minPoint ) == myAcceptedPoints.end() )
+	      // 	{ //if it does not belong to the set
+	      // 	  //the set of candidates is updated with 
+	      // 	  //the neighbors of the new accepted point
+	      // 	  myAcceptedPoints.insert( minPoint );
+	      // 	  myImage.setValue( minPoint, minPair.second ); 
+	      // 	  update( minPoint ); 
+	      // 	  flagStop = true; 
+	      // 	}      
 	      else 
 		{ //otherwise it has already been accepted
 		  //with a smaller distance and the next candidate
