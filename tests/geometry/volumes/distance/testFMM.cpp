@@ -267,160 +267,139 @@ bool testDisplayDT3d(int size, int area, double distance)
   return fmm.isValid(); 
 }
 
-// bool testDispalyDTFromCircle(int size)
-// {
+bool testDispalyDTFromCircle(int size)
+{
 
-//   static const DGtal::Dimension dimension = 2; 
+  static const DGtal::Dimension dimension = 2; 
 
-//   //space and domain 
-//   typedef KhalimskySpaceND<dimension,int> KSpace; 
-//   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-//   typedef Domain::Point Point;
- 
-//   //Metric
-//   typedef FirstOrderIncrementalMetric<Point> Metric; 
-//   typedef Metric::Value Distance;  
-//   Metric mc; 
+  //Domain
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point; 
+  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
+  DomainPredicate<Domain> dp(d);
 
-//   //Digital circle generation
-//   GridCurve<KSpace> gc;   
-//   double radius = (rand()%size);
-//   trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
-//   ballGenerator<KSpace>( size, 0, 0, radius, gc ); 
+  //Image and set
+  typedef ImageContainerBySTLMap<Domain,double> Image; 
+  typedef DigitalSetFromMap<Image> Set; 
+
+  //Digital circle generation
+  typedef KhalimskySpaceND< dimension, int > KSpace; 
+  GridCurve<KSpace> gc;   
+  double radius = (rand()%size);
+  trace.info() << " #ball c(" << 0 << "," << 0 << ") r=" << radius << endl; 
+  ballGenerator<KSpace>( size, 0, 0, radius, gc ); 
 
 
-//   unsigned int nbok = 0;
-//   unsigned int nb = 0;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
 
-//   double dmaxInt = 0; 
-//   trace.beginBlock ( "Interior " );
-//   {
-//     typedef BallPredicate<Point> Predicate; 
-//     typedef FMM<Metric, Predicate > FMM;
+  double dmaxInt = 0; 
+  trace.beginBlock ( "Interior " );
+  {
+    typedef BallPredicate<Point> Predicate; 
+    typedef FMM<Image, Set, Predicate > FMM;
 
-//     //init
-//     std::map<Point, Distance> map; 
-//     GridCurve<KSpace>::OuterPointsRange r = gc.getOuterPointsRange();
-//     FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
+    //init
+    Image map( d ); 
+    Set set(map); 
+    GridCurve<KSpace>::OuterPointsRange r = gc.getOuterPointsRange();
+    FMM::initFromPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
-//     //computation
-//     Predicate bp(0,0,radius); 
-//     FMM fmm(map, mc, bp); 
-//     fmm.compute(); 
-//     trace.info() << fmm << std::endl;
-//     nbok += (fmm.isValid()?1:0); 
-//     trace.info() << nbok << "/" << ++nb << std::endl; 
+    //computation
+    Predicate bp(0,0,radius); 
+    FMM fmm(map, set, bp); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+    nbok += (fmm.isValid()?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
 
-//     //max
-//     {
-//       std::map<Point, Distance>::const_iterator it = map.begin(); 
-//       std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-//       for ( ; it != itEnd; ++it)
-// 	{
-// 	  if (it->second > dmaxInt) dmaxInt = it->second; 
-// 	}
-//       trace.info() << dmaxInt << std::endl;
-//     }
+    //max
+    dmaxInt = fmm.getMax(); 
 
-//     //display
-//     std::stringstream s; 
-//     s << "DTInCircle-" << size; 
-//     draw(map.begin(), map.end(), size, s.str());
-//   }
-//   trace.endBlock();
+    //display
+    std::stringstream s; 
+    s << "DTInCircle-" << size; 
+    draw(map.begin(), map.end(), size, s.str());
 
-//   double dmaxExt = 0; 
-//   trace.beginBlock ( "Exterior " );
-//   {
-//     typedef NotPointPredicate<BallPredicate<Point> > PointPredicate; 
-//     typedef BinaryPointPredicate<PointPredicate, 
-//       DomainPredicate<Domain> > Predicate; 
-//     typedef FMM<Metric, Predicate > FMM;
+  }
+  trace.endBlock();
 
-//     //init
-//     std::map<Point, Distance> map; 
-//     GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
-//     FMM::initInnerPoints(r.begin(), r.end(), map, 0.5); 
+  double dmaxExt = 0; 
+  trace.beginBlock ( "Exterior " );
+  {
+    typedef NotPointPredicate<BallPredicate<Point> > PointPredicate; 
+    typedef BinaryPointPredicate<PointPredicate, 
+      DomainPredicate<Domain> > Predicate; 
+    typedef FMM<Image, Set, Predicate > FMM;
 
-//     //computation
-//     DomainPredicate<Domain> dp( Domain(Point(-size,-size), Point(size,size)) ); 
-//     PointPredicate bp( BallPredicate<Point>(0,0,radius) );
-//     Predicate pred( bp, dp, andBF2 ); 
-//     FMM fmm(map, mc, pred); 
-//     fmm.compute(); 
-//     trace.info() << fmm << std::endl; 
-//     nbok += (fmm.isValid()?1:0); 
-//     trace.info() << nbok << "/" << ++nb << std::endl; 
+    //init
+    Image map( d ); 
+    Set set(map); 
+    GridCurve<KSpace>::InnerPointsRange r = gc.getInnerPointsRange();
+    FMM::initFromPointsRange(r.begin(), r.end(), map, set, 0.5); 
 
-//     //max
-//     {
-//       std::map<Point, Distance>::const_iterator it = map.begin(); 
-//       std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-//       for ( ; it != itEnd; ++it)
-// 	{
-// 	  if (it->second > dmaxExt) dmaxExt = it->second; 
-// 	}
-//       trace.info() << dmaxExt << std::endl;
-//     }
+    //computation
+    PointPredicate bp( BallPredicate<Point>(0,0,radius) );
+    Predicate pred( bp, dp, andBF2 ); 
+    FMM fmm(map, set, pred); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl; 
+    nbok += (fmm.isValid()?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
 
-//     //display
-//     std::stringstream s; 
-//     s << "DTOutCircle-" << size; 
-//     draw(map.begin(), map.end(), size, s.str());
-//   }
-//   trace.endBlock();
+    //max
+    dmaxExt = fmm.getMax(); 
 
-//   double dmin = 2*size*size; 
-//   double dmax = 0; 
-//   trace.beginBlock ( "Both " );
-//   {
-//     typedef DomainPredicate<Domain> Predicate; 
-//     typedef FMM<Metric, Predicate > FMM;
+    //display
+    std::stringstream s; 
+    s << "DTOutCircle-" << size; 
+    draw(map.begin(), map.end(), size, s.str());
+  }
+  trace.endBlock();
 
-//     //init
-//     std::map<Point, Distance> map; 
-//     GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
-//     FMM::initIncidentPoints(r.begin(), r.end(), map, 0.5, true); 
+  double dmin = 2*size*size; 
+  double dmax = 0; 
+  trace.beginBlock ( "Both " );
+  {
+    typedef DomainPredicate<Domain> Predicate; 
+    typedef FMM<Image, Set, Predicate > FMM;
 
-//     //computation
-//     DomainPredicate<Domain> dp( Domain(Point(-size,-size), Point(size,size)) ); 
-//     FMM fmm(map, mc, dp); 
-//     fmm.compute(); 
-//     trace.info() << fmm << std::endl;
-//     nbok += (fmm.isValid()?1:0); 
-//     trace.info() << nbok << "/" << ++nb << std::endl; 
+    //init
+    Image map( d ); 
+    Set set(map); 
+    GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
+    FMM::initFromIncidentPointsRange(r.begin(), r.end(), map, set, 0.5, true); 
 
-//     //min, max
-//     {
-//       std::map<Point, Distance>::const_iterator it = map.begin(); 
-//       std::map<Point, Distance>::const_iterator itEnd = map.end(); 
-//       for ( ; it != itEnd; ++it)
-// 	{
-// 	  if (it->second > dmax) dmax = it->second; 
-// 	  if (it->second < dmin) dmin = it->second; 
-// 	}
-//       trace.info() << dmin << ", " << dmax << std::endl;
-//     }
+    //computation
+    FMM fmm(map, set, dp); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+    nbok += (fmm.isValid()?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
 
-//     //display
-//     std::stringstream s; 
-//     s << "DTfromCircle-" << size; 
-//     draw(map.begin(), map.end(), size, s.str());
-//   }
-//   trace.endBlock();
+    //min, max
+    dmin = fmm.getMin(); 
+    dmax = fmm.getMax(); 
 
-//   trace.beginBlock ( "Comparison " );
-//   {
-//     double epsilon = 0.0001;
-//     nbok += ( ( (std::abs(-dmaxInt - dmin) < epsilon) 
-// 		&& (std::abs(dmaxExt - dmax) < epsilon) )?1:0); 
-//     trace.info() << nbok << "/" << ++nb << std::endl; 
-//   }
-//   trace.endBlock();
+    //display
+    std::stringstream s; 
+    s << "DTfromCircle-" << size; 
+    draw(map.begin(), map.end(), size, s.str());
+  }
+  trace.endBlock();
 
-//   return (nb == nbok); 
+  trace.beginBlock ( "Comparison " );
+  {
+    double epsilon = 0.0001;
+    nbok += ( ( (std::abs(-dmaxInt - dmin) < epsilon) 
+    		&& (std::abs(dmaxExt - dmax) < epsilon) )?1:0); 
+    trace.info() << nbok << "/" << ++nb << std::endl; 
+  }
+  trace.endBlock();
 
-// }
+  return (nb == nbok); 
+
+}
 
 
 /**
@@ -519,7 +498,7 @@ int main ( int argc, char** argv )
     testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
     && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
     && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
-  //   && testDispalyDTFromCircle(size)   
+    && testDispalyDTFromCircle(size)   
     ;
 
   size = 20; 

@@ -218,6 +218,24 @@ namespace DGtal
      */
     bool computeOneStep();
 
+    /** 
+     * Get minimal distance value in the set of accepted points. 
+     *
+     * NB: in O(n log n) where n is the size of the set
+     *
+     * @return minimal distance value.
+     */
+    DistanceValue getMin() const;
+
+    /** 
+     * Get the maximal distance value in the set of accepted points. 
+     *
+     * NB: in O(n log n) where n is the size of the set
+     *
+     * @return maximal distance value.
+     */
+    DistanceValue getMax() const;
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -244,7 +262,7 @@ namespace DGtal
      * @param aDistanceValue distance default value
      */
     template <typename TIteratorOnPoints>
-    static void initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
+    static void initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
 				Image& aImg, AcceptedPointSet& aSet, 
 				const DistanceValue& aDistanceValue);
 
@@ -260,7 +278,7 @@ namespace DGtal
      * @param aDistanceValue distance default value
      */
     template <typename TIteratorOnPairs>
-    static void initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
+    static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 				   Image& aImg, AcceptedPointSet& aSet, 
 				   const DistanceValue& aDistanceValue, 
 				   bool aFlagIsPositive = false);
