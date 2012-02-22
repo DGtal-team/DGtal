@@ -149,7 +149,8 @@ bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::isValid() const
 {
   //area threshold
-  if (myAcceptedPoints.size() >= myAreaThreshold) return false;
+  if ( (myAcceptedPoints.size() <= 0)
+       || (myAcceptedPoints.size() >= myAreaThreshold) ) return false;
 
   //distance threshold
   //min and max distance
@@ -185,7 +186,7 @@ inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[FMM]" << std::endl;
+  out << "[FMM]";
   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")"; 
   out << " and " << myCandidatePoints.size() << " candidates. "; 
   myDC.selfDisplay(out); 
@@ -204,7 +205,6 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::selfDisplay ( std::ostream
     }
   out << "dmin: " << min << ", dmax: " << max; 
   out << " (abs < " << myDistanceValueThreshold << ")" << std::endl; 
-  out << "[/FMM]" << std::endl;
 }
 
 
