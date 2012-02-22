@@ -73,12 +73,12 @@ struct DistanceTraits
 {
   typedef LInfFirstOrderLocalDistance<TImage> Distance;  
 };
-// //partial specialization
-// template <typename TImage>
-// struct DistanceTraits<dim, 1>
-// {
-//   typedef L1FirstOrderLocalDistance<TImage> Distance;  
-// };
+//partial specialization
+template <typename TImage>
+struct DistanceTraits<TImage, 1>
+{
+  typedef L1FirstOrderLocalDistance<TImage> Distance;  
+};
 
 //////////////////////////////////////////////////////////////////////////////
 // digital circle generator
@@ -440,14 +440,15 @@ bool testComparison(int size, int area, double distance)
   DomainPredicate<Domain> dp(d);
 
   //Image and set for FMM
-  typedef ImageContainerBySTLMap<Domain, long> Image; 
-  Image map( d, 0.0 ); 
+  typedef ImageContainerBySTLVector<Domain, long> Image;
+  Image map( d ); 
   map.setValue( Point::diagonal(0), 0.0 );
-  typedef DigitalSetFromMap<Image> Set; 
-  Set set(map); 
+  typedef DigitalSetBySTLSet<Domain> Set; 
+  Set set( d );
+  set.insert( Point::diagonal(0) ); 
 
   //Image for separable DT
-  typedef ImageContainerBySTLVector<Domain, long> Image2;
+  typedef Image Image2;
   Image2 image ( d );
   typename Domain::Iterator dit = d.begin(); 
   typename Domain::Iterator ditEnd = d.end(); 
@@ -529,7 +530,7 @@ int main ( int argc, char** argv )
   //3d L1 and Linf comparison
   size = 20; 
   res = res  
-    // && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
+    && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
     && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
 ;
   //&& ... other tests
