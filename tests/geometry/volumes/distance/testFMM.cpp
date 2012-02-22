@@ -68,19 +68,17 @@ using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
 // 
-template <Dimension dim, int norm>
-struct MetricTraits
+template <typename TImage, int norm>
+struct DistanceTraits
 {
-  typedef FirstOrderIncrementalMetric<PointVector<dim,int>, 
-    LInfinityFirstOrderIncrementalMetricHelper<dim,int> > Metric;  
+  typedef LInfFirstOrderLocalDistance<TImage> Distance;  
 };
-//partial specialization
-template <Dimension dim>
-struct MetricTraits<dim, 1>
-{
-  typedef FirstOrderIncrementalMetric<PointVector<dim,int>, 
-    L1FirstOrderIncrementalMetricHelper<dim,int> > Metric;  
-};
+// //partial specialization
+// template <typename TImage>
+// struct DistanceTraits<dim, 1>
+// {
+//   typedef L1FirstOrderLocalDistance<TImage> Distance;  
+// };
 
 //////////////////////////////////////////////////////////////////////////////
 // digital circle generator
@@ -425,87 +423,81 @@ bool testDisplayDT3d(int size, int area, double distance)
 // }
 
 
-// /**
-//  * Comparison with the separable distance transform
-//  *
-//  */
-// template<Dimension dim, int norm>
-// bool testComparison(int size, int area, double distance)
-// {
+/**
+ * Comparison with the separable distance transform
+ *
+ */
+template<Dimension dim, int norm>
+bool testComparison(int size, int area, double distance)
+{
 
-//   static const DGtal::Dimension dimension = dim; 
+  static const DGtal::Dimension dimension = dim; 
 
-//   //type definitions 
-//   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
-//   typedef typename Domain::Point Point;
+  //Domain
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef typename Domain::Point Point; 
+  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
+  DomainPredicate<Domain> dp(d);
 
-//   //init
-//   Point c = Point::diagonal(0); 
-//   Point up = Point::diagonal(size); 
-//   Point low = Point::diagonal(-size); 
-//   Domain d(low, up); 
+  //Image and set for FMM
+  typedef ImageContainerBySTLMap<Domain, long> Image; 
+  Image map( d, 0.0 ); 
+  map.setValue( Point::diagonal(0), 0.0 );
+  typedef DigitalSetFromMap<Image> Set; 
+  Set set(map); 
 
-//   //image construction
-//   typedef typename ImageSelector<Domain, unsigned int>::Type Image;
-//   Image image ( Domain(low, up) );
-//   typename Domain::Iterator dit = d.begin(); 
-//   typename Domain::Iterator ditEnd = d.end(); 
-//   for ( ; dit != ditEnd; ++dit)
-//     {
-//       image.setValue(*dit, 128); 
-//     }
-//   image.setValue(c, 0); 
+  //Image for separable DT
+  typedef ImageContainerBySTLVector<Domain, long> Image2;
+  Image2 image ( d );
+  typename Domain::Iterator dit = d.begin(); 
+  typename Domain::Iterator ditEnd = d.end(); 
+  for ( ; dit != ditEnd; ++dit)
+    {
+      image.setValue(*dit, 128); 
+    }
+  image.setValue(Point::diagonal(0), 0); 
 
-//   //computation
-//   trace.beginBlock ( " FMM computation " ); 
+  //computation
+  trace.beginBlock ( " FMM computation " ); 
  
-//   typedef typename MetricTraits<dimension,norm>::Metric Metric; 
-//   typedef typename Metric::Value Distance;  
-//   typedef FMM<Metric, DomainPredicate<Domain> > FMM; 
+  typedef typename DistanceTraits<Image,norm>::Distance Distance; 
+  typedef FMM<Image, Set, DomainPredicate<Domain>, Distance > FMM; 
+  FMM fmm(map, set, dp, area, distance); 
+  fmm.compute(); 
+  trace.info() << fmm << std::endl; 
 
-//   std::map<Point, Distance> map; 
-//   map.insert( std::pair<Point, Distance>( c, 0 ) );
+  trace.endBlock();
 
-//   Metric mc; 
-//   DomainPredicate<Domain> dp(d);
+  trace.beginBlock ( " DT computation " );
 
-//   FMM fmm(map, mc, dp, area, distance); 
-//   fmm.compute(); 
-//   trace.info() << fmm << std::endl; 
+  typedef DistanceTransformation<Image2, norm> DT; 
+  DT dt;
+  typename DT::OutputImage resultImage = dt.compute ( image );
+  trace.info() << resultImage << std::endl; 
 
-//   trace.endBlock();
+  trace.endBlock();
 
-//   trace.beginBlock ( " DT computation " );
+  bool flagIsOk = true; 
 
-//   typedef DistanceTransformation<Image, norm> DT; 
-//   DT dt;
-//   typename DT::OutputImage resultImage = dt.compute ( image );
-//   trace.info() << resultImage << std::endl; 
+  trace.beginBlock ( " Comparison " );
+  //all points of result must be in map and have the same distance
+  typename Domain::ConstIterator it = d.begin(); 
+  typename Domain::ConstIterator itEnd = d.end(); 
+     for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+       {
+	 if (set.find(*it) == set.end())
+	   flagIsOk = false; 
+	 else 
+	   {
+	     if (resultImage(*it) != map(*it))
+	       flagIsOk = false;
+	   }
+       }
+  trace.endBlock();
 
-//   trace.endBlock();
+  return flagIsOk; 
 
-//   bool flagIsOk = true; 
-
-//   trace.beginBlock ( " Comparison " );
-//   //all points of result must be in map and have the same distance
-//   typename Domain::ConstIterator it = d.begin(); 
-//   typename Domain::ConstIterator itEnd = d.end(); 
-//      for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
-//        {
-// 	 typename std::map<Point, Distance>::iterator itMap = map.find(*it); 
-// 	 if (itMap == map.end())
-// 	   flagIsOk = false; 
-// 	 else 
-// 	   {
-// 	     if (resultImage(*it) != itMap->second)
-// 	       flagIsOk = false;
-// 	   }
-//        }
-//   trace.endBlock();
-
-//   return flagIsOk; 
-
-// }
+}
 
 
 
@@ -535,11 +527,11 @@ int main ( int argc, char** argv )
     ; 
 
   //3d L1 and Linf comparison
-//   size = 20; 
-//   res = res  
-//     && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
-//     && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
-// ;
+  size = 20; 
+  res = res  
+    // && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
+    && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
+;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

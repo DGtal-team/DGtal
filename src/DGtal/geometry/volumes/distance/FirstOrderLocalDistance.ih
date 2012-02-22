@@ -115,7 +115,7 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
     { //there should not be neighbors having values
       //of different signs in aMap
       trace.error() << "Metric values of different signs" 
-		    << "in DGtal::L2FirstOrderLocalDistance<TImage, TPointPredicate>"
+		    << "in DGtal::L2FirstOrderLocalDistance<TImage>"
 		    << std::endl;  
       throw InputException();
     } 
@@ -203,6 +203,125 @@ DGtal::L2FirstOrderLocalDistance<TImage>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "L2"; 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage>
+template <typename TPointPredicate>
+inline
+typename DGtal::LInfFirstOrderLocalDistance<TImage>::Value
+DGtal::LInfFirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
+{
+
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
+
+      //neighboring values
+      Value d; 
+      bool flag1 = aPred(neighbor1); 
+      bool flag2 = aPred(neighbor2);
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+	      Value d1 = aImg( neighbor1 ); 
+	      Value d2 = aImg( neighbor2 ); 
+	      if (std::abs(d1) < std::abs(d2))
+		d = d1;
+	      else 
+		d = d2; 
+	    } else 
+	    {
+	      if (flag1) d = aImg( neighbor1 );
+	      if (flag2) d = aImg( neighbor2 ); 
+	    }
+	  //sign test
+	  nb++; 
+	  if ( d >= 0 )
+	    nbPos++;
+	  else
+	    d = (-d);
+	  v.push(d); 
+	}
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  if (nbPos == nb) 
+    return this->compute(v); 
+  else if (nbPos == 0)
+    return this->compute(v);
+  else 
+    { //there should not be neighbors having values
+      //of different signs in aMap
+      trace.error() << "Metric values of different signs" 
+		    << "in DGtal::LInfFirstOrderLocalDistance<TImage>"
+		    << std::endl;  
+      throw InputException();
+    } 
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::LInfFirstOrderLocalDistance<TImage>::Value
+DGtal::LInfFirstOrderLocalDistance<TImage>::compute
+(Values& aValueList) const
+{
+
+  unsigned int c = aValueList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Value d = aValueList.top(); 
+      Value dres = d + 1;
+      ASSERT(dres > 0); 
+      return dres; 
+    } 
+  else 
+    { //max
+      Value dres = aValueList.top(); 
+      ASSERT(dres > 0); 
+      return dres; 
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+void
+DGtal::LInfFirstOrderLocalDistance<TImage>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "LInf"; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
