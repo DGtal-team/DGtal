@@ -494,18 +494,17 @@ int main ( int argc, char** argv )
 
   //2d L2 tests
   int size = 50; 
-   bool res =   
-     // testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
+   bool res   
+     // = testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
     // && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
     // && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
-    // && 
-testDispalyDTFromCircle(size)   
+    // && testDispalyDTFromCircle(size)   
      ;
 
-  size = 20; 
+   //size = 20; 
   //3d L2 test
-  // res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
-  //   ; 
+  res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
+    ; 
 
   //3d L1 and Linf comparison
 //   size = 20; 
