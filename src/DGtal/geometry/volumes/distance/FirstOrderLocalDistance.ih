@@ -110,11 +110,11 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
   if (nbPos == nb) 
     return this->compute(v); 
   else if (nbPos == 0)
-    return this->compute(v);
+    return -this->compute(v);
   else 
     { //there should not be neighbors having values
       //of different signs in aMap
-      trace.error() << "Metric values of different signs" 
+      trace.error() << "Metric values of different sign " 
 		    << "in DGtal::L2FirstOrderLocalDistance<TImage>"
 		    << std::endl;  
       throw InputException();
@@ -277,11 +277,11 @@ DGtal::LInfFirstOrderLocalDistance<TImage>::operator()
   if (nbPos == nb) 
     return this->compute(v); 
   else if (nbPos == 0)
-    return this->compute(v);
+    return -this->compute(v);
   else 
     { //there should not be neighbors having values
       //of different signs in aMap
-      trace.error() << "Metric values of different signs" 
+      trace.error() << "Metric values of different sign " 
 		    << "in DGtal::LInfFirstOrderLocalDistance<TImage>"
 		    << std::endl;  
       throw InputException();

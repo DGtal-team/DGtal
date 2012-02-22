@@ -86,7 +86,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TDi
 template <typename TIteratorOnPoints>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
-::initInnerPoints(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
+::initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
 		  Image& aImg, AcceptedPointSet& aSet, 
 		  const DistanceValue& aDistanceValue)
 {
@@ -102,7 +102,7 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TDi
 template <typename TIteratorOnPairs>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
-::initIncidentPoints(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
+::initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 		     Image& aImg, AcceptedPointSet& aSet, 
 		     const DistanceValue& aDistanceValue, 
 		     bool aFlagIsPositive)
@@ -145,6 +145,44 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::computeOneStep()
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
 inline
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::DistanceValue
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::getMin() const
+{
+  const AcceptedPointSet& set = myAcceptedPoints; 
+  ASSERT( set.size() >= 1 ); 
+
+  typename AcceptedPointSet::ConstIterator it = set.begin(); 
+  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
+  DistanceValue min = myImage( *it );  
+  for (++it; it != itEnd; ++it)
+    {
+      DistanceValue v = myImage( *it ); 
+      if (v < min) min = v; 
+    }
+  return min; 
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+inline
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::DistanceValue
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::getMax() const
+{
+  const AcceptedPointSet& set = myAcceptedPoints; 
+  ASSERT( set.size() >= 1 ); 
+
+  typename AcceptedPointSet::ConstIterator it = set.begin(); 
+  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
+  DistanceValue max = myImage( *it );  
+  for (++it; it != itEnd; ++it)
+    {
+      DistanceValue v = myImage( *it ); 
+      if (v > max) max = v; 
+    }
+  return max; 
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+inline
 bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::isValid() const
 {
@@ -153,25 +191,14 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::isValid() const
        || (myAcceptedPoints.size() >= myAreaThreshold) ) return false;
 
   //distance threshold
-  //min and max distance
-  DistanceValue min = std::numeric_limits<DistanceValue>::max(); 
-  DistanceValue max = 0; 
-  const AcceptedPointSet& set = myAcceptedPoints; 
-  typename AcceptedPointSet::ConstIterator it = set.begin(); 
-  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  for ( ; it != itEnd; ++it)
-    {
-      DistanceValue v = myImage( *it ); 
-      if (v < min) min = v; 
-      if (v > max) max = v; 
-    }
-  if ( (std::abs(min) >= myDistanceValueThreshold)
-       || (max >= myDistanceValueThreshold) ) return false; 
+  if ( (std::abs(getMin()) >= myDistanceValueThreshold)
+       || (getMax() >= myDistanceValueThreshold) ) return false; 
 
   //point predicate
   bool flagIsOk = true;  
-  it = set.begin(); 
-  itEnd = set.end(); 
+  const AcceptedPointSet& set = myAcceptedPoints; 
+  typename AcceptedPointSet::ConstIterator it = set.begin(); 
+  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
   for ( ; ( (it != itEnd)&&(flagIsOk == true) ); ++it)
     {
       if (myPointPredicate( *it ) == false) flagIsOk = false;  
@@ -186,24 +213,12 @@ inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[FMM]";
+  out << "[FMM " << dimension << "d] ";
   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")"; 
   out << " and " << myCandidatePoints.size() << " candidates. "; 
   myDC.selfDisplay(out); 
   out << " "; 
-  //min and max distance
-  DistanceValue min = std::numeric_limits<DistanceValue>::max(); 
-  DistanceValue max = 0; 
-  const AcceptedPointSet& set = myAcceptedPoints; 
-  typename AcceptedPointSet::ConstIterator it = set.begin(); 
-  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  for ( ; it != itEnd; ++it)
-    {
-      DistanceValue v = myImage( *it ); 
-      if (v < min) min = v; 
-      if (v > max) max = v; 
-    }
-  out << "dmin: " << min << ", dmax: " << max; 
+  out << "dmin: " << getMin() << ", dmax: " << getMax(); 
   out << " (abs < " << myDistanceValueThreshold << ")" << std::endl; 
 }
 
