@@ -56,15 +56,21 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // useful function for computing local distance
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class FirstOrderLocalDistance
+  // template class L2FirstOrderLocalDistance
   /**
    * Description of template class 'L2FirstOrderLocalDistance' <p>
    * \brief Aim: Class for the computation of the Euclidean distance
-   * at some point p, from the available distance values of the 
-   * 1-neighborhood of p. 
+   * at some point p, from the available distance values of some points 
+   * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
+   * equal to 1). 
+   *
+   * The computed value is such that the upwind gradient of the 
+   * distance map is one, ie. it the minimum solution \f$ \Phi \f$ 
+   * over all quadrants, verifying the following quadratic equation:
+   * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 \f$
+   * where \f$ \Phi_i \f$ is the distance value of the point preceding
+   * or following p along the \f$ i \f$ axis. 
+   *
    * It is a model of CLocalDistance.
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
@@ -98,7 +104,7 @@ namespace DGtal
      * of the 1-neighbors of @a aPoint for which 
      * @a aPred equals 'true'.
      *
-     * @param aImg any image
+     * @param aImg any distance map
      * @param aPred any point predicate
      * @param aPoint the point for which the distance is computed
      *
@@ -132,15 +138,97 @@ namespace DGtal
 
     /**
      * Returns the squared euclidean norm of the gradient 
-     * of the distance function
+     * of the distance map
      * 
-     * @param aValue  the distance of the point where the gradient is computed
-     * @param aValueList  the distance of (some of) the neighbors
+     * @param aValue  the distance value of the point where the gradient is computed
+     * @param aValueList  the distance value of (some of) the neighbors
      *
      * @return the computed gradient norm.
      */
     Value gradientNorm(const Value& aValue, const Values& aValueList) const;
   }; 
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class LInfFirstOrderLocalDistance
+  /**
+   * Description of template class 'LInfFirstOrderLocalDistance' <p>
+   * \brief Aim: Class for the computation of the LInf-distance
+   * at some point p, from the available distance values of some points 
+   * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
+   * equal to 1). 
+   *
+   * If there is only one available distance value v in the 1-neighborhood of p,
+   * the computed value is merely v + 1. Otherwise, it is the maximum over all
+   * the available distance value in the 1-neighborhood of p. 
+   *
+   * It is a model of CLocalDistance.
+   *
+   * @tparam TImage model of CImage used for the mapping point-distance value
+   */
+  template <typename TImage>
+  class LInfFirstOrderLocalDistance
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+
+    //concept assert
+    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+
+    //image
+    typedef TImage Image;
+    typedef typename Image::Point Point;
+    typedef typename Image::Value Value; 
+
+  
+  private: 
+
+    typedef priority_queue<Value> Values; 
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /** 
+     * LInf-distance computation at @a aPoint , 
+     * from the distance values stored in @a aImg
+     * of the 1-neighbors of @a aPoint for which 
+     * @a aPred equals 'true'.
+     *
+     * @param aImg any distance map
+     * @param aPred any point predicate
+     * @param aPoint the point for which the distance is computed
+     *
+     * @return the distance value at @a aPoint.
+     *
+     * @tparam TPointPredicate any model of CPointPredicate
+     */
+    template <typename TPointPredicate>
+    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
+		      const Point& aPoint);
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    // ----------------------- Internals -------------------------------------
+
+  private: 
+
+    /**
+     * Returns the LInf-distance at some point, 
+     * knowing the distance of its neighbors
+     * 
+     * @param aValueList  the distance of (some of) the neighbors
+     * @return the computed distance.
+     */
+    Value compute(Values& aValueList) const; 
+
+  }; 
+
 
 } // namespace DGtal
 
