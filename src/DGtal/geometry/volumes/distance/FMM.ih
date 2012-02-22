@@ -268,17 +268,6 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewAcceptedPoint()
 	      	  update( minPair.first ); 
 	      	  flagStop = true; 
 	      	}
-	      //do not work because of the setValue that is always done
-	      // Point minPoint = minPair.first; 
-	      // if ( myAcceptedPoints.find( minPoint ) == myAcceptedPoints.end() )
-	      // 	{ //if it does not belong to the set
-	      // 	  //the set of candidates is updated with 
-	      // 	  //the neighbors of the new accepted point
-	      // 	  myAcceptedPoints.insert( minPoint );
-	      // 	  myImage.setValue( minPoint, minPair.second ); 
-	      // 	  update( minPoint ); 
-	      // 	  flagStop = true; 
-	      // 	}      
 	      else 
 		{ //otherwise it has already been accepted
 		  //with a smaller distance and the next candidate
@@ -322,10 +311,10 @@ bool
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewCandidate(const Point& aPoint)
 {
 
-  //if it is not already accepted 
-  //and if it lies within the computation domain
-  if ( ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) 
-       && (myPointPredicate(aPoint)) ) 
+  //if it lies within the computation domain
+  //and if it is not already accepted 
+  if ( (myPointPredicate(aPoint) ) 
+       && ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) ) 
     {
       SetPredicate<AcceptedPointSet> pred( myAcceptedPoints ); 
       DistanceValue d = myDC(myImage, pred, aPoint); 

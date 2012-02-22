@@ -75,15 +75,16 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d; 
-      bool flag1 = aPred(neighbor1); 
-      bool flag2 = aPred(neighbor2);
+      Value d, d1, d2; 
+/**/
+      bool flag1 = aPred( neighbor1 ); 
+      bool flag2 = aPred( neighbor2 );
       if ( flag1 || flag2 ) 
 	{
 	  if ( flag1 && flag2 )
 	    { //take the minimal value
-	      Value d1 = aImg( neighbor1 ); 
-	      Value d2 = aImg( neighbor2 ); 
+	      d1 = aImg( neighbor1 ); 
+	      d2 = aImg( neighbor2 ); 
 	      if (std::abs(d1) < std::abs(d2))
 		d = d1;
 	      else 
@@ -93,6 +94,7 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
 	      if (flag1) d = aImg( neighbor1 );
 	      if (flag2) d = aImg( neighbor2 ); 
 	    }
+
 	  //sign test
 	  nb++; 
 	  if ( d >= 0 )

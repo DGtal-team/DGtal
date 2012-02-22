@@ -216,21 +216,25 @@ namespace DGtal
    *
    * The general behavior is like: 
    * @code
-   std::pair<S::Iterator, bool> res 
-     = aSet.insert( aPoint ); 
-   aImg.setValue( aPoint, aValue ); 
-   return res.second;  
+    bool flag = false; 
+    if ( aSet.find( aPoint ) == aSet.end() )
+      { 
+	flag = true; 
+	aSet.insert( aPoint );
+	aImg.setValue( aPoint, aValue ); 
+      }      
+    return flag; 
    * @endcode
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
    * S is a DigitalSetFromMap<I> as follows: 
    * @code
-  std::pair<typename I::Point, typename I::Value> 
-    pair( aPoint, aValue );  
-  std::pair<typename I::iterator, bool> res 
-    = aImg.insert( pair ); 
-  return res.second;  
+    std::pair<P, V> 
+      pair( aPoint, aValue );  
+    std::pair<Iterator, bool> res 
+      = aImg.insert( pair ); 
+    return res.second;  
    * @endcode
    *
    * @see ImageContainerBySTLMap DigitalSetFromMap 
@@ -258,19 +262,24 @@ namespace DGtal
    *
    * The general behavior is like: 
    * @code
-   std::pair<S::Iterator, bool> res 
-     = aSet.insert( aPoint ); 
-   aImg.setValue( aPoint, aValue ); 
-   return res.second;  
+    bool flag = false; 
+    if ( aSet.find( aPoint ) == aSet.end() )
+      { 
+	flag = true; 
+	aSet.insert( aPoint );
+      }      
+    //always set value
+    aImg.setValue( aPoint, aValue ); 
+    return flag; 
    * @endcode
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
    * S is a DigitalSetFromMap<I> as follows: 
    * @code
-    std::pair<typename I::Point, typename I::Value> 
+    std::pair<P, V> 
       pair( aPoint, aValue );  
-    std::pair<typename I::iterator, bool> res 
+    std::pair<Iterator, bool> res 
       = aImg.insert( pair );
     bool flag = res.second; 
     if (flag == false) //set value even in this case
@@ -286,6 +295,38 @@ namespace DGtal
 			       const typename I::Point& aPoint, 
 			       const typename I::Value& aValue ); 
 
+  /**
+   * Read the value contained in @a aImg at @a aPoint
+   * if @a aPoint belongs to @a aSet.
+   *
+   * @param aImg an image
+   * @param aSet a digital set
+   * @param aPoint a point
+   * @param aValue (returned) value
+   *
+   * @return 'true' if a new point is found and the value read 
+   * but 'false' otherwise
+   *
+   * @tparam I any model of CImage
+   * @tparam S any model of CDigitalSet
+   *
+   * The general behavior is like: 
+   * @code
+   * @endcode
+   * 
+   * However, this code is specialized if 
+   * I is an ImageContainerBySTLMap and 
+   * S is a DigitalSetFromMap<I> as follows: 
+   * @code
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * @see insertAndSetValue
+   */
+  template<typename I, typename S>
+  bool findAndReadValue(I& aImg, S& aSet, 
+			const typename I::Point& aPoint, 
+			typename I::Value& aValue ); 
  
 } // namespace DGtal
 
