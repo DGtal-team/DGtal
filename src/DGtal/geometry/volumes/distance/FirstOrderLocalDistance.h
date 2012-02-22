@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include <limits>
+#include <vector>
 #include <queue>
 #include "DGtal/base/Common.h"
 
@@ -93,7 +94,7 @@ namespace DGtal
 
   private: 
 
-    typedef priority_queue<Value> Values; 
+    typedef std::priority_queue<Value> Values; 
   
     // ----------------------- Interface --------------------------------------
   public:
@@ -185,7 +186,7 @@ namespace DGtal
   
   private: 
 
-    typedef priority_queue<Value> Values; 
+    typedef std::priority_queue<Value> Values; 
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -229,6 +230,85 @@ namespace DGtal
 
   }; 
 
+  /////////////////////////////////////////////////////////////////////////////
+  // template class L1FirstOrderLocalDistance
+  /**
+   * Description of template class 'L1FirstOrderLocalDistance' <p>
+   * \brief Aim: Class for the computation of the L1-distance
+   * at some point p, from the available distance values of some points 
+   * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
+   * equal to 1). 
+   *
+   * The computed value is merely the minimum over all
+   * the available distance value in the 1-neighborhood of p, 
+   * plus one.  
+   *
+   * It is a model of CLocalDistance.
+   *
+   * @tparam TImage model of CImage used for the mapping point-distance value
+   */
+  template <typename TImage>
+  class L1FirstOrderLocalDistance
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+
+    //concept assert
+    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+
+    //image
+    typedef TImage Image;
+    typedef typename Image::Point Point;
+    typedef typename Image::Value Value; 
+
+  
+  private: 
+
+    typedef std::vector<Value> Values; 
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /** 
+     * L1-distance computation at @a aPoint , 
+     * from the distance values stored in @a aImg
+     * of the 1-neighbors of @a aPoint for which 
+     * @a aPred equals 'true'.
+     *
+     * @param aImg any distance map
+     * @param aPred any point predicate
+     * @param aPoint the point for which the distance is computed
+     *
+     * @return the distance value at @a aPoint.
+     *
+     * @tparam TPointPredicate any model of CPointPredicate
+     */
+    template <typename TPointPredicate>
+    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
+		      const Point& aPoint);
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    // ----------------------- Internals -------------------------------------
+
+  private: 
+
+    /**
+     * Returns the L1-distance at some point, 
+     * knowing the distance of its neighbors
+     * 
+     * @param aValueList  the distance of (some of) the neighbors
+     * @return the computed distance.
+     */
+    Value compute(Values& aValueList) const; 
+
+  }; 
 
 } // namespace DGtal
 

@@ -323,6 +323,94 @@ DGtal::LInfFirstOrderLocalDistance<TImage>
 {
   out << "LInf"; 
 }
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage>
+template <typename TPointPredicate>
+inline
+typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
+DGtal::L1FirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
+{
+
+  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
+
+      //neighboring values
+      Value d; 
+      bool flag1 = aPred(neighbor1); 
+      bool flag2 = aPred(neighbor2);
+	    if (flag1) v.push_back( aImg( neighbor1 ) );
+	    if (flag2) v.push_back( aImg( neighbor2 ) ); 
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  return this->compute(v); 
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
+DGtal::L1FirstOrderLocalDistance<TImage>::compute
+(Values& aValueList) const
+{
+ASSERT(aValueList.size() > 0); 
+
+//min (in absolute values) 
+typename Values::const_iterator it = aValueList.begin();
+Value vmin = *it; ++it;   
+typename Values::const_iterator itEnd = aValueList.end(); 
+for ( ; it != itEnd; ++it )
+  {
+    if ( std::abs(*it) < std::abs(vmin) )
+      vmin = *it;  
+  }
+
+//sign
+if (vmin >= 0) 
+  return vmin + 1; 
+else 
+  return vmin - 1; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+void
+DGtal::L1FirstOrderLocalDistance<TImage>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "L1"; 
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
