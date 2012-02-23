@@ -46,8 +46,6 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 //FMM
-#include "DGtal/geometry/volumes/distance/FirstOrderLocalDistance.h"
-#include "DGtal/geometry/volumes/distance/FirstOrderIncrementalMetric.h"
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
 //Display
