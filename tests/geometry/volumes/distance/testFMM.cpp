@@ -85,8 +85,8 @@ struct DistanceTraits<TImage, 1>
 template <typename TPoint>
 class BallPredicate 
 {
-  public:
-    typedef TPoint Point;
+public:
+  typedef TPoint Point;
 
 public: 
 
@@ -463,16 +463,16 @@ bool testComparison(int size, int area, double distance)
   //all points of result must be in map and have the same distance
   typename Domain::ConstIterator it = d.begin(); 
   typename Domain::ConstIterator itEnd = d.end(); 
-     for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
-       {
-	 if (set.find(*it) == set.end())
-	   flagIsOk = false; 
-	 else 
-	   {
-	     if (resultImage(*it) != map(*it))
-	       flagIsOk = false;
-	   }
-       }
+  for ( ; ( (it != itEnd)&&(flagIsOk) ); ++it)
+    {
+      if (set.find(*it) == set.end())
+	flagIsOk = false; 
+      else 
+	{
+	  if (resultImage(*it) != map(*it))
+	    flagIsOk = false;
+	}
+    }
   trace.endBlock();
 
   return flagIsOk; 
@@ -494,26 +494,33 @@ int main ( int argc, char** argv )
 
   //2d L2 tests
   int size = 50; 
-   bool res   
-     = testDisplayDT2d( size, (2*size+1)*(2*size+1), std::sqrt(2*size*size) )
-    && testDisplayDT2d( size, (2*size+1)*(2*size+1), size )
-    && testDisplayDT2d( size, 2*size*size, std::sqrt(2*size*size) )
+  int area = int( std::pow(double(2*size+1),2) )+1; 
+  bool res   
+    = testDisplayDT2d( size, area, std::sqrt(2*size*size) )
+    && testDisplayDT2d( size, area, size )
+    && testDisplayDT2d( size, 2*area, std::sqrt(2*size*size) )
     && testDispalyDTFromCircle(size)   
-     ;
+    ;
 
-   size = 25; 
+  size = 25; 
+  area = 4*int( std::pow(double(size),3) ); 
   //3d L2 test
-  res = res && testDisplayDT3d( size, 4*size*size*size, std::sqrt(size*size*size) )
+  res = res && testDisplayDT3d( size, area, std::sqrt(size*size*size) )
     ; 
 
   //3d L1 and Linf comparison
   size = 20; 
+  area = int( std::pow(double(2*size+1),3) )+1; 
   res = res  
-    && testComparison<3,1>( size, int( std::pow((2*size+1),3.0) ), 3*size+1 )
-    && testComparison<3,0>( size, int( std::pow((2*size+1),3.0) ), size+1 )
-    && testComparison<4,1>( size, int( std::pow((2*size+1),4.0) ), 4*size+1 )
-    && testComparison<4,0>( size, int( std::pow((2*size+1),4.0) ), size+1 )
-;
+    && testComparison<3,1>( size, area, 3*size+1 )
+    && testComparison<3,0>( size, area, size+1 )
+    ;
+  size = 5; 
+  area = int( std::pow(double(2*size+1),4) ) + 1;
+  res = res
+    && testComparison<4,1>( size, area, 4*size+1 )
+    && testComparison<4,0>( size, area, size+1 )
+    ;
 
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

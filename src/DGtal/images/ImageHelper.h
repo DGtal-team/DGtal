@@ -56,6 +56,7 @@
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

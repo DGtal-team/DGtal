@@ -86,6 +86,9 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM).
    *
+   * Basic usage: 
+   @snippet geometry/volumes/distance/exampleFMM.cpp FMMUsage
+   *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
    * @tparam TPointPredicate  any model of CPointPredicate
