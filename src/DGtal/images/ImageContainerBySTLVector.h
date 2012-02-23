@@ -78,7 +78,7 @@ namespace DGtal
    * which can be used to directly iterate over the values of the image
    *
    * This class also provides a setValue() method and an output iterator, 
-   * which is returned by the output() method for writing purposes. 
+   * which is returned by the outputIterator() method for writing purposes. 
    *
    * Lastly, built-in iterators and a fast span iterator to perform 1D scans
    * are also provided. 
@@ -202,7 +202,7 @@ namespace DGtal
     /**
      * @return an output iterator to write values.
      */
-    OutputIterator output();
+    OutputIterator outputIterator();
 
     /**
      * @return the domain extension of the image.

@@ -162,7 +162,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::range() const
 template < typename Domain, typename Value, typename HashKey>
 inline
 typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
-experimental::ImageContainerByHashTree<Domain, Value, HashKey >::output()
+experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator()
 {
   return OutputIterator( *this );
 }

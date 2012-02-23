@@ -137,7 +137,7 @@ ImageContainerBySTLVector<Domain, T>::range() const
 template <typename Domain, typename T>
 inline
 typename ImageContainerBySTLVector<Domain, T>::OutputIterator 
-ImageContainerBySTLVector<Domain, T>::output()
+ImageContainerBySTLVector<Domain, T>::outputIterator()
 {
   return this->begin(); 
 }
