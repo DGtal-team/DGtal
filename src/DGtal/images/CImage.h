@@ -84,7 +84,7 @@ namespace DGtal
     
       <tr> 
       <td class=CName> Provide an output iterator           </td> 
-      <td class=CExpression>  x.output()    </td>
+      <td class=CExpression>  x.outputIterator()    </td>
       <td class=CRequirements>        </td> 
       <td class=CReturnType>  an instance of OutputIterator    </td>
       <td class=CPrecondition>   </td> 
@@ -115,7 +115,7 @@ namespace DGtal
   
     BOOST_CONCEPT_USAGE(CImage)
     {
-      ConceptUtils::sameType( myO, myI.output() ); //output iterator 
+      ConceptUtils::sameType( myO, myI.outputIterator() ); //output iterator 
     }
 
   private:

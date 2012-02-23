@@ -171,9 +171,9 @@ namespace DGtal
      * 
      * @return a range. 
      */
-    OutputIterator output()
+    OutputIterator outputIterator()
     {
-      return myImagePointer->output();
+      return myImagePointer->outputIterator();
     }
 
     /////////////////// Accessors //////////////////
