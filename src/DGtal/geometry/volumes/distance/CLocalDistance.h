@@ -43,8 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -86,16 +86,16 @@ namespace DGtal
       </tr>
       <tr> 
         <td class=CName> main operator  </td> 
-        <td class=CExpression> x(image, predicate, point)     </td>
+        <td class=CExpression> x(image, set, point)     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> Image::Value     </td>
         <td class=CPrecondition>    </td> 
         <td class=CSemantics> 
 Computes the distance value at 'point' (of type Image::Point), 
 knowing the distance values stored in 'image' (of type Image)
-of the neighborhood points for which 'predicate' is true 
-(an instance of any model of CPointPredicate whose inner type
-Point is equal to Image::Point) </td> 
+of the neighborhood points belonging to 'set' (an instance of 
+any model of CDigitalSet whose inner type Point is equal to 
+Image::Point) </td> 
         <td class=CPostCondition>       </td> 
         <td class=CComplexity>   </td>
       </tr>
@@ -122,7 +122,7 @@ Point is equal to Image::Point) </td>
     // Methods
     BOOST_CONCEPT_USAGE( CLocalDistance )
     {
-      ConceptUtils::sameType( myV, myX.operator()(myImg, myPred, myPoint) );
+      ConceptUtils::sameType( myV, myX.operator()(myImg, mySet, myPoint) );
     }
     // ------------------------- Private Datas --------------------------------
   private:
@@ -130,7 +130,7 @@ Point is equal to Image::Point) </td>
     Image myImg;  
     typename Image::Point myPoint; 
     typename Image::Value myV; 
-    TruePointPredicate<typename Image::Point> myPred; 
+    DigitalSetBySTLSet<typename Image::Domain> mySet; 
   
     // ------------------------- Internals ------------------------------------
   private:

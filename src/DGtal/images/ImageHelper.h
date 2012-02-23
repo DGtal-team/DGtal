@@ -200,8 +200,8 @@ namespace DGtal
 
   /**
    * Insert @a aPoint in @a aSet and if (and only if)
-   * @a aPoint is a newly inserted point, 
-   * set @a aValue at @a aPoint in @a aImg.
+   * @a aPoint is a newly inserted point. 
+   * Then set @a aValue at @a aPoint in @a aImg.
    *
    * @param aImg an image
    * @param aSet a digital set
@@ -216,25 +216,25 @@ namespace DGtal
    *
    * The general behavior is like: 
    * @code
-    bool flag = false; 
+    bool found = true; 
     if ( aSet.find( aPoint ) == aSet.end() )
-      { 
-	flag = true; 
+      { //if not found
+	found = false; 
 	aSet.insert( aPoint );
 	aImg.setValue( aPoint, aValue ); 
       }      
-    return flag; 
+    return !found; 
    * @endcode
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
    * S is a DigitalSetFromMap<I> as follows: 
    * @code
-    std::pair<P, V> 
-      pair( aPoint, aValue );  
-    std::pair<Iterator, bool> res 
-      = aImg.insert( pair ); 
-    return res.second;  
+   std::pair<P, V> 
+   pair( aPoint, aValue );  
+   std::pair<Iterator, bool> res 
+   = aImg.insert( pair ); 
+   return res.second;  
    * @endcode
    *
    * @see ImageContainerBySTLMap DigitalSetFromMap 
@@ -262,29 +262,27 @@ namespace DGtal
    *
    * The general behavior is like: 
    * @code
-    bool flag = false; 
-    if ( aSet.find( aPoint ) == aSet.end() )
-      { 
-	flag = true; 
-	aSet.insert( aPoint );
-      }      
+    bool found = false; 
+    if ( aSet.find( aPoint ) != aSet.end() )
+      found = true;       
     //always set value
+    aSet.insert( aPoint );
     aImg.setValue( aPoint, aValue ); 
-    return flag; 
+    return !found; 
    * @endcode
    * 
    * However, this code is specialized if 
    * I is an ImageContainerBySTLMap and 
    * S is a DigitalSetFromMap<I> as follows: 
    * @code
-    std::pair<P, V> 
-      pair( aPoint, aValue );  
-    std::pair<Iterator, bool> res 
-      = aImg.insert( pair );
-    bool flag = res.second; 
-    if (flag == false) //set value even in this case
-      res.first->second = aValue;
-    return flag; 
+   std::pair<P, V> 
+   pair( aPoint, aValue );  
+   std::pair<Iterator, bool> res 
+   = aImg.insert( pair );
+   bool flag = res.second; 
+   if (flag == false) //set value even in this case
+   res.first->second = aValue;
+   return flag; 
    * @endcode
    *
    * @see ImageContainerBySTLMap DigitalSetFromMap 
@@ -324,9 +322,9 @@ namespace DGtal
    * @see insertAndSetValue
    */
   template<typename I, typename S>
-  bool findAndReadValue(I& aImg, S& aSet, 
-			const typename I::Point& aPoint, 
-			typename I::Value& aValue ); 
+  bool findAndGetValue(const I& aImg, const S& aSet, 
+		       const typename I::Point& aPoint, 
+		       typename I::Value& aValue ); 
  
 } // namespace DGtal
 
