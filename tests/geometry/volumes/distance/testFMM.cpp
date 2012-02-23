@@ -509,8 +509,10 @@ int main ( int argc, char** argv )
   //3d L1 and Linf comparison
   size = 20; 
   res = res  
-    && testComparison<3,1>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, 3*size+1 )
-    && testComparison<3,0>( size, (2*size+1)*(2*size+1)*(2*size+1)+1, size+1 )
+    && testComparison<3,1>( size, int( std::pow((2*size+1),3.0) ), 3*size+1 )
+    && testComparison<3,0>( size, int( std::pow((2*size+1),3.0) ), size+1 )
+    && testComparison<4,1>( size, int( std::pow((2*size+1),4.0) ), 4*size+1 )
+    && testComparison<4,0>( size, int( std::pow((2*size+1),4.0) ), size+1 )
 ;
 
   //&& ... other tests
