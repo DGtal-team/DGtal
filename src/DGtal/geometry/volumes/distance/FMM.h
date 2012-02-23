@@ -84,7 +84,24 @@ namespace DGtal
   // template class FMM
   /**
    * Description of template class 'FMM' <p>
-   * \brief Aim: Fast Marching Method (FMM).
+   * \brief Aim: Fast Marching Method (FMM) for nd distance transforms.
+   *
+   * In this approach, a signed distance function is computing at 
+   * each digital point by marching out from an initial set of points, 
+   * for which the values of the signed distance are known. This set
+   * is an initialization of the so-called <em>accepted point set</em>. 
+   * Each digital point adjacent to one of the accepted points is
+   * put into the so-called <em>candidate point set</em>. 
+   * A tentative value is computed for its signed distance, using 
+   * only the values of the accepted points lying in its neighborhood. 
+   * This task is delegated to an instance of a model of CLocalDistance, 
+   * which is L2FirstOrderLocalDistance by default. 
+   * Then the point of smallest tentative value is added to the set of
+   * accepted points. The tentative values of the candidates adjacent 
+   * to the newly added point are updated using the the distance value
+   * of the newly added point. The search of the point of smallest
+   * tentative value is accelerated using a STL set of pairs (point, 
+   * tentative value).  
    *
    * Basic usage: 
    @snippet geometry/volumes/distance/exampleFMM.cpp FMMUsage
@@ -93,6 +110,9 @@ namespace DGtal
    * @tparam TSet  any model of CDigitalSet
    * @tparam TPointPredicate  any model of CPointPredicate
    * @tparam TDistance  any model of CLocalDistance
+   *
+   * @see testFMM.cpp
+   * @see exampleFMM.cpp
    */
   template <typename TImage, typename TSet, typename TPointPredicate, 
 	    typename TDistance = L2FirstOrderLocalDistance<TImage> >
