@@ -71,6 +71,7 @@ bool testDSS4drawing()
   contour.push_back(Point(1,0));
   contour.push_back(Point(1,1));
   contour.push_back(Point(2,1));
+  contour.push_back(Point(2,1));
   contour.push_back(Point(3,1));
   contour.push_back(Point(3,2));
   contour.push_back(Point(4,2));
