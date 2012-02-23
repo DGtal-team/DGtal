@@ -50,7 +50,8 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/images/CImage.h"
-#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/images/ImageHelper.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -94,7 +95,7 @@ namespace DGtal
 
   private: 
 
-    typedef std::priority_queue<Value> Values; 
+    typedef std::vector<Value> Values; 
   
     // ----------------------- Interface --------------------------------------
   public:
@@ -102,19 +103,19 @@ namespace DGtal
     /** 
      * Euclidean distance computation at @a aPoint , 
      * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint for which 
-     * @a aPred equals 'true'.
+     * of the 1-neighbors of @a aPoint 
+     * belonging to @a aSet .
      *
      * @param aImg any distance map
-     * @param aPred any point predicate
+     * @param aSet any digital set
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TPointPredicate any model of CPointPredicate
+     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TPointPredicate>
-    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
+    template <typename TSet>
+    Value operator() (const Image& aImg, const TSet& aSet, 
 		      const Point& aPoint);
 
     /**
@@ -186,7 +187,7 @@ namespace DGtal
   
   private: 
 
-    typedef std::priority_queue<Value> Values; 
+    typedef std::vector<Value> Values; 
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -194,19 +195,19 @@ namespace DGtal
     /** 
      * LInf-distance computation at @a aPoint , 
      * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint for which 
-     * @a aPred equals 'true'.
+     * of the 1-neighbors of @a aPoint 
+     * belonging to @a aSet .
      *
      * @param aImg any distance map
-     * @param aPred any point predicate
+     * @param aSet any digital set
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TPointPredicate any model of CPointPredicate
+     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TPointPredicate>
-    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
+    template <typename TSet>
+    Value operator() (const Image& aImg, const TSet& aSet, 
 		      const Point& aPoint);
 
     /**
@@ -274,19 +275,19 @@ namespace DGtal
     /** 
      * L1-distance computation at @a aPoint , 
      * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint for which 
-     * @a aPred equals 'true'.
+     * of the 1-neighbors of @a aPoint 
+     * belonging to @a aSet .
      *
      * @param aImg any distance map
-     * @param aPred any point predicate
+     * @param aSet any digital set
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TPointPredicate any model of CPointPredicate
+     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TPointPredicate>
-    Value operator() (const Image& aImg, const TPointPredicate& aPred, 
+    template <typename TSet>
+    Value operator() (const Image& aImg, const TSet& aSet, 
 		      const Point& aPoint);
 
     /**

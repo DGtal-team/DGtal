@@ -171,14 +171,14 @@ struct InsertAndSetValue
     // aImg.setValue( aPoint, aValue ); 
     // return res.second;  
 
-    bool flag = false; 
+    bool found = true; 
     if ( aSet.find( aPoint ) == aSet.end() )
-      { 
-	flag = true; 
+      { //if not found
+	found = false; 
 	aSet.insert( aPoint );
 	aImg.setValue( aPoint, aValue ); 
       }      
-    return flag; 
+    return !found; 
   } 
 }; 
 //------------------------------------------------------------------------------
@@ -237,15 +237,13 @@ struct InsertAndAlwaysSetValue
     // aImg.setValue( aPoint, aValue ); 
     // return res.second;  
 
-    bool flag = false; 
-    if ( aSet.find( aPoint ) == aSet.end() )
-      { 
-	flag = true; 
-	aSet.insert( aPoint );
-      }      
+    bool found = false; 
+    if ( aSet.find( aPoint ) != aSet.end() )
+      found = true;       
     //always set value
+    aSet.insert( aPoint );
     aImg.setValue( aPoint, aValue ); 
-    return flag; 
+    return !found; 
   } 
 }; 
 //------------------------------------------------------------------------------
@@ -297,13 +295,13 @@ DGtal::insertAndAlwaysSetValue(I& aImg, S& aSet,
 
 //------------------------------------------------------------------------------
 template<typename I, typename S, typename D, typename V>
-struct FindAndReadValue
+struct FindAndGetValue
 { 
-  static bool implementation(I& aImg, S& aSet, 
+  static bool implementation(const I& aImg, const S& aSet, 
 			     const typename D::Point& aPoint, 
 			     V& aValue)
   {
-    if ( aSet.find( aPoint ) == aSet.end() )
+    if ( aSet.find( aPoint ) != aSet.end() )
       { 
 	aValue = aImg( aPoint );
 	return true; 
@@ -314,21 +312,21 @@ struct FindAndReadValue
 //------------------------------------------------------------------------------
 //Partial specialization
 template<typename D, typename V>
-struct FindAndReadValue<
+struct FindAndGetValue<
   ImageContainerBySTLMap<D,V>, 
   DigitalSetFromMap<ImageContainerBySTLMap<D,V> >,
   D, V >
 { 
   static bool implementation
-  (ImageContainerBySTLMap<D,V>& aImg, 
-   DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
+  (const ImageContainerBySTLMap<D,V>& aImg, 
+   const DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
    const typename D::Point& aPoint, 
    V& aValue)
   {
     typedef typename D::Point P; 
-    typedef typename ImageContainerBySTLMap<D,V>::iterator Iterator; 
+    typedef typename ImageContainerBySTLMap<D,V>::const_iterator ConstIterator; 
 
-    Iterator it = aImg.find( aPoint ); 
+    ConstIterator it = aImg.find( aPoint ); 
     if ( it != aImg.end() )
       {
 	aValue = it->second; 
@@ -342,9 +340,9 @@ struct FindAndReadValue<
 template<typename I, typename S>
 inline
 bool
-DGtal::findAndReadValue(I& aImg, S& aSet, 
-			const typename I::Point& aPoint, 
-			typename I::Value& aValue ) 
+DGtal::findAndGetValue(const I& aImg, const S& aSet, 
+		       const typename I::Point& aPoint, 
+		       typename I::Value& aValue ) 
 {
   
   BOOST_CONCEPT_ASSERT(( CImage<I> )); 
@@ -353,5 +351,5 @@ DGtal::findAndReadValue(I& aImg, S& aSet,
 
   typedef typename I::Domain D; 
   typedef typename I::Value V; 
-  return FindAndReadValue<I,S,D,V>::implementation(aImg, aSet, aPoint, aValue); 
+  return FindAndGetValue<I,S,D,V>::implementation(aImg, aSet, aPoint, aValue); 
 }

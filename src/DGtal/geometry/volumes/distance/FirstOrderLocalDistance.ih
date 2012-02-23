@@ -41,15 +41,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 template <typename TImage>
-template <typename TPointPredicate>
+template <typename TSet>
 inline
 typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
 DGtal::L2FirstOrderLocalDistance<TImage>::operator()
-  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
 {
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
   //distance values
   Values v; 
@@ -75,24 +75,21 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d, d1, d2; 
-/**/
-      bool flag1 = aPred( neighbor1 ); 
-      bool flag2 = aPred( neighbor2 );
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
       if ( flag1 || flag2 ) 
 	{
 	  if ( flag1 && flag2 )
 	    { //take the minimal value
-	      d1 = aImg( neighbor1 ); 
-	      d2 = aImg( neighbor2 ); 
 	      if (std::abs(d1) < std::abs(d2))
 		d = d1;
 	      else 
 		d = d2; 
 	    } else 
 	    {
-	      if (flag1) d = aImg( neighbor1 );
-	      if (flag2) d = aImg( neighbor2 ); 
+	      if (flag1) d = d1;
+	      if (flag2) d = d2; 
 	    }
 
 	  //sign test
@@ -101,7 +98,7 @@ DGtal::L2FirstOrderLocalDistance<TImage>::operator()
 	    nbPos++;
 	  else
 	    d = (-d);
-	  v.push(d); 
+	  v.push_back(d); 
 	}
 
       *it1 = c; 
@@ -137,7 +134,7 @@ DGtal::L2FirstOrderLocalDistance<TImage>::compute
   ASSERT( c > 0 ); 
   if ( c == 1 )
     {
-      Value d = aValueList.top(); 
+      Value d = aValueList.back();
       Value dres = d + 1;
       ASSERT(dres > 0); 
       return dres; 
@@ -145,9 +142,11 @@ DGtal::L2FirstOrderLocalDistance<TImage>::compute
   else 
     {
       //function computation
-      if ( gradientNorm( aValueList.top(), aValueList ) > 1 )
+      typename Values::iterator it = 
+	std::max_element( aValueList.begin(), aValueList.end() ); 
+      if ( gradientNorm( *it, aValueList ) > 1 )
 	{
-	  aValueList.pop(); 
+	  aValueList.erase( it ); 
 	  return this->compute(aValueList); 
 	}
       else 
@@ -155,10 +154,11 @@ DGtal::L2FirstOrderLocalDistance<TImage>::compute
 	  double a = 0; 
 	  double b = 0; 
 	  double c = -1; 
-	  while ( aValueList.size() != 0 )
+
+	  for (typename Values::iterator it = aValueList.begin(); 
+	       it != aValueList.end(); ++it)
 	    {
-	      Value d = aValueList.top(); 
-	      aValueList.pop(); 
+	      Value d = *it; 
 
 	      a += 1; 
 	      b -= static_cast<double>(2*d);
@@ -184,14 +184,11 @@ typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
 DGtal::L2FirstOrderLocalDistance<TImage>
 ::gradientNorm(const Value& aValue, const Values& aValueList) const
 {
-  Values v(aValueList); 
-
   double sum = 0; 
-  while ( v.size() != 0 )
+  for (typename Values::const_iterator it = aValueList.begin(); 
+       it != aValueList.end(); ++it)
     {
-      Value d = std::abs(aValue - v.top()); 
-      v.pop(); 
-
+      Value d = std::abs(aValue - *it); 
       sum += (d*d); 
     }
   return sum; 
@@ -210,15 +207,15 @@ DGtal::L2FirstOrderLocalDistance<TImage>
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 template <typename TImage>
-template <typename TPointPredicate>
+template <typename TSet>
 inline
 typename DGtal::LInfFirstOrderLocalDistance<TImage>::Value
 DGtal::LInfFirstOrderLocalDistance<TImage>::operator()
-  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
 {
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
   //distance values
   Values v; 
@@ -244,31 +241,30 @@ DGtal::LInfFirstOrderLocalDistance<TImage>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d; 
-      bool flag1 = aPred(neighbor1); 
-      bool flag2 = aPred(neighbor2);
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
       if ( flag1 || flag2 ) 
 	{
 	  if ( flag1 && flag2 )
 	    { //take the minimal value
-	      Value d1 = aImg( neighbor1 ); 
-	      Value d2 = aImg( neighbor2 ); 
 	      if (std::abs(d1) < std::abs(d2))
 		d = d1;
 	      else 
 		d = d2; 
 	    } else 
 	    {
-	      if (flag1) d = aImg( neighbor1 );
-	      if (flag2) d = aImg( neighbor2 ); 
+	      if (flag1) d = d1;
+	      if (flag2) d = d2; 
 	    }
+
 	  //sign test
 	  nb++; 
 	  if ( d >= 0 )
 	    nbPos++;
 	  else
 	    d = (-d);
-	  v.push(d); 
+	  v.push_back(d); 
 	}
 
       *it1 = c; 
@@ -303,14 +299,16 @@ DGtal::LInfFirstOrderLocalDistance<TImage>::compute
   ASSERT( c > 0 ); 
   if ( c == 1 )
     {
-      Value d = aValueList.top(); 
+      Value d = aValueList.back(); 
       Value dres = d + 1;
       ASSERT(dres > 0); 
       return dres; 
     } 
   else 
     { //max
-      Value dres = aValueList.top(); 
+      typename Values::iterator it = 
+	std::max_element( aValueList.begin(), aValueList.end() ); 
+      Value dres = *it; 
       ASSERT(dres > 0); 
       return dres; 
     }
@@ -329,15 +327,15 @@ DGtal::LInfFirstOrderLocalDistance<TImage>
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
 template <typename TImage>
-template <typename TPointPredicate>
+template <typename TSet>
 inline
 typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
 DGtal::L1FirstOrderLocalDistance<TImage>::operator()
-  (const Image& aImg, const TPointPredicate& aPred, const Point& aPoint)
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
 {
 
-  BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TPointPredicate::Point >::value ));
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
   //distance values
   Values v; 
@@ -363,11 +361,11 @@ DGtal::L1FirstOrderLocalDistance<TImage>::operator()
       *it2 = (c-1);
 
       //neighboring values
-      Value d; 
-      bool flag1 = aPred(neighbor1); 
-      bool flag2 = aPred(neighbor2);
-	    if (flag1) v.push_back( aImg( neighbor1 ) );
-	    if (flag2) v.push_back( aImg( neighbor2 ) ); 
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
+      if (flag1) v.push_back( d1 );
+      if (flag2) v.push_back( d2 ); 
 
       *it1 = c; 
       *it2 = c;
@@ -385,23 +383,23 @@ typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
 DGtal::L1FirstOrderLocalDistance<TImage>::compute
 (Values& aValueList) const
 {
-ASSERT(aValueList.size() > 0); 
+  ASSERT(aValueList.size() > 0); 
 
-//min (in absolute values) 
-typename Values::const_iterator it = aValueList.begin();
-Value vmin = *it; ++it;   
-typename Values::const_iterator itEnd = aValueList.end(); 
-for ( ; it != itEnd; ++it )
-  {
-    if ( std::abs(*it) < std::abs(vmin) )
-      vmin = *it;  
-  }
+  //min (in absolute values) 
+  typename Values::const_iterator it = aValueList.begin();
+  Value vmin = *it; ++it;   
+  typename Values::const_iterator itEnd = aValueList.end(); 
+  for ( ; it != itEnd; ++it )
+    {
+      if ( std::abs(*it) < std::abs(vmin) )
+	vmin = *it;  
+    }
 
-//sign
-if (vmin >= 0) 
-  return vmin + 1; 
-else 
-  return vmin - 1; 
+  //sign
+  if (vmin >= 0) 
+    return vmin + 1; 
+  else 
+    return vmin - 1; 
 }
 
 //-----------------------------------------------------------------------------
