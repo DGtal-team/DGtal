@@ -60,7 +60,6 @@ namespace DGtal
     knowing the distance value of some points in its neighborhood.   
 
      <p> Refinement : 
-     - \t boost::DefaultConstructible
      - \t boost::Assignable
    
      <p> Nested types : 
@@ -111,7 +110,7 @@ Image::Point) </td>
      @tparam X the type that should be a model of CLocalDistance.
    */
   template <typename X> 
-  struct CLocalDistance : boost::DefaultConstructible<X>, boost::Assignable<X> 
+  struct CLocalDistance : boost::Assignable<X> 
   {
     // ----------------------- Concept checks ------------------------------
   public:

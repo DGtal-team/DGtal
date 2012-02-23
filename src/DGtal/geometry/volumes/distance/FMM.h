@@ -188,14 +188,16 @@ namespace DGtal
      * Constructor.
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
-	const PointPredicate& aPointPredicate );
+	const PointPredicate& aPointPredicate, 
+	const Distance& aDistance = Distance() );
     
     /**
      * Constructor.
      */
     FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold);
+	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold,
+	const Distance& aDistance = Distance() );
     
     /**
      * Destructor.
@@ -213,14 +215,18 @@ namespace DGtal
  
     /** 
      * Insert the candidate of min distance into the set 
-     * of accepted points and update the set of candidate points. 
+     * of accepted points if it is possible and then 
+     * update the set of candidate points. 
+     *
+     * @param aPoint inserted point (if inserted)
+     * @param aValue its distance value (if inserted)
      *
      * @return 'true' if the point of min distance is accepted
      * 'false' otherwise.
      *
      * @see addNewAcceptedPoint
      */
-    bool computeOneStep();
+    bool computeOneStep(Point& aPoint, DistanceValue& aValue);
 
     /** 
      * Get minimal distance value in the set of accepted points. 
@@ -316,10 +322,13 @@ namespace DGtal
      * Insert the candidate of min distance into the set 
      * of accepted points and update the set of candidate points. 
      *
+     * @param aPoint inserted point (if true)
+     * @param aValue distance value of the inserted point (if true)
+     *
      * @return 'true' if the point of min distance is accepted
      * 'false' otherwise.
      */
-    bool addNewAcceptedPoint();
+    bool addNewAcceptedPoint(Point& aPoint, DistanceValue& aValue);
 
     /** 
      * Update the set of candidate points with the neigbors of @a aPoint. 

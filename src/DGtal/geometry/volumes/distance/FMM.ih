@@ -44,8 +44,10 @@
 template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
-::FMM(Image& aImg, AcceptedPointSet& aSet, const PointPredicate& aPointPredicate)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance() ), 
+::FMM(Image& aImg, AcceptedPointSet& aSet, 
+      const PointPredicate& aPointPredicate,
+      const Distance& aDistance )
+  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
     myDistanceValueThreshold( std::numeric_limits<DistanceValue>::max() )
@@ -61,8 +63,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
-      const DistanceValue& aDistanceValueThreshold)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance() ), 
+      const DistanceValue& aDistanceValueThreshold,
+      const Distance& aDistance )
+  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
     myDistanceValueThreshold( aDistanceValueThreshold )
@@ -102,9 +105,9 @@ template <typename TIteratorOnPairs>
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 ::initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
-		     Image& aImg, AcceptedPointSet& aSet, 
-		     const DistanceValue& aDistanceValue, 
-		     bool aFlagIsPositive)
+			      Image& aImg, AcceptedPointSet& aSet, 
+			      const DistanceValue& aDistanceValue, 
+			      bool aFlagIsPositive)
 {
   DistanceValue k = -1; 
   if (aFlagIsPositive) k = 1; 
@@ -128,16 +131,19 @@ inline
 void
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::compute()
 {
-  while ( addNewAcceptedPoint() )
+  Point p = Point::diagonal(0); 
+  DistanceValue d = 0; 
+  while ( addNewAcceptedPoint( p, d ) )
     {   }
 }
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::computeOneStep()
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+::computeOneStep(Point& aPoint, DistanceValue& aValue)
 {
-  return addNewAcceptedPoint();
+  return addNewAcceptedPoint(aPoint, aValue);
 }
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
@@ -239,7 +245,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::init()
 template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewAcceptedPoint()
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+::addNewAcceptedPoint(Point& aPoint, DistanceValue& aValue)
 {
 
   if ( (myAcceptedPoints.size()+1) < myAreaThreshold )
@@ -265,7 +272,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewAcceptedPoint()
 	      	{ //if it does not belong to the set
 	      	  //the set of candidates is updated with 
 	      	  //the neighbors of the new accepted point
-	      	  update( minPair.first ); 
+		  aPoint = minPair.first;
+		  aValue = minPair.second; 
+	      	  update( aPoint ); 
 	      	  flagStop = true; 
 	      	}
 	      else 
