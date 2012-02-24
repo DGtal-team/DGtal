@@ -306,7 +306,7 @@ Steps:
      * @return 'true' if yes, 'false' otherwise.
      */
     bool isExtendableBackward();
-
+    
     /**
      * @deprecated
      * @see extendForward()
