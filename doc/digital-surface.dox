@@ -85,7 +85,7 @@ namespace DGtal {
 
 
    We focus here on the last method to define digital surfaces.
-   
+
    @subsection dgtal_digsurf_sec1_2 1.2 Digital surface as a set of n-1-cells
 
    Formally, the elements of the digital space \f$ Z^n \f$ are called
@@ -101,17 +101,17 @@ namespace DGtal {
    oriented.
 
    We assume from now on that you have instantiated some cellular
-   space \a K of type \a KSpace (see \ref dgtal_ctopo_sec1_4), for
+   space \a K of type \a KSpace (see dgtal_ctopo_sec4), for
    instance with the following lines:
 
    @code
    KSpace K;
    Point low( -10, -10, -10 );
-   Point high( 10, 10, 10 ); 
+   Point high( 10, 10, 10 );
    bool space_ok = K.init( low, high, true );
    @endcode
 
-   A surfel is an oriented n-1-cell, i.e. some SCell. Surfel may be
+   A surfel is an oriented @f$n-1@f$-cell, i.e. some SCell. Surfel may be
    obtained from spels by incidence relation. Reciprocally, you can
    use incidence to get spels.
 
@@ -156,10 +156,10 @@ namespace DGtal {
 
    @subsection dgtal_digsurf_sec1_3 1.3 Digital surface as a graph: adding adjacencies between surfels
 
-   The idea here is to connect surfels that share some n-2-cells. The
+   The idea here is to connect surfels that share some @f$n-2@f$-cells. The
    obtained adjacency relations are called \e bel \e adjacencies in
-   the terminology of Herman, Udupa and others. Generally an n-2-cell
-   is shared by at most two n-1-cells, except in "cross
+   the terminology of Herman, Udupa and others. Generally an @f$n-2@f$-cell
+   is shared by at most two @f$n-1@f$-cells, except in "cross
    configuration", symbolized below:
 
    @verbatim
@@ -169,10 +169,10 @@ namespace DGtal {
             +: n-2-cell 
    @endverbatim
    
-   A bel adjacency make a deterministic choice to connect b to d and a
+   A bel adjacency makes a deterministic choice to connect b to d and a
    to c when interior, and b to a and c to d when exterior. This
    choice has to be made along each possible pair of directions when
-   going nD. In DGtal, this is coded with the class SurfelAdjacency.
+   going nD. In DGtal, this is encoded with the class SurfelAdjacency.
 
    @image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" 
    @image latex digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" width=5cm
