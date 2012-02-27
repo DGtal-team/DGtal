@@ -8,13 +8,14 @@ namespace DGtal {
    
    @page dgtal_digital_surface III. Digital surfaces
    
-   Documentation written by Jacques-Olivier Lachaud.  Part of the \ref
-   TopologyPackage.
+   @writers Jacques-Olivier Lachaud
+
+  Part of the \ref   TopologyPackage.
   
    This part of the manual describes how to define digital surfaces,
    closed or open. A lot of the ideas, concepts, algorithms,
    documentation and code is a backport from <a
-   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite ImaGene
 
    - \ref dgtal_digsurf_sec1
       - \ref dgtal_digsurf_sec1_1
@@ -84,7 +85,7 @@ namespace DGtal {
 
 
    We focus here on the last method to define digital surfaces.
-   
+
    @subsection dgtal_digsurf_sec1_2 1.2 Digital surface as a set of n-1-cells
 
    Formally, the elements of the digital space \f$ Z^n \f$ are called
@@ -100,17 +101,17 @@ namespace DGtal {
    oriented.
 
    We assume from now on that you have instantiated some cellular
-   space \a K of type \a KSpace (see \ref dgtal_ctopo_sec1_4), for
+   space \a K of type \a KSpace (see dgtal_ctopo_sec4), for
    instance with the following lines:
 
    @code
    KSpace K;
    Point low( -10, -10, -10 );
-   Point high( 10, 10, 10 ); 
+   Point high( 10, 10, 10 );
    bool space_ok = K.init( low, high, true );
    @endcode
 
-   A surfel is an oriented n-1-cell, i.e. some SCell. Surfel may be
+   A surfel is an oriented @f$n-1@f$-cell, i.e. some SCell. Surfel may be
    obtained from spels by incidence relation. Reciprocally, you can
    use incidence to get spels.
 
@@ -155,10 +156,10 @@ namespace DGtal {
 
    @subsection dgtal_digsurf_sec1_3 1.3 Digital surface as a graph: adding adjacencies between surfels
 
-   The idea here is to connect surfels that share some n-2-cells. The
+   The idea here is to connect surfels that share some @f$n-2@f$-cells. The
    obtained adjacency relations are called \e bel \e adjacencies in
-   the terminology of Herman, Udupa and others. Generally an n-2-cell
-   is shared by at most two n-1-cells, except in "cross
+   the terminology of Herman, Udupa and others. Generally an @f$n-2@f$-cell
+   is shared by at most two @f$n-1@f$-cells, except in "cross
    configuration", symbolized below:
 
    @verbatim
@@ -168,10 +169,10 @@ namespace DGtal {
             +: n-2-cell 
    @endverbatim
    
-   A bel adjacency make a deterministic choice to connect b to d and a
+   A bel adjacency makes a deterministic choice to connect b to d and a
    to c when interior, and b to a and c to d when exterior. This
    choice has to be made along each possible pair of directions when
-   going nD. In DGtal, this is coded with the class SurfelAdjacency.
+   going nD. In DGtal, this is encoded with the class SurfelAdjacency.
 
    @image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" 
    @image latex digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" width=5cm
@@ -183,7 +184,7 @@ namespace DGtal {
 
    Once the adjacency has been chosen, it is possible to determine
    what are the adjacent surfels to a given surfel. More precisely,
-   any surfel (or n-1-cell) has exactly 2n-2 adjacent surfels (for
+   any surfel (or @f$n-1@f$-cell) has exactly @f$2n-2@f$ adjacent surfels (for
    closed surfaces). More precisely, it has exactly 2 adjacent surfels
    along directions different from the orthogonal direction of the
    surfel.
@@ -193,10 +194,10 @@ namespace DGtal {
 
    In fact, we can be even more precise. We can use orientation to
    orient the adjacencies consistently. Given two surfels sharing an
-   n-2-cell, this cell is positively oriented in the boundary of one
+   @f$n-2@f$-cell, this cell is positively oriented in the boundary of one
    surfel and negatively oriented in the boundary of the other. We
-   have thus that there are n-1 adjacent cells in the direct
-   orientation (positive) and n-1 adjacent cells in the indirect
+   have thus that there are @f$n-1@f$ adjacent cells in the direct
+   orientation (positive) and @f$n-1@f$ adjacent cells in the indirect
    orientation (negative). The direct adjacent surfels look like:
 
    @image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." 
@@ -221,19 +222,19 @@ namespace DGtal {
    trace.endBlock();
    @endcode
 
-   Generally, the methods SurfelNeighborhood::getAdjacentOnSpelSet,
+   Generally,  methods SurfelNeighborhood::getAdjacentOnSpelSet,
    SurfelNeighborhood::getAdjacentOnDigitalSet,
    SurfelNeighborhood::getAdjacentOnPointPredicate,
    SurfelNeighborhood::getAdjacentOnSurfelPredicate are used to find
    adjacent surfels.
 
-   Since we have defined adjacencies between surfels of a digital
+   Since we have defined adjacencies between surfels on a digital
    surface, the digital surface forms a graph (at least in theory).
 
 
    @section dgtal_digsurf_sec2 2. Tracking digital surfaces
 
-   This section show how to extract the boundary of a digital set,
+   This section shows how to extract the boundary of a digital set,
    given some predicate telling whether we are inside or outside the
    surface.
 
@@ -245,14 +246,14 @@ namespace DGtal {
    static methods Surfaces::uMakeBoundary and Surfaces::sMakeBoundary.
 
    The following snippet shows how to get a set of surfels that is the
-   boundary of some predicate on point by a simple scanning of the
+   boundary of some predicate on point by a simple scan of the
    whole domain (see volScanBoundary.cpp).
 
    @snippet topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
 
    @subsection dgtal_digsurf_sec2_2 2.2 Constructing digital surfaces by tracking
 
-   In many circumstances, it is better to use the presented graph
+   In many circumstances, it is better to use the above mentioned graph
    structure of digital surfaces. For instance it may be used to find
    the surface just by searching it by adjacencies. This process is
    called \b tracking. This is done for you by
@@ -280,7 +281,7 @@ namespace DGtal {
    (i.e. without boundary), you should use preferentially
    Surfaces::trackClosedBoundary. This technique only follows direct
    adjacent surfels and extracts the whole surface when it is
-   closed. This process may be illustrated as follows:
+   closed. This process can be illustrated as follows:
    
    @image html suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies."
    @image latex suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies." width=5cm

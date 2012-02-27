@@ -7,8 +7,10 @@ namespace DGtal {
    
    @page dgtal_helpers_surfaces IV. Helpers for digital surfaces
    
-   Documentation written by Bertrand Kerautret and Jacques-Olivier
-   Lachaud. Part of the \ref TopologyPackage.
+   @writers Bertrand Kerautret and Jacques-Olivier
+   Lachaud.
+
+    Part of the \ref TopologyPackage.
   
    This part of the manual describes how to use the helper class
    Surfaces to build digital surfaces, closed or open, or contours
