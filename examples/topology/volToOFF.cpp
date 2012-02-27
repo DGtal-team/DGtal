@@ -22,7 +22,7 @@
  *
  * @date 2012/02/06
  *
- * A simple marching cube algorithm based on digital surfaces.
+ * A simple marching cube algorithm for vol files based on digital surfaces.
  *
  * This file is part of the DGtal library.
  */
