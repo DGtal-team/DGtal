@@ -184,7 +184,7 @@ namespace DGtal {
 
    Once the adjacency has been chosen, it is possible to determine
    what are the adjacent surfels to a given surfel. More precisely,
-   any surfel (or n-1-cell) has exactly 2n-2 adjacent surfels (for
+   any surfel (or @f$n-1@f$-cell) has exactly @f$2n-2@f$ adjacent surfels (for
    closed surfaces). More precisely, it has exactly 2 adjacent surfels
    along directions different from the orthogonal direction of the
    surfel.
@@ -194,10 +194,10 @@ namespace DGtal {
 
    In fact, we can be even more precise. We can use orientation to
    orient the adjacencies consistently. Given two surfels sharing an
-   n-2-cell, this cell is positively oriented in the boundary of one
+   @f$n-2@f$-cell, this cell is positively oriented in the boundary of one
    surfel and negatively oriented in the boundary of the other. We
-   have thus that there are n-1 adjacent cells in the direct
-   orientation (positive) and n-1 adjacent cells in the indirect
+   have thus that there are @f$n-1@f$ adjacent cells in the direct
+   orientation (positive) and @f$n-1@f$ adjacent cells in the indirect
    orientation (negative). The direct adjacent surfels look like:
 
    @image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." 
@@ -222,19 +222,19 @@ namespace DGtal {
    trace.endBlock();
    @endcode
 
-   Generally, the methods SurfelNeighborhood::getAdjacentOnSpelSet,
+   Generally,  methods SurfelNeighborhood::getAdjacentOnSpelSet,
    SurfelNeighborhood::getAdjacentOnDigitalSet,
    SurfelNeighborhood::getAdjacentOnPointPredicate,
    SurfelNeighborhood::getAdjacentOnSurfelPredicate are used to find
    adjacent surfels.
 
-   Since we have defined adjacencies between surfels of a digital
+   Since we have defined adjacencies between surfels on a digital
    surface, the digital surface forms a graph (at least in theory).
 
 
    @section dgtal_digsurf_sec2 2. Tracking digital surfaces
 
-   This section show how to extract the boundary of a digital set,
+   This section shows how to extract the boundary of a digital set,
    given some predicate telling whether we are inside or outside the
    surface.
 
@@ -246,14 +246,14 @@ namespace DGtal {
    static methods Surfaces::uMakeBoundary and Surfaces::sMakeBoundary.
 
    The following snippet shows how to get a set of surfels that is the
-   boundary of some predicate on point by a simple scanning of the
+   boundary of some predicate on point by a simple scan of the
    whole domain (see volScanBoundary.cpp).
 
    @snippet topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
 
    @subsection dgtal_digsurf_sec2_2 2.2 Constructing digital surfaces by tracking
 
-   In many circumstances, it is better to use the presented graph
+   In many circumstances, it is better to use the above mentioned graph
    structure of digital surfaces. For instance it may be used to find
    the surface just by searching it by adjacencies. This process is
    called \b tracking. This is done for you by
@@ -281,7 +281,7 @@ namespace DGtal {
    (i.e. without boundary), you should use preferentially
    Surfaces::trackClosedBoundary. This technique only follows direct
    adjacent surfels and extracts the whole surface when it is
-   closed. This process may be illustrated as follows:
+   closed. This process can be illustrated as follows:
    
    @image html suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies."
    @image latex suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies." width=5cm
