@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/shapes/implicit/CImplicitFunction.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,6 +55,8 @@ namespace DGtal
    * \brief Aim: model of CEuclideanOrientedShape and CEuclideanBoundedShape concepts to create a ball in
    * nD..
    *
+   * Model of CImplicitFunction
+   *
    * @tparam TSpace the Digital space definition.
    */
   
@@ -62,11 +65,12 @@ namespace DGtal
   {
 
   public:
+    typedef ImplicitBall<TSpace> Self;
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::Integer Integer;
-    
-   
+    typedef double Value;
+
     /** 
      * Constructor. Contructs a ball with center aCenter and radius
      * aRadius.
@@ -89,7 +93,7 @@ namespace DGtal
   public:
     
     inline
-    double operator()(const RealPoint &aPoint) const
+    Value operator()(const RealPoint &aPoint) const
     {
       return NumberTraits<Integer>::castToDouble(myRadius) - 
         (aPoint - myCenter ).norm();

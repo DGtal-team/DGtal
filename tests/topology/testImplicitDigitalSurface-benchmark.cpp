@@ -103,7 +103,7 @@ namespace DGtal {
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int , char** )
 {
   using namespace Z3i;
   typedef DGtal::ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;
@@ -117,7 +117,7 @@ int main( int argc, char** argv )
     {
       ImplicitDigitalEllipse ellipse( 180.0, 135.0, 102.0 );
       Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
-      bool res = 
+      res = 
         testImplicitDigitalSurface<KSpace, ImplicitDigitalEllipse>
         ( K, ellipse, bel );
     }
