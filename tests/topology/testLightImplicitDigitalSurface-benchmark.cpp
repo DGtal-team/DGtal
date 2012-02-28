@@ -102,7 +102,7 @@ namespace DGtal {
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int, char** )
 {
   using namespace Z3i;
   typedef DGtal::ImplicitDigitalEllipse3<Point> ImplicitDigitalEllipse;

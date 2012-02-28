@@ -482,6 +482,15 @@ upperCell() const
 {
   return myCellUpper;
 }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+isSpaceClosed() const
+{
+  return myIsClosed;
+}
 
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>

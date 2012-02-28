@@ -221,8 +221,8 @@ namespace DGtal
       unsigned int nbVertices; ///< number of vertices incident to face.
       bool closed;         ///< tells if the face is closed or open.
       inline Face( const UmbrellaState & aState, 
-                   unsigned int nb, bool isClosed )
-        : state( aState ), nbVertices( nb ), closed( isClosed )
+                   unsigned int nb, bool aIsClosed )
+        : state( aState ), nbVertices( nb ), closed( aIsClosed )
       {}
       inline bool isClosed() const 
       { return closed; }
@@ -497,10 +497,36 @@ namespace DGtal
     bool isValid() const;
 
     /**
-       Writes/Displays the object on an output stream.
+       Writes/Displays the object on an output stream in OFF file
+       format. Cells are embbeded onto their default centroid.
+
        @param out the output stream where the object is written.
      */
     void exportSurfaceAs3DOFF ( std::ostream & out ) const;
+
+    /**
+       Writes/Displays the object on an output stream in OFF file
+       format. Cells are embedded by [cembedder]. Normals are not
+       computed.
+
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of cellular grid elements.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedSurfaceAs3DOFF ( std::ostream & out,
+                                        const CellEmbedder & cembedder ) const;
+
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Cells are embedded by [cembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of cellular grid elements.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedSurfaceAs3DNOFF ( std::ostream & out,
+                                        const CellEmbedder & cembedder ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

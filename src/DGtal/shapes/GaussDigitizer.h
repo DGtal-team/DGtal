@@ -86,7 +86,8 @@ namespace DGtal
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
 
-    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
+    // JOL: GaussDigitizer do not need a bounded shape.
+    // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
     
     BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
 
