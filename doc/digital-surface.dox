@@ -180,7 +180,7 @@ namespace DGtal {
    The following snippet shows the interior surfel adjacency
    (i.e. (6,18)-surfaces).
 
-   @snippet topology/volToOff.cpp volToOff-SurfelAdjacency
+   @snippet examples/topology/volToOFF.cpp volToOff-SurfelAdjacency
 
    Once the adjacency has been chosen, it is possible to determine
    what are the adjacent surfels to a given surfel. More precisely,
@@ -249,7 +249,7 @@ namespace DGtal {
    boundary of some predicate on point by a simple scan of the
    whole domain (see volScanBoundary.cpp).
 
-   @snippet topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
+   @snippet examples/topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
 
    @subsection dgtal_digsurf_sec2_2 2.2 Constructing digital surfaces by tracking
 
@@ -263,7 +263,7 @@ namespace DGtal {
    boundary of some predicate on point given only a starting surfel
    and by tracking (see volTrackBoundary.cpp).
 
-   @snippet topology/volTrackBoundary.cpp volTrackBoundary-ExtractingSurface
+   @snippet examples/topology/volTrackBoundary.cpp volTrackBoundary-ExtractingSurface
 
    On the lobser.vol volume, volScanBoundary.cpp extracts 155068 surfels
    in 3866ms, while volTrackBoundary.cpp extracts 148364 surfels in 351ms. 
@@ -596,14 +596,14 @@ namespace DGtal {
    directly the method DigitalSurface::exportSurfaceAs3DOFF to do so,
    or look at its code to see how it works.
 
-   The following snippets of file volToOff.cpp show how to extract all
+   The following snippets of file volToOFF.cpp show how to extract all
    surfels in an image and then how to export the surface in OFF
    format. The output is a surface that is very much the classical \b
    marching-cube surface, except that vertices lies in the middle of
    the edge.
 
-   @snippet topology/volToOff.cpp volToOff-ExtractingSurface
-   @snippet topology/volToOff.cpp volToOff-makingOFF
+   @snippet topology/volToOFF.cpp volToOff-ExtractingSurface
+   @snippet topology/volToOFF.cpp volToOff-makingOFF
 
    @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
    @image latex digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file." width=0.5\textwidth
@@ -678,7 +678,7 @@ namespace DGtal {
 
    @see \ref dgtal_digsurf_sec4_3
 
-   On the lobser.vol volume, volToOff.cpp builds an OFF surface of
+   On the lobser.vol volume, volToOFF.cpp builds an OFF surface of
    155068 vertices, 154910 faces, 310136 edges in 3879ms+1646ms.
 
    @verbatim
@@ -690,7 +690,7 @@ namespace DGtal {
    @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
    @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
 
-   \example topology/volToOff.cpp
+   \example examples/topology/volToOFF.cpp
 */
 
 }
