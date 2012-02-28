@@ -42,7 +42,7 @@
 #include "DGtal/math/MPolynomialReader.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
-#include "DGtal/shapes/LinearImplicitCellEmbedder.h"
+#include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
 //! [implicitSurface-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -179,7 +179,10 @@ int main( int argc, char** argv )
                << std::endl;
   // The cell embedder is used to place vertices closer to the set
   // P(x,y,z)=0
-  typedef LinearImplicitCellEmbedder<KSpace, ImplicitShape, DigitalShape>
+  typedef 
+    ImplicitFunctionDiff1LinearCellEmbedder< KSpace, 
+                                             ImplicitShape, 
+                                             DigitalShape >
     CellEmbedder;
   CellEmbedder cellEmbedder;
   cellEmbedder.init( K, ishape, dshape );
