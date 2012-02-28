@@ -46,6 +46,7 @@
 #include "DGtal/base/CPredicate.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/math/MPolynomial.h"
+#include "DGtal/shapes/implicit/CImplicitFunction.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,7 +58,7 @@ namespace DGtal
    * \brief Aim: model of CEuclideanOrientedShape concepts to create a
    * shape from a polynomial.
    *
-   * @todo Model of CImplicitFunctionCInfinite.
+   * Model of CImplicitFunction
    *
    * @tparam TSpace the Digital space definition.
    */
@@ -67,6 +68,7 @@ namespace DGtal
   {
 
   public:
+    typedef ImplicitPolynomial3Shape<TSpace> Self;
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealVector RealVector;
