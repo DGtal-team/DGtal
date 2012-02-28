@@ -38,6 +38,10 @@
 #endif
 ///////////////////////////////////////////////////////////////////////////////
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4101)
+#endif
+
 using namespace std;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -120,7 +124,7 @@ DGtal::AngleLinearMinimizer::getFormerEnergy( unsigned int i1, unsigned int i2 )
       unsigned int inext = mc.next( i );
       const ValueInfo & vi = this->ro( i );
       const ValueInfo & viprev = this->ro( mc.previous( i ) );
-      float dev = ac.deviation( vi.oldValue, viprev.oldValue );
+      double dev = ac.deviation( vi.oldValue, viprev.oldValue );
       E += (dev * dev)	/ viprev.distToNext;
       i = inext;
     }
