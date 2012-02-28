@@ -18,7 +18,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      volTrackBoundary
      volBreadthFirstTraversal
      frontierAndBoundary
-     volToOff
+     volToOFF
      implicitSurface
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
