@@ -36,6 +36,7 @@
 #include "DGtal/shapes/implicit/ImplicitRoundedHyperCube.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/CImplicitFunction.h"
+#include "DGtal/shapes/implicit/CImplicitFunctionDiff1.h"
 #include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -70,6 +71,8 @@ bool testImplicitFunctionModels()
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube2D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitRoundedHyperCube3D > ));
   BOOST_CONCEPT_ASSERT(( CImplicitFunction< _ImplicitPolynomial3Shape > ));
+  //BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< _ImplicitBall2D > ));
+  BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< _ImplicitPolynomial3Shape > ));
   return true;
 }
 
