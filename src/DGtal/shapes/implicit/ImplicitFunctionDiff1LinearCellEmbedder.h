@@ -17,32 +17,34 @@
 #pragma once
 
 /**
- * @file LinearImplicitCellEmbedder.h
+ * @file ImplicitFunctionDiff1LinearCellEmbedder.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2012/02/14
  *
- * Header file for module LinearImplicitCellEmbedder.cpp
+ * Header file for module ImplicitFunctionDiff1LinearCellEmbedder.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(LinearImplicitCellEmbedder_RECURSES)
-#error Recursive header files inclusion detected in LinearImplicitCellEmbedder.h
-#else // defined(LinearImplicitCellEmbedder_RECURSES)
+#if defined(ImplicitFunctionDiff1LinearCellEmbedder_RECURSES)
+#error Recursive header files inclusion detected in ImplicitFunctionDiff1LinearCellEmbedder.h
+#else // defined(ImplicitFunctionDiff1LinearCellEmbedder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LinearImplicitCellEmbedder_RECURSES
+#define ImplicitFunctionDiff1LinearCellEmbedder_RECURSES
 
-#if !defined LinearImplicitCellEmbedder_h
+#if !defined ImplicitFunctionDiff1LinearCellEmbedder_h
 /** Prevents repeated inclusion of headers. */
-#define LinearImplicitCellEmbedder_h
+#define ImplicitFunctionDiff1LinearCellEmbedder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/shapes/implicit/CImplicitFunction.h"
+#include "DGtal/shapes/implicit/CImplicitFunctionDiff1.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,26 +52,27 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-    Description of template class 'LinearImplicitCellEmbedder' <p>
+    Description of template class 'ImplicitFunctionDiff1LinearCellEmbedder' <p>
     \brief Aim: model of cellular embedder for implicit functions,
     (default constructible, copy constructible, assignable).
    
     @tparam TKSpace the cellular grid space definition.
-    @tparam TImplicitFunction the type of implicit function.
+    @tparam TImplicitFunctionDiff1 the type of implicit function, a model of CImplicitFunctionDiff1.
     @tparam TEmbedder the type of digital embedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
   
   template < typename TKSpace,
-             typename TImplicitFunction,
+             typename TImplicitFunctionDiff1,
              typename TEmbedder >
-  class LinearImplicitCellEmbedder
+  class ImplicitFunctionDiff1LinearCellEmbedder
   {
+    BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< TImplicitFunctionDiff1 > ));
 
   public:
     typedef TKSpace KSpace;
-    typedef TImplicitFunction ImplicitFunction;
+    typedef TImplicitFunctionDiff1 ImplicitFunctionDiff1;
     typedef TEmbedder Embedder;
     typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
@@ -78,31 +81,31 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealVector RealVector;
     typedef typename Space::Integer Integer;
-    typedef typename ImplicitFunction::Value Value;
+    typedef typename ImplicitFunctionDiff1::Value Value;
     
     /** 
         Constructor. The object is not valid.
      */
-    LinearImplicitCellEmbedder();
+    ImplicitFunctionDiff1LinearCellEmbedder();
     
     /** 
      * Destructor.
      */    
-    ~LinearImplicitCellEmbedder();
+    ~ImplicitFunctionDiff1LinearCellEmbedder();
 
     /**
        Copy constructor.
        @param other the object to copy.
      */
-    LinearImplicitCellEmbedder( const LinearImplicitCellEmbedder & other );
+    ImplicitFunctionDiff1LinearCellEmbedder( const ImplicitFunctionDiff1LinearCellEmbedder & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    LinearImplicitCellEmbedder & 
-    operator= ( const LinearImplicitCellEmbedder & other );
+    ImplicitFunctionDiff1LinearCellEmbedder & 
+    operator= ( const ImplicitFunctionDiff1LinearCellEmbedder & other );
 
     /**
        Initializes the embedder with the space \a K, the implicit
@@ -112,7 +115,7 @@ namespace DGtal
        @param f an implicit function
        @param e a digital embedder (like a GaussDigitizer).
     */
-    void init( const KSpace & K, const ImplicitFunction & f, 
+    void init( const KSpace & K, const ImplicitFunctionDiff1 & f, 
                const Embedder & e );
 
     // ----------------------- Interface --------------------------------------
@@ -205,7 +208,7 @@ namespace DGtal
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
     /// A pointer on the implicit function.
-    const ImplicitFunction* myPtrFct;
+    const ImplicitFunctionDiff1* myPtrFct;
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
    
@@ -214,31 +217,31 @@ namespace DGtal
 
   private:    
     
-  }; // end of class LinearImplicitCellEmbedder
+  }; // end of class ImplicitFunctionDiff1LinearCellEmbedder
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'LinearImplicitCellEmbedder'.
+   * Overloads 'operator<<' for displaying objects of class 'ImplicitFunctionDiff1LinearCellEmbedder'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'LinearImplicitCellEmbedder' to write.
+   * @param object the object of class 'ImplicitFunctionDiff1LinearCellEmbedder' to write.
    * @return the output stream after the writing.
    */
-  template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
+  template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
   std::ostream&
   operator<< ( std::ostream & out, 
-               const LinearImplicitCellEmbedder<TKSpace, TImplicitFunction, TEmbedder> & object );
+               const ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/LinearImplicitCellEmbedder.ih"
+#include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LinearImplicitCellEmbedder_h
+#endif // !defined ImplicitFunctionDiff1LinearCellEmbedder_h
 
-#undef LinearImplicitCellEmbedder_RECURSES
-#endif // else defined(LinearImplicitCellEmbedder_RECURSES)
+#undef ImplicitFunctionDiff1LinearCellEmbedder_RECURSES
+#endif // else defined(ImplicitFunctionDiff1LinearCellEmbedder_RECURSES)
