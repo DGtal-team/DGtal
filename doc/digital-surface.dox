@@ -333,7 +333,8 @@ namespace DGtal {
 
    @subsection dgtal_digsurf_sec3_2 3.2 Models of digital surface containers
 
-   For now, the implemented digital surface container are:
+   For now, the implemented digital surface container are (realization
+   of CDigitalSurfaceContainer):
 
    - model DigitalSetBoundary, parameterized by a cellular space and a
      digital set. Represents the boundary of a digital set (a set of
@@ -364,7 +365,7 @@ namespace DGtal {
      and a predicate Surfel->bool. Represents a (connected) set of
      surfels defined implicitly by a predicate.  Do not
      compute at instanciation the set of surfels, but rather visits
-     the surface on demand. To do.
+     the surface on demand.
 
    Depending of what is your digital surface, you should choose your
    container accordingly:
