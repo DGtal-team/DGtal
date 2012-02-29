@@ -21,6 +21,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      volToOFF
      volMarchingCubes
      trackImplicitPolynomialSurfaceToOFF
+     digitalSurfaceSlice
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
