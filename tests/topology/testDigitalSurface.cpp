@@ -39,6 +39,8 @@
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
+#include "DGtal/base/CSinglePassConstRange.h"
+
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -516,6 +518,10 @@ bool testDigitalSurface()
   trace.beginBlock ( "Testing DigitalSurface" );
   typedef DigitalSetBoundary<KSpace,DigitalSet> DSContainer;
   typedef DigitalSurface<DSContainer> MyDS;
+
+  //Checking the type as a model of CSinglePassConstRange
+  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange < MyDS> ));
+
   typedef typename MyDS::Surfel Surfel;
   DSContainer* ptrBdry = new DSContainer( K, dig_set );
   MyDS digsurf( ptrBdry ); // acquired
