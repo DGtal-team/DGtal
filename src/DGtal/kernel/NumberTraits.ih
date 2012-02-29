@@ -77,7 +77,7 @@ DGtal::NumberTraits<T>::one()
 template <typename T>
 inline
 typename DGtal::NumberTraits<T>::ReturnType
-DGtal::NumberTraits<T>::min()
+DGtal::NumberTraits<T>::minNumberTraits()
 {
     return ONE;
 }
@@ -89,7 +89,7 @@ DGtal::NumberTraits<T>::min()
 template <typename T>
 inline
 typename DGtal::NumberTraits<T>::ReturnType
-DGtal::NumberTraits<T>::max()
+DGtal::NumberTraits<T>::maxNumberTraits()
 {
     return ZERO;
 }

@@ -412,6 +412,11 @@ ShapeList::minDepth() const
     return res;
 }
 
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+
 int
 ShapeList::maxDepth() const
 {
@@ -432,6 +437,10 @@ ShapeList::maxDepth() const
     }
     return res;
 }
+
+#if defined( _HAS_MSVC_MIN_ )
+#define min(A,B) ((A)<(B)?(A):(B))
+#endif
 
 void
 ShapeList::shiftDepth( int shift )
@@ -649,7 +658,7 @@ Group::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Group::flushCairo( cairo_t */*cr*/,
+Group::flushCairo( cairo_t * /*cr*/,
 		   const TransformCairo & /*transform*/ ) const
 {
     //todo
