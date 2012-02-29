@@ -416,7 +416,7 @@ namespace DGtal {
    SetPredicate<DigitalSet>). The full code is in
    volBreadthFirstTraversal.cpp.
 
-   @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
+   @snippet examples/topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
 
    Once this is done, the object \c digSurf is a proxy to your
    container. Here the dynamically allocated object is acquired by the

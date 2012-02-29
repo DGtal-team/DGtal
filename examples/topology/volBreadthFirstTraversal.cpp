@@ -92,9 +92,6 @@ int main( int argc, char** argv )
   typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
-  typedef BreadthFirstVisitor<MyDigitalSurface> MyBreadthFirstVisitor;
-  typedef MyBreadthFirstVisitor::Node MyNode;
-  typedef MyBreadthFirstVisitor::Size MySize;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
   MyDigitalSurfaceContainer* ptrSurfContainer = 
     new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
@@ -104,6 +101,9 @@ int main( int argc, char** argv )
 
   //! [volBreadthFirstTraversal-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking from an initial bel." );
+  typedef BreadthFirstVisitor<MyDigitalSurface> MyBreadthFirstVisitor;
+  typedef MyBreadthFirstVisitor::Node MyNode;
+  typedef MyBreadthFirstVisitor::Size MySize;
   MyBreadthFirstVisitor visitor( digSurf, bel );
   unsigned long nbSurfels = 0;
   MyNode node;
