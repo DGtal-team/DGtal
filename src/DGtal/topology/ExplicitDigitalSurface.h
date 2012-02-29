@@ -43,6 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/CSurfelPredicate.h"
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
@@ -266,8 +267,7 @@ namespace DGtal
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
 
      /**
-        @return the connectedness of this surface. Either CONNECTED,
-        DISCONNECTED, or UNKNOWN.
+        @return the connectedness of this surface. By construction CONNECTED.
        */
     Connectedness connectedness() const;
 
