@@ -35,7 +35,10 @@ namespace DGtal {
       - \ref dgtal_digsurf_sec4_2
       - \ref dgtal_digsurf_sec4_3
 
-   A complete example is given in digitalSurface3D.cpp.
+   The following programs are related to this documentation:
+   volToOFF.cpp, volMarchingCubes.cpp,
+   volScanBoundary.cpp, volTrackBoundary.cpp, frontierAndBoundary.cpp,
+   volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF
 
    @section dgtal_digsurf_sec1 1. Introduction to digital surfaces
 

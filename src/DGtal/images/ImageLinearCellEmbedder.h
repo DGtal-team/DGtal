@@ -17,32 +17,33 @@
 #pragma once
 
 /**
- * @file LinearImplicitCellEmbedder.h
+ * @file ImageLinearCellEmbedder.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2012/02/14
  *
- * Header file for module LinearImplicitCellEmbedder.cpp
+ * Header file for module ImageLinearCellEmbedder.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(LinearImplicitCellEmbedder_RECURSES)
-#error Recursive header files inclusion detected in LinearImplicitCellEmbedder.h
-#else // defined(LinearImplicitCellEmbedder_RECURSES)
+#if defined(ImageLinearCellEmbedder_RECURSES)
+#error Recursive header files inclusion detected in ImageLinearCellEmbedder.h
+#else // defined(ImageLinearCellEmbedder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LinearImplicitCellEmbedder_RECURSES
+#define ImageLinearCellEmbedder_RECURSES
 
-#if !defined LinearImplicitCellEmbedder_h
+#if !defined ImageLinearCellEmbedder_h
 /** Prevents repeated inclusion of headers. */
-#define LinearImplicitCellEmbedder_h
+#define ImageLinearCellEmbedder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/images/CImageContainer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,26 +51,27 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-    Description of template class 'LinearImplicitCellEmbedder' <p>
-    \brief Aim: model of cellular embedder for implicit functions,
+    Description of template class 'ImageLinearCellEmbedder' <p>
+    \brief Aim: model of cellular embedder for images.
     (default constructible, copy constructible, assignable).
    
     @tparam TKSpace the cellular grid space definition.
-    @tparam TImplicitFunction the type of implicit function.
+    @tparam TImage the type of implicit function, a model of CImage.
     @tparam TEmbedder the type of digital embedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
   
   template < typename TKSpace,
-             typename TImplicitFunction,
+             typename TImage,
              typename TEmbedder >
-  class LinearImplicitCellEmbedder
+  class ImageLinearCellEmbedder
   {
+    BOOST_CONCEPT_ASSERT(( CImageContainer< TImage > ));
 
   public:
     typedef TKSpace KSpace;
-    typedef TImplicitFunction ImplicitFunction;
+    typedef TImage Image;
     typedef TEmbedder Embedder;
     typedef typename KSpace::Cell Cell;
     typedef typename KSpace::SCell SCell;
@@ -78,42 +80,43 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealVector RealVector;
     typedef typename Space::Integer Integer;
-    typedef typename ImplicitFunction::Value Value;
+    typedef typename Image::Value Value;
     
     /** 
         Constructor. The object is not valid.
      */
-    LinearImplicitCellEmbedder();
+    ImageLinearCellEmbedder();
     
     /** 
      * Destructor.
      */    
-    ~LinearImplicitCellEmbedder();
+    ~ImageLinearCellEmbedder();
 
     /**
        Copy constructor.
        @param other the object to copy.
      */
-    LinearImplicitCellEmbedder( const LinearImplicitCellEmbedder & other );
+    ImageLinearCellEmbedder( const ImageLinearCellEmbedder & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    LinearImplicitCellEmbedder & 
-    operator= ( const LinearImplicitCellEmbedder & other );
+    ImageLinearCellEmbedder & 
+    operator= ( const ImageLinearCellEmbedder & other );
 
     /**
        Initializes the embedder with the space \a K, the implicit
        function \a f, the digital embedder \a e.
        
        @param K any cellular grid space.
-       @param f an implicit function
+       @param f an image
        @param e a digital embedder (like a GaussDigitizer).
+       @param iso the threshold value that defines the linear embedding.
     */
-    void init( const KSpace & K, const ImplicitFunction & f, 
-               const Embedder & e );
+    void init( const KSpace & K, const Image & f, 
+               const Embedder & e, Value iso_value );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -146,41 +149,6 @@ namespace DGtal
      */
     RealPoint embedSCell( const SCell & scell ) const;
 
-    /**
-       Maps a digital point to its corresponding embedding position
-       and gradient vector in the Euclidean space.
-       
-       @param p any digital point in the digital space.
-       @param x its embedding in the Euclidean space.
-       @param grad (returns) its gradient vector at the point given by
-       the current embedder in the Euclidean space.
-     */
-    void embed( const Point & p, RealPoint & x, RealVector & grad ) const;
-
-    /**
-       Maps a cell to its corresponding gradient vector in the
-       Euclidean space, by a linear guess of its position.
-       
-       @param cell any cell in the cellular grid space.
-       @param x its embedding in the Euclidean space.
-       @param grad (returns) its gradient vector at the point given by
-       the current embedder in the Euclidean space.
-     */
-    void embedCell( const Cell & cell, 
-                    RealPoint & x, RealVector & grad ) const;
-
-    /**
-       Maps a signed cell to its corresponding gradient vector in the
-       Euclidean space, by a linear guess of its position. NB: the
-       signed is not used.
-       
-       @param scell any cell in the cellular grid space.
-       @param x its embedding in the Euclidean space.
-       @param grad (returns) its gradient vector at the point given by
-       the current embedder in the Euclidean space.
-     */
-    void embedSCell( const SCell & scell, 
-                     RealPoint & x, RealVector & grad ) const;
     
     // ----------------------- Interface --------------------------------------
   public:
@@ -204,41 +172,43 @@ namespace DGtal
    
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
-    /// A pointer on the implicit function.
-    const ImplicitFunction* myPtrFct;
+    /// A pointer on the image.
+    const Image* myPtrImage;
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
-   
+    /// The threshold value for the linear embedding.
+    Value myIsoValue;
+    
     // ------------------------- Hidden services ------------------------------
   protected:
 
   private:    
     
-  }; // end of class LinearImplicitCellEmbedder
+  }; // end of class ImageLinearCellEmbedder
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'LinearImplicitCellEmbedder'.
+   * Overloads 'operator<<' for displaying objects of class 'ImageLinearCellEmbedder'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'LinearImplicitCellEmbedder' to write.
+   * @param object the object of class 'ImageLinearCellEmbedder' to write.
    * @return the output stream after the writing.
    */
-  template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
+  template < typename TKSpace, typename TImage, typename TEmbedder >
   std::ostream&
   operator<< ( std::ostream & out, 
-               const LinearImplicitCellEmbedder<TKSpace, TImplicitFunction, TEmbedder> & object );
+               const ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/LinearImplicitCellEmbedder.ih"
+#include "DGtal/images/ImageLinearCellEmbedder.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LinearImplicitCellEmbedder_h
+#endif // !defined ImageLinearCellEmbedder_h
 
-#undef LinearImplicitCellEmbedder_RECURSES
-#endif // else defined(LinearImplicitCellEmbedder_RECURSES)
+#undef ImageLinearCellEmbedder_RECURSES
+#endif // else defined(ImageLinearCellEmbedder_RECURSES)

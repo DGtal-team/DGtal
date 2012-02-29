@@ -1,33 +1,34 @@
 /**
- * @file volScanBoundary.cpp
+ * @file volMarchingCubes.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/06
  *
- * An example file named volScanBoundary.
+ * An example file named volMarchingCubes.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-//! [volScanBoundary-basicIncludes]
+//! [volMarchingCubes-basicIncludes]
 #include <iostream>
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/Color.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/ImageLinearCellEmbedder.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
-//! [volScanBoundary-basicIncludes]
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/SetOfSurfels.h"
+//! [volMarchingCubes-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -42,11 +43,13 @@ void usage( int, char** argv )
   std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT>" << std::endl;
   std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>." << std::endl;
   std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT <= I(v) <= maxT." << std::endl;
+  std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency." << std::endl;
+
 }
 
 int main( int argc, char** argv )
 {
-  if ( argc < 4 )
+  if ( argc < 5 )
     {
       usage( argc, argv );
       return 1;
@@ -54,8 +57,9 @@ int main( int argc, char** argv )
   std::string inputFilename = argv[ 1 ];
   unsigned int minThreshold = atoi( argv[ 2 ] );
   unsigned int maxThreshold = atoi( argv[ 3 ] );
+  bool intAdjacency = atoi( argv[ 4 ] ) == 0;
 
-  //! [volScanBoundary-readVol]
+  //! [volMarchingCubes-readVol]
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
@@ -64,10 +68,10 @@ int main( int argc, char** argv )
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           minThreshold, maxThreshold);
   trace.endBlock();
-  //! [volScanBoundary-readVol]
+  //! [volMarchingCubes-readVol]
   
   
-  //! [volScanBoundary-KSpace]
+  //! [volMarchingCubes-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), 
@@ -78,31 +82,43 @@ int main( int argc, char** argv )
       return 2;
     }
   trace.endBlock();
-  //! [volScanBoundary-KSpace]
+  //! [volMarchingCubes-KSpace]
 
-  //! [volScanBoundary-ExtractingSurface]
+  //! [volMarchingCubes-SurfelAdjacency]
+  typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
+  MySurfelAdjacency surfAdj( intAdjacency ); // interior in all directions.
+  //! [volMarchingCubes-SurfelAdjacency]
+
+  //! [volMarchingCubes-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by scanning the space. " );
-  KSpace::SCellSet boundary;
-  Surfaces<KSpace>::sMakeBoundary( boundary, ks, set3dPredicate,
+  typedef KSpace::SurfelSet SurfelSet;
+  typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
+  typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
+  MySetOfSurfels theSetOfSurfels( ks, surfAdj );
+  Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
+                                   ks, set3dPredicate,
                                    image.domain().lowerBound(), 
                                    image.domain().upperBound() );
+  MyDigitalSurface digSurf( theSetOfSurfels );
+  trace.info() << "Digital surface has " << digSurf.size() << " surfels."
+               << std::endl;
   trace.endBlock();
-  //! [volScanBoundary-ExtractingSurface]
+  //! [volMarchingCubes-ExtractingSurface]
 
-  //! [volScanBoundary-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
-  QApplication application(argc,argv);
-  Viewer3D viewer;
-  viewer.show(); 
-  viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );
-  unsigned long nbSurfels = 0;
-  for ( KSpace::SCellSet::const_iterator it = boundary.begin(),
-          it_end = boundary.end(); it != it_end; ++it, ++nbSurfels )
-    viewer << *it;
-  viewer << Viewer3D::updateDisplay;
-  trace.info() << "nb surfels = " << nbSurfels << std::endl;
+  //! [volMarchingCubes-makingOFF]
+  trace.beginBlock( "Making OFF surface <marching-cube.off>. " );
+  typedef CanonicEmbedder< Space > MyEmbedder;
+  typedef 
+    ImageLinearCellEmbedder< KSpace, Image, MyEmbedder > CellEmbedder;
+  CellEmbedder cellEmbedder;
+  MyEmbedder trivialEmbedder;
+  cellEmbedder.init( ks, image, trivialEmbedder, minThreshold );
+  ofstream out( "marching-cube.off" );
+  if ( out.good() )
+    digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );
+  out.close();
   trace.endBlock();
-  return application.exec();
-  //! [volScanBoundary-DisplayingSurface]
+  //! [volMarchingCubes-makingOFF]
+  return 0;
 }
 

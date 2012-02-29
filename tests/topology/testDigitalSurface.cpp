@@ -35,6 +35,7 @@
 #include "DGtal/topology/ImplicitDigitalSurface.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/ExplicitDigitalSurface.h"
+#include "DGtal/topology/LightExplicitDigitalSurface.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
@@ -369,6 +370,117 @@ bool testExplicitDigitalSurface()
   return nbok == nb;
 }
 
+//-----------------------------------------------------------------------------
+// Testing LightExplicitDigitalSurface
+//-----------------------------------------------------------------------------
+bool testLightExplicitDigitalSurface()
+{
+  using namespace Z3i;
+  typedef ImageContainerBySTLVector<Domain,DGtal::uint8_t> Image;
+  typedef FrontierPredicate<KSpace, Image> SurfelPredicate;
+  typedef LightExplicitDigitalSurface<KSpace,SurfelPredicate> Frontier;
+  typedef Frontier::SurfelConstIterator ConstIterator;
+  typedef Frontier::Tracker Tracker;
+  typedef Frontier::SCell SCell;
+  typedef Frontier::Surfel Surfel;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block ... LightExplicitDigitalSurface" );
+  Point p1( -5, -5, -5 );
+  Point p2( 5, 5, 5 );
+  KSpace K;
+  nbok += K.init( p1, p2, true ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "K.init() is ok" << std::endl;
+  Image image( p1, p2 );
+  fillImage3D( image, p1, p2, 0 );
+  fillImage3D( image, Point(-2,-2,-2 ), Point( 2, 2, 2 ), 1 );
+  fillImage3D( image, Point( 0, 0,-2 ), Point( 0, 0, 2 ), 2 );
+  fillImage3D( image, Point(-1,-1, 2 ), Point( 1, 1, 2 ), 2 );
+  {
+    SCell vox2  = K.sSpel( Point( 0, 0, 2 ), K.POS );
+    SCell bel20 = K.sIncident( vox2, 2, true );
+    SurfelPredicate surfPredicate( K, image, 2, 0 );
+    Frontier frontier20( K, surfPredicate,
+                         SurfelAdjacency<KSpace::dimension>( true ), 
+                         bel20 );
+    unsigned int nbsurfels = 0;
+    for ( ConstIterator it = frontier20.begin(), it_end = frontier20.end();
+          it != it_end; ++it )
+      {
+        ++nbsurfels;
+      }
+    trace.info() << nbsurfels << " surfels found." << std::endl;
+    nb++, nbok += nbsurfels == 9 ? 1 : 0;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "frontier20: nbsurfels == 9" << std::endl;
+  }
+  {
+    SCell vox1  = K.sSpel( Point( 2, 0, 0 ), K.POS );
+    SCell bel10 = K.sIncident( vox1, 0, true );
+    SurfelPredicate surfPredicate( K, image, 1, 0 );
+    Frontier frontier10( K, surfPredicate,
+                         SurfelAdjacency<KSpace::dimension>( true ), 
+                         bel10 );
+    unsigned int nbsurfels = 0;
+    for ( ConstIterator it = frontier10.begin(), it_end = frontier10.end();
+          it != it_end; ++it )
+      {
+        ++nbsurfels;
+      }
+    trace.info() << nbsurfels << " surfels found." << std::endl;
+    nb++, nbok += nbsurfels == 140 ? 1 : 0; // 4*25(sides) + 16(top) + 24(bot)
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "frontier10: nbsurfels == 140" << std::endl;
+  }
+  {
+    SCell vox1  = K.sSpel( Point( 1, 0, 0 ), K.POS );
+    SCell bel12 = K.sIncident( vox1, 0, false );
+    SurfelPredicate surfPredicate( K, image, 1, 2 );
+    Frontier frontier12( K, surfPredicate,
+                         SurfelAdjacency<KSpace::dimension>( true ), 
+                         bel12 );
+    unsigned int nbsurfels = 0;
+    for ( ConstIterator it = frontier12.begin(), it_end = frontier12.end();
+          it != it_end; ++it )
+      {
+        ++nbsurfels;
+      }
+    trace.info() << nbsurfels << " surfels found." << std::endl;
+    nb++, nbok += nbsurfels == 36 ? 1 : 0; // 8+12(top) + 16(axis) 
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "frontier12: nbsurfels == 36" << std::endl;
+  }
+  {
+    typedef BoundaryPredicate<KSpace, Image> SecondSurfelPredicate;
+    typedef LightExplicitDigitalSurface<KSpace,SecondSurfelPredicate> Boundary;
+    typedef Boundary::SurfelConstIterator ConstIterator;
+    typedef Boundary::Tracker Tracker;
+    typedef Boundary::SCell SCell;
+    typedef Boundary::Surfel Surfel;
+    SCell vox1  = K.sSpel( Point( 1, 0, 0 ), K.POS );
+    SCell bel1x = K.sIncident( vox1, 0, false );
+    SecondSurfelPredicate surfPredicate( K, image, 1 );
+    Boundary boundary1x( K, surfPredicate,
+                         SurfelAdjacency<KSpace::dimension>( true ), 
+                         bel1x );
+    unsigned int nbsurfels = 0;
+    for ( ConstIterator it = boundary1x.begin(), it_end = boundary1x.end();
+          it != it_end; ++it )
+      {
+        ++nbsurfels;
+      }
+    trace.info() << nbsurfels << " surfels found." << std::endl;
+    nb++, nbok += nbsurfels == 176 ? 1 : 0; 
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "boundary1x: nbsurfels == 176" << std::endl;
+  }
+  trace.endBlock();
+  return nbok == nb;
+}
+
 
 
 template <typename KSpace>
@@ -477,6 +589,7 @@ int main( int argc, char** argv )
     && testImplicitDigitalSurface()
     && testLightImplicitDigitalSurface()
     && testExplicitDigitalSurface()
+    && testLightExplicitDigitalSurface()
     && testDigitalSurface<KhalimskySpaceND<2> >()
     && testDigitalSurface<KhalimskySpaceND<3> >()
     && testDigitalSurface<KhalimskySpaceND<4> >();
