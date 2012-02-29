@@ -56,7 +56,7 @@ namespace DGtal
   // template class SetOfSurfels
   /**
      Description of template class 'SetOfSurfels' <p> \brief Aim: A
-     model of DigitalSurfaceContainer which defines the digital
+     model of CDigitalSurfaceContainer which defines the digital
      surface as connected surfels. The shape is determined by the set
      of surfels that composed the surface. The set of surfels is
      stored in this container.

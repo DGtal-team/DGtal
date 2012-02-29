@@ -57,7 +57,7 @@ namespace DGtal
   // template class LightExplicitDigitalSurface
   /**
      Description of template class 'LightExplicitDigitalSurface' <p>
-     \brief Aim: A model of DigitalSurfaceContainer which defines the digital
+     \brief Aim: A model of CDigitalSurfaceContainer which defines the digital
      surface as connected surfels. The shape is determined by a
      predicate telling whether a given surfel belongs or not to the
      shape boundary. The whole boundary is not precomputed nor stored. You may
