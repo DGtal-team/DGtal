@@ -304,8 +304,8 @@ namespace DGtal {
    - the boundary of an explicit set of digital points
    - the boundary of a set of digital points, defined implicitly by a
      predicate: Point -> bool
-   - a set of oriented surfels, defined implicitly by a
-     predicate: Surfel -> bool
+   - a set of oriented surfels, implicitly by a
+     predicate: Oriented Surfel -> bool
    - the boundary of a region in a labelled image
    - the frontier between two regions in a labelled image
    - ...
@@ -361,7 +361,8 @@ namespace DGtal {
      and a predicate Surfel->bool. Represents a (connected) set of
      surfels defined implicitly by a predicate.  Do not
      compute at instanciation the set of surfels, but rather visits
-     the surface on demand. To do.
+     the surface on demand. @note Not yet implemented.
+
 
    Depending of what is your digital surface, you should choose your
    container accordingly:
