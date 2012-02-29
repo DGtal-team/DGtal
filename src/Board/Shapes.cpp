@@ -2141,15 +2141,15 @@ GouraudTriangle::GouraudTriangle( const Point & p0, float brightness0,
     _path << p0;
     _path << p1;
     _path << p2;
-    _color0.red( static_cast<unsigned char>( std::min( 255.0f, _color0.red() * brightness0 ) ) );
-    _color0.green( static_cast<unsigned char>( std::min( 255.0f, _color0.green() * brightness0 ) ) );
-    _color0.blue( static_cast<unsigned char>( std::min( 255.0f, _color0.blue() * brightness0 ) ) );
-    _color1.red( static_cast<unsigned char>( std::min( 255.0f, _color1.red() * brightness1 ) ) );
-    _color1.green( static_cast<unsigned char>( std::min( 255.0f, _color1.green() * brightness1 ) ) );
-    _color1.blue( static_cast<unsigned char>( std::min( 255.0f, _color1.blue() * brightness1 ) ) );
-    _color2.red( static_cast<unsigned char>( std::min( 255.0f, _color2.red() * brightness2 ) ) );
-    _color2.green( static_cast<unsigned char>( std::min( 255.0f, _color2.green() * brightness2 ) ) );
-    _color2.blue( static_cast<unsigned char>( std::min( 255.0f, _color2.blue() * brightness2 ) ) );
+    _color0.red( static_cast<unsigned char>( /*std::*/min( 255.0f, _color0.red() * brightness0 ) ) );
+    _color0.green( static_cast<unsigned char>( /*std::*/min( 255.0f, _color0.green() * brightness0 ) ) );
+    _color0.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, _color0.blue() * brightness0 ) ) );
+    _color1.red( static_cast<unsigned char>( /*std::*/min( 255.0f, _color1.red() * brightness1 ) ) );
+    _color1.green( static_cast<unsigned char>( /*std::*/min( 255.0f, _color1.green() * brightness1 ) ) );
+    _color1.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, _color1.blue() * brightness1 ) ) );
+    _color2.red( static_cast<unsigned char>( /*std::*/min( 255.0f, _color2.red() * brightness2 ) ) );
+    _color2.green( static_cast<unsigned char>( /*std::*/min( 255.0f, _color2.green() * brightness2 ) ) );
+    _color2.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, _color2.blue() * brightness2 ) ) );
 
     Shape::_fillColor.red( ( _color0.red() + _color1.red() + _color2.red() ) / 3 );
     Shape::_fillColor.green( ( _color0.green() + _color1.green() + _color2.green() ) / 3 );
@@ -2316,7 +2316,7 @@ GouraudTriangle::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-GouraudTriangle::flushCairo( cairo_t */*cr*/,
+GouraudTriangle::flushCairo( cairo_t * /*cr*/,
 			     const TransformCairo & /*transform*/ ) const
 {
 }
@@ -2543,7 +2543,7 @@ Text::flushSVG( std::ostream & stream,
 
 #ifdef WITH_CAIRO
 void
-Text::flushCairo( cairo_t */*cr*/,
+Text::flushCairo( cairo_t * /*cr*/,
 		  const TransformCairo & /*transform*/ ) const
 {
 }

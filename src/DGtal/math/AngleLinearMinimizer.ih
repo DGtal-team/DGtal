@@ -59,7 +59,7 @@ DGtal::AngleLinearMinimizer::sum() const
  */
 INLINE
 double 
-DGtal::AngleLinearMinimizer::max() const
+DGtal::AngleLinearMinimizer::maxAngle() const
 {
   return myMax;
 }

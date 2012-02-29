@@ -617,15 +617,15 @@ Board::fillGouraudTriangle( const Point & p1,
   DGtal::Color color1( _state.penColor );
   DGtal::Color color2( _state.penColor );
   DGtal::Color color3( _state.penColor );
-  color1.red( static_cast<unsigned char>( std::min( 255.0f, color1.red() * brightness1 ) ) );
-  color1.green( static_cast<unsigned char>( std::min( 255.0f, color1.green() * brightness1 ) ) );
-  color1.blue( static_cast<unsigned char>( std::min( 255.0f, color1.blue() * brightness1 ) ) );
-  color2.red( static_cast<unsigned char>( std::min( 255.0f, color2.red() * brightness2 ) ) );
-  color2.green( static_cast<unsigned char>( std::min( 255.0f, color2.green() * brightness2 ) ) );
-  color2.blue( static_cast<unsigned char>( std::min( 255.0f, color2.blue() * brightness2 ) ) );
-  color3.red( static_cast<unsigned char>( std::min( 255.0f, color3.red() * brightness3 ) ) );
-  color3.green( static_cast<unsigned char>( std::min( 255.0f, color3.green() * brightness3 ) ) );
-  color3.blue( static_cast<unsigned char>( std::min( 255.0f, color3.blue() * brightness3 ) ) );
+  color1.red( static_cast<unsigned char>( /*std::*/min( 255.0f, color1.red() * brightness1 ) ) );
+  color1.green( static_cast<unsigned char>( /*std::*/min( 255.0f, color1.green() * brightness1 ) ) );
+  color1.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, color1.blue() * brightness1 ) ) );
+  color2.red( static_cast<unsigned char>( /*std::*/min( 255.0f, color2.red() * brightness2 ) ) );
+  color2.green( static_cast<unsigned char>( /*std::*/min( 255.0f, color2.green() * brightness2 ) ) );
+  color2.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, color2.blue() * brightness2 ) ) );
+  color3.red( static_cast<unsigned char>( /*std::*/min( 255.0f, color3.red() * brightness3 ) ) );
+  color3.green( static_cast<unsigned char>( /*std::*/min( 255.0f, color3.green() * brightness3 ) ) );
+  color3.blue( static_cast<unsigned char>( /*std::*/min( 255.0f, color3.blue() * brightness3 ) ) );
   fillGouraudTriangle( Point( _state.unit(p1.x), _state.unit(p1.y) ), color1,
            Point( _state.unit(p2.x), _state.unit(p2.y) ), color2,
            Point( _state.unit(p3.x), _state.unit(p3.y) ), color3,
@@ -1076,7 +1076,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPNG:
     default:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cairoWidth, cairoHeight);
+      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, (int)cairoWidth, (int)cairoHeight);
   }
   
   cr = cairo_create (surface);
