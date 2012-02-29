@@ -80,15 +80,6 @@ else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
     ADD_DEFINITIONS(-DINLINE=)
 endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
 
-#------------------------------------------------------------------------------
-# Examples
-#------------------------------------------------------------------------------
-OPTION(BUILD_EXAMPLES "Build examples." ON)
-IF (BUILD_EXAMPLES)
-  add_subdirectory (examples)
-ENDIF(BUILD_EXAMPLES)
-
-
 # -----------------------------------------------------------------------------
 # Benchmark target
 # -----------------------------------------------------------------------------

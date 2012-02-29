@@ -4,7 +4,6 @@ SET(DGTAL_EXAMPLES_SRC
   khalimskySpaceScanner
 )
 
-
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
      homotopicThinning3D
