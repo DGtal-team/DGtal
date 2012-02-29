@@ -298,9 +298,9 @@ namespace DGtal
      * @param near near distance.
      * @param far far distance.
      */
-    CameraZNearFar( const double near, const double far )
+    CameraZNearFar( const double _near, const double _far )
     {
-      ZNear=near; ZFar=far;
+      ZNear=_near; ZFar=_far;
     }
     
     /*virtual void setStyleDisplay3D( Display3D & viewer) const

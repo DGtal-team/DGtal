@@ -120,7 +120,7 @@ namespace DGtal
      * @param near near distance.
      * @param far far distance.
      */
-    void setNearFar(double near, double far) { ZNear = near; ZFar = far; }
+    void setNearFar(double _near, double _far) { ZNear = _near; ZFar = _far; }
   
     /**
      * Save a Cairo image.

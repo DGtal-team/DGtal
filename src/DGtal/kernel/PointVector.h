@@ -630,14 +630,14 @@ namespace DGtal
      * 
      * @return the maximum value.
      */
-    Component max() const;
+    Component maxPointVector() const;
    
     /** 
      * Return the minimum component value of a point/vector.
      * 
      * @return the minimum value.
      */ 
-    Component min() const;
+    Component minPointVector() const;
 
     /** 
      * Return the iterator on the component with maximim value of a
