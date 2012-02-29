@@ -579,7 +579,7 @@ DGtal::PointVector<dim, TComponent>::isUpper( const Self& p ) const
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
-DGtal::PointVector<dim, TComponent>::max(  ) const
+DGtal::PointVector<dim, TComponent>::maxPointVector(  ) const
 {
   return  *std::max_element(this->begin(), this->end());
 }
@@ -587,7 +587,7 @@ DGtal::PointVector<dim, TComponent>::max(  ) const
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
-DGtal::PointVector<dim, TComponent>::min( ) const
+DGtal::PointVector<dim, TComponent>::minPointVector( ) const
 {
   return  *std::min_element(this->begin(), this->end());
 }

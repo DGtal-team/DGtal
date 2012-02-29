@@ -27,6 +27,12 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifdef _MSC_VER
+#include <windows.h>
+#include <GL/gl.h>
+#include "DGtal/io/viewers/windows/GL/glext.h"
+#endif
+
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
 #include <QColor>
@@ -179,8 +185,15 @@ DGtal::Viewer3D::draw()
     }  
 }
 
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
 
-
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
 
 void
 DGtal::Viewer3D::init()
@@ -220,7 +233,13 @@ DGtal::Viewer3D::init()
   
 }
 
+#if defined( _HAS_MSVC_MAX_ )
+#define max(A,B) ((A)>(B)?(A):(B))
+#endif
 
+#if defined( _HAS_MSVC_MIN_ )
+#define min(A,B) ((A)<(B)?(A):(B))
+#endif
 
 void 
 DGtal::Viewer3D::sortSurfelFromCamera()
