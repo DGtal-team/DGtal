@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file implicitSurface.cpp
+ * @file trackImplicitPolynomialSurfaceToOFF.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -28,7 +28,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-//! [implicitSurface-basicIncludes]
+//! [trackImplicitPolynomialSurfaceToOFF-basicIncludes]
 #include <iostream>
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -43,7 +43,7 @@
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
-//! [implicitSurface-basicIncludes]
+//! [trackImplicitPolynomialSurfaceToOFF-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -60,7 +60,7 @@ void usage( int argc, char** argv )
   std::cerr << "\t - displays the boundary of a shape defined implicitly by a 3-polynomial <Polynomial>." << std::endl;
   std::cerr << "\t - P and Q defines the bounding box." << std::endl;
   std::cerr << "\t - step is the grid step." << std::endl;
-  std::cerr << "\t - You may try x3y+xz3+y3z+z3+5z or (y2+z2-1)^2 +(x2+y2-1)^3 " << std::endl;
+  std::cerr << "\t - You may try x^3y+xz^3+y^3z+z^3+5z or (y^2+z^2-1)^2 +(x^2+y^2-1)^3 " << std::endl;
   std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
 
@@ -80,7 +80,7 @@ int main( int argc, char** argv )
     }
   double step = atof( argv[ 8 ] );
 
-  //! [implicitSurface-makeSurface]
+  //! [trackImplicitPolynomialSurfaceToOFF-makeSurface]
   trace.beginBlock( "Making polynomial surface." );
   typedef typename Space::RealPoint RealPoint;
   typedef typename RealPoint::Coordinate Ring;
@@ -132,9 +132,9 @@ int main( int argc, char** argv )
   dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
   Domain domain = dshape.getDomain();
   trace.endBlock();
-  //! [implicitSurface-makeSurface]
+  //! [trackImplicitPolynomialSurfaceToOFF-makeSurface]
 
-  //! [implicitSurface-KSpace]
+  //! [trackImplicitPolynomialSurfaceToOFF-KSpace]
   // Construct the Khalimsky space from the image domain
   KSpace K;
   // NB: it is \b necessary to work with a \b closed cellular space
@@ -148,14 +148,14 @@ int main( int argc, char** argv )
       trace.error() << "Error in the Khamisky space construction."<<std::endl;
       return 2;
     }
-  //! [implicitSurface-KSpace]
+  //! [trackImplicitPolynomialSurfaceToOFF-KSpace]
 
-  //! [implicitSurface-SurfelAdjacency]
+  //! [trackImplicitPolynomialSurfaceToOFF-SurfelAdjacency]
   typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
-  //! [implicitSurface-SurfelAdjacency]
+  //! [trackImplicitPolynomialSurfaceToOFF-SurfelAdjacency]
 
-  //! [implicitSurface-ExtractingSurface]
+  //! [trackImplicitPolynomialSurfaceToOFF-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by tracking the space. " );
   typedef KSpace::Surfel Surfel;
   typedef KSpace::SurfelSet SurfelSet;
@@ -170,9 +170,9 @@ int main( int argc, char** argv )
                                    K, surfAdj, 
                                    dshape, bel );
   trace.endBlock();
-  //! [implicitSurface-ExtractingSurface]
+  //! [trackImplicitPolynomialSurfaceToOFF-ExtractingSurface]
 
-  //! [implicitSurface-makingOFF]
+  //! [trackImplicitPolynomialSurfaceToOFF-makingOFF]
   trace.beginBlock( "Making OFF surface <marching-cube.off>. " );
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
@@ -191,7 +191,7 @@ int main( int argc, char** argv )
     digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );
   out.close();
   trace.endBlock();
-  //! [implicitSurface-makingOFF]
+  //! [trackImplicitPolynomialSurfaceToOFF-makingOFF]
 
   return 0;
 }
