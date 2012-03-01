@@ -63,6 +63,7 @@ digraph G {
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
     CDomainAdjacency -> CAdjacency ; 
+    CUndirectedSimpleGraph -> CSinglePassConstRange;
     CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
     label="Topology";
   }
