@@ -54,19 +54,22 @@ surface, tracking the boundary of a shape, defining cells and
 incidence operations. This package is notably used by the geometry
 package, especially to define curves and surfaces.
 
+Since 0.4.1, high-level classes are provided to navigate onto digital
+surfaces and to represent the topology on the surface.
+
 @b Modules
  - \ref dgtal_topology
  - \ref dgtal_cellular_topology
+ - \ref dgtal_digital_surface
+ - \ref dgtal_helpers_surfaces
 
  @b Related @b documentation @b pages
 
  @b Related @b examples
-  - 3dBorderExtraction.cpp, 3dBorderExtractionImg.cpp
-  - homotopicThinning3D.cpp
-  - ctopo-1.cpp, ctopo-1-3d.cpp, ctopo-1s-3d.cpp
-  - ctopo-2.cpp, ctopo-2-3d.cpp
-  - khalimskySpaceScanner.cpp
-  - 3dKSSurfaceExtraction.cpp
+  - 3dBorderExtraction.cpp, 3dBorderExtractionImg.cpp, homotopicThinning3D.cpp
+  - ctopo-1.cpp, ctopo-1-3d.cpp, ctopo-1s-3d.cpp, khalimskySpaceScanner.cpp
+  - ctopo-2.cpp, ctopo-2-3d.cpp, 3dKSSurfaceExtraction.cpp
+  - volScanBoundary.cpp, volTrackBoundary.cpp, volBreadthFirstTraversal.cpp, frontierAndBoundary.cpp
 
 */
 

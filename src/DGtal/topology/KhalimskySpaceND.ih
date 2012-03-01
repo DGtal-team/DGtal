@@ -464,6 +464,33 @@ upperBound() const
 {
   return myUpper;
 }
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+const typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+lowerCell() const
+{
+  return myCellLower;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+const typename DGtal::KhalimskySpaceND< dim, TInteger>::Cell &
+DGtal::KhalimskySpaceND< dim, TInteger>::
+upperCell() const
+{
+  return myCellUpper;
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+bool
+DGtal::KhalimskySpaceND< dim, TInteger>::
+isSpaceClosed() const
+{
+  return myIsClosed;
+}
 
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
