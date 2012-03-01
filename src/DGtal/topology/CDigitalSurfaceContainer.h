@@ -61,7 +61,7 @@ namespace DGtal
      
      - KSpace: the type of cellular grid space in which lies the digital surface.
      - Surfel: the type of an oriented n-1-cell in this space.
-     - SurfelConstIterator: the type for iterating over the of surfels of the digital surface
+     - SurfelConstIterator: the type for iterating over the of surfels of the digital surface, must be a model of boost_concepts::SinglePassIteratorConcept
      - DigitalSurfaceTracker: the type for tracking surfels over the digital surface
      - Size: the integral type for counting elements.
 
