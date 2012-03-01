@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CSinglePassConstRange.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
@@ -39,7 +40,7 @@
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -523,6 +524,8 @@ bool testDigitalSurface()
 
   //Checking the type as a model of CSinglePassConstRange
   BOOST_CONCEPT_ASSERT(( CSinglePassConstRange < MyDS> ));
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph < MyDS> ));
+  
 
   typedef typename MyDS::Surfel Surfel;
   DSContainer* ptrBdry = new DSContainer( K, dig_set );
