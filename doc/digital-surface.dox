@@ -364,7 +364,7 @@ namespace DGtal {
      and a predicate Surfel->bool. Represents a (connected) set of
      surfels defined implicitly by a predicate.  Do not
      compute at instanciation the set of surfels, but rather visits
-     the surface on demand. @note Not yet implemented.
+     the surface on demand.
 
 
    Depending of what is your digital surface, you should choose your
