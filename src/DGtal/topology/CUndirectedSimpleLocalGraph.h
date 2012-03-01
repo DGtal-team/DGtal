@@ -54,15 +54,23 @@ namespace DGtal
   /**
      Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
      @ingroup Concepts
-     @brief Aim:
+     @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
      <p> Refinement of
     
      <p> Associated types :
+
+     - Size: an integral type to count the number of vertices.
+     - Vertex: the type for the vertices of the graph.
+     - VertexSet: the type for storing a set of vertices.
+     - VertexMap: a rebinding structure to associate Value to vertices.
     
      <p> Notation
      - \c X : A type that is a model of CUndirectedSimpleLocalGraph
-     - \c x, \c y : object of type X
+     - \c x : object of type X
+     - \c v : object of type Vertex
+     - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
+     - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
     
      <p> Definitions
     
@@ -79,12 +87,42 @@ namespace DGtal
         <td class=CComplexity> \b Complexity </td>
       </tr>
       <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
+        <td class=CName>            Degree</td> 
+        <td class=CExpression>      x.degree( v )</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      Size</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns the degree of vertex \c v</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Best capacity</td> 
+        <td class=CExpression>      x.bestCapacity()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      Size</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns the approximate number of neighbors to be expected. Useful to prepare data structures.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Neighborhood</td> 
+        <td class=CExpression>      x.writeNeighbors<OutputIterator>( out, v )</td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType>      </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
+        <td class=CSemantics>       Writes with the output iterator \c out the neighboring vertices of \c v.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Neighborhood</td> 
+        <td class=CExpression>      x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p )</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p.</td> 
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>      </td>
       </tr>
@@ -95,7 +133,7 @@ namespace DGtal
     
      <p> Models <br>
 
-     A dummy model (for concept checking) is CCUndirectedSimpleLocalGraphArchetype.
+     - DigitalSurface
 
      <p> Notes <br>
 
