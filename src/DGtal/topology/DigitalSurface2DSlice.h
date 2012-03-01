@@ -84,7 +84,7 @@ namespace DGtal
      extremities of the open slice contour).
 
      @tparam TDigitalSurfaceTracker any model of
-     CDigitalSurfaceContainer: the concrete representation chosen for
+     CDigitalSurfaceTracker: the concrete representation chosen for tracking
      the digital surface.
 
    */
