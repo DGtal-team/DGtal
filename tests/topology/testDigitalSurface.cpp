@@ -41,6 +41,7 @@
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
 #include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/topology/CUndirectedSimpleGraph.h"
 
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -525,6 +526,7 @@ bool testDigitalSurface()
   //Checking the type as a model of CSinglePassConstRange
   BOOST_CONCEPT_ASSERT(( CSinglePassConstRange < MyDS> ));
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph < MyDS> ));
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph < MyDS> ));
   
 
   typedef typename MyDS::Surfel Surfel;
