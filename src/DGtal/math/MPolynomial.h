@@ -680,7 +680,7 @@ public:
        @param s any stream
        @param N degree of the polynomial, default to zero.
     */
-    void selfDisplay( std::ostream & s, int N = 0 ) const
+    void selfDisplay( std::ostream & s, int /*N = 0*/ ) const
     {
       s << myValue;
     }
