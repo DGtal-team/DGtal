@@ -37,7 +37,7 @@ using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void usage( int argc, char** argv )
+void usage( int /*argc*/, char** argv )
 {
   std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT>" << std::endl;
   std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>." << std::endl;

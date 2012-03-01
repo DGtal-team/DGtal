@@ -54,7 +54,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-void usage( int argc, char** argv )
+void usage( int /*argc*/, char** argv )
 {
   std::cerr << "Usage: " << argv[ 0 ] << " <Polynomial> <Px> <Py> <Pz> <Qx> <Qy> <Qz> <step>" << std::endl;
   std::cerr << "\t - displays the boundary of a shape defined implicitly by a 3-polynomial <Polynomial>." << std::endl;

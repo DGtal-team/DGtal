@@ -39,6 +39,8 @@
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
+#include "DGtal/base/CSinglePassConstRange.h"
+
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -226,8 +228,10 @@ bool testLightImplicitDigitalSurface()
       Surfel s = ptrTracker->current();
       Dimension trackDir = * K.sDirs( s );
       Surfel s1, s2;
-      unsigned int m1 = ptrTracker->adjacent( s1, trackDir, true ); 
-      unsigned int m2 = ptrTracker->adjacent( s2, trackDir, false ); 
+      // unsigned int m1 = 
+      ptrTracker->adjacent( s1, trackDir, true ); 
+      // unsigned int m2 = 
+      ptrTracker->adjacent( s2, trackDir, false ); 
       // trace.info() << "s = " << s << std::endl;
       // trace.info() << "s1 = " << s1 << " m1 = " << m1 << std::endl;
       // trace.info() << "s2 = " << s2 << " m2 = " << m2 << std::endl;
@@ -345,10 +349,10 @@ bool testExplicitDigitalSurface()
   {
     typedef BoundaryPredicate<KSpace, Image> SecondSurfelPredicate;
     typedef ExplicitDigitalSurface<KSpace,SecondSurfelPredicate> Boundary;
-    typedef Boundary::SurfelConstIterator ConstIterator;
-    typedef Boundary::Tracker Tracker;
-    typedef Boundary::SCell SCell;
-    typedef Boundary::Surfel Surfel;
+    typedef Boundary::SurfelConstIterator EConstIterator;
+    // typedef Boundary::Tracker Tracker;
+    // typedef Boundary::SCell SCell;
+    // typedef Boundary::Surfel Surfel;
     SCell vox1  = K.sSpel( Point( 1, 0, 0 ), K.POS );
     SCell bel1x = K.sIncident( vox1, 0, false );
     SecondSurfelPredicate surfPredicate( K, image, 1 );
@@ -356,7 +360,7 @@ bool testExplicitDigitalSurface()
                          SurfelAdjacency<KSpace::dimension>( true ), 
                          bel1x );
     unsigned int nbsurfels = 0;
-    for ( ConstIterator it = boundary1x.begin(), it_end = boundary1x.end();
+    for ( EConstIterator it = boundary1x.begin(), it_end = boundary1x.end();
           it != it_end; ++it )
       {
         ++nbsurfels;
@@ -456,10 +460,10 @@ bool testLightExplicitDigitalSurface()
   {
     typedef BoundaryPredicate<KSpace, Image> SecondSurfelPredicate;
     typedef LightExplicitDigitalSurface<KSpace,SecondSurfelPredicate> Boundary;
-    typedef Boundary::SurfelConstIterator ConstIterator;
-    typedef Boundary::Tracker Tracker;
-    typedef Boundary::SCell SCell;
-    typedef Boundary::Surfel Surfel;
+    typedef Boundary::SurfelConstIterator LEConstIterator;
+    //typedef Boundary::Tracker Tracker;
+    //typedef Boundary::SCell SCell;
+    //typedef Boundary::Surfel Surfel;
     SCell vox1  = K.sSpel( Point( 1, 0, 0 ), K.POS );
     SCell bel1x = K.sIncident( vox1, 0, false );
     SecondSurfelPredicate surfPredicate( K, image, 1 );
@@ -467,7 +471,7 @@ bool testLightExplicitDigitalSurface()
                          SurfelAdjacency<KSpace::dimension>( true ), 
                          bel1x );
     unsigned int nbsurfels = 0;
-    for ( ConstIterator it = boundary1x.begin(), it_end = boundary1x.end();
+    for ( LEConstIterator it = boundary1x.begin(), it_end = boundary1x.end();
           it != it_end; ++it )
       {
         ++nbsurfels;
@@ -516,6 +520,10 @@ bool testDigitalSurface()
   trace.beginBlock ( "Testing DigitalSurface" );
   typedef DigitalSetBoundary<KSpace,DigitalSet> DSContainer;
   typedef DigitalSurface<DSContainer> MyDS;
+
+  //Checking the type as a model of CSinglePassConstRange
+  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange < MyDS> ));
+
   typedef typename MyDS::Surfel Surfel;
   DSContainer* ptrBdry = new DSContainer( K, dig_set );
   MyDS digsurf( ptrBdry ); // acquired

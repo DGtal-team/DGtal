@@ -680,7 +680,7 @@ public:
        @param s any stream
        @param N degree of the polynomial, default to zero.
     */
-    void selfDisplay( std::ostream & s, int N = 0 ) const
+    void selfDisplay( std::ostream & s, int /*N = 0*/ ) const
     {
       s << myValue;
     }
@@ -1002,7 +1002,7 @@ private:
        Private constructor for initializing an array of size \a s.
     */
     inline 
-    MPolynomial( bool, Size s, const Alloc & allocator)
+      MPolynomial( bool, Size s, const Alloc & /*allocator*/)
       : myValue(s) 
     {}
     
@@ -1630,7 +1630,7 @@ public:
     Xe_kComputer() {}
 
     MPolynomial<0, Ring, Alloc> 
-    get( unsigned int k, unsigned int e )
+      get( unsigned int /*k*/, unsigned int /*e*/ )
     {
       MPolynomial<0, Ring, Alloc> p = 1;
       return p;

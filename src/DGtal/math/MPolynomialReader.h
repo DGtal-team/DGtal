@@ -356,7 +356,7 @@ namespace DGtal
           ExprNodeMaker emaker( *this );
           boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
           p = (Ring) 1; // emaker.myP;
-          for ( unsigned int i = 1; i <= topnode.exp; ++i )
+          for ( unsigned int i = 1; i <= (unsigned int)topnode.exp; ++i )
             p *= emaker.myP;
         }
       else if ( topnode.op == "*" )
