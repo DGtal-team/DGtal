@@ -79,7 +79,7 @@ bool testImplicitFunctionModels()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Testing class ImplicitFunctionModels" );
   bool res = testImplicitFunctionModels(); // && ... other tests
