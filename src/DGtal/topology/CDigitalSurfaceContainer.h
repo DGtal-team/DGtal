@@ -58,10 +58,17 @@ namespace DGtal
      <p> Refinement of boost_concepts::CopyConstructible
     
      <p> Associated types :
-    
+     
+     - KSpace: the type of cellular grid space in which lies the digital surface.
+     - Surfel: the type of an oriented n-1-cell in this space.
+     - SurfelConstIterator: the type for iterating over the of surfels of the digital surface, must be a model of boost_concepts::SinglePassIteratorConcept
+     - DigitalSurfaceTracker: the type for tracking surfels over the digital surface
+     - Size: the integral type for counting elements.
+
      <p> Notation
-     - \t X : A type that is a model of CDigitalSurfaceContainer
-     - \t x, \t y : object of type X
+     - \c X : A type that is a model of CDigitalSurfaceContainer
+     - \c x : object of type X
+     - \c s : object of type Surfel
     
      <p> Definitions
     
@@ -78,12 +85,82 @@ namespace DGtal
         <td class=CComplexity> \b Complexity </td>
       </tr>
       <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
+        <td class=CName>            Space accessor</td> 
+        <td class=CExpression>      x.space()</td>
         <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
+        <td class=CReturnType>      const KSpace &</td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
+        <td class=CSemantics>       Returns a reference to the cellular grid space in which lies the digital surface.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Inside test</td> 
+        <td class=CExpression>      x.isInside( s )</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c bool</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns \c true iff the surfel \c s belongs to this digital surface.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Beginning of range</td> 
+        <td class=CExpression>      x.begin()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c SurfelConstIterator</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns a const iterator pointing to the first element in the digital surface, seen as a collection of surfels.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            End of range</td> 
+        <td class=CExpression>      x.end()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c SurfelConstIterator</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns an iterator pointing one past the last element in the digital surface, seen as a collection of surfels.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Tracker instanciation</td> 
+        <td class=CExpression>      x.newTracker( s )</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c DigitalSurfaceTracker*</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns a dynamically allocated instance of tracker initialized at the surfel \c s.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Connectedness test</td> 
+        <td class=CExpression>      x.connectedness()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      enum Connectedness </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns either DISCONNECTED, CONNECTED, UNKNOWN depending on the surface.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Number of surfels</td> 
+        <td class=CExpression>      x.nbSurfels()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c Size</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Returns the number of surfels of this surface.</td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity>      </td>
+      </tr>
+      <tr> 
+        <td class=CName>            Empty container test</td> 
+        <td class=CExpression>      x.empty()</td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>      \c bool</td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>       Equivalent to x.size() == 0, but possibly faster.</td> 
         <td class=CPostCondition>   </td> 
         <td class=CComplexity>      </td>
       </tr>
@@ -94,7 +171,7 @@ namespace DGtal
     
      <p> Models <br>
 
-     A dummy model (for concept checking) is CCDigitalSurfaceContainerArchetype.
+     DigitalSetBoundary, SetOfSurfels, ImplicitDigitalSurface, LightImplicitDigitalSurface, ExplicitDigitalSurface, LightExplicitDigitalSurface
 
      <p> Notes <br>
 
@@ -140,7 +217,7 @@ namespace DGtal
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX; // only if T is default constructible.
+    T myX; // do not require T to be default constructible.
     KSpace myKSpace;
     Surfel mySurfel;
     bool myBool;
