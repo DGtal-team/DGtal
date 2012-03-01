@@ -635,7 +635,6 @@ exportEmbeddedSurfaceAs3DOFF
       << nbv << " " << nbf << " " << ( nbe / 2 ) << std::endl;
   // Outputs vertex coordinates (the 3 first ones).
   typedef typename CellEmbedder::RealPoint RealPoint;
-  const KSpace & K = container().space();
   for ( ConstIterator it = begin(), it_end = end();
         it != it_end; ++it )
     {
