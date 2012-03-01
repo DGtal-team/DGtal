@@ -57,7 +57,7 @@ namespace DGtal
   // template class LightImplicitDigitalSurface
   /**
      Description of template class 'LightImplicitDigitalSurface' <p>
-     \brief Aim: A model of DigitalSurfaceContainer which defines the
+     \brief Aim: A model of CDigitalSurfaceContainer which defines the
      digital surface as the boundary of an implicitly define
      shape. The whole boundary is not precomputed nor stored. You may
      use an iterator to visit it.

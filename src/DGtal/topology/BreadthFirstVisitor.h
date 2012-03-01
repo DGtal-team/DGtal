@@ -43,10 +43,12 @@
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
-#include "DGtal/topology/Object.h"
+//#include "DGtal/topology/Object.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -98,7 +100,9 @@ namespace DGtal
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
-    // BOOST_CONCEPT_ASSERT(( CSimpleGraph< Graph > ));
+
+    // Cannot check this since some types using it are incomplete.
+    // BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
     // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------
