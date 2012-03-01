@@ -14,6 +14,11 @@
 # Project related configuration options
 #---------------------------------------------------------------------------
 
+
+#special hack for 1.8.0 compatibility with theold syntax (DC)
+MARKDOWN_SUPPORT = NO
+
+
 # This tag specifies the encoding used for all characters in the config file 
 # that follow. The default is UTF-8 which is also the encoding used for all 
 # text before the first occurrence of this tag. Doxygen uses libiconv (or the b
@@ -560,8 +565,8 @@ INPUT                  = @top_srcdir@/doc \
 			 @top_srcdir@/examples 
 
 
-CITE_BIB_FILES         = ../doc/global.bib
-LATEX_BIB_STYLE = plain
+CITE_BIB_FILES         = @top_srcdir@/doc/global.bib
+LATEX_BIB_STYLE        = plain
 
 
 # This tag can be used to specify the character encoding of the source files 
