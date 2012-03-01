@@ -298,6 +298,22 @@ namespace DGtal {
    set of surface components, how to get 2D contours as slices onto a
    3D surface.
 
+   You may also use the template class DigitalSurface2DSlice, which,
+   given a tracker on a digital surface, computes and store a 2d slice
+   on the associated surface. You may after visit the slice with
+   iterators or circulators. 
+   @code
+   // Tracker is a type of tracker on some digital surface.
+   typedef DigitalSurface2DSlice<Tracker> MySlice;
+   Tracker* ptrTracker = ... ; // some pointer on a tracker.
+   MySlice slicex( ptrTracker, 0 ); // slice containing x-axis
+   MySlice slicey( ptrTracker, 1 ); // slice containing y-axis
+   MySlice slicez( ptrTracker, 2 ); // slice containing z-axis
+   // One of them is invalid in 3D.
+   @endcode
+
+   @see digitalSurfaceSlice.cpp
+
    @section dgtal_digsurf_sec3 3. High-level classes for digital surfaces
 
    Digital surfaces arise in many different contexts:
@@ -307,6 +323,8 @@ namespace DGtal {
    - the boundary of an explicit set of digital points
    - the boundary of a set of digital points, defined implicitly by a
      predicate: Point -> bool
+   - a set of oriented surfels, defined implicitly by a
+     predicate: Surfel -> bool
    - a set of oriented surfels, implicitly by a
      predicate: Oriented Surfel -> bool
    - the boundary of a region in a labelled image
@@ -333,7 +351,8 @@ namespace DGtal {
 
    @subsection dgtal_digsurf_sec3_2 3.2 Models of digital surface containers
 
-   For now, the implemented digital surface container are:
+   For now, the implemented digital surface container are (realization
+   of CDigitalSurfaceContainer):
 
    - model DigitalSetBoundary, parameterized by a cellular space and a
      digital set. Represents the boundary of a digital set (a set of
@@ -416,7 +435,7 @@ namespace DGtal {
    SetPredicate<DigitalSet>). The full code is in
    volBreadthFirstTraversal.cpp.
 
-   @snippet examples/topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
+   @snippet topology/volBreadthFirstTraversal.cpp volBreadthFirstTraversal-SetUpDigitalSurface
 
    Once this is done, the object \c digSurf is a proxy to your
    container. Here the dynamically allocated object is acquired by the

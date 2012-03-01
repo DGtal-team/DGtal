@@ -55,7 +55,7 @@ namespace DGtal
   // template class DigitalSetBoundary
   /**
      Description of template class 'DigitalSetBoundary' <p> \brief
-     Aim: A model of DigitalSurfaceContainer which defines the digital
+     Aim: A model of CDigitalSurfaceContainer which defines the digital
      surface as the boundary of a given digital set. 
      
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
