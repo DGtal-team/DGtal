@@ -136,7 +136,6 @@ int main( int argc, char** argv )
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
   viewer << Viewer3D::updateDisplay;
-  trace.endBlock();
   return application.exec();
 }
 //                                                                           //
