@@ -88,7 +88,9 @@ namespace DGtal
 
      Proxy class to a DigitalSurfaceContainer.
 
-     DigitalSurface is a model of the concept CSinglePassConstRange.
+     DigitalSurface is a model of the concept CUndirectedSimpleGraph,
+     CUndirectedSimpleLocalGraph, CSinglePassConstRange,
+     boost::CopyConstructible, boost::Assignable.
 
      @todo Should be a model of CCubicalComplex
 
