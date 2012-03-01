@@ -44,8 +44,7 @@
 #include <deque>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
-#include "DGtal/topology/CDigitalSurfaceContainer.h"
-#include "DGtal/topology/CDigitalSurfaceContainer.h"
+#include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,7 +57,7 @@ namespace DGtal
 
      \brief Aim: Represents a 2-dimensional slice in a
      DigitalSurface. In a sense, it is a 4-connected contour, open or
-     not. To be valide, it must be connected to some digital surface
+     not. To be valid, it must be connected to some digital surface
      and a starting surfel.
 
      It provides the following inner types: 
@@ -77,178 +76,38 @@ namespace DGtal
      - c() : ConstCirculator
      - rc() : ConstReverseCirculator
      
-     You can use these services to iterate over the elements. 
+     You can use these services to iterate over the elements. Note
+     that c() and rc() are defined so as to start on the same surfel
+     (when dereferenced). The same is true for cstart() and
+     rcstart(). You should use circulators when isClosed() is true,
+     otherwise it will connect unconnected surfels (the two
+     extremities of the open slice contour).
 
-     @tparam TDigitalSurfaceContainer any model of
+     @tparam TDigitalSurfaceTracker any model of
      CDigitalSurfaceContainer: the concrete representation chosen for
      the digital surface.
 
    */
-  template <typename TDigitalSurfaceContainer>
+  template <typename TDigitalSurfaceTracker>
   class DigitalSurface2DSlice
   {
   public:
-    typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
+    typedef TDigitalSurfaceTracker DigitalSurfaceTracker;
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
 
-    typedef DigitalSurface2DSlice<DigitalSurfaceContainer> Self;
+    typedef DigitalSurface2DSlice<DigitalSurfaceTracker> Self;
+    typedef typename DigitalSurfaceTracker::DigitalSurfaceContainer DigitalSurfaceContainer;
     typedef typename DigitalSurfaceContainer::KSpace KSpace;
-    typedef typename DigitalSurfaceContainer::Cell Cell;
-    typedef typename DigitalSurfaceContainer::SCell SCell;
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::Size Size;
     typedef DigitalSurface<DigitalSurfaceContainer> TheDigitalSurface;
-    typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
+
     typedef std::deque<Surfel> Storage;
     typedef typename Storage::const_iterator ConstIterator;
     typedef typename Storage::const_reverse_iterator ConstReverseIterator;
     typedef Circulator<ConstIterator> ConstCirculator;
     typedef Circulator<ConstReverseIterator> ConstReverseCirculator;
 
-    // struct ConstIterator {
-    // public:
-    //   /// The returned type for operator* on 'this'.
-    //   typedef ConstIterator Self;
-    //   typedef Surfel Value;
-
-    //   // stl iterator types.
-    //   typedef std::input_iterator_tag iterator_category;
-    //   typedef Value value_type;
-    //   typedef std::ptrdiff_t difference_type; 
-    //   typedef const Value* pointer;
-    //   typedef const Value& reference;
-
-    // public:
-    //   /// Destructor.
-    //   inline ~ConstIterator() 
-    //   {
-    //     if ( myTracker ) delete myTracker;
-    //   }
-
-    // private:
-    //   /// Constructor. Should not be used at any time.
-    //   inline ConstIterator() 
-    //     : myTracker( 0 )
-    //   {}
-      
-    // public:
-    //   /**
-    //      Copy constructor. 
-    //      @param other any other iterator.
-    //   */
-    //   inline ConstIterator( const Self & other ) 
-    //     : myTracker( new DigitalSurfaceTracker( *other.myTracker ) ),
-    //       myTrackingDir( other.myTrackingDir )
-    //   {}
-
-    //   /** 
-    //       Assignment.
-    //       @param other any other iterator (which may even point to a
-    //       different surface).
-    //       @return a reference to this.
-    //   */
-    //   inline Self & operator=( const Self & other ) 
-    //   {
-    //     if ( this != &other )
-    //       {
-    //         myTracker->move( other.myTracker->current() );
-    //         myTrackingDir = other.myTrackingDir;
-    //       }
-    //     return *this;
-    //   }
-
-    //   /**
-    //      Constructor.
-    //      @param tracker any valid tracker on a digital surface (cloned
-    //      in the iterator).
-    //      @param i any direction different from the orthogonal
-    //      direction to the current surfel.
-    //   */
-    //   inline ConstIterator( const DigitalSurfaceTracker & tracker, 
-    //                         Dimension i )
-    //     : myTracker( new DigitalSurfaceTracker( tracker ) ), myTrackingDir( i )
-    //   {
-    //     ASSERT( ( myTracker->surface().space().sOrthDir( myTracker->current() ) 
-    //               != i ) && "[DGtal::DigitalSurface2DSlice<TDigitalSurfaceContainer>::ConstIterator::ConstIterator(...)] Tracking direction should not be the orthogonal direction of the current surfel." );
-    //   }
-
-    //   inline
-    //   reference
-    //   operator*() const
-    //   {
-    //     ASSERT( myTracker != 0 );
-    //     ASSERT( ( myTrackingDir < KSpace::dimension )
-    //             && "[DGtal::DigitalSurface2DSlice<TDigitalSurfaceContainer>::ConstIterator::operator*()]: you cannot dereferenced an end() iterator.");
-    //     return myTracker->current();
-    //   }
-
-    //   inline
-    //   pointer
-    //   operator->() const
-    //   { 
-    //     ASSERT( myTracker != 0 );
-    //     ASSERT( ( myTrackingDir < KSpace::dimension )
-    //             && "[DGtal::DigitalSurface2DSlice<TDigitalSurfaceContainer>::ConstIterator::operator->()]: you cannot dereferenced an end() iterator.");
-    //     return &( myTracker->current() );
-    //   }
-
-    //   /**
-    //      Pre-increment operator. Moves to the next surfel or becomes end().
-    //      @return a reference on 'this'.
-    //   */
-    //   inline Self& operator++()
-    //   {
-    //     ASSERT( myTracker != 0 );
-    //     ASSERT( ( myTrackingDir < KSpace::dimension )
-    //             && "[DGtal::DigitalSurface2DSlice<TDigitalSurfaceContainer>::ConstIterator::operator++()]: you cannot increment an end() iterator.");
-    //     Surfel s;
-    //     const KSpace & K = myTracker->surface().space();
-    //     bool pos = K.sDirect( myTracker->current(), myTrackingDir );
-    //     uint8_t code = myTracker->adjacent( s, myTrackingDir, pos );
-    //     switch ( code )
-    //       {
-    //       case 0: // invalid move: iterator becomes end().
-    //         myTrackingDir += KSpace::dimension;
-    //         break;
-    //       case 1: // 1 or 3, swap tracking dir and orthogonal dir.
-    //       case 3: myTrackingDir = K.sOrthDir( myTracker->current() );
-    //       case 2: myTracker->move( s ); // move in all 3 cases.
-    //       }
-    //     return *this;
-    //   }
-
-    //   inline
-    //   Self
-    //   operator++(int)
-    //   {
-    //     Self __tmp = *this;
-    //     myVisitor->expand();
-    //     return __tmp;
-    //   }
-
-
-    //   /**
-    //      Equality operator.
-    //      @param other any other iterator.
-    //      @return 'true' whenever the iterators point on the same surfel or when both are invalid.
-    //   */
-    //   inline bool operator==( const Self & other ) const
-    //   {
-    //     if ( myTracker == 0 ) return other.myTracker == 0;
-    //     return other.myTracker == 0 ? false
-    //       : myTracker->current() == other.myTracker->current();
-    //   }
-
-    //   /// Current tracker or 0 if invalid.
-    //   DigitalSurfaceTracker* myTracker;
-    //   /// Tracking direction.
-    //   Dimension myTrackingDir;
-    // };
-    // struct ConstCirculator {
-    //   /// Current tracker or 0 if invalid.
-    //   DigitalSurfaceTracker* myTracker;
-    //   Dimension myTrackingDir;
-    // };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -300,8 +159,33 @@ namespace DGtal
     */
     bool init( DigitalSurfaceTracker* tracker, Dimension i );
 
-    // The number of surfels of this slice.
+    /// The number of surfels of this slice.
     Size size() const;
+
+    /// @return 'true' if the contour is closed, 'false' otherwise.
+    bool isClosed() const;
+
+    /**
+       @return the iterator on the surfel that was given for initialization.
+    */
+    ConstIterator start() const;
+
+    /**
+       @return the reverse iterator on the surfel that was given for
+       initialization.
+    */
+    ConstReverseIterator rstart() const;
+
+    /**
+       @return the circulator on the surfel that was given for initialization.
+    */
+    ConstCirculator cstart() const;
+
+    /**
+       @return the reverse circulator on the surfel that was given for
+       initialization.
+    */
+    ConstReverseCirculator rcstart() const;
 
     // ------------------------- iterator services ----------------------------
   public:
@@ -365,7 +249,9 @@ namespace DGtal
     std::deque<Surfel> mySurfels;
     /// Tells if the slice is closed (true) or open (false).
     bool myIsClosed;
-
+    /// The iterator on the surfel given at initialization (may be
+    /// different from begin() if the slice is open.
+    ConstIterator myStart;
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -404,9 +290,9 @@ namespace DGtal
    * @param object the object of class 'DigitalSurface2DSlice' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDigitalSurfaceContainer>
+  template <typename TDigitalSurfaceTracker>
   std::ostream&
-  operator<< ( std::ostream & out, const DigitalSurface2DSlice<TDigitalSurfaceContainer> & object );
+  operator<< ( std::ostream & out, const DigitalSurface2DSlice<TDigitalSurfaceTracker> & object );
 
 } // namespace DGtal
 

@@ -114,8 +114,8 @@ int main( int argc, char** argv )
   
   //! [digitalSurfaceSlice-ExtractingSlice]
   trace.beginBlock( "Extract slices." );
-  typedef DigitalSurface2DSlice< MySetOfSurfels > My2DSlice;
   typedef MyDigitalSurface::DigitalSurfaceTracker MyTracker;
+  typedef DigitalSurface2DSlice< MyTracker > My2DSlice;
   //Extract an initial boundary cell
   Surfel surf = *digSurf.begin();
   MyTracker* tracker1 = digSurf.container().newTracker( surf );
@@ -130,6 +130,18 @@ int main( int argc, char** argv )
   delete tracker2;
   trace.endBlock();
   //! [digitalSurfaceSlice-ExtractingSlice]
+
+  ASSERT( slice1.start() == slice1.begin() );
+  ASSERT( slice1.cstart() == slice1.c() );
+  ASSERT( *slice1.begin() == surf );
+  ASSERT( *slice1.c() == surf );
+  ASSERT( *slice1.start() == surf );
+  ASSERT( *slice1.cstart() == surf );
+  ASSERT( *slice1.rcstart() == surf );
+  ASSERT( slice1.rcstart() == slice1.rc() );
+  ASSERT( *slice1.rc() == surf );
+  ASSERT( *(slice1.c()+1) == *(slice1.begin()+1) );
+  ASSERT( *(slice1.rc()+1) == *(slice1.rbegin()) );
 
   //! [digitalSurfaceSlice-displayingAll]
   trace.beginBlock( "Display all with QGLViewer." );
