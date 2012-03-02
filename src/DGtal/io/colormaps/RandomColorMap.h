@@ -117,14 +117,14 @@ public:
      *
      * @return The lower bound of the value range.
      */
-    const unsigned int & min() const;
+    const unsigned int & minColorMap() const;
 
   /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-  const unsigned int  & max() const;
+  const unsigned int  & maxColorMap() const;
 
 
   /**
