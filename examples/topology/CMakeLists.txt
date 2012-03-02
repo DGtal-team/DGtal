@@ -2,6 +2,7 @@ SET(DGTAL_EXAMPLES_SRC
   ctopo-1
   ctopo-2
   khalimskySpaceScanner
+  volMarchingCubes
 )
 
 if (  WITH_VISU3D_QGLVIEWER )
@@ -17,8 +18,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      volTrackBoundary
      volBreadthFirstTraversal
      frontierAndBoundary
-     volToOFF
-     volMarchingCubes
+     volToOFF  
      trackImplicitPolynomialSurfaceToOFF
      digitalSurfaceSlice
    )

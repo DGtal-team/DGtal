@@ -15,7 +15,6 @@
 //! [volScanBoundary-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QImageReader>
 #include <QtGui/qapplication.h>
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/readers/VolReader.h"
