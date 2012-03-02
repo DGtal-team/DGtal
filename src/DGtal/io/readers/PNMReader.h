@@ -44,6 +44,10 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4290)
+#endif
+
 namespace DGtal
 {
 

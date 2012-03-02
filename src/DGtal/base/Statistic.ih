@@ -231,7 +231,7 @@ DGtal::Statistic<RealNumberType>::unbiasedVariance() const
 template <typename RealNumberType>
 inline
 RealNumberType
-DGtal::Statistic<RealNumberType>::max() const
+DGtal::Statistic<RealNumberType>::maxStatistic() const
 {
   return myMax;
 }
@@ -242,7 +242,7 @@ DGtal::Statistic<RealNumberType>::max() const
 template <typename RealNumberType>
 inline
 RealNumberType
-DGtal::Statistic<RealNumberType>::min() const
+DGtal::Statistic<RealNumberType>::minStatistic() const
 {
   return myMin;
 }
@@ -388,8 +388,8 @@ DGtal::Statistic<RealNumberType>::selfDisplay
        << " exp=" << mean()
        << " var=" << variance()
        << " uvar=" << unbiasedVariance()
-       << " min=" << min()
-       << " max=" << max()
+       << " min=" << minStatistic()
+       << " max=" << maxStatistic()
        << "]";
 }
 

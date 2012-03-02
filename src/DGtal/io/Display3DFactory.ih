@@ -415,7 +415,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   typename TSpace::RealPoint lowerBound ( h.myLowerBound);
 
   DGtal::Color colDef(250,250,250,10);
-  float shiftSize=0.01;
+  double shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
@@ -672,7 +672,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
@@ -863,7 +863,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;

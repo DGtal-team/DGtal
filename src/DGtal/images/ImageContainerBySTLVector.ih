@@ -39,8 +39,8 @@ template <typename Domain, typename T>
 inline
 ImageContainerBySTLVector<Domain, T>::
 ImageContainerBySTLVector(const Point &aPointA, const Point &aPointB ) :
-  myLowerBound(std::min(aPointA,aPointB)),
-  myUpperBound(std::max(aPointA,aPointB))
+  myLowerBound(/*std::*/min(aPointA,aPointB)),
+  myUpperBound(/*std::*/max(aPointA,aPointB))
 {
   Point dec = myUpperBound - myLowerBound;
   Size ext = 1;

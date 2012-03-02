@@ -283,9 +283,9 @@ namespace DGtal
         const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
-        return NumberTraits<Abscissa>::max();
+        return NumberTraits<Abscissa>::maxNumberTraits();
       if (hi > hj + j - i)
-        return NumberTraits<Abscissa>::min();
+        return NumberTraits<Abscissa>::minNumberTraits();
       return (hj - hi + j + i) / 2;
     }
 
@@ -293,9 +293,9 @@ namespace DGtal
           const Abscissa j, const InternalValue hj ) const
     {
       if (hj <= hi - j + i)
-  return NumberTraits<Abscissa>::max();
+  return NumberTraits<Abscissa>::maxNumberTraits();
       if (hi < hj - j + i)
-        return NumberTraits<Abscissa>::min();
+        return NumberTraits<Abscissa>::minNumberTraits();
       return (hi + i - hj + j ) / 2;
     }
     

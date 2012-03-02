@@ -79,7 +79,7 @@ public:
   iterator_type base() const
   { return current; }
 
-  const reference operator*() const
+  /*const*/ reference operator*() const
   { return *prev; }
 
   reference operator*()
