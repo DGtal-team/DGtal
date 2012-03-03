@@ -1,0 +1,148 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SummationBasedNormalVectorEstimation.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/06/27
+ *
+ * Implementation of inline methods defined in SummationBasedNormalVectorEstimation.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename DigitalSurf,  typename WeightFunctor>
+inline
+DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::LocalConvolutionNormalVectorEstimation(const double h, 
+                                                                                                            const ConstIterator& itb, 
+                                                                                                            const ConstIterator& ite,
+                                                                                                            DigitalSurf * digitalSurface,
+                                                                                                            const WeigtFuncor& aKernelFunctor,
+                                                                                                            const   unsigned int radius) 
+{
+  init(h,itb,ite,aKernelFunctor,radius);
+}
+
+/**
+ * Init.
+ */
+template <typename DigitalSurf,  typename KernelFunctor>
+inline
+void
+DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::init(const double h, 
+                                                                             const ConstIterator& itb, 
+                                                                             const ConstIterator& ite,
+                                                                             DigitalSurf * digitalSurface,
+                                                                             const KernelFunctor & aFunctor,   
+                                                                             const   unsigned int radius)
+{
+  myH = h;
+
+  myBegin = itb;
+  myEnd = ite;
+  
+  myRadius = radius;
+  
+  mySurface = CountedPtr<DigitalSurface> new(digitalSurface);
+
+  myFlagIsClosed = isClosed;
+  myFlagIsInit = true;
+
+  myKernelFunctor =  aFunctor;
+
+}
+
+/**
+ * @return the estimated quantity at *it
+ * from itb till ite
+ */
+template <typename DigitalSurf,  typename KernelFunctor>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::eval(const ConstIterator& itb, 
+                                                                             const ConstIterator& ite,
+                                                                             OutputIterator result)
+{
+  for(ConstIterator it = itb; it != ite; ++it)
+    {
+      Quantity q;
+      *result++ = q;
+    }
+  
+  return result;
+}
+  
+  
+/**
+ * @return the estimated quantity at *it
+ */
+template <typename DigitalSurf,  typename KernelFunctor>
+inline
+typename DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::Quantity 
+DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it)
+{
+  Quantity p; 
+  unsigned int nbSurfels=0;
+
+  typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
+  typedef MyBreadthFirstVisitor::Node MyNode;
+  typedef MyBreadthFirstVisitor::Size MySize;
+  MyBreadthFirstVisitor visitor( mySurface, *it );
+
+  MyNode node;
+  while ((nbSurfels< myRadius) &&  ! visitor.finished() )
+    {
+      node = visitor.current();
+      ++nbSurfels;
+      visitor.expand();
+    }
+  MySize maxDist = node.second;
+
+  return p;
+}
+
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename DigitalSurf,  typename KernelFunctor>
+inline
+bool
+DGtal::LocalConvolutionNormalVectorEstimation<DigitalSurf,KernelFunctor>::isValid() const
+{
+    return true;
+}
+
+

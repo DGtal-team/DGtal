@@ -64,7 +64,8 @@ namespace DGtal
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
      
-     @tparam TSurfelSet a model of CSurfelSet: the type chosen for representing the set of surfels in the space.
+     @tparam TSurfelSet a model of CSurfelSet: the type chosen for 
+     representing the set of surfels in the space.
    */
   template < typename TKSpace, 
              typename TSurfelSet = typename TKSpace::SurfelSet >
