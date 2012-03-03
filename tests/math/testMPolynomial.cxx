@@ -160,7 +160,7 @@ bool testMPolynomial()
   trace.info() << l << std::endl;
   trace.info() << derivative<0>(l) << std::endl;
   trace.info() << gcd(l, derivative<0>(l)) << " (gcd of two previous polys is 1)" << std::endl;
-  nbok += gcd(l, derivative<0>(l)) == 1 * mmonomial<double>(0) ? 1 : 0; 
+  nbok += gcd(l, derivative<0>(l)) == 1.0 * mmonomial<double>(0) ? 1 : 0; 
   nb++;
   trace.info() << "Durchblick (x3y+xz3+y3z+z3+5z)= " << durchblick<double>() << std::endl;
   nbok += true ? 1 : 0; 
