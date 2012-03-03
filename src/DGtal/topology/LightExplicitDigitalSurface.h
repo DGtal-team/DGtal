@@ -89,7 +89,7 @@ namespace DGtal
       typedef Tracker Self;
       typedef LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>
       DigitalSurfaceContainer;
-      typedef typename DigitalSurfaceContainer::Surfel Surfel;
+      typedef typename TKSpace::SCell Surfel;
 
       // -------------------- inner types --------------------
       typedef TKSpace KSpace;

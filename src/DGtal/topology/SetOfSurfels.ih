@@ -256,7 +256,7 @@ inline
 DGtal::Connectedness
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::connectedness() const
 {
-  return Connectedness::UNKNOWN;
+  return UNKNOWN;
 }
 
 // ------------------------- Hidden services ------------------------------
