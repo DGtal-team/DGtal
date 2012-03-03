@@ -251,7 +251,7 @@ inline
 DGtal::Connectedness
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::connectedness() const
 {
-  return Connectedness::UNKNOWN;
+  return UNKNOWN;
 }
 
 // ------------------------- Hidden services ------------------------------
