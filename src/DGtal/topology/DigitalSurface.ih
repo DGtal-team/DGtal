@@ -544,7 +544,7 @@ void
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 exportSurfaceAs3DOFF ( std::ostream & out ) const
 {
-  typedef unsigned long long Number;
+  typedef DGtal::uint64_t Number;
   // Numbers all vertices.
   std::map<Vertex, Number> index;
   Number nbv = 0;
@@ -606,7 +606,7 @@ exportEmbeddedSurfaceAs3DOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  typedef unsigned long long Number;
+  typedef DGtal::uint64_t Number;
   // Numbers all vertices.
   std::map<Vertex, Number> index;
   Number nbv = 0;
@@ -668,7 +668,7 @@ exportEmbeddedSurfaceAs3DNOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
-  typedef unsigned long long Number;
+  typedef DGtal::uint64_t Number;
   // Numbers all vertices.
   std::map<Vertex, Number> index;
   Number nbv = 0;

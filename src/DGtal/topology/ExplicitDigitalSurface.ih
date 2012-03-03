@@ -241,7 +241,7 @@ inline
 DGtal::Connectedness
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::connectedness() const
 {
-  return Connectedness::CONNECTED;
+  return CONNECTED;
 }
 
 // ------------------------- Hidden services ------------------------------

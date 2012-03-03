@@ -78,7 +78,7 @@ namespace DGtal
       // -------------------- associated types --------------------
       typedef Tracker Self;
       typedef DigitalSetBoundary<TKSpace,TDigitalSet> DigitalSurfaceContainer;
-      typedef typename DigitalSurfaceContainer::Surfel Surfel;
+      typedef typename TKSpace::SCell Surfel;
 
       // -------------------- inner types --------------------
       typedef TKSpace KSpace;
