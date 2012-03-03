@@ -247,7 +247,7 @@ inline
 DGtal::Connectedness
 DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::connectedness() const
 {
-  return Connectedness::CONNECTED;
+  return CONNECTED;
 }
 //-----------------------------------------------------------------------------
 // ----------------- UndirectedSimplePreGraph realization --------------------
