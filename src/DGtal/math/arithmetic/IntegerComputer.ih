@@ -290,7 +290,7 @@ getCFrac( std::vector<Integer> & quotients,
   _m_a1 = b;
   while ( isNotZero( _m_a1 ) )
   {
-    euclideanDiv( _m_q, _m_r, _m_a0, _m_a1 );
+    getEuclideanDiv( _m_q, _m_r, _m_a0, _m_a1 );
     quotients.push_back( _m_q );
     _m_a0 = _m_a1;
     _m_a1 = _m_r;
@@ -312,12 +312,39 @@ getCFrac( OutputIterator outIt,
   _m_a1 = b;
   while ( isNotZero( _m_a1 ) )
   {
-    euclideanDiv( _m_q, _m_r, _m_a0, _m_a1 );
+    getEuclideanDiv( _m_q, _m_r, _m_a0, _m_a1 );
     *outIt++ = _m_q;
     _m_a0 = _m_a1;
     _m_a1 = _m_r;
   }
   return _m_a0;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Point2I
+DGtal::IntegerComputer<TInteger>::
+convergent( const std::vector<Integer> & quotients,
+            unsigned int k ) const
+{
+  _m_bezout[ 0 ].clear(); // p
+  _m_bezout[ 0 ].push_back( NumberTraits<Integer>::ZERO );
+  _m_bezout[ 0 ].push_back( NumberTraits<Integer>::ONE );
+  _m_bezout[ 1 ].clear(); // q
+  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ONE );
+  _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
+  if ( k >= quotients.size() ) 
+    k = quotients.size() - 1;
+  for ( unsigned int i = 0; i <= k; ++i )
+    {
+      _m_bezout[ 0 ].push_back( quotients[ i ] * _m_bezout[ 0 ][ i + 1 ]
+                                + _m_bezout[ 0 ][ i ] );
+      _m_bezout[ 1 ].push_back( quotients[ i ] * _m_bezout[ 1 ][ i + 1 ]
+                                + _m_bezout[ 1 ][ i ] );
+    }
+  _m_v[ 0 ] = _m_bezout[ 0 ].back();
+  _m_v[ 1 ] = _m_bezout[ 1 ].back();
+  return _m_v;
 }
 //-----------------------------------------------------------------------------
 // ----------------------- Point2I services ------------------------------
@@ -328,7 +355,7 @@ void
 DGtal::IntegerComputer<TInteger>::
 reduce( Vector2I & p ) const
 {
-  _m_a = gcd( p.x, p.y );
+  _m_a = gcd( p[ 0 ], p[ 1 ] );
   if ( ( _m_a != NumberTraits<Integer>::ONE ) && ( isNotZero( _m_a ) ) )
     p /= _m_a;
 }
@@ -339,8 +366,8 @@ typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 crossProduct( const Vector2I & u, const Vector2I & v) const
 {
-  _m_a0 = u.x * v.y;
-  _m_a1 = u.y * v.x;
+  _m_a0 = u[ 0 ] * v[ 1 ];
+  _m_a1 = u[ 1 ] * v[ 0 ];
   return _m_a0 - _m_a1;
 }
 //-----------------------------------------------------------------------------
@@ -351,8 +378,8 @@ DGtal::IntegerComputer<TInteger>::
 getCrossProduct( Integer & cp, 
                  const Vector2I & u, const Vector2I & v) const
 {
-  cp = u.x * v.y;
-  cp -= u.y * v.x;
+  cp = u[ 0 ] * v[ 1 ];
+  cp -= u[ 1 ] * v[ 0 ];
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -361,8 +388,8 @@ typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 dotProduct( const Vector2I & u, const Vector2I & v ) const
 {
-  _m_a0 = u.x * v.x;
-  _m_a1 = u.y * v.y;
+  _m_a0 = u[ 0 ] * v[ 0 ];
+  _m_a1 = u[ 1 ] * v[ 1 ];
   return _m_a0 + _m_a1;
 }
 //-----------------------------------------------------------------------------
@@ -373,8 +400,8 @@ DGtal::IntegerComputer<TInteger>::
 getDotProduct( Integer & dp, 
                const Vector2I & u, const Vector2I & v) const
 {
-  dp = u.x * v.x;
-  dp += u.y * v.y;
+  dp = u[ 0 ] * v[ 0 ];
+  dp += u[ 1 ] * v[ 1 ];
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -413,11 +440,11 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
       ++k;
     }
   
-  _m_v.x = _m_bezout[ 2 ][ k ];
-  _m_v.y = _m_bezout[ 3 ][ k ];
+  _m_v[ 0 ] = _m_bezout[ 2 ][ k ];
+  _m_v[ 1 ] = _m_bezout[ 3 ][ k ];
   
-  if ( isNegative( a ) ) _m_v.x = -_m_v.x;
-  if ( isNegative( b ) ) _m_v.y = -_m_v.y;
+  if ( isNegative( a ) ) _m_v[ 0 ] = -_m_v[ 0 ];
+  if ( isNegative( b ) ) _m_v[ 1 ] = -_m_v[ 1 ];
   _m_v *= c;
   return _m_v;
 }
@@ -450,13 +477,13 @@ getValidBezout ( Vector2I & v,
 {
   if ( compute_v )
     {
-      v = extendedEuclid( -u.y, u.x, NumberTraits<Integer>::ONE );
+      v = extendedEuclid( -u[ 1 ], u[ 0 ], NumberTraits<Integer>::ONE );
       _m_v0 = A + v;
       getDotProduct( _m_c0, _m_v0, N );
       if ( _m_c0 > c )
 	{
-	  v.x = -v.x;
-	  v.y = -v.y;
+	  v[ 0 ] = -v[ 0 ];
+	  v[ 1 ] = -v[ 1 ];
 	}
     }
   else _m_v0 = A + v;
@@ -472,8 +499,8 @@ void
 DGtal::IntegerComputer<TInteger>::
 reduce( Vector3I & p ) const
 {
-  _m_a = gcd( p.x, p.y );
-  _m_r = gcd( _m_a, p.z );
+  _m_a = gcd( p[ 0 ], p[ 1 ] );
+  _m_r = gcd( _m_a, p[ 2 ] );
   p /= _m_r;
 }
 //-----------------------------------------------------------------------------
@@ -483,9 +510,9 @@ typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 dotProduct( const Vector3I & u, const Vector3I & v) const
 {
-  _m_a0 = u.x * v.x;
-  _m_a0 += u.y * v.y;
-  _m_a0 += u.z * v.z;
+  _m_a0 = u[ 0 ] * v[ 0 ];
+  _m_a0 += u[ 1 ] * v[ 1 ];
+  _m_a0 += u[ 2 ] * v[ 2 ];
   return _m_a0;
 }
 //-----------------------------------------------------------------------------
@@ -496,9 +523,9 @@ DGtal::IntegerComputer<TInteger>::
 getDotProduct( Integer & dp, 
             const Vector3I & u, const Vector3I & v) const
 {
-  dp =  u.x * v.x;
-  dp += u.y * v.y;
-  dp += u.z * v.z;
+  dp =  u[ 0 ] * v[ 0 ];
+  dp += u[ 1 ] * v[ 1 ];
+  dp += u[ 2 ] * v[ 2 ];
 }
 
 

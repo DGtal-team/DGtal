@@ -28,6 +28,7 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
@@ -39,6 +40,84 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class IntegerComputer.
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename Integer>
+bool testGCD( const IntegerComputer<Integer> & ic )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer a = random();
+  Integer b = random();
+  Integer g = ic.gcd( a, b );
+  trace.info() << "GCD(" << a << "," << b << ")" 
+               << " = " << g << std::endl;
+  Integer ra = a % g;
+  Integer rb = b % g;
+  nbok += ic.isZero( ra ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << a << " % " << g << " == 0" << std::endl;
+  nbok += ic.isZero( rb ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << b << " % " << g << " == 0" << std::endl;
+  a /= g; b /= g;
+  g = ic.gcd( a, b );
+  nbok += g == Integer( 1 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "GCD(" << a << "," << b << ") == 1" << std::endl;
+  Integer c = random(); 
+  ++c; // avoids zero.
+  a *= c; b *= c;
+  ic.getGcd( g, a, b );
+  nbok += g == c ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "GCD(" << a << "," << b << ") == " << c << std::endl;
+  return nbok == nb;
+}
+
+template <typename Integer>
+bool testCFrac( const IntegerComputer<Integer> & ic )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer a = random();
+  Integer b = random();
+  Integer g = ic.gcd( a, b );
+  trace.info() << "a / b = " << a << " / " << b << std::endl;
+  std::vector<Integer> quotients;
+  Integer g2 = ic.getCFrac( quotients, a, b );
+  nbok += g == g2 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << g << " == " << g2 << std::endl;
+  trace.info() << a << " / " << b << " = ";
+  for ( typename std::vector<Integer>::const_iterator it = quotients.begin(),
+          it_end = quotients.end(); it != it_end; ++it )
+    trace.info() << *it;
+  trace.info() << std::endl;
+  double da = NumberTraits<Integer>::castToDouble( a );
+  double db = NumberTraits<Integer>::castToDouble( b );
+  double q = floor( da / db );
+  nbok += Integer( (int) q ) == quotients[ 0 ] ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << q << " == " << quotients[ 0 ] << std::endl;
+  typedef typename IntegerComputer<Integer>::Point2I Point2I;
+  Point2I p = ic.convergent( quotients, quotients.size() );
+  nbok += p[ 0 ] == ( a / g ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "convergent p[ 0 ] " << p[ 0 ] << " == a / g " << std::endl;
+  nbok += p[ 1 ] == ( b / g ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "convergent p[ 1 ] " << p[ 1 ] << " == b / g " << std::endl;
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -48,20 +127,35 @@ bool testIntegerComputer()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef BigInteger Integer;
-  trace.beginBlock ( "Testing block ..." );
   IntegerComputer<Integer> ic;
-  Integer a = 123456;
-  Integer b = 6543210;
-  Integer g = ic.gcd( a, b );
-  trace.info() << "GCD(" << a << "," << b << ")" 
-               << " = " << g << std::endl;
-  a /= g; b /= g;
-  g = ic.gcd( a, b );
-  nbok += g == Integer( 1 ) ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "GCD(" << a << "," << b << ") == 1" << std::endl;
+  trace.beginBlock ( "Testing block: multiple random gcd." );
+  for ( unsigned int i = 0; i < 100; ++i )
+    {
+      nbok += testGCD<Integer>( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") gcd tests." << std::endl;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing block: multiple random cfrac." );
+  for ( unsigned int i = 0; i < 100; ++i )
+    {
+      nbok += testCFrac<Integer>( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") cfrac tests." << std::endl;
+  trace.endBlock();
+  // Integer a = 123456;
+  // Integer b = 6543210;
+  // Integer g = ic.gcd( a, b );
+  // trace.info() << "GCD(" << a << "," << b << ")" 
+  //              << " = " << g << std::endl;
+  // a /= g; b /= g;
+  // g = ic.gcd( a, b );
+  // nbok += g == Integer( 1 ) ? 1 : 0; 
+  // nb++;
+  // trace.info() << "(" << nbok << "/" << nb << ") "
+  //              << "GCD(" << a << "," << b << ") == 1" << std::endl;
   
   return nbok == nb;
 }

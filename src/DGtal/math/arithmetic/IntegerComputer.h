@@ -291,6 +291,19 @@ xs
     Integer getCFrac( OutputIterator outIt,
                       IntegerParamType a, IntegerParamType b ) const;
 
+    /**
+       Returns the fraction corresponding to the given quotients, more
+       precisely its k-th principal convergent. When k >=
+       quotients.size() - 1, it is the inverse of the function
+       getCFrac.
+
+       @param quotients the sequence of partial quotients.
+       @param k the desired partial convergent.
+       @return the corresponding fraction p_k / q_k as a point (p_k, q_k).
+    */
+    Point2I convergent( const std::vector<Integer> & quotients,
+                        unsigned int k ) const;
+
     // ----------------------- Point2I services ------------------------------
   public:
     /**
