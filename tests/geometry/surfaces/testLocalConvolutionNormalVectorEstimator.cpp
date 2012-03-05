@@ -109,11 +109,15 @@ bool testLocalConvolutionNormalVectorEstimator()
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
  
   MyDigitalSurface::ConstIterator it = digSurf.begin();
-  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,MyFunctor> MyEstimator;
+
+  //Fake embedder
+  typedef int MyEmbedder;
+
+  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,MyFunctor, MyEmbedder> MyEstimator;
  
 
   MyFunctor f; 
-  MyEstimator myNormalEstimator(digSurf, f);
+  MyEstimator myNormalEstimator(digSurf, f, MyEmbedder());
 
   myNormalEstimator.init(1.0, 5);
   
