@@ -150,6 +150,28 @@ bool testCeilFloorDiv( const IntegerComputer<Integer> & ic )
   return nbok == nb;
 }
 
+template <typename Integer>
+bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer a = random();
+  Integer b = random();
+  Integer g = ic.gcd( a, b );
+  trace.info() << "a / b = " << a << " / " << b 
+               << " gcd=" << g << std::endl;
+  typedef typename IntegerComputer<Integer>::Point2I Point2I;
+  Point2I v = ic.extendedEuclid( a, b, 1 );
+  trace.info() << "Bezout = " << v[ 0 ] << "," << v[ 1 ] << std::endl;
+  Integer rem = a * v[ 0 ] + b * v[ 1 ];
+  nbok += rem == g ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "a * v[ 0 ] + b * v[ 1 ] == g " 
+               << "(" << rem << " == " << g << ")" << std::endl;
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -186,6 +208,15 @@ bool testIntegerComputer()
       nb++;
     }
   trace.info() << "(" << nbok << "/" << nb << ") ceil floor division." << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing block: multiple Bezout / extended euclid: ax+by= gcd(a,b)." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      nbok += testExtendedEuclid<Integer>( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") Bezout / extended euclid." << std::endl;
   trace.endBlock();
   // Integer a = 123456;
   // Integer b = 6543210;
