@@ -57,7 +57,7 @@ DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & other )
 template <typename TInteger>
 inline
 DGtal::IntegerComputer<TInteger> &
-DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & other )
+DGtal::IntegerComputer<TInteger>::operator=( const Self & other )
 {
   return *this;
 }
@@ -124,7 +124,10 @@ typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 abs( IntegerParamType a )
 {
-  return isPositiveOrZero( a ) ? a : -a;
+  if ( isPositiveOrZero( a ) )
+    return a;
+  else 
+    return -a;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -242,10 +245,10 @@ typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
 gcd( IntegerParamType a, IntegerParamType b ) const
 {
-  _m_a = _abs( a );
-  _m_b = _abs( b );
-  _m_a0 = _max( _m_a, _m_b );
-  _m_a1 = _min( _m_a, _m_b );
+  _m_a = abs( a );
+  _m_b = abs( b );
+  _m_a0 = max( _m_a, _m_b );
+  _m_a1 = min( _m_a, _m_b );
   while ( isNotZero( _m_a1 ) )
   {
     _m_r = _m_a0 % _m_a1;
@@ -262,10 +265,10 @@ DGtal::IntegerComputer<TInteger>::
 getGcd( Integer & g, IntegerParamType a, IntegerParamType b ) const
 {
   //  std::cerr << "gcd(" << a << ", " << b << ")=";
-  _m_a = _abs( a );
-  _m_b = _abs( b );
-  _m_a0 = _max( _m_a, _m_b );
-  _m_a1 = _min( _m_a, _m_b );
+  _m_a = abs( a );
+  _m_b = abs( b );
+  _m_a0 = max( _m_a, _m_b );
+  _m_a1 = min( _m_a, _m_b );
   while ( isNotZero( _m_a1 ) )
   {
     _m_r = _m_a0 % _m_a1;
@@ -303,7 +306,7 @@ DGtal::IntegerComputer<TInteger>::
 getCFrac( OutputIterator outIt,
        IntegerParamType a, IntegerParamType b ) const
 {
-  BOOST_CONCEPT_ASSERT(( boost::OutputIterator< OutputIterator > ));
+  BOOST_CONCEPT_ASSERT(( boost::OutputIterator< OutputIterator, Integer > ));
   ASSERT( isPositiveOrZero( a ) && isPositiveOrZero( b ) );
   _m_a0 = a;
   _m_a1 = b;
@@ -386,9 +389,6 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   for ( unsigned int i = 0; i < 4; ++i )
     _m_bezout[ i ].clear();
 
-  _eu_a = _abs( a );
-  _eu_b = _abs( b );
-  
   _m_bezout[ 0 ].push_back( abs( a ) );
   _m_bezout[ 0 ].push_back( abs( b ) );
   _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
@@ -472,8 +472,8 @@ void
 DGtal::IntegerComputer<TInteger>::
 reduce( Vector3I & p ) const
 {
-  _m_a = gcd( x, y );
-  _m_r = gcd( _m_a, z );
+  _m_a = gcd( p.x, p.y );
+  _m_r = gcd( _m_a, p.z );
   p /= _m_r;
 }
 //-----------------------------------------------------------------------------

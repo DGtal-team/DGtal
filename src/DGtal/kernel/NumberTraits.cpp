@@ -54,6 +54,10 @@ namespace DGtal
  
   const long double NumberTraits<long double>::ONE = 1.0;
   const long double NumberTraits<long double>::ZERO = 0.0;
- 
+
+#ifdef WITH_BIGINTEGER
+  const DGtal::BigInteger NumberTraits<DGtal::BigInteger>::ONE = 1;
+  const DGtal::BigInteger NumberTraits<DGtal::BigInteger>::ZERO = 0;
+#endif 
 
 }
