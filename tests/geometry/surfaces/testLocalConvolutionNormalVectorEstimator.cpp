@@ -43,6 +43,9 @@
 #include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 #include "DGtal/topology/CUndirectedSimpleGraph.h"
 
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -52,6 +55,13 @@
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
+
+struct MyFunctor {
+
+  double operator()(double /*r*/) {return 0.0;}
+
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class LocalConvolutionNormalVectorEstimator.
@@ -71,11 +81,11 @@ bool testLocalConvolutionNormalVectorEstimator()
   std::string filename = testPath + "samples/cat10.vol";
 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  Image image = VolReader<Image>::importVol(inputFilename);
+  Image image = VolReader<Image>::importVol(filename);
   DigitalSet set3d (image.domain());
   SetPredicate<DigitalSet> set3dPredicate( set3d );
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
-                                          minThreshold, maxThreshold);
+                                          0,256);
  
   KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), 
@@ -98,16 +108,16 @@ bool testLocalConvolutionNormalVectorEstimator()
     new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
  
-  typedef int myKernel;
-
   MyDigitalSurface::ConstIterator it = digSurf.begin();
-  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,myKernel> MyEstimator;
-  
-  MyEstimator myNormalEstimator;
+  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,MyFunctor> MyEstimator;
+ 
 
-  myNormalEstimator.init(1,digSurf.begin(),digSurf.end(),digSurf, 5, 5);
+  MyFunctor f; 
+  MyEstimator myNormalEstimator(digSurf, f);
+
+  myNormalEstimator.init(1.0, 5);
   
-  MyEstimator::Quantitiy res = myNormalEstimator.eval(it);
+  MyEstimator::Quantity res = myNormalEstimator.eval(it);
   
   trace.info() << "Normal vector at begin() : "<< res << std::endl;
 

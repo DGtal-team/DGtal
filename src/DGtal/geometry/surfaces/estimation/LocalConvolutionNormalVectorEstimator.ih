@@ -44,12 +44,10 @@
 template <typename DigitalSurf,  typename KernelFunctor>
 inline
 DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>
-::LocalConvolutionNormalVectorEstimator(const double h, 
-                                        DigitalSurf * digitalSurface,
-                                        const KernelFunctor & aKernelFunctor,
-                                        const   unsigned int radius) 
+::LocalConvolutionNormalVectorEstimator( const DigitalSurf & digitalSurface,
+                                         const KernelFunctor & aKernelFunctor) 
+  : mySurface(digitalSurface), myKernelFunctor(aKernelFunctor)
 {
-  init(h,digitalSurface,aKernelFunctor,radius);
 }
 
 /**
@@ -59,19 +57,11 @@ template <typename DigitalSurf,  typename KernelFunctor>
 inline
 void
 DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::init(const double h, 
-                                                                              DigitalSurf * digitalSurface,
-                                                                             const KernelFunctor & aFunctor,   
-                                                                             const   unsigned int radius)
+                                                                              const unsigned int radius)
 {
+  myFlagIsInit = true;
   myH = h;
   myRadius = radius;
-  
-  mySurface = CountedPtr<DigitalSurface>(digitalSurface);
-
-  myFlagIsInit = true;
-
-  myKernelFunctor =  aFunctor;
-
 }
 
 /**
@@ -110,13 +100,15 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
   typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
   typedef typename MyBreadthFirstVisitor::Node MyNode;
   typedef typename MyBreadthFirstVisitor::Size MySize;
-  MyBreadthFirstVisitor visitor( mySurface, *it );
+  typename DigitalSurf::Vertex source = *it;
+  MyBreadthFirstVisitor visitor( mySurface, source );
 
   MyNode node;
   while ((nbSurfels< myRadius) &&  ! visitor.finished() )
     {
       node = visitor.current();
       ++nbSurfels;
+      trace.info() << node<<std::endl;
       visitor.expand();
     }
   MySize maxDist = node.second;

@@ -81,31 +81,21 @@ namespace DGtal
 
     typedef TDigitalSurface DigitalSurface;
     typedef TKernelFunctor KernelFunctor;
-    typedef typename TDigitalSurface::ConsIterator ConstIterator;
+    typedef typename TDigitalSurface::ConstIterator ConstIterator;
     typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
     
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /**
-     * Default constructor.
-     */
-    LocalConvolutionNormalVectorEstimator() 
-    {
-      myFlagIsInit = false;
-    }
-   
-    /**
+     /**
      * Constructor.
      * @param h grid size (must be >0).
      * @param itb, begin iterator
      * @param ite, end iterator
      */
-    LocalConvolutionNormalVectorEstimator(const double h, 
-                                          DigitalSurface * aSurface,
-                                          const TKernelFunctor & aFunctor,
-                                          const unsigned int radius);
+    LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
+                                          const KernelFunctor & aFunctor);
     
     /**
      * Destructor.
@@ -118,12 +108,8 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
       */
     void init(const double h, 
-              DigitalSurface *aSurface,
-              const TKernelFunctor & aFunctor,
               const unsigned int radius);
     
     /**
@@ -149,7 +135,15 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-
+    /**
+     * Default constructor.
+     */
+    LocalConvolutionNormalVectorEstimator() 
+    {
+      myFlagIsInit = false;
+    }
+   
+ 
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -163,10 +157,10 @@ namespace DGtal
     unsigned int myRadius;
     
     ///Copy of the kernel convolution functor.
-    TKernelFunctor myKernelFunctor;
+    const KernelFunctor & myKernelFunctor;
 
     ///Pointer to the digitale surface
-    CountedPtr<TDigitalSurface> mySurface;
+    const DigitalSurface & mySurface;
 
 
     // ------------------------- Hidden services ------------------------------
