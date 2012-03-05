@@ -262,7 +262,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   if ( colors.size() < 2 )
     return Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
-  const int intervals = colors.size() - 1;
+  const int intervals = (const int)colors.size() - 1;
   int upper_index = static_cast<int>( ceil( intervals * scale ) );
   if ( !upper_index ) // Special case when value == min.
     upper_index = 1;

@@ -115,7 +115,7 @@ inline
 typename DGtal::DigitalSetBySTLVector<Domain>::Size
 DGtal::DigitalSetBySTLVector<Domain>::size() const
 {
-  return myVector.size();
+  return (unsigned int)myVector.size();
 }
 
 /**
