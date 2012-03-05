@@ -58,7 +58,7 @@ bool testFLF( const OrderedAlphabet & alphabet,
   unsigned int len;
   unsigned int nb;
   unsigned int s = 0;
-  unsigned int e = w1.size();
+  unsigned int e = (unsigned int)w1.size();
   do 
     {
       alphabet.firstLyndonFactor( len, nb, w1, s, e );
@@ -91,7 +91,7 @@ bool testDuvalPP( const OrderedAlphabet & alphabet,
 {
   OrderedAlphabet::size_t len;
   OrderedAlphabet::size_t nb;
-  bool christoffel = alphabet.duvalPP( len, nb, input, 0, input.size() );
+  bool christoffel = alphabet.duvalPP( len, nb, input, 0, (DGtal::OrderedAlphabet::index_t)input.size() );
   stringstream s1;
   if ( christoffel ) 
     s1 << "C(" << input.substr( 0, len ) << ")^" << nb;

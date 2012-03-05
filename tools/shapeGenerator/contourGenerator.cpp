@@ -341,7 +341,7 @@ generateContour(
     (aShape, h, gridcurve.getMidPointsRange(), truePoints2, trueTangents2, trueCurvatures2);
 
     
-    unsigned int n = r.size(); 
+    unsigned int n = (unsigned int)r.size(); 
     for (unsigned int i = 0; i < n; ++i ) {
       outstream << setprecision( 15 ) << i 
       << " " << truePoints[ i ][ 0 ]
