@@ -118,18 +118,51 @@ bool testCFrac( const IntegerComputer<Integer> & ic )
   return nbok == nb;
 }
 
+template <typename Integer>
+bool testCeilFloorDiv( const IntegerComputer<Integer> & ic )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer a = random();
+  a -= random();
+  Integer b = random();
+  b -= random(); 
+  if ( ic.isZero( b ) ) ++b;
+  trace.info() << "- a / b = " << a << " / " << b << std::endl;
+  Integer fl = ic.floorDiv( a, b );
+  Integer ce = ic.ceilDiv( a, b );
+  Integer fl2, ce2;
+  ic.getFloorCeilDiv( fl2, ce2, a, b );
+  nbok += fl == fl2 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "fl == fl2 " << fl2 << std::endl;
+  nbok += ce == ce2 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "ce == ce2 " << ce2 << std::endl;
+  Integer m = a % b;
+  nbok += ( ( m == 0 ) && ( fl == ce ) ) || ( fl + 1 == ce ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "( ( m == 0 ) && ( fl == ce ) ) || ( fl+1 == ce )"
+               << std::endl;
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
  */
 bool testIntegerComputer()
 {
+  unsigned int nbtests = 50;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef BigInteger Integer;
   IntegerComputer<Integer> ic;
   trace.beginBlock ( "Testing block: multiple random gcd." );
-  for ( unsigned int i = 0; i < 100; ++i )
+  for ( unsigned int i = 0; i < nbtests; ++i )
     {
       nbok += testGCD<Integer>( ic ) ? 1 : 0;
       nb++;
@@ -138,12 +171,21 @@ bool testIntegerComputer()
   trace.endBlock();
 
   trace.beginBlock ( "Testing block: multiple random cfrac." );
-  for ( unsigned int i = 0; i < 100; ++i )
+  for ( unsigned int i = 0; i < nbtests; ++i )
     {
       nbok += testCFrac<Integer>( ic ) ? 1 : 0;
       nb++;
     }
   trace.info() << "(" << nbok << "/" << nb << ") cfrac tests." << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing block: multiple ceil floor division." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      nbok += testCeilFloorDiv<Integer>( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") ceil floor division." << std::endl;
   trace.endBlock();
   // Integer a = 123456;
   // Integer b = 6543210;
