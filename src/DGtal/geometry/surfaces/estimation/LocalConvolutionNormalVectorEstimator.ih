@@ -41,22 +41,23 @@
 /**
  * Constructor.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  typename KernelFunctor, typename CellEmbedder>
 inline
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor, CellEmbedder>
 ::LocalConvolutionNormalVectorEstimator( const DigitalSurf & digitalSurface,
-                                         const KernelFunctor & aKernelFunctor) 
-  : mySurface(digitalSurface), myKernelFunctor(aKernelFunctor)
+                                         const KernelFunctor & aKernelFunctor,
+					 const CellEmbedder &aEmbedder) 
+  : mySurface(digitalSurface), myKernelFunctor(aKernelFunctor), myEmbedder(aEmbedder)
 {
 }
 
 /**
  * Init.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  typename KernelFunctor, typename CellEmbedder>
 inline
 void
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::init(const double h, 
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor,CellEmbedder>::init(const double h, 
                                                                               const unsigned int radius)
 {
   myFlagIsInit = true;
@@ -68,13 +69,14 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::init(co
  * @return the estimated quantity at *it
  * from itb till ite
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  typename KernelFunctor, typename CellEmbedder>
 template <typename OutputIterator>
 inline
 OutputIterator
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& itb, 
-                                                                             const ConstIterator& ite,
-                                                                             OutputIterator result)
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor,CellEmbedder>::
+eval(const ConstIterator& itb, 
+     const ConstIterator& ite,
+     OutputIterator result)
 {
   for(ConstIterator it = itb; it != ite; ++it)
     {
@@ -89,10 +91,11 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
 /**
  * @return the estimated quantity at *it
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+
+template <typename DigitalSurf,  typename KernelFunctor, typename CellEmbedder>
 inline
-typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity 
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it)
+typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor,CellEmbedder>::Quantity 
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor,CellEmbedder>::eval(const ConstIterator& it)
 {
   Quantity p; 
   unsigned int nbSurfels=0;
@@ -104,11 +107,16 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
   MyBreadthFirstVisitor visitor( mySurface, source );
 
   MyNode node;
+  Dimension direction;
+  typename DigitalSurf::RealPoint p,n;
+  
   while ((nbSurfels< myRadius) &&  ! visitor.finished() )
     {
       node = visitor.current();
+
+      myEmbedder( node, p, n);
+      
       ++nbSurfels;
-      trace.info() << node<<std::endl;
       visitor.expand();
     }
   MySize maxDist = node.second;
@@ -122,10 +130,10 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename DigitalSurf,  typename KernelFunctor>
+template <typename DigitalSurf,  typename KernelFunctor, typename CellEmbedder>
 inline
 bool
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::isValid() const
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor,CellEmbedder>::isValid() const
 {
     return true;
 }
