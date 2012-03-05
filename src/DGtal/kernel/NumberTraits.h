@@ -803,9 +803,9 @@ namespace DGtal
     typedef DGtal::BigInteger SignedVersion;
     typedef DGtal::BigInteger UnsignedVersion;
     typedef DGtal::BigInteger ReturnType;
-    typedef boost::call_traits<int64_t>::param_type ParamType;
-    static DGtal::BigInteger ZERO;
-    static DGtal::BigInteger ONE;
+    typedef DGtal::BigInteger ParamType;
+    static const DGtal::BigInteger ZERO;
+    static const DGtal::BigInteger ONE;
     static ReturnType zero()
     {
       return ZERO;

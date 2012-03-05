@@ -84,8 +84,6 @@ xs
     // ----------------------- Associated types ------------------------------
   public:
     typedef IntegerComputer<TInteger> Self;
-    typedef TInteger Integer;
-
     typedef typename NumberTraits<TInteger>::SignedVersion Integer;
     typedef typename NumberTraits<Integer>::ParamType IntegerParamType;
 
