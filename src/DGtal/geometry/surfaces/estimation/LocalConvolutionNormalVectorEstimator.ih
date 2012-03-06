@@ -96,9 +96,6 @@ inline
 typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity 
 DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it)
 {
-  Quantity p; 
-  unsigned int nbSurfels=0;
-
   typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
   typedef typename MyBreadthFirstVisitor::Node MyNode;
   typedef typename MyBreadthFirstVisitor::Size MySize;
@@ -106,16 +103,16 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
   MyBreadthFirstVisitor visitor( mySurface, source );
 
   MyNode node;
-  Dimension direction;
   Quantity n, elementary;
-  double distance =0.0;
+  Dimension i;
+  typename DigitalSurf::Surfel s;
   const typename DigitalSurf::KSpace & K = mySurface.container().space();
   
   while ( ! visitor.finished() )
     {
       node = visitor.current();
-      typename DigitalSurf::Surfel s = node.first;
-      Dimension i = K.sOrthDir( s );
+      s = node.first;
+      i = K.sOrthDir( s );
       elementary[ i ] = K.sDirect( s, i ) ? 1 : -1;
       
       elementary *= myKernelFunctor( elementary );
