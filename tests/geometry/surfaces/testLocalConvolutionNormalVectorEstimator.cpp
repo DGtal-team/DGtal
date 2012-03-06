@@ -136,9 +136,37 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
       Point center = ks.sCoords(*it);
       MyEstimator::Quantity res = myNormalEstimator.eval(it);
       viewer.addLine(center[0],center[1],center[2],
-		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2]);
+		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2], 
+		     DGtal::Color(20,20,20,200), 1.0);
     }
+  viewer<< Viewer3D::updateDisplay;
   
+  //Convolution kernel
+  GaussianConvolutionKernel<Vector> Gkernel(4.0);
+  
+  //Estimator definition
+  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface, 
+						GaussianConvolutionKernel<Vector> > MyEstimatorGaussian;
+  MyEstimatorGaussian myNormalEstimatorG(digSurf, Gkernel);
+  
+  myNormalEstimatorG.init(1.0, 5);
+  
+  MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval(it);
+  trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+
+  viewer.setLineColor(DGtal::Color(200,20,20));
+
+  for(MyDigitalSurface::ConstIterator it = digSurf.begin(),itend=digSurf.end();
+      it!=itend; ++it)
+    {
+      viewer << ks.unsigns(*it);
+   
+      Point center = ks.sCoords(*it);
+      MyEstimatorGaussian::Quantity res = myNormalEstimatorG.eval(it);
+      viewer.addLine(center[0],center[1],center[2],
+		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2], 
+		     DGtal::Color(200,20,20), 1.0);
+    }
   viewer<< Viewer3D::updateDisplay;
   
 
