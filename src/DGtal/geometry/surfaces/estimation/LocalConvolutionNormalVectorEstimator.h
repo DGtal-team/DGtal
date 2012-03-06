@@ -46,8 +46,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
-
+#include "DGtal/geometry/surfaces/estimation/CConvolutionKernel.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -84,7 +83,8 @@ namespace DGtal
     typedef TKernelFunctor KernelFunctor;
     typedef typename TDigitalSurface::ConstIterator ConstIterator;
     typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
-    
+
+    BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:
