@@ -70,16 +70,15 @@ namespace DGtal
    * @tparam TDigitalSurface type of digital surface on which we would
    * like to compute vector field..
    * @tparam TKernelFunctor type of Functor used to represent
-   * convolution kernel functor. ma
+   * convolution kernel functor (see BasicConvolutionKernels.h).
    */
-  template <typename TDigitalSurface, typename TKernelFunctor, typename TCellEmbedder>
+  template <typename TDigitalSurface, typename TKernelFunctor>
   class LocalConvolutionNormalVectorEstimator
   {
 
     // ----------------------- Types ------------------------------
   public:
 
-    typedef TCellEmbedder CellEmbedder;
     typedef TDigitalSurface DigitalSurface;
     typedef TKernelFunctor KernelFunctor;
     typedef typename TDigitalSurface::ConstIterator ConstIterator;
@@ -96,8 +95,7 @@ namespace DGtal
      * @param ite, end iterator
      */
     LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
-                                          const KernelFunctor & aFunctor,
-					  const CellEmbedder & anEmbedder);
+                                          const KernelFunctor & aFunctor);
     
     /**
      * Destructor.
@@ -163,11 +161,6 @@ namespace DGtal
 
     ///Copy to the digitale surface
     const DigitalSurface & mySurface;
-
-    ///Copy of the cell embedder
-    const CellEmbedder & myEmbedder;
-
-
 
     // ------------------------- Hidden services ------------------------------
   private:
