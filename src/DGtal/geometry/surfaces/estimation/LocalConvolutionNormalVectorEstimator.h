@@ -57,15 +57,16 @@ namespace DGtal
   /**
    * Description of template class 'LocalConvolutionNormalVectorEstimator' <p>
    * \brief Aim: Computes the normal vector at a surface element by
-   * summation of elementary normal vector to adjacent surfel.
+   * convolution of elementary normal vector to adjacent surfel.
    *
-   * To each $n-1$ signed surfel, an elementary outward normal vector can be
+   * To each $n-1$ signed surfel, an elementary inward normal vector can be
    * defined. At a given surfel, this estimator will compute the
-   * weighted sum of elementary normal vector of neighboring surfel
+   * convolution of elementary normal vector of neighboring surfels
    * using a breadth-first propagation around the given surfel.
    *
    * The neighboring is parametrized by a given topological radius @e R.
-   * The weight function maps [O,R] to a continuous weights.
+   * The weight kernel function maps displacment vectors  to a
+   * continuous weights.
    *
    * @tparam TDigitalSurface type of digital surface on which we would
    * like to compute vector field..
@@ -90,9 +91,8 @@ namespace DGtal
 
      /**
      * Constructor.
-     * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param aSurface surface  for which the normal vector are estimated.
+     * @param aFunctor convolution kernel functor.
      */
     LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
                                           const KernelFunctor & aFunctor);
@@ -108,7 +108,9 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-      */
+     * @param radius topological radius used to specify the size of
+     * the convolution.
+     */
     void init(const double h, 
               const unsigned int radius);
     
@@ -153,7 +155,7 @@ namespace DGtal
     ///True if the init() has been called.
     bool myFlagIsInit;
     
-    ///Parametric quantity functor
+    ///Radius of the convolution.
     unsigned int myRadius;
     
     ///Copy of the kernel convolution functor.
