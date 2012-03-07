@@ -484,6 +484,7 @@ getValidBezout ( Vector2I & v,
 	{
 	  v[ 0 ] = -v[ 0 ];
 	  v[ 1 ] = -v[ 1 ];
+          _m_v0 = A + v;
 	}
     }
   else _m_v0 = A + v;
