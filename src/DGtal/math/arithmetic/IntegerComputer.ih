@@ -471,8 +471,8 @@ void
 DGtal::IntegerComputer<TInteger>::
 getValidBezout ( Vector2I & v, 
                  const Point2I & A, const Vector2I & u,
-                 const Point2I & N, IntegerParamType c, 
-                 const Point2I & N2, IntegerParamType c2, 
+                 const Vector2I & N, IntegerParamType c, 
+                 const Vector2I & N2, IntegerParamType c2, 
                  bool compute_v ) const
 {
   if ( compute_v )

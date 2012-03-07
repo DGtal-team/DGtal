@@ -184,10 +184,10 @@ bool testCoefficientIntersection( const IntegerComputer<Integer> & ic )
   N = Point2I( random() , random() );
   c = random() * random();
   Point2I u( random() / 100, random() / 100);
-  trace.info() << "p = " << p << std::endl
-               << "u = " << u << std::endl
-               << "N = " << N << std::endl
-               << "c = " << c << std::endl;
+  trace.info() << "p = " << p << std::endl;
+  trace.info() << "u = " << u << std::endl;
+  trace.info() << "N = " << N << std::endl;
+  trace.info() << "c = " << c << std::endl;
   Integer fl, ce;
   ic.getCoefficientIntersection( fl, ce, p, u, N, c );
   trace.info() << "fl = " << fl << ", ce = " << ce << std::endl;
@@ -203,6 +203,57 @@ bool testCoefficientIntersection( const IntegerComputer<Integer> & ic )
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "( ( c1 == c2 ) && ( c == c1 ) ) || ( ( c1 <= c ) && ( c < c2 ) )" << std::endl;
+  return nbok == nb;
+}
+
+template <typename Integer>
+bool testValidBezout( const IntegerComputer<Integer> & ic )
+{
+  typedef typename IntegerComputer<Integer>::Point2I Point2I;
+  typedef typename IntegerComputer<Integer>::Vector2I Vector2I;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Vector2I v;
+  Point2I A( random(), random() );
+  Vector2I u( random() / 100, random() / 100 );
+  ic.reduce( u );
+  Vector2I N( random(), random() );
+  Vector2I N2( random(), random() );
+  Integer c = random() * random();
+  Integer c2 = random() * random();
+  trace.info() << "A = " << A << std::endl;
+  trace.info() << "u = " << u << std::endl;
+  trace.info() << "N = " << N << std::endl;
+  trace.info() << "c = " << c << std::endl;
+  trace.info() << "N2 = " << N2 << std::endl;
+  trace.info() << "c2 = " << c2 << std::endl;
+  ic.getValidBezout ( v,
+                      A, u, N, c, N2, c2, true );
+  trace.info() << "-> v = " << v << std::endl;
+  Integer a0 = ic.crossProduct(u,v);
+  nbok += ( ic.abs( a0 ) == 1 ) ? 1 : 0;
+  ++nb;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << " v^u = " << a0 << " == +/- 1 " << std::endl;
+  // (A+v).N    <= c , (A+v).N2   <= c2, (A+v+u).N2 >  c2.
+  // Integer a1 = ic.dotProduct( A+v, N );
+  Integer a2 = ic.dotProduct( A+v, N2 );
+  Integer a3 = ic.dotProduct( A+v+u, N2 );
+  // nbok += a1 <= c ? 1 : 0;
+  // ++nb;
+  // trace.info() << "(" << nbok << "/" << nb << ") "
+  //              << "(A+v).N = " << a1
+  //              << " <= c = " << c << std::endl;
+  nbok += a2 <= c2 ? 1 : 0;
+  ++nb;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "(A+v).N2 = " << a2
+               << " <= c = " << c2 << std::endl;
+  nbok += a3 > c2 ? 1 : 0;
+  ++nb;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "(A+v+u).N2 = " << a2
+               << " > c2 = " << c2 << std::endl;
   return nbok == nb;
 }
 
@@ -260,6 +311,15 @@ bool testIntegerComputer()
       nb++;
     }
   trace.info() << "(" << nbok << "/" << nb << ") coefficient intersection." << std::endl;
+  trace.endBlock();
+  
+  trace.beginBlock ( "Testing block: multiple valid bezout." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      nbok += testValidBezout( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") valid bezout." << std::endl;
   trace.endBlock();
   
   return nbok == nb;
