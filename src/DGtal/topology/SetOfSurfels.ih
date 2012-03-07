@@ -67,8 +67,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
-::DigitalSurfaceContainer &
+const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker::DigitalSurfaceContainer &
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
 ::surface() const
 {
@@ -77,10 +76,8 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
-::Surfel &
-DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
-::current() const
+const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker::Surfel &
+DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker::current() const
 {
   return myNeighborhood.surfel();
 }

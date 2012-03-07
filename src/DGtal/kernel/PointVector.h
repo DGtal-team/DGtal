@@ -727,7 +727,7 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-
+    
 
     
     /**
