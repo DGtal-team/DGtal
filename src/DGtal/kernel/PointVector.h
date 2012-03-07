@@ -504,7 +504,7 @@ namespace DGtal
      * @param coeff is the factor 'this' is multiplied by.
      * @return a new Point that is the multiplication of 'this' by coeff.
      */
-    PointVector operator*( Component coeff );
+    PointVector operator*( Component coeff ) const;
     
     /**
      * dot product with a PointVector
