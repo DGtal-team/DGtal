@@ -1,0 +1,255 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Pattern.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/03/07
+ *
+ * Implementation of inline methods defined in Pattern.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::Pattern<TInteger, TSize>::~Pattern()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::Pattern<TInteger, TSize>::Pattern( Fraction f )
+  : mySlope( f )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::Pattern<TInteger, TSize>::Pattern( const Self & other )
+  : mySlope( other.mySlope )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::Pattern<TInteger, TSize> &
+DGtal::Pattern<TInteger, TSize>::operator=( const Self & other )
+{
+  mySlope = other.mySlope;
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::Pattern<TInteger, TSize>::Pattern( Integer p, Integer q )
+{
+  IntegerComputer<Integer> ic;
+  Integer g = ic.gcd( p, q );
+  p /= g;
+  q /= g;
+  mySlope = SB::fraction( p, q );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+std::string
+DGtal::Pattern<TInteger, TSize>::
+rE() const
+{
+  ASSERT( ! mySlope.null() );
+  if ( mySlope.k() == NumberTraits<Size>::ZERO )
+    return "0";
+  else if ( mySlope.k() == NumberTraits<Size>::ONE )
+    {
+      std::string s( mySlope.u(), '0' );
+      return s + '1';
+    }
+  else
+    {
+      Fraction f1, f2;
+      Size nb1, nb2;
+      mySlope.getSplitBerstel( f1, nb1, f2, nb2 );
+      std::string s;
+      Self p1( f1 );
+      Self p2( f2 );
+      for ( Size i = 0; i < nb1; ++i ) s += p1.rE();
+      for ( Size i = 0; i < nb2; ++i ) s += p2.rE();
+      return s;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::Pattern<TInteger, TSize>::Fraction
+DGtal::Pattern<TInteger, TSize>::
+slope() const
+{
+  return mySlope;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::Pattern<TInteger, TSize>::Integer
+DGtal::Pattern<TInteger, TSize>::
+length() const
+{
+  return mySlope.p() + mySlope.q();
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::Pattern<TInteger, TSize>
+DGtal::Pattern<TInteger, TSize>::
+previousPattern() const
+{
+  ASSERT( ( ! slope().null() ) && ( slope().k() > NumberTraits<Size>::ZERO ) );
+  return Self( slope().previousPartial() );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+bool
+DGtal::Pattern<TInteger, TSize>::
+getSmallestCoveringSubpattern( Pattern & subpattern,
+                               Size & nb,
+                               Integer & startPos,
+                               Integer posA, Integer posB ) const
+{
+  bool different = false;
+  Integer l = length();
+  ASSERT( ( 0 <= posA ) && ( posA < posB ) && ( posB <= l ) );
+  if ( slope().odd() )
+    { // Odd pattern: E(z_n) = E( z_{n-1} )^u E( z_n-2 )
+      Self prevP = previousPattern();
+      Integer prevL = prevP.length();
+      Integer k1 = posA / prevL;
+      // Integer r1 = posA % prevL;
+      if ( posB > slope().u() * prevL )  
+        { // B at extremity in the E( z_n-2 ) part
+          nb = slope().u() - NumberTraits<Integer>::castToInt64_t( k1 ); // number of E( z_{n-1} ) from A.
+          // subpattern is E( z_{n-1} )^nb E( z_n-2 )
+          subpattern = Self( slope().father( nb ) );
+          nb = 1;
+          startPos = k1 * prevL;
+          different = k1 != 0;
+        }
+      else
+        { // B within some pattern E( z_{n-1} )
+          Integer k2 = posB / prevL;
+          Integer r2 = posB % prevL;
+          if ( r2 != NumberTraits<Integer>::ZERO ) ++k2; // to cover B.
+          nb = NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          ASSERT( nb > 0 );
+          // subpattern is E( z_{n-1} )^nb
+          subpattern = prevP;
+          startPos = k1 * prevL;
+          different = true;
+        }
+    }
+  else // slope() is even
+    { // Even pattern: E(z_n) = E( z_n-2 ) E( z_{n-1} )^u
+      Self prevP = previousPattern();
+      Integer prevL = prevP.length();
+      Integer k1 = ( l - posB ) / prevL;
+      // Integer r1 = ( l - posB ) % prevL;
+      if ( ( l - posA ) > slope().u() * prevL )  
+        { // A at extremity in the E( z_n-2 ) part
+          nb = slope().u() - NumberTraits<Integer>::castToInt64_t( k1 ); // number of E( z_{n-1} ) from B.
+          // subpattern is E( z_n-2 ) E( z_{n-1} )^nb 
+          subpattern = Self( slope().father( nb ) );
+          nb = 1;
+          startPos = 0;
+          different = k1 != 0;
+        }
+      else
+        { // A within some pattern E( z_{n-1} )
+          Integer k2 = ( l - posA ) / prevL;
+          Integer r2 = ( l - posA ) % prevL;
+          if ( r2 != NumberTraits<Integer>::ZERO ) ++k2; // to cover A.
+          nb = NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          ASSERT( nb > 0 );
+          // subpattern is E( z_{n-1} )^nb
+          subpattern = prevP;
+          startPos = l - k2 * prevL;
+          different = true;
+        }
+    }
+  return different;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TInteger, typename TSize>
+inline
+void
+DGtal::Pattern<TInteger, TSize>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Pattern] f=";
+  SB::display( out, mySlope );
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TInteger, typename TSize>
+inline
+bool
+DGtal::Pattern<TInteger, TSize>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TInteger, typename TSize>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const Pattern<TInteger, TSize> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

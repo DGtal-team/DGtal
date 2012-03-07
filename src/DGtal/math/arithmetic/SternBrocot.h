@@ -70,7 +70,7 @@ namespace DGtal
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
   */
-  template <typename TInteger, typename TSize>
+  template <typename TInteger, typename TSize = int32_t>
   class SternBrocot
   {
   public:
@@ -167,6 +167,14 @@ namespace DGtal
 	 => [u0,...,uk - 1]
       */
       Fraction father() const;
+      /**
+         @param m a quotient between 1 and uk-1.
+	 @return a given father of this fraction in O(uk - m), ie [u0,...,uk]
+	 => [u0,...,m]
+
+         @todo Do it in O(1)... but require to change the data structure.
+      */
+      Fraction father( Size m ) const;
       /**
 	 @return the previous partial of this fraction in O(1), ie
 	 [u0,...,u{k-1},uk] => [u0,...,u{k-1}]. Otherwise said, it is

@@ -33,6 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
+#include "DGtal/math/arithmetic/Pattern.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -72,6 +73,126 @@ bool testInitFraction()
   return nbok == nb;
 }
 
+template <typename SB>
+bool testPattern()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  typedef Pattern<Integer, Size> MyPattern;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer p = random() / 10000;
+  Integer q = random() / 10000;
+  MyPattern pattern( p*6, q*6 );
+  trace.info() << pattern << endl;
+
+  MyPattern pat_odd( 5, 12 );
+  trace.info() << pat_odd << " " << pat_odd.rE() << endl;
+  MyPattern sp;
+  Size np;
+  Integer start;
+  bool mod;
+
+  // Left Subpatterns
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 17 );
+  trace.info() << "sub(0,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                1, 17 );
+  trace.info() << "sub(1,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                7, 17 );
+  trace.info() << "sub(7,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                8, 17 );
+  trace.info() << "sub(8,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                13, 17 );
+  trace.info() << "sub(13,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                14, 17 );
+  trace.info() << "sub(14,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                15, 17 );
+  trace.info() << "sub(15,17) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) ? 1 : 0;
+
+  trace.info() << "(" << nbok << "/" << nb << ") covering left Subpatterns." << endl;
+
+  // Right Subpatterns
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 16 );
+  trace.info() << "sub(0,16) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 15 );
+  trace.info() << "sub(0,15) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 14 );
+  trace.info() << "sub(0,14) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 8 );
+  trace.info() << "sub(0,8) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 7 );
+  trace.info() << "sub(0,7) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                0, 1 );
+  trace.info() << "sub(0,1) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+
+  trace.info() << "(" << nbok << "/" << nb << ") covering right Subpatterns." << endl;
+
+  // Middle Subpatterns
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                1, 16 );
+  trace.info() << "sub(1,16) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 5, 12 ) ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                2, 14 );
+  trace.info() << "sub(2,14) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                7, 15 );
+  trace.info() << "sub(7,15) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 3, 7 ) && np == 1 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                7, 14 );
+  trace.info() << "sub(7,14) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                3, 6 );
+  trace.info() << "sub(3,6) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                6, 8 );
+  trace.info() << "sub(6,8) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 2 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                8, 12 );
+  trace.info() << "sub(8,12) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 2, 5 ) && np == 1 ? 1 : 0;
+  mod =  pat_odd.getSmallestCoveringSubpattern( sp, np, start,
+                                                15, 16 );
+  trace.info() << "sub(15,16) = " << sp << " " << sp.rE() << "^" << np << endl;
+  ++nb, nbok += sp.slope() == SB::fraction( 1, 2 ) && np == 1 ? 1 : 0;
+
+  trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
+                                        
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -90,13 +211,14 @@ bool testSternBrocot()
       nbok += testInitFraction<SB>() ? 1 : 0;
       nb++;
     }
-  trace.info() << "(" << nbok << "/" << nb << ") init fractions." << std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") init fractions." << endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing block: number of fractions." );
-  trace.info() << "- nbFractions = " << SB::nbFractions << std::endl;
+  trace.info() << "- nbFractions = " << SB::nbFractions << endl;
   trace.endBlock();
 
+  ++nb, nbok += testPattern<SB>() ? 1 : 0;
   return nbok == nb;
 }
 
@@ -106,7 +228,8 @@ bool testSternBrocot()
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing class SternBrocot" );
-  bool res = testSternBrocot(); // && ... other tests
+  bool res = testSternBrocot();
+  //&& testPattern(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
