@@ -153,6 +153,7 @@ bool testCeilFloorDiv( const IntegerComputer<Integer> & ic )
 template <typename Integer>
 bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
 {
+  typedef typename IntegerComputer<Integer>::Point2I Point2I;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   Integer a = random();
@@ -160,7 +161,6 @@ bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
   Integer g = ic.gcd( a, b );
   trace.info() << "a / b = " << a << " / " << b 
                << " gcd=" << g << std::endl;
-  typedef typename IntegerComputer<Integer>::Point2I Point2I;
   Point2I v = ic.extendedEuclid( a, b, 1 );
   trace.info() << "Bezout = " << v[ 0 ] << "," << v[ 1 ] << std::endl;
   Integer rem = a * v[ 0 ] + b * v[ 1 ];
@@ -169,6 +169,40 @@ bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "a * v[ 0 ] + b * v[ 1 ] == g " 
                << "(" << rem << " == " << g << ")" << std::endl;
+  return nbok == nb;
+}
+
+template <typename Integer>
+bool testCoefficientIntersection( const IntegerComputer<Integer> & ic )
+{
+  typedef typename IntegerComputer<Integer>::Point2I Point2I;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Point2I p, N;
+  Integer c;
+  p = Point2I( random(), random() );
+  N = Point2I( random() , random() );
+  c = random() * random();
+  Point2I u( random() / 100, random() / 100);
+  trace.info() << "p = " << p << std::endl
+               << "u = " << u << std::endl
+               << "N = " << N << std::endl
+               << "c = " << c << std::endl;
+  Integer fl, ce;
+  ic.getCoefficientIntersection( fl, ce, p, u, N, c );
+  trace.info() << "fl = " << fl << ", ce = " << ce << std::endl;
+  Point2I p1 = p + (u * fl);
+  Point2I p2 = p + (u * ce);
+  Integer c1 = ic.dotProduct( p1, N );
+  Integer c2 = ic.dotProduct( p2, N );
+  trace.info() << "c1 = " << c1
+               << " <= c = " << c
+               << " <= c2 = " << c2 << std::endl;
+  nbok += ( ( c1 == c2 ) && ( c == c1 ) )
+    || ( ( c1 <= c ) && ( c < c2 ) ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "( ( c1 == c2 ) && ( c == c1 ) ) || ( ( c1 <= c ) && ( c < c2 ) )" << std::endl;
   return nbok == nb;
 }
 
@@ -218,17 +252,15 @@ bool testIntegerComputer()
     }
   trace.info() << "(" << nbok << "/" << nb << ") Bezout / extended euclid." << std::endl;
   trace.endBlock();
-  // Integer a = 123456;
-  // Integer b = 6543210;
-  // Integer g = ic.gcd( a, b );
-  // trace.info() << "GCD(" << a << "," << b << ")" 
-  //              << " = " << g << std::endl;
-  // a /= g; b /= g;
-  // g = ic.gcd( a, b );
-  // nbok += g == Integer( 1 ) ? 1 : 0; 
-  // nb++;
-  // trace.info() << "(" << nbok << "/" << nb << ") "
-  //              << "GCD(" << a << "," << b << ") == 1" << std::endl;
+
+  trace.beginBlock ( "Testing block: multiple coefficient intersection." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      nbok += testCoefficientIntersection( ic ) ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") coefficient intersection." << std::endl;
+  trace.endBlock();
   
   return nbok == nb;
 }

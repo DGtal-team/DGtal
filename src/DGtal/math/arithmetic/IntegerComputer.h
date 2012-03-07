@@ -375,9 +375,9 @@ xs
 
        @param fl the greatest integer such that (u.N) fl <= c - p.N
        @param ce the smallest integer such that c - p.N  < (u.N) ce
-       @param p any vector in Z2.
-       @param u any vector in Z2.
-       @param N any vector in Z2.
+       @param p any vector in Z2
+       @param u any vector in Z2 in the same quadrant as N.
+       @param N any vector in Z2 in the same quadrant as u.
        @param c any integer.
      */
     void getCoefficientIntersection( Integer & fl, Integer & ce,
