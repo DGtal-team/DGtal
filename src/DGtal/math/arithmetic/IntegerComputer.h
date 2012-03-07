@@ -388,15 +388,18 @@ xs
 				  
     /**
        Compute the valid bezout vector v of u such that A+v satifies
-       the constraints C and C2 and such that A+v+u doesn't satify the
+       the constraints C2 and such that A+v+u doesn't satify the
        constraint C2. 
        
-       (A+v).N    <= c ,    
        (A+v).N2   <= c2,
        (A+v+u).N2 >  c2.
 
-       If ! compute_v, v is already initialized and the
-       constraint N.p<=c is not used in the computation.
+       The constraint (N,c) is used like this: if the Bezout is such
+       that (A+v).N > c, then v <- -v. Thus v is oriented toward the
+       constraint.
+
+       If ! compute_v, v is used as is. The constraint N.(A+v) <= c
+       should be satisfied.
 
        @param v (modifies) a Bezout vector for u, with the constraints above.
        @param A any point in Z2.
@@ -409,10 +412,10 @@ xs
        already given (false), default to true.
      */
     void getValidBezout ( Vector2I & v, 
-                       const Point2I & A, const Vector2I & u,
-		       const Point2I & N, IntegerParamType c, 
-                       const Point2I & N2, IntegerParamType c2, 
-                       bool compute_v = true ) const;
+                          const Point2I & A, const Vector2I & u,
+                          const Vector2I & N, IntegerParamType c, 
+                          const Vector2I & N2, IntegerParamType c2, 
+                          bool compute_v = true ) const;
 
     // ----------------------- Point3I services ------------------------------
   public:
