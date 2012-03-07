@@ -249,6 +249,27 @@ template <typename TInteger, typename TSize>
 inline
 typename DGtal::SternBrocot<TInteger, TSize>::Fraction
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
+father( Size m ) const
+{
+  if ( m > NumberTraits<Size>::ONE ) // > 1
+    {
+      Node* n = myNode;
+      while ( n->u > m )
+        n = odd() ? n->ascendantRight : n->ascendantLeft;
+      return Fraction( n );
+    }
+  else if ( m != NumberTraits<Size>::ZERO ) // == 1
+    {
+      return odd() ? previousPartial().right() : previousPartial().left();
+    }
+  else // == 0
+    return previousPartial().previousPartial();
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::SternBrocot<TInteger, TSize>::Fraction
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
 previousPartial() const
 {
   return Fraction( odd() ? myNode->ascendantLeft : myNode->ascendantRight );
