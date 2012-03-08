@@ -5,6 +5,8 @@
 # -----------------------------------------------------------------------------
 # Look for boost 
 # -----------------------------------------------------------------------------
+SET(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "/opt/local/include")
+
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 
