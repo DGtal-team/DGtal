@@ -39,50 +39,50 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-DGtal::Pattern<TInteger, TSize>::~Pattern()
+DGtal::Pattern<TFraction>::~Pattern()
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-DGtal::Pattern<TInteger, TSize>::Pattern( Fraction f )
+DGtal::Pattern<TFraction>::Pattern( Fraction f )
   : mySlope( f )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-DGtal::Pattern<TInteger, TSize>::Pattern( const Self & other )
+DGtal::Pattern<TFraction>::Pattern( const Self & other )
   : mySlope( other.mySlope )
 {
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize> &
-DGtal::Pattern<TInteger, TSize>::operator=( const Self & other )
+typename DGtal::Pattern<TFraction> &
+DGtal::Pattern<TFraction>::operator=( const Self & other )
 {
   mySlope = other.mySlope;
   return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-DGtal::Pattern<TInteger, TSize>::Pattern( Integer p, Integer q )
+DGtal::Pattern<TFraction>::Pattern( Integer p, Integer q )
 {
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
   p /= g;
   q /= g;
-  mySlope = SB::fraction( p, q );
+  mySlope = Fraction( p, q );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 std::string
-DGtal::Pattern<TInteger, TSize>::
+DGtal::Pattern<TFraction>::
 rE() const
 {
   if ( mySlope.null() ) return "eps";
@@ -112,28 +112,28 @@ rE() const
     }
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Fraction
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Fraction
+DGtal::Pattern<TFraction>::
 slope() const
 {
   return mySlope;
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Integer
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Integer
+DGtal::Pattern<TFraction>::
 length() const
 {
   return mySlope.p() + mySlope.q();
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Integer
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Integer
+DGtal::Pattern<TFraction>::
 posU( Size k ) const
 {
   ASSERT( ! slope().null() );
@@ -142,10 +142,10 @@ posU( Size k ) const
   else return length() * ((Integer) k);
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Integer
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Integer
+DGtal::Pattern<TFraction>::
 posL( Size k ) const
 {
   ASSERT( ! slope().null() );
@@ -156,10 +156,10 @@ posL( Size k ) const
   else return pL + length() * ((Integer) k);
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Point2I
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Point2I
+DGtal::Pattern<TFraction>::
 U( Size k ) const
 {
   ASSERT( ! slope().null() );
@@ -174,10 +174,10 @@ U( Size k ) const
                     slope().p() * ((Integer) k) );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-typename DGtal::Pattern<TInteger, TSize>::Point2I
-DGtal::Pattern<TInteger, TSize>::
+typename DGtal::Pattern<TFraction>::Point2I
+DGtal::Pattern<TFraction>::
 L( Size k ) const
 {
   ASSERT( ! slope().null() );
@@ -192,20 +192,20 @@ L( Size k ) const
     return L + U( k );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
-DGtal::Pattern<TInteger, TSize>
-DGtal::Pattern<TInteger, TSize>::
+DGtal::Pattern<TFraction>
+DGtal::Pattern<TFraction>::
 previousPattern() const
 {
   ASSERT( ( ! slope().null() ) && ( slope().k() > NumberTraits<Size>::ZERO ) );
   return Self( slope().previousPartial() );
 }
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 bool
-DGtal::Pattern<TInteger, TSize>::
+DGtal::Pattern<TFraction>::
 getSmallestCoveringSubpattern( Pattern & subpattern,
                                Size & nb,
                                Integer & startPos,
@@ -271,10 +271,10 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
 }
 
 //-----------------------------------------------------------------------------
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 bool
-DGtal::Pattern<TInteger, TSize>::
+DGtal::Pattern<TFraction>::
 getGreatestIncludedSubpattern( Pattern & subpattern,
                                Size & nb,
                                Integer & startPos,
@@ -364,23 +364,23 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 void
-DGtal::Pattern<TInteger, TSize>::selfDisplay ( std::ostream & out ) const
+DGtal::Pattern<TFraction>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Pattern] f=";
-  SB::display( out, mySlope );
+  mySlope.selfDisplay( out );
 }
 
 /**
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 bool
-DGtal::Pattern<TInteger, TSize>::isValid() const
+DGtal::Pattern<TFraction>::isValid() const
 {
     return true;
 }
@@ -390,11 +390,11 @@ DGtal::Pattern<TInteger, TSize>::isValid() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TInteger, typename TSize>
+template <typename TFraction>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const Pattern<TInteger, TSize> & object )
+                    const Pattern<TFraction> & object )
 {
   object.selfDisplay( out );
   return out;
