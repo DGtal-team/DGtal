@@ -124,6 +124,11 @@ namespace DGtal
     /// Christoffel word in {0,1}.
     std::string rE() const;
 
+    /// The recursive mapping E, which gives the corresponding
+    /// Christoffel word in {0,1}, but also shows the Berstel splits
+    /// with "(|)".  @param seps the three separators.
+    std::string rEs( const std::string & seps = "(|)" ) const;
+
     /// @return the slope of this pattern, an irreducible fraction
     Fraction slope() const;
 
@@ -145,6 +150,11 @@ namespace DGtal
     /// @return the coordinates of the k-th lower leaning point, @param k
     /// its index ( L( 0 ) is between U( 0 ) and U( 1 ) ).
     Point2I L( Size k ) const;
+
+    /// @return the Bezout vector for the pattern, such that bezout()
+    /// is oriented in the first quadrant, slightly to the left of the
+    /// slope, and shorter.
+    Vector2I bezout() const;
 
     /// @return the pattern of slope z_{n-1} if z_n was the slope of 'this'.
     Pattern previousPattern() const;

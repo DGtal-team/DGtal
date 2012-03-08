@@ -1,0 +1,236 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file StandardDSLQ0.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/03/08
+ *
+ * Implementation of inline methods defined in StandardDSLQ0.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction>::
+~StandardDSLQ0()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction>::
+StandardDSLQ0()
+  : myPattern()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction>::
+StandardDSLQ0 ( const Self & other )
+  : myPattern( other.myPattern )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction> &
+DGtal::StandardDSLQ0<TFraction>::
+operator= ( const Self & other )
+{
+  myPattern = other.myPattern;
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction>::
+StandardDSLQ0( Fraction slope, IntegerParamType mu )
+  : myPattern( slope ), myMu( mu )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+DGtal::StandardDSLQ0<TFraction>::
+StandardDSLQ0( IntegerParamType a, IntegerParamType b, IntegerParamType mu )
+  : myPattern( a, b ), myMu( mu )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+bool
+DGtal::StandardDSLQ0<TFraction>::
+operator()( const Point & p ) const
+{
+  if ( slope().null() ) return false;
+  Integer _r = r( p );
+  return ( mu() <= _r ) && ( _r < ( mu() + pattern().length() ) );
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Integer
+DGtal::StandardDSLQ0<TFraction>::
+r( const Point & p ) const
+{
+  ASSERT( ! slope().null() );
+  return a() * p[ 0 ] - b() * p[ 1 ];
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Fraction
+DGtal::StandardDSLQ0<TFraction>::
+slope() const
+{
+  return pattern().slope();
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+const DGtal::Pattern<TFraction> &
+DGtal::StandardDSLQ0<TFraction>::
+pattern() const
+{
+  return myPattern;
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+const typename DGtal::StandardDSLQ0<TFraction>::Integer &
+DGtal::StandardDSLQ0<TFraction>::
+mu() const
+{
+  return myMu;
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Integer
+DGtal::StandardDSLQ0<TFraction>::
+mup() const
+{
+  return myMu + pattern().length() - NumberTraits<Integer>::ONE;
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Integer
+DGtal::StandardDSLQ0<TFraction>::
+a() const
+{
+  return slope().p();
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Integer
+DGtal::StandardDSLQ0<TFraction>::
+b() const
+{
+  return slope().q();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Point
+DGtal::StandardDSLQ0<TFraction>::
+U() const
+{
+  Vector2I v = pattern().bezout();
+  Integer c = ( mu() * v[ 0 ] ) / b();
+  Vector2I u( b(), a() );
+  return Point( mu() > NumberTraits<Integer>::ZERO 
+                ? u * ( c + 1 ) - v * mu()
+                : u * c - v * mu() );
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::StandardDSLQ0<TFraction>::Point
+DGtal::StandardDSLQ0<TFraction>::
+L() const
+{
+  return Point( U() + pattern().L( NumberTraits<Size>::ZERO ) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TFraction>
+inline
+void
+DGtal::StandardDSLQ0<TFraction>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[StandardDSLQ0"
+      << " a=" << a() << ", b=" << b() << ", mu=" << mu() << "]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TFraction>
+inline
+bool
+DGtal::StandardDSLQ0<TFraction>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TFraction>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const StandardDSLQ0<TFraction> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

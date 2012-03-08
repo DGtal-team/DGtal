@@ -34,6 +34,7 @@
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
+#include "DGtal/math/arithmetic/StandardDSLQ0.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -480,6 +481,32 @@ bool testPattern()
   return nbok == nb;
 }
 
+template <typename Fraction>
+bool testStandardDSLQ0()
+{
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef typename Fraction::Integer Integer;
+  typedef typename Fraction::Size Size;
+  typedef typename DSL::Point Point;
+  typedef typename DSL::Point2I Point2I;
+  typedef typename DSL::Vector2I Vector2I;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  for ( Integer mu = -5; mu < 30; ++mu )
+    {
+      DSL D1( 5, 12, mu );
+      trace.info() << "DSL D1=" << D1 << endl;
+      Point U = D1.U();
+      Point L = D1.L();
+      trace.info() << "- U=" << U << " r(U)=" << D1.r( U )
+                   << ", L=" << L << " r(L)=" << D1.r( L ) << endl;
+      ++nb, nbok += D1.r( U ) == D1.mu() ? 1 : 0;
+      ++nb, nbok += D1.r( L ) == D1.mup() ? 1 : 0;
+    }
+  return nbok == nb;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -506,6 +533,7 @@ bool testSternBrocot()
   trace.endBlock();
 
   ++nb, nbok += testPattern<SB>() ? 1 : 0;
+  ++nb, nbok += testStandardDSLQ0<Fraction>() ? 1 : 0;
   return nbok == nb;
 }
 
