@@ -61,19 +61,17 @@ namespace DGtal
      here is to use SternBrocot::Fraction so as to compute efficiently
      subpatterns.
 
-     @param TInteger the integral type chosen for the fractions.
-     
-     @param TSize the integral type chosen for the
-     quotients/coefficients or depth (may be "smaller" than TInteger,
-     since they are generally much smaller than the fraction itself).
+     @param TFraction the type chosen to represent fractions, a model
+     of CFraction. You may use SternBrocot<>::Fraction for instance.
   */
-  template <typename TInteger, typename TSize = int32_t>
+  template <typename TFraction>
   class Pattern
   {
   public:
-    typedef TInteger Integer;
-    typedef TSize Size;
-    typedef Pattern<Integer,Size> Self;
+    typedef TFraction Fraction;
+    typedef Pattern<TFraction> Self;
+    typedef typename Fraction::Integer Integer;
+    typedef typename Fraction::Size Size;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
     BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
@@ -81,8 +79,6 @@ namespace DGtal
     // ----------------------- associated types ------------------------------
   public:
 
-    typedef SternBrocot<Integer, Size> SB;
-    typedef typename SB::Fraction Fraction;
     typedef IntegerComputer<Integer> IC;
     typedef typename IC::Point2I Point2I;
     typedef typename IC::Vector2I Vector2I;
@@ -254,9 +250,9 @@ namespace DGtal
    * @param object the object of class 'Pattern' to write.
    * @return the output stream after the writing.
    */
-  template <typename TInteger, typename TSize>
+  template <typename TFraction>
   std::ostream&
-  operator<< ( std::ostream & out, const Pattern<TInteger, TSize> & object );
+  operator<< ( std::ostream & out, const Pattern<TFraction> & object );
 
 } // namespace DGtal
 

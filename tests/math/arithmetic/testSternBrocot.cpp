@@ -79,7 +79,7 @@ bool testPattern()
   typedef typename SB::Integer Integer;
   typedef typename SB::Size Size;
   typedef typename SB::Fraction Fraction;
-  typedef Pattern<Integer, Size> MyPattern;
+  typedef Pattern<Fraction> MyPattern;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   Integer p = random() / 10000;

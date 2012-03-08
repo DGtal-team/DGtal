@@ -65,6 +65,14 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
 template <typename TInteger, typename TSize>
 inline
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
+Fraction( Integer p, Integer q, Fraction ancestor )
+{
+  this->operator=( SB::fraction( p, q, ancestor ) );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
 Fraction( Node* sb_node )
   : myNode( sb_node )
 {
@@ -368,6 +376,33 @@ cfrac( std::vector<Size> & quotients ) const
         ( i == NumberTraits<Size>::castToInt64_t( n->k ) ) ? n->u : 1;
       --i;
       left = ! left;
+    }
+}
+
+template <typename TInteger, typename TSize>
+inline
+void
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+selfDisplay( std::ostream & out ) const
+{
+  if ( this->null() ) out << "[Fraction null]";
+  else
+    {
+      out << "[Fraction f=" << this->p() 
+          << "/" << this->q()
+          << " u=" << this->u()
+          << " k=" << this->k()
+          << std::flush;
+      std::vector<Size> quotients;
+      if ( this->k() >= 0 )
+        {
+          this->cfrac( quotients );
+          out << " [" << quotients[ 0 ];
+          for ( unsigned int i = 1; i < quotients.size(); ++i )
+            out << "," << quotients[ i ];
+          out << "]";
+        }
+      out << " ]";
     }
 }
 
