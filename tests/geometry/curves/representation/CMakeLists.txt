@@ -1,4 +1,4 @@
-SET(DGTAL_TESTS_SRC
+SET(DGTAL_TESTS_SRC	
   testArithDSS	
   testArithDSS3d
   testFreemanChain
@@ -10,6 +10,7 @@ SET(DGTAL_TESTS_SRC
   testCombinDSS
   testGeometricalDSS
   testGeometricalDCA
+  testFrechetShortcut
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
