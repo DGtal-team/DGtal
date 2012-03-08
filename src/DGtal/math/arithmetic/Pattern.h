@@ -83,6 +83,9 @@ namespace DGtal
 
     typedef SternBrocot<Integer, Size> SB;
     typedef typename SB::Fraction Fraction;
+    typedef IntegerComputer<Integer> IC;
+    typedef typename IC::Point2I Point2I;
+    typedef typename IC::Vector2I Vector2I;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -131,8 +134,25 @@ namespace DGtal
     /// @return the digital length of the pattern, i.e. slope.p() + slope.q().
     Integer length() const;
 
+    /// @return the position of the k-th upper leaning point, @param k
+    /// its index ( posU( 0 ) == 0 ).
+    Integer posU( Size k ) const;
+
+    /// @return the position of the k-th lower leaning point, @param k
+    /// its index ( posU( 0 ) <= posL( 0 ) < posU( 1 ) ).
+    Integer posL( Size k ) const;
+
+    /// @return the coordinates of the k-th upper leaning point, @param k
+    /// its index ( U( 0 ) == (0,0) ).
+    Point2I U( Size k ) const;
+
+    /// @return the coordinates of the k-th lower leaning point, @param k
+    /// its index ( L( 0 ) is between U( 0 ) and U( 1 ) ).
+    Point2I L( Size k ) const;
+
     /// @return the pattern of slope z_{n-1} if z_n was the slope of 'this'.
     Pattern previousPattern() const;
+
 
     /**
        Computes the smallest subpattern that contains the segment
@@ -153,13 +173,48 @@ namespace DGtal
        @param posA the position of A (number of steps till A).
        @param posB the position of B (number of steps till B), > posA.
 
+       @param reversed when 'false' assume a usual pattern, otherwise
+       assume a reversed pattern (i.e. a path between two lower
+       leaning points). In this case, all positions are relative to
+       the first lower leaning point L(0). Everything returned
+       correspond to reversed pattern(s).
+       
        @return 'true' iff the subpattern is different from 'this'.
     */
     bool
     getSmallestCoveringSubpattern( Pattern & subpattern,
                                    Size & nb,
                                    Integer & startPos,
-                                   Integer posA, Integer posB ) const;
+                                   Integer posA, Integer posB,
+                                   bool reversed = false ) const;
+
+    /**
+       Computes the greatest subpattern that is included in the
+       segment [A,B], a subpart of the pattern. Points A and B are
+       defined by their position with respect to the beginning of this
+       pattern.  The \a subpattern has a starting position \a startPos
+       and may be repeated \a nb times.
+
+       @param subpattern (returns) the subpattern (a pattern that is
+       some ascendant of 'this' in the Stern-Brocot tree).
+
+       @param nb (returns) the number of times \a subpattern is
+       repeated so as to be included in [A,B]
+
+       @param startPos (returns) the starting position of the
+       subpattern in this pattern.
+
+       @param posA the position of A (number of steps till A).
+       @param posB the position of B (number of steps till B), > posA.
+
+       @return 'true' iff the subpattern is not null.
+    */
+    bool
+    getGreatestIncludedSubpattern( Pattern & subpattern,
+                                   Size & nb,
+                                   Integer & startPos,
+                                   Integer posA, Integer posB,
+                                   bool reversed = false ) const;
 
     // ----------------------- Interface --------------------------------------
   public:

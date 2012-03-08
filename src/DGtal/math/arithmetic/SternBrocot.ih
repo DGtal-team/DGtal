@@ -410,21 +410,25 @@ void
 DGtal::SternBrocot<TInteger, TSize>::display( std::ostream & out, 
                                               const Fraction & f )
 {
-  out << "[Fraction f=" << f.p() 
-	      << "/" << f.q()
-	      << " u=" << f.u()
-	      << " k=" << f.k()
-	      << std::flush;
-  std::vector<Size> quotients;
-  if ( f.k() >= 0 )
+  if ( f.null() ) out << "[Fraction null]";
+  else
     {
-      f.cfrac( quotients );
-      out << " [" << quotients[ 0 ];
-      for ( unsigned int i = 1; i < quotients.size(); ++i )
-	out << "," << quotients[ i ];
-      out << "]";
+      out << "[Fraction f=" << f.p() 
+          << "/" << f.q()
+          << " u=" << f.u()
+          << " k=" << f.k()
+          << std::flush;
+      std::vector<Size> quotients;
+      if ( f.k() >= 0 )
+        {
+          f.cfrac( quotients );
+          out << " [" << quotients[ 0 ];
+          for ( unsigned int i = 1; i < quotients.size(); ++i )
+            out << "," << quotients[ i ];
+          out << "]";
+        }
+      out << " ]";
     }
-  out << " ]";
 }
 
 /**
