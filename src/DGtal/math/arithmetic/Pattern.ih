@@ -101,13 +101,44 @@ rE() const
       Fraction f1, f2;
       Size nb1, nb2;
       mySlope.getSplitBerstel( f1, nb1, f2, nb2 );
-      std::string s( "(" );
+      std::string s;
       Self p1( f1 );
       Self p2( f2 );
       for ( Size i = 0; i < nb1; ++i ) s += p1.rE();
-      s += '|';
       for ( Size i = 0; i < nb2; ++i ) s += p2.rE();
-      s += ')';
+      return s;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+std::string
+DGtal::Pattern<TFraction>::
+rEs( const std::string & seps ) const
+{
+  if ( mySlope.null() ) return "eps";
+  else if ( mySlope.k() == NumberTraits<Size>::ZERO )
+    {
+      std::string s( mySlope.u(), '1' );
+      return '0' + s;
+    }
+  else if ( mySlope.k() == NumberTraits<Size>::ONE )
+    {
+      std::string s( mySlope.u(), '0' );
+      return s + '1';
+    }
+  else
+    {
+      Fraction f1, f2;
+      Size nb1, nb2;
+      mySlope.getSplitBerstel( f1, nb1, f2, nb2 );
+      std::string s( seps[ 0 ] );
+      Self p1( f1 );
+      Self p2( f2 );
+      for ( Size i = 0; i < nb1; ++i ) s += p1.rEs( seps );
+      s += seps[ 1 ];
+      for ( Size i = 0; i < nb2; ++i ) s += p2.rEs( seps );
+      s += seps[ 2 ];
       return s;
     }
 }
@@ -183,13 +214,22 @@ L( Size k ) const
   ASSERT( ! slope().null() );
   Point2I L( NumberTraits<Integer>::ONE,
              -NumberTraits<Integer>::ONE ); // (1,-1)
-  L += slope().odd() 
-    ? U( 1 ) - previousPattern().U( 1 ) 
-    : previousPattern().U( 1 );
+  L += bezout();
   if ( k == NumberTraits<Size>::ZERO ) 
     return L;
   else
     return L + U( k );
+}
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+inline
+typename DGtal::Pattern<TFraction>::Vector2I
+DGtal::Pattern<TFraction>::
+bezout() const
+{
+  return slope().odd() 
+    ? U( 1 ) - previousPattern().U( 1 ) 
+    : previousPattern().U( 1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TFraction>
