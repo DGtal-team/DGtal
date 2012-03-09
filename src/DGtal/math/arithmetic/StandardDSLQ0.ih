@@ -486,16 +486,6 @@ DSSWithinTwoPatterns( Point U1, Point U2,
 //-----------------------------------------------------------------------------
 template <typename TFraction>
 inline
-typename DGtal::StandardDSLQ0<TFraction>::Size
-DGtal::StandardDSLQ0<TFraction>::
-max3( Size a, Size b, Size c )
-{
-  return ( a >= b ) ? ( a >= c ? a : c )
-    : ( b >= c ? b : c );
-}
-//-----------------------------------------------------------------------------
-template <typename TFraction>
-inline
 typename DGtal::StandardDSLQ0<TFraction>::Fraction
 DGtal::StandardDSLQ0<TFraction>::
 deepest( Fraction f1, Fraction f2, Fraction f3 )
