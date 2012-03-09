@@ -160,6 +160,7 @@ DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
       myPred2 = other.myPred2; 
       myBoolFunctor = other.myBoolFunctor; 
     }
+    return *this; 
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
@@ -208,6 +209,7 @@ DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
       myFun = other.myFun; 
       myPred = other.myPred; 
     }
+    return *this;
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>

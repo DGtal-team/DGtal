@@ -226,6 +226,7 @@ namespace DGtal
 	  myF1 = other.myF1; 
 	  myF2 = other.myF2;
 	}
+    return *this;
     }
 
 
@@ -433,6 +434,7 @@ struct Thresholder<T,true,true> {
 	  myPred2 = other.myPred2; 
 	  myBoolFunctor = other.myBoolFunctor; 
 	}
+    return *this;
     }
 
     /**

@@ -82,7 +82,7 @@ int main( int argc, char** argv )
 
   //fill
   const int maximalValue = size*size; 
-  Image::OutputIterator it = img.output(); 
+  Image::OutputIterator it = img.outputIterator(); 
   for (int i = 0; i < maximalValue; ++i)
     *it++ = i;
 

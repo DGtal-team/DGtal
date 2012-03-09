@@ -118,7 +118,7 @@ namespace DGtal
    * which can be used to directly iterate over the values of the image
    *
    * This class also provides a setValue() method and an output iterator, 
-   * which is returned by the output() method for writting purposes. 
+   * which is returned by the outputIterator() method for writting purposes. 
    *
    * @see testImage.cpp
    */
@@ -242,7 +242,7 @@ namespace DGtal
     /**
      * @return an output iterator to write values.
      */
-    OutputIterator output();
+    OutputIterator outputIterator();
     
     /**
      * Writes/Displays the object on an output stream.
