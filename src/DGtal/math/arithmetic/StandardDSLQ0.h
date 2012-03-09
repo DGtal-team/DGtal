@@ -62,6 +62,11 @@ namespace DGtal
 
      \f$ mu <= ax - by < mu + a + b \f$
 
+     You may move on it point by point with iterators ConstIterator.
+     You can find upper and lower leaning points, find points on the
+     DSL given one coordinate.  You may extract subsegment with
+     reversedSmartDSS.
+
      @param TFraction the type chosen to represent fractions, a model
      of CFraction. You may use SternBrocot<>::Fraction for instance.
 
@@ -87,6 +92,17 @@ namespace DGtal
     // Model of CPointPredicate
     typedef typename IC::Point2I Point;
 
+    /**
+       The iterator to move in the standard digital straight line,
+       point by point. To move from A to B on the DSL D, visiting
+       [A,B], write:
+
+       @code
+       for ( ConstIterator it = D.begin( A ), it_end = D.end( B );
+             it != it_end; ++it )
+         Point P = *it;
+       @endcode
+    */
     struct ConstIterator {
       typedef ConstIterator Self;
       typedef Point Value;
@@ -274,11 +290,51 @@ namespace DGtal
     
 
     /**
-       Algorithm ReversedSmartDSS.
+       Algorithm ReversedSmartDSS. See M. Said and J.-O. Lachaud,
+       DGCI2010.
+
+       Computes the exact characteristics of the subsegment [A,B] of
+       this DSL in time O(log(|B-A|)). An even better bound in the
+       output is achieved.
+       
+       @param A any point belonging to this DSL, A < B.
+       @param B any point belonging to this DSL, A < B.
+
+       @return the minimal DSL containing [A,B].
     */
     Self reversedSmartDSS( const Point & A, const Point & B ) const;
+
+    /**
+       Algorithm ReversedSmartDSS. See M. Said and J.-O. Lachaud,
+       DGCI2010.
+
+       Computes the exact characteristics of the subsegment [A,B] of
+       this DSL in time O(log(|B-A|)). An even better bound in the
+       output is achieved.
+       
+       @param A any point belonging to this DSL, A < B.
+       @param B any point belonging to this DSL, A < B.
+       @param U1 the first upper leaning point such that U1 <= A.
+       @param U2 the second upper leaning point such that B <= U2.
+
+       @return the minimal DSL containing [A,B].
+       @see reversedSmartDSS( const Point & A, const Point & B )
+    */
     Self reversedSmartDSS( Point U1, Point U2,
                            const Point & A, const Point & B ) const;
+
+    /**
+       Used by reversedSmartDSS.
+       Computes the exact characteristics of the subsegment [A,B] of
+       this DSL. Note that |U2-U1| = 2 * length().
+       
+       @param A any point belonging to this DSL, A < B.
+       @param B any point belonging to this DSL, A < B.
+       @param U1 the first upper leaning point such that U1 <= A.
+       @param U2 the second upper leaning point such that B <= U2.
+
+       @return the minimal DSL containing [A,B].
+    */
     Self DSSWithinTwoPatterns( Point U1, Point U2,
                                const Point & A, const Point & B ) const;
 
@@ -306,18 +362,14 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
+    /// Used in some computations.
     IC ic;
 
     // ------------------------- Hidden services ------------------------------
   protected:
     
-
-  private:
-
-
     // ------------------------- Internals ------------------------------------
   private:
-    static Size max3( Size a, Size b, Size c );
     static Fraction deepest( Fraction f1, Fraction f2, Fraction f3 );
     static Fraction deepest( Fraction f1, Fraction f2 );
   }; // end of class StandardDSLQ0
