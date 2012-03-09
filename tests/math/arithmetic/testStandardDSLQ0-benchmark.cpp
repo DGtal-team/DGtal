@@ -106,7 +106,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries )
 int main( int , char** )
 {
   typedef SternBrocot<int64_t,int32_t> SB;
-  typedef typename SB::Fraction Fraction;
+  typedef SB::Fraction Fraction;
   testSubStandardDSLQ0<Fraction>( 10000 );
   return true;
 }

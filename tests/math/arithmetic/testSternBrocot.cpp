@@ -642,7 +642,7 @@ bool testSternBrocot()
   unsigned int nb = 0;
   typedef BigInteger Integer;
   typedef SternBrocot<Integer,int32_t> SB;
-  typedef typename SB::Fraction Fraction;
+  typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing block: init fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
@@ -665,7 +665,7 @@ bool testSternBrocot()
 int main( int , char** )
 {
   typedef SternBrocot<int64_t,int32_t> SB;
-  typedef typename SB::Fraction Fraction;
+  typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing class SternBrocot" );
   bool res = testSternBrocot()
     && testPattern<SB>()
