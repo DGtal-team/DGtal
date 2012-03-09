@@ -41,14 +41,20 @@ install(TARGETS DGtal
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
-add_library ( DGtalIO SHARED ${DGTALIO_SRC})
-target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
+IF (BUILD_SHARED_LIBS)
+  add_library ( DGtalIO SHARED ${DGTALIO_SRC} )
+  target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
+ELSE(BUILD_SHARED_LIBS)
+  add_library ( DGtalIO STATIC ${DGTALIO_SRC} )
+  target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
+ENDIF(BUILD_SHARED_LIBS)
 
 install(TARGETS DGtalIO
-  # IMPORTANT: Add the DGtalVisu library to the "export-set"
+  # IMPORTANT: Add the DGtalIO library to the "export-set"
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 

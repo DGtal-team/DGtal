@@ -814,12 +814,12 @@ namespace DGtal
     {
       return ONE;
     }
-    static ReturnType min()
+    static ReturnType minNumberTraits()
     {
       ASSERT2(false, "UnBounded interger type does not support min() function");
       return ZERO;
     }
-    static ReturnType max()
+    static ReturnType maxNumberTraits()
     {
       ASSERT2(false, "UnBounded interger type does not support max() function");
       return ZERO;
