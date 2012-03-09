@@ -180,8 +180,8 @@ namespace DGtal
 
 
     private:
-      Point myP;
       const StandardDSLQ0<TFraction>* myPtrDSL;
+      Point myP;
       
     };
     // ----------------------- Standard services ------------------------------

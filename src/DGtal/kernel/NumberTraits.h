@@ -175,8 +175,8 @@ namespace DGtal
     typedef uint16_t UnsignedVersion;
     typedef uint16_t ReturnType;
     typedef boost::call_traits<uint16_t>::param_type ParamType;
-    static const uint16_t ZERO = 0;
-    static const uint16_t ONE = 1;
+    static const uint16_t ZERO; // = 0;
+    static const uint16_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -234,8 +234,8 @@ namespace DGtal
     typedef uint16_t UnsignedVersion;
     typedef int16_t ReturnType;
     typedef boost::call_traits<int16_t>::param_type ParamType;
-    static const int16_t ZERO = 0;
-    static const int16_t ONE = 1;
+    static const int16_t ZERO; // = 0;
+    static const int16_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -293,8 +293,8 @@ namespace DGtal
     typedef uint8_t UnsignedVersion;
     typedef uint8_t ReturnType;
     typedef boost::call_traits<uint8_t>::param_type ParamType;
-    static const uint8_t ZERO = 0;
-    static const uint8_t ONE = 1;
+    static const uint8_t ZERO; // = 0;
+    static const uint8_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -352,8 +352,8 @@ namespace DGtal
     typedef uint8_t UnsignedVersion;
     typedef int8_t ReturnType;
     typedef boost::call_traits<int8_t>::param_type ParamType;
-    static const int8_t ZERO = 0;
-    static const int8_t ONE = 1;
+    static const int8_t ZERO; // = 0;
+    static const int8_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -410,8 +410,8 @@ namespace DGtal
     typedef uint32_t UnsignedVersion;
     typedef uint32_t ReturnType;
     typedef boost::call_traits<uint32_t>::param_type ParamType;
-    static const uint32_t ZERO = 0;
-    static const uint32_t ONE = 1;
+    static const uint32_t ZERO; // = 0;
+    static const uint32_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -522,8 +522,8 @@ namespace DGtal
     typedef uint64_t UnsignedVersion;
     typedef uint64_t ReturnType;
     typedef boost::call_traits<uint64_t>::param_type ParamType;
-    static const uint64_t ZERO = 0;
-    static const uint64_t ONE = 1;
+    static const uint64_t ZERO; // = 0;
+    static const uint64_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
@@ -580,8 +580,8 @@ namespace DGtal
     typedef uint64_t UnsignedVersion;
     typedef int64_t ReturnType;
     typedef boost::call_traits<int64_t>::param_type ParamType;
-    static const int64_t ZERO = 0;
-    static const int64_t ONE = 1;
+    static const int64_t ZERO; // = 0;
+    static const int64_t ONE; // = 1;
     static ReturnType zero()
     {
       return 0;
