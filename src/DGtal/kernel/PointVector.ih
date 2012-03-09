@@ -286,7 +286,7 @@ DGtal::PointVector<dim, TComponent>::operator*= ( Component coeff )
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 DGtal::PointVector<dim, TComponent>
-DGtal::PointVector<dim, TComponent>::operator* ( Component coeff )
+DGtal::PointVector<dim, TComponent>::operator* ( Component coeff ) const
 {
   Self v = *this;
   v *= coeff;
