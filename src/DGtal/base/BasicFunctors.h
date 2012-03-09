@@ -154,7 +154,7 @@ namespace DGtal
      */
     template <typename TInput>
     inline
-    Value operator()(const TInput& aInput) const
+    Value operator()(const TInput& /*aInput*/) const
     {
       return myValue;
     }

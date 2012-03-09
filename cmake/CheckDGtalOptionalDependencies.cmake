@@ -5,6 +5,12 @@
 # -----------------------------------------------------------------------------
 # Global options
 # -----------------------------------------------------------------------------
+message(STATUS "-------------------------------------------------------------------------------")
+message(STATUS "DGtal Library optional configuration:")
+message(STATUS "   (to change these values, use ccmake, a graphical")
+message(STATUS "   cmake frontend, or define cmake commandline variables") 
+message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
+message(STATUS "")
 
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
@@ -12,25 +18,6 @@ OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
-OPTION(WITH_ALL "With all optional dependencies." OFF)
-
-
-
-IF(WITH_ALL)
-  SET( WITH_GMP   TRUE )
-  SET( WITH_ITK   TRUE )
-  SET( WITH_CAIRO  TRUE)
-  SET( WITH_COIN3D-SOQT  TRUE)
-  SET( WITH_QGLVIEWER  TRUE)
-  SET( WITH_MAGICK  TRUE)
-ENDIF(WITH_ALL)
-
-IF(WITH_ALL) 
-message(STATUS "      WITH_ALL          true")
-ELSE(WITH_ALL)
-message(STATUS "      WITH_ALL          false")
-ENDIF(WITH_ALL)
-message(STATUS " ")
 
 IF(WITH_GMP) 
 SET (LIST_OPTION ${LIST_OPTION} [GMP]\ ) 
@@ -75,10 +62,7 @@ message(STATUS "      WITH_MAGICK       false")
 ENDIF(WITH_MAGICK)
 
 message(STATUS "")
-message(STATUS "-------------------------------------------------------------------------------")
-
 message(STATUS "Checking the dependencies: ")
-
 
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
@@ -164,7 +148,6 @@ ENDIF(WITH_CAIRO)
 # Look for Coin3D, SoQt for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-
 IF(WITH_COIN3D-SOQT)
   find_package(COIN3D REQUIRED)
   if ( COIN3D_FOUND )
@@ -198,14 +181,10 @@ if ( COIN3D_FOUND AND SOQT_FOUND )
     ADD_DEFINITIONS("-DWITH_VISU3D_IV")
 endif( COIN3D_FOUND  AND SOQT_FOUND )
 
-
-
-
 # -----------------------------------------------------------------------------
 # Look for QGLViewer for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
-
 IF(WITH_QGLVIEWER)
   find_package(QGLVIEWER REQUIRED)
   if(QGLVIEWER_FOUND)
@@ -222,7 +201,6 @@ IF(WITH_QGLVIEWER)
   endif (QGLVIEWER_FOUND)
 ENDIF(WITH_QGLVIEWER)
 
-
 if(NOT WITH_VISU3D_QGLVIEWER)
   if(NOT WITH_VISU3D_IV)
     set( WITH_VISU3D FALSE)
@@ -233,11 +211,9 @@ else(NOT WITH_VISU3D_QGLVIEWER)
   set( WITH_VISU3D TRUE )
 endif(NOT WITH_VISU3D_QGLVIEWER)
 
-
 # -----------------------------------------------------------------------------
 # Look for Qt (if LibqglViewer or coin3D are set).
 # -----------------------------------------------------------------------------
-
 IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   find_package(Qt4  COMPONENTS QtCore QtGUI QtXml QtOpenGL REQUIRED)
   if ( QT4_FOUND )
@@ -254,4 +230,4 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 
-
+message(STATUS "-------------------------------------------------------------------------------")

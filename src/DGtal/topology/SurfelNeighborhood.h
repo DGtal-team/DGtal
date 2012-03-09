@@ -274,6 +274,35 @@ namespace DGtal
                 Dimension track_dir,
                 bool pos ) const;
 
+    /**
+       Go to the next direct or indirect adjacent bel on some set of
+       surfels defined by a SurfelPredicate [sp].  The digital surface may be
+       open (for instance, it may touch the space borders or may be open).
+
+       @tparam SurfelPredicate any model of predicate on surfel, i.e. a
+       boolean functor returning 'true' when the surfel belongs to the
+       digital surface. It is a model of CSurfelPredicate. 
+
+       @param adj_surfel (returns) the signed adjacent surfel in direction
+       [track_dir] if there is one.
+
+       @param sp any predicate taking a Surfel and returning 'true'
+       whenever the surfel belongs to the surface.
+
+       @param track_dir the direction where to look for the spel.
+       @param pos when 'true' look in positive direction along
+       [track_dir] axis, 'false' look in negative direction.
+
+       @return 0 if the move was impossible (no bels in this direction),
+       1 if it was the first interior, 2 if it was the second interior,
+       3 if it was the third interior.
+    */
+    template <typename SurfelPredicate>
+    unsigned int getAdjacentOnSurfelPredicate( SCell & adj_surfel,
+                                               const SurfelPredicate & sp, 
+                                               Dimension track_dir,
+                                               bool pos ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 

@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC
   testGaussDigitizer
   testHalfPlane
+  testImplicitFunctionModels
   testShapesFromPoints
   )
 

@@ -62,6 +62,7 @@ digraph G {
     CDigitalOrientedShape;
     CEuclideanBoundedShape;
     CEuclideanOrientedShape;
+    CImplicitFunctionDiff1 -> CImplicitFunction;
 	  
     label="Shapes";
   }
@@ -71,9 +72,12 @@ digraph G {
     color=lightgrey;
     node [style=filled,color=white];
           
-    CDigitalSurface;
-    CDomainAdjacency -> CAdjacency; 
-          
+    CDigitalSurfaceContainer -> boost_CopyConstructible;
+    CDigitalSurfaceTracker -> boost_CopyConstructible;
+    CDomainAdjacency -> CAdjacency ; 
+    CUndirectedSimpleGraph -> CSinglePassConstRange;
+    CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
+
     label="Topology";
   }
   subgraph cluster_5 {

@@ -63,9 +63,11 @@ namespace DGtal
   {
 
   public:
+    typedef ImplicitRoundedHyperCube<TSpace> Self;
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
-   
+    typedef double Value;
+
     /** 
      * Constructor. Contructs a rounded hypercube with center aCenter and width
      * aWidth.

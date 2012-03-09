@@ -100,8 +100,6 @@ namespace DGtal
      */
     SetPredicate();
 
-  private:
-
     // ------------------------- Internals ------------------------------------
   private:
     /**

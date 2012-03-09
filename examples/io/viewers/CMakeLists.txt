@@ -10,6 +10,6 @@ SET(DGTAL_TESTS_SRC
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtalIO DGtal)
+  target_link_libraries (${FILE} DGtalIO DGtal ${DGtalLibDependencies})
 ENDFOREACH(FILE)
 
