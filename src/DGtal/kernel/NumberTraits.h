@@ -464,8 +464,8 @@ namespace DGtal
     typedef uint32_t UnsignedVersion;
     typedef int32_t ReturnType;
     typedef boost::call_traits<int32_t>::param_type ParamType;
-    static const int32_t ZERO = 0;
-    static const int32_t ONE = 1;
+    static const int32_t ZERO;// = 0;
+    static const int32_t ONE;// = 1;
     static ReturnType zero()
     {
       return 0;

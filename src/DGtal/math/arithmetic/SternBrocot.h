@@ -147,18 +147,18 @@ namespace DGtal
           Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
           
-          @param p the numerator (>=0)
-          @param q the denominator (>=0)
+          @param aP the numerator (>=0)
+          @param aQ the denominator (>=0)
           
-          @param ancestor (optional) any ancestor of p/q in the tree
+          @param ancestor (optional) any ancestor of aP/aQ in the tree
           (for speed-up).
           
           @return the corresponding fraction in the Stern-Brocot tree.
           
           NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
-          are the partial quotients of p/q.
+          are the partial quotients of aP/aQ.
       */
-      Fraction( Integer p, Integer q,
+      Fraction( Integer aP, Integer aQ,
                 Fraction ancestor = SB::zeroOverOne() );
 
       /**

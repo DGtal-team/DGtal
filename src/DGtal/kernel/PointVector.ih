@@ -646,9 +646,12 @@ typename DGtal::PointVector<dim, TComponent>::UnsignedComponent
 DGtal::PointVector<dim, TComponent>::norm1() const
 {
   ASSERT ( dimension > 0 );
-  UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  UnsignedComponent val
+    ( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : UnsignedComponent(-myArray[ 0 ]) );
   for ( Dimension i = 1; i < dimension; ++i )
-    val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
+    val += ( myArray[ i ] >= 0 ) 
+      ? myArray[ i ] 
+      : UnsignedComponent(-myArray[ i ]);
   return val;
 }
 //------------------------------------------------------------------------------

@@ -46,6 +46,9 @@ using namespace std;
 namespace DGtal
 {
   //Constant definitions in NumberTraits specializations.
+  const int32_t NumberTraits<int32_t>::ONE = 1;
+  const int32_t NumberTraits<int32_t>::ZERO = 0;
+
   const float NumberTraits<float>::ONE = 1.0f;
   const float NumberTraits<float>::ZERO = 0.0f;
 

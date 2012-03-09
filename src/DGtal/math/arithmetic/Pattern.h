@@ -155,6 +155,8 @@ namespace DGtal
     /// is oriented in the first quadrant, slightly to the left of the
     /// slope, and shorter.
     Vector2I bezout() const;
+    /// @return the vector for the pattern, ie ( slope().q(), slope().p() )
+    Vector2I v() const;
 
     /// @return the pattern of slope z_{n-1} if z_n was the slope of 'this'.
     Pattern previousPattern() const;
@@ -190,7 +192,7 @@ namespace DGtal
     bool
     getSmallestCoveringSubpattern( Pattern & subpattern,
                                    Size & nb,
-                                   Integer & startPos,
+                                   Vector2I & startPos,
                                    Integer posA, Integer posB,
                                    bool reversed = false ) const;
 
@@ -218,7 +220,7 @@ namespace DGtal
     bool
     getGreatestIncludedSubpattern( Pattern & subpattern,
                                    Size & nb,
-                                   Integer & startPos,
+                                   Vector2I & startPos,
                                    Integer posA, Integer posB,
                                    bool reversed = false ) const;
 
