@@ -31,10 +31,12 @@
 #include <cstdlib>
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
 #include "DGtal/math/arithmetic/StandardDSLQ0.h"
+#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -81,6 +83,7 @@ bool testPattern()
   typedef typename SB::Size Size;
   typedef typename SB::Fraction Fraction;
   typedef Pattern<Fraction> MyPattern;
+  typedef typename MyPattern::Vector2I Vector2I;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   Integer p = random() / 10000;
@@ -94,7 +97,7 @@ bool testPattern()
   trace.info() << "ODD  " << pat_odd << " " << pat_odd.rE() << endl;
   MyPattern sp;
   Size np;
-  Integer start;
+  Vector2I start;
   bool mod;
 
   // Left Subpatterns
@@ -490,6 +493,8 @@ bool testStandardDSLQ0()
   typedef typename DSL::Point Point;
   typedef typename DSL::Point2I Point2I;
   typedef typename DSL::Vector2I Vector2I;
+
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< DSL > ));
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
@@ -504,8 +509,128 @@ bool testStandardDSLQ0()
       ++nb, nbok += D1.r( U ) == D1.mu() ? 1 : 0;
       ++nb, nbok += D1.r( L ) == D1.mup() ? 1 : 0;
     }
+
+  DSL D2( 12, 17, 5 );
+  for ( Integer x = -5; x < 30; ++x )
+    {
+      Point P = D2.lowestY( x );
+      ++nb, nbok += D2( P ) && ( ! D2( P - Vector2I(0,1) ) ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << endl;
+      P = D2.uppermostY( x );
+      ++nb, nbok += D2( P ) && ( ! D2( P + Vector2I(0,1) ) ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << endl;
+    }
+  for ( Integer y = -5; y < 30; ++y )
+    {
+      Point P = D2.lowestX( y );
+      ++nb, nbok += D2( P ) && ( ! D2( P - Vector2I(1,0) ) ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << endl;
+      P = D2.uppermostX( y );
+      ++nb, nbok += D2( P ) && ( ! D2( P + Vector2I(1,0) ) ) ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") "
+                   << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << endl;
+    }
+
   return nbok == nb;
 }
+
+template <typename DSL>
+bool checkSubStandardDSLQ0( const DSL & D,
+                            const typename DSL::Point & A, 
+                            const typename DSL::Point & B ) 
+{
+  typedef typename DSL::Fraction Fraction;
+  typedef typename DSL::Integer Integer;
+  typedef typename DSL::Size Size;
+  typedef typename DSL::Point Point;
+  typedef typename DSL::ConstIterator ConstIterator;
+  typedef typename DSL::Point2I Point2I;
+  typedef typename DSL::Vector2I Vector2I;
+  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+
+  DSL S = D.reversedSmartDSS( A, B );
+  ConstIterator it = D.begin( A );
+  ConstIterator it_end = D.end( B );
+  ADSS dss;
+  dss.init( it );
+  while ( ( dss.end() != it_end )
+          && ( dss.extendForward() ) ) {}
+  bool ok = S.a() == dss.getA() 
+    &&  S.b() == dss.getB() 
+    &&  S.mu() == dss.getMu(); 
+  if ( ! ok )
+    {
+      trace.info() << "-------------------------------------------------------"
+                   << std::endl;
+      trace.info() << "D = " << D // << " U1=" << U1 << " U2=" << U2
+                   << " " << D.pattern().rE() << endl;
+      trace.info() << "S(" << A << "," << B << ") = "
+                   << S << " " << S.pattern() << endl;
+      trace.info() << "ArithDSS = " << dss << std::endl;
+    }
+  // if ( ok )
+  //   trace.info() << "========================== OK =========================";
+  // else
+  //   trace.info() << "eeeeeeeeeeeeeeeeeeeeeeeeee KO eeeeeeeeeeeeeeeeeeeeeeeee";
+  // std::cerr << std::endl;
+  return ok;
+}
+
+template <typename Fraction>
+bool testSubStandardDSLQ0()
+{
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef typename Fraction::Integer Integer;
+  typedef typename Fraction::Size Size;
+  typedef typename DSL::Point Point;
+  typedef typename DSL::ConstIterator ConstIterator;
+  typedef typename DSL::Point2I Point2I;
+  typedef typename DSL::Vector2I Vector2I;
+  typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
+  IntegerComputer<Integer> ic;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock( "Check ReversedSmartDSS == ArithmeticDSS" );
+  for ( unsigned int i = 0; i < 100; ++i )
+    {
+      Integer a( random() % 12000 + 1 );
+      Integer b( random() % 12000 + 1 );
+      if ( ic.gcd( a, b ) == 1 )
+        {
+          trace.info() << "(" << i << ")"
+                       << " Test DSL has slope " << a << "/" << b << std::endl;
+          for ( Integer mu = 0; mu < 5; ++mu )
+            {
+              DSL D( a, b, random() % 10000 );
+              for ( Integer x = 0; x < 10; ++x )
+                {
+                  Integer x1 = random() % 1000;
+                  Integer x2 = x1 + 1 + ( random() % 1000 );
+                  Point A = D.lowestY( x1 );
+                  Point B = D.lowestY( x2 );
+                  ++nb, nbok += checkSubStandardDSLQ0<DSL>( D, A, B ) ? 1 : 0;
+                  if ( nb != nbok )
+                    trace.info() << "(" << nbok << "/" << nb << ") correct reversedSmartDSS."
+                                 << std::endl;
+                  if ( nbok != nb ) assert(false);
+                }
+            }
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") correct reversedSmartDSS."
+               << std::endl;
+  trace.endBlock();
+  return nbok == nb;
+}
+
 
 /**
  * Example of a test. To be completed.
@@ -532,21 +657,23 @@ bool testSternBrocot()
   trace.info() << "- nbFractions = " << SB::nbFractions << endl;
   trace.endBlock();
 
-  ++nb, nbok += testPattern<SB>() ? 1 : 0;
-  ++nb, nbok += testStandardDSLQ0<Fraction>() ? 1 : 0;
   return nbok == nb;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int , char** )
 {
+  typedef SternBrocot<int64_t,int32_t> SB;
+  typedef typename SB::Fraction Fraction;
   trace.beginBlock ( "Testing class SternBrocot" );
-  bool res = testSternBrocot();
-  //&& testPattern(); // && ... other tests
+  bool res = testSternBrocot()
+    && testPattern<SB>()
+    && testSubStandardDSLQ0<Fraction>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+
   return res ? 0 : 1;
 }
 //                                                                           //

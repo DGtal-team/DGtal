@@ -51,8 +51,10 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
       Node* descendant_left1, Node* descendant_right1,
       Node* inverse1 )
   : p( p1 ), q( q1 ), u( u1 ), k( k1 ), 
-    ascendantRight( ascendant_right1 ), ascendantLeft( ascendant_left1 ),
-    descendantRight( descendant_right1 ), descendantLeft( descendant_left1 ),
+    ascendantLeft( ascendant_left1 ),
+    ascendantRight( ascendant_right1 ), 
+    descendantLeft( descendant_left1 ),
+    descendantRight( descendant_right1 ), 
     inverse( inverse1 )
 {
   // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
@@ -65,9 +67,9 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
 template <typename TInteger, typename TSize>
 inline
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
-Fraction( Integer p, Integer q, Fraction ancestor )
+Fraction( Integer aP, Integer aQ, Fraction ancestor )
 {
-  this->operator=( SB::fraction( p, q, ancestor ) );
+  this->operator=( SB::fraction( aP, aQ, ancestor ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
@@ -192,7 +194,7 @@ left() const
       Node* pleft = myNode->ascendantLeft;
       Node* n = new Node( p() + pleft->p, 
 			  q() + pleft->q,
-			  odd() ? u() + 1 : 2,
+			  odd() ? u() + 1 : (Size) 2,
 			  odd() ? k() : k() + 1,
 			  pleft, myNode,
 			  0, 0, 0 );
@@ -200,7 +202,7 @@ left() const
       Node* invpright = inv.myNode->ascendantRight;
       Node* invn = new Node( inv.p() + invpright->p,
 			     inv.q() + invpright->q,
-			     inv.even() ? inv.u() + 1 : 2,
+			     inv.even() ? inv.u() + 1 : (Size) 2,
 			     inv.even() ? inv.k() : inv.k() + 1,
 			     myNode->inverse, invpright,
 			     0, 0, n );
@@ -271,7 +273,7 @@ father( Size m ) const
       return odd() ? previousPartial().right() : previousPartial().left();
     }
   else // == 0
-    return previousPartial().previousPartial();
+    return reduced( 2 ); //previousPartial().previousPartial();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
@@ -314,11 +316,12 @@ reduced( Size i ) const
   ASSERT( ( ((Size)0) <= i ) && ( i <= ( k()+((Size)2) ) ) );
   Node* n = this->myNode;
 
-  bool left = ( n->k & NumberTraits<Size>::ONE ) ? true : false;
+  bool bleft = ( n->k & NumberTraits<Size>::ONE ) 
+    != NumberTraits<Size>::ZERO;
   while ( i-- > NumberTraits<Size>::ZERO )
     {
-      n = left ? n->ascendantLeft : n->ascendantRight;
-      left = ! left;
+      n = bleft ? n->ascendantLeft : n->ascendantRight;
+      bleft = ! bleft;
     }
   return Fraction( n );
 }
@@ -367,15 +370,15 @@ cfrac( std::vector<Size> & quotients ) const
   quotients.resize( i + 1 );
   quotients[ i-- ] = this->u();
   Node* n = myNode;
-  bool left = odd() ? true : false;
+  bool bleft = odd() ? true : false;
   while ( i >= 0 )
     {
       ASSERT( n->k >= NumberTraits<Size>::ZERO );
-      n = left ? n->ascendantLeft : n->ascendantRight;
+      n = bleft ? n->ascendantLeft : n->ascendantRight;
       quotients[ i ] = 
         ( i == NumberTraits<Size>::castToInt64_t( n->k ) ) ? n->u : 1;
       --i;
-      left = ! left;
+      bleft = ! bleft;
     }
 }
 

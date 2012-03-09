@@ -20,6 +20,8 @@
  * @file StandardDSLQ0.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @author Mouhammad Said (\c mouhammad.said@liris.cnrs.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France, and LIRIS (CNRS), University of Lyon 2.
  *
  * @date 2012/03/08
  *
@@ -85,6 +87,87 @@ namespace DGtal
     // Model of CPointPredicate
     typedef typename IC::Point2I Point;
 
+    struct ConstIterator {
+      typedef ConstIterator Self;
+      typedef Point Value;
+
+      // stl iterator types.
+      typedef std::input_iterator_tag iterator_category;
+      typedef Point value_type;
+      typedef std::ptrdiff_t difference_type; 
+      typedef const Point* pointer;
+      typedef const Point& reference;
+
+      inline ConstIterator()
+        : myPtrDSL( 0 )
+      {}
+      inline ConstIterator( const StandardDSLQ0<TFraction> & myDSL,
+                            const Point & p )
+        : myPtrDSL( & myDSL ), myP( p )
+      {}
+      inline ConstIterator( const Self & other )
+        : myPtrDSL( other.myPtrDSL ), myP( other.myP )
+      {}
+      inline Self& operator=( const Self & other )
+      {
+        if ( this != &other )
+          {
+            myPtrDSL = other.myPtrDSL;
+            myP = other.myP;
+          }
+        return *this;
+      }
+
+      inline reference operator*() const
+      {
+        ASSERT( myPtrDSL != 0 );
+        return myP;
+      }
+
+      inline pointer operator->() const
+      { 
+        ASSERT( myPtrDSL != 0 );
+        return &myP;
+      }
+
+      inline Self& operator++()
+      {
+        Integer rem = myPtrDSL->r( myP );
+        if ( rem - myPtrDSL->b() >= myPtrDSL->mu() )
+          ++myP[ 1 ]; // +y;
+        else
+          ++myP[ 0 ]; // +x;
+	return *this;
+      }
+
+      inline
+      Self
+      operator++(int)
+      {
+	Self __tmp = *this;
+        this->operator++();
+	return __tmp;
+      }
+      
+      inline
+      bool operator==( const Self & other ) const
+      {
+        ASSERT( myPtrDSL == other.myPtrDSL );
+        return myP == other.myP;
+      }
+
+      inline
+      bool operator!=( const Self & other ) const
+      {
+        return ! ( this->operator==( other ) );
+      }
+
+
+    private:
+      Point myP;
+      const StandardDSLQ0<TFraction>* myPtrDSL;
+      
+    };
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -113,18 +196,19 @@ namespace DGtal
 
     /**
        Creates the DSL(a,b,mu).
-       @param slope the slope a/b, where gcd(a,b)=1
-       @param mu the shift to origin.
+       @param aSlope the slope a/b, where gcd(a,b)=1
+       @param aMu the shift to origin.
     */
-    StandardDSLQ0( Fraction slope, IntegerParamType mu );
+    StandardDSLQ0( Fraction aSlope, IntegerParamType aMu );
 
     /**
        Creates the DSL(a/g,b/g,mu), where g = gcd( a, b).
-       @param a any integer
-       @param b any integer 
-       @param mu the shift to origin.
+       @param a1 any integer
+       @param b1 any integer 
+       @param mu1 the shift to origin.
     */
-    StandardDSLQ0( IntegerParamType a, IntegerParamType b, IntegerParamType mu );
+    StandardDSLQ0( IntegerParamType a1, IntegerParamType b1, 
+                   IntegerParamType mu1 );
 
     /// @param p any point in Z2.
     /// @return 'true' iff the point \a p belongs to this.
@@ -144,6 +228,16 @@ namespace DGtal
     Integer a() const;
     /// @return b the denominator of the slope.
     Integer b() const;
+    /// @return the vector for the pattern, ie ( slope().q(), slope().p() )
+    Vector2I v() const;
+
+    /// @param p a point in the DSL.
+    /// @return an iterator on the DSL pointing on \a p.
+    ConstIterator begin( Point p ) const;
+
+    /// @param p a point in the DSL.
+    /// @return an iterator on the DSL pointing after \a p.
+    ConstIterator end( Point p ) const;
 
     /// @return the pattern of this DSL
     const Pattern<Fraction> & pattern() const;
@@ -159,6 +253,34 @@ namespace DGtal
     /// @return the first lower leaning point of the DSL with greater
     /// x than U().
     Point L() const;
+
+    /// @return the point on this DSL with this \a x coordinate and
+    /// lowest y coordinate.
+    Point lowestY( IntegerParamType x ) const;
+    /// @return the point on this DSL with this \a x coordinate and
+    /// uppermost y coordinate.
+    Point uppermostY( IntegerParamType x ) const;
+    /// @return the point on this DSL with this \a y coordinate and
+    /// lowest x coordinate.
+    Point lowestX( IntegerParamType y ) const;
+    /// @return the point on this DSL with this \a y coordinate and
+    /// uppermost x coordinate.
+    Point uppermostX( IntegerParamType y ) const;
+
+    /// @return true if p1 is before p2 in the DSL.
+    bool before( const Point & p1, const Point & p2 ) const;
+    /// @return true if p1 is before or equal to p2 in the DSL.
+    bool beforeOrEqual( const Point & p1, const Point & p2 ) const;
+    
+
+    /**
+       Algorithm ReversedSmartDSS.
+    */
+    Self reversedSmartDSS( const Point & A, const Point & B ) const;
+    Self reversedSmartDSS( Point U1, Point U2,
+                           const Point & A, const Point & B ) const;
+    Self DSSWithinTwoPatterns( Point U1, Point U2,
+                               const Point & A, const Point & B ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -184,17 +306,20 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
+    IC ic;
 
     // ------------------------- Hidden services ------------------------------
   protected:
-
+    
 
   private:
 
 
     // ------------------------- Internals ------------------------------------
   private:
-
+    static Size max3( Size a, Size b, Size c );
+    static Fraction deepest( Fraction f1, Fraction f2, Fraction f3 );
+    static Fraction deepest( Fraction f1, Fraction f2 );
   }; // end of class StandardDSLQ0
 
 
