@@ -246,7 +246,7 @@ namespace DGtal
       /** 
        * @return an output iterator used to write values.
        */      
-      OutputIterator output();
+      OutputIterator outputIterator();
 
 
       /**

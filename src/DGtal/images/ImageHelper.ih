@@ -143,7 +143,7 @@ DGtal::imageFromFunctor(I& aImg, const F& aFun)
 
   typename I::Domain d = aImg.domain();
 
-  std::transform(d.begin(), d.end(), aImg.output(), aFun ); 
+  std::transform(d.begin(), d.end(), aImg.outputIterator(), aFun ); 
 }
 
 //------------------------------------------------------------------------------
@@ -155,5 +155,5 @@ DGtal::imageFromImage(I& aImg1, const I& aImg2)
   BOOST_CONCEPT_ASSERT(( CImage<I> )); 
 
   typename I::ConstRange r = aImg2.range(); 
-  std::copy( r.begin(), r.end(), aImg1.output() ); 
+  std::copy( r.begin(), r.end(), aImg1.outputIterator() ); 
 }

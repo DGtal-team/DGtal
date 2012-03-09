@@ -94,7 +94,7 @@ bool testImage(const Image& aImage)
 
   ////////////////////////////////////////////////
   trace.beginBlock ( "Output iterator" );
-  std::copy(rimg.begin(), rimg.end(), img2.output()); 
+  std::copy(rimg.begin(), rimg.end(), img2.outputIterator()); 
 
   //rimg2 is invalid if Image is a proxy image
   //because its iterators point to the data of aImage
