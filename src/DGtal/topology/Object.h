@@ -46,6 +46,7 @@
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
+#include "DGtal/topology/Topology.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -104,13 +105,6 @@ namespace DGtal
       typedef Object<DigitalTopology, SmallSet> SmallObject;
       typedef Object<ReverseTopology, SmallSet> SmallComplementObject;
 
-      /**
-       * Kind of connectedness of this object.
-       */
-      enum Connectedness
-      {
-        DISCONNECTED = 0, CONNECTED = 1, UNKNOWN = 2
-      };
 
       /**
        * Constructor. The object is not valid.

@@ -41,6 +41,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <set>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CCommutativeRing.h"
@@ -61,9 +63,9 @@ namespace DGtal
   /**
      @brief Represents an (unsigned) cell in a cellular grid space by its
      Khalimsky coordinates.
-   */
+  */
   template < Dimension dim,
-	     typename TInteger = DGtal::int32_t >
+             typename TInteger = DGtal::int32_t >
   struct KhalimskyCell
   {
 
@@ -141,17 +143,17 @@ namespace DGtal
   }; 
 
   template < Dimension dim,
-       typename TInteger >
+             typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
-        const KhalimskyCell< dim, TInteger > & object );
+              const KhalimskyCell< dim, TInteger > & object );
 
   /**
      @brief Represents a signed cell in a cellular grid space by its
      Khalimsky coordinates and a boolean value.
-   */
+  */
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+             typename TInteger = DGtal::int32_t >
   struct SignedKhalimskyCell
   {
     //Integer must be a model of the concept CInteger.
@@ -229,10 +231,10 @@ namespace DGtal
   }; 
 
   template < Dimension dim,
-       typename TInteger >
+             typename TInteger >
   std::ostream & 
   operator<<( std::ostream & out, 
-        const SignedKhalimskyCell< dim, TInteger > & object );
+              const SignedKhalimskyCell< dim, TInteger > & object );
 
   /**
      @bried This class is useful for looping on all "interesting" coordinates of a
@@ -243,13 +245,13 @@ namespace DGtal
      KnSpace::DirIterator q;
      for ( q = ks.uDirs( p ); q != 0; ++q ) 
      { 
-        KSpace::Dimension dir = *q;
-  ...
+     KSpace::Dimension dir = *q;
+     ...
      } 
      @endcode
-   */
+  */
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+             typename TInteger = DGtal::int32_t >
   class CellDirectionIterator 
   {
   public:
@@ -312,7 +314,7 @@ namespace DGtal
     /** the cell. */
     Cell myCell;
     /** If 'true', returns open coordinates, otherwise returns closed
-  coordinates. */
+        coordinates. */
     bool myOpen;
 
   private:
@@ -324,11 +326,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class KhalimskySpaceND
   /**
-   * Description of template class 'KhalimskySpaceND' <p> \brief Aim:
-   * This class is a model of CCellularGridSpaceND. It represents the
-   * cubical grid as a cell complex, whose cells are defined as an
-   * array of integers. The topology of the cells is defined by the
-   * parity of the coordinates (even: closed, odd: open). 
+   * Description of template class 'KhalimskySpaceND' <p> 
+   *
+   * \brief Aim: This class is a model of CCellularGridSpaceND. It
+   * represents the cubical grid as a cell complex, whose cells are
+   * defined as an array of integers. The topology of the cells is
+   * defined by the parity of the coordinates (even: closed, odd:
+   * open).
    *
    * The space is generally finite (except for arbitrary size
    * integers). The user should choose between a closed (default) cell
@@ -338,9 +342,9 @@ namespace DGtal
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
    * NB: Essentially a backport from <a
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
-   */
+  */
   template < Dimension dim,
-       typename TInteger = DGtal::int32_t >
+             typename TInteger = DGtal::int32_t >
   class KhalimskySpaceND
   {
     //Integer must be signed to characterize a ring.
@@ -356,6 +360,7 @@ namespace DGtal
     // Cells
     typedef KhalimskyCell< dim, Integer > Cell;
     typedef SignedKhalimskyCell< dim, Integer > SCell;
+    typedef SCell Surfel;
     typedef bool Sign;
     typedef CellDirectionIterator< dim, Integer > DirIterator;
     
@@ -392,6 +397,28 @@ namespace DGtal
     typedef AnyCellCollection<Cell> Cells;
     typedef AnyCellCollection<SCell> SCells;
 
+    // Sets, Maps
+    /// Preferred type for defining a set of Cell(s).
+    typedef std::set<Cell> CellSet;
+    /// Preferred type for defining a set of SCell(s).
+    typedef std::set<SCell> SCellSet;
+    /// Preferred type for defining a set of surfels (always signed cells).
+    typedef std::set<SCell> SurfelSet;
+    /// Template rebinding for defining the type that is a mapping
+    /// Cell -> Value.
+    template <typename Value> struct CellMap {
+      typedef std::map<SCell,Value> Type;
+    };
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
+    template <typename Value> struct SCellMap {
+      typedef std::map<SCell,Value> Type;
+    };
+    /// Template rebinding for defining the type that is a mapping
+    /// SCell -> Value.
+    template <typename Value> struct SurfelMap {
+      typedef std::map<SCell,Value> Type;
+    };
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -430,8 +457,8 @@ namespace DGtal
      * are representable with these integers).
      */
     bool init( const Point & lower,
-         const Point & upper,
-         bool closed );
+               const Point & upper,
+               bool closed );
 
     // ------------------------- Basic services ------------------------------
   public:
@@ -439,17 +466,17 @@ namespace DGtal
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the width of the space in the [k]-dimension.
-     */
+    */
     Size size( Dimension k ) const;
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the minimal coordinate in the [k]-dimension.
-     */
+    */
     Integer min( Dimension k ) const;
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the maximal coordinate in the [k]-dimension.
-     */
+    */
     Integer max( Dimension k ) const;
     /**
        @return the lower bound for digital points in this space.
@@ -459,6 +486,19 @@ namespace DGtal
        @return the upper bound for digital points in this space.
     */
     const Point & upperBound() const;
+    /**
+       @return the lower bound for cells in this space.
+    */
+    const Cell & lowerCell() const;
+    /**
+       @return the upper bound for cells in this space.
+    */
+    const Cell & upperCell() const;
+
+    /**
+       @return 'true' iff the space is closed.
+    */
+    bool isSpaceClosed() const; 
 
     // ----------------------- Cell creation services --------------------------
   public:
@@ -506,7 +546,7 @@ namespace DGtal
      */
     SCell sCell( const Point & p, const SCell & c ) const;
 
-   /**
+    /**
      * From the digital coordinates of a point in Zn, creates the spel
      * (cell of maximal dimension) with these coordinates.
      *
@@ -516,7 +556,7 @@ namespace DGtal
      */
     Cell uSpel( const Point & p ) const;
 
-   /**
+    /**
      * From the digital coordinates of a point in Zn, creates the spel
      * (cell of maximal dimension) with these coordinates.
      *
@@ -527,7 +567,7 @@ namespace DGtal
      */
     SCell sSpel( const Point & p, Sign sign = POS ) const;
 
-   /**
+    /**
      * From the digital coordinates of a point in Zn, creates the pointel
      * (cell of dimension 0) with these coordinates.
      *
@@ -537,7 +577,7 @@ namespace DGtal
      */
     Cell uPointel( const Point & p ) const;
 
-   /**
+    /**
      * From the digital coordinates of a point in Zn, creates the pointel
      * (cell of dimension 0) with these coordinates.
      *
@@ -759,90 +799,90 @@ namespace DGtal
   public:
 
     /**
-     Given an unsigned cell [p], returns an iterator to iterate over
-     each coordinate the cell spans. (A spel spans all coordinates; a
-     surfel all but one, etc). Example:
+       Given an unsigned cell [p], returns an iterator to iterate over
+       each coordinate the cell spans. (A spel spans all coordinates; a
+       surfel all but one, etc). Example:
 
-     @code
-     KSpace::Cell p;
-     ...
-     for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
-     { 
-        KSpace::Dimension dir = *q;
-  ...
-     } 
-     @endcode
+       @code
+       KSpace::Cell p;
+       ...
+       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+       { 
+         Dimension dir = *q;
+       ...
+       } 
+       @endcode
      
-     @param p any unsigned cell.
+       @param p any unsigned cell.
      
-     @return an iterator that points on the first coordinate spanned
-     by the cell.
+       @return an iterator that points on the first coordinate spanned
+       by the cell.
     */
     DirIterator uDirs( const Cell & p ) const;
 
     /**
-     Given a signed cell [p], returns an iterator to iterate over
-     each coordinate the cell spans. (A spel spans all coordinates; a
-     surfel all but one, etc). Example:
+       Given a signed cell [p], returns an iterator to iterate over
+       each coordinate the cell spans. (A spel spans all coordinates; a
+       surfel all but one, etc). Example:
 
-     @code
-     KSpace::SCell p;
-     ...
-     for ( KnSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
-     { 
-        KSpace::Dimension dir = *q;
-  ...
-     } 
-     @endcode
+       @code
+       KSpace::SCell p;
+       ...
+       for ( KSpace::DirIterator q = ks.uDirs( p ); q != 0; ++q ) 
+       { 
+         Dimension dir = *q;
+       ...
+       } 
+       @endcode
      
-     @param p any signed cell.
+       @param p any signed cell.
      
-     @return an iterator that points on the first coordinate spanned
-     by the cell.
+       @return an iterator that points on the first coordinate spanned
+       by the cell.
     */
     DirIterator sDirs( const SCell & p ) const;
 
     /**
-     Given an unsigned cell [p], returns an iterator to iterate over each 
-     coordinate the cell does not span. (A spel spans all coordinates; 
-     a surfel all but one, etc). Example: 
+       Given an unsigned cell [p], returns an iterator to iterate over each 
+       coordinate the cell does not span. (A spel spans all coordinates; 
+       a surfel all but one, etc). Example: 
 
-     @code
-     KSpace::Cell p;
-     ...
-     for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
-     { 
-        KSpace::Dimension dir = *q;
-  ...
-     } 
-     @endcode
+       @code
+       KSpace::Cell p;
+       ...
+       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+       { 
+         Dimension dir = *q;
+       ...
+       } 
+       @endcode
      
-     @param p any unsigned cell.
+       @param p any unsigned cell.
      
-     @return an iterator that points on the first coordinate spanned
-     by the cell.
+       @return an iterator that points on the first coordinate spanned
+       by the cell.
     */
     DirIterator uOrthDirs( const Cell & p ) const;
 
     /**
-     Given a signed cell [p], returns an iterator to iterate over each 
-     coordinate the cell does not span. (A spel spans all coordinates; 
-     a surfel all but one, etc). Example: 
+       Given a signed cell [p], returns an iterator to iterate over each 
+       coordinate the cell does not span. (A spel spans all coordinates; 
+       a surfel all but one, etc). Example: 
 
-     @code
-     KSpace::SCell p;
-     ...
-     for ( KnSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
-     { 
-        KSpace::Dimension dir = *q;
-  ...
-     } 
-     @endcode
+       @code
+       KSpace::SCell p;
+       ...
+       for ( KSpace::DirIterator q = ks.uOrthDirs( p ); q != 0; ++q ) 
+       { 
+         Dimension dir = *q;
+       ...
+       } 
+       @endcode
      
-     @param p any signed cell.
+       @param p any signed cell.
      
-     @return an iterator that points on the first coordinate spanned
-     by the cell.
+       @return an iterator that points on the first coordinate spanned
+       by the cell.
     */
     DirIterator sOrthDirs( const SCell & p ) const;
 
@@ -864,8 +904,8 @@ namespace DGtal
     */
     Dimension sOrthDir( const SCell & s ) const;
 
-  // -------------------- Unsigned cell geometry services --------------------
- public:
+    // -------------------- Unsigned cell geometry services --------------------
+  public:
 
     /**
        @return the first cell of the space with the same type as [p].
@@ -926,7 +966,7 @@ namespace DGtal
        
        @return the same element as [p] except for an decremented
        coordinate [k].
-     */
+    */
     Cell uGetDecr( const Cell & p, Dimension k ) const;
 
     /**
@@ -1044,8 +1084,8 @@ namespace DGtal
     */
     bool uNext( Cell & p, const Cell & lower, const Cell & upper ) const;
 
-  // -------------------- Signed cell geometry services --------------------
- public:
+    // -------------------- Signed cell geometry services --------------------
+  public:
 
     /**
        @return the first cell of the space with the same type as [p].
@@ -1094,7 +1134,7 @@ namespace DGtal
        
        @return the same element as [p] except for an decremented
        coordinate [k].
-     */
+    */
     SCell sGetDecr( const SCell & p, Dimension k ) const;
 
     /**
@@ -1445,10 +1485,10 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template < Dimension dim,
-       typename TInteger >
+             typename TInteger >
   std::ostream&
   operator<< ( std::ostream & out, 
-         const KhalimskySpaceND<dim, TInteger > & object );
+               const KhalimskySpaceND<dim, TInteger > & object );
 
 } // namespace DGtal
 
