@@ -107,6 +107,12 @@ namespace DGtal
    * <td> </td> <td> Size </td>
    * <td> </td> <td> return the number of points lying in the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
+   * <tr> 
+   * <td> iterator from point </td> <td> x.begin(p) </td> 
+   * <td> </td> <td> ConstIterator </td>
+   * <td> </td> <td> return a ConstIterator on the domain starting
+   * from the point p.</td> <td> </td> <td>  </td>
+   * </tr>
    * </table>
    *
    * <p> Invariants <br>
@@ -145,6 +151,11 @@ namespace DGtal
       ConceptUtils::sameType( myBool, myT.isInside( myP ) );
       // Domain should have a predicate() returning a Predicate.
       ConceptUtils::sameType( myPred, myT.predicate() );
+      // Domain should have a begin(Point) method returning an
+      // ConstIterator starting from Point
+      ConceptUtils::sameType( myIt, myT.begin(myP) );
+
+
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -154,6 +165,7 @@ namespace DGtal
     Predicate myPred;
     bool myBool;
     Size mySize; 
+    ConstIterator myIt;
     // ------------------------- Internals ------------------------------------
   private:
     

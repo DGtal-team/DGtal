@@ -70,6 +70,15 @@ template <typename TDigitalSet>
 inline
 typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
 DGtal::DigitalSetDomain<TDigitalSet>
+::begin(const Point &aPoint) const
+{
+  return mySet.find(aPoint);
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+DGtal::DigitalSetDomain<TDigitalSet>
 ::begin() const
 {
   return mySet.begin();

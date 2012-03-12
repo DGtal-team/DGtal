@@ -65,6 +65,8 @@ namespace DGtal
    * <p> Notation
    * - \t X : A type that is a model of CImage
    * - \t x : Object of type X
+   * - \t aPoint : Object of type Point
+   * 
    *
    * <p> Definitions
    *
@@ -84,7 +86,7 @@ namespace DGtal
     
       <tr> 
       <td class=CName> Provide an output iterator           </td> 
-      <td class=CExpression>  x.outputIterator()    </td>
+      <td class=CExpression>  x.begin(aPoint)    </td>
       <td class=CRequirements>        </td> 
       <td class=CReturnType>  an instance of OutputIterator    </td>
       <td class=CPrecondition>   </td> 
