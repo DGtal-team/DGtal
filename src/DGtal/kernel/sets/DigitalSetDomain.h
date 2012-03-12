@@ -95,6 +95,12 @@ namespace DGtal
   public:
 
     /**
+     * @return an iterator on a given point in the domain.
+     * @param aPoint the point to get an iterator on.
+     **/
+    ConstIterator begin(const Point &aPoint) const;
+
+    /**
      * @return an iterator on the first element of the domain.
      **/
     ConstIterator begin() const;
