@@ -63,7 +63,7 @@ namespace DGtal
    * KhalimskySpaceND).
    *
    * Essentially a backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
    */
   template <typename TKSpace>
   class SurfelNeighborhood
