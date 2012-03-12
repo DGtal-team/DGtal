@@ -115,7 +115,7 @@ bool testSubArithmeticDSS( unsigned int nbtries )
 
 int main( int , char** )
 {
-  typedef SternBrocot<int64_t,int32_t> SB;
+  typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
   testSubArithmeticDSS<Fraction>( 10000 );
   return true;
