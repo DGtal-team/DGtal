@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
 #include "backpath.h"
 #include "cone.h"
 //#include "circle.h"
@@ -176,7 +177,7 @@ public:
     
     static Vector chainCode2Vect(int d)
     {
-      Vector v(2);
+      Vector v;
       switch(d){
 	
       case 0:{
@@ -364,7 +365,7 @@ public:
   
   // ------------------------- Hidden services ------------------------------
  
- private:
+ public:
 
   bool updateBackpath(); 
   
@@ -385,9 +386,15 @@ public:
   bool isWidthOk();
   
 
-
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) ; 
   
-    // ------------------------- Internals ------------------------------------
+  
+  
+  // ------------------------- Internals ------------------------------------
  private:
   
 }; // end of class FrechetShortcut
@@ -407,8 +414,13 @@ public:
    */
   
   template <typename TIterator, typename TInteger>
-  std::ostream&
-    operator<< ( std::ostream & out, const FrechetShortcut<TIterator,TInteger> & object );
+    std::ostream&
+    operator<< ( std::ostream & out, FrechetShortcut<TIterator,TInteger> & object )
+  {      
+    object.selfDisplay( out);
+    return out;
+  }
+  
   
   
   
