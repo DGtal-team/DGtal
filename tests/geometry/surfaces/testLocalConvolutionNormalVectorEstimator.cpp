@@ -125,18 +125,17 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   MyEstimator::Quantity res = myNormalEstimator.eval(it);
   trace.info() << "Normal vector at begin() : "<< res << std::endl;
 
-  int cpt=0;
   viewer.show(); 
  
-  for(MyDigitalSurface::ConstIterator it = digSurf.begin(),itend=digSurf.end();
-      it!=itend; ++it)
+  for(MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
+      itbis!=itend; ++itbis)
     {
-      viewer << ks.unsigns(*it);
+      viewer << ks.unsigns(*itbis);
    
-      Point center = ks.sCoords(*it);
-      MyEstimator::Quantity res = myNormalEstimator.eval(it);
+      Point center = ks.sCoords(*itbis);
+      MyEstimator::Quantity normal = myNormalEstimator.eval(itbis);
       viewer.addLine(center[0],center[1],center[2],
-		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2]);
+		     center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2]);
     }
   
   viewer<< Viewer3D::updateDisplay;

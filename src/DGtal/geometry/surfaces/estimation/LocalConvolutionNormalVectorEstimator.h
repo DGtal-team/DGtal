@@ -158,12 +158,12 @@ namespace DGtal
     ///Radius of the convolution.
     unsigned int myRadius;
     
-    ///Copy of the kernel convolution functor.
-    const KernelFunctor & myKernelFunctor;
-
     ///Copy to the digitale surface
     const DigitalSurface & mySurface;
 
+    ///Copy of the kernel convolution functor.
+    const KernelFunctor & myKernelFunctor;
+   
     // ------------------------- Hidden services ------------------------------
   private:
     
