@@ -61,7 +61,7 @@ void backpath<TIterator>::updateBackPathFirstQuad(int d, const  ConstIterator& i
   
   myIt = it;
   
-  //std::cerr << "local frame direction " << d << std::endl;
+  // trace.info() << "local frame direction " << d  << "point " << Point(*it)<< std::endl;
   switch(d)
     {    
     case 0:
