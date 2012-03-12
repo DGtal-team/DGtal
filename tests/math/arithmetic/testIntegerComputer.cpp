@@ -328,7 +328,7 @@ bool testIntegerComputer()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Testing class IntegerComputer" );
   bool res = testIntegerComputer(); // && ... other tests
