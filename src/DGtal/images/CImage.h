@@ -86,9 +86,19 @@ namespace DGtal
     
       <tr> 
       <td class=CName> Provide an output iterator           </td> 
-      <td class=CExpression>  x.begin(aPoint)    </td>
+      <td class=CExpression>  x.begin()    </td>
       <td class=CRequirements>        </td> 
       <td class=CReturnType>  an instance of OutputIterator    </td>
+      <td class=CPrecondition>   </td> 
+      <td class=CSemantics>       </td> 
+      <td class=CPostCondition>   </td> 
+      <td class=CComplexity>  Container dependent    </td>
+      </tr>
+      <tr> 
+      <td class=CName> Provide an output iterator           </td> 
+      <td class=CExpression>  x.begin(aPoint)    </td>
+      <td class=CRequirements>        </td> 
+      <td class=CReturnType>  an instance of OutputIterator starting at aPoint    </td>
       <td class=CPrecondition>   </td> 
       <td class=CSemantics>       </td> 
       <td class=CPostCondition>   </td> 
@@ -111,17 +121,19 @@ namespace DGtal
   struct CImage: CConstImage<I>
   {
 
-  typedef typename I::OutputIterator O; 
-
+    typedef typename I::OutputIterator O; 
+    typedef typename I::Point Point;
   public:
   
     BOOST_CONCEPT_USAGE(CImage)
     {
-      ConceptUtils::sameType( myO, myI.outputIterator() ); //output iterator 
+      ConceptUtils::sameType( myO, myI.begin() ); //output iterator 
+      //      ConceptUtils::sameType( myO, myI.begin(aPoint) ); //output iterator 
     }
-
+    
   private:
     I myI;
+    Point aPoint;
     O myO; 
   };
 } // namespace DGtal

@@ -54,7 +54,6 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/io/Color.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -200,11 +199,6 @@ namespace DGtal
     ConstRange range() const;
 
     /**
-     * @return an output iterator to write values.
-     */
-    OutputIterator outputIterator();
-
-    /**
      * @return the domain extension of the image.
      */
     Vector extent() const;
@@ -250,7 +244,17 @@ namespace DGtal
      * 
      * @return a Iterator on @c aPoint
      */
-    Iterator getIterator(const Point &aPoint);
+    Iterator begin(const Point &aPoint);
+    
+    /** 
+     * Construct a Iterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a Iterator on. 
+     * 
+     * @return a ConstIterator on @c aPoint
+     */
+    ConstIterator begin(const Point &aPoint) const;
 
     /////////////////////////// Custom Iterator ///////////////
     /**
