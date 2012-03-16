@@ -1,0 +1,56 @@
+/**
+ * @file kernelPackageConcepts.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature kernelPackageConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page kernelPackageConcepts Documentation for kernelPackageConcepts
+@writers David Coeurjolly
+
+
+
+ @dot   
+digraph G {
+  rankdir=BT;
+  
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    CPointPredicate -> CPointFunctor ;
+    CSpace;
+    CUnsignedInteger-> CInteger;
+    CEuclideanRing->CCommutativeRing ;
+    CSignedInteger ->  CInteger;
+    CDomain;
+	
+    CDomainArchetype;
+    CDigitalSet;
+    CDigitalSetArchetype;
+    label = "Kernel";
+  }
+
+  CInteger-> boost_EqualityComparable;
+  CCommutativeRing-> boost_EqualityComparable;
+  CCommutativeRing-> boost_EqualityComparable;
+  CInteger-> boost_EqualityComparable;
+  }
+@enddot
+
+
+*/
+
+}
