@@ -43,6 +43,11 @@ digraph G {
     label = "Kernel";
   }
 
+  "CDomain" -> CImageContainer  [label="use",style=dashed];
+   CDomain -> CSpace [label="use",style=dashed];
+  "CInteger" -> CSpace  [label="use",style=dashed];
+  "CUnsignedInteger" -> CSpace [label="use",style=dashed];
+
   CInteger-> boost_EqualityComparable;
   CCommutativeRing-> boost_EqualityComparable;
   CCommutativeRing-> boost_EqualityComparable;
