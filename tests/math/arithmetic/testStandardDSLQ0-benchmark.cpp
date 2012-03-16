@@ -60,7 +60,8 @@ bool checkSubStandardDSLQ0( const DSL & D,
 
   DSL S = D.reversedSmartDSS( A, B );
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
-            << S.a() << " " << S.b() << " " << S.mu() 
+            << S.a() << " " << S.b() << " " << S.mu() << " "
+            << A[0] << " " << A[1] << " " << B[0] << " " << B[1]
             << std::endl;
   return true;
 }
@@ -77,6 +78,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries )
   typedef typename DSL::Vector2I Vector2I;
   IntegerComputer<Integer> ic;
 
+  std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       Integer a( random() % 12000 + 1 );

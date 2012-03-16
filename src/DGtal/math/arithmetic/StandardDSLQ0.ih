@@ -399,7 +399,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
             << " B=" << B << " U2=" << U2 
             << " L1=" << L1 << std::endl;
   #endif
-  for ( Size i = NumberTraits<Size>::ZERO; i <= pattern().slope().k(); ++i )
+  while( true ) //for ( Size i = NumberTraits<Size>::ZERO; i <= pattern().slope().k(); ++i )
     {
       if ( ! readyLU )
         {
