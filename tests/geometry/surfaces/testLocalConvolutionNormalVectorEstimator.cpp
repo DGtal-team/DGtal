@@ -154,13 +154,13 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
 
   viewer<< CustomColors3D(Color(200, 0, 0),Color(200, 0,0));
-  for(MyDigitalSurface::ConstIterator it = digSurf.begin(),itend=digSurf.end();
-      it!=itend; ++it)
+  for(MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
+      itbis!=itend; ++itbis)
     {
-      viewer << ks.unsigns(*it);
+      viewer << ks.unsigns(*itbis);
    
-      Point center = ks.sCoords(*it);
-      MyEstimatorGaussian::Quantity res = myNormalEstimatorG.eval(it);
+      Point center = ks.sCoords(*itbis);
+      MyEstimatorGaussian::Quantity res = myNormalEstimatorG.eval(itbis);
       viewer.addLine(center[0],center[1],center[2],
 		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2], 
 		     DGtal::Color(20,200,20), 1.0);
