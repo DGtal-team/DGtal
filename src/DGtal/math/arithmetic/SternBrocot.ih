@@ -169,6 +169,15 @@ template <typename TInteger, typename TSize>
 inline
 bool
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
+operator!=( const Fraction & other ) const
+{
+  return myNode != other.myNode;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+bool
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
 operator<( const Fraction & other ) const
 {
   return this->lessThan( other.p(), other.q() );
