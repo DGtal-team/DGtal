@@ -46,6 +46,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -143,6 +144,7 @@ namespace DGtal
       typedef TInteger Integer;
       typedef TSize Size;
       typedef SternBrocot<TInteger,TSize> SB;
+      typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
       
       /** 
           Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
@@ -285,6 +287,12 @@ namespace DGtal
          @return 'true' iff this is equal to other.
       */
       bool operator==( const Fraction & other ) const;
+
+      /**
+         @param other any fraction.
+         @return 'true' iff this is different from other.
+      */
+      bool operator!=( const Fraction & other ) const;
 
       /**
          @param other any fraction.
