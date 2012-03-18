@@ -11,18 +11,17 @@
  */
 
 
-namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackageConcepts Documentation for GeometryPackageConcepts
+@page geomPackageConcepts Geometry Concepts
 @writers David Coeurjolly
 
 @dot
-digraph G {
+digraph F {
   rankdir=BT;
   
   subgraph cluster_1 {
-    style=filled;
+     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
                
@@ -42,5 +41,5 @@ digraph G {
  }
 @enddot
 
- }
+ 
 */
