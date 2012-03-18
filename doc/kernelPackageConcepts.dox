@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page kernelPackageConcepts Documentation for kernelPackageConcepts
+@page kernelPackageConcepts Kernel Concepts
 @writers David Coeurjolly
 
 
