@@ -16,7 +16,7 @@
 
 
 #special hack for 1.8.0 compatibility with theold syntax (DC)
-MARKDOWN_SUPPORT = NO
+#MARKDOWN_SUPPORT = NO
 
 
 # This tag specifies the encoding used for all characters in the config file 

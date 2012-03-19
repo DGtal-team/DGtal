@@ -23,15 +23,10 @@ namespace DGtal {
 This part of the manual describes the DGtal volumetric package and its
 classes. 
 
-Table of contents:
- -# \ref introvol
- -# \ref dt 
- -# \ref rdt
- -# \ref ma
- -# \ref sep
- -# \ref refsvol
+[TOC]
+\tableofcontents
 
-\section introvol Introduction
+# Introduction
 
 For decades, distance transformation (DT) and geometrical skeleton
 extraction have been classic tools for shape analysis
@@ -77,7 +72,7 @@ In DGtal, we have chosen to separate the metric from the algorithmic
 decomposition. We discuss in section \ref sep on the construction of
 a separable metric type. 
 
-\section dt Distance Transformation
+# Distance Transformation
 
 Given a binary object @f$ X @f$ and its complementary @f$\bar{X}@f$,
 the distance transformation is a mapping of  points @f$ x\in X@f$ with
@@ -104,8 +99,8 @@ numbers @f$ (x_i-y_i)^p@f$.
 
 As a consequence, the class DistanceTransformation is parametrized by
 three elements:
-- an Input image type
-- and a static number "p" used to define the @f$l_p@f$ metric
+* an Input image type
+* and a static number "p" used to define the @f$l_p@f$ metric
 
 An optional IntegerLong template parameter with default type
 DGtal::int64_t can be specified to represent the sums of @f$x_i^p@f$
@@ -114,8 +109,8 @@ type of the DistanceTransformation::OutputImage type that is used to
 store the output result.
 
 Hence, the DistanceTransformation class provides 
-- a output image type;
-- a method to compute the distance transformation of an input image.
+* a output image type;
+* a method to compute the distance transformation of an input image.
 
 
 @note The output image type provided by DistanceTransformation is a
@@ -153,7 +148,7 @@ Few comments can be made from this example. First, Z2i::Image is defined on a Z2
 
 
 
-\section rdt Reverse Distance Transformation
+# Reverse Distance Transformation
 
 Given a set of balls and a domain, the aim of the reverse reconstruction is to compute the binary shape defined as the union of the 
 input balls. In other word, a point @e x belong to the set @f$X@f$ is there exists at least one ball containing @f$x@f$.
@@ -198,8 +193,8 @@ OutputReconstruction reconstruction = rdt.reconstruction(results);
 @endcode
 
 From this example, we can notice that:
- - the first template  parameter type of ReverseDistanceTransformation is an image type whose Value must be consistent with the @f$l_p@f$ metric as discussed in the DistanceTransformation section;
- - the second parmeter is the static integer @f$p@f$.
+ * the first template  parameter type of ReverseDistanceTransformation is an image type whose Value must be consistent with the @f$l_p@f$ metric as discussed in the DistanceTransformation section;
+ * the second parmeter is the static integer @f$p@f$.
 
  There is an optional third template parameter to specify the value type of the output binary image (default is DGta::int8_t). During the construction of the @e rdt object, we can also optionnaly specify the value used to represent object grid points (set @f$X@f$, default value is 1) and background grid points (default value is '0'). For instance
 @code
@@ -210,12 +205,12 @@ will affect the value 128 to object points and 0 otherwise.
 @warning Obviously, the reconstruction will be incorrect if the metric used in the distance transformation is not the same as the metric used for the reconstruction. 
 
 
-\section ma Discrete Medial Axis Extraction
+# Discrete Medial Axis Extraction
 
 @todo complete code/doc
 
 
-\section sep Separable Metric Traits
+# Separable Metric Traits
 
 As discussed in the introduction, the same algorithmic decomposition
 can be used on different metrics. In DGtal, such suitable metrics are
@@ -232,7 +227,7 @@ point of view but it makes the code simpler.
 
 
 
-\section refsvol References
+# References
 
 G. Borgefors. Distance transformations in digital images. Computer
 Vision, Graphics, and Image Processing, 34(3):344–371, June 1986.
