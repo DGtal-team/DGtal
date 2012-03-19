@@ -26,11 +26,6 @@ INCLUDE(${CMAKE_MODULE_PATH}/Common.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/OSDependentSettings.cmake)
 
 # -----------------------------------------------------------------------------
-# Check CPP0X
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
-
-# -----------------------------------------------------------------------------
 # Check Mandatory Dependencies
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
