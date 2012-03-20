@@ -49,6 +49,11 @@ cone::cone(double m, double mm, bool a)
   myInf = false;
 }
 
+cone::cone(const cone & other) : myMin(other.myMin), myMax(other.myMax), myB(other.myB), myInf(other.myInf)
+{
+  
+}
+
 cone::cone(double angle0, double angle1)
 {
   myB = 0;

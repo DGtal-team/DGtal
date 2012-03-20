@@ -139,7 +139,7 @@ bool testSegmentation()
   
   //Segmentation
   trace.beginBlock("Segmentation test");
-    
+   
     SegmentComputer algo;
     Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
            
