@@ -239,18 +239,25 @@ public:
   FrechetShortcut();
   
   /**
+   * Constructor with initialisation of the error only
+   * @param error a double
+   */
+  FrechetShortcut(double error);
+  
+
+  /**
    * Constructor with initialisation
    * @param it an iterator on 2D points
    */
   FrechetShortcut(const ConstIterator& it, double error);
-
+  
   /**
    * Initialisation.
    * @param it an iterator on 2D points
    */
-  void init(const ConstIterator& it, double error);
+  void init(const ConstIterator& it);
   
-
+  
   /**
    * Copy constructor.
    * @param other the object to clone.

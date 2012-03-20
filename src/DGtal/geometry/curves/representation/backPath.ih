@@ -34,17 +34,26 @@ backpath<TIterator>::backpath(int q, double error)
 {
   myError = error;
   myQuad = q;
-  myFlag = false;
-  
+  myFlag = false;  
 }
+
+
+template <typename TIterator>
+inline
+backpath<TIterator>::backpath(const backpath<TIterator> & other ) : myQuad(other.myQuad), myFlag(other.myFlag),  myError(other.myError), myOcculters(other.myOcculters), myForbiddenIntervals(other.myForbiddenIntervals){    
+}
+
+
 
 template <typename TIterator>
 inline
 void backpath<TIterator>::reset()
 {
+  trace.info() << "backpath reset begin";
   myFlag = false;
   myOcculters.clear();
   myForbiddenIntervals.clear();
+  trace.info() << "backpath reset";
 }
 
 
@@ -53,6 +62,25 @@ template <typename TIterator>
 inline
 backpath<TIterator>::~backpath()              
 { }      
+
+
+
+template <typename TIterator>
+inline
+backpath<TIterator> & backpath<TIterator>::operator=(const backpath<TIterator> & other)
+{
+  
+  if(this != &other)
+    {
+      myQuad = other.myQuad;
+      myIt = other.myIt;
+      myError = other.myError;
+    }
+  return *this;
+}
+
+
+
 
 template <typename TIterator>
 inline
