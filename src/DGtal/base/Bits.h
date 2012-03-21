@@ -46,7 +46,7 @@ namespace DGtal
      */
 
      
-     /**
+    /**
      * Returns a string containing value's bits. Mainly designed for debugging purposes.
      * 
      * @param value The value that you need to dipslay as a bit string.
@@ -61,19 +61,19 @@ namespace DGtal
 
       // if the requested number of bit is 0, use the size of the data type instead
       if(nbBits == 0) nbBits = sizeof(T)*8;
-      int i = min(sizeof(T)*8-1, nbBits-1);
+      int i = std::min((DGtal::int64_t)sizeof(T)*8-1, (DGtal::int64_t)nbBits-1);
 
       for(; i>=0; i--)
-  {
-    T mask = ((T)1) << i; // if you take these parenthesis out,
-        // a mountain of incredible runtime
-        // errors will jump on you.(I warned
-        // ya !)
-    if(value & mask)
-      bitStr += "1" ;
-    else
-      bitStr += "0" ;
-  }
+	{
+	  T mask = ((T)1) << i; // if you take these parenthesis out,
+	  // a mountain of incredible runtime
+	  // errors will jump on you.(I warned
+	  // ya !)
+	  if(value & mask)
+	    bitStr += "1" ;
+	  else
+	    bitStr += "0" ;
+	}
       return bitStr;
     }
 
