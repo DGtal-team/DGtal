@@ -37,6 +37,7 @@
 #include "DGtal/geometry/curves/representation/CombinatorialDSS.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "ConfigTest.h"
+#include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
 #include <time.h>
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,6 +63,9 @@ bool testCombinatorialDSS()
   typedef ContourType::ConstIterator ConstIterator;
   typedef CombinatorialDSS<Coordinate> CombinatorialDSS;
 
+  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS> ));
+  //BOOST_CONCEPT_ASSERT(( CSegment<CombinatorialDSS> ));
+
   trace.beginBlock ( "Test \'extend\' and \'retract\'" );
 
   std::string filename = testPath + "samples/france.fc";
@@ -71,23 +75,20 @@ bool testCombinatorialDSS()
 
 
   int nbRetract = 0;
-  CombinatorialDSS C(theContour.begin());
-  //while ( *C.end() != *theContour.end() ) 
+  CombinatorialDSS C;
+  C.init( theContour.begin() );
   while ( C.getLastPoint() != theContour.lastPoint() ) 
-  {
-    //cout << "=================================" << theContour.size()  << endl;
-    //cout << C << endl;
-    //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
-    if ( ! C.extendForward() )  {
-      C.retractForward();
-      ++nbRetract;
+    {
+      if ( ! C.extendForward() )  
+        {
+          C.retractForward();
+          ++nbRetract;
+        }
     }
-    //cout << C.begin().getPosition() << " " << C.end().getPosition() << " <---> " << theContour.end().getPosition() << endl;
-  }
   trace.endBlock();
   return (nbRetract == 3485) ;
 }
-  
+
 
 /**
  * Builds CombinatorialDSS and ArithmeticalDSS in the fourth quadrants and
@@ -109,7 +110,8 @@ bool CompareToArithmetical()
   ContourType theContour(fst);
   ContourType::ConstIterator it = theContour.begin();
   for (int i=0; i<10; i++) it++;
-  CombinatorialDSS<int> C(it);
+  CombinatorialDSS<int> C;
+  C.init(it);
   ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
   A.extendForward(); 
   int nbPts = 2;
@@ -142,6 +144,26 @@ bool CompareToArithmetical()
       res = false;
       break;
     }
+    if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
+        ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
+        ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
+        ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
+    )
+      {
+        cout << "Arithmetic parameters error\n";
+        cout <<  C << endl;
+        cout <<  A << endl;
+        cout << "getA()    " <<  C.getA()     << " --- " <<  A.getA() << "\n";
+        cout << "getB()    " <<  C.getB()     << " --- " <<  A.getB() << "\n";
+        cout << "getMu()   " <<  C.getMu()    << " --- " <<  A.getMu() << "\n";
+        cout << "getOmega()" <<  C.getOmega() << " --- " <<  A.getOmega() << "\n";
+        cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
+        cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
+        cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
+        cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
+        res = false;
+        break;
+      }
   }
   trace.endBlock();
   return res;
