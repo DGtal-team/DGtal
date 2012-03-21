@@ -26,6 +26,8 @@
  *
  * Header file for module CombinatorialDSS.cpp
  *
+ * This class is a model of the concept CDynamicBidirectionalSegmentComputer. 
+ *
  * This file is part of the DGtal library.
  *
  * @see testCombinDSS.cpp
@@ -60,7 +62,7 @@ namespace DGtal
    * \brief Aim:
    *
    * A combinatorial DSS is a specialized type of DSS where input points
-   * are given by a Freeman Chain code.
+   * are given by an array of Codes considered as a FreemanChain.
    *
    * This class uses the fact that the part of a Freeman chain code that,
    * in general, is a DSS has the following form : 's.c^k.p' where 'k>0',
@@ -72,13 +74,18 @@ namespace DGtal
    * to one of the axes , in this case the DSS is called 'trivial', and
    * when the DSS has only one upper leaning point.
    *
-   * This class is a model of the concept CSegmentComputer.
-   *
    * The main interest of this class is to provide the function
    * 'longestChristoffelPrefix'. A Christoffel word is a particular type
    * of pattern in a 4-connected DSS such that both the starting point
    * and the end point are upper leaning points (see Berstel, Lauve,
    * Reutenauer and Saliola [2008]).
+   *
+   * The input array of codes is considered as an open curve so the starting
+   * point and the ending points are not assumed to be related.
+   *
+   *
+   * This class is a model of the concept CSegmentComputer.
+   *
    *
    * @tparam TInteger the type of scalars used for the coordinates of the
    * points (satisfying CInteger) 
@@ -89,6 +96,8 @@ namespace DGtal
     class CombinatorialDSS  
   {
 
+
+
     // ----------------------- Types ------------------------------
     public :
       //Required type
@@ -97,11 +106,10 @@ namespace DGtal
 
       //Required types
       typedef FreemanChain<TInteger> FreemanChainCode;
-      typedef typename FreemanChainCode::ConstIterator ConstIterator;
       typedef CombinatorialDSS<Integer> Self;
+      typedef CombinatorialDSS<Integer> Reverse;
 
       //2D points and 2D vectors
-        // \TODO : récupérer Point et Vector a partir de FreemanChain
       typedef DGtal::PointVector<2,Integer> Point;
       typedef DGtal::PointVector<2,Integer> Vector;
 
@@ -111,7 +119,130 @@ namespace DGtal
       typedef int Index;
 
       //Arithmetical DSS, for comparaison purpose
-      typedef DGtal::ArithmeticalDSS< ConstIterator, Integer, 4 > ArithmeticalDSS;
+      typedef DGtal::ArithmeticalDSS< typename FreemanChainCode::ConstIterator, Integer, 4 > ArithmeticalDSS;
+
+
+
+      typedef Vector (*DisplacementFct) (Code);
+
+
+      /**
+       * Basic iterator on the points of the DSS
+       */
+      struct ConstIterator
+        {
+          const CombinatorialDSS * myDSS;
+          Index i;
+          Point p;
+
+          /**
+           * Default constructor, does nothing
+           */
+          ConstIterator( )
+          {}
+
+          /**
+           * Initialization constructor.
+           * @param Index of the first letter.
+           * @param CombinatorialDSS on which the iterator is defined.
+           * @param Starting point of the iterator.
+           */
+          ConstIterator( const CombinatorialDSS * dss, Index ind, Point pt ) :
+            myDSS(dss), i(ind), p(pt) 
+          {}
+
+          /**
+           * Destructor. Does nothing.
+           */
+          ~ConstIterator() {}
+            
+          /**
+           * Comparaison operators.
+           */
+          bool operator==( const ConstIterator other) const
+            {
+              return i == other.i;
+            }
+          bool operator!=( const ConstIterator other) const
+            {
+              return i != other.i;
+            }
+
+
+          /**
+           * Copy operator
+           */
+          ConstIterator& operator=( ConstIterator & other)
+            {
+              i = other.i;
+              myDSS = other.myDSS;
+              p = other.p;
+              return *this;
+            }
+
+          Point operator*() const
+            {
+              return p;
+            }
+
+          // pre-increment ++i
+          ConstIterator& operator++()
+            {
+              next();
+              return *this;
+            }
+
+          // post-increment
+          ConstIterator operator++( int )
+            {
+              ConstIterator it = *this;
+              next();
+              return it;
+            }
+
+
+          // pre-decrement --i
+          ConstIterator& operator--()
+            {
+              prev();
+              return *this;
+            }
+
+          // post-decrement
+          ConstIterator operator--( int )
+            {
+              ConstIterator it = *this;
+              prev();
+              return it;
+            }
+
+          // Move to next position
+          void next()
+            {
+              if ( i < myDSS->myCodesLength ) 
+                p += myDSS->myDisplacements( myDSS->getCode( i ) );
+              ++i;
+            }
+
+          // Move to previous position
+          void prev()
+            {
+              --i;
+              if ( ( i < myDSS->myCodesLength ) && (i >= 0) )
+                p -= myDSS->myDisplacements( myDSS->getCode( i ) );
+            }
+
+
+          // Get the index of the iterator
+          Index getIndex() const
+            {
+              return i;
+            }
+
+        };
+
+
+
 
     // ----------------------- Standard services ------------------------------
     public:
@@ -127,16 +258,33 @@ namespace DGtal
       ~CombinatorialDSS();
 
       /**
-       * Initialize from a ConstIterator over a Freman Chain code.
-       * @param ConstIterator giving the letter to initialize the DSS with.
+       * Initialize from a ConstIterator on a CombinatorialDSS.
+       * @param ConstIterator
        */
-      CombinatorialDSS(const ConstIterator& it);
+      void init(ConstIterator i);
+
+      /**
+       * Initialize from a Freman Chain code.
+       * @param FreemanChain on which is defined the DSS.
+       */
+      void init(const FreemanChainCode & fc);
 
       /**
        * Initialize from a ConstIterator over a Freman Chain code.
-       * @param Iterator giving the letter to initialize the DSS with.
+       * @param ConstIterator giving the letter to initialize the DSS with.
        */
-      void init(const ConstIterator& it);
+      void init(const typename FreemanChainCode::ConstIterator & it);
+
+      /**
+       * Initialize from an array of codes.
+       * @param a pointer to an array of codes.
+       * @param the length of the code array.
+       * @param the start position in 'theCode'.
+       * @param the position of the starting point of the first code.
+       * @param a function that returns the displacement vector of the codes.
+       */
+      void init(const Code * theCode, Size codeLength, Index firstLetter, const
+                Point & startPoint, Vector (*displacement) (Code) );
 
       /**
        * Copy constructor.
@@ -180,12 +328,18 @@ namespace DGtal
       bool operator!=( const ArithmeticalDSS & other ) const;
 
       /**
-       * Tests whether the current DSS can be extended at the front or at
-       * the back depending on the iterator given as argument.  Computes
-       * the parameters of the extended DSS if yes.
+       * @return a reverse version of '*this'.
+       * TODO : not implemented yet
+       */
+      Reverse getReverse() const;
+
+
+      /**
+       * Tests whether the current DSS can be extended at the front.
+       *  
        * @return 'true' if yes, 'false' otherwise.
        */
-      bool extendForward(ConstIterator it);
+      bool isExtendableForward();
 
       /**
        * Tests whether the current DSS can be extended at the front.
@@ -200,6 +354,13 @@ namespace DGtal
        * @return 'true' if yes, 'false' otherwise.
        */
       bool extendBackward();
+
+      /**
+       * Tests whether the current DSS can be extended at the back.
+       *  
+       * @return 'true' if yes, 'false' otherwise.
+       */
+      bool isExtendableBackward();
 
       /**
        * Removes the first point of the DSS (at back). 
@@ -254,59 +415,100 @@ namespace DGtal
           const OrderedAlphabet & aOA);
 
       /**
-       * Computes the arithmetic description of the DSS.
+       * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
        * @param (returns) 'a' from the equation mu <= ax-by < mu + omega
        * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
        * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
        * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
+       * TODO test this !
        */
       void getArithmeticalDescription( Integer &a, Integer &b, Integer
           &mu, Integer &omega) const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Uses 'getArithmeticalDescription' so prefer this latter one if more
+       * then one parameter is computed.
+       *
        * @return the value of 'a' in the DSS equation
        */
       Integer getA() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Uses 'getArithmeticalDescription' so prefer this latter one if more
+       * then one parameter is computed.
+       * 
        * @return the value of 'b' in the DSS equation
        */
       Integer getB() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Uses 'getArithmeticalDescription' so prefer this latter one if more
+       * then one parameter is computed.
+       *
        * @return the value of 'mu' in the DSS equation
        */
       Integer getMu() const;
 
       /**
        * Computes the arithmetic description of the DSS : 0 <= ax+by+mu < omega
+       * Uses 'getArithmeticalDescription' so prefer this latter one if more
+       * then one parameter is computed.
+       *
        * @return the value of 'omega' in the DSS equation
        */
       Integer getOmega() const;
 
+
+      /**
+       * Computes the remained of a point relatively to the arithmetical
+       * description of the current DSS.
+       * @param aPoint a point whose remainder is returned
+       * @returns the remaindre of aPoint
+       */
+      Integer getRemainder(const Point & aPoint) const;
+
+      /**
+       * Computes the leaning points of the DSS
+       * @param (returns) the first upper leaning point.
+       * @param (returns) the last upper leaning point.
+       * @param (returns) the first lower leaning point.
+       * @param (returns) the last lower leaning point.
+       */
+      void computeLeaningPoints( Point & uf, Point & ul, 
+                                 Point & lf, Point & ll ) const;
+
+
       /**
        * Accessor to the first upper leaning point
+       * Uses 'computeLeaningPoints' so prefer this latter one if more then one
+       * leaning point is computed.
        * @return first upper leaning point.
        */
       Point getUf() const;
 
       /**
        * Accessor to the last upper leaning point
+       * Uses 'computeLeaningPoints' so prefer this latter one if more then one
+       * leaning point is computed.
        * @return last upper leaning point.
        */
       Point getUl() const;
 
       /**
        * Accessor to the first lower leaning point
+       * Uses 'computeLeaningPoints' so prefer this latter one if more then one
+       * leaning point is computed.
        * @return first lower leaning point.
        */
       Point getLf() const;
 
       /**
        * Accessor to the last lower leaning point
+       * Uses 'computeLeaningPoints' so prefer this latter one if more then one
+       * leaning point is computed.
        * @return last lower leaning point.
        */
       Point getLl() const;
@@ -363,9 +565,20 @@ namespace DGtal
       // ------------------------- Protected Datas ------------------------------
       
       /**
+       * @no longer used
        * Freeman chain on which is defined the CombinatarialDSS
        */
-      const FreemanChainCode * myFC;
+      //const FreemanChainCode * myFC;
+
+      /**
+       * The array of char on which is defined the CombinatorialDSS
+       */
+      const Code * myCodes;
+
+      /**
+       * Length of 'myCodes'
+       */
+      Size myCodesLength;
 
       /**
        * In order to keep track of the DSS position, first and last points
@@ -409,9 +622,13 @@ namespace DGtal
       Index myNextBefore;
       Index myNextAfter;
 
+      /**
+       * Function that converts the codes of a FreemanChain into a elementary translations.
+       */
+      Vector (*myDisplacements) ( Code ) ;
 
 
-    private:
+
       // ------------------------- Private Datas --------------------------------
     private:
 
@@ -431,8 +648,7 @@ namespace DGtal
       Code getBigLetter() const;
 
       /** 
-       * Get the code at a given position in the
-       * FreemanChain
+       * Get the code at a given index.
        * @param a position in the FreemanChain
        * @returns the letter at the given position
        */
@@ -443,6 +659,12 @@ namespace DGtal
        * @returns the length of the main pattern
        */
       Size mainPatternLength() const;
+
+      /**
+       * Computes the vector defined by the main pattern.
+       * @returns the vector defined by the main pattern.
+       */
+      Vector mainPatternVector() const;
 
       /**
        * Computes the length of the suffix of the main pattern read before
@@ -500,6 +722,14 @@ namespace DGtal
        * @returns 'true' is the DSS is trivial, 'false' otherwise.
        */
       bool isTrivial() const;
+
+      /**
+       * Convert a code into vector.
+       * @param a code.
+       * @returns the vector defined by that code.
+       */
+      Vector displacement( Code c ) const;
+
 
 
     
