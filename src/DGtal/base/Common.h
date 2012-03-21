@@ -68,6 +68,8 @@
 //C++ exception specification ignored except 
 //to indicate a function is not __declspec(nothrow)
 #pragma warning(disable : 4290)
+//C++ Perf Warning int <- bool
+#pragma warning(disable : 4800)
 #endif
 
 #if defined( WIN32 )
