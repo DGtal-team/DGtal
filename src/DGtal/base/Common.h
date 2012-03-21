@@ -57,11 +57,6 @@
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/concept_archetype.hpp>
 
-#ifdef _MSC_VER
-#ifdef M_PI
-#undef M_PI
-#endif
-#endif
 
 #if defined( WIN32 )
 #define _USE_MATH_DEFINES
@@ -69,6 +64,17 @@
 #else 
 #include <cmath>
 #endif //win32
+
+#ifdef _MSC_VER
+#define NOMINMAX
+#include <windows.h>
+#ifdef M_PI
+#undef M_PI
+#endif
+//C++ exception specification ignored except 
+//to indicate a function is not __declspec(nothrow)
+#pragma warning(disable : 4290)
+#endif
 
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s

@@ -28,7 +28,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
-#include <windows.h>
 #include <GL/gl.h>
 #include "DGtal/io/viewers/windows/GL/glext.h"
 #endif
