@@ -115,56 +115,49 @@ bool CompareToArithmetical()
   ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
   A.extendForward(); 
   int nbPts = 2;
-  bool a,c;
   bool res = true;
-  //while ( *C.end() != *theContour.end() ) {
-  //while ( C.end() != theContour.end() ) {
-  while ( C.getLastPoint() != theContour.lastPoint() ) {
-    double d = ((double) rand()) / ((double) RAND_MAX );
-    if ( (d < 0.15)  && (nbPts > 2) ) {
-      a = A.retractForward();
-      c = C.retractForward();
-      if (a && c) --nbPts;
+  while ( C.getLastPoint() != theContour.lastPoint() ) 
+    {
+      bool a = A.extendForward();
+      bool c = C.extendForward();
+      if ( a ^ c )
+        {
+          res = false;
+          cout << "Extension test error\n";
+          break;
+        }
+      else if ( ! a )
+        {
+          A.retractForward();
+          C.retractForward();
+        }
+      if ( C != A )
+        {
+          res = false;
+          cout << "Equality test error\n";
+          break;
+        }
+      if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
+           ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
+           ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
+           ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
+         )
+        {
+          cout << "Arithmetic parameters error\n";
+          cout <<  C << endl;
+          cout <<  A << endl;
+          cout << "getA()    " <<  C.getA()     << " --- " <<  A.getA() << "\n";
+          cout << "getB()    " <<  C.getB()     << " --- " <<  A.getB() << "\n";
+          cout << "getMu()   " <<  C.getMu()    << " --- " <<  A.getMu() << "\n";
+          cout << "getOmega()" <<  C.getOmega() << " --- " <<  A.getOmega() << "\n";
+          cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
+          cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
+          cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
+          cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
+          res = false;
+          break;
+        }
     }
-    else if ( (d < 0.30)  && (nbPts > 2) ) {
-      a = A.retractBackward();
-      c = C.retractBackward();
-      if (a && c) --nbPts;
-    }
-    else  {
-      a = A.extendForward();
-      c = C.extendForward();
-      if (a && c) ++nbPts;
-    }
-    if ( ((!C.isValid()) || (a ^ c)) || (C != A) ) {
-      cout << C.isValid() << endl;
-      cout << a << " " << c << endl;
-      cout << C << endl;
-      cout << A << endl;
-      res = false;
-      break;
-    }
-    if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
-        ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
-        ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
-        ( C.getLf() != A.getLf() ) || ( C.getLl() != A.getLl() ) 
-    )
-      {
-        cout << "Arithmetic parameters error\n";
-        cout <<  C << endl;
-        cout <<  A << endl;
-        cout << "getA()    " <<  C.getA()     << " --- " <<  A.getA() << "\n";
-        cout << "getB()    " <<  C.getB()     << " --- " <<  A.getB() << "\n";
-        cout << "getMu()   " <<  C.getMu()    << " --- " <<  A.getMu() << "\n";
-        cout << "getOmega()" <<  C.getOmega() << " --- " <<  A.getOmega() << "\n";
-        cout << "getUf()   " <<  C.getUf()    << " --- " <<  A.getUf() << "\n";
-        cout << "getUl()   " <<  C.getUl()    << " --- " <<  A.getUl() << "\n";
-        cout << "getLf()   " <<  C.getLf()    << " --- " <<  A.getLf() << "\n";
-        cout << "getLl()   " <<  C.getLl()    << " --- " <<  A.getLl() << endl;
-        res = false;
-        break;
-      }
-  }
   trace.endBlock();
   return res;
 }
