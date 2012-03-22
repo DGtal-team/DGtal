@@ -54,11 +54,9 @@ digital space, the digital domain, as well as basic linear algebra
 tools.
 
 @b Modules
- - \ref moduleNumber
-
- - \ref moduleSpacePointVectorDomain
-
- - \ref moduleDigitalSets  
+- \ref moduleNumber
+- \ref moduleSpacePointVectorDomain
+- \ref moduleDigitalSets  
 
 
  @b Package @b Concepts @b Overview
