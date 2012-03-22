@@ -413,14 +413,17 @@ namespace DGtal {
    Light versions of containers should be preferred in mostly two
    cases:
 
-   1 The digital surface is big and you do not wish to keep it in
+   1. The digital surface is big and you do not wish to keep it in
       memory. This is probably the case when tracking some implicit
       function and outputing it in some stream.
-   2 The digital surface is likely to evolve (i.e. the predicate do
+
+   2. The digital surface is likely to evolve (i.e. the predicate do
       not give the same response at a point/surfel depending on when
       it is called).
 
+
    @subsection dgtal_digsurf_sec3_3  Relating a digital surface to some container
+
    The following snippet shows how to create a digital surface
    associated to a LightImplicitDigitalSurface. The
    LightImplicitDigitalSurface is connected to a shape described by a
@@ -494,6 +497,7 @@ namespace DGtal {
       true for a surfel \a s iff the interior spel of \a s has label
       \c l while the exterior spel of \a s has label different from \c
       l.
+
   2. FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
       true for a surfel \a s iff the interior spel of \a s has label
       \c l1 while the exterior spel of \a s has label \c l2.
