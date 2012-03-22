@@ -53,8 +53,22 @@ digraph G {
   CCommutativeRing-> boost_EqualityComparable;
   CInteger-> boost_EqualityComparable;
   }
-@enddot
 
+  subgraph cluster_01 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    CSinglePassRange-> CConstSinglePassRange ;
+    CBidirectionalRange -> CSinglePassRange;
+    CBidirectionalRange -> CConstBidirectionalRange;
+    label = "Base";
+  }
+
+
+  "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
+  "CSinglePassRange"->  boost_SingePassIteratorConcept [label="use",style=dashed] ;
+ 
+ @enddot
 
 */
 
