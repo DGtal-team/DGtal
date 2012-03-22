@@ -25,14 +25,7 @@ namespace DGtal {
 patterns from one-dimensional discrete structures
 (basically digital curves).
 
- -# \ref geometryIntro
-    -# \ref geometryBasicConcepts
-    -# \ref geometryGridCurve
- -# \ref geometrySegments
- -# \ref geometrySegmentsExtraction
-		-# \ref geometryGreedyDecomposition
-		-# \ref geometryUniqueDecomposition
-
+[TOC]
 
  \section geometryIntro One-dimensional discrete structures
 

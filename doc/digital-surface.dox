@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
    
-   @page dgtal_digital_surface III. Digital surfaces
+   @page dgtal_digital_surface  Digital surfaces
    
    @writers Jacques-Olivier Lachaud
 
@@ -16,40 +16,24 @@ namespace DGtal {
    closed or open. A lot of the ideas, concepts, algorithms,
    documentation and code is a backport from <a
    href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>. \cite ImaGene
+[TOC]
 
-   - \ref dgtal_digsurf_sec1
-      - \ref dgtal_digsurf_sec1_1
-      - \ref dgtal_digsurf_sec1_2
-      - \ref dgtal_digsurf_sec1_3
-   - \ref dgtal_digsurf_sec2
-      - \ref dgtal_digsurf_sec2_1
-      - \ref dgtal_digsurf_sec2_2
-      - \ref dgtal_digsurf_sec2_3
-   - \ref dgtal_digsurf_sec3
-      - \ref dgtal_digsurf_sec3_1
-      - \ref dgtal_digsurf_sec3_2
-      - \ref dgtal_digsurf_sec3_3
-      - \ref dgtal_digsurf_sec3_4
-   - \ref dgtal_digsurf_sec4
-      - \ref dgtal_digsurf_sec4_1
-      - \ref dgtal_digsurf_sec4_2
-      - \ref dgtal_digsurf_sec4_3
 
    The following programs are related to this documentation:
    volToOFF.cpp, volMarchingCubes.cpp,
    volScanBoundary.cpp, volTrackBoundary.cpp, frontierAndBoundary.cpp,
    volBreadthFirstTraversal.cpp, trackImplicitPolynomialSurfaceToOFF
 
-   @section dgtal_digsurf_sec1 1. Introduction to digital surfaces
+   @section dgtal_digsurf_sec1  Introduction to digital surfaces
 
-   @subsection dgtal_digsurf_sec1_1 1.1 Possible definitions for digital surfaces
+   @subsection dgtal_digsurf_sec1_1  Possible definitions for digital surfaces
 
    Although continuous surfaces are well defined as n-manifolds, a
    digital or discrete analog of surface is more tricky to
    define. Several methods have been explored to define consistent
    digital surfaces. We mention three approaches here.
 
-   -# Surface as specific subsets of \f$ Z^n \f$, i.e. as sets of
+   - Surface as specific subsets of \f$ Z^n \f$, i.e. as sets of
       pixels in 2D, voxels in 3D, etc, with specific properties. This
       approach was proposed by Rosenfeld in the 70s. The set \f$ S
       \subset Z^n \f$ is a digital surface iff \f$ Z^n \setminus S \f$
@@ -60,7 +44,8 @@ namespace DGtal {
       Rosenfeld or Malgouyres) and is unusable in practice. For
       instance the border of any digital object is generally not a
       surface.
-   -# Surface as \f$ n-1 \f$-dimensional cubical complexes. For
+
+   - Surface as \f$ n-1 \f$-dimensional cubical complexes. For
       example, if a digital object is a pure \f$ n \f$-dimensional
       cubical complex, its boundary is naturally a \f$ n-1
       \f$-dimensional cubical complex. This seems at first sight a
@@ -74,7 +59,8 @@ namespace DGtal {
       thus interesting for representing objects, but not so
       interesting when one is interested by the geometry of its
       boundary.
-   -# Surface as set of n-1-cells with some specific adjacencies. This
+
+   - Surface as set of n-1-cells with some specific adjacencies. This
       approach is more or less the approach of Herman, Udupa and
       others, which was designed originally for tracking surfaces in a
       digital space. In 2D, this correspond to an interpixel
@@ -89,7 +75,7 @@ namespace DGtal {
 
    We focus here on the last method to define digital surfaces.
 
-   @subsection dgtal_digsurf_sec1_2 1.2 Digital surface as a set of n-1-cells
+   @subsection dgtal_digsurf_sec1_2  Digital surface as a set of n-1-cells
 
    Formally, the elements of the digital space \f$ Z^n \f$ are called
    \e spels, and often \e pixels in 2D and \e voxels in 3D. A \e
@@ -157,7 +143,7 @@ namespace DGtal {
    topology on the digital surface. The first step is to transform the
    digital surface into a graph.
 
-   @subsection dgtal_digsurf_sec1_3 1.3 Digital surface as a graph: adding adjacencies between surfels
+   @subsection dgtal_digsurf_sec1_3  Digital surface as a graph: adding adjacencies between surfels
 
    The idea here is to connect surfels that share some @f$n-2@f$-cells. The
    obtained adjacency relations are called \e bel \e adjacencies in
@@ -235,13 +221,13 @@ namespace DGtal {
    surface, the digital surface forms a graph (at least in theory).
 
 
-   @section dgtal_digsurf_sec2 2. Tracking digital surfaces
+   @section dgtal_digsurf_sec2  Tracking digital surfaces
 
    This section shows how to extract the boundary of a digital set,
    given some predicate telling whether we are inside or outside the
    surface.
 
-   @subsection dgtal_digsurf_sec2_1 2.1 Constructing digital surfaces by scanning
+   @subsection dgtal_digsurf_sec2_1 Constructing digital surfaces by scanning
    
    Given a domain and a predicate telling whether we are inside or
    outside the object of interest, it is easy to determine the set of
@@ -254,7 +240,7 @@ namespace DGtal {
 
    @snippet examples/topology/volScanBoundary.cpp volScanBoundary-ExtractingSurface
 
-   @subsection dgtal_digsurf_sec2_2 2.2 Constructing digital surfaces by tracking
+   @subsection dgtal_digsurf_sec2_2  Constructing digital surfaces by tracking
 
    In many circumstances, it is better to use the above mentioned graph
    structure of digital surfaces. For instance it may be used to find
@@ -291,7 +277,7 @@ namespace DGtal {
    @image html suivi-artzy.png "Tracking a digital surface by following only direct adjacencies."
    @image latex suivi-artzy.png "Tracking a digital surface by following only direct adjacencies." width=5cm
 
-   @subsection dgtal_digsurf_sec2_3 2.3 Other constructions by tracking: 2D contours, surface connected components, 2D slices in 3D surface
+   @subsection dgtal_digsurf_sec2_3 Other constructions by tracking: 2D contours, surface connected components, 2D slices in 3D surface
 
    You can have a look at page \ref dgtal_helpers_surfaces to see how
    to construct directly a 2D contour in \f$ Z^2 \f$, how to get the
@@ -314,21 +300,29 @@ namespace DGtal {
 
    @see digitalSurfaceSlice.cpp
 
-   @section dgtal_digsurf_sec3 3. High-level classes for digital surfaces
+   @section dgtal_digsurf_sec3 High-level classes for digital surfaces
 
    Digital surfaces arise in many different contexts:
 
    - an explicit set of oriented surfels
+
    - the boundary of an explicit set of spels
+
    - the boundary of an explicit set of digital points
+
    - the boundary of a set of digital points, defined implicitly by a
      predicate: Point -> bool
+
    - a set of oriented surfels, defined implicitly by a
      predicate: Surfel -> bool
+
    - a set of oriented surfels, implicitly by a
      predicate: Oriented Surfel -> bool
+
    - the boundary of a region in a labelled image
+
    - the frontier between two regions in a labelled image
+
    - ...
    
    Since there are so many digital surfaces, it is necessary to
@@ -336,7 +330,7 @@ namespace DGtal {
    DigitalSurface will be the common proxy to hide models of
    CDigitalSurfaceContainer.
 
-   @subsection dgtal_digsurf_sec3_1 3.1 A common architecture for digital surfaces
+   @subsection dgtal_digsurf_sec3_1  A common architecture for digital surfaces
    
    Since there may be several types of digital surfaces, there are
    several container classes for them. All of them follow the concept
@@ -349,7 +343,7 @@ namespace DGtal {
    @image html diag-digital-surface-1.png "Class architecture of digital surfaces."
    @image latex diag-digital-surface-1.png "Class architecture of digital surfaces." width=0.95\textwidth
 
-   @subsection dgtal_digsurf_sec3_2 3.2 Models of digital surface containers
+   @subsection dgtal_digsurf_sec3_2  Models of digital surface containers
 
    For now, the implemented digital surface container are (realization
    of CDigitalSurfaceContainer):
@@ -419,15 +413,14 @@ namespace DGtal {
    Light versions of containers should be preferred in mostly two
    cases:
 
-   -# The digital surface is big and you do not wish to keep it in
+   1 The digital surface is big and you do not wish to keep it in
       memory. This is probably the case when tracking some implicit
       function and outputing it in some stream.
-   -# The digital surface is likely to evolve (i.e. the predicate do
+   2 The digital surface is likely to evolve (i.e. the predicate do
       not give the same response at a point/surfel depending on when
       it is called).
 
-   @subsection dgtal_digsurf_sec3_3 3.3 Relating a digital surface to some container
-
+   @subsection dgtal_digsurf_sec3_3  Relating a digital surface to some container
    The following snippet shows how to create a digital surface
    associated to a LightImplicitDigitalSurface. The
    LightImplicitDigitalSurface is connected to a shape described by a
@@ -446,7 +439,7 @@ namespace DGtal {
    (Light...) is lazy: the whole surface has not been extracted yet.
 
 
-   @subsection dgtal_digsurf_sec3_4 3.4 A digital surface is a graph, example of breadth-first traversal
+   @subsection dgtal_digsurf_sec3_4  A digital surface is a graph, example of breadth-first traversal
 
    Any DigitalSurface is a model of CUndirectedSimpleGraph (a
    refinement of CUndirectedLocalSimpleGraph). Essentially, you have
@@ -490,18 +483,18 @@ namespace DGtal {
    CUndirectedSimpleGraph are susceptible to evolve to meet other
    standards.
 
-   @subsection dgtal_digsurf_sec3_5 3.5 Boundary and frontiers  examples of digital surface
+   @subsection dgtal_digsurf_sec3_5  Boundary and frontiers  examples of digital surface
 
    Surfels of a digital surface can also be defined by a predicate
    telling whether or not some surfel belongs to it. Given an image of
    labels, the class BoundaryPredicate and FrontierPredicate are such
    predicates:
 
-   -# BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
+  1. BoundaryPredicate ( KSpace, Image, l ) is a predicate returning
       true for a surfel \a s iff the interior spel of \a s has label
       \c l while the exterior spel of \a s has label different from \c
       l.
-   -# FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
+  2. FrontierPredicate ( KSpace, Image, l1, l2 ) is a predicate returning
       true for a surfel \a s iff the interior spel of \a s has label
       \c l1 while the exterior spel of \a s has label \c l2.
 
@@ -519,9 +512,9 @@ namespace DGtal {
 
 
 
-   @section dgtal_digsurf_sec4 4. The digital surface graph is a combinatorial manifold
+   @section dgtal_digsurf_sec4  The digital surface graph is a combinatorial manifold
 
-   @subsection dgtal_digsurf_sec4_1 4.1 Umbrellas and faces
+   @subsection dgtal_digsurf_sec4_1  Umbrellas and faces
 
    We have shown before that a digital surface has a dual structure
    that is the graph whose vertices are n-1-cells and whose arcs are
@@ -546,7 +539,7 @@ namespace DGtal {
    You may look at file testUmbrellaComputer.cpp to see how to use
    this class directly.
 
-   @subsection dgtal_digsurf_sec4_2 4.2 Vertices, arcs and faces on a digital surface
+   @subsection dgtal_digsurf_sec4_2  Vertices, arcs and faces on a digital surface
 
    However, it is simpler to use directly the methods defined in
    DigitalSurface. It offers three types: DigitalSurface::Vertex,
@@ -582,37 +575,51 @@ namespace DGtal {
 
    - DigitalSurface::outArcs (Vertex): the range of outgoing arcs from
      the given vertex.
+
    - DigitalSurface::inArcs (Vertex): the range of ingoing arcs from
      the given vertex.
+
    - DigitalSurface::facesAroundVertex (Vertex): the range of faces
      containing this vertex [v]: 0 in 2D, 4 in 3D, 12 in 4D,
      2(n-1)(n-2) in nD.
+
    - DigitalSurface::head (Arc): the head vertex of the given arc
+
    - DigitalSurface::tail (Arc): the tail vertex of the given arc
+
    - DigitalSurface::opposite (Arc): the opposite arc of the given arc
      (may not exist if the arc lies on some boundary).
+
    - DigitalSurface::arc (Vertex,Vertex): the arc from the first
      vertex toward the second.
+
    - DigitalSurface::facesAroundArc (Arc): the range of faces incident
      to a given arc. Empty in 2D. 1 face in 3D, 2 in 4D and so one,
      n-2 in nD. Returned faces may be open.
+
    - DigitalSurface::verticesAroundFace (Face): the sequence of
      vertices that touches this face. The order follows the order of
      incident arcs.
+
    - DigitalSurface::allFaces (): the set of all faces of the digital
      surface (open and closed faces).
+
    - DigitalSurface::allClosedFaces (): the set of all closed faces of
      the digital surface.
+
    - DigitalSurface::allOpenFaces (): the set of all open faces of the
      digital surface.
+
    - DigitalSurface::computeFace ( UmbrellaComputer::State ): compute
      the face from a given umbrella state.
+
    - DigitalSurface::separator ( Arc ): the separator of a given arc
      (the n-2-cell between the two surfels forming the arc).
+
    - DigitalSurface::pivot ( Face ): the positively oriented n-3-cell
      that is the pivot of the face.
 
-   @subsection dgtal_digsurf_sec4_3 4.3 Application to export surface in OFF format
+   @subsection dgtal_digsurf_sec4_3  Application to export surface in OFF format
 
    In 3D, you may use faces to transform an arbitrary digital surface
    into a polygonal manifold (closed or open). You can for instance

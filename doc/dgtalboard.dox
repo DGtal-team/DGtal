@@ -18,23 +18,9 @@ namespace DGtal {
      href="http://www.cairographics.org">Cairo</a>).  This document is
      dedicated both to DGtal users and developers.
 
-    
-    
-     Table of contents:
-      -# \ref dgtal_dgtalboard_sec1
-        -# \ref dgtal_dgtalboard_sec11
-        -# \ref dgtal_dgtalboard_sec12
-        -# \ref dgtal_dgtalboard_sec13
-        -# \ref dgtal_dgtalboard_sec14
-        -# \ref dgtal_dgtalboard_sec15
-        -# \ref dgtal_dgtalboard_sec16
-        -# \ref dgtal_dgtalboard_sec17
-        -# \ref dgtal_dgtalboard_sec18
-        -# \ref dgtal_dgtalboard_sec19
-      -# \ref dgtal_dgtalboard_sec2
-        -# \ref dgtal_dgtalboard_sec21
-        -# \ref dgtal_dgtalboard_sec22
-    
+  
+[TOC]
+   
      \section dgtal_dgtalboard_sec1 User guide to Board2D
     
      \subsection dgtal_dgtalboard_sec11 Elementary usage: displaying a domain and a few points

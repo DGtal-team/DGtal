@@ -18,15 +18,17 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page volpackage nD Volumetric Package
+
+[TOC]
+
 @author David Coeurjolly
 
 This part of the manual describes the DGtal volumetric package and its
 classes. 
 
-[TOC]
-\tableofcontents
 
-# Introduction
+
+\section intro Introduction
 
 For decades, distance transformation (DT) and geometrical skeleton
 extraction have been classic tools for shape analysis
@@ -72,7 +74,7 @@ In DGtal, we have chosen to separate the metric from the algorithmic
 decomposition. We discuss in section \ref sep on the construction of
 a separable metric type. 
 
-# Distance Transformation
+\section dt Distance Transformation
 
 Given a binary object @f$ X @f$ and its complementary @f$\bar{X}@f$,
 the distance transformation is a mapping of  points @f$ x\in X@f$ with
@@ -145,10 +147,12 @@ OutputImage result = dt.compute( image );
 Few comments can be made from this example. First, Z2i::Image is defined on a Z2i::Domain whose pixel coordinates Z2i::Space::Coordinate have type DGtal::int32_t. In this example, we have used the default DGtal::uint64_t type to store sum of two square of Coordinate differences.  Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
 
 
+A simple example applying the 3D transform (see distancetransform3D.cpp). This program outputs these images (L1 metric): 
+ @image html resuExDistanceTransform3D.png 
 
 
 
-# Reverse Distance Transformation
+\section rdt  Reverse Distance Transformation
 
 Given a set of balls and a domain, the aim of the reverse reconstruction is to compute the binary shape defined as the union of the 
 input balls. In other word, a point @e x belong to the set @f$X@f$ is there exists at least one ball containing @f$x@f$.
@@ -205,12 +209,12 @@ will affect the value 128 to object points and 0 otherwise.
 @warning Obviously, the reconstruction will be incorrect if the metric used in the distance transformation is not the same as the metric used for the reconstruction. 
 
 
-# Discrete Medial Axis Extraction
+\section rdma Discrete Medial Axis Extraction
 
 @todo complete code/doc
 
 
-# Separable Metric Traits
+\section sep Separable Metric Traits
 
 As discussed in the introduction, the same algorithmic decomposition
 can be used on different metrics. In DGtal, such suitable metrics are
@@ -227,7 +231,7 @@ point of view but it makes the code simpler.
 
 
 
-# References
+\section refs References
 
 G. Borgefors. Distance transformations in digital images. Computer
 Vision, Graphics, and Image Processing, 34(3):344–371, June 1986.
@@ -273,9 +277,5 @@ T. Saito and J I Toriwaki. New algorithms for Euclidean distance transformations
 
 
 
-/**
-* A simple example applying the 3D transform. This program outputs these images: 
-*   @image html resuExDistanceTransform3D.png 
-* \example distancetransform3D.cpp 
-*/
+
 }
