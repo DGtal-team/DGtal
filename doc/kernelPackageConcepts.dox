@@ -17,13 +17,13 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page kernelPackageConcepts Kernel Concepts
+@page kernelPackageConcepts Kernel and Base Concepts
 @writers David Coeurjolly
 
 
 
  @dot   
-digraph G {
+digraph GKERNEL {
   rankdir=BT;
   
   subgraph cluster_0 {
@@ -53,8 +53,13 @@ digraph G {
   CCommutativeRing-> boost_EqualityComparable;
   CInteger-> boost_EqualityComparable;
   }
+@enddot
 
-  subgraph cluster_01 {
+@dot
+digraph GBASE {
+  rankdir=BT;
+  
+  subgraph cluster_0 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
@@ -67,7 +72,7 @@ digraph G {
 
   "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
   "CSinglePassRange"->  boost_SingePassIteratorConcept [label="use",style=dashed] ;
- 
+  }
  @enddot
 
 */
