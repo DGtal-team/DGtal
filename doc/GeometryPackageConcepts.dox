@@ -17,7 +17,7 @@
 @writers David Coeurjolly
 
 @dot
-digraph F {
+digraph GGeom{
   rankdir=BT;
   
   subgraph cluster_1 {

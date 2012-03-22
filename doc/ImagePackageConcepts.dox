@@ -23,7 +23,7 @@ namespace DGtal {
 
 
  @dot   
-digraph G {
+digraph GIMAGE {
   rankdir=BT;
   
 subgraph cluster_0 {
