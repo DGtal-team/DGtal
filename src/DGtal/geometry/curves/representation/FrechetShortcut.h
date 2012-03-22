@@ -257,7 +257,8 @@ public:
    */
   void init(const ConstIterator& it);
   
-  
+  FrechetShortcut & getSelf();
+
   /**
    * Copy constructor.
    * @param other the object to clone.

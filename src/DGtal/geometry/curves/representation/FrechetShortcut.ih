@@ -96,6 +96,17 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
 
 template <typename TIterator, typename TInteger>
 inline
+DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TInteger>::getSelf()
+{
+  FrechetShortcut<TIterator,TInteger> other = FrechetShortcut(myError);
+  return other;
+}
+
+
+
+
+template <typename TIterator, typename TInteger>
+inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myBackpath(other.myBackpath), myCone(other.myCone),  myError(other.myError), myBegin(other.myBegin), myEnd(other.myEnd){    
 }
 
