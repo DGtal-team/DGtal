@@ -6,34 +6,23 @@ namespace DGtal {
 
 /**
    
-   @page dgtal_cellular_topology II. Cellular grid space and topology, unoriented and oriented cells, incidence
+   @page dgtal_cellular_topology  Cellular grid space and topology, unoriented and oriented cells, incidence
    
    @writers by Jacques-Olivier Lachaud and Bertrand
    Kerautret
 
      Part of the \ref TopologyPackage.
-  
+  [TOC]
+
    This part of the manual describes how to define cellular grid space
    or cartesian cubic spaces, as well as the main objects living in
    these spaces. A lot of the ideas, concepts, algorithms,
    documentation and code is a backport from <a
    href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
-   - \ref dgtal_ctopo_sec1
-   - \ref dgtal_ctopo_sec2
-   - \ref dgtal_ctopo_sec3
-   - \ref dgtal_ctopo_sec4
-   - \ref dgtal_ctopo_sec5
-   - \ref dgtal_ctopo_sec6
-   - \ref dgtal_ctopo_sec7
-   - \ref dgtal_ctopo_sec8
-   - \ref dgtal_ctopo_sec9
-   - \ref dgtal_ctopo_sec10
-   - \ref dgtal_ctopo_sec11
+ 
 
-   @section dgtal_ctopo_sec1 1. The digital space is a cubic grid
-
-   @subsection dgtal_ctopo_sec1 1. Images and digital spaces
+   @section dgtal_ctopo_sec1  Images and digital spaces
 
    2D images are often seen as two dimensional arrays, where each cell
    is a pixel with some value (a gray level, a color). If
@@ -59,9 +48,11 @@ namespace DGtal {
    nD), but also all the lower dimensional cells of the space. For
    instance, in 2D, we have:
 
-   - 2-dimensional cells (closed unit square) = pixels
-   - 1-dimensional cells (closed unit segment) = linels
-   - 0-dimensional cells (closed point) = pointels
+   * 2-dimensional cells (closed unit square) = pixels
+  
+   * 1-dimensional cells (closed unit segment) = linels
+  
+   * 0-dimensional cells (closed point) = pointels
 
    The set of all cells \f$\mathbf{F}^n\f$ is called the n-dimensional
    space of cubical complexes, or n-dimensional cellular grid
@@ -82,7 +73,7 @@ namespace DGtal {
    @image latex cellular-grid-space-1.png "Illustration of a cellular grid space with cells of different dimensions." width=0.4\textwidth
 
 
-   @subsection dgtal_ctopo_sec2 2. Cells in the cubical grid and Khalimsky coordinates
+   @subsection dgtal_ctopo_sec2  Cells in the cubical grid and Khalimsky coordinates
  
    We use now the regularity of the cubical grid to represent it
    efficiently. In 1D, the cubical grid is a simple line alternating
@@ -118,7 +109,7 @@ namespace DGtal {
    \f$\mathbf{Z}^2\f$ corresponds to the 2-cell (2x+1,2y+1) of the
    cellular grid space \f$\mathbf{F}^2\f$.
 
-   @subsection dgtal_ctopo_sec3 3. Models for cellular grid spaces 
+   @subsection dgtal_ctopo_sec3  Models for cellular grid spaces 
 
    Instead of chosing a specific implementation of a cellular grid
    space, we keep the genericity and efficiency objective of DGtal by
@@ -127,8 +118,9 @@ namespace DGtal {
    and methods to manipulate cells of arbitrary dimension. Models of
    CCellularGridSpaceND are:
 
-   -# the KhalimskySpaceND template class.
-   -# the --- yet to come --- CodedKhalimskySpaceND class, a backport
+   1 the KhalimskySpaceND template class.
+
+   2 the --- yet to come --- CodedKhalimskySpaceND class, a backport
    from class KnSpace of <a
    href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
@@ -159,7 +151,7 @@ namespace DGtal {
    - Incidence services
    - Interface
 
-   @subsection dgtal_ctopo_sec4 4. Creating a cellular grid space
+   @subsection dgtal_ctopo_sec4  Creating a cellular grid space
 
    We use hereafter the model KhalimskySpaceND. To create a 2D
    cellular grid space where cells have coordinates coded with
@@ -220,7 +212,7 @@ namespace DGtal {
    @endcode
 
 
-   @subsection dgtal_ctopo_sec5 5. Creating (unsigned) cells in a cellular grid space
+   @section dgtal_ctopo_sec5  Creating (unsigned) cells in a cellular grid space
 
    There are many ways of creating cells within a cellular grid
    space. The simplest way is certainly to give the Khalimsky
@@ -285,7 +277,7 @@ namespace DGtal {
 
  
 
-   @subsection dgtal_ctopo_sec6 6. Cells may be unsigned or signed
+   @section dgtal_ctopo_sec6  Cells may be unsigned or signed
 
    Up to now, we have only consider unsigned cells (type
    Cell). However it is often convenient to assign a sign (POS or NEG)
@@ -325,7 +317,7 @@ namespace DGtal {
 
 
 
-   @subsection dgtal_ctopo_sec7 7. Accessing and modifying cell coordinates.
+   @section dgtal_ctopo_sec7  Accessing and modifying cell coordinates.
 
    Since one does not necessarily know which model of
    CCellularGridSpaceND you may be using, you cannot access the cell
@@ -344,7 +336,7 @@ namespace DGtal {
      - KhalimskySpaceND::uSetKCoords, KhalimskySpaceND::sSetKCoords (write Khalimsky coordinates)
      - KhalimskySpaceND::uSetCoords, KhalimskySpaceND::sSetCoords (write digital coordinates)
 
-   @subsection dgtal_ctopo_sec8 8. Moving within the cellular grid space
+   @section dgtal_ctopo_sec8 8. Moving within the cellular grid space
 
    Note that you dispose also of a whole set of methods to determine
    cells according to different geometric queries. The following
@@ -433,7 +425,7 @@ namespace DGtal {
      KhalimskySpaceND::uTranslation and
      KhalimskySpaceND::sTranslation.
 
-   @subsection dgtal_ctopo_sec9 9. Cell topology and directions
+   @section dgtal_ctopo_sec9  Cell topology and directions
 
    As said above, the cell topology is defined by the parity of its
    Khalimsky coordinates. The number of coordinates where the cell is
@@ -476,7 +468,7 @@ namespace DGtal {
      } 
      @endcode
 
-   @subsection dgtal_ctopo_sec10 10. Cell adjacency and neighborhood
+   @section dgtal_ctopo_sec10  Cell adjacency and neighborhood
 
    You may obtain the cells of same topology which are (face-)adjacent
    to a given cell with the following methods:
@@ -491,7 +483,7 @@ namespace DGtal {
      axis is returned by KhalimskySpaceND::uAdjacent and
      KhalimskySpaceND::sAdjacent. 
 
-   @subsection dgtal_ctopo_sec11 11. Cell incidence
+   @section dgtal_ctopo_sec11  Cell incidence
 
    Cells incident to some cell touch the cell but do not have the same
    dimension. Cells lower incident to a cell have lower dimensions,
