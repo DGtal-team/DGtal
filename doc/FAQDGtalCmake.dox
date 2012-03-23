@@ -33,14 +33,10 @@ manage the project build on various systems. With the same project
 description syntax, cmake can do various things:
 
   - Check the compiler and its options
-
   - Check and locate the project dependencies
-
   - Generate different build  backends (Unix makefile, VisualStudio
   projects,..), also called generators.
-
   - Create documentation build rules
-
   - Manage unit tests
 
   - ...
