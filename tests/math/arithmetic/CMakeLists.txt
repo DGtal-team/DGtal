@@ -12,7 +12,8 @@ ENDFOREACH(FILE)
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
     testIntegerComputer
-    testSternBrocot )
+    testSternBrocot 
+    testLightSternBrocot )
 
 IF(GMP_FOUND)
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})

@@ -156,8 +156,22 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
-
-
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & ONE ) == ZERO;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & ONE ) != ZERO;
+    }
   }; // end of class NumberTraits
 
   
@@ -216,6 +230,22 @@ namespace DGtal
     static double castToDouble(const uint16_t & aT)
     {
       return static_cast<double>(aT);
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
     }
 
   }; // end of class NumberTraits<uint16_t>.
@@ -276,6 +306,22 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
+    }
   }; // end of class NumberTraits<int16_t>.
  
 
@@ -334,6 +380,22 @@ namespace DGtal
     static double castToDouble(const uint8_t & aT)
     {
       return static_cast<double>(aT);
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
     }
 
   }; // end of class NumberTraits<uint8_t>.
@@ -394,6 +456,22 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
+    }
   }; // end of class NumberTraits<int16_t>.
 
   /**
@@ -447,6 +525,22 @@ namespace DGtal
     static double castToDouble(const uint32_t & aT)
     {
       return static_cast<double>(aT);
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
     }
   }; // end of class NumberTraits<uint32_t>.
 
@@ -506,6 +600,22 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
+    }
   }; // end of class NumberTraits<int32_t>.
 
   /**
@@ -564,6 +674,22 @@ namespace DGtal
     {
       return static_cast<double>(aT);
     }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
+    }
   }; // end of class NumberTraits<uint64_t>.
 
   /**
@@ -617,6 +743,22 @@ namespace DGtal
     static double castToDouble(const int64_t & aT)
     {
       return static_cast<double>(aT);
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return ( aT & 1 ) == 0;
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return ( aT & 1 ) != 0;
     }
   }; // end of class NumberTraits<int64_t>.
 
@@ -845,6 +987,22 @@ namespace DGtal
     static double castToDouble(const DGtal::BigInteger & aT)
     {
       return aT.get_d();
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is even.
+    */
+    static bool even( ParamType aT )
+    {
+      return mpz_even_p( aT.get_mpz_t() );
+    }
+    /**
+       @param aT any number.
+       @return 'true' iff the number is odd.
+    */
+    static bool odd( ParamType aT )
+    {
+      return mpz_odd_p( aT.get_mpz_t() );
     }
   }; // end of class NumberTraits<DGtal::BigInteger>.
 #endif
