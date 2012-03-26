@@ -5,12 +5,12 @@ namespace DGtal {
 
 /**
    
-   @page dgtal_helpers_surfaces IV. Helpers for digital surfaces
+   @page dgtal_helpers_surfaces  Helpers for digital surfaces
    
    @writers Bertrand Kerautret and Jacques-Olivier
    Lachaud.
 
-    Part of the \ref TopologyPackage.
+  Part of the \ref TopologyPackage.
   
    This part of the manual describes how to use the helper class
    Surfaces to build digital surfaces, closed or open, or contours
@@ -18,15 +18,12 @@ namespace DGtal {
    documentation and code is a backport from <a
    href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
-   - \ref dgtal_helpsurf_sec1
-   - \ref dgtal_helpsurf_sec2
-   - \ref dgtal_helpsurf_sec3
+[TOC]
 
-   All the code presented here require:
-
-   @code
-   #include "DGtal/topology/helpers/Surfaces.h"
-   @endcode
+  All the code presented here require:
+ @code
+      #include "DGtal/topology/helpers/Surfaces.h"
+@endcode
 
    @note This class is useful if you wish only to obtain the set of
    surfels of a given digital surface or if you wish to obtain 2D
@@ -35,7 +32,7 @@ namespace DGtal {
    surface), it is better to wrap a DigitalSurface object around your
    surface of interest, see \ref dgtal_digital_surface.
 
-   @subsection dgtal_helpsurf_sec1 1. The 2D case: the boundary is a sequence of cells
+   @section dgtal_helpsurf_sec1  The 2D case: the boundary is a sequence of cells
 
    The surfaces classes offers the possibility to extract an open or
    closed contour as a sequence of surfels obtained from a DigitalSet
@@ -97,7 +94,7 @@ namespace DGtal {
    @image html ctopo2c.png  "Tracking of an open 2D contour."
    @image latex ctopo2c.png  "Tracking of an open 2D contour." width=0.5\textwidth
    
-   @subsection dgtal_helpsurf_sec2 2. Tracking a 3D boundary to build a surface.
+   @section dgtal_helpsurf_sec2 Tracking a 3D boundary to build a surface.
 
    With only few modifications we can apply the same extraction on 3D
    surfel set. The file <a
@@ -154,7 +151,7 @@ namespace DGtal {
 
 
 
-   @subsection dgtal_helpsurf_sec3 3. Extracting surface connected components
+   @section dgtal_helpsurf_sec3 Extracting surface connected components
 
    The class \ref Surfaces provides other useful function to extract
    connected boundary surfels from a digital set and given a surfel

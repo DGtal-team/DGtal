@@ -21,12 +21,13 @@ namespace DGtal {
 @writers David Coeurjolly, Tristan Roussillon
 
 Table of contents:
- -# \ref tutoFileGridCurveRanges
- -# \ref tutoImageRegionDT
- -# \ref tutoImageGridCurveEstimator
- -# \ref tutoShapeGridCurveEstimator
- -# \ref freemanChainFromImage
- -# \ref Tools3dVolViewer
+
+1. \ref tutoFileGridCurveRanges
+2. \ref tutoImageRegionDT
+3. \ref tutoImageGridCurveEstimator
+4. \ref tutoShapeGridCurveEstimator
+5. \ref freemanChainFromImage
+6. \ref Tools3dVolViewer
 
 */
 
