@@ -206,7 +206,6 @@ class cone {
   bool myInf; // true if the cone is infinite (the whole plane)
   
   cone();
-  cone(const cone & other);
   cone(double m, double mm, bool a);
   cone(double a0, double a1);
   cone(double x, double y, double x0, double y0, double x1, double y1);
