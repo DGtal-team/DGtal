@@ -258,7 +258,7 @@ Steps:
      * @return an instance of Self 
      */
     
-    //Self getSelf() const;
+    Self getSelf() const;
     
 
     /**

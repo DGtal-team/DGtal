@@ -139,6 +139,17 @@ DGtal::GeometricalDCA<TConstIterator>::getReverse() const
   return Reverse(); 
 }
 
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDCA<TConstIterator>::Self
+DGtal::GeometricalDCA<TConstIterator>::getSelf() const
+{
+  return Self(); 
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
