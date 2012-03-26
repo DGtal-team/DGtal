@@ -67,6 +67,7 @@ using namespace boost::icl;
 using namespace DGtal::Z2i;
 
 
+
 template <typename TIterator>
 class backpath {
   
@@ -77,10 +78,8 @@ class backpath {
     double angle_max; // 
   } occulter_attributes;
   
-
   
   typedef TIterator ConstIterator;
-  typedef backpath<ConstIterator> Self;
   typedef map <ConstIterator,occulter_attributes > occulter_list;
   
   
@@ -165,7 +164,6 @@ class backpath {
   
   
   
-  
   int myQuad; // quadrant
   
   bool myFlag; // current state myFlag=true if we are on a backpath, false otherwise 
@@ -178,15 +176,7 @@ class backpath {
   
   double myError;
   
-  /**
-   * Assignment.
-   * @param other the object to copy.
-   * @return a reference on 'this'.
-   */
-  backpath & operator= ( const Self & other );
-  
   backpath(int q, double error);
-  backpath(const Self & other);
   ~backpath();
   
   void reset();

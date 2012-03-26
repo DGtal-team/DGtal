@@ -46,23 +46,12 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
   myError = 0;
   myCone = cone();
   
-}
-
-
-template <typename TIterator, typename TInteger>
-inline
-DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
-{
-  myError = error;
-  myCone = cone();
-  
-  myBackpath.clear();
   for(int i=0;i<8;i++)
     {
-      backpath<TIterator> b(i,myError);
+      backpath<TIterator> b(i,0);
       myBackpath.push_back(b);
-    }  
-  
+    }
+
 }
 
 
@@ -70,27 +59,23 @@ template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(const ConstIterator& it, double error)
 {
-  myError = error;
-  myCone = cone();
-  
-  for(int i=0;i<8;i++)
-    {
-      backpath<TIterator> b(i,myError);
-      myBackpath.push_back(b);
-    }  
-  
-  init(it);
+  init(it, error);
 }
-
 
 template <typename TIterator, typename TInteger>
 inline
-void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
+void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it, double error)
 {
+  myError = error;
+  myCone = cone();
   myBegin = it;
   myEnd = it;
-  resetBackpath();
-  resetCone();
+  for(int i=0;i<8;i++)
+     {
+       backpath<TIterator> b(i,error);
+       myBackpath.push_back(b);
+     }
+  
 }
 
 
@@ -108,6 +93,7 @@ DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TI
 template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myBackpath(other.myBackpath), myCone(other.myCone),  myError(other.myError), myBegin(other.myBegin), myEnd(other.myEnd){    
+   
 }
 
 template <typename TIterator, typename TInteger>
@@ -140,7 +126,7 @@ inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::operator==(
  const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
-  return ( /*(myBackpath==other.myBackpath) && (myCone == other.myCone) &&*/ (myBegin == other.myBegin) && (myEnd == other.myEnd) && (myError == other.myError));
+   return ( (myBackpath==other.myBackpath) && (myCone == other.myCone) && (myBegin == other.myBegin) && (myEnd == other.myEnd) && (myError == other.myError));
 }
 
 
@@ -161,18 +147,10 @@ DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
 {
   
   bool flag = (updateWidth() && updateBackpath());
-
-  trace.info()<< "extend\n";
+  
   
   if(flag)
     myEnd++;
-
-  // if(!flag)
-  //   {
-  //     resetBackpath();
-  //     resetCone();
-  //     trace.info() << "reset\n";
-  //   }
   
   return flag;
 }
