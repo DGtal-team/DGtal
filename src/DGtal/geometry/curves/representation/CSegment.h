@@ -140,7 +140,7 @@ namespace DGtal
       ConceptUtils::sameType( it, myX.begin() );
       ConceptUtils::sameType( it, myX.end() );
       
-      // ConceptUtils::sameType( Self, myX.getSelf() );
+      ConceptUtils::sameType( myX, myX.getSelf() );
       
     }
     // ------------------------- Private Datas --------------------------------

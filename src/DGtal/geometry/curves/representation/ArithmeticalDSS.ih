@@ -139,13 +139,13 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
   return Reverse(); 
 }
 
-// template <typename TIterator, typename TInteger, int connectivity>
-// inline
-// DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-// DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-// ::getSelf() const {
-//   return Self(); 
-// }
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Self
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+::getSelf() const {
+  return Self(); 
+}
 
 
 
