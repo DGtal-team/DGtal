@@ -5,9 +5,11 @@
 namespace DGtal {
 
 /**
-   @page dgtal_topology Digital topology and digital objects
+   @page dgtal_topology I. Digital topology and digital objects
   
-   Documentation written by Jacques-Olivier Lachaud and Bertrand Kerautret.
+   @writers  Jacques-Olivier Lachaud and Bertrand Kerautret. 
+
+   Part of the \ref TopologyPackage.
   
    This part of the manual describes how to define digital
    objects. Subset of a digital sets are not really objects as long as
@@ -35,20 +37,20 @@ namespace DGtal {
    can also be seen as a graph, which can be traversed in many ways,
    although the breadth-first is often very useful (class \ref Expander).
   
-   -# \ref dgtal_topology_sec1_ajdacency
-      -# \ref dgtal_topology_sec1s1
-      -# \ref dgtal_topology_sec1s2
-      -# \ref dgtal_topology_sec1s3
-      -# \ref dgtal_topology_sec1s4
-   -# \ref dgtal_topology_sec2_digital_topology
-   -# \ref dgtal_topology_sec3_digital_object
-      -# \ref dgtal_topology_sec3s1
-      -# \ref dgtal_topology_sec3s2
-      -# \ref dgtal_topology_sec3s3
-      -# \ref dgtal_topology_sec3s4
-      -# \ref dgtal_topology_sec3s5
+   - \ref dgtal_topology_sec1_ajdacency
+      - \ref dgtal_topology_sec1_1
+      - \ref dgtal_topology_sec1_2
+      - \ref dgtal_topology_sec1_3
+      - \ref dgtal_topology_sec1_4
+   - \ref dgtal_topology_sec2_digital_topology
+   - \ref dgtal_topology_sec3_digital_object
+      - \ref dgtal_topology_sec3_1
+      - \ref dgtal_topology_sec3_2
+      - \ref dgtal_topology_sec3_3
+      - \ref dgtal_topology_sec3_4
+      - \ref dgtal_topology_sec3_5
   
-   \section dgtal_topology_sec1_ajdacency Adjacency relations
+   \section dgtal_topology_sec1_ajdacency 1. Adjacency relations
   
    An adjacency relation in a digital space \b X describes which
    points of the digital space are close to each other. Generally it
@@ -56,7 +58,7 @@ namespace DGtal {
    X. Interested readers can read the works of Azriel Rosenfeld and
    Gabor Herman to see a well-founded theory of digital spaces.
   
-   \subsection dgtal_topology_sec1s1 4- and 8- adjacencies in Z2
+   \subsection dgtal_topology_sec1_1 1.1  4- and 8- adjacencies in Z2
   
    In \f$ Z^2 \f$, two adjacencies are used. The so-called \b
    4-adjacency tells that a 2D point is adjacent to itself and to four
@@ -97,7 +99,7 @@ namespace DGtal {
    @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
    @image latex DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" width=5cm
   
-   \subsection dgtal_topology_sec1s2 6-, 18- and 26- adjacencies in Z3
+   \subsection dgtal_topology_sec1_2 1.2  6-, 18- and 26- adjacencies in Z3
   
    Similarly as the 4-,8- adjacencies in 3D, the name of the 6-, 18-,
    26- adjacencies defined in Z3 comes from the number of proper
@@ -123,7 +125,7 @@ namespace DGtal {
    (namespace Z3i in "DGtal/helpers/StdDefs.h"), defined on \c
    SpaceND<3,int>.
   
-   \subsection dgtal_topology_sec1s3 Metric adjacencies in Zn
+   \subsection dgtal_topology_sec1_3 1.3  Metric adjacencies in Zn
   
    Adjacencies based on metrics can be defined in arbitrary
    dimension. They all have the properties to be translation
@@ -144,7 +146,7 @@ namespace DGtal {
    Myadj myAdj;                         // your instance.
    @endcode
   
-   \subsection dgtal_topology_sec1s4 Concepts CAdjacency et CDomainAdjacency
+   \subsection dgtal_topology_sec1_4 1.4  Concepts CAdjacency et CDomainAdjacency
   
    Adjacencies are used at many places as a basis for more complex
    operations. To keep genericity and efficiency, adjacencies should
@@ -178,7 +180,7 @@ namespace DGtal {
    - domain
    - predicate
   
-   \section dgtal_topology_sec2_digital_topology Digital topology over a digital space
+   \section dgtal_topology_sec2_digital_topology 2. Digital topology over a digital space
   
    A digital topology is a couple of adjacencies, one for the
    foreground, one for the background. The template class
@@ -208,7 +210,7 @@ namespace DGtal {
    papers of Herman or to its book <b> Geometry of digital spaces
    </b>.
   
-   \section dgtal_topology_sec3_digital_object Digital objects
+   \section dgtal_topology_sec3_digital_object 3. Digital objects
   
    A digital object is a set of points together with a topology
    describing how points are close to each others. In DGtal, they are
@@ -223,7 +225,7 @@ namespace DGtal {
    the domain of the object, which remains the same for the lifetime
    of the object.
   
-   \subsection dgtal_topology_sec3s1 Construction of digital objects
+   \subsection dgtal_topology_sec3_1 3.1  Construction of digital objects
   
    A digital object is generally initialized with some given set. The
    type of the set can be chosen so as to leave to the user the choice
@@ -268,7 +270,7 @@ namespace DGtal {
    vector<ObjectType> objects; // valid
    @endcode
   
-   \subsection dgtal_topology_sec3s2 Neighborhood of a point in an object
+   \subsection dgtal_topology_sec3_2 3.2  Neighborhood of a point in an object
   
    An object proposes several methods to return the neighborhood of a
    given point of the object.
@@ -281,7 +283,7 @@ namespace DGtal {
      these methods if you only need the cardinal of the neighborhoods
      and not the neighborhoods itselves
   
-   \subsection dgtal_topology_sec3s3 Border of a digital object
+   \subsection dgtal_topology_sec3_3 3.3  Border of a digital object
   
    Objects have a border, which are the points which touch the
    complement in the sense of background adjacency. A border of an
@@ -312,7 +314,7 @@ see example <a href="3dBorderExtraction_8cpp-example.html" >  3dBorderExtraction
 @image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm
 see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtractionImg.cpp</a>
    
-   \subsection dgtal_topology_sec3s4 Connectedness and connected components
+   \subsection dgtal_topology_sec3_4 3.4  Connectedness and connected components
   
    The digital topology induces a connectedness relation on the object
    (transitive closure of the foreground adjacency) and a
@@ -346,7 +348,7 @@ see example: <a href="3dBorderExtractionImg_8cpp-example.html"> 3dBorderExtracti
    You must be careful when using an output iterator writing in the
    same container as 'this' object (see Object::writeComponents).
   
-   \subsection dgtal_topology_sec3s5 Simple points
+   \subsection dgtal_topology_sec3_5 3.5  Simple points
 
    A basic mechanism for simple points is implemented in the Object
    class. It relies on the well-known definition of simple points of
@@ -440,19 +442,41 @@ Finally the result can simply be displayed using Viewer3D:
 
 
 
+/**
+   Objects have a border, which are the points which touch the
+   complement in the sense of background adjacency. A border of an
+   object is itself an object, with the same topology as the object.
+   
+   @see \ref dgtal_topology_sec3_3
+
+   @image html visuBorderExtraction.png  "Border extraction visualisation" 
+
+   \example topology/3dBorderExtraction.cpp
+*/
 
 /**
-\example homotopicThinning3D.cpp
-* 
+   Objects have a border, which are the points which touch the
+   complement in the sense of background adjacency. A border of an
+   object is itself an object, with the same topology as the object.
+   
+   @see \ref dgtal_topology_sec3_3
+
+   @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
+
+   \example topology/3dBorderExtractionImg.cpp
 */
+
 /**
-\example  3dBorderExtraction.cpp
-* 
+   An homotopic thinning is an iterative removal of simple points from
+   a given digital object.
+
+   @see \ref dgtal_topology_sec3_5
+
+   @image html visuThinning.png  "Resulting 3d thinning with the 6_26 object"
+
+   \example topology/homotopicThinning3D.cpp
 */
-/**
-\example  3dBorderExtractionImg.cpp
-* 
-*/
+
 
 
 

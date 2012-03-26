@@ -55,6 +55,22 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>::GaussDigitizer()
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
+DGtal::GaussDigitizer<TSpace,TEuclideanShape> &
+DGtal::GaussDigitizer<TSpace,TEuclideanShape>::
+operator=( const GaussDigitizer & other )
+{
+  if ( this != &other )
+    {
+      myEShape = other.myEShape;
+      myGridSteps = other.myGridSteps;
+      myLowerPoint = other.myLowerPoint;
+      myUpperPoint = other.myUpperPoint;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TEuclideanShape>
+inline
 void 
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::attach( const EuclideanShape & shape )

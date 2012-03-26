@@ -273,6 +273,7 @@ Composer<TFunctor1, TFunctor2, ReturnType>
 {
   myF1 = other.myF1; 
   myF2 = other.myF2; 
+  return *this;
 }
 
   /**

@@ -691,7 +691,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   bool zodd = ( NumberTraits<TInteger>::castToInt64_t(k.myCoordinates[ 2 ]) & 1 );
   
    
-  uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
 
    
   switch (spaceDim) {
@@ -885,7 +885,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   bool zodd = ( sk.myCoordinates[ 2 ] & 1 );
     
   
-  uint spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
   // pointel
   switch (spaceDim) {
     

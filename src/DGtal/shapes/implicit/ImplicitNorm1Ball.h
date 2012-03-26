@@ -60,9 +60,11 @@ namespace DGtal
   {
 
   public:
+    typedef ImplicitNorm1Ball<TSpace> Self;
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;    
-   
+    typedef double Value;
+
     /** 
      * Constructor. Contructs a ball with center aCenter and width
      * aWidth.

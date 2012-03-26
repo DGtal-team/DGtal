@@ -1,3 +1,15 @@
+#------------------------------------------------------------------------------
+# -- Environement variables
+#------------------------------------------------------------------------------
+if (UNIX)
+  add_definitions(-DUNIX)
+endif (UNIX)
+if (WIN32)
+  add_definitions(-DWIN32)
+endif (WIN32)
+if (APPLE)
+  add_definitions(-DAPPLE)
+endif (APPLE)
 
 #------------------------------------------------------------------------------
 # -- Removing some strange warnings when compiling with VS Express
