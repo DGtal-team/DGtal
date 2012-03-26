@@ -1,5 +1,5 @@
 SET(DGTAL_TESTS_SRC_ARITH
-       testModuloComputer)
+       testModuloComputer )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_ARITH})
   add_executable(${FILE} ${FILE})
@@ -7,3 +7,33 @@ FOREACH(FILE ${DGTAL_TESTS_SRC_ARITH})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 
+#-----------------------
+#GMP based tests
+#----------------------
+SET(DGTAL_TESTS_GMP_SRC 
+    testIntegerComputer
+    testSternBrocot )
+
+IF(GMP_FOUND)
+  FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    add_test(${FILE} ${FILE})
+  ENDFOREACH(FILE)
+ENDIF(GMP_FOUND)
+
+SET(DGTAL_BENCH_GMP_SRC
+   testStandardDSLQ0-benchmark
+   testArithmeticDSS-benchmark
+)
+
+
+#Benchmark target
+IF(GMP_FOUND)
+  FOREACH(FILE ${DGTAL_BENCH_GMP_SRC})
+    add_executable(${FILE} ${FILE}) 
+    target_link_libraries (${FILE} DGtal DGtalIO)
+    add_custom_target(${FILE}-benchmark COMMAND ${FILE} ">benchmark-${FILE}.txt" )
+    ADD_DEPENDENCIES(benchmark ${FILE}-benchmark)
+  ENDFOREACH(FILE)
+ENDIF(GMP_FOUND)

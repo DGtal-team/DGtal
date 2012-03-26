@@ -46,6 +46,26 @@ using namespace std;
 namespace DGtal
 {
   //Constant definitions in NumberTraits specializations.
+  const int8_t NumberTraits<int8_t>::ONE = 1;
+  const int8_t NumberTraits<int8_t>::ZERO = 0;
+  const uint8_t NumberTraits<uint8_t>::ONE = 1;
+  const uint8_t NumberTraits<uint8_t>::ZERO = 0;
+
+  const int16_t NumberTraits<int16_t>::ONE = 1;
+  const int16_t NumberTraits<int16_t>::ZERO = 0;
+  const uint16_t NumberTraits<uint16_t>::ONE = 1;
+  const uint16_t NumberTraits<uint16_t>::ZERO = 0;
+
+  const int32_t NumberTraits<int32_t>::ONE = 1;
+  const int32_t NumberTraits<int32_t>::ZERO = 0;
+  const uint32_t NumberTraits<uint32_t>::ONE = 1;
+  const uint32_t NumberTraits<uint32_t>::ZERO = 0;
+
+  const int64_t NumberTraits<int64_t>::ONE = 1;
+  const int64_t NumberTraits<int64_t>::ZERO = 0;
+  const uint64_t NumberTraits<uint64_t>::ONE = 1;
+  const uint64_t NumberTraits<uint64_t>::ZERO = 0;
+
   const float NumberTraits<float>::ONE = 1.0f;
   const float NumberTraits<float>::ZERO = 0.0f;
 
@@ -54,6 +74,10 @@ namespace DGtal
  
   const long double NumberTraits<long double>::ONE = 1.0;
   const long double NumberTraits<long double>::ZERO = 0.0;
- 
+
+#ifdef WITH_BIGINTEGER
+  const DGtal::BigInteger NumberTraits<DGtal::BigInteger>::ONE = 1;
+  const DGtal::BigInteger NumberTraits<DGtal::BigInteger>::ZERO = 0;
+#endif 
 
 }

@@ -1,0 +1,177 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ImplicitPolynomial3Shape.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ *
+ * @date 2012/02/14
+ *
+ * Implementation of inline methods defined in ImplicitPolynomial3Shape.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ImplicitPolynomial3Shape<TSpace>::~ImplicitPolynomial3Shape()
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+ImplicitPolynomial3Shape( const Polynomial3 & poly )
+{
+  init( poly );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::ImplicitPolynomial3Shape<TSpace> &
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+operator=( const ImplicitPolynomial3Shape & other )
+{
+  if ( this != &other )
+    {
+      myPolynomial = other.myPolynomial;
+      myDerivatives[ 0 ] = other.myDerivatives[ 0 ];
+      myDerivatives[ 1 ] = other.myDerivatives[ 1 ];
+      myDerivatives[ 2 ] = other.myDerivatives[ 2 ];
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+void
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+init( const Polynomial3 & poly )
+{
+  myPolynomial = poly;
+  myDerivatives[ 0 ] = derivative<0>( poly );
+  myDerivatives[ 1 ] = derivative<1>( poly );
+  myDerivatives[ 2 ] = derivative<2>( poly );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+double 
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+operator()(const RealPoint &aPoint) const
+{
+  return myPolynomial( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+bool
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+isInside(const RealPoint &aPoint) const
+{
+  return (this->operator()(aPoint) > (Ring)0);
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+DGtal::Orientation
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+orientation(const RealPoint &aPoint) const
+{
+  Ring v = this->operator()(aPoint);
+  if ( v > (Ring)0 )
+    return INSIDE;
+  else if ( v < (Ring)0 )
+    return OUTSIDE;
+  else
+    return ON;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealVector
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+gradient( const RealPoint &aPoint ) const
+{
+  // ISO C++ tells that an object created at return time will not be
+  // copied into the caller context, but will be already defined in
+  // the correct context.
+  return RealVector
+    ( myDerivatives[ 0 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ),
+      myDerivatives[ 1 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ),
+      myDerivatives[ 2 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ) );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace>
+inline
+void
+DGtal::ImplicitPolynomial3Shape<TSpace>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ImplicitPolynomial3Shape] P(x,y,z) = " << myPolynomial;
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace>
+inline
+bool
+DGtal::ImplicitPolynomial3Shape<TSpace>::isValid() const
+{
+  return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSpace>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+                    const ImplicitPolynomial3Shape<TSpace> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
