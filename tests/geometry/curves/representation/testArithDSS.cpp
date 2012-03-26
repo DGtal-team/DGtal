@@ -344,6 +344,16 @@ bool testCorner()
 
 
 
+void testArithDSSConceptChecking()
+{
+   typedef PointVector<2,int> Point; 
+   typedef std::vector<Point>::iterator Iterator; 
+   typedef ArithmeticalDSS<Iterator,int,8> ArithDSS; 
+   //BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
+   // BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<ArithDSS> ));
+}
+
+
 int main(int argc, char **argv)
 {
 
@@ -352,6 +362,13 @@ int main(int argc, char **argv)
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
+
+   
+  {//concept checking
+    testArithDSSConceptChecking();
+  }
+  
+
 
   bool res = testDSS4drawing() 
     && testDSS8drawing()
