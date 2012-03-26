@@ -60,7 +60,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
     if ( (it != itb)&&(it != ite) ) 
       {
   --previousIt;
-  SegmentComputer tmpSegmentComputer;
+  SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
   tmpSegmentComputer.init(previousIt);
   return tmpSegmentComputer.extendForward();
       } 
@@ -87,7 +87,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
 {
   ConstIterator previousIt(it); --previousIt;
   
-  SegmentComputer tmpSegmentComputer;
+  SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
   tmpSegmentComputer.init(previousIt);
   return tmpSegmentComputer.extendForward();
 }
