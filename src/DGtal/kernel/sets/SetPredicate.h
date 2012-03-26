@@ -100,13 +100,10 @@ namespace DGtal
      */
     SetPredicate();
 
-  private:
 
     // ------------------------- Internals ------------------------------------
   private:
-    /**
-     * Aliasing pointer on the underlying set
-     */
+
     const DigitalSet* mySet;
 
   }; // end of struct SetPredicate

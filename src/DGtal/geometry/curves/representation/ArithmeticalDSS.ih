@@ -49,8 +49,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()
 {
   myUf = Point(0,0);
   myLf = Point(0,0);
-  myUl = Point(9,9);
-  myLl = Point(9,9);
+  myUl = Point(0,0);
+  myLl = Point(0,0);
 
   myA = 0; 
   myB = 0; 
@@ -107,7 +107,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS (
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> &
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Self&
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 ::operator=( const ArithmeticalDSS<TIterator,TInteger,connectivity> & other )
 {
@@ -138,6 +138,16 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 ::getReverse() const {
   return Reverse(); 
 }
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Self
+DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
+::getSelf() const {
+  return Self(); 
+}
+
+
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline

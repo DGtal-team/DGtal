@@ -71,6 +71,8 @@ namespace DGtal
   {
   public:
     typedef TDomain Domain;
+    typedef DigitalSetBySTLVector<Domain> Self;
+    typedef typename Domain::Space Space;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
     typedef typename std::vector<Point>::iterator Iterator;

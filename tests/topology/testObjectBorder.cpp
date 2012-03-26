@@ -150,18 +150,18 @@ bool testObjectBorder()
 
     ObjectType bubble ( dt8_4, bubble_set );
 
-    //Connectedness Check
-    if ( bubble.computeConnectedness() == ObjectType::CONNECTED )
-        trace.info() << "The object is (8,4)connected." << endl;
-    else
-        trace.info() << "The object is not (8,4)connected." << endl;
+  //Connectedness Check
+  if (bubble.computeConnectedness() == CONNECTED)
+    trace.info() << "The object is (8,4)connected." << endl;
+  else
+    trace.info() << "The object is not (8,4)connected." << endl;
 
-    //Border Computation
-    ObjectType bubbleBorder = bubble.border();
-    if ( bubbleBorder.computeConnectedness() == ObjectType::CONNECTED )
-        trace.info() << "The object (8,4) border is connected." << endl;
-    else
-        trace.info() << "The object (8,4) border is not connected." << endl;
+  //Border Computation
+  ObjectType bubbleBorder = bubble.border();
+  if (bubbleBorder.computeConnectedness() == CONNECTED)
+    trace.info() << "The object (8,4) border is connected." << endl;
+  else
+    trace.info() << "The object (8,4) border is not connected." << endl;
 
     //Board Export
     Board2D board;
@@ -184,12 +184,12 @@ bool testObjectBorder()
 
     ObjectType48 bubble2 ( dt4_8, bubble_set );
 
-    //Border Computation
-    ObjectType48 bubbleBorder2 = bubble2.border();
-    if ( bubbleBorder2.computeConnectedness() == ObjectType48::CONNECTED )
-        trace.info() << "The object (4,8) border is connected." << endl;
-    else
-        trace.info() << "The object (4,8) border is not connected." << endl;
+  //Border Computation
+  ObjectType48 bubbleBorder2 = bubble2.border();
+  if (bubbleBorder2.computeConnectedness() == CONNECTED)
+    trace.info() << "The object (4,8) border is connected." << endl;
+  else
+    trace.info() << "The object (4,8) border is not connected." << endl;
 
     board << SetMode( domain.className(), "Grid" ) << domain;
     board << bubble_set
@@ -270,18 +270,18 @@ bool testBoard2D()
 
     ObjectType bubble ( dt8_4, bubble_set );
 
-    //Connectedness Check
-    if ( bubble.computeConnectedness() == ObjectType::CONNECTED )
-        trace.info() << "The object is (8,4)connected." << endl;
-    else
-        trace.info() << "The object is not (8,4)connected." << endl;
+  //Connectedness Check
+  if (bubble.computeConnectedness() == CONNECTED)
+    trace.info() << "The object is (8,4)connected." << endl;
+  else
+    trace.info() << "The object is not (8,4)connected." << endl;
 
-    //Border Computation
-    ObjectType bubbleBorder = bubble.border();
-    if ( bubbleBorder.computeConnectedness() == ObjectType::CONNECTED )
-        trace.info() << "The object (8,4) border is connected." << endl;
-    else
-        trace.info() << "The object (8,4) border is not connected." << endl;
+  //Border Computation
+  ObjectType bubbleBorder = bubble.border();
+  if (bubbleBorder.computeConnectedness() == CONNECTED)
+    trace.info() << "The object (8,4) border is connected." << endl;
+  else
+    trace.info() << "The object (8,4) border is not connected." << endl;
 
     //Board Export
     Board2D board;

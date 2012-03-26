@@ -102,7 +102,16 @@ namespace DGtal
         <td class=CPostCondition>       </td> 
         <td class=CComplexity> O(1)     </td>
       </tr>
-      
+       <tr> 
+        <td class=CName> getSelf method  </td> 
+        <td class=CExpression> x.getSelf()     </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType> Self   </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics> returns an uninitialized instance of Self </td> 
+        <td class=CPostCondition>       </td> 
+        <td class=CComplexity> depends on the internal structures defined in Self </td>
+      </tr>
      </table>
     
      <p> Invariants <br>
@@ -130,6 +139,9 @@ namespace DGtal
     {
       ConceptUtils::sameType( it, myX.begin() );
       ConceptUtils::sameType( it, myX.end() );
+      
+      ConceptUtils::sameType( myX, myX.getSelf() );
+      
     }
     // ------------------------- Private Datas --------------------------------
   private:

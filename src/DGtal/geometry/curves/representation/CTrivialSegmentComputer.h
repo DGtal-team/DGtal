@@ -130,7 +130,7 @@ namespace DGtal
     BOOST_CONCEPT_USAGE( CTrivialSegmentComputer )
     {
       typename T::ConstIterator i(myI);
-      myX.init(myI);
+      myX.init(myI);     
 
       ConceptUtils::sameType( myB, myX.isExtendableForward() );
       ConceptUtils::sameType( myB, myX.extendForward() );

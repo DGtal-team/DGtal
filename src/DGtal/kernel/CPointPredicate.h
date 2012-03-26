@@ -42,7 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/base/CPredicate.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,49 +54,21 @@ namespace DGtal
   /**
      Description of \b concept '\b CPointPredicate' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a point.
+     \brief Aim: Defines a predicate on a point. 
      
-     Associates booleans to points.
-    
-     <p> Refinement of CUnaryFunctor
+
+     Associates a boolean to points.
+
+     <p> Refinement of CPredicate< T, T::Point >.
+
     
      <p> Associated types :
-    
-     - Point : specifies the type for a point (inner type).
-    
-     <p> Notation
-     - \t X : A type that is a model of CPointPredicate
-     - \t x : Object of type \t X
-     - \t p : Object of type Point
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            Apply predicate </td>
-     <td class=CExpression>      \t x( \t p ) </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c bool</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value of the predicate \t x at point \t p</td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
-     <p> Invariants <br>
-    
+
+     - Point : specifies the type for an element of the domain (inner
+       type).
+
+     @see CPredicate
+
      <p> Models <br>
     
      - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
@@ -105,19 +78,10 @@ namespace DGtal
      <p> Notes <br>
    */
   template <typename T>
-  struct CPointPredicate
+
+    struct CPointPredicate : CPredicate< T, typename T::Point>
   {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::Point Point;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
-    // ------------------------- Private Datas --------------------------------
-  private:
-    // ------------------------- Internals ------------------------------------
-  private:
-    
   }; // end of concept CPointPredicate
   
 } // namespace DGtal
