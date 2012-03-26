@@ -31,11 +31,6 @@ INCLUDE(${CMAKE_MODULE_PATH}/Common.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/OSDependentSettings.cmake)
 
 # -----------------------------------------------------------------------------
-# Check CPP0X
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
-
-# -----------------------------------------------------------------------------
 # Check Mandatory Dependencies
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalDependencies.cmake)
@@ -53,8 +48,14 @@ INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 #------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
-add_subdirectory (src)
-add_subdirectory (tools)
+add_subdirectory(src)
+add_subdirectory(tools)
+
+OPTION(BUILD_EXAMPLES "Build examples." ON)
+IF (BUILD_EXAMPLES)
+  add_subdirectory (examples)
+ENDIF(BUILD_EXAMPLES)
+
 
 # -----------------------------------------------------------------------------
 # Install settings

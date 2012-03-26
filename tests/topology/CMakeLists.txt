@@ -1,12 +1,14 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
    testCellularGridSpaceND
+   testDigitalSurface
    testDigitalTopology
    testExpander
    testObject
    testObjectBorder
    testSimpleExpander
    testSCellsFunctor
+   testUmbrellaComputer
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
@@ -19,6 +21,8 @@ ENDFOREACH(FILE)
 SET(DGTAL_BENCH_SRC
    testExpander-benchmark
    testObject-benchmark
+   testImplicitDigitalSurface-benchmark
+   testLightImplicitDigitalSurface-benchmark
 )
 
 

@@ -1,8 +1,3 @@
-# Make sure the compiler can find include files.
-if ( CPP0X_INITIALIZER_LIST )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif ( CPP0X_INITIALIZER_LIST )
-
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR}/src)
 
@@ -42,10 +37,10 @@ install(TARGETS DGtal
   COMPONENT dev)
 
 IF (BUILD_SHARED_LIBS)
-  add_library ( DGtalIO SHARED ${DGTALIO_SRC} )
+  add_library ( DGtalIO SHARED ${DGTALIO_SRC})
   target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
 ELSE(BUILD_SHARED_LIBS)
-  add_library ( DGtalIO STATIC ${DGTALIO_SRC} )
+  add_library ( DGtalIO STATIC ${DGTALIO_SRC})
   target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
 ENDIF(BUILD_SHARED_LIBS)
 
