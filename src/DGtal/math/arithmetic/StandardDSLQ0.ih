@@ -183,7 +183,7 @@ U() const
   Integer c = ( mu() * u[ 0 ] ) / b();
   return Point( mu() > NumberTraits<Integer>::ZERO 
                 ? v() * ( c + 1 ) - u * mu()
-                : v() * c - u * mu() );
+                : u * mu() - v() * c );
 }
 //-----------------------------------------------------------------------------
 template <typename TFraction>
@@ -299,7 +299,17 @@ reversedSmartDSS( Point U1, Point U2,
   std::cerr << "[reversedSmartDSS] " << (*this) 
             << " " << pattern().rE() << std::endl
             << "  +- U1=" << U1 << " A=" << A 
-            << " B=" << B << " U2=" << U2 << std::endl;
+            << " B=" << B << " U2=" << U2 << std::endl
+            << " v()=" << pattern().v()
+            << " u()=" << pattern().bezout()
+            << " r(U())=" << r(U())
+            << " mu=" << mu() << " r(U1)=" << r(U1)
+            << " r(U2)=" << r(U2) 
+            << " r(A)=" << r(A)
+            << " r(B)=" << r(B)
+            << " mup=" << mup()
+            << " DSS(A)=" << this->operator()( A ) 
+            << " DSS(B)=" << this->operator()( B ) << std::endl;
   #endif
   ASSERT( ! slope().null() );
   ASSERT( r( U1 ) == mu() && r( U2 ) == mu()
@@ -460,11 +470,11 @@ DSSWithinTwoPatterns( Point U1, Point U2,
           // L2 = L1 + patL.v() * nb;
         }
 #ifdef TRACE_DSL
-      std::cerr << "  (" << i << ") " << (readyLU ? '*' : '-')
+      std::cerr << "  (*) " << (readyLU ? '*' : '-')
                 << "LU=" << patLU.rE() << " at " << U1 << std::endl;
-      std::cerr << "  (" << i << ") " << (readyRU ? '*' : '-')
+      std::cerr << "  (*) " << (readyRU ? '*' : '-')
                 << "RU=" << patRU.rE() << " til " << U2 << std::endl;
-      std::cerr << "  (" << i << ") " << (readyL  ? '*' : '-')
+      std::cerr << "  (*) " << (readyL  ? '*' : '-')
                 << "L =" << patL.rE()  << " at " << L1 << std::endl;
 #endif
       if ( readyLU || readyRU || readyL )
