@@ -118,7 +118,35 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 k() const
 {
   ASSERT( myNode != 0 );
-  return mySup1 ? myNode->k - NumberTraits<Size>::ONE : myNode->k;
+  if ( mySup1 )
+    {
+      if ( ( myNode->k == 0 ) 
+           && ( myNode != instance().myZeroOverOne )
+           && ( myNode != instance().myOneOverOne ) )
+        {
+          std::cerr << "****ERROR**** "
+                    << " sup1=" << mySup1
+                    << " p=" << myNode->p
+                    << " q=" << myNode->q
+                    << " k=" << myNode->k
+                    << " u=" << myNode->u;
+          std::cerr << std::endl;
+        }
+      ASSERT( ( myNode->k != 0 ) 
+              || ( myNode == instance().myZeroOverOne )
+              || ( myNode == instance().myOneOverOne ) );
+      ASSERT( ( myNode->k != -1 ) 
+              || ( myNode == instance().myOneOverZero ) );
+      if ( myNode->k == -NumberTraits<Size>::ONE )
+        return NumberTraits<Size>::ZERO;
+      if ( myNode == instance().myZeroOverOne )
+        return -NumberTraits<Size>::ONE;
+      else if ( myNode == instance().myOneOverOne )
+        return NumberTraits<Size>::ZERO;
+      else
+        return myNode->k - NumberTraits<Size>::ONE;
+    }
+  return myNode->k;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -325,7 +353,8 @@ bool
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 even() const
 {
-  return myNode->even();
+  return NumberTraits<Size>::even( k() );
+  // return myNode->even();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -334,7 +363,8 @@ bool
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 odd() const
 {
-  return myNode->odd();
+  return NumberTraits<Size>::odd( k() );
+  //return myNode->odd();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -390,9 +420,10 @@ father( Size m ) const
         : ancestor().next1( m );
     }
   else // == 0
-    return isAncestorDirect() 
-      ? ancestor().ancestor()
-      : ancestor();
+    return reduced( 2 );
+  // isAncestorDirect() 
+  //     ? ancestor().ancestor()
+  //     : ancestor();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -556,12 +587,13 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::LightSternBrocot()
                             NumberTraits<Size>::ZERO,
                             NumberTraits<Size>::ZERO,
                             myOneOverZero );
-  myOneOverZero->ascendant = myZeroOverOne;
+  myOneOverZero->ascendant = 0; //myZeroOverOne;
   myOneOverOne = new Node( NumberTraits<Integer>::ONE,
                            NumberTraits<Integer>::ONE,
                            NumberTraits<Size>::ONE,
                            NumberTraits<Size>::ZERO,
                            myOneOverZero );
+  myOneOverZero->descendant[ NumberTraits<Size>::ZERO ] = myZeroOverOne;
   myOneOverZero->descendant[ NumberTraits<Size>::ONE ] = myOneOverOne;
   nbFractions = 3;
   // myOneOverZero = new Node( NumberTraits<Integer>::ONE,
