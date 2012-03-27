@@ -57,43 +57,48 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
 
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(const ConstIterator& it, double error)
-{
-  init(it, error);
-}
-
-template <typename TIterator, typename TInteger>
-inline
-void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it, double error)
+DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
 {
   myError = error;
   myCone = cone();
-  myBegin = it;
-  myEnd = it;
+  
   for(int i=0;i<8;i++)
-     {
-       backpath<TIterator> b(i,error);
-       myBackpath.push_back(b);
-     }
+    {
+      backpath<TIterator> b(i,error);
+      myBackpath.push_back(b);
+    }
   
 }
 
 
+
+
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TInteger>::getSelf()
+void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
+{
+  myBegin = it;
+  myEnd = it;
+  resetCone();
+  resetBackpath();
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>  DGtal::FrechetShortcut<TIterator,TInteger>::getSelf()
 {
   FrechetShortcut<TIterator,TInteger> other = FrechetShortcut(myError);
   return other;
 }
 
 
-
-
 template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myBackpath(other.myBackpath), myCone(other.myCone),  myError(other.myError), myBegin(other.myBegin), myEnd(other.myEnd){    
-   
+  resetBackpath();
+  resetCone();
+  
 }
 
 template <typename TIterator, typename TInteger>
@@ -118,7 +123,7 @@ DGtal::FrechetShortcut<std::reverse_iterator<TIterator>,TInteger>
 DGtal::FrechetShortcut<TIterator,TInteger>
 ::getReverse() const
 {
-  return Reverse();
+  return Reverse(myError);
 }
 
 template <typename TIterator, typename TInteger>
@@ -126,7 +131,7 @@ inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::operator==(
  const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
-   return ( (myBackpath==other.myBackpath) && (myCone == other.myCone) && (myBegin == other.myBegin) && (myEnd == other.myEnd) && (myError == other.myError));
+   return ((myBegin == other.myBegin) && (myEnd == other.myEnd) && (myError == other.myError));
 }
 
 
@@ -135,7 +140,7 @@ template <typename TIterator, typename TInteger>
 inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::operator!=(
-							     const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
+						       const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
   return (!(*this == other));
 }
 
@@ -146,11 +151,12 @@ bool
 DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
 {
   
+  //  trace.info() << Point(*(myEnd+1)) << std::endl;
   bool flag = (updateWidth() && updateBackpath());
-  
+  //trace.info() << myCone << endl;
   
   if(flag)
-    myEnd++;
+    ++myEnd;
   
   return flag;
 }
@@ -180,7 +186,7 @@ cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
   
   // compute the tangent points defined by the first point and the
   // circle C(newP,error)
-  bool intersect = cone::Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError, &x0, &y0,
+  bool intersect = cone::Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
 				       &x1, &y1);
   
   if(intersect)
@@ -246,17 +252,22 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
   Point firstP = Point(*myBegin);
   Point newP = Point(*(myEnd+1));
   
+  bool flag = true;
+  
   if(!(c.isEmpty()))
     if(c.myInf)
-      return true;
+      flag = true;
     else
       {
 	double angle = cone::Tools::computeAngle(firstP[0], firstP[1], newP[0],
-				    newP[1]);
-	return cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
+						 newP[1]);
+	flag = cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
       }
   else
-    return false;
+    flag = false;
+  
+  //trace.info() << "width " << flag << std::endl;
+  return flag;
 }
 
 template <typename TIterator, typename TInteger>
@@ -279,6 +290,7 @@ bool FrechetShortcut<TIterator,TInteger>::updateBackpath()
       
     }
   
+  //trace.info() << "backpath " << isBackpathOk() << std::endl;
   return isBackpathOk();
   
 }
@@ -317,6 +329,8 @@ bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   bool end = false;
   
   interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
+
+  //trace.info() << intervals << " angle " << angle << endl;
   
   if(contains(intervals,angle))
     return false;

@@ -152,6 +152,14 @@ namespace DGtal
      */
     Reverse getReverse() const;
 
+
+    /** 
+     * @return an instance of Self 
+     */
+    
+    Self getSelf() const;
+    
+
     /**
      * Equality operator.
      * @param other the object to compare with.
