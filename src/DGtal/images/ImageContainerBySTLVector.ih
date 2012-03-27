@@ -94,25 +94,15 @@ ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
   return this->operator[](linearized( aPoint ) );
 }
 
-template <typename Domain, typename T>
-inline
 //------------------------------------------------------------------------------
-typename ImageContainerBySTLVector<Domain, T>::Iterator
-ImageContainerBySTLVector<Domain, T>::begin(const Point &aPoint)
-{
-  ASSERT(this->domain().isInside(aPoint));
-  return this->begin() + linearized( aPoint );
-}
-
-//------------------------------------------------------------------------------
-template <typename Domain, typename T>
-inline
-typename ImageContainerBySTLVector<Domain, T>::ConstIterator
-ImageContainerBySTLVector<Domain, T>::begin(const Point &aPoint) const
-{
-  ASSERT(this->domain().isInside(aPoint));
-  return this->begin() + linearized( aPoint );
-}
+// template <typename Domain, typename T>
+// inline
+// typename ImageContainerBySTLVector<Domain, T>::ConstIterator
+// ImageContainerBySTLVector<Domain, T>::begin(const Point &aPoint) const
+// {
+//   ASSERT(this->domain().isInside(aPoint));
+//   return this->begin() + linearized( aPoint );
+// }
 
 
 //------------------------------------------------------------------------------
