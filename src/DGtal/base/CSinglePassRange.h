@@ -50,62 +50,35 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRange
   /**
-     Description of \b concept '\b CSinglePassRange' <p>
-     @ingroup Concepts
+Description of \b concept '\b CSinglePassRange' <p>
+@ingroup Concepts
     
-     \brief Aim: Defines the concept describing a range.
-     
-     <p> Refinement of CSinglePassConstRange
-    
-     <p> Provided types:
+\brief Aim: Defines the concept describing a range.
 
-     - Iterator: the iterator type, a model of iterator concept
-          (see boost concept SinglePassIteratorConcept).
-
-     <p> Notation:
-
-     - x an object of a model of CSinglePassConstRange.
-     
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t begin </td>
-     <td class=CExpression>      \t x.begin() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      Iterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t end </td>
-     <td class=CExpression>      \t x.end() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      Iterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+<p> Refinement of CSinglePassConstRange
     
-     <p> Invariants <br>
-    
-     <p> Models <br>
-    
-     <p> Notes <br>
+<p> Provided types:
 
-     @tparam T the type that is checked. T should be a model of CSinglePassRange.
+- Iterator: the iterator type, a model of iterator concept
+(see boost concept SinglePassIteratorConcept).
+
+<p> Notation:
+
+- x an object of a model of CSinglePassConstRange.
+
+Name | Expression | Type requirements | Return type | Precondition | Semantics | Post condition | Complexity|
+-----|------------|-------------------|-------------|--------------|-----------|----------------|-----------|
+begin| x.begin()  |                   | Iterator    |              |           |                |           |
+end  | x.end()    |                   | Iterator    |              |           |                |           | 
+
+    
+<p> Invariants <br>
+    
+<p> Models <br>
+    
+<p> Notes <br>
+
+@tparam T the type that is checked. T should be a model of CSinglePassRange.
 
    */
   template <typename T>
@@ -119,8 +92,8 @@ namespace DGtal
  
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
-      Iterator it=i.begin();
-      it=i.end();
+ Iterator it=i.begin();
+ it=i.end();
     };
 
   private:
@@ -131,7 +104,7 @@ namespace DGtal
 
 
 
-//                                                                           //
+//                                        //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CSinglePassRange_h

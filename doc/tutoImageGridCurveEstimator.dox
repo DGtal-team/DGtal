@@ -23,14 +23,7 @@ namespace DGtal {
 In this example, we show how to retrieve 
 the contour of a connected subset of an image
 and estimate its perimeter.   
-
-Table of contents:
- -# \ref secttutoImageGridCurveEstimator0
- -# \ref secttutoImageGridCurveEstimator1
- -# \ref secttutoImageGridCurveEstimator2
- -# \ref secttutoImageGridCurveEstimator3
- -# \ref secttutoImageGridCurveEstimator4 
-  
+[TOC]
 
 \section secttutoImageGridCurveEstimator0 Extracting a digital set from an image
 
