@@ -31,14 +31,7 @@ objects are defined.
 For DGtal users, the specification of the digital Space  usually
 corresponds to the first lines of DGtal codes. 
 
-Table of contents:
- -# \ref sectSpace
- -# \ref sectPointVector
- -# \ref sectDomain 
-   -# \ref sectDomDef
-   -# \ref sectDomIter
- -# \ref sectImage
-
+[TOC]
 
 \section sectSpace DGtal Space
 

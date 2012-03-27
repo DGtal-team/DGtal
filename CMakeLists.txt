@@ -9,8 +9,8 @@ cmake_minimum_required (VERSION 2.6)
 # -----------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 4)
-SET(DGtal_VERSION_PATCH 1devel)
+SET(DGtal_VERSION_MINOR 5)
+SET(DGtal_VERSION_PATCH 0devel)
 SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
@@ -24,11 +24,6 @@ INCLUDE(${CMAKE_MODULE_PATH}/Common.cmake)
 # Common build options/settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/OSDependentSettings.cmake)
-
-# -----------------------------------------------------------------------------
-# Check CPP0X
-# -----------------------------------------------------------------------------
-INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
 
 # -----------------------------------------------------------------------------
 # Check Mandatory Dependencies

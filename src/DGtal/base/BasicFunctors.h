@@ -261,6 +261,67 @@ namespace DGtal
   };
 
 
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>
+::Composer(TFunctor1& aF1, TFunctor2& aF2)
+ :myF1(aF1), myF2(aF2) 
+{}
+
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>
+::Composer(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
+ :myF1(other.myF1), myF2(other.myF2)
+{}
+
+
+template<typename TFunctor1, typename TFunctor2, typename ReturnType>
+inline
+Composer<TFunctor1, TFunctor2, ReturnType>&
+Composer<TFunctor1, TFunctor2, ReturnType>
+::operator=(const Composer<TFunctor1, TFunctor2, ReturnType>& other)
+{
+  myF1 = other.myF1; 
+  myF2 = other.myF2; 
+  return *this;
+}
+
+  /**
+   * Description of template class 'BinaryToUnaryFunctor' <p>
+   * \brief Aim: Define a simple functor that returns 
+   * the result of an operation between a given value
+   * and a threshold value (0 by default). 
+   *
+   * @tparam TValue a type that should support
+   * the operation performed by TBinaryFunctor. 
+   * @tparam TBinaryFunctor a model of binary function
+   * (default MinusFunctor)
+   */
+  template <typename TValue, typename TBinaryFunctor = MinusFunctor<TValue> >
+  class BinaryToUnaryFunctor
+  {
+  public:
+    typedef TValue Value;
+
+    /** 
+     * Constructor.
+     * @param value  the threshold value.
+     * @param aF  the binary functor.
+     */
+    BinaryToUnaryFunctor(const Value& aValue = 0, const TBinaryFunctor& aF = TBinaryFunctor() )
+      :myValue(aValue), myF(aF) {};
+    
+    /** 
+     * Operator
+     * @return binary function return value
+     * (with arguments @a aValue  and  @a myValue ).
+     */
+    Value operator()(const Value& aValue) const
+    {
+      return myF(aValue, myValue);
+    }
+
 
 /**
  * // template class Thresholder
