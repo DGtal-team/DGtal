@@ -25,14 +25,7 @@ length estimator of the contour of
 a generated shape, which is digitized 
 at different resolutions.   
 
-Table of contents:
- -# \ref secttutoShapeGridCurveEstimator0
- -# \ref secttutoShapeGridCurveEstimator1
- -# \ref secttutoShapeGridCurveEstimator2
- -# \ref secttutoShapeGridCurveEstimator3
- -# \ref secttutoShapeGridCurveEstimator5 
- -# \ref secttutoShapeGridCurveEstimator4 
-  
+[TOC]
 
 \section secttutoShapeGridCurveEstimator0 Implicit Gauss digitization of a Euclidean shape 
 
