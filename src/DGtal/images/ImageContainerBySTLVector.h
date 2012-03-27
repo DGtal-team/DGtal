@@ -236,25 +236,6 @@ namespace DGtal
     typedef typename vector<Value>::reverse_iterator ReverseIterator;
     typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
 
-    /** 
-     * Construct a Iterator on the image at a position specified
-     * by @c aPoint
-     * 
-     * @param aPoint a point to construct a Iterator on. 
-     * 
-     * @return a Iterator on @c aPoint
-     */
-    Iterator begin(const Point &aPoint);
-    
-    /** 
-     * Construct a Iterator on the image at a position specified
-     * by @c aPoint
-     * 
-     * @param aPoint a point to construct a Iterator on. 
-     * 
-     * @return a ConstIterator on @c aPoint
-     */
-    ConstIterator begin(const Point &aPoint) const;
 
     /////////////////////////// Custom Iterator ///////////////
     /**
