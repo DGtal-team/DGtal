@@ -16,7 +16,7 @@
 
 
 #special hack for 1.8.0 compatibility with theold syntax (DC)
-MARKDOWN_SUPPORT = NO
+#MARKDOWN_SUPPORT = NO
 
 
 # This tag specifies the encoding used for all characters in the config file 
@@ -562,7 +562,8 @@ INPUT                  = @top_srcdir@/doc \
                          @top_srcdir@/src \
                          @top_srcdir@/tests \
 			 @top_srcdir@/tools \
-			 @top_srcdir@/examples 
+			 @top_srcdir@/examples \
+                         @top_bindir@/src/DGtal/base
 
 
 CITE_BIB_FILES         = @top_srcdir@/doc/global.bib
@@ -965,7 +966,7 @@ FORMULA_FONTSIZE       = 10
 # If the GENERATE_LATEX tag is set to YES (the default) Doxygen will 
 # generate Latex output.
 
-GENERATE_LATEX         = YES
+GENERATE_LATEX         = NO
 
 # The LATEX_OUTPUT tag is used to specify where the LaTeX docs will be put. 
 # If a relative path is entered the value of OUTPUT_DIRECTORY will be 
