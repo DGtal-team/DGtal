@@ -61,7 +61,7 @@ namespace DGtal
 
       // if the requested number of bit is 0, use the size of the data type instead
       if(nbBits == 0) nbBits = sizeof(T)*8;
-      int i = std::min((DGtal::int64_t)sizeof(T)*8-1, (DGtal::int64_t)nbBits-1);
+      int i = (int)(std::min((DGtal::int64_t)sizeof(T)*8-1, (DGtal::int64_t)nbBits-1));
 
       for(; i>=0; i--)
 	{

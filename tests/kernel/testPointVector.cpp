@@ -115,12 +115,12 @@ bool testMaxMin()
 
   trace.beginBlock("Testing max/min of a vector");
   trace.info() << " Vector: "<< v<<std::endl;
-  trace.info() << "max val = "<< v.maxPointVector() <<std::endl;
-  trace.info()<< "min val = "<<v.minPointVector() << std::endl;
+  trace.info() << "max val = "<< v.max() <<std::endl;
+  trace.info()<< "min val = "<<v.min() << std::endl;
   trace.info() << "maxElement val = "<< *v.maxElement() <<std::endl;
   trace.info()<< "minElement val = "<<*v.minElement() << std::endl;
   trace.endBlock();
-  return ((v.maxPointVector() == 4.1) && (v.minPointVector()==2.2));
+  return ((v.max() == 4.1) && (v.min()==2.2));
 }
 
 /**

@@ -472,12 +472,12 @@ namespace DGtal
        @param k a coordinate (from 0 to 'dim()-1').
        @return the minimal coordinate in the [k]-dimension.
      */
-    Integer minKSND( Dimension k ) const;
+    Integer min( Dimension k ) const;
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the maximal coordinate in the [k]-dimension.
      */
-    Integer maxKSND( Dimension k ) const;
+    Integer max( Dimension k ) const;
     /**
        @return the lower bound for digital points in this space.
     */

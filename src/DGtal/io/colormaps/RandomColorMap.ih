@@ -130,14 +130,14 @@ DGtal::RandomColorMap::operator()( const unsigned int & aValue ) const
 
 inline
 const unsigned int &
-DGtal::RandomColorMap::minColorMap() const
+DGtal::RandomColorMap::min() const
 {
   return myMin;
 }
 
 inline
 const unsigned int &
-DGtal::RandomColorMap::maxColorMap() const
+DGtal::RandomColorMap::max() const
 {
   return myMax;
 }

@@ -61,10 +61,10 @@ bool testStatistics()
   trace.info() << "Mean value = "<<stat.mean()  << std::endl;
   nbok += (stat.mean()==499.5) ? 1 : 0; 
   trace.info() << "Variance value = "<<stat.variance()<<std::endl;
-  trace.info() << "Max value = "<<stat.maxStatistic()<<std::endl;
-  nbok += (stat.maxStatistic()==999) ? 1 : 0; 
-  trace.info() << "Min value = "<<stat.minStatistic()<<std::endl;
-  nbok += (stat.minStatistic()==0)  ? 1 : 0; 
+  trace.info() << "Max value = "<<stat.max()<<std::endl;
+  nbok += (stat.max()==999) ? 1 : 0; 
+  trace.info() << "Min value = "<<stat.min()<<std::endl;
+  nbok += (stat.min()==0)  ? 1 : 0; 
  
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
@@ -98,10 +98,10 @@ bool testStatisticsSaving()
   trace.info() << "Mean value = "<<stat.mean()  << std::endl;
   nbok += (stat.mean()==88) ? 1 : 0; 
   trace.info() << "Variance value = "<<stat.variance()<<std::endl;
-  trace.info() << "Max value = "<<stat.maxStatistic()<<std::endl;
-  nbok += (stat.maxStatistic()==99) ? 1 : 0; 
-  trace.info() << "Min value = "<<stat.minStatistic()<<std::endl;
-  nbok += (stat.minStatistic()==77)  ? 1 : 0; 
+  trace.info() << "Max value = "<<stat.max()<<std::endl;
+  nbok += (stat.max()==99) ? 1 : 0; 
+  trace.info() << "Min value = "<<stat.min()<<std::endl;
+  nbok += (stat.min()==77)  ? 1 : 0; 
   trace.info() << "Median value = "<<stat.median()<<std::endl;
   nbok += (stat.median()==88)  ? 1 : 0; 
  

@@ -227,9 +227,9 @@ namespace DGtal
         const Abscissa j, const InternalValue hj ) const
     {
       if (   ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) )  >= 0)
-  return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
+  return (int)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
       else
-  return ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) ) -1;
+  return (int)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) ) -1;
   
     }
 
@@ -283,19 +283,19 @@ namespace DGtal
         const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
-        return NumberTraits<Abscissa>::maxNumberTraits();
+        return NumberTraits<Abscissa>::max();
       if (hi > hj + j - i)
-        return NumberTraits<Abscissa>::minNumberTraits();
-      return (hj - hi + j + i) / 2;
+        return NumberTraits<Abscissa>::min();
+      return (int)((hj - hi + j + i) / 2);
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
           const Abscissa j, const InternalValue hj ) const
     {
       if (hj <= hi - j + i)
-  return NumberTraits<Abscissa>::maxNumberTraits();
+  return NumberTraits<Abscissa>::max();
       if (hi < hj - j + i)
-        return NumberTraits<Abscissa>::minNumberTraits();
+        return NumberTraits<Abscissa>::min();
       return (hi + i - hj + j ) / 2;
     }
     

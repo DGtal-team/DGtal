@@ -117,7 +117,7 @@ DGtal::AngleComputer::deviation( float j, float i )
  */
 inline
 float 
-DGtal::AngleComputer::minAngle( float i, float j )
+DGtal::AngleComputer::min( float i, float j )
 {
   return less( i, j ) ? i : j;
 }
@@ -131,7 +131,7 @@ DGtal::AngleComputer::minAngle( float i, float j )
  */
 inline
 float 
-DGtal::AngleComputer::maxAngle( float i, float j )
+DGtal::AngleComputer::max( float i, float j )
 {
   return less( i, j ) ? j : i;
 }
@@ -210,7 +210,7 @@ DGtal::AngleComputer::deviation( double j, double i )
  */
 inline
 double 
-DGtal::AngleComputer::minAngle( double i, double j )
+DGtal::AngleComputer::min( double i, double j )
 {
   return less( i, j ) ? i : j;
 }
@@ -224,7 +224,7 @@ DGtal::AngleComputer::minAngle( double i, double j )
  */
 inline
 double 
-DGtal::AngleComputer::maxAngle( double i, double j )
+DGtal::AngleComputer::max( double i, double j )
 {
   return less( i, j ) ? j : i;
 }

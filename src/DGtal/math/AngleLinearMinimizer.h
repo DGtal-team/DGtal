@@ -234,7 +234,7 @@ public:
   /**
    * Max of all the absolute displacements of the last optimisation step.
    */
-   double maxAngle() const;
+   double max() const;
 
  
 protected:
