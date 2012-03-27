@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/kernel/sets/DigitalSetFromMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -49,7 +49,7 @@ DGtal::DigitalSetFromMap<TMapImage>::~DigitalSetFromMap()
 template <typename TMapImage>
 inline
 DGtal::DigitalSetFromMap<TMapImage>
-::DigitalSetFromMap( Image& aImage, 
+::DigitalSetFromMap( Image& aImage,
 		     const typename Image::Value& aDefaultValue )
   : myImgPtr( &aImage ), myFun( Functor() ), myDefault( aDefaultValue )
 {
@@ -82,7 +82,7 @@ DGtal::DigitalSetFromMap<TMapImage>
 // ------------------------------------------------------------------------
 template <typename TMapImage>
 inline
-const typename DGtal::DigitalSetFromMap<TMapImage>::Domain& 
+const typename DGtal::DigitalSetFromMap<TMapImage>::Domain&
 DGtal::DigitalSetFromMap<TMapImage>::domain() const
 {
   return myImgPtr->domain();
@@ -131,7 +131,7 @@ void
 DGtal::DigitalSetFromMap<TMapImage>::insert( PointInputIterator first, PointInputIterator last )
 {
   for (PointInputIterator it = first; it != last; ++it)
-      this->insert( *it ); 
+      this->insert( *it );
 }
 
 
@@ -154,7 +154,7 @@ DGtal::DigitalSetFromMap<TMapImage>::insertNew
 ( PointInputIterator first, PointInputIterator last )
 {
   for (PointInputIterator it = first; it != last; ++it)
-      this->insert( *it ); 
+      this->insert( *it );
 }
 
 // ------------------------------------------------------------------------
@@ -241,7 +241,7 @@ DGtal::DigitalSetFromMap<TMapImage>::end()
 template <typename TMapImage>
 template <typename TDigitalSet>
 inline
-DGtal::DigitalSetFromMap<TMapImage> & 
+DGtal::DigitalSetFromMap<TMapImage> &
 DGtal::DigitalSetFromMap<TMapImage>
 ::operator+=( const TDigitalSet & aSet )
 {
@@ -252,7 +252,7 @@ DGtal::DigitalSetFromMap<TMapImage>
 	    itSrc != aSet.end();
 	    ++itSrc )
 	{
-	  itDst = Iterator( myImgPtr->insert( itDst.base(), Pair(*itSrc, myDefault) ), 
+	  itDst = Iterator( myImgPtr->insert( itDst.base(), Pair(*itSrc, myDefault) ),
 			    myFun );
 	}
     }
@@ -262,7 +262,7 @@ DGtal::DigitalSetFromMap<TMapImage>
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------
-    
+
 // ------------------------------------------------------------------------
 template <typename TMapImage>
 template <typename TOutputIterator>
@@ -271,7 +271,7 @@ void
 DGtal::DigitalSetFromMap<TMapImage>::computeComplement
 (TOutputIterator& ito) const
 {
-  Domain d = this->domain(); 
+  Domain d = this->domain();
   typename Domain::ConstIterator itPoint = d.begin();
   typename Domain::ConstIterator itEnd = d.end();
   while ( itPoint != itEnd ) {
@@ -291,7 +291,7 @@ DGtal::DigitalSetFromMap<TMapImage>::assignFromComplement
 ( const TDigitalSet& otherSet )
 {
   this->clear();
-  Domain d = this->domain(); 
+  Domain d = this->domain();
   typename Domain::ConstIterator itPoint = d.begin();
   typename Domain::ConstIterator itEnd = d.end();
   while ( itPoint != itEnd ) {
@@ -309,7 +309,7 @@ void
 DGtal::DigitalSetFromMap<TMapImage>::computeBoundingBox
 ( Point & lower, Point & upper ) const
 {
-  Domain d = this->domain(); 
+  Domain d = this->domain();
   lower = d.upperBound();
   upper = d.lowerBound();
   ConstIterator it = this->begin();
