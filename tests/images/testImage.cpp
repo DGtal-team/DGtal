@@ -170,8 +170,8 @@ int main( int argc, char** argv )
   typedef Image<VImage > LImage;
 
   /// tests
-  VImage vi(d); 
-  bool res = testImage(vi); 
+  // VImage vi(d); 
+  // bool res = testImage(vi); 
 
   MImage mi(d);
   res = res && testImage(mi);
