@@ -193,11 +193,6 @@ namespace DGtal
       */
       const Domain &domain() const;
 
-      /**
-       * @return the range providing begin and end
-       * iterators to scan the values of image.
-       */
-      ConstRange range() const;
 
       /**
        * @return the domain extension of the image.
@@ -236,22 +231,39 @@ namespace DGtal
       typedef typename vector<Value>::const_iterator ConstIterator;
       typedef typename vector<Value>::reverse_iterator ReverseIterator;
       typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
+      typedef typename vector<Value>::difference_type Difference;
+
 
       typedef typename vector<Value>::iterator OutputIterator;
       typedef typename vector<Value>::reverse_iterator ReverseOutputIterator;
 
 
       /////////////////////////// Ranges  ///////////////
+
       struct DistanceFunctor
       {
-        typedef ImageContainerBySTLVector<Domain,Value>::difference_type Difference;
+        typedef ImageContainerBySTLVector<Domain,Value>::Difference Difference;
         typedef ImageContainerBySTLVector<Domain,Value>::Point Point;
-        Difference operator()(const Point &aPoint)      { return Difference(linearized(aPoint);}
+        Difference operator() ( const Point &aPoint )
+        {
+          return Difference ( linearized ( aPoint ) );
+        }
       };
 
-      typedef typename SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctor> ConstRange;
-      typedef typename SimpleRandomAccessRangeFromPoint<Iterator,DistanceFunctor> Range;
+      typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctor> ConstRange;
+      typedef SimpleRandomAccessRangeFromPoint<Iterator,DistanceFunctor> Range;
 
+      /**
+      * @return the range providing begin and end
+      * iterators to scan the values of image.
+      */
+      ConstRange range() const;
+
+      /**
+      * @return the range providing begin and end
+      * iterators to scan the values of image.
+      */
+      Range range();
 
 
       /////////////////////////// Custom Iterator ///////////////

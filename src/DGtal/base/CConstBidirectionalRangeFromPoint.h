@@ -93,6 +93,7 @@ namespace DGtal
   public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Point Point;
+    typedef typename T::ConstIterator ConstIterator;
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CConstBidirectionalRangeFromPoint )
@@ -109,7 +110,7 @@ namespace DGtal
   private:
     T myX; // do not require T to be default constructible.
     Point myPoint;
-    ConstIterartor myB;
+    ConstIterator myB;
 
     // ------------------------- Internals ------------------------------------
   private:
