@@ -113,7 +113,7 @@ namespace DGtal
     // static constants
     static const Dimension dimension = Domain::dimension;
 
-    typedef ConstRangeAdapter<typename Image::ConstRange::ConstIterator, 
+    typedef ConstRangeFromPointAdapter<typename Image::ConstRange, 
 		       TFunctor, TValue> ConstRange; 
 
     // ----------------------- Standard services ------------------------------
@@ -178,10 +178,9 @@ namespace DGtal
      * @return the range that can be used 
      * to iterate over the values of the image.
      */
-    ConstRange range() const
+    ConstRange constRange() const
     {
-      typename Image::ConstRange r = myImg->range(); 
-      return ConstRange(r.begin(), r.end(), *myF);
+      return ConstRange(myImg->constRange(), *myF);
     }
 
     /**

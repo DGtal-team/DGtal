@@ -160,9 +160,9 @@ namespace DGtal
      * 
      * @return a range. 
      */
-    ConstRange range() const
+    ConstRange constRange() const
     {
-      return myImagePointer->range();
+      return myImagePointer->constRange();
     }
         
     /** 
@@ -171,10 +171,22 @@ namespace DGtal
      * 
      * @return a range. 
      */
-    OutputIterator outputIterator()
+    Range range() const
     {
-      return myImagePointer->outputIterator();
+      return myImagePointer->range();
     }
+
+    //obsolete
+    // /** 
+    //  * Returns the range of the underlying image
+    //  * to iterate over its values
+    //  * 
+    //  * @return a range. 
+    //  */
+    // OutputIterator outputIterator()
+    // {
+    //   return myImagePointer->outputIterator();
+    // }
 
     /////////////////// Accessors //////////////////
 
