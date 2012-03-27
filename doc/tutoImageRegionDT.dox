@@ -20,20 +20,16 @@ namespace DGtal {
 @page tutoImageRegionDT Tutorial "Image -> Region -> Distance Transformation"
 @writers David Coeurjolly
 
-Table of contents:
- -# \ref secttutoImageRegionDT0
- -# \ref secttutoImageRegionDT1
- -# \ref secttutoImageRegionDT2
- -# \ref secttutoImageRegionDT3 
- -# \ref secttutoImageRegionDT4 
-  
+[TOC]
 
 See the source code: imageSetDT.cpp
 
 \section secttutoImageRegionDT0 Introduction
 
 In this example, we illustrate a very  simple shape analysis pipeline:
+
 - Image loading from file
+
 - Distance Transformation with the Euclidean metric of a region of interest.
 
 For the sake of simplicity, we just consider a straightforward segmentation step using a simple threshold on gray level values.

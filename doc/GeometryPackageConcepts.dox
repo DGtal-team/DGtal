@@ -1,0 +1,45 @@
+/**
+ * @file GeometryPackageConcepts.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature GeometryPackageConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//----------------------------------------
+/*!
+@page geomPackageConcepts Geometry Concepts
+@writers David Coeurjolly
+
+@dot
+digraph GGeom   {
+  rankdir=BT;
+  
+  subgraph cluster_1 {
+     style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+               
+    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment; 
+    CDynamicSegmentComputer-> "CForwardSegmentComputer" ;
+    CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer  ;
+
+    CDynamicBidirectionalSegmentComputer->          CBidirectionalSegmentComputer;
+    CSeparableMetric;
+    label="Geometry";
+  }
+ 
+  CSegment ->  boost_CopyConstructible ;
+  CSegment ->boost_DefaultConstructible;
+  CSegment -> boost_Assignable;
+ 
+ }
+@enddot
+
+ 
+*/
