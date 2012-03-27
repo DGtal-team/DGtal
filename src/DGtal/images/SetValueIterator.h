@@ -62,7 +62,8 @@ namespace DGtal
    * @tparam TImage a model of CSetValueImage
    *
    */
-  template <typename TImage>
+  template <typename TImage, typename TIteratorOnPts 
+	    = typename TImage::Domain::ConstIterator>
   class SetValueIterator:
     public std::iterator<std::output_iterator_tag,void,void,void,void>
   {
@@ -72,12 +73,20 @@ namespace DGtal
     typedef TImage Image; 
     BOOST_CONCEPT_ASSERT(( CSetValueImage<Image> ));
 
-    typedef typename Image::Domain::ConstIterator PointIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
     /**
      * Constructor.
+     * @param aItOnPts an iterator on points
+     * @param aImg any image passed by reference
+     */
+    SetValueIterator(const TIteratorOnPts& aItOnPts, Image &aImg)
+: myImg(&aImg), myItOnPts(aItOnPts) {}
+
+    /**
+     * Overloaded constructor, which can be used
+     * with the default template argument.
      * @param aImg any image passed by reference
      */
     SetValueIterator(Image &aImg)
@@ -154,7 +163,7 @@ namespace DGtal
     /**
      * Iterator on points that scan the domain of the underlying image
      */
-    PointIterator myItOnPts; 
+    TIteratorOnPts myItOnPts; 
 
   }; // end of class SetValueIterator
 
