@@ -272,7 +272,7 @@ namespace DGtal
      * 
      * @return a Iterator on @c aPoint
      */
-    OutputIterator begin();
+    OutputIterator outputIterator();
 
         
   };

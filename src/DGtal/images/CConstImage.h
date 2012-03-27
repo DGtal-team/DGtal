@@ -120,27 +120,27 @@ namespace DGtal
   struct CConstImage: CPointFunctor<I>
   {
 
-  public:
+  // public:
     
-    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
-    //Inner types
-    typedef typename I::Domain Domain;
-    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+  //   BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
+  //   //Inner types
+  //   typedef typename I::Domain Domain;
+  //   BOOST_CONCEPT_ASSERT((CDomain<Domain>));
 
-    typedef typename I::ConstRange Range;
-    BOOST_CONCEPT_ASSERT((CConstBidirectionalRange<Range>));
+  //   typedef typename I::ConstRange Range;
+  //   BOOST_CONCEPT_ASSERT((CConstBidirectionalRange<Range>));
 
       
-    BOOST_CONCEPT_USAGE(CConstImage)
-    {
-      ConceptUtils::sameType(i.domain(), d); 
-      ConceptUtils::sameType(i.range(), r); 
-    }
+  //   BOOST_CONCEPT_USAGE(CConstImage)
+  //   {
+  //     ConceptUtils::sameType(i.domain(), d); 
+  //     ConceptUtils::sameType(i.range(), r); 
+  //   }
 
-  private:
-    I i;
-    Domain d;
-    Range r; 
+  // private:
+  //   I i;
+  //   Domain d;
+  //   Range r; 
     
   };
 } // namespace DGtal
