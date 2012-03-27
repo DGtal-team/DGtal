@@ -143,7 +143,7 @@ DGtal::imageFromFunctor(I& aImg, const F& aFun)
 
   typename I::Domain d = aImg.domain();
 
-  std::transform(d.begin(), d.end(), aImg.outputIterator(), aFun ); 
+  std::transform(d.begin(), d.end(), aImg.range().outputIterator(), aFun ); 
 }
 
 //------------------------------------------------------------------------------
