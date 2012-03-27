@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file SternBrocot.ih
+ * @file LightSternBrocot.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
@@ -62,9 +62,37 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
 template <typename TInteger, typename TSize, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
-Fraction( Integer aP, Integer aQ, Fraction start )
+Fraction( Integer aP, Integer aQ, Fraction )
 {
-  this->operator=( SB::fraction( aP, aQ, start ) );
+  // special case 1/0
+  if ( ( aP == NumberTraits<Integer>::ONE ) 
+       && ( aQ == NumberTraits<Integer>::ZERO ) ) 
+    this->operator=( oneOverZero() );
+  else
+    {
+      Fraction f = zeroOverOne();
+      bool sup1 = aP > aQ;
+      if ( sup1 ) std::swap( aP, aQ );
+      Integer _quot, _rem;
+      IntegerComputer<Integer> ic;
+      Size v;
+      bool prec_was_one = false;
+      Size j = NumberTraits<Size>::ZERO;
+      while ( aQ != NumberTraits<Integer>::ZERO )
+        {
+          ic.getEuclideanDiv( _quot, _rem, aP, aQ );
+          v = NumberTraits<Integer>::castToInt64_t( _quot );
+          if ( f.k() == j ) 
+            f = f.next( v );
+          else 
+            f = f.next1( v );
+          if ( v != 0 ) ++j;
+          aP = aQ;
+          aQ = _rem;
+        }
+      if ( prec_was_one ) f = f.next( NumberTraits<Size>::ONE );
+      this->operator=( sup1 ? f.inverse() : f );
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -684,32 +712,33 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::fraction
   Fraction // ancestor
   )
 {
-  // special case 1/0
-  if ( ( p == NumberTraits<Integer>::ONE ) 
-       && ( q == NumberTraits<Integer>::ZERO ) ) 
-    return oneOverZero();
-  Fraction f = zeroOverOne();
-  bool sup1 = p > q;
-  if ( sup1 ) std::swap( p, q );
-  Integer _quot, _rem;
-  IntegerComputer<Integer> ic;
-  Size v;
-  bool prec_was_one = false;
-  Size j = NumberTraits<Size>::ZERO;
-  while ( q != NumberTraits<Integer>::ZERO )
-    {
-      ic.getEuclideanDiv( _quot, _rem, p, q );
-      v = NumberTraits<Integer>::castToInt64_t( _quot );
-      if ( f.k() == j ) 
-        f = f.next( v );
-      else 
-        f = f.next1( v );
-      if ( v != 0 ) ++j;
-      p = q;
-      q = _rem;
-    }
-  if ( prec_was_one ) f = f.next( NumberTraits<Size>::ONE );
-  return sup1 ? f.inverse() : f;
+  return Fraction( p, q );
+  // // special case 1/0
+  // if ( ( p == NumberTraits<Integer>::ONE ) 
+  //      && ( q == NumberTraits<Integer>::ZERO ) ) 
+  //   return oneOverZero();
+  // Fraction f = zeroOverOne();
+  // bool sup1 = p > q;
+  // if ( sup1 ) std::swap( p, q );
+  // Integer _quot, _rem;
+  // IntegerComputer<Integer> ic;
+  // Size v;
+  // bool prec_was_one = false;
+  // Size j = NumberTraits<Size>::ZERO;
+  // while ( q != NumberTraits<Integer>::ZERO )
+  //   {
+  //     ic.getEuclideanDiv( _quot, _rem, p, q );
+  //     v = NumberTraits<Integer>::castToInt64_t( _quot );
+  //     if ( f.k() == j ) 
+  //       f = f.next( v );
+  //     else 
+  //       f = f.next1( v );
+  //     if ( v != 0 ) ++j;
+  //     p = q;
+  //     q = _rem;
+  //   }
+  // if ( prec_was_one ) f = f.next( NumberTraits<Size>::ONE );
+  // return sup1 ? f.inverse() : f;
 }
 
 
