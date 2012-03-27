@@ -26,6 +26,7 @@ ENDIF(GMP_FOUND)
 
 SET(DGTAL_BENCH_GMP_SRC
    testStandardDSLQ0-reversedSmartDSS-benchmark
+   testStandardDSLQ0-LSB-reversedSmartDSS-benchmark
    testStandardDSLQ0-smartDSS-benchmark
    testArithmeticDSS-benchmark
 )
