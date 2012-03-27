@@ -207,8 +207,7 @@ namespace DGtal
   
     /////////////////// Interface //////////////////
 
-   
-    /**
+      /**
      * Get the value of an image at a given position given
      * by a Point.
      *
@@ -242,11 +241,6 @@ namespace DGtal
     ConstRange range() const;
 
     /**
-     * @return an output iterator to write values.
-     */
-    OutputIterator outputIterator();
-    
-    /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -269,129 +263,19 @@ namespace DGtal
     typedef typename map<Point,Value>::const_iterator ConstIterator;
     typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
     typedef typename map<Point,Value>::const_reverse_iterator ConstReverseIterator;
-    //
-    // NB: It does not make sense for domain that are not rectangular
-    // ///\todo create span iterators
-    // class SpanIterator: public Iterator
-    // {
-    //   friend class ImageContainerBySTLMap<TDomain,TValue>;
+    
+    /** 
+     * Construct a Iterator on the image at a position specified
+     * by @c aPoint
+     * 
+     * @param aPoint a point to construct a Iterator on. 
+     * 
+     * @return a Iterator on @c aPoint
+     */
+    OutputIterator begin();
 
-    // public:
-    //   SpanIterator( const Point & p ,
-    // 		    const Dimension aDim ,
-    // 		    ImageContainerBySTLMap<TDomain,TValue> *aMap ) :   
-    // 	myStartingPoint( p ),  myDimension ( aDim ),   myMap ( aMap )
-    //   {
-    // 	myPos = myMap->find( p );
-    //   }
-
-
-    //   const Value & operator*() const
-    //   {
-    // 	return (*myPos).second;
-    //   }
-      
-    //   /**
-    //    * Implements the next() method
-    //    *
-    //    **/
-    //   void next()
-    //   {
-    // 	while ((myPos != myMap->end()) && 
-    // 	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-    // 	  {
-    // 	    myPos++;
-    // 	  }
-    //   }
-
-    //   /**
-    //    * Implements the prev() method
-    //    *
-    //    **/
-    //   void prev()
-    //   {
-    // 	while ((myPos != myMap->end()) && 
-    // 	       ( (*myPos).first.at(myDimension) != myStartingPoint.at(myDimension)))
-    // 	  {
-    // 	    myPos--;
-    // 	  }
-    //   }      
-
-    //   /**
-    //    * Operator ++ (++it)
-    //    *
-    //    */
-    //   SpanIterator &operator++()
-    //   {
-    // 	this->next();
-    // 	return *this;
-    //   }
-
-    //   /**
-    //    * Operator ++ (it++)
-    //    *
-    //    */
-    //   SpanIterator &operator++ ( int )
-    //   {
-    // 	SpanIterator tmp = *this;
-    // 	++*this;
-    // 	return tmp;
-    //   }
-
-
-    //   /**
-    //    * Operator -- (--it)
-    //    *
-    //    */
-    //   SpanIterator &operator--()
-    //   {
-    // 	this->prev();
-    // 	return *this;
-    //   }
-
-    //   /**
-    //    * Operator -- (it--)
-    //    *
-    //    */
-    //   SpanIterator &operator-- ( int )
-    //   {
-    // 	SpanIterator tmp = *this;
-    // 	--*this;
-    // 	return tmp;
-    //   }
-
-    // private:
-      
-    //   ///Copie of starting point
-    //   Point myStartingPoint;
-      
-    //   ///Current  position in the built-in iterator
-    //   Iterator myPos;
-
-    //   /// Copy of the underlying images
-    //   ImageContainerBySTLMap<TDomain,TValue> *myMap;
-
-    //   ///Dimension on which the iterator must iterate
-    //   Dimension myDimension;
-
-    // };
-
-    // SpanIterator span_begin(const Point &aPoint, const Dimension aDimension)
-    // {
-    //   return SpanIterator ( aPoint, aDimension, this);
-    // }
-
-    // SpanIterator span_end(const Point &aPoint,const Dimension aDimension)
-    // {
-    //   Point tmp = aPoint;
-    //   tmp.at( aDimension ) = myDomain->lowerBound.at( aDimension ) +
-    // 	myDomain->upperBound.at( aDimension ) - 
-    // 	myDomain->lowerBound.at( aDimension ) + 1;
-    //   return SpanIterator( tmp, aDimension, this);
-    // }
-
+        
   };
-
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'Image'.

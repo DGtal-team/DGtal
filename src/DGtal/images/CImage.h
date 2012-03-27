@@ -65,36 +65,19 @@ namespace DGtal
    * <p> Notation
    * - \t X : A type that is a model of CImage
    * - \t x : Object of type X
+   * - \t aPoint : Object of type Point
+   * 
    *
    * <p> Definitions
    *
    * <p> Valid expressions and semantics <br>
-      <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      
-    
-      <tr> 
-      <td class=CName> Provide an output iterator           </td> 
-      <td class=CExpression>  x.outputIterator()    </td>
-      <td class=CRequirements>        </td> 
-      <td class=CReturnType>  an instance of OutputIterator    </td>
-      <td class=CPrecondition>   </td> 
-      <td class=CSemantics>       </td> 
-      <td class=CPostCondition>   </td> 
-      <td class=CComplexity>  Container dependent    </td>
-      </tr>
-        
 
-    </table>   
+
+| Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
+|-------------------------------------|------------------------------------|----------------------|-----------------------|------------------------------------|-------------------------------------------------------|----------------|------------|
+| get an output Iterator              | x.range().outputIterator()         |                      | Range::OutputIterator |                                    | Returns an output iterator on the image first point   |                |            |
+| get an output Iterator from a point | x.range().outputIterator( aPoint ) | aPoint of type Point | Range::OutputIterator | aPoint must be in the image domain | Returns an output  iterator on the image from a point |                |            |
+
 
    *
    * <p> Invariants <br>
@@ -107,20 +90,22 @@ namespace DGtal
 
   template <typename I>
   struct CImage: CConstImage<I>
-  {
-
-  typedef typename I::OutputIterator O; 
-
+  { 
+    //Inner type in the range 
+    typedef typename I::Range::OutputIterator OutputIterator;
+    typedef typename I::Point Point;
   public:
   
     BOOST_CONCEPT_USAGE(CImage)
     {
-      ConceptUtils::sameType( myO, myI.outputIterator() ); //output iterator 
+      ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator 
+      ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator 
     }
-
+    
   private:
     I myI;
-    O myO; 
+    Point aPoint;
+    OutputIterator myO; 
   };
 } // namespace DGtal
 

@@ -20,10 +20,7 @@ namespace DGtal {
   @page moduleShape Shapes, Shapers and Digitizers 
 @writers David Coeurjolly
 
-Table of contents:
- -# \ref sectmoduleShape1
- -# \ref sectmoduleShape2  
- -# \ref sectmoduleShape3  
+[TOC]
   
    \section sectmoduleShape1 Introduction of Concepts
 
@@ -40,9 +37,13 @@ region/pixel of interest).
 Hence, shapes can be  compact or not (i.e. bounded), oriented or not and
 finally, defined on either the Euclidean space, or the Digital
 one. All these cases are formalized in the following concepts:
+
  - CDigitalBoundedShape: Digital shape with lower/upper bounds
+
  - CEuclideanBoundedShape: Euclidean shape with lower/upper bounds
+
  - CDigitalOrientedShape: Digital shape with an orientation predicate
+
  - CEuclideanOrientedShape: Euclidean shape with an orientation predicate
 
 @note An orientation predicate is a method with the following

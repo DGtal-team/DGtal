@@ -57,21 +57,33 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 @b Modules
  - \ref geometry2d
+
  - \ref moduleEsimators
+
  - \ref volpackage
+
  - \ref moduleShape
 
 
+ @b Package @b Concepts @b Overview
+
+  - \ref geomPackageConcepts
 
 
  @b Related @b documentation @b pages
 
  @b Related @b examples @b and @b tools
+
   - shapeGenerator.cpp
+
   - contourGenerator.cpp
+
   - lengthEstimators.cpp
+
   - estimatorComparator.cpp
+
   - distancetransform3D.cpp
+
   - distancetransform2D.cpp
 
 

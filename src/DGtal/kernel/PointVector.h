@@ -504,7 +504,7 @@ namespace DGtal
      * @param coeff is the factor 'this' is multiplied by.
      * @return a new Point that is the multiplication of 'this' by coeff.
      */
-    PointVector operator*( Component coeff );
+    PointVector operator*( Component coeff ) const;
     
     /**
      * dot product with a PointVector
@@ -727,7 +727,7 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-
+    
 
     
     /**

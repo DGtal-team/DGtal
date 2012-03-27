@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC_MATH
        testMeasure
        testSignal 
+       testMPolynomial
        testAngleLinearMinimizer)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})

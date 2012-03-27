@@ -70,7 +70,7 @@ inline
 DGtal::PointVector<dim, TComponent>::PointVector()
 {
   for ( Dimension i = 0; i < dim; ++i )
-    myArray[ i ] = 0;
+    myArray[ i ] = NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -106,7 +106,7 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x, const Com
   myArray[ 0 ] = x;
   myArray[ 1 ] = y;
   for ( Dimension i = 2; i < dim; ++i )
-    myArray[ i ] = 0;
+    myArray[ i ] =  NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -120,7 +120,7 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
   myArray[ 1 ] = y;
   myArray[ 2 ] = z;
   for ( Dimension i = 3; i < dim; ++i )
-    myArray[ i ] = 0;
+    myArray[ i ] = NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -136,7 +136,7 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
   myArray[ 2 ] = z;
   myArray[ 3 ] = t;
   for ( Dimension i = 4; i < dim; ++i )
-    myArray[ i ] = 0;
+    myArray[ i ] =  NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
 #ifdef CPP0X_INITIALIZER_LIST
@@ -148,7 +148,7 @@ DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component
   for (const Component *p = init.begin (); p != init.end () && i < dim; ++p, ++i)
     myArray[ i ] = *p;
   for ( ; i < dim; ++i)
-    myArray[i] = 0;
+    myArray[i] =  NumberTraits<TComponent>::ZERO;
 }
 #endif // CPP0X_INITIALIZER_LIST
 //------------------------------------------------------------------------------
@@ -286,7 +286,7 @@ DGtal::PointVector<dim, TComponent>::operator*= ( Component coeff )
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 DGtal::PointVector<dim, TComponent>
-DGtal::PointVector<dim, TComponent>::operator* ( Component coeff )
+DGtal::PointVector<dim, TComponent>::operator* ( Component coeff ) const
 {
   Self v = *this;
   v *= coeff;
@@ -646,9 +646,12 @@ typename DGtal::PointVector<dim, TComponent>::UnsignedComponent
 DGtal::PointVector<dim, TComponent>::norm1() const
 {
   ASSERT ( dimension > 0 );
-  UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
+  UnsignedComponent val
+    ( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : UnsignedComponent(-myArray[ 0 ]) );
   for ( Dimension i = 1; i < dimension; ++i )
-    val += ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ];
+    val += ( myArray[ i ] >= 0 ) 
+      ? myArray[ i ] 
+      : UnsignedComponent(-myArray[ i ]);
   return val;
 }
 //------------------------------------------------------------------------------

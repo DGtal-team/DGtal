@@ -319,7 +319,7 @@ bool testObject3D()
   back_insert_iterator< vector< ObjectType > > inserter2( objects2 );
   unsigned int nbc0 = objects[ 0 ].border().writeComponents( inserter2 );
   INBLOCK_TEST( nbc0 == 1 );
-  INBLOCK_TEST( objects[ 0 ].computeConnectedness() == ObjectType::CONNECTED );
+  INBLOCK_TEST( objects[ 0 ].computeConnectedness() == CONNECTED );
   trace.endBlock();
 
   trace.beginBlock ( "Components of diamond_clone.border()  ..." );
