@@ -70,6 +70,22 @@ namespace DGtal
    node [u_0; u_1, ..., u_n, k] in the time of the operation
    M::operator[].
 
+   In this representation, the fraction 1/1 has depth 1, like 1/2,
+   1/3, etc. Furthermore, each fraction has an ancestor, which is the
+   reduced partial of order 1 of the fraction. Be careful the ancestor
+   of an ancestor is \b not the reduced of order 2. Each node [u_0;
+   u_1, ..., u_n] has two sets of children: the nodes [u_0; u_1, ...,
+   u_n, k], for k >= 2, and the nodes [u_0; u_1, ..., u_n - 1, 1, k],
+   for k >= 2. A disadvantage of this representation is that to obtain
+   the father of something like [...,u_k, 1, ..., 1, u_n ], one has to
+   go up the tree till u_k, to go back down on the other side.
+
+   In practice, also this class has supposedly a better complexity
+   than SternBrocot, it is 1% slower for integers smaller than 10^9
+   and 5% slower for integers smaller than 10^4. Note however that it
+   takes like 6 times less memory (and asymptotically less when the
+   number of computations tends toward infinity).
+
    This class is not to be instantiated, since it is useless to
    duplicate it. Use static method LightSternBrocot::fraction to obtain
    your fractions.
@@ -220,12 +236,14 @@ namespace DGtal
 
       inline Size trueK() const { return myNode->k; }
 
+    protected:
       /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
       Fraction next( Size v ) const;
       /// @return the fraction [u_0, ..., u_n -1, 1, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
       Fraction next1( Size v ) const;
+    public:
 
       /// @return its left descendant (construct it if it does not exist yet).
       Fraction left() const;
@@ -245,11 +263,15 @@ namespace DGtal
 	 @return 'true' if its ancestor has depth k-1, otherwise returns false.
       */
       bool isAncestorDirect() const;
+
+    protected:
       /**
 	 @return the father of this fraction in O(1), ie [u0,...,uk]
 	 => [u0,...,uk - 1]
       */
       Fraction father() const;
+
+    public:
       /**
          @param m a quotient between 1 and uk-1.
 	 @return a given father of this fraction in O(uk - m), ie [u0,...,uk]
