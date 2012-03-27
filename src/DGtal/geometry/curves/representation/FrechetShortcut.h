@@ -242,7 +242,7 @@ public:
    * Constructor with initialisation
    * @param it an iterator on 2D points
    */
-  FrechetShortcut(const ConstIterator& it, double error);
+  FrechetShortcut(double error);
 
   /**
    * Initialisation.
@@ -251,7 +251,7 @@ public:
 
   void init(const ConstIterator& it);
   
-  FrechetShortcut & getSelf();
+  FrechetShortcut getSelf();
 
   /**
    * Copy constructor.

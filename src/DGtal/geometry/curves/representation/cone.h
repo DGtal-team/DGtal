@@ -215,8 +215,33 @@ class cone {
   cone intersectConesSimple(cone c);
   cone symmetricalCone();
 
+    /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out) ;
+
+
   
 };
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'FrechetShortcut'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'FrechetShortcut' to write.
+   * @return the output stream after the writing.
+   */
+  
+std::ostream&
+operator<< ( std::ostream & out, cone & object )
+{      
+  object.selfDisplay( out);
+  return out;
+}
+  
+  
+
 
 #if !defined(BUILD_INLINE)
 #include "DGtal/geometry/curves/representation/cone.ih"

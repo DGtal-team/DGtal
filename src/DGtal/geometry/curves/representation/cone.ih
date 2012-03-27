@@ -192,3 +192,13 @@ cone cone::intersectConesSimple(cone c)
   return res;
 }
 
+
+void cone::selfDisplay ( std::ostream & out)
+{
+  out << "[Cone]" <<  endl;
+  if(myInf)
+    out << "Infinite" << endl;
+  else
+    out << "[Cone min = " << myMin << " max = " << myMax << "]" << endl;
+  out << "[End Cone]" <<  endl; 
+}
