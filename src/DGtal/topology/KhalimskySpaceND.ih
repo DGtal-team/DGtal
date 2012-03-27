@@ -356,8 +356,8 @@ KhalimskySpaceND()
   Point low, high;
   for ( Dimension i = 0; i < dimension; ++i )
     {
-      low[ i ] = NumberTraits< Integer >::minNumberTraits() / 2 + 1;
-      high[ i ] = NumberTraits< Integer >::maxNumberTraits() / 2 - 1;
+      low[ i ] = NumberTraits< Integer >::min() / 2 + 1;
+      high[ i ] = NumberTraits< Integer >::max() / 2 - 1;
     }
   init( low, high, true );
 }
@@ -403,9 +403,9 @@ init( const Point & lower,
       for ( Dimension i = 0; i < dimension; ++i )
   {
     if ( ( lower[ i ] 
-     <= ( NumberTraits< Integer >::minNumberTraits() / 2 ) )
+     <= ( NumberTraits< Integer >::min() / 2 ) )
          || ( upper[ i ] 
-        >= ( NumberTraits< Integer >::maxNumberTraits() / 2 ) ) )
+        >= ( NumberTraits< Integer >::max() / 2 ) ) )
       return false;
   }
     }
@@ -433,7 +433,7 @@ template < Dimension dim, typename TInteger>
 inline
 TInteger 
 DGtal::KhalimskySpaceND< dim, TInteger>::
-minKSND( Dimension k ) const
+min( Dimension k ) const
 {
   return myLower[ k ];
 }
@@ -442,7 +442,7 @@ template < Dimension dim, typename TInteger>
 inline
 TInteger 
 DGtal::KhalimskySpaceND< dim, TInteger>::
-maxKSND( Dimension k ) const
+max( Dimension k ) const
 {
   return myUpper[ k ];
 }

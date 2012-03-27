@@ -46,7 +46,7 @@ ImageContainerBySTLVector(const Point &aPointA, const Point &aPointB ) :
   Size ext = 1;
   for (Dimension k = 0;k <  Domain::dimension; k++)
     ext = ext* (dec[k] + 1);
-  this->resize(ext);
+  this->resize((unsigned int)ext);
 }
 
 template <typename Domain, typename T>
@@ -70,7 +70,7 @@ inline
 void
 ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
 {
-  this->at( linearized( aPoint ) ) = V;
+  this->at( (unsigned int)linearized( aPoint ) ) = V;
 }
 
 template <typename Domain, typename T>

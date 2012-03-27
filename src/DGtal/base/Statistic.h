@@ -135,12 +135,12 @@ namespace DGtal
     /** 
      * @return the maximal value.
      */
-    RealNumberType maxStatistic() const;
+    RealNumberType max() const;
 
     /** 
      * @return the minimal value.
      */
-    RealNumberType minStatistic() const;
+    RealNumberType min() const;
     
 
     /**

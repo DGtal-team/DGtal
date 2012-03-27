@@ -80,7 +80,7 @@ ColorBrightnessColorMap<PValue,PDefaultColor>::operator=
 template<typename PValue, int PDefaultColor>
 inline
 const PValue &
-DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::minColorMap() const
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::min() const
 {
   return myMin;
 }
@@ -88,7 +88,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::minColorMap() const
 template<typename PValue, int PDefaultColor>
 inline
 const PValue &
-DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::maxColorMap() const
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::max() const
 {
   return myMax;
 }

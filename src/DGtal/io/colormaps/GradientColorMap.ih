@@ -174,7 +174,7 @@ template<typename PValue,
     int PDefaultLastColor >
 inline
 const PValue &
-DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::minColorMap() const
+DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::min() const
 {
   return myMin;
 }
@@ -185,7 +185,7 @@ template<typename PValue,
     int PDefaultLastColor >
 inline
 const PValue &
-DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::maxColorMap() const
+DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::max() const
 {
   return myMax;
 }

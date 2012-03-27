@@ -117,13 +117,13 @@ namespace DGtal
      * @return the minimum possible value for this type of integer or
      * ONE if not bounded or unknown.
      */
-    static ReturnType minNumberTraits();
+    static ReturnType min();
 
     /**
      * @return the maximum possible value for this type of integer or
      * ZERO if not bounded or unknown.
      */
-    static ReturnType maxNumberTraits();
+    static ReturnType max();
 
     /**
      * @return the number of significant digits for this integer type,
@@ -185,11 +185,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<uint16_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<uint16_t>::const_max;
     }
@@ -244,11 +244,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<int16_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<int16_t>::const_max;
     }
@@ -303,11 +303,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<uint8_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<uint8_t>::const_max;
     }
@@ -362,11 +362,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<int8_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<int8_t>::const_max;
     }
@@ -420,11 +420,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<uint32_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<uint32_t>::const_max;
     }
@@ -474,11 +474,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<int32_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<int32_t>::const_max;
     }
@@ -532,11 +532,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<uint64_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<uint64_t>::const_max;
     }
@@ -590,11 +590,11 @@ namespace DGtal
     {
       return 1;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return boost::integer_traits<int64_t>::const_min;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return boost::integer_traits<int64_t>::const_max;
     }
@@ -644,11 +644,11 @@ namespace DGtal
     {
       return 1.0f;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return FLT_MIN;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return FLT_MAX;
     }
@@ -699,11 +699,11 @@ namespace DGtal
     {
       return 1.0;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return DBL_MIN;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return DBL_MAX;
     }
@@ -754,11 +754,11 @@ namespace DGtal
     {
       return 1.0;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       return LDBL_MIN;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       return LDBL_MAX;
     }
@@ -814,12 +814,12 @@ namespace DGtal
     {
       return ONE;
     }
-    static ReturnType minNumberTraits()
+    static ReturnType min()
     {
       ASSERT2(false, "UnBounded interger type does not support min() function");
       return ZERO;
     }
-    static ReturnType maxNumberTraits()
+    static ReturnType max()
     {
       ASSERT2(false, "UnBounded interger type does not support max() function");
       return ZERO;

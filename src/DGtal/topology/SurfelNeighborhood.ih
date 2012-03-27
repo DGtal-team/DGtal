@@ -290,9 +290,9 @@ getAdjacentOnDigitalSet( SCell & adj_surfel,
   ASSERT( obj.find( mySpace->sCoords( outerSpel() ) ) == obj.end() );
   
   // Check if it goes outside the space.
-  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->maxKSND( track_dir ) ) )
+  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
        || 
-       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->minKSND( track_dir ) ) )
+       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
        )
     return 0;
   // Check type of surfel adjacency.
@@ -359,9 +359,9 @@ getAdjacentOnPointPredicate( SCell & adj_surfel,
   ASSERT( ! pp( mySpace->sCoords( outerSpel() ) ) && "Should be outside" );
   
   // Check if it goes outside the space.
-  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->maxKSND( track_dir ) ) )
+  if ( ( pos && ( inner_spel_pt[ track_dir ] == mySpace->max( track_dir ) ) )
        || 
-       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->minKSND( track_dir ) ) )
+       ( (!pos) && ( inner_spel_pt[ track_dir ] == mySpace->min( track_dir ) ) )
        )
     return 0;
   // Check type of surfel adjacency.

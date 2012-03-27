@@ -68,29 +68,29 @@ bool testInteger()
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
 
-  trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::maxNumberTraits()
+  trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
          << std::endl;
-  trace.info() << "  - min int16 = " << NumberTraits<DGtal::int16_t>::minNumberTraits()
+  trace.info() << "  - min int16 = " << NumberTraits<DGtal::int16_t>::min()
          << std::endl;
-  trace.info() << "  - max int32 = " << NumberTraits<DGtal::int32_t>::maxNumberTraits()
+  trace.info() << "  - max int32 = " << NumberTraits<DGtal::int32_t>::max()
          << std::endl;
-  trace.info() << "  - min int32 = " << NumberTraits<DGtal::int32_t>::minNumberTraits()
+  trace.info() << "  - min int32 = " << NumberTraits<DGtal::int32_t>::min()
          << std::endl;
-  trace.info() << "  - max int64 = " << NumberTraits<DGtal::int64_t>::maxNumberTraits()
+  trace.info() << "  - max int64 = " << NumberTraits<DGtal::int64_t>::max()
          << std::endl;
-  trace.info() << "  - min int64 = " << NumberTraits<DGtal::int64_t>::minNumberTraits()
+  trace.info() << "  - min int64 = " << NumberTraits<DGtal::int64_t>::min()
          << std::endl;
-  trace.info() << "  - max uint16 = " << NumberTraits<DGtal::uint16_t>::maxNumberTraits()
+  trace.info() << "  - max uint16 = " << NumberTraits<DGtal::uint16_t>::max()
          << std::endl;
-  trace.info() << "  - min uint16 = " << NumberTraits<DGtal::uint16_t>::minNumberTraits()
+  trace.info() << "  - min uint16 = " << NumberTraits<DGtal::uint16_t>::min()
          << std::endl;
-  trace.info() << "  - max uint32 = " << NumberTraits<DGtal::uint32_t>::maxNumberTraits()
+  trace.info() << "  - max uint32 = " << NumberTraits<DGtal::uint32_t>::max()
          << std::endl;
-  trace.info() << "  - min uint32 = " << NumberTraits<DGtal::uint32_t>::minNumberTraits()
+  trace.info() << "  - min uint32 = " << NumberTraits<DGtal::uint32_t>::min()
          << std::endl;
-  trace.info() << "  - max uint64 = " << NumberTraits<DGtal::uint64_t>::maxNumberTraits()
+  trace.info() << "  - max uint64 = " << NumberTraits<DGtal::uint64_t>::max()
          << std::endl;
-  trace.info() << "  - min uint64 = " << NumberTraits<DGtal::uint64_t>::minNumberTraits()
+  trace.info() << "  - min uint64 = " << NumberTraits<DGtal::uint64_t>::min()
          << std::endl;
 
   trace.endBlock();

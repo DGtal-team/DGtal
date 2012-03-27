@@ -62,7 +62,7 @@ void addColorMapSample( const char * name,
   board.setFont( LibBoard::Fonts::Courier, 12 );  // todo with Cairo
   board.drawText( -150, 0, name );      // todo with Cairo
   board.setPenColor(Color::None);
-  for ( Value x = aColorMap.minColorMap(); x <= aColorMap.maxColorMap(); x += step ) {
+  for ( Value x = aColorMap.min(); x <= aColorMap.max(); x += step ) {
     board.setFillColor( aColorMap( x ) );
     board.drawRectangle( static_cast<double>( x ),
        10,

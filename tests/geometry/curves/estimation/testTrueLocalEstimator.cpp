@@ -279,7 +279,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       
       trace.info()<< "Nb samples= "<< error.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error.mean()<<std::endl;
-      trace.info()<< "Error max= "<< error.maxStatistic()<<std::endl;
+      trace.info()<< "Error max= "<< error.max()<<std::endl;
       
       typename ComparatorTan::OutputVectorStatistic error2=ComparatorTan::compareVectors(tang1, tang2, 
                        r.begin(),
@@ -287,7 +287,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       
       trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
-      trace.info()<< "Error max= "<< error2.maxStatistic()<<std::endl;
+      trace.info()<< "Error max= "<< error2.max()<<std::endl;
 
 
      }    

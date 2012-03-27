@@ -81,7 +81,7 @@ findABel
       for ( Dimension i = 0; i < K.dimension; ++i )
   {
     r = rand();
-    x2[ i ] = ( r % sizes[ i ] ) + K.minKSND( i );
+    x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
   }
       bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
       if ( val_v2 != val_v1 )
@@ -632,8 +632,8 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
       double x1 = !xodd ? x  - 0.5 : (aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
       double y1 = !yodd ? y  - 0.5 : (aKSpace.sSign(sc)? y  - 0.5: y  + 0.5);      
       
-      Point ptA(x0+0.5, y0-0.5);
-      Point ptB(x1+0.5, y1-0.5) ;
+      Point ptA((const int)(x0+0.5), (const int)(y0-0.5));
+      Point ptB((const int)(x1+0.5), (const int)(y1-0.5)) ;
       aContour.push_back(ptA);
       if(sc== vectContoursBdrySCell.at(i).at(vectContoursBdrySCell.at(i).size()-1)){
         aContour.push_back(ptB);

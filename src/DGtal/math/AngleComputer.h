@@ -97,7 +97,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the smallest angle of [i] and [j] in a window 'pi'.
      */
-    static float minAngle( float i, float j );
+    static float min( float i, float j );
 
     /**
      * Equivalent to 'less( i, j ) ? j : i'.
@@ -106,7 +106,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the greatest angle of [i] and [j] in a window 'pi'.
      */
-    static float maxAngle( float i, float j );
+    static float max( float i, float j );
 
 
     /**
@@ -150,7 +150,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the smallest angle of [i] and [j] in a window 'pi'.
      */
-    static double minAngle( double i, double j );
+    static double min( double i, double j );
 
     /**
      * Equivalent to 'less( i, j ) ? j : i'.
@@ -159,7 +159,7 @@ namespace DGtal
      * @param j any angle in [0:2pi[
      * @return the greatest angle of [i] and [j] in a window 'pi'.
      */
-    static double maxAngle( double i, double j );
+    static double max( double i, double j );
 
     
   };

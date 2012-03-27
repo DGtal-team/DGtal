@@ -82,7 +82,7 @@ HueShadeColorMap<Value,DefaultCycles>::operator=
 template<typename Value, int DefaultCycles>
 inline
 const Value &
-DGtal::HueShadeColorMap<Value,DefaultCycles>::minColorMap() const
+DGtal::HueShadeColorMap<Value,DefaultCycles>::min() const
 {
   return myMin;
 }
@@ -90,7 +90,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::minColorMap() const
 template<typename Value, int DefaultCycles>
 inline
 const Value &
-DGtal::HueShadeColorMap<Value,DefaultCycles>::maxColorMap() const
+DGtal::HueShadeColorMap<Value,DefaultCycles>::max() const
 {
   return myMax;
 }

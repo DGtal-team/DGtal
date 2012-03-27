@@ -250,7 +250,7 @@ DGtal::AngleLinearMinimizer::optimize( unsigned int i1, unsigned int i2 )
 double
 DGtal::AngleLinearMinimizer::lastDelta() const
 {
-  return maxAngle();
+  return max();
 }
 
 
@@ -356,7 +356,7 @@ DGtal::AngleLinearMinimizerByRelaxation::oneStep( unsigned int i1, unsigned int 
 double
 DGtal::AngleLinearMinimizerByRelaxation::lastDelta() const
 {
-  return maxAngle();
+  return max();
 }
 
 

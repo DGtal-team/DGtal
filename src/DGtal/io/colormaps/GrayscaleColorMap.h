@@ -145,14 +145,14 @@ namespace DGtal
      *
      * @return The lower bound of the value range.
      */
-    const PValue & minColorMap() const;
+    const PValue & min() const;
 
     /** 
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
-    const PValue & maxColorMap() const;
+    const PValue & max() const;
 
     // ----------------------- Static methods ---------------------------------
 
