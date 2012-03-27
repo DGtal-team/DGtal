@@ -52,7 +52,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/base/BasicFunctors.h"
-//#include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/base/CLabel.h"
@@ -153,8 +153,10 @@ namespace DGtal
     /// range of values
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
-    typedef DefaultImageRange<Self> ConstRange; 
+    //obsolete:
+    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;  
+    typedef DefaultConstImageRange<Self> ConstRange; 
+    typedef DefaultImageRange<Self> Range; 
 
     /// output iterator
     typedef SetValueIterator<Self> OutputIterator; 
@@ -235,10 +237,16 @@ namespace DGtal
     const Domain &domain() const; 
 
     /**
-     * @return the range providing begin and end
-     * iterators to scan the values of image.
+     * @return the const range providing constant
+     * iterators to iterate over the values of the image.
      */
-    ConstRange range() const;
+    ConstRange constRange() const;
+
+    /**
+     * @return the range providing constant iterators
+     * and output iterators on the values of the image.
+     */
+    Range range() const;
 
     /**
      * Writes/Displays the object on an output stream.

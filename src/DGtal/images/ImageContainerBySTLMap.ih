@@ -118,13 +118,19 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::domain() const
 template <typename TDomain, typename TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::ConstRange
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::constRange() const
 {
-  //  return ConstRange( myDomainPtr->begin(), myDomainPtr->end(), *this );
   return ConstRange( *this );
-
 }
 
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Range
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
+{
+  return Range( *this );
+}
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline

@@ -79,9 +79,9 @@ bool testImage(const Image& aImage)
   img3 = img; //assignment
 
   //ranges comparison
-  typename Image::ConstRange rimg = img.range(); 
-  typename Image::ConstRange rimg2 = img2.range(); 
-  typename Image::ConstRange rimg3 = img3.range(); 
+  typename Image::ConstRange rimg = img.constRange(); 
+  typename Image::ConstRange rimg2 = img2.constRange(); 
+  typename Image::ConstRange rimg3 = img3.constRange(); 
 
   bool flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
   bool flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin()); 
@@ -94,12 +94,12 @@ bool testImage(const Image& aImage)
 
   ////////////////////////////////////////////////
   trace.beginBlock ( "Output iterator" );
-  std::copy(rimg.begin(), rimg.end(), img2.outputIterator()); 
+  std::copy(rimg.begin(), rimg.end(), img2.range().outputIterator()); 
 
   //rimg2 is invalid if Image is a proxy image
   //because its iterators point to the data of aImage
   //instead of pointing to the data of img2
-  rimg2 = img2.range(); 
+  rimg2 = img2.constRange(); 
   flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
   nbok += (flag2)?1:0;
   nb++;  
@@ -115,9 +115,9 @@ bool testImage(const Image& aImage)
   bool flag4 = ( img(p) == 128 );
 
   //range comparison
-  rimg = img.range(); 
-  rimg2 = img2.range(); 
-  rimg3 = img3.range(); 
+  rimg = img.constRange(); 
+  rimg2 = img2.constRange(); 
+  rimg3 = img3.constRange(); 
   std::copy( rimg.begin(), rimg.end(), std::ostream_iterator<int>(cout,", ") ); 
   cout << endl;  
   flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
@@ -180,8 +180,8 @@ int main( int argc, char** argv )
   // HImage hi(3, p, q, 0);
   // res = res && testImage(hi);
 
-  LImage li( new VImage(d) );
-  res = res && testImage(li);
+  // LImage li( new VImage(d) );
+  // res = res && testImage(li);
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
