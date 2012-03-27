@@ -52,7 +52,8 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
   : p( p1 ), q( q1 ), u( u1 ), k( k1 ), 
     ascendant( _ascendant )
 {
-  // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
+  //  if ( k == 0 )
+  //std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -236,7 +237,9 @@ next( Size v ) const
   ASSERT( ! this->null() );
   if ( v == NumberTraits<Size>::ZERO )
     return *this;
-  else if ( v == NumberTraits<Size>::ONE && ( *this != zeroOverOne() ) )
+  else if ( ( v == NumberTraits<Size>::ONE ) 
+            && ( this->myNode != instance().myZeroOverOne ) )
+    // && ( *this != zeroOverOne() ) )
     { // Specific case: same depth.
       v += u();
       bool anc_direct = isAncestorDirect();
@@ -301,7 +304,8 @@ next1( Size v ) const
       // display( std::cerr, father() );
       // std::cerr << ") ";
       Fraction f = father();
-      if ( f.k() == this->k() )
+      //if ( f.k() == this->k() )
+      if ( f.myNode->k == myNode->k )
         return father().next( 2 );
       else
         return father().next1( 2 );
@@ -311,7 +315,7 @@ next1( Size v ) const
       Iterator itkey = myNode->descendant2.find( v );
       if ( itkey != myNode->descendant2.end() ) // found
         return Fraction( itkey->second, mySup1 );
-      Node* new_node 
+      Node* new_node
         = new Node( myNode->p * v + myNode->p - myNode->ascendant->p,
                     myNode->q * v + myNode->q - myNode->ascendant->q,
                     v, myNode->k + 2, myNode );
@@ -577,25 +581,7 @@ template <typename TInteger, typename TSize, typename TMap>
 inline
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::LightSternBrocot()
 {
-  myOneOverZero = new Node( NumberTraits<Integer>::ONE,
-                            NumberTraits<Integer>::ZERO,
-                            NumberTraits<Size>::ZERO,
-                            -NumberTraits<Size>::ONE,
-                            0 );
-  myZeroOverOne = new Node( NumberTraits<Integer>::ZERO,
-                            NumberTraits<Integer>::ONE,
-                            NumberTraits<Size>::ZERO,
-                            NumberTraits<Size>::ZERO,
-                            myOneOverZero );
-  myOneOverZero->ascendant = 0; //myZeroOverOne;
-  myOneOverOne = new Node( NumberTraits<Integer>::ONE,
-                           NumberTraits<Integer>::ONE,
-                           NumberTraits<Size>::ONE,
-                           NumberTraits<Size>::ZERO,
-                           myOneOverZero );
-  myOneOverZero->descendant[ NumberTraits<Size>::ZERO ] = myZeroOverOne;
-  myOneOverZero->descendant[ NumberTraits<Size>::ONE ] = myOneOverOne;
-  nbFractions = 3;
+  // // Version 1/1 has depth 0.
   // myOneOverZero = new Node( NumberTraits<Integer>::ONE,
   //                           NumberTraits<Integer>::ZERO,
   //                           NumberTraits<Size>::ZERO,
@@ -606,16 +592,38 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::LightSternBrocot()
   //                           NumberTraits<Size>::ZERO,
   //                           NumberTraits<Size>::ZERO,
   //                           myOneOverZero );
-  // myOneOverZero->ascendant = myZeroOverOne;
+  // myOneOverZero->ascendant = 0; //myZeroOverOne;
   // myOneOverOne = new Node( NumberTraits<Integer>::ONE,
   //                          NumberTraits<Integer>::ONE,
   //                          NumberTraits<Size>::ONE,
-  //                          NumberTraits<Size>::ONE,
-  //                          myZeroOverOne );
-  // myZeroOverOne->descendant[ NumberTraits<Size>::ONE ] = myOneOverOne;
-  // myOneOverZero->descendant[ NumberTraits<Size>::ONE ] = myZeroOverOne;
-  // myOneOverZero->descendant2[ NumberTraits<Size>::ONE ] = myOneOverOne;
+  //                          NumberTraits<Size>::ZERO,
+  //                          myOneOverZero );
+  // myOneOverZero->descendant[ NumberTraits<Size>::ZERO ] = myZeroOverOne;
+  // myOneOverZero->descendant[ NumberTraits<Size>::ONE ] = myOneOverOne;
   // nbFractions = 3;
+
+  // Version 1/1 has depth 1.
+  myOneOverZero = new Node( NumberTraits<Integer>::ONE,
+                            NumberTraits<Integer>::ZERO,
+                            NumberTraits<Size>::ZERO,
+                            -NumberTraits<Size>::ONE,
+                            0 );
+  myZeroOverOne = new Node( NumberTraits<Integer>::ZERO,
+                            NumberTraits<Integer>::ONE,
+                            NumberTraits<Size>::ZERO,
+                            NumberTraits<Size>::ZERO,
+                            myOneOverZero );
+  myOneOverZero->ascendant = 0;
+  myOneOverOne = new Node( NumberTraits<Integer>::ONE,
+                           NumberTraits<Integer>::ONE,
+                           NumberTraits<Size>::ONE,
+                           NumberTraits<Size>::ONE,
+                           myZeroOverOne );
+  myZeroOverOne->descendant[ NumberTraits<Size>::ONE ] = myOneOverOne;
+  myOneOverZero->descendant[ NumberTraits<Size>::ZERO ] = myZeroOverOne;
+  myOneOverZero->descendant[ NumberTraits<Size>::ONE ] = myZeroOverOne;
+  myOneOverZero->descendant2[ NumberTraits<Size>::ONE ] = myOneOverOne;
+  nbFractions = 3;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -700,21 +708,22 @@ inline
 typename DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::fraction
 ( Integer p, Integer q,
-  Fraction ancestor )
+  Fraction // ancestor
+  )
 {
   // special case 1/0
   if ( ( p == NumberTraits<Integer>::ONE ) 
        && ( q == NumberTraits<Integer>::ZERO ) ) 
     return oneOverZero();
-  ASSERT( ancestor == zeroOverOne() );
-  Fraction f = ancestor;
+  //ASSERT( ancestor == zeroOverOne() );
+  Fraction f = zeroOverOne();
   bool sup1 = p > q;
   if ( sup1 ) std::swap( p, q );
   Integer _quot, _rem;
   IntegerComputer<Integer> ic;
   Size v;
   bool prec_was_one = false;
-  Size j = -NumberTraits<Size>::ONE;
+  Size j = NumberTraits<Size>::ZERO;//-NumberTraits<Size>::ONE;
   while ( q != NumberTraits<Integer>::ZERO )
     {
       ic.getEuclideanDiv( _quot, _rem, p, q );
@@ -722,9 +731,12 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::fraction
       // display( std::cerr, f );
       // std::cerr << "(" << f.k() << "/" << j << ")";
       v = NumberTraits<Integer>::castToInt64_t( _quot );
-      if ( f.k() == j ) f = f.next( v );
-      else f = f.next1( v );
-      ++j;
+      if ( f.k() == j ) 
+        f = f.next( v );
+      else 
+        f = f.next1( v );
+      //++j;
+      if ( v != 0 ) ++j;
       // std::cerr << " => ";
       // display( std::cerr, f );
       // std::cerr << std::endl;
