@@ -117,9 +117,9 @@ bool testImageFromSet()
   imageFromImage(image3, image2); 
   //image2 and image3 should be equal, 
   //but both different from image
-  Image::ConstRange rimg = image.range(); 
-  Image::ConstRange rimg2 = image2.range(); 
-  Image::ConstRange rimg3 = image3.range(); 
+  Image::ConstRange rimg = image.constRange(); 
+  Image::ConstRange rimg2 = image2.constRange(); 
+  Image::ConstRange rimg3 = image3.constRange(); 
   bool flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin());
   bool flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin()); 
   bool flag23 = std::equal(rimg2.begin(), rimg2.end(), rimg3.begin()); 

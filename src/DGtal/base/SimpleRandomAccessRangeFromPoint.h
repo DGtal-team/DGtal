@@ -88,8 +88,8 @@ namespace DGtal
       typedef TIterator OutputIterator;
       typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
 
-      typedef Circulator<Iterator> Circulator;
-      typedef std::reverse_iterator<Circulator> ReverseCirculator;
+      // typedef Circulator<Iterator> Circulator;
+      // typedef std::reverse_iterator<Circulator> ReverseCirculator;
 
       // ------------------------- standard services --------------------------------
 
@@ -284,23 +284,23 @@ namespace DGtal
         return ReverseIterator ( this->begin() );
       }
 
-      /**
-       * Circulator service.
-       * @return a circulator
-       */
-      Circulator c() const
-      {
-        return Circulator ( this->begin(), this->begin(), this->end() );
-      }
+      // /**
+      //  * Circulator service.
+      //  * @return a circulator
+      //  */
+      // Circulator c() const
+      // {
+      //   return Circulator ( this->begin(), this->begin(), this->end() );
+      // }
 
-      /**
-       * Circulator service.
-       * @return a reverse circulator
-       */
-      ReverseCirculator rc() const
-      {
-        return ReverseCirculator ( this->c() );
-      }
+      // /**
+      //  * Circulator service.
+      //  * @return a reverse circulator
+      //  */
+      // ReverseCirculator rc() const
+      // {
+      //   return ReverseCirculator ( this->c() );
+      // }
 
   }; //end class SimpleRandomAccessRangeFromPoint
 
