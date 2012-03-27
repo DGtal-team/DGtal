@@ -155,7 +155,7 @@ bool testSetFromImage()
   image.setValue(r,10);
   
   //image content
-  Image::ConstRange range = image.range(); 
+  Image::ConstRange range = image.constRange(); 
   std::copy(range.begin(), range.end(), ostream_iterator<Image::Value>(cout, " ") ); 
   cout << endl; 
 
