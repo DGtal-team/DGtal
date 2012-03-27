@@ -91,21 +91,21 @@ namespace DGtal
   template <typename I>
   struct CImage: CConstImage<I>
   { 
-    //Inner type in the range 
-    typedef typename I::Range::OutputIterator OutputIterator;
-    typedef typename I::Point Point;
-  public:
+  //   //Inner type in the range 
+  //   typedef typename I::Range::OutputIterator OutputIterator;
+  //   typedef typename I::Point Point;
+  // public:
   
-    BOOST_CONCEPT_USAGE(CImage)
-    {
-      ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator 
-      ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator 
-    }
+  //   BOOST_CONCEPT_USAGE(CImage)
+  //   {
+  //     ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator 
+  //     ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator 
+  //   }
     
-  private:
-    I myI;
-    Point aPoint;
-    OutputIterator myO; 
+  // private:
+  //   I myI;
+  //   Point aPoint;
+  //   OutputIterator myO; 
   };
 } // namespace DGtal
 
