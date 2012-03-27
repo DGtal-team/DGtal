@@ -24,31 +24,21 @@ namespace DGtal {
 This part of the manual describes how the build sequence of the  DGtal
 project is managed and how to extend DGtal with new classes and examples. 
 
-
-Table of contents:
- -# \ref intro
-  -# \ref linux 
-  -# \ref macos
-  -# \ref win   
- -# \ref cmakeDGtal
- -# \ref howtos  
-   -# \ref newclass
-   -# \ref newtest
-   -# \ref newexample
-   -# \ref newdep
-   -# \ref newdoc
+[TOC]
 
 \section intro Introduction and first build
 
 The DGTal library uses <a href="http://www.cmake.org">cmake</a> to
 manage the project build on various systems. With the same project
 description syntax, cmake can do various things:
+
   - Check the compiler and its options
   - Check and locate the project dependencies
   - Generate different build  backends (Unix makefile, VisualStudio
   projects,..), also called generators.
   - Create documentation build rules
   - Manage unit tests
+
   - ...
 
 \subsection linux Build on Linux-based distributions

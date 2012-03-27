@@ -114,6 +114,12 @@ namespace DGtal
     /**
      * @return an iterator on the first element of the domain.
      **/
+    ConstIterator begin(const Point &aPoint) const 
+    { return DummyObject<ConstIterator>::get(); }
+
+    /**
+     * @return an iterator on the first element of the domain.
+     **/
     ConstIterator begin() const 
     { return DummyObject<ConstIterator>::get(); }
 

@@ -129,10 +129,11 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
 template <typename TDomain, typename TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::OutputIterator
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::outputIterator()
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::begin()
 {
-  return OutputIterator( *this );
+  return this->begin( );
 }
+
 
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>

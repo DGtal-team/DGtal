@@ -23,34 +23,17 @@ namespace DGtal {
 This part of the manual describes how the DGtal Git repository is used on github
 and gives a couple of details on the git system.
 
-
-Table of contents:
- -# \ref sectGIT1
-   -# \ref subsectGIT11
-   -# \ref subsectGIT12
-   -# \ref subsectGIT13
- -# \ref sectGIT3
-   -# \ref subsectGIT31
-   -# \ref subsectGIT32
- -# \ref sectGITCommands
-   -# \ref ssCom1
-   -# \ref ssCom2
-   -# \ref ssCom3
- -# \ref sectGIT2  
-   -# \ref ss21
-   -# \ref ss22
-
- -# \ref sectGIT5
+[TOC]
 
 \section sectGIT1 Setting up your account and working copy
 
 \subsection subsectGIT11 Create an account on github.com
 
-  - go to github.com, then Signup -> Free account for opensource projects.
-  - choose login/password and it's done
-  - once it's ok, you're transferred to your "dashboard" with three
+- go to github.com, then Signup -> Free account for opensource projects.
+- choose login/password and it's done
+- once it's ok, you're transferred to your "dashboard" with three
 options "Set up Git", "Create a Repo", "Fork a Repo" and "Be Social"
-  - Select the first one.
+- Select the first one.
 
 \subsection subsectGIT12 Set up git
 

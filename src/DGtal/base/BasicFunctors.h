@@ -154,7 +154,7 @@ namespace DGtal
      */
     template <typename TInput>
     inline
-    Value operator()(const TInput& aInput) const
+    Value operator()(const TInput& /*aInput*/) const
     {
       return myValue;
     }
@@ -259,8 +259,6 @@ namespace DGtal
      */
     const TFunctor2* myF2;
   };
-
-
 
 /**
  * // template class Thresholder

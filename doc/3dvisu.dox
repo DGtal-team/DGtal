@@ -11,20 +11,9 @@ namespace DGtal {
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
  * 
- * Table of contents:
- *  -# \ref DGtalGLV_Display3D
- *  -# \ref DGtalGLV_Viewer3D
- *  -# \ref DGtalGLV_Boas3DTo2D
- *  -# \ref DGtalGLV_VisualizationDigitalSet
- *  -# \ref DGtalGLV_ModeEx 
- *  -# \ref DGtalGLV_Mode  
-        -# \ref DGtalGLV_ModeListing
-	-# \ref DGtalGLV_ModeExamplesDomain
-	-# \ref DGtalGLV_ModeOtherExamples
- *  -# \ref DGtalGLV_Custom
- *  -# \ref DGtalGLV_CLipping 
- *
- *
+ 
+[TOC]
+
   \section DGtalGLV_Display3D Display3D: a stream mechanism from abstract class Display3D
 
   The semi abstract class Display3D defines the stream mechanism to
@@ -37,28 +26,28 @@ namespace DGtal {
   
 
 
- * \section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
- *  The class Viewer3D inherits from the base class QGLViewer (which
- *  is based on QGLwidget).  It permits to display simple 3D shapes.
- *  LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library
- *  based on QT allowing to access to simple 3D fonctionalities like
- *  camera moving, mouse, keyboard interaction, clipping plane
- *  .... etc.
+\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
+ The class Viewer3D inherits from the base class QGLViewer (which
+ is based on QGLwidget).  It permits to display simple 3D shapes.
+ LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library
+ based on QT allowing to access to simple 3D fonctionalities like
+ camera moving, mouse, keyboard interaction, clipping plane
+ .... etc.
  *
- *  
- * First to use the Viewer3D stream, you need to include the following hearders:
+ 
+First to use the Viewer3D stream, you need to include the following hearders:
  *
- * @code
- *  #include "DGtal/io/3dViewers/Viewer3D.h"
- * @endcode
+@code
+ #include "DGtal/io/3dViewers/Viewer3D.h"
+@endcode
  *	
- * The following code snippet defines three points and a rectangular
- * domain in Z3. It then displays them in a Viewer3D object. The	
- * full code is in <a  href="viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
+The following code snippet defines three points and a rectangular
+domain in Z3. It then displays them in a Viewer3D object. The	
+full code is in <a  href="viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *	
- * 
- * The first step to visualize 3D object with Viewer3D is to create a QApplication from the main(): 
+
+The first step to visualize 3D object with Viewer3D is to create a QApplication from the main(): 
  @code
 using namespace DGtal;
 using namespace Z3i;
@@ -199,12 +188,12 @@ This example should provides a comparable visualization.
 
 As for \c Board2D the object can be displayed with different possible mode:
 
-   * - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
-   * - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
-   * - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
-   * - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-   * - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
-   * - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
+  - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
+  - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
+  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
 
 
 
@@ -257,13 +246,16 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 *<TR>
 *<TD  align=CENTER>
 \image html visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain "
-\image latex visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain " width=5cm</TD>
+\image latex visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain " width=5cm
+</TD>
 <TD  align=CENTER>
  \image html  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain."  
- \image latex  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain." width=5cm </TD>
+ \image latex  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain." width=5cm 
+</TD>
 <TD  align=CENTER>
  \image html  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels."
- \image latex  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels." width=5cm </TD>
+ \image latex  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels." width=5cm 
+</TD>
 
 
 * </TR>
@@ -343,10 +335,12 @@ we can add for instance two differents clipping planes:
 </TD>
 <TD  align=CENTER>
  \image html  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)." 
- \image latex  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm </TD>
+ \image latex  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
+</TD>
 <TD  align=CENTER>
  \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
-\image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm </TD>
+\image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
+</TD>
 * </TR>
 *</TABLE>
 *</CENTER>

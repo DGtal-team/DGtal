@@ -63,7 +63,8 @@ namespace DGtal
      \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
-     GaussDigitizer is a model of CDigitalEucldieanShape and CDigitalBoundedShape.
+     GaussDigitizer is a model of CDigitalEucldieanShape and
+     CDigitalBoundedShape. It is thus a model of CPointPredicate.
 
      @tparam TSpace the type of digital Space where the digitized
      object lies.
@@ -85,7 +86,8 @@ namespace DGtal
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
 
-    BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
+    // JOL: GaussDigitizer do not need a bounded shape.
+    // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
     
     BOOST_CONCEPT_ASSERT(( CEuclideanOrientedShape<TEuclideanShape> ));
 
@@ -99,6 +101,13 @@ namespace DGtal
      * Constructor. The object is not valid.
      */
     GaussDigitizer();
+
+    /**
+     * Assignment. Required by CPointPredicate.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    GaussDigitizer & operator= ( const GaussDigitizer & other );
 
     /**
        @param shape the digitizer now references the given shape.
@@ -246,7 +255,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   private:
-
 
     // ------------------------- Internals ------------------------------------
   private:
