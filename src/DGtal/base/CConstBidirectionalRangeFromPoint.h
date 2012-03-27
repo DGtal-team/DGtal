@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,11 +54,11 @@ namespace DGtal
      Description of \b concept '\b CConstBidirectionalRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of const bidirectional range with a begin() method from a point.
-     
+
      <p> Refinement of CConstBidirectionalRange
-    
+
      <p> Associated types :
-    
+
      <p> Notation
      - X : A type that is a model of CConstBidirectionalRangeFromPoint
      - x,  y : object of type X
@@ -65,7 +66,7 @@ namespace DGtal
 
 
      <p> Definitions
-    
+
      <p> Valid expressions and semantics <br>
 
 
@@ -74,9 +75,9 @@ namespace DGtal
 |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
 | reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const reverse iterator on the range first element |                |            |
 
-    
+
      <p> Invariants <br>
-    
+
      <p> Models <br>
 
      ImageContainerBySTLVector::Range
@@ -85,13 +86,14 @@ namespace DGtal
 
      @tparam T the type that should be a model of CConstBidirectionalRangeFromPoint.
    */
-  template <typename T> 
-  struct CConstBidirectionalRangeFromPoint: CConstBidirectionalRange<T> 
+  template <typename T>
+  struct CConstBidirectionalRangeFromPoint: CConstBidirectionalRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Point Point;
+    typedef typename T::ConstIterator ConstIterator;
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CConstBidirectionalRangeFromPoint )
@@ -108,13 +110,13 @@ namespace DGtal
   private:
     T myX; // do not require T to be default constructible.
     Point myPoint;
-    ConstIterartor myB;
-    
+    ConstIterator myB;
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CConstBidirectionalRangeFromPoint
-  
+
 } // namespace DGtal
 
 //                                                                           //
