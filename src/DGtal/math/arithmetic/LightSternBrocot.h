@@ -399,13 +399,12 @@ namespace DGtal
 	@param p the numerator (>=0)
 	@param q the denominator (>=0)
 
-	@param ancestor (optional) any ancestor of p/q in the tree
-	(for speed-up).
+	@param ancestor (optional) unused in this representation.
 	
 	@return the corresponding fraction in the Stern-Brocot tree.
 
-        NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
-        are the partial quotients of p/q.
+        NB: Complexity is bounded by \a n where \a n is the depth of
+        the continued fraction of p/q.
     */
     static Fraction fraction( Integer p, Integer q,
                               Fraction ancestor = zeroOverOne() );
