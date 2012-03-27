@@ -218,6 +218,8 @@ namespace DGtal
       /// @return its depth (1+number of coefficients of its continued fraction).
       Size k() const;
 
+      inline Size trueK() const { return myNode->k; }
+
       /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
       Fraction next( Size v ) const;
