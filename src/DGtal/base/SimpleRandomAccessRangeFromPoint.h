@@ -73,13 +73,12 @@ namespace DGtal
   class SimpleRandomAccessRangeFromPoint
   {
 
-      BOOST_CONCEPT_ASSERT ( ( CBidirectionalRangeFromPoint<TIterator> ) );
+// BOOST_CONCEPT_ASSERT ( ( CBidirectionalRange<TIterator> ) );
       BOOST_CONCEPT_ASSERT ( ( boost::UnaryFunction<DistanceFunctor,typename DistanceFunctor::Difference,typename DistanceFunctor::Point > ) );
 
       // ------------------------- inner types --------------------------------
 
     public:
-
 
       typedef typename DistanceFunctor::Point Point;
 
@@ -88,7 +87,6 @@ namespace DGtal
 
       typedef TIterator OutputIterator;
       typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
-
 
       typedef Circulator<Iterator> Circulator;
       typedef std::reverse_iterator<Circulator> ReverseCirculator;
@@ -223,7 +221,7 @@ namespace DGtal
        */
       OutputIterator outputIterator()
       {
-        return OutputIterator ( mybegin );
+        return OutputIterator ( myBegin );
       }
 
       /**
@@ -233,7 +231,7 @@ namespace DGtal
        */
       OutputIterator outputIterator ( const Point &aPoint )
       {
-        return OutputIterator ( mybegin ) + myDistance ( aPoint ) ;
+        return OutputIterator ( myBegin ) + myDistance ( aPoint ) ;
       }
 
       /**
@@ -242,7 +240,7 @@ namespace DGtal
       */
       ReverseOutputIterator routputIterator()
       {
-        return ReverseOutputIterator ( mybegin );
+        return ReverseOutputIterator ( myBegin );
       }
 
       /**
@@ -252,7 +250,7 @@ namespace DGtal
        */
       ReverseOutputIterator routputIterator ( const Point &aPoint )
       {
-        return ReverseOutputIterator ( mybegin ) + myDistance ( aPoint ) ;
+        return ReverseOutputIterator ( myBegin ) + myDistance ( aPoint ) ;
       }
 
 
