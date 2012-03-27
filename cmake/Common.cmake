@@ -12,19 +12,6 @@ message(STATUS "Host system is " ${CMAKE_HOST_SYSTEM} " with processor " ${CMAKE
 message(STATUS "Target system is " ${CMAKE_SYSTEM} " with processor " ${CMAKE_SYSTEM_PROCESSOR})
 
 #------------------------------------------------------------------------------
-# -- Environement variables
-#------------------------------------------------------------------------------
-if (UNIX)
-  add_definitions(-DUNIX)
-endif (UNIX)
-if (WIN32)
-  add_definitions(-DWIN32)
-endif (WIN32)
-if (APPLE)
-  add_definitions(-DAPPLE)
-endif (APPLE)
-
-#------------------------------------------------------------------------------
 # Offer the user the choice of overriding the installation directories
 #------------------------------------------------------------------------------
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")

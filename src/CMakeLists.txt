@@ -1,8 +1,3 @@
-# Make sure the compiler can find include files.
-if ( CPP0X_INITIALIZER_LIST )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif ( CPP0X_INITIALIZER_LIST )
-
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR}/src)
 
