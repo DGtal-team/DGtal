@@ -121,18 +121,18 @@ k() const
   ASSERT( myNode != 0 );
   if ( mySup1 )
     {
-      if ( ( myNode->k == 0 ) 
-           && ( myNode != instance().myZeroOverOne )
-           && ( myNode != instance().myOneOverOne ) )
-        {
-          std::cerr << "****ERROR**** "
-                    << " sup1=" << mySup1
-                    << " p=" << myNode->p
-                    << " q=" << myNode->q
-                    << " k=" << myNode->k
-                    << " u=" << myNode->u;
-          std::cerr << std::endl;
-        }
+      // if ( ( myNode->k == 0 ) 
+      //      && ( myNode != instance().myZeroOverOne )
+      //      && ( myNode != instance().myOneOverOne ) )
+      //   {
+      //     std::cerr << "****ERROR**** "
+      //               << " sup1=" << mySup1
+      //               << " p=" << myNode->p
+      //               << " q=" << myNode->q
+      //               << " k=" << myNode->k
+      //               << " u=" << myNode->u;
+      //     std::cerr << std::endl;
+      //   }
       ASSERT( ( myNode->k != 0 ) 
               || ( myNode == instance().myZeroOverOne )
               || ( myNode == instance().myOneOverOne ) );
@@ -239,7 +239,6 @@ next( Size v ) const
     return *this;
   else if ( ( v == NumberTraits<Size>::ONE ) 
             && ( this->myNode != instance().myZeroOverOne ) )
-    // && ( *this != zeroOverOne() ) )
     { // Specific case: same depth.
       v += u();
       bool anc_direct = isAncestorDirect();
@@ -264,22 +263,12 @@ next( Size v ) const
       Iterator itkey = myNode->descendant.find( v );
       if ( itkey != myNode->descendant.end() ) // found
         {
-          // std::cerr << "[next(" << v <<") of ";
-          // display( std::cerr, *this );
-          // std::cerr << "=Found:";
-          // display( std::cerr, Fraction( itkey->second, mySup1 ) );
-          // std::cerr << "]";
           return Fraction( itkey->second, mySup1 );
         }
       Node* new_node = 
         new Node( myNode->p * v + myNode->ascendant->p,
                   myNode->q * v + myNode->ascendant->q,
                   v, myNode->k + 1, myNode );
-      // std::cerr << "[next(" << v <<") of ";
-      // display( std::cerr, *this );
-      // std::cerr << "=NewNode:";
-      // display( std::cerr, Fraction( new_node, mySup1 ) );
-      // std::cerr << "]";
       myNode->descendant[ v ] = new_node;
       ++( instance().nbFractions );
       return Fraction( new_node, mySup1 );
@@ -300,11 +289,7 @@ next1( Size v ) const
     return *this;
   else if ( v == NumberTraits<Size>::ONE ) 
     { // Specific case: depth + 1.  [u_0, ..., u_n] => [u_0, ..., u_n -1, 2]
-      // std::cerr << "(father = ";
-      // display( std::cerr, father() );
-      // std::cerr << ") ";
       Fraction f = father();
-      //if ( f.k() == this->k() )
       if ( f.myNode->k == myNode->k )
         return father().next( 2 );
       else
@@ -358,7 +343,6 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 even() const
 {
   return NumberTraits<Size>::even( k() );
-  // return myNode->even();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -368,7 +352,6 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 odd() const
 {
   return NumberTraits<Size>::odd( k() );
-  //return myNode->odd();
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -377,7 +360,6 @@ typename DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 ancestor() const
 {
-  // ASSERT( myNode->q != NumberTraits<Integer>::ZERO );
   return Fraction( myNode->ascendant, mySup1 );
 }
 //-----------------------------------------------------------------------------
@@ -387,7 +369,6 @@ bool
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 isAncestorDirect() const
 {
-  // ASSERT( myNode->q != NumberTraits<Integer>::ZERO );
   return myNode->k == myNode->ascendant->k + NumberTraits<Size>::ONE;
 }
 //-----------------------------------------------------------------------------
@@ -397,14 +378,6 @@ typename DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 father() const
 {
-  //ASSERT( u() > NumberTraits<Size>::ONE );
-  // if ( u() == NumberTraits<Size>::ONE )
-  //   {
-  //     if ( *this == zeroOverOne() ) 
-  //       return inverse();
-  //     else // case: ( myNode == myOneOverOne ) 
-  //       return zeroOverOne();
-  //   }
   if ( isAncestorDirect() )
     return ancestor().next( u() - NumberTraits<Size>::ONE );
   else
@@ -715,7 +688,6 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::fraction
   if ( ( p == NumberTraits<Integer>::ONE ) 
        && ( q == NumberTraits<Integer>::ZERO ) ) 
     return oneOverZero();
-  //ASSERT( ancestor == zeroOverOne() );
   Fraction f = zeroOverOne();
   bool sup1 = p > q;
   if ( sup1 ) std::swap( p, q );
@@ -723,23 +695,16 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::fraction
   IntegerComputer<Integer> ic;
   Size v;
   bool prec_was_one = false;
-  Size j = NumberTraits<Size>::ZERO;//-NumberTraits<Size>::ONE;
+  Size j = NumberTraits<Size>::ZERO;
   while ( q != NumberTraits<Integer>::ZERO )
     {
       ic.getEuclideanDiv( _quot, _rem, p, q );
-      // std::cerr << "[" << _quot << "] ";
-      // display( std::cerr, f );
-      // std::cerr << "(" << f.k() << "/" << j << ")";
       v = NumberTraits<Integer>::castToInt64_t( _quot );
       if ( f.k() == j ) 
         f = f.next( v );
       else 
         f = f.next1( v );
-      //++j;
       if ( v != 0 ) ++j;
-      // std::cerr << " => ";
-      // display( std::cerr, f );
-      // std::cerr << std::endl;
       p = q;
       q = _rem;
     }
