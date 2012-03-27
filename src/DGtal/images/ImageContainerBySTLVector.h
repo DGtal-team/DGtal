@@ -116,7 +116,8 @@ namespace DGtal
       /// range of values
       BOOST_CONCEPT_ASSERT ( ( CLabel<TValue> ) );
       typedef TValue Value;
-//      typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange;
+    // obsolete
+    // typedef SimpleConstRange<typename vector<Value>::const_iterator > ConstRange;
 
       /////////////////// Data members //////////////////
 
@@ -257,13 +258,13 @@ namespace DGtal
       * @return the range providing begin and end
       * iterators to scan the values of image.
       */
-      ConstRange range() const;
+      ConstRange constRange() const;
 
       /**
       * @return the range providing begin and end
       * iterators to scan the values of image.
       */
-      Range range();
+      Range range() const;
 
 
       /////////////////////////// Custom Iterator ///////////////

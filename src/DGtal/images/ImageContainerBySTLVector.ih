@@ -129,11 +129,19 @@ ImageContainerBySTLVector<Domain, T>::domain() const
 template <typename Domain, typename T>
 inline
 typename ImageContainerBySTLVector<Domain, T>::ConstRange
-ImageContainerBySTLVector<Domain, T>::range() const
+ImageContainerBySTLVector<Domain, T>::constRange() const
 {
   return ConstRange( this->begin(), this->end() );
 }
 
+//------------------------------------------------------------------------------
+template <typename Domain, typename T>
+inline
+typename ImageContainerBySTLVector<Domain, T>::Range
+ImageContainerBySTLVector<Domain, T>::range() const
+{
+  return Range( this->begin(), this->end() );
+}
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
