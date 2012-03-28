@@ -63,20 +63,20 @@ namespace DGtal
      @brief Aim: Represents a set of points within the given
      domain. This set of points is modifiable by the user.
      
-     <p> Refinement of boost::CopyConstructible, boost::Assignable
+ ### Refinement of boost::CopyConstructible, boost::Assignable
 
      @todo add boost::Container ? Not for now, since coding style do
      not match with STL (e.g. Iterator instead of iterator).
     
-     <p> Associated types :
+ ### Associated types :
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CDigitalSet
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -101,11 +101,11 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CDigitalSet.
    */

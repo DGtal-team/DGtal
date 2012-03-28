@@ -78,7 +78,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td>
@@ -98,12 +98,12 @@ namespace DGtal
    * </tr>
    * </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    *
-   * <p> Notes <br>
+   * <p> Notes###
    * @todo ImageContainerByHashTree does not implement setStyle(display &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  template <typename T>

@@ -57,22 +57,22 @@ namespace DGtal
      
      Associates booleans to points.
     
-     <p> Refinement of CUnaryFunctor
+ ### Refinement of CUnaryFunctor
     
-     <p> Associated types :
+ ### Associated types :
 
      - Point : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
-     <p> Models <br>
+ ### Models###
     
      - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
      - complex predicate constructor: BinaryPointPredicate
      - others: DomainPredicate,SetPredicate
     
-     <p> Notes <br>
+ ### Notes###
    */
   template <typename T>
   struct CPointPredicate

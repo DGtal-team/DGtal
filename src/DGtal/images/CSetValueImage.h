@@ -65,7 +65,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
       <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -96,11 +96,11 @@ namespace DGtal
     </table>   
 
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
-   * <p> Notes <br>
+   * <p> Notes###
    *
    */
 

@@ -70,7 +70,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
@@ -80,11 +80,11 @@ namespace DGtal
 
 
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
-   * <p> Notes <br>
+   * <p> Notes###
    *
    */
 

@@ -70,7 +70,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
@@ -101,14 +101,14 @@ namespace DGtal
     
       </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * 
    *   Implicit and Parametric shapes of the shape factory.
    *
    *
-   * <p> Notes <br>
+   * <p> Notes###
    */
   template <typename TShape>
   struct CDigitalBoundedShape
