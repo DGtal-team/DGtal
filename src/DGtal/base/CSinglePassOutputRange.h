@@ -54,17 +54,17 @@ namespace DGtal
      @brief Aim: refined concept of single pass range which require that an output iterator exists.
 
 
-     <p> Refinement of
+ ###  Refinement of
 
-     <p> Associated types :
+ ###  Associated types :
      - OutputIterator: type of output iterator on the range.
 
-     <p> Notation
+ ###  Notation
      - \a X : A type that is a model of CSinglePassOutputRange
      - \a x, \a y : object of type X
 
 
-     <p> Definitions
+ ###  Definitions
 
 
 | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
@@ -73,13 +73,13 @@ namespace DGtal
 |          |                  |                   |                |              |                                                    |                |            |
 
 
-     <p> Invariants <br>
+ ###  Invariants
 
-     <p> Models <br>
+ ###  Models
 
      ImageContainerBySTLVector::Range
 
-     <p> Notes <br>
+ ###  Notes
 
      @tparam T the type that should be a model of CSinglePassOutputRange.
      @tparam Value the type of object t in (*it) = t.

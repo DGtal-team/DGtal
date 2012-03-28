@@ -56,19 +56,19 @@ namespace DGtal
      @ingroup Concepts
      @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
 
-     <p> Refinement of CSinglePassOutputRange
+ ### Refinement of CSinglePassOutputRange
 
-     <p> Associated types :
+ ### Associated types :
 
-     <p> Notation
+ ### Notation
      - X : A type that is a model of CSinglePassOutputRangeFromPoint
      - x,  y : object of type X
      - Point: A type of Point
 
 
-     <p> Definitions
+ ### Definitions
 
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and semantics
 
 
 
@@ -76,13 +76,13 @@ namespace DGtal
 |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
 | output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
 
-         <p> Invariants <br>
+ ### Invariants
 
-     <p> Models <br>
+ ### Models
 
      ImageContainerBySTLVector::Range
 
-     <p> Notes <br>
+ ### Notes
 
      @tparam T the type that should be a model of CSinglePassOutputRangeFromPoint.
      @tparam Value the type of object t in (*it) = t.

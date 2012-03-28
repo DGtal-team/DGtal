@@ -50,40 +50,40 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalOutputRange
   /**
-     Description of \b concept '\b CBidirectionalOutputRange' <p>
+     Description of \b concept '\b CBidirectionalOutputRange'
      @ingroup Concepts
      @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
 
 
-     <p> Refinement of CSinglePassOutputRange
+### Refinement of CSinglePassOutputRange
 
-     <p> Associated types :
-     - OutputIterator: type of output iterator on the range.
+### Associated types :
+- OutputIterator: type of output iterator on the range.
 
-     <p> Notation
-     - \a X : A type that is a model of CBidirectionalOutputRange
-     - \a x, \a y : object of type X
-
-
-     <p> Definitions
+### Notation
+- \a X : A type that is a model of CBidirectionalOutputRange
+- \a x, \a y : object of type X
 
 
-| Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
+### Definitions
+
+
+| Name| Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
 |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
 | creation | routputIterator() |                   | ReverseOutputIterator |              | Returns a reverse output iterator on the range first element |                |            |
 |          |                  |                   |                |              |                                                    |                |            |
 
 
-     <p> Invariants <br>
+### Invariants###
 
-     <p> Models <br>
+### Models###
 
-     ImageContainerBySTLVector::Range
+ImageContainerBySTLVector::Range
 
-     <p> Notes <br>
+### Notes###
 
-     @tparam T the type that should be a model of CBidirectionalOutputRange.
-     @tparam Value the type of object t in (*it) = t.
+@tparam T the type that should be a model of CBidirectionalOutputRange.
+@tparam Value the type of object t in (*it) = t.
 
    */
   template <typename T, typename Value>

@@ -54,17 +54,17 @@ namespace DGtal
      @ingroup Concepts
      @brief Aim:
      
-     <p> Refinement of boost_concepts::CopyConstructible
+ ### Refinement of boost_concepts::CopyConstructible
     
-     <p> Associated types :
+ ### Associated types :
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CDigitalSurfaceTracker
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -89,13 +89,13 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
      A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
 
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CDigitalSurfaceTracker.
    */

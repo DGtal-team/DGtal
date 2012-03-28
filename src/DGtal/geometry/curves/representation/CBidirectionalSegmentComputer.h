@@ -56,17 +56,17 @@ namespace DGtal
      @brief Aim: Defines the concept describing a bidirectional segment computer,  
     ie. a model of CSegment that can extend itself in the two possible directions. 
      
-     <p> Refinement of CForwardSegmentComputer 
+ ### Refinement of CForwardSegmentComputer 
     
-     <p> Associated types : the same as CForwardSegmentComputer
+ ### Associated types : the same as CForwardSegmentComputer
   
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CBidirectionalSegmentComputer
      - \t x : object of type X
   
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -100,11 +100,11 @@ namespace DGtal
       </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CBidirectionalSegmentComputer.
    */

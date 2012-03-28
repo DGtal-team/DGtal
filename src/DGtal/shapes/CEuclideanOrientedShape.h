@@ -57,18 +57,18 @@ namespace DGtal
      models should provide an orientation method  for  real
      points. Returned value type corresponds to  DGtal::Orientation.
 
-     <p> Refinement of
+ ### Refinement of
     
-     <p> Associated types :
+ ### Associated types :
     - RealPoint: type for real points.
 
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CEuclideanOrientedShape
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -95,13 +95,13 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
       Parametric and implicit shapes in the DGtal shape factory, 
 
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CEuclideanOrientedShape.
    */
