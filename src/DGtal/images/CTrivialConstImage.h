@@ -17,50 +17,51 @@
 #pragma once
 
 /**
- * @file CSetValueImage.h
+ * @file CTrivialConstImage.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
  * @date 2012/02/08
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CSetValueImageRECURSES)
-#error Recursive header files inclusion detected in CSetValueImage.h
-#else // defined(CSetValueImageRECURSES)
+#if defined(CConstImageRECURSES)
+#error Recursive header files inclusion detected in CTrivialConstImage.h
+#else // defined(CConstImageRECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CSetValueImageRECURSES
+#define CConstImageRECURSES
 
-#if !defined CSetValueImage_h
+#if !defined CTrivialConstImage_h
 /** Prevents repeated inclusion of headers. */
-#define CSetValueImage_h
+#define CTrivialConstImage_h
 
 #include <boost/concept_check.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 
+#include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/images/CConstImage.h"
+#include "DGtal/base/CLabel.h"
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // struct CSetValueImage
+  // struct CTrivialConstImage
   /**
-   * Description of \b concept '\b CSetValueImage' <p>
+   * Description of \b concept '\b CTrivialConstImage' <p>
    *
    * @ingroup Concepts
-   * Aim: Defines the concept describing a read/write image, 
-   * which is a refinement of a read-only image. 
+   * Aim: Defines the concept describing a read-only image, 
+   * which is a refinement of CPointFunctor. 
    *
-   * <p> Refinement of CConstImage
+   * <p> Refinement of CPointFunctor
    *
-   * <p> Associated types : the same as CConstImage
+   * <p> Associated types :
+   * - \t Domain: type of the image domain, model of concept CDomain
    *
    * <p> Notation
-   * - \t X : A type that is a model of CSetValueImage
+   * - \t X : A type that is a model of CTrivialConstImage
    * - \t x, \t y  : Object of type X
    *
    * <p> Definitions
@@ -77,21 +78,18 @@ namespace DGtal
         <td class=CPostCondition> \b Postcondition </td> 
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      
-    
-      <tr> 
-      <td class=CName> Set a value           </td> 
-      <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
-      <td class=CRequirements> @c aPoint of type Point and @c aValue of
-      type Value   </td> 
-      <td class=CReturnType>  void    </td>
-      <td class=CPrecondition> @c aPoint must be valid (inside the image domain)  </td> 
-      <td class=CSemantics>  associate the value @c aValue with the
-      point  @aPoint     </td> 
-      <td class=CPostCondition>   </td> 
-      <td class=CComplexity>  Container dependent    </td>
+
+	<tr> 
+        <td class=CName> accessor to the domain            </td> 
+        <td class=CExpression>  x.domain()   </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType>  const Domain &    </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics>  returns a const reference to the image domain     </td> 
+        <td class=CPostCondition>   </td> 
+        <td class=CComplexity> O(1)     </td>
       </tr>
-        
+
 
     </table>   
 
@@ -100,32 +98,39 @@ namespace DGtal
    *
    * <p> Models <br>
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
+   *
    * <p> Notes <br>
    *
    */
 
   template <typename I>
-  struct CSetValueImage: CConstImage<I>
+  struct CTrivialConstImage: CPointFunctor<I>
   {
 
   public:
-  
-    BOOST_CONCEPT_USAGE(CSetValueImage)
+    
+    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
+    //Inner types
+    typedef typename I::Domain Domain;
+    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+
+      
+    BOOST_CONCEPT_USAGE(CTrivialConstImage)
     {
-      myI.setValue(myP, myV);  //set a value v at p
+      ConceptUtils::sameType(i.domain(), d); 
     }
 
   private:
-    I myI;
-    typename I::Value myV;
-    typename I::Point myP;
+    I i;
+    Domain d;
+    
   };
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CSetValueImage_h
+#endif // !defined CTrivialConstImage_h
 
-#undef CSetValueImageRECURSES
-#endif // else defined(CSetValueImageRECURSES)
+#undef CConstImageRECURSES
+#endif // else defined(CConstImageRECURSES)

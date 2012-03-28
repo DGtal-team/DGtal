@@ -41,7 +41,7 @@
 
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/base/CConstBidirectionalRange.h"
+#include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
 #include "DGtal/base/CLabel.h"
 
 namespace DGtal
@@ -60,7 +60,8 @@ namespace DGtal
    *
    * <p> Associated types :
    * - \t Domain: type of the image domain, model of concept CDomain
-   * - \t ConstRange: type of range of image values, model of concept CConstBidirectionalRange
+   * - \t ConstRange: type of range of image values, 
+   * model of concept CConstBidirectionalRangeFromPoint
    *
    * <p> Notation
    * - \t X : A type that is a model of CConstImage
@@ -94,7 +95,7 @@ namespace DGtal
     
 	<tr> 
         <td class=CName> accessor to the range of the image values            </td> 
-        <td class=CExpression>  x.range()   </td>
+        <td class=CExpression>  x.constRange()   </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType>  ConstRange    </td>
         <td class=CPrecondition>    </td> 
@@ -120,27 +121,27 @@ namespace DGtal
   struct CConstImage: CPointFunctor<I>
   {
 
-  // public:
+  public:
     
-  //   BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
-  //   //Inner types
-  //   typedef typename I::Domain Domain;
-  //   BOOST_CONCEPT_ASSERT((CDomain<Domain>));
+    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
+    //Inner types
+    typedef typename I::Domain Domain;
+    BOOST_CONCEPT_ASSERT((CDomain<Domain>));
 
-  //   typedef typename I::ConstRange Range;
-  //   BOOST_CONCEPT_ASSERT((CConstBidirectionalRange<Range>));
+    typedef typename I::ConstRange ConstRange;
+    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
 
       
-  //   BOOST_CONCEPT_USAGE(CConstImage)
-  //   {
-  //     ConceptUtils::sameType(i.domain(), d); 
-  //     ConceptUtils::sameType(i.range(), r); 
-  //   }
+    BOOST_CONCEPT_USAGE(CConstImage)
+    {
+      ConceptUtils::sameType(i.domain(), d); 
+      ConceptUtils::sameType(i.constRange(), r); 
+    }
 
-  // private:
-  //   I i;
-  //   Domain d;
-  //   Range r; 
+  private:
+    I i;
+    Domain d;
+    ConstRange r; 
     
   };
 } // namespace DGtal

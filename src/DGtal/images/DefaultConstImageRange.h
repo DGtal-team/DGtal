@@ -44,7 +44,7 @@
 // Inclusions
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CTrivialConstImage.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "boost/concept_check.hpp"
 //////////////////////////////////////////////////////////////////////////////
@@ -79,7 +79,7 @@ namespace DGtal
     // ------------------------- inner types --------------------------------
   public: 
   
-    BOOST_CONCEPT_ASSERT(( CConstImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( CTrivialConstImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 
@@ -187,7 +187,7 @@ namespace DGtal
     ConstReverseIterator rbegin(const Point& aPoint) const {
       Domain d = myImagePtr->domain(); 
       typename Domain::ConstIterator itOnPts = d.begin(aPoint); 
-      if ( itOnPts != d.end ) ++itOnPts; 
+      if ( itOnPts != d.end() ) ++itOnPts; 
       ConstIterator itOnVals( itOnPts, *myImagePtr );
       return ConstReverseIterator( itOnVals );
     }
