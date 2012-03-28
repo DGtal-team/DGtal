@@ -57,7 +57,7 @@ template<typename Image>
 bool testImage(const Image& aImage)
 {
 
-  BOOST_CONCEPT_ASSERT(( CImage<Image> )); 
+  BOOST_CONCEPT_ASSERT(( CImage<Image> ));
 
   int nb = 0;
   int nbok = 0;
@@ -65,78 +65,78 @@ bool testImage(const Image& aImage)
   ////////////////////////////////////////////////
   trace.beginBlock ( "Main services, range" );
 
-  Image img(aImage); 
+  Image img(aImage);
   Image img2 = img; //copy
 
   //fill
-  typename Image::Domain::ConstIterator dit = img.domain().begin(); 
-  typename Image::Domain::ConstIterator ditEnd = img.domain().end(); 
+  typename Image::Domain::ConstIterator dit = img.domain().begin();
+  typename Image::Domain::ConstIterator ditEnd = img.domain().end();
   for (int i = 0; ( (dit != ditEnd)&&(i < 5) ); ++dit, ++i)
     {
       img.setValue(*dit, i);
     }
-  Image img3(img2); 
+  Image img3(img2);
   img3 = img; //assignment
 
   //ranges comparison
-  typename Image::ConstRange rimg = img.constRange(); 
-  typename Image::ConstRange rimg2 = img2.constRange(); 
-  typename Image::ConstRange rimg3 = img3.constRange(); 
+  typename Image::ConstRange rimg = img.constRange();
+  typename Image::ConstRange rimg2 = img2.constRange();
+  typename Image::ConstRange rimg3 = img3.constRange();
 
-  bool flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
-  bool flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin()); 
-  bool flag23 = std::equal(rimg2.begin(), rimg2.end(), rimg3.begin()); 
+  bool flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin());
+  bool flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin());
+  bool flag23 = std::equal(rimg2.begin(), rimg2.end(), rimg3.begin());
 
   nbok += ( (!flag2) && flag3 && (!flag23) )?1:0;
-  nb++;  
+  nb++;
   trace.info() << "(" <<nbok << "/" << nb << ")" << std::endl;
   trace.endBlock();
 
   ////////////////////////////////////////////////
   trace.beginBlock ( "Output iterator" );
-  std::copy(rimg.begin(), rimg.end(), img2.range().outputIterator()); 
+  std::copy(rimg.begin(), rimg.end(), img2.range().outputIterator());
 
   //rimg2 is invalid if Image is a proxy image
   //because its iterators point to the data of aImage
   //instead of pointing to the data of img2
-  rimg2 = img2.constRange(); 
-  flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
+  rimg2 = img2.constRange();
+  flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin());
   nbok += (flag2)?1:0;
-  nb++;  
+  nb++;
   trace.info() << "(" <<nbok << "/" << nb << ")" << std::endl;
   trace.endBlock();
 
   ////////////////////////////////////////////////
   trace.beginBlock ( " Getters / setters " );
   typename Image::Domain::Point p = img.domain().upperBound();
-  
+
   //local comparison
   img.setValue( p, 128 );
   bool flag4 = ( img(p) == 128 );
 
   //range comparison
-  rimg = img.constRange(); 
-  rimg2 = img2.constRange(); 
-  rimg3 = img3.constRange(); 
-  std::copy( rimg.begin(), rimg.end(), std::ostream_iterator<int>(cout,", ") ); 
-  cout << endl;  
-  flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin()); 
-  std::copy( rimg2.begin(), rimg2.end(), std::ostream_iterator<int>(cout,", ") ); 
-  cout << endl;  
-  flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin()); 
-  std::copy( rimg3.begin(), rimg3.end(), std::ostream_iterator<int>(cout,", ") ); 
-  cout << endl;  
-  
+  rimg = img.constRange();
+  rimg2 = img2.constRange();
+  rimg3 = img3.constRange();
+  std::copy( rimg.begin(), rimg.end(), std::ostream_iterator<int>(cout,", ") );
+  cout << endl;
+  flag2 = std::equal(rimg.begin(), rimg.end(), rimg2.begin());
+  std::copy( rimg2.begin(), rimg2.end(), std::ostream_iterator<int>(cout,", ") );
+  cout << endl;
+  flag3 = std::equal(rimg.begin(), rimg.end(), rimg3.begin());
+  std::copy( rimg3.begin(), rimg3.end(), std::ostream_iterator<int>(cout,", ") );
+  cout << endl;
+
   nbok += ( flag4 && (!flag2) && (!flag3) )?1:0;
-  nb++;  
+  nb++;
   trace.info() << "(" <<nbok << "/" << nb << ")" << std::endl;
   trace.endBlock();
 
   ////////////////////////////////////////////////
   trace.beginBlock ( " Display " );
-  trace.info() << img << std::endl; 
-  trace.info() << img2 << std::endl; 
-  trace.info() << img3 << std::endl; 
+  trace.info() << img << std::endl;
+  trace.info() << img2 << std::endl;
+  trace.info() << img3 << std::endl;
   trace.endBlock();
 
   return ( img.isValid() && img2.isValid() && img3.isValid() && (nbok == nb) );
@@ -144,7 +144,7 @@ bool testImage(const Image& aImage)
 
 int main( int argc, char** argv )
 {
- 
+
   trace.beginBlock ( "Testing image classes" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
@@ -152,29 +152,29 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   /// domain
-  typedef DGtal::int64_t Integer; 
-  typedef SpaceND<2,Integer> Space; 
-  typedef Space::Point Point; 
-  typedef HyperRectDomain<Space> Domain; 
+  typedef DGtal::int64_t Integer;
+  typedef SpaceND<2,Integer> Space;
+  typedef Space::Point Point;
+  typedef HyperRectDomain<Space> Domain;
 
-  const Integer size = 5; 
-  Point p = Point::diagonal(0); 
-  Point q = Point::diagonal(size-1); 
-  Domain d(p,q); 
+  const Integer size = 5;
+  Point p = Point::diagonal(0);
+  Point q = Point::diagonal(size-1);
+  Domain d(p,q);
 
   /// image types
-  typedef short Value; 
-  typedef ImageContainerBySTLVector<Domain,Value> VImage; 
-  typedef ImageContainerBySTLMap<Domain,Value> MImage; 
-  typedef experimental::ImageContainerByHashTree<Domain,Value> HImage; 
+  typedef short Value;
+  typedef ImageContainerBySTLVector<Domain,Value> VImage;
+  typedef ImageContainerBySTLMap<Domain,Value> MImage;
+  typedef experimental::ImageContainerByHashTree<Domain,Value> HImage;
   typedef Image<VImage > LImage;
 
   /// tests
-  // VImage vi(d); 
-  // bool res = testImage(vi); 
+  // VImage vi(d);
+  // bool res = testImage(vi);
 
   MImage mi(d);
-  res = res && testImage(mi);
+  bool res = res && testImage(mi);
 
   // TODO
   // HImage hi(3, p, q, 0);

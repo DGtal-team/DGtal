@@ -55,7 +55,7 @@ namespace DGtal
   /**
    * Description of template class 'Image' <p>
    * \brief Aim: implements association bewteen points lying in a
-   * digital domain and values. 
+   * digital domain and values.
    *
    * This class is a lightweight proxy on ImageContainers (models of
    * CImage). Image class is also a model of CImage.
@@ -71,31 +71,32 @@ namespace DGtal
     // ----------------------- Types ------------------------------
 
   public:
-    
+
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-                                                 
+
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
-    typedef typename TImageContainer::ConstRange ConstRange; 
-    typedef typename TImageContainer::OutputIterator OutputIterator; 
+    typedef typename TImageContainer::ConstRange ConstRange;
+    typedef typename TImageContainer::Range Range;
+    typedef typename TImageContainer::OutputIterator OutputIterator;
 
     ///Pointer to the image container data.
     typedef CowPtr<TImageContainer> ImagePointer;
 
     // ----------------------- Standard services ------------------------------
 
-  public: 
+  public:
 
-    /** 
+    /**
      * Default constructor.
      */
     Image();
 
-    /** 
+    /**
      * Constructor from a pointer on the underlying image container.
      */
     Image(ImageContainer *anImageContainer):
@@ -123,11 +124,11 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    Image & operator= ( const Image & other ) 
+    Image & operator= ( const Image & other )
     {
       if (&other != this)
 	{
-	  myImagePointer = other.myImagePointer; 
+	  myImagePointer = other.myImagePointer;
 	}
       return *this;
     }
@@ -141,47 +142,47 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /////////////////// Domains //////////////////
-  
-    /** 
+
+    /**
      * Returns a reference to the underlying image domain.
-     * 
-     * @return a reference to the domain. 
+     *
+     * @return a reference to the domain.
      */
     const Domain & domain() const
     {
       return myImagePointer->domain();
     }
 
-    /** 
+    /**
      * Returns the range of the underlying image
      * to iterate over its values
-     * 
-     * @return a range. 
+     *
+     * @return a range.
      */
     ConstRange constRange() const
     {
       return myImagePointer->constRange();
     }
-        
-    /** 
+
+    /**
      * Returns the range of the underlying image
      * to iterate over its values
-     * 
-     * @return a range. 
+     *
+     * @return a range.
      */
-    Range range() const
+    Range range()
     {
       return myImagePointer->range();
     }
 
     //obsolete
-    // /** 
+    // /**
     //  * Returns the range of the underlying image
     //  * to iterate over its values
-    //  * 
-    //  * @return a range. 
+    //  *
+    //  * @return a range.
     //  */
     // OutputIterator outputIterator()
     // {
@@ -190,7 +191,7 @@ namespace DGtal
 
     /////////////////// Accessors //////////////////
 
-   
+
     /**
      * Get the value of an image at a given position given
      * by a Point.
@@ -220,17 +221,17 @@ namespace DGtal
     {
       myImagePointer->setValue(aPoint,aValue);
     }
-    
-    
+
+
 
     /////////////////// API //////////////////
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -244,8 +245,8 @@ namespace DGtal
     }
 
 
-    /** 
-     * 
+    /**
+     *
      * @return a const reference to the image container data.
      */
     const ImagePointer getPointer() const
@@ -260,8 +261,8 @@ namespace DGtal
 
     /// Owning smart pointer on the image container
     ImagePointer myImagePointer;
-    
- 
+
+
   private:
 
 
