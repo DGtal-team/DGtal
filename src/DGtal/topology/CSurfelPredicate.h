@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSurfelPredicate
   /**
-     Description of \b concept '\b CSurfelPredicate' <p>
+Description of \b concept '\b CSurfelPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a surfel.
      

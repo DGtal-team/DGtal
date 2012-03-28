@@ -55,7 +55,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUnsignedInteger
   /**
-     Description of \b concept '\b CUnsignedInteger' <p>
+Description of \b concept '\b CUnsignedInteger' <p>
      @ingroup Concepts
 
      @brief Aim: Concept checking for Unsigned Integer. 

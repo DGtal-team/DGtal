@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalBoundedShape
   /**
-   * Description of \b concept '\b CDigitalBoundedShape' <p>
+   * DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
    * @ingroup Concepts
    * Aim: designs the concept of bounded shapes in DGtal (shape for
    * which upper and lower bounding bounds are available).

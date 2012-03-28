@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConstSinglePassRangeFromPoint
   /**
-     Description of \b concept '\b CConstSinglePassRangeFromPoint' <p>
+Description of \b concept '\b CConstSinglePassRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of const single pass range with a begin() method from a point.
 

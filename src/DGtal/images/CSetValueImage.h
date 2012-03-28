@@ -49,7 +49,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CSetValueImage
   /**
-   * Description of \b concept '\b CSetValueImage' <p>
+   * DescriptionDescription of \b concept '\b CSetValueImage' <p>
    *
    * @ingroup Concepts
    * Aim: Defines the concept describing a read/write image, 

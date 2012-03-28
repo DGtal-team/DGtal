@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDomainAdjacency
   /**
-   * Description of \b concept '\b CDomainAdjacency' <p> 
+   * DescriptionDescription of \b concept '\b CDomainAdjacency' <p> 
    * @ingroup Concepts 
    *
    * \brief Aim: Refines the concept CAdjacency by telling that the

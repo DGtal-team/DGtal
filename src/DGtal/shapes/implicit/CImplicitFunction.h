@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunction
   /**
-     Description of \b concept '\b CImplicitFunction' <p>
+Description of \b concept '\b CImplicitFunction' <p>
      @ingroup Concepts
 
      @brief Aim: Describes any function of the form f(x), where x is

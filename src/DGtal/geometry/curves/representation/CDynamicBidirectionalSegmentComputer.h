@@ -53,7 +53,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDynamicBidirectionalSegmentComputer
   /**
-     Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
+Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a dynamic and bidirectional 
     segment computer,  ie. a model of CSegment that can extend and retract itself 

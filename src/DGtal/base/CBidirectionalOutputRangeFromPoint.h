@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalOutputRangeFromPoint
   /**
-Description of \b concept '\b CBidirectionalOutputRangeFromPoint' <p>
+DescriptionDescription of \b concept '\b CBidirectionalOutputRangeFromPoint' <p>
 @ingroup Concepts
 @brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
 

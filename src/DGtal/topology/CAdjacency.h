@@ -53,7 +53,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CAdjacency
   /**
-   * Description of \b concept '\b CAdjacency' <p>
+   * DescriptionDescription of \b concept '\b CAdjacency' <p>
    * @ingroup Concepts
    *
    * \brief Aim: The concept CAdjacency defines an elementary

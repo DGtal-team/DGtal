@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSegment
   /**
-     Description of \b concept '\b CSegment' <p>
+Description of \b concept '\b CSegment' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a segment of a range,
     ie. a valid and not empty subrange.

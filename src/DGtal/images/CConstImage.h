@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
-   * Description of \b concept '\b CConstImage' <p>
+   * DescriptionDescription of \b concept '\b CConstImage' <p>
    *
    * @ingroup Concepts
    * Aim: Defines the concept describing a read-only image,

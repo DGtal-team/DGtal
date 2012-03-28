@@ -56,7 +56,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSignedInteger
   /**
-     Description of \b concept '\b CSignedInteger' <p>
+Description of \b concept '\b CSignedInteger' <p>
      @ingroup Concepts
 
      @brief Aim: Concept checking for Signed Integer. 

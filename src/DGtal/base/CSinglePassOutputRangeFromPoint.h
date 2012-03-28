@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassOutputRangeFromPoint
   /**
-     Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
+Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
 

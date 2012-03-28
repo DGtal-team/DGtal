@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConstSinglePassRange
   /**
-     Description of \b concept '\b CConstSinglePassRange' <p>
+Description of \b concept '\b CConstSinglePassRange' <p>
      @ingroup Concepts
     
      \brief Aim: Defines the concept describing a const range.

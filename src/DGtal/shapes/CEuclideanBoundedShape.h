@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanBoundedShape
   /**
-   * Description of \b concept '\b CEuclideanBoundedShape' <p>
+   * DescriptionDescription of \b concept '\b CEuclideanBoundedShape' <p>
    * @ingroup Concepts
    * Aim: designs the concept of bounded shapes in DGtal (shape for
    * which upper and lower bounding bounds are available).

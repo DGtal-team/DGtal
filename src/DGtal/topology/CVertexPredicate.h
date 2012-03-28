@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CVertexPredicate
   /**
-     Description of \b concept '\b CVertexPredicate' <p>
+Description of \b concept '\b CVertexPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a vertex.
      

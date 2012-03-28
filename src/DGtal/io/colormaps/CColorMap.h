@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CColorMap
   /**
-   * Description of \b concept \b 'CColorMap' <p>
+   * DescriptionDescription of \b concept \b 'CColorMap' <p>
    * @ingroup Concepts
    * \brief Aim: Defines the concept describing a color map. A color map converts
    * a value within a given range into an RGB triple.

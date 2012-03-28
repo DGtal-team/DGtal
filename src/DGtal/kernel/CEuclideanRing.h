@@ -49,7 +49,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanRing
   /**
-     Description of \b concept '\b CEuclideanRing' <p>
+Description of \b concept '\b CEuclideanRing' <p>
      @ingroup Concepts
     
      @brief Aim: Defines the mathematical concept equivalent to a

@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CForwardSegmentComputer
   /**
-     Description of \b concept '\b CForwardSegmentComputer' <p>
+Description of \b concept '\b CForwardSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a forward segment computer,  
     ie. a model of CSegment that can extend itself (in the direction that is relative to 

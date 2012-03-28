@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalSegmentComputer
   /**
-     Description of \b concept '\b CBidirectionalSegmentComputer' <p>
+Description of \b concept '\b CBidirectionalSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a bidirectional segment computer,  
     ie. a model of CSegment that can extend itself in the two possible directions. 
