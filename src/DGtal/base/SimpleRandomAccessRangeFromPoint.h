@@ -73,7 +73,7 @@ namespace DGtal
   class SimpleRandomAccessRangeFromPoint
   {
 
-// BOOST_CONCEPT_ASSERT ( ( CBidirectionalRange<TIterator> ) );
+      BOOST_CONCEPT_ASSERT ( ( boost::RandomAccessIterator<TIterator> ) );
       BOOST_CONCEPT_ASSERT ( ( boost::UnaryFunction<DistanceFunctor,typename DistanceFunctor::Difference,typename DistanceFunctor::Point > ) );
 
       // ------------------------- inner types --------------------------------
@@ -274,7 +274,7 @@ namespace DGtal
        */
       ReverseIterator rbegin ( const Point &aPoint ) const
       {
-        return ReverseIterator ( this->end() ) + myDistance ( aPoint );
+        return ReverseIterator ( this->end() + myDistance ( aPoint ) );
       }
 
 

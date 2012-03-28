@@ -61,6 +61,37 @@
 namespace DGtal
 {
 
+
+     /**
+     *  Distance Functor used to create the ranges.
+     *  Such functor returns the distance between the image
+     *  "begin" and a given point.
+     *
+     * @tparam TImage Image type
+     */
+    template<typename TImage>
+    class DistanceFunctorFromPoint
+    {
+
+    public:
+
+        typedef typename TImage::Point Point;
+        typedef typename TImage::Difference Difference;
+
+    public:
+
+        DistanceFunctorFromPoint( const TImage *aImagePtr): myImagePtr(aImagePtr)
+        {};
+
+        Difference operator() ( const Point &aPoint ) const
+        {
+            return Difference ( myImagePtr->linearized ( aPoint ) );
+        }
+    private:
+        const TImage *myImagePtr;
+
+    };
+
 /////////////////////////////////////////////////////////////////////////////
 // class ImageContainerBySTLVector
 
@@ -96,6 +127,8 @@ class ImageContainerBySTLVector: public std::vector<TValue>
 {
 
 public:
+
+   typedef ImageContainerBySTLVector<TDomain, TValue> Self;
 
     /// domain
     BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
@@ -239,35 +272,9 @@ public:
     typedef typename vector<Value>::reverse_iterator ReverseOutputIterator;
 
 
-    /////////////////////////// Ranges  ///////////////
-
-    /**
-     *  Distance Functor used to create the ranges.
-     *  Such functor returns the distance between the image
-     *  "begin" and a given point.
-     *
-     */
-    class DistanceFunctor
-    {
-        friend class ImageContainerBySTLVector<Domain, Value>;
-    public:
-
-        DistanceFunctor( const ImageContainerBySTLVector<Domain, Value> *aImage): myImage(aImage)
-        {};
-
-        typedef ImageContainerBySTLVector<Domain,Value>::Difference Difference;
-        typedef ImageContainerBySTLVector<Domain,Value>::Point Point;
-        Difference operator() ( const Point &aPoint )
-        {
-            return Difference ( myImage->linearized ( aPoint ) );
-        }
-    private:
-        const ImageContainerBySTLVector<Domain, Value> *myImage;
-
-    };
-
-    typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctor> ConstRange;
-    typedef SimpleRandomAccessRangeFromPoint<Iterator,DistanceFunctor> Range;
+    /////////////////////////// Ranges  /////////////////////
+    typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctorFromPoint<Self> > ConstRange;
+    typedef SimpleRandomAccessRangeFromPoint<Iterator,DistanceFunctorFromPoint<Self> > Range;
 
     /**
     * @return the range providing begin and end
@@ -507,7 +514,6 @@ public:
 
 
 
-private:
 
     /**
      *  Linearized a point and return the vector position.
