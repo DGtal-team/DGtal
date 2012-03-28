@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/images/CSetValueImage.h"
+#include "DGtal/images/CTrivialImage.h"
 
 #include <iostream>
 
@@ -55,14 +55,14 @@ namespace DGtal
   // template class SetValueIterator
   /**
    * Description of template class 'SetValueIterator' <p>
-   * \brief Aim: implements an output iterator, 
-   * which is able to write values in an underlying image, 
-   * by calling its setValue method. 
+   * \brief Aim: implements an output iterator,
+   * which is able to write values in an underlying image,
+   * by calling its setValue method.
    *
    * @tparam TImage a model of CSetValueImage
    *
    */
-  template <typename TImage, typename TIteratorOnPts 
+  template <typename TImage, typename TIteratorOnPts
 	    = typename TImage::Domain::ConstIterator>
   class SetValueIterator:
     public std::iterator<std::output_iterator_tag,void,void,void,void>
@@ -70,8 +70,8 @@ namespace DGtal
     // ----------------------- Types definitions ------------------------------
   public:
 
-    typedef TImage Image; 
-    BOOST_CONCEPT_ASSERT(( CSetValueImage<Image> ));
+    typedef TImage Image;
+    BOOST_CONCEPT_ASSERT(( CTrivialImage<Image> ));
 
 
     // ----------------------- Standard services ------------------------------
@@ -112,10 +112,10 @@ namespace DGtal
      * @param aValue any value
      * @return a reference to *this
      */
-    SetValueIterator& operator=(const typename Image::Value& aValue) 
-      { 
-        myImg->setValue( *myItOnPts, aValue ); 
-        return *this; 
+    SetValueIterator& operator=(const typename Image::Value& aValue)
+      {
+        myImg->setValue( *myItOnPts, aValue );
+        return *this;
       }
 
     /**
@@ -134,11 +134,11 @@ namespace DGtal
      * Post-increment operator
      * @return *this
      */
-    SetValueIterator operator++(int) 
-    { 
-      SetValueIterator tmp = *this; 
-      ++myItOnPts; 
-      return tmp; 
+    SetValueIterator operator++(int)
+    {
+      SetValueIterator tmp = *this;
+      ++myItOnPts;
+      return tmp;
     }
 
 
@@ -158,12 +158,12 @@ namespace DGtal
     /**
      * Aliasing pointer on the underlying image
      */
-    Image* myImg; 
+    Image* myImg;
 
     /**
      * Iterator on points that scan the domain of the underlying image
      */
-    TIteratorOnPts myItOnPts; 
+    TIteratorOnPts myItOnPts;
 
   }; // end of class SetValueIterator
 

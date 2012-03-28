@@ -68,12 +68,13 @@ namespace DGtal
    *
    * @see RangeAdapter
    */
-  template <typename TIterator, typename DistanceFunctor>
+  template <typename TConstIterator, typename TIterator, typename DistanceFunctor>
 
   class SimpleRandomAccessRangeFromPoint
   {
 
       BOOST_CONCEPT_ASSERT ( ( boost::RandomAccessIterator<TIterator> ) );
+      BOOST_CONCEPT_ASSERT ( ( boost::RandomAccessIterator<TConstIterator> ) );
       BOOST_CONCEPT_ASSERT ( ( boost::UnaryFunction<DistanceFunctor,typename DistanceFunctor::Difference,typename DistanceFunctor::Point > ) );
 
       // ------------------------- inner types --------------------------------
@@ -83,7 +84,10 @@ namespace DGtal
       typedef typename DistanceFunctor::Point Point;
 
       typedef TIterator Iterator;
+      typedef TConstIterator ConstIterator;
+
       typedef std::reverse_iterator<Iterator> ReverseIterator;
+      typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef TIterator OutputIterator;
       typedef std::reverse_iterator<Iterator> ReverseOutputIterator;
@@ -193,7 +197,7 @@ namespace DGtal
        * Iterator service.
        * @return begin iterator
        */
-      Iterator begin() const
+      Iterator begin()
       {
         return Iterator ( myBegin );
       }
@@ -204,18 +208,47 @@ namespace DGtal
        * @param aPoint a Point
        * @return begin iterator at aPoint
        */
-      Iterator begin ( const Point &aPoint ) const
+      Iterator begin ( const Point &aPoint )
       {
         return Iterator ( myBegin ) + myDistance ( aPoint );
+      }
+
+       /**
+       * Iterator service.
+       * @return begin iterator
+       */
+      ConstIterator begin() const
+      {
+        return ConstIterator ( myBegin );
+      }
+
+
+      /**
+       * Iterator service.
+       * @param aPoint a Point
+       * @return begin iterator at aPoint
+       */
+      ConstIterator begin ( const Point &aPoint ) const
+      {
+        return ConstIterator ( myBegin ) + myDistance ( aPoint );
       }
 
       /**
        * Iterator service.
        * @return end iterator
        */
-      Iterator end() const
+      Iterator end()
       {
         return Iterator ( myEnd );
+      }
+
+     /**
+        * Iterator service.
+       * @return end iterator
+       */
+      ConstIterator end()  const
+      {
+        return ConstIterator ( myEnd );
       }
 
       /**
@@ -262,7 +295,7 @@ namespace DGtal
        * Iterator service.
        * @return rbegin iterator
        */
-      ReverseIterator rbegin() const
+      ReverseIterator rbegin()
       {
         return ReverseIterator ( this->end() );
       }
@@ -272,7 +305,7 @@ namespace DGtal
       * @param aPoint a Point
        * @return rbegin iterator at aPoint
        */
-      ReverseIterator rbegin ( const Point &aPoint ) const
+      ReverseIterator rbegin ( const Point &aPoint )
       {
         return ReverseIterator ( this->end() + myDistance ( aPoint ) );
       }
@@ -282,9 +315,39 @@ namespace DGtal
        * Iterator service.
        * @return rend iterator
        */
-      ReverseIterator rend() const
+      ReverseIterator rend()
       {
         return ReverseIterator ( this->begin() );
+      }
+
+
+      /**
+       * Iterator service.
+       * @return rbegin iterator
+       */
+      ConstReverseIterator rbegin() const
+      {
+        return ConstReverseIterator ( this->end() );
+      }
+
+      /**
+       * Iterator service.
+      * @param aPoint a Point
+       * @return rbegin iterator at aPoint
+       */
+      ConstReverseIterator rbegin ( const Point &aPoint ) const
+      {
+        return ConstReverseIterator ( this->end() + myDistance ( aPoint ) );
+      }
+
+
+      /**
+       * Iterator service.
+       * @return rend iterator
+       */
+      ConstReverseIterator rend() const
+      {
+        return ConstReverseIterator ( this->begin() );
       }
 
       // /**

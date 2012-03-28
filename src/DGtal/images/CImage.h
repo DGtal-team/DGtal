@@ -44,69 +44,82 @@
 
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
+#include "DGtal/base/CBidirectionalOutputRangeFromPoint.h"
+#include "DGtal/images/CTrivialImage.h"
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // struct CImage
-  /**
-   * DescriptionDescription of \b concept '\b CImage' <p>
-   *
-   * @ingroup Concepts
-   * Aim: Defines the concept describing a read/write image,
-   * having an output iterator.
-   *
-   * <p> Refinement of CSetValueImage
-   *
-   * <p> Associated types : the same as CSetValueImage +
-   * - \t OutputIterator : type of the output iterator
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CImage
-   * - \t x : Object of type X
-   * - \t aPoint : Object of type Point
-   *
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and
+/////////////////////////////////////////////////////////////////////////////
+// struct CImage
+/**
+ * DescriptionDescription of \b concept '\b CImage' <p>
+ *
+ * @ingroup Concepts
+ * Aim: Defines the concept describing a read/write image,
+ * having an output iterator.
+ *
+ * <p> Refinement of
+ *
+ *  CTrivialImage and CConstImage
+ *
+ * <p> Associated types:
+ * - the same as CTrivialImage
+ * - the same as CConstImage
+ * - \a Range : type of the Range
+ *
+ *
+ * <p> Notation
+ * - \t X : A type that is a model of CImage
+ * - \t x : Object of type X
+ * - \t aPoint : Object of type Point
+ * - \t aValue : Object of type Value
+ *
+ *
+ * <p> Definitions
+ *
+ * <p> Valid expressions and
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
 |-------------------------------------|------------------------------------|----------------------|-----------------------|------------------------------------|-------------------------------------------------------|----------------|------------|
-| get an output Iterator              | x.range().outputIterator()         |                      | Range::OutputIterator |                                    | Returns an output iterator on the image first point   |                |            |
-| get an output Iterator from a point | x.range().outputIterator( aPoint ) | aPoint of type Point | Range::OutputIterator | aPoint must be in the image domain | Returns an output  iterator on the image from a point |                |            |
+| get range                           | x.range()                          |                      | Range                 |                                    | Returns a range on the image values                   |                |            |
 
 
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
-   * <p> Notes###
-   *
-   */
+ *
+ * <p> Invariants###
+ *
+ * <p> Models###
+ * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
+ * <p> Notes###
+ *
+ */
 
-  template <typename I>
-  struct CImage: CConstImage<I>
-  {
-  //   //Inner type in the range
-  //   typedef typename I::Range::OutputIterator OutputIterator;
-   typedef typename I::Point Point;
-   public:
+template <typename I>
+struct CImage: CConstImage<I>, CTrivialImage<I>
+{
 
-  //   BOOST_CONCEPT_USAGE(CImage)
-  //   {
-  //     ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator
-  //     ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator
-  //   }
+public:
 
-   private:
-  //   I myI;
-     Point aPoint;
-  //   OutputIterator myO;
-  };
+    typedef typename I::Range Range;
+    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<Range>));
+    BOOST_CONCEPT_ASSERT((CBidirectionalOutputRangeFromPoint<Range, typename
+    I::Value>));
+
+public:
+
+    BOOST_CONCEPT_USAGE(CImage)
+    {
+        ConceptUtils::sameType( myI.range(), myR);
+    }
+
+private:
+
+    I myI;
+    Range myR;
+
+};
 } // namespace DGtal
 
 //                                                                           //
