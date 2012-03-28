@@ -69,7 +69,7 @@ DGtal::ImageContainerBySTLVector<Domain,T>
 {
   if (this != &other)
     {
-      vector<T>::operator=(other);
+      std::vector<T>::operator=(other);
       myDomain = other.myDomain;
       myExtent = other.myExtent;
     }
@@ -80,7 +80,7 @@ DGtal::ImageContainerBySTLVector<Domain,T>
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
+DGtal::ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 {
 }
 
@@ -89,7 +89,7 @@ ImageContainerBySTLVector<Domain, T>::~ImageContainerBySTLVector( )
 template <typename Domain, typename T>
 inline
 T
-ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
+DGtal::ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
 {
   ASSERT(this->domain().isInside(aPoint));
   return this->operator[](linearized( aPoint ) );
@@ -110,7 +110,7 @@ ImageContainerBySTLVector<Domain, T>::operator()(const Point &aPoint) const
 template <typename Domain, typename T>
 inline
 void
-ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
+DGtal::ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
 {
   ASSERT(this->domain().isInside(aPoint));
   this->operator[](linearized( aPoint )) = V;
@@ -119,8 +119,8 @@ ImageContainerBySTLVector<Domain, T>::setValue(const Point &aPoint, const T &V)
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-const typename ImageContainerBySTLVector<Domain, T>::Domain&
-ImageContainerBySTLVector<Domain, T>::domain() const
+const typename DGtal::ImageContainerBySTLVector<Domain, T>::Domain&
+DGtal::ImageContainerBySTLVector<Domain, T>::domain() const
 {
   return myDomain;
 }
@@ -128,25 +128,25 @@ ImageContainerBySTLVector<Domain, T>::domain() const
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain, T>::ConstRange
-ImageContainerBySTLVector<Domain, T>::constRange() const
+typename DGtal::ImageContainerBySTLVector<Domain, T>::ConstRange
+DGtal::ImageContainerBySTLVector<Domain, T>::constRange() const
 {
-  return ConstRange( this->begin(), this->end() );
+  return ConstRange( this->begin(), this->end(), DistanceFunctor(this));
 }
 
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
 typename ImageContainerBySTLVector<Domain, T>::Range
-ImageContainerBySTLVector<Domain, T>::range() const
+DGtal::ImageContainerBySTLVector<Domain, T>::range()
 {
-  return Range( this->begin(), this->end() );
+  return Range ( this->begin(), this->end(), DistanceFunctor(this) );
 }
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline
-typename ImageContainerBySTLVector<Domain, T>::Vector
-ImageContainerBySTLVector<Domain, T>::extent() const
+typename DGtal::ImageContainerBySTLVector<Domain, T>::Vector
+DGtal::ImageContainerBySTLVector<Domain, T>::extent() const
 {
   return myExtent;
 }
@@ -155,7 +155,7 @@ ImageContainerBySTLVector<Domain, T>::extent() const
 template <typename Domain, typename T>
 inline
 void
-ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShift)
+DGtal::ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShift)
 {
   myDomain = Domain(myDomain.lowerBound()+aShift, myDomain.upperBound()+aShift);
 }
@@ -164,7 +164,7 @@ ImageContainerBySTLVector<Domain, T>::translateDomain(const Vector& aShift)
 template <typename TDomain, typename V>
 inline
 void
-ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Image - STLVector] size=" << this->size() << " valuetype="
       << sizeof(V) << "bytes Domain=" << myDomain;
@@ -174,7 +174,7 @@ ImageContainerBySTLVector<TDomain, V>::selfDisplay ( std::ostream & out ) const
 template <typename Domain, typename T>
 inline
 bool
-ImageContainerBySTLVector<Domain, T>::isValid() const
+DGtal::ImageContainerBySTLVector<Domain, T>::isValid() const
 {
   return (this != NULL);
 }

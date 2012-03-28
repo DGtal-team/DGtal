@@ -73,7 +73,7 @@ namespace DGtal
   class SimpleRandomAccessConstRangeFromPoint
   {
 
-      BOOST_CONCEPT_ASSERT ( ( CConstBidirectionalRangeFromPoint<TConstIterator> ) );
+     // BOOST_CONCEPT_ASSERT ( ( CConstBidirectionalRangeFromPoint<TConstIterator> ) );
       BOOST_CONCEPT_ASSERT ( ( boost::UnaryFunction<DistanceFunctor,typename DistanceFunctor::Difference,typename DistanceFunctor::Point > ) );
 
       // ------------------------- inner types --------------------------------

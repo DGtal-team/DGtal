@@ -101,7 +101,9 @@ namespace DGtal
        * @param aFunctor functor used to adapt on-the-fly the elements of the range
        *
        */
-      SimpleRandomAccessRangeFromPoint ( const TIterator& itb, const TIterator& ite, const DistanceFunctor & aDistance )
+      SimpleRandomAccessRangeFromPoint ( const TIterator& itb,
+                                         const TIterator& ite,
+                                         const DistanceFunctor & aDistance )
           : myBegin ( itb ), myEnd ( ite ), myDistance ( aDistance ) {}
 
       /**
@@ -109,7 +111,8 @@ namespace DGtal
        * @param other the iterator to clone.
        */
       SimpleRandomAccessRangeFromPoint ( const SimpleRandomAccessRangeFromPoint & other )
-          : myBegin ( other.myBegin ), myEnd ( other.myEnd ), myDistance ( other.myDistance ) {}
+          : myBegin ( other.myBegin ), myEnd ( other.myEnd ),
+          myDistance ( other.myDistance ) {}
 
       /**
        * Assignment.
