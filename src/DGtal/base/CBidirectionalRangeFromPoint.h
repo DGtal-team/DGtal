@@ -52,7 +52,7 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class CBidirectionalRangeFromPoint
 /**
-   Description of \b concept '\b CBidirectionalRangeFromPoint'
+   DescriptionDescription of \b concept '\b CBidirectionalRangeFromPoint'
    @ingroup Concepts
    @brief Aim: refined concept of  single pass range with a begin() method from a point.
 

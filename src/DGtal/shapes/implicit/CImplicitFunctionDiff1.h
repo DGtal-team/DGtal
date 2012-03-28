@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunctionDiff1
   /**
-     Description of \b concept '\b CImplicitFunctionDiff1' <p>
+Description of \b concept '\b CImplicitFunctionDiff1' <p>
      @ingroup Concepts
 
      @brief Aim: Describes a 1-differentiable function of the form

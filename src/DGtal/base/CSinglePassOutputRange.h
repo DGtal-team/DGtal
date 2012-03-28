@@ -49,7 +49,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassOutputRange
   /**
-     Description of \b concept '\b CSinglePassOutputRange' <p>
+Description of \b concept '\b CSinglePassOutputRange' <p>
      @ingroup Concepts
      @brief Aim: refined concept of single pass range which require that an output iterator exists.
 

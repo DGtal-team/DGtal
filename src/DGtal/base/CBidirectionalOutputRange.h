@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalOutputRange
   /**
-     Description of \b concept '\b CBidirectionalOutputRange'
+Description of \b concept '\b CBidirectionalOutputRange'
      @ingroup Concepts
      @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
 

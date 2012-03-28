@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPredicate
   /**
-     Description of \b concept '\b CPredicate'
+Description of \b concept '\b CPredicate'
      @ingroup Concepts
      \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
 

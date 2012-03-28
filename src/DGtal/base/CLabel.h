@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CLabel
   /**
-     Description of \b concept '\b CLabel' <p>
+Description of \b concept '\b CLabel' <p>
      @ingroup Concepts
      @brief Aim: Define the concept of DGtal labels.
      Models of CLabel can be default-constructible, assignable and equality comparable.

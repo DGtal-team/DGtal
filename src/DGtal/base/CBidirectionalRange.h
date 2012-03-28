@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalRange
   /**
-     Description of \b concept '\b CBidirectionalRange'
+Description of \b concept '\b CBidirectionalRange'
      @ingroup Concepts
 
 \brief Aim: Defines the concept describing a bidirectional range.

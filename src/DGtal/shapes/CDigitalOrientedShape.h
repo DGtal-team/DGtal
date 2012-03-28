@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalOrientedShape
   /**
-     Description of \b concept '\b CDigitalOrientedShape' <p>
+Description of \b concept '\b CDigitalOrientedShape' <p>
      @ingroup Concepts
      @brief Aim: characterizes models of digital oriented shapes. For example,
      models should provide an orientation method  for  points on a

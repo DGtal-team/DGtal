@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceContainer
   /**
-     Description of \b concept '\b CDigitalSurfaceContainer' <p>
+Description of \b concept '\b CDigitalSurfaceContainer' <p>
      @ingroup Concepts
      @brief Aim:
      

@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointPredicate
   /**
-     Description of \b concept '\b CPointPredicate' <p>
+Description of \b concept '\b CPointPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a point. 
      

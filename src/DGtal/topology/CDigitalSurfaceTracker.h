@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceTracker
   /**
-     Description of \b concept '\b CDigitalSurfaceTracker' <p>
+Description of \b concept '\b CDigitalSurfaceTracker' <p>
      @ingroup Concepts
      @brief Aim:
      

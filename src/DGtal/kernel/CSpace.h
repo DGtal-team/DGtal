@@ -57,7 +57,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
-     Description of \b concept '\b CSpace' <p>
+Description of \b concept '\b CSpace' <p>
      @ingroup Concepts
     
      \brief Aim: Defines the concept describing a digital space, ie a

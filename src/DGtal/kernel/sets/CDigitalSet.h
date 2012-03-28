@@ -57,7 +57,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
   /**
-     Description of \b concept '\b CDigitalSet' <p>
+Description of \b concept '\b CDigitalSet' <p>
      @ingroup Concepts
 
      @brief Aim: Represents a set of points within the given

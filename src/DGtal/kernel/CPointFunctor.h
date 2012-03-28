@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointFunctor
   /**
-     Description of \b concept '\b CPointFunctor' <p>
+Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
      \brief Aim: Defines a functor on points.
      

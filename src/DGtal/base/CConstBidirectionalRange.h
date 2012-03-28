@@ -48,7 +48,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // class CConstBidirectionalRange
 /**
-Description of \b concept '\b CConstBidirectionalRange'
+DescriptionDescription of \b concept '\b CConstBidirectionalRange'
 @ingroup Concepts
 
 \brief Aim: Defines the concept describing a bidirectional const range.

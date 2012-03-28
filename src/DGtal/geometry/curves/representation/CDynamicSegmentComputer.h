@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDynamicSegmentComputer
   /**
-     Description of \b concept '\b CDynamicSegmentComputer' <p>
+Description of \b concept '\b CDynamicSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a dynamic segment computer,  
     ie. a model of CSegment that can extend and retract itself 

@@ -53,7 +53,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDomain
   /**
-   * Description of \b concept '\b CDomain' <p> \brief Aim: This
+   * DescriptionDescription of \b concept '\b CDomain' <p> \brief Aim: This
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
    * 

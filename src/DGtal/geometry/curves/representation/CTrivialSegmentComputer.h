@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CTrivialSegmentComputer
   /**
-     Description of \b concept '\b CTrivialSegmentComputer' <p>
+Description of \b concept '\b CTrivialSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing the most trivial segment computer,  
     ie. a model of CSegment that can extend itself. 

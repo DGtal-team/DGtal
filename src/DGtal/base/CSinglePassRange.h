@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRange
   /**
-Description of \b concept '\b CSinglePassRange' ###
+DescriptionDescription of \b concept '\b CSinglePassRange' ###
 @ingroup Concepts
 
 \brief Aim: Defines the concept describing a range.

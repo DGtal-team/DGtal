@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CImage
   /**
-   * Description of \b concept '\b CImage' <p>
+   * DescriptionDescription of \b concept '\b CImage' <p>
    *
    * @ingroup Concepts
    * Aim: Defines the concept describing a read/write image,

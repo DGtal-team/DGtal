@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUndirectedSimpleLocalGraph
   /**
-     Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
+Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
      @ingroup Concepts
      @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      

@@ -53,7 +53,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CQuantity
   /**
-     Description of \b concept '\b CQuantity' <p>
+Description of \b concept '\b CQuantity' <p>
      @ingroup Concepts
      @brief Aim: defines the concept of quantity in DGtal.
 

@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConvolutionKernel
   /**
-     Description of \b concept '\b CConvolutionKernel' <p>
+Description of \b concept '\b CConvolutionKernel' <p>
      @ingroup Concepts
      @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
 

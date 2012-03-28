@@ -55,7 +55,7 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithBoard3DTo2D
   /**
-   * Description of \b concept '\b CDrawableWithDisplay3D' <p>
+   * DescriptionDescription of \b concept '\b CDrawableWithDisplay3D' <p>
    * @ingroup Concepts
    * Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
    * that admit an export with Display3D.

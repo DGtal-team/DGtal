@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSeparableMetric
   /**
-   * Description of \b concept '\b CSeparableMetric' <p>
+   * DescriptionDescription of \b concept '\b CSeparableMetric' <p>
    * @ingroup Concepts
    * Aim: The concept CSeparableMetric specifies what are the classes
    * that implement a model of separable metrics.

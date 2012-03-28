@@ -49,7 +49,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUnaryFunctor
   /**
-     Description of \b concept '\b CUnaryFunctor' <p>
+Description of \b concept '\b CUnaryFunctor' <p>
      @ingroup Concepts
      \brief Aim: Defines a unary functor, which
      associates arguments to results

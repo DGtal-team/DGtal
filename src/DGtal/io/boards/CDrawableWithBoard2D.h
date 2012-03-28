@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithBoard2D
   /**
-   * Description of \b concept '\b CDrawableWithBoard2D' <p>
+   * DescriptionDescription of \b concept '\b CDrawableWithBoard2D' <p>
    * @ingroup Concepts
    * Aim:  The concept CDrawableWithBoard2D specifies what are the classes
    * that admit an export with Board2D.

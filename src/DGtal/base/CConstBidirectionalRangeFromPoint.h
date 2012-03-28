@@ -51,7 +51,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConstBidirectionalRangeFromPoint
   /**
-Description of \b concept '\b CConstBidirectionalRangeFromPoint'
+DescriptionDescription of \b concept '\b CConstBidirectionalRangeFromPoint'
 @ingroup Concepts
 @brief Aim: refined concept of const bidirectional range with a begin() method from a point.
 

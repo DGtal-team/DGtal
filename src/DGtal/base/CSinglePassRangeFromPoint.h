@@ -50,7 +50,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRangeFromPoint
   /**
-     Description of \b concept '\b CSinglePassRangeFromPoint' <p>
+Description of \b concept '\b CSinglePassRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of  single pass range with a begin() method from a point.
 
