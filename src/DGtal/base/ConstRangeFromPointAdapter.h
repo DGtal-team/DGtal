@@ -85,7 +85,7 @@ namespace DGtal
   class ConstRangeFromPointAdapter
   {
 
-    BOOST_CONCEPT_ASSERT(( CBidirectionalRangeFromPoint<TRange> )); 
+    BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint<TRange> )); 
 
     // ------------------------- inner types --------------------------------
   public: 
@@ -149,7 +149,7 @@ namespace DGtal
     /**
      * Aliasing pointer on the underlying functor
      */
-    const TFunctor* myFunctor; 
+    const TFunctor* myFunctorPtr; 
 
     // ------------------------- iterator services --------------------------------
   public:
@@ -159,7 +159,7 @@ namespace DGtal
      * @return begin iterator
      */
     ConstIterator begin() const {
-      return ConstIterator( myRangePtr->begin(), *myFunctor );
+      return ConstIterator( myRangePtr->begin(), *myFunctorPtr );
     }
 
     /**
@@ -167,7 +167,7 @@ namespace DGtal
      * @return begin iterator from a point
      */
     ConstIterator begin(const Point& aPoint) const {
-      return ConstIterator( myRangePtr->begin(aPoint), *myFunctor );
+      return ConstIterator( myRangePtr->begin(aPoint), *myFunctorPtr );
     }
 
     /**
@@ -175,7 +175,7 @@ namespace DGtal
      * @return end iterator
      */
     ConstIterator end() const {
-      return ConstIterator( myRangePtr->end(), *myFunctor );
+      return ConstIterator( myRangePtr->end(), *myFunctorPtr );
     }
 
     /**
@@ -191,7 +191,7 @@ namespace DGtal
      * @return rbegin iterator from a point
      */
     ConstReverseIterator rbegin(const Point& aPoint) const {
-      ConstIterator it( myRangePtr->begin(aPoint), *myFunctor ); 
+      ConstIterator it( myRangePtr->begin(aPoint), *myFunctorPtr ); 
       if ( it != this->end() ) ++it; 
       return ConstReverseIterator( it );
     }

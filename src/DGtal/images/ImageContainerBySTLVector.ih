@@ -131,7 +131,7 @@ inline
 typename DGtal::ImageContainerBySTLVector<Domain, T>::ConstRange
 DGtal::ImageContainerBySTLVector<Domain, T>::constRange() const
 {
-  return ConstRange( this->begin(), this->end(), DistanceFunctor(this));
+  return ConstRange( this->begin(), this->end(), DistanceFunctorFromPoint<Self>(this));
 }
 
 //------------------------------------------------------------------------------
@@ -140,7 +140,7 @@ inline
 typename ImageContainerBySTLVector<Domain, T>::Range
 DGtal::ImageContainerBySTLVector<Domain, T>::range()
 {
-  return Range ( this->begin(), this->end(), DistanceFunctor(this) );
+  return Range ( this->begin(), this->end(), DistanceFunctorFromPoint<Self>(this) );
 }
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
