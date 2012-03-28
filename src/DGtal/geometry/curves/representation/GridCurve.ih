@@ -126,7 +126,7 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
   
   try {
     return DGtal::GridCurve<TKSpace>::initFromVector(v);
-  } catch (DGtal::ConnectivityException& e) {
+  } catch (DGtal::ConnectivityException& /*e*/) {
     throw ConnectivityException();
     return false; 
   }

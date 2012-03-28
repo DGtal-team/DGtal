@@ -226,7 +226,7 @@ inline
 typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Size
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::nbSurfels() const
 {
-  return mySurfels.size();
+  return (unsigned int)mySurfels.size();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
