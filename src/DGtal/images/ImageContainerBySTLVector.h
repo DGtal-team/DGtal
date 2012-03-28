@@ -241,6 +241,12 @@ public:
 
     /////////////////////////// Ranges  ///////////////
 
+    /**
+     *  Distance Functor used to create the ranges.
+     *  Such functor returns the distance between the image
+     *  "begin" and a given point.
+     *
+     */
     class DistanceFunctor
     {
         friend class ImageContainerBySTLVector<Domain, Value>;
