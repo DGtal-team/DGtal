@@ -50,33 +50,33 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRange
   /**
-Description of \b concept '\b CSinglePassRange' <p>
+Description of \b concept '\b CSinglePassRange' ###
 @ingroup Concepts
 
 \brief Aim: Defines the concept describing a range.
 
-<p> Refinement of CSinglePassConstRange
-    
-<p> Provided types:
+### Refinement of CSinglePassConstRange
+
+### Provided types:
 
 - Iterator: the iterator type, a model of iterator concept
 (see boost concept SinglePassIteratorConcept).
 
-<p> Notation:
+### Notation:
 
 - x an object of a model of CSinglePassConstRange.
 
 Name | Expression | Type requirements | Return type | Precondition | Semantics | Post condition | Complexity|
 -----|------------|-------------------|-------------|--------------|-----------|----------------|-----------|
 begin| x.begin()  |                   | Iterator    |              |           |                |           |
-end  | x.end()    |                   | Iterator    |              |           |                |           | 
+end  | x.end()    |                   | Iterator    |              |           |                |           |
 
-    
-<p> Invariants <br>
-    
-<p> Models <br>
-    
-<p> Notes <br>
+
+### Invariants
+
+### Models
+
+### Notes
 
 @tparam T the type that is checked. T should be a model of CSinglePassRange.
 
@@ -89,7 +89,7 @@ end  | x.end()    |                   | Iterator    |              |           |
    typedef typename T::Iterator Iterator;
 
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
- 
+
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
  Iterator it=i.begin();
@@ -99,7 +99,7 @@ end  | x.end()    |                   | Iterator    |              |           |
   private:
     T i;
   }; // end of concept CSinglePassRange
-  
+
 } // namespace DGtal
 
 

@@ -57,17 +57,17 @@ namespace DGtal
     ie. a model of CSegment that can extend and retract itself 
     (in the direction that is relative to the underlying iterator).  
      
-     <p> Refinement of CForwardSegmentComputer 
+ ### Refinement of CForwardSegmentComputer 
     
-     <p> Associated types : the same as CForwardSegmentComputer
+ ### Associated types : the same as CForwardSegmentComputer
   
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CDynamicSegmentComputer
      - \t x : object of type X
   
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -91,11 +91,11 @@ namespace DGtal
       </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CDynamicSegmentComputer.
    */

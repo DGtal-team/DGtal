@@ -53,8 +53,8 @@ namespace DGtal
    * Description of \b concept '\b CConstImage' <p>
    *
    * @ingroup Concepts
-   * Aim: Defines the concept describing a read-only image, 
-   * which is a refinement of CPointFunctor. 
+   * Aim: Defines the concept describing a read-only image,
+   * which is a refinement of CPointFunctor.
    *
    * <p> Refinement of CPointFunctor
    *
@@ -69,27 +69,27 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
-      <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
+   * <p> Valid expressions and
+      <table>
+      <tr>
+        <td class=CName> \b Name </td>
         <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CRequirements> \b Type requirements </td>
         <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CPrecondition> \b Precondition </td>
+        <td class=CSemantics> \b Semantics </td>
+        <td class=CPostCondition> \b Postcondition </td>
         <td class=CComplexity> \b Complexity </td>
       </tr>
 
-	<tr> 
-        <td class=CName> accessor to the domain            </td> 
+	<tr>
+        <td class=CName> accessor to the domain            </td>
         <td class=CExpression>  x.domain()   </td>
-        <td class=CRequirements>    </td> 
+        <td class=CRequirements>    </td>
         <td class=CReturnType>  const Domain &    </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>  returns a const reference to the image domain     </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics>  returns a const reference to the image domain     </td>
+        <td class=CPostCondition>   </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
     
@@ -98,22 +98,22 @@ namespace DGtal
         <td class=CExpression>  x.constRange()   </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType>  ConstRange    </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>  returns a constant range     </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics>  returns a constant range     </td>
+        <td class=CPostCondition>   </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
 
 
-    </table>   
+    </table>
 
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
    *
-   * <p> Notes <br>
+   * <p> Notes###
    *
    */
 

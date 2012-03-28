@@ -267,10 +267,8 @@ public:
     typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
     typedef typename vector<Value>::difference_type Difference;
 
-
     typedef typename vector<Value>::iterator OutputIterator;
     typedef typename vector<Value>::reverse_iterator ReverseOutputIterator;
-
 
     /////////////////////////// Ranges  /////////////////////
     typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctorFromPoint<Self> > ConstRange;

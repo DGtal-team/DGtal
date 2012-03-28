@@ -49,52 +49,52 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CBidirectionalRangeFromPoint
-  /**
-     Description of \b concept '\b CBidirectionalRangeFromPoint' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of  single pass range with a begin() method from a point.
+/////////////////////////////////////////////////////////////////////////////
+// class CBidirectionalRangeFromPoint
+/**
+   Description of \b concept '\b CBidirectionalRangeFromPoint'
+   @ingroup Concepts
+   @brief Aim: refined concept of  single pass range with a begin() method from a point.
 
-  <p> Refinement of CBidirectionalRange
+### Refinement of CBidirectionalRange
 
-  <p> Associated types :
+### Associated types :
 
-  <p> Notation
-  - X : A type that is a model of CBidirectionalRangeFromPoint
-  - x,  y : object of type X
-  - Point: A type of Point
-
-
-  <p> Definitions
-
-  <p> Valid expressions and semantics <br>
+### Notation
+- X : A type that is a model of CBidirectionalRangeFromPoint
+- x,  y : object of type X
+- Point: A type of Point
 
 
+### Definitions
 
-  | Name  | Expression       | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
-  |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-  | reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | Iterator |              | Returns an iterator on the range at point \a aPoint |                |            |
+### Valid expressions and
 
-  <p> Invariants <br>
 
-  <p> Models <br>
 
-  ImageContainerBySTLVector::Range
+| Name  | Expression       | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+|-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
+| reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | Iterator |              | Returns an iterator on the range at point \a aPoint |                |            |
 
-  <p> Notes <br>
+### Invariants
 
-  @tparam T the type that should be a model of CBidirectionalRangeFromPoint.
-   */
-  template <typename T>
+### Models
 
-  struct CBidirectionalRangeFromPoint:
-        CBidirectionalRange<T>,
-        CConstBidirectionalRangeFromPoint<T>
-  {
+ImageContainerBySTLVector::Range
+
+### Notes
+
+@tparam T the type that should be a model of CBidirectionalRangeFromPoint.
+ */
+template <typename T>
+
+struct CBidirectionalRangeFromPoint:
+            CBidirectionalRange<T>,
+            CConstBidirectionalRangeFromPoint<T>
+{
     // ----------------------- Concept checks ------------------------------
 
-  public:
+public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Point Point;
     typedef typename T::Iterator Iterator;
@@ -103,21 +103,21 @@ namespace DGtal
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE ( CBidirectionalRangeFromPoint )
     {
-      ConceptUtils::sameType ( myIt, myX.rbegin ( myPoint ) );
+        ConceptUtils::sameType ( myIt, myX.rbegin ( myPoint ) );
     }
 
     // ------------------------- Private Datas --------------------------------
 
-  private:
+private:
     T myX; // do not require T to be default constructible.
     Point myPoint;
     Iterator myIt;
 
     // ------------------------- Internals ------------------------------------
 
-  private:
+private:
 
-  }; // end of concept CBidirectionalRangeFromPoint
+}; // end of concept CBidirectionalRangeFromPoint
 
 } // namespace DGtal
 
