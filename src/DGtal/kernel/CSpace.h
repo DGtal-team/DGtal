@@ -114,7 +114,7 @@ Description of \b concept '\b CSpace' <p>
     
  ### Notes###
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CSpace.
 
    */

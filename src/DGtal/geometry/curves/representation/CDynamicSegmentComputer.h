@@ -97,7 +97,7 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CDynamicSegmentComputer.
+@tparam T the type that should be a model of CDynamicSegmentComputer.
    */
   template <typename T> 
   struct CDynamicSegmentComputer : CForwardSegmentComputer<T>

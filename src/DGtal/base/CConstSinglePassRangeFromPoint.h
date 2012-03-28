@@ -84,7 +84,7 @@ ImageContainerBySTLVector::Range
 
 ###  Notes
 
-     @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
+@tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
    */
   template <typename T>
   struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T>

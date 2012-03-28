@@ -104,7 +104,7 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CDigitalOrientedShape.
+@tparam T the type that should be a model of CDigitalOrientedShape.
    */
   template <typename T> 
   struct CDigitalOrientedShape

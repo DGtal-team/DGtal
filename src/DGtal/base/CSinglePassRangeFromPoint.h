@@ -82,7 +82,7 @@ Description of \b concept '\b CSinglePassRangeFromPoint' <p>
 
 ### Notes
 
-     @tparam T the type that should be a model of CSinglePassRangeFromPoint.
+@tparam T the type that should be a model of CSinglePassRangeFromPoint.
    */
   template <typename T>
   struct CSinglePassRangeFromPoint:

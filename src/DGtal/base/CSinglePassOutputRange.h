@@ -81,8 +81,8 @@ Description of \b concept '\b CSinglePassOutputRange' <p>
 
  ###  Notes
 
-     @tparam T the type that should be a model of CSinglePassOutputRange.
-     @tparam Value the type of object t in (*it) = t.
+@tparam T the type that should be a model of CSinglePassOutputRange.
+@tparam Value the type of object t in (*it) = t.
    */
   template <typename T, typename Value>
   struct CSinglePassOutputRange

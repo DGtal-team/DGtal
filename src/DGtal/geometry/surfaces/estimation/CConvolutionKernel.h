@@ -100,7 +100,7 @@ Description of \b concept '\b CConvolutionKernel' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CConvolutionKernel.
+@tparam T the type that should be a model of CConvolutionKernel.
    */
   template <typename T> 
   struct CConvolutionKernel:  boost::CopyConstructible<T>, boost::Assignable<T>

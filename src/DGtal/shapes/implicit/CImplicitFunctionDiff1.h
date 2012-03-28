@@ -106,7 +106,7 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CImplicitFunctionDiff1.
+@tparam T the type that should be a model of CImplicitFunctionDiff1.
    */
   template <typename T> 
   struct CImplicitFunctionDiff1 : CImplicitFunction<T>

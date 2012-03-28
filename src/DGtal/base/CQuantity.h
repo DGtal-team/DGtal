@@ -99,7 +99,7 @@ Description of \b concept '\b CQuantity' <p>
 
 ###  Notes
 
-     @tparam T the type that should be a model of CQuantity.
+@tparam T the type that should be a model of CQuantity.
    */
   template <typename T>
   struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
