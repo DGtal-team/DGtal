@@ -126,13 +126,13 @@ namespace DGtal
       //deinterleave the bits
       for ( std::size_t i = 0; i < dimension; ++i )
 		{
-			coordinates[i] = 0;
+			coordinates[(Dimension)i] = 0;
 
 			for ( std::size_t bitPos = 0; bitPos < ( sizeof ( HashKey ) <<3 ) / dimension; ++bitPos )
 			{
 				if ( akey & Bits::mask<HashKey> ( (unsigned int)(bitPos*dimension+i) ) )
 				{
-					coordinates[i] |= Bits::mask<HashKey> ( (unsigned int)bitPos );
+					coordinates[(Dimension)i] |= Bits::mask<HashKey> ( (unsigned int)bitPos );
 				}
 			}
 		}
