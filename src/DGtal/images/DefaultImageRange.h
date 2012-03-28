@@ -101,7 +101,7 @@ namespace DGtal
      * @param aImage any image.
      *
      */
-    DefaultImageRange( const TImage& aImage )
+    DefaultImageRange( TImage& aImage )
       : myImagePtr(&aImage) {}
 
     /**
@@ -143,7 +143,7 @@ namespace DGtal
     /**
      * Aliasing pointer on the underlying image
      */
-    const TImage* myImagePtr; 
+    TImage* myImagePtr; 
 
     // ------------------------- iterator services (read-only) --------------------------------
   public:

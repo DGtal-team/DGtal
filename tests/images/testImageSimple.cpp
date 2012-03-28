@@ -143,7 +143,7 @@ bool testAPI()
 
   trace.warning() << "Image Iterate"<<std::endl;
   trace.info()<<std::endl;
-  MyImage::ConstRange r = image.range(); 
+  MyImage::ConstRange r = image.constRange(); 
   for(MyImage::ConstRange::ConstIterator it =r.begin(), ite=r.end();
       it != ite; ++it)
     std::cerr << (*it)<<" ";
