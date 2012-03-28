@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CSinglePassOutputRange.h"
+#include "DGtal/base/CConstSinglePassRangeFromPoint.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,11 +55,11 @@ namespace DGtal
      Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
-     
+
      <p> Refinement of CSinglePassOutputRange
-    
+
      <p> Associated types :
-    
+
      <p> Notation
      - X : A type that is a model of CSinglePassOutputRangeFromPoint
      - x,  y : object of type X
@@ -65,7 +67,7 @@ namespace DGtal
 
 
      <p> Definitions
-    
+
      <p> Valid expressions and semantics <br>
 
 
@@ -75,7 +77,7 @@ namespace DGtal
 | output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
 
          <p> Invariants <br>
-    
+
      <p> Models <br>
 
      ImageContainerBySTLVector::Range
@@ -83,10 +85,13 @@ namespace DGtal
      <p> Notes <br>
 
      @tparam T the type that should be a model of CSinglePassOutputRangeFromPoint.
+     @tparam Value the type of object t in (*it) = t.
+
    */
-  template <typename T> 
-  struct CSinglePassOutputRangeFromPoint: 
-    CSinglePassOutputRange<T>
+  template <typename T, typename Value>
+  struct CSinglePassOutputRangeFromPoint:
+    CConstSinglePassRangeFromPoint<T,Value>,
+    CSinglePassOutputRange<T,Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -105,12 +110,12 @@ namespace DGtal
     T myX; // do not require T to be default constructible.
     Point myPoint;
     OutputIterartor myIt;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CSinglePassOutputRangeFromPoint
-  
+
 } // namespace DGtal
 
 //                                                                           //
