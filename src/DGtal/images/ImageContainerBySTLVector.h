@@ -272,7 +272,7 @@ public:
 
     /////////////////////////// Ranges  /////////////////////
     typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctorFromPoint<Self> > ConstRange;
-    typedef SimpleRandomAccessRangeFromPoint<Iterator,DistanceFunctorFromPoint<Self> > Range;
+    typedef SimpleRandomAccessRangeFromPoint<ConstIterator,Iterator,DistanceFunctorFromPoint<Self> > Range;
 
     /**
     * @return the range providing begin and end

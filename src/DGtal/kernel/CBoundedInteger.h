@@ -103,7 +103,7 @@ DescriptionDescription of \b concept '\b CBoundedInteger' <p>
 
  ### Notes###
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CBoundedInteger.
    */
   template <typename T>

@@ -60,6 +60,8 @@ namespace DGtal
 
 ### Associated types :
 
+- ReverseIterator
+
 ### Notation
 - X : A type that is a model of CBidirectionalRangeFromPoint
 - x,  y : object of type X
@@ -74,7 +76,7 @@ namespace DGtal
 
 | Name  | Expression       | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
 |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-| reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | Iterator |              | Returns an iterator on the range at point \a aPoint |                |            |
+| reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ReverseIterator |              | Returns a reverse iterator on the range at point \a aPoint |                |            |
 
 ### Invariants
 
@@ -97,7 +99,7 @@ struct CBidirectionalRangeFromPoint:
 public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Point Point;
-    typedef typename T::Iterator Iterator;
+    typedef typename T::ReverseIterator ReverseIterator;
 
 
     // 2. then check the presence of data members, operators and methods with
@@ -111,7 +113,7 @@ public:
 private:
     T myX; // do not require T to be default constructible.
     Point myPoint;
-    Iterator myIt;
+    ReverseIterator myIt;
 
     // ------------------------- Internals ------------------------------------
 

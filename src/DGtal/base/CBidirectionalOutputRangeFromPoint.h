@@ -98,14 +98,14 @@ ImageContainerBySTLVector::Range
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CBidirectionalOutputRangeFromPoint )
     {
-       ConceptUtils::sameType( myIt, myX.rbegin( myPoint ) );
+       ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
     }
 
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     Point myPoint;
-    ReverseOutputItereator myIt;
+    ReverseOutputIterator myIt;
 
     // ------------------------- Internals ------------------------------------
   private:
