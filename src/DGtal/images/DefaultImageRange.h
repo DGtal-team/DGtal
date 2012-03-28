@@ -44,7 +44,7 @@
 // Inclusions
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CTrivialImage.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "boost/concept_check.hpp"
 //////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ namespace DGtal
     // ------------------------- inner types --------------------------------
   public: 
   
-    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    BOOST_CONCEPT_ASSERT(( CTrivialImage<TImage> ));
     typedef typename TImage::Domain Domain; 
     typedef typename TImage::Point Point; 
     typedef typename TImage::Value Value; 
