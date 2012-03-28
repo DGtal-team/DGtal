@@ -54,8 +54,8 @@ namespace DGtal
    * Description of \b concept '\b CImage' <p>
    *
    * @ingroup Concepts
-   * Aim: Defines the concept describing a read/write image, 
-   * having an output iterator. 
+   * Aim: Defines the concept describing a read/write image,
+   * having an output iterator.
    *
    * <p> Refinement of CSetValueImage
    *
@@ -66,11 +66,11 @@ namespace DGtal
    * - \t X : A type that is a model of CImage
    * - \t x : Object of type X
    * - \t aPoint : Object of type Point
-   * 
+   *
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
@@ -80,32 +80,32 @@ namespace DGtal
 
 
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
-   * <p> Notes <br>
+   * <p> Notes###
    *
    */
 
   template <typename I>
   struct CImage: CConstImage<I>
-  { 
-  //   //Inner type in the range 
+  {
+  //   //Inner type in the range
   //   typedef typename I::Range::OutputIterator OutputIterator;
-  //   typedef typename I::Point Point;
-  // public:
-  
+   typedef typename I::Point Point;
+   public:
+
   //   BOOST_CONCEPT_USAGE(CImage)
   //   {
-  //     ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator 
-  //     ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator 
+  //     ConceptUtils::sameType( myO, myI.range().outputIterator() ); //output iterator
+  //     ConceptUtils::sameType( myO, myI.range().outputIterator(aPoint) ); //output iterator
   //   }
-    
-  // private:
+
+   private:
   //   I myI;
-  //   Point aPoint;
-  //   OutputIterator myO; 
+     Point aPoint;
+  //   OutputIterator myO;
   };
 } // namespace DGtal
 

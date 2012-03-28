@@ -50,55 +50,55 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPredicate
   /**
-     Description of \b concept '\b CPredicate' <p>
+     Description of \b concept '\b CPredicate'
      @ingroup Concepts
      \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
 
      @tparam T the type that should be a model of this predicate
      @tparam TELement the type of an element of the predicate domain.
 
-     <p> Refinement of  boost::Assignable<T>
-    
-     <p> Associated types :
-    
-     <p> Notation
+###  Refinement of  boost::Assignable<T>
+
+###  Associated types :
+
+###  Notation
      - \t X : A type that is a model of CPredicate
      - \t x : Object of type \t X
      - \t p : Object of type TElement
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-     <tr> 
-     <td class=CName> \b Name </td> 
+
+###  Definitions
+
+###  Valid expressions and semantics
+     <table>
+     <tr>
+     <td class=CName> \b Name </td>
      <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CRequirements> \b Type requirements </td>
      <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CPrecondition> \b Precondition </td>
+     <td class=CSemantics> \b Semantics </td>
+     <td class=CPostCondition> \b Postcondition </td>
      <td class=CComplexity> \b Complexity </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Apply predicate </td>
-     <td class=CExpression>      \t x( \t p ) </td> 
+     <td class=CExpression>      \t x( \t p ) </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \c bool</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value of the predicate \t x at element \t p</td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       the value of the predicate \t x at element \t p</td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-    
+
+###  Invariants
+
+###  Models
+
      - specializations: CPointPredicate, CVertexPredicate
-    
-     <p> Notes <br>
+
+###  Notes
 
      CPredicate allows to factor codes when writing concepts for new
      kinds of predicates.
@@ -127,9 +127,9 @@ namespace DGtal
     bool myBool;
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CPredicate
-  
+
 } // namespace DGtal
 
 //                                                                           //

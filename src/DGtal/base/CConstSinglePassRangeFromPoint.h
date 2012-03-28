@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,20 +54,20 @@ namespace DGtal
      Description of \b concept '\b CConstSinglePassRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of const single pass range with a begin() method from a point.
-     
-     <p> Refinement of CConstSinglePassRange
-    
-     <p> Associated types :
-    
-     <p> Notation
+
+###  Refinement of CConstSinglePassRange
+
+###  Associated types :
+
+###  Notation
      - X : A type that is a model of CConstSinglePassRangeFromPoint
      - x,  y : object of type X
      - Point: A type of Point
 
 
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
+###  Definitions
+
+###  Valid expressions and semantics
 
 
 
@@ -74,19 +75,19 @@ namespace DGtal
 |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
 | begin | begin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const iterator on the range first element |                |            |
 
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
 
-     ImageContainerBySTLVector::Range
+###  Invariants
 
-     <p> Notes <br>
+###  Models
+
+ImageContainerBySTLVector::Range
+
+###  Notes
 
      @tparam T the type that should be a model of CConstSinglePassRangeFromPoint.
    */
-  template <typename T> 
-  struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T> 
+  template <typename T>
+  struct CConstSinglePassRangeFromPoint: CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -109,12 +110,12 @@ namespace DGtal
     T myX; // do not require T to be default constructible.
     Point myPoint;
     ConstIterartor myB;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CConstSinglePassRangeFromPoint
-  
+
 } // namespace DGtal
 
 //                                                                           //

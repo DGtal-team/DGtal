@@ -55,16 +55,16 @@ namespace DGtal
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring with a division operator. 
      
-     <p> Refinement of CCommutativeRing
-     <p> Associated types :
+ ### Refinement of CCommutativeRing
+ ### Associated types :
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CEuclideanRing
      - \t x, \t y  : Object of type Integer
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
      <tr> 
      <td class=CName> \b Name </td> 
@@ -88,12 +88,12 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
        DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
-     <p> Notes <br>
+ ### Notes###
    
      @tparam T the type that should be a model of commutative ring.
    */

@@ -59,14 +59,14 @@ namespace DGtal
     segment computer,  ie. a model of CSegment that can extend and retract itself 
     in either direction.  
      
-     <p> Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer 
+ ### Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer 
     
     
-     <p> Models <br>
+ ### Models###
 
      @href ArithmeticalDSS
     
-     <p> Notes <br>
+ ### Notes###
 
      @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
    */

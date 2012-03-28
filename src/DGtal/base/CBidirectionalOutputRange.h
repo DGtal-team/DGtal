@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CSinglePassOutputRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -49,42 +50,44 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalOutputRange
   /**
-     Description of \b concept '\b CBidirectionalOutputRange' <p>
+     Description of \b concept '\b CBidirectionalOutputRange'
      @ingroup Concepts
      @brief Aim: refined concept of bidirectional range which require that a reverse output iterator exists.
 
-     
-     <p> Refinement of CSinglePassOutputRange, CBidirectionalRange
-    
-     <p> Associated types : 
-     - OutputIterator: type of output iterator on the range.
-    
-     <p> Notation
-     - \a X : A type that is a model of CBidirectionalOutputRange
-     - \a x, \a y : object of type X
 
-    
-     <p> Definitions
-    
+### Refinement of CSinglePassOutputRange
 
-| Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
-|----------+------------------+-------------------+----------------+--------------+----------------------------------------------------+----------------+------------|
+### Associated types :
+- OutputIterator: type of output iterator on the range.
+
+### Notation
+- \a X : A type that is a model of CBidirectionalOutputRange
+- \a x, \a y : object of type X
+
+
+### Definitions
+
+
+| Name| Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
+|----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
 | creation | routputIterator() |                   | ReverseOutputIterator |              | Returns a reverse output iterator on the range first element |                |            |
 |          |                  |                   |                |              |                                                    |                |            |
- 
 
-     <p> Invariants <br>
-    
-     <p> Models <br>
 
-     ImageContainerBySTLVector::Range
-     
-     <p> Notes <br>
+### Invariants###
 
-     @tparam T the type that should be a model of CBidirectionalOutputRange.
+### Models###
+
+ImageContainerBySTLVector::Range
+
+### Notes###
+
+@tparam T the type that should be a model of CBidirectionalOutputRange.
+@tparam Value the type of object t in (*it) = t.
+
    */
-  template <typename T> 
-  struct CBidirectionalOutputRange : CSinglePassOutputRange<T>, CBidirectionalRange<T>
+  template <typename T, typename Value>
+  struct CBidirectionalOutputRange : CSinglePassOutputRange<T, Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -92,7 +95,7 @@ namespace DGtal
     typedef typename T::ReverseOutputIterator  ReverseOutputIterator;
     // possibly check these types so as to satisfy a concept with
     //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-   
+
     BOOST_CONCEPT_USAGE( CBidirectionalOutputRange )
     {
       ConceptUtils::sameType( myB, myX.routputIterator( ) );
@@ -101,12 +104,12 @@ namespace DGtal
   private:
     T myX; // do not require T to be default constructible.
     ReverseOutputIterator myOutput;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CBidirectionalOutputRange
-  
+
 } // namespace DGtal
 
 //                                                                           //

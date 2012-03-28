@@ -51,40 +51,40 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConstBidirectionalRangeFromPoint
   /**
-     Description of \b concept '\b CConstBidirectionalRangeFromPoint' <p>
-     @ingroup Concepts
-     @brief Aim: refined concept of const bidirectional range with a begin() method from a point.
+Description of \b concept '\b CConstBidirectionalRangeFromPoint'
+@ingroup Concepts
+@brief Aim: refined concept of const bidirectional range with a begin() method from a point.
 
-     <p> Refinement of CConstBidirectionalRange
+###  Refinement of CConstBidirectionalRange
 
-     <p> Associated types :
+###  Associated types :
 
-     <p> Notation
-     - X : A type that is a model of CConstBidirectionalRangeFromPoint
-     - x,  y : object of type X
-     - Point: A type of Point
-
-
-     <p> Definitions
-
-     <p> Valid expressions and semantics <br>
+###  Notation
+- X : A type that is a model of CConstBidirectionalRangeFromPoint
+- x,  y : object of type X
+- Point: A type of Point
 
 
+###  Definitions
 
-| Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+###  Valid expressions and semantics
+
+
+
+| Name  | Expression  | Type requirements    | Return type   | Precondition | Semantics   | Post condition | Complexity |
 |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-| reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ConstIterator |              | Returns a const reverse iterator on the range first element |                |            |
+| reverse begin | rbegin(const Point &aPoint) | aPoint of type Point | ConstIterator |    | Returns a const reverse iterator on the range first element | |  |
 
 
-     <p> Invariants <br>
+###  Invariants
 
-     <p> Models <br>
+###  Models
 
-     ImageContainerBySTLVector::Range
+ImageContainerBySTLVector::Range
 
-     <p> Notes <br>
+###  Notes
 
-     @tparam T the type that should be a model of CConstBidirectionalRangeFromPoint.
+@tparam T the type that should be a model of CConstBidirectionalRangeFromPoint.
    */
   template <typename T>
   struct CConstBidirectionalRangeFromPoint: CConstBidirectionalRange<T>
@@ -97,13 +97,13 @@ namespace DGtal
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CConstBidirectionalRangeFromPoint )
     {
-      checkConstConstraints();
+ checkConstConstraints();
     }
     void checkConstConstraints() const
     {
-      // const method dummyConst should take parameter myA of type A and return
-      // something of type B
-      ConceptUtils::sameType( myB, myX.rbegin( myPoint ) );
+ // const method dummyConst should take parameter myA of type A and return
+ // something of type B
+ ConceptUtils::sameType( myB, myX.rbegin( myPoint ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:
@@ -118,7 +118,7 @@ namespace DGtal
 
 } // namespace DGtal
 
-//                                                                           //
+////
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CConstBidirectionalRangeFromPoint_h
