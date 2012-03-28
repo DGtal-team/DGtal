@@ -192,7 +192,7 @@ namespace DGtal
     ConstReverseIterator rbegin(const Point& aPoint) const {
       Domain d = myImagePtr->domain(); 
       typename Domain::ConstIterator itOnPts = d.begin(aPoint); 
-      if ( itOnPts != d.end ) ++itOnPts; 
+      if ( itOnPts != d.end() ) ++itOnPts; 
       ConstIterator itOnVals( itOnPts, *myImagePtr );
       return ConstReverseIterator( itOnVals );
     }
