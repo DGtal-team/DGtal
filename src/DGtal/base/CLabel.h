@@ -88,7 +88,7 @@ Description of \b concept '\b CLabel' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CLabel.
+@tparam T the type that should be a model of CLabel.
    */
   template <typename T>
   struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,

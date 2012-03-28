@@ -97,7 +97,7 @@ Description of \b concept '\b CDigitalSurfaceTracker' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CDigitalSurfaceTracker.
+@tparam T the type that should be a model of CDigitalSurfaceTracker.
    */
   template <typename T> 
   struct CDigitalSurfaceTracker : boost::CopyConstructible<T>

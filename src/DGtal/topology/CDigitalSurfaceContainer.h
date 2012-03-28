@@ -175,7 +175,7 @@ Description of \b concept '\b CDigitalSurfaceContainer' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CDigitalSurfaceContainer.
+@tparam T the type that should be a model of CDigitalSurfaceContainer.
    */
   template <typename T> 
   struct CDigitalSurfaceContainer : boost::CopyConstructible<T>

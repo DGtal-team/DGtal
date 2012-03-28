@@ -104,7 +104,7 @@ Description of \b concept '\b CSignedInteger' <p>
 
  ### Notes###
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CBoundedInteger.
     
    */

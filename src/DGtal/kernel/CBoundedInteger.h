@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBoundedInteger
   /**
-Description of \b concept '\b CBoundedInteger' <p>
+DescriptionDescription of \b concept '\b CBoundedInteger' <p>
      @ingroup Concepts
 
      \brief Aim: The concept CBoundedInteger specifies what are the bounded

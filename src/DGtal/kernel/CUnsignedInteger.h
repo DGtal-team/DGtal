@@ -103,7 +103,7 @@ Description of \b concept '\b CUnsignedInteger' <p>
  ### Notes###
 
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CBoundedInteger.
 
    */

@@ -103,7 +103,7 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CEuclideanOrientedShape.
+@tparam T the type that should be a model of CEuclideanOrientedShape.
    */
   template <typename T> 
   struct CEuclideanOrientedShape

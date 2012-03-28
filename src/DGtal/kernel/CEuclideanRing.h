@@ -95,7 +95,7 @@ Description of \b concept '\b CEuclideanRing' <p>
     
  ### Notes###
    
-     @tparam T the type that should be a model of commutative ring.
+@tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
   struct CEuclideanRing : CCommutativeRing<T>

@@ -112,7 +112,7 @@ Description of \b concept '\b CSegment' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CSegment.
+@tparam T the type that should be a model of CSegment.
    */
   template <typename T>
   struct CSegment : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>

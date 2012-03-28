@@ -118,7 +118,7 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CTrivialSegmentComputer.
+@tparam T the type that should be a model of CTrivialSegmentComputer.
    */
   template <typename T> 
   struct CTrivialSegmentComputer : CSegment<T>

@@ -106,7 +106,7 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CBidirectionalSegmentComputer.
+@tparam T the type that should be a model of CBidirectionalSegmentComputer.
    */
   template <typename T> 
   struct CBidirectionalSegmentComputer : CForwardSegmentComputer<T>

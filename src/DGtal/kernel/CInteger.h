@@ -263,7 +263,7 @@ Description of \b concept '\b CInteger' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of integer.
+@tparam T the type that should be a model of integer.
    */
   template <typename T>
   struct CInteger : boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>

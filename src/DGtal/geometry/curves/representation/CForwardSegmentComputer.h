@@ -100,7 +100,7 @@ Description of \b concept '\b CForwardSegmentComputer' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CForwardSegmentComputer.
+@tparam T the type that should be a model of CForwardSegmentComputer.
    */
   template <typename T> 
   struct CForwardSegmentComputer : CTrivialSegmentComputer<T>

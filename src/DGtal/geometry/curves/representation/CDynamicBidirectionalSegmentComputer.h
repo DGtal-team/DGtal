@@ -68,7 +68,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
+@tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
    */
   template <typename T> 
   struct CDynamicBidirectionalSegmentComputer : 

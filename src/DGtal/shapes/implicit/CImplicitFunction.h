@@ -101,7 +101,7 @@ Description of \b concept '\b CImplicitFunction' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CImplicitFunction.
+@tparam T the type that should be a model of CImplicitFunction.
    */
   template <typename T> 
   struct CImplicitFunction 

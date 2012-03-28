@@ -115,7 +115,7 @@ Description of \b concept '\b CUndirectedSimpleGraph' <p>
 
  ### Notes###
 
-     @tparam T the type that should be a model of CUndirectedSimpleGraph.
+@tparam T the type that should be a model of CUndirectedSimpleGraph.
    */
   template <typename T> 
   struct CUndirectedSimpleGraph : 

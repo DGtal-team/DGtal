@@ -107,7 +107,7 @@ Description of \b concept '\b CDigitalSet' <p>
     
  ### Notes###
 
-     @tparam T the type that should be a model of CDigitalSet.
+@tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
   struct CDigitalSet :
