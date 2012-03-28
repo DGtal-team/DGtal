@@ -127,7 +127,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::constRange() const
 template <typename TDomain, typename TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Range
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::range()
 {
   return Range( *this );
 }

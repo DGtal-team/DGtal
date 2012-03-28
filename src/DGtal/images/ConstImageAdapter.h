@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/base/ConstRangeFromPointAdapter.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"

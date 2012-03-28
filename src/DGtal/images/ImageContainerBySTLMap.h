@@ -246,7 +246,7 @@ namespace DGtal
      * @return the range providing constant iterators
      * and output iterators on the values of the image.
      */
-    Range range() const;
+    Range range();
 
     /**
      * Writes/Displays the object on an output stream.
