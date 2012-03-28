@@ -53,60 +53,62 @@ namespace DGtal
      @ingroup Concepts
      @brief Aim: refined concept of single pass range which require that an output iterator exists.
 
-     
-     <p> Refinement of CSinglePassRange
-    
-     <p> Associated types : 
+
+     <p> Refinement of
+
+     <p> Associated types :
      - OutputIterator: type of output iterator on the range.
-    
+
      <p> Notation
      - \a X : A type that is a model of CSinglePassOutputRange
      - \a x, \a y : object of type X
 
-    
+
      <p> Definitions
-    
+
 
 | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
 |----------+------------------+-------------------+----------------+--------------+----------------------------------------------------+----------------+------------|
 | creation | outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
 |          |                  |                   |                |              |                                                    |                |            |
- 
+
 
      <p> Invariants <br>
-    
+
      <p> Models <br>
 
      ImageContainerBySTLVector::Range
-     
+
      <p> Notes <br>
 
      @tparam T the type that should be a model of CSinglePassOutputRange.
+     @tparam Value the type of object t in (*it) = t.
    */
-  template <typename T> 
-  struct CSinglePassOutputRange : CSinglePassRange<T>
+  template <typename T, typename Value>
+  struct CSinglePassOutputRange
   {
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::OutputIterator  OutputIterator;
+
     // possibly check these types so as to satisfy a concept with
-    //BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-   
+    BOOST_CONCEPT_ASSERT(( boost::OutputIterator<OutputIterator,Value> ));
+
     BOOST_CONCEPT_USAGE( CSinglePassOutputRange )
     {
-      ConceptUtils::sameType( myB, myX.outputIterator( ) );
+      ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
     }
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     OutputIterator myOutput;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CSinglePassOutputRange
-  
+
 } // namespace DGtal
 
 //                                                                           //

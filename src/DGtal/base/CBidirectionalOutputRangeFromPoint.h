@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CBidirectionalOutputRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,9 +56,9 @@ Description of \b concept '\b CBidirectionalOutputRangeFromPoint' <p>
 @brief Aim: refined concept of  single pass range with an routputIterator() method from a point.
 
 ### Refinement of CBidirectionalOutputRange
-    
+
 ### Associated types :
-    
+
 ### Notation
 - X : A type that is a model of CBidirectionalOutputRangeFromPoint
 - x,  y : object of type X
@@ -65,27 +66,28 @@ Description of \b concept '\b CBidirectionalOutputRangeFromPoint' <p>
 
 
 ### Definitions
-    
-### Valid expressions and semantics 
+
+### Valid expressions and semantics
 
 
 | Name                    | Expression                           | Type requirements    | Return type          | Precondition | Semantics                                                         | Post condition | Complexity |
 |-------------------------|--------------------------------------|----------------------|----------------------|--------------|-------------------------------------------------------------------|----------------|------------|
 | reverse output iterator | routputIterator(const Point &aPoint) | aPoint of type Point | ReveseOutputIterator |              | Returns a reverse output iterator on the range at point \a aPoint |                |            |
 
-### Invariants 
-    
-### Models 
+### Invariants
+
+### Models
 
 ImageContainerBySTLVector::Range
 
-### Notes 
+### Notes
 
 @tparam T the type that should be a model of CBidirectionalOutputRangeFromPoint.
-   */
-  template <typename T> 
-  struct CBidirectionalOutputRangeFromPoint: 
-    CBidirectionalOutputRange<T> 
+@tparam Value the type of object t in (*it) = t.
+      */
+  template <typename T, typename Value>
+  struct CBidirectionalOutputRangeFromPoint:
+    CBidirectionalOutputRange<T,Value>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -104,12 +106,12 @@ ImageContainerBySTLVector::Range
     T myX; // do not require T to be default constructible.
     Point myPoint;
     ReverseOutputItereator myIt;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CBidirectionalOutputRangeFromPoint
-  
+
 } // namespace DGtal
 
 //                                                                           //
