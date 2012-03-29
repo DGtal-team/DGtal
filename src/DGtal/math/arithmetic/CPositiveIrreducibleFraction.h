@@ -98,6 +98,9 @@ Stern-Brocot tree.
 | odd parity    |\e x.\c odd()|                    | \c bool     | ! \e x.\c null() | returns 'true' iff the fraction is odd, i.e. \e k is odd | | O(1) |
 | father        |\e x.\c father()|                 | \e X        | ! \e x.\c null() | returns the father of this fraction, ie \f$[u_0,...,u_k - 1]\f$ | | O(1) |
 | m-father      |\e x.\c father(\e m)|             | \e X        | ! \e x.\c null(), \e m>=0 | returns the \e m-father of this fraction, ie \f$[u_0,...,u_{k-1}, m]\f$ | | O( \e m) |
+| previousPartial|\e x.\c previousPartial()|       | \e X        | ! \e x.\c null() | returns the previous partial of this fraction, ie \f$[u_0,...,u_{k-1}]\f$ | | O(1) |
+| inverse       |\e x.\c inverse()|                | \e X        | ! \e x.\c null() | returns the inverse of this fraction, ie \f$[0,u_0,...,u_k]\f$ if \f$u_0 \neq 0 \f$ or \f$[u_1,...,u_k]\f$ otherwise | | O(1) |
+| \e m-th partial |\e x.\c partial(m)|             | \e X        | ! \e x.\c null() | returns the \e m-th partial of this fraction, ie \f$[u_0,...,u_m]\f$ | | O(1) |
 
 ### Invariants
 
@@ -139,6 +142,9 @@ public:
     ConceptUtils::sameType( myBool, myX.odd() );
     ConceptUtils::sameType( myX, myX.father() );
     ConceptUtils::sameType( myX, myX.father( myU ) );
+    ConceptUtils::sameType( myX, myX.previousPartial() );
+    ConceptUtils::sameType( myX, myX.inverse() );
+    ConceptUtils::sameType( myX, myX.partial( myU ) );
   }
   // ------------------------- Private Datas --------------------------------
 private:
