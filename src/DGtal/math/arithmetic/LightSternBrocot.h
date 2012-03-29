@@ -330,12 +330,6 @@ namespace DGtal
       void cfrac( std::vector<Size> & quotients ) const;
 
       /**
-         @param other another fraction "compatible" with this one.
-         @return the mediant fraction of this and other.
-      */
-      Fraction mediant( Fraction other ) const;
-
-      /**
          @param p1 a numerator.
          @param q1 a denominator.
          @return 'true' if this is the fraction p1/q1.

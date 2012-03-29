@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -63,22 +64,24 @@ one-to-one correspondence with the position of the fraction in the
 Stern-Brocot tree.
 
 ### Refinement of
-- boost::CopyConstructible, boost::DefaultConstructible, boost_Assignable
+- boost::CopyConstructible, boost::DefaultConstructible, boost::Assignable
 
 ### Associated types :
 
-- Integer: the type for representing a numerator or a denominator.
+- \e Integer: the type for representing a numerator or a denominator.
 
-- Size: the type for representing partial quotients, i.e. the integers
+- \e Size: the type for representing partial quotients, i.e. the integers
   that appear in the continued fractions of p/q. Might be the same as
   Integer but may be also smaller, since quotients are generally much
   smaller than the convergent numerators and denominators.
 
 ### Notation
  - \e X : A type that is a model of CPositiveIrreducibleFraction
- - \e x : object of type X, which is below some fraction written \f$[u_0, \ldots, u_k]\f$ as a continued fraction
- - \e p, \e q : object of type X::Integer
- - \e v, \e m : object of type X::Size
+ - \e x : object of type \e X, which is below some fraction written \f$[u_0, \ldots, u_k]\f$ as a continued fraction
+ - \e x1, \e x2, \e y : other objects of type \e X
+ - \e p, \e q : object of type \e Integer
+ - \e m, \e n1, \e n2 : objects of type \e Size
+ - \e quots : an object of type \c std::vector<Size>
 
 ### Definitions
 
@@ -92,15 +95,28 @@ Stern-Brocot tree.
 | quotient      | \e x.\c u()|                     | \e Size     | ! \e x.\c null() | returns the quotient \f$u_k\f$ | | O(1) |
 | depth         | \e x.\c k()|                     | \e Size     | ! \e x.\c null() | returns the depth \e k |   | O(1) |
 | null test     | \e x.\c null()|                  | \c bool     |                  | returns 'true' if the fraction is null 0/0 (default fraction) | | O(1) |
-| left descendant| \e x.\c left()|                 | \e X        | ! \e x.\c null() | returns the left descendant of p/q in the Stern-Brocot tree | | O(1) |
-| right descendant|\e x.\c right()|                | \e X        | ! \e x.\c null() | returns the right descendant of p/q in the Stern-Brocot tree | | O(1) |
 | even parity   |\e x.\c even()|                   | \c bool     | ! \e x.\c null() | returns 'true' iff the fraction is even, i.e. \e k is even | | O(1) |
 | odd parity    |\e x.\c odd()|                    | \c bool     | ! \e x.\c null() | returns 'true' iff the fraction is odd, i.e. \e k is odd | | O(1) |
+|               |            |                     |             |                  |           |                |            |
+| left descendant| \e x.\c left()|                 | \e X        | ! \e x.\c null() | returns the left descendant of p/q in the Stern-Brocot tree | | O(1) |
+| right descendant|\e x.\c right()|                | \e X        | ! \e x.\c null() | returns the right descendant of p/q in the Stern-Brocot tree | | O(1) |
 | father        |\e x.\c father()|                 | \e X        | ! \e x.\c null() | returns the father of this fraction, ie \f$[u_0,...,u_k - 1]\f$ | | O(1) |
 | m-father      |\e x.\c father(\e m)|             | \e X        | ! \e x.\c null(), \e m>=0 | returns the \e m-father of this fraction, ie \f$[u_0,...,u_{k-1}, m]\f$ | | O( \e m) |
 | previousPartial|\e x.\c previousPartial()|       | \e X        | ! \e x.\c null() | returns the previous partial of this fraction, ie \f$[u_0,...,u_{k-1}]\f$ | | O(1) |
 | inverse       |\e x.\c inverse()|                | \e X        | ! \e x.\c null() | returns the inverse of this fraction, ie \f$[0,u_0,...,u_k]\f$ if \f$u_0 \neq 0 \f$ or \f$[u_1,...,u_k]\f$ otherwise | | O(1) |
 | \e m-th partial |\e x.\c partial(m)|             | \e X        | ! \e x.\c null() | returns the \e m-th partial of this fraction, ie \f$[u_0,...,u_m]\f$ | | O(1) |
+| \e m-th reduced |\e x.\c reduced(m)|             | \e X        | ! \e x.\c null() | returns the \e m-th reduced of this fraction, equivalently the \f$k-m\f$ partial, ie \f$[u_0,...,u_{k-m}]\f$ | | O(1) |
+| splitting formula |\e x.\c getSplit(\e x1, \e x2)| | \c void   | ! \e x.\c null() | modifies fractions \e x1 and \e x2 such that \f$ x1 \oplus x2 = x \f$| | O(1) |
+| Berstel splitting formula |\e x.\c getSplitBerstel(\e x1, \e n1, \e x2, \e n2)| | \c void | ! \e x.\c null() | modifies fractions \e x1 and \e x2 and integers \e n1 and \e n2 such that \f$ (x1)^{n1} \oplus (x2)^{n2}  = x \f$| | O(1) |
+| Continued fraction coefficients |\e x.\c cfrac(\e quots)| | \c void |             | modifies the vector \e quots such that it contains the quotients \f$u_0,u_1,...,u_k \f$| | O(k) |
+|               |            |                     |             |                  |           |                |            |
+| equality      |\e x.\c equals(\e p, \e q)|       | \c bool     |                  | returns 'true' iff the fraction is equal to \f$ p / q \f$. | | O(1) |
+| less than     |\e x.\c lessThan(\e p, \e q)|     | \c bool     |                  | returns 'true' iff the fraction is inferior to \f$ p / q \f$. | | O(1) |
+| more than     |\e x.\c moreThan(\e p, \e q)|     | \c bool     |                  | returns 'true' iff the fraction is superior to \f$ p / q \f$. | | O(1) |
+| equality ==   |\e x == \e y|                     | \c bool     |                  | returns 'true' iff the fraction is equal to \e y. | | O(1) |
+| inequality != |\e x != \e y|                     | \c bool     |                  | returns 'true' iff the fraction is different from \e y. | | O(1) |
+| less than <   |\e x <  \e y|                     | \c bool     |                  | returns 'true' iff the fraction is inferior to \e y. | | O(1) |
+| more than >   |\e x >  \e y|                     | \c bool     |                  | returns 'true' iff the fraction is superior to \e y. | | O(1) |
 
 ### Invariants
 
@@ -145,14 +161,32 @@ public:
     ConceptUtils::sameType( myX, myX.previousPartial() );
     ConceptUtils::sameType( myX, myX.inverse() );
     ConceptUtils::sameType( myX, myX.partial( myU ) );
+    ConceptUtils::sameType( myX, myX.reduced( myU ) );
+    myX.getSplit( myF1, myF2 );
+    myX.getSplitBerstel( myF1, myN1, myF2, myN2 );
+    myX.cfrac( myQuots );
+    ConceptUtils::sameType( myBool, myX.equals( myP, myQ ) );
+    ConceptUtils::sameType( myBool, myX.lessThan( myP, myQ ) );
+    ConceptUtils::sameType( myBool, myX.moreThan( myP, myQ ) );
+    ConceptUtils::sameType( myBool, myX == myY );
+    ConceptUtils::sameType( myBool, myX != myY );
+    ConceptUtils::sameType( myBool, myX < myY );
+    ConceptUtils::sameType( myBool, myX > myY );
+    
   }
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
+  T myY; // do not require T to be default constructible.
   Integer myP;
   Integer myQ;
   Size myU;
   bool myBool;
+  mutable Size myN1;
+  mutable Size myN2;
+  mutable T myF1; 
+  mutable T myF2; 
+  mutable std::vector<Size> myQuots; 
   // ------------------------- Internals ------------------------------------
 private:
 
