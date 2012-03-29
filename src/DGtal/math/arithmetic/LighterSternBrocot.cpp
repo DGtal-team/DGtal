@@ -34,6 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+#include <map>
 
 using namespace std;
 
@@ -52,4 +53,22 @@ namespace DGtal
   DGtal::LighterSternBrocot<TInteger, TSize, TMap>*
   DGtal::LighterSternBrocot<TInteger, TSize, TMap>::singleton = 0;
 
+  template <>
+  LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>*
+  LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
+
+#ifdef WITH_BIGINTEGER
+  template <>
+  LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>*
+  LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
+
+  template <>
+  LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>*
+  LighterSternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
+
+  template <>
+  LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
+  LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
+
+#endif
 }

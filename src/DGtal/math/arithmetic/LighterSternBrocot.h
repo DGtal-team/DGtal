@@ -45,6 +45,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/StdRebinders.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -68,22 +69,23 @@ namespace DGtal
    lies in the access to the children of a node. Here, a map type M is
    provided so that a node [u_0; u_1, ..., u_n] can access its child
    node [u_0; u_1, ..., u_n, k] in the time of the operation
-   M::operator[].
+   M::operator[]. This representation is also different from
+   LightSternBrocot in the sense that nodes have only one set of child
+   nodes and that only fractions greater than 1/1 are stored.
 
-   In this representation, the fraction 1/1 has depth 1, like 1/2,
-   1/3, etc. Furthermore, each fraction has an ancestor, which is the
-   reduced partial of order 1 of the fraction. Be careful the ancestor
-   of an ancestor is \b not the reduced of order 2. Each node [u_0;
-   u_1, ..., u_n] has two sets of children: the nodes [u_0; u_1, ...,
-   u_n, k], for k >= 2, and the nodes [u_0; u_1, ..., u_n - 1, 1, k],
-   for k >= 2. A disadvantage of this representation is that to obtain
-   the father of something like [...,u_k, 1, ..., 1, u_n ], one has to
-   go up the tree till u_k, to go back down on the other side.
+   In this representation, the fraction 1/1 has depth 0, like 2/1,
+   3/1, etc. Furthermore, each fraction [u_0,...,u_n] has an origin
+   which is the fraction [u_0,...,u_{n-1},1]. It is the top extremity
+   of this branch. The origin has depth n-1 since [u_0,...,u_{n-1},1]
+   = [u_0,...,u_{n-1}+1]. Inversely a k-child of [u_0,...,u_n], for k
+   >= 2, is the fraction [u_0,...,u_n - 1, k]. A 1-child of a fraction
+   f is itself, except for the fraction 1/0 where its 1-child is 1/1
+   by convention.
 
    In practice, also this class has supposedly a better complexity
    than SternBrocot, it is 1% slower for integers smaller than 10^9
    and 5% slower for integers smaller than 10^4. Note however that it
-   takes like 6 times less memory (and asymptotically less when the
+   takes like 7 times less memory (and asymptotically less when the
    number of computations tends toward infinity).
 
    This class is not to be instantiated, since it is useless to
@@ -96,11 +98,11 @@ namespace DGtal
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
 
-   @param TMap the type for defining an association TSize ->
-   LighterSternBrocot::Node*. For instance, std::map<TSize,
-   LighterSternBrocot::Node*> is fine.
+   @param TMap the rebinder type for defining an association TSize ->
+   LighterSternBrocot::Node*. For instance, StdMapRebinder is fine.
   */
-  template <typename TInteger, typename TSize, typename TMap>
+  template <typename TInteger, typename TSize, 
+            typename TMap = StdMapRebinder >
   class LighterSternBrocot
   {
   public:

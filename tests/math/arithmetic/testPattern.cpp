@@ -90,7 +90,7 @@ template <typename Fraction1, typename Fraction2>
 bool
 testPatterns()
 {
-  unsigned int nbtests = 1000;
+  unsigned int nbtests = 100;
   unsigned int nb = 0;
   unsigned int nbok = 0;
   Fraction1 f1;
@@ -127,28 +127,13 @@ testPatterns()
 }
 
 
-struct StdMapRebinder
-{
-  template <typename Key, typename Value>
-  struct Rebinder {
-    typedef std::map<Key, Value> Type;
-  };
-};
-
-template <>
-LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
-template <>
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 int main( int , char** )
 {
   typedef SternBrocot<DGtal::int64_t, DGtal::int32_t> SB;
-  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> LSB;
-  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> LLSB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> LSB;
+  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t> LLSB;
   typedef SB::Fraction Fraction;
   typedef LSB::Fraction LFraction;
   typedef LLSB::Fraction LLFraction;

@@ -109,16 +109,9 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
-struct StdMapRebinder
-{
-  template <typename Key, typename Value>
-  struct Rebinder {
-    typedef std::map<Key, Value> Type;
-  };
-};
-template <>
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
+// template <>
+// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
+// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
 
 int main( int argc, char** argv)
 {

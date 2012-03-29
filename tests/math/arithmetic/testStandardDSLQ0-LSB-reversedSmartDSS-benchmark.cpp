@@ -109,20 +109,10 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
-struct StdMapRebinder
-{
-  template <typename Key, typename Value>
-  struct Rebinder {
-    typedef std::map<Key, Value> Type;
-  };
-};
-template <>
-LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
 
 int main( int argc, char** argv)
 {
-  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> SB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
   typedef Fraction::Integer Integer;
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 10000;

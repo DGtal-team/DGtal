@@ -45,6 +45,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/StdRebinders.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -80,7 +81,7 @@ namespace DGtal
    the father of something like [...,u_k, 1, ..., 1, u_n ], one has to
    go up the tree till u_k, to go back down on the other side.
 
-   In practice, also this class has supposedly a better complexity
+   In practice, although this class has supposedly a better complexity
    than SternBrocot, it is 1% slower for integers smaller than 10^9
    and 5% slower for integers smaller than 10^4. Note however that it
    takes like 6 times less memory (and asymptotically less when the
@@ -96,11 +97,12 @@ namespace DGtal
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
 
-   @param TMap the type for defining an association TSize ->
-   LightSternBrocot::Node*. For instance, std::map<TSize,
-   LightSternBrocot::Node*> is fine.
+   @param TMap the rebinder type for defining an association TSize ->
+   LighterSternBrocot::Node*. For instance, StdMapRebinder is fine.
+
   */
-  template <typename TInteger, typename TSize, typename TMap>
+  template <typename TInteger, typename TSize, 
+            typename TMap = StdMapRebinder>
   class LightSternBrocot
   {
   public:
