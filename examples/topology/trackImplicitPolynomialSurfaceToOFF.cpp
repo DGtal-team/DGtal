@@ -82,8 +82,8 @@ int main( int argc, char** argv )
 
   //! [trackImplicitPolynomialSurfaceToOFF-makeSurface]
   trace.beginBlock( "Making polynomial surface." );
-  typedef typename Space::RealPoint RealPoint;
-  typedef typename RealPoint::Coordinate Ring;
+  typedef Space::RealPoint RealPoint;
+  typedef RealPoint::Coordinate Ring;
   typedef MPolynomial<3, Ring> Polynomial3;
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;

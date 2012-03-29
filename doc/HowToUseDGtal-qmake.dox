@@ -23,8 +23,7 @@ namespace DGtal {
 
 In \ref HowToUseDGtal, we have described a simple way to use DGtal in your own project with the cmake build system. We detail here hints to use DGtal with different systems.
 
--# \ref HowToUseDGtal_QMAKE
-
+[TOC]
 
 \section HowToUseDGtal_QMAKE Using qmake tools
 
