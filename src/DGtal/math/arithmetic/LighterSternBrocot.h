@@ -221,16 +221,13 @@ namespace DGtal
 
     public:      
       /** 
-          Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
-          u_i \f$, where u_i are the partial quotients of p/q.
+          Creates the fraction aP/aQ. Complexity is in O(n) where n is the depth
+          of continued fraction of aP/aQ.
           
           @param aP the numerator (>=0)
           @param aQ the denominator (>=0)
           
           @param start (optional) unused in this representation.
-          
-          NB: Complexity is bounded by the depth of the continued
-          fraction of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
                 Fraction start = SB::zeroOverOne() );
@@ -445,8 +442,8 @@ namespace DGtal
     static Fraction oneOverOne();
 
     /** 
-	Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
-	u_i \f$, where u_i are the partial quotients of p/q.
+	Any fraction p/q. Complexity is in O(n) where n is the depth
+	of continued fraction of p/q.
 
 	@param p the numerator (>=0)
 	@param q the denominator (>=0)
@@ -454,9 +451,6 @@ namespace DGtal
 	@param ancestor (optional) unused in this representation.
 	
 	@return the corresponding fraction in the Stern-Brocot tree.
-
-        NB: Complexity is bounded by \a n where \a n is the depth of
-        the continued fraction of p/q.
     */
     static Fraction fraction( Integer p, Integer q, 
                               Fraction ancestor = oneOverZero()  );

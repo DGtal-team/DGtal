@@ -31,6 +31,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/math/arithmetic/IntegerComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -500,6 +501,13 @@ DGtal::SternBrocot<TInteger, TSize>::fraction
 ( Integer p, Integer q,
   Fraction ancestor )
 {
+  IntegerComputer<Integer> ic;
+  Integer g = ic.gcd( p, q );
+  if ( g != NumberTraits<Integer>::ZERO )
+    {
+      p /= g;
+      q /= g;
+    }
   // special case 1/0
   if ( ( p == NumberTraits<Integer>::ONE ) 
        && ( q == NumberTraits<Integer>::ZERO ) ) return oneOverZero();

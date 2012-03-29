@@ -133,7 +133,7 @@ father() const
   ASSERT( origin() != 0 );
   Node* prevNode = origin();
   if ( this->u == NumberTraits<Size>::ONE ) // 1/1
-    return myOneOverZero;
+    return instance().myOneOverZero;
   return prevNode->child( this->u - NumberTraits<Size>::ONE );
 }
 
