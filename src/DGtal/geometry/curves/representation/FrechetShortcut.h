@@ -42,6 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include <boost/static_assert.hpp>
+#include "DGtal/base/CowPtr.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/PointVector.h"
 #include "backpath.h"
 #include "cone.h"
@@ -49,7 +52,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-#include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal::Z2i;
@@ -336,6 +338,13 @@ public:
    */
   void selfDisplay ( std::ostream & out ) const;
   
+
+  /**
+   * @return the name of the class.
+   */
+  std::string className() const;
+  
+
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
