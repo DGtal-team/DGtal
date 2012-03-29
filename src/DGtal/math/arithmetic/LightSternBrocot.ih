@@ -478,13 +478,13 @@ getSplit( Fraction & f1, Fraction & f2 ) const
 {
   if ( odd() )
     {
-      f1 = Fraction( ancestor(), mySup1 );
-      f2 = Fraction( father(), mySup1 );
+      f1 = ancestor();
+      f2 = father();
     }
   else
     {
-      f1 = Fraction( father(), mySup1 );
-      f2 = Fraction( ancestor(), mySup1 );
+      f1 = father();
+      f2 = ancestor();
     }
 }
 //-----------------------------------------------------------------------------
