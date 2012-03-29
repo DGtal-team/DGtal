@@ -32,9 +32,9 @@ endforeach()
 # -----------------------------------------------------------------------------
 # Doxygen doc target
 # -----------------------------------------------------------------------------
-#set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
-#INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
-#INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
+set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
+INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
+INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
