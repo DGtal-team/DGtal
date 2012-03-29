@@ -278,7 +278,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( OutputImage &
   //final computation
   for ( point[0] = 0; point[0] <= myUpperBoundCopy[0]; point[0]++ )
     if (output( point ) < myInfinity)
-      output.setValue ( point, myMetric.power( output ( point ) ));
+      output.setValue ( point, myMetric.power( (const int)output ( point ) ));
     else
       output.setValue ( point, myInfinity);
 }

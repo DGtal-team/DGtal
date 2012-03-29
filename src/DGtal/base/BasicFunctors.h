@@ -63,7 +63,7 @@ namespace DGtal
   {
     inline
     T operator() (const T&a, const T&b) const
-    { return std::min(a,b); }
+    { return /*std::*/min(a,b); }
   };
   
   template<typename T>
@@ -71,7 +71,7 @@ namespace DGtal
   {
     inline
     T operator() (const T&a, const T&b) const
-    { return std::max(a,b); }
+    { return /*std::*/max(a,b); }
   };
 
  /**
