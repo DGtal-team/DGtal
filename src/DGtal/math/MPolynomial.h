@@ -854,14 +854,14 @@ public:
     
     ~IVector()
     {
-      free(0, myVec.size());
+      free(0, (Size)myVec.size());
     }
     
     IVector & operator = (const IVector & v)
     {
       if (&v != this)
         {
-          free(0, myVec.size());
+          free(0, (Size)myVec.size());
           myVec.resize(v.size());
           copy_from(v.myVec);
         }
@@ -870,12 +870,12 @@ public:
     
     Size size() const
     {
-      return myVec.size();
+      return (Size)myVec.size();
     }
     
     void resize(Size aSize, const T & entry = T())
     {
-      Size oldsize = myVec.size();
+      Size oldsize = (Size)myVec.size();
       if (oldsize > aSize)
         free(aSize, oldsize);
       myVec.resize(aSize);
@@ -1109,7 +1109,7 @@ public:
     */
     inline int degree() const
     {
-      return myValue.size() - 1;
+      return (int)(myValue.size() - 1);
     }
     
     /**

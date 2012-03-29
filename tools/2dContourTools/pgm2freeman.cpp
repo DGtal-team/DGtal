@@ -134,9 +134,9 @@ int main( int argc, char** argv )
   
   int min, max, increment;
   if(! thresholdRange){
-    min=minThreshold;
-    max= maxThreshold;
-    increment =  maxThreshold- minThreshold;
+    min=(int)minThreshold;
+    max= (int)maxThreshold;
+    increment =  (int)(maxThreshold- minThreshold);
   }else{
     vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
     if(vectRange.size()!=3){
@@ -157,8 +157,8 @@ int main( int argc, char** argv )
   SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
 
   for(int i=0; minThreshold+i*increment< maxThreshold; i++){
-    min = minThreshold+i*increment;
-    max = minThreshold+(i+1)*increment;
+    min = (int)(minThreshold+i*increment);
+    max = (int)(minThreshold+(i+1)*increment);
     
     
     SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, min, max);

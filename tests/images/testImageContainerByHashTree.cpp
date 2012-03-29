@@ -52,7 +52,7 @@ int iRand ( int iMin, int iMax )
 template<typename Domain, typename T >
 bool test_setVal ( experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& container, bool checkAfterEachSet )
 {
-  srand ( time ( NULL ) );
+  srand ( (unsigned int)time ( NULL ) );
 
   //phase 1
   cerr << "Test: set" <<endl;
@@ -120,7 +120,7 @@ bool test_setVal ( experimental::ImageContainerByHashTree<Domain , T, DGtal::uin
 template<typename Domain, typename T >
 bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool  )
 {
-  srand ( time ( NULL ) );
+  srand ( (unsigned int)time ( NULL ) );
   unsigned count = 0;
   //unsigned DepthMask = container.ROOT_KEY << container.getDepth()*dim;
   unsigned DepthMask = 100000;

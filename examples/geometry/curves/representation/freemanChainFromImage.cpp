@@ -82,7 +82,7 @@ int main()
   aBoard << set2d;
   aBoard << image.domain();  
 
-  GradientColorMap<int> cmap_grad( 0, vectContoursBdryPointels.size() );
+  GradientColorMap<int> cmap_grad( 0, (const int)vectContoursBdryPointels.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
