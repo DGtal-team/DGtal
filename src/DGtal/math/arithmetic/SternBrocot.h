@@ -147,7 +147,7 @@ namespace DGtal
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
       
       /** 
-          Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+          Any fraction p/q. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
           
           @param aP the numerator (>=0)
@@ -158,7 +158,7 @@ namespace DGtal
           
           @return the corresponding fraction in the Stern-Brocot tree.
           
-          NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+          NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
           are the partial quotients of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
@@ -333,7 +333,7 @@ namespace DGtal
     static Fraction oneOverZero();
 
     /** 
-	Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+	Any fraction p/q. Complexity is in \f$ \sum_i
 	u_i \f$, where u_i are the partial quotients of p/q.
 
 	@param p the numerator (>=0)
@@ -344,7 +344,7 @@ namespace DGtal
 	
 	@return the corresponding fraction in the Stern-Brocot tree.
 
-        NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+        NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
         are the partial quotients of p/q.
     */
     static Fraction fraction( Integer p, Integer q,
