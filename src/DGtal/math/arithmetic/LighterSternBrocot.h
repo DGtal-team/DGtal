@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file LightSternBrocot.h
+ * @file LighterSternBrocot.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
@@ -25,20 +25,20 @@
  *
  * @date 2012/03/07
  *
- * Header file for module LightSternBrocot.cpp
+ * Header file for module LighterSternBrocot.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(LightSternBrocot_RECURSES)
-#error Recursive header files inclusion detected in LightSternBrocot.h
-#else // defined(LightSternBrocot_RECURSES)
+#if defined(LighterSternBrocot_RECURSES)
+#error Recursive header files inclusion detected in LighterSternBrocot.h
+#else // defined(LighterSternBrocot_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LightSternBrocot_RECURSES
+#define LighterSternBrocot_RECURSES
 
-#if !defined LightSternBrocot_h
+#if !defined LighterSternBrocot_h
 /** Prevents repeated inclusion of headers. */
-#define LightSternBrocot_h
+#define LighterSternBrocot_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,9 +53,9 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class LightSternBrocot
+  // template class LighterSternBrocot
   /**
-   Description of template class 'LightSternBrocot' <p> \brief Aim: The
+   Description of template class 'LighterSternBrocot' <p> \brief Aim: The
    Stern-Brocot tree is the tree of irreducible fractions. This class
    allows to construct it progressively and to navigate within
    fractions in O(1) time for most operations. It is well known that
@@ -87,7 +87,7 @@ namespace DGtal
    number of computations tends toward infinity).
 
    This class is not to be instantiated, since it is useless to
-   duplicate it. Use static method LightSternBrocot::fraction to obtain
+   duplicate it. Use static method LighterSternBrocot::fraction to obtain
    your fractions.
 
    @param TInteger the integral type chosen for the fractions.
@@ -97,17 +97,17 @@ namespace DGtal
    since they are generally much smaller than the fraction itself).
 
    @param TMap the type for defining an association TSize ->
-   LightSternBrocot::Node*. For instance, std::map<TSize,
-   LightSternBrocot::Node*> is fine.
+   LighterSternBrocot::Node*. For instance, std::map<TSize,
+   LighterSternBrocot::Node*> is fine.
   */
   template <typename TInteger, typename TSize, typename TMap>
-  class LightSternBrocot
+  class LighterSternBrocot
   {
   public:
     typedef TInteger Integer;
     typedef TSize Size;
     typedef TMap Map;
-    typedef LightSternBrocot<TInteger,TSize,TMap> Self;
+    typedef LighterSternBrocot<TInteger,TSize,TMap> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
     BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
@@ -121,14 +121,17 @@ namespace DGtal
        Represents a node in the Stern-Brocot. The node stores
        information on the irreducible fraction itself (p/q, the
        partial quotient u, the depth k), but also pointers to
-       ascendants, descendants and inverse in the Stern-Brocot tree.
-       Nodes are constructed on demand, when the user ask for
-       descendant or for a specific fraction.
+       ascendant and descendants in the Stern-Brocot tree.  Nodes are
+       constructed on demand, when the user ask for a descendant or
+       for a specific fraction.
 
-       @see LightSternBrocot::fraction
+       The LighterSternBrocot instances only fractions greater than or
+       equal to 1/1. The node 0/1 does not exist. It is the inverse of
+       1/0. Given a fraction [u_0,...,u_n], for u_n >= 2, its origin
+       is [u_0,...,u_{n-1},1]. The k-th son, k >= 2, of [u_0,...,u_n]
+       is the fraction [u_0,...,u_n - 1, k].
 
-       Essentially a backport from <a
-       href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+       @see LighterSternBrocot::fraction
     */
     struct Node {
 
@@ -139,11 +142,33 @@ namespace DGtal
          @param q1 the denominator.
          @param u1 the quotient (last coefficient of its continued fraction).
          @param k1 the depth (1+number of coefficients of its continued fraction).
-         @param _ascendant A pointer to the node that is the preceding
-         principal convergent.
+         @param _origin A pointer to the origin node [u_0,...,u_{n-1},1].
        */
       Node( Integer p1, Integer q1, Size u1, Size k1, 
-	    Node* ascendant );
+	    Node* _origin );
+
+      /// @return the node [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
+      /// is the current node. Construct it if it does not exist yet.
+      Node* child( Size v );
+
+      /**
+	 @return the origin of this node in O(1), ie [u0,...,uk]
+	 => [u0,...,u_{k-1},1], i.e. [u0,...,u_{k-1}+1].
+      */
+      Node* origin() const;
+
+      /**
+	 @return the ancestor of this fraction in O(1), ie 
+         [u0,...,u_{k-1},uk] => [u0,...,u_{k-1}] if u_{k-1} > 1,
+         => [u0,...,u_{k-2}] otherwise.
+         Equivalent to reduced( 1 ).
+      */
+      Node* ancestor() const;
+      /**
+	 @return the father of this fraction in O(1), ie [u0,...,uk]
+	 => [u0,..  .,uk - 1]
+      */
+      Node* father() const;
 
       /// the numerator;
       Integer p;
@@ -153,16 +178,13 @@ namespace DGtal
       Size u;
       /// the depth (1+number of coefficients of its continued fraction).
       Size k;
-      /// A pointer to the node that is the preceding principal convergent.
-      Node* ascendant;
-      /// a map which gives the descendant [..u_n, k] if k is the
+      /// A pointer to the origin node [u_0,...,u_{n-1},1]
+      Node* myOrigin;
+      /// a map which gives the descendant [u_0,...,u_n - 1, k] if k is the
       /// key. Note that they are left or right descendant according
       /// to the parity of the depth.  (odd=left, even=right).
-      MapSizeToNode descendant;
-      /// a map which gives the descendant [...u_n-1,1, k] if k is the
-      /// key. Note that they are left or right descendant according
-      /// to the parity of the depth.  (even=left, odd=right).
-      MapSizeToNode descendant2;
+      MapSizeToNode myChildren;
+
 
       /// @return 'true' iff this node has an even depth.
       inline bool even() const {
@@ -185,14 +207,14 @@ namespace DGtal
     public:
       typedef TInteger Integer;
       typedef TSize Size;
-      typedef LightSternBrocot<TInteger, TSize, TMap> SB;
+      typedef LighterSternBrocot<TInteger, TSize, TMap> SB;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
 
     private:
       /// The pointer to the corresponding node in the Stern-Brocot
-      /// tree, i.e. the node p/q if p <= q or the node q/p otherwise.
+      /// tree, i.e. the node p/q if p >= q or the node q/p otherwise.
       Node* myNode; 
-      /// When 'true', the fraction is greater than 1/1 (to its right).
+      /// When 'true', the fraction is greater or equal than 1/1 (to its right).
       bool mySup1;
 
     public:      
@@ -203,13 +225,10 @@ namespace DGtal
           @param aP the numerator (>=0)
           @param aQ the denominator (>=0)
           
-          @param start (optional) any ancestor of aP/aQ in the tree
-          (for speed-up).
+          @param start (optional) unused in this representation.
           
-          @return the corresponding fraction in the Stern-Brocot tree.
-          
-          NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
-          are the partial quotients of aP/aQ.
+          NB: Complexity is bounded by the depth of the continued
+          fraction of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
                 Fraction start = SB::zeroOverOne() );
@@ -218,13 +237,14 @@ namespace DGtal
 	 Default constructor.
          @param sb_node the associated node (or 0 for null fraction).
 
-         @param sup1 when 'true', the fraction is greater than 1/1 and
+         @param sup1 when 'false', the fraction is smaller greater than 1/1 and
          represents q/p.
       */
       Fraction( Node* sb_node = 0, bool sup1 = false );
       /// @return 'true' iff it is the null fraction 0/0.
       bool null() const;
-      bool isSup1() const { return mySup1; }
+      /// For debug purposes
+      inline bool isSup1() const { return mySup1; }
       /// @return its numerator;
       Integer p() const;
       /// @return its denominator;
@@ -234,9 +254,19 @@ namespace DGtal
       /// @return its depth (1+number of coefficients of its continued fraction).
       Size k() const;
 
+      /// For debug purposes.
       inline Size trueK() const { return myNode->k; }
 
     protected:
+      /// @return the fraction [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
+      /// is the current fraction. Construct it if it does not exist yet.
+      Fraction child( Size v ) const;
+      /**
+	 @return the origin of this fraction in O(1), ie [u0,...,uk]
+	 => [u0,...,u_{k-1},1], i.e. [u0,...,u_{k-1}+1].
+      */
+      Fraction origin() const;
+
       /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
       Fraction next( Size v ) const;
@@ -253,29 +283,26 @@ namespace DGtal
       bool even() const; 
       /// @return 'true' if it is an odd fraction, i.e. its depth k() is odd.
       bool odd() const; 
+
       /**
 	 @return the ancestor of this fraction in O(1), ie 
          [u0,...,u_{k-1},uk] => [u0,...,u_{k-1}] if u_{k-1} > 1,
          => [u0,...,u_{k-2}] otherwise.
+         Equivalent to reduced( 1 ).
       */
       Fraction ancestor() const;
       /**
 	 @return 'true' if its ancestor has depth k-1, otherwise returns false.
       */
       bool isAncestorDirect() const;
-
       /**
 	 @return the father of this fraction in O(1), ie [u0,...,uk]
-	 => [u0,...,uk - 1]
+	 => [u0,..  .,uk - 1]
       */
       Fraction father() const;
-
       /**
          @param m a quotient between 1 and uk-1.
-	 @return a given father of this fraction in O(uk - m), ie [u0,...,uk]
-	 => [u0,...,m]
-
-         @todo Do it in O(1)... but require to change the data structure.
+	 @return the fraction [u_0, ..., u_{n-1},m]
       */
       Fraction father( Size m ) const;
       /**
@@ -399,18 +426,21 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~LightSternBrocot();
+    ~LighterSternBrocot();
 
     /**
-       @return the (only) instance of LightSternBrocot.
+       @return the (only) instance of LighterSternBrocot.
     */
-    static LightSternBrocot & instance();
+    static LighterSternBrocot & instance();
 
     /** The fraction 0/1 */
     static Fraction zeroOverOne();
 
     /** The fraction 1/0 */
     static Fraction oneOverZero();
+
+    /** The fraction 1/1 */
+    static Fraction oneOverOne();
 
     /** 
 	Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
@@ -426,8 +456,8 @@ namespace DGtal
         NB: Complexity is bounded by \a n where \a n is the depth of
         the continued fraction of p/q.
     */
-    static Fraction fraction( Integer p, Integer q,
-                              Fraction ancestor = zeroOverOne() );
+    static Fraction fraction( Integer p, Integer q, 
+                              Fraction ancestor = oneOverZero()  );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -453,13 +483,13 @@ namespace DGtal
     /**
        Constructor.
      */
-    LightSternBrocot();
+    LighterSternBrocot();
 
     // ------------------------- Private Datas --------------------------------
   private:
 
     /// Singleton class.
-    static LightSternBrocot* singleton;
+    static LighterSternBrocot* singleton;
 
 
     // ------------------------- Datas ----------------------------------------
@@ -479,7 +509,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    LightSternBrocot ( const LightSternBrocot & other );
+    LighterSternBrocot ( const LighterSternBrocot & other );
 
     /**
      * Assignment.
@@ -487,36 +517,36 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    LightSternBrocot & operator= ( const LightSternBrocot & other );
+    LighterSternBrocot & operator= ( const LighterSternBrocot & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class LightSternBrocot
+  }; // end of class LighterSternBrocot
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'LightSternBrocot'.
+   * Overloads 'operator<<' for displaying objects of class 'LighterSternBrocot'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'LightSternBrocot' to write.
+   * @param object the object of class 'LighterSternBrocot' to write.
    * @return the output stream after the writing.
    */
   // template <typename TInteger, typename TSize, typename TMap>
   // std::ostream&
   // operator<< ( std::ostream & out, 
-  //              const typename LightSternBrocot<TInteger, TSize, TMap>::Fraction & object );
+  //              const typename LighterSternBrocot<TInteger, TSize, TMap>::Fraction & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/LightSternBrocot.ih"
+#include "DGtal/math/arithmetic/LighterSternBrocot.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LightSternBrocot_h
+#endif // !defined LighterSternBrocot_h
 
-#undef LightSternBrocot_RECURSES
-#endif // else defined(LightSternBrocot_RECURSES)
+#undef LighterSternBrocot_RECURSES
+#endif // else defined(LighterSternBrocot_RECURSES)
