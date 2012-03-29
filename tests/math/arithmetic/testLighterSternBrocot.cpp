@@ -703,14 +703,6 @@ bool testSubStandardDSLQ0()
   return nbok == nb;
 }
 
-struct StdMapRebinder
-{
-  template <typename Key, typename Value>
-  struct Rebinder {
-    typedef std::map<Key, Value> Type;
-  };
-};
-
 /**
  * Example of a test. To be completed.
  *
@@ -721,7 +713,7 @@ bool testLighterSternBrocot()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::BigInteger Integer;
-  typedef LighterSternBrocot<Integer, DGtal::int32_t, StdMapRebinder> SB;
+  typedef LighterSternBrocot<Integer, DGtal::int32_t, DGtal::StdMapRebinder> SB;
   typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing block: init fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
@@ -751,16 +743,16 @@ bool testLighterSternBrocot()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-template <>
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
+// template <>
+// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
+// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
 template <>
 LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t, StdMapRebinder>*
 LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t, StdMapRebinder>::singleton = 0;
 
 int main( int , char** )
 {
-  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> SB;
+  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, DGtal::StdMapRebinder> SB;
   typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing class LighterSternBrocot" );
   bool res = testLighterSternBrocot()

@@ -52,4 +52,23 @@ namespace DGtal
   DGtal::LightSternBrocot<TInteger, TSize, TMap>*
   DGtal::LightSternBrocot<TInteger, TSize, TMap>::singleton = 0;
 
+  template <>
+  LightSternBrocot<DGtal::int64_t,DGtal::int32_t>*
+  LightSternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
+
+#ifdef WITH_BIGINTEGER
+  template <>
+  LightSternBrocot<DGtal::BigInteger,DGtal::int32_t>*
+  LightSternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
+
+  template <>
+  LightSternBrocot<DGtal::BigInteger,DGtal::int64_t>*
+  LightSternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
+
+  template <>
+  LightSternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
+  LightSternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
+
+#endif
+
 }
