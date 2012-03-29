@@ -53,6 +53,7 @@
 #include "DGtal/geometry/curves/representation/FreemanChain.h"
 #include "DGtal/geometry/curves/representation/GeometricalDSS.h"
 #include "DGtal/geometry/curves/representation/GeometricalDCA.h"
+#include "DGtal/geometry/curves/representation/FrechetShortcut.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -160,11 +161,17 @@ void draw( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> & );
 template <typename TConstIterator>
 void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDSS<TConstIterator> & );
 // GeometricalDSS
-    
+
 // GeometricalDCA
 template <typename TConstIterator>
 void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIterator> & );
 // GeometricalDCA
+
+
+// FrechetShortcut
+template <typename TIterator, typename TInteger>
+void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & );
+// FrechetShortcut
 
     
 // GridCurve

@@ -377,6 +377,16 @@ DGtal::FrechetShortcut<TIterator,TInteger>::end() const {
 
 
 
+template <typename TIterator, typename TInteger>
+inline
+std::string
+DGtal::FrechetShortcut<TIterator,TInteger>::className() const
+{
+  return "FrechetShortcut";
+}
+
+
+
 /**
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
