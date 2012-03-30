@@ -439,11 +439,6 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    /**
-       Constructor.
-     */
-    LightSternBrocot();
-
     // ------------------------- Private Datas --------------------------------
   private:
 
@@ -462,6 +457,11 @@ namespace DGtal
   protected:
 
   private:
+    /**
+       Constructor. Hidden since singleton class.
+     */
+    LightSternBrocot();
+
 
     /**
      * Copy constructor.

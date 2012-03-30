@@ -59,7 +59,6 @@ Node( Integer p1, Integer q1, Size u1, Size k1,
     inverse( inverse1 )
 {
   // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
-  ++SternBrocot<TInteger,TSize>::nbFractions;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -219,6 +218,7 @@ left() const
       n->inverse = invn;
       myNode->inverse->descendantRight = invn;
       myNode->descendantLeft = n;
+      instance().nbFractions += 2;
     }
   return Fraction( myNode->descendantLeft );
 }
@@ -427,14 +427,60 @@ template <typename TInteger, typename TSize>
 inline
 DGtal::SternBrocot<TInteger, TSize>::~SternBrocot()
 {
+  if ( myOneOverOne != 0 ) delete myOneOverOne;
+  if ( myOneOverZero != 0 ) delete myOneOverZero;
+  if ( myZeroOverOne != 0 ) delete myZeroOverOne;
 }
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::SternBrocot<TInteger, TSize>::SternBrocot()
+{
+  myOneOverZero = new Node( NumberTraits<Integer>::ONE,
+                            NumberTraits<Integer>::ZERO,
+                            NumberTraits<Size>::ZERO,
+                            -NumberTraits<Size>::ONE,
+                            myZeroOverOne, 0, myOneOverOne, 0,
+                            myZeroOverOne );
+  myZeroOverOne = new Node( NumberTraits<Integer>::ZERO,
+                            NumberTraits<Integer>::ONE,
+                            NumberTraits<Size>::ZERO,
+                            NumberTraits<Size>::ZERO,
+                            myZeroOverOne, myOneOverZero, 0, myOneOverOne,
+                            myOneOverZero );
+  myOneOverOne = new Node( NumberTraits<Integer>::ONE,
+                           NumberTraits<Integer>::ONE,
+                           NumberTraits<Size>::ONE,
+                           NumberTraits<Size>::ZERO,
+                           myZeroOverOne, myOneOverZero, 0, 0,
+                           myOneOverOne );
+  myOneOverZero->ascendantLeft = myZeroOverOne;
+  myOneOverZero->descendantLeft = myOneOverOne;
+  myOneOverZero->inverse = myZeroOverOne;
+  myZeroOverOne->ascendantLeft = myZeroOverOne;
+  myZeroOverOne->descendantRight = myOneOverOne;
+  myOneOverOne->inverse = myOneOverOne;
+  nbFractions = 3;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::SternBrocot<TInteger, TSize> &
+DGtal::SternBrocot<TInteger, TSize>::instance()
+{
+  if ( singleton == 0 )
+    singleton = new SternBrocot;
+  return *singleton;
+}
+
+
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
 inline
 typename DGtal::SternBrocot<TInteger, TSize>::Fraction
 DGtal::SternBrocot<TInteger, TSize>::zeroOverOne()
 {
-  return Fraction( &myZeroOverOne );
+  return Fraction( instance().myZeroOverOne );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
@@ -442,7 +488,7 @@ inline
 typename DGtal::SternBrocot<TInteger, TSize>::Fraction
 DGtal::SternBrocot<TInteger, TSize>::oneOverZero()
 {
-  return Fraction( &myOneOverZero );
+  return Fraction( instance().myOneOverZero );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
