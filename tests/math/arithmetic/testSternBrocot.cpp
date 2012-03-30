@@ -142,7 +142,7 @@ bool testInitFraction()
   trace.info() << "(" << nbok << "/" << nb << ") " 
                << "( ( p == f1.p() ) && ( q == f1.q() ) )"
                << std::endl;
-  trace.info() << "- nbFractions = " << SB::nbFractions << std::endl;
+  trace.info() << "- nbFractions = " << SB::instance().nbFractions << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -733,7 +733,7 @@ bool testSternBrocot()
   trace.endBlock();
 
   trace.beginBlock ( "Testing block: number of fractions." );
-  trace.info() << "- nbFractions = " << SB::nbFractions << endl;
+  trace.info() << "- nbFractions = " << SB::instance().nbFractions << endl;
   trace.endBlock();
 
   return nbok == nb;

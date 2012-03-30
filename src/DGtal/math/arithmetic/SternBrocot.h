@@ -320,6 +320,11 @@ namespace DGtal
      */
     ~SternBrocot();
 
+    /**
+       @return the (only) instance of SternBrocot.
+    */
+    static SternBrocot & instance();
+
     /** The fraction 0/1 */
     static Fraction zeroOverOne();
 
@@ -361,30 +366,26 @@ namespace DGtal
     bool isValid() const;
 
     /// The total number of fractions in the current tree.
-    static Size nbFractions;
+    Size nbFractions;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+    /// Singleton class.
+    static SternBrocot* singleton;
 
-    // ------------------------- Datas ----------------------------------------
-  private:
-
-    static Node myVirtualZeroOverOne;
-    static Node myZeroOverOne;
-    static Node myOneOverZero;
-    static Node myOneOverOne;
+    Node* myZeroOverOne;
+    Node* myOneOverZero;
+    Node* myOneOverOne;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+  private:
 
     /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
+     * Constructor. Hidden since singleton class.
      */
     SternBrocot();
-
-  private:
 
     /**
      * Copy constructor.

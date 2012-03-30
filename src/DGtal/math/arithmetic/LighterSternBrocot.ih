@@ -81,6 +81,7 @@ child( Size v )
                   NumberTraits<Size>::ZERO,                // k' = 0
                   this );
       myChildren[ v ] = newNode;
+      ++( instance().nbFractions );
       return newNode;
     }
   long int _v = NumberTraits<Size>::castToInt64_t( v );
@@ -98,6 +99,7 @@ child( Size v )
               k + NumberTraits<Size>::ONE, // k' = k+1
               this );
   myChildren[ v ] = newNode;
+  ++( instance().nbFractions );
   return newNode;
 }
 //-----------------------------------------------------------------------------
@@ -584,7 +586,7 @@ template <typename TInteger, typename TSize, typename TMap>
 inline
 DGtal::LighterSternBrocot<TInteger, TSize, TMap>::~LighterSternBrocot()
 {
-  if ( myZeroOverOne != 0 ) delete myZeroOverOne;
+  if ( myOneOverOne != 0 ) delete myOneOverOne;
   if ( myOneOverZero != 0 ) delete myOneOverZero;
 }
 //-----------------------------------------------------------------------------

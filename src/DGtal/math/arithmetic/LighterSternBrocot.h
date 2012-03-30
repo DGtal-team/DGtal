@@ -470,22 +470,12 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    /**
-       Constructor.
-     */
-    LighterSternBrocot();
-
     // ------------------------- Private Datas --------------------------------
   private:
 
     /// Singleton class.
     static LighterSternBrocot* singleton;
 
-
-    // ------------------------- Datas ----------------------------------------
-  private:
-
-    Node* myZeroOverOne;
     Node* myOneOverZero;
     Node* myOneOverOne;
 
@@ -493,6 +483,11 @@ namespace DGtal
   protected:
 
   private:
+
+    /**
+     * Constructor. Hidden since singleton class.
+     */
+    LighterSternBrocot();
 
     /**
      * Copy constructor.
