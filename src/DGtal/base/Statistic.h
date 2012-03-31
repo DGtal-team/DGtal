@@ -49,16 +49,17 @@
 namespace DGtal
 {
   /**
-   * Description of class 'Statistic' <p> \brief Aim: This class processes a
-   * set of sample values for one variable and can then compute
-   * different statistics, like sample mean, sample variance, sample
-   * unbiased variance, etc. It is minimalistic for space
-   * efficiency. For multiple variables, sample storage and others,
-   * see Statistics class.
-   *
-   * Backported from  \cite ImaGene . \cite Lachaud03b
-   *
-   * @see testStatistics.cpp
+
+    Description of class 'Statistic' <p> \brief Aim: This class processes a
+    set of sample values for one variable and can then compute
+    different statistics, like sample mean, sample variance, sample
+    unbiased variance, etc. It is minimalistic for space
+    efficiency. For multiple variables, sample storage and others,
+    see Statistics class.
+
+    Backported from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene). \cite Lachaud03b
+    
+    @see testStatistics.cpp
    */
   template <typename RealNumberType>
   class Statistic
