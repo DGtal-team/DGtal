@@ -155,8 +155,8 @@ namespace DGtal
      @tparam TValue the type chosen for each sample (generally float
      or double).
      
-     This class is a backport from <a
-     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+     This class is a backport from
+     [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
   */
   template <typename TValue>
   class Signal
