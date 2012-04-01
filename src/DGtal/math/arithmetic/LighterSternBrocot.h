@@ -203,14 +203,23 @@ namespace DGtal
       
     };
 
-    /// A fraction is simply a pointer to the corresponding node, plus
-    /// a boolean indicating if it is bigger than 1/1.
+    /**
+       @brief This fraction is a model of CPositiveIrreducibleFraction.
+
+       It represents a positive irreducible fraction, i.e. some p/q
+       qith gcd(p,q)=1. It is an inner class of
+       LighterSternBrocot. This representation of a fraction is simply
+       a pointer to the corresponding node in this tree, plus a
+       boolean indicating if it is bigger than 1/1.
+    */
     class Fraction {
     public:
       typedef TInteger Integer;
       typedef TSize Size;
       typedef LighterSternBrocot<TInteger, TSize, TMap> SB;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
+      typedef std::pair<Size, Size> value_type;
+      typedef value_type Value;
 
     private:
       /// The pointer to the corresponding node in the Stern-Brocot
@@ -242,8 +251,6 @@ namespace DGtal
       Fraction( Node* sb_node = 0, bool sup1 = false );
       /// @return 'true' iff it is the null fraction 0/0.
       bool null() const;
-      /// For debug purposes
-      inline bool isSup1() const { return mySup1; }
       /// @return its numerator;
       Integer p() const;
       /// @return its denominator;
@@ -253,8 +260,11 @@ namespace DGtal
       /// @return its depth (1+number of coefficients of its continued fraction).
       Size k() const;
 
-      /// For debug purposes.
-      inline Size trueK() const { return myNode->k; }
+      /// \attention Only for debug purposes. @return 'true' iff the fraction is
+      /// greater than 1/1.
+      bool isSup1() const { return mySup1; }
+      /// \attention Only for debug purposes. @return the depth of the node.
+      Size trueK() const { return myNode->k; }
 
     protected:
       /// @return the fraction [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
@@ -265,13 +275,10 @@ namespace DGtal
 	 => [u0,...,u_{k-1},1], i.e. [u0,...,u_{k-1}+1].
       */
       Fraction origin() const;
-
       /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
       Fraction next( Size v ) const;
-      /// @return the fraction [u_0, ..., u_n -1, 1, v] if [u_0, ..., u_n]
-      /// is the current fraction. Construct it if it does not exist yet.
-      Fraction next1( Size v ) const;
+
     public:
 
       /// @return its left descendant (construct it if it does not exist yet).
@@ -329,6 +336,36 @@ namespace DGtal
 	 [u0,...,u{k-i}]
       */
       Fraction reduced( Size i ) const;
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         Useful to create output iterators, for instance with
+
+         @code
+         typedef ... Fraction; 
+         Fraction f;
+         std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
+         @endcode
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */
+      void push_back( const std::pair<Size, Size> & quotient );
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         See push_back for creating output iterators.
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */         
+      void pushBack( const std::pair<Size, Size> & quotient );
 
       /**
 	 Splitting formula, O(1) time complexity. This fraction should

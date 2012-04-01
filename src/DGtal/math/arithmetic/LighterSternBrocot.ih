@@ -320,17 +320,6 @@ next( Size v ) const
   return Fraction( node->child( v ), mySup1 );
 }
 //-----------------------------------------------------------------------------
-/// @return the fraction [u_0, ..., u_n -1, 1, v] if [u_0, ..., u_n]
-/// is the current fraction. Construct it if it does not exist yet.
-template <typename TInteger, typename TSize, typename TMap>
-inline
-typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction
-DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
-next1( Size v ) const
-{
-  ASSERT( false );
-}
-//-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
 inline
 typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction
@@ -388,6 +377,15 @@ DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
 origin() const
 {
   return Fraction( myNode->origin(), mySup1 );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+child( Size v ) const
+{
+  return Fraction( myNode->child( v ), mySup1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -483,6 +481,76 @@ reduced( Size i ) const
   Size _u = node->u;
   node = node->origin()->child( _u - NumberTraits<Size>::ONE );
   return Fraction( node, mySup1 );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+void
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+push_back( const std::pair<Size, Size> & quotient )
+{
+  pushBack( quotient );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+void
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+pushBack( const std::pair<Size, Size> & quotient )
+{
+  std::vector<Size> quots;
+  if ( ! null() )
+    {
+      this->cfrac( quots );
+      std::cerr << "F[";
+      for ( unsigned int i = 0; i < quots.size(); ++i )
+        std::cerr << " " << quots[ i ];
+    }
+  else std::cerr << "[";
+  std::cerr << "] + " << "(" << quotient.first 
+            << "," << quotient.second << ")";
+  if ( null() )
+    {
+      ASSERT( quotient.second <= NumberTraits<Size>::ZERO );
+      if ( quotient.second < NumberTraits<Size>::ZERO )
+        this->operator=( oneOverZero() );
+      else if ( quotient.first == NumberTraits<Size>::ZERO ) // (0,0)
+        this->operator=( zeroOverOne() );
+      else
+        this->operator=( oneOverZero().child( quotient.first ) );
+    }
+  else if ( this->myNode == instance().myOneOverZero )
+    {
+      if ( this->mySup1 ) // 1/0
+        {
+          ASSERT( quotient.second == NumberTraits<Size>::ZERO );
+          if ( quotient.first == NumberTraits<Size>::ZERO ) // (0,0)
+            this->operator=( zeroOverOne() );
+          else
+            this->operator=( oneOverZero().child( quotient.first ) );
+        }
+      else // 0/1
+        {
+          ASSERT( quotient.second == NumberTraits<Size>::ONE );
+          this->operator=( oneOverZero().child( quotient.first ).inverse() );
+        }
+    }
+  else 
+    { // Generic case.
+      if ( quotient.second == this->k() + NumberTraits<Size>::ONE )
+        this->operator=( origin().child( u() + NumberTraits<Size>::ONE )
+                         .child( quotient.first ) );
+      else if ( this->k() == NumberTraits<Size>::ZERO ) // 1/1
+        this->operator=( oneOverZero().child( quotient.first ).inverse() );
+      else // preceding node was [....,u_k,1]
+        this->operator=( child( 2 ).child( quotient.first ) );
+    }
+  quots.clear();
+  this->cfrac( quots );
+  std::cerr << " => F[";
+  for ( unsigned int i = 0; i < quots.size(); ++i )
+    std::cerr << " " << quots[ i ];
+  std::cerr << "]" << std::endl;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -663,7 +731,7 @@ DGtal::LighterSternBrocot<TInteger, TSize, TMap>::display( std::ostream & out,
           << "/" << f.q()
           << " u=" << f.u()
           << " k=" << f.k()
-          << " s1=" << f.isSup1()
+        // << " s1=" << f.isSup1()
           << std::flush;
       std::vector<Size> quotients;
       if ( f.k() >= 0 )

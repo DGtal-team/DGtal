@@ -30,6 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <vector>
+#include <iterator>
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
@@ -740,24 +742,68 @@ bool testLighterSternBrocot()
   return nbok == nb;
 }
 
+
+template <typename SB>
+bool testContinuedFraction()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  Fraction f;
+  std::vector<Size> quotients;
+  std::vector<Size> qcfrac;
+  std::back_insert_iterator< Fraction > itout = 
+    std::back_inserter( f );
+  unsigned int size = ( random() % 20 ) + 10;
+  for ( unsigned int i = 0; i < size; ++i )
+    {
+      Size q = ( i == 0 )
+        ? ( random() % 5 )
+        : ( random() % 5 ) + 1;
+      *itout++ = std::make_pair( q, (Size) i );
+      quotients.push_back( q );
+    }
+  f.cfrac( qcfrac );
+  bool ok = equalCFrac( quotients, qcfrac );
+  trace.info() << ( ok ? "(OK)" : "(ERR)" );
+  for ( unsigned int i = 0; i < quotients.size(); ++i )
+    std::cerr << " " << quotients[ i ];
+  trace.info() << std::endl;
+  trace.info() << "     f=";
+  f.selfDisplay( std::cerr );
+  trace.info() << std::endl;
+  return ok;
+}
+
+template <typename SB>
+bool testContinuedFractions()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  unsigned int nbtests = 10;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block: continued fraction." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+  trace.endBlock();
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-// template <>
-// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>*
-// LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder>::singleton = 0;
-template <>
-LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t, StdMapRebinder>*
-LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t, StdMapRebinder>::singleton = 0;
-
 int main( int , char** )
 {
-  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, DGtal::StdMapRebinder> SB;
+  typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
+                              DGtal::StdMapRebinder > SB;
   typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing class LighterSternBrocot" );
   bool res = testLighterSternBrocot()
     && testPattern<SB>()
-    && testSubStandardDSLQ0<Fraction>();
+    // && testSubStandardDSLQ0<Fraction>()
+    && testContinuedFractions<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

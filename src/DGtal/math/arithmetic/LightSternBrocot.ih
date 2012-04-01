@@ -474,6 +474,25 @@ template <typename TInteger, typename TSize, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
+push_back( const std::pair<Size, Size> & quotient )
+{
+  pushBack( quotient );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+void
+DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
+pushBack( const std::pair<Size, Size> & quotient )
+{
+  ASSERT( false 
+          && "UNIMPLEMENTED. Use SternBrocot::Fraction or LighterSternBrocot::Fraction instead." );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+void
+DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
 getSplit( Fraction & f1, Fraction & f2 ) const
 {
   if ( odd() )
@@ -669,7 +688,7 @@ DGtal::LightSternBrocot<TInteger, TSize, TMap>::display( std::ostream & out,
           << "/" << f.q()
           << " u=" << f.u()
           << " k=" << f.k()
-          << " s1=" << f.isSup1()
+        // << " s1=" << f.isSup1() 
           << std::flush;
       std::vector<Size> quotients;
       if ( f.k() >= 0 )
