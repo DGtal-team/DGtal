@@ -138,7 +138,14 @@ namespace DGtal
       Node* inverse;
     };
 
-    /// A fraction is simply a pointer to the corresponding node.
+    /**
+       @brief This fraction is a model of CPositiveIrreducibleFraction.
+
+       It represents a positive irreducible fraction, i.e. some p/q
+       qith gcd(p,q)=1. It is an inner class of SternBrocot. This
+       representation of a fraction is simply a pointer to the
+       corresponding node in this tree.
+    */
     class Fraction {
     public:
       typedef TInteger Integer;
