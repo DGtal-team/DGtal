@@ -373,7 +373,7 @@ template <typename TInteger, typename TSize>
 inline
 void
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
-cfrac( std::vector<Size> & quotients ) const
+getCFrac( std::vector<Size> & quotients ) const
 {
   ASSERT( this->k() >= NumberTraits<Size>::ZERO );
   int64_t i = NumberTraits<Size>::castToInt64_t( this->k() );
@@ -409,7 +409,7 @@ selfDisplay( std::ostream & out ) const
       std::vector<Size> quotients;
       if ( this->k() >= 0 )
         {
-          this->cfrac( quotients );
+          this->getCFrac( quotients );
           out << " [" << quotients[ 0 ];
           for ( unsigned int i = 1; i < quotients.size(); ++i )
             out << "," << quotients[ i ];
@@ -515,7 +515,7 @@ DGtal::SternBrocot<TInteger, TSize>::display( std::ostream & out,
       std::vector<Size> quotients;
       if ( f.k() >= 0 )
         {
-          f.cfrac( quotients );
+          f.getCFrac( quotients );
           out << " [" << quotients[ 0 ];
           for ( unsigned int i = 1; i < quotients.size(); ++i )
             out << "," << quotients[ i ];
