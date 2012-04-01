@@ -781,12 +781,16 @@ bool testContinuedFractions()
   typedef typename SB::Integer Integer;
   typedef typename SB::Size Size;
   typedef typename SB::Fraction Fraction;
-  unsigned int nbtests = 10;
+  unsigned int nbtests = 1000;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   trace.beginBlock ( "Testing block: continued fraction." );
   for ( unsigned int i = 0; i < nbtests; ++i )
-    ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+    {
+      ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      trace.info() << "(" << nbok << "/" << nb << ")"
+                   << " continued fractions." << std::endl;
+    }
   trace.endBlock();
   return nbok == nb;
 }

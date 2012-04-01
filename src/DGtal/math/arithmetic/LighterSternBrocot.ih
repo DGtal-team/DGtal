@@ -442,7 +442,10 @@ typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction
 DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
 inverse() const
 {
-  return Fraction( myNode, ! mySup1 );
+  return ( ( myNode->k == NumberTraits<Size>::ZERO )
+           && ( myNode->u == NumberTraits<Size>::ONE ) )
+    ? *this
+    : Fraction( myNode, ! mySup1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -540,8 +543,13 @@ pushBack( const std::pair<Size, Size> & quotient )
       if ( quotient.second == this->k() + NumberTraits<Size>::ONE )
         this->operator=( origin().child( u() + NumberTraits<Size>::ONE )
                          .child( quotient.first ) );
-      else if ( this->k() == NumberTraits<Size>::ZERO ) // 1/1
-        this->operator=( oneOverZero().child( quotient.first ).inverse() );
+      else if ( ( this->k() == NumberTraits<Size>::ZERO ) 
+                && ( this->u() == NumberTraits<Size>::ONE ) ) // (1/1)
+        {
+          this->operator=( oneOverZero().child( 2 ).inverse() );  // (1/(1+1))
+          if ( quotient.first > NumberTraits<Size>::ONE )
+            this->operator=( child( quotient.first ) ); // (1/(1+1/q))
+        }
       else // preceding node was [....,u_k,1]
         this->operator=( child( 2 ).child( quotient.first ) );
     }
