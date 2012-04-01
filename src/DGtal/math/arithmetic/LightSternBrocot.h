@@ -367,7 +367,7 @@ namespace DGtal
 	 @param quotients (returns) the coefficients of the continued
 	 fraction of 'this'.
       */
-      void cfrac( std::vector<Size> & quotients ) const;
+      void getCFrac( std::vector<Size> & quotients ) const;
 
       /**
          @param p1 a numerator.

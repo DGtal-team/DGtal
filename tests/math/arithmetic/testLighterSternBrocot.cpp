@@ -91,7 +91,7 @@ bool testReducedFraction()
   ics.getCFrac( cf1, sp, sq );
   Fraction f1 = SB::fraction( p, q );
   std::vector<Size> cf1_bis;
-  f1.cfrac( cf1_bis );
+  f1.getCFrac( cf1_bis );
   bool ok = equalCFrac<Size>( cf1, cf1_bis );
   trace.info() << "  - p / q = " << p << " / " << q << std::endl;
   trace.info() << "  - f1 = ";
@@ -106,7 +106,7 @@ bool testReducedFraction()
     {
       std::vector<Size> cf1_red;
       Fraction fr = f1.reduced( k );
-      fr.cfrac( cf1_red );
+      fr.getCFrac( cf1_red );
       cf1.resize( depth - k );
       ok = equalCFrac<Size>( cf1, cf1_red );
       ++nb, nbok += ok ? 1 : 0;
@@ -763,7 +763,7 @@ bool testContinuedFraction()
       *itout++ = std::make_pair( q, (Size) i );
       quotients.push_back( q );
     }
-  f.cfrac( qcfrac );
+  f.getCFrac( qcfrac );
   bool ok = equalCFrac( quotients, qcfrac );
   trace.info() << ( ok ? "(OK)" : "(ERR)" );
   for ( unsigned int i = 0; i < quotients.size(); ++i )

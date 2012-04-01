@@ -108,7 +108,7 @@ Stern-Brocot tree.
 | \e m-th reduced |\e x.\c reduced(m)|             | \e X        | ! \e x.\c null() | returns the \e m-th reduced of this fraction, equivalently the \f$k-m\f$ partial, ie \f$[u_0,...,u_{k-m}]\f$ | | O(1) |
 | splitting formula |\e x.\c getSplit(\e x1, \e x2)| | \c void   | ! \e x.\c null() | modifies fractions \e x1 and \e x2 such that \f$ x1 \oplus x2 = x \f$| | O(1) |
 | Berstel splitting formula |\e x.\c getSplitBerstel(\e x1, \e n1, \e x2, \e n2)| | \c void | ! \e x.\c null() | modifies fractions \e x1 and \e x2 and integers \e n1 and \e n2 such that \f$ (x1)^{n1} \oplus (x2)^{n2}  = x \f$| | O(1) |
-| Continued fraction coefficients |\e x.\c cfrac(\e quots)| | \c void |             | modifies the vector \e quots such that it contains the quotients \f$u_0,u_1,...,u_k \f$| | O(k) |
+| Continued fraction coefficients |\e x.\c getCFrac(\e quots)| | \c void |             | modifies the vector \e quots such that it contains the quotients \f$u_0,u_1,...,u_k \f$| | O(k) |
 |               |            |                     |             |                  |           |                |            |
 | equality      |\e x.\c equals(\e p, \e q)|       | \c bool     |                  | returns 'true' iff the fraction is equal to \f$ p / q \f$. | | O(1) |
 | less than     |\e x.\c lessThan(\e p, \e q)|     | \c bool     |                  | returns 'true' iff the fraction is inferior to \f$ p / q \f$. | | O(1) |
@@ -164,7 +164,7 @@ public:
     ConceptUtils::sameType( myX, myX.reduced( myU ) );
     myX.getSplit( myF1, myF2 );
     myX.getSplitBerstel( myF1, myN1, myF2, myN2 );
-    myX.cfrac( myQuots );
+    myX.getCFrac( myQuots );
     ConceptUtils::sameType( myBool, myX.equals( myP, myQ ) );
     ConceptUtils::sameType( myBool, myX.lessThan( myP, myQ ) );
     ConceptUtils::sameType( myBool, myX.moreThan( myP, myQ ) );

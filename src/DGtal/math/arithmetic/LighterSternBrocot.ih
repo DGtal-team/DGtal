@@ -504,7 +504,7 @@ pushBack( const std::pair<Size, Size> & quotient )
   std::vector<Size> quots;
   if ( ! null() )
     {
-      this->cfrac( quots );
+      this->getCFrac( quots );
       std::cerr << "F[";
       for ( unsigned int i = 0; i < quots.size(); ++i )
         std::cerr << " " << quots[ i ];
@@ -554,7 +554,7 @@ pushBack( const std::pair<Size, Size> & quotient )
         this->operator=( child( 2 ).child( quotient.first ) );
     }
   quots.clear();
-  this->cfrac( quots );
+  this->getCFrac( quots );
   std::cerr << " => F[";
   for ( unsigned int i = 0; i < quots.size(); ++i )
     std::cerr << " " << quots[ i ];
@@ -606,7 +606,7 @@ template <typename TInteger, typename TSize, typename TMap>
 inline
 void
 DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
-cfrac( std::vector<Size> & quotients ) const
+getCFrac( std::vector<Size> & quotients ) const
 {
   ASSERT( k() >= NumberTraits<Size>::ZERO );
   int64_t i = NumberTraits<Size>::castToInt64_t( k() );
@@ -644,7 +644,7 @@ selfDisplay( std::ostream & out ) const
       std::vector<Size> quotients;
       if ( this->k() >= 0 )
         {
-          this->cfrac( quotients );
+          this->getCFrac( quotients );
           out << " [" << quotients[ 0 ];
           for ( unsigned int i = 1; i < quotients.size(); ++i )
             out << "," << quotients[ i ];
@@ -744,7 +744,7 @@ DGtal::LighterSternBrocot<TInteger, TSize, TMap>::display( std::ostream & out,
       std::vector<Size> quotients;
       if ( f.k() >= 0 )
         {
-          f.cfrac( quotients );
+          f.getCFrac( quotients );
           out << " [" << quotients[ 0 ];
           for ( unsigned int i = 1; i < quotients.size(); ++i )
             out << "," << quotients[ i ];
