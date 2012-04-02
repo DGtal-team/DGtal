@@ -340,6 +340,69 @@ template <typename TInteger, typename TSize>
 inline
 void
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
+push_back( const std::pair<Size, Size> & quotient )
+{
+  pushBack( quotient );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+void
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+pushBack( const std::pair<Size, Size> & quotient )
+{
+  // std::vector<Size> quots;
+  // if ( ! null() )
+  //   {
+  //     this->getCFrac( quots );
+  //     std::cerr << "F[";
+  //     for ( unsigned int i = 0; i < quots.size(); ++i )
+  //       std::cerr << " " << quots[ i ];
+  //   }
+  // else std::cerr << "[";
+  // std::cerr << "] + " << "(" << quotient.first 
+  //           << "," << quotient.second << ")";
+  if ( null() )
+    {
+      ASSERT( quotient.second <= NumberTraits<Size>::ZERO );
+      if ( quotient.second < NumberTraits<Size>::ZERO )
+        this->operator=( oneOverZero() );
+      else if ( quotient.first == NumberTraits<Size>::ZERO ) // (0,0)
+        this->operator=( zeroOverOne() );
+      else
+        {
+          Fraction f = zeroOverOne();
+          for ( Size i = 0; i < quotient.first; ++i )
+            f = f.right();
+          this->operator=( f );
+        }
+    }
+  else if ( NumberTraits<Size>::even( quotient.second ) )
+    {
+      Fraction f = left();
+      for ( Size i = 1; i < quotient.first; ++i )
+        f = f.right();
+      this->operator=( f );
+    }
+  else
+    {
+      Fraction f = right();
+      for ( Size i = 1; i < quotient.first; ++i )
+        f = f.left();
+      this->operator=( f );
+    }
+  // quots.clear();
+  // this->getCFrac( quots );
+  // std::cerr << " => F[";
+  // for ( unsigned int i = 0; i < quots.size(); ++i )
+  //   std::cerr << " " << quots[ i ];
+  // std::cerr << "]" << std::endl;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+void
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
 getSplit( Fraction & f1, Fraction & f2 ) const
 {
   f1.myNode = myNode->ascendantLeft;
@@ -391,7 +454,28 @@ getCFrac( std::vector<Size> & quotients ) const
       bleft = ! bleft;
     }
 }
-
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::SternBrocot<TInteger, TSize>::Fraction::ConstIterator
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+begin() const
+{
+  CFracSequence* seq = new CFracSequence;
+  this->getCFrac( *seq );
+  return ConstIterator( seq, seq->begin() );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::SternBrocot<TInteger, TSize>::Fraction::ConstIterator
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+end() const
+{
+  static CFracSequence dummy;
+  return ConstIterator( 0, dummy.end() );
+}
+//-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
 inline
 void

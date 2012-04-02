@@ -33,6 +33,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/LightSternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
@@ -715,6 +716,7 @@ bool testLightSternBrocot()
   typedef DGtal::BigInteger Integer;
   typedef LightSternBrocot<Integer, DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
+
   trace.beginBlock ( "Testing block: init fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
@@ -748,6 +750,9 @@ int main( int , char** )
 {
   typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
+
+  BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+
   trace.beginBlock ( "Testing class LightSternBrocot" );
   bool res = testLightSternBrocot()
     && testPattern<SB>()

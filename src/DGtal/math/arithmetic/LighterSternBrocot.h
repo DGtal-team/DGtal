@@ -46,6 +46,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/StdRebinders.h"
+#include "DGtal/base/ForwardConstIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -218,8 +219,13 @@ namespace DGtal
       typedef TSize Size;
       typedef LighterSternBrocot<TInteger, TSize, TMap> SB;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-      typedef std::pair<Size, Size> value_type;
-      typedef value_type Value;
+      typedef std::pair<Size, Size> Value;
+      typedef std::vector<Size> CFracSequence;
+      typedef ForwardConstIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
+
+      // --------------------- std types ------------------------------
+      typedef Value value_type;
+      typedef ConstIterator const_iterator;
 
     private:
       /// The pointer to the corresponding node in the Stern-Brocot
@@ -446,6 +452,18 @@ namespace DGtal
        * @param out the output stream where the object is written.
        */
       void selfDisplay ( std::ostream & out ) const;
+
+      /**
+         @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
+         NB: \f$ O(\sum_i u_i) \f$ operation. 
+      */
+      ConstIterator begin() const;
+
+      /**
+         @return a const iterator pointing after the end of the sequence of quotients of this fraction.
+         NB: O(1) operation.
+      */
+      ConstIterator end() const;
 
     };
 

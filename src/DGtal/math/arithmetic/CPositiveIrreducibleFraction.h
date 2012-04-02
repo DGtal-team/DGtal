@@ -43,6 +43,9 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CBackInsertable.h"
+#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,8 +66,15 @@ continued fraction with quotients \f$[u_0, \ldots, u_k]\f$ has
 one-to-one correspondence with the position of the fraction in the
 Stern-Brocot tree.
 
+One can "visit" irreducible fractions by enumerating the sequence of
+its partial quotients. Furthermore, one can push a new quotient at the
+end of this fraction to get a new fraction which shares all quotients
+except the last one. In this sense, a fraction is a sequence
+(container) that can only grow.
+
 ### Refinement of
 - boost::CopyConstructible, boost::DefaultConstructible, boost::Assignable
+- CBackInsertable, CSinglePassConstRange
 
 ### Associated types :
 
@@ -75,6 +85,12 @@ Stern-Brocot tree.
   Integer but may be also smaller, since quotients are generally much
   smaller than the convergent numerators and denominators.
 
+- \e Value and \e value_type: the type \c std::pair<Size,Size>, useful
+  to create back insertion sequence.
+
+- \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
+  fraction in sequence. The value of the iterator has type \e Value.
+
 ### Notation
  - \e X : A type that is a model of CPositiveIrreducibleFraction
  - \e x : object of type \e X, which is below some fraction written \f$[u_0, \ldots, u_k]\f$ as a continued fraction
@@ -82,6 +98,7 @@ Stern-Brocot tree.
  - \e p, \e q : object of type \e Integer
  - \e m, \e n1, \e n2 : objects of type \e Size
  - \e quots : an object of type \c std::vector<Size>
+ - \e pair : a object of \c std::pair<Size,Size>, here (m,k+1)  
 
 ### Definitions
 
@@ -117,12 +134,19 @@ Stern-Brocot tree.
 | inequality != |\e x != \e y|                     | \c bool     |                  | returns 'true' iff the fraction is different from \e y. | | O(1) |
 | less than <   |\e x <  \e y|                     | \c bool     |                  | returns 'true' iff the fraction is inferior to \e y. | | O(1) |
 | more than >   |\e x >  \e y|                     | \c bool     |                  | returns 'true' iff the fraction is superior to \e y. | | O(1) |
+|               |            |                     |             |                  |           |                |            |
+| Next continued fraction | \e x.pushBack( pair )| |             |                  | transforms this fraction \f$[0,u_0,...,u_k]\f$ into \f$[0,u_0,...,u_k,m]\f$, where \e pair is \f$(m,k+1)\f$ | | O(m) |
+| Next continued fraction | \e x.push_back( pair )| |            |                  | transforms this fraction \f$[0,u_0,...,u_k]\f$ into \f$[0,u_0,...,u_k,m]\f$, where \e pair is \f$(m,k+1)\f$ | | O(m) |
+|               |            |                     |             |                  |           |                |            |
+| Begin visiting quotients | \e x.begin()|         | \e ConstIterator |             | returns a forward iterator on the beginning of the sequence of quotients \f$[u_0,...,u_k]\f$ | | |
+| End visiting quotients | \e x.end()|             | \e ConstIterator |             | returns a forward iterator after the end of the sequence of quotients \f$[u_0,...,u_k]\f$ | | |
 
 ### Invariants
 
 ### Models
 
-  - SternBrocot::Fraction, LighterSternBrocot::Fraction
+- SternBrocot::Fraction, LighterSternBrocot::Fraction
+- also LightSternBrocot::Fraction (but do not use).
 
 ### Notes
 
@@ -132,17 +156,28 @@ template <typename T>
 struct CPositiveIrreducibleFraction 
   : boost::CopyConstructible<T>, 
   boost::DefaultConstructible<T>, 
-  boost::Assignable<T>
+  boost::Assignable<T>,
+  DGtal::CBackInsertable<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
   typedef typename T::Integer Integer;
   typedef typename T::Size Size;
+  typedef typename T::value_type value_type;
+  typedef typename T::Value Value;
+  typedef typename T::ConstIterator ConstIterator;
+  typedef typename T::const_iterator const_iterator;
+
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
   BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Size,Size> >::value ));
+  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
+
   BOOST_CONCEPT_USAGE( CPositiveIrreducibleFraction )
   {
     ConceptUtils::sameType( myX, T( myP, myQ ) );
+    myX.push_back( myValue );
+    myX.pushBack( myValue );
     checkConstConstraints();
   }
   void checkConstConstraints() const
@@ -172,7 +207,8 @@ public:
     ConceptUtils::sameType( myBool, myX != myY );
     ConceptUtils::sameType( myBool, myX < myY );
     ConceptUtils::sameType( myBool, myX > myY );
-    
+    ConceptUtils::sameType( myIterator, myX.begin() );
+    ConceptUtils::sameType( myIterator, myX.end() );
   }
   // ------------------------- Private Datas --------------------------------
 private:
@@ -187,6 +223,8 @@ private:
   mutable T myF1; 
   mutable T myF2; 
   mutable std::vector<Size> myQuots; 
+  std::pair<Size,Size> myValue;
+  ConstIterator myIterator;
   // ------------------------- Internals ------------------------------------
 private:
 

@@ -35,6 +35,7 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/LighterSternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
@@ -749,6 +750,8 @@ bool testContinuedFraction()
   typedef typename SB::Integer Integer;
   typedef typename SB::Size Size;
   typedef typename SB::Fraction Fraction;
+  typedef typename SB::Fraction::ConstIterator ConstIterator;
+
   Fraction f;
   std::vector<Size> quotients;
   std::vector<Size> qcfrac;
@@ -763,8 +766,12 @@ bool testContinuedFraction()
       *itout++ = std::make_pair( q, (Size) i );
       quotients.push_back( q );
     }
-  f.getCFrac( qcfrac );
+  for ( ConstIterator it = f.begin(), it_end = f.end();
+        it != it_end; ++it )
+    qcfrac.push_back( (*it).first );
+  // f.getCFrac( qcfrac );
   bool ok = equalCFrac( quotients, qcfrac );
+  
   trace.info() << ( ok ? "(OK)" : "(ERR)" );
   for ( unsigned int i = 0; i < quotients.size(); ++i )
     std::cerr << " " << quotients[ i ];
@@ -803,10 +810,13 @@ int main( int , char** )
   typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
                               DGtal::StdMapRebinder > SB;
   typedef SB::Fraction Fraction;
+
+  BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+
   trace.beginBlock ( "Testing class LighterSternBrocot" );
   bool res = testLighterSternBrocot()
     && testPattern<SB>()
-    // && testSubStandardDSLQ0<Fraction>()
+    && testSubStandardDSLQ0<Fraction>()
     && testContinuedFractions<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
