@@ -51,7 +51,7 @@ digraph GTOPO {
         style=filled;
         color=lightgrey;
         node [style=filled,color=white];
-        label="topology";
+        label="topology (main concepts)";
 
         CDigitalSurfaceContainer;
         CDigitalSurfaceTracker;
