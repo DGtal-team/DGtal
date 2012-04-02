@@ -501,17 +501,17 @@ void
 DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
 pushBack( const std::pair<Size, Size> & quotient )
 {
-  std::vector<Size> quots;
-  if ( ! null() )
-    {
-      this->getCFrac( quots );
-      std::cerr << "F[";
-      for ( unsigned int i = 0; i < quots.size(); ++i )
-        std::cerr << " " << quots[ i ];
-    }
-  else std::cerr << "[";
-  std::cerr << "] + " << "(" << quotient.first 
-            << "," << quotient.second << ")";
+  // std::vector<Size> quots;
+  // if ( ! null() )
+  //   {
+  //     this->getCFrac( quots );
+  //     std::cerr << "F[";
+  //     for ( unsigned int i = 0; i < quots.size(); ++i )
+  //       std::cerr << " " << quots[ i ];
+  //   }
+  // else std::cerr << "[";
+  // std::cerr << "] + " << "(" << quotient.first 
+  //           << "," << quotient.second << ")";
   if ( null() )
     {
       ASSERT( quotient.second <= NumberTraits<Size>::ZERO );
@@ -553,12 +553,12 @@ pushBack( const std::pair<Size, Size> & quotient )
       else // preceding node was [....,u_k,1]
         this->operator=( child( 2 ).child( quotient.first ) );
     }
-  quots.clear();
-  this->getCFrac( quots );
-  std::cerr << " => F[";
-  for ( unsigned int i = 0; i < quots.size(); ++i )
-    std::cerr << " " << quots[ i ];
-  std::cerr << "]" << std::endl;
+  // quots.clear();
+  // this->getCFrac( quots );
+  // std::cerr << " => F[";
+  // for ( unsigned int i = 0; i < quots.size(); ++i )
+  //   std::cerr << " " << quots[ i ];
+  // std::cerr << "]" << std::endl;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
@@ -626,7 +626,28 @@ getCFrac( std::vector<Size> & quotients ) const
         : NumberTraits<Size>::ZERO;
     }
 }
-
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::ConstIterator
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+begin() const
+{
+  CFracSequence* seq = new CFracSequence;
+  this->getCFrac( *seq );
+  return ConstIterator( seq, seq->begin() );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::ConstIterator
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+end() const
+{
+  static CFracSequence dummy;
+  return ConstIterator( 0, dummy.end() );
+}
+//-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
 inline
 void

@@ -45,6 +45,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ForwardConstIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -152,7 +153,18 @@ namespace DGtal
       typedef TSize Size;
       typedef SternBrocot<TInteger,TSize> SB;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-      
+      typedef std::pair<Size, Size> Value;
+      typedef std::vector<Size> CFracSequence;
+      typedef ForwardConstIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
+
+      // --------------------- std types ------------------------------
+      typedef Value value_type;
+      typedef ConstIterator const_iterator;
+
+    private:
+      Node* myNode; 
+
+    public:
       /** 
           Any fraction p/q. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
@@ -234,6 +246,36 @@ namespace DGtal
       Fraction reduced( Size i ) const;
 
       /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         Useful to create output iterators, for instance with
+
+         @code
+         typedef ... Fraction; 
+         Fraction f;
+         std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
+         @endcode
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */
+      void push_back( const std::pair<Size, Size> & quotient );
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         See push_back for creating output iterators.
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */         
+      void pushBack( const std::pair<Size, Size> & quotient );
+
+      /**
 	 Splitting formula, O(1) time complexity. This fraction should
 	 not be 0/1 or 1/0. NB: 'this' = [f1] \oplus [f2].
 
@@ -313,8 +355,18 @@ namespace DGtal
        */
       void selfDisplay ( std::ostream & out ) const;
 
-    private:
-      Node* myNode; 
+      /**
+         @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
+         NB: \f$ O(\sum_i u_i) \f$ operation. 
+      */
+      ConstIterator begin() const;
+
+      /**
+         @return a const iterator pointing after the end of the sequence of quotients of this fraction.
+         NB: O(1) operation.
+      */
+      ConstIterator end() const;
+      
     };
 
 

@@ -32,6 +32,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
@@ -739,6 +740,65 @@ bool testSternBrocot()
   return nbok == nb;
 }
 
+template <typename SB>
+bool testContinuedFraction()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  typedef typename SB::Fraction::ConstIterator ConstIterator;
+
+  Fraction f;
+  std::vector<Size> quotients;
+  std::vector<Size> qcfrac;
+  std::back_insert_iterator< Fraction > itout = 
+    std::back_inserter( f );
+  unsigned int size = ( random() % 20 ) + 10;
+  for ( unsigned int i = 0; i < size; ++i )
+    {
+      Size q = ( i == 0 )
+        ? ( random() % 5 )
+        : ( random() % 5 ) + 1;
+      *itout++ = std::make_pair( q, (Size) i );
+      quotients.push_back( q );
+    }
+  for ( ConstIterator it = f.begin(), it_end = f.end();
+        it != it_end; ++it )
+    qcfrac.push_back( (*it).first );
+  // f.getCFrac( qcfrac );
+  bool ok = equalCFrac( quotients, qcfrac );
+  
+  trace.info() << ( ok ? "(OK)" : "(ERR)" );
+  for ( unsigned int i = 0; i < quotients.size(); ++i )
+    std::cerr << " " << quotients[ i ];
+  trace.info() << std::endl;
+  trace.info() << "     f=";
+  f.selfDisplay( std::cerr );
+  trace.info() << std::endl;
+  return ok;
+}
+
+template <typename SB>
+bool testContinuedFractions()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  unsigned int nbtests = 1000;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block: continued fraction." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      trace.info() << "(" << nbok << "/" << nb << ")"
+                   << " continued fractions." << std::endl;
+    }
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -746,10 +806,14 @@ int main( int , char** )
 {
   typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
+
+  BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+
   trace.beginBlock ( "Testing class SternBrocot" );
   bool res = testSternBrocot()
     && testPattern<SB>()
-    && testSubStandardDSLQ0<Fraction>();
+    && testSubStandardDSLQ0<Fraction>()
+    && testContinuedFractions<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

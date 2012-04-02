@@ -483,7 +483,7 @@ template <typename TInteger, typename TSize, typename TMap>
 inline
 void
 DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
-pushBack( const std::pair<Size, Size> & quotient )
+pushBack( const std::pair<Size, Size> & ) //quotient )
 {
   ASSERT( false 
           && "UNIMPLEMENTED. Use SternBrocot::Fraction or LighterSternBrocot::Fraction instead." );
@@ -551,7 +551,28 @@ getCFrac( std::vector<Size> & quotients ) const
       --i, --j;
     }
 }
-
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::ConstIterator
+DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
+begin() const
+{
+  CFracSequence* seq = new CFracSequence;
+  this->getCFrac( *seq );
+  return ConstIterator( seq, seq->begin() );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::ConstIterator
+DGtal::LightSternBrocot<TInteger, TSize, TMap>::Fraction::
+end() const
+{
+  static CFracSequence dummy;
+  return ConstIterator( 0, dummy.end() );
+}
+//-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
 inline
 void
