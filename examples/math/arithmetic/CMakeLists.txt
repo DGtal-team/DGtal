@@ -2,6 +2,7 @@ SET(DGTAL_EXAMPLES_SRC
         approximation
         convergents
         fraction
+        pattern
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})

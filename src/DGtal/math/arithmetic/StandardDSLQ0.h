@@ -55,22 +55,24 @@ namespace DGtal
   // template class StandardDSLQ0
   /**
      Description of template class 'StandardDSLQ0' <p> \brief Aim:
-     Represents a digital straight line in first quadrant (Q0: x >= 0,
+     Represents a digital straight line with slope in the first quadrant (Q0: x >= 0,
      y >= 0 ).
 
-     It is the 4-connected set of points (x,y) of Z2 satisfyting:
+     It is the 4-connected set of points (x,y) of Z2 satisfying:
 
      \f$ mu <= ax - by < mu + a + b \f$
 
      You may move on it point by point with iterators ConstIterator.
      You can find upper and lower leaning points, find points on the
-     DSL given one coordinate.  You may extract subsegment with
-     reversedSmartDSS.
+     DSL given one coordinate.  You may extract subsegment with smartDSS and
+     reversedSmartDSS algorithms.
 
      @param TFraction the type chosen to represent fractions, a model
      of CFraction. You may use SternBrocot<>::Fraction for instance.
 
      Model of boost::CopyConstructible, boost::Assignable, CPointPredicate
+
+     @see dgtal_digstraighness_sec3
    */
   template <typename TFraction>
   class StandardDSLQ0

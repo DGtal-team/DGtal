@@ -71,6 +71,8 @@ namespace DGtal
      SternBrocot::Fraction and is more efficient for large
      integers. It is 10% slower than SternBrocot::Fraction for small
      integers (<1000).
+
+     @see dgtal_digstraighness_sec2
   */
   template <typename TFraction>
   class Pattern
