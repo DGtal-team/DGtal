@@ -36,7 +36,7 @@
 
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the signed d-cells of a grid curve.
  * 
  * (Included in GridCurve.h)
@@ -252,7 +252,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the 0-cells of a grid curve,
  * viewed as points of integer coordinates. 
  * 
@@ -269,9 +269,9 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToPoint<KSpace> Modifier; 
+  typedef SCellToPoint<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,Point> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -279,23 +279,19 @@ public:
 
   // ------------------------- standard services --------------------------------
 
-  /**
-   * Default Constructor.
-   */
-  PointsRange(){}
 
   /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  PointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  PointsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)) {}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   PointsRange( const PointsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor) {}
   
   /**
    * Assignment.
@@ -307,6 +303,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -411,9 +408,13 @@ public:
   // ------------------------- private data --------------------------------
 private:
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */    
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a digital point
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -423,7 +424,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my0SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my0SCells.begin(), myFunctor );
   }
 
   /**
@@ -431,7 +432,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my0SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my0SCells.end(), myFunctor );
   }
 
   /**
@@ -478,7 +479,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the signed 1-cells of a grid curve, 
  * viewed as points of half-integer coordinates. 
  * 
@@ -495,9 +496,10 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToMidPoint<KSpace> Modifier; 
+  typedef SCellToMidPoint<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,
+			       typename KSpace::Space::RealPoint> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -506,22 +508,17 @@ public:
   // ------------------------- standard services --------------------------------
 
   /**
-   * Default Constructor.
-   */
-  MidPointsRange(){}
-
-  /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  MidPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)){}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   MidPointsRange( const MidPointsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor) {}
   
   /**
    * Assignment.
@@ -533,6 +530,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -638,9 +636,13 @@ public:
   // ------------------------- private data --------------------------------
 private: 
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a real point
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -650,7 +652,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -658,7 +660,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
@@ -704,7 +706,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the signed 1-cells of a grid curve,
  * viewed as pairs (point - shift vector), both in integer coordinates.
  * 
@@ -721,9 +723,10 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToArrow<KSpace> Modifier; 
+  typedef SCellToArrow<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor, 
+			       std::pair<Point,Vector> > ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -732,22 +735,17 @@ public:
   // ------------------------- standard services --------------------------------
 
   /**
-   * Default Constructor.
-   */
-  ArrowsRange(){}
-
-  /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  ArrowsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  ArrowsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)) {}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   ArrowsRange( const ArrowsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor ){}
   
   /**
    * Assignment.
@@ -759,6 +757,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -858,13 +857,13 @@ public:
     for( ; it != itEnd; ++it)
       {
 	typename IteratorCirculatorTraits<ConstIterator>::Value pair(*it); 
-	typename Modifier::Vector shift( pair.second );
+	Vector shift( pair.second );
 	aBoard << CustomStyle( shift.className(), 
 			       new CustomPen( Color::Black, Color::Black, 1.0, 
 					      Board2D::Shape::SolidStyle,
 					      Board2D::Shape::RoundCap,
 					      Board2D::Shape::RoundJoin ) );       
-	draw(aBoard, shift, pair.first); //shift.selfDraw( aBoard, pair.first );
+	draw(aBoard, shift, pair.first);
       }
   }
   friend void draw( Board2D &aBoard, const ArrowsRange &ar)
@@ -875,9 +874,13 @@ public:
   // ------------------------- private data --------------------------------
 private: 
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into an arrow (pair point-vector)
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -887,7 +890,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -895,7 +898,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
@@ -941,7 +944,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the 2-cells (viewed as points
  * of integer coordinates) that are directly incident to the
  * signed 1-cells of a 2d grid curve.
@@ -959,9 +962,9 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToInnerPoint<KSpace> Modifier; 
+  typedef SCellToInnerPoint<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,Point> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -969,23 +972,19 @@ public:
 
   // ------------------------- standard services --------------------------------
 
-  /**
-   * Default Constructor.
-   */
-  InnerPointsRange(){}
 
   /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  InnerPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  InnerPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)){}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   InnerPointsRange( const InnerPointsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor) {}
   
   /**
    * Assignment.
@@ -997,6 +996,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -1104,9 +1104,13 @@ public:
   // ------------------------- private data --------------------------------
 private: 
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a digital point
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1116,7 +1120,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -1124,7 +1128,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
@@ -1169,7 +1173,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the 2-cells (viewed as points
  * of integer coordinates) that are indirectly incident to the
  * signed 1-cells of a 2d grid curve.
@@ -1189,9 +1193,9 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToOuterPoint<KSpace> Modifier; 
+  typedef SCellToOuterPoint<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,Point> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -1200,22 +1204,17 @@ public:
   // ------------------------- standard services --------------------------------
 
   /**
-   * Default Constructor.
-   */
-  OuterPointsRange(){}
-
-  /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  OuterPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  OuterPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)){}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   OuterPointsRange( const OuterPointsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor ){}
   
   /**
    * Assignment.
@@ -1227,6 +1226,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -1332,9 +1332,13 @@ public:
   // ------------------------- private data --------------------------------
 private:
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */    
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a digital point
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1344,7 +1348,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -1352,7 +1356,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
@@ -1397,7 +1401,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the two 2-cells (viewed as points
  * of integer coordinates) that are (directly and indirectly) 
  * incident to the signed 1-cells of a 2d grid curve.
@@ -1417,9 +1421,10 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToIncidentPoints<KSpace> Modifier; 
+  typedef SCellToIncidentPoints<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,
+			       std::pair<Point,Point> > ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -1428,22 +1433,17 @@ public:
   // ------------------------- standard services --------------------------------
 
   /**
-   * Default Constructor.
-   */
-  IncidentPointsRange(){}
-
-  /**
    * Constructor.
    * @param aGridCurve a grid curve.
    */
-  IncidentPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  IncidentPointsRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)){}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   IncidentPointsRange( const IncidentPointsRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor ){}
   
   /**
    * Assignment.
@@ -1455,6 +1455,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -1570,9 +1571,13 @@ public:
   // ------------------------- private data --------------------------------
 private: 
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a pair of digital points
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1582,7 +1587,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -1590,7 +1595,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
@@ -1635,7 +1640,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * @brief Aim: model of CRange that provides services
+ * @brief Aim: model of CConstRange that provides services
  * to (circularly)iterate over the 1-cells of a 2d grid curve,
  * viewed as chain codes: 
  * - 0 for a shift to the right
@@ -1658,9 +1663,9 @@ public:
   typedef typename GridCurve::Storage Storage; 
   typedef typename Storage::const_iterator ConstIteratorOnSCells; 
 
-  typedef SCellToCode<KSpace> Modifier; 
+  typedef SCellToCode<KSpace> Functor; 
 
-  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Modifier> ConstIterator; 
+  typedef ConstIteratorAdapter<ConstIteratorOnSCells,Functor,char> ConstIterator; 
   typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
   typedef Circulator<ConstIterator> ConstCirculator;
@@ -1668,21 +1673,16 @@ public:
   // ------------------------- standard services --------------------------------
 
   /**
-   * Default Constructor.
-   */
-  CodesRange(){}
-
-  /**
    * Constructor.
    */
-  CodesRange(const GridCurve* aGridCurve ): myC(aGridCurve){}
+  CodesRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(myC->myK)){}
 
   /**
    * Copy constructor.
    * @param other the iterator to clone.
    */
   CodesRange( const CodesRange & aOther )
-    : myC( aOther.myC ){}
+    : myC( aOther.myC ), myFunctor( aOther.myFunctor ){}
   
   /**
    * Assignment.
@@ -1694,6 +1694,7 @@ public:
     if ( this != &other )
       {
 	myC = other.myC;
+	myFunctor = other.myFunctor; 
       }
     return *this;
   }
@@ -1745,9 +1746,13 @@ public:
   // ------------------------- private data --------------------------------
 private:
   /**
-   * Private member @a myC is a pointer to any grid curve
+   * Private member @a myC is an aliasing pointer to any grid curve
    */    
   const GridCurve* myC;
+  /**
+   * Functor transforming a signed cell into a char containing its code
+   */    
+  Functor myFunctor; 
 
   // ------------------------- iterator services --------------------------------
 public:
@@ -1757,7 +1762,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.begin(), myFunctor );
   }
 
   /**
@@ -1765,7 +1770,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), Modifier(myC->myK) );
+    return ConstIterator( myC->my1SCells.end(), myFunctor );
   }
 
   /**
