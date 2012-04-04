@@ -22,18 +22,18 @@ namespace DGtal {
 
 \section dgtalImagesAbstract Overview
 
-The concept of <em>point functor</em> describe a mapping between 
+The concept of @a point functor describe a mapping between 
 the points of a digital space and a set of values. 
 The only method of a point functor is the `operator()`, 
 which must take a point as input parameter and must return a value.
 
-The concept of <em>constant image</em> is a point functor bounded by a domain. 
+The concept of @a constant image is a point functor bounded by a domain. 
 It is thus a refinement of the concept of point functor, 
 describing a mapping between points and values, but having in addition a domain, 
 returned by the `domain` method, and a range of values 
 (for each point of the domain), returned by the `constRange` method.  
 
-The concept of <em>image</em>, which is a refinement of the concept of constant image, 
+The concept of @a image, which is a refinement of the concept of constant image, 
 provides extra services to update values.  
 Any model of image must have a method `setValue` 
 taking a point and a value as input parameters
