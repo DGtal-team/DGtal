@@ -74,6 +74,9 @@ the size of their denominator.
 A \e i-\e reduced of a continued fraction is its \e k - \e i-th
 convergent. The \e depth of the fraction is \e k.
 
+A nice property of convergents with respect to their fraction is that even convergents
+are smaller than the fraction while odd convergents are greater.
+
 \subsection dgtal_irrfrac_sec1_3 Stern-Brocot tree
 
 Another (but one-to-one) way of seeing irreducible fractions is the
@@ -94,8 +97,8 @@ sequence \f$ u_1,\ldots, u_k \f$ is exactly the sequence of
 left-then-right moves in the Stern-Brocot tree from node 1/1, except
 for the last \f$ u_k \f$ where there is one less movement.
 
-Looking back at 8/3=[2;1,2] gives 2 right moves, 1 left move, then
-2-1 right move.
+Looking back at \f$ 8/3=[2;1,2] \f$ gives 2 right moves, 1 left move,
+then 2-1 right move.
 
 
 \section dgtal_irrfrac_sec2 Implementation of irreducible fractions.
@@ -243,20 +246,20 @@ This approach is implemented in the class LighterSternBrocot::Fraction
 
 There are two main differences with the class SternBrocot. The
 first one is that inverses are not stored. With this optimization,
-   there are twice less nodes and each node is lighter. The second one
-   lies in the access to the children of a node. Here, a map type M is
-   provided so that a node [u_0; u_1, ..., u_n] can access its child
-   node [u_0; u_1, ..., u_n, k] in the time of the operation
+there are twice less nodes and each node is lighter. The second one
+lies in the access to the children of a node. Here, a map type M is
+   provided so that a node \f$ [u_0; u_1, ..., u_n] \f$ can access its child
+   node \f$ [u_0; u_1, ..., u_n, k] \f$ in the time of the operation
    M::operator[]. This representation is also different from
    LightSternBrocot in the sense that nodes have only one set of child
    nodes and that only fractions greater than 1/1 are stored.
 
    In this representation, the fraction 1/1 has depth 0, like 2/1,
-   3/1, etc. Furthermore, each fraction [u_0,...,u_n] has an origin
-   which is the fraction [u_0,...,u_{n-1},1]. It is the top extremity
-   of this branch. The origin has depth n-1 since [u_0,...,u_{n-1},1]
-   = [u_0,...,u_{n-1}+1]. Inversely a k-child of [u_0,...,u_n], for k
-   >= 2, is the fraction [u_0,...,u_n - 1, k]. A 1-child of a fraction
+   3/1, etc. Furthermore, each fraction \f$ [u_0,...,u_n] \f$ has an origin
+   which is the fraction \f$ [u_0,...,u_{n-1},1] \f$. It is the top extremity
+   of this branch. The origin has depth n-1 since \f$ [u_0,...,u_{n-1},1] \f$
+   = \f$ [u_0,...,u_{n-1}+1] \f$. Inversely a k-child of \f$ [u_0,...,u_n] \f$, for k
+   >= 2, is the fraction \f$ [u_0,...,u_n - 1, k] \f$. A 1-child of a fraction
    f is itself, except for the fraction 1/0 where its 1-child is 1/1
    by convention.
 
@@ -294,7 +297,319 @@ You may have a look at testLighterSternBrocot.cpp to see how to use these fracti
 
 \section dgtal_irrfrac_sec3 Using irreducible fractions.
 
+\subsection dgtal_irrfrac_sec3_1 Choosing your integers for fractions
 
+Available fractions allows you to choose the ultimate precision 
+you wish to have for your fractions.
+
+You have two different integral types for irreducible fractions: TInteger and TSize. 
+The type TInteger defines the integral type for the numerators and the denominators.
+The type TSize defines the integral type for the quotients and for the depth of the 
+fraction. 
+
+\note It is worthy to note that quotients are in general much much smaller than 
+numerators and denominators (except for fractions p/1 or 1/q). You may choose 
+thus a smaller type for TSize (like DGtal::int32_t) than for TInteger 
+(for instance DGtal::int64_t).
+
+You may for instance choose your fractions like:
+@code
+// With SternBrocot
+typedef SternBrocot<DGtal::int64_t,DGtal::int32_t>::Fraction Fraction; // not so big fractions
+typedef SternBrocot<DGtal::BigInteger,DGtal::BigInteger>::Fraction Fraction; // arbitrary large fractions
+
+// With LighterSternBrocot
+typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t,DGtal::StdMapRebinder>::Fraction Fraction; // not so big fractions
+typedef LighterSternBrocot<DGtal::BigInteger,DGtal::BigInteger,DGtal::StdMapRebinder>::Fraction Fraction; // arbitrary large fractions
+@endcode
+
+\note If you wish to instantiate fractions with integral types
+other than DGtal::int32_t, DGtal::int64_t, DGtal::BigInteger, then you 
+must instantiate the singleton of the class. For instance, add somewhere
+in your code:
+
+@code
+// With SternBrocot
+typedef SternBrocot<IntegralType1,IntegralType2>::Fraction Fraction; // not so big fractions
+
+template <>
+SternBrocot<IntegralType1,IntegralType2>*
+SternBrocot<IntegralType1,IntegralType2>::singleton = 0;
+@endcode
+
+\note In some sense, \e IntegralType2 should be promotable to \e IntegralType1. 
+I.e., if \e t1 is of type \e IntegralType1 and \e t2 is of type \e IntegralType2 then
+
+@code
+t1 = (IntegralType1) t2; 
+@endcode
+should be valid.
+
+\subsection dgtal_irrfrac_sec3_2 Instantiating fractions
+
+You may instantiate a fraction directly by giving the numerator \e p and denominator \e q. 
+Note that if \f$ g = gcd(p,q) \neq 1 \f$, the instantiated fraction is \f$ \frac{p'}{q'} \f$ 
+where \f$ p'=p/g, q'=q/g \f$. We follow the example convergents.cpp.
+
+First we give the correct includes:
+
+@snippet math/arithmetic/convergents.cpp convergents-basicIncludes
+
+Then the useful types:
+
+@snippet math/arithmetic/convergents.cpp convergents-types
+
+The program is given \e p and \e q in arguments \e argv. The fraction is
+instantiated as follows:
+
+@snippet math/arithmetic/convergents.cpp convergents-instantiation
+
+\subsection dgtal_irrfrac_sec3_3 Obtaining quotients
+
+You may visit the quotients of a fraction by using the single-pass iterators
+provided by the class. A fraction is indeed a model of CSinglePassConstRange.
+The quotients are computed and stored with the call to \c begin(). We therefore
+advise you to store the begin() iterator in a variable. Then, all other
+operations with iterators (copy, displacement, comparison, dereferenciation) are O(1).
+We display the quotients of the fraction \e f as follows.
+
+@snippet math/arithmetic/convergents.cpp convergents-cfrac
+
+\note The iterator value is the pair \f$ (u_i,i) \f$ where \f$ 0 \le i \le k \f$ 
+and \e k is the depth of the fraction. The type is therefore a \c std::pair<Size,Size>.
+This is done for consistency with \c push_back method.
+
+\subsection dgtal_irrfrac_sec3_3 Obtaining all the convergents of a fraction
+
+One way of obtaining all the convergents of a fraction is simply to create the fraction
+progressively by adding quotients one at a time. You may use the methods \c pushBack or \c push_back 
+to do so. This can be done as follows:
+
+@snippet math/arithmetic/convergents.cpp convergents-convergents
+
+You may now execute this program to get the quotients and the convergents of a 
+given fraction. We give below several examples:
+
+@verbatim
+# A Fibonacci fraction
+$ ./examples/math/arithmetic/convergents 21 34
+z = [0,1,1,1,1,1,1,2]
+z_0 = 0 / 1
+z_1 = 1 / 1
+z_2 = 1 / 2
+z_3 = 2 / 3
+z_4 = 3 / 5
+z_5 = 5 / 8
+z_6 = 8 / 13
+z_7 = 21 / 34
+
+# Approximations of pi
+$ ./examples/math/arithmetic/convergents 103993 33102
+z = [3,7,15,1,292]
+z_0 = 3 / 1
+z_1 = 22 / 7
+z_2 = 333 / 106
+z_3 = 355 / 113
+z_4 = 103993 / 33102
+
+# A huge fraction
+$ ./examples/math/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
+z = [0,17,1,3,1,1,12,1,2,33,2,1,1,1,1,49,1,1,1,1,17,34,1,1,304,1,2,1,1,1,2,1,48,1,20,2,3,5,1,1,16,9,1,1,5,1,2,2,7,4,3,1,7,1,1,17,1,1,29,1,12,2,5]
+z_0 = 0 / 1
+z_1 = 1 / 17
+z_2 = 1 / 18
+z_3 = 4 / 71
+z_4 = 5 / 89
+...
+z_18 = 23610961 / 419772458
+...
+z_40 = 832739221613445323225 / 14805030169237188131024
+...
+z_62 = 243224233245235253407096734543059 / 4324213412343432913758138673203834
+@endverbatim
+
+\subsection dgtal_irrfrac_sec3_4 Fractions are back insertable
+
+Since fractions have a \c push_back method, you can use \c std::back_inserter 
+to create a \c std::back_insert_iterator on your fraction. The code
+for computing a fraction from its quotients looks like: 
+
+@see fraction.cpp
+
+@snippet math/arithmetic/fraction.cpp fraction-from-quotients
+
+which gives
+
+@verbatim
+# More precise approximation of pi
+$ ./examples/math/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
+z = 80143857 / 25510582
+@endverbatim
+
+\subsection dgtal_irrfrac_sec3_5 Computing reduced fractions
+
+If \f$ z_k \f$ is a fraction, its 1-reduced is \f$ z_{k-1} \f$, its 2-reduced is \f$ z_{k-2} \f$
+and so on. Reduced are in particular used for computing Bézout vectors, or in splitting formulas.
+You may use the methods \c reduced (SternBrocot::Fraction::reduced, 
+LighterSternBrocot::Fraction::reduced) or \c partial (SternBrocot::Fraction::partial,
+LighterSternBrocot::Fraction::partial) to obtain them.
+
+Assume \e f is the fraction \f$ 103993 / 33102 = [3;7,15,1,292] \f$. Then
+@code
+Fraction z_3 = f.reduced( 1 ); // [3;7,15,1] but in fact [3;7,16]
+Fraction z_2 = f.reduced( 2 ); // [3;7,15] 
+@endcode
+
+\note The depth of a \e i-reduced fraction is necessarily \f$ k - i \f$.
+It may be \f$ k - i - 1 \f$.
+
+You dispose also of the methods \c getSplit and \c getSplitBerstel to obtain directly
+the decomposition of a fraction into two fractions. Their "mediant sum" gives the fraction itself.
+Fractions are seen as vectors in this case.
+
+@see SternBrocot::Fraction::getSplit, LighterSternBrocot::Fraction::getSplit,
+SternBrocot::Fraction::getSplitBerstel, LighterSternBrocot::Fraction::getSplitBerstel.
+
+\subsection dgtal_irrfrac_sec3_6 Getting ancestors in the Stern-Brocot tree
+
+Convergents or partials, and reduced fractions are ancestors of a given fractions. 
+There exist in-between ancestors which are not given by these methods. We list them below
+with their exact definition, assuming \e f is \f$ [u_0,...,u_{k-1},u_k] \f$:
+
+- \e i-\b convergent or \e i-\b partial: the fraction \f$ z_i=[u_0,...,u_i] \f$.
+  Method \c partial,  SternBrocot::Fraction::partial, LighterSternBrocot::Fraction::partial.
+- \e i-\b reduced fraction: the fraction \f$ z_{k-i}=[u_0,...,u_{k-i}] \f$.
+  Method \c reduced,  SternBrocot::Fraction::reduced, LighterSternBrocot::Fraction::reduced.
+- \b father fraction: the fraction \f$ z'=[u_0,...,u_{k-1},u_{k} - 1] \f$.
+  Method \c father,  SternBrocot::Fraction::father, LighterSternBrocot::Fraction::father.
+- \e m-\b father fraction: the fraction \f$ z'=[u_0,...,u_{k-1},m] \f$.
+  Method \c father(Size m),  SternBrocot::Fraction::father(Size m) const, LighterSternBrocot::Fraction::father(Size m) const.
+- \b origin fraction: the fraction \f$ z'=[u_0,...,u_{k-1},1] \f$.
+  Method \c origin,  SternBrocot::Fraction::origin, LighterSternBrocot::Fraction::origin.
+
+\subsection dgtal_irrfrac_sec3_7 Inverse of a fraction
+
+You can get the inverse of a fraction in O(1) with the
+method \c inverse (SternBrocot::Fraction::inverse, LighterSternBrocot::Fraction::inverse).
+
+\subsection dgtal_irrfrac_sec3_8 Rational approximation of floating-point number
+
+A simple way to get rational approximation of a "real" number is to
+use the mapping: \f$ G(x)=\frac{1}{x- \lfloor x \rfloor} \f$. The
+successive \f$ \lfloor x \rfloor \f$ gives the successive quotients of
+the rational approximation. You may have a look at example
+approximation.cpp.
+
+@snippet math/arithmetic/approximation.cpp approximation-process
+
+
+\subsection dgtal_irrfrac_sec3_9 Standard arithmetic operations '+', '-', '*', '/'
+
+There are not implemented yet and continued fractions are not the best
+representation for doing them. Here, you must use numerators and
+denominators to perform computations with these fractions.
+
+\todo Arithmetic operations will soon be implemented with usual
+arithmetic operations on numerators and denominators. Furthermore, a
+dedicated system for performing arithmetic operations using only
+quotients (and guaranteed O(log(k)) complexity) is also under
+development.
 
 */
+
+/**
+   Computes the quotients and the convergents of a given fraction.
+
+@see \ref dgtal_irrfrac_sec3_2
+
+@verbatim
+# Approximations of pi
+$ ./examples/math/arithmetic/convergents 103993 33102
+z = [3,7,15,1,292]
+z_0 = 3 / 1
+z_1 = 22 / 7
+z_2 = 333 / 106
+z_3 = 355 / 113
+z_4 = 103993 / 33102
+@endverbatim
+
+\example math/arithmetic/convergents.cpp
+*/
+
+/**
+
+   Computes the quotients and the convergents of a given fraction,
+   which may be arbitrarily large.
+
+@see \ref dgtal_irrfrac_sec3_2
+
+@verbatim
+# A huge fraction
+$ ./examples/math/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
+z = [0,17,1,3,1,1,12,1,2,33,2,1,1,1,1,49,1,1,1,1,17,34,1,1,304,1,2,1,1,1,2,1,48,1,20,2,3,5,1,1,16,9,1,1,5,1,2,2,7,4,3,1,7,1,1,17,1,1,29,1,12,2,5]
+z_0 = 0 / 1
+z_1 = 1 / 17
+z_2 = 1 / 18
+z_3 = 4 / 71
+z_4 = 5 / 89
+...
+z_18 = 23610961 / 419772458
+...
+z_40 = 832739221613445323225 / 14805030169237188131024
+...
+z_62 = 243224233245235253407096734543059 / 4324213412343432913758138673203834
+@endverbatim
+
+\example math/arithmetic/convergents-biginteger.cpp
+*/
+
+/**
+   Computes a fraction from its quotients.
+
+@see \ref dgtal_irrfrac_sec3_4
+
+@verbatim
+# More precise approximation of pi
+$ ./examples/math/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
+z = 80143857 / 25510582
+@endverbatim
+
+\example math/arithmetic/fraction.cpp
+*/
+
+/**
+   Computes a fraction from a floating-point number
+
+@see \ref dgtal_irrfrac_sec3_8
+
+@verbatim
+$ ./examples/math/arithmetic/approximation 1.33333333333333
+z = 1 / 1 =~ 1
+z = 4 / 3 =~ 1.333333333333333
+z = 4 / 3
+
+$./examples/math/arithmetic/approximation 1.33333333333338
+z = 1 / 1 =~ 1
+z = 3 / 2 =~ 1.5
+z = 4 / 3 =~ 1.333333333333333
+z = 9523805234895 / 7142853926171 =~ 1.33333333333338
+z = 9523805234895 / 7142853926171
+
+$ ./examples/math/arithmetic/approximation 3.141592654 
+z = 3 / 1 =~ 3
+z = 22 / 7 =~ 3.142857142857143
+z = 333 / 106 =~ 3.141509433962264
+z = 355 / 113 =~ 3.141592920353982
+z = 104348 / 33215 =~ 3.141592653921421
+z = 1148183 / 365478 =~ 3.141592654003798
+z = 1252531 / 398693 =~ 3.141592653996935
+z = 2400714 / 764171 =~ 3.141592654000217
+z = 18057529 / 5747890 =~ 3.14159265399999
+z = 38515772 / 12259951 =~ 3.141592654000004
+z = 38515772 / 12259951
+@endverbatim
+
+\example math/arithmetic/approximation.cpp
+*/
+
 }

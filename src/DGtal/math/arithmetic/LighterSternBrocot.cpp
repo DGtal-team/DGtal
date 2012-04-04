@@ -61,6 +61,10 @@ namespace DGtal
   LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>*
   LighterSternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
 
+  template <>
+  LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>*
+  LighterSternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
+
 #ifdef WITH_BIGINTEGER
   template <>
   LighterSternBrocot<DGtal::BigInteger,DGtal::int32_t>*
