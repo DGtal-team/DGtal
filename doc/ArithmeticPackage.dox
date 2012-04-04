@@ -72,7 +72,8 @@ with Mouhammad Said).
 
 @b Related @b documentation @b pages
 
-
+@b Related @b examples
+- approximation.cpp, convergents.cpp, convergents-biginteger.cpp, fraction.cpp
 
 */
 
