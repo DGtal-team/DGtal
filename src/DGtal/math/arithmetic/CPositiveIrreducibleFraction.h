@@ -44,7 +44,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CBackInsertable.h"
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +74,7 @@ except the last one. In this sense, a fraction is a sequence
 
 ### Refinement of
 - boost::CopyConstructible, boost::DefaultConstructible, boost::Assignable
-- CBackInsertable, CSinglePassConstRange
+- CBackInsertable, CConstSinglePassRange
 
 ### Associated types :
 
@@ -151,13 +151,11 @@ except the last one. In this sense, a fraction is a sequence
 ### Notes
 
 @tparam T the type that should be a model of CPositiveIrreducibleFraction.
- */
+*/
 template <typename T>
 struct CPositiveIrreducibleFraction 
-  : boost::CopyConstructible<T>, 
-  boost::DefaultConstructible<T>, 
-  boost::Assignable<T>,
-  DGtal::CBackInsertable<T>
+  : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, DGtal::CBackInsertable<T>, DGtal::CConstSinglePassRange<T>
+
 {
     // ----------------------- Concept checks ------------------------------
 public:
