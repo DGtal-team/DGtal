@@ -376,16 +376,16 @@ void drawAsPolygon( DGtal::Board2D & aBoard,
   ConstIterator i = fp.polygon().begin();
   for ( ;i != fp.polygon().end();++i) {
       Point p = (*i);
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      double xp = (double)NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = (double)NumberTraits<TInteger>::castToInt64_t(p[1]);
       polyline.push_back(LibBoard::Point(xp,yp));
   }
 
   // now with accessor
   if (fp.flagIsClosed()) {
       Point p = (*fp.polygon().begin());
-      double xp = NumberTraits<TInteger>::castToInt64_t(p[0]);
-      double yp = NumberTraits<TInteger>::castToInt64_t(p[1]);
+      double xp = (double)NumberTraits<TInteger>::castToInt64_t(p[0]);
+      double yp = (double)NumberTraits<TInteger>::castToInt64_t(p[1]);
       polyline.push_back(LibBoard::Point(xp,yp));
   }
   aBoard.drawPolyline(polyline);
@@ -748,7 +748,7 @@ void drawImage( DGtal::Board2D & board,
 {
   ASSERT(D::dimension == 2);
 
-  Colormap colormap(minV, maxV);
+  Colormap colormap((const unsigned char)minV, (const unsigned char)maxV);
   Color c;
   V val;
   D ldomain(i.domain());
@@ -757,7 +757,7 @@ void drawImage( DGtal::Board2D & board,
        it != ldomain.end(); ++it)
   {
     val = i.operator()( (*it) );
-    c = colormap( val );
+    c = colormap( (const unsigned char)val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename D::Integer>::
        castToInt64_t((*it)[0]) - 0.5, 
