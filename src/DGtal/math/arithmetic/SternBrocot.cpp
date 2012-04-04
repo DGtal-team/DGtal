@@ -60,6 +60,10 @@ namespace DGtal
   SternBrocot<DGtal::int64_t,DGtal::int32_t>*
   SternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
 
+  template <>
+  SternBrocot<DGtal::int64_t,DGtal::int64_t>*
+  SternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
+
 #ifdef WITH_BIGINTEGER
   template <>
   SternBrocot<DGtal::BigInteger,DGtal::int32_t>*
