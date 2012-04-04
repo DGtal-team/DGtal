@@ -340,8 +340,7 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * NB: Essentially a backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   * NB: Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
@@ -471,12 +470,12 @@ namespace DGtal
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the minimal coordinate in the [k]-dimension.
-    */
+     */
     Integer min( Dimension k ) const;
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the maximal coordinate in the [k]-dimension.
-    */
+     */
     Integer max( Dimension k ) const;
     /**
        @return the lower bound for digital points in this space.

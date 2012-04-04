@@ -142,7 +142,7 @@ DGtal::NGon2D<T>::x( double t ) const
        myRadius*sin(myPhi + intervale_upper*2.0*M_PI/myK) );
   RealPoint2D s3( s2[0] - s1[0], s2[1] - s1[1]);
   
-  double line_angle = atan2f( s3[ 1 ], s3[ 0 ]);
+  double line_angle = atan2f( (float)s3[ 1 ], (float)s3[ 0 ]);
   
   double rho = dist/(cos (t - line_angle - 0.5*M_PI));
   

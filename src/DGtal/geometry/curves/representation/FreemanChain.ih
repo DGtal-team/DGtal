@@ -61,7 +61,7 @@ inline
   {// iterator end() 
     myXY.at(0)=aChain.xn;
     myXY.at(1)=aChain.yn;
-    myPos = myFc->chain.size()+1;
+    myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size()+1);
   }
 }
 
@@ -154,7 +154,7 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
 {
-  if ( myPos == 0 ) myPos = myFc->chain.size() - 1;
+  if ( myPos == 0 ) myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size() - 1);
   else --myPos;
   switch ( myFc->code( myPos ) )
   {
@@ -263,7 +263,7 @@ typename DGtal::FreemanChain<TInteger>::ConstIterator
 DGtal::FreemanChain<TInteger>::end() const
 {
   Point p(0,0); // *(end()) is invalid
-  return ConstIterator( *this, chain.size() + 1, p );
+  return ConstIterator( *this, (typename DGtal::FreemanChain<TInteger>::Index)(chain.size() + 1), p );
 }
 
 
@@ -316,7 +316,7 @@ inline
 typename DGtal::FreemanChain<TInteger>::Index
 DGtal::FreemanChain<TInteger>::size() const
 {
-  return chain.size();
+  return (typename DGtal::FreemanChain<TInteger>::Size)(chain.size());
 }
 
 
@@ -872,7 +872,7 @@ void DGtal::FreemanChain<TInteger>::innerContour(
     const FreemanChain & aOuterChain,
     bool ccw )
 {
-  unsigned int nb = aOuterChain.chain.size();
+  unsigned int nb = (unsigned int)aOuterChain.chain.size();
   unsigned int j = 0;
   aOuter2inner.clear();
   aOuter2inner.reserve( nb );
@@ -966,7 +966,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
     const FreemanChain & c,
     bool ccw )
 {
-  unsigned int nb = c.chain.size();
+  unsigned int nb = (unsigned int)c.chain.size();
   if ( nb == 0 )
   {
     cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
@@ -1130,7 +1130,7 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
   aC2clean.resize( nb );
   i = start_idx % nb;
   j = 0;
-  unsigned int nb_spikes = begin_outer_spike.size();
+  unsigned int nb_spikes = (unsigned int)begin_outer_spike.size();
   unsigned int k = 0;
   n = 0;
   while ( n < nb )

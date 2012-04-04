@@ -48,6 +48,10 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4290)
+#endif
+
 namespace DGtal
 {
 
@@ -68,8 +72,7 @@ namespace DGtal
      function. This is to be more generic than a simple
      DigitalSet. With this approach, shapes can be defined implicitly.
 
-     Essentially a backport from <a
-     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+     Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   template <typename TKSpace>
   class Surfaces

@@ -265,7 +265,8 @@ namespace
         const Point & lowerBound,
         const Point & extent )
     {
-      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + extent[ 0 ] * (aPoint[ 1 ] - lowerBound[ 1 ] );
+      return ( aPoint[ 0 ] - lowerBound[ 0 ] ) + extent[ 0 ] *
+	(aPoint[ 1 ] - lowerBound[ 1 ] );
     }
   };
 

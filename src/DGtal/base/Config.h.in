@@ -16,6 +16,10 @@
 
 #define DGTAL_VERSION "@DGtal_VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@"
 
+///Boost version obtained during cmake 
+///the version is a scalar (e.g. 104800 for 1.48.0)
+#define BOOST_VERSION @Boost_VERSION@
+
 /*! \namespace DGtal
 *  \brief \p DGtal is the top-level namespace which contains all DGtal
 *         functions and types.
@@ -121,5 +125,8 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
    @defgroup Tests DGtal Test Files
    @defgroup Examples DGtal Examples
   
+
+[imagene]: https://gforge.liris.cnrs.fr/projects/imagene "ImaGene"
+
  */
 

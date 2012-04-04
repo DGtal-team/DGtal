@@ -112,7 +112,7 @@ namespace DGtal
     for ( unsigned int i = 0; i < dim; ++i )
       if ( maxSize < p1[i] - p2[i] )
         maxSize = p1[i] - p2[i];
-    unsigned int depth = ceil ( log ( (double) maxSize ) / log((double) 2.0) );
+    unsigned int depth = (unsigned int)(ceil ( log ( (double) maxSize ) / log((double) 2.0) ));
     
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )

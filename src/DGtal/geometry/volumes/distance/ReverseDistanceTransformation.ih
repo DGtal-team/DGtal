@@ -281,8 +281,8 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
   }
     
       while ( ( q >= 0 ) &&
-        ( myMetric.reversedF ( t[q], s[q], input ( sQ ) ) <
-    myMetric.reversedF ( t[q], u, input ( pU ) ) ) )
+        ( myMetric.reversedF ( t[q], s[q], (const int)input ( sQ ) ) <
+    myMetric.reversedF ( t[q], u, (const int)input ( pU ) ) ) )
   {
     q--;
     ///@todo optimize the test here
@@ -301,9 +301,9 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
   {
     sQ[dim] = s[q];
     w = 1 + myMetric.reversedSep ( s[q],
-           input ( sQ ),
+           (const int)input ( sQ ),
            u,
-           input ( pU ) );
+           (const int)input ( pU ) );
 
     if (( w <= myUpperBoundCopy[dim] ) && (w>= myLowerBoundCopy[dim]))
       {
@@ -324,8 +324,8 @@ DGtal::ReverseDistanceTransformation<I, p, IntShort>::computeSteps1D ( const I &
        last[dim] >= myLowerBoundCopy[dim] ;
        last[dim]-- )
     {    
-      if (myMetric.reversedF ( last[dim] , s[q], input ( sQ )) > 0 )
-      output.setValue ( last, myMetric.reversedF ( last[dim] , s[q], input ( sQ ) ) );
+      if (myMetric.reversedF ( last[dim] , s[q], (const int)input ( sQ )) > 0 )
+      output.setValue ( last, myMetric.reversedF ( last[dim] , s[q], (const int)input ( sQ ) ) );
       else
   output.setValue ( last, 0 );
     
