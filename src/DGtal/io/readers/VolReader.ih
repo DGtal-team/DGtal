@@ -49,7 +49,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   typename T::Point firstPoint( 0, 0, 0 );
   typename T::Point lastPoint( 0, 0, 0 );
-  T nullImage( firstPoint, lastPoint );
+  T nullImage( typename T::Domain( firstPoint, lastPoint ));
 
   HeaderField header[ MAX_HEADERNUMLINES ];
 
@@ -197,7 +197,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   try
   {
-    T image( firstPoint, lastPoint );
+    T image( domain );
 
     count = 0;
     unsigned char val;

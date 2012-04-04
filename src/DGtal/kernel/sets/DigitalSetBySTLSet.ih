@@ -339,26 +339,21 @@ DGtal::DigitalSetBySTLSet<Domain>
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------
     
-/**
- * @return the complement of this set in the domain.
- *
- * NB: be aware of the overhead cost when returning the object.
- */
+
 template <typename Domain>
+template <typename TOutputIterator>
 inline
-DGtal::DigitalSetBySTLSet<Domain>
-DGtal::DigitalSetBySTLSet<Domain>::computeComplement() const
+void
+DGtal::DigitalSetBySTLSet<Domain>::computeComplement(TOutputIterator& ito) const
 {
-  DigitalSetBySTLSet<Domain> set;
   typename Domain::ConstIterator itPoint = myDomain.begin();
   typename Domain::ConstIterator itEnd = myDomain.end();
   while ( itPoint != itEnd ) {
     if ( find( *itPoint ) == end() ) {
-      set.insert( *itPoint );
+      *ito++ = *itPoint;
     }
     ++itPoint;
   }
-  return set;
 }
 
 /**

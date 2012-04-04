@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -22,18 +22,23 @@ namespace DGtal {
 
 
 
- @dot   
+ @dot
 digraph GIMAGE {
   rankdir=BT;
-  
+
 subgraph cluster_0 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
     "CValue" -> CImageContainer [label="use",style=dashed] ;
 
+    CImage -> CConstImage;
+    CImage -> CTrivialImage;
+    CConstImage -> CTrivialConstImage;
+    CTrivialImage -> CTrivialConstImage;
+
     label="Images";
-  } 
+  }
   CValue -> boost_DefaultConstructible;
   CValue -> boost_Assignable;
   CValue-> boost_EqualityComparable;

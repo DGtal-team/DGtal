@@ -52,6 +52,8 @@
 namespace DGtal
 {
 
+namespace deprecated
+{
   
   /////////////////////////////////////////////////////////////////////////////
   // template class Point3dTo2dXY
@@ -689,6 +691,7 @@ namespace DGtal
       
   }; // end of class SCellToArrow
 
+} //namespace deprecated
   
 } // namespace DGtal
 

@@ -76,9 +76,9 @@ namespace DGtal
 
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       * Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK; 
+    const KSpace* myK; 
     
     public:
 
@@ -86,7 +86,7 @@ namespace DGtal
        * Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToPoint(const KSpace& aK) : myK(aK) { }
+    SCellToPoint(const KSpace& aK) : myK(&aK) { }
 
     /**
      * Copy constructor.
@@ -96,15 +96,17 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     * 
+     * Assignment. 
+     *
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToPoint& operator= ( const SCellToPoint & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
     
@@ -116,7 +118,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      return Output( myK.sCoords(s) );
+      return Output( myK->sCoords(s) );
     }
       
   }; // end of class SCellToPoint
@@ -149,9 +151,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK;
+    const KSpace* myK;
     
     public:
       
@@ -159,7 +161,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToMidPoint(const KSpace& aK) : myK(aK) { }
+    SCellToMidPoint(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -169,15 +171,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     * 
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToMidPoint & operator= ( const SCellToMidPoint & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
     
@@ -188,7 +191,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      Output o( myK.sKCoords(s) );
+      Output o( myK->sKCoords(s) );
       o /= 2;
       return o;
     } 
@@ -217,9 +220,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK; 
+    const KSpace* myK; 
     
     public:
     
@@ -227,7 +230,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToArrow(const KSpace& aK) : myK(aK) { }
+    SCellToArrow(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -237,15 +240,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     * 
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToArrow & operator= ( const SCellToArrow & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
       
@@ -258,10 +262,10 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       //starting point of the arrow
-      Input pointel( myK.sIndirectIncident( s, *myK.sDirs( s ) ) );
-      Point p( myK.sCoords( pointel ) );   //integer coordinates
+      Input pointel( myK->sIndirectIncident( s, *myK->sDirs( s ) ) );
+      Point p( myK->sCoords( pointel ) );   //integer coordinates
       //displacement vector
-      Vector v( myK.sKCoords( s ) - myK.sKCoords( pointel ) );
+      Vector v( myK->sKCoords( s ) - myK->sKCoords( pointel ) );
       return Output(p,v);
     }
       
@@ -292,9 +296,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK; 
+    const KSpace* myK; 
     
     public:
       
@@ -302,7 +306,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToInnerPoint(const KSpace& aK) : myK(aK) { }
+    SCellToInnerPoint(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -312,15 +316,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     *
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToInnerPoint & operator= ( const SCellToInnerPoint & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
       
@@ -331,8 +336,8 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      Input pixel( myK.sIndirectIncident( s, *myK.sOrthDirs( s ) ) );
-      return Output( myK.sCoords( pixel ) ); //integer coordinates
+      Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
+      return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
   }; // end of class SCellToInnerPoint
@@ -361,9 +366,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK; 
+    const KSpace* myK; 
     
     public:
       
@@ -371,7 +376,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToOuterPoint(const KSpace& aK) : myK(aK) { }
+    SCellToOuterPoint(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -381,15 +386,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     *
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToOuterPoint & operator= ( const SCellToOuterPoint & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
       
@@ -400,8 +406,8 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
-      Input pixel( myK.sDirectIncident( s, *myK.sOrthDirs( s ) ) );
-      return Output( myK.sCoords( pixel ) ); //integer coordinates
+      Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
+      return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
       
   }; // end of class SCellToOuterPoint
@@ -432,9 +438,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK;   
+    const KSpace* myK;   
     
     public:
       
@@ -442,7 +448,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToIncidentPoints(const KSpace& aK) : myK(aK) { }
+    SCellToIncidentPoints(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -452,15 +458,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     *
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToIncidentPoints & operator= ( const SCellToIncidentPoints & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
       
@@ -472,11 +479,11 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       //inner point
-      Input innerPixel( myK.sIndirectIncident( s, *myK.sOrthDirs( s ) ) );
+      Input innerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
       //outer point
-      Input outerPixel( myK.sDirectIncident( s, *myK.sOrthDirs( s ) ) );
+      Input outerPixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
 
-      return Output(myK.sCoords( innerPixel ),myK.sCoords( outerPixel ));
+      return Output(myK->sCoords( innerPixel ),myK->sCoords( outerPixel ));
     }
       
   }; // end of class SCellToIncidentPoints
@@ -506,9 +513,9 @@ namespace DGtal
     
     private: 
      /**
-       *  Constant reference on the Khalimsky space.
+       *  Aliasing pointer on the Khalimsky space.
       */
-    const KSpace& myK;      
+    const KSpace* myK;      
     
     public:
       
@@ -516,7 +523,7 @@ namespace DGtal
        *  Constructor.
        * @param aK a Khalimsky space
       */
-    SCellToCode(const KSpace& aK) : myK(aK) { }
+    SCellToCode(const KSpace& aK) : myK(&aK) { }
 
     /**
      *  Copy constructor.
@@ -526,15 +533,16 @@ namespace DGtal
     : myK(other.myK) { }
 
     /**
-     * Assignment. Does nothing since all
-     * instances should have a constant reference
-     * on the same Khalimsky space.
-     *
+     * Assignment. 
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SCellToCode & operator= ( const SCellToCode & other ) 
     {
+      if (this != &other)
+	{
+	  myK = other.myK;
+	}
       return *this;
     }
       
@@ -546,10 +554,10 @@ namespace DGtal
     Output operator()(const Input& s) const
     {
       //starting point of the arrow
-      Input pointel( myK.sIndirectIncident( s, *myK.sDirs( s ) ) );
-      Point p( myK.sCoords( pointel ) );   //integer coordinates
+      Input pointel( myK->sIndirectIncident( s, *myK->sDirs( s ) ) );
+      Point p( myK->sCoords( pointel ) );   //integer coordinates
       //displacement vector
-      Vector v( myK.sKCoords( s ) - myK.sKCoords( pointel ) );
+      Vector v( myK->sKCoords( s ) - myK->sKCoords( pointel ) );
       if (v == Vector(1,0)) return '0'; 
       else if (v == Vector(0,1)) return '1';
       else if (v == Vector(-1,0)) return '2';
