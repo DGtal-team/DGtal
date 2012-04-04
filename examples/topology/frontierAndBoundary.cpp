@@ -63,7 +63,7 @@ int main( int argc, char** argv )
   shape2.init( RealPoint( -10.0, -10.0, -10.0 ), 
                RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   Domain domain = shape1.getDomain();
-  Image image( domain.lowerBound(), domain.upperBound() ); // p1, p2 );
+  Image image( domain ); // p1, p2 );
   std::cerr << std::endl;
   for ( Domain::ConstIterator it = domain.begin(), it_end = domain.end();
         it != it_end; ++it )
