@@ -65,6 +65,8 @@ with Mouhammad Said).
 @b Modules
 
 - \ref dgtal_irreducible_fraction
+- \ref dgtal_digital_straightness
+
 
 @b Package @b Concepts @b Overview
 
@@ -74,6 +76,7 @@ with Mouhammad Said).
 
 @b Related @b examples
 - approximation.cpp, convergents.cpp, convergents-biginteger.cpp, fraction.cpp
+- pattern.cpp
 
 */
 
