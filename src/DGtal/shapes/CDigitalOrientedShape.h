@@ -51,25 +51,25 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalOrientedShape
   /**
-     Description of \b concept '\b CDigitalOrientedShape' <p>
+Description of \b concept '\b CDigitalOrientedShape' <p>
      @ingroup Concepts
      @brief Aim: characterizes models of digital oriented shapes. For example,
      models should provide an orientation method  for  points on a
      SpaceND.  Returned value type corresponds to  DGtal::Orientation.
 
      
-     <p> Refinement of
+ ### Refinement of
     
-     <p> Associated types :
+ ### Associated types :
      - Point: type for digital points.
 
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CDigitalOrientedShape
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -96,15 +96,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
       Parametric and implicit shapes in the DGtal shape factory, 
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CDigitalOrientedShape.
+@tparam T the type that should be a model of CDigitalOrientedShape.
    */
   template <typename T> 
   struct CDigitalOrientedShape

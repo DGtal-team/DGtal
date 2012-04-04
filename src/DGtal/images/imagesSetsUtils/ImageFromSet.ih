@@ -55,7 +55,7 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
  
   aSet.computeBoundingBox(lower,upper);
 
-  Image image(lower - dec ,upper + dec);
+  Image image(typename Image::Domain(lower - dec ,upper + dec));
   append<Set>(image,defaultValue, itBegin, itEnd);
   
   return image;

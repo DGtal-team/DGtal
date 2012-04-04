@@ -49,8 +49,13 @@
 #include "DGtal/kernel/domains/CDomainArchetype.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
+#include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
+#include "DGtal/kernel/sets/DigitalSetInserter.h"
+
+#include "DGtal/images/ImageContainerBySTLMap.h"
+
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/boards/Board2D.h"
@@ -135,7 +140,7 @@ bool testDigitalSetBoardSnippet()
 }
 
 template < typename DigitalSetType >
-bool testDigitalSet( const typename DigitalSetType::Domain & domain )
+bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
 {
   BOOST_CONCEPT_ASSERT(( CDigitalSet< DigitalSetType > ));
 
@@ -145,32 +150,90 @@ bool testDigitalSet( const typename DigitalSetType::Domain & domain )
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Constructor." );
-
-  DigitalSetType set1( domain );
-  nbok += set1.size() == 0 ? 1 : 0;
+  //copy, size/empty
+  DigitalSetType set1( aSet1 );
+  nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Empty set: " << set1 << std::endl;
-  trace.endBlock();
 
+  //insertion
+  std::set<Point> v; 
   Coordinate t [] = { 4, 3, 3 , 4};
-  Point p1( t );
   Coordinate t2[] = { 2, 5, 3 , 5};
-  Point p2( t2);
   Coordinate t3[] =  { 2, 5, 3 , 4} ;
-  Point p3( t3);
+  Point a( t );
+  Point b( t2 );
+  Point c( t3 );
+  v.insert( a );
+  v.insert( b );
+  v.insert( c );
 
-  trace.beginBlock ( "Insertion." );
-  set1.insert( p1 );
-  set1.insert( p2 );
-  set1.insert( p3 );
-  set1.insert( p2 );
+  set1.insert( a );
+  set1.insert( b );
+  set1.insertNew( c );
+  set1.insert( b );
   nbok += set1.size() == 3 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "Set (3 elements): " << set1 << std::endl;
-  trace.endBlock();
+  << "Insertion (3 elements): " << set1 << std::endl;
+
+  //iterate
+  bool flag = true; 
+  for (typename DigitalSetType::Iterator it = set1.begin(); 
+       it != set1.end(); ++it) 
+    {
+      if (v.find( *it ) == v.end())
+	flag = false; 
+    } 
+  nbok += (flag) ? 1 : 0;
+  nb++;
+  trace.info() << "Iterate: (" << nbok << "/" << nb << ") "
+  	       << std::endl;
+
+  //erasure
+  set1.erase( b ); 
+  nbok += ( (set1.size() == 2)
+  	    &&(set1.find( b ) == set1.end()) )? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Erase one element by key (2 remain): " << set1 << std::endl;
+
+  typename DigitalSetType::Iterator it = set1.find( c );
+  set1.erase( it ); 
+  nbok += ( (set1.size() == 1)
+  	    &&(set1.find( c ) == set1.end()) )? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Erase one element by iterator (1 remain): " << set1 << std::endl;
+
+  //other sets
+  DigitalSetType set2( aSet2 );
+  DigitalSetInserter<DigitalSetType> inserter(set2); 
+  set1.computeComplement(inserter); 
+  nbok += (set2.size() == (set2.domain().size()-1))? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Complement: " << set2 << std::endl;
+
+  set2 += set1; 
+  nbok += (set2.size() == (set2.domain().size()))? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Union: " << set2 << std::endl;
+
+  //clear
+  set1.clear(); 
+  nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "Cleared set: " << set1 << std::endl;
+
+  set1.assignFromComplement(set2); //remains empty
+  nbok += ( (set1.size() == 0)&&(set1.empty()) ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << std::endl;
 
   return nbok == nb;
 }
@@ -329,11 +392,21 @@ int main()
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetBySTLVector" );
-  bool okVector = testDigitalSet< DigitalSetBySTLVector<Domain> >( domain );
+  bool okVector = testDigitalSet< DigitalSetBySTLVector<Domain> >
+    ( DigitalSetBySTLVector<Domain>(domain), DigitalSetBySTLVector<Domain>(domain) );
   trace.endBlock();
 
   trace.beginBlock( "DigitalSetBySTLSet" );
-  bool okSet = testDigitalSet< DigitalSetBySTLSet<Domain> >( domain );
+  bool okSet = testDigitalSet< DigitalSetBySTLSet<Domain> >
+    ( DigitalSetBySTLSet<Domain>(domain), DigitalSetBySTLSet<Domain>(domain) );
+  trace.endBlock();
+
+  trace.beginBlock( "DigitalSetFromMap" );
+  typedef ImageContainerBySTLMap<Domain,short int> Map; 
+  Map map(domain); Map map2(domain);        //maps
+  DigitalSetFromMap<Map> setFromMap(map);   //sets from these maps 
+  DigitalSetFromMap<Map> setFromMap2(map2);  
+  bool okMap = testDigitalSet< DigitalSetFromMap<Map> >( setFromMap, setFromMap2 );
   trace.endBlock();
 
   bool okSelectorSmall = testDigitalSetSelector
@@ -354,7 +427,7 @@ int main()
 
   bool okDigitalSetDrawSnippet = testDigitalSetBoardSnippet();
 
-  bool res = okVector && okSet
+  bool res = okVector && okSet && okMap 
       && okSelectorSmall && okSelectorBig && okSelectorMediumHBel
       && okDigitalSetDomain && okDigitalSetDraw && okDigitalSetDrawSnippet;
   trace.endBlock();

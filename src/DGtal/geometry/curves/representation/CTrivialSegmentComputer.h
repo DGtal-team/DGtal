@@ -51,24 +51,24 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CTrivialSegmentComputer
   /**
-     Description of \b concept '\b CTrivialSegmentComputer' <p>
+Description of \b concept '\b CTrivialSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing the most trivial segment computer,  
     ie. a model of CSegment that can extend itself. 
      
-     <p> Refinement of CSegment 
+ ### Refinement of CSegment 
     
-     <p> Associated types : 
+ ### Associated types : 
     the same as CSegment
   
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CTrivialSegmentComputer
      - \t x, \t y : object of type X
      - \t i : object of type X::ConstIterator
   
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -112,13 +112,13 @@ namespace DGtal
       </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CTrivialSegmentComputer.
+@tparam T the type that should be a model of CTrivialSegmentComputer.
    */
   template <typename T> 
   struct CTrivialSegmentComputer : CSegment<T>
