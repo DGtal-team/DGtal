@@ -72,6 +72,17 @@
 #pragma warning(disable : 4800)
 #endif
 
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
+
 #if defined( WIN32 )
 #define _USE_MATH_DEFINES
 #include <math.h>
