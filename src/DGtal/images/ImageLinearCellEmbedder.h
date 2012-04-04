@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -67,7 +67,7 @@ namespace DGtal
              typename TEmbedder >
   class ImageLinearCellEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( CImageContainer< TImage > ));
+    BOOST_CONCEPT_ASSERT(( CImage< TImage > ));
 
   public:
     typedef TKSpace KSpace;

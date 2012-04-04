@@ -55,23 +55,23 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUnsignedInteger
   /**
-     Description of \b concept '\b CUnsignedInteger' <p>
+Description of \b concept '\b CUnsignedInteger' <p>
      @ingroup Concepts
 
      @brief Aim: Concept checking for Unsigned Integer. 
      
-     <p> Refinement of CInteger
+ ### Refinement of CInteger
     
     
-     <p> Associated types :
+ ### Associated types :
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CUnsignedInteger
      - \t x, \t y  : Object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table>
      <tr> 
      <td class=CName> \b Name </td> 
@@ -95,15 +95,15 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
      unsigned short, unsigned int, unsigned long long, uint16_t, uint32_t, uint64_t.
     
-     <p> Notes <br>
+ ### Notes###
 
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CBoundedInteger.
 
    */

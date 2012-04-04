@@ -17,53 +17,51 @@
 #pragma once
 
 /**
- * @file CRange.h
+ * @file CConstSinglePassRange.h
  * @author Guillaume Damiand
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/08/31
  *
- * Header file for concept CRange
+ * Header file for concept CConstSinglePassRange
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CRange_RECURSES)
-#error Recursive header files inclusion detected in CRange.h
-#else // defined(CRange_RECURSES)
+#if defined(CConstSinglePassRange_RECURSES)
+#error Recursive header files inclusion detected in CConstSinglePassRange.h
+#else // defined(CConstSinglePassRange_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CRange_RECURSES
+#define CConstSinglePassRange_RECURSES
 
-#if !defined CRange_h
+#if !defined CConstSinglePassRange_h
 /** Prevents repeated inclusion of headers. */
-#define CRange_h
+#define CConstSinglePassRange_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassRange.h"
+#include "DGtal/base/ConceptUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CRange
+  // class CConstSinglePassRange
   /**
-     Description of \b concept '\b CRange' <p>
+Description of \b concept '\b CConstSinglePassRange' <p>
      @ingroup Concepts
     
      \brief Aim: Defines the concept describing a const range.
      
-     <p> Refinement of CSinglePassRange
+ ### Refinement of
     
-     <p> Provided types :
+ ### Provided types :
 
-     - ReverseIterator: the reverse iterator type, a model of
-          iterator concept.
-     - ConstReverseIterator: the const reverse iterator type, a model of
-          const iterator concept.
+     - ConstIterator: the const iterator type, a model of const iterator
+          concept (see boost concept SinglePassIteratorConcept).
 
      <table>
      <tr> 
@@ -77,40 +75,20 @@ namespace DGtal
      <td class=CComplexity> \b Complexity </td>
      </tr>
      <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() </td> 
+     <td class=CName>            \t begin </td>
+     <td class=CExpression>      \t x.begin() </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ReverseIterator</td>
+     <td class=CReturnType>      ConstIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
      <td class=CComplexity>      </td>
      </tr>
      <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() </td> 
+     <td class=CName>            \t end </td>
+     <td class=CExpression>      \t x.end() </td> 
      <td class=CRequirements>    </td>
-     <td class=CReturnType>      ReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() const </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() const </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
+     <td class=CReturnType>      ConstIterator</td>
      <td class=CPrecondition>    </td> 
      <td class=CSemantics>       </td> 
      <td class=CPostCondition>   </td> 
@@ -118,38 +96,29 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
-      PointVector, 
-    
-     <p> Notes <br>
-
-     @tparam T the type that is checked. T should be a model of CRange.
+ ### Models###    
 
    */
   template <typename T>
-  struct CRange : public CSinglePassRange<T>
+  struct CConstSinglePassRange
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::ReverseIterator ReverseIterator;
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
+    typedef typename T::ConstIterator ConstIterator;
     
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-    
-    BOOST_CONCEPT_USAGE(CRange)
+    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator> ));
+
+    BOOST_CONCEPT_USAGE(CConstSinglePassRange)
     {
-      ReverseIterator it=i.rbegin();
-      it=i.rend();
-      ConstReverseIterator it2=i.rbegin();
-      it2=i.rend();
+      ConstIterator it=i.begin();
+      it=i.end();
     };
 
   private:
     T i;
-  }; // end of concept CRange
+  }; // end of concept CConstSinglePassRange
   
 } // namespace DGtal
 
@@ -158,7 +127,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CRange_h
+#endif // !defined CConstSinglePassRange_h
 
-#undef CRange_RECURSES
-#endif // else defined(CRange_RECURSES)
+#undef CConstSinglePassRange_RECURSES
+#endif // else defined(CConstSinglePassRange_RECURSES)

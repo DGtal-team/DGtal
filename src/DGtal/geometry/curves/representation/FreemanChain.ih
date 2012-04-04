@@ -61,7 +61,7 @@ inline
   {// iterator end() 
     myXY.at(0)=aChain.xn;
     myXY.at(1)=aChain.yn;
-    myPos = (DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size()+1);
+    myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size()+1);
   }
 }
 
@@ -154,7 +154,7 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::ConstIterator::previousInLoop()
 {
-  if ( myPos == 0 ) myPos = (DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size() - 1);
+  if ( myPos == 0 ) myPos = (typename DGtal::FreemanChain<TInteger>::Index)(myFc->chain.size() - 1);
   else --myPos;
   switch ( myFc->code( myPos ) )
   {
@@ -263,7 +263,7 @@ typename DGtal::FreemanChain<TInteger>::ConstIterator
 DGtal::FreemanChain<TInteger>::end() const
 {
   Point p(0,0); // *(end()) is invalid
-  return ConstIterator( *this, (DGtal::FreemanChain<TInteger>::Index)(chain.size() + 1), p );
+  return ConstIterator( *this, (typename DGtal::FreemanChain<TInteger>::Index)(chain.size() + 1), p );
 }
 
 
@@ -316,7 +316,7 @@ inline
 typename DGtal::FreemanChain<TInteger>::Index
 DGtal::FreemanChain<TInteger>::size() const
 {
-  return (DGtal::FreemanChain<TInteger>::Size)chain.size();
+  return (typename DGtal::FreemanChain<TInteger>::Size)(chain.size());
 }
 
 
@@ -708,7 +708,7 @@ template <typename TRange>
 inline
 void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TRange& aRange, FreemanChain & c ) 
 {
-  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange<TRange> ));
+  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange<TRange> ));
   readFromPointsRange( aRange.begin(), aRange.end(), c ); 
 }
 
