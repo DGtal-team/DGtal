@@ -18,6 +18,7 @@
 #include <iostream>
 #include <iomanip>
 #include "DGtal/math/arithmetic/LighterSternBrocot.h"
+#include "DGtal/base/StdRebinders.h"
 //! [approximation-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
