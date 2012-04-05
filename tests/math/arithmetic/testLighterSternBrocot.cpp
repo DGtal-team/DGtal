@@ -810,8 +810,10 @@ int main( int , char** )
   typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
                               DGtal::StdMapRebinder > SB;
   typedef SB::Fraction Fraction;
+  typedef Fraction::ConstIterator ConstIterator;
 
   BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
 
   trace.beginBlock ( "Testing class LighterSternBrocot" );
   bool res = testLighterSternBrocot()

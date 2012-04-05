@@ -17,30 +17,31 @@
 #pragma once
 
 /**
- * @file ForwardConstIteratorWithRankOnSequence.h
+ * @file InputIteratorWithRankOnSequence.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/02
  *
- * Header file for module ForwardConstIteratorWithRankOnSequence.cpp
+ * Header file for module InputIteratorWithRankOnSequence.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ForwardConstIteratorWithRankOnSequence_RECURSES)
-#error Recursive header files inclusion detected in ForwardConstIteratorWithRankOnSequence.h
-#else // defined(ForwardConstIteratorWithRankOnSequence_RECURSES)
+#if defined(InputIteratorWithRankOnSequence_RECURSES)
+#error Recursive header files inclusion detected in InputIteratorWithRankOnSequence.h
+#else // defined(InputIteratorWithRankOnSequence_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ForwardConstIteratorWithRankOnSequence_RECURSES
+#define InputIteratorWithRankOnSequence_RECURSES
 
-#if !defined ForwardConstIteratorWithRankOnSequence_h
+#if !defined InputIteratorWithRankOnSequence_h
 /** Prevents repeated inclusion of headers. */
-#define ForwardConstIteratorWithRankOnSequence_h
+#define InputIteratorWithRankOnSequence_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <iterator>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/CInteger.h"
@@ -50,26 +51,32 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ForwardConstIteratorWithRankOnSequence
+  // template class InputIteratorWithRankOnSequence
   /**
-     Description of template class 'ForwardConstIteratorWithRankOnSequence' <p>
+     Description of template class 'InputIteratorWithRankOnSequence' <p>
      
-     \brief Aim: Useful to create an iterator that outputs a pair
+     \brief Aim: Useful to create an iterator that returns a pair
      (value,rank) when visiting a sequence. The sequence is smartly
      copied within the iterator. Hence, the given sequence need not to
-     persist during the visit. Since it is only a forward sequence, it
+     persist during the visit. Since it is only an input sequence, it
      is not necessary to give a valid sequence when creating the end()
-     iterator.
+     iterator. 
 
      It is used by SternBrocot::Fraction, LightSternBrocot::Fraction,
      LighterSternBrocot::Fraction to visit the quotients of the
      continued fraction.
 
+     It is a model of boost::InputIterator.
+
+     @note It is not exactly an adapter since it requires the sequence
+     itself. In fact, it could be decomposed into an adapter (which
+     creates a pair) and a proxy on sequence.
+
      @tparam TSequence the type of sequence (a model of Sequence).
      @tparam TRank the type of the rank (a model of CInteger).
    */
   template <typename TSequence, typename TRank = typename TSequence::difference_type>
-  class ForwardConstIteratorWithRankOnSequence
+  class InputIteratorWithRankOnSequence
   {
     // ----------------------- public types ------------------------------
   public:
@@ -78,18 +85,20 @@ namespace DGtal
 
     typedef TSequence Sequence;
     typedef TRank Rank;
-    typedef ForwardConstIteratorWithRankOnSequence<Sequence,Rank> Self;
+    typedef InputIteratorWithRankOnSequence<Sequence,Rank> Self;
     typedef typename Sequence::value_type SequenceValue;
     typedef std::pair<SequenceValue,Rank> Value;
     typedef typename Sequence::const_iterator ConstIterator;
+    typedef const Value* Pointer;
 
     // ----------------------- std types ----------------------------------
     typedef Value value_type;
     typedef typename Sequence::size_type size_type;
     typedef typename Sequence::difference_type difference_type;
-    typedef const value_type* pointer;
+    typedef Pointer pointer;
     typedef const value_type& reference;
     typedef const reference const_reference;
+    typedef std::input_iterator_tag iterator_category;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -97,34 +106,34 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~ForwardConstIteratorWithRankOnSequence();
+    ~InputIteratorWithRankOnSequence();
 
     /**
        Constructor.
        @param seq any sequence.
        @param it any iterator in the sequence \e seq.
      */
-    ForwardConstIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it );
+    InputIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it );
 
     /**
        Constructor.
        @param ptrSeq any dynamically allocated pointer on a sequence (acquired).
        @param it any iterator in the sequence \e ptrSeq.
      */
-    ForwardConstIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it );
+    InputIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it );
 
     /**
        Constructor.
        @param ptrSeq any smart pointer on a sequence (CountedPtr or CowPtr).
        @param it any iterator in the sequence \e ptrSeq.
      */
-    ForwardConstIteratorWithRankOnSequence( const CountedPtr<Sequence> & ptrSeq, ConstIterator it );
+    InputIteratorWithRankOnSequence( const CountedPtr<Sequence> & ptrSeq, ConstIterator it );
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ForwardConstIteratorWithRankOnSequence ( const Self & other );
+    InputIteratorWithRankOnSequence ( const Self & other );
 
     /**
      * Assignment.
@@ -138,7 +147,13 @@ namespace DGtal
        @return the current value of the iterator, if valid.
     */
     Value operator*() const;
-    
+
+    /**
+       Pointer dereference operator.
+       @return a non-mutable pointer on the current value.
+    */  
+    Pointer operator->() const;
+
     /** 
         Pre-increment operator.
         @return a reference to itself.
@@ -189,41 +204,44 @@ namespace DGtal
     CountedPtr<Sequence> mySequence;
     /// The current iterator position on the sequence.
     ConstIterator myIterator;
+    /// Hack to store a value when using operator->. This value is not copied
+    /// nor initialized.
+    Value myTmpValue;
 
     // ------------------------- Hidden services ------------------------------
   protected:
     /**
      * Constructor.
      */
-    ForwardConstIteratorWithRankOnSequence();
+    InputIteratorWithRankOnSequence();
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class ForwardConstIteratorWithRankOnSequence
+  }; // end of class InputIteratorWithRankOnSequence
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ForwardConstIteratorWithRankOnSequence'.
+   * Overloads 'operator<<' for displaying objects of class 'InputIteratorWithRankOnSequence'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ForwardConstIteratorWithRankOnSequence' to write.
+   * @param object the object of class 'InputIteratorWithRankOnSequence' to write.
    * @return the output stream after the writing.
    */
   template <typename TSequence, typename TRank = typename TSequence::difference_type>
   std::ostream&
-  operator<< ( std::ostream & out, const ForwardConstIteratorWithRankOnSequence<TSequence, TRank> & object );
+  operator<< ( std::ostream & out, const InputIteratorWithRankOnSequence<TSequence, TRank> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/ForwardConstIteratorWithRankOnSequence.ih"
+#include "DGtal/base/InputIteratorWithRankOnSequence.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ForwardConstIteratorWithRankOnSequence_h
+#endif // !defined InputIteratorWithRankOnSequence_h
 
-#undef ForwardConstIteratorWithRankOnSequence_RECURSES
-#endif // else defined(ForwardConstIteratorWithRankOnSequence_RECURSES)
+#undef InputIteratorWithRankOnSequence_RECURSES
+#endif // else defined(InputIteratorWithRankOnSequence_RECURSES)
