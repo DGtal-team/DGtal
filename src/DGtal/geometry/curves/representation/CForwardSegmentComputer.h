@@ -51,26 +51,26 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CForwardSegmentComputer
   /**
-     Description of \b concept '\b CForwardSegmentComputer' <p>
+Description of \b concept '\b CForwardSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a forward segment computer,  
     ie. a model of CSegment that can extend itself (in the direction that is relative to 
     the underlying iterator). 
      
-     <p> Refinement of CTrivialSegmentComputer 
+ ### Refinement of CTrivialSegmentComputer 
     
-     <p> Associated types : the same as CTrivialSegmentComputer +
+ ### Associated types : the same as CTrivialSegmentComputer +
     - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
     instead of Self::ConstIterator as the underlying iterator
   
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CForwardSegmentComputer
      - \t x : object of type X
      - \t r : object of type X::Reverse
   
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -94,13 +94,13 @@ namespace DGtal
       </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CForwardSegmentComputer.
+@tparam T the type that should be a model of CForwardSegmentComputer.
    */
   template <typename T> 
   struct CForwardSegmentComputer : CTrivialSegmentComputer<T>

@@ -70,6 +70,15 @@ template <typename TDigitalSet>
 inline
 typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
 DGtal::DigitalSetDomain<TDigitalSet>
+::begin(const Point &aPoint) const
+{
+  return mySet.find(aPoint);
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+DGtal::DigitalSetDomain<TDigitalSet>
 ::begin() const
 {
   return mySet.begin();
@@ -100,6 +109,15 @@ DGtal::DigitalSetDomain<TDigitalSet>
 ::upperBound() const
 {
   return myUpperBound;
+}
+//------------------------------------------------------------------------------
+template <typename TDigitalSet>
+inline
+typename DGtal::DigitalSetDomain<TDigitalSet>::Size
+DGtal::DigitalSetDomain<TDigitalSet>
+::size() const
+{
+  return mySet.size();
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>

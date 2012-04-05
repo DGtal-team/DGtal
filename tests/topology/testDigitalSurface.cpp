@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
@@ -289,7 +289,7 @@ bool testExplicitDigitalSurface()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "K.init() is ok" << std::endl;
-  Image image( p1, p2 );
+  Image image( Domain(p1, p2) );
   fillImage3D( image, p1, p2, 0 );
   fillImage3D( image, Point(-2,-2,-2 ), Point( 2, 2, 2 ), 1 );
   fillImage3D( image, Point( 0, 0,-2 ), Point( 0, 0, 2 ), 2 );
@@ -400,7 +400,7 @@ bool testLightExplicitDigitalSurface()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "K.init() is ok" << std::endl;
-  Image image( p1, p2 );
+  Image image( Domain(p1, p2) );
   fillImage3D( image, p1, p2, 0 );
   fillImage3D( image, Point(-2,-2,-2 ), Point( 2, 2, 2 ), 1 );
   fillImage3D( image, Point( 0, 0,-2 ), Point( 0, 0, 2 ), 2 );
@@ -524,7 +524,7 @@ bool testDigitalSurface()
   typedef DigitalSurface<DSContainer> MyDS;
 
   //Checking the type as a model of CSinglePassConstRange
-  BOOST_CONCEPT_ASSERT(( CSinglePassConstRange < MyDS> ));
+  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange < MyDS> ));
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph < MyDS> ));
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph < MyDS> ));
   

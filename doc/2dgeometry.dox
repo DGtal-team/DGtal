@@ -25,14 +25,7 @@ namespace DGtal {
 patterns from one-dimensional discrete structures
 (basically digital curves).
 
- -# \ref geometryIntro
-    -# \ref geometryBasicConcepts
-    -# \ref geometryGridCurve
- -# \ref geometrySegments
- -# \ref geometrySegmentsExtraction
-		-# \ref geometryGreedyDecomposition
-		-# \ref geometryUniqueDecomposition
-
+[TOC]
 
  \section geometryIntro One-dimensional discrete structures
 
@@ -41,13 +34,18 @@ discrete structures in a generic framework. These structures are assumed
 to be constant, not mutable. This is a (not exhaustive) 
 list of such structures used in digital geometry: 
  - digital curves
+
    - 2d, 3d, nd
+
    - 4-connected, 8-connected, disconnected
+
    - interpixels, pixels
+
    - open, closed
+
  - chaincodes
 
-	\subsection geometryBasicConcepts Iterators/Circulators and Ranges.
+\subsection geometryBasicConcepts Iterators/Circulators and Ranges.
 
 
 Since these structures are one-dimensional and discrete, 
@@ -125,33 +123,49 @@ GridCurve and FreemanChain.
 GridCurve is an (open or closed) n-dimensional oriented grid curve. 
 It stores a list of alternated (signed) 0-cells and 1-cells,
  but provides many ranges to iterate over different kinds of elements:  
+
 - in nd:   
     - SCellsRange to iterate over the (signed) cells (0-cells or 1-cells),
+
     - PointsRange to iterate over the 0-cells viewed as integer points,
+
     - MidPointsRange to iterate over the midpoint of the 1-cells,
+
     - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
     (the point stands for the starting point of the arrow, the vector gives
     the orientation or the arrow). 
+
 - in 2d: 
-    - InnerPointsRange to iterate over the 2-cells, viewed as integer points, 
-that are <em>directly</em> incident to the (signed) 1-cells,
-    - OuterPointsRange to iterate over the 2-cells, viewed as integer points, 
-that are <em>indirectly</em> incident to the (signed) 1-cells,
-    - IncidentPointsRange to iterate over the pairs of 2-cells 
-that are incident to the 1-cells (both inner points and outer points),
+    - InnerPointsRange to iterate over the 2-cells, viewed as integer points, that are <em>directly</em> incident to the (signed) 1-cells,
+
+    - OuterPointsRange to iterate over the 2-cells, viewed as integer points, that are <em>indirectly</em> incident to the (signed) 1-cells,
+
+    - IncidentPointsRange to iterate over the pairs of 2-cells that are incident to the 1-cells (both inner points and outer points),
+
     - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}. 
+
+
 
 You can get an access to these nine ranges through the following methods: 
 
 - get0SCellsRange()
+
 - get1SCellsRange()
+
 - getPointsRange()
+
 - getMidPointsRange()
+
 - getArrowsRange()
+
 - getInnerPointsRange()
+
 - getOuterPointsRange()
+
 - getIncidentPointsRange()
+
 - getCodesRange()
+
 
 The different ranges for a grid curve whose chain code is 1110002223333
 are depicted below. 
@@ -175,30 +189,46 @@ are depicted below.
 
 FreemanChain is 2-dimensional and 4-connected digital curve
 stored as a string of codes {0,1,2,3} as follows: 
+
 - 0 for a horizontal step to the right 
+
 - 1 for a vertical step to the up
+
 - 2 for a horizontal step to the left
+
 - 3 for a vertical step to the bottom
+
 As GridCurve, it provides a CodesRange. 
 
 Each range has the following inner types: 
 
 - ConstIterator
+
 - ConstReverseIterator
+
 - ConstCirculator
+
 - ConstReverseCirculator
+
 
 And each range provides these (circular)iterator services: 
 
 - begin() : begin ConstIterator
+
 - end() : end ConstIterator
+
 - rbegin() : begin ConstReverseIterator
+
 - rend() : end ConstReverseIterator
+
 - c() : ConstCirculator
+
 - rc() : ConstReverseCirculator
 
+
 You can use these services to iterate over the elements of a given range
-as follows: 
+as follows:
+ 
 @snippet geometry/exampleGridCurve2d.cpp GridCurveRangeIterators
 
 Since GridCurve and FreemanChain have both a method isClosed(), 
@@ -234,6 +264,7 @@ Any model of the concept CSegment, should have the following inner types:
 and the following methods: 
 
  - begin() : begin iterator
+
  - end() : end iterator
 
 Moreover, a segment can be defined from a property P, 
@@ -267,13 +298,15 @@ CDynamicSegmentComputer and CDynamicBidirectionalSegmentComputer.
  @image html segmentComputersHierarchy.png  "Hierarchy"
  @image latex segmentComputersHierarchy.png  "Hierarchy"
  
-The most restrictive kind of segment computer is CTrivialSegmentComputer, 
+The less restrictive kind of segment computer is CTrivialSegmentComputer, 
 which is only presented to smoothly introduce the next concepts.   
 CTrivialSegmentComputer is a refinement of CSegment and should provide
 in addition the following two methods: 
 
  - void init ( const Iterator& it ) : set the segment to the element pointed to by it.
+
  - bool extendForward () : return 'true' and extend the segment to the element pointed to by end() if it is possible, return 'false' and does not extend the segment otherwise. 
+
  - bool isExtendableForward () : return 'true' if the segment can be extended to the element pointed to by end() and 'false' otherwise (no extension is performed).
 
 Detecting a segment in a range looks like this: 
@@ -301,7 +334,8 @@ However the extension of a segment can be performed in only one direction (given
 To cope with this problem, the models of CForwardSegmentComputer, which is a refinement of 
 CTrivialSegmentComputer, should define the following nested type:
 
- - Reverse 
+ - Self (its own type)
+ - Reverse (like Self but based on reverse iterators) 
 
 Reverse is a type that behaves like Self but with reverse iterators. In order to get a 
 reverse copy of a segment computer, the following method should be defined:   
@@ -317,6 +351,7 @@ Any model of CBidirectionalSegmentComputer, which is a refinement of CForwardSeg
 should define the following methods:
 
  - bool extendBackward () : return 'true' and extend the segment to the element pointed to by --begin() if it is possible, return 'false' and does not extend the segment otherwise.
+
  - bool isExtendableBackward () : return 'true' if the segment can be extended to the element pointed to by --begin() and 'false' otherwise (no extension is performed).
 
 GeometricalDSS and GeometricalDCA are both models of CBidirectionalSegmentComputer. 
@@ -339,9 +374,11 @@ devoted to the dynamic recognition of DSSs,
  (see Debled and Reveilles, 1995).
 
  Here is a short example of how to use this class in the 4-connected case:
+
  @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
+
  @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
 
  These snippets are drawn from ArithmeticalDSS.cpp. 
@@ -361,10 +398,15 @@ As seen above, the code can be different if an iterator or a circulator is used
 as the nested ConstIterator type. Moreover, some tasks can be made faster for a 
 given kind of segment computer than for another kind of segment computer. 
 That's why many generic functions are provided in @href SegmentComputerUtils.h:
+
  - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension, 
+
  - maximalRetraction, oppositeEndMaximalRetraction,  
+
  - longestSegment, 
+
  - firstMaximalSegment, lastMaximalSegment, mostCenteredMaximalSegment,
+
  - previousMaximalSegment, nextMaximalSegment,
 
 These functions are used in the segmentation algorithms introduced below. 
@@ -374,9 +416,12 @@ These functions are used in the segmentation algorithms introduced below.
 A given range contains a finite set of segments verifying a given 
 valid property P.  
 A <em>segmentation</em> is a subset of the whole set of segments, 
-such that:  
- - (i) each element of the range belongs to a segment of the subset and 
- - (ii) no segment contains another segment of the subset. 
+such that:
+  
+ i. each element of the range belongs to a segment of the subset and 
+
+ ii.  no segment contains another segment of the subset. 
+
 Due to (ii), the segments of a segmentation can be ordered without ambiguity
 (according to the position of their first element for instance). 
 
@@ -388,12 +433,15 @@ A CSegmentation model should define the following nested type:
 It should also define a constructor taking as input parameters: 
 
  - begin/end iterators of the range to be segmented. 
+
  - an instance of a model of CSegmentComputer.
 
 Note that a model of CSegmentComputerIterator should define the following methods :
 
  - default and copy constructors
+
  - dereference operator: return an instance of a model of CSegmentComputer.
+
  - intersectPrevious(), intersectNext(): return 'true' if the current segment intersects, respectively, the previous and the next one (when they exist), 'false' otherwise. 
 
 	\subsection geometryGreedyDecomposition Greedy segmentation
@@ -572,7 +620,9 @@ Let @f$ L_i @f$ be the length of the i-th maximal segments.
 During the segmentation, the current segment is extended: 
 
  - at most @f$ 2.\Sigma_{1 \leq i \leq n} L_i @f$ times in the forward case.
+
  - exactly @f$ \Sigma_{1 \leq i \leq n} L_i @f$ times in the bidirectional case.
+
  - @f$ l @f$ times in the dynamic case. (But in this case, the current segment is 
 also retracted @f$ l @f$ times). 
 

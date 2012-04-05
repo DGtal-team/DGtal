@@ -72,7 +72,7 @@ using namespace DGtal;
 template<typename Image>
 void randomSeeds(Image &image, const unsigned int nb, const int value)
 {
-  typename Image::Point p, low = image.lowerBound();
+  typename Image::Point p, low = image.domain().lowerBound();
   typename Image::Vector ext;
   srand ( time(NULL) );
 
@@ -110,10 +110,10 @@ int main( int argc, char** argv )
  //Default image selector = STLVector
  typedef ImageSelector<TDomain, unsigned char>::Type Image;
  Image image = VolReader<Image>::importVol( inputFilename );
- TDomain domain(image.lowerBound(), image.upperBound());
+ TDomain domain = image.domain();
 
 
- Image imageSeeds (image.lowerBound(), image.upperBound());
+ Image imageSeeds ( domain);
  for ( Image::Iterator it = imageSeeds.begin(), itend = imageSeeds.end();it != itend; ++it)
    (*it)=1;
  Z3i::Point p0(10,10,10);

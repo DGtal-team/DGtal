@@ -92,7 +92,7 @@ int main( int argc, char** argv )
 
   trace.info() << "Image loaded: "<<image<< std::endl;
 
-  Domain domain(image.lowerBound(), image.upperBound());
+  Domain domain = image.domain();
   GradientColorMap<long> gradient( thresholdMin, thresholdMax);
   gradient.addColor(Color::Blue);
   gradient.addColor(Color::Green);
