@@ -83,6 +83,10 @@
 #endif
 #endif
 
+#ifdef _MSC_VER
+#define random rand
+#endif
+
 #if defined( WIN32 )
 #define _USE_MATH_DEFINES
 #include <math.h>

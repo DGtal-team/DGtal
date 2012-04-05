@@ -367,15 +367,15 @@ cfrac( std::vector<Size> & quotients ) const
 {
   ASSERT( this->k() >= NumberTraits<Size>::ZERO );
   int64_t i = NumberTraits<Size>::castToInt64_t( this->k() );
-  quotients.resize( i + 1 );
-  quotients[ i-- ] = this->u();
+  quotients.resize( (unsigned int)i + 1 );
+  quotients[ (unsigned int)i-- ] = this->u();
   Node* n = myNode;
   bool bleft = odd() ? true : false;
   while ( i >= 0 )
     {
       ASSERT( n->k >= NumberTraits<Size>::ZERO );
       n = bleft ? n->ascendantLeft : n->ascendantRight;
-      quotients[ i ] = 
+      quotients[ (unsigned int)i ] = 
         ( i == NumberTraits<Size>::castToInt64_t( n->k ) ) ? n->u : 1;
       --i;
       bleft = ! bleft;
