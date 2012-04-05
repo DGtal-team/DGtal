@@ -13,13 +13,13 @@ namespace DGtal {
    Adapted by Jacques-Olivier Lachaud. Part of the \ref KernelPackage.
   
    This part of the manual describes how to define multivariate
-   polynomials, like xy^2-yz, x^4-y^2z^2+z^4, etc.
+   polynomials, like \f$ xy^2-yz \f$, \f$ x^4-y^2z^2+z^4 \f$, etc.
 
 [TOC]
 
-\section dgtal_mpolynomial_sec1 1. Defining a multivariate polynomial
+\section dgtal_mpolynomial_sec1 Multivariate polynomial
 
-\subsection dgtal_mpolynomial_sec1_1 1.1 What is a multivariate polynomial ?
+\subsection dgtal_mpolynomial_sec1_1 What is a multivariate polynomial ?
 
 A \e multivariate \e monomial is a product of powers of zero, one or
 several variables, like \f$ 1, x, x^2, xy, y^3, xy^2z, x^4y^4z^4
@@ -34,7 +34,7 @@ indeterminate are synonymous. When you define a multivariate
 polynomial, you must precise its number of variables. The variables
 are numbered from 0 to \e n - 1, if \e n is the number of variables.
 
-\subsection dgtal_mpolynomial_sec1_2 1.2 The class MPolynomial
+\subsection dgtal_mpolynomial_sec1_2 The class MPolynomial
 
 The class MPolynomial is the base class for representing arbitrary
 multivariate polynomials, i.e. an element of \f$ K[X_0, ..., X_{-1}]
@@ -90,7 +90,7 @@ X_{n-1}^{e_{n-1}} having coefficient 1.
 Otherwise, polynomials are created through operations, derivations,
 etc.
 
-\subsection dgtal_mpolynomial_sec1_3 1.3 Interface of the class MPolynomial
+\subsection dgtal_mpolynomial_sec1_3 Interface of the class MPolynomial
 
 Let us describe the interface:
 
@@ -179,7 +179,7 @@ the last by X_{n-1}.
 contents. The polynomials have to be of the same type.This is
 for instance useful in some algorithms of the STL.
 
-\subsection dgtal_mpolynomial_sec1_4 1.4 How monomials and coefficients are stored ?
+\subsection dgtal_mpolynomial_sec1_4 How monomials and coefficients are stored ?
 
 The coefficients are stored in a std::vector <K>; while
 MPolynomial <1, K> uses std::vector<K>, MPolynomial <n, K> for n > 1
@@ -187,7 +187,7 @@ uses std::vector <MPolynomial <n-1, K> *>, i.e. pointers to
 coefficients are stored. This is implemented using the "intelligent"
 vector IVector <K> template.
 
-\subsection dgtal_mpolynomial_sec1_5 1.5 Computing partial derivatives
+\subsection dgtal_mpolynomial_sec1_5 Computing partial derivatives
 
 The library also offers to compute partial derivatives. Given a
 polynomial f of type MPolynomial <n, K>, one can compute the partial
@@ -209,7 +209,7 @@ Q(x,y,z)=1+xy^2+x^4yz = (1 + 1 X_1^2 X_0 + 1 X_2 X_1 X_0^4)
          dQ/dz        = 1 X_1 X_0^4                 // yx^4
 @endverbatim
 
-\subsection dgtal_mpolynomial_sec1_6 1.6 Computing euclidean division and greatest commond divisor (gcd)
+\subsection dgtal_mpolynomial_sec1_6 Computing euclidean division and greatest commond divisor (gcd)
 
 Finally, there exist functions euclidDiv(f, g, q, r), requiring
 parameters f, g of the const MPolynomial <1, K> & and q, r of type
@@ -226,9 +226,9 @@ euclidean algorithm. In every step, the remainder is made
 monic. This function is ignoring potential round-off errors, and
 this function needs that K is (kind of) a field. Use with care.
 
-\section dgtal_mpolynomial_sec2 2. Efficiency considerations.
+\section dgtal_mpolynomial_sec2 Efficiency considerations.
 
-\subsection dgtal_mpolynomial_sec2_1 2.1 Best suited polynomials 
+\subsection dgtal_mpolynomial_sec2_1 Best suited polynomials 
 
 The class is tuned so as to be efficient for rather dense
 polynomials. More precisely, this class is not space nor time
@@ -244,7 +244,7 @@ twice. When you design a polynomial, you should choose the variable
 order well so as to choose the one that factors at best
 computations.
 
-\subsection dgtal_mpolynomial_sec2_2 2.2 Repetitive evaluations in space
+\subsection dgtal_mpolynomial_sec2_2 Repetitive evaluations in space
 
 Consider the following simple code, which integrates some
 information in cubic part of the space:

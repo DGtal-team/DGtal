@@ -233,17 +233,23 @@ namespace DGtal
 
      @tparam TRing the type chosen for the polynomial, defines also
      the type of the coefficents (generally int, float or double).
+
+     @tparam TAlloc is an allocator for TRing, for example
+     std::allocator<TRing>; this is also the default
+     parameter. Usually this parameter does not needs to be changed.
      
      @tparam TIterator the type chosen for iterating over characters.
   */
   template <int n, typename TRing, 
+            typename TAlloc = std::allocator<TRing>,
             typename TIterator = std::string::const_iterator>
   class MPolynomialReader
   {
   public:
     typedef TRing Ring;
     typedef TIterator Iterator;
-    typedef MPolynomial<n, Ring, std::allocator<Ring> > Polynomial;
+    typedef TAlloc Alloc;
+    typedef MPolynomial<n, Ring, Alloc > Polynomial;
     typedef MPolynomialGrammar<Iterator> Grammar;
     
     /// Polynomial grammar.
@@ -408,10 +414,42 @@ namespace DGtal
    * @param object the object of class 'MPolynomialReader' to write.
    * @return the output stream after the writing.
    */
-  template <int n, typename TRing, typename TIterator>
+  template <int n, typename TRing, typename TAlloc, typename TIterator>
   std::ostream&
   operator<< ( std::ostream & out,
-               const MPolynomialReader<n, TRing, TIterator> & object );
+               const MPolynomialReader<n, TRing, TAlloc, TIterator> & object );
+
+  /**
+     Overloads 'operator>>' to create directly multi-variate
+     polynomials from input istreams. Note that the type of
+     aMPolynomial defines the kind of constructed polynomial. For
+     instance, if the stream is "x+1" and the type is
+     MPolynomial<2,int>, then the polynomial is 2-variate like
+     P(x,y)=1+x.
+
+     The stream is read till the end of line. It may stop before if
+     the stream does not correspond anymore to a multi-variate
+     polynomial. The stream is returned at the position where the
+     polynomial reader stopped (except the newline).
+
+     @param in the input stream.
+
+     @param aMPolynomial (returns) the modified polynomial constructed
+     from the input stream.
+
+     @tparam n the number of variables of the polynomial
+
+     @tparam TRing the coefficient ring
+
+     @tparam TAlloc is an allocator for TRing, for example
+     std::allocator<TRing>; this is also the default
+     parameter. Usually this parameter does not needs to be changed.
+
+  */
+  template < int n, typename TRing, class TAlloc >
+  std::istream&
+  operator>> ( std::istream & in,
+               MPolynomial<n,TRing,TAlloc> & aMPolynomial );
 
 } // namespace DGtal
 
