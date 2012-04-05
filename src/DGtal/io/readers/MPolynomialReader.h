@@ -133,6 +133,13 @@ namespace DGtal
   namespace ascii = boost::spirit::ascii;
   namespace phoenix = boost::phoenix;
 
+  /**
+     Defines a grammar for parsing multi-variate polynomials. Based on
+     boost::spirit. You should use a MPolynomialReader to make
+     polynomials from input strings. Another way is to use the
+     overloaded DGtal::operator>>(std::istream
+     &,MPolynomial<n,TRing,TAlloc> &).
+   */
   template <typename Iterator>
   struct MPolynomialGrammar 
     : qi::grammar<Iterator, detail::top_node(), ascii::space_type>
@@ -456,7 +463,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/MPolynomialReader.ih"
+#include "DGtal/io/readers/MPolynomialReader.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

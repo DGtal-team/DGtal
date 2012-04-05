@@ -33,7 +33,7 @@
 #include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/MPolynomial.h"
-#include "DGtal/math/MPolynomialReader.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
