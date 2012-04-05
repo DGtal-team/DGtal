@@ -30,4 +30,5 @@ add_subdirectory(geometry)
 add_subdirectory(doc-examples)
 add_subdirectory(tutorial-examples)
 add_subdirectory(topology)
+add_subdirectory(math)
 
