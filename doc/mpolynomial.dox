@@ -8,9 +8,10 @@ namespace DGtal {
    
    @page dgtal_multivariate_polynomial Multivariate polynomials.
    
-   Documentation written by Felix Fontein (University of Zurich) at 
-   http://spielwiese.fontein.de. 
-   Adapted by Jacques-Olivier Lachaud. Part of the \ref pageMathematicsPackage.
+   @writers Felix Fontein (University of Zurich, http://spielwiese.fontein.de) and
+   adapted by Jacques-Olivier Lachaud. 
+
+   Part of the \ref pagePolynomialModule.
   
    This part of the manual describes how to define multivariate
    polynomials, like \f$ xy^2-yz \f$, \f$ x^4-y^2z^2+z^4 \f$, etc.
@@ -209,6 +210,21 @@ Q(x,y,z)=1+xy^2+x^4yz = (1 + 1 X_1^2 X_0 + 1 X_2 X_1 X_0^4)
          dQ/dz        = 1 X_1 X_0^4                 // yx^4
 @endverbatim
 
+You may have a look at example polynomial-derivative.cpp to see how to
+get derivatives of simple polynomials:
+
+@snippet math/polynomial-derivative.cpp polynomial-derivative-basicIncludes
+@snippet math/polynomial-derivative.cpp polynomial-derivative-types
+@snippet math/polynomial-derivative.cpp polynomial-derivative-process
+
+Along the same lines, the example polynomial2-derivative.cpp computes
+first- and second-order partial derivatives of a 2-variate polynomial.
+
+@snippet math/polynomial2-derivative.cpp polynomial2-derivative-basicIncludes
+@snippet math/polynomial2-derivative.cpp polynomial2-derivative-types
+@snippet math/polynomial2-derivative.cpp polynomial2-derivative-process
+
+
 \subsection dgtal_mpolynomial_sec1_6 Computing euclidean division and greatest commond divisor (gcd)
 
 Finally, there exist functions euclidDiv(f, g, q, r), requiring
@@ -232,7 +248,7 @@ this function needs that K is (kind of) a field. Use with care.
 
 The class is tuned so as to be efficient for rather dense
 polynomials. More precisely, this class is not space nor time
-efficient for a polynomial like \f$ 1+x+x^100000 \f$. This class is
+efficient for a polynomial like \f$ 1+x+x^{100000} \f$. This class is
 rather efficient for low-degree polynomials, even if there are many
 monomials. In fact, it factors the computation of the first
 variables.
@@ -288,6 +304,111 @@ MPolynomial<3, double> P = //...
   This function takes 69ms for a step 0.01, for 8000000 evaluations.
 The C version where the function is explicitely compiled takes 22ms.
 
+\subsection dgtal_mpolynomial_sec3 Input and output for multivariate polynomials
+
+You may simply output a polynomial an output stream with the usual
+operator<<.
+
+@code
+MPolynomial<3,int> Q = mmonomial<int>(0,0,0) + mmonomial<int>(1,2,0) + mmonomial<int>(4,1,1);
+std::cout << "Q(x,y,z)=1+xy^2+x^4yz = " << Q << std::endl;
+@endcode
+
+You may also input a polynomial from an input stream with the usual
+operator>>. However, it is required to include file
+"MPolynomialReader.h".
+
+@code
+#include <string>
+#include <sstream>
+#include "DGtal/io/readers/MPolynomialReader.h"
+...
+string s = "1+xy^2+x^4yz".
+std::istringstream sin( s );
+MPolynomial<3,int> P;
+sin >> P;
+trace.info() << "- Read " << P << std::endl;
+@endcode
+
+You may read successively several polynomials from the input stream:
+you just have to separate them with newlines. The input stream is read
+as long as the input is valid for the multivariate polynomial grammar.
+
+If you wish to handle better error recovery when creating a
+polynomial, you can use the method MPolynomialReader::read directly.
+
+In input, you may write the variables either simply \c x, \c y, \c z,
+\c t for the first four variables, or more generically \c X_0, \c X_1,
+\ldots, \c X_m, where \c m is an integer number that is smaller than
+the number of variables of the polynomial.
+
+For instance, you may test polynomial-derivative.cpp and
+polynomial2-derivative.cpp as follows:
+
+@verbatim
+$ ./examples/math/polynomial-derivative "1+x+x^2-3*x^4"
+P(X_0)   = (1 + 1 X_0 + 1 X_0^2 + -3 X_0^4)
+P'(X_0)  = (1 + 2 X_0 + -12 X_0^3)
+P''(X_0) = (2 + -36 X_0^2)
+$ ./examples/math/polynomial-derivative "(2 + -36 X_0^2)"
+P(X_0)   = (2 + -36 X_0^2)
+P'(X_0)  = -72 X_0
+P''(X_0) = -72
+@endverbatim
+
+@verbatim
+$ ./examples/math/polynomial2-derivative "(x-3)^2 + (y-2)^2 - 4"
+P(X_0,X_1)        = ((9 + -4 X_1 + 1 X_1^2) + -6 X_0 + 1 X_0^2)
+dP/dX_0(X_0,X_1)  = (-6 + 2 X_0)
+dP/dX_1(X_0,X_1)  = (-4 + 2 X_1)
+d/dX_1 dP/dX_0(X_0,X_1) = 0
+d/dX_0 dP/dX_1(X_0,X_1) = 0
+d/dX_0 dP/dX_0(X_0,X_1) = 2
+d/dX_1 dP/dX_1(X_0,X_1) = 2
+@endverbatim
+
+
+@see polynomial-derivative.cpp, polynomial2-derivative.cpp.
+@see testMPolynomial.cpp, trackImplicitPolynomialSurfaceToOFF.cpp.
+
+*/
+
+/**
+   Computes the first and second derivative of the given polynomial P (in one variable).
+
+@see \ref dgtal_mpolynomial_sec2_5 and \ref dgtal_mpolynomial_sec3 
+
+@verbatim
+$ ./examples/math/polynomial-derivative "1+x+x^2-3*x^4"
+P(X_0)   = (1 + 1 X_0 + 1 X_0^2 + -3 X_0^4)
+P'(X_0)  = (1 + 2 X_0 + -12 X_0^3)
+P''(X_0) = (2 + -36 X_0^2)
+$ ./examples/math/polynomial-derivative "(2 + -36 X_0^2)"
+P(X_0)   = (2 + -36 X_0^2)
+P'(X_0)  = -72 X_0
+P''(X_0) = -72
+@endverbatim
+
+\example math/polynomial-derivative.cpp
+*/
+
+/**
+   computes the first and second derivatives of the given polynomial P (in two variables).
+
+@see \ref dgtal_mpolynomial_sec2_5 and \ref dgtal_mpolynomial_sec3 
+
+@verbatim
+$ ./examples/math/polynomial2-derivative "(x-3)^2 + (y-2)^2 - 4"
+P(X_0,X_1)        = ((9 + -4 X_1 + 1 X_1^2) + -6 X_0 + 1 X_0^2)
+dP/dX_0(X_0,X_1)  = (-6 + 2 X_0)
+dP/dX_1(X_0,X_1)  = (-4 + 2 X_1)
+d/dX_1 dP/dX_0(X_0,X_1) = 0
+d/dX_0 dP/dX_1(X_0,X_1) = 0
+d/dX_0 dP/dX_0(X_0,X_1) = 2
+d/dX_1 dP/dX_1(X_0,X_1) = 2
+@endverbatim
+
+\example math/polynomial2-derivative.cpp
 */
 
 
