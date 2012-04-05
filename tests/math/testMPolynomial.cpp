@@ -30,9 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <iomanip>
+#include <sstream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/MPolynomial.h"
-#include "DGtal/math/MPolynomialReader.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -219,6 +220,13 @@ bool testMPolynomialReader()
   trace.info() << "- Parsing " << s6 << " : " << ok6 << " " << P << std::endl;
   bool ok7 = reader.read( P, s7.begin(), s7.end() ) == s7.end();
   trace.info() << "- Parsing " << s7 << " : " << ok7 << " " << P << std::endl;
+
+  string s8 = "(zyx^2+x^2-1)^2 + xy AVERTY"; 
+  std::istringstream sin( s8 );
+  std::string other;
+  sin >> P >> other;
+  trace.info() << "- Read " << P << " and " << other << std::endl;
+
   return ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && (!ok7);
 }
 ///////////////////////////////////////////////////////////////////////////////
