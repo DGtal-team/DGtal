@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ForwardConstIteratorWithRankOnSequence.ih
+ * @file InputIteratorWithRankOnSequence.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/02
  *
- * Implementation of inline methods defined in ForwardConstIteratorWithRankOnSequence.h
+ * Implementation of inline methods defined in InputIteratorWithRankOnSequence.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,31 +41,31 @@
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
-~ForwardConstIteratorWithRankOnSequence()
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+~InputIteratorWithRankOnSequence()
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
-ForwardConstIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it )
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+InputIteratorWithRankOnSequence( const Sequence & seq, ConstIterator it )
   : mySequence( new Sequence( seq ) ), myIterator( it )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
-ForwardConstIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it )
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+InputIteratorWithRankOnSequence( Sequence* ptrSeq, ConstIterator it )
   : mySequence( ptrSeq ), myIterator( it )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
-ForwardConstIteratorWithRankOnSequence
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+InputIteratorWithRankOnSequence
 ( const CountedPtr<Sequence> & ptrSeq, ConstIterator it )
   : mySequence( ptrSeq ), myIterator( it )
 {
@@ -73,16 +73,16 @@ ForwardConstIteratorWithRankOnSequence
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
-ForwardConstIteratorWithRankOnSequence( const Self & other )
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+InputIteratorWithRankOnSequence( const Self & other )
   : mySequence( other.mySequence ), myIterator( other.myIterator )
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-typename DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::Self &
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self &
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator= ( const Self & other )
 {
   if ( this != &other )
@@ -95,8 +95,8 @@ operator= ( const Self & other )
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-typename DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::Value
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Value
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator*() const
 {
   return std::make_pair( *myIterator, (Rank) ( myIterator - mySequence->begin() ) );
@@ -104,8 +104,18 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-typename DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::Self &
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Pointer 
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
+operator->() const
+{
+  myTmpValue = this->operator*();
+  return &myTmpValue;
+}
+//-----------------------------------------------------------------------------
+template <typename TSequence, typename TRank>
+inline
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self &
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator++()
 {
   ++myIterator;
@@ -114,8 +124,8 @@ operator++()
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-typename DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::Self
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Self
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator++( int )
 {
   Self tmp = *this;
@@ -126,7 +136,7 @@ operator++( int )
 template <typename TSequence, typename TRank>
 inline
 bool
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator==( const Self & other ) const
 {
   if ( mySequence.get() != 0 )
@@ -148,7 +158,7 @@ operator==( const Self & other ) const
 template <typename TSequence, typename TRank>
 inline
 bool
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator!=( const Self & other ) const
 {
   return ! this->operator==( other );
@@ -164,10 +174,10 @@ operator!=( const Self & other ) const
 template <typename TSequence, typename TRank>
 inline
 void
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 selfDisplay ( std::ostream & out ) const
 {
-  out << "[ForwardConstIteratorWithRankOnSequence]";
+  out << "[InputIteratorWithRankOnSequence]";
 }
 
 /**
@@ -177,7 +187,7 @@ selfDisplay ( std::ostream & out ) const
 template <typename TSequence, typename TRank>
 inline
 bool
-DGtal::ForwardConstIteratorWithRankOnSequence<TSequence,TRank>::
+DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 isValid() const
 {
     return true;
@@ -192,7 +202,7 @@ template <typename TSequence, typename TRank>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const ForwardConstIteratorWithRankOnSequence<TSequence,TRank> & object )
+		  const InputIteratorWithRankOnSequence<TSequence,TRank> & object )
 {
   object.selfDisplay( out );
   return out;

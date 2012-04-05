@@ -46,7 +46,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/StdRebinders.h"
-#include "DGtal/base/ForwardConstIteratorWithRankOnSequence.h"
+#include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -221,7 +221,7 @@ namespace DGtal
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
       typedef std::pair<Size, Size> Value;
       typedef std::vector<Size> CFracSequence;
-      typedef ForwardConstIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
+      typedef InputIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
 
       // --------------------- std types ------------------------------
       typedef Value value_type;
