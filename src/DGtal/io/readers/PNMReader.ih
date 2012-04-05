@@ -103,8 +103,8 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename ) thr
   lastPoint[1] = h-1;
   
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer image(firstPoint,lastPoint);
-  
+  TImageContainer image(domain);
+
   getline( infile, str );
   istringstream str2_in( str );
   int max_value;

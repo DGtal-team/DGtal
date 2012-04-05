@@ -143,8 +143,8 @@ int main( int argc, char** argv )
     typedef ImageSelector<Z2i::Domain, unsigned char>::Type Image;
     DGtal::MagickReader<Image> reader;
     Image img = reader.importImage( imageName );
-    Z2i::Point ptInf = img.lowerBound(); 
-    Z2i::Point ptSup = img.upperBound(); 
+    Z2i::Point ptInf = img.domain().lowerBound(); 
+    Z2i::Point ptSup = img.domain().upperBound(); 
     unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
     unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
     

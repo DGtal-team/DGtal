@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -64,7 +64,7 @@ namespace DGtal
   struct ImageSelector
   {
 
-    BOOST_CONCEPT_ASSERT((CValue<Value>));
+    BOOST_CONCEPT_ASSERT((CLabel<Value>));
 
     // ----------------------- Local types ------------------------------
     /**

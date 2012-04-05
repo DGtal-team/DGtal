@@ -51,7 +51,7 @@
 #include <vector>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CRange.h"
+#include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
@@ -138,7 +138,7 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * PointVector is a model of CRange.
+   * PointVector is a model of CBidirectionalRange.
    * 
    * @see testPointVector.cpp
    *
@@ -520,7 +520,7 @@ namespace DGtal
      * @param v a vector that is dot-producted to *this.
      * @return the dot product of this and v.
      */
-    Component dot( const Self &v);
+    Component dot( const Self &v) const;
 
     /**
      * Addition operator with assignement.

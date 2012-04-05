@@ -156,7 +156,7 @@ namespace DGtal
           
           @return the corresponding fraction in the Stern-Brocot tree.
           
-          NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+          NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
           are the partial quotients of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
@@ -336,7 +336,7 @@ namespace DGtal
 	
 	@return the corresponding fraction in the Stern-Brocot tree.
 
-        NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+        NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
         are the partial quotients of p/q.
     */
     static Fraction fraction( Integer p, Integer q,

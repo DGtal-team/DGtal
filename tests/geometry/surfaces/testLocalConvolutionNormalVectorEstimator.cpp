@@ -160,9 +160,9 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
       viewer << ks.unsigns(*itbis);
    
       Point center = ks.sCoords(*itbis);
-      MyEstimatorGaussian::Quantity res = myNormalEstimatorG.eval(itbis);
+      MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval(itbis);
       viewer.addLine(center[0],center[1],center[2],
-		     center[0]-3*res[0],center[1]-3*res[1],center[2]-3*res[2], 
+		     center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2], 
 		     DGtal::Color(20,200,20), 1.0);
     }
   viewer<< Viewer3D::updateDisplay;

@@ -3,6 +3,7 @@
    set( VERSION ${PROJECT_VERSION} )
    set( DOC_DIR ${PROJECT_SOURCE_DIR}/doc )
    set( top_srcdir ${PROJECT_SOURCE_DIR} )
+   set( top_bindir ${PROJECT_BINARY_DIR} )
    set( HAVE_DOT YES )
    find_program(DOT_EXE dot)
    if ( DOT_EXE )

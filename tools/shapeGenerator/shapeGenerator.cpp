@@ -252,7 +252,7 @@ struct Exporter
    */
   template <typename Shape>
   static 
-  void exportSignature(const Shape & aShape,const Set &aSet, const Z2i::Domain &aDomain)
+  void exportSignature(const Shape & aShape, Set &aSet, const Z2i::Domain &aDomain)
   {
     SetPredicate<Set> aSetPredicate( aSet );
     trace.beginBlock("Extracting the boundary");
