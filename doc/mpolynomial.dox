@@ -10,7 +10,7 @@ namespace DGtal {
    
    Documentation written by Felix Fontein (University of Zurich) at 
    http://spielwiese.fontein.de. 
-   Adapted by Jacques-Olivier Lachaud. Part of the \ref KernelPackage.
+   Adapted by Jacques-Olivier Lachaud. Part of the \ref pageMathematicsPackage.
   
    This part of the manual describes how to define multivariate
    polynomials, like \f$ xy^2-yz \f$, \f$ x^4-y^2z^2+z^4 \f$, etc.
