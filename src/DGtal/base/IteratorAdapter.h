@@ -179,7 +179,7 @@ namespace DGtal
     /**
      *  @return constant reference on a member of the element pointed to by @a myCurrentIt.
      */
-    const reference operator*() const 
+    /*const*/ reference operator*() const 
     { 
       BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, const TArgument&, const TReturnType& > )); 
       return myFunctorPtr->operator()(*myCurrentIt); 
