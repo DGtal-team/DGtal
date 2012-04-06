@@ -39,37 +39,27 @@
 #define backpath_h
 
 
-//#ifndef __backPath_H
-//#define __backPath_H
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <vector>
-#include <list>
-#include <map>
 #include <boost/icl/interval_set.hpp>
+#include <map>
+#include "DGtal/kernel/PointVector.h"
 
-#include <math.h>
-#include <assert.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "FrechetShortcut.h"
-#include "backpath.h"
-#include <iostream>
-
-#include "DGtal/helpers/StdDefs.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
 
-using namespace std;
-using namespace boost::icl;
-using namespace DGtal::Z2i;
-
-
-
+namespace DGtal
+{
+  
 template <typename TIterator>
 class backpath {
+  
+  
+  typedef DGtal::PointVector<2,int> Point;
+  typedef DGtal::PointVector<2,int> Vector;
+  
   
  protected: 
   
@@ -170,7 +160,7 @@ class backpath {
   
   occulter_list myOcculters;
   
-  interval_set<double> myForbiddenIntervals;
+  boost::icl::interval_set<double> myForbiddenIntervals;
   
   ConstIterator myIt;
   
@@ -188,6 +178,8 @@ class backpath {
   
   
 };
+
+} //namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////

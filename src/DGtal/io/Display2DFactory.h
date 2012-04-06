@@ -168,10 +168,10 @@ void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIterator> &
 // GeometricalDCA
 
 
-// FrechetShortcut
+//FrechetShortcut
 template <typename TIterator, typename TInteger>
-void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & );
-// FrechetShortcut
+  void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & );
+//FrechetShortcut
 
     
 // GridCurve

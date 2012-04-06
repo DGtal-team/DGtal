@@ -39,11 +39,8 @@
 #define cone_h
 
 
-#include <vector>
-#include <list>
-#include <iostream>
-
-using namespace std;
+namespace DGtal
+{
 
 class cone {
 
@@ -240,7 +237,7 @@ operator<< ( std::ostream & out, cone & object )
   return out;
 }
   
-  
+} //namespace DGtal  
 
 
 #if !defined(BUILD_INLINE)
