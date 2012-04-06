@@ -1,5 +1,5 @@
 /**
- * @file freemanChainFromImage.dox
+ * @file tutoImageGridCurveExtraction.dox
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
@@ -17,7 +17,8 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page freemanChainFromImage Extracting level set boundary from Image
+@page tutoImageGridCurveExtraction  Tutorial "Image -> Region -> Grid curve ->  Extracting level set boundary from Image"
+
 @author Bertrand Kerautret
 
 This part of the manual describes a simple way to extract a level set
