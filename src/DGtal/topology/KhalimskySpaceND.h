@@ -386,7 +386,7 @@ namespace DGtal
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
-      typedef CellType ValueType;
+      typedef CellType Value;
       typedef typename std::deque<CellType> Container;
       typedef typename std::deque<CellType>::iterator Iterator;
       typedef typename std::deque<CellType>::const_iterator ConstIterator;
@@ -673,7 +673,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void uSetCoord( Cell & c, Dimension k, const Integer & i ) const;
+    void uSetCoord( Cell & c, Dimension k, Integer i ) const;
 
     /**
      * Sets the [k]-th digital coordinate of [c] to [i].
@@ -681,7 +681,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void sSetCoord( SCell & c, Dimension k, const Integer & i ) const;
+    void sSetCoord( SCell & c, Dimension k, Integer i ) const;
 
     /**
      * Sets the Khalimsky coordinates of [c] to [kp].
