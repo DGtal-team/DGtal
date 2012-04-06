@@ -20,6 +20,8 @@ namespace DGtal {
 
 @date 2012/03/28
 
+[TOC]
+
 \section dgtalImagesAbstract Overview
 
 The concept of @a point functor describe a mapping between 
