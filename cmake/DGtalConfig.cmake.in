@@ -5,7 +5,7 @@
 #  DGTAL_LIBRARIES    - libraries to link against
  
 # Tell the user project where to find our headers and libraries
-set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@ @DGtalLibInc@")
+set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@;@DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
  
 # Our library dependencies (contains definitions for IMPORTED targets)
