@@ -880,7 +880,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsSurfel( const Cell & b ) const
 {
-  return udim( b ) == ( DIM - 1 );
+  return uDim( b ) == ( DIM - 1 );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>

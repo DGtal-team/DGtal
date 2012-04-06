@@ -942,8 +942,7 @@ namespace DGtal
        @param p any cell.
        @param k the tested coordinate.
        
-       @return true if [p] cannot have its [k]-coordinate augmented
-       without leaving the space.
+       @return true if [p] has its [k]-coordinate within the allowed bounds.
     */
     bool uIsInside( const Cell & p, Dimension k ) const;
  
