@@ -3,6 +3,7 @@ SET(DGTAL_TUTO_EXAMPLES_SRC
   fileGridCurveRanges
   imageGridCurveEstimator
   shapeGridCurveEstimator
+  freemanChainFromImage
 )
 
 
@@ -11,7 +12,8 @@ FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
   target_link_libraries (${FILE} DGtal DGtalIO )
 ENDFOREACH(FILE)
 
-#########
+
+
 
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_TUTO_EXAMPLES_QGL_SRC
