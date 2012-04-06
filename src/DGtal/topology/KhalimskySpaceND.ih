@@ -731,7 +731,7 @@ template < Dimension dim, typename TInteger>
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uSetCoord( Cell & c, Dimension k, const Integer & i ) const
+uSetCoord( Cell & c, Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
@@ -744,7 +744,7 @@ template < Dimension dim, typename TInteger>
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sSetCoord( SCell & c, Dimension k, const Integer & i ) const
+sSetCoord( SCell & c, Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
