@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page Tools3dVolViewer 3dVolViewer : a simple 3D volume viewer in less than 50 lines.
+@page tutoImageGridVolume3dVolViewer   Tutorial "Image -> Region -> Volume ->  3dVolViewer : a simple 3D volume viewer in less than 50 lines" 
 @author Bertrand Kerautret
 
 
