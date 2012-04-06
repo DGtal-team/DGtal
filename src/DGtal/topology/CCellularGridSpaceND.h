@@ -119,11 +119,12 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 - \e X : A type that is a model of \e CCellularGridSpaceND
 - \e x : object of type \e X
 - \e k : object of type Dimension 
-- \e i : object of type Integer
+- \e i : object of type \e Integer
 - \e c : object of type \e Cell 
 - \e sc : object of type \e SCell 
 - \e s : object of type \e Surfel 
 - \e p, \e p1, \e p2 : object of type \e Point
+- \e v : object of type \e Vector
 - \e sign: object of type \e Sign
 
 ### Definitions
@@ -239,6 +240,33 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 | Get cell before along some axis|\e x.uGetSub(\e c,\e k,\e i)| | \e Cell|            | returns the same cell as \e c except the \e k-th coordinate that is decreased by \e i | | |
 | Distance to upper bound |\e x.uDistanceToMax(\e c,\e k)| | \e Integer  |            | returns the number of increments to do along the \e k-th axis to reach the upper bound | | |
 | Distance to lower bound |\e x.uDistanceToMin(\e c,\e k)| | \e Integer  |            | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
+| Get the translation of a cell |\e x.uTranslation(\e c,\e v)| | \e Cell  |           | returns the cell that is the translation of \e c by the vector \e v | | |
+| Get the projection of a cell |\e x.uProjection(\e c,\e bc,\e k)| \e bc is a \e Cell| \e Cell | | returns the same cell as \e c except for the \e k-th coordinate that is equal to the one of \e bc | | |
+| Projection of a cell |\e x.uProject(\e c,\e bc,\e k)| \e bc is a \e Cell| |         | modifies cell \e c such that its \e k-th coordinate that is equal to the one of \e bc | | |
+| Next cell within bounds |\e x.uNext(\e c,\e lc,\e uc)| \e lc, \e uc are \e Cell|\c bool|  | cell \e c becomes the next cell with same topology within lower and upper bounds \e lc and \e uc, returns 'true' iff \e c is still within bounds | | |
+|               |                  |                   |               |              |                                       |                |            |
+| Get first cell|\e x.sFirst(\e sc) |                   | \e SCell     |              | returns the first cell of the space with same topology as \e sc | |  |
+| Get last cell |\e x.sLast(\e sc)  |                   | \e SCell     |              | returns the last cell of the space with same topology as \e sc | |  |
+| Get next cell along some axis|\e x.sGetIncr(\e sc,\e k)| | \e SCell  |              | returns the same cell as \e sc except the \e k-th coordinate that is incremented | | |
+| Get previous cell along some axis|\e x.sGetDecr(\e sc,\e k)| | \e SCell |           | returns the same cell as \e sc except the \e k-th coordinate that is decremented | | |
+| Maximal coordinate test|\e x.sIsMax(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
+| Minimal coordinate test|\e x.sIsMin(\e sc,\e k)|      | \c bool      |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
+| Get maximal cell along some axis|\e x.sGetMax(\e sc,\e k)| | \e SCell|              | returns the same cell as \e sc except the \e k-th coordinate that is the maximal possible | | |
+| Get minimal cell along some axis|\e x.sGetMin(\e sc,\e k)| | \e SCell|              | returns the same cell as \e sc except the \e k-th coordinate that is the minimal possible | | |
+| Inside test along some axis|\e x.sIsInside(\e sc,\e k)| | \c bool    |              | returns 'true' iff the cell \e sc has a valid \e k-th coordinate | | |
+| Get cell further along some axis|\e x.sGetAdd(\e sc,\e k,\e i)| | \e SCell|         | returns the same cell as \e sc except the \e k-th coordinate that is increased by \e i | | |
+| Get cell before along some axis|\e x.sGetSub(\e sc,\e k,\e i)| | \e SCell|          | returns the same cell as \e sc except the \e k-th coordinate that is decreased by \e i | | |
+| Distance to upper bound |\e x.sDistanceToMax(\e sc,\e k)| | \e Integer  |           | returns the number of increments to do along the \e k-th axis to reach the upper bound | | |
+| Distance to lower bound |\e x.sDistanceToMin(\e sc,\e k)| | \e Integer  |           | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
+| Get the translation of a cell |\e x.sTranslation(\e sc,\e v)| | \e SCell  |         | returns the cell that is the translation of \e sc by the vector \e v | | |
+| Get the projection of a cell |\e x.sProjection(\e sc,\e bc,\e k)| \e bc is a \e SCell| \e SCell | | returns the same cell as \e sc except for the \e k-th coordinate that is equal to the one of \e bc | | |
+| Projection of a cell |\e x.sProject(\e sc,\e bc,\e k)| \e bc is a \e SCell| |       | modifies cell \e sc such that its \e k-th coordinate that is equal to the one of \e bc | | |
+| Next cell within bounds |\e x.sNext(\e sc,\e lc,\e uc)| \e lc, \e uc are \e SCell|\c bool|  | cell \e sc becomes the next cell with same topology within lower and upper bounds \e lc and \e uc, returns 'true' iff \e sc is still within bounds | | |
+|               |                  |                   |               |              |                                       |                |            |
+| Neighborhood |\e x.uNeighborhood(\e c) |             | \e Cells      |              | returns the range of cells that forms the 1-neighborhood of \e c | | |
+| Neighborhood |\e x.sNeighborhood(\e sc)|             | \e SCells     |              | returns the range of signed cells that forms the 1-neighborhood of \e sc | | |
+| Proper neighborhood |\e x.uProperNeighborhood(\e c) | | \e Cells     |              | returns the range of cells that forms the proper 1-neighborhood of \e c, hence without \e c itself| | |
+| Proper neighborhood |\e x.sProperNeighborhood(\e sc)| | \e SCells    |              | returns the range of signed cells that forms the proper 1-neighborhood of \e sc, hence without \e sc itself| | |
 
 ### Invariants
 
@@ -372,8 +400,35 @@ public:
     ConceptUtils::sameType( myCell, myX.uGetSub( myCell, myDim, myInteger ) );
     ConceptUtils::sameType( myInteger, myX.uDistanceToMax( myCell, myDim ) );
     ConceptUtils::sameType( myInteger, myX.uDistanceToMin( myCell, myDim ) );
+    ConceptUtils::sameType( myCell, myX.uTranslation( myCell, myV ) );
+    ConceptUtils::sameType( myCell, myX.uProjection( myCell, myCell, myDim ) );
+    myX.uProject( myMutableCell, myCell, myDim );
+    ConceptUtils::sameType( myBool, myX.uNext( myMutableCell, myCell, myCell ) );
+    // -------------------- Signed cell geometry services --------------------
+    ConceptUtils::sameType( mySCell, myX.sFirst( mySCell ) );
+    ConceptUtils::sameType( mySCell, myX.sLast( mySCell ) );
+    ConceptUtils::sameType( mySCell, myX.sGetIncr( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sGetDecr( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsMax( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsMin( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sGetMax( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sGetMin( mySCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsInside( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sGetAdd( mySCell, myDim, myInteger ) );
+    ConceptUtils::sameType( mySCell, myX.sGetSub( mySCell, myDim, myInteger ) );
+    ConceptUtils::sameType( myInteger, myX.sDistanceToMax( mySCell, myDim ) );
+    ConceptUtils::sameType( myInteger, myX.sDistanceToMin( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sTranslation( mySCell, myV ) );
+    ConceptUtils::sameType( mySCell, myX.sProjection( mySCell, mySCell, myDim ) );
+    myX.sProject( myMutableSCell, mySCell, myDim );
+    ConceptUtils::sameType( myBool, myX.sNext( myMutableSCell, mySCell, mySCell ) );
+    // ----------------------- Neighborhood services --------------------------
+    ConceptUtils::sameType( myCells, myX.uNeighborhood( myCell ) );
+    ConceptUtils::sameType( myCells, myX.uProperNeighborhood( myCell ) );
+    ConceptUtils::sameType( mySCells, myX.sNeighborhood( mySCell ) );
+    ConceptUtils::sameType( mySCells, myX.sProperNeighborhood( mySCell ) );
 
-  }
+}
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
@@ -381,6 +436,7 @@ private:
   Size mySize;
   Dimension myDim;
   Point myP1, myP2;
+  Vector myV;
   Cell myCell;
   SCell mySCell;
   mutable Cell myMutableCell;
@@ -388,6 +444,8 @@ private:
   bool myBool;
   Sign mySign;
   DirIterator myDirIt;
+  Cells myCells;
+  SCells mySCells;
 
     // ------------------------- Internals ------------------------------------
 private:

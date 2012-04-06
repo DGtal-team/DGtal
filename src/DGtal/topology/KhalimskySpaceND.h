@@ -1118,6 +1118,15 @@ namespace DGtal
     /**
        Useful to check if you are going out of the space.
        @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] has its [k]-coordinate within the allowed bounds.
+    */
+    bool sIsInside( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
        @param k the concerned coordinate.
        
        @return the cell similar to [p] but with the maximum allowed
