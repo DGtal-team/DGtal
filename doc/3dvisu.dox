@@ -357,75 +357,75 @@ It also possible to remove the visualisation of the transparent clipping plane b
 
 
 /**
-\example viewer3D-1-points.cpp
+\example io/viewers/viewer3D-1-points.cpp
 * 
 */
 
 /**
-\example viewer3D-2-sets.cpp
+\example io/viewers/viewer3D-2-sets.cpp
 * 
 */
 /**
-\example viewer3D-3-objects.cpp
+\example io/viewers/viewer3D-3-objects.cpp
 * 
 */
 /**
-\example viewer3D-4-modes.cpp
+\example io/viewers/viewer3D-4-modes.cpp
 * 
 */
 /**
-\example viewer3D-5-custom.cpp
+\example io/viewers/viewer3D-5-custom.cpp
 * 
 */
 /**
-\example viewer3D-6-clipping.cpp
-* 
-*/
-
-/**
-\example dgtalBoard3DTo2D-1-points.cpp
+\example io/viewers/viewer3D-6-clipping.cpp
 * 
 */
 
 /**
-\example dgtalBoard3DTo2D-2-sets.cpp
+\example io/boards/dgtalBoard3DTo2D-1-points.cpp
 * 
 */
 
 /**
-\example dgtalBoard3DTo2D-2bis-sets.cpp
+\example io/boards/dgtalBoard3DTo2D-2-sets.cpp
 * 
 */
 
 /**
-\example dgtalBoard3DTo2D-3-objects.cpp
+\example io/boards/dgtalBoard3DTo2D-2bis-sets.cpp
 * 
 */
 
-
-
 /**
-\example dgtalBoard3DTo2D-4-modes.cpp
+\example io/boards/dgtalBoard3DTo2D-3-objects.cpp
 * 
 */
 
 
 
 /**
-\example dgtalBoard3DTo2D-5-custom.cpp
+\example io/boards/dgtalBoard3DTo2D-4-modes.cpp
 * 
 */
 
 
 
 /**
-\example dgtalBoard3DTo2D-6.cpp
+\example io/boards/dgtalBoard3DTo2D-5-custom.cpp
+* 
+*/
+
+
+
+/**
+\example io/boards/dgtalBoard3DTo2D-6.cpp
 * 
 */
 
 
 /**
-\example dgtalBoard3DTo2D-KSCell.cpp
+\example io/boards/dgtalBoard3DTo2D-KSCell.cpp
 * 
 */
 
