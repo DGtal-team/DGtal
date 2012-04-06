@@ -87,11 +87,11 @@ space or an open cell space.
 - \e Integer: the integral type for representing coordinates in the space (model of CInteger).
 - \e Size: the integral unsigned type for representing sizes in the space (model of CUnsignedInteger).
 - \e Space: the corresponding digital space (same dimension and same \e Integer type as this).
-- \e Cell: the type that represents an unsigned cell.
-- \e SCell: the type that represents a signed cell.
-- \e Surfel: the type that represents a signed n-1-cell. Should be promotable to SCell and reciprocally.
+- \e Cell: the type that represents an unsigned cell. Cell's are ordered.
+- \e SCell: the type that represents a signed cell. SCell's are ordered.
+- \e Surfel: the type that represents a signed n-1-cell. Should be promotable to SCell and reciprocally. Surfel's are ordered.
 - \e Sign: the type that represents the sign/orientation of a cell. Should be promotable to \c bool and reciprocally (POS is true, NEG is false).
-- \e DirIterator: the type that represents an iterator over the open or closed directions of a cell (signed or not) (model of boost::InputIterator).
+- \e DirIterator: the type that represents an iterator over the open or closed directions of a cell (signed or not).
 - \e Point: the type for defining points in \e Space (same as Space::Point).
 - \e Vector: the type for defining vectors in \e Space  (same as Space::Vector).
 - \e Cells: a container that stores unsigned cells (not a set, rather a enumerable collection type, model of CConstSinglePassRange).
@@ -103,6 +103,18 @@ space or an open cell space.
 - \e SCellMap<Value>: an associative container SCell->Value rebinder type (efficient for key queries). Use as \c typename X::template SCellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
 - \e SurfelMap<Value>: an associative container Surfel->Value rebinder type (efficient for key queries). Use as \c typename X::template SurfelMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
 
+
+\note DirIterator should be use as follows:
+@code
+KSpace x; 
+Cell c; 
+for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q ) 
+  { 
+    Dimension dir = *q;
+    ...
+  } 
+@endcode
+       
 ### Notation
 - \e X : A type that is a model of \e CCellularGridSpaceND
 - \e x : object of type \e X
@@ -138,6 +150,13 @@ space or an open cell space.
   the cell is open along this coordinate axis.
 - a \b spel is a cell of maximal dimension (say n), a \b surfel is a
   cell of dimension n-1, a \b pointel is a cell of dimension 0.
+- the \b topology of a cell along a dimension \e k is open if the cell
+  is open along the \e k-th coordinate axis. We code open with 1 and
+  closed with 0. The \b topology \b word of a cell is the integer
+  whose \e k-th bit is the topology of the cell along the \e k-th
+  axis. The \b dimension of a cell is the number of coordinates where
+  the cell is open. It is also the sum of the bits of its topology
+  word.
 
 ### Valid expressions and semantics
 
@@ -149,9 +168,9 @@ space or an open cell space.
 | NEG           | \e x.NEG         |                   | \e Sign       |              | the negative sign for cells           |                |            |
 |               |                  |                   |               |              |                                       |                |            |
 | initialization|\e x.\e init(p1, p2, b)| b is \c bool | \c bool       |              | initializes the space so that cells are within the bounds p1 and p2, returns true iff the initialization was valid (ie, such bounds are representable with these integers).      |                |            |
-| Size or width | \e.size( \e k )    |                 | \e Integer    |              | returns the size/width of the space along the axis \e k | |         |
-| Minimal coordinate | \e.min( \e k )|                 | \e Integer    |              | returns the minimal possible digital coordinate along the axis \e k | | |
-| Maximal coordinate | \e.max( \e k )|                 | \e Integer    |              | returns the maximal possible digital coordinate along the axis \e k | | |
+| Size or width | \e x.size( \e k )    |               | \e Integer    |              | returns the size/width of the space along the axis \e k | |         |
+| Minimal coordinate | \e x.min( \e k )|               | \e Integer    |              | returns the minimal possible digital coordinate along the axis \e k | | |
+| Maximal coordinate | \e x.max( \e k )|               | \e Integer    |              | returns the maximal possible digital coordinate along the axis \e k | | |
 | Lower bound   | \e x.lowerBound()|                   | \e Point      |              | returns the lowest point in the space, i.e. \e p1 |    |            |
 | Upper bound   | \e x.upperBound()|                   | \e Point      |              | returns the uppermost point in the space, i.e. \e p1 | |            |
 | Lower cell    | \e x.lowerCell() |                   | \e Cell       |              | returns the lowest cell in the space  |                |            |
@@ -191,7 +210,35 @@ space or an open cell space.
 | Unsign/unorient signed cell | \e x.unsigns(\e sc)|   |               |              | returns the unsigned cell with same topology as \e sc| | |
 | Flip sign     | \e x.sOpp(\e sc) |                   |               |              | returns the signed cell with opposite sign to \e sc| | |
 |               |                  |                   |               |              |                                       |                |            |
+| Get topology word |\e x.uTopology(\e c) |            | \e Integer    |              | returns the topology word of unsigned cell \e c |      |            |
+| Get topology word |\e x.sTopology(\e sc) |           | \e Integer    |              | returns the topology word of signed cell \e sc |       |            |
+| Get cell dimension |\e x.uDim(\e c) |                | Dimension     |              | returns the dimension of the unsigned cell \e c |      |            |
+| Get cell dimension |\e x.sDim(\e sc) |               | Dimension     |              | returns the dimension of the signed cell \e sc |       |            |
+| Surfel test   |\e x.uIsSurfel(\e s) |                | \c bool       |              | returns 'true' iff the unsigned cell \e c has dimension n-1 | |     |
+| Surfel test   |\e x.sIsSurfel(\e sc) |               | \c bool       |              | returns 'true' iff the signed cell \e sc has dimension n-1 | |      |
+| Open test     |\e x.uIsOpen(\e c,\e k) |             | \c bool       |              | returns 'true' iff the unsigned cell \e c is open along the \e k-th axis| | |
+| Open test     |\e x.sIsOpen(\e sc,\e k) |            | \c bool       |              | returns 'true' iff the signed cell \e sc is open along the \e k-th axis| | |
 |               |                  |                   |               |              |                                       |                |            |
+| Get open directions |\e x.uDirs(\e c)|               | \e DirIterator|              | returns a kind of iterator that enumerates the open directions of \e c| | |
+| Get open directions |\e x.sDirs(\e sc)|              | \e DirIterator|              | returns a kind of iterator that enumerates the open directions of \e sc| | |
+| Get closed directions |\e x.uOrthDirs(\e c)|         | \e DirIterator|              | returns a kind of iterator that enumerates the closed directions of \e c| | |
+| Get closed directions |\e x.sOrthDirs(\e sc)|        | \e DirIterator|              | returns a kind of iterator that enumerates the closed directions of \e sc| | |
+| Get closed direction of surfel |\e x.uOrthDir(\e c)|\e x.uIsSurfel(\e c)| Dimension     |              | returns the closed direction of the n-1-cell \e c| | |
+| Get closed direction of surfel |\e x.sOrthDir(\e sc)|\e x.sIsSurfel(\e sc)| Dimension    |              | returns the closed direction of the signed n-1-cell \e sc| | |
+|               |                  |                   |               |              |                                       |                |            |
+| Get first cell|\e x.uFirst(\e c) |                   | \e Cell       |              | returns the first cell of the space with same topology as \e c | |  |
+| Get last cell |\e x.uLast(\e c)  |                   | \e Cell       |              | returns the last cell of the space with same topology as \e c | |  |
+| Get next cell along some axis|\e x.uGetIncr(\e c,\e k)| | \e Cell    |              | returns the same cell as \e c except the \e k-th coordinate that is incremented | | |
+| Get previous cell along some axis|\e x.uGetDecr(\e c,\e k)| | \e Cell |             | returns the same cell as \e c except the \e k-th coordinate that is decremented | | |
+| Maximal coordinate test|\e x.uIsMax(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the maximal possible \e k-th coordinate | | |
+| Minimal coordinate test|\e x.uIsMin(\e c,\e k)|      | \c bool       |              | returns 'true' iff the cell has the minimal possible \e k-th coordinate | | |
+| Get maximal cell along some axis|\e x.uGetMax(\e c,\e k)| | \e Cell  |              | returns the same cell as \e c except the \e k-th coordinate that is the maximal possible | | |
+| Get minimal cell along some axis|\e x.uGetMin(\e c,\e k)| | \e Cell  |              | returns the same cell as \e c except the \e k-th coordinate that is the minimal possible | | |
+| Inside test along some axis|\e x.uIsInside(\e c,\e k)| | \c bool     |              | returns 'true' iff the cell \e c has a valid \e k-th coordinate | | |
+| Get cell further along some axis|\e x.uGetAdd(\e c,\e k,\e i)| | \e Cell|           | returns the same cell as \e c except the \e k-th coordinate that is increased by \e i | | |
+| Get cell before along some axis|\e x.uGetSub(\e c,\e k,\e i)| | \e Cell|            | returns the same cell as \e c except the \e k-th coordinate that is decreased by \e i | | |
+| Distance to upper bound |\e x.uDistanceToMax(\e c,\e k)| | \e Integer  |            | returns the number of increments to do along the \e k-th axis to reach the upper bound | | |
+| Distance to lower bound |\e x.uDistanceToMin(\e c,\e k)| | \e Integer  |            | returns the number of decrements to do along the \e k-th axis to reach the lower bound | | |
 
 ### Invariants
 
@@ -297,6 +344,34 @@ public:
     ConceptUtils::sameType( mySCell, myX.signs( myCell, mySign ) );
     ConceptUtils::sameType( mySCell, myX.sOpp( mySCell ) );
     ConceptUtils::sameType( myCell, myX.unsigns( mySCell ) );
+    ConceptUtils::sameType( myInteger, myX.uTopology( myCell ) );
+    ConceptUtils::sameType( myInteger, myX.sTopology( mySCell ) );
+    ConceptUtils::sameType( myDim, myX.uDim( myCell ) );
+    ConceptUtils::sameType( myDim, myX.sDim( mySCell ) );
+    ConceptUtils::sameType( myBool, myX.uIsSurfel( myCell ) );
+    ConceptUtils::sameType( myBool, myX.sIsSurfel( mySCell ) );
+    ConceptUtils::sameType( myBool, myX.uIsOpen( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.sIsOpen( mySCell, myDim ) );
+    ConceptUtils::sameType( myDirIt, myX.uDirs( myCell ) );
+    ConceptUtils::sameType( myDirIt, myX.sDirs( mySCell ) );
+    ConceptUtils::sameType( myDirIt, myX.uOrthDirs( myCell ) );
+    ConceptUtils::sameType( myDirIt, myX.sOrthDirs( mySCell ) );
+    ConceptUtils::sameType( myDim, myX.uOrthDir( myCell ) );
+    ConceptUtils::sameType( myDim, myX.sOrthDir( mySCell ) );
+    // -------------------- Unsigned cell geometry services --------------------
+    ConceptUtils::sameType( myCell, myX.uFirst( myCell ) );
+    ConceptUtils::sameType( myCell, myX.uLast( myCell ) );
+    ConceptUtils::sameType( myCell, myX.uGetIncr( myCell, myDim ) );
+    ConceptUtils::sameType( myCell, myX.uGetDecr( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsMax( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsMin( myCell, myDim ) );
+    ConceptUtils::sameType( myCell, myX.uGetMax( myCell, myDim ) );
+    ConceptUtils::sameType( myCell, myX.uGetMin( myCell, myDim ) );
+    ConceptUtils::sameType( myBool, myX.uIsInside( myCell, myDim ) );
+    ConceptUtils::sameType( myCell, myX.uGetAdd( myCell, myDim, myInteger ) );
+    ConceptUtils::sameType( myCell, myX.uGetSub( myCell, myDim, myInteger ) );
+    ConceptUtils::sameType( myInteger, myX.uDistanceToMax( myCell, myDim ) );
+    ConceptUtils::sameType( myInteger, myX.uDistanceToMin( myCell, myDim ) );
 
   }
   // ------------------------- Private Datas --------------------------------
@@ -312,6 +387,7 @@ private:
   mutable SCell myMutableSCell;
   bool myBool;
   Sign mySign;
+  DirIterator myDirIt;
 
     // ------------------------- Internals ------------------------------------
 private:
