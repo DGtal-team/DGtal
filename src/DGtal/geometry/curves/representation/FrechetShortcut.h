@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -40,46 +41,41 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
 #include "DGtal/base/Common.h"
-#include <boost/static_assert.hpp>
-#include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
+#include "DGtal/geometry/curves/representation/backpath.h"
+#include "DGtal/geometry/curves/representation/cone.h"
 #include "DGtal/kernel/PointVector.h"
-#include "backpath.h"
-#include "cone.h"
-//#include "circle.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
-#include "DGtal/helpers/StdDefs.h"
-
-using namespace DGtal::Z2i;
-
 namespace DGtal
 {
-
-/////////////////////////////////////////////////////////////////////////////
-// class FrechetShortcut
-/**
- * Description of class 'FrechetShortcut' <p>
- * \brief Aim:
- * Computation of the longest shortcut according to the Fréchet distance for a given error
- * This class is a model of the concept CForwardSegmentComputer
- */
-
-  template <typename TIterator, typename TInteger>
-class FrechetShortcut
-{
-    // ----------------------- Standard services ------------------------------
-public:
-
-  //entier
   
-  BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-  typedef TInteger Integer;
-
-  //required types
+  /////////////////////////////////////////////////////////////////////////////
+  // class FrechetShortcut
+  /**
+   * Description of class 'FrechetShortcut' <p>
+   * \brief Aim:
+   * Computation of the longest shortcut according to the Fréchet distance for a given error
+   * This class is a model of the concept CForwardSegmentComputer
+   */
+  
+  template <typename TIterator, typename TInteger>
+    class FrechetShortcut
+  {
+    // ----------------------- Standard services ------------------------------
+  public:
+    
+    //entier
+    
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
+    typedef TInteger Integer;
+    
+    typedef DGtal::PointVector<2,Integer> Point;
+    typedef DGtal::PointVector<2,Integer> Vector;
+    
+    //required types
   typedef TIterator ConstIterator;
   typedef FrechetShortcut<ConstIterator,TInteger> Self; 
   typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,TInteger> Reverse;
@@ -338,13 +334,13 @@ public:
    */
   void selfDisplay ( std::ostream & out ) const;
   
-
+  
   /**
    * @return the name of the class.
    */
   std::string className() const;
   
-
+  
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
@@ -408,7 +404,7 @@ public:
   // ------------------------- Internals ------------------------------------
  private:
   
-}; // end of class FrechetShortcut
+  }; // end of class FrechetShortcut
   
   
   

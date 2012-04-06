@@ -35,7 +35,6 @@
 //////////////////////////////////////////////////////////////////////////////
 
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
@@ -328,7 +327,7 @@ bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   bool ok = true;
   bool end = false;
   
-  interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
+  boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
   //trace.info() << intervals << " angle " << angle << endl;
   
