@@ -35,16 +35,7 @@ Since the types are known at compile-time, syntactical errors can be detected ea
 generated code can be optimized and efficiency is preserved. In DGtal, the name of the 
 concepts always begin by C. 
 
- -# \ref dgtalintroBasicConcepts
-    -# \ref dgtalintroBasicConceptsSpace
-    -# \ref dgtalintroBasicConceptsExplicitSet
-    -# \ref dgtalintroBasicConceptsImplicitSet
-    -# \ref dgtalintroBasicConceptsImage
- -# \ref dgtalintroPackages
-    -# \ref dgtalintroPackagesKernel
-    -# \ref dgtalintroPackagesTopology
-    -# \ref dgtalintroPackagesGeometry
-    -# \ref dgtalintroPackagesImage
+[TOC]
 
  \section dgtalintroBasicConcepts Main concepts
 
