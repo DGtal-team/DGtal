@@ -1,0 +1,128 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DigitalSurfaceConvolver.ih
+ * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/27
+ *
+ * Implementation of inline methods defined in DigitalSurfaceConvolver.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+#include "DGtal/geometry/surfaces/DigitalSurfaceConvolver.h"
+#include "DGtal/kernel/NumberTraits.h"
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename DigitalSurface, typename CellularKernel>
+inline
+DGtal::DigitalSurfaceConvolver<DigitalSurface, CellularKernel>
+::DigitalSurfaceConvolver( const DigitalSurface & aSurface, const CellularKernel &aKernelFunctor ):
+    mySurface( aSurface ), myKernel( aKernelFunctor )
+{
+  mySurfaceKSpace = mySurface.container().space();
+}
+
+
+/**
+ * @return the estimated quantity at *it
+ * from itb till ite
+ */
+template <typename DigitalSurf, typename CellularKernel>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::DigitalSurfaceConvolver<DigitalSurf, CellularKernel>::
+eval( const ConstIterator& itBeginSurface, const ConstIterator &itEndSurface,
+      OutputIterator result )
+{
+  for ( ConstIterator it = itBeginSurface; it != itEndSurface; ++it )
+  {
+    Quantity q = eval( it );
+    *result++ = q;
+  }
+
+  return result;
+}
+
+
+/**
+ * @return the estimated quantity at *it
+ */
+
+template <typename DigitalSurf, typename CellularKernel>
+inline
+typename DGtal::DigitalSurfaceConvolver<DigitalSurf, CellularKernel>::Quantity
+DGtal::DigitalSurfaceConvolver<DigitalSurf, CellularKernel>::eval( const ConstIterator& it )
+{
+  //n-Cell indirectincident to the surfel
+  Spel p( mySurfaceKSpace.sIndirectIncident( *it, *mySurfaceKSpace.sOrthDirs( *it ) ) );
+  typename DigitalSurface::KSpace::Vector t,shift = p.myCoordinates - myKernel.origin().myCoordinates;
+  typename CellularKernel::Quantity val;
+
+  //Make sure that val is neutral element for summation
+  val -= val;
+
+  
+  typename DigitalSurface::KSpace::SCell shiftedCell;
+  
+  for ( typename CellularKernel::ConstIterator itbegin = myKernel.begin(), itend = myKernel.end();
+        itbegin != itend;
+        ++itbegin )
+  {
+    t= (*itbegin).myCoordinates;
+    t+= shift;
+    shiftedCell.myCoordinates = t;
+    val += myKernel( shiftedCell );
+  }
+
+  return val;
+
+}
+
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename DigitalSurf, typename CellularKernel>
+inline
+bool
+DGtal::DigitalSurfaceConvolver<DigitalSurf, CellularKernel>::isValid() const
+{
+  return true;
+}
+
+
