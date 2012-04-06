@@ -1205,6 +1205,16 @@ sIsMax( const SCell & p, Dimension k ) const
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
 inline
+bool 
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sIsInside( const SCell & p, Dimension k ) const
+{
+  return (p.myCoordinates[ k ] <= sLast(p).myCoordinates[ k ]) &&
+    (p.myCoordinates[ k ] >= sFirst(p).myCoordinates[ k ]);
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
 typename DGtal::KhalimskySpaceND< dim, TInteger >::SCell
 DGtal::KhalimskySpaceND< dim, TInteger >::
 sGetMax( const SCell & p, Dimension k ) const
