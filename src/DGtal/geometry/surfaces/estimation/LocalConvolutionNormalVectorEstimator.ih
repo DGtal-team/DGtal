@@ -75,7 +75,7 @@ OutputIterator
 DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
 eval(const ConstIterator& itb, 
      const ConstIterator& ite,
-     OutputIterator result)
+     OutputIterator result) const
 {
   for(ConstIterator it = itb; it != ite; ++it)
     {
@@ -94,7 +94,7 @@ eval(const ConstIterator& itb,
 template <typename DigitalSurf,  typename KernelFunctor>
 inline
 typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity 
-DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it)
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it) const
 {
   typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
   typedef typename MyBreadthFirstVisitor::Node MyNode;
@@ -108,6 +108,8 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
   typename DigitalSurf::Surfel s;
   const typename DigitalSurf::KSpace & K = mySurface.container().space();
   
+  ASSERT( myFlagIsInit );
+
   while ( ! visitor.finished() )
     {
       node = visitor.current();
