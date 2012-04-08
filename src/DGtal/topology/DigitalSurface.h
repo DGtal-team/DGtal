@@ -530,6 +530,18 @@ namespace DGtal
     template <typename CellEmbedder>
     void exportEmbeddedSurfaceAs3DNOFF ( std::ostream & out,
                                         const CellEmbedder & cembedder ) const;
+ 
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Surface spels are embedded by [cembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of digital surface spels.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedIteratedSurfaceAs3DNOFF ( std::ostream & out,
+                                                 const CellEmbedder & cembedder ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

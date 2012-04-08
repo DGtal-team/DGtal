@@ -117,7 +117,7 @@ namespace DGtal
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it);
+    Quantity eval(const ConstIterator& it) const;
     
     /**
      * @return the estimated quantity
@@ -126,7 +126,7 @@ namespace DGtal
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, 
                         const ConstIterator& ite, 
-                        OutputIterator result); 
+                        OutputIterator result) const; 
     
     
     /**
