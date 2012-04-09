@@ -49,13 +49,11 @@ INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory(src)
-add_subdirectory(tools)
 
 OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
-
 
 # -----------------------------------------------------------------------------
 # Install settings
