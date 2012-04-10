@@ -216,7 +216,7 @@ inline
 typename DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Size
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::nbSurfels() const
 {
-  return (unsigned int)mySurfels.size();
+  return mySurfels.size();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
