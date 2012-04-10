@@ -106,7 +106,7 @@ bool testCFrac( const IntegerComputer<Integer> & ic )
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << q << " == " << quotients[ 0 ] << std::endl;
   typedef typename IntegerComputer<Integer>::Point2I Point2I;
-  Point2I p = ic.convergent( quotients, (unsigned int)quotients.size() );
+  Point2I p = ic.convergent( quotients, quotients.size() );
   nbok += p[ 0 ] == ( a / g ) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
