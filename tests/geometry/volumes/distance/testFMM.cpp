@@ -66,16 +66,16 @@ using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
 // 
-template <typename TImage, int norm>
+template <typename TImage, typename TSet, int norm>
 struct DistanceTraits
 {
-  typedef LInfFirstOrderLocalDistance<TImage> Distance;  
+  typedef LInfFirstOrderLocalDistance<TImage, TSet> Distance;  
 };
 //partial specialization
-template <typename TImage>
-struct DistanceTraits<TImage, 1>
+template <typename TImage, typename TSet>
+struct DistanceTraits<TImage, TSet, 1>
 {
-  typedef L1FirstOrderLocalDistance<TImage> Distance;  
+  typedef L1FirstOrderLocalDistance<TImage, TSet> Distance;  
 };
 
 //////////////////////////////////////////////////////////////////////////////
@@ -265,7 +265,7 @@ bool testDisplayDT3d(int size, int area, double distance)
   return fmm.isValid(); 
 }
 
-bool testDispalyDTFromCircle(int size)
+bool testDisplayDTFromCircle(int size)
 {
 
   static const DGtal::Dimension dimension = 2; 
@@ -405,7 +405,7 @@ bool testDispalyDTFromCircle(int size)
  *
  */
 template<Dimension dim, int norm>
-bool testComparison(int size, int area, double distance)
+bool testComparison(int size, int area, double dist)
 {
 
   static const DGtal::Dimension dimension = dim; 
@@ -438,9 +438,9 @@ bool testComparison(int size, int area, double distance)
   //computation
   trace.beginBlock ( " FMM computation " ); 
  
-  typedef typename DistanceTraits<Image,norm>::Distance Distance; 
+  typedef typename DistanceTraits<Image,Set,norm>::Distance Distance; 
   typedef FMM<Image, Set, DomainPredicate<Domain>, Distance > FMM; 
-  FMM fmm(map, set, dp, area, distance); 
+  FMM fmm( map, set, dp, area, dist, Distance(map, set) ); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
@@ -497,7 +497,7 @@ int main ( int argc, char** argv )
     = testDisplayDT2d( size, area, std::sqrt(2*size*size) )
     && testDisplayDT2d( size, area, size )
     && testDisplayDT2d( size, 2*area, std::sqrt(2*size*size) )
-    && testDispalyDTFromCircle(size)   
+    && testDisplayDTFromCircle(size)   
     ;
 
   size = 25; 

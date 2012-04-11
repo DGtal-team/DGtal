@@ -54,7 +54,7 @@
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/volumes/distance/CLocalDistance.h"
-#include "DGtal/geometry/volumes/distance/FirstOrderLocalDistance.h"
+#include "DGtal/geometry/volumes/distance/FMMPointFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -89,12 +89,12 @@ namespace DGtal
    * In this approach, a signed distance function is computing at 
    * each digital point by marching out from an initial set of points, 
    * for which the values of the signed distance are known. This set
-   * is an initialization of the so-called <em>accepted point set</em>. 
+   * is an initialization of the so-called @e accepted @e point @e set. 
    * Each digital point adjacent to one of the accepted points is
-   * put into the so-called <em>candidate point set</em>. 
+   * put into the so-called @e candidate @e point @e set. 
    * A tentative value is computed for its signed distance, using 
    * only the values of the accepted points lying in its neighborhood. 
-   * This task is delegated to an instance of a model of CLocalDistance, 
+   * This task is delegated to an instance of a point functor, 
    * which is L2FirstOrderLocalDistance by default. 
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
@@ -115,7 +115,7 @@ namespace DGtal
    * @see exampleFMM.cpp
    */
   template <typename TImage, typename TSet, typename TPointPredicate, 
-	    typename TDistance = L2FirstOrderLocalDistance<TImage> >
+	    typename TDistance = L2FirstOrderLocalDistance<TImage,TSet> >
   class FMM
   {
 
@@ -127,7 +127,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CLocalDistance<TDistance> ));
+    BOOST_CONCEPT_ASSERT(( CPointFunctor<TDistance> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 
@@ -208,8 +208,21 @@ namespace DGtal
      * Constructor.
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
+	const PointPredicate& aPointPredicate);
+    
+    /**
+     * Constructor.
+     */
+    FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
-	const Distance& aDistance = Distance() );
+	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold);
+    
+    /**
+     * Constructor.
+     */
+    FMM(Image& aImg, AcceptedPointSet& aSet,
+	const PointPredicate& aPointPredicate, 
+	const Distance& aDistance );
     
     /**
      * Constructor.
@@ -217,7 +230,7 @@ namespace DGtal
     FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
 	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold,
-	const Distance& aDistance = Distance() );
+	const Distance& aDistance );
     
     /**
      * Destructor.
