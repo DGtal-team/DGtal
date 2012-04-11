@@ -519,32 +519,34 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::operator()
   Values v; 
   v.reserve(Point::dimension); 
 
-  Cell spel = myKSpace.uSpel( aPoint );  
-  for ( typename KSpace::DirIterator q = myKSpace.uDirs( spel ); 
+  Cell spel = myKSpace->uSpel( aPoint );  
+  for ( typename KSpace::DirIterator q = myKSpace->uDirs( spel ); 
   	    (q != 0); ++q ) 
   	{ //for each dimension
   	  const DGtal::Dimension dir = *q;
 
   	  /// for the direct orientation
-  	  Cell surfel1 = myKSpace.uDirectIncident( spel, dir );
-  	  ASSERT( myKSpace.uIsSurfel( surfel1 ) ); 
+  	  Cell surfel1 = myKSpace->uIncident( spel, dir, true );
+  	  //ASSERT( myKSpace->uIsSurfel( surfel1 ) ); 
+	  ASSERT( myKSpace->uDim( surfel1 )  == (KSpace::dimension - 1) );
 
   	  /// for the indirect orientation
-  	  Cell surfel2 = myKSpace.uIndirectIncident( spel, dir ); 
-  	  ASSERT( myKSpace.uIsSurfel( surfel2 ) ); 
+  	  Cell surfel2 = myKSpace->uIncident( spel, dir, false ); 
+  	  //ASSERT( myKSpace->uIsSurfel( surfel2 ) ); 
+	  ASSERT( myKSpace->uDim( surfel2 )  == (KSpace::dimension - 1) );
 
       //neighboring values
       Value d = 0; 
       typename Map::iterator it1 = myMap->find( surfel1 );  
       typename Map::iterator it2 = myMap->find( surfel2 ); 
-      bool flag1 = ( it1 == myMap->end() );
-      bool flag2 = ( it2 == myMap->end() );
+      bool flag1 = ( it1 != myMap->end() );
+      bool flag2 = ( it2 != myMap->end() );
       if ( flag1 || flag2 ) 
 	{
 	  if ( flag1 && flag2 )
 	    { //take the minimal value
-        ASSERT( it1->second >= 0 ); 
-        ASSERT( it2->second >= 0 ); 
+	      ASSERT( it1->second >= 0 ); 
+	      ASSERT( it2->second >= 0 ); 
 	      if (it1->second < it2->second)
 		d = it1->second;
 	      else 

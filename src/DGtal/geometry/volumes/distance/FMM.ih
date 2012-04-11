@@ -171,6 +171,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   /// types
   typedef typename KSpace::Cell Bel; 
   typedef typename TImplicitFunction::Value Value; 
+  typedef std::pair<const Bel, Value> Pair; 
   typedef std::map<Bel, Value> Buffer; 
   typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer> Computer; 
 
@@ -184,12 +185,13 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       //getting incident points
       typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
       //getting values 
-      Value vin, vout = 0; 
-      vin = std::abs( aF( points.first ) ); 
-      vout = std::abs( aF( points.second ) ); 
+      Value vin = aF( points.first ); 
+      Value vout = aF( points.second ); 
       //computing/storing the new value
-      typename TImplicitFunction::Value e = vin+vout;
-      buffer.insert( aK.uCell( aK.sKCoords( *it ) ), (vin/e) ); 
+      Value e = std::max(vin, vout) - std::min(vin, vout);
+      Value v = (std::abs(vin)/e); 
+      ASSERT( v >= 0 ); 
+      buffer.insert( Pair( aK.unsigns( *it ), v ) ); 
     }
 
   /// 2) for each inner/outer point
@@ -200,12 +202,11 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       //getting incident points
       typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
       //computing the values     
-      Value vin = computer(points.first); 
-      Value vout = computer(points.second); 
+      Value vin = computer( points.first ); 
+      Value vout = computer( points.second ); 
       //assignement
       insertAndAlwaysSetValue( aImg, aSet, points.first, vin ); 
-      insertAndAlwaysSetValue( aImg, aSet, points.second, vout ); 
- 
+      insertAndAlwaysSetValue( aImg, aSet, points.second, vout );  
     }
 }
 

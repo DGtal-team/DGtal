@@ -202,6 +202,7 @@ bool performDT(int size)
     FMM::initFromBelsRange( K, 
 			    vSCells.begin(), vSCells.end(), 
 			    map, set, 0.5 ); 
+    trace.info() << "init done" << std::endl; 
 
     //computation
     //! [FMMUsage]
@@ -232,10 +233,13 @@ bool performDT(int size)
     //! [FMMDef]
     typedef FMM<Image, Set, Predicate > FMM;
     //! [FMMDef]
+    typedef BallFunctor<Point> Functor; 
+    Functor functor( 0, 0, radius ); 
     FMM::initFromBelsRange( K, 
 			    vSCells.begin(), vSCells.end(), 
-			    map, set, 0.5 ); 
+			    functor, map, set ); 
 
+    trace.info() << "init done" << std::endl; 
     //computation
     //! [FMMUsage]
     FMM fmm(map, set, predicate); 
