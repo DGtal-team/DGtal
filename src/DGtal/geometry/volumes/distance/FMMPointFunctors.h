@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file FirstOrderLocalDistance.h
+ * @file FMMPointFunctors.h
  *
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -31,15 +31,15 @@
  *
  */
 
-#if defined(FirstOrderLocalDistance_RECURSES)
-#error Recursive header files inclusion detected in FirstOrderLocalDistance.h
-#else // defined(FirstOrderLocalDistance_RECURSES)
+#if defined(FMMPointFunctors_RECURSES)
+#error Recursive header files inclusion detected in FMMPointFunctors.h
+#else // defined(FMMPointFunctors_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define FirstOrderLocalDistance_RECURSES
+#define FMMPointFunctors_RECURSES
 
-#if !defined FirstOrderLocalDistance_h
+#if !defined FMMPointFunctors_h
 /** Prevents repeated inclusion of headers. */
-#define FirstOrderLocalDistance_h
+#define FMMPointFunctors_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -73,11 +73,12 @@ namespace DGtal
    * where \f$ \Phi_i \f$ is the distance value of the point preceding
    * or following p along the \f$ i \f$ axis. 
    *
-   * It is a model of CLocalDistance.
+   * It is a model of CPointFunctor.
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
+   * @tparam TSet model of CDigitalSet for storing points whose distance value is known
    */
-  template <typename TImage>
+  template <typename TImage, typename TSet>
   class L2FirstOrderLocalDistance
   {
 
@@ -85,38 +86,71 @@ namespace DGtal
   public:
 
 
-    //concept assert
+    /// image
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-
-    //image
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
+
+    /// set
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    typedef TSet Set;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
   private: 
 
     typedef std::vector<Value> Values; 
   
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying image
+    Image* myImgPtr; 
+    /// Aliasing pointer on the underlying set
+    Set* mySetPtr; 
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
-    /** 
-     * Euclidean distance computation at @a aPoint , 
-     * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint 
-     * belonging to @a aSet .
+    /**
+     * Constructor from an image and a set. 
+     * NB: only pointers are stored
      *
      * @param aImg any distance map
      * @param aSet any digital set
+     */
+    L2FirstOrderLocalDistance(Image& aImg, TSet& aSet);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    L2FirstOrderLocalDistance ( const L2FirstOrderLocalDistance & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    L2FirstOrderLocalDistance & operator= ( const L2FirstOrderLocalDistance & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~L2FirstOrderLocalDistance(); 
+
+    /** 
+     * Euclidean distance computation at @a aPoint , 
+     * from the available distance values
+     * of the 1-neighbors of @a aPoint  .
+     *
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TSet>
-    Value operator() (const Image& aImg, const TSet& aSet, 
-		      const Point& aPoint);
+    Value operator() (const Point& aPoint);
 
     /**
      * Writes/Displays the object on an output stream.
@@ -161,54 +195,88 @@ namespace DGtal
    * equal to 1). 
    *
    * If there is only one available distance value v in the 1-neighborhood of p,
-   * the computed value is merely v + 1. Otherwise, it is the maximum over all
+   * the computed value is merely incremented or decremented. 
+   * Otherwise, it is the maximum over all
    * the available distance value in the 1-neighborhood of p. 
    *
-   * It is a model of CLocalDistance.
+   * It is a model of CPointFunctor.
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
+   * @tparam TSet model of CDigitalSet for storing points whose distance value is known
    */
-  template <typename TImage>
+  template <typename TImage, typename TSet>
   class LInfFirstOrderLocalDistance
   {
-
     // ----------------------- Types ------------------------------
   public:
 
 
-    //concept assert
+    /// image
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-
-    //image
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-  
+    /// set
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    typedef TSet Set;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
   private: 
 
     typedef std::vector<Value> Values; 
 
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying image
+    Image* myImgPtr; 
+    /// Aliasing pointer on the underlying set
+    Set* mySetPtr; 
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
-    /** 
-     * LInf-distance computation at @a aPoint , 
-     * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint 
-     * belonging to @a aSet .
+    /**
+     * Constructor from an image and a set. 
+     * NB: only pointers are stored
      *
      * @param aImg any distance map
      * @param aSet any digital set
+     */
+    LInfFirstOrderLocalDistance(Image& aImg, TSet& aSet);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    LInfFirstOrderLocalDistance ( const LInfFirstOrderLocalDistance & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    LInfFirstOrderLocalDistance & operator= ( const LInfFirstOrderLocalDistance & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~LInfFirstOrderLocalDistance(); 
+
+
+    /** 
+     * LInf-distance computation at @a aPoint , 
+     * from the available distance values
+     * of the 1-neighbors of @a aPoint .
+     *
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
      *
-     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TSet>
-    Value operator() (const Image& aImg, const TSet& aSet, 
-		      const Point& aPoint);
+    Value operator() (const Point& aPoint);
 
     /**
      * Writes/Displays the object on an output stream.
@@ -241,54 +309,84 @@ namespace DGtal
    * equal to 1). 
    *
    * The computed value is merely the minimum over all
-   * the available distance value in the 1-neighborhood of p, 
+   * the available distance values in the 1-neighborhood of p, 
    * plus one.  
    *
-   * It is a model of CLocalDistance.
+   * It is a model of CPointFunctor.
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
+   * @tparam TSet model of CDigitalSet for storing points whose distance value is known
    */
-  template <typename TImage>
+  template <typename TImage, typename TSet>
   class L1FirstOrderLocalDistance
   {
-
     // ----------------------- Types ------------------------------
   public:
 
 
-    //concept assert
+    /// image
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
-
-    //image
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-  
+    /// set
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    typedef TSet Set;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
   private: 
 
     typedef std::vector<Value> Values; 
 
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying image
+    Image* myImgPtr; 
+    /// Aliasing pointer on the underlying set
+    Set* mySetPtr; 
+
     // ----------------------- Interface --------------------------------------
   public:
 
-    /** 
-     * L1-distance computation at @a aPoint , 
-     * from the distance values stored in @a aImg
-     * of the 1-neighbors of @a aPoint 
-     * belonging to @a aSet .
+    /**
+     * Constructor from an image and a set. 
+     * NB: only pointers are stored
      *
      * @param aImg any distance map
      * @param aSet any digital set
+     */
+    L1FirstOrderLocalDistance(Image& aImg, TSet& aSet);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    L1FirstOrderLocalDistance ( const L1FirstOrderLocalDistance & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    L1FirstOrderLocalDistance & operator= ( const L1FirstOrderLocalDistance & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~L1FirstOrderLocalDistance(); 
+
+    /** 
+     * L1-distance computation at @a aPoint , 
+     * from the available distance values
+     * of the 1-neighbors of @a aPoint .
+     *
      * @param aPoint the point for which the distance is computed
      *
      * @return the distance value at @a aPoint.
-     *
-     * @tparam TSet any model of CDigitalSet
      */
-    template <typename TSet>
-    Value operator() (const Image& aImg, const TSet& aSet, 
-		      const Point& aPoint);
+    Value operator() (const Point& aPoint);
 
     /**
      * Writes/Displays the object on an output stream.
@@ -316,12 +414,12 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/distance/FirstOrderLocalDistance.ih"
+#include "DGtal/geometry/volumes/distance/FMMPointFunctors.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined FirstOrderLocalDistance_h
+#endif // !defined FMMPointFunctors_h
 
-#undef FirstOrderLocalDistance_RECURSES
-#endif // else defined(FirstOrderLocalDistance_RECURSES)
+#undef FMMPointFunctors_RECURSES
+#endif // else defined(FMMPointFunctors_RECURSES)

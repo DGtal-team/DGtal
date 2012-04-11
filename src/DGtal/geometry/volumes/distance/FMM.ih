@@ -45,8 +45,40 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TDi
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
+      const PointPredicate& aPointPredicate)
+  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance(aImg, aSet) ), 
+    myPointPredicate( aPointPredicate ), 
+    myAreaThreshold( std::numeric_limits<Area>::max() ), 
+    myDistanceValueThreshold( std::numeric_limits<DistanceValue>::max() )
+{
+  if (myAcceptedPoints.size() == 0) throw InputException(); 
+  init(); 
+}
+
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+inline
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+::FMM(Image& aImg, AcceptedPointSet& aSet, 
+      const PointPredicate& aPointPredicate, 
+      const Area& aAreaThreshold, 
+      const DistanceValue& aDistanceValueThreshold)
+  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance(aImg, aSet) ), 
+    myPointPredicate( aPointPredicate ), 
+    myAreaThreshold( aAreaThreshold ), 
+    myDistanceValueThreshold( aDistanceValueThreshold )
+{
+  if (myAcceptedPoints.size() == 0) throw InputException(); 
+  init();
+}
+
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+inline
+DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate,
-      const Distance& aDistance )
+      const Distance& aDistance)
   : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
@@ -64,7 +96,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
       const DistanceValue& aDistanceValueThreshold,
-      const Distance& aDistance )
+      const Distance& aDistance)
   : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
@@ -325,7 +357,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewCandidate(const Poin
   if ( (myPointPredicate(aPoint) ) 
        && ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) ) 
     {
-      DistanceValue d = myDC(myImage, myAcceptedPoints, aPoint); 
+      DistanceValue d = myDC(aPoint); 
       PointDistanceValue newPair( aPoint, d ); 
       //insert the new candidate with its distance
       myCandidatePoints.insert(newPair);
