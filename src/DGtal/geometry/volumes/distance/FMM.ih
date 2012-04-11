@@ -34,6 +34,8 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+#include "DGtal/topology/SCellsFunctors.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,10 +127,85 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 		  Image& aImg, AcceptedPointSet& aSet, 
 		  const Value& aValue)
 {
-  TIteratorOnPoints it = itb; 
-  for ( ; it != ite; ++it) 
+   
+  for (TIteratorOnPoints it = itb; it != ite; ++it) 
     {
       insertAndAlwaysSetValue( aImg, aSet, *it, aValue ); 
+    }
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename KSpace, typename TIteratorOnBels>
+void
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
+::initFromBelsRange(const KSpace& aK, 
+		    const TIteratorOnBels& itb, const TIteratorOnBels& ite, 
+		    Image& aImg, AcceptedPointSet& aSet, 
+		    const Value& aValue, 
+		    bool aFlagIsPositive)
+{
+  Value k = -1; 
+  if (aFlagIsPositive) k = 1; 
+
+  for (TIteratorOnBels it = itb; it != ite; ++it) 
+    {
+      //getting incident points
+      SCellToIncidentPoints<KSpace> func( aK ); 
+      typename SCellToIncidentPoints<KSpace>::Output points = func( *it ); 
+      //assignement
+      insertAndAlwaysSetValue( aImg, aSet, points.first, k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, points.second, -k*aValue ); 
+    }
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
+void
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
+::initFromBelsRange(const KSpace& aK, 
+		    const TIteratorOnBels& itb, const TIteratorOnBels& ite,
+		    const TImplicitFunction& aF, 
+		    Image& aImg, AcceptedPointSet& aSet)
+{
+ 
+  /// types
+  typedef typename KSpace::Cell Bel; 
+  typedef typename TImplicitFunction::Value Value; 
+  typedef std::map<Bel, Value> Buffer; 
+  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer> Computer; 
+
+  SCellToIncidentPoints<KSpace> getPts( aK ); 
+
+  /// 1) store a value for each bel
+  /// (== distance of the inner point to the interface) 
+  Buffer buffer;
+  for (TIteratorOnBels it = itb; it != ite; ++it) 
+    {
+      //getting incident points
+      typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
+      //getting values 
+      Value vin, vout = 0; 
+      vin = std::abs( aF( points.first ) ); 
+      vout = std::abs( aF( points.second ) ); 
+      //computing/storing the new value
+      typename TImplicitFunction::Value e = vin+vout;
+      buffer.insert( aK.uCell( aK.sKCoords( *it ) ), (vin/e) ); 
+    }
+
+  /// 2) for each inner/outer point
+  /// computes its distance from the values of its incident bels
+  Computer computer(aK, buffer);    
+  for (TIteratorOnBels it = itb; it != ite; ++it) 
+    {
+      //getting incident points
+      typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
+      //computing the values     
+      Value vin = computer(points.first); 
+      Value vout = computer(points.second); 
+      //assignement
+      insertAndAlwaysSetValue( aImg, aSet, points.first, vin ); 
+      insertAndAlwaysSetValue( aImg, aSet, points.second, vout ); 
+ 
     }
 }
 
@@ -144,13 +221,10 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   Value k = -1; 
   if (aFlagIsPositive) k = 1; 
 
-  TIteratorOnPairs it = itb; 
-  for ( ; it != ite; ++it) 
+  for (TIteratorOnPairs it = itb; it != ite; ++it) 
     {
-      Point inner( it->first ); 
-      Point outer( it->second ); 
-      insertAndAlwaysSetValue( aImg, aSet, inner, k*aValue ); 
-      insertAndAlwaysSetValue( aImg, aSet, outer, -k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->first, k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->second, -k*aValue ); 
     }
 }
 
@@ -204,13 +278,13 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMin() const
 
   typename AcceptedPointSet::ConstIterator it = set.begin(); 
   typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  Value min = myImage( *it );  
+  Value vmin = myImage( *it );  
   for (++it; it != itEnd; ++it)
     {
       Value v = myImage( *it ); 
-      if (v < min) min = v; 
+      if (v < vmin) vmin = v; 
     }
-   return min; 
+   return vmin; 
 }
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
@@ -223,13 +297,13 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMax() const
 
   typename AcceptedPointSet::ConstIterator it = set.begin(); 
   typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  Value max = myImage( *it );  
+  Value vmax = myImage( *it );  
   for (++it; it != itEnd; ++it)
     {
       Value v = myImage( *it ); 
-      if (v > max) max = v; 
+      if (v > vmax) vmax = v; 
     }
-  return max; 
+  return vmax; 
 }
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
@@ -296,7 +370,6 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::init()
   myMinValue = getMin(); 
   myMaxValue = getMax(); 
 
-  ASSERT( isValid() ); 
 }
 
 template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >

@@ -416,6 +416,113 @@ namespace DGtal
 
   }; 
 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class L2FirstOrderLocalDistanceFromCells
+  /**
+   * Description of template class 'L2FirstOrderLocalDistanceFromCells' <p>
+   * \brief Aim: Class for the computation of the Euclidean distance
+   * at some point p, from the available distance values in the neighborhood of p. 
+   * Contrary to L2FirstOrderLocalDistance, the distance values are not available
+   * from the points adjacent to p but instead from the (d-1)-cells lying between p 
+   * and these points.   
+   *
+   * @tparam TKSpace a model of cellular grid
+   * @tparam TMap type used for the mapping cells-value
+   */
+  template <typename TKSpace, typename TMap>
+  class L2FirstOrderLocalDistanceFromCells
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+
+    /// map
+    typedef TMap Map;
+    typedef typename Map::mapped_type Value; 
+
+    /// cellular grid
+    typedef TKSpace KSpace; 
+    typedef typename KSpace::Point Point; 
+    typedef typename KSpace::Cell Cell; 
+
+  private: 
+
+    typedef std::vector<Value> Values; 
+  
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying cellular grid
+    const KSpace* myKSpace; 
+    /// Aliasing pointer on the underlying mapping
+    Map* myMap; 
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Constructor from a space and a map. 
+     * NB: only pointers are stored
+     *
+     * @param aMap any distance map
+     */
+    L2FirstOrderLocalDistanceFromCells(const KSpace& aK, Map& aMap);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    L2FirstOrderLocalDistanceFromCells ( const L2FirstOrderLocalDistanceFromCells & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    L2FirstOrderLocalDistanceFromCells & operator= ( const L2FirstOrderLocalDistanceFromCells & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~L2FirstOrderLocalDistanceFromCells(); 
+
+    /** 
+     * Euclidean distance computation at @a aPoint , 
+     * from the available distance values
+     * of the adjacent cells. 
+     *
+     * @param aPoint the point for which the distance is computed
+     *
+     * @return the distance value at @a aPoint.
+     *
+     */
+    Value operator() (const Point& aPoint);
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    // ----------------------- Internals -------------------------------------
+
+  private: 
+
+    /**
+     * Returns an approximation of the Euclidean distance 
+     * at some point, knowing the distance of its adjacent cells
+     * containing in @a aValueList
+     * 
+     * @param aValueList  the distance of (some of) the neighbors
+     * @return the computed distance.
+     */
+    Value compute(Values& aValueList) const; 
+
+  }; 
+
+
 } // namespace DGtal
 
 

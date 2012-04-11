@@ -467,4 +467,143 @@ DGtal::L1FirstOrderLocalDistance<TImage, TSet>
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::L2FirstOrderLocalDistanceFromCells
+  (const KSpace& aK, Map& aMap): myKSpace(&aK), myMap(&aMap)
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::L2FirstOrderLocalDistanceFromCells
+  (const L2FirstOrderLocalDistanceFromCells& other): myKSpace(other.myKSpace), myMap(other.myMap)
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>&
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::operator=
+  (const L2FirstOrderLocalDistanceFromCells& other)
+{
+  if( this != &other)
+  {
+    myMap = other.myMap; 
+    myKSpace = other.myKSpace; 
+  }
+  return *this; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::~L2FirstOrderLocalDistanceFromCells
+  ()
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+typename DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::Value
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::operator()
+  (const Point& aPoint)
+{
+
+  //distance values
+  Values v; 
+  v.reserve(Point::dimension); 
+
+  Cell spel = myKSpace.uSpel( aPoint );  
+  for ( typename KSpace::DirIterator q = myKSpace.uDirs( spel ); 
+  	    (q != 0); ++q ) 
+  	{ //for each dimension
+  	  const DGtal::Dimension dir = *q;
+
+  	  /// for the direct orientation
+  	  Cell surfel1 = myKSpace.uDirectIncident( spel, dir );
+  	  ASSERT( myKSpace.uIsSurfel( surfel1 ) ); 
+
+  	  /// for the indirect orientation
+  	  Cell surfel2 = myKSpace.uIndirectIncident( spel, dir ); 
+  	  ASSERT( myKSpace.uIsSurfel( surfel2 ) ); 
+
+      //neighboring values
+      Value d = 0; 
+      typename Map::iterator it1 = myMap->find( surfel1 );  
+      typename Map::iterator it2 = myMap->find( surfel2 ); 
+      bool flag1 = ( it1 == myMap->end() );
+      bool flag2 = ( it2 == myMap->end() );
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+        ASSERT( it1->second >= 0 ); 
+        ASSERT( it2->second >= 0 ); 
+	      if (it1->second < it2->second)
+		d = it1->second;
+	      else 
+		d = it2->second; 
+	    } else 
+	    {
+	      if (flag1) d = it1->second;
+	      if (flag2) d = it2->second; 
+	    }
+
+    if (d == 0) return 0;
+ 
+	  v.push_back(d); 
+	}
+
+    } //end for each dimension
+
+  //computation of the new value
+    return this->compute(v); 
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+typename DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::Value
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>::compute
+(Values& aValueList) const
+{
+  ASSERT(aValueList.size() > 0); 
+
+  unsigned int nb = aValueList.size();
+  if ( nb == 1 )
+    {
+      return aValueList.back();
+    } 
+  else 
+	{ //resolution
+	  double a = 0; 
+
+	  for (typename Values::iterator it = aValueList.begin(); 
+	       it != aValueList.end(); ++it)
+	    {
+	      Value d = *it; 
+	      a += ( 1.0 / static_cast<double>( d*d ) ); 
+	    }
+
+    return static_cast<Value>( std::sqrt(a) / a ); 
+	}
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TMap>
+inline
+void
+DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "L2"; 
+}
 

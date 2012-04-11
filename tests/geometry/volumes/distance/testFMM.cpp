@@ -367,6 +367,8 @@ bool testDisplayDTFromCircle(int size)
     Set set(map); 
     GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
     FMM::initFromIncidentPointsRange(r.begin(), r.end(), map, set, 0.5, true); 
+    // GridCurve<KSpace>::SCellsRange r = gc.get1SCellsRange();
+    // FMM::initFromBelsRange(KSpace(), r.begin(), r.end(), map, set, 0.5, true); 
 
     //computation
     FMM fmm(map, set, dp); 
