@@ -1,0 +1,417 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FirstOrderLocalDistance.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ *
+ * @date 2012/02/21
+ *
+ * @brief Implementation of inline methods defined in FirstOrderLocalDistance.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage>
+template <typename TSet>
+inline
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
+{
+
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
+
+      //neighboring values
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+	      if (std::abs(d1) < std::abs(d2))
+		d = d1;
+	      else 
+		d = d2; 
+	    } else 
+	    {
+	      if (flag1) d = d1;
+	      if (flag2) d = d2; 
+	    }
+
+	  //sign test
+	  nb++; 
+	  if ( d >= 0 )
+	    nbPos++;
+	  else
+	    d = (-d);
+	  v.push_back(d); 
+	}
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  if (nbPos == nb) 
+    return this->compute(v); 
+  else if (nbPos == 0)
+    return -this->compute(v);
+  else 
+    { //there should not be neighbors having values
+      //of different signs in aMap
+      trace.error() << "Metric values of different sign " 
+		    << "in DGtal::L2FirstOrderLocalDistance<TImage>"
+		    << std::endl;  
+      throw InputException();
+    } 
+
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>::compute
+(Values& aValueList) const
+{
+
+  unsigned int c = aValueList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Value d = aValueList.back();
+      Value dres = d + 1;
+      ASSERT(dres > 0); 
+      return dres; 
+    } 
+  else 
+    {
+      //function computation
+      typename Values::iterator it = 
+	std::max_element( aValueList.begin(), aValueList.end() ); 
+      if ( gradientNorm( *it, aValueList ) > 1 )
+	{
+	  aValueList.erase( it ); 
+	  return this->compute(aValueList); 
+	}
+      else 
+	{ //resolution
+	  double a = 0; 
+	  double b = 0; 
+	  double c = -1; 
+
+	  for (typename Values::iterator it = aValueList.begin(); 
+	       it != aValueList.end(); ++it)
+	    {
+	      Value d = *it; 
+
+	      a += 1; 
+	      b -= static_cast<double>(2*d);
+	      c += static_cast<double>(d*d); 
+	    }
+	  //std::cerr << a << " " << b << " " << c  << std::endl;
+ 
+	  //discriminant
+	  double disc = b*b - 4*a*c;
+	  ASSERT(disc >= 0); 
+	  //greatest solution
+	  double dres = ( ( -b + std::sqrt(disc) ) / (2*a) );
+	  ASSERT(dres > 0); 
+	  return static_cast<Value>(dres); 
+	}
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::L2FirstOrderLocalDistance<TImage>::Value
+DGtal::L2FirstOrderLocalDistance<TImage>
+::gradientNorm(const Value& aValue, const Values& aValueList) const
+{
+  double sum = 0; 
+  for (typename Values::const_iterator it = aValueList.begin(); 
+       it != aValueList.end(); ++it)
+    {
+      Value d = std::abs(aValue - *it); 
+      sum += (d*d); 
+    }
+  return sum; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+void
+DGtal::L2FirstOrderLocalDistance<TImage>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "L2"; 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage>
+template <typename TSet>
+inline
+typename DGtal::LInfFirstOrderLocalDistance<TImage>::Value
+DGtal::LInfFirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
+{
+
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
+
+      //neighboring values
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+	      if (std::abs(d1) < std::abs(d2))
+		d = d1;
+	      else 
+		d = d2; 
+	    } else 
+	    {
+	      if (flag1) d = d1;
+	      if (flag2) d = d2; 
+	    }
+
+	  //sign test
+	  nb++; 
+	  if ( d >= 0 )
+	    nbPos++;
+	  else
+	    d = (-d);
+	  v.push_back(d); 
+	}
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  if (nbPos == nb) 
+    return this->compute(v); 
+  else if (nbPos == 0)
+    return -this->compute(v);
+  else 
+    { //there should not be neighbors having values
+      //of different signs in aMap
+      trace.error() << "Metric values of different sign " 
+		    << "in DGtal::LInfFirstOrderLocalDistance<TImage>"
+		    << std::endl;  
+      throw InputException();
+    } 
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::LInfFirstOrderLocalDistance<TImage>::Value
+DGtal::LInfFirstOrderLocalDistance<TImage>::compute
+(Values& aValueList) const
+{
+
+  unsigned int c = aValueList.size();
+  ASSERT( c > 0 ); 
+  if ( c == 1 )
+    {
+      Value d = aValueList.back(); 
+      Value dres = d + 1;
+      ASSERT(dres > 0); 
+      return dres; 
+    } 
+  else 
+    { //max
+      typename Values::iterator it = 
+	std::max_element( aValueList.begin(), aValueList.end() ); 
+      Value dres = *it; 
+      ASSERT(dres > 0); 
+      return dres; 
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+void
+DGtal::LInfFirstOrderLocalDistance<TImage>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "LInf"; 
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TImage>
+template <typename TSet>
+inline
+typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
+DGtal::L1FirstOrderLocalDistance<TImage>::operator()
+  (const Image& aImg, const TSet& aSet, const Point& aPoint)
+{
+
+  BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+  BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
+  //distance values
+  Values v; 
+
+  //count the number of positive and negative 
+  //distance values
+  unsigned short nb = 0; 
+  unsigned short nbPos = 0; 
+
+  //two 1-neighbors
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+      *it1 = (c+1); 
+      *it2 = (c-1);
+
+      //neighboring values
+      Value d, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( aImg, aSet, neighbor1, d1 );
+      bool flag2 = findAndGetValue( aImg, aSet, neighbor2, d2 );
+      if (flag1) v.push_back( d1 );
+      if (flag2) v.push_back( d2 ); 
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  return this->compute(v); 
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+typename DGtal::L1FirstOrderLocalDistance<TImage>::Value
+DGtal::L1FirstOrderLocalDistance<TImage>::compute
+(Values& aValueList) const
+{
+  ASSERT(aValueList.size() > 0); 
+
+  //min (in absolute values) 
+  typename Values::const_iterator it = aValueList.begin();
+  Value vmin = *it; ++it;   
+  typename Values::const_iterator itEnd = aValueList.end(); 
+  for ( ; it != itEnd; ++it )
+    {
+      if ( std::abs(*it) < std::abs(vmin) )
+	vmin = *it;  
+    }
+
+  //sign
+  if (vmin >= 0) 
+    return vmin + 1; 
+  else 
+    return vmin - 1; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TImage>
+inline
+void
+DGtal::L1FirstOrderLocalDistance<TImage>
+::selfDisplay ( std::ostream & out ) const
+{
+  out << "L1"; 
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
