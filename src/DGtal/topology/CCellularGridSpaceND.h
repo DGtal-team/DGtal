@@ -267,6 +267,21 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 | Neighborhood |\e x.sNeighborhood(\e sc)|             | \e SCells     |              | returns the range of signed cells that forms the 1-neighborhood of \e sc | | |
 | Proper neighborhood |\e x.uProperNeighborhood(\e c) | | \e Cells     |              | returns the range of cells that forms the proper 1-neighborhood of \e c, hence without \e c itself| | |
 | Proper neighborhood |\e x.sProperNeighborhood(\e sc)| | \e SCells    |              | returns the range of signed cells that forms the proper 1-neighborhood of \e sc, hence without \e sc itself| | |
+| Adjacent cell|\e x.uAdjacent(\e c,\e k,\e b)|\e b is a \c bool |\e Cell |           | return the cell adjacent to \e c along axis \e k either with greater coordinate (\e b is \c true) or lesser | | |
+| Adjacent cell|\e x.sAdjacent(\e sc,\e k,\e b)|\e b is a \c bool |\e SCell |         | return the signed cell adjacent to \e sc along axis \e k either with greater coordinate (\e b is \c true) or lesser | | |
+|               |                  |                   |               |              |                                       |                |            |
+| Incident cell|\e x.uIncident(\e c,\e k,\e b)|\e b is a \c bool |\e Cell |           | return the cell incident to \e c along axis \e k either with greater coordinate (\e b is \c true) or lesser | | |
+| Incident cell|\e x.sIncident(\e sc,\e k,\e b)|\e b is a \c bool |\e SCell |         | return the signed cell incident to \e sc along axis \e k either with greater coordinate (\e b is \c true) or lesser | | |
+| Lower incident cells|\e x.uLowerIncident(\e c)|      |\e Cells       |              | return all the cells just lower incident to \e c (1-dim less) | | |
+| Lower incident cells|\e x.sLowerIncident(\e sc)|     |\e SCells      |              | return all the signed cells just lower incident to \e sc (1-dim less) | | |
+| Upper incident cells|\e x.uUpperIncident(\e c)|      |\e Cells       |              | return all the cells just upper incident to \e c (1-dim more) | | |
+| Upper incident cells|\e x.sUpperIncident(\e sc)|     |\e SCells      |              | return all the signed cells just upper incident to \e c (1-dim more) | | |
+| Faces of a cell|\e x.uFaces(\e c)|                   |\e Cells       |              | return all the faces of the cell \e c | | |
+| Co-Faces of a cell|\e x.uCoFaces(\e c)|              |\e Cells       |              | return all the co-faces of the cell \e c | | |
+| Direct orientation|\e x.sDirect(\e sc,\e k)|         |\c bool        |              | return the direct orientation of cell \e sc along axis \e k | | |
+| Direct incident cell|\e x.sDirectIncident(\e sc,\e k)| |\e SCell     |              | return the signed cell that is the direct incident cell to \e sc along axis \e k | | |
+| Indirect incident cell|\e x.sIndirectIncident(\e sc,\e k)| |\e SCell |              | return the signed cell that is the indirect incident cell to \e sc along axis \e k | | |
+
 
 ### Invariants
 
@@ -427,6 +442,19 @@ public:
     ConceptUtils::sameType( myCells, myX.uProperNeighborhood( myCell ) );
     ConceptUtils::sameType( mySCells, myX.sNeighborhood( mySCell ) );
     ConceptUtils::sameType( mySCells, myX.sProperNeighborhood( mySCell ) );
+    ConceptUtils::sameType( myCell, myX.uAdjacent( myCell, myDim, myBool ) );
+    ConceptUtils::sameType( mySCell, myX.sAdjacent( mySCell, myDim, myBool ) );
+    ConceptUtils::sameType( myCell, myX.uIncident( myCell, myDim, myBool ) );
+    ConceptUtils::sameType( mySCell, myX.sIncident( mySCell, myDim, myBool ) );
+    ConceptUtils::sameType( myCells, myX.uLowerIncident( myCell ) );
+    ConceptUtils::sameType( myCells, myX.uUpperIncident( myCell ) );
+    ConceptUtils::sameType( mySCells, myX.sLowerIncident( mySCell ) );
+    ConceptUtils::sameType( mySCells, myX.sUpperIncident( mySCell ) );
+    ConceptUtils::sameType( myCells, myX.uFaces( myCell ) );
+    ConceptUtils::sameType( myCells, myX.uCoFaces( myCell ) );
+    ConceptUtils::sameType( myBool, myX.sDirect( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sDirectIncident( mySCell, myDim ) );
+    ConceptUtils::sameType( mySCell, myX.sIndirectIncident( mySCell, myDim ) );
 
 }
   // ------------------------- Private Datas --------------------------------
