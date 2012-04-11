@@ -47,13 +47,14 @@
 #include <iostream>
 #include <limits>
 #include <map>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/geometry/volumes/distance/CLocalDistance.h"
+#include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/geometry/volumes/distance/FMMPointFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -64,7 +65,7 @@ namespace DGtal
   namespace details
   {
     template<typename T>
-    class PointDistanceValueCompare {
+    class PointValueCompare {
     public: 
       bool operator()(const T& a, const T& b) 
       {
@@ -109,13 +110,13 @@ namespace DGtal
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
    * @tparam TPointPredicate  any model of CPointPredicate
-   * @tparam TDistance  any model of CLocalDistance
+   * @tparam TPointFunctor  any model of CPointFunctor
    *
    * @see testFMM.cpp
    * @see exampleFMM.cpp
    */
   template <typename TImage, typename TSet, typename TPointPredicate, 
-	    typename TDistance = L2FirstOrderLocalDistance<TImage,TSet> >
+	    typename TPointFunctor = L2FirstOrderLocalDistance<TImage,TSet> >
   class FMM
   {
 
@@ -127,7 +128,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
     BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-    BOOST_CONCEPT_ASSERT(( CPointFunctor<TDistance> ));
+    BOOST_CONCEPT_ASSERT(( CPointFunctor<TPointFunctor> ));
 
     typedef TImage Image; 
     typedef TSet AcceptedPointSet; 
@@ -144,17 +145,16 @@ namespace DGtal
     static const Dimension dimension = Point::dimension;
 
     //distance
-    typedef TDistance Distance; 
-    BOOST_STATIC_ASSERT(( boost::is_same< Image, typename Distance::Image >::value ));
-    typedef typename Image::Value DistanceValue; 
+    typedef TPointFunctor PointFunctor; 
+    typedef typename PointFunctor::Value Value; 
 
 
   private: 
 
     //intern data types
-    typedef std::pair<Point, DistanceValue> PointDistanceValue; 
-    typedef std::set<PointDistanceValue,
-		     details::PointDistanceValueCompare<PointDistanceValue> > CandidatePointSet; 
+    typedef std::pair<Point, Value> PointValue; 
+    typedef std::set<PointValue,
+		     details::PointValueCompare<PointValue> > CandidatePointSet; 
     typedef unsigned long Area;
 
     // ------------------------- Private Datas --------------------------------
@@ -176,11 +176,11 @@ namespace DGtal
     CandidatePointSet myCandidatePoints; 
 
     /**
-     * Distance computer used to deduce 
+     * Point functor used to deduce 
      * the distance of a new point
      * from the distance of its neighbors
      */
-    Distance myDC; 
+    PointFunctor myPF; 
 
     /**
      * Constant reference on a point predicate that returns 
@@ -196,9 +196,19 @@ namespace DGtal
     Area myAreaThreshold; 
 
     /**
-     * DistanceValue threshold above which the propagation stops
+     * Value threshold above which the propagation stops
      */
-    DistanceValue myDistanceValueThreshold; 
+    Value myValueThreshold; 
+
+    /**
+     * Min value
+     */
+    Value myMinValue; 
+
+    /**
+     * Max value
+     */
+    Value myMaxValue; 
 
 
     // ----------------------- Standard services ------------------------------
@@ -206,31 +216,39 @@ namespace DGtal
 
     /**
      * Constructor.
+     *
+     * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
 	const PointPredicate& aPointPredicate);
     
     /**
      * Constructor.
+     *
+     * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold);
+	const Area& aAreaThreshold, const Value& aValueThreshold);
     
     /**
      * Constructor.
+     *
+     * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
 	const PointPredicate& aPointPredicate, 
-	const Distance& aDistance );
+	const PointFunctor& aPointFunctor );
     
     /**
      * Constructor.
+     *
+     * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
-	const Area& aAreaThreshold, const DistanceValue& aDistanceValueThreshold,
-	const Distance& aDistance );
+	const Area& aAreaThreshold, const Value& aValueThreshold,
+	const PointFunctor& aPointFunctor );
     
     /**
      * Destructor.
@@ -259,25 +277,38 @@ namespace DGtal
      *
      * @see addNewAcceptedPoint
      */
-    bool computeOneStep(Point& aPoint, DistanceValue& aValue);
+    bool computeOneStep(Point& aPoint, Value& aValue);
 
     /** 
-     * Get minimal distance value in the set of accepted points. 
+     * Minimal distance value in the set of accepted points. 
+     *
+     * @return minimal distance value.
+     */
+    Value min() const;
+
+    /** 
+     * Maximal distance value in the set of accepted points. 
+     *
+     */
+    Value max() const;
+
+    /** 
+     * Computes the minimal distance value in the set of accepted points. 
      *
      * NB: in O(n log n) where n is the size of the set
      *
      * @return minimal distance value.
      */
-    DistanceValue getMin() const;
+    Value getMin() const;
 
     /** 
-     * Get the maximal distance value in the set of accepted points. 
+     * Computes the maximal distance value in the set of accepted points. 
      *
      * NB: in O(n log n) where n is the size of the set
      *
      * @return maximal distance value.
      */
-    DistanceValue getMax() const;
+    Value getMax() const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -296,34 +327,34 @@ namespace DGtal
 
     /**
      * Initialize @a aImg and @a aSet from the points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to @a aDistanceValue  
+     * Assign a distance equal to @a aValue  
      *
      * @param itb begin iterator (on points)
      * @param ite end iterator (on points)
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
-     * @param aDistanceValue distance default value
+     * @param aValue distance default value
      */
     template <typename TIteratorOnPoints>
     static void initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
 				Image& aImg, AcceptedPointSet& aSet, 
-				const DistanceValue& aDistanceValue);
+				const Value& aValue);
 
     /**
      * Initialize @a aImg and @a aSet from the inner and outer points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to - @a aDistanceValue if aFlagIsPositive is 'false' (default)
-     * to the inner points, but @a aDistanceValue otherwise, and conversely for the outer points.  
+     * Assign a distance equal to - @a aValue if aFlagIsPositive is 'false' (default)
+     * to the inner points, but @a aValue otherwise, and conversely for the outer points.  
      *
      * @param itb begin iterator (on points)
      * @param ite end iterator (on points)
      * @param aImg the distance image
      * @param aSet the set of points for which the distance has been assigned
-     * @param aDistanceValue distance default value
+     * @param aValue distance default value
      */
     template <typename TIteratorOnPairs>
     static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 				   Image& aImg, AcceptedPointSet& aSet, 
-				   const DistanceValue& aDistanceValue, 
+				   const Value& aValue, 
 				   bool aFlagIsPositive = false);
 
   private:
@@ -361,7 +392,7 @@ namespace DGtal
      * @return 'true' if the point of min distance is accepted
      * 'false' otherwise.
      */
-    bool addNewAcceptedPoint(Point& aPoint, DistanceValue& aValue);
+    bool addNewAcceptedPoint(Point& aPoint, Value& aValue);
 
     /** 
      * Update the set of candidate points with the neigbors of @a aPoint. 
@@ -394,9 +425,9 @@ namespace DGtal
    * @param object the object of class 'FMM' to write.
    * @return the output stream after the writing.
    */
-  template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+  template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
   std::ostream&
-  operator<< ( std::ostream & out, const FMM<TImage, TSet, TPointPredicate, TDistance> & object );
+  operator<< ( std::ostream & out, const FMM<TImage, TSet, TPointPredicate, TPointFunctor> & object );
 
 } // namespace DGtal
 
