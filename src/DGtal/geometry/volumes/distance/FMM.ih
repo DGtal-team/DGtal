@@ -187,9 +187,11 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       //getting values 
       Value vin = aF( points.first ); 
       Value vout = aF( points.second ); 
+      // std::cout << points.first << " " << vin << ", " << points.second <<  " " << vout;   
       //computing/storing the new value
       Value e = std::max(vin, vout) - std::min(vin, vout);
-      Value v = (std::abs(vin)/e); 
+      Value v = (std::abs(vout)/e); 
+      // std::cout << " : " << e << ", " << v << std::endl; 
       ASSERT( v >= 0 ); 
       buffer.insert( Pair( aK.unsigns( *it ), v ) ); 
     }
@@ -203,7 +205,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
       //computing the values     
       Value vin = computer( points.first ); 
-      Value vout = computer( points.second ); 
+      Value vout = computer( points.second );
+      // std::cout << points.first << " " << vin << ", " 
+      //<< points.second <<  " " << vout << std::endl;  
       //assignement
       insertAndAlwaysSetValue( aImg, aSet, points.first, vin ); 
       insertAndAlwaysSetValue( aImg, aSet, points.second, vout );  

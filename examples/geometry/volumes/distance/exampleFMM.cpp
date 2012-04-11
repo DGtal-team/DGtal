@@ -120,11 +120,11 @@ public:
     myCx(aCx), myCy(aCy), myR(aR)
   { ASSERT(myR > 0); }; 
 
-  bool operator()(const TPoint& aPoint) const 
+  Value operator()(const TPoint& aPoint) const 
   {
     double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
 			  + std::pow( (myCy-aPoint[1] ), 2) );  
-    return (d - myR); 
+    return (d - myR);
   };
 private: 
   double myCx, myCy, myR; 
