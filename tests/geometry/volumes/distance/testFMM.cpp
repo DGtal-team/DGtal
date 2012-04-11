@@ -500,7 +500,7 @@ int main ( int argc, char** argv )
     && testDisplayDTFromCircle(size)   
     ;
 
-  size = 25; 
+  size = 25;
   area = 4*int( std::pow(double(size),3) ); 
   //3d L2 test
   res = res && testDisplayDT3d( size, area, std::sqrt(size*size*size) )

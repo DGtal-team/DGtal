@@ -41,75 +41,75 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance(aImg, aSet) ), 
+  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( PointFunctor(aImg, aSet) ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
-    myDistanceValueThreshold( std::numeric_limits<DistanceValue>::max() )
+    myValueThreshold( std::numeric_limits<Value>::max() )
 {
   if (myAcceptedPoints.size() == 0) throw InputException(); 
   init(); 
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
-      const DistanceValue& aDistanceValueThreshold)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( Distance(aImg, aSet) ), 
+      const Value& aValueThreshold)
+  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( PointFunctor(aImg, aSet) ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
-    myDistanceValueThreshold( aDistanceValueThreshold )
+    myValueThreshold( aValueThreshold )
 {
   if (myAcceptedPoints.size() == 0) throw InputException(); 
   init();
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate,
-      const Distance& aDistance)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
+      const PointFunctor& aPointFunctor)
+  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( aPointFunctor ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
-    myDistanceValueThreshold( std::numeric_limits<DistanceValue>::max() )
+    myValueThreshold( std::numeric_limits<Value>::max() )
 {
   if (myAcceptedPoints.size() == 0) throw InputException(); 
   init(); 
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
-      const DistanceValue& aDistanceValueThreshold,
-      const Distance& aDistance)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myDC( aDistance ), 
+      const Value& aValueThreshold,
+      const PointFunctor& aPointFunctor)
+  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( aPointFunctor ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
-    myDistanceValueThreshold( aDistanceValueThreshold )
+    myValueThreshold( aValueThreshold )
 {
   if (myAcceptedPoints.size() == 0) throw InputException(); 
   init();
 }
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::~FMM()
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::~FMM()
 {
 }
 
@@ -117,31 +117,31 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::~FMM()
 // Static functions :
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 template <typename TIteratorOnPoints>
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
 		  Image& aImg, AcceptedPointSet& aSet, 
-		  const DistanceValue& aDistanceValue)
+		  const Value& aValue)
 {
   TIteratorOnPoints it = itb; 
   for ( ; it != ite; ++it) 
     {
-      insertAndAlwaysSetValue( aImg, aSet, *it, aDistanceValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, *it, aValue ); 
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 template <typename TIteratorOnPairs>
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
 			      Image& aImg, AcceptedPointSet& aSet, 
-			      const DistanceValue& aDistanceValue, 
+			      const Value& aValue, 
 			      bool aFlagIsPositive)
 {
-  DistanceValue k = -1; 
+  Value k = -1; 
   if (aFlagIsPositive) k = 1; 
 
   TIteratorOnPairs it = itb; 
@@ -149,8 +149,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
     {
       Point inner( it->first ); 
       Point outer( it->second ); 
-      insertAndAlwaysSetValue( aImg, aSet, inner, k*aDistanceValue ); 
-      insertAndAlwaysSetValue( aImg, aSet, outer, -k*aDistanceValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, inner, k*aValue ); 
+      insertAndAlwaysSetValue( aImg, aSet, outer, -k*aValue ); 
     }
 }
 
@@ -158,76 +158,93 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 // Interface - public :
 
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::compute()
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::compute()
 {
   Point p = Point::diagonal(0); 
-  DistanceValue d = 0; 
+  Value d = 0; 
   while ( addNewAcceptedPoint( p, d ) )
     {   }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
-::computeOneStep(Point& aPoint, DistanceValue& aValue)
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
+::computeOneStep(Point& aPoint, Value& aValue)
 {
   return addNewAcceptedPoint(aPoint, aValue);
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-typename DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::DistanceValue
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::getMin() const
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::min() const
 {
-  const AcceptedPointSet& set = myAcceptedPoints; 
-  ASSERT( set.size() >= 1 ); 
-
-  typename AcceptedPointSet::ConstIterator it = set.begin(); 
-  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  DistanceValue min = myImage( *it );  
-  for (++it; it != itEnd; ++it)
-    {
-      DistanceValue v = myImage( *it ); 
-      if (v < min) min = v; 
-    }
-  return min; 
+  return myMinValue; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
-typename DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::DistanceValue
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::getMax() const
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::max() const
+{
+  return myMaxValue; 
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+inline
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMin() const
 {
   const AcceptedPointSet& set = myAcceptedPoints; 
   ASSERT( set.size() >= 1 ); 
 
   typename AcceptedPointSet::ConstIterator it = set.begin(); 
   typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
-  DistanceValue max = myImage( *it );  
+  Value min = myImage( *it );  
   for (++it; it != itEnd; ++it)
     {
-      DistanceValue v = myImage( *it ); 
+      Value v = myImage( *it ); 
+      if (v < min) min = v; 
+    }
+   return min; 
+}
+
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+inline
+typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Value
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::getMax() const
+{
+  const AcceptedPointSet& set = myAcceptedPoints; 
+  ASSERT( set.size() >= 1 ); 
+
+  typename AcceptedPointSet::ConstIterator it = set.begin(); 
+  typename AcceptedPointSet::ConstIterator itEnd = set.end(); 
+  Value max = myImage( *it );  
+  for (++it; it != itEnd; ++it)
+    {
+      Value v = myImage( *it ); 
       if (v > max) max = v; 
     }
   return max; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::isValid() const
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::isValid() const
 {
   //area threshold
   if ( (myAcceptedPoints.size() <= 0)
        || (myAcceptedPoints.size() >= myAreaThreshold) ) return false;
 
   //distance threshold
-  if ( (std::abs(getMin()) >= myDistanceValueThreshold)
-       || (getMax() >= myDistanceValueThreshold) ) return false; 
+  if ( ( getMin() != min() ) || ( getMax() != max() ) ) return false; 
+  if ( (std::abs(getMin()) >= myValueThreshold)
+       || (getMax() >= myValueThreshold) ) return false; 
 
   //point predicate
   bool flagIsOk = true;  
@@ -243,42 +260,50 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::isValid() const
   return true; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::selfDisplay ( std::ostream & out ) const
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::selfDisplay ( std::ostream & out ) const
 {
   out << "[FMM " << dimension << "d] ";
   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")"; 
   out << " and " << myCandidatePoints.size() << " candidates. "; 
-  myDC.selfDisplay(out); 
+  myPF.selfDisplay(out); 
   out << " "; 
-  out << "dmin: " << getMin() << ", dmax: " << getMax(); 
-  out << " (abs < " << myDistanceValueThreshold << ")" << std::endl; 
+  out << "dmin: " << min() << ", dmax: " << max(); 
+  out << " (abs < " << myValueThreshold << ")" << std::endl; 
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::init()
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::init()
 {
+
+  myCandidatePoints.clear(); 
+
   typename AcceptedPointSet::Iterator it = myAcceptedPoints.begin(); 
   typename AcceptedPointSet::Iterator itEnd = myAcceptedPoints.end(); 
   for ( ; it != itEnd; ++it)
     {
       update( *it ); 
     }
+  
+  myMinValue = getMin(); 
+  myMaxValue = getMax(); 
+
+  ASSERT( isValid() ); 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
-::addNewAcceptedPoint(Point& aPoint, DistanceValue& aValue)
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
+::addNewAcceptedPoint(Point& aPoint, Value& aValue)
 {
 
   if ( (myAcceptedPoints.size()+1) < myAreaThreshold )
@@ -291,9 +316,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 	{ //while there are candidates and no point has been accepted
 
 	  //pair of min distance
-	  PointDistanceValue minPair = *it; 
+	  PointValue minPair = *it; 
 
-	  if ( std::abs(minPair.second) < myDistanceValueThreshold ) 
+	  if ( std::abs(minPair.second) < myValueThreshold ) 
 	    { //if distance below a given threshold
 
 	      //the point of min distance is removed from the set of candidates
@@ -306,6 +331,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
 	      	  //the neighbors of the new accepted point
 		  aPoint = minPair.first;
 		  aValue = minPair.second; 
+		  if (aValue > myMaxValue) myMaxValue = aValue; 
+		  if (aValue < myMinValue) myMinValue = aValue; 
 	      	  update( aPoint ); 
 	      	  flagStop = true; 
 	      	}
@@ -327,10 +354,10 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>
   else return false; 
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 void
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::update(const Point& aPoint)
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::update(const Point& aPoint)
 {
  
   //neigbors
@@ -346,10 +373,10 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::update(const Point& aPoint
     }
 }
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 bool
-DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewCandidate(const Point& aPoint)
+DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::addNewCandidate(const Point& aPoint)
 {
 
   //if it lies within the computation domain
@@ -357,8 +384,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewCandidate(const Poin
   if ( (myPointPredicate(aPoint) ) 
        && ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) ) 
     {
-      DistanceValue d = myDC(aPoint); 
-      PointDistanceValue newPair( aPoint, d ); 
+      Value d = myPF( aPoint ); 
+      PointValue newPair( aPoint, d ); 
       //insert the new candidate with its distance
       myCandidatePoints.insert(newPair);
       return true; 
@@ -370,11 +397,11 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TDistance>::addNewCandidate(const Poin
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImage, typename TSet, typename TPointPredicate, typename TDistance >
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const FMM<TImage, TSet, TPointPredicate, TDistance> & object )
+		    const FMM<TImage, TSet, TPointPredicate, TPointFunctor> & object )
 {
   object.selfDisplay( out );
   return out;

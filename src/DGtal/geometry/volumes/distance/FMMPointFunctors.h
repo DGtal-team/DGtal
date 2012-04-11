@@ -57,6 +57,13 @@
 namespace DGtal
 {
 
+  ///////////////////////////////////////////////////////////////////////////////
+  //--------------- small helper  ----------------------------------------------
+  namespace details
+  {
+    bool absComparator(double i, double j) { return ( std::abs(i) < std::abs(j) ); }
+  }
+
   /////////////////////////////////////////////////////////////////////////////
   // template class L2FirstOrderLocalDistance
   /**
