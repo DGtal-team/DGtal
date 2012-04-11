@@ -29,12 +29,7 @@ then to track its boundary (see. <a href="classDGtal_1_1Surfaces.html">
 DGtal::Surfaces</a>). An example can also be found in the example <a
 href="freemanChainFromImage_8cpp-example.html" >freemanChainFromImage.cpp</a> .
 
-
-Table of contents:
- -# \ref step1 
- -# \ref step2 
- -# \ref step3 
- -# \ref FCfromImageTools
+[TOC]
 
 
 \section step1 DigitalSet from thresholded image 
@@ -45,11 +40,11 @@ with readers as for instance in PNMReader:
 
 
 @code
-#include "DGtal/kernel/images/ImageSelector.h"
+#include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/PNMReader.h"
 ...
- typedef ImageSelector < Z2i::Domain, int>::Type Image;
- Image image = PNMReader<Image>::importPGMImage( examplesPath + "samples/circleR10modif.pgm" ); 
+typedef ImageSelector < Z2i::Domain, int>::Type Image;
+Image image = PNMReader<Image>::importPGM( examplesPath + "samples/circleR10modif.pgm" ); 
 @endcode
 
 
