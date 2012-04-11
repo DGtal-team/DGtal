@@ -341,9 +341,50 @@ namespace DGtal
 				const Value& aValue);
 
     /**
-     * Initialize @a aImg and @a aSet from the inner and outer points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to - @a aValue if aFlagIsPositive is 'false' (default)
-     * to the inner points, but @a aValue otherwise, and conversely for the outer points.  
+     * Initialize @a aImg and @a aSet from the points 
+     * incident to the signed cells of the range [@a itb , @a ite ) 
+     * Assign to the inner points a distance equal to - @a aValue 
+     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
+     * and conversely for the outer points.  
+     *
+     * @param itb begin iterator (on signed cells)
+     * @param ite end iterator (on signed cells)
+     * @param aImg the distance image
+     * @param aSet the set of points for which the distance has been assigned
+     * @param aValue distance default value
+     */
+    template <typename KSpace, typename TIteratorOnBels>
+    static void initFromBelsRange(const KSpace& aK, 
+				    const TIteratorOnBels& itb, const TIteratorOnBels& ite, 
+				    Image& aImg, AcceptedPointSet& aSet, 
+				    const Value& aValue, 
+				   bool aFlagIsPositive = false);
+    /**
+     * Initialize @a aImg and @a aSet from the points 
+     * incident to the signed cells of the range [@a itb , @a ite ) 
+     * Assign to the inner points a distance equal to - @a aValue 
+     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
+     * and conversely for the outer points.  
+     *
+     * @param itb begin iterator (on signed cells)
+     * @param ite end iterator (on signed cells)
+     * @param aF any implicit function
+     * @param aImg the distance image
+     * @param aSet the set of points for which the distance has been assigned
+     */
+    template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
+    static void initFromBelsRange(const KSpace& aK, 
+				    const TIteratorOnBels& itb, const TIteratorOnBels& ite,
+				  const TImplicitFunction& aF, 
+				    Image& aImg, AcceptedPointSet& aSet);
+
+
+    /**
+     * Initialize @a aImg and @a aSet from the inner and outer points 
+     * of the range [@a itb , @a ite ) of pairs of points.  
+     * Assign to the inner points a distance equal to - @a aValue 
+     * if @a aFlagIsPositive is 'false' (default) but @a aValue otherwise, 
+     * and conversely for the outer points.  
      *
      * @param itb begin iterator (on points)
      * @param ite end iterator (on points)

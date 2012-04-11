@@ -41,6 +41,10 @@
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
+//tracking
+#include "DGtal/topology/helpers/Surfaces.h"
+
+
 //FMM
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
@@ -56,28 +60,28 @@ using namespace DGtal;
 
 //////////////////////////////////////////////////////////////////////////////
 // annulus
-template <typename TPoint>
-class AnnulusPredicate 
-{
-public:
-  typedef TPoint Point;
+// template <typename TPoint>
+// class AnnulusPredicate 
+// {
+// public:
+//   typedef TPoint Point;
 
-public: 
+// public: 
 
-  AnnulusPredicate(double aCx, double aCy, double aR, double aW = 1.5): 
-    myCx(aCx), myCy(aCy), myR(aR), myW(aW)
-  { ASSERT(myR > 0); ASSERT(myW > 0); }; 
+//   AnnulusPredicate(double aCx, double aCy, double aR, double aW = 1.5): 
+//     myCx(aCx), myCy(aCy), myR(aR), myW(aW)
+//   { ASSERT(myR > 0); ASSERT(myW > 0); }; 
 
-  bool operator()(const TPoint& aPoint) const 
-  {
-    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
-			  + std::pow( (myCy-aPoint[1] ), 2) );  
-    if ( (d <= (myR+myW))&&(d >= (myR-myW)) ) return true; 
-    else return false; 
-  };
-private: 
-  double myCx, myCy, myR, myW; 
-};
+//   bool operator()(const TPoint& aPoint) const 
+//   {
+//     double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
+// 			  + std::pow( (myCy-aPoint[1] ), 2) );  
+//     if ( (d <= (myR+myW))&&(d >= (myR-myW)) ) return true; 
+//     else return false; 
+//   };
+// private: 
+//   double myCx, myCy, myR, myW; 
+// };
 
 //////////////////////////////////////////////////////////////////////////////
 // ball
@@ -104,31 +108,53 @@ private:
   double myCx, myCy, myR; 
 };
 
-//////////////////////////////////////////////////////////////////////////////
-// display
-template< typename TIterator >
-void draw( const TIterator& itb, const TIterator& ite, const int& size, std::string basename) 
+template <typename TPoint>
+class BallFunctor 
 {
-  typedef typename std::iterator_traits<TIterator>::value_type Pair; 
-  typedef typename Pair::first_type Point; 
-  typedef typename Pair::second_type Value; 
-  HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
+public:
+  typedef TPoint Point;
+  typedef double Value; 
+public: 
 
-  Board2D b; 
-  b.setUnit ( LibBoard::Board::UCentimeter );
+  BallFunctor(double aCx, double aCy, double aR ): 
+    myCx(aCx), myCy(aCy), myR(aR)
+  { ASSERT(myR > 0); }; 
 
-  TIterator it = itb; 
-  for ( ; it != ite; ++it)
-    {
-      Point p = it->first;
-      b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
-      b << p;
-    }
+  bool operator()(const TPoint& aPoint) const 
+  {
+    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
+			  + std::pow( (myCy-aPoint[1] ), 2) );  
+    return (d - myR); 
+  };
+private: 
+  double myCx, myCy, myR; 
+};
 
-  std::stringstream s; 
-  s << basename << ".eps"; 
-  b.saveEPS(s.str().c_str());
-} 
+// //////////////////////////////////////////////////////////////////////////////
+// // display
+// template< typename TIterator >
+// void draw( const TIterator& itb, const TIterator& ite, const int& size, std::string basename) 
+// {
+//   typedef typename std::iterator_traits<TIterator>::value_type Pair; 
+//   typedef typename Pair::first_type Point; 
+//   typedef typename Pair::second_type Value; 
+//   HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
+
+//   Board2D b; 
+//   b.setUnit ( LibBoard::Board::UCentimeter );
+
+//   TIterator it = itb; 
+//   for ( ; it != ite; ++it)
+//     {
+//       Point p = it->first;
+//       b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
+//       b << p;
+//     }
+
+//   std::stringstream s; 
+//   s << basename << ".eps"; 
+//   b.saveEPS(s.str().c_str());
+// } 
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -152,33 +178,84 @@ bool performDT(int size)
 	       << "digitized in a square of size 1 "
 	       << "at step h=" << h << endl; 
 
-  //Image and set
-  typedef ImageContainerBySTLMap<Domain,double> Image; 
-  typedef DigitalSetFromMap<Image> Set; 
-  Image map( d ); 
-  Set set(map); 
-  map.setValue(Point(0,0), 0.0); 
+  //Digital circle generation
+  typedef KhalimskySpaceND< dimension, int > KSpace; 
+  KSpace K; K.init( Point::diagonal(-size), Point::diagonal(size), true); 
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
+  KSpace::SCell bel = Surfaces<KSpace>::findABel( K, predicate, 10000 );
+  std::vector<KSpace::SCell> vSCells;
+  Surfaces<KSpace>::track2DBoundary( vSCells, K, SAdj, predicate, bel );
 
-  //computation
-  //! [FMMUsage]
-  typedef FMM<Image, Set, Predicate > FMM;
-  FMM fmm(map, set, predicate); 
-  fmm.compute(); 
-  trace.info() << fmm << std::endl;
-  //! [FMMUsage]
 
-  //max
-  double truth = radius*h; 
-  double found = fmm.getMax()*h;
-  trace.info() << " # radius " << std::endl; 
-  trace.info() << " # truth: " << truth << std::endl; 
-  trace.info() << " # found: " << found << std::endl; 
-  trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
+  { ///low accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set; 
+    Image map( d ); 
+    Set set(map); 
+    //  map.setValue(Point(0,0), 0.0); 
 
-  //display
-  std::stringstream s; 
-  s << "DT-" << radius; 
-  draw(map.begin(), map.end(), radius, s.str());
+    //initialisation
+    //! [FMMDef]
+    typedef FMM<Image, Set, Predicate > FMM;
+    //! [FMMDef]
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    map, set, 0.5 ); 
+
+    //computation
+    //! [FMMUsage]
+    FMM fmm(map, set, predicate); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+    //! [FMMUsage]
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    trace.info() << " # radius (low accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
+
+  }
+
+  { ///high accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set; 
+    Image map( d ); 
+    Set set(map); 
+    //  map.setValue(Point(0,0), 0.0); 
+
+    //initialisation
+    //! [FMMDef]
+    typedef FMM<Image, Set, Predicate > FMM;
+    //! [FMMDef]
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    map, set, 0.5 ); 
+
+    //computation
+    //! [FMMUsage]
+    FMM fmm(map, set, predicate); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+    //! [FMMUsage]
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    trace.info() << " # radius (high accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
+  }
+
+  // //display
+  // std::stringstream s; 
+  // s << "DT-" << radius; 
+  // draw(map.begin(), map.end(), radius, s.str());
 
 
   return true; 
@@ -199,6 +276,10 @@ int main ( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
+
+  trace.info() << "NB: You can increase the resolution as follows: "
+	       << std::endl << argv[0] << " 30 (default)" << std::endl; 
+
 
   //size parameter
   int size = 30; 
