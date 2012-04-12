@@ -131,6 +131,12 @@ The inner types are:
 - KhalimskySpace: this cellular grid space
 - Cells: a sequence of unsigned cells
 - SCells: a sequence of signed cells
+- \e CellSet: a set container that stores unsigned cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \e SCellSet: a set container that stores signed cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \e SurfelSet: a set container that stores surfels, i.e. signed n-1-cells (efficient for queries like \c find, model of boost::UniqueAssociativeContainer and boost::SimpleAssociativeContainer).
+- \e CellMap<Value>: an associative container Cell->Value rebinder type (efficient for key queries). Use as \c typename X::template CellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
+- \e SCellMap<Value>: an associative container SCell->Value rebinder type (efficient for key queries). Use as \c typename X::template SCellMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
+- \e SurfelMap<Value>: an associative container Surfel->Value rebinder type (efficient for key queries). Use as \c typename X::template SurfelMap<Value>::Type, which is a model of boost::UniqueAssociativeContainer and boost::PairAssociativeContainer.
 
 Methods include:
 - Cell creation services
@@ -144,6 +150,8 @@ Methods include:
 - Neighborhood services
 - Incidence services
 - Interface
+
+An comprehensive description is given in the concept CCellularGridSpaceND.
 
 @subsection dgtal_ctopo_sec4  Creating a cellular grid space
 
