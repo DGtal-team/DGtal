@@ -27,40 +27,31 @@
  * This file is part of the DGtal library.
  */
 
-///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
-#include <fstream>
+//! [freemanChainFromImage-basicIncludes]
 #include "DGtal/base/Common.h"
-///////////////////////////////////////////////////////////////////////////////
-
-
-#include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/images/ImageSelector.h"
-#include "DGtal/kernel/SpaceND.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-
-#include "DGtal/base/BasicTypes.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
-#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/helpers/Surfaces.h"
-
-#include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
+//! [freemanChainFromImage-basicIncludes]
 
+//! [freemanChainFromImage-ImageSetIncludes]
+#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+//! [freemanChainFromImage-ImageSetIncludes]
 
-using namespace std;
-using namespace DGtal;
-using namespace Z2i;
+//! [freemanChainFromImage-trackingFCIncludes]
+#include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
+//! [freemanChainFromImage-trackingFCIncludes]
 
-
-
-///////////////////////////////////////////////////////////////////////////////
+//! [freemanChainFromImage-displayIncludes]
+#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/Color.h"
+//! [freemanChainFromImage-displayIncludes]
 
 int main()
 {
+<<<<<<< HEAD
 <<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
 =======
 
@@ -70,22 +61,30 @@ int main()
   Image image = DGtal::PNMReader<Image>::importPGM(filename); 
   //! [freemanChainFromImage-imageImport]
 >>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
+=======
+
+  //! [freemanChainFromImage-imageImport]
+  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
+  std::string filename =  examplesPath + "samples/contourS.pgm";
+  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
+  //! [freemanChainFromImage-imageImport]
+>>>>>>> 515ed21... update tutorial example using snippet.
   
-  typedef ImageSelector < Z2i::Domain, int>::Type Image;
-  Image image = PNMReader<Image>::importPGM( examplesPath + "samples/circleR10modif.pgm" ); 
+  //![freemanChainFromImage-ksspace]
   Z2i::KSpace ks;
-  if(! ks.init( image.domain().lowerBound(), 
-    image.domain().upperBound(), true )){
-    cerr << "Problem in initialisation of KSpace" << endl;
-    exit(1);
-  }
-  
+  ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
+  //![freemanChainFromImage-ksspace]
+
+  //! [freemanChainFromImage-setAppend]
   Z2i::DigitalSet set2d (image.domain());
   SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
 <<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
+<<<<<<< HEAD
 =======
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 1, 255);
+=======
+>>>>>>> 515ed21... update tutorial example using snippet.
   //! [freemanChainFromImage-setAppend]
 
 
@@ -96,14 +95,19 @@ int main()
   //! [freemanChainFromImage-displaySet]
 
   //! [freemanChainFromImage-adj]
+<<<<<<< HEAD
 >>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
+=======
+>>>>>>> 515ed21... update tutorial example using snippet.
   SurfelAdjacency<2> sAdj( true );
+  //! [freemanChainFromImage-adj]
+
+  //! [freemanChainFromImage-extraction]
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
                 ks, set2dPredicate, sAdj );  
-  Board2D aBoard;
-  aBoard << set2d;
-  aBoard << image.domain();  
+  //! [freemanChainFromImage-extraction]
+  
 
   GradientColorMap<int> cmap_grad( 0, (const int)vectContoursBdryPointels.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
@@ -113,19 +117,19 @@ int main()
   cmap_grad.addColor( Color( 255, 25, 255 ) );
   cmap_grad.addColor( Color( 25, 25, 25 ) );
   
-  
+  //! [freemanChainFromImage-fcConstruction]
   for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
     //  Constructing and displaying FreemanChains from contours. 
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
+    //! [freemanChainFromImage-fcConstruction]
+    //! [freemanChainFromImage-fcdysplay]
     aBoard << SetMode( fc.className(), "InterGrid" );
     aBoard<< CustomStyle( fc.className(), 
-            new CustomColors(  cmap_grad(i),  Color::None ) );    
-    
-    
-    
+            new CustomColors(  cmap_grad(i),  Color::None ) );        
     aBoard << fc;
+    //! [freemanChainFromImage-fcdysplay]
   }   
-  
+
   aBoard.saveEPS("freemanChainFromImage.eps");
   return 0;
 }

@@ -23,12 +23,12 @@ namespace DGtal {
 
 This part of the manual describes a simple way to extract a level set
 boundary as a FreemanChain contour from an gray level image. The first
-step is to extract the thresholed Digital set from the image (see. <a
-href="structDGtal_1_1SetFromImage.html"> DGtal::SetFromImage </a>) and
-then to track its boundary (see. <a href="classDGtal_1_1Surfaces.html">
-DGtal::Surfaces</a>). An example can also be found in the example <a
-href="freemanChainFromImage_8cpp-example.html" >freemanChainFromImage.cpp</a> .
+step is to extract the thresholed Digital set from the image
+(see. \ref DGtal::SetFromImage) and then to track its boundary
+(see. \ref DGtal::Surfaces). An example can also be found in the
+example tutorial-examples/freemanChainFromImage.cpp
 
+ 
 [TOC]
 
 
@@ -38,46 +38,32 @@ The digitalSet can be obtained after thresholding a given image. As
 described in the section \ref image_io a image can simply be imported
 with readers as for instance in PNMReader: 
 
+@snippet freemanChainFromImage.cpp freemanChainFromImage-imageImport
 
-@code
-#include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/readers/PNMReader.h"
-...
-typedef ImageSelector < Z2i::Domain, int>::Type Image;
-Image image = PNMReader<Image>::importPGM( examplesPath + "samples/circleR10modif.pgm" ); 
-@endcode
 
 
 From the imported image you can extract a DigitalSet by using thresholds:
-@code 
-Z2i::DigitalSet set2d (image.domain());
-SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
-@endcode
+@snippet  freemanChainFromImage.cpp freemanChainFromImage-setAppend
+
+
+
  
 You can display the thresholded set:
-@code 
-Board2D aBoard;
-aBoard << set2d;
-aBoard << image.domain();  
-@endcode
+@snippet freemanChainFromImage.cpp freemanChainFromImage-displaySet
 
   @image html fcExtraction0.png  
 
 A KhalimskySpaceND is also needed to extract the region boundary, you can
 simply use the domain of the imported image to initialise a KhalimskySpaceND:
 
-@code 
-Z2i::KSpace ks;
-bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
-@endcode
+
+@snippet freemanChainFromImage.cpp freemanChainFromImage-ksspace 
 
 
 Another important element is to define the SurfelAdjacency used to
 track the DigitalSet boundary:
 
-@code
-SurfelAdjacency<2> sAdj( true );
-@endcode
+@snippet freemanChainFromImage.cpp freemanChainFromImage-adj
 
 
 
@@ -86,12 +72,8 @@ SurfelAdjacency<2> sAdj( true );
 Afterwards the set of all 4-connected contours can be extracted by
 using the function extractAllPointContours4C from DGtal::Surfaces:
 
+@snippet freemanChainFromImage.cpp freemanChainFromImage-extraction
 
-@code
-std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
-Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-                                                  ks, set2d, sAdj );  
-@endcode
 
 
 
@@ -100,23 +82,21 @@ Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
 From the previous vector containing the contour points, we can
 construct and display its associated FreemanChain.
 
-@code
-for(int i=0; i<vectContoursBdryPointels.size(); i++)
-   FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i), true);
-@endcode
+@snippet freemanChainFromImage.cpp freemanChainFromImage-fcConstruction
+
+
 
 Since the reconstructed freemanchain represents the inter pixels
 boundary of the digital set we can specify it by using the mode "InterGrid" as follows:
-@code
-aBoard << SetMode( fc.className(), "InterGrid" );
-aBoard<< CustomStyle( fc.className(), 
-    			  new CustomColors(  cmap_grad(i),  Board2D::Color::None ) );    
-@endcode
 
-By using the display color defining in the example <a
-href="freemanChainFromImage_8cpp-example.html"
->freemanChainFromImage.cpp</a> you may obtain the following result
-where each contour are represented with a specific color:
+@snippet freemanChainFromImage.cpp freemanChainFromImage-fcdysplay
+
+
+
+By using the display color defining in the example
+tutorial-examples/freemanChainFromImage.cpp you may obtain the
+following result where each contour are represented with a specific
+color:
 
 
   @image html fcExtraction.png 
@@ -177,6 +157,29 @@ transparency (right image).
 </TR>
 </table>
 </center>
+
+
+\section secttutoImageGridCurveExctraction5 Required includes
+
+You need to include the DGTal basic header files: 
+
+@snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-basicIncludes
+
+
+To import the image and create digital set you need to include the following header files:
+
+@snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-ImageSetIncludes
+
+
+To track the frontier of the digital set and create the digital set you nedd to include:
+
+@snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-trackingFCIncludes
+
+
+
+For the display with gradient color:
+
+@snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-displayIncludes
 
 
 */
