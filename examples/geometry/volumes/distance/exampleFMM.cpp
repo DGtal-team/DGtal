@@ -130,6 +130,29 @@ private:
   double myCx, myCy, myR; 
 };
 
+template< typename TIterator >
+void draw( const TIterator& itb, const TIterator& ite, const int& size, std::string basename) 
+{
+  typedef typename std::iterator_traits<TIterator>::value_type Pair; 
+  typedef typename Pair::first_type Point; 
+  typedef typename Pair::second_type Value; 
+  HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
+
+  Board2D b; 
+  b.setUnit ( LibBoard::Board::UCentimeter );
+
+  TIterator it = itb; 
+  for ( ; it != ite; ++it)
+    {
+      Point p = it->first;
+      b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
+      b << p;
+    }
+
+  std::stringstream s; 
+  s << basename << ".eps"; 
+  b.saveEPS(s.str().c_str());
+} 
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -165,7 +188,7 @@ bool performDT(int size)
   { ///low accuracy
     //Image and set
     typedef ImageContainerBySTLMap<Domain,double> Image; 
-    typedef DigitalSetFromMap<Image> Set; 
+    typedef DigitalSetFromMap<Image> Set;
     Image map( d ); 
     Set set(map); 
 
@@ -197,18 +220,16 @@ bool performDT(int size)
 
   }
 
-  { ///high accuracy
+  { ///medium accuracy
     //Image and set
     typedef ImageContainerBySTLMap<Domain,double> Image; 
     typedef DigitalSetFromMap<Image> Set; 
     Image map( d ); 
     Set set(map); 
-    //  map.setValue(Point(0,0), 0.0); 
 
     //initialisation
-    //! [FMMDef2]
     typedef FMM<Image, Set, Predicate > FMM;
-    //! [FMMDef2]
+
     typedef BallFunctor<Point> Functor; 
     Functor functor( 0, 0, radius ); 
     //! [FMMInit2]
@@ -218,11 +239,43 @@ bool performDT(int size)
     //! [FMMInit2]
 
     //computation
-    //! [FMMUsage2]
     FMM fmm(map, set, predicate); 
     fmm.compute(); 
     trace.info() << fmm << std::endl;
-    //! [FMMUsage2]
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    trace.info() << " # radius (medium accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
+  }
+
+  { ///high accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set; 
+    Image map( d ); 
+    Set set(map); 
+
+    //initialisation
+    //! [FMMDef3]
+    typedef L2SecondOrderLocalDistance<Image, Set> Distance; 
+    typedef FMM<Image, Set, Predicate, Distance > FMM;
+    //! [FMMDef3]
+
+    typedef BallFunctor<Point> Functor; 
+    Functor functor( 0, 0, radius ); 
+
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    functor, map, set ); 
+
+    //computation
+    FMM fmm(map, set, predicate, Distance(map, set) ); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
 
     //max
     double truth = radius*h; 
@@ -231,7 +284,15 @@ bool performDT(int size)
     trace.info() << " # truth: " << truth << std::endl; 
     trace.info() << " # found: " << found << std::endl; 
     trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
+
+    //display
+    std::stringstream s; 
+    s << "DT2d-" << radius; 
+    draw(map.begin(), map.end(), size, s.str());
+
   }
+
+
 
   return true; 
 
