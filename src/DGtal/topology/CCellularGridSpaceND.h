@@ -78,6 +78,9 @@ The space is generally finite (except for arbitrary size
 integers). The user should choose between a closed (default) cell
 space or an open cell space.
 
+We refer the reader to \ref dgtal_cellular_topology for further
+details.
+
 ### Refinement of
 
 - boost::CopyConstructible
@@ -150,7 +153,10 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   coordinates are doubled and the odd parity depends on whether or not
   the cell is open along this coordinate axis.
 - a \b spel is a cell of maximal dimension (say n), a \b surfel is a
-  cell of dimension n-1, a \b pointel is a cell of dimension 0.
+  cell of dimension n-1, a \b pointel is a cell of dimension 0.  Spels
+  have thus all their Khalimsky coordinates odd. Surfels have only one
+  Khalimsky coordinate that is even. Pointels have all their Khalimsky
+  coordinates even.
 - the \b topology of a cell along a dimension \e k is open if the cell
   is open along the \e k-th coordinate axis. We code open with 1 and
   closed with 0. The \b topology \b word of a cell is the integer
@@ -158,6 +164,12 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   axis. The \b dimension of a cell is the number of coordinates where
   the cell is open. It is also the sum of the bits of its topology
   word.
+- \b adjacent cells to some cell \e c are cells with the same topology
+  as \e c but whose one of their digital coordinates differs by
+  one. They are often called 1-adjacent.
+- \b incident cells to some cell \e c are cells that are either a face
+  of \e c or such that \e c is one of their faces.
+
 
 ### Valid expressions and semantics
 
@@ -444,6 +456,7 @@ public:
     ConceptUtils::sameType( mySCells, myX.sProperNeighborhood( mySCell ) );
     ConceptUtils::sameType( myCell, myX.uAdjacent( myCell, myDim, myBool ) );
     ConceptUtils::sameType( mySCell, myX.sAdjacent( mySCell, myDim, myBool ) );
+    // ----------------------- Incidence services --------------------------
     ConceptUtils::sameType( myCell, myX.uIncident( myCell, myDim, myBool ) );
     ConceptUtils::sameType( mySCell, myX.sIncident( mySCell, myDim, myBool ) );
     ConceptUtils::sameType( myCells, myX.uLowerIncident( myCell ) );
