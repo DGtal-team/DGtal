@@ -50,24 +50,24 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConvolutionKernel
   /**
-     Description of \b concept '\b CConvolutionKernel' <p>
+Description of \b concept '\b CConvolutionKernel' <p>
      @ingroup Concepts
      @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
 
      CConvolutionKernel models are functor mappings displacement vectors to real values.
      
      
-     <p> Refinement of CopyConstructible, Assignable
+ ### Refinement of CopyConstructible, Assignable
     
-     <p> Associated types : Vector
+ ### Associated types : Vector
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CConvolutionKernel
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -92,15 +92,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
      ConstantConvolutionKernel, GaussianConvolutionKernel
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CConvolutionKernel.
+@tparam T the type that should be a model of CConvolutionKernel.
    */
   template <typename T> 
   struct CConvolutionKernel:  boost::CopyConstructible<T>, boost::Assignable<T>

@@ -39,10 +39,10 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/math/MPolynomial.h"
-#include "DGtal/math/MPolynomialReader.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
+#include "DGtal/io/readers/MPolynomialReader.h"
 //! [trackImplicitPolynomialSurfaceToOFF-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////

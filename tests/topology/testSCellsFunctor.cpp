@@ -29,6 +29,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 
 #include "DGtal/topology/SCellsFunctors.h"
 
@@ -42,6 +43,14 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing the scells functors.
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename TFunctor, typename TArg, typename TRes >
+void checkingConcepts()
+{
+  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
+}
+
+
 /**
  * Example of a test. To be completed.
  *
@@ -168,6 +177,16 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
+
+  //concepts
+  typedef KhalimskySpaceND<2> K2;
+  checkingConcepts<SCellToPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToMidPoint<K2>, K2::SCell, K2::Space::RealPoint >(); 
+  checkingConcepts<SCellToArrow<K2>, K2::SCell, std::pair<K2::Point, K2::Vector> >(); 
+  checkingConcepts<SCellToInnerPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToOuterPoint<K2>, K2::SCell, K2::Point >(); 
+  checkingConcepts<SCellToIncidentPoints<K2>, K2::SCell, std::pair<K2::Point, K2::Point> >(); 
+  checkingConcepts<SCellToCode<K2>, K2::SCell, char >(); 
 
   bool res = testSCellsFunctors(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

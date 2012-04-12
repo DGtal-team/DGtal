@@ -57,15 +57,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
-     Description of \b concept '\b CSpace' <p>
+Description of \b concept '\b CSpace' <p>
      @ingroup Concepts
     
      \brief Aim: Defines the concept describing a digital space, ie a
      cartesian product of integer lines.
      
-     <p> Refinement of
+ ### Refinement of
     
-     <p> Provided types :
+ ### Provided types :
 
      - Space: the type itself.
      - Integer: the type for the components or coordinates of the
@@ -77,13 +77,13 @@ namespace DGtal
      - Size: the type for measuring distances or counting elements in
        this space. Must be a model of CUnsignedInteger
 
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CSpace
      - \t x, \t y  : Object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
 
      <table>
      <tr> 
@@ -108,13 +108,13 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that is checked. T should be a model of
+@tparam T the type that is checked. T should be a model of
      CSpace.
 
    */

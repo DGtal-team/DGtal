@@ -94,14 +94,13 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref GeometryPackage
   - \ref TopologyPackage
   - \ref ImagePackage
+  - \ref pageMathematicsPackage
 
 @section manuals_dgtal Helpers and tools
+
   - \ref tutorials
   - \ref dgtal_dgtalboard
   - \ref threeD_visu
-
-  
-  
 
 
    
@@ -123,5 +122,8 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
    @defgroup Tests DGtal Test Files
    @defgroup Examples DGtal Examples
   
+
+[imagene]: https://gforge.liris.cnrs.fr/projects/imagene "ImaGene"
+
  */
 
