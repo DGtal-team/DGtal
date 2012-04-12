@@ -376,7 +376,8 @@ namespace DGtal
     static void initFromBelsRange(const KSpace& aK, 
 				    const TIteratorOnBels& itb, const TIteratorOnBels& ite,
 				  const TImplicitFunction& aF, 
-				    Image& aImg, AcceptedPointSet& aSet);
+				    Image& aImg, AcceptedPointSet& aSet, 
+				   bool aFlagIsPositive = false);
 
 
     /**

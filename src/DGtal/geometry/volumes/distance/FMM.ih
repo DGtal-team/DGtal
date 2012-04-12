@@ -165,15 +165,19 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::initFromBelsRange(const KSpace& aK, 
 		    const TIteratorOnBels& itb, const TIteratorOnBels& ite,
 		    const TImplicitFunction& aF, 
-		    Image& aImg, AcceptedPointSet& aSet)
+		    Image& aImg, AcceptedPointSet& aSet, 
+		    bool aFlagIsPositive)
 {
- 
+  Value k = -1; 
+  if (aFlagIsPositive) k = 1; 
+
   /// types
   typedef typename KSpace::Cell Bel; 
   typedef typename TImplicitFunction::Value Value; 
   typedef std::pair<const Bel, Value> Pair; 
   typedef std::map<Bel, Value> Buffer; 
-  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer> Computer; 
+  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, false> Computer4InnerPts; 
+  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, true> Computer4OuterPts; 
 
   SCellToIncidentPoints<KSpace> getPts( aK ); 
 
@@ -184,33 +188,38 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
     {
       //getting incident points
       typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
+
       //getting values 
       Value vin = aF( points.first ); 
       Value vout = aF( points.second ); 
-      // std::cout << points.first << " " << vin << ", " << points.second <<  " " << vout;   
+
       //computing/storing the new value
       Value e = std::max(vin, vout) - std::min(vin, vout);
-      Value v = (std::abs(vout)/e); 
+      Value v = (std::abs(vin)/e); 
+      // std::cout << points.first << " " << vin << ", " << points.second <<  " " << vout;   
       // std::cout << " : " << e << ", " << v << std::endl; 
+
       ASSERT( v >= 0 ); 
       buffer.insert( Pair( aK.unsigns( *it ), v ) ); 
     }
 
   /// 2) for each inner/outer point
   /// computes its distance from the values of its incident bels
-  Computer computer(aK, buffer);    
+  Computer4InnerPts computerIn(aK, buffer);    
+  Computer4OuterPts computerOut(aK, buffer);    
   for (TIteratorOnBels it = itb; it != ite; ++it) 
     {
       //getting incident points
       typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
       //computing the values     
-      Value vin = computer( points.first ); 
-      Value vout = computer( points.second );
+      Value vin = computerIn( points.first ); 
+      Value vout = computerOut( points.second );
       // std::cout << points.first << " " << vin << ", " 
-      //<< points.second <<  " " << vout << std::endl;  
+      // 		<< points.second <<  " " << vout << std::endl;  
+
       //assignement
-      insertAndAlwaysSetValue( aImg, aSet, points.first, vin ); 
-      insertAndAlwaysSetValue( aImg, aSet, points.second, vout );  
+      insertAndAlwaysSetValue( aImg, aSet, points.first, k*vin ); 
+      insertAndAlwaysSetValue( aImg, aSet, points.second, -k*vout );  
     }
 }
 
