@@ -52,6 +52,7 @@
 int main()
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
 =======
 
@@ -62,12 +63,17 @@ int main()
   //! [freemanChainFromImage-imageImport]
 >>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
 =======
+=======
+>>>>>>> 515ed21... update tutorial example using snippet.
 
   //! [freemanChainFromImage-imageImport]
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGM(filename); 
   //! [freemanChainFromImage-imageImport]
+<<<<<<< HEAD
+>>>>>>> 515ed21... update tutorial example using snippet.
+=======
 >>>>>>> 515ed21... update tutorial example using snippet.
   
   //![freemanChainFromImage-ksspace]
@@ -81,8 +87,11 @@ int main()
 <<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 1, 255);
+=======
+>>>>>>> 515ed21... update tutorial example using snippet.
 =======
 >>>>>>> 515ed21... update tutorial example using snippet.
   //! [freemanChainFromImage-setAppend]
@@ -96,7 +105,10 @@ int main()
 
   //! [freemanChainFromImage-adj]
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
+=======
+>>>>>>> 515ed21... update tutorial example using snippet.
 =======
 >>>>>>> 515ed21... update tutorial example using snippet.
   SurfelAdjacency<2> sAdj( true );
