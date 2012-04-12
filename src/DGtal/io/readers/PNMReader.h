@@ -104,9 +104,10 @@ namespace DGtal
      * template parameter ImageContainer.
      * 
      * @param filename the file name to import.
+     * @param topbotomOrder if true, the point of coordinate (0,0) will be the bottom left corner image point (default) else the center of image coordinate will be the top left of the image (not usual).  
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importPGM(const std::string & aFilename) throw(DGtal::IOException);
+    static  ImageContainer importPGM(const std::string & aFilename, bool topbotomOrder) throw(DGtal::IOException);
 
 
     /** 
