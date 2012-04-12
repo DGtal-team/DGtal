@@ -107,7 +107,7 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename ) thr
 
   getline( infile, str );
   istringstream str2_in( str );
-  int max_value;
+  unsigned int max_value;
   str2_in >> max_value;  
 
   if ( ! infile.good() )
@@ -129,7 +129,7 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename ) thr
 	  pt[0]=x; pt[1]=y;
 	  if(!isASCIImode)
 	    {
-	      char c; 
+	      unsigned char c; 
 	      infile >> c;
 	      if ( infile.good() )
 		{ 
