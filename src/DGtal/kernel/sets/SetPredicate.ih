@@ -58,11 +58,13 @@ DGtal::SetPredicate<TDigitalSet>
 template <typename TDigitalSet>
 inline
 DGtal::SetPredicate<TDigitalSet>&
-DGtal::SetPredicate<TDigitalSet>
-::operator=( const SetPredicate & other )
+DGtal::SetPredicate<TDigitalSet>::operator=( const SetPredicate & other )
 {
-  mySet = other.mySet;
-  return *this;
+  if (this != &other)
+    {
+      mySet = other.mySet;
+    }
+  return *this; 
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -71,7 +73,6 @@ bool
 DGtal::SetPredicate<TDigitalSet>
 ::operator()( const Point & p ) const
 {
-  //  std::cerr << "SetPred.operator(" << p << ")" << std::endl;
   return mySet->find( p ) != mySet->end();
 }
 //------------------------------------------------------------------------------

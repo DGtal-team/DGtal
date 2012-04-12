@@ -64,8 +64,7 @@ namespace DGtal
    * StarShaped2D and its derived classes are models of
    * CEuclideanBoundedShape and CEuclideanOrientedShape. 
    *
-   * NB: A backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    *
    *  
    * @tparam TSpace space in which the shape is defined.
@@ -135,7 +134,7 @@ namespace DGtal
      * @return the vector (x(t),y(t)) which is the position on the
      * shape boundary.
      */
-    virtual RealPoint x( double t ) const = 0;
+    virtual RealPoint x( const double t ) const = 0;
 
     /**
      * @param t any angle between 0 and 2*Pi.
@@ -143,14 +142,14 @@ namespace DGtal
      * @return the vector (x'(t),y'(t)) which is the tangent to the
      * shape boundary.
      */
-    virtual RealPoint xp( double t ) const = 0;
+    virtual RealPoint xp( const double t ) const = 0;
 
     /**
      * @param t any angle between 0 and 2*Pi.
      *
      * @return the vector (x''(t),y''(t)).
      */
-    virtual RealPoint xpp( double t ) const = 0;
+    virtual RealPoint xpp( const double t ) const = 0;
     
 
     // ------------------------- star-shaped services -------------------------

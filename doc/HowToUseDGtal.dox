@@ -18,6 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page HowToUseDGtal How to use DGtal in my own project ?
+\tableofcontents
 @author David Coeurjolly
 
 

@@ -27,6 +27,11 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+#ifdef _MSC_VER
+#include <GL/gl.h>
+#include "DGtal/io/viewers/windows/GL/glext.h"
+#endif
+
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <limits>
 #include <QColor>
@@ -84,12 +89,12 @@ DGtal::Viewer3D::drawWithNames()
     }
   for(unsigned int i=0; i<myLineSetList.size(); i++)
     {
-      glCallList(myListToAff+myVoxelSetList.size()+i);
+      glCallList(GLuint(myListToAff+myVoxelSetList.size()+i));
     }
   
   for(unsigned int i=0; i<myPointSetList.size(); i++)
     {
-      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i);
+      glCallList(GLuint(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i));
     }   
 }
 
@@ -124,7 +129,7 @@ DGtal::Viewer3D::draw()
       if(myPointSetList.at(i).size()!=0){
 	glPointSize((myPointSetList.at(i).at(0).size)/distCam);
       }
-      glCallList(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1);
+      glCallList(GLuint(myListToAff+myVoxelSetList.size()+myLineSetList.size()+i+1));
     }   
  
   for(unsigned int i=0; i<myLineSetList.size(); i++)
@@ -132,10 +137,10 @@ DGtal::Viewer3D::draw()
       if(myLineSetList.at(i).size()!=0){
 	glLineWidth((myLineSetList.at(i).at(0).width));
       }
-      glCallList(myListToAff+myVoxelSetList.size()+1+i);
+      glCallList(GLuint(myListToAff+myVoxelSetList.size()+1+i));
     }
   
-  glCallList(myListToAff+myVoxelSetList.size());
+  glCallList(GLuint(myListToAff+myVoxelSetList.size()));
   for(unsigned int i=0; i<myVoxelSetList.size(); i++)
     {
       glCallList(myListToAff+i);
@@ -179,8 +184,15 @@ DGtal::Viewer3D::draw()
     }  
 }
 
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
 
-
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
 
 void
 DGtal::Viewer3D::init()
@@ -220,7 +232,13 @@ DGtal::Viewer3D::init()
   
 }
 
+#if defined( _HAS_MSVC_MAX_ )
+#define max(A,B) ((A)>(B)?(A):(B))
+#endif
 
+#if defined( _HAS_MSVC_MIN_ )
+#define min(A,B) ((A)<(B)?(A):(B))
+#endif
 
 void 
 DGtal::Viewer3D::sortSurfelFromCamera()
@@ -282,7 +300,7 @@ DGtal::Viewer3D::postSelection(const QPoint& point)
 void
 DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
 { 
-  unsigned int nbList= myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size();
+  unsigned int nbList= (unsigned int)(myVoxelSetList.size()+ myLineSetList.size()+ myPointSetList.size());
   glDeleteLists(myListToAff, myNbListe);
   myListToAff = glGenLists( nbList  );   
   myNbListe=0;
@@ -353,7 +371,7 @@ DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
       glEnd();
       glEndList();
     }
-  glNewList(myListToAff+myVoxelSetList.size(), GL_COMPILE);
+  glNewList(GLuint(myListToAff+myVoxelSetList.size()), GL_COMPILE);
   myNbListe++;
   glPushName(myNbListe);  
   glEnable( GL_DEPTH_TEST );
@@ -383,7 +401,7 @@ DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
   for (unsigned int i=0; i<myLineSetList.size(); i++)
     {  
       listeID++;
-      glNewList(myListToAff+myVoxelSetList.size()+i+1, GL_COMPILE);
+      glNewList(GLuint(myListToAff+myVoxelSetList.size()+i+1), GL_COMPILE);
       myNbListe++;
       glDisable(GL_LIGHTING);
       glPushName(myNbListe);  
@@ -406,7 +424,7 @@ DGtal::Viewer3D::updateList(bool needToUpdateBoundingBox)
 
   for (unsigned int i=0; i<myPointSetList.size(); i++)
     {  
-      glNewList(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1, GL_COMPILE);
+      glNewList(GLuint(myListToAff+myLineSetList.size()+myVoxelSetList.size()+i+1), GL_COMPILE);
       myNbListe++;
       glDepthMask(GL_TRUE);
       glDisable(GL_TEXTURE_2D);

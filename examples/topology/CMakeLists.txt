@@ -1,9 +1,18 @@
-SET(DGTAL_EXAMPLES_SRC
+SET(DGTAL_EXAMPLES_TOPO_SRC
   ctopo-1
   ctopo-2
   khalimskySpaceScanner
   volMarchingCubes
+  volToOFF  
+  trackImplicitPolynomialSurfaceToOFF
 )
+
+FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
+  add_executable(${FILE} ${FILE})
+  target_link_libraries ( ${FILE} DGtalIO DGtal
+    ${DGtalLibDependencies})   
+ENDFOREACH(FILE)
+
 
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
@@ -18,8 +27,6 @@ if (  WITH_VISU3D_QGLVIEWER )
      volTrackBoundary
      volBreadthFirstTraversal
      frontierAndBoundary
-     volToOFF  
-     trackImplicitPolynomialSurfaceToOFF
      digitalSurfaceSlice
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 

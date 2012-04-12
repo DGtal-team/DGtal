@@ -51,13 +51,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSurfaceContainer
   /**
-     Description of \b concept '\b CDigitalSurfaceContainer' <p>
+Description of \b concept '\b CDigitalSurfaceContainer' <p>
      @ingroup Concepts
      @brief Aim:
      
-     <p> Refinement of boost_concepts::CopyConstructible
+ ### Refinement of boost_concepts::CopyConstructible
     
-     <p> Associated types :
+ ### Associated types :
      
      - KSpace: the type of cellular grid space in which lies the digital surface.
      - Surfel: the type of an oriented n-1-cell in this space.
@@ -65,14 +65,14 @@ namespace DGtal
      - DigitalSurfaceTracker: the type for tracking surfels over the digital surface
      - Size: the integral type for counting elements.
 
-     <p> Notation
+ ### Notation
      - \c X : A type that is a model of CDigitalSurfaceContainer
      - \c x : object of type X
      - \c s : object of type Surfel
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -167,15 +167,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
      DigitalSetBoundary, SetOfSurfels, ImplicitDigitalSurface, LightImplicitDigitalSurface, ExplicitDigitalSurface, LightExplicitDigitalSurface
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CDigitalSurfaceContainer.
+@tparam T the type that should be a model of CDigitalSurfaceContainer.
    */
   template <typename T> 
   struct CDigitalSurfaceContainer : boost::CopyConstructible<T>
