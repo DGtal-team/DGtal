@@ -280,9 +280,9 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
   it != s.end();
         ++it )
     {
-      display.addPoint(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]), 
-                       NumberTraits<Component>::castToInt64_t((*it)[2]), 
+      display.addPoint(NumberTraits<Component>::castToDouble((*it)[0]),
+                       NumberTraits<Component>::castToDouble((*it)[1]), 
+                       NumberTraits<Component>::castToDouble((*it)[2]), 
                        display.getFillColor());
     }
 }
@@ -415,7 +415,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   typename TSpace::RealPoint lowerBound ( h.myLowerBound);
 
   DGtal::Color colDef(250,250,250,10);
-  float shiftSize=0.01;
+  double shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
@@ -528,13 +528,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
       {
         for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
              x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-          display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5,z,
-                          x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5,z,display.getLineColor() );
+          display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                          (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor() );
         }
         for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
              y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-          display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-                          NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y,z,  display.getLineColor());
+          display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                          NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
         }
       }
     
@@ -543,13 +543,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
          y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
            x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-        display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-                        x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])+0.5,display.getLineColor());
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-                        NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y, z, display.getLineColor());
+        display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                        NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
       }
     }
     
@@ -559,13 +559,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
       
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
            y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-        display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-                        x, y ,NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2])+0.5, display.getLineColor());
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5 ,z,
-                        x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5, z, display.getLineColor());
+        display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                        (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor());
       }
     }
   }
@@ -590,7 +590,7 @@ void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display,
       
   for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
        y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-    display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
+    display.addPoint((double)x, (double)y , (double)z, DGtal::Color(255, 0 ,0));
 
   }
       }
@@ -672,7 +672,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
@@ -863,7 +863,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;

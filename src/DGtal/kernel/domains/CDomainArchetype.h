@@ -15,7 +15,10 @@
  **/
 
 #pragma once
+
+#ifndef _MSC_VER
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
 
 /**
@@ -114,6 +117,12 @@ namespace DGtal
     /**
      * @return an iterator on the first element of the domain.
      **/
+    ConstIterator begin(const Point &aPoint) const 
+    { return DummyObject<ConstIterator>::get(); }
+
+    /**
+     * @return an iterator on the first element of the domain.
+     **/
     ConstIterator begin() const 
     { return DummyObject<ConstIterator>::get(); }
 
@@ -137,6 +146,12 @@ namespace DGtal
     const Point &upperBound() const
     { return DummyObject<Point>::get(); }
 
+    /**
+     * Returns the size.
+     *
+     **/
+    Size size() const
+    { return DummyObject<Size>::get(); }
 
     /**
      * @param p any point.

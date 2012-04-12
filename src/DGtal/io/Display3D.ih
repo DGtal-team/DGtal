@@ -158,11 +158,11 @@ void
 DGtal::Display3D::addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z,
 			   DGtal::Color aColor, double width, bool withWire)
 {
-  updateBoundingBox(x, y, z);    
+  updateBoundingBox((double)x, (double)y, (double)z);    
   voxelD3D v;
-  v.x=x;
-  v.y=y;
-  v.z=z;
+  v.x=(int)x;
+  v.y=(int)y;
+  v.z=(int)z;
   v.R=aColor.red();
   v.G=aColor.green();
   v.B=aColor.blue();

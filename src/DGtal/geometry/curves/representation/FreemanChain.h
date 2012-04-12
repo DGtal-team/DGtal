@@ -58,7 +58,7 @@
 #include "DGtal/base/Circulator.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
 //#include "DGtal/io/boards/Board2D.h"
-
+#include "DGtal/base/CConstSinglePassRange.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

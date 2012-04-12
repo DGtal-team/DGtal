@@ -31,6 +31,7 @@
 #include <fstream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
@@ -38,10 +39,10 @@
 using namespace DGtal;
 using namespace std;
 
-template<typename TFunctor>
+template <typename TFunctor, typename TArg, typename TRes >
 void checkingConcepts()
 {
-  BOOST_CONCEPT_ASSERT(( boost::Assignable<TFunctor> ));
+  BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArg, TRes > ));
 }
 
 bool testProjector()
@@ -115,7 +116,8 @@ bool testProjector()
   nb++;  
 
   PointVector<3,int> res4(2,-1,-1);
-  trace.info() << "p " << p << " => " << proj4(p) << " == " << res4 << "(-1 as default value)" << std::endl;
+  trace.info() << "p " << p << " => " << proj4(p) << " == " << res4
+	       << "(-1 as default value)" << std::endl;
   nbok += ( proj4(p) == res4 ) ? 1 : 0; 
   nb++;  
   }
@@ -136,7 +138,10 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
 
-  checkingConcepts<Projector<> >(); 
+  checkingConcepts<Projector<SpaceND<2,int> >, PointVector<6,int>, PointVector<2,int> >(); 
+  //for instance, this does not compile because 
+  //the point of dim 6 is projected on a point of dim 2 (and not 3)
+  //checkingConcepts<Projector<SpaceND<2,int> >, PointVector<6,int>, PointVector<3,int> >(); 
 
   bool res = testProjector();
 

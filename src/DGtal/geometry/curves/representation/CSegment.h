@@ -52,69 +52,69 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSegment
   /**
-     Description of \b concept '\b CSegment' <p>
+Description of \b concept '\b CSegment' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing a segment of a range, 
-    ie. a valid and not empty subrange. 
-     
-     <p> Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T> 
-    
-     <p> Associated types :
+     @brief Aim: Defines the concept describing a segment of a range,
+    ie. a valid and not empty subrange.
+
+ ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
+
+ ### Associated types :
     - Self, the type itself
     - ConstIterator, the type used to iterate over the
     elements of the segment
-  
-     <p> Notation
+
+ ### Notation
      - \t X : A type that is a model of CSegment
      - \t x, \t y : object of type X
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
+
+ ### Definitions
+
+ ### Valid expressions and semantics
+     <table>
+      <tr>
+        <td class=CName> \b Name </td>
         <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CRequirements> \b Type requirements </td>
         <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CPrecondition> \b Precondition </td>
+        <td class=CSemantics> \b Semantics </td>
+        <td class=CPostCondition> \b Postcondition </td>
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      <tr> 
-        <td class=CName> begin method  </td> 
+      <tr>
+        <td class=CName> begin method  </td>
         <td class=CExpression> x.begin()     </td>
-        <td class=CRequirements>    </td> 
+        <td class=CRequirements>    </td>
         <td class=CReturnType> ConstIterator     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> provides an iterator on the first element of the segment      </td> 
-        <td class=CPostCondition>       </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics> provides an iterator on the first element of the segment      </td>
+        <td class=CPostCondition>       </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
-      <tr> 
-        <td class=CName> end method  </td> 
+      <tr>
+        <td class=CName> end method  </td>
         <td class=CExpression> x.end()     </td>
-        <td class=CRequirements>    </td> 
+        <td class=CRequirements>    </td>
         <td class=CReturnType> ConstIterator     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> past-the-end value      </td> 
-        <td class=CPostCondition>       </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics> past-the-end value      </td>
+        <td class=CPostCondition>       </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
-      
+
      </table>
-    
-     <p> Invariants <br>
-     The range [x.begin(),x.end()) is valid and not empty    
 
-     <p> Models <br>
-    
-     <p> Notes <br>
+ ### Invariants###
+     The range [x.begin(),x.end()) is valid and not empty
 
-     @tparam T the type that should be a model of CSegment.
+ ### Models###
+
+ ### Notes###
+
+@tparam T the type that should be a model of CSegment.
    */
-  template <typename T> 
+  template <typename T>
   struct CSegment : boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -135,12 +135,12 @@ namespace DGtal
   private:
     T myX; // only if T is default constructible.
     ConstIterator it;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CSegment
-  
+
 } // namespace DGtal
 
 //                                                                           //

@@ -53,22 +53,22 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDynamicBidirectionalSegmentComputer
   /**
-     Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
+Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
      @ingroup Concepts
      @brief Aim: Defines the concept describing a dynamic and bidirectional 
     segment computer,  ie. a model of CSegment that can extend and retract itself 
     in either direction.  
      
-     <p> Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer 
+ ### Refinement of CBidirectionalSegmentComputer and CDynamicSegmentComputer 
     
     
-     <p> Models <br>
+ ### Models###
 
      @href ArithmeticalDSS
     
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
+@tparam T the type that should be a model of CDynamicBidirectionalSegmentComputer.
    */
   template <typename T> 
   struct CDynamicBidirectionalSegmentComputer : 

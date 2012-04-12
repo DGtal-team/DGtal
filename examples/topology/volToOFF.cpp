@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //! [volToOff-basicIncludes]
 #include <iostream>
+#include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
@@ -74,15 +75,15 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
   SetPredicate<DigitalSet> set3dPredicate( set3d );
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           minThreshold, maxThreshold);
   trace.endBlock();
   //! [volToOff-readVol]
-  
+
   //! [volToOff-KSpace]
   // Construct the Khalimsky space from the image domain
   KSpace K;
-  bool space_ok = K.init( image.domain().lowerBound(), 
+  bool space_ok = K.init( image.domain().lowerBound(),
                           image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -106,7 +107,7 @@ int main( int argc, char** argv )
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
   Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
                                    K, set3dPredicate,
-                                   image.domain().lowerBound(), 
+                                   image.domain().lowerBound(),
                                    image.domain().upperBound() );
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."

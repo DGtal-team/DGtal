@@ -49,9 +49,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain_Iterator.h"
 #include "DGtal/kernel/NumberTraits.h"
-//#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/base/CConstRange.h"
-//#include "DGtal/io/Display3D.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 
 namespace DGtal
 {
@@ -173,7 +171,7 @@ namespace DGtal
     ConstIterator begin(const Point& aPoint) const
     { ASSERT(isInside(aPoint));
       return ConstIterator(aPoint, 
-         myLowerBound, myUpperBound); }
+			   myLowerBound, myUpperBound); }
     
     /*
      * end method.
@@ -182,10 +180,10 @@ namespace DGtal
     const ConstIterator& end() const
     { return myIteratorEnd; }
     
-      /*
-       * reverse begin method.
-       * @return ConstIterator on the beginning of the reverse range.
-       */
+    /*
+     * reverse begin method.
+     * @return ConstIterator on the beginning of the reverse range.
+     */
     ConstReverseIterator rbegin() const
     { return ConstReverseIterator(end()); }
     
@@ -203,7 +201,7 @@ namespace DGtal
     /*
      * reverse end method.
      * @return ConstIterator on the end of the reverse range.
-       */
+     */
     ConstReverseIterator rend() const
     { return ConstReverseIterator(begin()); }
     
@@ -229,17 +227,17 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        const std::vector<Dimension> & permutation,
-        const Point & startingPoint)
-  : myLowerBound(domain.myLowerBound),
-    myUpperBound(domain.myUpperBound),
-    myStartingPoint(startingPoint)
+		    const std::vector<Dimension> & permutation,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
       {
-  myPermutation.reserve( permutation.size() );
-  std::copy(permutation.begin(),permutation.end(),
-      std::back_inserter(myPermutation));
-  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+	myPermutation.reserve( permutation.size() );
+	std::copy(permutation.begin(),permutation.end(),
+		  std::back_inserter(myPermutation));
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 
 #ifdef CPP0X_INITIALIZER_LIST
@@ -252,20 +250,20 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        std::initializer_list<Dimension> permutation,
-        const Point & startingPoint)
-  : myLowerBound(domain.myLowerBound),
-    myUpperBound(domain.myUpperBound),
-    myStartingPoint(startingPoint)
+		    std::initializer_list<Dimension> permutation,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
       {
-  myPermutation.reserve( permutation.size() );
-  for ( const unsigned int *c = permutation.begin();
-        c != permutation.end(); ++c )
-    {
-      myPermutation.push_back( *c );
-    }
-  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+	myPermutation.reserve( permutation.size() );
+	for ( const unsigned int *c = permutation.begin();
+	      c != permutation.end(); ++c )
+	  {
+	    myPermutation.push_back( *c );
+	  }
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 #endif
 
@@ -277,15 +275,15 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        Dimension adim,
-        const Point & startingPoint)
-  : myLowerBound(domain.myLowerBound),
-    myUpperBound(domain.myUpperBound),
-    myStartingPoint(startingPoint)
+		    Dimension adim,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
       {
-  myPermutation.push_back( adim );
-  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+	myPermutation.push_back( adim );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /**
@@ -297,16 +295,16 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        Dimension adim1, Dimension adim2,
-        const Point & startingPoint)
-  : myLowerBound(domain.myLowerBound),
-    myUpperBound(domain.myUpperBound),
-    myStartingPoint(startingPoint)
+		    Dimension adim1, Dimension adim2,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
       {
-  myPermutation.push_back( adim1 );
-  myPermutation.push_back( adim2 );
-  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+	myPermutation.push_back( adim1 );
+	myPermutation.push_back( adim2 );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /**
@@ -319,17 +317,17 @@ namespace DGtal
        * @pre startingPoint must belong to the range.     
        */
       ConstSubRange(const HyperRectDomain<TSpace>& domain,
-        Dimension adim1, Dimension adim2, Dimension adim3,
-        const Point & startingPoint)
-  : myLowerBound(domain.myLowerBound),
-    myUpperBound(domain.myUpperBound),
-    myStartingPoint(startingPoint)
+		    Dimension adim1, Dimension adim2, Dimension adim3,
+		    const Point & startingPoint)
+	: myLowerBound(domain.myLowerBound),
+	  myUpperBound(domain.myUpperBound),
+	  myStartingPoint(startingPoint)
       {
-  myPermutation.push_back( adim1 );
-  myPermutation.push_back( adim2 );
-  myPermutation.push_back( adim3 );
-  myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
-  myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
+	myPermutation.push_back( adim1 );
+	myPermutation.push_back( adim2 );
+	myPermutation.push_back( adim3 );
+	myLowerBound.partialCopyInv(myStartingPoint, myPermutation);
+	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
       
       /*
@@ -338,7 +336,7 @@ namespace DGtal
        */
       ConstIterator begin() const
       {  return ConstIterator(myLowerBound, myLowerBound,
-           myUpperBound, myPermutation); }
+			      myUpperBound, myPermutation); }
       
       /*
        * begin method from a given point.
@@ -348,10 +346,10 @@ namespace DGtal
        */
       ConstIterator begin(const Point& aPoint) const
       { 
-  ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
-  ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
-  return ConstIterator(aPoint, myLowerBound,
-           myUpperBound, myPermutation);
+	ASSERT(aPoint.partialEqualInv(myLowerBound, myPermutation) );
+	ASSERT(myLowerBound<=aPoint && aPoint<=myUpperBound);
+	return ConstIterator(aPoint, myLowerBound,
+			     myUpperBound, myPermutation);
       }
 
       /*
@@ -360,10 +358,10 @@ namespace DGtal
        */
       ConstIterator end() const
       {
-  ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
-           myUpperBound, myPermutation);
-  ++it;
-  return it;
+	ConstIterator it = ConstIterator(myUpperBound, myLowerBound,
+					 myUpperBound, myPermutation);
+	++it;
+	return it;
       }
 
       /*
@@ -381,7 +379,7 @@ namespace DGtal
        */
       ConstReverseIterator rbegin(const Point& aPoint) const
       { ConstIterator it(begin(aPoint)); ++it;
-  return ConstReverseIterator(it); }
+	return ConstReverseIterator(it); }
 
       /*
        * reverse end method.
@@ -419,7 +417,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(const std::vector<Dimension> & permutation,
-         const Point & startingPoint) const
+			   const Point & startingPoint) const
     { return ConstSubRange(*this, permutation, startingPoint); }
     
     /**
@@ -430,7 +428,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim,
-         const Point & startingPoint) const
+			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim, startingPoint); }
     
     /**
@@ -442,7 +440,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2,
-         const Point & startingPoint) const
+			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, startingPoint); }
     
     /**
@@ -455,7 +453,7 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(Dimension adim1, Dimension adim2, Dimension adim3,
-         const Point & startingPoint) const
+			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
     
 #ifdef CPP0X_INITIALIZER_LIST
@@ -477,24 +475,37 @@ namespace DGtal
      * @pre startingPoint must belong to the range.     
      */
     ConstSubRange subRange(std::initializer_list<Dimension> permutation,
-         const Point & startingPoint)
+			   const Point & startingPoint)
     { return ConstSubRange(*this, permutation, startingPoint); }
 #endif
     
     // ----------------------- Interface --------------------------------------
   public:
     /**
-     * @return  the size of the HyperRectDomain
+     * @return  the extent of the HyperRectDomain
      *
      **/
-    Point size() const
+    Vector extent() const
     {
-      Point p;
-      for(typename Point::Iterator it=p.begin(), itend=p.end();
-    it != itend; ++it)
-        (*it) = 1;
-
+      Point p = Point::diagonal(1);
       return (myUpperBound - myLowerBound) + p;
+    }
+
+    /**
+     * @return  the size (number of points) of the HyperRectDomain
+     *
+     **/
+    Size size() const
+    {
+      Size res = 1;
+      Vector e = this->extent();
+      typename Vector::ConstIterator it, itEnd; 
+      for ( it = e.begin(), itEnd = e.end(); 
+	    it != itEnd; ++it)
+	{
+	  res *= *it; 
+	}
+      return res; 
     }
 
     /**
