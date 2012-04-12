@@ -61,10 +61,21 @@ namespace DGtal
   //--------------- small helpers  ----------------------------------------------
   namespace details
   {
-    //comparator in absolute value
     //@TODO put it in a file of the base directory ?
-    bool absComparator(double i, double j) { return ( std::abs(i) < std::abs(j) ); }
 
+    //comparator in absolute value
+    template <typename Value>
+    bool absComparator(const Value& i, const Value& j) 
+    { 
+      return ( std::abs(static_cast<double>(i)) < std::abs(static_cast<double>(j)) ); 
+    }
+
+    //pair second member comparator in absolute value
+    template <typename Pair>
+    bool secondAbsComparator(const Pair& i, const Pair& j) 
+    { 
+      return absComparator( i.second, j.second ); 
+    }
   }
 
 
@@ -195,6 +206,136 @@ namespace DGtal
      * @return the computed gradient norm.
      */
     Value gradientNorm(const Value& aValue, const Values& aValueList) const;
+  }; 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class L2SecondOrderLocalDistance
+  /**
+   * Description of template class 'L2SecondOrderLocalDistance' <p>
+   * \brief Aim: Class for the computation of the Euclidean distance
+   * at some point p, from the available distance values of some points 
+   * lying in the neighborhood of p, such that only one of their
+   * coordinate differ from the coordinates of p by at most two. 
+   *
+   * Like L2FirstOrderLocalDistance, the computed value is such that
+   * the upwind gradient of the distance map is one, but instead of 
+   * using first-order accurate forward and backward differences, 
+   * L2SecondOrderLocalDistance uses second-order accurate forward 
+   * and backward difference whenever there are enough points whose
+   * distance values are known in order to evaluate these differences. 
+   *
+   * It is a model of CPointFunctor.
+   *
+   * @tparam TImage model of CImage used for the mapping point-distance value
+   * @tparam TSet model of CDigitalSet for storing points whose distance value is known
+   *
+   * @see FMM
+   */
+  template <typename TImage, typename TSet>
+  class L2SecondOrderLocalDistance
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+
+    /// image
+    BOOST_CONCEPT_ASSERT(( CImage<TImage> ));
+    typedef TImage Image;
+    typedef typename Image::Point Point;
+    typedef typename Image::Value Value; 
+
+    /// set
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    typedef TSet Set;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+
+  private: 
+
+    typedef std::pair<double, Value> CoeffValue; 
+    typedef std::vector<CoeffValue> List; 
+  
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying image
+    Image* myImgPtr; 
+    /// Aliasing pointer on the underlying set
+    Set* mySetPtr; 
+
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Constructor from an image and a set. 
+     * NB: only pointers are stored
+     *
+     * @param aImg any distance map
+     * @param aSet any digital set
+     */
+    L2SecondOrderLocalDistance(Image& aImg, TSet& aSet);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    L2SecondOrderLocalDistance ( const L2SecondOrderLocalDistance & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    L2SecondOrderLocalDistance & operator= ( const L2SecondOrderLocalDistance & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~L2SecondOrderLocalDistance(); 
+
+    /** 
+     * Euclidean distance computation at @a aPoint , 
+     * from the available distance values
+     * of the 1-neighbors of @a aPoint  .
+     *
+     * @param aPoint the point for which the distance is computed
+     *
+     * @return the distance value at @a aPoint.
+     *
+     */
+    Value operator() (const Point& aPoint);
+
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out ) const;
+
+    // ----------------------- Internals -------------------------------------
+
+  private: 
+
+    /**
+     * Returns an approximation of the Euclidean distance 
+     * at some point, knowing the distance of its neighbors
+     * 
+     * @param aList  the distance of (some of) the neighbors
+     * @return the computed distance.
+     */
+    Value compute(List& aList) const; 
+
+
+    /**
+     * Returns the squared euclidean norm of the gradient 
+     * of the distance map
+     * 
+     * @param aValue  the distance value of the point where the gradient is computed
+     * @param aList  the distance value of (some of) the neighbors
+     *
+     * @return the computed gradient norm.
+     */
+    Value gradientNorm(const Value& aValue, const List& aList) const;
   }; 
 
 
