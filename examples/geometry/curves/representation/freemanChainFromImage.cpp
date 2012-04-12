@@ -61,6 +61,15 @@ using namespace Z2i;
 
 int main()
 {
+<<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
+=======
+
+  //! [freemanChainFromImage-imageImport]
+  typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, unsigned char> Image;
+  std::string filename =  examplesPath + "samples/circleR10modif.pgm";
+  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
+  //! [freemanChainFromImage-imageImport]
+>>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
   
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
   Image image = PNMReader<Image>::importPGM( examplesPath + "samples/circleR10modif.pgm" ); 
@@ -73,7 +82,21 @@ int main()
   
   Z2i::DigitalSet set2d (image.domain());
   SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
+<<<<<<< HEAD:examples/geometry/curves/representation/freemanChainFromImage.cpp
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
+=======
+  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 1, 255);
+  //! [freemanChainFromImage-setAppend]
+
+
+  //! [freemanChainFromImage-displaySet]
+  Board2D aBoard;
+  aBoard << set2d;
+  aBoard << image.domain();  
+  //! [freemanChainFromImage-displaySet]
+
+  //! [freemanChainFromImage-adj]
+>>>>>>> 65df006... small change fior beug with image type <int> [work]...:examples/tutorial-examples/freemanChainFromImage.cpp
   SurfelAdjacency<2> sAdj( true );
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
