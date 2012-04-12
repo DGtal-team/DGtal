@@ -130,31 +130,6 @@ private:
   double myCx, myCy, myR; 
 };
 
-// //////////////////////////////////////////////////////////////////////////////
-// // display
-// template< typename TIterator >
-// void draw( const TIterator& itb, const TIterator& ite, const int& size, std::string basename) 
-// {
-//   typedef typename std::iterator_traits<TIterator>::value_type Pair; 
-//   typedef typename Pair::first_type Point; 
-//   typedef typename Pair::second_type Value; 
-//   HueShadeColorMap<unsigned char, 2> colorMap(0,3*size);
-
-//   Board2D b; 
-//   b.setUnit ( LibBoard::Board::UCentimeter );
-
-//   TIterator it = itb; 
-//   for ( ; it != ite; ++it)
-//     {
-//       Point p = it->first;
-//       b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
-//       b << p;
-//     }
-
-//   std::stringstream s; 
-//   s << basename << ".eps"; 
-//   b.saveEPS(s.str().c_str());
-// } 
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -193,16 +168,17 @@ bool performDT(int size)
     typedef DigitalSetFromMap<Image> Set; 
     Image map( d ); 
     Set set(map); 
-    //  map.setValue(Point(0,0), 0.0); 
 
     //initialisation
     //! [FMMDef]
     typedef FMM<Image, Set, Predicate > FMM;
     //! [FMMDef]
+
+    //! [FMMInit1]
     FMM::initFromBelsRange( K, 
 			    vSCells.begin(), vSCells.end(), 
 			    map, set, 0.5 ); 
-    trace.info() << "init done" << std::endl; 
+    //! [FMMInit1]
 
     //computation
     //! [FMMUsage]
@@ -230,22 +206,23 @@ bool performDT(int size)
     //  map.setValue(Point(0,0), 0.0); 
 
     //initialisation
-    //! [FMMDef]
+    //! [FMMDef2]
     typedef FMM<Image, Set, Predicate > FMM;
-    //! [FMMDef]
+    //! [FMMDef2]
     typedef BallFunctor<Point> Functor; 
     Functor functor( 0, 0, radius ); 
+    //! [FMMInit2]
     FMM::initFromBelsRange( K, 
 			    vSCells.begin(), vSCells.end(), 
 			    functor, map, set ); 
+    //! [FMMInit2]
 
-    trace.info() << "init done" << std::endl; 
     //computation
-    //! [FMMUsage]
+    //! [FMMUsage2]
     FMM fmm(map, set, predicate); 
     fmm.compute(); 
     trace.info() << fmm << std::endl;
-    //! [FMMUsage]
+    //! [FMMUsage2]
 
     //max
     double truth = radius*h; 
@@ -255,12 +232,6 @@ bool performDT(int size)
     trace.info() << " # found: " << found << std::endl; 
     trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
   }
-
-  // //display
-  // std::stringstream s; 
-  // s << "DT-" << radius; 
-  // draw(map.begin(), map.end(), radius, s.str());
-
 
   return true; 
 

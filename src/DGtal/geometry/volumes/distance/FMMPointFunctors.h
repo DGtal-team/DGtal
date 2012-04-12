@@ -58,11 +58,15 @@ namespace DGtal
 {
 
   ///////////////////////////////////////////////////////////////////////////////
-  //--------------- small helper  ----------------------------------------------
+  //--------------- small helpers  ----------------------------------------------
   namespace details
   {
+    //comparator in absolute value
+    //@TODO put it in a file of the base directory ?
     bool absComparator(double i, double j) { return ( std::abs(i) < std::abs(j) ); }
+
   }
+
 
   /////////////////////////////////////////////////////////////////////////////
   // template class L2FirstOrderLocalDistance
@@ -84,6 +88,8 @@ namespace DGtal
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
    * @tparam TSet model of CDigitalSet for storing points whose distance value is known
+   *
+   * @see FMM
    */
   template <typename TImage, typename TSet>
   class L2FirstOrderLocalDistance
@@ -210,6 +216,8 @@ namespace DGtal
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
    * @tparam TSet model of CDigitalSet for storing points whose distance value is known
+   *
+   * @see FMM
    */
   template <typename TImage, typename TSet>
   class LInfFirstOrderLocalDistance
@@ -323,6 +331,8 @@ namespace DGtal
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
    * @tparam TSet model of CDigitalSet for storing points whose distance value is known
+   *
+   * @see FMM
    */
   template <typename TImage, typename TSet>
   class L1FirstOrderLocalDistance
@@ -427,10 +437,17 @@ namespace DGtal
    * from the points adjacent to p but instead from the (d-1)-cells lying between p 
    * and these points.   
    *
+   * @note The stored values are expected to be the distance of the interface
+   * to the points directly incident to the cells and must be between 0 and 1. 
+   *
    * @tparam TKSpace a model of cellular grid
-   * @tparam TMap type used for the mapping cells-value
+   * @tparam TMap a model of associative container used for the mapping cells-value
+   * @tparam isIndirect a bool equal to 'false' if the tested points are expected to be 
+   * directly incident to the cells (default) and 'true' otherwise 
+   *
+   * @see initFromBelsRange FMM
    */
-  template <typename TKSpace, typename TMap>
+  template <typename TKSpace, typename TMap, bool isIndirect = false>
   class L2FirstOrderLocalDistanceFromCells
   {
 
@@ -513,7 +530,7 @@ namespace DGtal
     /**
      * Returns an approximation of the Euclidean distance 
      * at some point, knowing the distance of its adjacent cells
-     * containing in @a aValueList
+     * contained in @a aValueList
      * 
      * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
