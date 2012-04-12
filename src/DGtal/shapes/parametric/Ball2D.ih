@@ -50,14 +50,14 @@ DGtal::Ball2D<T>::~Ball2D()
 template <typename T>
 inline
 DGtal::Ball2D<T>::Ball2D(const double x0, const double y0, const double radius):
-  myRadius(radius), myCenter(x0,y0) 
+  myCenter(x0,y0), myRadius(radius) 
 {}
 
 
 template <typename T>
 inline
 DGtal::Ball2D<T>::Ball2D(const RealPoint2D &aPoint, const double radius):
-  myRadius(radius), myCenter(aPoint) 
+  myCenter(aPoint), myRadius(radius)
 {}
 
 template <typename T>
