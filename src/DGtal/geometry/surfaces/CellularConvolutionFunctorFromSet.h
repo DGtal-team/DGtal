@@ -18,14 +18,15 @@
 
 /**
  * @file CellularConvolutionFunctorFromSet.h
+ * @brief Create a cellular convolution functor from a shape set.
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/04/05
  *
- * Header file for module CellularConvolutionFunctorFromSet.cpp
- *
  * This file is part of the DGtal library.
+ *
+ * @see testConvolver.cpp
  */
 
 #if defined(CellularConvolutionFunctorFromSet_RECURSES)
@@ -51,9 +52,14 @@ namespace DGtal
   // template class CellularConvolutionFunctorFromSet
   /**
    * Description of template class 'CellularConvolutionFunctorFromSet' <p>
-   * \brief Aim:
+   * \brief Aim: a convolution functor that return a value (between constructor's arguments val1 and val2)
+   * from a signed cell.
+   *
+   * @tparam TDigitalSet a model of a digital set
+   * @tparam TKSpace a model of a KSpace from digital set
    */
   template <typename TDigitalSet, typename TKSpace>
+
   class CellularConvolutionFunctorFromSet
   {
       // ----------------------- Standard services ------------------------------
@@ -65,7 +71,13 @@ namespace DGtal
       typedef typename KSpace::Space::Integer Quantity;
       typedef Quantity Value;
 
-
+      /**
+      * Constructor.
+      *
+      * @param aDigitalSet digital set of the shape, used to compute if a signed cell is inside or not.
+      * @param val1 value returned by the functor if the signed cell is inside the shape
+      * @param val2 value returned by the functor if the signed cell isn't inside the shape.
+      */
       CellularConvolutionFunctorFromSet( const DigitalSet & aDigitalSet,
                                          Quantity val1 = NumberTraits<Quantity>::ZERO,
                                          Quantity val2 = NumberTraits<Quantity>::ONE )
@@ -73,17 +85,21 @@ namespace DGtal
           myValFalse( val1 ),
           myValTrue( val2 )
       {
-        KSpace myKSpace;
         bool space_ok = myKSpace.init( myDigitalSet.domain().lowerBound(), myDigitalSet.domain().upperBound(), true );
         ASSERT( space_ok );
       }
 
 
-      //Assumption aCell -> Spel
+      /**
+       * Assumption aCell -> Spel
+       *
+       * @param aSpel a signed cell witch we compute if she is inside the shape or not.
+       * @return myValTrue if she is inside, myValFalse else
+       */
       inline
       Quantity operator()( const typename KSpace::SCell &aSpel ) const
       {
-        if ( myDigitalSet.find( myKSpace.sCoords( aSpel )) != myDigitalSet.end() )
+        if ( myDigitalSet.find( myKSpace.sCoords( aSpel ) ) != myDigitalSet.end() )
           return myValTrue;
         else
           return myValFalse;
@@ -117,13 +133,13 @@ namespace DGtal
     private:
       // ------------------------- Private Datas --------------------------------
 
-    private:
-
-
+      ///DigitalSet of the shape
       const  DigitalSet & myDigitalSet;
+      ///Value return by the functor if the cellular isn't inside the shape
       Quantity myValFalse;
+      ///Value return by the functor if the cellular is inside the shape
       Quantity myValTrue;
-
+      ///KSpace of the shape
       KSpace myKSpace;
 
       // ------------------------- Hidden services ------------------------------

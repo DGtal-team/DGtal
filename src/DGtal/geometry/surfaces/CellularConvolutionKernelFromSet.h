@@ -18,14 +18,15 @@
 
 /**
  * @file CellularConvolutionKernelFromSet.h
+ * @brief Create a cellular convolution kernel from a functor and a kernel set.
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/04/05
  *
- * Header file for module CellularConvolutionKernelFromSet.cpp
- *
  * This file is part of the DGtal library.
+ *
+ * @see testConvolver.cpp
  */
 
 #if defined(CellularConvolutionKernelFromSet_RECURSES)
@@ -49,13 +50,20 @@
 namespace DGtal
 {
 
-/////////////////////////////////////////////////////////////////////////////
-// class CellularConvolutionKernelFromSet
+  /////////////////////////////////////////////////////////////////////////////
+  // template class CellularConvolutionKernelFromSet
   /**
    * Description of class 'CellularConvolutionKernelFromSet' <p>
-   * \brief Aim:
+   * \brief Aim: a convolution kernel that will be used by a convolver. This will create a kernel from a set, and linked it with a functor.
+   *
+   * Model of @href CCellularConvolutionKernel
+   *
+   * @tparam TDigitalSet a model of digital set
+   * @tparam TKSpace a model of KSpace from digital set
+   * @tparam TCellFunctor a functor on signed cell
    */
   template<typename TDigitalSet, typename TKSpace, typename TCellFunctor>
+
   class CellularConvolutionKernelFromSet
   {
 
@@ -71,16 +79,28 @@ namespace DGtal
       typedef typename Spels::ConstIterator ConstIterator;
       typedef typename TCellFunctor::Quantity Quantity;
       typedef TCellFunctor CellFunctor;
-      
-      ///@todo BOOST ASSERT CEllFunctor::KSpace == KSpace
-      
-      CellularConvolutionKernelFromSet( const DigitalSet &aDigitalSet, const Spel &aOrigin, const CellFunctor&aFunctor ): myOrigin( aOrigin ), myCellFunctor(aFunctor)
+
+
+      /**
+      * Constructor.
+      *
+      * @param aDigitalSet digital set of the kernel.
+      * @param aOrigin origin signed cell of the kernel (ex: center of a ball)
+      * @param aFunctor the functor used for the kernel.
+      */
+      CellularConvolutionKernelFromSet( const DigitalSet & aDigitalSet,
+                                        const Spel & aOrigin,
+                                        const CellFunctor & aFunctor )
+          : myOrigin( aOrigin ),
+          myCellFunctor( aFunctor )
       {
         KSpace myKSpace;
         bool space_ok = myKSpace.init( aDigitalSet.domain().lowerBound(), aDigitalSet.domain().upperBound(), true );
         ASSERT( space_ok );
 
-        //Explicit copy of set points into Spel
+        ///@todo BOOST ASSERT CEllFunctor::KSpace == KSpace // BOOST_CONCEPT_ASSERT(( ConceptUtils::same_type< CellFunctor::KSpace, KSpace >() ));
+
+        ///Explicit copy of set points into Spel
 
         for ( typename DigitalSet::ConstIterator it = aDigitalSet.begin(), itend = aDigitalSet.end();
               it != itend;
@@ -98,27 +118,49 @@ namespace DGtal
     public:
 
 
+      /**
+       * Get the origin of the kernel (ex: center of a ball)
+       *
+       * @return the kernel's origin signed cell
+       */
       const Spel & origin()  const
       {
         return myOrigin;
       }
 
 
+      /**
+       * Get a constant interator of the begin of the kernel.
+       *
+       * @return the kernel's first signed cell iterator
+       */
       ConstIterator begin() const
       {
         return mySpels.begin();
       }
 
 
+      /**
+       * Get a constant interator of the end of the kernel.
+       *
+       * @return the kernel's last signed cell iterator
+       */
       ConstIterator end() const
       {
         return mySpels.end();
       }
 
 
+      /**
+       * Get the functor return quantity from a signed cell.
+       *
+       * @param aSpel a signed cell which we compute the value with the functor
+       *
+       * @return the functor's return for aSpel
+       */
       Quantity operator()( const Spel &aSpel ) const
       {
-        return myCellFunctor(aSpel);
+        return myCellFunctor( aSpel );
       }
 
 
@@ -139,15 +181,13 @@ namespace DGtal
     private:
       // ------------------------- Private Datas --------------------------------
 
-    private:
-
-      ///
+      ///Explicit copy of kernel set into signed cells
       Spels mySpels;
-
+      ///Const ref to origin signed cell
       const Spel & myOrigin;
-
+      ///Const ref to the functor
       const CellFunctor &myCellFunctor;
-      
+
       // ------------------------- Hidden services ------------------------------
 
     protected:
@@ -188,9 +228,9 @@ namespace DGtal
    * @param object the object of class 'CellularConvolutionKernelFromSet' to write.
    * @return the output stream after the writing.
    */
-  template <typename Set,typename Space,typename Functor>
+  template <typename Set, typename Space, typename Functor>
   std::ostream&
-  operator<< ( std::ostream & out, const CellularConvolutionKernelFromSet<Set,Space,Functor> & object );
+  operator<< ( std::ostream & out, const CellularConvolutionKernelFromSet<Set, Space, Functor> & object );
 
 
 } // namespace DGtal
