@@ -35,7 +35,6 @@
 
 //! [freemanChainFromImage-ImageSetIncludes]
 #include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/io/readers/MagickReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 //! [freemanChainFromImage-ImageSetIncludes]
 
@@ -56,8 +55,7 @@ int main()
   //! [freemanChainFromImage-imageImport]
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, unsigned char> Image;
   std::string filename =  examplesPath + "samples/circleR10modif.pgm";
-  Image image = DGtal::MagickReader<Image>::importImage(filename); 
-  // Image image = DGtal::PNMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
   //! [freemanChainFromImage-imageImport]
   
   //![freemanChainFromImage-ksspace]
