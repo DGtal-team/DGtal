@@ -63,17 +63,35 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
   out << ext[0]<<" "<< ext[1]<<endl;
   out << "255" <<endl;
 
-  //We scan the domain instead of the image becaus we cannot
-  //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-
-      val = aImage( (*it) );
-      col = colormap( val );
-      out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
-    }
+ if(!topbotomOrder){
+   //We scan the domain instead of the image becaus we cannot
+   //trust the image container Iterator
+   for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+       it!=itend;
+       ++it)
+     {
+       val = aImage( (*it) );
+       col = colormap( val );
+       out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
+     }
+ }else{
+     typename I::Domain::Point ptUpper=  domain.upperBound();
+    
+    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
+      {    
+	typename I::Domain::Point ptUpperY=  *itY;
+	
+	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
+	    it!=itend;
+	    ++it)
+	  {
+	     val = aImage( (*it) );
+	     col = colormap( val );
+	     out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";	    
+	  }
+      }
+   
+ }
   
   out.close(); 
 
