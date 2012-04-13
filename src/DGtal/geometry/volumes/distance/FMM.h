@@ -96,7 +96,11 @@ namespace DGtal
    * A tentative value is computed for its signed distance, using 
    * only the values of the accepted points lying in its neighborhood. 
    * This task is delegated to an instance of a point functor, 
-   * which is L2FirstOrderLocalDistance by default. 
+   * which is defined as L2FirstOrderLocalDistance by default. 
+   * However, you are free to use L2SecondOrderLocalDistance, which provides
+   * more accurate distance values, L1FirstOrderLocalDistance and 
+   * LInfFirstOrderLocalDistance for other norms. 
+   *
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
    * to the newly added point are updated using the the distance value
@@ -104,16 +108,22 @@ namespace DGtal
    * tentative value is accelerated using a STL set of pairs (point, 
    * tentative value).  
    *
-   * Basic usage: 
-   @snippet geometry/volumes/distance/exampleFMM.cpp FMMUsage
-   *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
-   * @tparam TPointPredicate  any model of CPointPredicate
-   * @tparam TPointFunctor  any model of CPointFunctor
+   * @tparam TPointPredicate  any model of CPointPredicate, 
+   * used to bound the computation within a domain 
+   * @tparam TPointFunctor  any model of CPointFunctor,
+   * used to compute the new distance value
    *
+   * You can define the FMM type as follows: 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMDef
+   *
+   * You can run the algorithm as follows (d is a domain): 
+   @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage
+   *
+   * @see exampleFMM2D.cpp
+   * @see exampleFMM3D.cpp
    * @see testFMM.cpp
-   * @see exampleFMM.cpp
    */
   template <typename TImage, typename TSet, typename TPointPredicate, 
 	    typename TPointFunctor = L2FirstOrderLocalDistance<TImage,TSet> >

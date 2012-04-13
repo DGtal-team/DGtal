@@ -21,9 +21,10 @@
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/23
  *
- * The aim of this example
- * is to illustrate the FMM (fast marching method) algorithm
- * for incremental distance transform. 
+ * @brief The aim of this example
+ * is to use the FMM (fast marching method) class
+ * in order to extrapolate a speed field out of an interface, 
+ * such that the extended field is constant on rays normal to the interface.  
  *
  * This file is part of the DGtal library.
  */
@@ -144,7 +145,7 @@ bool perform()
   Domain d(Point::diagonal(-size), Point::diagonal(size)); 
   double h = 1.0/(double)size; 
 
-  //predicate
+  //Predicate, which implicitely define the interface
   int radius = (size/2);
   typedef BallPredicate<Point> Predicate; 
   Predicate predicate( 0, 0, radius ); 
@@ -195,7 +196,8 @@ bool perform()
     }
 
 
-  //speed extension away from the interface 
+  //Extrapolating speed away from the interface 
+  SpeedExtrapolator<DistanceImage, Set, SpeedImage> speedFunctor(dmap, set, smap); 
   const double maxWidth = 10.0; 
   FMM fmm(dmap, set, d.predicate(), d.size(), maxWidth, Distance(dmap, set) ); 
   Point lastPt = Point::diagonal(0);      //last point
@@ -204,12 +206,13 @@ bool perform()
 	  && (std::abs( lastDist ) < maxWidth) )
     {
       //new speed value
-      //smap.setValue( lastPoint, computer(lastDist) ); 
+      smap.setValue( lastPt, speedFunctor( lastPt ) ); 
     }
 
   trace.info() << fmm << std::endl;
 
-  //display
+  //display - you should see constant colors 
+  //on rays normal to the interface. 
   std::stringstream s; 
   s << "SpeedExt-" << radius; 
   draw(smap.begin(), smap.end(), size, s.str());
