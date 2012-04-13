@@ -569,7 +569,7 @@ DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::compute
   else 
     { //max element
       typename Values::iterator it = 
-	std::max_element( aValueList.begin(), aValueList.end(), details::absComparator ); 
+	std::max_element( aValueList.begin(), aValueList.end(), details::absComparator<Value> ); 
       return *it; 
     }
 }
@@ -677,7 +677,7 @@ DGtal::L1FirstOrderLocalDistance<TImage, TSet>::compute
 
   //min (in absolute values) 
   typename Values::iterator it = 
-	std::min_element( aValueList.begin(), aValueList.end(), details::absComparator ); 
+    std::min_element( aValueList.begin(), aValueList.end(), details::absComparator<Value> ); 
   Value vmin = *it; 
 
   //sign

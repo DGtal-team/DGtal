@@ -103,6 +103,29 @@ private:
   double myCx, myCy, myR; 
 };
 
+template <typename TPoint>
+class BallFunctor 
+{
+public:
+  typedef TPoint Point;
+  typedef double Value; 
+public: 
+
+  BallFunctor(double aCx, double aCy, double aR ): 
+    myCx(aCx), myCy(aCy), myR(aR)
+  { ASSERT(myR > 0); }; 
+
+  Value operator()(const TPoint& aPoint) const 
+  {
+    double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
+			  + std::pow( (myCy-aPoint[1] ), 2) );  
+    return (d - myR);
+  };
+private: 
+  double myCx, myCy, myR; 
+};
+
+
 template<typename TKSpace>
 void
 ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSpace>& gc)
@@ -203,6 +226,152 @@ bool testDisplayDT2d(int size, int area, double distance)
   draw(map.begin(), map.end(), size, s.str());
 
   return fmm.isValid(); 
+}
+
+
+///////////////////////////
+bool accuracyTest(int size)
+{
+
+  static const DGtal::Dimension dimension = 2; 
+
+  //Domain
+  typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
+  typedef Domain::Point Point; 
+  Domain d(Point::diagonal(-size), Point::diagonal(size)); 
+  double h = 1.0/(double)size; 
+
+  //predicate
+  int radius = (size/2);
+  typedef BallPredicate<Point> Predicate; 
+  Predicate predicate( 0, 0, radius ); 
+
+  trace.beginBlock ( "test of accuracy" );
+  trace.info() << " # circle of radius 0.5 "
+	       << "digitized in a square of size 1 "
+	       << "at step h=" << h << endl; 
+
+  //Digital circle generation
+  typedef KhalimskySpaceND< dimension, int > KSpace; 
+  KSpace K; K.init( Point::diagonal(-size), Point::diagonal(size), true); 
+  SurfelAdjacency<KSpace::dimension> SAdj( true );
+  KSpace::SCell bel = Surfaces<KSpace>::findABel( K, predicate, 10000 );
+  std::vector<KSpace::SCell> vSCells;
+  Surfaces<KSpace>::track2DBoundary( vSCells, K, SAdj, predicate, bel );
+
+  double diff1, diff2, diff3 = 0.0; 
+  { ///low accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set;
+    Image map( d ); 
+    Set set(map); 
+
+    //initialisation
+    //! [FMMDef]
+    typedef FMM<Image, Set, Predicate > FMM;
+    //! [FMMDef]
+
+    //! [FMMInit1]
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    map, set, 0.5 ); 
+    //! [FMMInit1]
+
+    //computation
+    //! [FMMUsage]
+    FMM fmm(map, set, predicate); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+    //! [FMMUsage]
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    double diff = std::abs(found-truth);
+    trace.info() << " # radius (low accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << diff << std::endl; 
+    
+    diff1 = diff; 
+  }
+
+  { ///medium accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set; 
+    Image map( d ); 
+    Set set(map); 
+
+    //initialisation
+    typedef FMM<Image, Set, Predicate > FMM;
+
+    typedef BallFunctor<Point> Functor; 
+    Functor functor( 0, 0, radius ); 
+    //! [FMMInit2]
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    functor, map, set ); 
+    //! [FMMInit2]
+
+    //computation
+    FMM fmm(map, set, predicate); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    double diff = std::abs(found-truth);
+    trace.info() << " # radius (medium accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << diff << std::endl; 
+
+    diff2 = diff; 
+  }
+
+  { ///high accuracy
+    //Image and set
+    typedef ImageContainerBySTLMap<Domain,double> Image; 
+    typedef DigitalSetFromMap<Image> Set; 
+    Image map( d ); 
+    Set set(map); 
+
+    //initialisation
+    //! [FMMDef3]
+    typedef L2SecondOrderLocalDistance<Image, Set> Distance; 
+    typedef FMM<Image, Set, Predicate, Distance > FMM;
+    //! [FMMDef3]
+
+    typedef BallFunctor<Point> Functor; 
+    Functor functor( 0, 0, radius ); 
+
+    FMM::initFromBelsRange( K, 
+			    vSCells.begin(), vSCells.end(), 
+			    functor, map, set ); 
+
+    //computation
+    FMM fmm(map, set, predicate, Distance(map, set) ); 
+    fmm.compute(); 
+    trace.info() << fmm << std::endl;
+
+    //max
+    double truth = radius*h; 
+    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
+    double diff = std::abs(found-truth);
+    trace.info() << " # radius (high accuracy)" << std::endl; 
+    trace.info() << " # truth: " << truth << std::endl; 
+    trace.info() << " # found: " << found << std::endl; 
+    trace.info() << " # diff.: " << diff << std::endl; 
+
+    diff3 = diff; 
+  }
+
+  trace.endBlock();
+
+  return ( (diff1 >= diff2)&&(diff2 >= diff3) );  
 }
 
 /**
@@ -367,8 +536,6 @@ bool testDisplayDTFromCircle(int size)
     Set set(map); 
     GridCurve<KSpace>::IncidentPointsRange r = gc.getIncidentPointsRange();
     FMM::initFromIncidentPointsRange(r.begin(), r.end(), map, set, 0.5, true); 
-    // GridCurve<KSpace>::SCellsRange r = gc.get1SCellsRange();
-    // FMM::initFromBelsRange(KSpace(), r.begin(), r.end(), map, set, 0.5, true); 
 
     //computation
     FMM fmm(map, set, dp); 
@@ -500,6 +667,7 @@ int main ( int argc, char** argv )
     && testDisplayDT2d( size, area, size )
     && testDisplayDT2d( size, 2*area, std::sqrt(2*size*size) )
     && testDisplayDTFromCircle(size)   
+    && accuracyTest(size)
     ;
 
   size = 25;

@@ -40,6 +40,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/topology/SCellsFunctors.h"
 
 //tracking
 #include "DGtal/topology/helpers/Surfaces.h"
@@ -57,31 +58,6 @@
 using namespace std;
 using namespace DGtal;
 
-
-//////////////////////////////////////////////////////////////////////////////
-// annulus
-// template <typename TPoint>
-// class AnnulusPredicate 
-// {
-// public:
-//   typedef TPoint Point;
-
-// public: 
-
-//   AnnulusPredicate(double aCx, double aCy, double aR, double aW = 1.5): 
-//     myCx(aCx), myCy(aCy), myR(aR), myW(aW)
-//   { ASSERT(myR > 0); ASSERT(myW > 0); }; 
-
-//   bool operator()(const TPoint& aPoint) const 
-//   {
-//     double d = std::sqrt( std::pow( (myCx-aPoint[0] ), 2) 
-// 			  + std::pow( (myCy-aPoint[1] ), 2) );  
-//     if ( (d <= (myR+myW))&&(d >= (myR-myW)) ) return true; 
-//     else return false; 
-//   };
-// private: 
-//   double myCx, myCy, myR, myW; 
-// };
 
 //////////////////////////////////////////////////////////////////////////////
 // ball
@@ -140,9 +116,8 @@ void draw( const TIterator& itb, const TIterator& ite, const int& size, std::str
 
   Board2D b; 
   b.setUnit ( LibBoard::Board::UCentimeter );
-
-  TIterator it = itb; 
-  for ( ; it != ite; ++it)
+ 
+  for (TIterator it = itb; it != ite; ++it)
     {
       Point p = it->first;
       b << CustomStyle( p.className(), new CustomFillColor( colorMap( it->second) ) );
@@ -157,7 +132,7 @@ void draw( const TIterator& itb, const TIterator& ite, const int& size, std::str
 
 //////////////////////////////////////////////////////////////////////////////
 // main task
-bool performDT(int size)
+bool perform()
 {
 
   static const DGtal::Dimension dimension = 2; 
@@ -165,6 +140,7 @@ bool performDT(int size)
   //Domain
   typedef HyperRectDomain< SpaceND<dimension, int> > Domain; 
   typedef Domain::Point Point; 
+  int size = 50; 
   Domain d(Point::diagonal(-size), Point::diagonal(size)); 
   double h = 1.0/(double)size; 
 
@@ -184,115 +160,59 @@ bool performDT(int size)
   std::vector<KSpace::SCell> vSCells;
   Surfaces<KSpace>::track2DBoundary( vSCells, K, SAdj, predicate, bel );
 
+  //Image of distance values and associated set
+  typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
+  typedef DigitalSetFromMap<DistanceImage> Set; 
+  DistanceImage dmap( d ); 
+  Set set(dmap); 
 
-  { ///low accuracy
-    //Image and set
-    typedef ImageContainerBySTLMap<Domain,double> Image; 
-    typedef DigitalSetFromMap<Image> Set;
-    Image map( d ); 
-    Set set(map); 
+  //initialisation
+  //! [FMMFullDef]
+  typedef L2SecondOrderLocalDistance<DistanceImage, Set> Distance; 
+  typedef FMM<DistanceImage, Set, Domain::Predicate, Distance > FMM;
+  //! [FMMFullDef]
 
-    //initialisation
-    //! [FMMDef]
-    typedef FMM<Image, Set, Predicate > FMM;
-    //! [FMMDef]
+  typedef BallFunctor<Point> Functor; 
+  Functor functor( 0, 0, radius ); 
+  FMM::initFromBelsRange( K, 
+			  vSCells.begin(), vSCells.end(), 
+			  functor, dmap, set ); 
 
-    //! [FMMInit1]
-    FMM::initFromBelsRange( K, 
-			    vSCells.begin(), vSCells.end(), 
-			    map, set, 0.5 ); 
-    //! [FMMInit1]
+  //Image of speed values
+  typedef ImageContainerBySTLMap<Domain,double> SpeedImage; 
+  SpeedImage smap(d, 0.0); 
 
-    //computation
-    //! [FMMUsage]
-    FMM fmm(map, set, predicate); 
-    fmm.compute(); 
-    trace.info() << fmm << std::endl;
-    //! [FMMUsage]
-
-    //max
-    double truth = radius*h; 
-    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
-    trace.info() << " # radius (low accuracy)" << std::endl; 
-    trace.info() << " # truth: " << truth << std::endl; 
-    trace.info() << " # found: " << found << std::endl; 
-    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
-
-  }
-
-  { ///medium accuracy
-    //Image and set
-    typedef ImageContainerBySTLMap<Domain,double> Image; 
-    typedef DigitalSetFromMap<Image> Set; 
-    Image map( d ); 
-    Set set(map); 
-
-    //initialisation
-    typedef FMM<Image, Set, Predicate > FMM;
-
-    typedef BallFunctor<Point> Functor; 
-    Functor functor( 0, 0, radius ); 
-    //! [FMMInit2]
-    FMM::initFromBelsRange( K, 
-			    vSCells.begin(), vSCells.end(), 
-			    functor, map, set ); 
-    //! [FMMInit2]
-
-    //computation
-    FMM fmm(map, set, predicate); 
-    fmm.compute(); 
-    trace.info() << fmm << std::endl;
-
-    //max
-    double truth = radius*h; 
-    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
-    trace.info() << " # radius (medium accuracy)" << std::endl; 
-    trace.info() << " # truth: " << truth << std::endl; 
-    trace.info() << " # found: " << found << std::endl; 
-    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
-  }
-
-  { ///high accuracy
-    //Image and set
-    typedef ImageContainerBySTLMap<Domain,double> Image; 
-    typedef DigitalSetFromMap<Image> Set; 
-    Image map( d ); 
-    Set set(map); 
-
-    //initialisation
-    //! [FMMDef3]
-    typedef L2SecondOrderLocalDistance<Image, Set> Distance; 
-    typedef FMM<Image, Set, Predicate, Distance > FMM;
-    //! [FMMDef3]
-
-    typedef BallFunctor<Point> Functor; 
-    Functor functor( 0, 0, radius ); 
-
-    FMM::initFromBelsRange( K, 
-			    vSCells.begin(), vSCells.end(), 
-			    functor, map, set ); 
-
-    //computation
-    FMM fmm(map, set, predicate, Distance(map, set) ); 
-    fmm.compute(); 
-    trace.info() << fmm << std::endl;
-
-    //max
-    double truth = radius*h; 
-    double found = ( std::max(std::abs(fmm.max()),std::abs(fmm.min())) )*h;
-    trace.info() << " # radius (high accuracy)" << std::endl; 
-    trace.info() << " # truth: " << truth << std::endl; 
-    trace.info() << " # found: " << found << std::endl; 
-    trace.info() << " # diff.: " << std::abs(found-truth) << std::endl; 
-
-    //display
-    std::stringstream s; 
-    s << "DT2d-" << radius; 
-    draw(map.begin(), map.end(), size, s.str());
-
-  }
+  SCellToIncidentPoints<KSpace> belToPair( K );
+  for (std::vector<KSpace::SCell>::const_iterator it = vSCells.begin(),
+	 itEnd = vSCells.end(); it != itEnd; ++it) 
+    {
+      SCellToIncidentPoints<KSpace>::Output pair = belToPair( *it );
+      Point in = pair.first; 
+      Point out = pair.second; 
+      //speed equal to the x-coordinate
+      smap.setValue( in, in[0] ); 
+      smap.setValue( out, out[0] ); 
+    }
 
 
+  //speed extension away from the interface 
+  const double maxWidth = 10.0; 
+  FMM fmm(dmap, set, d.predicate(), d.size(), maxWidth, Distance(dmap, set) ); 
+  Point lastPt = Point::diagonal(0);      //last point
+  double lastDist = 0.0;                  //its distance
+  while ( (fmm.computeOneStep( lastPt, lastDist )) 
+	  && (std::abs( lastDist ) < maxWidth) )
+    {
+      //new speed value
+      //smap.setValue( lastPoint, computer(lastDist) ); 
+    }
+
+  trace.info() << fmm << std::endl;
+
+  //display
+  std::stringstream s; 
+  s << "SpeedExt-" << radius; 
+  draw(smap.begin(), smap.end(), size, s.str());
 
   return true; 
 
@@ -313,19 +233,8 @@ int main ( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  trace.info() << "NB: You can increase the resolution as follows: "
-	       << std::endl << argv[0] << " 30 (default)" << std::endl; 
-
-
-  //size parameter
-  int size = 30; 
-  if (argc > 1) 
-    {
-      std::istringstream s( argv[1] ); 
-      s >> size;  
-    }
   //computation
-  performDT(size); 
+  perform(); 
 
   trace.endBlock();
   return 1;

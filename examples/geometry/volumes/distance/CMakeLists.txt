@@ -1,6 +1,6 @@
 SET(DGTAL_EXAMPLES_SRC
   distancetransform2D
-  exampleFMM
+  exampleFMM2D
 )
 
 

@@ -66,7 +66,7 @@ int main( int argc, char** argv )
   //threshold
   int t = vm["threshold"].as<int>(); 
   //width
-  double w = vm["width"].as<double>(); 
+  double maximalWidth = vm["width"].as<double>(); 
 
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -133,19 +133,25 @@ int main( int argc, char** argv )
   /// FMM types
   typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
   typedef DigitalSetFromMap<DistanceImage> PointSet; 
+  //! [FMMDef]
   typedef FMM<DistanceImage, PointSet, Domain::Predicate > FMM;
+  //! [FMMDef]
 
   DGtal::trace.beginBlock("FMM..."); 
 
   /// FMM init
-  DistanceImage map( d, 0.0 );
-  PointSet points(map);
-  FMM::initFromBelsRange( ks, frontier.begin(), frontier.end(), map, points, 0.5 ); 
+  //! [FMMInit]
+  DistanceImage image( d, 0.0 );
+  PointSet points(image);
+  FMM::initFromBelsRange( ks, frontier.begin(), frontier.end(), image, points, 0.5 ); 
+  //! [FMMInit]
 
   /// FMM main
-  FMM fmm( map, points, d.predicate(), d.size(), w );
+  //! [FMMUsage]
+  FMM fmm( image, points, d.predicate(), d.size(), maximalWidth );
   fmm.compute(); 
   trace.info() << fmm << std::endl;  
+  //! [FMMUsage]
 
   DGtal::trace.endBlock();
   //////////////////////////////////////////////////////////////////////////////////
@@ -155,10 +161,10 @@ int main( int argc, char** argv )
   viewer.show();
 
   //
-  GradientColorMap<double> colorMap( 0, 2*w );
+  GradientColorMap<double> colorMap( 0, 2*maximalWidth );
   colorMap.addColor( Color( 255, 0, 0 ) );
   colorMap.addColor( Color( 0, 250, 0 ) );
-  for (DistanceImage::const_iterator it = map.begin(), itEnd = map.end(); 
+  for (DistanceImage::const_iterator it = image.begin(), itEnd = image.end(); 
        it != itEnd; ++it)
     {
       Point p = it->first;
