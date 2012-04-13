@@ -49,9 +49,10 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 
+#include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageHelper.h"
-#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -677,6 +678,117 @@ namespace DGtal
      * @return the computed distance.
      */
     Value compute(Values& aValueList) const; 
+
+  }; 
+
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SpeedExtrapolator
+  /**
+   * Description of template class 'SpeedExtrapolator' <p>
+   * \brief Aim: Class for the computation of the a speed value
+   * at some point p, from the available distance values and speed
+   * values of some points lying in the 1-neighborhood of p 
+   * (ie. points at a L1-distance to p equal to 1) in order to 
+   * extrapolate a speed field in the normal direction to the interface. 
+   *
+   * The computed value is such that the dot product of the gradients
+   * of the speed function and of the distance function is zero, ie. 
+   * \f$ \nabla S .  \nabla \Phi = 0 \f$. 
+   *
+   * [Adalsteinsson and Sethian, Fast Construction of Extension Velocities
+   * in Level Set Methods, J. Comput. Phys. 148, 2-22, 1999]
+   *
+   * It is a model of CPointFunctor.
+   *
+   * @tparam TDistanceImage model of CImage used for the mapping point-distance value
+   * @tparam TSet model of CDigitalSet for storing points whose distance value is known
+   * @tparam TSpeedFunctor model of CImage used for the mapping point-speed value
+   *
+   * @see FMM
+   */
+  template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+  class SpeedExtrapolator
+  {
+
+    // ----------------------- Types ------------------------------
+  public:
+
+
+    /// image
+    BOOST_CONCEPT_ASSERT(( CImage<TDistanceImage> ));
+    typedef TDistanceImage DistanceImage;
+    typedef typename DistanceImage::Point Point;
+    typedef typename DistanceImage::Value DistanceValue;
+    BOOST_CONCEPT_ASSERT(( CPointFunctor<TSpeedFunctor> ));
+    typedef TSpeedFunctor SpeedFunctor;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename SpeedFunctor::Point >::value ));
+    typedef typename SpeedFunctor::Value Value; 
+
+    /// set
+    BOOST_CONCEPT_ASSERT(( CDigitalSet<TSet> ));
+    typedef TSet Set;
+    BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
+  
+    // ----------------------- Data -------------------------------------
+  public: 
+    /// Aliasing pointer on the underlying image of distance values
+    const DistanceImage* myDistImgPtr; 
+    /// Aliasing pointer on the underlying set of points 
+    /// whose distance value is known
+    const Set* mySetPtr; 
+    /// Aliasing pointer on the underlying image of speed values
+    DistanceImage* mySpeedFuncPtr; 
+
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Constructor from images and set. 
+     * NB: only pointers are stored
+     *
+     * @param aDistImg any distance map
+     * @param aSet any digital set
+     * @param aSpeedFunc any speed map
+     */
+    SpeedExtrapolator(const DistanceImage& aDistImg, const TSet& aSet, SpeedFunctor& aSpeedFunc);
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    SpeedExtrapolator ( const SpeedExtrapolator & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    SpeedExtrapolator & operator= ( const SpeedExtrapolator & other); 
+
+    /**
+     * Destructor.
+     * Does nothing.
+     */
+    ~SpeedExtrapolator(); 
+
+    /** 
+     * Speed value computation at @a aPoint , 
+     * from the available distance/speed values
+     * of the 1-neighbors of @a aPoint  .
+     *
+     * @param aPoint the point for which the speed is computed
+     *
+     * @return the speed value at @a aPoint.
+     *
+     */
+    Value operator() (const Point& aPoint);
+
+
+    // ----------------------- Internals -------------------------------------
+
+  private: 
 
   }; 
 

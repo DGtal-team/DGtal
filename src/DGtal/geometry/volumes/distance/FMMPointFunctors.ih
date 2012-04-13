@@ -887,3 +887,125 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap, isIndirect>
   out << "L2"; 
 }
 
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+inline
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
+(const DistanceImage& aDistImg, const Set& aSet, SpeedFunctor& aSpeedFunc)
+  : myDistImgPtr(&aDistImg), mySetPtr(&aSet), mySpeedFuncPtr(&aSpeedFunc)
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+inline
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
+  (const SpeedExtrapolator& other)
+    : myDistImgPtr(other.myDistImgPtr), mySetPtr(other.mySetPtr), mySpeedFuncPtr(other.mySpeedFuncPtr)
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+inline
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>&
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
+  (const SpeedExtrapolator& other)
+{
+  if( this != &other)
+  {
+    myDistImgPtr = other.myDistImgPtr; 
+    mySetPtr = other.mySetPtr; 
+    mySpeedFuncPtr = other.mySpeedFuncPtr; 
+  }
+  return *this; 
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+inline
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::~SpeedExtrapolator
+  ()
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TDistanceImage, typename TSet, typename TSpeedFunctor>
+inline
+typename DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::Value
+DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()
+  (const Point& aPoint)
+{
+
+  //speed values
+  Value num, den = 0; 
+
+  //two 1-neighbors for one dimension
+  Point neighbor1 = aPoint; 
+  Point neighbor2 = aPoint;
+ 
+  typename Point::Iterator it1 = neighbor1.begin(); 
+  typename Point::Iterator it2 = neighbor2.begin(); 
+  typename Point::ConstIterator it = aPoint.begin(); 
+  typename Point::ConstIterator itEnd = aPoint.end(); 
+  for ( ; it != itEnd; ++it, ++it1, ++it2)
+    {//for each dimension
+
+      typename Point::Coordinate c = *it; 
+
+      //distance value
+      DistanceValue d = 0; 
+      bool flag = findAndGetValue( *myDistImgPtr, *mySetPtr, aPoint, d );
+      ASSERT( flag ); 
+
+      //neighbors
+      *it1 = (c+1); 
+      *it2 = (c-1);
+      //neighboring speed value
+      Value s = 0; 
+      //neighboring distance values
+      DistanceValue d0, d1, d2 = 0; 
+      bool flag1 = findAndGetValue( *myDistImgPtr, *mySetPtr, neighbor1, d1 );
+      bool flag2 = findAndGetValue( *myDistImgPtr, *mySetPtr, neighbor2, d2 );
+      if ( flag1 || flag2 ) 
+	{
+	  if ( flag1 && flag2 )
+	    { //take the minimal value
+	      if (std::abs(d1) < std::abs(d2))
+		{
+		  d0 = d1;
+		  s = (*mySpeedFuncPtr)( neighbor1 );
+		}
+	      else 
+		{
+		  d0 = d2; 
+		  s = (*mySpeedFuncPtr)( neighbor2 );
+		}
+	    } else 
+	    {
+	      if (flag1)
+		{
+		  d0 = d1;
+		  s = (*mySpeedFuncPtr)( neighbor1 );
+		}
+	      if (flag2) 
+		{
+		  d0 = d2; 
+		  s = (*mySpeedFuncPtr)( neighbor2 );
+		}
+	    }
+
+	  Value diff = static_cast<Value>(d - d0);
+	  num += ( s * diff ); 
+	  den += diff;  
+	}
+
+      *it1 = c; 
+      *it2 = c;
+    } //end for each dimension
+
+  //computation of the new value
+  ASSERT(den != 0); 
+  return (num/den); 
+}
