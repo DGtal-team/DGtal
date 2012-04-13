@@ -12,6 +12,7 @@ ENDFOREACH(FILE)
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
   distancetransform3D
+  exampleFMM3D
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
