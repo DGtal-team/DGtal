@@ -161,9 +161,7 @@ namespace DGtal
       // --------------------- std types ------------------------------
       typedef Value value_type;
       typedef ConstIterator const_iterator;
-      typedef Self* pointer;
-      typedef Self & reference;
-      typedef const Self & const_reference;
+      typedef const value_type & const_reference;
 
     private:
       Node* myNode; 
