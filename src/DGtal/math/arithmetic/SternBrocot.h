@@ -151,7 +151,8 @@ namespace DGtal
     public:
       typedef TInteger Integer;
       typedef TSize Size;
-      typedef SternBrocot<TInteger,TSize> SB;
+      typedef SternBrocot<TInteger,TSize> SternBrocotTree;
+      typedef typename SternBrocotTree::Fraction Self;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
       typedef std::pair<Size, Size> Value;
       typedef std::vector<Size> CFracSequence;
@@ -160,6 +161,9 @@ namespace DGtal
       // --------------------- std types ------------------------------
       typedef Value value_type;
       typedef ConstIterator const_iterator;
+      typedef Self* pointer;
+      typedef Self & reference;
+      typedef const Self & const_reference;
 
     private:
       Node* myNode; 
@@ -181,13 +185,27 @@ namespace DGtal
           are the partial quotients of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
-                Fraction ancestor = SB::zeroOverOne() );
+                Fraction ancestor = SternBrocotTree::zeroOverOne() );
 
       /**
 	 Default constructor.
          @param sb_node the associated node (or 0 for null fraction).
       */
       Fraction( Node* sb_node = 0 );
+
+      /**
+         Copy constructor.
+         @param other the object to clone.
+      */
+      Fraction( const Self & other );
+
+      /**
+         Assignment
+         @param other the object to clone.
+         @return a reference to 'this'.
+      */
+      Self& operator=( const Self & other );
+
       /// @return 'true' iff it is the null fraction 0/0.
       bool null() const;
       /// @return its numerator;

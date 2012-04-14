@@ -186,6 +186,28 @@ Fraction( Node* sb_node, bool sup1 )
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize, typename TMap>
 inline
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+Fraction( const Self & other )
+  : myNode( other.myNode ), mySup1( other.mySup1 )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
+typename DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction &
+DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
+operator=( const Self & other )
+{
+  if ( this != &other )
+    {
+      myNode = other.myNode;
+      mySup1 = other.mySup1;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize, typename TMap>
+inline
 bool 
 DGtal::LighterSternBrocot<TInteger, TSize, TMap>::Fraction::
 null() const
