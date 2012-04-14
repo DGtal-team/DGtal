@@ -549,9 +549,7 @@ operator<< ( std::ostream & out, const AngleLinearMinimizer & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#if defined(BUILD_INLINE)
 #include "DGtal/math/AngleLinearMinimizer.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
