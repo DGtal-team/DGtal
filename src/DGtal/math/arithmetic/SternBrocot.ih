@@ -69,7 +69,7 @@ inline
 DGtal::SternBrocot<TInteger, TSize>::Fraction::
 Fraction( Integer aP, Integer aQ, Fraction ancestor )
 {
-  this->operator=( SB::fraction( aP, aQ, ancestor ) );
+  this->operator=( SternBrocotTree::fraction( aP, aQ, ancestor ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
@@ -78,6 +78,27 @@ DGtal::SternBrocot<TInteger, TSize>::Fraction::
 Fraction( Node* sb_node )
   : myNode( sb_node )
 {
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+Fraction( const Self & other )
+  : myNode( other.myNode )
+{
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger, typename TSize>
+inline
+typename DGtal::SternBrocot<TInteger, TSize>::Fraction &
+DGtal::SternBrocot<TInteger, TSize>::Fraction::
+operator=( const Self & other )
+{
+  if ( this != &other )
+    {
+      myNode = other.myNode;
+    }
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TSize>
