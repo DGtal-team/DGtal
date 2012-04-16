@@ -80,8 +80,9 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealVector RealVector;
-    typedef typename Space::Integer Integer;
-    typedef typename ImplicitFunctionDiff1::Value Value;
+    typedef typename ImplicitFunctionDiff1::Value ImplicitFctValue;
+    typedef Cell Argument;
+    typedef RealPoint Value;
     
     /** 
         Constructor. The object is not valid.
@@ -148,6 +149,15 @@ namespace DGtal
        @return its embedding in the Euclidean space.
      */
     RealPoint embedSCell( const SCell & scell ) const;
+
+    /**
+       Maps a cell to its corresponding point in the Euclidean
+       space, by a linear guess of its position.
+       
+       @param cell any cell in the cellular grid space.
+       @return its embedding in the Euclidean space.
+     */
+    RealPoint operator()( const Cell & cell ) const;
 
     /**
        Maps a digital point to its corresponding embedding position

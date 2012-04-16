@@ -606,6 +606,8 @@ exportEmbeddedSurfaceAs3DOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
+  BOOST_CONCEPT_ASSERT(( CCellEmbedder< CellEmbedder > ));
+
   typedef DGtal::uint64_t Number;
   // Numbers all vertices.
   std::map<Vertex, Number> index;
@@ -635,10 +637,11 @@ exportEmbeddedSurfaceAs3DOFF
       << nbv << " " << nbf << " " << ( nbe / 2 ) << std::endl;
   // Outputs vertex coordinates (the 3 first ones).
   typedef typename CellEmbedder::RealPoint RealPoint;
+  const KSpace & K = container().space();
   for ( ConstIterator it = begin(), it_end = end();
         it != it_end; ++it )
     {
-      RealPoint p( cembedder.embedSCell( *it ) );
+      RealPoint p( cembedder( K.unsigns( *it ) ) );
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
       // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
     }

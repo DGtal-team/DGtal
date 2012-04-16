@@ -80,7 +80,9 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef typename Space::RealVector RealVector;
     typedef typename Space::Integer Integer;
-    typedef typename Image::Value Value;
+    typedef typename Image::Value ImageValue;
+    typedef Cell Argument;
+    typedef RealPoint Value;;
     
     /** 
         Constructor. The object is not valid.
@@ -116,7 +118,7 @@ namespace DGtal
        @param iso the threshold value that defines the linear embedding.
     */
     void init( const KSpace & K, const Image & f, 
-               const Embedder & e, Value iso_value );
+               const Embedder & e, ImageValue iso_value );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -149,6 +151,15 @@ namespace DGtal
      */
     RealPoint embedSCell( const SCell & scell ) const;
 
+    /**
+       Maps a cell to its corresponding point in the Euclidean
+       space, by a linear guess of its position.
+       
+       @param cell any cell in the cellular grid space.
+       @return its embedding in the Euclidean space.
+     */
+    RealPoint operator()( const Cell & cell ) const;
+
     
     // ----------------------- Interface --------------------------------------
   public:
@@ -177,7 +188,7 @@ namespace DGtal
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
     /// The threshold value for the linear embedding.
-    Value myIsoValue;
+    ImageValue myIsoValue;
     
     // ------------------------- Hidden services ------------------------------
   protected:
