@@ -55,6 +55,8 @@ namespace DGtal
    \brief Aim: A trivial embedder for digital points, which
    corresponds to the canonic injection of Zn into Rn.
 
+   Model of CPointEmbedder.
+
    @tparam TSpace the type of digital Space where the embedder works.
  */
   template <typename TSpace>
@@ -66,7 +68,8 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
     typedef typename Space::RealPoint RealPoint;
-    typedef typename Space::RealPoint RealVector;
+    typedef Point Argument;
+    typedef RealPoint Value;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -99,6 +102,15 @@ namespace DGtal
        @return its canconical embedding in the Euclidean space.
     */
     RealPoint embed( const Point & dp ) const;
+
+    /**
+       Map a digital point to its corresponding point in the Euclidean
+       space.
+       
+       @param dp any digital point in the digital space.
+       @return its canconical embedding in the Euclidean space.
+    */
+    RealPoint operator()( const Point & dp ) const;
 
     // ----------------------- Interface --------------------------------------
 public:

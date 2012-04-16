@@ -103,11 +103,20 @@ typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFuncti
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 embedCell( const Cell & cell ) const
 {
+  return this->operator()( cell );
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
+inline
+typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
+DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
+operator()( const Cell & cell ) const
+{
   ASSERT( this->isValid() );
   // embed first the spel related to the cell.
   Point p1( myPtrK->uCoords( cell ) );
   RealPoint x1( embed( p1 ) );
-  Value y1 = (*myPtrFct)( x1 );
+  ImplicitFctValue y1 = (*myPtrFct)( x1 );
   for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell ); 
         qit != 0; ++qit )
     { // cell is closed along this dimension.
@@ -115,7 +124,7 @@ embedCell( const Cell & cell ) const
       Dimension k = *qit;
       Point p2( p1 ); --p2[ k ];
       RealPoint x2( embed( p2 ) );
-      Value y2 = (*myPtrFct)( x2 );
+      ImplicitFctValue y2 = (*myPtrFct)( x2 );
       x1[ k ] -= y1 * ( x2[ k ] - x1[ k ] ) / ( y2 - y1 );
     }
   return x1;
@@ -131,7 +140,7 @@ embedSCell( const SCell & scell ) const
   // embed first the spel related to the cell.
   Point p1( myPtrK->sCoords( scell ) );
   RealPoint x1( embed( p1 ) );
-  Value y1 = (*myPtrFct)( x1 );
+  ImplicitFctValue y1 = (*myPtrFct)( x1 );
   for ( typename KSpace::DirIterator qit = myPtrK->sOrthDirs( scell ); 
         qit != 0; ++qit )
     { // cell is closed along this dimension.
@@ -139,7 +148,7 @@ embedSCell( const SCell & scell ) const
       Dimension k = *qit;
       Point p2( p1 ); --p2[ k ];
       RealPoint x2( embed( p2 ) );
-      Value y2 = (*myPtrFct)( x2 );
+      ImplicitFctValue y2 = (*myPtrFct)( x2 );
       x1[ k ] -= y1 * ( x2[ k ] - x1[ k ] ) / ( y2 - y1 );
     }
   return x1;
