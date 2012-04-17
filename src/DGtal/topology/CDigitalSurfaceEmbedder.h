@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
-#include "DGtal/kernel/CSCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
