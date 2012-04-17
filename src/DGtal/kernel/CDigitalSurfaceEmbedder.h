@@ -101,10 +101,12 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename KSpace::RealPoint >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
+  // Already checked in CSCellEmbedder
+  // BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
+  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
+  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
+  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename KSpace::RealPoint >::value ));
+  // BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
   BOOST_CONCEPT_USAGE( CDigitalSurfaceEmbedder )
   {
     checkConstConstraints();
@@ -112,14 +114,14 @@ public:
   
   void checkConstConstraints() const
   { // operator()
-    ConceptUtils::sameType( myRP, myX( myP ) );
+    // ConceptUtils::sameType( myRP, myX( myP ) );
     ConceptUtils::sameType( mySurface, myX.surface() );
   }
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
-  SCell myP;
-  RealPoint myRP;
+  // SCell myP;
+  // RealPoint myRP;
   Surface mySurface;
 
     // ------------------------- Internals ------------------------------------

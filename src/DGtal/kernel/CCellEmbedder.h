@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -98,6 +99,7 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
+  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Cell, typename KSpace::Cell >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Cell, Argument >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));

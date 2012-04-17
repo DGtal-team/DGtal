@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -100,6 +101,7 @@ public:
   typedef typename T::Argument Argument;
   typedef typename T::Value Value;
 
+  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, Argument >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename Space::RealPoint >::value ));
