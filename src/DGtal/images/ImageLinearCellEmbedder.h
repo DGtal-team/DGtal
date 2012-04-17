@@ -82,7 +82,7 @@ namespace DGtal
     typedef typename Space::Integer Integer;
     typedef typename Image::Value ImageValue;
     typedef Cell Argument;
-    typedef RealPoint Value;;
+    typedef RealPoint Value;
     
     /** 
         Constructor. The object is not valid.

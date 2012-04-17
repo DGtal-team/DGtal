@@ -32,10 +32,10 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointEmbedder.h"
-#include "DGtal/kernel/CCellEmbedder.h"
-#include "DGtal/kernel/CSCellEmbedder.h"
-#include "DGtal/kernel/CDigitalSurfaceEmbedder.h"
 #include "DGtal/kernel/CDifferentiable.h"
+#include "DGtal/topology/CCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
+#include "DGtal/topology/CDigitalSurfaceEmbedder.h"
 #include "DGtal/shapes/CanonicEmbedder.h"
 ///////////////////////////////////////////////////////////////////////////////
 

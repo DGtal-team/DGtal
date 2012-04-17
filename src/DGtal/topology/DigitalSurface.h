@@ -45,7 +45,7 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/kernel/CCellEmbedder.h"
+#include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 #include "DGtal/topology/UmbrellaComputer.h"
