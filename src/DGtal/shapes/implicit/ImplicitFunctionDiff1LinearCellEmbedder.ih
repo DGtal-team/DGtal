@@ -89,6 +89,15 @@ init( const KSpace & K, const ImplicitFunctionDiff1 & f, const Embedder & e )
 //-----------------------------------------------------------------------------
 template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
 inline
+typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::GradientMap
+DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
+gradientMap() const
+{
+  return GradientMap( *this );
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
+inline
 typename DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::RealPoint
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 embed( const Point & p ) const
