@@ -36,7 +36,8 @@
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceEmbedder.h"
-#include "DGtal/shapes/CanonicEmbedder.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
+#include "DGtal/kernel/RegularPointEmbedder.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -55,8 +56,10 @@ bool testEmbedder()
   unsigned int nb = 0;
 
   using Z3i::Space;
-  typedef CanonicEmbedder<Space> MyEmbedder;
-  BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder > ));
+  typedef CanonicEmbedder<Space> MyEmbedder1;
+  BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder1 > ));
+  typedef RegularPointEmbedder<Space> MyEmbedder2;
+  BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder2 > ));
 
   trace.beginBlock ( "Testing block ..." );
   nbok += true ? 1 : 0; 

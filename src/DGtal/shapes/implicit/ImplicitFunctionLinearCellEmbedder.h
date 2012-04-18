@@ -51,9 +51,10 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-    Description of template class 'ImplicitFunctionLinearCellEmbedder' <p>
-    \brief Aim: model of cellular embedder for implicit functions,
-    (default constructible, copy constructible, assignable).
+    Description of template class 'ImplicitFunctionLinearCellEmbedder'
+    <p> \brief Aim: a cellular embedder for implicit functions,
+    (default constructible, copy constructible, assignable). Model of
+    CCellEmbedder.
    
     @tparam TKSpace the cellular grid space definition.
     @tparam TImplicitFunction the type of implicit function, a model of CImplicitFunction.

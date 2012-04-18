@@ -17,12 +17,12 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageLinearCellEmbedder.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/shapes/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
