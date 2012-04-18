@@ -80,6 +80,8 @@ Such object provides a gradient map that associates to each argument some real v
 
 ### Models
 
+- ImplicitFunctionDiff1LinearCellEmbedder
+
 ### Notes
 
 @tparam T the type that should be a model of CWithGradientMap.

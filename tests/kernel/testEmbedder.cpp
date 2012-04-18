@@ -33,11 +33,14 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointEmbedder.h"
 #include "DGtal/kernel/CWithGradientMap.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
+#include "DGtal/kernel/RegularPointEmbedder.h"
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceEmbedder.h"
-#include "DGtal/kernel/CanonicEmbedder.h"
-#include "DGtal/kernel/RegularPointEmbedder.h"
+#include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
+#include "DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
+#include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -56,10 +59,19 @@ bool testEmbedder()
   unsigned int nb = 0;
 
   using Z3i::Space;
+  using Z3i::KSpace;
   typedef CanonicEmbedder<Space> MyEmbedder1;
   BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder1 > ));
   typedef RegularPointEmbedder<Space> MyEmbedder2;
   BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder2 > ));
+  typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
+  typedef ImplicitFunctionLinearCellEmbedder
+    < KSpace, ImplicitShape, MyEmbedder1 > MyCellEmbedder1;
+  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder1 > ));
+  typedef ImplicitFunctionDiff1LinearCellEmbedder
+    < KSpace, ImplicitShape, MyEmbedder2 > MyCellEmbedder2;
+  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder2 > ));
+  BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyCellEmbedder2 > ));
 
   trace.beginBlock ( "Testing block ..." );
   nbok += true ? 1 : 0; 
