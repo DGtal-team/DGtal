@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testSternBrocot.cpp
+ * @file testLighterSternBrocot.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/03/05
  *
- * Functions for testing class SternBrocot.
+ * Functions for testing class LighterSternBrocot.
  *
  * This file is part of the DGtal library.
  */
@@ -30,11 +30,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <vector>
+#include <iterator>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/SternBrocot.h"
+#include "DGtal/math/arithmetic/LighterSternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
 #include "DGtal/math/arithmetic/StandardDSLQ0.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
@@ -44,7 +47,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class SternBrocot.
+// Functions for testing class LighterSternBrocot.
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename Size>
@@ -703,18 +706,17 @@ bool testSubStandardDSLQ0()
   return nbok == nb;
 }
 
-
 /**
  * Example of a test. To be completed.
  *
  */
-bool testSternBrocot()
+bool testLighterSternBrocot()
 {
   unsigned int nbtests = 10;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::BigInteger Integer;
-  typedef SternBrocot<Integer, DGtal::int32_t> SB;
+  typedef LighterSternBrocot<Integer, DGtal::int32_t, DGtal::StdMapRebinder> SB;
   typedef SB::Fraction Fraction;
   trace.beginBlock ( "Testing block: init fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
@@ -724,6 +726,7 @@ bool testSternBrocot()
     }
   trace.info() << "(" << nbok << "/" << nb << ") init fractions." << endl;
   trace.endBlock();
+
   trace.beginBlock ( "Testing block: reduced fractions." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
@@ -739,6 +742,7 @@ bool testSternBrocot()
 
   return nbok == nb;
 }
+
 
 template <typename SB>
 bool testContinuedFraction()
@@ -798,21 +802,21 @@ bool testContinuedFractions()
   return nbok == nb;
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int , char** )
 {
-  typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
+  typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
+                              DGtal::StdMapRebinder > SB;
   typedef SB::Fraction Fraction;
   typedef Fraction::ConstIterator ConstIterator;
 
   BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
 
-  trace.beginBlock ( "Testing class SternBrocot" );
-  bool res = testSternBrocot()
+  trace.beginBlock ( "Testing class LighterSternBrocot" );
+  bool res = testLighterSternBrocot()
     && testPattern<SB>()
     && testSubStandardDSLQ0<Fraction>()
     && testContinuedFractions<SB>();
