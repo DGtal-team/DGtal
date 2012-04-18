@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+ #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -88,16 +89,22 @@ namespace DGtal
     typedef TDistance Distance;
       
     GaussianConvolutionWeight(const double sigma): mySigma(sigma)
-    {}
+    {
+      myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
+    }
       
     inline
     double operator()(const Distance &aDisplacment) const
     {
-      return 1.0/(mySigma* sqrt(2.0*M_PI))*exp(  -(double)aDisplacment*aDisplacment/(2.0*mySigma));
+      return myCoef*exp(  -NumberTraits<Distance>::castToDouble(aDisplacment)*
+        NumberTraits<Distance>::castToDouble(aDisplacment)/(2.0*mySigma));
     } 
      
+     ///Internal Sigma value;
     double mySigma;
     
+    ///Precomputed constant coefs.
+    double myCoef;
   }; 
 
 

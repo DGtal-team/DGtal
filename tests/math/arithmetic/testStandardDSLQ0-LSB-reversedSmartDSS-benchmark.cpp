@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testStandardDSLQ0.cpp
+ * @file testStandardDSLQ0-LSB-reversedSmartDSS-benchmark.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -30,10 +30,11 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/SternBrocot.h"
+#include "DGtal/math/arithmetic/LightSternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
 #include "DGtal/math/arithmetic/StandardDSLQ0.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class SternBrocot.
+// Functions for testing class LightSternBrocot.
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename DSL>
@@ -60,13 +61,17 @@ bool checkSubStandardDSLQ0( const DSL & D,
 
   DSL S = D.reversedSmartDSS( A, B );
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
-            << S.a() << " " << S.b() << " " << S.mu() 
+            << S.a() << " " << S.b() << " " << S.mu() << " "
+            << A[0] << " " << A[1] << " " << B[0] << " " << B[1]
             << std::endl;
   return true;
 }
 
 template <typename Fraction>
-bool testSubStandardDSLQ0( unsigned int nbtries )
+bool testSubStandardDSLQ0( unsigned int nbtries, 
+                           typename Fraction::Integer moda, 
+                           typename Fraction::Integer modb, 
+                           typename Fraction::Integer modx )
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
@@ -77,19 +82,20 @@ bool testSubStandardDSLQ0( unsigned int nbtries )
   typedef typename DSL::Vector2I Vector2I;
   IntegerComputer<Integer> ic;
 
+  std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
-      Integer a( random() % 12000 + 1 );
-      Integer b( random() % 12000 + 1 );
+      Integer a( random() % moda + 1 );
+      Integer b( random() % modb + 1 );
       if ( ic.gcd( a, b ) == 1 )
         {
           for ( Integer mu = 0; mu < 5; ++mu )
             {
-              DSL D( a, b, random() % 10000 );
+              DSL D( a, b, random() % (moda+modb) );
               for ( Integer x = 0; x < 10; ++x )
                 {
-                  Integer x1 = random() % 1000;
-                  Integer x2 = x1 + 1 + ( random() % 1000 );
+                  Integer x1 = random() % modx;
+                  Integer x2 = x1 + 1 + ( random() % modx );
                   Point A = D.lowestY( x1 );
                   Point B = D.lowestY( x2 );
                   checkSubStandardDSLQ0<DSL>( D, A, B );
@@ -100,14 +106,20 @@ bool testSubStandardDSLQ0( unsigned int nbtries )
   return true;
 }
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int , char** )
+int main( int argc, char** argv)
 {
-  typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
-  testSubStandardDSLQ0<Fraction>( 10000 );
+  typedef Fraction::Integer Integer;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 10000;
+  Integer moda = ( argc > 2 ) ? atoll( argv[ 2 ] ) : 12000;
+  Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 12000;
+  Integer modx = ( argc > 4 ) ? atoll( argv[ 4 ] ) : 1000;
+  testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );
   return true;
 }
 //                                                                           //

@@ -376,7 +376,7 @@ namespace DGtal
 
 
 // AngleLinearMinimizer
-INLINE
+inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AngleLinearMinimizer & /*a*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);

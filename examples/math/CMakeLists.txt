@@ -9,3 +9,4 @@ FOREACH(FILE ${DGTAL_EXAMPLES_MATH_SRC})
 ENDFOREACH(FILE)
 
 
+add_subdirectory(arithmetic)

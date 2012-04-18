@@ -50,7 +50,7 @@
  * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
  * 4-connected freeman chains.
  */
-INLINE
+inline
 DGtal::OrderedAlphabet::OrderedAlphabet( char first, unsigned int nb )
   : myFirst( first ), myNb( nb )
 {
@@ -68,7 +68,7 @@ DGtal::OrderedAlphabet::OrderedAlphabet( char first, unsigned int nb )
  * @return the index of the letter [c] in the order relation,
  * starting from 0 to myNb-1.
  */
-INLINE
+inline
 unsigned int
 DGtal::OrderedAlphabet::order( char c ) const
 {
@@ -85,7 +85,7 @@ DGtal::OrderedAlphabet::order( char c ) const
  *
  * NB: O(nb of letters in the alphabet).
  */
-INLINE
+inline
 char
 DGtal::OrderedAlphabet::letter( unsigned int i ) const
 {
@@ -102,7 +102,7 @@ DGtal::OrderedAlphabet::letter( unsigned int i ) const
  * @param c2 another letter in the same alphabet.
  * @return 'true' iff c1 < c2
  */
-INLINE
+inline
 bool 
 DGtal::OrderedAlphabet::less( char c1, char c2 ) const
 {
@@ -114,7 +114,7 @@ DGtal::OrderedAlphabet::less( char c1, char c2 ) const
  * @param c2 another letter in the same alphabet.
  * @return 'true' iff c1 <= c2
  */
-INLINE
+inline
 bool 
 DGtal::OrderedAlphabet::lessOrEqual( char c1, char c2 ) const
 {
@@ -126,7 +126,7 @@ DGtal::OrderedAlphabet::lessOrEqual( char c1, char c2 ) const
  * @param c2 another letter in the same alphabet.
  * @return 'true' iff c1 == c2
  */
-INLINE
+inline
 bool 
 DGtal::OrderedAlphabet::equal( char c1, char c2 ) const
 {
@@ -143,7 +143,7 @@ DGtal::OrderedAlphabet::equal( char c1, char c2 ) const
  * @param object the object of class 'OrderedAlphabet' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const OrderedAlphabet & object )

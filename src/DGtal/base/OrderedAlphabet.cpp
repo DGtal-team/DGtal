@@ -31,11 +31,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/base/OrderedAlphabet.h"
 #include "DGtal/math/arithmetic/ModuloComputer.h"
-
-// Includes inline functions/methods if necessary.
-#if !defined(BUILD_INLINE)
-#include "DGtal/base/OrderedAlphabet.ih"
-#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
