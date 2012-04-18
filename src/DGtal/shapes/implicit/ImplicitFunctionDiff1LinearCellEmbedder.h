@@ -52,12 +52,18 @@
 namespace DGtal
 {
 
+  /// Forward declaration.
+  template < typename TKSpace,
+             typename TImplicitFunctionDiff1,
+             typename TEmbedder >
+  class ImplicitFunctionDiff1LinearCellEmbedderGradientMap;
+
   /////////////////////////////////////////////////////////////////////////////
   /**
     Description of template class 'ImplicitFunctionDiff1LinearCellEmbedder' <p>
     \brief Aim: a cellular embedder for implicit functions,
     (default constructible, copy constructible, assignable). 
-    Model of CCellEmbedder and CDifferentiable.
+    Model of CCellEmbedder and CWithGradientMap.
    
     @tparam TKSpace the cellular grid space definition, a model of CCellularGridSpaceND.
     @tparam TImplicitFunctionDiff1 the type of implicit function, a model of CImplicitFunctionDiff1.
@@ -88,6 +94,8 @@ namespace DGtal
     typedef typename ImplicitFunctionDiff1::Value ImplicitFctValue;
     typedef Cell Argument;
     typedef RealPoint Value;
+    typedef ImplicitFunctionDiff1LinearCellEmbedderGradientMap
+    < KSpace, ImplicitFunctionDiff1, Embedder > GradientMap;
     
     /** 
         Constructor. The object is not valid.
@@ -126,6 +134,11 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
+
+    /**
+       @return the corresponding gradient map. 
+    */
+    GradientMap gradientMap() const;
 
     /**
        Maps a digital point to its corresponding point in the Euclidean
@@ -216,9 +229,7 @@ namespace DGtal
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
+  protected:
    
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
@@ -227,13 +238,51 @@ namespace DGtal
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
    
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:    
-    
   }; // end of class ImplicitFunctionDiff1LinearCellEmbedder
 
+  /**
+     GradientMap class for ImplicitFunctionDiff1LinearCellEmbedder.
+     A model of CUnaryFunctor<T, T::Point, T::RealVector>.
+  */
+  template < typename TKSpace,
+             typename TImplicitFunctionDiff1,
+             typename TEmbedder >
+  struct ImplicitFunctionDiff1LinearCellEmbedderGradientMap
+    : public ImplicitFunctionDiff1LinearCellEmbedder< TKSpace, 
+                                                      TImplicitFunctionDiff1,
+                                                      TEmbedder>
+  {
+    typedef ImplicitFunctionDiff1LinearCellEmbedderGradientMap
+    < TKSpace, TImplicitFunctionDiff1, TEmbedder> Self;
+    typedef ImplicitFunctionDiff1LinearCellEmbedder
+    < TKSpace, TImplicitFunctionDiff1, TEmbedder> Base;
+    typedef typename Base::Cell Cell;
+    typedef typename Base::RealPoint RealPoint;
+    typedef typename Base::RealVector RealVector;
+    typedef Cell Argument;
+    typedef RealVector Value;
+    using Base::myPtrFct;
+
+    inline
+    ImplicitFunctionDiff1LinearCellEmbedderGradientMap
+    ( const Base & other )
+      : Base( other )
+    {}
+
+    inline
+    Self & operator=( const Base & other )
+    {
+      Base::operator=( other );
+      return *this;
+    }
+
+    inline
+    Value operator()( const Argument & arg ) const
+    {
+      RealPoint x = Base::operator()( arg );
+      return myPtrFct->gradient( x );
+    }
+  };
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'ImplicitFunctionDiff1LinearCellEmbedder'.

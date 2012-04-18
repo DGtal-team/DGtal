@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CDifferentiable.h
+ * @file CWithGradientMap.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/16
  *
- * Header file for concept CDifferentiable.cpp
+ * Header file for concept CWithGradientMap.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CDifferentiable_RECURSES)
-#error Recursive header files inclusion detected in CDifferentiable.h
-#else // defined(CDifferentiable_RECURSES)
+#if defined(CWithGradientMap_RECURSES)
+#error Recursive header files inclusion detected in CWithGradientMap.h
+#else // defined(CWithGradientMap_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CDifferentiable_RECURSES
+#define CWithGradientMap_RECURSES
 
-#if !defined CDifferentiable_h
+#if !defined CWithGradientMap_h
 /** Prevents repeated inclusion of headers. */
-#define CDifferentiable_h
+#define CWithGradientMap_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,12 +49,12 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CDifferentiable
+// class CWithGradientMap
 /**
-Description of \b concept '\b CDifferentiable' <p>
+Description of \b concept '\b CWithGradientMap' <p>
 @ingroup Concepts
 @brief Aim:
-A differentiable object provides a gradient map that associates to each argument some real vector.
+Such object provides a gradient map that associates to each argument some real vector.
 
 ### Refinement of
 
@@ -65,7 +65,7 @@ A differentiable object provides a gradient map that associates to each argument
 - \e gradientMap() const: returns a \e GradientMap.
 
 ### Notation
- - \e X : A type that is a model of CDifferentiable
+ - \e X : A type that is a model of CWithGradientMap
  - \e x : object of type X
 
 ### Definitions
@@ -82,10 +82,10 @@ A differentiable object provides a gradient map that associates to each argument
 
 ### Notes
 
-@tparam T the type that should be a model of CDifferentiable.
+@tparam T the type that should be a model of CWithGradientMap.
  */
 template <typename T>
-struct CDifferentiable
+struct CWithGradientMap
 {
     // ----------------------- Concept checks ------------------------------
 public:
@@ -94,7 +94,7 @@ public:
   typedef typename T::GradientMap GradientMap;
   BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< GradientMap > ));
   BOOST_CONCEPT_ASSERT(( CUnaryFunctor< GradientMap, Argument, RealVector > ));
-  BOOST_CONCEPT_USAGE( CDifferentiable )
+  BOOST_CONCEPT_USAGE( CWithGradientMap )
   {
     checkConstConstraints();
   }
@@ -110,14 +110,14 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of concept CDifferentiable
+}; // end of concept CWithGradientMap
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CDifferentiable_h
+#endif // !defined CWithGradientMap_h
 
-#undef CDifferentiable_RECURSES
-#endif // else defined(CDifferentiable_RECURSES)
+#undef CWithGradientMap_RECURSES
+#endif // else defined(CWithGradientMap_RECURSES)

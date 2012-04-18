@@ -189,7 +189,7 @@ int main( int argc, char** argv )
   cellEmbedder.init( K, ishape, dshape.pointEmbedder() );
   ofstream out( "marching-cube.off" );
   if ( out.good() )
-    digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );
+    digSurf.exportEmbeddedSurfaceAs3DNOFF( out, cellEmbedder );
   out.close();
   trace.endBlock();
   //! [trackImplicitPolynomialSurfaceToOFF-makingOFF]

@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointEmbedder.h"
-#include "DGtal/kernel/CDifferentiable.h"
+#include "DGtal/kernel/CWithGradientMap.h"
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceEmbedder.h"
