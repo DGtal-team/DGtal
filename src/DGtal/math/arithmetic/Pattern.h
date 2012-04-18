@@ -43,6 +43,7 @@
 #include <iostream>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -62,19 +63,29 @@ namespace DGtal
      subpatterns.
 
      @param TFraction the type chosen to represent fractions, a model
-     of CFraction. You may use SternBrocot<>::Fraction for instance.
+     of CPositiveIrreducibleFraction. You may use
+     SternBrocot::Fraction or LighterSternBrocot::Fraction for
+     instance.
+
+     @note LighterSternBrocot::Fraction takes much less memory than
+     SternBrocot::Fraction and is more efficient for large
+     integers. It is 10% slower than SternBrocot::Fraction for small
+     integers (<1000).
+
+     @see dgtal_digstraighness_sec2
   */
   template <typename TFraction>
   class Pattern
   {
   public:
     typedef TFraction Fraction;
+    BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+
     typedef Pattern<TFraction> Self;
     typedef typename Fraction::Integer Integer;
     typedef typename Fraction::Size Size;
     
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    // BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
 
     // ----------------------- associated types ------------------------------
   public:
