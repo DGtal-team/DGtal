@@ -84,6 +84,8 @@ It adds inner types to functor.
 
 ### Models
 
+- ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
+
 ### Notes
 
 @tparam T the type that should be a model of CCellEmbedder.
