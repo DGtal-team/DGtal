@@ -86,18 +86,20 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
       
+
     typedef TDistance Distance;
       
     GaussianConvolutionWeight(const double sigma): mySigma(sigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
+      myCoef2 = 1.0/2.0*M_PI;
     }
       
     inline
     double operator()(const Distance &aDisplacment) const
     {
-      return myCoef*exp(  -NumberTraits<Distance>::castToDouble(aDisplacment)*
-        NumberTraits<Distance>::castToDouble(aDisplacment)/(2.0*mySigma));
+      return myCoef*exp(-NumberTraits<Distance>::castToDouble(aDisplacment)*
+        NumberTraits<Distance>::castToDouble(aDisplacment)*myCoef2);
     } 
      
      ///Internal Sigma value;
@@ -105,6 +107,7 @@ namespace DGtal
     
     ///Precomputed constant coefs.
     double myCoef;
+    double myCoef2;
   }; 
 
 
