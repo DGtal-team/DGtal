@@ -671,6 +671,8 @@ exportEmbeddedSurfaceAs3DNOFF
 ( std::ostream & out,
   const CellEmbedder & cembedder ) const
 {
+  BOOST_CONCEPT_ASSERT(( CCellEmbedder< CellEmbedder > ));
+
   typedef DGtal::uint64_t Number;
   // Numbers all vertices.
   std::map<Vertex, Number> index;

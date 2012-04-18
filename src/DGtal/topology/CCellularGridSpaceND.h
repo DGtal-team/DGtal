@@ -179,10 +179,10 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 
 | Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
 |---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
-| dimension     | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| DIM           | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| POS           | \e x.POS         |                   | \e Sign       |              | the positive sign for cells           |                |            |
-| NEG           | \e x.NEG         |                   | \e Sign       |              | the negative sign for cells           |                |            |
+| dimension     | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| DIM           | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| POS           | \e X::POS        |                   | \e Sign       |              | the positive sign for cells           |                |            |
+| NEG           | \e X::NEG        |                   | \e Sign       |              | the negative sign for cells           |                |            |
 |               |                  |                   |               |              |                                       |                |            |
 | initialization|\e x.\e init(p1, p2, b)| b is \c bool | \c bool       |              | initializes the space so that cells are within the bounds p1 and p2, returns true iff the initialization was valid (ie, such bounds are representable with these integers).      |                |            |
 | Size or width | \e x.size( \e k )    |               | \e Integer    |              | returns the size/width of the space along the axis \e k | |         |
@@ -357,7 +357,10 @@ public:
 
   BOOST_CONCEPT_USAGE( CCellularGridSpaceND )
   {
-    // ConceptUtils::sameType( myA, T::staticMember );
+    ConceptUtils::sameType( myDim, T::dimension );
+    ConceptUtils::sameType( myDim, T::DIM );
+    ConceptUtils::sameType( mySign, T::POS );
+    ConceptUtils::sameType( mySign, T::NEG );
     ConceptUtils::sameType( myBool, myX.init( myP1, myP2, myBool ) );
     checkConstConstraints();
   }

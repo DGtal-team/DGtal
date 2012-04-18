@@ -43,6 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/kernel/CPointEmbedder.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/shapes/implicit/CImplicitFunction.h"
 #include "DGtal/shapes/implicit/CImplicitFunctionDiff1.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -53,12 +55,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
     Description of template class 'ImplicitFunctionDiff1LinearCellEmbedder' <p>
-    \brief Aim: model of cellular embedder for implicit functions,
-    (default constructible, copy constructible, assignable).
+    \brief Aim: a cellular embedder for implicit functions,
+    (default constructible, copy constructible, assignable). 
+    Model of CCellEmbedder and CDifferentiable.
    
-    @tparam TKSpace the cellular grid space definition.
+    @tparam TKSpace the cellular grid space definition, a model of CCellularGridSpaceND.
     @tparam TImplicitFunctionDiff1 the type of implicit function, a model of CImplicitFunctionDiff1.
-    @tparam TEmbedder the type of digital embedder.
+    @tparam TEmbedder the type of digital embedder, a model of CPointEmbedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
@@ -68,7 +71,9 @@ namespace DGtal
              typename TEmbedder >
   class ImplicitFunctionDiff1LinearCellEmbedder
   {
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< TKSpace > ));
     BOOST_CONCEPT_ASSERT(( CImplicitFunctionDiff1< TImplicitFunctionDiff1 > ));
+    BOOST_CONCEPT_ASSERT(( CPointEmbedder< TEmbedder > ));
 
   public:
     typedef TKSpace KSpace;

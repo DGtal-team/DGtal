@@ -158,7 +158,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/CanonicEmbedder.ih"
+#include "DGtal/kernel/CanonicEmbedder.ih"
 
 
 //                                                                           //

@@ -51,9 +51,9 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-    Description of template class 'ImageLinearCellEmbedder' <p>
-    \brief Aim: model of cellular embedder for images.
-    (default constructible, copy constructible, assignable).
+    Description of template class 'ImageLinearCellEmbedder' <p> \brief
+    Aim: a cellular embedder for images.  (default constructible, copy
+    constructible, assignable). Model of CCellEmbedder.
    
     @tparam TKSpace the cellular grid space definition.
     @tparam TImage the type of implicit function, a model of CImage.
