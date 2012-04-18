@@ -111,13 +111,13 @@ DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(co
   while ( ! visitor.finished() )
     {
       node = visitor.current();
-      if (node.second < myRadius)
+      if (node.second < (MySize) myRadius)
 	{
 	  s = node.first;
 	  i = K.sOrthDir( s );
 	  elementary[ i ] = K.sDirect( s, i ) ? 1 : -1;
 	  
-	  elementary *= myKernelFunctor( elementary );
+	  elementary *= myKernelFunctor( node.second );
 	  n+=  elementary;
 	  
 	  elementary [ i  ] = 0;      

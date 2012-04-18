@@ -52,7 +52,7 @@
 #include <QtGui/qapplication.h>
 
 #include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,18 +112,19 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   MyDigitalSurface::ConstIterator it = digSurf.begin();
 
 
-  //Convolution kernel
-  ConstantConvolutionKernel<Vector> kernel;
+  //Convolution weight
+  ConstantConvolutionWeight<MyDigitalSurface::Size> kernel;
   
   //Estimator definition
+  trace.beginBlock("Constant weights");
   typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface, 
-						ConstantConvolutionKernel<Vector> > MyEstimator;
-  MyEstimator myNormalEstimator(digSurf, kernel);
-  
+						ConstantConvolutionWeight<MyDigitalSurface::Size> > MyEstimator;
+  MyEstimator myNormalEstimator(digSurf, kernel);  
   myNormalEstimator.init(1.0, 5);
   
   MyEstimator::Quantity res = myNormalEstimator.eval(it);
   trace.info() << "Normal vector at begin() : "<< res << std::endl;
+  trace.endBlock();
 
   viewer.show(); 
  
@@ -141,17 +142,19 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   viewer<< Viewer3D::updateDisplay;
   
   //Convolution kernel
-  GaussianConvolutionKernel<Vector> Gkernel(14.0);
-  
+  GaussianConvolutionWeight<MyDigitalSurface::Size> Gkernel(5.0);
+  trace.beginBlock("Gaussian weights");
   //Estimator definition
   typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface, 
-						GaussianConvolutionKernel<Vector> > MyEstimatorGaussian;
+						GaussianConvolutionWeight<MyDigitalSurface::Size> > MyEstimatorGaussian;
   MyEstimatorGaussian myNormalEstimatorG(digSurf, Gkernel);
   
-  myNormalEstimatorG.init(1.0, 15);
+  myNormalEstimatorG.init(1.0, 5);
   
   MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval(it);
   trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+  trace.endBlock();
+
 
   viewer<< CustomColors3D(Color(200, 0, 0),Color(200, 0,0));
   for(MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();

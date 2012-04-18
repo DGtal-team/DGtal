@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CConvolutionKernel.h
+ * @file CConvolutionWeights.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/06
  *
- * Header file for concept CConvolutionKernel.cpp
+ * Header file for concept CConvolutionWeights.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CConvolutionKernel_RECURSES)
-#error Recursive header files inclusion detected in CConvolutionKernel.h
-#else // defined(CConvolutionKernel_RECURSES)
+#if defined(CConvolutionWeights_RECURSES)
+#error Recursive header files inclusion detected in CConvolutionWeights.h
+#else // defined(CConvolutionWeights_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CConvolutionKernel_RECURSES
+#define CConvolutionWeights_RECURSES
 
-#if !defined CConvolutionKernel_h
+#if !defined CConvolutionWeights_h
 /** Prevents repeated inclusion of headers. */
-#define CConvolutionKernel_h
+#define CConvolutionWeights_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,13 +48,14 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CConvolutionKernel
+  // class CConvolutionWeights
   /**
-Description of \b concept '\b CConvolutionKernel' <p>
-     @ingroup Concepts
-     @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
+Description of \b concept '\b CConvolutionWeights' <p> @ingroup
+     Concepts @brief Aim: defines models of centered convolution
+     weight function used for normal vector integration for instance.
 
-     CConvolutionKernel models are functor mappings displacement vectors to real values.
+     CConvolutionWeights models are functor mapping topological
+     distance to real values.
      
      
  ### Refinement of CopyConstructible, Assignable
@@ -62,7 +63,7 @@ Description of \b concept '\b CConvolutionKernel' <p>
  ### Associated types : Vector
     
  ### Notation
-     - \t X : A type that is a model of CConvolutionKernel
+     - \t X : A type that is a model of CConvolutionWeights
      - \t x, \t y : object of type X
     
  ### Definitions
@@ -82,7 +83,7 @@ Description of \b concept '\b CConvolutionKernel' <p>
       <tr> 
         <td class=CName> Apply function           </td> 
         <td class=CExpression>  x(v)     </td>
-        <td class=CRequirements> v of type const  Vector&    </td> 
+        <td class=CRequirements> v of type const  Distance&    </td> 
         <td class=CReturnType> double     </td>
         <td class=CPrecondition>    </td> 
         <td class=CSemantics>  the value of the kernel at @e v     </td> 
@@ -96,14 +97,14 @@ Description of \b concept '\b CConvolutionKernel' <p>
     
  ### Models###
 
-     ConstantConvolutionKernel, GaussianConvolutionKernel
+     ConstantConvolutionWeights, GaussianConvolutionWeights
 
  ### Notes###
 
-@tparam T the type that should be a model of CConvolutionKernel.
+@tparam T the type that should be a model of CConvolutionWeights.
    */
   template <typename T> 
-  struct CConvolutionKernel:  boost::CopyConstructible<T>, boost::Assignable<T>
+  struct CConvolutionWeights:  boost::CopyConstructible<T>, boost::Assignable<T>
   // Use derivation for coarser concepts, like
   // : CoarserConcept<T>
   // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
@@ -112,10 +113,10 @@ Description of \b concept '\b CConvolutionKernel' <p>
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Vector Vector;
+    typedef typename T::Distance Distance;
    
     // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CConvolutionKernel )
+    BOOST_CONCEPT_USAGE( CConvolutionWeights )
     {
 
       ConceptUtils::sameType( myB, myX( myA ) );
@@ -124,20 +125,20 @@ Description of \b concept '\b CConvolutionKernel' <p>
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // do not require T to be default constructible.
-    typename T::Vector myA;
+    typename T::Distance myA;
     double myB;
     
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CConvolutionKernel
+  }; // end of concept CConvolutionWeights
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CConvolutionKernel_h
+#endif // !defined CConvolutionWeights_h
 
-#undef CConvolutionKernel_RECURSES
-#endif // else defined(CConvolutionKernel_RECURSES)
+#undef CConvolutionWeights_RECURSES
+#endif // else defined(CConvolutionWeights_RECURSES)

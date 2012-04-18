@@ -46,7 +46,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/CConvolutionKernel.h"
+#include "DGtal/geometry/surfaces/estimation/CConvolutionWeights.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -64,13 +64,13 @@ namespace DGtal
    * using a breadth-first propagation around the given surfel.
    *
    * The neighboring is parametrized by a given topological radius @e R.
-   * The weight kernel function maps displacment vectors  to a
-   * continuous weights.
+   * The weight kernel function maps topological distance to a
+   * continuous weight.
    *
    * @tparam TDigitalSurface type of digital surface on which we would
    * like to compute vector field..
    * @tparam TKernelFunctor type of Functor used to represent
-   * convolution kernel functor (see BasicConvolutionKernels.h).
+   * convolution kernel functor (see BasicConvolutionWeights.h).
    */
   template <typename TDigitalSurface, typename TKernelFunctor>
   class LocalConvolutionNormalVectorEstimator
@@ -84,7 +84,7 @@ namespace DGtal
     typedef typename TDigitalSurface::ConstIterator ConstIterator;
     typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
 
-    BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
+    BOOST_CONCEPT_ASSERT(( CConvolutionWeights<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:
