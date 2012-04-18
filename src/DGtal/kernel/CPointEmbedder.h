@@ -84,7 +84,7 @@ It adds inner types to functor.
 
 ### Models
 
-- CanonicEmbedder
+- CanonicEmbedder, RegularPointEmbedder
 
 ### Notes
 
