@@ -45,8 +45,8 @@ int main( int argc, char** argv )
     }
 
   //! [approximation-types]
-  typedef int64_t Integer;
-  typedef int64_t Size;
+  typedef DGtal::int64_t Integer;
+  typedef DGtal::int64_t Size;
   typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
@@ -67,13 +67,13 @@ int main( int argc, char** argv )
       long double int_part = floorl( number );
       Size u = NumberTraits<long double>::castToInt64_t( int_part );
       *itback++ = std::make_pair( u, i++ );
-      long double approx = 
+      long double approx =
         ( (long double) NumberTraits<Integer>::castToDouble( f.p() ) )
         / ( (long double) NumberTraits<Integer>::castToDouble( f.q() ) );
-      std::cout << "z = " << f.p() << " / " << f.q() 
+      std::cout << "z = " << f.p() << " / " << f.q()
                 << " =~ " << setprecision( 16 ) << approx << std::endl;
       number -= int_part;
-      if ( ( (number0 - epsilon ) < approx ) 
+      if ( ( (number0 - epsilon ) < approx )
            && ( approx < (number0 + epsilon ) ) ) break;
       number = 1.0 / number;
     }

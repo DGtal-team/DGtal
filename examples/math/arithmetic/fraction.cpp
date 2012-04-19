@@ -41,8 +41,8 @@ int main( int argc, char** argv )
     }
 
   //! [fraction-types]
-  typedef int64_t Integer;
-  typedef int64_t Size;
+  typedef DGtal::int64_t Integer;
+  typedef DGtal::int64_t Size;
   typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
