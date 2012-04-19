@@ -13,6 +13,7 @@ ENDFOREACH(FILE)
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
     testIntegerComputer
+    testConvexIntegerPolygon
     testSternBrocot 
     testLightSternBrocot
     testLighterSternBrocot

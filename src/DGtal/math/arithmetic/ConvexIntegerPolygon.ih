@@ -1,0 +1,233 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ConvexIntegerPolygon.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/04/19
+ *
+ * Implementation of inline methods defined in ConvexIntegerPolygon.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include "DGtal/kernel/NumberTraits.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::~ConvexIntegerPolygon()
+{ // Nothing to do.
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConvexIntegerPolygon()
+{ // Nothing to do.
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConvexIntegerPolygon
+( const Base & other )
+  : Base( other )
+{ // Nothing to do.
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Self &
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::operator=
+( const Base & other )
+{ // Nothing to do.
+  Base::operator=( other );
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+purge()
+{
+  Iterator it = begin();
+  Iterator it_end = end();
+  while ( it != it_end )
+    {
+      _A = *it;
+      ++it;
+      while ( ( it != it_end ) && ( _A == *it ) )
+	it = erase( it );
+    }
+  while ( ( size() > 1 )
+	  && ( * begin() == * rbegin() ) )
+    erase( begin() );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Iterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+insertBefore( const Iterator & pos, const Point & K )
+{
+  return Base::insert( pos, K );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+pushBack( const Point & K )
+{
+  Base::push_back( K );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+const typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Integer &
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+twiceArea() const
+{
+  _a = NumberTraits<Integer>::ZERO;
+  ConstIterator it = begin();
+  ConstIterator it_end = end();
+  ConstIterator it_next = it; ++it_next;
+  while ( it_next != it_end )
+    {
+      _a += _ic.crossProduct( *it, *it_next );
+      it = it_next; ++it_next;
+    }
+  _a += _ic.crossProduct( *it, *(begin()) );
+  return _a;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Point3I
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+centroid() const
+{
+  _a = twiceArea();
+  return centroid( _a );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Point3I
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+centroid( const Integer & twice_area ) const
+{
+  _a = _b = NumberTraits<Integer>::ZERO;
+  _A = Point( NumberTraits<Integer>::ZERO, NumberTraits<Integer>::ZERO );
+  ConstIterator it_begin = begin();
+  ConstIterator it = it_begin;
+  ConstIterator it_end = end();
+  if( twice_area > NumberTraits<Integer>::ZERO )
+    {
+      _den = 3 * twice_area;
+      ConstIterator it_next = it; ++it_next;
+      while ( it_next != it_end )
+	{
+	  _ic.getCrossProduct( _c, *it, *it_next );
+	  _B = *it + *it_next;
+	  _B *= _c;
+	  _A += _B;
+	  it = it_next; ++it_next;
+	}
+      _ic.getCrossProduct( _c, *it, *it_begin );
+      _B = *it + *it_begin;
+      _B *= _c;
+      _A += _B;
+    }
+  else
+    {
+      _den = NumberTraits<Integer>::ZERO;
+      for ( ; it != it_end; ++it )
+	{
+	  _A += *it;
+	  ++_den;
+	}
+    }
+  return Point3I( _A[ 0 ], _A[ 1 ], _den );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+bool
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+cut( const Vector & N, const Integer & c )
+{
+  return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[ConvexIntegerPolygon]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TSpace, typename TSequence>
+inline
+bool
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename TSpace, typename TSequence>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const ConvexIntegerPolygon<TSpace,TSequence> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
