@@ -44,7 +44,7 @@ int main( int argc, char** argv )
 
   //! [convergents-biginteger-types]
   typedef BigInteger Integer;
-  typedef int64_t Size;
+  typedef DGtal::int64_t Size;
   typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
@@ -65,9 +65,9 @@ int main( int argc, char** argv )
     {
       Value u = *it;
       std::cout << ( ( it == itbegin ) ? "[" : "," )
-                << u.first; 
+                << u.first;
     }
-  std::cout << "]" << std::endl; 
+  std::cout << "]" << std::endl;
   //! [convergents-biginteger-cfrac]
 
   //! [convergents-biginteger-convergents]
