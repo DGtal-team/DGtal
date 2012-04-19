@@ -41,15 +41,15 @@ int main( int argc, char** argv )
     }
 
   //! [convergents-types]
-  typedef LighterSternBrocot<int64_t, int64_t, StdMapRebinder> SB; // the type of the Stern-Brocot tree
+  typedef LighterSternBrocot<DGtal::int64_t, DGtal::int64_t, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
   typedef Fraction::Value Value; // the value of the iterator, a pair (quotient,depth).
   //! [convergents-types]
 
   //! [convergents-instantiation]
-  int64_t p = atoll( argv[ 1 ] );
-  int64_t q = atoll( argv[ 2 ] );
+  DGtal::int64_t p = atoll( argv[ 1 ] );
+  DGtal::int64_t q = atoll( argv[ 2 ] );
   Fraction f( p, q ); // fraction p/q
   //! [convergents-instantiation]
 
@@ -61,9 +61,9 @@ int main( int argc, char** argv )
     {
       Value u = *it;
       std::cout << ( ( it == itbegin ) ? "[" : "," )
-                << u.first; 
+                << u.first;
     }
-  std::cout << "]" << std::endl; 
+  std::cout << "]" << std::endl;
   //! [convergents-cfrac]
 
   //! [convergents-convergents]
