@@ -47,16 +47,16 @@ int main( int argc, char** argv )
     }
 
   //! [pattern-types]
-  typedef int32_t Integer;
-  typedef int32_t Size;
+  typedef DGtal::int32_t Integer;
+  typedef DGtal::int32_t Size;
   typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Pattern<Fraction> MyPattern; // the type for patterns
   //! [pattern-types]
 
   //! [pattern-instantiation]
-  int32_t p = atoi( argv[ 1 ] );
-  int32_t q = atoi( argv[ 2 ] );
+  DGtal::int32_t p = atoi( argv[ 1 ] );
+  DGtal::int32_t q = atoi( argv[ 2 ] );
   MyPattern pattern( p, q );
   //! [pattern-instantiation]
 
