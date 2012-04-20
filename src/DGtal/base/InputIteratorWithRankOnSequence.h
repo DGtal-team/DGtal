@@ -227,7 +227,8 @@ namespace DGtal
    * @param object the object of class 'InputIteratorWithRankOnSequence' to write.
    * @return the output stream after the writing.
    */
-  template <typename TSequence, typename TRank >
+  //  template <typename TSequence, typename TRank = typename TSequence::difference_type>
+  template <typename TSequence, typename TRank>
   std::ostream&
   operator<< ( std::ostream & out, const InputIteratorWithRankOnSequence<TSequence, TRank> & object );
 
