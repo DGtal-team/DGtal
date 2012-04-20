@@ -1,3 +1,35 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file exampleFMM3D.cpp
+ * @ingroup Examples
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @date 2012/02/23
+ *
+ * @brief The aim of this example
+ * is to use the FMM (fast marching method) class
+ * in order to incrementally compute a signed distance
+ * field from a digital surface. The resulting field
+ * is visualized with QGLViewer  
+ *
+ * This file is part of the DGtal library.
+ */
+
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"

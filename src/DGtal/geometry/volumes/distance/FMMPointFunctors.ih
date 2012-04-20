@@ -34,7 +34,26 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+///////////////////////////////////////////////////////////////////////////////
+// Helper functions defined in the compilation unit (anonymous namespace)
+// see operator() below
+namespace
+{
+    //comparator in absolute value
+    template <typename Value>
+    bool absComparator(const Value& i, const Value& j) 
+    { 
+      return ( std::abs(static_cast<double>(i)) < std::abs(static_cast<double>(j)) ); 
+    }
 
+    //pair second member comparator in absolute value
+    template <typename Pair>
+    bool secondAbsComparator(const Pair& i, const Pair& j) 
+    { 
+      return absComparator( i.second, j.second ); 
+    }
+
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -47,6 +66,8 @@ inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -55,6 +76,8 @@ inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
   (const L2FirstOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -68,6 +91,8 @@ DGtal::L2FirstOrderLocalDistance<TImage,TSet>::operator=
   {
     myImgPtr = other.myImgPtr; 
     mySetPtr = other.mySetPtr; 
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
   }
   return *this; 
 }
@@ -146,8 +171,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
 {
   ASSERT(aValueList.size() > 0); 
 
-  unsigned int nb = aValueList.size();
-  if ( nb == 1 )
+  if ( aValueList.size() == 1 )
     {
       Value d = aValueList.back();
       if (d >= 0) return d + 1.0; 
@@ -157,7 +181,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
     {
       //function computation
       typename Values::iterator itMax = 
-	std::max_element( aValueList.begin(), aValueList.end(), details::absComparator<Value> ); 
+	std::max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
       if ( gradientNorm( *itMax, aValueList ) > 1 )
 	{
 	  aValueList.erase( itMax ); 
@@ -183,12 +207,10 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
 	  double disc = b*b - 4*a*c;
 	  ASSERT(disc >= 0); 
 
-	  double dres1 = ( ( -b + std::sqrt(disc) ) / (2*a) );
-	  double dres2 = ( ( -b - std::sqrt(disc) ) / (2*a) );
-	  if ( std::abs(dres1) > std::abs(dres2) )
-	      return static_cast<Value>(dres1);
+	  if ( b < 0 )
+	      return static_cast<Value>( ( -b + std::sqrt(disc) ) / (2*a) );
 	  else 
-	      return static_cast<Value>(dres2); 
+	      return static_cast<Value>( ( -b - std::sqrt(disc) ) / (2*a) ); 
 	}
     }
 
@@ -201,11 +223,11 @@ typename DGtal::L2FirstOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2FirstOrderLocalDistance<TImage, TSet>
 ::gradientNorm(const Value& aValue, const Values& aValueList) const
 {
-  double sum = 0; 
+  Value sum = 0; 
   for (typename Values::const_iterator it = aValueList.begin(); 
        it != aValueList.end(); ++it)
     {
-      Value d = std::abs(aValue - *it); 
+      Value d = (aValue - *it); 
       sum += (d*d); 
     }
   return sum; 
@@ -228,6 +250,8 @@ inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -236,6 +260,8 @@ inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
   (const L2SecondOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -249,6 +275,8 @@ DGtal::L2SecondOrderLocalDistance<TImage,TSet>::operator=
   {
     myImgPtr = other.myImgPtr; 
     mySetPtr = other.mySetPtr; 
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
   }
   return *this; 
 }
@@ -307,8 +335,8 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
 
 	      if ( flag12 && flag22 )
 		{ //take the minimal value
-		  d1 = 2.0*d1 - d12/2.0; 
-		  d2 = 2.0*d2 - d22/2.0; 
+		  d1 = getValue( d1, d12 ); 
+		  d2 = getValue( d2, d22 ); 
 		  if (std::abs(d1) < std::abs(d2))
 		    d = d1;
 		  else 
@@ -332,7 +360,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
 
 		  if ( flag12 )
 		    {
-		      d1 = 2.0*d1 - d12/2.0; 
+		      d1 = getValue( d1, d12 ); 
 		      coeff = 1.5; 
 		    }
 		  d = d1;
@@ -344,7 +372,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
 
 		  if ( flag22 )
 		    {
-		      d2 = 2.0*d2 - d22/2.0; 
+		      d2 = getValue( d2, d22 ); 
 		      coeff = 1.5; 
 		    }
 		  d = d2;
@@ -373,8 +401,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::compute
 {
   ASSERT(aList.size() > 0); 
 
-  unsigned int nb = aList.size();
-  if ( nb == 1 )
+  if ( aList.size() == 1 )
     {
       CoeffValue pair = aList.back();
       if (pair.second >= 0) 
@@ -383,17 +410,6 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::compute
 	return ( (pair.second - 1.0)/(pair.first) ); 
     } 
   else 
-    {
-      //function computation
-      // typename List::iterator itMax = 
-      // 	std::max_element( aList.begin(), aList.end(), details::secondAbsComparator<CoeffValue> ); 
-      // if ( gradientNorm( itMax->second, aList ) > 1 )
-      // 	{
-      // 	  trace.info() << "NB. numerical error in L2SecondOrderLocalDistance " << std::endl; 
-      // 	  aList.erase( itMax ); 
-      // 	  return this->compute(aList); 
-      // 	}
-      // else 
 	{ //resolution
 	  double a = 0; 
 	  double b = 0; 
@@ -414,13 +430,10 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::compute
 	  double disc = b*b - 4*a*c;
 	  ASSERT(disc >= 0); 
 
-	  double dres1 = ( ( -b + std::sqrt(disc) ) / (2*a) );
-	  double dres2 = ( ( -b - std::sqrt(disc) ) / (2*a) );
-	  if ( std::abs(dres1) > std::abs(dres2) )
-	      return static_cast<Value>(dres1);
+	  if ( b < 0 )
+	      return static_cast<Value>( ( -b + std::sqrt(disc) ) / (2*a) );
 	  else 
-	      return static_cast<Value>(dres2); 
-	}
+	      return static_cast<Value>( ( -b - std::sqrt(disc) ) / (2*a) ); 
     }
 }
 
@@ -429,16 +442,9 @@ template <typename TImage, typename TSet>
 inline
 typename DGtal::L2SecondOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2SecondOrderLocalDistance<TImage, TSet>
-::gradientNorm(const Value& aValue, const List& aList) const
+::getValue(const Value& aValue1, const Value& aValue2) const
 {
-  double sum = 0; 
-  for (typename List::const_iterator it = aList.begin(); 
-       it != aList.end(); ++it)
-    {
-      Value v = std::abs( it->first*aValue - it->second ); 
-      sum += (v*v); 
-    }
-  return sum; 
+  return (2.0*aValue1 - aValue2/2.0); 
 }
 
 //-----------------------------------------------------------------------------
@@ -455,30 +461,36 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::LInfFirstOrderLocalDistance<TImage,TSet>::LInfFirstOrderLocalDistance
+DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::LInfFirstOrderLocalDistance<TImage,TSet>::LInfFirstOrderLocalDistance
-  (const LInfFirstOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
+DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
+  (const LInfLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::LInfFirstOrderLocalDistance<TImage,TSet>&
-DGtal::LInfFirstOrderLocalDistance<TImage,TSet>::operator=
-  (const LInfFirstOrderLocalDistance& other)
+DGtal::LInfLocalDistance<TImage,TSet>&
+DGtal::LInfLocalDistance<TImage,TSet>::operator=
+  (const LInfLocalDistance& other)
 {
   if( this != &other)
   {
     myImgPtr = other.myImgPtr; 
     mySetPtr = other.mySetPtr; 
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
   }
   return *this; 
 }
@@ -486,15 +498,15 @@ DGtal::LInfFirstOrderLocalDistance<TImage,TSet>::operator=
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::LInfFirstOrderLocalDistance<TImage,TSet>::~LInfFirstOrderLocalDistance
+DGtal::LInfLocalDistance<TImage,TSet>::~LInfLocalDistance
   ()
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-typename DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::Value
-DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::operator()
+typename DGtal::LInfLocalDistance<TImage, TSet>::Value
+DGtal::LInfLocalDistance<TImage, TSet>::operator()
   (const Point& aPoint)
 {
 
@@ -551,15 +563,14 @@ DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::operator()
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-typename DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::Value
-DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::compute
+typename DGtal::LInfLocalDistance<TImage, TSet>::Value
+DGtal::LInfLocalDistance<TImage, TSet>::compute
 (Values& aValueList) const
 {
 
   ASSERT(aValueList.size() > 0); 
 
-  unsigned int nb = aValueList.size();
-  if ( nb == 1 )
+  if ( aValueList.size() == 1 )
     {
       Value d = aValueList.back();
       if (d >= 0) ++d; 
@@ -569,7 +580,7 @@ DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::compute
   else 
     { //max element
       typename Values::iterator it = 
-	std::max_element( aValueList.begin(), aValueList.end(), details::absComparator<Value> ); 
+	std::max_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
       return *it; 
     }
 }
@@ -578,7 +589,7 @@ DGtal::LInfFirstOrderLocalDistance<TImage, TSet>::compute
 template <typename TImage, typename TSet>
 inline
 void
-DGtal::LInfFirstOrderLocalDistance<TImage, TSet>
+DGtal::LInfLocalDistance<TImage, TSet>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "LInf"; 
@@ -588,30 +599,36 @@ DGtal::LInfFirstOrderLocalDistance<TImage, TSet>
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::L1FirstOrderLocalDistance<TImage,TSet>::L1FirstOrderLocalDistance
+DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::L1FirstOrderLocalDistance<TImage,TSet>::L1FirstOrderLocalDistance
-  (const L1FirstOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
+DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
+  (const L1LocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
 {
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
 }
 
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::L1FirstOrderLocalDistance<TImage,TSet>&
-DGtal::L1FirstOrderLocalDistance<TImage,TSet>::operator=
-  (const L1FirstOrderLocalDistance& other)
+DGtal::L1LocalDistance<TImage,TSet>&
+DGtal::L1LocalDistance<TImage,TSet>::operator=
+  (const L1LocalDistance& other)
 {
   if( this != &other)
   {
     myImgPtr = other.myImgPtr; 
     mySetPtr = other.mySetPtr; 
+      ASSERT( myImgPtr ); 
+      ASSERT( mySetPtr ); 
   }
   return *this;
 }
@@ -619,15 +636,15 @@ DGtal::L1FirstOrderLocalDistance<TImage,TSet>::operator=
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-DGtal::L1FirstOrderLocalDistance<TImage,TSet>::~L1FirstOrderLocalDistance
+DGtal::L1LocalDistance<TImage,TSet>::~L1LocalDistance
   ()
 {
 }
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-typename DGtal::L1FirstOrderLocalDistance<TImage, TSet>::Value
-DGtal::L1FirstOrderLocalDistance<TImage, TSet>::operator()
+typename DGtal::L1LocalDistance<TImage, TSet>::Value
+DGtal::L1LocalDistance<TImage, TSet>::operator()
   (const Point& aPoint)
 {
 
@@ -669,15 +686,15 @@ DGtal::L1FirstOrderLocalDistance<TImage, TSet>::operator()
 //-----------------------------------------------------------------------------
 template <typename TImage, typename TSet>
 inline
-typename DGtal::L1FirstOrderLocalDistance<TImage, TSet>::Value
-DGtal::L1FirstOrderLocalDistance<TImage, TSet>::compute
+typename DGtal::L1LocalDistance<TImage, TSet>::Value
+DGtal::L1LocalDistance<TImage, TSet>::compute
 (Values& aValueList) const
 {
   ASSERT(aValueList.size() > 0); 
 
   //min (in absolute values) 
   typename Values::iterator it = 
-    std::min_element( aValueList.begin(), aValueList.end(), details::absComparator<Value> ); 
+    std::min_element( aValueList.begin(), aValueList.end(), absComparator<Value> ); 
   Value vmin = *it; 
 
   //sign
@@ -691,7 +708,7 @@ DGtal::L1FirstOrderLocalDistance<TImage, TSet>::compute
 template <typename TImage, typename TSet>
 inline
 void
-DGtal::L1FirstOrderLocalDistance<TImage, TSet>
+DGtal::L1LocalDistance<TImage, TSet>
 ::selfDisplay ( std::ostream & out ) const
 {
   out << "L1"; 
@@ -794,12 +811,10 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap,isIndirect>::operator()
 
       /// for the direct orientation
       Cell surfel1 = myKSpace->uIncident( spel, dir, true );
-      //ASSERT( myKSpace->uIsSurfel( surfel1 ) ); 
       ASSERT( myKSpace->uDim( surfel1 )  == (KSpace::dimension - 1) );
 
       /// for the indirect orientation
       Cell surfel2 = myKSpace->uIncident( spel, dir, false ); 
-      //ASSERT( myKSpace->uIsSurfel( surfel2 ) ); 
       ASSERT( myKSpace->uDim( surfel2 )  == (KSpace::dimension - 1) );
 
       //neighboring values
@@ -857,8 +872,7 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap,isIndirect>::compute
 {
   ASSERT(aValueList.size() > 0); 
 
-  unsigned int nb = aValueList.size();
-  if ( nb == 1 )
+  if ( aValueList.size() == 1 )
     {
       return aValueList.back();
     } 
@@ -895,6 +909,9 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 (const DistanceImage& aDistImg, const Set& aSet, SpeedFunctor& aSpeedFunc)
   : myDistImgPtr(&aDistImg), mySetPtr(&aSet), mySpeedFuncPtr(&aSpeedFunc)
 {
+  ASSERT( myDistImgPtr ); 
+  ASSERT( mySetPtr ); 
+  ASSERT( mySpeedFuncPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -904,6 +921,9 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
   (const SpeedExtrapolator& other)
     : myDistImgPtr(other.myDistImgPtr), mySetPtr(other.mySetPtr), mySpeedFuncPtr(other.mySpeedFuncPtr)
 {
+  ASSERT( myDistImgPtr ); 
+  ASSERT( mySetPtr ); 
+  ASSERT( mySpeedFuncPtr ); 
 }
 
 //-----------------------------------------------------------------------------
@@ -918,6 +938,9 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
     myDistImgPtr = other.myDistImgPtr; 
     mySetPtr = other.mySetPtr; 
     mySpeedFuncPtr = other.mySpeedFuncPtr; 
+  ASSERT( myDistImgPtr ); 
+  ASSERT( mySetPtr ); 
+  ASSERT( mySpeedFuncPtr ); 
   }
   return *this; 
 }
