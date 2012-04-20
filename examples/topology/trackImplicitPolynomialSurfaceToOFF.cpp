@@ -30,14 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 //! [trackImplicitPolynomialSurfaceToOFF-basicIncludes]
 #include <iostream>
-#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/images/ImageSelector.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
