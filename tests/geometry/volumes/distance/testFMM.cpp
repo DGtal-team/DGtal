@@ -69,13 +69,13 @@ using namespace DGtal;
 template <typename TImage, typename TSet, int norm>
 struct DistanceTraits
 {
-  typedef LInfFirstOrderLocalDistance<TImage, TSet> Distance;  
+  typedef LInfLocalDistance<TImage, TSet> Distance;  
 };
 //partial specialization
 template <typename TImage, typename TSet>
 struct DistanceTraits<TImage, TSet, 1>
 {
-  typedef L1FirstOrderLocalDistance<TImage, TSet> Distance;  
+  typedef L1LocalDistance<TImage, TSet> Distance;  
 };
 
 //////////////////////////////////////////////////////////////////////////////

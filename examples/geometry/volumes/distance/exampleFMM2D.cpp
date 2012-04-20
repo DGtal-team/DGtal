@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleFMM.cpp
+ * @file exampleFMM2D.cpp
  * @ingroup Examples
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -215,7 +215,7 @@ bool perform()
   //on rays normal to the interface. 
   std::stringstream s; 
   s << "SpeedExt-" << radius; 
-  draw(smap.begin(), smap.end(), size, s.str());
+  //draw(smap.begin(), smap.end(), size, s.str());
 
   return true; 
 

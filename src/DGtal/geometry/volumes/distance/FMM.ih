@@ -128,6 +128,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 		  const Value& aValue)
 {
    
+  aSet.clear(); 
   for (TIteratorOnPoints it = itb; it != ite; ++it) 
     {
       insertAndAlwaysSetValue( aImg, aSet, *it, aValue ); 
@@ -147,6 +148,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   Value k = -1; 
   if (aFlagIsPositive) k = 1; 
 
+  aSet.clear(); 
   for (TIteratorOnBels it = itb; it != ite; ++it) 
     {
       //getting incident points
@@ -174,20 +176,22 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   /// types
   typedef typename KSpace::Cell Bel; 
   typedef typename TImplicitFunction::Value Value; 
-  typedef std::pair<const Bel, Value> Pair; 
-  typedef std::map<Bel, Value> Buffer; 
-  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, false> Computer4InnerPts; 
-  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, true> Computer4OuterPts; 
-
-  SCellToIncidentPoints<KSpace> getPts( aK ); 
+  typedef std::pair<const Bel, Value> BelValue; 
+  typedef std::map<Bel, Value> Buffer;
+  
+  typedef typename SCellToIncidentPoints<KSpace>::Output Pair;  
+  typedef std::vector<Pair> IncidentPoints; 
+  SCellToIncidentPoints<KSpace> getIncidentPoints( aK ); 
 
   /// 1) store a value for each bel
   /// (== distance of the inner point to the interface) 
+  IncidentPoints incidentPoints; 
   Buffer buffer;
   for (TIteratorOnBels it = itb; it != ite; ++it) 
     {
       //getting incident points
-      typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
+      Pair points = getIncidentPoints( *it );
+      incidentPoints.push_back( points ); 
 
       //getting values 
       Value vin = aF( points.first ); 
@@ -196,30 +200,27 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       //computing/storing the new value
       Value e = std::max(vin, vout) - std::min(vin, vout);
       Value v = (std::abs(vin)/e); 
-      // std::cout << points.first << " " << vin << ", " << points.second <<  " " << vout;   
-      // std::cout << " : " << e << ", " << v << std::endl; 
-
       ASSERT( v >= 0 ); 
-      buffer.insert( Pair( aK.unsigns( *it ), v ) ); 
+      buffer.insert( BelValue( aK.unsigns( *it ), v ) ); 
     }
 
+  aSet.clear(); 
   /// 2) for each inner/outer point
   /// computes its distance from the values of its incident bels
+  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, false> Computer4InnerPts; 
+  typedef L2FirstOrderLocalDistanceFromCells<KSpace, Buffer, true> Computer4OuterPts; 
   Computer4InnerPts computerIn(aK, buffer);    
   Computer4OuterPts computerOut(aK, buffer);    
-  for (TIteratorOnBels it = itb; it != ite; ++it) 
+  for (typename IncidentPoints::const_iterator it = incidentPoints.begin(); 
+       it != incidentPoints.end(); ++it) 
     {
-      //getting incident points
-      typename SCellToIncidentPoints<KSpace>::Output points = getPts( *it );
       //computing the values     
-      Value vin = computerIn( points.first ); 
-      Value vout = computerOut( points.second );
-      // std::cout << points.first << " " << vin << ", " 
-      // 		<< points.second <<  " " << vout << std::endl;  
+      Value vin = computerIn( it->first ); 
+      Value vout = computerOut( it->second );
 
       //assignement
-      insertAndAlwaysSetValue( aImg, aSet, points.first, k*vin ); 
-      insertAndAlwaysSetValue( aImg, aSet, points.second, -k*vout );  
+      insertAndAlwaysSetValue( aImg, aSet, it->first, k*vin ); 
+      insertAndAlwaysSetValue( aImg, aSet, it->second, -k*vout );  
     }
 }
 
@@ -235,6 +236,7 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
   Value k = -1; 
   if (aFlagIsPositive) k = 1; 
 
+  aSet.clear(); 
   for (TIteratorOnPairs it = itb; it != ite; ++it) 
     {
       insertAndAlwaysSetValue( aImg, aSet, it->first, k*aValue ); 
@@ -356,10 +358,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::selfDisplay ( std::ost
   out << "[FMM " << dimension << "d] ";
   out << myAcceptedPoints.size() << " accepted points (< " << myAreaThreshold << ")"; 
   out << " and " << myCandidatePoints.size() << " candidates. "; 
-  myPF.selfDisplay(out); 
-  out << " "; 
   out << "dmin: " << min() << ", dmax: " << max(); 
-  out << " (abs < " << myValueThreshold << ")" << std::endl; 
+  out << " (abs < " << myValueThreshold << ")"; 
 }
 
 

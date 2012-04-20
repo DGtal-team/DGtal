@@ -59,27 +59,6 @@ namespace DGtal
 {
 
   ///////////////////////////////////////////////////////////////////////////////
-  //--------------- small helpers  ----------------------------------------------
-  namespace details
-  {
-    //@TODO put it in a file of the base directory ?
-
-    //comparator in absolute value
-    template <typename Value>
-    bool absComparator(const Value& i, const Value& j) 
-    { 
-      return ( std::abs(static_cast<double>(i)) < std::abs(static_cast<double>(j)) ); 
-    }
-
-    //pair second member comparator in absolute value
-    template <typename Pair>
-    bool secondAbsComparator(const Pair& i, const Pair& j) 
-    { 
-      return absComparator( i.second, j.second ); 
-    }
-  }
-
-
   /////////////////////////////////////////////////////////////////////////////
   // template class L2FirstOrderLocalDistance
   /**
@@ -95,6 +74,12 @@ namespace DGtal
    * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 \f$
    * where \f$ \Phi_i \f$ is the distance value of the point preceding
    * or following p along the \f$ i \f$ axis. 
+   *
+   * @note This class deals with positive or negative distance values
+   * (0 is arbitrarily considered as a positive value, ie. starting with
+   * a seed of null value, you must get positive values). 
+   * However, the behavior is undefined when there are both positive
+   * and negative distance values in the neighborhood of p. 
    *
    * It is a model of CPointFunctor.
    *
@@ -225,6 +210,12 @@ namespace DGtal
    * and backward difference whenever there are enough points whose
    * distance values are known in order to evaluate these differences. 
    *
+   * @note This class deals with positive or negative distance values
+   * (0 is arbitrarily considered as a positive value, ie. starting with
+   * a seed of null value, you must get positive values). 
+   * However, the behavior is undefined when there are both positive
+   * and negative distance values in the neighborhood of p. 
+   *
    * It is a model of CPointFunctor.
    *
    * @tparam TImage model of CImage used for the mapping point-distance value
@@ -328,22 +319,22 @@ namespace DGtal
 
 
     /**
-     * Returns the squared euclidean norm of the gradient 
-     * of the distance map
+     * Returns the combination of two distance values 
+     * for the second-order accurate difference
      * 
-     * @param aValue  the distance value of the point where the gradient is computed
-     * @param aList  the distance value of (some of) the neighbors
+     * @param aValue1
+     * @param aValue2
      *
-     * @return the computed gradient norm.
+     * @return the resulting value.
      */
-    Value gradientNorm(const Value& aValue, const List& aList) const;
+    Value getValue(const Value& aValue1, const Value& aValue2) const;
   }; 
 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class LInfFirstOrderLocalDistance
+  // template class LInfLocalDistance
   /**
-   * Description of template class 'LInfFirstOrderLocalDistance' <p>
+   * Description of template class 'LInfLocalDistance' <p>
    * \brief Aim: Class for the computation of the LInf-distance
    * at some point p, from the available distance values of some points 
    * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
@@ -362,7 +353,7 @@ namespace DGtal
    * @see FMM
    */
   template <typename TImage, typename TSet>
-  class LInfFirstOrderLocalDistance
+  class LInfLocalDistance
   {
     // ----------------------- Types ------------------------------
   public:
@@ -401,26 +392,26 @@ namespace DGtal
      * @param aImg any distance map
      * @param aSet any digital set
      */
-    LInfFirstOrderLocalDistance(Image& aImg, TSet& aSet);
+    LInfLocalDistance(Image& aImg, TSet& aSet);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    LInfFirstOrderLocalDistance ( const LInfFirstOrderLocalDistance & other );
+    LInfLocalDistance ( const LInfLocalDistance & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    LInfFirstOrderLocalDistance & operator= ( const LInfFirstOrderLocalDistance & other); 
+    LInfLocalDistance & operator= ( const LInfLocalDistance & other); 
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~LInfFirstOrderLocalDistance(); 
+    ~LInfLocalDistance(); 
 
 
     /** 
@@ -457,9 +448,9 @@ namespace DGtal
   }; 
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class L1FirstOrderLocalDistance
+  // template class L1LocalDistance
   /**
-   * Description of template class 'L1FirstOrderLocalDistance' <p>
+   * Description of template class 'L1LocalDistance' <p>
    * \brief Aim: Class for the computation of the L1-distance
    * at some point p, from the available distance values of some points 
    * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
@@ -477,7 +468,7 @@ namespace DGtal
    * @see FMM
    */
   template <typename TImage, typename TSet>
-  class L1FirstOrderLocalDistance
+  class L1LocalDistance
   {
     // ----------------------- Types ------------------------------
   public:
@@ -515,26 +506,26 @@ namespace DGtal
      * @param aImg any distance map
      * @param aSet any digital set
      */
-    L1FirstOrderLocalDistance(Image& aImg, TSet& aSet);
+    L1LocalDistance(Image& aImg, TSet& aSet);
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    L1FirstOrderLocalDistance ( const L1FirstOrderLocalDistance & other );
+    L1LocalDistance ( const L1LocalDistance & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    L1FirstOrderLocalDistance & operator= ( const L1FirstOrderLocalDistance & other); 
+    L1LocalDistance & operator= ( const L1LocalDistance & other); 
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~L1FirstOrderLocalDistance(); 
+    ~L1LocalDistance(); 
 
     /** 
      * L1-distance computation at @a aPoint , 
@@ -696,8 +687,8 @@ namespace DGtal
    * of the speed function and of the distance function is zero, ie. 
    * \f$ \nabla S .  \nabla \Phi = 0 \f$. 
    *
-   * [Adalsteinsson and Sethian, Fast Construction of Extension Velocities
-   * in Level Set Methods, J. Comput. Phys. 148, 2-22, 1999]
+   * @note see [Adalsteinsson and Sethian, Fast Construction of 
+   * Extension Velocities in Level Set Methods, J. Comput. Phys. 148, 2-22, 1999]
    *
    * It is a model of CPointFunctor.
    *
@@ -738,7 +729,7 @@ namespace DGtal
     /// whose distance value is known
     const Set* mySetPtr; 
     /// Aliasing pointer on the underlying image of speed values
-    DistanceImage* mySpeedFuncPtr; 
+    SpeedFunctor* mySpeedFuncPtr; 
 
 
     // ----------------------- Interface --------------------------------------
@@ -785,10 +776,6 @@ namespace DGtal
      */
     Value operator() (const Point& aPoint);
 
-
-    // ----------------------- Internals -------------------------------------
-
-  private: 
 
   }; 
 
