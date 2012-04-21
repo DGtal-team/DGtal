@@ -31,6 +31,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/io/boards/Board2D.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -54,6 +56,7 @@ bool testConvexIntegerPolygon()
   typedef typename Space::Integer Integer;
   typedef ConvexIntegerPolygon<Space> CIP;
   typedef typename CIP::Point3I Point3I;
+  typedef typename CIP::Domain Domain;
   CIP cip;
   cip.push_back( Point( 0, 0 ) );
   cip.push_back( Point( 5, 0 ) );
@@ -68,8 +71,18 @@ bool testConvexIntegerPolygon()
   ++nb, nbok += ( c == Point3I( 75, 45, 45 ) ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "centroid == [75,45,45]" << std::endl;
+  Domain d = cip.boundingBoxDomain();
+  trace.info() << "- domain = " << d << std::endl;
   trace.endBlock();
-  
+
+  trace.beginBlock ( "Output ConvexIntegerPolygon in <cip.eps>" );
+  Board2D board;
+  board << SetMode( d.className(), "Grid" ) << d;
+  board << SetMode( cip.className(), "Transparent" ) << cip;
+  board.saveEPS( "cip.eps" );
+  board.saveSVG( "cip.svg" );
+  trace.endBlock();
+
   return nbok == nb;
 }
 

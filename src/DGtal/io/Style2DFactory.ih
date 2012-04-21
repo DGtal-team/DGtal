@@ -364,6 +364,29 @@ namespace DGtal
   };
   // SignedKhalimskyCell
 
+  // ConvexIntegerPolygon
+  struct DefaultDrawStyleFilled_ConvexIntegerPolygon : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColorRGBi( 200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  struct DefaultDrawStyleTransparent_ConvexIntegerPolygon : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColor( DGtal::Color::None ); //200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  // ConvexIntegerPolygon
+
   
   // StraightLineFrom2Points
   // StraightLineFrom2Points
@@ -598,6 +621,17 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TP
 }
 // StraightLineFrom2Points
 
+// ConvexIntegerPolygon
+template < typename Space>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ConvexIntegerPolygon<Space> & /*cip*/, std::string mode = "" )
+{
+  if ( ( mode == "" ) || ( mode == "Transparent" ) ) 
+    return new DefaultDrawStyleTransparent_ConvexIntegerPolygon;
+  else // "Filled"
+    return new DefaultDrawStyleFilled_ConvexIntegerPolygon;
+}
+// ConvexIntegerPolygon
 
 //
 
