@@ -42,8 +42,10 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -59,7 +61,9 @@ namespace DGtal
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. It is also a
-     model of boost::Container since it is a std::list of points.
+     model of boost::Container since it is a std::list of points. It
+     is also a model of CDrawableWithBoard2D, and is displayable on a
+     Board2D object.
 
      It contains no more data than a list of points except mutable
      data for intermediate computations.
@@ -88,6 +92,7 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
     typedef IntegerComputer<Integer> MyIntegerComputer;
+    typedef HyperRectDomain< Space > Domain; 
 
     typedef typename Base::value_type Value;
     typedef typename Base::iterator Iterator;
@@ -145,6 +150,12 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self & operator= ( const Base & other );
+
+    /**
+       @return the bounding domain of this polygon, i.e. the smallest
+       bounding box containing all the points of this polygon.
+    */
+    Domain boundingBoxDomain() const;
 
     /**
      * Removes (duplicate) consecutive vertices.
@@ -219,6 +230,11 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

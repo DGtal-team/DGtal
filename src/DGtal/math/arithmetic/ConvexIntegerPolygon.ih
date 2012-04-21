@@ -71,6 +71,23 @@ DGtal::ConvexIntegerPolygon<TSpace,TSequence>::operator=
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Domain
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+boundingBoxDomain() const
+{
+  ConstIterator it = begin();
+  ConstIterator it_end = end();
+  Point infimum = *it;
+  Point supremum = *it;
+  for ( ++it; it != it_end; ++it )
+    {
+      infimum = infimum.inf( *it );
+      supremum = supremum.sup( *it );
+    }
+  return Domain( infimum, supremum );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
 void
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 purge()
@@ -197,7 +214,7 @@ inline
 void
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ConvexIntegerPolygon]";
+  out << "[ConvexIntegerPolygon #Vertices=" << size() << "]";
 }
 
 /**
@@ -210,6 +227,15 @@ bool
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::isValid() const
 {
     return true;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+std::string
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::className
+() const
+{ 
+  return "ConvexIntegerPolygon";
 }
 
 
