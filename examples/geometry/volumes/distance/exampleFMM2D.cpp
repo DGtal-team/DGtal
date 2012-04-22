@@ -199,7 +199,8 @@ bool perform()
   //Extrapolating speed away from the interface 
   SpeedExtrapolator<DistanceImage, Set, SpeedImage> speedFunctor(dmap, set, smap); 
   const double maxWidth = 10.0; 
-  FMM fmm(dmap, set, d.predicate(), d.size(), maxWidth, Distance(dmap, set) ); 
+  Distance distFunctor(dmap, set); 
+  FMM fmm(dmap, set, d.predicate(), d.size(), maxWidth, distFunctor ); 
   Point lastPt = Point::diagonal(0);      //last point
   double lastDist = 0.0;                  //its distance
   while ( (fmm.computeOneStep( lastPt, lastDist )) 
@@ -215,7 +216,7 @@ bool perform()
   //on rays normal to the interface. 
   std::stringstream s; 
   s << "SpeedExt-" << radius; 
-  //draw(smap.begin(), smap.end(), size, s.str());
+  draw(smap.begin(), smap.end(), size, s.str());
 
   return true; 
 

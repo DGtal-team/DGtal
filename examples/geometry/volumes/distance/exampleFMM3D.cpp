@@ -186,6 +186,7 @@ int main( int argc, char** argv )
   //! [FMMUsage]
 
   DGtal::trace.endBlock();
+
   //////////////////////////////////////////////////////////////////////////////////
   //visualisation
   QApplication application(argc,argv);

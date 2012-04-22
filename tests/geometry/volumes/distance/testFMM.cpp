@@ -353,7 +353,8 @@ bool accuracyTest(int size)
 			    functor, map, set ); 
 
     //computation
-    FMM fmm(map, set, predicate, Distance(map, set) ); 
+    Distance distance(map, set); 
+    FMM fmm(map, set, predicate, distance); 
     fmm.compute(); 
     trace.info() << fmm << std::endl;
 
@@ -609,7 +610,8 @@ bool testComparison(int size, int area, double dist)
  
   typedef typename DistanceTraits<Image,Set,norm>::Distance Distance; 
   typedef FMM<Image, Set, DomainPredicate<Domain>, Distance > FMM; 
-  FMM fmm( map, set, dp, area, dist, Distance(map, set) ); 
+  Distance distance(map, set); 
+  FMM fmm( map, set, dp, area, dist, distance ); 
   fmm.compute(); 
   trace.info() << fmm << std::endl; 
 
