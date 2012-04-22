@@ -98,8 +98,9 @@ namespace DGtal
    * This task is delegated to an instance of a point functor, 
    * which is defined as L2FirstOrderLocalDistance by default. 
    * However, you are free to use L2SecondOrderLocalDistance, which provides
-   * more accurate distance values, L1FirstOrderLocalDistance and 
-   * LInfFirstOrderLocalDistance for other norms. 
+   * more accurate distance values, L1LocalDistance and 
+   * LInfLocalDistance for other norms. 
+   * @see FMMPointFunctors.h
    *
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
@@ -186,11 +187,18 @@ namespace DGtal
     CandidatePointSet myCandidatePoints; 
 
     /**
-     * Point functor used to deduce 
+     * Pointer on the point functor used to deduce 
      * the distance of a new point
      * from the distance of its neighbors
      */
-    PointFunctor myPF; 
+    PointFunctor* myPointFunctorPtr; 
+
+    /**
+     * 'true' if @a myPointFunctorPtr is an owning pointer
+     * (default case), 'false' if it is an aliasing pointer
+     * on a point functor given at construction
+     */
+    const bool myFlagIsOwning; 
 
     /**
      * Constant reference on a point predicate that returns 
@@ -248,7 +256,7 @@ namespace DGtal
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
 	const PointPredicate& aPointPredicate, 
-	const PointFunctor& aPointFunctor );
+	PointFunctor& aPointFunctor );
     
     /**
      * Constructor.
@@ -258,7 +266,7 @@ namespace DGtal
     FMM(Image& aImg, AcceptedPointSet& aSet, 
 	const PointPredicate& aPointPredicate, 
 	const Area& aAreaThreshold, const Value& aValueThreshold,
-	const PointFunctor& aPointFunctor );
+	PointFunctor& aPointFunctor );
     
     /**
      * Destructor.

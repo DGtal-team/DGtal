@@ -48,7 +48,9 @@ inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( PointFunctor(aImg, aSet) ), 
+  : myImage( aImg ), myAcceptedPoints( aSet ), 
+    myPointFunctorPtr( new PointFunctor(aImg, aSet) ), 
+    myFlagIsOwning( true ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
     myValueThreshold( std::numeric_limits<Value>::max() )
@@ -65,7 +67,9 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
       const Value& aValueThreshold)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( PointFunctor(aImg, aSet) ), 
+  : myImage( aImg ), myAcceptedPoints( aSet ), 
+    myPointFunctorPtr( new PointFunctor(aImg, aSet) ), 
+    myFlagIsOwning( true ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
     myValueThreshold( aValueThreshold )
@@ -80,8 +84,10 @@ inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
 ::FMM(Image& aImg, AcceptedPointSet& aSet, 
       const PointPredicate& aPointPredicate,
-      const PointFunctor& aPointFunctor)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( aPointFunctor ), 
+      PointFunctor& aPointFunctor)
+  : myImage( aImg ), myAcceptedPoints( aSet ), 
+    myPointFunctorPtr( &aPointFunctor ), 
+    myFlagIsOwning( false ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( std::numeric_limits<Area>::max() ), 
     myValueThreshold( std::numeric_limits<Value>::max() )
@@ -98,8 +104,10 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>
       const PointPredicate& aPointPredicate, 
       const Area& aAreaThreshold, 
       const Value& aValueThreshold,
-      const PointFunctor& aPointFunctor)
-  : myImage( aImg ), myAcceptedPoints( aSet ), myPF( aPointFunctor ), 
+      PointFunctor& aPointFunctor)
+  : myImage( aImg ), myAcceptedPoints( aSet ), 
+    myPointFunctorPtr( &aPointFunctor ), 
+    myFlagIsOwning( false ), 
     myPointPredicate( aPointPredicate ), 
     myAreaThreshold( aAreaThreshold ), 
     myValueThreshold( aValueThreshold )
@@ -113,6 +121,8 @@ template <typename TImage, typename TSet, typename TPointPredicate, typename TPo
 inline
 DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::~FMM()
 {
+  if (myFlagIsOwning) 
+    delete myPointFunctorPtr; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -471,7 +481,8 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::addNewCandidate(const 
   if ( (myPointPredicate(aPoint) ) 
        && ( myAcceptedPoints.find(aPoint) == myAcceptedPoints.end() ) ) 
     {
-      Value d = myPF( aPoint ); 
+      ASSERT( myPointFunctorPtr ); 
+      Value d = myPointFunctorPtr->operator()( aPoint ); 
       PointValue newPair( aPoint, d ); 
       //insert the new candidate with its distance
       myCandidatePoints.insert(newPair);
