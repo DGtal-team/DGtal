@@ -95,11 +95,11 @@ void DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::init(const ConstIt
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS ( 
-      const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) : 
-          myA(other.myA), myB(other.myB), myMu(other.myMu), myOmega(other.myOmega),
-          myNbUpPat(other.myNbUpPat),myNbLowPat(other.myNbLowPat),
-          myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
-          myF(other.myF), myL(other.myL) {
+									  const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) : 
+  myA(other.myA), myB(other.myB), myMu(other.myMu), myOmega(other.myOmega),
+  myNbUpPat(other.myNbUpPat),myNbLowPat(other.myNbLowPat),
+  myUf(other.myUf), myUl(other.myUl), myLf(other.myLf), myLl(other.myLl), 
+  myF(other.myF), myL(other.myL) {
 
   mySteps.clear();
   mySteps = other.mySteps;
@@ -143,28 +143,28 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator==( 
-  const ArithmeticalDSS<TIterator,TInteger,connectivity>& other ) const {
+								    const ArithmeticalDSS<TIterator,TInteger,connectivity>& other ) const {
   return ( ( (myOmega == other.myOmega) &&
-            (myUf == other.myUf) && 
-            (myUl == other.myUl) &&  
-            (myLf == other.myLf) &&  
-            (myLl == other.myLl) && 
-            (*myF == *other.myF) &&  
-            (*myL == *other.myL) ) || 
-          ( (myOmega == other.myOmega) &&
-            (myUf == other.myLl) && 
-            (myUl == other.myLf) &&  
-            (myLf == other.myUl) &&  
-            (myLl == other.myUf) && 
-            (*myF == *other.myL) &&  
-            (*myL == *other.myF) ) );
+	     (myUf == other.myUf) && 
+	     (myUl == other.myUl) &&  
+	     (myLf == other.myLf) &&  
+	     (myLl == other.myLl) && 
+	     (*myF == *other.myF) &&  
+	     (*myL == *other.myL) ) || 
+	   ( (myOmega == other.myOmega) &&
+	     (myUf == other.myLl) && 
+	     (myUl == other.myLf) &&  
+	     (myLf == other.myUl) &&  
+	     (myLl == other.myUf) && 
+	     (*myF == *other.myL) &&  
+	     (*myL == *other.myF) ) );
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=( 
-        const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) const {
+								    const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) const {
   return (!(*this == other));
 }
 
@@ -173,21 +173,28 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-     ::extendForward( const ConstIterator & it, 
-                     ConstIterator & lastIt, 
-               const Vector & lastMove,
-                     Point & Uf,  Point & Ul,
-                     Point & Lf,  Point & Ll )
+::extendForward( const ConstIterator & it, 
+		 ConstIterator & lastIt, 
+		 const Vector & lastMove,
+		 Point & Uf,  Point & Ul,
+		 Point & Lf,  Point & Ll )
 {
 
   Point lastPoint(*it);
 
-  //if the two last points 
-  //are confounded or not connected
-  //return false
+  
   Integer deviation = Tools<TInteger,connectivity>
-                        ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+    ::norm(lastMove[0],lastMove[1]);
+  //if the two last points are not connected return false
+  if (deviation>1) return false;
+  //if the two last points are confounded return true
+  else if (deviation==0) 
+    {
+      //add the point to the DSS
+      lastIt = it; 
+      return true;
+    } 
+  //otherwise
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -227,7 +234,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
         if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
-                 //the two steps are compatible
+	  //the two steps are compatible
 
           //update
           lastIt = it; 
@@ -313,7 +320,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
     } else { 
       //if there is more than two steps 
-       return false;
+      return false;
     }
 
   } 
@@ -375,18 +382,18 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
-     ::retractForward( ConstIterator & firstIt,
-                ConstIterator & lastIt,
-                ConstIterator & nextIt,       
-                 Point & Uf,  Point & Ul,
-                 Point & Lf,  Point & Ll,
-                const Integer& s )
+::retractForward( ConstIterator & firstIt,
+		  ConstIterator & lastIt,
+		  ConstIterator & nextIt,       
+		  Point & Uf,  Point & Ul,
+		  Point & Lf,  Point & Ll,
+		  const Integer& s )
 {
 
 
   Vector v = Point(*myL)-Point(*myF);
   if (Tools<TInteger,connectivity>
-                ::norm(v[0],v[1]) <= 1) {//if there are only two points
+      ::norm(v[0],v[1]) <= 1) {//if there are only two points
 
     //init with nextIt
     firstIt = nextIt;
@@ -421,12 +428,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
         Integer k; //repetitions of the newMainVector
         Vector toUl = (Ul - Point(*firstIt))*s;
         k = Tools<TInteger,connectivity>::norm(toUl[0],toUl[1])
-            /Tools<TInteger,connectivity>::norm(myA,myB);
+	  /Tools<TInteger,connectivity>::norm(myA,myB);
         Uf = Ul - newMainVector*k*s;
         myNbUpPat = k;
         Vector toLastIt = Point(*lastIt) - Lf;
         k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
-            /Tools<TInteger,connectivity>::norm(myA,myB);
+	  /Tools<TInteger,connectivity>::norm(myA,myB);
         Ll = Lf + newMainVector*k*s;
         myNbLowPat = k;
         //mu, omega
@@ -451,12 +458,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
         Integer k; //repetitions of the newMainVector
         Vector toLl = Ll - Point(*firstIt);
         k = Tools<TInteger,connectivity>::norm(toLl[0],toLl[1])
-            /Tools<TInteger,connectivity>::norm(myA,myB);
+	  /Tools<TInteger,connectivity>::norm(myA,myB);
         Lf = Ll - newMainVector*k*s;
         myNbLowPat = k;
         Vector toLastIt = Point(*lastIt) - Uf;
         k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
-            /Tools<TInteger,connectivity>::norm(myA,myB);
+	  /Tools<TInteger,connectivity>::norm(myA,myB);
         Ul = Uf + newMainVector*k*s;
         myNbUpPat = k;
         //mu, omega
@@ -529,12 +536,14 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
 
   Point lastPoint(*it);
   Vector lastMove = lastPoint-Point(*myL);
-  //if the two last points 
-  //are confounded or not connected
-  //return false
+
   Integer deviation = Tools<TInteger,connectivity>
-                        ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+    ::norm(lastMove[0],lastMove[1]);
+  //if the two last points are not connected return false
+  if (deviation>1) return false;
+  //if the two last points are confounded return true
+  else if (deviation==0) return true; 
+  //otherwise
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -554,7 +563,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
         if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
-                 //the two steps are compatible
+	  //the two steps are compatible
           return true;
 
         } else {  //the two steps are not compatible
@@ -582,7 +591,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
 
     } else { 
       //if there is more than two steps 
-       return false;
+      return false;
     }
 
   } 
@@ -617,16 +626,17 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool 
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
-   const Point & lastPoint, 
-   const Vector & lastMove )
+									     const Point & lastPoint, 
+									     const Vector & lastMove )
 {
 
-  //if the two last points 
-  //are confounded or not connected
-  //return false
   Integer deviation = Tools<TInteger,connectivity>
-                        ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1)||(deviation<=0) ) return false;
+    ::norm(lastMove[0],lastMove[1]);
+  //if the two last points are not connected return false
+  if (deviation>1) return false;
+  //if the two last points are confounded return true
+  else if (deviation==0) return true; 
+  //otherwise
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -646,7 +656,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
         if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
-                 //the two steps are compatible
+	  //the two steps are compatible
           return true;
 
         } else {  //the two steps are not compatible
@@ -674,7 +684,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 
     } else { 
       //if there is more than two steps 
-       return false;
+      return false;
     }
 
   } 
@@ -689,7 +699,7 @@ TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getRemainder(const Point & aPoint) const
 {
   return myA * static_cast<Integer>(aPoint[0])
-  - myB * static_cast<Integer>(aPoint[1]);
+    - myB * static_cast<Integer>(aPoint[1]);
 }
 
 
@@ -708,7 +718,7 @@ TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
 {
   return myA * static_cast<Integer>(aPoint[0])
-  + myB * static_cast<Integer>(aPoint[1]);
+    + myB * static_cast<Integer>(aPoint[1]);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -885,11 +895,11 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isValid() const
 
     //init case with one point
     if ( (myA==0)
-      &&(myB==0)
-      &&(myMu==0)
-      &&(myOmega==0)
-      &&(myNbUpPat==0)
-      &&(myNbLowPat==0) ) return true;
+	 &&(myB==0)
+	 &&(myMu==0)
+	 &&(myOmega==0)
+	 &&(myNbUpPat==0)
+	 &&(myNbLowPat==0) ) return true;
     else return false; 
 
   } else {
@@ -1016,7 +1026,7 @@ template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::hasLessThanTwoSteps(
-        const Vector& aStep) const
+									     const Vector& aStep) const
 {
   if ( (aStep == mySteps.at(0)) || 
        (aStep == mySteps.at(1)) ) {
