@@ -51,9 +51,10 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   /**
-    Description of template class 'ImplicitFunctionLinearCellEmbedder' <p>
-    \brief Aim: model of cellular embedder for implicit functions,
-    (default constructible, copy constructible, assignable).
+    Description of template class 'ImplicitFunctionLinearCellEmbedder'
+    <p> \brief Aim: a cellular embedder for implicit functions,
+    (default constructible, copy constructible, assignable). Model of
+    CCellEmbedder.
    
     @tparam TKSpace the cellular grid space definition.
     @tparam TImplicitFunction the type of implicit function, a model of CImplicitFunction.
@@ -78,9 +79,9 @@ namespace DGtal
     typedef typename KSpace::Space Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
-    typedef typename Space::RealVector RealVector;
-    typedef typename Space::Integer Integer;
-    typedef typename ImplicitFunction::Value Value;
+    typedef typename ImplicitFunction::Value ImplicitFctValue;
+    typedef Cell Argument;
+    typedef RealPoint Value;
     
     /** 
         Constructor. The object is not valid.
@@ -148,6 +149,14 @@ namespace DGtal
      */
     RealPoint embedSCell( const SCell & scell ) const;
 
+    /**
+       Maps a cell to its corresponding point in the Euclidean
+       space, by a linear guess of its position.
+       
+       @param cell any cell in the cellular grid space.
+       @return its embedding in the Euclidean space.
+     */
+    RealPoint operator()( const Cell & cell ) const;
     
     // ----------------------- Interface --------------------------------------
   public:
