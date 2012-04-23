@@ -27,5 +27,15 @@ IF(MAGICK++_FOUND)
 ENDIF(MAGICK++_FOUND)
 
 
+### Test with QGLViewer
+if (  WITH_VISU3D_QGLVIEWER )
+   SET(DGTAL_EXAMPLES_QGL_SRC
+     exampleArithDSS3d
+   )
+  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+   add_executable(${FILE} ${FILE})
+    target_link_libraries ( ${FILE} DGtalIO DGtal)   
+  ENDFOREACH(FILE)
 
+endif ( WITH_VISU3D_QGLVIEWER   )
 

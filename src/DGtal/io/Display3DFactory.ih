@@ -41,27 +41,25 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
 					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
-
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   
   // Draw points
   display << CustomColors3D(Color(250,250,250,100),Color(250,250,250,100));
-  ConstIterator end = a.myL; ++end;
-  for (ConstIterator i = a.myF; i != end; ++i) {
-    Point3d p = *i;
-    display << p;
-  }
+  for (ConstIterator i = a.begin(); i != a.end(); ++i) 
+    {
+      display << *i;
+    }
   
   // Draw a linking polygonal line if the voxels are drawn as points. 
   if(display.getMode("PointVector")=="Grid")
     {
-      ConstIterator k = a.myF;
+      ConstIterator k = a.begin();
       Point3d prevp = *k;
       double xprevp =  NumberTraits<TInteger>::castToDouble(prevp[0]);
       double yprevp =  NumberTraits<TInteger>::castToDouble(prevp[1]);
       double zprevp =  NumberTraits<TInteger>::castToDouble(prevp[2]);
       ++k;
-      for ( ; k != end; ++k) {
+      for ( ; k != a.end(); ++k) {
         Point3d p = *k;
         double xp = NumberTraits<TInteger>::castToDouble(p[0]);
         double yp = NumberTraits<TInteger>::castToDouble(p[1]);
@@ -96,7 +94,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   Vector3d v; //direction vector
   PointD3d mu; //intercept
   PointD3d omega; //thickness
-  getParameters(v,mu,omega);
+  a.getParameters(v,mu,omega);
 
   //casting coordinates of v in double
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]), 
@@ -106,12 +104,14 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
   
   //first and last points
-  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myF))[0]), 
-			NumberTraits<Integer>::castToDouble((*(a.myF))[1]), 
-			NumberTraits<Integer>::castToDouble((*(a.myF))[2]) ); 
-  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myL))[0]), 
-			NumberTraits<Integer>::castToDouble((*(a.myL))[1]), 
-			NumberTraits<Integer>::castToDouble((*(a.myL))[2]) ); 
+  Point3d first = *a.begin(); 
+  Point3d last = *(--a.end()); 
+  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble(first[0]), 
+			NumberTraits<Integer>::castToDouble(first[1]), 
+			NumberTraits<Integer>::castToDouble(first[2]) ); 
+  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble(last[0]), 
+			NumberTraits<Integer>::castToDouble(last[1]), 
+			NumberTraits<Integer>::castToDouble(last[2]) ); 
   
   if (n != 0) {
     
