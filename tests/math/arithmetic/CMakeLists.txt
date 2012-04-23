@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC_ARITH
-       testModuloComputer )
+       testModuloComputer
+       testPattern )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_ARITH})
   add_executable(${FILE} ${FILE})
@@ -12,7 +13,10 @@ ENDFOREACH(FILE)
 #----------------------
 SET(DGTAL_TESTS_GMP_SRC 
     testIntegerComputer
-    testSternBrocot )
+    testSternBrocot 
+    testLightSternBrocot
+    testLighterSternBrocot
+ )
 
 IF(GMP_FOUND)
   FOREACH(FILE ${DGTAL_TESTS_GMP_SRC})
@@ -23,7 +27,10 @@ IF(GMP_FOUND)
 ENDIF(GMP_FOUND)
 
 SET(DGTAL_BENCH_GMP_SRC
-   testStandardDSLQ0-benchmark
+   testStandardDSLQ0-reversedSmartDSS-benchmark
+   testStandardDSLQ0-LSB-reversedSmartDSS-benchmark
+   testStandardDSLQ0-LrSB-reversedSmartDSS-benchmark
+   testStandardDSLQ0-smartDSS-benchmark
    testArithmeticDSS-benchmark
 )
 

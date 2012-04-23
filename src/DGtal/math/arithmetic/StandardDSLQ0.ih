@@ -183,7 +183,7 @@ U() const
   Integer c = ( mu() * u[ 0 ] ) / b();
   return Point( mu() > NumberTraits<Integer>::ZERO 
                 ? v() * ( c + 1 ) - u * mu()
-                : v() * c - u * mu() );
+                : u * mu() - v() * c );
 }
 //-----------------------------------------------------------------------------
 template <typename TFraction>
@@ -299,7 +299,17 @@ reversedSmartDSS( Point U1, Point U2,
   std::cerr << "[reversedSmartDSS] " << (*this) 
             << " " << pattern().rE() << std::endl
             << "  +- U1=" << U1 << " A=" << A 
-            << " B=" << B << " U2=" << U2 << std::endl;
+            << " B=" << B << " U2=" << U2 << std::endl
+            << " v()=" << pattern().v()
+            << " u()=" << pattern().bezout()
+            << " r(U())=" << r(U())
+            << " mu=" << mu() << " r(U1)=" << r(U1)
+            << " r(U2)=" << r(U2) 
+            << " r(A)=" << r(A)
+            << " r(B)=" << r(B)
+            << " mup=" << mup()
+            << " DSS(A)=" << this->operator()( A ) 
+            << " DSS(B)=" << this->operator()( B ) << std::endl;
   #endif
   ASSERT( ! slope().null() );
   ASSERT( r( U1 ) == mu() && r( U2 ) == mu()
@@ -399,7 +409,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
             << " B=" << B << " U2=" << U2 
             << " L1=" << L1 << std::endl;
   #endif
-  for ( Size i = NumberTraits<Size>::ZERO; i <= pattern().slope().k(); ++i )
+  while( true ) //for ( Size i = NumberTraits<Size>::ZERO; i <= pattern().slope().k(); ++i )
     {
       if ( ! readyLU )
         {
@@ -460,11 +470,11 @@ DSSWithinTwoPatterns( Point U1, Point U2,
           // L2 = L1 + patL.v() * nb;
         }
 #ifdef TRACE_DSL
-      std::cerr << "  (" << i << ") " << (readyLU ? '*' : '-')
+      std::cerr << "  (*) " << (readyLU ? '*' : '-')
                 << "LU=" << patLU.rE() << " at " << U1 << std::endl;
-      std::cerr << "  (" << i << ") " << (readyRU ? '*' : '-')
+      std::cerr << "  (*) " << (readyRU ? '*' : '-')
                 << "RU=" << patRU.rE() << " til " << U2 << std::endl;
-      std::cerr << "  (" << i << ") " << (readyL  ? '*' : '-')
+      std::cerr << "  (*) " << (readyL  ? '*' : '-')
                 << "L =" << patL.rE()  << " at " << L1 << std::endl;
 #endif
       if ( readyLU || readyRU || readyL )
@@ -483,6 +493,97 @@ DSSWithinTwoPatterns( Point U1, Point U2,
     - patDeepest.slope().q() * Um[ 1 ];
   return StandardDSLQ0( patDeepest.slope(), nmu );
 }
+//-----------------------------------------------------------------------------
+template <typename TFraction>
+typename DGtal::StandardDSLQ0<TFraction>::Self
+DGtal::StandardDSLQ0<TFraction>::
+smartDSS( const Point & A, const Point & B ) const
+{
+#ifdef TRACE_DSL
+  std::cerr << "[smartDSS] " << (*this) 
+            << " " << pattern().rE() << std::endl
+            << " A=" << A << " B=" << B << std::endl;
+#endif
+  ASSERT( ! slope().null() );
+  ASSERT( this->operator()( A ) && this->operator()( B ) );
+  ASSERT( before( A, B ) );
+  Fraction f10( 1, 0 );
+  Pattern<Fraction> p( 0, 1 );
+  bool ulu = true;
+  bool lul = true;
+  Size delta = 0;
+  Point2I _U = A;
+  Point2I _L = A;
+  Point2I _Up = _U + Point2I(0,1);
+  Point2I _Lp = _L + Point2I(1,-1);
+  UnsignedInteger AB1 = (B-A).norm1();
+  while ( ( (_Up - A).norm1() <= AB1 )
+	  && this->operator()( _Up ) ) 
+    {
+#ifdef TRACE_DSL
+      std::cerr << "Vertical" << std::endl;
+#endif
+     p = Pattern<Fraction>( f10 );
+      _Up += Point2I(0,1);
+      _Lp += Point2I(0,1);
+      ++delta;
+    }
+  if ( delta != 0 )
+    {
+      _Lp += Point2I(0,1);
+      // ulu = false;
+    }
+ 
+  while ( p.slope() != this->slope() )
+    {
+#ifdef TRACE_DSL
+      std::cerr << "[smartDSS] v=" << p.v()
+		<< " bez=" << p.bezout()
+		<< " U=(" << _U[0] << "," << _U[1] << ")"
+		<< " L=(" << _L[0] << "," << _L[1] << ")"
+		<< " Up=(" << _Up[0] << "," << _Up[1] << ")"
+		<< " Lp=(" << _Lp[0] << "," << _Lp[1] << ")"
+		<< std::endl;
+#endif
+      ASSERT( p.v()[1]*p.bezout()[0] - p.v()[0]*p.bezout()[1] == -1 ); 
+      if ( ( (_Up - A).norm1() > AB1 ) &&  ( (_Lp - A).norm1() > AB1 ) ) break;
+      else if ( _Up[ 1 ] <= B[ 1 ] && this->operator()( _Up ) )
+	{
+	  Fraction np = p.slope().right();
+	  for ( Size i = 1; i < delta; ++i ) 
+	    np = np.left();
+	  _L = _Lp + p.bezout() - p.v();
+	  if ( ! lul ) _L -= p.v();
+	  p = Pattern<Fraction>( np );
+	  ASSERT( p.v()[1]*p.bezout()[0] - p.v()[0]*p.bezout()[1] == -1 ); 
+	  _Up = _U + p.v() + p.bezout();
+	  _Lp = _L + p.v() + p.v() - p.bezout();
+	  delta = 1; ulu = true; lul = false;
+	}
+      else if ( _Lp[ 0 ] <= B[ 0 ] && this->operator()( _Lp ) )
+	{
+	  Fraction np = p.slope().left();
+	  for ( Size i = 1; i < delta; ++i ) 
+	    np = np.right();
+	  _U = p.slope() == f10 ? _Up - Point2I( 0,1 ) : _Up - p.bezout();
+	  if ( ! ulu ) _U -= p.v();
+	  p = Pattern<Fraction>( np );
+	  ASSERT( p.v()[1]*p.bezout()[0] - p.v()[0]*p.bezout()[1] == -1 ); 
+	  _Up = _U + p.v() + p.bezout();
+	  _Lp = _L + p.v() + p.v() - p.bezout();
+	  delta = 1; ulu = false; lul = true;
+	}
+      else
+	{
+	  ++delta;
+	  _Up += p.v();
+	  _Lp += p.v();
+	}
+    }
+  Integer nmu = p.slope().p() * _U[ 0 ] - p.slope().q() * _U[ 1 ];
+  return StandardDSLQ0( p.slope(), nmu );
+}
+
 //-----------------------------------------------------------------------------
 template <typename TFraction>
 inline

@@ -58,7 +58,7 @@ bool testSpanIterators()
     Point c( t3 );
 
     trace.beginBlock("Test of Concepts");
-    TContainerV myImageV ( a,b );
+    TContainerV myImageV ( TDomain(a,b ));
 
     double cpt=0;
     //Image Construction 
@@ -66,7 +66,7 @@ bool testSpanIterators()
             it != myImageV.end();
             ++it)
     {
-      myImageV.setValue( it, cpt );
+      (*it) = cpt ;
       cpt++;
     }
 
@@ -76,7 +76,7 @@ bool testSpanIterators()
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,0), itend = myImageV.spanEnd(c,0);
     it != itend;
     ++it)
-      trace.info() << myImageV(it)<<" ";
+      trace.info() << (*it)<<" ";
     trace.info() << endl;
     
     //We process a 1D slice
@@ -84,7 +84,7 @@ bool testSpanIterators()
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
     it != itend;
     ++it)
-      trace.info() << myImageV(it)<<" ";
+      trace.info() << (*it)<<" ";
     trace.info() << endl;
   
     //We process a 1D slice
@@ -92,7 +92,7 @@ bool testSpanIterators()
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,2), itend = myImageV.spanEnd(c,2);
     it != itend;
     ++it)
-      trace.info() << myImageV(it)<<" ";
+      trace.info() << (*it)<<" ";
     trace.info() << endl;
   
 
@@ -108,7 +108,7 @@ bool testSpanIterators()
     for ( TContainerV::SpanIterator it = myImageV.spanBegin(c,1), itend = myImageV.spanEnd(c,1);
     it != itend;
     ++it)
-      trace.info() << myImageV(it)<<" ";
+      trace.info() << (*it)<<" ";
     trace.info() << endl;
   
 

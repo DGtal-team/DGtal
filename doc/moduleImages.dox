@@ -1,0 +1,276 @@
+/**
+ * @file moduleIntroduction.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/28
+ * 
+ * @brief Documentation file about the images in DGtal
+ *
+ * This file is part of the DGtal library.
+ */
+namespace DGtal {
+
+//----------------------------------------
+/*!
+
+
+@page moduleImage Images
+@author Tristan Roussillon
+@date 2012/03/28
+
+[TOC]
+
+\section dgtalImagesAbstract Overview
+
+The concept of @a point functor describe a mapping between 
+the points of a digital space and a set of values. 
+The only method of a point functor is the `operator()`, 
+which must take a point as input parameter and must return a value.
+
+The concept of @a constant image is a point functor bounded by a domain. 
+It is thus a refinement of the concept of point functor, 
+describing a mapping between points and values, but having in addition a domain, 
+returned by the `domain` method, and a range of values 
+(for each point of the domain), returned by the `constRange` method.  
+
+The concept of @a image, which is a refinement of the concept of constant image, 
+provides extra services to update values.  
+Any model of image must have a method `setValue` 
+taking a point and a value as input parameters
+and updating the value associated with the given point with the given value.  
+In addition, they must have a range, returned by the `range` method,
+providing output iterators.  
+
+Different models of images are available: ImageContainerBySTLVector, 
+ImageContainerBySTLMap, and --- coming soon --- ImageContainerByHashTree, 
+ ImageContainerByITKImage, a wrapper for ITK images. 
+
+ \section dgtalImagesDetails Let us go into details 
+
+In this section, the concepts and the main services 
+to read and write values in images are detailed.  
+
+  \subsection dgtalImagesConcepts Concepts
+
+Any model of the concept CPointFunctor must have two nested types:
+ 
+  - Point, which specifies the type for a point.
+  - Value, which specifies the type for a value.
+
+Moreover, it must have the following method: 
+
+  - `operator()`, which takes a point as input parameter
+and returns a value, like a function.
+
+The concept CConstImage is a refinement of CPointFunctor. 
+Its models must have two extra nested types: 
+
+  - Domain, a model of CDomain
+  - ConstRange, a model of CConstBidirectionnalRangeFromPoint
+
+Obviously, there are two methods 
+that return instances of these two types: 
+
+  - `domain`, which returns a constant reference on the image domain
+  - `constRange`, which returns a range providing constant bidirectional 
+iterators on the image values (associated to each point of the image domain)
+
+You can see @ref moduleSpacePointVectorDomain for more
+details about spaces and domains and @ref dgtalImagesRanges 
+for more details about ranges in images.
+
+The concept CImage is refinement of CConstImage.  
+Images, instead of constant ones, provide services
+to update values. 
+The main way of assigning values to points is the 
+following method: 
+
+  - `setValue`, which updates a given value at a given point. 
+
+Moreover, in addition to the ConstRange, images must have
+the following inner type: 
+
+  - Range, a model of CConstBidirectionalRangeFromPoint, like ConstRange,
+and a model of CBidirectionalOutputRangeFromPoint, which must provide 
+output iterators for incrementally updating a (sub)range of values.   
+
+Obviously, you can get an instance of this type using the following method: 
+
+  - `range`, which returns a range providing both constant bidirectional 
+iterators and output iterators. 
+
+Lastly, note that the Value type in the (constant) images
+is expected to be at least a model of CLabel, ie.  
+to be default-constructible, assignable and equality comparable.
+
+@note In the snippets of the following subsections, 
+the type of image used is `Image` and its instances are `image`, `image1`, `image2`. 
+
+  \subsection dgtalImagesMainMethods Main methods
+
+
+All models of images have a domain returned by the method `domain`. 
+This domain is the set of points for which the image is defined
+and has values. Since a domain is a range, you can straightforwardly 
+use it in order to iterate over the points of an image. 
+
+    //iterate over the points
+    Image::Domain d = image.domain(); 
+    for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
+    it != itEnd; ++it)
+    {}
+
+Models of images have also two main methods in order to 
+read or write values at a given point: 
+
+- `operator()` to get the value associated to a given point 
+- `setValue` to assign a value to a given point. 
+
+    //process the values
+    Image::Domain d = image.domain(); 
+    for (Image::Domain::ConstIterator it = d.begin(), itEnd = d.end(); 
+    it != itEnd; ++it)
+    {
+    Image::Value v = image( *it ); 
+    v += 5; //adding 5 to all values
+    image.setValue( v ); 
+    }
+
+
+Note that this method of iterating over the values of an image
+is not always the fastest and that is why we also provide ranges. 
+
+
+  \subsection dgtalImagesRanges Ranges of values
+
+Constant images provide a constant range of values returned by the `constRange` method.
+As every model of CConstBidirectionalRange, it provides `begin`, `end`, `rbegin` and `rend`
+ methods returning constant iterators to iterate over the values in the forward or
+backward direction. 
+
+    //iterate over the values
+    Image::ConstRange r = image.constRange(); 
+    for (Image::ConstRange::ConstIterator it = r.begin(), itEnd = r.end(); 
+    it != itEnd; ++it)
+    {} 
+
+However, this range is also a model of CConstBidirectionalRangeFromPoint, 
+which is a refinement of CConstBidirectionalRange. That is why it also has 
+overloaded versions of the `begin` and `rbegin` methods taking a point as input argument. 
+This provides a way of iterating on sub-ranges defined from points.  
+
+    //iterator on the origin (0, ... , 0)
+    Image::ConstRange::ConstIterator it = r.begin( Image::Point::diagonal(0) )
+
+Note that if the point does not belong to the domain, 
+the returned iterators (resp. reverse iterators) 
+must be equal to the `end` (resp. `rend`) methods. 
+
+    ASSERT( image.constRange().begin( image.domain().end() ) == image.constRange().end() )
+
+
+Images provide in addition to a constant range, a richer range returned by the `range` method.
+This range is not only a model of CBidirectionalRangeFromPoint, but also a model 
+of CBidirectionalOutputRangeFromPoint. That is why, it must have two methods:   
+`outputIterator` and `routputIterator` returning output iterators. Moreover, 
+it must have overloaded versions of these methods taking a point as input argument. 
+Thus, these output iterators are useful in order to incrementaly fill (a part of) an image. 
+For instance, you can fill an image from the values of another one 
+(assumed to have the same domain) as follows: 
+
+    Image::Range r1 = image1.range(); 
+    Image::ConstRange r2 = image2.constRange(); 
+    std::copy( r2.begin(), r2.end(), r1.outputIterator() ); 
+
+ \section dgtalImagesModels Main models
+
+Different models of images are available: ImageContainerBySTLVector, 
+ImageContainerBySTLMap, and --- coming soon --- ImageContainerByHashTree, 
+ ImageContainerByITKImage, a wrapper for ITK images. 
+
+  \subsection dgtalImagesModelsVector ImageContainerBySTLVector
+
+ImageContainerBySTLVector is a model of CImage 
+that inherits the STL vector class. 
+The hyper-rectangular domain, which the only model
+of domain accepted, is linearized so that  
+each point is mapped, from its coordinates, into an index 
+and each index is mapped into a unique value, as in any 
+one-dimensional array. 
+
+Let \f$ n \f$ be the domain size (the number of points). 
+At construction all the needed space is allocated 
+and filled with a default value (0) in \f$ O(n) \f$ space and time. 
+After that, you can access to the value associated
+to any point at any time. Each access for reading (`operator()`)
+or writing ('setValue`) values is in \f$ O(1) \f$.
+
+The (constant) range of this class only used the built-in iterators
+of the underlying STL vector. It is therefore a fast way of 
+iterating over the values of the image. 
+
+  \subsection dgtalImagesModelsMap ImageContainerBySTLMap
+
+ImageContainerBySTLMap is a model of CImage
+that inherits the STL map class. 
+The domain can be any set of points. 
+Values are stored and associated to points
+in pairs point-value. 
+The set of points stored in 
+this way may be any domain subset. 
+A default value (user-defined) is automatically 
+associated to each point of the domain that
+does not belong the subset for which values are known. 
+Once constructed (in \f$ O(1) \f$), the image is valid and every point of the
+image domain has a value, which can be read and overwritten.
+
+The pairs point-value are stored in a red-black tree, 
+where the points are used as keys, so that  
+each access for reading (`operator()`)
+or writing (`setValue`) values is in \f$ O(log m) \f$, 
+where \f$ m \f$ is the cardinal of the subset for which values
+are known (less or equal to the domain size \f$ n \f$).  
+
+The (constant) range of this class adapts the domain iterators
+in order to deal with values instead of points. The `operator*`
+of the iterators provided by the range calls the `operator()` 
+and use the `setValue` method of the class. 
+
+
+  \subsection dgtalImagesModelsHashTree ImageContainerByHashTree
+
+@TODO
+
+ \section dgtalImagesFunctions Useful classes and functions
+
+In addition to the image containers described in the previous section, 
+there are image adapters: 
+
+i. ConstImageAdapter is a small class that adapts any (constant or not) 
+image into a constant one, which provides a virtual view of the true values
+ contained in the adapted image.
+
+ii. Image is a light proxy on image containers based on a COW pointer.
+It can be constructed, copied, assigned, deleted without any special care. 
+ 
+Moreover, in ImageHelper.h, many useful functions are provided. 
+
+1. Conversely, others convert images into digital sets with value comparators:
+setFromPointsRangeAndPredicate, setFromPointsRangeAndFunctor, setFromImage.
+
+2. Some of them convert digital sets into images,
+imageFromRangeAndValue assigns a given value in an image to each point of a given range.
+
+3. Lastly, some functions are available to fastly fill images 
+from point functors or other images: imageFromFunctor and imageFromImage.
+
+
+
+
+*/
+
+}
+
+
+

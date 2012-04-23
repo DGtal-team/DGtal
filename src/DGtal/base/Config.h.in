@@ -13,7 +13,6 @@
 #include <iostream>
 #include <string>
 
-
 #define DGTAL_VERSION "@DGtal_VERSION_MAJOR@.@DGtal_VERSION_MINOR@.@DGtal_VERSION_PATCH@"
 
 /*! \namespace DGtal
@@ -52,7 +51,7 @@ programming whose main objective is to gather and structure different
 developments from the digital geometry and topology community. The
 benefits are numerous: to make easier the appropriation of our tools
 for a neophyte (new PhD students, researchers from other topics,
-\ldots), to permit better comparisons of new methods with already
+...), to permit better comparisons of new methods with already
 existing approaches, to construct a federative project. Furthermore we
 believe this is a necessary step for a better recognition of the
 efficiency of discrete geometry techniques by the important image
@@ -94,14 +93,14 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref GeometryPackage
   - \ref TopologyPackage
   - \ref ImagePackage
+  - \ref pageMathematicsPackage
+  - \ref pageArithmeticPackage
 
 @section manuals_dgtal Helpers and tools
+
   - \ref tutorials
   - \ref dgtal_dgtalboard
   - \ref threeD_visu
-
-  
-  
 
 
    
@@ -123,5 +122,8 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
    @defgroup Tests DGtal Test Files
    @defgroup Examples DGtal Examples
   
+
+[imagene]: https://gforge.liris.cnrs.fr/projects/imagene "ImaGene"
+
  */
 
