@@ -48,6 +48,7 @@
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
+#include "DGtal/geometry/curves/representation/SegmentComputerUtils.h"
 
 namespace DGtal
 {
@@ -61,7 +62,7 @@ namespace DGtal
    * This class is a model of the concept CForwardSegmentComputer
    */
   
-  template <typename TIterator, typename TInteger>
+  template <typename TIterator,typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
     class FrechetShortcut
   {
     // ----------------------- Standard services ------------------------------
@@ -72,14 +73,22 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     
-    typedef DGtal::PointVector<2,Integer> Point;
-    typedef DGtal::PointVector<2,Integer> Vector;
+    
+
+    //typedef DGtal::PointVector<2,Integer> Point;
+    //typedef DGtal::PointVector<2,Integer> Vector;
     
     //required types
   typedef TIterator ConstIterator;
   typedef FrechetShortcut<ConstIterator,TInteger> Self; 
   typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,TInteger> Reverse;
   
+  //2D point and 2D vector
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+    
+
+
   typedef backpath<TIterator> Backpath; 
   
   
