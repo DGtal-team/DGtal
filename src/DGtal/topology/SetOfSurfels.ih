@@ -228,7 +228,7 @@ inline
 typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Size
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::nbSurfels() const
 {
-  return mySurfelSet.size();
+  return (unsigned int)mySurfelSet.size();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>

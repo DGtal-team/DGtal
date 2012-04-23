@@ -1,0 +1,83 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Arithmetic.dox
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/04/02
+ *
+ * Documentation file for feature Arithmetic
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page pageArithmeticPackage  Arithmetic package
+
+@author Jacques-Olivier Lachaud
+@author Emilie Charrier
+@author Xavier Provençal
+@author Mouhammad Said
+
+@b LICENSE: LGPL
+
+
+@b Package @b Overview
+
+This package gathers tools to perform arithmetic
+computations. Standard arithmetic computations are provided: greatest
+common divisor, Bézout vectors, continued fractions, convergent,
+intersection of integer half-spaces. Several representations of
+irreducible fractions are provided. They are based on the Stern-Brocot
+tree structure. With these fractions, amortized constant time
+operations are provided for computing reduced fractions. A
+representation of digital standard line in the first quadrant is
+provided, as well as fast algorithms to recognize digital straight
+subsegments.
+
+Parts of this package are backports from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene): 
+class IntegerComputer (written with Emilie Charrier), class
+SternBrocot (written with Xavier Provençal), algorithms
+StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS (written
+with Mouhammad Said).
+
+@b Modules
+
+- \ref dgtal_irreducible_fraction
+- \ref dgtal_digital_straightness
+
+
+@b Package @b Concepts @b Overview
+
+- \ref pageArithmeticPackageConcepts
+
+@b Related @b documentation @b pages
+
+@b Related @b examples
+- approximation.cpp, convergents.cpp, convergents-biginteger.cpp, fraction.cpp
+- pattern.cpp
+
+*/
+
+}

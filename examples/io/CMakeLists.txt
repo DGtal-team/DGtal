@@ -11,10 +11,7 @@ if (  WITH_VISU3D_QGLVIEWER )
       ${DGtalLibDependencies})   
   ENDFOREACH(FILE)
   
-  
-  add_subdirectory(viewers)
-  
-  
+add_subdirectory(viewers)
 endif ( WITH_VISU3D_QGLVIEWER   )
 
 add_subdirectory(boards)

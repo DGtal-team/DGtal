@@ -51,29 +51,29 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunctionDiff1
   /**
-     Description of \b concept '\b CImplicitFunctionDiff1' <p>
+Description of \b concept '\b CImplicitFunctionDiff1' <p>
      @ingroup Concepts
 
      @brief Aim: Describes a 1-differentiable function of the form
      f(x), where x is some real point in the given space, and f(x) is
      some value. 
 
-     <p> Refinement of CImplicitFunction
+ ### Refinement of CImplicitFunction
       
-     <p> Associated types :
+ ### Associated types :
     
      - RealPoint: the type for the domain
      - RealVector: the type for a vector in the domain
      - Value: the type for the range
 
-     <p> Notation
+ ### Notation
      - \c X : A type that is a model of CImplicitFunctionDiff1
      - \c f : objet of type X
      - \c a : objet of type RealPoint
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -98,15 +98,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
      - ImplicitPolynomial3Shape
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CImplicitFunctionDiff1.
+@tparam T the type that should be a model of CImplicitFunctionDiff1.
    */
   template <typename T> 
   struct CImplicitFunctionDiff1 : CImplicitFunction<T>

@@ -19,6 +19,7 @@ namespace DGtal {
 /*!
 @page dgtalITK Interactions between ITK and DGtal using ITKImage 
 @author David Coeurjolly
+[TOC]
 
 This part of the manual describe the interactions between DGTal and
 InsightToolkit ITK library (http://www.itk.org).
