@@ -1,12 +1,12 @@
 SET(DGTAL_EXAMPLES_SRC
   FrechetShortcut	 
- # greedy-dss-decomposition
- # ArithmeticalDSS	 
- # convex-and-concave-parts
- # freemanChainFromImage
- # exampleGridCurve2d
- # exampleGeometricalDSS
- # exampleGeometricalDCA
+  greedy-dss-decomposition
+  ArithmeticalDSS	 
+  convex-and-concave-parts
+  freemanChainFromImage
+  exampleGridCurve2d
+  exampleGeometricalDSS
+  exampleGeometricalDCA
 )
 
 
