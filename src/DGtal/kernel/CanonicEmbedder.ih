@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <cmath>
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -77,6 +78,14 @@ template <typename TSpace>
 inline
 typename DGtal::CanonicEmbedder<TSpace>::RealPoint
 DGtal::CanonicEmbedder<TSpace>::embed( const Point & dp ) const
+{
+  return this->operator()( dp );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::CanonicEmbedder<TSpace>::RealPoint
+DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
 {
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
