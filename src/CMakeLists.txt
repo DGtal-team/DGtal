@@ -9,7 +9,6 @@ include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
-include(DGtal/kernel/ModuleSRC.txt)
 
 ## Board dependency
 include(Board/ModuleSRC.txt)

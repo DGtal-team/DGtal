@@ -187,6 +187,14 @@ namespace DGtal
      */
      Reverse getReverse() const; 
 
+     /** 
+     * @return an instance of Self 
+     */
+    
+    Self getSelf() const;
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
