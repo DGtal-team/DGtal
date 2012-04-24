@@ -32,6 +32,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
 #include "DGtal/math/arithmetic/SternBrocot.h"
 #include "DGtal/math/arithmetic/Pattern.h"
@@ -45,6 +46,78 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SternBrocot.
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename Size>
+bool
+equalCFrac( const std::vector<Size> & c1, const std::vector<Size> & c2 )
+{
+  unsigned int s = c1.size() < c2.size() ? c1.size() : c2.size();
+  if ( ( s != c1.size() ) && ( c1.back() != NumberTraits<Size>::ONE ) )
+    return false;
+  if ( ( s != c2.size() ) && ( c2.back() != NumberTraits<Size>::ONE ) )
+    return false;
+  for ( unsigned int i = 0; i < s; ++i )
+    {
+      Size q1 = c1[ i ];
+      if ( ( s != c1.size() ) && ( i == s - 1 ) ) q1 += c1.back();
+      Size q2 = c2[ i ];
+      if ( ( s != c2.size() ) && ( i == s - 1 ) ) q2 += c2.back();
+      if ( q1 != q2 ) return false;
+    }
+  return true;
+}
+
+template <typename SB>
+bool testReducedFraction()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  Integer p = random() / 10000;
+  Integer q = random() / 10000;
+  trace.beginBlock ( "Testing block: reduced fraction." );
+  IntegerComputer<Integer> ic;
+  Integer g = ic.gcd( p, q );
+  p /= g;
+  q /= g;
+  IntegerComputer<Size> ics;
+  Size sp = NumberTraits<Integer>::castToInt64_t( p );
+  Size sq = NumberTraits<Integer>::castToInt64_t( q );
+  std::vector<Size> cf1;
+  ics.getCFrac( cf1, sp, sq );
+  Fraction f1 = SB::fraction( p, q );
+  std::vector<Size> cf1_bis;
+  f1.getCFrac( cf1_bis );
+  bool ok = equalCFrac<Size>( cf1, cf1_bis );
+  trace.info() << "  - p / q = " << p << " / " << q << std::endl;
+  trace.info() << "  - f1 = ";
+  SB::display( trace.info(), f1 );
+  trace.info() << std::endl;
+  ++nb, nbok += ok ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ") " 
+               << " cfrac"
+               << std::endl;
+  unsigned int depth = cf1.size();
+  for ( unsigned int k = 1; k < depth; ++k )
+    {
+      std::vector<Size> cf1_red;
+      Fraction fr = f1.reduced( k );
+      fr.getCFrac( cf1_red );
+      cf1.resize( depth - k );
+      ok = equalCFrac<Size>( cf1, cf1_red );
+      ++nb, nbok += ok ? 1 : 0;
+      trace.info() << "(" << nbok << "/" << nb << ") " 
+                   << "reduced(" << k << ")=";
+      SB::display( trace.info(), fr );
+      std::cerr << std::endl;
+    }
+
+  //trace.info() << "- nbFractions = " << SB::instance().nbFractions << std::endl;
+  trace.endBlock();
+  return nbok == nb;
+}
 
 template <typename SB>
 bool testInitFraction()
@@ -70,7 +143,7 @@ bool testInitFraction()
   trace.info() << "(" << nbok << "/" << nb << ") " 
                << "( ( p == f1.p() ) && ( q == f1.q() ) )"
                << std::endl;
-  trace.info() << "- nbFractions = " << SB::nbFractions << std::endl;
+  trace.info() << "- nbFractions = " << SB::instance().nbFractions << std::endl;
   trace.endBlock();
 
   return nbok == nb;
@@ -637,7 +710,7 @@ bool testSubStandardDSLQ0()
  */
 bool testSternBrocot()
 {
-  unsigned int nbtests = 100;
+  unsigned int nbtests = 10;
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef DGtal::BigInteger Integer;
@@ -651,13 +724,80 @@ bool testSternBrocot()
     }
   trace.info() << "(" << nbok << "/" << nb << ") init fractions." << endl;
   trace.endBlock();
+  trace.beginBlock ( "Testing block: reduced fractions." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      nbok += testReducedFraction<SB>() ? 1 : 0;
+      nb++;
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") reduced fractions." << endl;
+  trace.endBlock();
 
   trace.beginBlock ( "Testing block: number of fractions." );
-  trace.info() << "- nbFractions = " << SB::nbFractions << endl;
+  trace.info() << "- nbFractions = " << SB::instance().nbFractions << endl;
   trace.endBlock();
 
   return nbok == nb;
 }
+
+template <typename SB>
+bool testContinuedFraction()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  typedef typename SB::Fraction::ConstIterator ConstIterator;
+
+  Fraction f;
+  std::vector<Size> quotients;
+  std::vector<Size> qcfrac;
+  std::back_insert_iterator< Fraction > itout = 
+    std::back_inserter( f );
+  unsigned int size = ( random() % 20 ) + 10;
+  for ( unsigned int i = 0; i < size; ++i )
+    {
+      Size q = ( i == 0 )
+        ? ( random() % 5 )
+        : ( random() % 5 ) + 1;
+      *itout++ = std::make_pair( q, (Size) i );
+      quotients.push_back( q );
+    }
+  for ( ConstIterator it = f.begin(), it_end = f.end();
+        it != it_end; ++it )
+    qcfrac.push_back( (*it).first );
+  // f.getCFrac( qcfrac );
+  bool ok = equalCFrac( quotients, qcfrac );
+  
+  trace.info() << ( ok ? "(OK)" : "(ERR)" );
+  for ( unsigned int i = 0; i < quotients.size(); ++i )
+    std::cerr << " " << quotients[ i ];
+  trace.info() << std::endl;
+  trace.info() << "     f=";
+  f.selfDisplay( std::cerr );
+  trace.info() << std::endl;
+  return ok;
+}
+
+template <typename SB>
+bool testContinuedFractions()
+{
+  typedef typename SB::Integer Integer;
+  typedef typename SB::Size Size;
+  typedef typename SB::Fraction Fraction;
+  unsigned int nbtests = 1000;
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  trace.beginBlock ( "Testing block: continued fraction." );
+  for ( unsigned int i = 0; i < nbtests; ++i )
+    {
+      ++nb, nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      trace.info() << "(" << nbok << "/" << nb << ")"
+                   << " continued fractions." << std::endl;
+    }
+  trace.endBlock();
+  return nbok == nb;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -666,10 +806,16 @@ int main( int , char** )
 {
   typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
+  typedef Fraction::ConstIterator ConstIterator;
+
+  BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
+
   trace.beginBlock ( "Testing class SternBrocot" );
   bool res = testSternBrocot()
     && testPattern<SB>()
-    && testSubStandardDSLQ0<Fraction>();
+    && testSubStandardDSLQ0<Fraction>()
+    && testContinuedFractions<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

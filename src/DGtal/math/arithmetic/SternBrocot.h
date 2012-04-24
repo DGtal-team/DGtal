@@ -45,7 +45,9 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -137,15 +139,36 @@ namespace DGtal
       Node* inverse;
     };
 
-    /// A fraction is simply a pointer to the corresponding node.
+    /**
+       @brief This fraction is a model of CPositiveIrreducibleFraction.
+
+       It represents a positive irreducible fraction, i.e. some p/q
+       qith gcd(p,q)=1. It is an inner class of SternBrocot. This
+       representation of a fraction is simply a pointer to the
+       corresponding node in this tree.
+    */
     class Fraction {
     public:
       typedef TInteger Integer;
       typedef TSize Size;
-      typedef SternBrocot<TInteger,TSize> SB;
-      
+      typedef SternBrocot<TInteger,TSize> SternBrocotTree;
+      typedef typename SternBrocotTree::Fraction Self;
+      typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
+      typedef std::pair<Size, Size> Value;
+      typedef std::vector<Size> CFracSequence;
+      typedef InputIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
+
+      // --------------------- std types ------------------------------
+      typedef Value value_type;
+      typedef ConstIterator const_iterator;
+      typedef const value_type & const_reference;
+
+    private:
+      Node* myNode; 
+
+    public:
       /** 
-          Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+          Any fraction p/q. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
           
           @param aP the numerator (>=0)
@@ -160,13 +183,27 @@ namespace DGtal
           are the partial quotients of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
-                Fraction ancestor = SB::zeroOverOne() );
+                Fraction ancestor = SternBrocotTree::zeroOverOne() );
 
       /**
 	 Default constructor.
          @param sb_node the associated node (or 0 for null fraction).
       */
       Fraction( Node* sb_node = 0 );
+
+      /**
+         Copy constructor.
+         @param other the object to clone.
+      */
+      Fraction( const Self & other );
+
+      /**
+         Assignment
+         @param other the object to clone.
+         @return a reference to 'this'.
+      */
+      Self& operator=( const Self & other );
+
       /// @return 'true' iff it is the null fraction 0/0.
       bool null() const;
       /// @return its numerator;
@@ -225,6 +262,36 @@ namespace DGtal
       Fraction reduced( Size i ) const;
 
       /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         Useful to create output iterators, for instance with
+
+         @code
+         typedef ... Fraction; 
+         Fraction f;
+         std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
+         @endcode
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */
+      void push_back( const std::pair<Size, Size> & quotient );
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         See push_back for creating output iterators.
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */         
+      void pushBack( const std::pair<Size, Size> & quotient );
+
+      /**
 	 Splitting formula, O(1) time complexity. This fraction should
 	 not be 0/1 or 1/0. NB: 'this' = [f1] \oplus [f2].
 
@@ -251,13 +318,7 @@ namespace DGtal
 	 @param quotients (returns) the coefficients of the continued
 	 fraction of 'this'.
       */
-      void cfrac( std::vector<Size> & quotients ) const;
-
-      /**
-         @param other another fraction "compatible" with this one.
-         @return the mediant fraction of this and other.
-      */
-      Fraction mediant( Fraction other ) const;
+      void getCFrac( std::vector<Size> & quotients ) const;
 
       /**
          @param p1 a numerator.
@@ -288,6 +349,12 @@ namespace DGtal
 
       /**
          @param other any fraction.
+         @return 'true' iff this is different from other.
+      */
+      bool operator!=( const Fraction & other ) const;
+
+      /**
+         @param other any fraction.
          @return 'true' iff this is < to other.
       */
       bool operator<( const Fraction & other ) const;
@@ -304,8 +371,18 @@ namespace DGtal
        */
       void selfDisplay ( std::ostream & out ) const;
 
-    private:
-      Node* myNode; 
+      /**
+         @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
+         NB: \f$ O(\sum_i u_i) \f$ operation. 
+      */
+      ConstIterator begin() const;
+
+      /**
+         @return a const iterator pointing after the end of the sequence of quotients of this fraction.
+         NB: O(1) operation.
+      */
+      ConstIterator end() const;
+      
     };
 
 
@@ -318,6 +395,11 @@ namespace DGtal
      */
     ~SternBrocot();
 
+    /**
+       @return the (only) instance of SternBrocot.
+    */
+    static SternBrocot & instance();
+
     /** The fraction 0/1 */
     static Fraction zeroOverOne();
 
@@ -325,7 +407,7 @@ namespace DGtal
     static Fraction oneOverZero();
 
     /** 
-	Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+	Any fraction p/q. Complexity is in \f$ \sum_i
 	u_i \f$, where u_i are the partial quotients of p/q.
 
 	@param p the numerator (>=0)
@@ -359,30 +441,26 @@ namespace DGtal
     bool isValid() const;
 
     /// The total number of fractions in the current tree.
-    static Size nbFractions;
+    Size nbFractions;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+    /// Singleton class.
+    static SternBrocot* singleton;
 
-    // ------------------------- Datas ----------------------------------------
-  private:
-
-    static Node myVirtualZeroOverOne;
-    static Node myZeroOverOne;
-    static Node myOneOverZero;
-    static Node myOneOverOne;
+    Node* myZeroOverOne;
+    Node* myOneOverZero;
+    Node* myOneOverOne;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+  private:
 
     /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
+     * Constructor. Hidden since singleton class.
      */
     SternBrocot();
-
-  private:
 
     /**
      * Copy constructor.

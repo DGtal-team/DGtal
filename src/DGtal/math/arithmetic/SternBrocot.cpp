@@ -48,229 +48,260 @@ using namespace std;
 **/
 namespace DGtal
 {
-  template<>
-  DGtal::SternBrocot<int32_t,int32_t>::Size
-  DGtal::SternBrocot<int32_t,int32_t>::nbFractions = 0;
-  template<>
-  DGtal::SternBrocot<int64_t,int32_t>::Size
-  DGtal::SternBrocot<int64_t,int32_t>::nbFractions = 0;
-  template<>
-  DGtal::SternBrocot<int64_t,int64_t>::Size
-  DGtal::SternBrocot<int64_t,int64_t>::nbFractions = 0;
+  template <typename TInteger, typename TSize>
+  DGtal::SternBrocot<TInteger, TSize>*
+  DGtal::SternBrocot<TInteger, TSize>::singleton = 0;
 
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<int32_t,int32_t>
-  template<>
-  DGtal::SternBrocot<int32_t,int32_t>::Node 
-  DGtal::SternBrocot<int32_t,int32_t>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
+  template <>
+  SternBrocot<DGtal::int32_t,DGtal::int32_t>*
+  SternBrocot<DGtal::int32_t,DGtal::int32_t>::singleton = 0;
 
-  template<>
-  DGtal::SternBrocot<int32_t,int32_t>::Node 
-  DGtal::SternBrocot<int32_t,int32_t>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
+  template <>
+  SternBrocot<DGtal::int64_t,DGtal::int32_t>*
+  SternBrocot<DGtal::int64_t,DGtal::int32_t>::singleton = 0;
 
-  template<>
-  DGtal::SternBrocot<int32_t,int32_t>::Node 
-  DGtal::SternBrocot<int32_t,int32_t>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
-
-  template<>
-  DGtal::SternBrocot<int32_t,int32_t>::Node 
-  DGtal::SternBrocot<int32_t,int32_t>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
-
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<int64_t,int32_t>
-  template<>
-  DGtal::SternBrocot<int64_t,int32_t>::Node 
-  DGtal::SternBrocot<int64_t,int32_t>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int32_t>::Node 
-  DGtal::SternBrocot<int64_t,int32_t>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int32_t>::Node 
-  DGtal::SternBrocot<int64_t,int32_t>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int32_t>::Node 
-  DGtal::SternBrocot<int64_t,int32_t>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
-
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<int64_t,int64_t>
-  template<>
-  DGtal::SternBrocot<int64_t,int64_t>::Node 
-  DGtal::SternBrocot<int64_t,int64_t>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int64_t>::Node 
-  DGtal::SternBrocot<int64_t,int64_t>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int64_t>::Node 
-  DGtal::SternBrocot<int64_t,int64_t>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
-
-  template<>
-  DGtal::SternBrocot<int64_t,int64_t>::Node 
-  DGtal::SternBrocot<int64_t,int64_t>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
+  template <>
+  SternBrocot<DGtal::int64_t,DGtal::int64_t>*
+  SternBrocot<DGtal::int64_t,DGtal::int64_t>::singleton = 0;
 
 #ifdef WITH_BIGINTEGER
-  template<>
-  DGtal::SternBrocot<BigInteger,int64_t>::Size
-  DGtal::SternBrocot<BigInteger,int64_t>::nbFractions = 0;
-  template<>
-  DGtal::SternBrocot<BigInteger,int32_t>::Size
-  DGtal::SternBrocot<BigInteger,int32_t>::nbFractions = 0;
-  template<>
-  DGtal::SternBrocot<BigInteger,BigInteger>::Size
-  DGtal::SternBrocot<BigInteger,BigInteger>::nbFractions = 0;
+  template <>
+  SternBrocot<DGtal::BigInteger,DGtal::int32_t>*
+  SternBrocot<DGtal::BigInteger,DGtal::int32_t>::singleton = 0;
 
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<BigInteger,int64_t>
-  template<>
-  DGtal::SternBrocot<BigInteger,int64_t>::Node 
-  DGtal::SternBrocot<BigInteger,int64_t>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
+  template <>
+  SternBrocot<DGtal::BigInteger,DGtal::int64_t>*
+  SternBrocot<DGtal::BigInteger,DGtal::int64_t>::singleton = 0;
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int64_t>::Node 
-  DGtal::SternBrocot<BigInteger,int64_t>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
+  template <>
+  SternBrocot<DGtal::BigInteger,DGtal::BigInteger>*
+  SternBrocot<DGtal::BigInteger,DGtal::BigInteger>::singleton = 0;
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int64_t>::Node 
-  DGtal::SternBrocot<BigInteger,int64_t>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
+#endif
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int64_t>::Node 
-  DGtal::SternBrocot<BigInteger,int64_t>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
+//   template<>
+//   DGtal::SternBrocot<int32_t,int32_t>::Size
+//   DGtal::SternBrocot<int32_t,int32_t>::nbFractions = 0;
+//   template<>
+//   DGtal::SternBrocot<int64_t,int32_t>::Size
+//   DGtal::SternBrocot<int64_t,int32_t>::nbFractions = 0;
+//   template<>
+//   DGtal::SternBrocot<int64_t,int64_t>::Size
+//   DGtal::SternBrocot<int64_t,int64_t>::nbFractions = 0;
 
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<BigInteger,int32_t>
-  template<>
-  DGtal::SternBrocot<BigInteger,int32_t>::Node 
-  DGtal::SternBrocot<BigInteger,int32_t>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<int32_t,int32_t>
+//   template<>
+//   DGtal::SternBrocot<int32_t,int32_t>::Node 
+//   DGtal::SternBrocot<int32_t,int32_t>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int32_t>::Node 
-  DGtal::SternBrocot<BigInteger,int32_t>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
+//   template<>
+//   DGtal::SternBrocot<int32_t,int32_t>::Node 
+//   DGtal::SternBrocot<int32_t,int32_t>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int32_t>::Node 
-  DGtal::SternBrocot<BigInteger,int32_t>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
+//   template<>
+//   DGtal::SternBrocot<int32_t,int32_t>::Node 
+//   DGtal::SternBrocot<int32_t,int32_t>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,int32_t>::Node 
-  DGtal::SternBrocot<BigInteger,int32_t>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
+//   template<>
+//   DGtal::SternBrocot<int32_t,int32_t>::Node 
+//   DGtal::SternBrocot<int32_t,int32_t>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
 
-  // Constant definitions in SternBrocot specializations.
-  // DGtal::SternBrocot<BigInteger,BigInteger>
-  template<>
-  DGtal::SternBrocot<BigInteger,BigInteger>::Node 
-  DGtal::SternBrocot<BigInteger,BigInteger>::myVirtualZeroOverOne
-  ( 0, 1, 0, -2, 
-    0, 0, 0, &myOneOverZero,
-    &myOneOverZero );
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<int64_t,int32_t>
+//   template<>
+//   DGtal::SternBrocot<int64_t,int32_t>::Node 
+//   DGtal::SternBrocot<int64_t,int32_t>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,BigInteger>::Node 
-  DGtal::SternBrocot<BigInteger,BigInteger>::myOneOverZero
-  ( 1, 0, 0, -1, 
-    // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne, 0, &myOneOverOne, 0,
-    &myZeroOverOne );
+//   template<>
+//   DGtal::SternBrocot<int64_t,int32_t>::Node 
+//   DGtal::SternBrocot<int64_t,int32_t>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,BigInteger>::Node 
-  DGtal::SternBrocot<BigInteger,BigInteger>::myZeroOverOne
-  ( 0, 1, 0, 0, 
-    // &myVirtualZeroOverOne, &myOneOverZero, 
-    &myZeroOverOne, &myOneOverZero, 
-    0, &myOneOverOne,
-    &myOneOverZero );
+//   template<>
+//   DGtal::SternBrocot<int64_t,int32_t>::Node 
+//   DGtal::SternBrocot<int64_t,int32_t>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
 
-  template<>
-  DGtal::SternBrocot<BigInteger,BigInteger>::Node 
-  DGtal::SternBrocot<BigInteger,BigInteger>::myOneOverOne
-  ( 1, 1, 1, 0, 
-    &myZeroOverOne, &myOneOverZero, 0, 0,
-    &myOneOverOne );
+//   template<>
+//   DGtal::SternBrocot<int64_t,int32_t>::Node 
+//   DGtal::SternBrocot<int64_t,int32_t>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
+
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<int64_t,int64_t>
+//   template<>
+//   DGtal::SternBrocot<int64_t,int64_t>::Node 
+//   DGtal::SternBrocot<int64_t,int64_t>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<int64_t,int64_t>::Node 
+//   DGtal::SternBrocot<int64_t,int64_t>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
+
+//   template<>
+//   DGtal::SternBrocot<int64_t,int64_t>::Node 
+//   DGtal::SternBrocot<int64_t,int64_t>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<int64_t,int64_t>::Node 
+//   DGtal::SternBrocot<int64_t,int64_t>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
+
+// #ifdef WITH_BIGINTEGER
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int64_t>::Size
+//   DGtal::SternBrocot<BigInteger,int64_t>::nbFractions = 0;
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int32_t>::Size
+//   DGtal::SternBrocot<BigInteger,int32_t>::nbFractions = 0;
+//   template<>
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Size
+//   DGtal::SternBrocot<BigInteger,BigInteger>::nbFractions = 0;
+
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<BigInteger,int64_t>
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int64_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int64_t>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int64_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int64_t>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int64_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int64_t>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int64_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int64_t>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
+
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<BigInteger,int32_t>
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int32_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int32_t>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int32_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int32_t>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int32_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int32_t>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,int32_t>::Node 
+//   DGtal::SternBrocot<BigInteger,int32_t>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
+
+//   // Constant definitions in SternBrocot specializations.
+//   // DGtal::SternBrocot<BigInteger,BigInteger>
+//   template<>
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Node 
+//   DGtal::SternBrocot<BigInteger,BigInteger>::myVirtualZeroOverOne
+//   ( 0, 1, 0, -2, 
+//     0, 0, 0, &myOneOverZero,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Node 
+//   DGtal::SternBrocot<BigInteger,BigInteger>::myOneOverZero
+//   ( 1, 0, 0, -1, 
+//     // &myVirtualZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne, 0, &myOneOverOne, 0,
+//     &myZeroOverOne );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Node 
+//   DGtal::SternBrocot<BigInteger,BigInteger>::myZeroOverOne
+//   ( 0, 1, 0, 0, 
+//     // &myVirtualZeroOverOne, &myOneOverZero, 
+//     &myZeroOverOne, &myOneOverZero, 
+//     0, &myOneOverOne,
+//     &myOneOverZero );
+
+//   template<>
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Node 
+//   DGtal::SternBrocot<BigInteger,BigInteger>::myOneOverOne
+//   ( 1, 1, 1, 0, 
+//     &myZeroOverOne, &myOneOverZero, 0, 0,
+//     &myOneOverOne );
 
 
 
-  // const DGtal::BigInteger SternBrocot<DGtal::BigInteger>::ONE = 1;
-  // const DGtal::BigInteger SternBrocot<DGtal::BigInteger>::ZERO = 0;
-#endif 
+//   // const DGtal::BigInteger SternBrocot<DGtal::BigInteger>::ONE = 1;
+//   // const DGtal::BigInteger SternBrocot<DGtal::BigInteger>::ZERO = 0;
+// #endif 
 
 }
