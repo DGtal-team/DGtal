@@ -84,7 +84,7 @@ int main( int argc, char** argv )
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
-  typedef typename DigitalShape::PointEmbedder DigitalEmbedder;
+  typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
   // See http://www.freigeist.cc/gallery.html
   Polynomial3 P;
