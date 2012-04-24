@@ -156,10 +156,17 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::operator= (
   return *this;
 }
 
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::Self
+DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getSelf() const {
+  return Self();
+} 
+
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-DGtal::ArithmeticalDSS3d<std::reverse_iterator<TIterator>,TInteger,connectivity>
+typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::Reverse
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
   return Reverse();
 } 

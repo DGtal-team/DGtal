@@ -148,7 +148,12 @@ namespace DGtal
     ArithmeticalDSS3d & operator= ( const ArithmeticalDSS3d & other );
 
     /** 
-     * @return a reverse version of '*this'.
+     * @return a constructed instance of Self.
+     */
+    Self getSelf() const;
+
+    /** 
+     * @return a constructed instance of Reverse.
      */
     Reverse getReverse() const;
 
