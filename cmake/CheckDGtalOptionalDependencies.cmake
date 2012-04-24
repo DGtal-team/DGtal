@@ -21,7 +21,7 @@ OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
 
 IF(WITH_C11) 
-SET (LIST_OPTION ${LIST_OPTION} [c11]\ ) 
+SET (LIST_OPTION ${LIST_OPTION} [c++11]\ ) 
 message(STATUS "      WITH_C11          true")
 ELSE(WITH_C11)
 message(STATUS "      WITH_C11          false")
@@ -73,11 +73,11 @@ message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
 # -----------------------------------------------------------------------------
-# Check CPP0X
+# Check CPP11
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 IF(WITH_C11)
-  INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP0X.cmake)
+  INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP11.cmake)
 ENDIF(WITH_C11)
 
 # -----------------------------------------------------------------------------
@@ -135,22 +135,22 @@ IF(WITH_ITK)
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
     
 
-    ## We test if ITK build accepts cpp0x compilers
+    ## We test if ITK build accepts cpp11 compilers
     IF(WITH_C11)
-      try_compile( CPP0X_ITK 
+      try_compile( CPP11_ITK 
 	${CMAKE_BINARY_DIR}/CMakeTmp
-	${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp0xBug/
-	ITKCPP0XBUG
+	${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
+	ITKCPP11BUG
 	OUTPUT_VARIABLE OUTPUT )
       
-      if ( CPP0X_ITK )
-	message(STATUS "ITK accepts [c++0x]" )
-    else ( CPP0X_ITK )
-      message(STATUS "ITK does not accept [c++0x]" )
-      if (CPP0X_AUTO OR CPP0X_INITIALIZER_LIST)
-	MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp0x extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).") 
-      endif(CPP0X_AUTO OR CPP0X_INITIALIZER_LIST)
-    endif ( CPP0X_ITK )
+      if ( CPP11_ITK )
+	message(STATUS "ITK accepts [c++11]" )
+    else ( CPP11_ITK )
+      message(STATUS "ITK does not accept [c++11]" )
+      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+	MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).") 
+      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+    endif ( CPP11m_ITK )
     ENDIF(WITH_C11)
 
   ELSE(ITK_FOUND)
