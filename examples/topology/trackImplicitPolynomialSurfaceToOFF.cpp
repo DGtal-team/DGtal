@@ -84,6 +84,7 @@ int main( int argc, char** argv )
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
+  typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
   // See http://www.freigeist.cc/gallery.html
   Polynomial3 P;
@@ -178,16 +179,22 @@ int main( int argc, char** argv )
   typedef 
     ImplicitFunctionDiff1LinearCellEmbedder< KSpace, 
                                              ImplicitShape, 
-                                             DigitalShape >
+                                             DigitalEmbedder >
     CellEmbedder;
   CellEmbedder cellEmbedder;
-  cellEmbedder.init( K, ishape, dshape );
+  cellEmbedder.init( K, ishape, dshape.pointEmbedder() );
   ofstream out( "marching-cube.off" );
   if ( out.good() )
     digSurf.exportEmbeddedSurfaceAs3DOFF( out, cellEmbedder );
   out.close();
   trace.endBlock();
   //! [trackImplicitPolynomialSurfaceToOFF-makingOFF]
+  trace.beginBlock( "Making NOFF surface <marching-cube.noff>. " );
+  ofstream out2( "marching-cube.noff" );
+  if ( out2.good() )
+    digSurf.exportEmbeddedSurfaceAs3DNOFF( out2, cellEmbedder );
+  out2.close();
+  trace.endBlock();
 
   return 0;
 }

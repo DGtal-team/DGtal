@@ -8,6 +8,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testLinearAlgebra
    testImagesSetsUtilities
    testBasicPointFunctors
+   testEmbedder
    )
 
 

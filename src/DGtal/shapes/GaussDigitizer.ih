@@ -62,7 +62,7 @@ operator=( const GaussDigitizer & other )
   if ( this != &other )
     {
       myEShape = other.myEShape;
-      myGridSteps = other.myGridSteps;
+      myPointEmbedder = other.myPointEmbedder;
       myLowerPoint = other.myLowerPoint;
       myUpperPoint = other.myUpperPoint;
     }
@@ -85,9 +85,9 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
   typename RealVector::Component gridStep )
 {
-  myGridSteps = RealVector::diagonal( gridStep );
-  myLowerPoint = floor( xLow );
-  myUpperPoint = ceil( xUp );
+  myPointEmbedder.init( gridStep );
+  myLowerPoint = myPointEmbedder.floor( xLow );
+  myUpperPoint = myPointEmbedder.ceil( xUp );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
@@ -97,11 +97,20 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::init( const RealPoint & xLow, const RealPoint & xUp, 
   const RealVector & aGridSteps )
 {
-  myGridSteps = aGridSteps;
-  myLowerPoint = floor( xLow );
-  myUpperPoint = ceil( xUp );
+  myPointEmbedder.init( aGridSteps );
+  myLowerPoint = myPointEmbedder.floor( xLow );
+  myUpperPoint = myPointEmbedder.ceil( xUp );
 }
 
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TEuclideanShape>
+inline
+const typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::PointEmbedder &
+DGtal::GaussDigitizer<TSpace,TEuclideanShape>
+::pointEmbedder() const
+{
+  return myPointEmbedder;
+}
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
@@ -119,10 +128,7 @@ typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::Point
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::floor( const RealPoint & p ) const
 {
-  Point aPoint;
-  for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) ::floor( p[ i ] / myGridSteps[ i ] );
-  return aPoint;
+  return myPointEmbedder.floor( p );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
@@ -131,10 +137,7 @@ typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::Point
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::ceil( const RealPoint & p ) const
 {
-  Point aPoint;
-  for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) ::ceil( p[ i ] / myGridSteps[ i ] );
-  return aPoint;
+  return myPointEmbedder.ceil( p );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
@@ -143,10 +146,7 @@ typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::Point
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::round( const RealPoint & p ) const
 {
-  Point aPoint;
-  for ( Dimension i = 0; i < Space::dimension; ++i )
-    aPoint[ i ] = (Integer) ::round( p[ i ] / myGridSteps[ i ] );
-  return aPoint;
+  return myPointEmbedder.round( p );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
@@ -155,11 +155,7 @@ typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::RealPoint
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::embed( const Point & p ) const
 {
-  RealPoint aRealPoint;
-  for ( Dimension i = 0; i < Space::dimension; ++i )
-    aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) 
-      * myGridSteps[ i ];
-  return aRealPoint;
+  return myPointEmbedder.embed( p );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
@@ -205,7 +201,7 @@ typename DGtal::GaussDigitizer<TSpace,TEuclideanShape>::RealVector
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::gridSteps() const
 {
-  return myGridSteps;
+  return myPointEmbedder.gridSteps();
 }
 
 
