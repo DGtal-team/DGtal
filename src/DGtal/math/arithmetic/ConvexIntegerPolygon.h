@@ -125,6 +125,19 @@ namespace DGtal
     using Base::rbegin;
     using Base::rend;
 
+  public:
+    /**
+       A half-space specified by a vector N and a constant c. The
+       half-space is the set \f$ \{ P \in Z^2, N.P \le c \} \f$.
+    */
+    struct HalfSpace {
+      Vector N; //<! The normal to the half-space.
+      Integer c; //<! The uppermost value N.(x,y) that is in the half-space.
+      inline HalfSpace( const Vector & aN, const Integer & aC )
+        : N( aN ), c( aC )
+      {}
+    };
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -209,12 +222,38 @@ namespace DGtal
      */
     Point3I centroid( const Integer & twice_area ) const;
 
+    // ----------------------- halfspace services -------------------------------
+  public:
+
     /**
-     * Cuts the convex polygon with the constraint N.(x,y) <= c
-     *
-     * @return 'true' if the polygon was modified, 'false' otherwise.
+       Cuts the convex polygon with the given half-space constraint.
+       
+       @param hs any half-space constraint.
+       @return 'true' if the polygon was modified, 'false' otherwise.
      */
-    bool cut( const Vector & N, const Integer & c );
+    bool cut( const HalfSpace & hs );
+
+    /**
+       Computes the constraint of the form N.P<=c whose supporting
+       line passes through point *it and *(it+1), such that the other
+       points of the polygon are inside.
+
+       @param it an iterator on a point of this polygon.
+       @return the corresponding half-space.
+     */
+    HalfSpace halfSpace( ConstIterator it ) const;
+
+    /**
+       Computes the constraint of the form N.P<=c whose supporting
+       line passes through A and B such that the point \a inP
+       satisfies the constraint.
+       
+       @param A any point.
+       @param B any point different from A.
+       @param inP any point not on the straight line (AB).
+       @return  the corresponding half-space.
+     */
+    HalfSpace halfSpace( const Point & A, const Point & B, const Point & inP ) const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -244,8 +283,9 @@ namespace DGtal
     /// to be copied when cloning this object. Avoids many dynamic
     /// allocations when using big integers.
     mutable MyIntegerComputer _ic;
-    mutable Integer _a, _b, _c, _c1, _c3, _den;
+    mutable Integer _a, _b, _c, _c1, _c3, _den, _g;
     mutable Point _A, _B, _A1, _B1, _A2, _B2;
+    mutable Vector _N;
 
     // ------------------------- Hidden services ------------------------------
   protected:

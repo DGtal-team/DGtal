@@ -197,9 +197,56 @@ template <typename TSpace, typename TSequence>
 inline
 bool
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
-cut( const Vector & N, const Integer & c )
+cut( const HalfSpace & hs )
 {
   return true;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::HalfSpace
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+halfSpace( ConstIterator it ) const
+{
+  Point A( *it ); ++it;
+  Point B( *it ); it;
+  _N[ 0 ] = A[ 1 ] - B[ 1 ];
+  _N[ 1 ] = B[ 0 ] - A[ 0 ];
+  _ic.getDotProduct( _c, _N, A );
+  if ( it == end() ) it = begin();
+  _ic.getDotProduct( _c1, _N, *it );
+  if ( _c1 > _c )
+    {
+      _N.neg();
+      _c = -_c;
+    }
+  ASSERT( _c1 < _c );
+  //simplification of the constraint
+  _ic.getGcd( _g, _N[ 0 ], _N[ 1 ] );
+  _N /= _g;
+  return HalfSpace( _N, _ic.floorDiv( _c, _g) );  
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::HalfSpace
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+halfSpace( const Point & A, const Point & B, const Point & inP ) const
+{
+  _N[ 0 ] = A[ 1 ] - B[ 1 ];
+  _N[ 1 ] = B[ 0 ] - A[ 0 ];
+  _ic.getDotProduct( _c, _N, A );
+  _ic.getDotProduct( _c1, _N, inP );
+  if ( _c1 > _c )
+    {
+      _N.neg();
+      _c = -_c;
+    }
+  ASSERT( _c1 < _c );
+  //simplification of the constraint
+  _ic.getGcd( _g, _N[ 0 ], _N[ 1 ] );
+  _N /= _g;
+  return HalfSpace( _N, _ic.floorDiv( _c, _g) );  
 }
 
 ///////////////////////////////////////////////////////////////////////////////
