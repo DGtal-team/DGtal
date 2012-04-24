@@ -2,9 +2,9 @@
 #David Coeurjolly <david.coeurjolly@liris.cnrs.fr>
 
 # Make sure the compiler can find include files.
-if ( CPP0X_INITIALIZER_LIST )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif ( CPP0X_INITIALIZER_LIST )
+if ( CPP11_INITIALIZER_LIST )
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+endif ( CPP11_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
@@ -29,7 +29,6 @@ configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in
 add_subdirectory(base)
 add_subdirectory(kernel)
 add_subdirectory(math)
-add_subdirectory(utils)
 add_subdirectory(geometry)
 add_subdirectory(topology)
 add_subdirectory(io)

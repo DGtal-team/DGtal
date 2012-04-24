@@ -52,7 +52,7 @@ bool testBinomialConvolver()
   trace.beginBlock ( "Testing block ..." );
   typedef PointVector<2, double> RealPoint;
   std::vector< RealPoint > points;
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
   points.push_back( RealPoint( { 0.0, 0.0 } ) ); 
   points.push_back( RealPoint( { 1.0, 0.0 } ) ); 
   points.push_back( RealPoint( { 2.0, 0.0 } ) ); 
