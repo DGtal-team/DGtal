@@ -110,7 +110,7 @@ int main( int argc, char** argv )
 
 
   // Each connected compoments are simply displayed with a specific color.
-  GradientColorMap<long> gradient( 0,vectConnectedSCell.size());
+  GradientColorMap<long> gradient(0, (const long)vectConnectedSCell.size());
   gradient.addColor(Color::Red);
   gradient.addColor(Color::Yellow);
   gradient.addColor(Color::Green);
