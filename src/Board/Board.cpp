@@ -29,7 +29,6 @@
 #include <map>
 #include <algorithm>
 #include <cstdio>
-#include <algorithm>
 
 #ifdef WITH_CAIRO
 // cairo
@@ -49,14 +48,25 @@
 #endif //win32
 
 #ifdef _MSC_VER
-#define NOMINMAX
-#include <windows.h>
-#ifdef M_PI
-#undef M_PI
-#endif
+//#define NOMINMAX
+//#include <windows.h>
+//#ifdef M_PI
+//#undef M_PI
+//#endif
 //C++ exception specification ignored except 
 //to indicate a function is not __declspec(nothrow)
 #pragma warning(disable : 4290)
+#endif
+
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
 #endif
 
 

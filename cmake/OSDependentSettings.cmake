@@ -24,20 +24,14 @@ ENDIF(MSVC)
 # Remove some MS Visual c++ flags
 #------------------------------------------------------------------------------
 IF(MSVC)
+
   ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
   
 #------------------------------------------------------------------------------
-# GMP / MPIR (test for static runtime)
+# for GMP / MPIR (MT)
 #------------------------------------------------------------------------------
-#	IF (NOT BUILD_SHARED_LIBS)
-#		foreach(flag_var
-#		      CMAKE_CXX_FLAGS CMAKE_CXX_FLAGS_DEBUG CMAKE_CXX_FLAGS_RELEASE
-#		      CMAKE_CXX_FLAGS_MINSIZEREL CMAKE_CXX_FLAGS_RELWITHDEBINFO)
-#		 if(${flag_var} MATCHES "/MD")
-#		    string(REGEX REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-#		 endif(${flag_var} MATCHES "/MD")
-#		endforeach(flag_var)
-#	ENDIF(NOT BUILD_SHARED_LIBS)
+SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
+
 ENDIF(MSVC)
 
 
