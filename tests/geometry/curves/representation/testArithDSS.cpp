@@ -48,6 +48,10 @@
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/io/boards/Board2D.h"
 
+#include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
+
+
 using namespace DGtal;
 using namespace std;
 using namespace LibBoard;
@@ -344,6 +348,16 @@ bool testCorner()
 
 
 
+void testArithDSSConceptChecking()
+{
+   typedef PointVector<2,int> Point; 
+   typedef std::vector<Point>::iterator Iterator; 
+   typedef ArithmeticalDSS<Iterator,int,8> ArithDSS; 
+   BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
+   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<ArithDSS> ));
+}
+
+
 int main(int argc, char **argv)
 {
 
@@ -353,6 +367,11 @@ int main(int argc, char **argv)
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
+   
+  {//concept checking
+    testArithDSSConceptChecking();
+  }
+  
   bool res = testDSS4drawing() 
     && testDSS8drawing()
     && testExtendretractForward()

@@ -223,6 +223,12 @@ outputs the following graphics.
   
 \image html dgtalboard-3-custom-classes.png "Custom drawing."
 \image latex dgtalboard-3-custom-classes.png "Custom drawing." width=5cm
+
+
+Combining several @e CustomStyles, the main DGtal logo can be generated as follows.:
+
+@snippet boards/logoDGtal.cpp logoDGtal-main
+
   
 \subsection dgtal_dgtalboard_sec16 Creating your own custom style class for displaying drawable elements.
   
@@ -546,5 +552,11 @@ the drawable element.
   
 Another example where the specific mode style of the drawable
 element ArithmeticDSS is redefined.
+ */
+
+ /**
+\example logoDGtal.cpp
+  
+Simple example to generate DGtal logo in DGtal.
  */
 }
