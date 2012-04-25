@@ -96,11 +96,19 @@ inline
 typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity 
 DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::eval(const ConstIterator& it) const
 {
+  return eval( *it );
+}
+//-----------------------------------------------------------------------------
+template <typename DigitalSurf,  typename KernelFunctor>
+inline
+typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Quantity 
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
+eval(const SCell & scell ) const
+{
   typedef BreadthFirstVisitor<DigitalSurf> MyBreadthFirstVisitor;
   typedef typename MyBreadthFirstVisitor::Node MyNode;
   typedef typename MyBreadthFirstVisitor::Size MySize;
-  typename DigitalSurf::Vertex source = *it;
-  MyBreadthFirstVisitor visitor( mySurface, source );
+  MyBreadthFirstVisitor visitor( mySurface, scell );
 
   MyNode node;
   Quantity n, elementary;

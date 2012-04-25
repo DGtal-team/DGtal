@@ -45,8 +45,7 @@ template <typename TDigitalSurfaceContainer>
 inline
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::~DigitalSurface()
 {
-  ASSERT( myTracker != 0 );
-  delete myTracker;
+  if ( myTracker != 0 ) delete myTracker;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -71,6 +70,8 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
       myTracker = myContainer->newTracker( s ); 
       myUmbrellaComputer.init( *myTracker, 0, false, 1 );
     }
+  else 
+    myTracker = 0;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -85,6 +86,8 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
       myTracker = myContainer->newTracker( s );
       myUmbrellaComputer.init( *myTracker, 0, false, 1 );
     }
+  else 
+    myTracker = 0;
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -96,8 +99,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::operator=
   if ( this != &other )
     {
       myContainer = other.myContainer;
-      ASSERT( myTracker != 0 );
-      delete myTracker;
+      if ( myTracker != 0 ) delete myTracker;
       myTracker = new DigitalSurfaceTracker( *other.myTracker );
       myUmbrellaComputer = other.myUmbrellaComputer;
     }
@@ -531,7 +533,7 @@ inline
 bool
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::isValid() const
 {
-    return true;
+  return myTracker != 0;
 }
 
 //-----------------------------------------------------------------------------

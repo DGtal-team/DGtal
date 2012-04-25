@@ -83,6 +83,7 @@ namespace DGtal
     typedef TKernelFunctor KernelFunctor;
     typedef typename TDigitalSurface::ConstIterator ConstIterator;
     typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
+    typedef typename DigitalSurface::SCell SCell;
 
     BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
 
@@ -114,6 +115,12 @@ namespace DGtal
     void init(const double h, 
               const unsigned int radius);
     
+    /**
+       @param scell any signed cell.
+       @return the estimated quantity at cell \e scell.
+     */
+    Quantity eval(const SCell & scell) const;
+
     /**
      * @return the estimated quantity at *it
      */
@@ -149,19 +156,19 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Grid size
+    /// Grid size
     double myH; 
     
-    ///True if the init() has been called.
+    /// True if the init() has been called.
     bool myFlagIsInit;
     
-    ///Radius of the convolution.
+    /// Radius of the convolution.
     unsigned int myRadius;
     
-    ///Copy to the digitale surface
+    /// Reference to the digital surface
     const DigitalSurface & mySurface;
 
-    ///Copy of the kernel convolution functor.
+    /// Reference of the kernel convolution functor.
     const KernelFunctor & myKernelFunctor;
    
     // ------------------------- Hidden services ------------------------------
