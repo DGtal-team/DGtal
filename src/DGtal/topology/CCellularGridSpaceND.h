@@ -205,8 +205,8 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 |               |                  |                   |               |              |                                       |                |            |
 | Get Khalimsky coordinate| \e x.uKCoord(\e c, \e k)|  | \e Integer    |              | returns the Khalimsky coordinate of cell \e c along axis \e k | |   |
 | Get digital coordinate| \e x.uCoord(\e c, \e k)|     | \e Integer    |              | returns the digital coordinate of cell \e c along axis \e k | |     |
-| Get Khalimsky coordinates| \e x.uKCoords(\e c, \e k)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
-| Get digital coordinates| \e x.uCoords(\e c, \e k)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
+| Get Khalimsky coordinates| \e x.uKCoords(\e c)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
+| Get digital coordinates| \e x.uCoords(\e c)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
 | Get Khalimsky coordinate| \e x.sKCoord(\e sc, \e k)|  | \e Integer   |              | returns the Khalimsky coordinate of signed cell \e sc along axis \e k | | |
 | Get digital coordinate| \e x.sCoord(\e sc, \e k)|     | \e Integer   |              | returns the digital coordinate of signed cell \e sc along axis \e k | | |
 | Get Khalimsky coordinates| \e x.sKCoords(\e sc, \e k)| | \e Point    |              | returns the Khalimsky coordinates of signed cell \e sc |       |    |

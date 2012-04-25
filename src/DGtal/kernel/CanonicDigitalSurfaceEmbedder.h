@@ -17,104 +17,119 @@
 #pragma once
 
 /**
- * @file CanonicEmbedder.h
+ * @file CanonicDigitalSurfaceEmbedder.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/28
  *
- * Header file for module CanonicEmbedder.cpp
+ * Header file for module CanonicDigitalSurfaceEmbedder.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CanonicEmbedder_RECURSES)
-#error Recursive header files inclusion detected in CanonicEmbedder.h
-#else // defined(CanonicEmbedder_RECURSES)
+#if defined(CanonicDigitalSurfaceEmbedder_RECURSES)
+#error Recursive header files inclusion detected in CanonicDigitalSurfaceEmbedder.h
+#else // defined(CanonicDigitalSurfaceEmbedder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CanonicEmbedder_RECURSES
+#define CanonicDigitalSurfaceEmbedder_RECURSES
 
-#if !defined CanonicEmbedder_h
+#if !defined CanonicDigitalSurfaceEmbedder_h
 /** Prevents repeated inclusion of headers. */
-#define CanonicEmbedder_h
+#define CanonicDigitalSurfaceEmbedder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CSpace.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CanonicEmbedder
+// class CanonicDigitalSurfaceEmbedder
 /**
-   Description of class 'CanonicEmbedder' <p>
+   Description of class 'CanonicDigitalSurfaceEmbedder' <p>
 
-   \brief Aim: A trivial embedder for digital points, which
-   corresponds to the canonic injection of Zn into Rn.
+   \brief Aim: A trivial embedder for digital surfaces, which
+   corresponds to the canonic injection of cell centroids into Rn.
 
-   Model of CPointEmbedder.
+   Model of CCanonicDigitalSurfaceEmbedder (and thus of CSCellEmbedder).
 
-   @tparam TSpace the type of digital Space where the embedder works.
+   @tparam TDigitalSurface the type of digital surface where the embedder works.
  */
-  template <typename TSpace>
-  struct CanonicEmbedder
+  template <typename TDigitalSurface>
+  struct CanonicDigitalSurfaceEmbedder
   {
   public:
-    typedef CanonicEmbedder<TSpace> Self;
-    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    typedef CanonicDigitalSurfaceEmbedder<TDigitalSurface> Self;
 
-    typedef TSpace Space;
+    typedef TDigitalSurface Surface;
+    typedef typename Surface::KSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<KSpace> ));
+    typedef typename KSpace::SCell SCell;
+    typedef typename KSpace::Space Space;
+    typedef typename Space::RealPoint RealPoint;
+    typedef SCell Argument;
+    typedef RealPoint Value;
+
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;
-    typedef typename Space::Vector Vector;
-    typedef typename Space::RealPoint RealPoint;
-    typedef Point Argument;
-    typedef RealPoint Value;
 
     // ----------------------- Standard services ------------------------------
   public:
-    
     /**
-       @param p any point in the Euclidean space.
-       @return the digital point floor( p ).
+       Destructor. Nothing special.
     */
-    Point floor( const RealPoint & p ) const;
+    ~CanonicDigitalSurfaceEmbedder();
 
     /**
-       @param p any point in the Euclidean space.
-       @return the digital point ceil( p ).
+       Default constructor. The object is not valid.
     */
-    Point ceil( const RealPoint & p ) const;
+    CanonicDigitalSurfaceEmbedder();
 
     /**
-       @param p any point in the Euclidean space.
-
-       @return the digital point round( p ), i.e. the
-       "closest" digital point.
+       Constructor from surface. 
     */
-    Point round( const RealPoint & p ) const;
+    CanonicDigitalSurfaceEmbedder( const Surface & aSurface );
 
     /**
-       Map a digital point to its corresponding point in the Euclidean
+       Copy constructor.
+       @param other the object to clone.
+    */
+    CanonicDigitalSurfaceEmbedder( const Self & other );
+
+    /**
+       Assignment.
+       @param other the object to clone.
+       @return a reference to 'this'.
+    */
+    Self & operator=( const Self & other );
+
+    /**
+       @return the digital surface.
+    */
+    const Surface & surface() const;
+
+    /**
+       Map a signed cell to its corresponding point in the Euclidean
        space.
        
-       @param dp any digital point in the digital space.
+       @param cell any signed cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint embed( const Point & dp ) const;
+    RealPoint embed( const SCell & cell ) const;
 
     /**
-       Map a digital point to its corresponding point in the Euclidean
+       Map a signed cell to its corresponding point in the Euclidean
        space.
        
-       @param dp any digital point in the digital space.
+       @param cell any signed cell in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
-    RealPoint operator()( const Point & dp ) const;
+    RealPoint operator()( const SCell & cell ) const;
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -132,7 +147,9 @@ public:
     bool isValid() const;
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  protected:
+    const Surface* mySurface;
+
     // ------------------------- Private Datas --------------------------------
 private:
 
@@ -143,18 +160,18 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class CanonicEmbedder
+}; // end of class CanonicDigitalSurfaceEmbedder
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CanonicEmbedder'.
+ * Overloads 'operator<<' for displaying objects of class 'CanonicDigitalSurfaceEmbedder'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CanonicEmbedder' to write.
+ * @param object the object of class 'CanonicDigitalSurfaceEmbedder' to write.
  * @return the output stream after the writing.
  */
-  template <typename TSpace>
+  template <typename TDigitalSurface>
   std::ostream&
-  operator<< ( std::ostream & out, const CanonicEmbedder<TSpace> & object );
+  operator<< ( std::ostream & out, const CanonicDigitalSurfaceEmbedder<TDigitalSurface> & object );
 
 
 } // namespace DGtal
@@ -162,13 +179,13 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CanonicEmbedder.ih"
+#include "DGtal/kernel/CanonicDigitalSurfaceEmbedder.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CanonicEmbedder_h
+#endif // !defined CanonicDigitalSurfaceEmbedder_h
 
-#undef CanonicEmbedder_RECURSES
-#endif // else defined(CanonicEmbedder_RECURSES)
+#undef CanonicDigitalSurfaceEmbedder_RECURSES
+#endif // else defined(CanonicDigitalSurfaceEmbedder_RECURSES)

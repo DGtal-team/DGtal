@@ -63,7 +63,7 @@ typename DGtal::NormalVectorEstimatorLinearCellEmbedder<TDigitalSurface, TNormal
 DGtal::NormalVectorEstimatorLinearCellEmbedder<TDigitalSurface, TNormalEstimator, TEmbedder>::
 embed( const Point & p ) const
 {
-  ASSERT( myPtrEmbedder.isValid()  );
+  //ASSERT( myPtrEmbedder.isValid()  );
   return myPtrEmbedder.embed( p );
 }
 //-----------------------------------------------------------------------------
@@ -121,7 +121,8 @@ bool
 DGtal::NormalVectorEstimatorLinearCellEmbedder<TDigitalSurface, TNormalEstimator, TEmbedder>::
 isValid() const
 {
-  return ( mySurface.isValid() ) && ( myPtrFct.isValid() ) && ( myPtrEmbedder.isValid() );
+  return ( mySurface.isValid() ) && ( myPtrFct.isValid() ); 
+  //&& ( myPtrEmbedder.isValid() );
 }
 
 
