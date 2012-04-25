@@ -94,7 +94,7 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   if (!space_ok)
     {
       trace.error() << "Error in the Khamisky space construction."<<std::endl;
-      return 2;
+      return true; //2; (return a bool !!!)
     }
   trace.endBlock();
   typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
