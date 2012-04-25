@@ -98,7 +98,6 @@ int main( int argc, char** argv )
 
   //! [ConstImageAdapterConstruction]
   Thresholder<Image::Value> t( thresholdValue ); 
-
   ConstImageAdapter<Image, Thresholder<Image::Value>, bool> a(img, t); 
   //! [ConstImageAdapterConstruction]
 

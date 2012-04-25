@@ -47,7 +47,7 @@
 /**
  * Sum of all the absolute displacements of the last optimisation step.
  */
-INLINE
+inline
 double
 DGtal::AngleLinearMinimizer::sum() const
 {
@@ -57,7 +57,7 @@ DGtal::AngleLinearMinimizer::sum() const
 /**
  * Max of all the absolute displacements of the last optimisation step.
  */
-INLINE
+inline
 double 
 DGtal::AngleLinearMinimizer::max() const
 {
@@ -68,7 +68,7 @@ DGtal::AngleLinearMinimizer::max() const
 /**
  * Default constructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByRelaxation::AngleLinearMinimizerByRelaxation()
 {}
 
@@ -76,7 +76,7 @@ DGtal::AngleLinearMinimizerByRelaxation::AngleLinearMinimizerByRelaxation()
 /**
  * Destructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByRelaxation::~AngleLinearMinimizerByRelaxation()
 {}
 
@@ -84,7 +84,7 @@ DGtal::AngleLinearMinimizerByRelaxation::~AngleLinearMinimizerByRelaxation()
 /**
  * Default constructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByGradientDescent::AngleLinearMinimizerByGradientDescent
 ( double aStep )
   : myStep( aStep )
@@ -94,7 +94,7 @@ DGtal::AngleLinearMinimizerByGradientDescent::AngleLinearMinimizerByGradientDesc
 /**
  * Destructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByGradientDescent::~AngleLinearMinimizerByGradientDescent()
 {}
 
@@ -102,7 +102,7 @@ DGtal::AngleLinearMinimizerByGradientDescent::~AngleLinearMinimizerByGradientDes
 /**
  * Default constructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::AngleLinearMinimizerByAdaptiveStepGradientDescent
 ( double aStep )
   : myStep( aStep )
@@ -111,7 +111,7 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::AngleLinearMinimizerBy
 /**
  * Destructor. Does nothing.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::~AngleLinearMinimizerByAdaptiveStepGradientDescent()
 {}
 
@@ -120,7 +120,7 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::~AngleLinearMinimizerB
 /**
  * @return a reference on the information structure of the [i]th value.
  */
-INLINE
+inline
 DGtal::AngleLinearMinimizer::ValueInfo & 
 DGtal::AngleLinearMinimizer::rw( unsigned int i )
 {
@@ -132,7 +132,7 @@ DGtal::AngleLinearMinimizer::rw( unsigned int i )
 /**
  * @return a const reference on the information structure of the [i]th value.
  */
-INLINE
+inline
 const DGtal::AngleLinearMinimizer::ValueInfo & 
 DGtal::AngleLinearMinimizer::ro( unsigned int i ) const
 {
@@ -144,7 +144,7 @@ DGtal::AngleLinearMinimizer::ro( unsigned int i ) const
 /**
  * @return the maximum number of values stored in the object.
  */
-INLINE
+inline
 unsigned int
 DGtal::AngleLinearMinimizer::maxSize() const
 {
@@ -155,7 +155,7 @@ DGtal::AngleLinearMinimizer::maxSize() const
 /**
  * @return the number of values stored in the object.
  */
-INLINE
+inline
 unsigned int
 DGtal::AngleLinearMinimizer::size() const
 {
@@ -167,7 +167,7 @@ DGtal::AngleLinearMinimizer::size() const
  * Specifies the exact number of valid values.
  * @param nb any number below 'maxSize()'.
  */
-INLINE
+inline
 void
 DGtal::AngleLinearMinimizer::setSize( unsigned int nb )
 {
@@ -182,7 +182,7 @@ DGtal::AngleLinearMinimizer::setSize( unsigned int nb )
  * value does not depend on the first one, otherwise the curve is
  * closed and the last value is linked to the first one.
  */
-INLINE
+inline
 void
 DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
 {
@@ -193,9 +193,9 @@ DGtal::AngleLinearMinimizer::setIsCurveOpen( bool isCurveOpen)
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of INLINE functions and external operators                 //
+// Implementation of inline functions and external operators                 //
 
-INLINE
+inline
 std::string
 DGtal::AngleLinearMinimizer::className() const
 {
@@ -208,7 +208,7 @@ DGtal::AngleLinearMinimizer::className() const
  * @param object the object of class 'AngleLinearMinimizer' to write.
  * @return the output stream after the writing.
  */
-INLINE
+inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const AngleLinearMinimizer & object )
