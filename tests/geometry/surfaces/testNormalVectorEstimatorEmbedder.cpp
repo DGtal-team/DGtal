@@ -31,6 +31,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <iterator>
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/kernel/CanonicDigitalSurfaceEmbedder.h"
@@ -54,6 +55,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/CanonicEmbedder.h"
 
+#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
@@ -118,8 +120,9 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   typedef LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface, 
       ConstantConvolutionKernel<Vector> > MyConstantEstimator;
+  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyConstantEstimator > ));
   MyConstantEstimator myNormalEstimator(digSurf, kernel);
-  
+
   // Embedder definition
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> SurfaceEmbedder;
   SurfaceEmbedder surfaceEmbedder( digSurf );
@@ -149,6 +152,7 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   typedef LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface, 
       GaussianConvolutionKernel<Vector> > MyGaussianEstimator;
+  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyGaussianEstimator > ));
   MyGaussianEstimator myNormalEstimatorG(digSurf, Gkernel);
 
   // Embedder definition
@@ -160,6 +164,9 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   
   MyGaussianEstimator::Quantity res2 = myNormalEstimatorG.eval(it);
   trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+  std::vector<MyGaussianEstimator::Quantity> allNormals;
+  myNormalEstimatorG.evalAll( std::back_inserter( allNormals ) );
+  trace.info() << "Normal vector field of size "<< allNormals.size() << std::endl;
 
   ofstream out2( "cat10-gaussian.off" );
   if ( out2.good() )
