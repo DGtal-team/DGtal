@@ -58,6 +58,8 @@ namespace DGtal
    * \brief Aim: Computes the normal vector at a surface element by
    * convolution of elementary normal vector to adjacent surfel.
    *
+   * A model of CNormalVectorEstimator.
+   *
    * To each $n-1$ signed surfel, an elementary inward normal vector can be
    * defined. At a given surfel, this estimator will compute the
    * convolution of elementary normal vector of neighboring surfels
@@ -81,9 +83,10 @@ namespace DGtal
 
     typedef TDigitalSurface DigitalSurface;
     typedef TKernelFunctor KernelFunctor;
-    typedef typename TDigitalSurface::ConstIterator ConstIterator;
-    typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
-    typedef typename DigitalSurface::SCell SCell;
+    typedef DigitalSurface Surface;
+    typedef typename Surface::ConstIterator ConstIterator;
+    typedef typename Surface::KSpace::Space::RealVector Quantity;
+    typedef typename Surface::SCell SCell;
 
     BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
 
@@ -105,7 +108,10 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-
+    
+    /// @return a reference to the associated digital surface.
+    const Surface & surface() const;
+    
     /**
      * Initialisation.
      * @param h grid size (must be >0).
@@ -134,6 +140,14 @@ namespace DGtal
     OutputIterator eval(const ConstIterator& itb, 
                         const ConstIterator& ite, 
                         OutputIterator result) const; 
+
+    /**
+       Writes on \e result the estimated quantity at all surfels of the digital surface.  
+       @param result any model of boost::OutputIterator on Quantity.
+       @return the output iterator after the last write.
+     */
+    template <typename OutputIterator>
+    OutputIterator evalAll( OutputIterator result ) const; 
     
     
     /**

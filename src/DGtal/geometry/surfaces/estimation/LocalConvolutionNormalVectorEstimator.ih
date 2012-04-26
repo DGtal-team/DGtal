@@ -85,7 +85,33 @@ eval(const ConstIterator& itb,
   
   return result;
 }
+
+//-----------------------------------------------------------------------------  
+template <typename DigitalSurf,  typename KernelFunctor>
+inline
+const typename DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::Surface &
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
+surface() const
+{
+  return mySurface;
+}
+
+//-----------------------------------------------------------------------------
+template <typename DigitalSurf,  typename KernelFunctor>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::LocalConvolutionNormalVectorEstimator<DigitalSurf,KernelFunctor>::
+evalAll( OutputIterator result) const
+{
+  for( ConstIterator it = surface().begin(), it_end = surface().end();
+       it != it_end; ++it )
+    {
+      *result++ = eval( *it );
+    }
   
+  return result;
+}
   
 /**
  * @return the estimated quantity at *it
