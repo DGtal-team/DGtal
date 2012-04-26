@@ -18,8 +18,8 @@
 
 /**
  * @file DigitalSurfaceEmbedderWithNormalVectorEstimator.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/14
  *
@@ -97,11 +97,23 @@ namespace DGtal
 
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<DigitalSurfaceEmbedder,NormalVectorEstimator> GradientMap;
 
+
+    /**
+       Default constructor. The object is not valid.
+    */
+    DigitalSurfaceEmbedderWithNormalVectorEstimator();
+
+    /** 
+       Assignment.
+       @param other the object to clone.
+       @return a reference to 'this'.
+    */
+    Self & operator=( const Self & other );
+    
     /** 
         Constructor.
-        
-       @param aDSEmbedder any digital surface embedder.
-       @param anEstimator a normal vector estimator
+        @param aDSEmbedder any digital surface embedder.
+        @param anEstimator a normal vector estimator
     */
     DigitalSurfaceEmbedderWithNormalVectorEstimator
     ( const DigitalSurfaceEmbedder & aDSEmbedder,
@@ -153,6 +165,7 @@ namespace DGtal
   public:
     
     /**
+
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
@@ -170,30 +183,77 @@ namespace DGtal
   private:
    
     ///A pointer on the digital surface
-    const DigitalSurfaceEmbedder& myDSEmbedder;
+    const DigitalSurfaceEmbedder* myDSEmbedder;
     /// A pointer on the normal vector estimator.
-    const NormalVectorEstimator& myEstimator;
+    const NormalVectorEstimator* myEstimator;
    
     // ------------------------- Hidden services ------------------------------
   protected:
-    DigitalSurfaceEmbedderWithNormalVectorEstimator();
-
-  private:    
-    /** 
-       Assignment.
-       Forbidden.
-       @param other the object to clone.
-       @return a reference to 'this'.
-    */
-    Self & operator=( const Self & other );
-    
     
   }; // end of class DigitalSurfaceEmbedderWithNormalVectorEstimator
 
+  /**
+     Functor object to associate a normal vector to any surfel of a
+     digital surface. It is constructed from an object combining
+     digital surface embedder and a normal vector estimator. Generally
+     not instantiated directly by the user.
+
+    @tparam TDigitalSurfaceEmbedder a model of digital surface embedder.
+    @tparam TNormalVectorEstimator the type of normal vector estimator.
+
+     @see DigitalSurfaceEmbedderWithNormalVectorEstimator::gradientMap
+  */
   template < typename TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
-  struct DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+  class DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
   {
+  public:
+    typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder,TNormalVectorEstimator> Self;
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder<TDigitalSurfaceEmbedder> ));
+
+    typedef TDigitalSurfaceEmbedder DigitalSurfaceEmbedder;
+    typedef TNormalVectorEstimator NormalVectorEstimator;
+
+    typedef DigitalSurfaceEmbedderWithNormalVectorEstimator< DigitalSurfaceEmbedder, NormalVectorEstimator > Embedder;
+    typedef typename Embedder::SCell Argument;
+    typedef typename Embedder::RealVector Value;
+
+    /// Destructor. Does nothing.
+    ~DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap();
+
+    /// Default constructor. The object is not valid.
+    DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap();
+
+    /// Assignment.
+    Self & operator=( const Self & other );
+
+    /**
+       Copy constructor.
+       @param other the object to clone.
+    */
+    DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+    ( const Self & other );
+
+    /**
+       Constructor from embedder.
+       @param embedder any instance of DigitalSurfaceEmbedderWithNormalVectorEstimator.
+    */
+    DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+    ( const Embedder & embedder );
+
+    /**
+       Functor operator : SCell (surfel) -> RealVector (gradient vector).
+       @param arg any signed cell.
+       @return a real-value vector.
+    */
+    Value operator()( const Argument & arg ) const;
+
+  protected:
+    /// The digital surface embedder with normal vector estimator.
+    const Embedder* myEmbedder;
+
+  private:
+
   };
 
   /**
