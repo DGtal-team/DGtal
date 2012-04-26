@@ -44,7 +44,15 @@ inline
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 ~DigitalSurfaceEmbedderWithNormalVectorEstimator()
 {}
+
 //-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+DigitalSurfaceEmbedderWithNormalVectorEstimator()
+  : myDSEmbedder( 0 ), myEstimator( 0 )
+{}
+
 //-----------------------------------------------------------------------------
 template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
@@ -52,9 +60,10 @@ DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, 
 DigitalSurfaceEmbedderWithNormalVectorEstimator
 ( const DigitalSurfaceEmbedder & aDSEmbedder,
   const NormalVectorEstimator & anEstimator )
-  : myDSEmbedder( aDSEmbedder ),
-    myEstimator( anEstimator )
+  : myDSEmbedder( &aDSEmbedder ),
+    myEstimator( &anEstimator )
 {}
+
 //-----------------------------------------------------------------------------
 template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
@@ -64,6 +73,20 @@ DigitalSurfaceEmbedderWithNormalVectorEstimator
   : myDSEmbedder( other.myDSEmbedder ),
     myEstimator( other.myEstimator )
 {}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::Self &
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+operator=
+( const Self & other )
+{
+  myDSEmbedder = other.myDSEmbedder;
+  myEstimator = other.myEstimator;
+  return *this;
+}
+
 //-----------------------------------------------------------------------------
 template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
@@ -71,7 +94,8 @@ const typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSu
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 surface() const
 {
-  return myDSEmbedder.surface();
+  ASSERT( this->isValid() );
+  return myDSEmbedder->surface();
 }
 
 //-----------------------------------------------------------------------------
@@ -81,8 +105,10 @@ typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceE
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 operator()( const SCell & scell ) const
 {
-  return myDSEmbedder( scell );
+  ASSERT( this->isValid() );
+  return myDSEmbedder->operator()( scell );
 }
+
 //-----------------------------------------------------------------------------
 template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
@@ -90,7 +116,19 @@ typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceE
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 gradient( const SCell & scell ) const
 {
-  return myEstimator.eval( scell );
+  ASSERT( this->isValid() );
+  return myEstimator->eval( scell );
+}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::GradientMap
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+gradientMap() const
+{
+  ASSERT( this->isValid() );
+  return GradientMap( *this );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -119,9 +157,68 @@ bool
 DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
 isValid() const
 {
-  return ( myEstimator.isValid() ) && ( myDSEmbedder.isValid() );
+  return ( myEstimator != 0 ) && ( myDSEmbedder != 0 )
+    && ( myEstimator->isValid() ) && ( myDSEmbedder->isValid() );
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// class DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+~DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap()
+{}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap()
+  : myEmbedder( 0 )
+{}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+( const Embedder & embedder )
+  : myEmbedder( &embedder )
+{}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap
+( const Self & other )
+  : myEmbedder( other.myEmbedder )
+{}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::Self &
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+operator=
+( const Self & other )
+{
+  myEmbedder = other.myEmbedder;
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
+inline
+typename DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::Value
+DGtal::DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<TDigitalSurfaceEmbedder, TNormalVectorEstimator>::
+operator()( const Argument & arg ) const
+{
+  ASSERT( myEmbedder != 0 );
+  return myEmbedder->gradient( arg );
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
