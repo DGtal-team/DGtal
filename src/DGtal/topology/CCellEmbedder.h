@@ -85,7 +85,7 @@ It adds inner types to functor.
 
 ### Models
 
-- ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
+- CanonicCellEmbedder, ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
 
 ### Notes
 

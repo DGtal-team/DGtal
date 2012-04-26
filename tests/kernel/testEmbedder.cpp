@@ -46,6 +46,8 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
+#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -65,6 +67,7 @@ bool testEmbedder()
   unsigned int nb = 0;
 
   using Z3i::Point;
+  using Z3i::Vector;
   using Z3i::Domain;
   using Z3i::Space;
   using Z3i::KSpace;
@@ -90,6 +93,13 @@ bool testEmbedder()
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
+  typedef ConstantConvolutionKernel<Vector> Kernel;
+  typedef LocalConvolutionNormalVectorEstimator
+    < MyDigitalSurface, Kernel > MyEstimator;
+  typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
+    < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder2 > ));
+  BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyDSEmbedder2 > ));
 
   trace.beginBlock ( "Testing block ..." );
   MyEmbedder1 emb1;

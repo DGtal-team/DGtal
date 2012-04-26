@@ -55,7 +55,6 @@
 #include "DGtal/shapes/CanonicEmbedder.h"
 
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
-
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////

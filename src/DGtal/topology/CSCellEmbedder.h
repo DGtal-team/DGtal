@@ -85,6 +85,8 @@ It adds inner types to functor.
 
 ### Models
 
+- CanonicSCellEmbedder, CanonicDigitalSurfaceEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
+
 ### Notes
 
 @tparam T the type that should be a model of CSCellEmbedder.
