@@ -118,7 +118,7 @@ namespace DGtal
    * <p> Invariants###
    *
    * <p> Models###
-   * HyperRectDomain 
+   * HyperRectDomain, DigitalSetDomain 
    *
    * <p> Notes###
    *
