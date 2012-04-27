@@ -111,7 +111,7 @@ representations of irreducible fractions which are efficient for that
 kind of requests.
 
 Several representations have been implemented in the Arithmetic package. 
-Their interface are common (see dgtal_irrfrac_sec2_1) so that a user can 
+Their interface are common (see \ref dgtal_irrfrac_sec2_1) so that a user can 
 choose which representation suits him best.
 
 \subsection dgtal_irrfrac_sec2_1 Irreducible fraction concept
