@@ -248,6 +248,16 @@ xs
        @param b any integer.
        @return the gcd of \a a and \a b.
      */
+    static Integer staticGcd( IntegerParamType a, IntegerParamType b );
+
+    /**
+       Returns the greatest common divisor of \a a and \a b (\a a and \a b may be
+       either positive or negative).
+
+       @param a any integer.
+       @param b any integer.
+       @return the gcd of \a a and \a b.
+     */
     Integer gcd( IntegerParamType a, IntegerParamType b ) const;
 
     /**

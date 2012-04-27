@@ -329,11 +329,15 @@ void draw( DGtal::Board2D & board,
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    board.drawRectangle( NumberTraits<Coordinate>::castToDouble( (*it)[0] ) - 0.5,
+                         NumberTraits<Coordinate>::castToDouble( (*it)[1] ) + 0.5,
+                         1,
+                         1 );      
 }
 // DigitalSetBySTLSet
 
