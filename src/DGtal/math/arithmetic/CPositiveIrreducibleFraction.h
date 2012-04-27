@@ -82,14 +82,14 @@ except the last one. In this sense, a fraction is a sequence
 - \e Integer: the type for representing a numerator or a
   denominator. Must be a model of CInteger.
 
-- \e Size: the type for representing partial quotients, i.e. the
+- \e Quotient: the type for representing partial quotients, i.e. the
   integers that appear in the continued fractions of p/q, and for
   representing the depth of the fraction. Might be the same as Integer
   but may be also smaller, since quotients are generally much smaller
   than the convergent numerators and denominators. Must be a model of
   CSignedInteger since depths may be negative (1/0 is -1).
 
-- \e Value and \e value_type: the type \c std::pair<Size,Size>, useful
+- \e Value and \e value_type: the type \c std::pair<Quotient,Quotient>, useful
   to create back insertion sequence.
 
 - \e ConstIterator \and \e const_iterator: the type for visiting the quotients of the
@@ -100,9 +100,9 @@ except the last one. In this sense, a fraction is a sequence
  - \e x : object of type \e X, which is below some fraction written \f$[u_0, \ldots, u_k]\f$ as a continued fraction
  - \e x1, \e x2, \e y : other objects of type \e X
  - \e p, \e q : object of type \e Integer
- - \e m, \e n1, \e n2 : objects of type \e Size
- - \e quots : an object of type \c std::vector<Size>
- - \e pair : a object of \c std::pair<Size,Size>, here (m,k+1)  
+ - \e m, \e n1, \e n2 : objects of type \e Quotient
+ - \e quots : an object of type \c std::vector<Quotient>
+ - \e pair : a object of \c std::pair<Quotient,Quotient>, here (m,k+1)  
 
 ### Definitions
 
@@ -113,8 +113,8 @@ except the last one. In this sense, a fraction is a sequence
 | Constructor   | \c Fraction( \e p, \e q )|       | \e X        |     | creates the fraction p'/q', where p'=p/g, q'=q/g, g=gcd(p,q) | | o(\e p+\e q) |
 | numerator     | \e x.\c p()|                     | \e Integer  | ! \e x.\c null() | returns the numerator|     | O(1) |
 | denominator   | \e x.\c q()|                     | \e Integer  | ! \e x.\c null() | returns the denominator|   | O(1) |
-| quotient      | \e x.\c u()|                     | \e Size     | ! \e x.\c null() | returns the quotient \f$u_k\f$ | | O(1) |
-| depth         | \e x.\c k()|                     | \e Size     | ! \e x.\c null() | returns the depth \e k |   | O(1) |
+| quotient      | \e x.\c u()|                     | \e Quotient     | ! \e x.\c null() | returns the quotient \f$u_k\f$ | | O(1) |
+| depth         | \e x.\c k()|                     | \e Quotient     | ! \e x.\c null() | returns the depth \e k |   | O(1) |
 | null test     | \e x.\c null()|                  | \c bool     |                  | returns 'true' if the fraction is null 0/0 (default fraction) | | O(1) |
 | even parity   |\e x.\c even()|                   | \c bool     | ! \e x.\c null() | returns 'true' iff the fraction is even, i.e. \e k is even | | O(1) |
 | odd parity    |\e x.\c odd()|                    | \c bool     | ! \e x.\c null() | returns 'true' iff the fraction is odd, i.e. \e k is odd | | O(1) |
@@ -164,15 +164,15 @@ struct CPositiveIrreducibleFraction
     // ----------------------- Concept checks ------------------------------
 public:
   typedef typename T::Integer Integer;
-  typedef typename T::Size Size;
+  typedef typename T::Quotient Quotient;
   typedef typename T::value_type value_type;
   typedef typename T::Value Value;
   typedef typename T::ConstIterator ConstIterator;
   typedef typename T::const_iterator const_iterator;
 
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CSignedInteger< Size > ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Size,Size> >::value ));
+  BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
+  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
 
   BOOST_CONCEPT_USAGE( CPositiveIrreducibleFraction )
@@ -218,14 +218,14 @@ private:
   T myY; // do not require T to be default constructible.
   Integer myP;
   Integer myQ;
-  Size myU;
+  Quotient myU;
   bool myBool;
-  mutable Size myN1;
-  mutable Size myN2;
+  mutable Quotient myN1;
+  mutable Quotient myN2;
   mutable T myF1; 
   mutable T myF2; 
-  mutable std::vector<Size> myQuots; 
-  std::pair<Size,Size> myValue;
+  mutable std::vector<Quotient> myQuots; 
+  std::pair<Quotient,Quotient> myValue;
   ConstIterator myIterator;
   // ------------------------- Internals ------------------------------------
 private:

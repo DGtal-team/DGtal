@@ -46,8 +46,8 @@ int main( int argc, char** argv )
 
   //! [approximation-types]
   typedef DGtal::int64_t Integer;
-  typedef DGtal::int64_t Size;
-  typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
+  typedef DGtal::int64_t Quotient;
+  typedef LighterSternBrocot<Integer, Quotient, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
   typedef Fraction::Value Value; // the value of the iterator, a pair (quotient,depth).
@@ -61,11 +61,11 @@ int main( int argc, char** argv )
   ASSERT( number >= 0.0 );
   Fraction f;
   OutputIterator itback = std::back_inserter( f );
-  Size i = 0;
+  Quotient i = 0;
   while ( true )
     {
       long double int_part = floorl( number );
-      Size u = NumberTraits<long double>::castToInt64_t( int_part );
+      Quotient u = NumberTraits<long double>::castToInt64_t( int_part );
       *itback++ = std::make_pair( u, i++ );
       long double approx =
         ( (long double) NumberTraits<Integer>::castToDouble( f.p() ) )

@@ -192,7 +192,7 @@ typename DGtal::StandardDSLQ0<TFraction>::Point
 DGtal::StandardDSLQ0<TFraction>::
 L() const
 {
-  return Point( U() + pattern().L( NumberTraits<Size>::ZERO ) );
+  return Point( U() + pattern().L( NumberTraits<Quotient>::ZERO ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TFraction>
@@ -343,7 +343,7 @@ reversedSmartDSS( Point U1, Point U2,
     }
   // [A,B] is included in one patterns of this DSL.
   Pattern<Fraction> subpattern;
-  Size nb;
+  Quotient nb;
   Vector2I startPos;
   Integer posA = ( A - U1 ).norm1();
   Integer posB = ( B - U1 ).norm1();
@@ -400,7 +400,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
   Pattern<Fraction> patLU = pattern();
   Pattern<Fraction> patRU = pattern();
   Pattern<Fraction> patL = pattern();
-  Size nb;
+  Quotient nb;
   Vector2I startPos;
   #ifdef TRACE_DSL
   std::cerr << "[DSSWithinTwoPatterns] " << (*this) 
@@ -409,7 +409,7 @@ DSSWithinTwoPatterns( Point U1, Point U2,
             << " B=" << B << " U2=" << U2 
             << " L1=" << L1 << std::endl;
   #endif
-  while( true ) //for ( Size i = NumberTraits<Size>::ZERO; i <= pattern().slope().k(); ++i )
+  while( true ) //for ( Quotient i = NumberTraits<Quotient>::ZERO; i <= pattern().slope().k(); ++i )
     {
       if ( ! readyLU )
         {
@@ -511,7 +511,7 @@ smartDSS( const Point & A, const Point & B ) const
   Pattern<Fraction> p( 0, 1 );
   bool ulu = true;
   bool lul = true;
-  Size delta = 0;
+  Quotient delta = 0;
   Point2I _U = A;
   Point2I _L = A;
   Point2I _Up = _U + Point2I(0,1);
@@ -550,7 +550,7 @@ smartDSS( const Point & A, const Point & B ) const
       else if ( _Up[ 1 ] <= B[ 1 ] && this->operator()( _Up ) )
 	{
 	  Fraction np = p.slope().right();
-	  for ( Size i = 1; i < delta; ++i ) 
+	  for ( Quotient i = 1; i < delta; ++i ) 
 	    np = np.left();
 	  _L = _Lp + p.bezout() - p.v();
 	  if ( ! lul ) _L -= p.v();
@@ -563,7 +563,7 @@ smartDSS( const Point & A, const Point & B ) const
       else if ( _Lp[ 0 ] <= B[ 0 ] && this->operator()( _Lp ) )
 	{
 	  Fraction np = p.slope().left();
-	  for ( Size i = 1; i < delta; ++i ) 
+	  for ( Quotient i = 1; i < delta; ++i ) 
 	    np = np.right();
 	  _U = p.slope() == f10 ? _Up - Point2I( 0,1 ) : _Up - p.bezout();
 	  if ( ! ulu ) _U -= p.v();
