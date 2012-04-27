@@ -46,6 +46,7 @@
 #include "DGtal/base/CBackInsertable.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,12 +79,15 @@ except the last one. In this sense, a fraction is a sequence
 
 ### Associated types :
 
-- \e Integer: the type for representing a numerator or a denominator.
+- \e Integer: the type for representing a numerator or a
+  denominator. Must be a model of CInteger.
 
-- \e Size: the type for representing partial quotients, i.e. the integers
-  that appear in the continued fractions of p/q. Might be the same as
-  Integer but may be also smaller, since quotients are generally much
-  smaller than the convergent numerators and denominators.
+- \e Size: the type for representing partial quotients, i.e. the
+  integers that appear in the continued fractions of p/q, and for
+  representing the depth of the fraction. Might be the same as Integer
+  but may be also smaller, since quotients are generally much smaller
+  than the convergent numerators and denominators. Must be a model of
+  CSignedInteger since depths may be negative (1/0 is -1).
 
 - \e Value and \e value_type: the type \c std::pair<Size,Size>, useful
   to create back insertion sequence.
@@ -167,7 +171,7 @@ public:
   typedef typename T::const_iterator const_iterator;
 
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+  BOOST_CONCEPT_ASSERT(( CSignedInteger< Size > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Size,Size> >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
 
