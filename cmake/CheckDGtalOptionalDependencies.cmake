@@ -142,17 +142,16 @@ IF(WITH_ITK)
 	${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
 	ITKCPP11BUG
 	OUTPUT_VARIABLE OUTPUT )
-      
       if ( CPP11_ITK )
 	message(STATUS "ITK accepts [c++11]" )
-    else ( CPP11_ITK )
-      message(STATUS "ITK does not accept [c++11]" )
-      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-	MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).") 
-      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-    endif ( CPP11m_ITK )
+      else ( CPP11_ITK )
+	message(STATUS "ITK does not accept [c++11]" )
+	if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+	  MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).") 
+	endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+      endif ( CPP11_ITK )
     ENDIF(WITH_C11)
-
+    
   ELSE(ITK_FOUND)
     MESSAGE(FATAL_ERROR "ITK not found. Check the cmake variables associated to this package or disable it.")
   ENDIF(ITK_FOUND)
