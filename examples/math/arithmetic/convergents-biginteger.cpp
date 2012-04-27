@@ -44,8 +44,8 @@ int main( int argc, char** argv )
 
   //! [convergents-biginteger-types]
   typedef BigInteger Integer;
-  typedef DGtal::int64_t Size;
-  typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
+  typedef DGtal::int64_t Quotient;
+  typedef LighterSternBrocot<Integer, Quotient, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
   typedef Fraction::Value Value; // the value of the iterator, a pair (quotient,depth).

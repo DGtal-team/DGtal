@@ -48,9 +48,9 @@ using namespace std;
 **/
 namespace DGtal
 {
-  template <typename TInteger, typename TSize>
-  DGtal::SternBrocot<TInteger, TSize>*
-  DGtal::SternBrocot<TInteger, TSize>::singleton = 0;
+  template <typename TInteger, typename TQuotient>
+  DGtal::SternBrocot<TInteger, TQuotient>*
+  DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
 
   template <>
   SternBrocot<DGtal::int32_t,DGtal::int32_t>*
@@ -80,13 +80,13 @@ namespace DGtal
 #endif
 
 //   template<>
-//   DGtal::SternBrocot<int32_t,int32_t>::Size
+//   DGtal::SternBrocot<int32_t,int32_t>::Quotient
 //   DGtal::SternBrocot<int32_t,int32_t>::nbFractions = 0;
 //   template<>
-//   DGtal::SternBrocot<int64_t,int32_t>::Size
+//   DGtal::SternBrocot<int64_t,int32_t>::Quotient
 //   DGtal::SternBrocot<int64_t,int32_t>::nbFractions = 0;
 //   template<>
-//   DGtal::SternBrocot<int64_t,int64_t>::Size
+//   DGtal::SternBrocot<int64_t,int64_t>::Quotient
 //   DGtal::SternBrocot<int64_t,int64_t>::nbFractions = 0;
 
 //   // Constant definitions in SternBrocot specializations.
@@ -190,13 +190,13 @@ namespace DGtal
 
 // #ifdef WITH_BIGINTEGER
 //   template<>
-//   DGtal::SternBrocot<BigInteger,int64_t>::Size
+//   DGtal::SternBrocot<BigInteger,int64_t>::Quotient
 //   DGtal::SternBrocot<BigInteger,int64_t>::nbFractions = 0;
 //   template<>
-//   DGtal::SternBrocot<BigInteger,int32_t>::Size
+//   DGtal::SternBrocot<BigInteger,int32_t>::Quotient
 //   DGtal::SternBrocot<BigInteger,int32_t>::nbFractions = 0;
 //   template<>
-//   DGtal::SternBrocot<BigInteger,BigInteger>::Size
+//   DGtal::SternBrocot<BigInteger,BigInteger>::Quotient
 //   DGtal::SternBrocot<BigInteger,BigInteger>::nbFractions = 0;
 
 //   // Constant definitions in SternBrocot specializations.

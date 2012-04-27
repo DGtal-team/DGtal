@@ -48,20 +48,20 @@ using namespace DGtal;
 // Functions for testing class LightSternBrocot.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename Size>
+template <typename Quotient>
 bool
-equalCFrac( const std::vector<Size> & c1, const std::vector<Size> & c2 )
+equalCFrac( const std::vector<Quotient> & c1, const std::vector<Quotient> & c2 )
 {
   unsigned int s = c1.size() < c2.size() ? c1.size() : c2.size();
-  if ( ( s != c1.size() ) && ( c1.back() != NumberTraits<Size>::ONE ) )
+  if ( ( s != c1.size() ) && ( c1.back() != NumberTraits<Quotient>::ONE ) )
     return false;
-  if ( ( s != c2.size() ) && ( c2.back() != NumberTraits<Size>::ONE ) )
+  if ( ( s != c2.size() ) && ( c2.back() != NumberTraits<Quotient>::ONE ) )
     return false;
   for ( unsigned int i = 0; i < s; ++i )
     {
-      Size q1 = c1[ i ];
+      Quotient q1 = c1[ i ];
       if ( ( s != c1.size() ) && ( i == s - 1 ) ) q1 += c1.back();
-      Size q2 = c2[ i ];
+      Quotient q2 = c2[ i ];
       if ( ( s != c2.size() ) && ( i == s - 1 ) ) q2 += c2.back();
       if ( q1 != q2 ) return false;
     }
@@ -72,7 +72,7 @@ template <typename SB>
 bool testReducedFraction()
 {
   typedef typename SB::Integer Integer;
-  typedef typename SB::Size Size;
+  typedef typename SB::Quotient Quotient;
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -83,15 +83,15 @@ bool testReducedFraction()
   Integer g = ic.gcd( p, q );
   p /= g;
   q /= g;
-  IntegerComputer<Size> ics;
-  Size sp = NumberTraits<Integer>::castToInt64_t( p );
-  Size sq = NumberTraits<Integer>::castToInt64_t( q );
-  std::vector<Size> cf1;
+  IntegerComputer<Quotient> ics;
+  Quotient sp = NumberTraits<Integer>::castToInt64_t( p );
+  Quotient sq = NumberTraits<Integer>::castToInt64_t( q );
+  std::vector<Quotient> cf1;
   ics.getCFrac( cf1, sp, sq );
   Fraction f1 = SB::fraction( p, q );
-  std::vector<Size> cf1_bis;
+  std::vector<Quotient> cf1_bis;
   f1.getCFrac( cf1_bis );
-  bool ok = equalCFrac<Size>( cf1, cf1_bis );
+  bool ok = equalCFrac<Quotient>( cf1, cf1_bis );
   trace.info() << "  - p / q = " << p << " / " << q << std::endl;
   trace.info() << "  - f1 = ";
   SB::display( trace.info(), f1 );
@@ -103,11 +103,11 @@ bool testReducedFraction()
   unsigned int depth = cf1.size();
   for ( unsigned int k = 1; k < depth; ++k )
     {
-      std::vector<Size> cf1_red;
+      std::vector<Quotient> cf1_red;
       Fraction fr = f1.reduced( k );
       fr.getCFrac( cf1_red );
       cf1.resize( depth - k );
-      ok = equalCFrac<Size>( cf1, cf1_red );
+      ok = equalCFrac<Quotient>( cf1, cf1_red );
       ++nb, nbok += ok ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") " 
                    << "reduced(" << k << ")=";
@@ -154,7 +154,7 @@ template <typename SB>
 bool testPattern()
 {
   typedef typename SB::Integer Integer;
-  typedef typename SB::Size Size;
+  typedef typename SB::Quotient Quotient;
   typedef typename SB::Fraction Fraction;
   typedef Pattern<Fraction> MyPattern;
   typedef typename MyPattern::Vector2I Vector2I;
@@ -170,7 +170,7 @@ bool testPattern()
   MyPattern pat_odd( 5, 12 );
   trace.info() << "ODD  " << pat_odd << " " << pat_odd.rE() << endl;
   MyPattern sp;
-  Size np;
+  Quotient np;
   Vector2I start;
 
   // Left Subpatterns
@@ -562,7 +562,7 @@ bool testStandardDSLQ0()
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Size Size;
+  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::Point2I Point2I;
   typedef typename DSL::Vector2I Vector2I;
@@ -621,7 +621,7 @@ bool checkSubStandardDSLQ0( const DSL & D,
 {
   typedef typename DSL::Fraction Fraction;
   typedef typename DSL::Integer Integer;
-  typedef typename DSL::Size Size;
+  typedef typename DSL::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
@@ -661,7 +661,7 @@ bool testSubStandardDSLQ0()
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Size Size;
+  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
