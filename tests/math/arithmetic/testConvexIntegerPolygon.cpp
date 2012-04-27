@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,9 @@ bool testConvexIntegerPolygon()
   typedef ConvexIntegerPolygon<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
+  typedef typename CIP::HalfSpace HalfSpace;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+
   CIP cip;
   cip.push_back( Point( 0, 0 ) );
   cip.push_back( Point( 5, 0 ) );
@@ -78,7 +82,15 @@ bool testConvexIntegerPolygon()
   trace.beginBlock ( "Output ConvexIntegerPolygon in <cip.eps>" );
   Board2D board;
   board << SetMode( d.className(), "Grid" ) << d;
+  DigitalSet aSet( d );
+  HalfSpace h = cip.halfSpace( ++cip.begin() );
+  Shapes<Domain>::makeSetFromPointPredicate( aSet, h );
+  Color col1( 100, 100, 255 );
+  Color col2( 180, 180, 255 );
+  board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
+        << aSet;
   board << SetMode( cip.className(), "Transparent" ) << cip;
+
   board.saveEPS( "cip.eps" );
   board.saveSVG( "cip.svg" );
   trace.endBlock();

@@ -63,7 +63,7 @@ namespace DGtal
      \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
-     GaussDigitizer is a model of CDigitalEucldieanShape and
+     GaussDigitizer is a model of CDigitalEuclideanShape and
      CDigitalBoundedShape. It is thus a model of CPointPredicate.
 
      @tparam TSpace the type of digital Space where the digitized

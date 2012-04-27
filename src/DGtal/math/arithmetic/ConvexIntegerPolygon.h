@@ -47,6 +47,7 @@
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/math/arithmetic/IntegerComputer.h"
+#include "DGtal/math/arithmetic/ClosedIntegerHalfPlane.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -93,6 +94,7 @@ namespace DGtal
     typedef typename Space::Vector Vector;
     typedef IntegerComputer<Integer> MyIntegerComputer;
     typedef HyperRectDomain< Space > Domain; 
+    typedef ClosedIntegerHalfPlane< Space > HalfSpace;
 
     typedef typename Base::value_type Value;
     typedef typename Base::iterator Iterator;
@@ -126,18 +128,6 @@ namespace DGtal
     using Base::rend;
 
   public:
-    /**
-       A half-space specified by a vector N and a constant c. The
-       half-space is the set \f$ \{ P \in Z^2, N.P \le c \} \f$.
-    */
-    struct HalfSpace {
-      Vector N; //<! The normal to the half-space.
-      Integer c; //<! The uppermost value N.(x,y) that is in the half-space.
-      inline HalfSpace( const Vector & aN, const Integer & aC )
-        : N( aN ), c( aC )
-      {}
-    };
-
     // ----------------------- Standard services ------------------------------
   public:
 

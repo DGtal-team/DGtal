@@ -243,6 +243,26 @@ template <typename TInteger>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
+staticGcd( IntegerParamType a, IntegerParamType b )
+{
+  Integer _m_a = abs( a );
+  Integer _m_b = abs( b );
+  Integer _m_a0 = max( _m_a, _m_b );
+  Integer _m_a1 = min( _m_a, _m_b );
+  Integer _m_r;
+  while ( isNotZero( _m_a1 ) )
+  {
+    _m_r = _m_a0 % _m_a1;
+    _m_a0 = _m_a1;
+    _m_a1 = _m_r;
+  }
+  return _m_a0;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
 gcd( IntegerParamType a, IntegerParamType b ) const
 {
   _m_a = abs( a );
