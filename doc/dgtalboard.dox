@@ -500,7 +500,7 @@ included in DGtal. Its classes are grouped into the namespace Board.
  */
 
   /**
-\example dgtalBoard2D-1-points.cpp
+\example io/boards/dgtalBoard2D-1-points.cpp
   
 This simple example shows the basic usage of a Board2D to
 export graphical representations of dgtal objects (here, a
@@ -508,7 +508,7 @@ HyperRectDomain and three points exported as SVG and EPS).
  */
 
   /**
-\example dgtalBoard2D-2-sets.cpp
+\example io/boards/dgtalBoard2D-2-sets.cpp
   
 This simple example shows also some basic usage of a Board2D
 to export graphical representations of dgtal objects (here, a
@@ -519,7 +519,7 @@ with neighborhood structure (a graph).
  */
 
   /**
-\example dgtalBoard2D-3-custom-classes.cpp
+\example io/boards/dgtalBoard2D-3-custom-classes.cpp
   
 This example shows you how to modify the style of each drawable
 elements. You just have to create an instance of CustomColors,
@@ -529,7 +529,7 @@ outputed in the Board2D stream.
  */
 
   /**
-\example dgtalBoard2D-3-custom-points.cpp
+\example io/boards/dgtalBoard2D-3-custom-points.cpp
   
 This example shows you how to modify the style of each drawable
 elements. It is a matter of creating a custom style class which
@@ -540,7 +540,7 @@ stream.
  */
 
   /**
-\example dgtalBoard2D-4-colormaps.cpp
+\example io/boards/dgtalBoard2D-4-colormaps.cpp
   
 This example shows you how to use colormaps with Board2D
 streams. Note how we redefine the style of a specific mode for
@@ -548,7 +548,7 @@ the drawable element.
  */
 
   /**
-\example dgtalBoard2D-5-greedy-dss.cpp
+\example io/boards/dgtalBoard2D-5-greedy-dss.cpp
   
 Another example where the specific mode style of the drawable
 element ArithmeticDSS is redefined.

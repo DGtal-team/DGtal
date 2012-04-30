@@ -26,8 +26,8 @@ Table of contents:
 2. \ref tutoImageRegionDT
 3. \ref tutoImageGridCurveEstimator
 4. \ref tutoShapeGridCurveEstimator
-5. \ref freemanChainFromImage
-6. \ref Tools3dVolViewer
+5. \ref tutoImageGridCurveExtraction
+6. \ref tutoImageGridVolume3dVolViewer
 
 */
 
