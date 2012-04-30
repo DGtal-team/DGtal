@@ -44,8 +44,14 @@
 #include <vector>
 #include <algorithm>
 
+#ifdef APPLE
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
+
 
 #include <QGLViewer/qglviewer.h>
 #include <QGLWidget>
