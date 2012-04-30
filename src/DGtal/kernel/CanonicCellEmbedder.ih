@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file CanonicEmbedder.ih
+ * @file CanonicCellEmbedder.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/28
  *
- * Implementation of inline methods defined in CanonicEmbedder.h
+ * Implementation of inline methods defined in CanonicCellEmbedder.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,79 +41,94 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::floor( const RealPoint & p ) const
+DGtal::CanonicCellEmbedder<TKSpace>::
+~CanonicCellEmbedder()
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::CanonicCellEmbedder<TKSpace>::
+CanonicCellEmbedder()
+  : myKSpace( 0 )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::CanonicCellEmbedder<TKSpace>::
+CanonicCellEmbedder( const KSpace & aKSpace )
+  : myKSpace( &aKSpace )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+DGtal::CanonicCellEmbedder<TKSpace>::
+CanonicCellEmbedder( const Self & other )
+  : myKSpace( other.myKSpace )
+{}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::CanonicCellEmbedder<TKSpace>::Self &
+DGtal::CanonicCellEmbedder<TKSpace>::
+operator=( const Self & other )
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) floor( p[ i ] );
-  return dp;
+  myKSpace = other.myKSpace;
+  return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::ceil( const RealPoint & p ) const
+const typename DGtal::CanonicCellEmbedder<TKSpace>::KSpace &
+DGtal::CanonicCellEmbedder<TKSpace>::space() const
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) ceil( p[ i ] );
-  return dp;
+  ASSERT( this->isValid() );
+  return *myKSpace;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::round( const RealPoint & p ) const
+typename DGtal::CanonicCellEmbedder<TKSpace>::RealPoint
+DGtal::CanonicCellEmbedder<TKSpace>::embed( const Cell & cell ) const
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) round( p[ i ] );
-  return dp;
+  return this->operator()( cell );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::RealPoint
-DGtal::CanonicEmbedder<TSpace>::embed( const Point & dp ) const
+typename DGtal::CanonicCellEmbedder<TKSpace>::RealPoint
+DGtal::CanonicCellEmbedder<TKSpace>::operator()( const Cell & cell ) const
 {
-  return this->operator()( dp );
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace>
-inline
-typename DGtal::CanonicEmbedder<TSpace>::RealPoint
-DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
-{
+  ASSERT( this->isValid() );
+  Point dp = myKSpace->uKCoords( cell );
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
-    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] );
+    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2;
   return p;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TKSpace>
 inline
 bool
-DGtal::CanonicEmbedder<TSpace>::isValid( ) const
+DGtal::CanonicCellEmbedder<TKSpace>::isValid( ) const
 {
-  return true;
+  return myKSpace != 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CanonicEmbedder'.
+ * Overloads 'operator<<' for displaying objects of class 'CanonicCellEmbedder'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CanonicEmbedder' to write.
+ * @param object the object of class 'CanonicCellEmbedder' to write.
  * @return the output stream after the writing.
  */
-template <typename TSpace>
+template <typename TKSpace>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const CanonicEmbedder<TSpace> & object )
+                    const CanonicCellEmbedder<TKSpace> & object )
 {
     object.selfDisplay ( out );
     return out;

@@ -64,8 +64,9 @@ It adds inner types to functor.
 ### Associated types :
 - \e KSpace: the cellular grid space
 - \e SCell: same as KSpace::SCell
+- \e RealPoint: the type of Euclidean point
 - \e Argument: type of the argument, same as KSpace::SCell
-- \e Value: type of value, same as Space::RealPoint
+- \e Value: type of value, same as RealPoint
 
 ### Notation
  - \e X : A type that is a model of CSCellEmbedder
@@ -83,6 +84,8 @@ It adds inner types to functor.
 ### Invariants
 
 ### Models
+
+- CanonicSCellEmbedder, CanonicDigitalSurfaceEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
 
 ### Notes
 
@@ -102,7 +105,6 @@ public:
   BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, typename KSpace::SCell >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< SCell, Argument >::value ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, typename KSpace::RealPoint >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< RealPoint, Value >::value ));
   BOOST_CONCEPT_USAGE( CSCellEmbedder )
   {
