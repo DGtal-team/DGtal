@@ -79,7 +79,7 @@ eval ( const ConstIterator& itb,
 {
     for ( ConstIterator it = itb; it != ite; ++it )
     {
-        Quantity q;
+      Quantity q = eval( *it );
         *result++ = q;
     }
 
