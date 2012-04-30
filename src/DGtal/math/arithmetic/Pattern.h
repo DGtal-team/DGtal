@@ -83,9 +83,9 @@ namespace DGtal
 
     typedef Pattern<TFraction> Self;
     typedef typename Fraction::Integer Integer;
-    typedef typename Fraction::Size Size;
+    typedef typename Fraction::Quotient Quotient;
     
-    // BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    // BOOST_CONCEPT_ASSERT(( CInteger< Quotient > ));
 
     // ----------------------- associated types ------------------------------
   public:
@@ -148,19 +148,19 @@ namespace DGtal
 
     /// @return the position of the k-th upper leaning point, @param k
     /// its index ( posU( 0 ) == 0 ).
-    Integer posU( Size k ) const;
+    Integer posU( Quotient k ) const;
 
     /// @return the position of the k-th lower leaning point, @param k
     /// its index ( posU( 0 ) <= posL( 0 ) < posU( 1 ) ).
-    Integer posL( Size k ) const;
+    Integer posL( Quotient k ) const;
 
     /// @return the coordinates of the k-th upper leaning point, @param k
     /// its index ( U( 0 ) == (0,0) ).
-    Point2I U( Size k ) const;
+    Point2I U( Quotient k ) const;
 
     /// @return the coordinates of the k-th lower leaning point, @param k
     /// its index ( L( 0 ) is between U( 0 ) and U( 1 ) ).
-    Point2I L( Size k ) const;
+    Point2I L( Quotient k ) const;
 
     /// @return the Bezout vector for the pattern, such that bezout()
     /// is oriented in the first quadrant, slightly to the left of the
@@ -202,7 +202,7 @@ namespace DGtal
     */
     bool
     getSmallestCoveringSubpattern( Pattern & subpattern,
-                                   Size & nb,
+                                   Quotient & nb,
                                    Vector2I & startPos,
                                    Integer posA, Integer posB,
                                    bool reversed = false ) const;
@@ -230,7 +230,7 @@ namespace DGtal
     */
     bool
     getGreatestIncludedSubpattern( Pattern & subpattern,
-                                   Size & nb,
+                                   Quotient & nb,
                                    Vector2I & startPos,
                                    Integer posA, Integer posB,
                                    bool reversed = false ) const;

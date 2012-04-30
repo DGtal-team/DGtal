@@ -42,8 +42,8 @@ int main( int argc, char** argv )
 
   //! [fraction-types]
   typedef DGtal::int64_t Integer;
-  typedef DGtal::int64_t Size;
-  typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
+  typedef DGtal::int64_t Quotient;
+  typedef LighterSternBrocot<Integer, Quotient, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Fraction::ConstIterator ConstIterator; // the iterator type for visiting quotients
   typedef Fraction::Value Value; // the value of the iterator, a pair (quotient,depth).
@@ -53,9 +53,9 @@ int main( int argc, char** argv )
   //! [fraction-from-quotients]
   Fraction f;
   OutputIterator itback = std::back_inserter( f );
-  for ( Size i = 1; i < argc; ++i)
+  for ( Quotient i = 1; i < argc; ++i)
     {
-      Size u = atoll( argv[ i ] );
+      Quotient u = atoll( argv[ i ] );
       *itback++ = std::make_pair( u, i-1 );
     }
   std::cout << "z = " << f.p() << " / " << f.q() << std::endl;
