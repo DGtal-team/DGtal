@@ -46,7 +46,7 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ bool testEmbedder()
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
-  typedef ConstantConvolutionKernel<Vector> Kernel;
+  typedef ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
   typedef LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface, Kernel > MyEstimator;
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
@@ -108,18 +108,18 @@ bool testEmbedder()
   MyCellEmbedder3 cemb3( K );
   MySCellEmbedder1 scemb1( K );
   Domain domain( Point( 0, 0, 0 ), Point( 10, 10, 10 ) );
-  K.init( Point( 0, 0, 0 ), Point( 10, 10, 10 ), true ); 
+  K.init( Point( 0, 0, 0 ), Point( 10, 10, 10 ), true );
   DigitalSet dset( domain );
   //dset.insert( Point( 3,3,2) );
   DigitalSurfaceContainer dsc( K, dset );
   MyDigitalSurface ds( dsc );
   MyDSEmbedder1 dsemb1( ds );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
