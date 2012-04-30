@@ -52,7 +52,7 @@
 #include <QtGui/qapplication.h>
 
 #include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -68,130 +68,130 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
-bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
+bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing convolution neighborhood ..." );
-  
-  QApplication application(argc,argv);
-  Viewer3D viewer;
-  
-  std::string filename = testPath + "samples/cat10.vol";
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
 
-  typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  Image image = VolReader<Image>::importVol(filename);
-  trace.info()<<image<<std::endl;
-  DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
-                                          0,256);
- 
-  KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
-                           image.domain().upperBound(), true );
-  if (!space_ok)
+    trace.beginBlock ( "Testing convolution neighborhood ..." );
+
+    QApplication application ( argc,argv );
+    Viewer3D viewer;
+
+    std::string filename = testPath + "samples/cat10.vol";
+
+    typedef ImageSelector < Z3i::Domain, int>::Type Image;
+    Image image = VolReader<Image>::importVol ( filename );
+    trace.info() <<image<<std::endl;
+    DigitalSet set3d ( image.domain() );
+    SetPredicate<DigitalSet> set3dPredicate ( set3d );
+    SetFromImage<DigitalSet>::append<Image> ( set3d, image,
+            0,256 );
+
+    KSpace ks;
+    bool space_ok = ks.init ( image.domain().lowerBound(),
+                              image.domain().upperBound(), true );
+    if ( !space_ok )
     {
-      trace.error() << "Error in the Khamisky space construction."<<std::endl;
-      return 2;
+        trace.error() << "Error in the Khamisky space construction."<<std::endl;
+        return true; //2; (return a bool !!!)
     }
-  trace.endBlock();
-  typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
-  MySurfelAdjacency surfAdj( true ); // interior in all directions.
-  
-  trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
+    trace.endBlock();
+    typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
+    MySurfelAdjacency surfAdj ( true ); // interior in all directions.
+
+    trace.beginBlock ( "Set up digital surface." );
+    typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> >
     MyDigitalSurfaceContainer;
-  typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
-  SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
-  MyDigitalSurfaceContainer* ptrSurfContainer = 
-    new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
-  MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
- 
-  MyDigitalSurface::ConstIterator it = digSurf.begin();
+    typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
+    SCell bel = Surfaces<KSpace>::findABel ( ks, set3dPredicate, 100000 );
+    MyDigitalSurfaceContainer* ptrSurfContainer =
+        new MyDigitalSurfaceContainer ( ks, set3dPredicate, surfAdj, bel );
+    MyDigitalSurface digSurf ( ptrSurfContainer ); // acquired
+
+    MyDigitalSurface::ConstIterator it = digSurf.begin();
 
 
-  //Convolution kernel
-  ConstantConvolutionKernel<Vector> kernel;
-  
-  //Estimator definition
-  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface, 
-						ConstantConvolutionKernel<Vector> > MyEstimator;
-  MyEstimator myNormalEstimator(digSurf, kernel);
-  
-  myNormalEstimator.init(1.0, 5);
-  
-  MyEstimator::Quantity res = myNormalEstimator.eval(it);
-  trace.info() << "Normal vector at begin() : "<< res << std::endl;
+    //Convolution kernel
+    ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
 
-  viewer.show(); 
- 
-  for(MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
-      itbis!=itend; ++itbis)
+    //Estimator definition
+    typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
+            ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
+    MyEstimator myNormalEstimator ( digSurf, kernel );
+
+    myNormalEstimator.init ( 1.0, 5 );
+
+    MyEstimator::Quantity res = myNormalEstimator.eval ( it );
+    trace.info() << "Normal vector at begin() : "<< res << std::endl;
+
+    viewer.show();
+
+    for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
+            itbis!=itend; ++itbis )
     {
-      viewer << ks.unsigns(*itbis);
-   
-      Point center = ks.sCoords(*itbis);
-      MyEstimator::Quantity normal = myNormalEstimator.eval(itbis);
-      viewer.addLine(center[0],center[1],center[2],
-		     center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
-		     DGtal::Color(200,20,20), 1.0);
-    }
-  viewer<< Viewer3D::updateDisplay;
-  
-  //Convolution kernel
-  GaussianConvolutionKernel<Vector> Gkernel(14.0);
-  
-  //Estimator definition
-  typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface, 
-						GaussianConvolutionKernel<Vector> > MyEstimatorGaussian;
-  MyEstimatorGaussian myNormalEstimatorG(digSurf, Gkernel);
-  
-  myNormalEstimatorG.init(1.0, 15);
-  
-  MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval(it);
-  trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+        viewer << ks.unsigns ( *itbis );
 
-  viewer<< CustomColors3D(Color(200, 0, 0),Color(200, 0,0));
-  for(MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
-      itbis!=itend; ++itbis)
+        Point center = ks.sCoords ( *itbis );
+        MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
+        viewer.addLine ( center[0],center[1],center[2],
+                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
+                         DGtal::Color ( 200,20,20 ), 1.0 );
+    }
+    viewer<< Viewer3D::updateDisplay;
+
+    //Convolution kernel
+    GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
+
+    //Estimator definition
+    typedef LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
+            GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
+    MyEstimatorGaussian myNormalEstimatorG ( digSurf, Gkernel );
+
+    myNormalEstimatorG.init ( 1.0, 15 );
+
+    MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval ( it );
+    trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+
+    viewer<< CustomColors3D ( Color ( 200, 0, 0 ),Color ( 200, 0,0 ) );
+    for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
+            itbis!=itend; ++itbis )
     {
-      viewer << ks.unsigns(*itbis);
-   
-      Point center = ks.sCoords(*itbis);
-      MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval(itbis);
-      viewer.addLine(center[0],center[1],center[2],
-		     center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2], 
-		     DGtal::Color(20,200,20), 1.0);
-    }
-  viewer<< Viewer3D::updateDisplay;
-  
+        viewer << ks.unsigns ( *itbis );
 
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
-  
-  return application.exec();
+        Point center = ks.sCoords ( *itbis );
+        MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
+        viewer.addLine ( center[0],center[1],center[2],
+                         center[0]-3*normal[0],center[1]-3*normal[1],center[2]-3*normal[2],
+                         DGtal::Color ( 20,200,20 ), 1.0 );
+    }
+    viewer<< Viewer3D::updateDisplay;
+
+
+    nbok += true ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "true == true" << std::endl;
+    trace.endBlock();
+
+    return application.exec();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main ( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class LocalConvolutionNormalVectorEstimator" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+    trace.beginBlock ( "Testing class LocalConvolutionNormalVectorEstimator" );
+    trace.info() << "Args:";
+    for ( int i = 0; i < argc; ++i )
+        trace.info() << " " << argv[ i ];
+    trace.info() << endl;
 
-  bool res = testLocalConvolutionNormalVectorEstimator(argc,argv); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return true;
+    bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
+    trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+    trace.endBlock();
+    return true;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -34,13 +34,21 @@
 #include "DGtal/kernel/CPointEmbedder.h"
 #include "DGtal/kernel/CWithGradientMap.h"
 #include "DGtal/kernel/CanonicEmbedder.h"
+#include "DGtal/kernel/CanonicCellEmbedder.h"
+#include "DGtal/kernel/CanonicSCellEmbedder.h"
+#include "DGtal/kernel/CanonicDigitalSurfaceEmbedder.h"
 #include "DGtal/kernel/RegularPointEmbedder.h"
 #include "DGtal/topology/CCellEmbedder.h"
 #include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceEmbedder.h"
+#include "DGtal/topology/DigitalSetBoundary.h"
+#include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
+#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -58,8 +66,13 @@ bool testEmbedder()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
+  using Z3i::Point;
+  using Z3i::Vector;
+  using Z3i::Domain;
   using Z3i::Space;
   using Z3i::KSpace;
+  using Z3i::DigitalSet;
+
   typedef CanonicEmbedder<Space> MyEmbedder1;
   BOOST_CONCEPT_ASSERT(( CPointEmbedder< MyEmbedder1 > ));
   typedef RegularPointEmbedder<Space> MyEmbedder2;
@@ -72,14 +85,41 @@ bool testEmbedder()
     < KSpace, ImplicitShape, MyEmbedder2 > MyCellEmbedder2;
   BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder2 > ));
   BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyCellEmbedder2 > ));
+  typedef CanonicCellEmbedder<KSpace> MyCellEmbedder3;
+  BOOST_CONCEPT_ASSERT(( CCellEmbedder< MyCellEmbedder3 > ));
+  typedef CanonicSCellEmbedder<KSpace> MySCellEmbedder1;
+  BOOST_CONCEPT_ASSERT(( CSCellEmbedder< MySCellEmbedder1 > ));
+  typedef DigitalSetBoundary<KSpace, DigitalSet> DigitalSurfaceContainer;
+  typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
+  typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
+  typedef ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
+  typedef LocalConvolutionNormalVectorEstimator
+    < MyDigitalSurface, Kernel > MyEstimator;
+  typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
+    < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;
+  BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder2 > ));
+  BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyDSEmbedder2 > ));
 
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  MyEmbedder1 emb1;
+  MyEmbedder2 emb2;
+  KSpace K;
+  MyCellEmbedder3 cemb3( K );
+  MySCellEmbedder1 scemb1( K );
+  Domain domain( Point( 0, 0, 0 ), Point( 10, 10, 10 ) );
+  K.init( Point( 0, 0, 0 ), Point( 10, 10, 10 ), true );
+  DigitalSet dset( domain );
+  //dset.insert( Point( 3,3,2) );
+  DigitalSurfaceContainer dsc( K, dset );
+  MyDigitalSurface ds( dsc );
+  MyDSEmbedder1 dsemb1( ds );
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CSpace.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,6 +64,9 @@ namespace DGtal
   struct CanonicEmbedder
   {
   public:
+    typedef CanonicEmbedder<TSpace> Self;
+    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+
     typedef TSpace Space;
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;

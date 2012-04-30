@@ -17,89 +17,97 @@
 #pragma once
 
 /**
- * @file BasicConvolutionKernels.h
+ * @file BasicConvolutionWeights.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/06
  *
- * Header file for module BasicConvolutionKernels.cpp
+ * Header file for module BasicConvolutionWeightss.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(BasicConvolutionKernels_RECURSES)
-#error Recursive header files inclusion detected in BasicConvolutionKernels.h
-#else // defined(BasicConvolutionKernels_RECURSES)
+#if defined(BasicConvolutionWeights_RECURSES)
+#error Recursive header files inclusion detected in BasicConvolutionWeights.h
+#else // defined(BasicConvolutionWeights_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define BasicConvolutionKernels_RECURSES
+#define BasicConvolutionWeights_RECURSES
 
-#if !defined BasicConvolutionKernels_h
+#if !defined BasicConvolutionWeights_h
 /** Prevents repeated inclusion of headers. */
-#define BasicConvolutionKernels_h
+#define BasicConvolutionWeights_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+ #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ConstantConvolutionKernel
+  // template class ConstantConvolutionWeight
   /**
-   * Description of template class 'ConstantConvolutionKernel' <p>
+   * Description of template class 'ConstantConvolutionWeights' <p>
    * \brief Aim: implement a trivial constant convolution kernel which
    * returns 1 for each vector.
    *
-   *   @tparam TVector type for displacement vectors.
+   *   @tparam TVector type for displacement topological distances.
    */
-  template <typename TVector>
-  class ConstantConvolutionKernel
+  template <typename TDistance>
+  class ConstantConvolutionWeights
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
-    typedef TVector Vector;
+
+    typedef TDistance Distance;
 
     inline
-    double operator()(const Vector &/*aDisplacment*/) const
+    double operator()(const Distance &/*aDisplacment*/) const
     {
       return 1.0;
-    } 
+    }
   };
-  
+
   /////////////////////////////////////////////////////////////////////////////
-  // template class ConstantConvolutionKernel
+  // template class ConstantConvolutionWeight
   /**
-   * Description of template class 'GaussianConvolutionKernel' <p>
+   * Description of template class 'GaussianConvolutionWeights' <p>
    * \brief Aim: implement a Gaussian centered convolution kernel.
    *
-   *   @tparam TVector type for displacement vectors.
+   *   @tparam TDistance type for displacement topological distances.
    */
-  template <typename TVector>
-  class GaussianConvolutionKernel
+  template <typename TDistance>
+  class GaussianConvolutionWeights
   {
     // ----------------------- Standard services ------------------------------
   public:
-      
-    typedef TVector Vector;
-      
-    GaussianConvolutionKernel(const double sigma): mySigma(sigma)
-    {}
-      
-    inline
-    double operator()(const Vector &aDisplacment) const
+
+    typedef TDistance Distance;
+
+    GaussianConvolutionWeights(const double sigma): mySigma(sigma)
     {
-      return 1.0/(mySigma* sqrt(2.0*M_PI))*
-	exp(  -aDisplacment.norm()*aDisplacment.norm()/(2.0*mySigma));
-    } 
-     
+      myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
+      myCoef2 = 1.0/2.0*M_PI;
+    }
+
+    inline
+    double operator()(const Distance &aDisplacment) const
+    {
+      return myCoef*exp(-NumberTraits<Distance>::castToDouble(aDisplacment)*
+        NumberTraits<Distance>::castToDouble(aDisplacment)*myCoef2);
+    }
+
+     ///Internal Sigma value;
     double mySigma;
-    
-  }; 
+
+    ///Precomputed constant coefs.
+    double myCoef;
+    double myCoef2;
+  };
 
 
 
@@ -108,7 +116,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined BasicConvolutionKernels_h
+#endif // !defined BasicConvolutionWeights_h
 
-#undef BasicConvolutionKernels_RECURSES
-#endif // else defined(BasicConvolutionKernels_RECURSES)
+#undef BasicConvolutionWeights_RECURSES
+#endif // else defined(BasicConvolutionWeights_RECURSES)
