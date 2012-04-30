@@ -12,7 +12,7 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_C11 "With C++ compiler C11 (cpp0x) features." ON)
+OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." ON)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
