@@ -46,7 +46,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/CConvolutionKernel.h"
+#include "DGtal/geometry/surfaces/estimation/CConvolutionWeights.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -88,7 +88,7 @@ namespace DGtal
     typedef typename Surface::KSpace::Space::RealVector Quantity;
     typedef typename Surface::SCell SCell;
 
-    BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
+    BOOST_CONCEPT_ASSERT(( CConvolutionWeights<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -100,7 +100,7 @@ namespace DGtal
      */
     LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
                                           const KernelFunctor & aFunctor);
-    
+
     /**
      * Destructor.
      */
@@ -108,19 +108,19 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /// @return a reference to the associated digital surface.
     const Surface & surface() const;
-    
+
     /**
      * Initialisation.
      * @param h grid size (must be >0).
      * @param radius topological radius used to specify the size of
      * the convolution.
      */
-    void init(const double h, 
+    void init(const double h,
               const unsigned int radius);
-    
+
     /**
        @param scell any signed cell.
        @return the estimated quantity at cell \e scell.
@@ -131,25 +131,25 @@ namespace DGtal
      * @return the estimated quantity at *it
      */
     Quantity eval(const ConstIterator& it) const;
-    
+
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, 
-                        const ConstIterator& ite, 
-                        OutputIterator result) const; 
+    OutputIterator eval(const ConstIterator& itb,
+                        const ConstIterator& ite,
+                        OutputIterator result) const;
 
     /**
-       Writes on \e result the estimated quantity at all surfels of the digital surface.  
+       Writes on \e result the estimated quantity at all surfels of the digital surface.
        @param result any model of boost::OutputIterator on Quantity.
        @return the output iterator after the last write.
      */
     template <typename OutputIterator>
-    OutputIterator evalAll( OutputIterator result ) const; 
-    
-    
+    OutputIterator evalAll( OutputIterator result ) const;
+
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -161,33 +161,33 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    LocalConvolutionNormalVectorEstimator() 
+    LocalConvolutionNormalVectorEstimator()
     {
       myFlagIsInit = false;
     }
-   
- 
+
+
     // ------------------------- Private Datas --------------------------------
   private:
 
     /// Grid size
-    double myH; 
-    
+    double myH;
+
     /// True if the init() has been called.
     bool myFlagIsInit;
-    
+
     /// Radius of the convolution.
     unsigned int myRadius;
-    
+
     /// Reference to the digital surface
     const DigitalSurface & mySurface;
 
     /// Reference of the kernel convolution functor.
     const KernelFunctor & myKernelFunctor;
-   
+
     // ------------------------- Hidden services ------------------------------
   private:
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.

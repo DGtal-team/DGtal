@@ -51,64 +51,63 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstantConvolutionWeight
   /**
-   * Description of template class 'ConstantConvolutionWeight' <p>
+   * Description of template class 'ConstantConvolutionWeights' <p>
    * \brief Aim: implement a trivial constant convolution kernel which
    * returns 1 for each vector.
    *
    *   @tparam TVector type for displacement topological distances.
    */
   template <typename TDistance>
-  class ConstantConvolutionWeight
+  class ConstantConvolutionWeights
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     typedef TDistance Distance;
 
     inline
     double operator()(const Distance &/*aDisplacment*/) const
     {
       return 1.0;
-    } 
+    }
   };
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class ConstantConvolutionWeight
   /**
-   * Description of template class 'GaussianConvolutionWeight' <p>
+   * Description of template class 'GaussianConvolutionWeights' <p>
    * \brief Aim: implement a Gaussian centered convolution kernel.
    *
    *   @tparam TDistance type for displacement topological distances.
    */
   template <typename TDistance>
-  class GaussianConvolutionWeight
+  class GaussianConvolutionWeights
   {
     // ----------------------- Standard services ------------------------------
   public:
-      
 
     typedef TDistance Distance;
-      
-    GaussianConvolutionWeight(const double sigma): mySigma(sigma)
+
+    GaussianConvolutionWeights(const double sigma): mySigma(sigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
       myCoef2 = 1.0/2.0*M_PI;
     }
-      
+
     inline
     double operator()(const Distance &aDisplacment) const
     {
       return myCoef*exp(-NumberTraits<Distance>::castToDouble(aDisplacment)*
         NumberTraits<Distance>::castToDouble(aDisplacment)*myCoef2);
-    } 
-     
+    }
+
      ///Internal Sigma value;
     double mySigma;
-    
+
     ///Precomputed constant coefs.
     double myCoef;
     double myCoef2;
-  }; 
+  };
 
 
 

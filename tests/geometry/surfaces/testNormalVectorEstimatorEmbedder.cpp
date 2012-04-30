@@ -56,7 +56,7 @@
 #include "DGtal/kernel/CanonicEmbedder.h"
 
 #include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
+#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
 #include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,131 +72,130 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
-bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
+bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing convolution neighborhood ..." );
+    trace.beginBlock ( "Testing convolution neighborhood ..." );
 
-  std::string filename = testPath + "samples/cat10.vol";
+    std::string filename = testPath + "samples/cat10.vol";
 
-  typedef ImageSelector < Z3i::Domain, int>::Type Image;
-  Image image = VolReader<Image>::importVol(filename);
-  trace.info()<<image<<std::endl;
-  DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
-  SetFromImage<DigitalSet>::append<Image>(set3d, image,
-                                          0,256);
+    typedef ImageSelector < Z3i::Domain, int>::Type Image;
+    Image image = VolReader<Image>::importVol ( filename );
+    trace.info() <<image<<std::endl;
+    DigitalSet set3d ( image.domain() );
+    SetPredicate<DigitalSet> set3dPredicate ( set3d );
+    SetFromImage<DigitalSet>::append<Image> ( set3d, image,
+            0,256 );
 
-  KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(),
-                           image.domain().upperBound(), true );
-  if (!space_ok)
+    KSpace ks;
+    bool space_ok = ks.init ( image.domain().lowerBound(),
+                              image.domain().upperBound(), true );
+    if ( !space_ok )
     {
-      trace.error() << "Error in the Khamisky space construction."<<std::endl;
-      return 2;
+        trace.error() << "Error in the Khamisky space construction."<<std::endl;
+        return 2;
     }
-  trace.endBlock();
-  typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
-  MySurfelAdjacency surfAdj( true ); // interior in all directions.
+    trace.endBlock();
+    typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
+    MySurfelAdjacency surfAdj ( true ); // interior in all directions.
 
-  trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> >
+    trace.beginBlock ( "Set up digital surface." );
+    typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> >
     MyDigitalSurfaceContainer;
-  typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
-  SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
-  MyDigitalSurfaceContainer* ptrSurfContainer =
-    new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
-  MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
-  MyDigitalSurface::ConstIterator it = digSurf.begin();
-  trace.endBlock();
+    typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
+    SCell bel = Surfaces<KSpace>::findABel ( ks, set3dPredicate, 100000 );
+    MyDigitalSurfaceContainer* ptrSurfContainer =
+        new MyDigitalSurfaceContainer ( ks, set3dPredicate, surfAdj, bel );
+    MyDigitalSurface digSurf ( ptrSurfContainer ); // acquired
+    MyDigitalSurface::ConstIterator it = digSurf.begin();
+    trace.endBlock();
 
-  trace.beginBlock( "Compute and output surface <cat10-constant.off> with trivial normals." );
-  //Convolution kernel
-  ConstantConvolutionKernel<Vector> kernel;
+    trace.beginBlock ( "Compute and output surface <cat10-constant.off> with trivial normals." );
+    //Convolution kernel
+    ConstantConvolutionWeights<MyDigitalSurface::Size> kernel;
 
-  //Estimator definition
-  typedef LocalConvolutionNormalVectorEstimator
+    //Estimator definition
+    typedef LocalConvolutionNormalVectorEstimator
     < MyDigitalSurface,
-      ConstantConvolutionKernel<Vector> > MyConstantEstimator;
-  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyConstantEstimator > ));
-  MyConstantEstimator myNormalEstimator(digSurf, kernel);
+    ConstantConvolutionWeights<MyDigitalSurface::Size> > MyConstantEstimator;
+    BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyConstantEstimator > ) );
+    MyConstantEstimator myNormalEstimator ( digSurf, kernel );
 
-  // Embedder definition
-  typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> SurfaceEmbedder;
-  SurfaceEmbedder surfaceEmbedder( digSurf );
-  typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
+    // Embedder definition
+    typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> SurfaceEmbedder;
+    SurfaceEmbedder surfaceEmbedder ( digSurf );
+    typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < SurfaceEmbedder, MyConstantEstimator > SurfaceEmbedderWithTrivialNormal;
-  SurfaceEmbedderWithTrivialNormal mySurfelEmbedder( surfaceEmbedder,
-                                                     myNormalEstimator );
+    SurfaceEmbedderWithTrivialNormal mySurfelEmbedder ( surfaceEmbedder,
+            myNormalEstimator );
 
-  // Compute normal vector field and displays it.
-  myNormalEstimator.init(1.0, 2);
+    // Compute normal vector field and displays it.
+    myNormalEstimator.init ( 1.0, 2 );
 
-  MyConstantEstimator::Quantity res = myNormalEstimator.eval(it);
-  trace.info() << "Normal vector at begin() : "<< res << std::endl;
+    MyConstantEstimator::Quantity res = myNormalEstimator.eval ( it );
+    trace.info() << "Normal vector at begin() : "<< res << std::endl;
 
-  ofstream out( "cat10-constant.off" );
-  if ( out.good() )
-    digSurf.exportAs3DNOFF( out,mySurfelEmbedder);
-  out.close();
-  trace.endBlock();
+    ofstream out ( "cat10-constant.off" );
+    if ( out.good() )
+        digSurf.exportAs3DNOFF ( out,mySurfelEmbedder );
+    out.close();
+    trace.endBlock();
 
-  trace.beginBlock( "Compute and output surface <cat10-gaussian.off> with gaussian convoluted normals." );
+    trace.beginBlock ( "Compute and output surface <cat10-gaussian.off> with gaussian convoluted normals." );
 
-  //Convolution kernel
-  GaussianConvolutionKernel<Vector> Gkernel(4.0);
+    //Convolution kernel
+    GaussianConvolutionWeights < MyDigitalSurface::Size > Gkernel ( 4.0 );
 
-  //Estimator definition
-  typedef LocalConvolutionNormalVectorEstimator
-    < MyDigitalSurface,
-      GaussianConvolutionKernel<Vector> > MyGaussianEstimator;
-  BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyGaussianEstimator > ));
-  MyGaussianEstimator myNormalEstimatorG(digSurf, Gkernel);
+    //Estimator definition
+    typedef LocalConvolutionNormalVectorEstimator  < MyDigitalSurface,
+            GaussianConvolutionWeights< MyDigitalSurface::Size>  > MyGaussianEstimator;
+    BOOST_CONCEPT_ASSERT ( ( CNormalVectorEstimator< MyGaussianEstimator > ) );
+    MyGaussianEstimator myNormalEstimatorG ( digSurf, Gkernel );
 
-  // Embedder definition
-  typedef DigitalSurfaceEmbedderWithNormalVectorEstimator<SurfaceEmbedder,MyGaussianEstimator> SurfaceEmbedderWithGaussianNormal;
-  SurfaceEmbedderWithGaussianNormal mySurfelEmbedderG( surfaceEmbedder, myNormalEstimatorG );
+    // Embedder definition
+    typedef DigitalSurfaceEmbedderWithNormalVectorEstimator<SurfaceEmbedder,MyGaussianEstimator> SurfaceEmbedderWithGaussianNormal;
+    SurfaceEmbedderWithGaussianNormal mySurfelEmbedderG ( surfaceEmbedder, myNormalEstimatorG );
 
-  // Compute normal vector field and displays it.
-  myNormalEstimatorG.init(1.0, 5);
+    // Compute normal vector field and displays it.
+    myNormalEstimatorG.init ( 1.0, 5 );
 
-  MyGaussianEstimator::Quantity res2 = myNormalEstimatorG.eval(it);
-  trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
-  std::vector<MyGaussianEstimator::Quantity> allNormals;
-  myNormalEstimatorG.evalAll( std::back_inserter( allNormals ) );
-  trace.info() << "Normal vector field of size "<< allNormals.size() << std::endl;
+    MyGaussianEstimator::Quantity res2 = myNormalEstimatorG.eval ( it );
+    trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
+    std::vector<MyGaussianEstimator::Quantity> allNormals;
+    myNormalEstimatorG.evalAll ( std::back_inserter ( allNormals ) );
+    trace.info() << "Normal vector field of size "<< allNormals.size() << std::endl;
 
-  ofstream out2( "cat10-gaussian.off" );
-  if ( out2.good() )
-    digSurf.exportAs3DNOFF( out2 ,mySurfelEmbedderG);
-  out2.close();
+    ofstream out2 ( "cat10-gaussian.off" );
+    if ( out2.good() )
+        digSurf.exportAs3DNOFF ( out2 ,mySurfelEmbedderG );
+    out2.close();
 
-  nbok += true ? 1 : 0;
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
+    nbok += true ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+                 << "true == true" << std::endl;
+    trace.endBlock();
 
-  return true;
+    return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main ( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class LocalConvolutionNormalVectorEstimator" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+    trace.beginBlock ( "Testing class LocalConvolutionNormalVectorEstimator" );
+    trace.info() << "Args:";
+    for ( int i = 0; i < argc; ++i )
+        trace.info() << " " << argv[ i ];
+    trace.info() << endl;
 
-  bool res = testLocalConvolutionNormalVectorEstimator(argc,argv); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return true;
+    bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
+    trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+    trace.endBlock();
+    return true;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
