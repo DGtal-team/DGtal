@@ -28,6 +28,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #ifdef _MSC_VER
+#define NOMINMAX
+#include <windows.h>
 #include <GL/gl.h>
 #include "DGtal/io/viewers/windows/GL/glext.h"
 #endif
