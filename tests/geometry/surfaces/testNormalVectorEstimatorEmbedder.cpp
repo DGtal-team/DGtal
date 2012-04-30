@@ -53,7 +53,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/CanonicEmbedder.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
 
 #include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/BasicConvolutionKernels.h"
@@ -76,9 +76,9 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing convolution neighborhood ..." );
-   
+
   std::string filename = testPath + "samples/cat10.vol";
 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
@@ -86,11 +86,11 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   trace.info()<<image<<std::endl;
   DigitalSet set3d (image.domain());
   SetPredicate<DigitalSet> set3dPredicate( set3d );
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           0,256);
- 
+
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -100,13 +100,13 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   trace.endBlock();
   typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
-  
+
   trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
+  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> >
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
   SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
-  MyDigitalSurfaceContainer* ptrSurfContainer = 
+  MyDigitalSurfaceContainer* ptrSurfContainer =
     new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   MyDigitalSurface::ConstIterator it = digSurf.begin();
@@ -115,10 +115,10 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   trace.beginBlock( "Compute and output surface <cat10-constant.off> with trivial normals." );
   //Convolution kernel
   ConstantConvolutionKernel<Vector> kernel;
-  
+
   //Estimator definition
   typedef LocalConvolutionNormalVectorEstimator
-    < MyDigitalSurface, 
+    < MyDigitalSurface,
       ConstantConvolutionKernel<Vector> > MyConstantEstimator;
   BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyConstantEstimator > ));
   MyConstantEstimator myNormalEstimator(digSurf, kernel);
@@ -128,15 +128,15 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
   SurfaceEmbedder surfaceEmbedder( digSurf );
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < SurfaceEmbedder, MyConstantEstimator > SurfaceEmbedderWithTrivialNormal;
-  SurfaceEmbedderWithTrivialNormal mySurfelEmbedder( surfaceEmbedder, 
-                                                     myNormalEstimator ); 
+  SurfaceEmbedderWithTrivialNormal mySurfelEmbedder( surfaceEmbedder,
+                                                     myNormalEstimator );
 
   // Compute normal vector field and displays it.
   myNormalEstimator.init(1.0, 2);
-  
+
   MyConstantEstimator::Quantity res = myNormalEstimator.eval(it);
   trace.info() << "Normal vector at begin() : "<< res << std::endl;
-  
+
   ofstream out( "cat10-constant.off" );
   if ( out.good() )
     digSurf.exportAs3DNOFF( out,mySurfelEmbedder);
@@ -147,21 +147,21 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
 
   //Convolution kernel
   GaussianConvolutionKernel<Vector> Gkernel(4.0);
-  
+
   //Estimator definition
   typedef LocalConvolutionNormalVectorEstimator
-    < MyDigitalSurface, 
+    < MyDigitalSurface,
       GaussianConvolutionKernel<Vector> > MyGaussianEstimator;
   BOOST_CONCEPT_ASSERT(( CNormalVectorEstimator< MyGaussianEstimator > ));
   MyGaussianEstimator myNormalEstimatorG(digSurf, Gkernel);
 
   // Embedder definition
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator<SurfaceEmbedder,MyGaussianEstimator> SurfaceEmbedderWithGaussianNormal;
-  SurfaceEmbedderWithGaussianNormal mySurfelEmbedderG( surfaceEmbedder, myNormalEstimatorG ); 
+  SurfaceEmbedderWithGaussianNormal mySurfelEmbedderG( surfaceEmbedder, myNormalEstimatorG );
 
   // Compute normal vector field and displays it.
   myNormalEstimatorG.init(1.0, 5);
-  
+
   MyGaussianEstimator::Quantity res2 = myNormalEstimatorG.eval(it);
   trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
   std::vector<MyGaussianEstimator::Quantity> allNormals;
@@ -173,12 +173,12 @@ bool testLocalConvolutionNormalVectorEstimator(int argc, char**argv)
     digSurf.exportAs3DNOFF( out2 ,mySurfelEmbedderG);
   out2.close();
 
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return true;
 }
 
