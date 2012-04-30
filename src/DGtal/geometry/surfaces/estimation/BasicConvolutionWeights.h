@@ -53,18 +53,23 @@ namespace DGtal
   /**
    * Description of template class 'ConstantConvolutionWeights' <p>
    * \brief Aim: implement a trivial constant convolution kernel which
-   * returns 1 for each vector.
+   * returns 1 to each distance.
    *
-   *   @tparam TVector type for displacement topological distances.
+   *   @tparam TDistance type for topological distances.
    */
   template <typename TDistance>
   class ConstantConvolutionWeights
   {
     // ----------------------- Standard services ------------------------------
   public:
-
+    
+    ///Inner type
     typedef TDistance Distance;
 
+
+    /**
+     * @return 1.0 whatever the distance is. 
+     */    
     inline
     double operator()(const Distance &/*aDisplacment*/) const
     {
@@ -78,7 +83,7 @@ namespace DGtal
    * Description of template class 'GaussianConvolutionWeights' <p>
    * \brief Aim: implement a Gaussian centered convolution kernel.
    *
-   *   @tparam TDistance type for displacement topological distances.
+   *   @tparam TDistance type for  topological distances.
    */
   template <typename TDistance>
   class GaussianConvolutionWeights
@@ -86,14 +91,27 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
+    ///Inner type for the topological distance.
     typedef TDistance Distance;
 
+    /** 
+     * Constructor
+     * 
+     * @param sigma Gaussian sigma parameter.
+     */
     GaussianConvolutionWeights(const double sigma): mySigma(sigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
       myCoef2 = 1.0/(2.0*M_PI);
     }
 
+    /** 
+     * Return a Gaussian weight from a distance to the gaussian
+     * function center. 
+     *
+     * @param aDisplacment distance to the center  
+     * @return the weight
+     */
     inline
     double operator()(const Distance &aDisplacment) const
     {
