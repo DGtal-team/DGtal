@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CConvolutionWeight.h
+ * @file CConvolutionWeights.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/06
  *
- * Header file for concept CConvolutionWeight.cpp
+ * Header file for concept CConvolutionWeights.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CConvolutionWeight_RECURSES)
-#error Recursive header files inclusion detected in CConvolutionWeight.h
-#else // defined(CConvolutionWeight_RECURSES)
+#if defined(CConvolutionWeights_RECURSES)
+#error Recursive header files inclusion detected in CConvolutionWeights.h
+#else // defined(CConvolutionWeights_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CConvolutionWeight_RECURSES
+#define CConvolutionWeights_RECURSES
 
-#if !defined CConvolutionWeight_h
+#if !defined CConvolutionWeights_h
 /** Prevents repeated inclusion of headers. */
-#define CConvolutionWeight_h
+#define CConvolutionWeights_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,21 +48,23 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CConvolutionWeight
+  // class CConvolutionWeights
   /**
-Description of \b concept '\b CConvolutionWeight' <p>
+Description of \b concept '\b CConvolutionWeights' <p>
      @ingroup Concepts
      @brief Aim: defines models of centered convolution kernel used for normal vector integration for instance.
 
-     CConvolutionWeight models are functor mappings displacement vectors to real values.
+     CConvolutionWeights models are functor mappings displacement vectors to real values.
 
 
  ### Refinement of CopyConstructible, Assignable
 
- ### Associated types : Vector
+ ### Associated types :
+
+   - Distance: type to represent topological distances.
 
  ### Notation
-     - \t X : A type that is a model of CConvolutionWeight
+     - \t X : A type that is a model of CConvolutionWeights
      - \t x, \t y : object of type X
 
  ### Definitions
@@ -96,14 +98,14 @@ Description of \b concept '\b CConvolutionWeight' <p>
 
  ### Models###
 
-     ConstantConvolutionWeight, GaussianConvolutionWeight
+     ConstantConvolutionWeights, GaussianConvolutionWeights
 
  ### Notes###
 
-@tparam T the type that should be a model of CConvolutionWeight.
+@tparam T the type that should be a model of CConvolutionWeights.
    */
   template <typename T>
-  struct CConvolutionWeight:  boost::CopyConstructible<T>, boost::Assignable<T>
+  struct CConvolutionWeights:  boost::CopyConstructible<T>, boost::Assignable<T>
   // Use derivation for coarser concepts, like
   // : CoarserConcept<T>
   // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
@@ -111,11 +113,12 @@ Description of \b concept '\b CConvolutionWeight' <p>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Vector Vector;
+
+    //inner type
+    typedef typename T::Distance Distance;
 
     // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CConvolutionWeight )
+    BOOST_CONCEPT_USAGE( CConvolutionWeights )
     {
 
       ConceptUtils::sameType( myB, myX( myA ) );
@@ -124,20 +127,20 @@ Description of \b concept '\b CConvolutionWeight' <p>
     // ------------------------- Private Datas --------------------------------
   private:
     T myX; // do not require T to be default constructible.
-    typename T::Vector myA;
+    Distance myA;
     double myB;
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CConvolutionWeight
+  }; // end of concept CConvolutionWeights
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CConvolutionWeight_h
+#endif // !defined CConvolutionWeights_h
 
-#undef CConvolutionWeight_RECURSES
-#endif // else defined(CConvolutionWeight_RECURSES)
+#undef CConvolutionWeights_RECURSES
+#endif // else defined(CConvolutionWeights_RECURSES)
