@@ -76,6 +76,8 @@ namespace DGtal
     Vector N; //<! The normal to the half-space.
     Integer c; //<! The uppermost value N.(x,y) that is in the half-space.
 
+  protected:
+    // mutable Integer _d; //<! used for computation (avoids reallocation when Integer is a BigInteger).
     // ----------------------- Standard services ------------------------------
   public:
     /**

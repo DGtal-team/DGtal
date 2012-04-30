@@ -99,6 +99,7 @@ namespace DGtal
     typedef typename Base::value_type Value;
     typedef typename Base::iterator Iterator;
     typedef typename Base::const_iterator ConstIterator;
+    typedef typename std::size_t Size;
 
     // The sequence must contain points.
     BOOST_STATIC_ASSERT
@@ -214,6 +215,23 @@ namespace DGtal
 
     // ----------------------- halfspace services -------------------------------
   public:
+
+    /**
+       Given some half-plane \a hs, finds the vertices of this polygon
+       that borders this half-plane.
+
+       @param it_next_is_outside (returns) either the vertex that is
+       in \a hs and whose successor is not in \a hs, or end() if none
+       exists.
+
+       @param it_next_is_inside (returns) either the vertex that is not
+       in \a hs and whose successor is in \a hs, or end() if none
+       exists.
+
+       @return the number of vertices that are in \a hs.
+     */
+    Size findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
+                  const HalfSpace & hs );
 
     /**
        Cuts the convex polygon with the given half-space constraint.
