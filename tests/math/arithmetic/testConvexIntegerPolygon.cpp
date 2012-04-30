@@ -54,11 +54,13 @@ bool testConvexIntegerPolygon()
   
   trace.beginBlock ( "Testing block ConvexIntegerPolygon area and centroid" );
   typedef typename Space::Point Point;
+  typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
   typedef ConvexIntegerPolygon<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
+  typedef typename CIP::Iterator Iterator;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
@@ -80,17 +82,33 @@ bool testConvexIntegerPolygon()
   trace.endBlock();
 
   trace.beginBlock ( "Output ConvexIntegerPolygon in <cip.eps>" );
+  cip.push_back( Point( -4, 4 ) );
+  cip.push_back( Point( -7, 2 ) );
+  cip.push_back( Point( -5, 1 ) );
   Board2D board;
+  d = cip.boundingBoxDomain();
   board << SetMode( d.className(), "Grid" ) << d;
   DigitalSet aSet( d );
-  HalfSpace h = cip.halfSpace( ++cip.begin() );
+  HalfSpace h( Vector( 1, 3 ), 8 );
+  //HalfSpace h = cip.halfSpace( ++cip.begin() );
   Shapes<Domain>::makeSetFromPointPredicate( aSet, h );
   Color col1( 100, 100, 255 );
   Color col2( 180, 180, 255 );
   board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
         << aSet;
   board << SetMode( cip.className(), "Transparent" ) << cip;
-
+  Iterator itA1, itB2;
+  unsigned int nbWithin = cip.findCut( itA1, itB2, h );
+  Iterator itB1 = itA1; ++itB1;
+  if ( itB1 == cip.end() ) itB1 = cip.begin();
+  Iterator itA2 = itB2; ++itA2;
+  if ( itA2 == cip.end() ) itA2 = cip.begin();
+  Color col3( 0, 255, 0 );
+  Color col4( 255, 0, 0 );
+  board << CustomStyle( Point().className(), new CustomColors( col3, col3 ) )
+        << *itA1 << *itA2;
+  board << CustomStyle( Point().className(), new CustomColors( col4, col4 ) )
+        << *itB1 << *itB2;
   board.saveEPS( "cip.eps" );
   board.saveSVG( "cip.svg" );
   trace.endBlock();
