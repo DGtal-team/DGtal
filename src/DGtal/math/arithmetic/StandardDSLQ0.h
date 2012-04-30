@@ -83,7 +83,7 @@ namespace DGtal
     typedef StandardDSLQ0<TFraction> Self;
     typedef typename Fraction::Integer Integer;
     typedef typename Fraction::UnsignedInteger UnsignedInteger;
-    typedef typename Fraction::Size Size;
+    typedef typename Fraction::Quotient Quotient;
 
     // BOOST_CONCEPT_ASSERT(( CFraction<Fraction> ));
 

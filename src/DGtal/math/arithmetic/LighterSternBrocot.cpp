@@ -49,9 +49,9 @@ using namespace std;
 **/
 namespace DGtal
 {
-  template <typename TInteger, typename TSize, typename TMap>
-  DGtal::LighterSternBrocot<TInteger, TSize, TMap>*
-  DGtal::LighterSternBrocot<TInteger, TSize, TMap>::singleton = 0;
+  template <typename TInteger, typename TQuotient, typename TMap>
+  DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>*
+  DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::singleton = 0;
 
   template <>
   LighterSternBrocot<DGtal::int32_t,DGtal::int32_t>*
