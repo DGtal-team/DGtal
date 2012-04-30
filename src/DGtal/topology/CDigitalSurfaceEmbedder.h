@@ -59,13 +59,15 @@ A digital surface embedder is a specialized mapping from signed cells to Euclide
 It adds inner types to functor as well as a method to access the digital surface.
 
 ### Refinement of
-- CUnaryFunctor<T, T::SCell, T::RealPoint>
+- CSCellEmbedder<T>
 
 ### Associated types :
 - \e KSpace: the cellular grid space
 - \e SCell: same as KSpace::SCell
-- \e Argument: type of the argument, same as Space::SCell
-- \e Value: type of value, same as Space::RealPoint
+- \e RealPoint: the type of Euclidean point
+- \e Surface: a digital surface, some concrete DigitalSurface<X>.
+- \e Argument: type of the argument, same as SCell
+- \e Value: type of value, same as RealPoint
 
 ### Notation
  - \e X : A type that is a model of CDigitalSurfaceEmbedder

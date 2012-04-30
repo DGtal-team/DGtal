@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file CanonicEmbedder.ih
+ * @file CanonicDigitalSurfaceEmbedder.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/28
  *
- * Implementation of inline methods defined in CanonicEmbedder.h
+ * Implementation of inline methods defined in CanonicDigitalSurfaceEmbedder.h
  *
  * This file is part of the DGtal library.
  */
@@ -41,79 +41,94 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::floor( const RealPoint & p ) const
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
+~CanonicDigitalSurfaceEmbedder()
+{}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurface>
+inline
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
+CanonicDigitalSurfaceEmbedder()
+  : mySurface( 0 )
+{}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurface>
+inline
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
+CanonicDigitalSurfaceEmbedder( const Surface & aSurface )
+  : mySurface( &aSurface )
+{}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurface>
+inline
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
+CanonicDigitalSurfaceEmbedder( const Self & other )
+  : mySurface( other.mySurface )
+{}
+//-----------------------------------------------------------------------------
+template <typename TDigitalSurface>
+inline
+typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::Self &
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::
+operator=( const Self & other )
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) floor( p[ i ] );
-  return dp;
+  mySurface = other.mySurface;
+  return *this;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::ceil( const RealPoint & p ) const
+const typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::Surface &
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::surface() const
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) ceil( p[ i ] );
-  return dp;
+  ASSERT( this->isValid() );
+  return *mySurface;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::Point
-DGtal::CanonicEmbedder<TSpace>::round( const RealPoint & p ) const
+typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::RealPoint
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::embed( const SCell & scell ) const
 {
-  Point dp;
-  for ( Dimension i = 0; i < dp.size(); ++i )
-    dp[ i ] = (Integer) round( p[ i ] );
-  return dp;
+  return this->operator()( scell );
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
-typename DGtal::CanonicEmbedder<TSpace>::RealPoint
-DGtal::CanonicEmbedder<TSpace>::embed( const Point & dp ) const
+typename DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::RealPoint
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::operator()( const SCell & scell ) const
 {
-  return this->operator()( dp );
-}
-//-----------------------------------------------------------------------------
-template <typename TSpace>
-inline
-typename DGtal::CanonicEmbedder<TSpace>::RealPoint
-DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
-{
+  ASSERT( this->isValid() );
+  Point dp = mySurface->container().space().sKCoords( scell );
   RealPoint p;
   for ( Dimension i = 0; i < dp.size(); ++i )
-    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] );
+    p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] ) / 2;
   return p;
 }
 //-----------------------------------------------------------------------------
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
 bool
-DGtal::CanonicEmbedder<TSpace>::isValid( ) const
+DGtal::CanonicDigitalSurfaceEmbedder<TDigitalSurface>::isValid( ) const
 {
-  return true;
+  return mySurface != 0;
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CanonicEmbedder'.
+ * Overloads 'operator<<' for displaying objects of class 'CanonicDigitalSurfaceEmbedder'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CanonicEmbedder' to write.
+ * @param object the object of class 'CanonicDigitalSurfaceEmbedder' to write.
  * @return the output stream after the writing.
  */
-template <typename TSpace>
+template <typename TDigitalSurface>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const CanonicEmbedder<TSpace> & object )
+                    const CanonicDigitalSurfaceEmbedder<TDigitalSurface> & object )
 {
     object.selfDisplay ( out );
     return out;
