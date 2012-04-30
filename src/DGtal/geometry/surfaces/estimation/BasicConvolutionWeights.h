@@ -91,7 +91,7 @@ namespace DGtal
     GaussianConvolutionWeights(const double sigma): mySigma(sigma)
     {
       myCoef = 1.0/(mySigma * sqrt(2.0*M_PI));
-      myCoef2 = 1.0/2.0*M_PI;
+      myCoef2 = 1.0/(2.0*M_PI);
     }
 
     inline
