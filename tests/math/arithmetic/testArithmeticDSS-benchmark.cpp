@@ -53,7 +53,7 @@ bool checkSubArithmeticDSS( const DSL & D,
 {
   typedef typename DSL::Fraction Fraction;
   typedef typename DSL::Integer Integer;
-  typedef typename DSL::Size Size;
+  typedef typename DSL::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
@@ -79,7 +79,7 @@ bool checkSubArithmeticDSS( const DSL & D,
 // {
 //   typedef StandardDSLQ0<Fraction> DSL;
 //   typedef typename Fraction::Integer Integer;
-//   typedef typename Fraction::Size Size;
+//   typedef typename Fraction::Quotient Quotient;
 //   typedef typename DSL::Point Point;
 //   typedef typename DSL::ConstIterator ConstIterator;
 //   typedef typename DSL::Point2I Point2I;
@@ -118,7 +118,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Size Size;
+  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;

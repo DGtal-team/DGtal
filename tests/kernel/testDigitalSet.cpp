@@ -46,6 +46,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/CDigitalSetArchetype.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/CDomainArchetype.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
@@ -338,6 +339,8 @@ bool testDigitalSetDomain()
   trace.endBlock();
 
   typedef DigitalSetDomain< SpecificSet > RestrictedDomain;
+  BOOST_CONCEPT_ASSERT(( CDomain< RestrictedDomain > ));
+
   RestrictedDomain disk_domain( disk );
   trace.beginBlock ( "Iterating over disk domain ..." );
   unsigned int nb_in_domain = 0;

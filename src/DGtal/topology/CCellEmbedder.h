@@ -63,9 +63,10 @@ It adds inner types to functor.
 
 ### Associated types :
 - \e KSpace: the cellular grid space
-- \e Cell: same as Space::Cell
-- \e Argument: type of the argument, same as Space::Cell
-- \e Value: type of value, same as Space::RealPoint
+- \e Cell: same as KSpace::Cell
+- \e RealPoint: the type of Euclidean point
+- \e Argument: type of the argument, same as KSpace::Cell
+- \e Value: type of value, same as RealPoint
 
 ### Notation
  - \e X : A type that is a model of CCellEmbedder
@@ -84,7 +85,7 @@ It adds inner types to functor.
 
 ### Models
 
-- ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
+- CanonicCellEmbedder, ImageLinearCellEmbedder, ImplicitFunctionLinearCellEmbedder, ImplicitFunctionDiff1LinearCellEmbedder
 
 ### Notes
 

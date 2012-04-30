@@ -92,7 +92,14 @@ DGtal::CanonicEmbedder<TSpace>::operator()( const Point & dp ) const
     p[ i ] = NumberTraits<Integer>::castToDouble( dp[ i ] );
   return p;
 }
-
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+bool
+DGtal::CanonicEmbedder<TSpace>::isValid( ) const
+{
+  return true;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 

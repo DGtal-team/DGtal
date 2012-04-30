@@ -47,6 +47,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/CWithGradientMap.h"
 #include "DGtal/topology/CCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 #include "DGtal/topology/UmbrellaComputer.h"
@@ -536,6 +537,33 @@ namespace DGtal
     template <typename CellEmbedder>
     void exportEmbeddedSurfaceAs3DNOFF ( std::ostream & out,
                                         const CellEmbedder & cembedder ) const;
+
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Cells are embedded by [scembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param scembedder any embedder of signed cellular grid elements.
+
+       @tparam SCellEmbedderWithGradientMap any model of
+       CSCellEmbedder and CWithGradientMap.
+     */
+    template <typename SCellEmbedderWithGradientMap>
+    void exportAs3DNOFF( std::ostream & out,
+                         const SCellEmbedderWithGradientMap & scembedder ) const;
+ 
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Surface spels are embedded by [cembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of digital surface spels.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedIteratedSurfaceAs3DNOFF ( std::ostream & out,
+                                                 const CellEmbedder & cembedder ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

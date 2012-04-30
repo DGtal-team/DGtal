@@ -48,6 +48,7 @@
 #include "DGtal/base/StdRebinders.h"
 #include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -95,28 +96,28 @@ namespace DGtal
 
    @param TInteger the integral type chosen for the fractions.
 
-   @param TSize the integral type chosen for the
+   @param TQuotient the integral type chosen for the
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
 
-   @param TMap the rebinder type for defining an association TSize ->
+   @param TMap the rebinder type for defining an association TQuotient ->
    LighterSternBrocot::Node*. For instance, StdMapRebinder is fine.
   */
-  template <typename TInteger, typename TSize, 
+  template <typename TInteger, typename TQuotient, 
             typename TMap = StdMapRebinder >
   class LighterSternBrocot
   {
   public:
     typedef TInteger Integer;
-    typedef TSize Size;
+    typedef TQuotient Quotient;
     typedef TMap Map;
-    typedef LighterSternBrocot<TInteger,TSize,TMap> Self;
+    typedef LighterSternBrocot<TInteger,TQuotient,TMap> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
 
     struct Node;
-    typedef typename TMap:: template Rebinder<Size, Node*>::Type MapSizeToNode;
+    typedef typename TMap:: template Rebinder<Quotient, Node*>::Type MapQuotientToNode;
 
   public:
 
@@ -147,12 +148,12 @@ namespace DGtal
          @param k1 the depth (1+number of coefficients of its continued fraction).
          @param _origin A pointer to the origin node [u_0,...,u_{n-1},1].
        */
-      Node( Integer p1, Integer q1, Size u1, Size k1, 
+      Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
 	    Node* _origin );
 
       /// @return the node [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
       /// is the current node. Construct it if it does not exist yet.
-      Node* child( Size v );
+      Node* child( Quotient v );
 
       /**
 	 @return the origin of this node in O(1), ie [u0,...,uk]
@@ -178,24 +179,24 @@ namespace DGtal
       /// the denominator;
       Integer q;
       /// the quotient (last coefficient of its continued fraction).
-      Size u;
+      Quotient u;
       /// the depth (1+number of coefficients of its continued fraction).
-      Size k;
+      Quotient k;
       /// A pointer to the origin node [u_0,...,u_{n-1},1]
       Node* myOrigin;
       /// a map which gives the descendant [u_0,...,u_n - 1, k] if k is the
       /// key. Note that they are left or right descendant according
       /// to the parity of the depth.  (odd=left, even=right).
-      MapSizeToNode myChildren;
+      MapQuotientToNode myChildren;
 
 
       /// @return 'true' iff this node has an even depth.
       inline bool even() const {
-        return NumberTraits<Size>::even( k );
+        return NumberTraits<Quotient>::even( k );
       }
       /// @return 'true' iff this node has an odd depth.
       inline bool odd() const {
-        return NumberTraits<Size>::odd( k );
+        return NumberTraits<Quotient>::odd( k );
       }
       /// @return 'true' iff the descendant with the same depth is to the left.
       inline bool isSameDepthLeft() const {
@@ -216,13 +217,13 @@ namespace DGtal
     class Fraction {
     public:
       typedef TInteger Integer;
-      typedef TSize Size;
-      typedef LighterSternBrocot<TInteger, TSize, TMap> SternBrocotTree;
+      typedef TQuotient Quotient;
+      typedef LighterSternBrocot<TInteger, TQuotient, TMap> SternBrocotTree;
       typedef typename SternBrocotTree::Fraction Self;
       typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-      typedef std::pair<Size, Size> Value;
-      typedef std::vector<Size> CFracSequence;
-      typedef InputIteratorWithRankOnSequence<CFracSequence,Size> ConstIterator;
+      typedef std::pair<Quotient, Quotient> Value;
+      typedef std::vector<Quotient> CFracSequence;
+      typedef InputIteratorWithRankOnSequence<CFracSequence,Quotient> ConstIterator;
 
       // --------------------- std types ------------------------------
       typedef Value value_type;
@@ -278,20 +279,20 @@ namespace DGtal
       /// @return its denominator;
       Integer q() const;
       /// @return its quotient (last coefficient of its continued fraction).
-      Size u() const;
+      Quotient u() const;
       /// @return its depth (1+number of coefficients of its continued fraction).
-      Size k() const;
+      Quotient k() const;
 
       /// \attention Only for debug purposes. @return 'true' iff the fraction is
       /// greater than 1/1.
       bool isSup1() const { return mySup1; }
       /// \attention Only for debug purposes. @return the depth of the node.
-      Size trueK() const { return myNode->k; }
+      Quotient trueK() const { return myNode->k; }
 
     protected:
       /// @return the fraction [u_0, ..., u_n - 1, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
-      Fraction child( Size v ) const;
+      Fraction child( Quotient v ) const;
       /**
 	 @return the origin of this fraction in O(1), ie [u0,...,uk]
 	 => [u0,...,u_{k-1},1], i.e. [u0,...,u_{k-1}+1].
@@ -299,7 +300,7 @@ namespace DGtal
       Fraction origin() const;
       /// @return the fraction [u_0, ..., u_n, v] if [u_0, ..., u_n]
       /// is the current fraction. Construct it if it does not exist yet.
-      Fraction next( Size v ) const;
+      Fraction next( Quotient v ) const;
 
     public:
 
@@ -332,7 +333,7 @@ namespace DGtal
          @param m a quotient between 1 and uk-1.
 	 @return the fraction [u_0, ..., u_{n-1},m]
       */
-      Fraction father( Size m ) const;
+      Fraction father( Quotient m ) const;
       /**
 	 @return the previous partial of this fraction in O(1), ie
 	 [u0,...,u{k-1},uk] => [u0,...,u{k-1}]. Otherwise said, it is
@@ -350,14 +351,14 @@ namespace DGtal
 	 @return the partial fraction of depth kp, ie. [u0,...,uk] =>
 	 [u0,...,ukp]
       */
-      Fraction partial( Size kp ) const;
+      Fraction partial( Quotient kp ) const;
       /**
 	 @param i a positive integer smaller or equal to k()+2.
 
 	 @return the partial fraction of depth k()-i, ie. [u0,...,uk] =>
 	 [u0,...,u{k-i}]
       */
-      Fraction reduced( Size i ) const;
+      Fraction reduced( Quotient i ) const;
 
       /**
          Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
@@ -375,7 +376,7 @@ namespace DGtal
 
          @param quotient the pair \f$(m,k+1)\f$.
       */
-      void push_back( const std::pair<Size, Size> & quotient );
+      void push_back( const std::pair<Quotient, Quotient> & quotient );
 
       /**
          Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
@@ -387,7 +388,7 @@ namespace DGtal
 
          @param quotient the pair \f$(m,k+1)\f$.
       */         
-      void pushBack( const std::pair<Size, Size> & quotient );
+      void pushBack( const std::pair<Quotient, Quotient> & quotient );
 
       /**
 	 Splitting formula, O(1) time complexity. This fraction should
@@ -409,14 +410,14 @@ namespace DGtal
 	 @param f2 (returns) the right part of the split (right pattern).
 	 @param nb2 (returns) the number of repetition of the right pattern
       */
-      void getSplitBerstel( Fraction & f1, Size & nb1, 
-			    Fraction & f2, Size & nb2 ) const; 
+      void getSplitBerstel( Fraction & f1, Quotient & nb1, 
+			    Fraction & f2, Quotient & nb2 ) const; 
 
       /**
 	 @param quotients (returns) the coefficients of the continued
 	 fraction of 'this'.
       */
-      void getCFrac( std::vector<Size> & quotients ) const;
+      void getCFrac( std::vector<Quotient> & quotients ) const;
 
       /**
          @param p1 a numerator.
@@ -537,7 +538,7 @@ namespace DGtal
     bool isValid() const;
 
     /// The total number of fractions in the current tree.
-    Size nbFractions;
+    Quotient nbFractions;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -587,10 +588,10 @@ namespace DGtal
    * @param object the object of class 'LighterSternBrocot' to write.
    * @return the output stream after the writing.
    */
-  // template <typename TInteger, typename TSize, typename TMap>
+  // template <typename TInteger, typename TQuotient, typename TMap>
   // std::ostream&
   // operator<< ( std::ostream & out, 
-  //              const typename LighterSternBrocot<TInteger, TSize, TMap>::Fraction & object );
+  //              const typename LighterSternBrocot<TInteger, TQuotient, TMap>::Fraction & object );
 
 } // namespace DGtal
 

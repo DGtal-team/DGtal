@@ -46,7 +46,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/geometry/surfaces/estimation/CConvolutionKernel.h"
+#include "DGtal/geometry/surfaces/estimation/CConvolutionWeights.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,6 +57,8 @@ namespace DGtal
    * Description of template class 'LocalConvolutionNormalVectorEstimator' <p>
    * \brief Aim: Computes the normal vector at a surface element by
    * convolution of elementary normal vector to adjacent surfel.
+   *
+   * A model of CNormalVectorEstimator.
    *
    * To each $n-1$ signed surfel, an elementary inward normal vector can be
    * defined. At a given surfel, this estimator will compute the
@@ -81,10 +83,12 @@ namespace DGtal
 
     typedef TDigitalSurface DigitalSurface;
     typedef TKernelFunctor KernelFunctor;
-    typedef typename TDigitalSurface::ConstIterator ConstIterator;
-    typedef typename TDigitalSurface::KSpace::Space::RealVector Quantity;
+    typedef DigitalSurface Surface;
+    typedef typename Surface::ConstIterator ConstIterator;
+    typedef typename Surface::KSpace::Space::RealVector Quantity;
+    typedef typename Surface::SCell SCell;
 
-    BOOST_CONCEPT_ASSERT(( CConvolutionKernel<TKernelFunctor>));
+    BOOST_CONCEPT_ASSERT(( CConvolutionWeights<TKernelFunctor>));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -96,7 +100,7 @@ namespace DGtal
      */
     LocalConvolutionNormalVectorEstimator(const DigitalSurface & aSurface,
                                           const KernelFunctor & aFunctor);
-    
+
     /**
      * Destructor.
      */
@@ -105,30 +109,47 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
 
+    /// @return a reference to the associated digital surface.
+    const Surface & surface() const;
+
     /**
      * Initialisation.
      * @param h grid size (must be >0).
      * @param radius topological radius used to specify the size of
      * the convolution.
      */
-    void init(const double h, 
+    void init(const double h,
               const unsigned int radius);
-    
+
+    /**
+       @param scell any signed cell.
+       @return the estimated quantity at cell \e scell.
+     */
+    Quantity eval(const SCell & scell) const;
+
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it);
-    
+    Quantity eval(const ConstIterator& it) const;
+
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, 
-                        const ConstIterator& ite, 
-                        OutputIterator result); 
-    
-    
+    OutputIterator eval(const ConstIterator& itb,
+                        const ConstIterator& ite,
+                        OutputIterator result) const;
+
+    /**
+       Writes on \e result the estimated quantity at all surfels of the digital surface.
+       @param result any model of boost::OutputIterator on Quantity.
+       @return the output iterator after the last write.
+     */
+    template <typename OutputIterator>
+    OutputIterator evalAll( OutputIterator result ) const;
+
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -140,33 +161,33 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    LocalConvolutionNormalVectorEstimator() 
+    LocalConvolutionNormalVectorEstimator()
     {
       myFlagIsInit = false;
     }
-   
- 
+
+
     // ------------------------- Private Datas --------------------------------
   private:
 
-    ///Grid size
-    double myH; 
-    
-    ///True if the init() has been called.
+    /// Grid size
+    double myH;
+
+    /// True if the init() has been called.
     bool myFlagIsInit;
-    
-    ///Radius of the convolution.
+
+    /// Radius of the convolution.
     unsigned int myRadius;
-    
-    ///Copy to the digitale surface
+
+    /// Reference to the digital surface
     const DigitalSurface & mySurface;
 
-    ///Copy of the kernel convolution functor.
+    /// Reference of the kernel convolution functor.
     const KernelFunctor & myKernelFunctor;
-   
+
     // ------------------------- Hidden services ------------------------------
   private:
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.

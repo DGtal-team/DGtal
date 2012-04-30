@@ -48,8 +48,8 @@ int main( int argc, char** argv )
 
   //! [pattern-types]
   typedef DGtal::int32_t Integer;
-  typedef DGtal::int32_t Size;
-  typedef LighterSternBrocot<Integer, Size, StdMapRebinder> SB; // the type of the Stern-Brocot tree
+  typedef DGtal::int32_t Quotient;
+  typedef LighterSternBrocot<Integer, Quotient, StdMapRebinder> SB; // the type of the Stern-Brocot tree
   typedef SB::Fraction Fraction; // the type for fractions
   typedef Pattern<Fraction> MyPattern; // the type for patterns
   //! [pattern-types]
