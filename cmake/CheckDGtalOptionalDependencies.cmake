@@ -8,7 +8,7 @@
 message(STATUS "-------------------------------------------------------------------------------")
 message(STATUS "DGtal Library optional configuration:")
 message(STATUS "   (to change these values, use ccmake, a graphical")
-message(STATUS "   cmake frontend, or define cmake commandline variables") 
+message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
@@ -20,50 +20,50 @@ OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
 
-IF(WITH_C11) 
-SET (LIST_OPTION ${LIST_OPTION} [c++11]\ ) 
+IF(WITH_C11)
+SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
 message(STATUS "      WITH_C11          true")
 ELSE(WITH_C11)
 message(STATUS "      WITH_C11          false")
 ENDIF(WITH_C11)
 
-IF(WITH_GMP) 
-SET (LIST_OPTION ${LIST_OPTION} [GMP]\ ) 
+IF(WITH_GMP)
+SET (LIST_OPTION ${LIST_OPTION} [GMP]\ )
 message(STATUS "      WITH_GMP          true")
 ELSE(WITH_GMP)
 message(STATUS "      WITH_GMP          false")
 ENDIF(WITH_GMP)
 
-IF(WITH_ITK) 
-SET (LIST_OPTION ${LIST_OPTION} [ITK]\ ) 
+IF(WITH_ITK)
+SET (LIST_OPTION ${LIST_OPTION} [ITK]\ )
 message(STATUS "      WITH_ITK          true")
 ELSE(WITH_ITK)
 message(STATUS "      WITH_ITK          false")
 ENDIF(WITH_ITK)
 
-IF(WITH_CAIRO) 
-SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ ) 
+IF(WITH_CAIRO)
+SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ )
 message(STATUS "      WITH_CAIRO        true")
 ELSE(WITH_CAIRO)
 message(STATUS "      WITH_CAIRO        false")
 ENDIF(WITH_CAIRO)
 
-IF(WITH_COIN3D-SOQT) 
-SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ ) 
+IF(WITH_COIN3D-SOQT)
+SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ )
 message(STATUS "      WITH_COIN3D-SOQT  true")
 ELSE(WITH_COIN3D-SOQT)
 message(STATUS "      WITH_COIN3D-SOQT  false")
 ENDIF(WITH_COIN3D-SOQT)
 
-IF(WITH_QGLVIEWER) 
-SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ ) 
+IF(WITH_QGLVIEWER)
+SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
 message(STATUS "      WITH_QGLVIEWER    true")
 ELSE(WITH_QGLVIEWER)
 message(STATUS "      WITH_QGLVIEWER    false")
 ENDIF(WITH_QGLVIEWER)
- 
-IF(WITH_MAGICK) 
-SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ ) 
+
+IF(WITH_MAGICK)
+SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ )
 message(STATUS "      WITH_MAGICK       true")
 ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false")
@@ -114,10 +114,10 @@ IF(WITH_MAGICK)
   ELSE(MAGICK++_FOUND)
     message(FATAL_ERROR "GraphicsMagick++ not found. Check the cmake variables associated to this package or disable it." )
   ENDIF(MAGICK++_FOUND)
-ELSE(WITH_MAGICK)  
+ELSE(WITH_MAGICK)
   UNSET(MAGICK++_INCLUDE_DIR)
   UNSET(MAGICK++_LIBRARIES)
-ENDIF(WITH_MAGICK)  
+ENDIF(WITH_MAGICK)
 
 # -----------------------------------------------------------------------------
 # Look for ITK
@@ -133,29 +133,29 @@ IF(WITH_ITK)
     SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     ADD_DEFINITIONS(" -DWITH_ITK ")
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
-    
+
 
     ## We test if ITK build accepts cpp11 compilers
     IF(WITH_C11)
-      try_compile( CPP11_ITK 
-	${CMAKE_BINARY_DIR}/CMakeTmp
-	${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
-	ITKCPP11BUG
-	OUTPUT_VARIABLE OUTPUT )
+      try_compile( CPP11_ITK
+            ${CMAKE_BINARY_DIR}/CMakeTmp
+            ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
+            ITKCPP11BUG
+            OUTPUT_VARIABLE OUTPUT )
       if ( CPP11_ITK )
-	message(STATUS "ITK accepts [c++11]" )
+        message(STATUS "ITK accepts [c++11]" )
       else ( CPP11_ITK )
-	message(STATUS "ITK does not accept [c++11]" )
-	if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-	  MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).") 
-	endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-      endif ( CPP11_ITK )
+        message(STATUS "ITK does not accept [c++11]" )
+      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).")
+      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+     endif ( CPP11_ITK )
     ENDIF(WITH_C11)
-    
+
   ELSE(ITK_FOUND)
     MESSAGE(FATAL_ERROR "ITK not found. Check the cmake variables associated to this package or disable it.")
   ENDIF(ITK_FOUND)
-ENDIF(WITH_ITK)  
+ENDIF(WITH_ITK)
 
 # -----------------------------------------------------------------------------
 # Look for Cairo (2D graphics library)
@@ -196,7 +196,7 @@ IF(WITH_COIN3D-SOQT)
     set(COIN3D_FOUND_DGTAL 0)
     message(FATAL_ERROR " Coin3d not found. Check the cmake variables associated to this package or disable it." )
   endif ( COIN3D_FOUND )
-  
+
   find_package(SOQT REQUIRED)
   if ( SOQT_FOUND )
     SET(SOQT_FOUND_DGTAL 1)
@@ -209,7 +209,7 @@ IF(WITH_COIN3D-SOQT)
     SET(SOQT_FOUND_DGTAL 0)
     message(FATAL_ERROR  "SoQt not found." Check the cmake variables associated to this package or disable it. )
   endif ( SOQT_FOUND )
-ENDIF(WITH_COIN3D-SOQT)  
+ENDIF(WITH_COIN3D-SOQT)
 
 if ( COIN3D_FOUND AND SOQT_FOUND )
     SET ( WITH_VISU3D_IV TRUE )
@@ -223,8 +223,15 @@ endif( COIN3D_FOUND  AND SOQT_FOUND )
 IF(WITH_QGLVIEWER)
   find_package(QGLVIEWER REQUIRED)
   if(QGLVIEWER_FOUND)
+
     find_package(OpenGL REQUIRED)
-    message(STATUS  "libQGLViewer found.")
+      message(STATUS  "libQGLViewer found.")
+    if (OPENGL_GLU_FOUND)
+      message(STATUS  "  (OpenGL-GLU ok)")
+    else(OPENGL_GLU_FOUND)
+      message(FATAL_ERROR  "libQGLViewer found but your system does not have OpenGL/GLU modules." )
+    endif(OPENGL_GLU_FOUND)
+
     include_directories( ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
     set ( WITH_VISU3D_QGLVIEWER TRUE )
     set(QGLVIEWER_FOUND_DGTAL 1)

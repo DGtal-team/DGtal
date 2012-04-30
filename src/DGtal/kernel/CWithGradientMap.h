@@ -80,7 +80,7 @@ Such object provides a gradient map that associates to each argument some real v
 
 ### Models
 
-- ImplicitFunctionDiff1LinearCellEmbedder
+- ImplicitFunctionDiff1LinearCellEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
 
 ### Notes
 
