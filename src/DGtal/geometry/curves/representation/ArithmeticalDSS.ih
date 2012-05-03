@@ -193,12 +193,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
   Point lastPoint(*it);
 
   
-  Integer deviation = Tools<TInteger,connectivity>
+  Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
-  if (deviation>1) return false;
+  if (deviation > NumberTraits<Integer>::ONE) return false;
   //if the two last points are confounded return true
-  else if (deviation==0) 
+  else if (deviation == NumberTraits<Integer>::ZERO) 
     {
       //add the point to the DSS
       lastIt = it; 
@@ -220,7 +220,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
       myA += lastMove[1]; 
       myB += lastMove[0]; 
       myMu = getRemainder(myUl); 
-      myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+      myOmega = Tools<Integer,connectivity>::norm(myA,myB);
       myNbUpPat = 1;
       myNbLowPat = 1;
 
@@ -243,7 +243,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
-        if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+        if (Tools<Integer,connectivity>::dualNorm(diff[0],diff[1]) == NumberTraits<Integer>::ONE) {
 	  //the two steps are compatible
 
           //update
@@ -266,7 +266,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
             myNbLowPat = 1;
           }
           myMu = getRemainder(myUl); 
-          myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+          myOmega = Tools<Integer,connectivity>::norm(myA,myB);
 
           mySteps.push_back(lastMove);
 
@@ -311,7 +311,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
           myA = myUl[1] - myUf[1]; 
           myB = myUl[0] - myUf[0]; 
           myMu = getRemainder(myUl);
-          myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+          myOmega = Tools<Integer,connectivity>::norm(myA,myB);
           myNbUpPat = 1;
           myNbLowPat = 0;
         } else if (r == myMu+myOmega) { //on the right
@@ -320,7 +320,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
           myA = myLl[1] - myLf[1]; 
           myB = myLl[0] - myLf[0]; 
           myMu = getRemainder(myUl);
-          myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+          myOmega = Tools<Integer,connectivity>::norm(myA,myB);
           myNbUpPat = 0;
           myNbLowPat = 1;
         }
@@ -402,8 +402,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 
   Vector v = Point(*myL)-Point(*myF);
-  if (Tools<TInteger,connectivity>
-      ::norm(v[0],v[1]) <= 1) {//if there are only two points
+  if (Tools<Integer,connectivity>
+      ::norm(v[0],v[1]) <= NumberTraits<Integer>::ONE) {//if there are only two points
 
     //init with nextIt
     firstIt = nextIt;
@@ -437,18 +437,18 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
         //leaning points
         Integer k; //repetitions of the newMainVector
         Vector toUl = (Ul - Point(*firstIt))*s;
-        k = Tools<TInteger,connectivity>::norm(toUl[0],toUl[1])
-	  /Tools<TInteger,connectivity>::norm(myA,myB);
+        k = Tools<Integer,connectivity>::norm(toUl[0],toUl[1])
+	  /Tools<Integer,connectivity>::norm(myA,myB);
         Uf = Ul - newMainVector*k*s;
         myNbUpPat = k;
         Vector toLastIt = Point(*lastIt) - Lf;
-        k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
-	  /Tools<TInteger,connectivity>::norm(myA,myB);
+        k = Tools<Integer,connectivity>::norm(toLastIt[0],toLastIt[1])
+	  /Tools<Integer,connectivity>::norm(myA,myB);
         Ll = Lf + newMainVector*k*s;
         myNbLowPat = k;
         //mu, omega
         myMu = getRemainder(myUl);
-        myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+        myOmega = Tools<Integer,connectivity>::norm(myA,myB);
       } else {
         Uf = Uf + Vector(myB,myA)*s;
         myNbUpPat--;
@@ -467,18 +467,18 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
         //leaning points
         Integer k; //repetitions of the newMainVector
         Vector toLl = Ll - Point(*firstIt);
-        k = Tools<TInteger,connectivity>::norm(toLl[0],toLl[1])
-	  /Tools<TInteger,connectivity>::norm(myA,myB);
+        k = Tools<Integer,connectivity>::norm(toLl[0],toLl[1])
+	  /Tools<Integer,connectivity>::norm(myA,myB);
         Lf = Ll - newMainVector*k*s;
         myNbLowPat = k;
         Vector toLastIt = Point(*lastIt) - Uf;
-        k = Tools<TInteger,connectivity>::norm(toLastIt[0],toLastIt[1])
-	  /Tools<TInteger,connectivity>::norm(myA,myB);
+        k = Tools<Integer,connectivity>::norm(toLastIt[0],toLastIt[1])
+	  /Tools<Integer,connectivity>::norm(myA,myB);
         Ul = Uf + newMainVector*k*s;
         myNbUpPat = k;
         //mu, omega
         myMu = getRemainder(myUl);
-        myOmega = Tools<TInteger,connectivity>::norm(myA,myB);
+        myOmega = Tools<Integer,connectivity>::norm(myA,myB);
       } else {
         Lf = Lf + Vector(myB,myA)*s;
         myNbLowPat--;
@@ -547,12 +547,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
   Point lastPoint(*it);
   Vector lastMove = lastPoint-Point(*myL);
 
-  Integer deviation = Tools<TInteger,connectivity>
+  Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
-  if (deviation>1) return false;
+  if (deviation>NumberTraits<Integer>::ONE) return false;
   //if the two last points are confounded return true
-  else if (deviation==0) return true; 
+  else if (deviation==NumberTraits<Integer>::ZERO) return true; 
   //otherwise
   else if (mySteps.size()<2) {
 
@@ -572,7 +572,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
 
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
-        if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+        if (Tools<Integer,connectivity>::dualNorm(diff[0],diff[1]) == NumberTraits<Integer>::ONE) {
 	  //the two steps are compatible
           return true;
 
@@ -640,12 +640,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 									     const Vector & lastMove )
 {
 
-  Integer deviation = Tools<TInteger,connectivity>
+  Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
-  if (deviation>1) return false;
+  if (deviation > NumberTraits<Integer>::ONE) return false;
   //if the two last points are confounded return true
-  else if (deviation==0) return true; 
+  else if (deviation == NumberTraits<Integer>::ZERO) return true; 
   //otherwise
   else if (mySteps.size()<2) {
 
@@ -665,7 +665,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 
         //difference of the two steps viewed as points
         Vector diff = ( lastMove-mySteps.at(0) );
-        if (Tools<TInteger,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
+        if (Tools<Integer,connectivity>::dualNorm(diff[0],diff[1]) == 1) {
 	  //the two steps are compatible
           return true;
 
