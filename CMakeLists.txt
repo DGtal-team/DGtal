@@ -19,7 +19,6 @@ SET(DGtal_VERSION_PATCH 0devel)
 SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
-
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
