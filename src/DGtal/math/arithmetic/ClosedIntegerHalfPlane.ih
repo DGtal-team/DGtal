@@ -60,6 +60,34 @@ operator()( const Point & p ) const
   return N.dot( p ) <= c;
 }
 //-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+bool
+DGtal::ClosedIntegerHalfPlane<TSpace>::
+isOnBoundary( const Point & p ) const
+{
+  return N.dot( p ) == c;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+typename DGtal::ClosedIntegerHalfPlane<TSpace>::Vector
+DGtal::ClosedIntegerHalfPlane<TSpace>::
+tangent() const
+{
+  return Vector( -N[ 1 ], N[ 0 ] );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+void
+DGtal::ClosedIntegerHalfPlane<TSpace>::
+negate()
+{
+  N.negate(); // = Point( -N[ 0 ], -N[ 1 ] ); 
+  c = -c;
+}
+//-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline

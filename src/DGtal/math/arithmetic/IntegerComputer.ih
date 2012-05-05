@@ -512,6 +512,8 @@ getValidBezout ( Vector2I & v,
                               _m_v0, u, N2, c2 );
   _m_v1 = u * _m_a0; // floor value
   v += _m_v1;
+  ASSERT( N2.dot( A + v ) <= c2 );
+  ASSERT( N2.dot( A + v + u ) > c2 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
