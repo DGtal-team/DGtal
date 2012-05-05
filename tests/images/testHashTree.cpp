@@ -78,6 +78,9 @@ bool testHashTree()
   ///Domain characterized by points a and b
   Image myImage ( 3, 3,0 );
 
+  ///Domain characterized by points a and b
+  Image myImage2 ( TDomain(a,b) );
+
   trace.info() << myImage;
   nbok += true ? 1 : 0;
   nb++;

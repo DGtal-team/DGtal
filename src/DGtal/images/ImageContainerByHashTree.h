@@ -210,6 +210,27 @@ namespace DGtal
 			       const Point & p2,
 			       const Value defaultValue);
 
+      /**
+       * The constructor from  a \a domain,  a 
+       * @a defaultValue (default value: 0) and a \a hashKeySize (default value: 3). In this case, the depth
+       * of the tree is given by the logarithm of the domain size
+       * defined by the two points. 
+       *
+       * @param aDomain the image domain
+       * @param hashKeySize Number of bit of the hash key. This
+       * parameter is important as it influences the amount of
+       * collisions in the hash table. A value K creates an array of
+       * length 2^K with potential unused cells so a compromise between
+       * speed and memory usage is to be done here (default: 3).
+       *
+       * @param defaultValue In order for the tree to be valid it needs
+       * a default value at the root (key = 1)
+       */
+      ImageContainerByHashTree(const Domain &aDomain,
+                               const unsigned int hashKeySize = 3,
+			       const Value defaultValue= NumberTraits<Value>::ZERO);
+
+
       // TODO
       // /** 
       //  * Copy contructor.
