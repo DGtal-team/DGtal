@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <list>
+#include <vector>
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
@@ -100,6 +101,7 @@ namespace DGtal
     typedef typename Base::iterator Iterator;
     typedef typename Base::const_iterator ConstIterator;
     typedef typename std::size_t Size;
+    typedef std::pair<Size,Size> SizeCouple;
 
     // The sequence must contain points.
     BOOST_STATIC_ASSERT
@@ -220,6 +222,8 @@ namespace DGtal
        Given some half-plane \a hs, finds the vertices of this polygon
        that borders this half-plane.
 
+       Complexity is O(n), where n is size().
+
        @param it_next_is_outside (returns) either the vertex that is
        in \a hs and whose successor is not in \a hs, or end() if none
        exists.
@@ -228,10 +232,10 @@ namespace DGtal
        in \a hs and whose successor is in \a hs, or end() if none
        exists.
 
-       @return the number of vertices that are in \a hs.
+       @return the couple (number of vertices that are in \a hs, number of vertices).
      */
-    Size findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
-                  const HalfSpace & hs );
+    SizeCouple findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
+                        const HalfSpace & hs );
 
     /**
        Cuts the convex polygon with the given half-space constraint.
@@ -263,6 +267,101 @@ namespace DGtal
      */
     HalfSpace halfSpace( const Point & A, const Point & B, const Point & inP ) const;
 
+
+    /**
+       Computes the set \a aSet all the digital points that belongs to this polygon.
+
+       @param aSet (returns) the set that contains as output all the
+       digital points of this polygon.
+
+       @todo this method is for now not efficient.
+    */
+    template <typename DigitalSet>
+    void getIncludedDigitalPoints( DigitalSet & aSet ) const;
+
+    // ----------------------- Helper methods ----------------------------------
+    
+    /**
+       Given a point \a inPt on the boundary of \a hs1, computes the
+       closest integer points along the boundary of \a hs1 that are
+       separated by \a hs2. Either the intersection is exact and the
+       returned points lies at this intersection, or \a inPt
+       designates the point that satisfies \a hs2 while \a outPt does
+       not satisfy \a hs2. The two points are then separated by the
+       direction vector of the half-space.
+
+       @param v (returns) the Bezout vector of the direction vector
+       between \a inPt and \a outPt.
+
+       @param inPt (in/out) as input, a point on \a hs1, as output, a
+       point on \a hs1 satisfying \a hs2. @pre \a inPt must belong to \a hs1.
+
+       @param inPt (returns) a point on \a hs1 not satisfying \a hs2.
+
+       @return 'true' iff the intersection oh \a hs1 and \a hs2 is
+       exact. In this case, outPt is equal to inPt and is at the
+       intersection of the two half-space boundaries.
+     */
+    bool getFirstPointsOfHull( Vector & v, 
+                               Point & inPt, // must belong to hs1.
+                               Point & outPt,
+                               const HalfSpace & hs1,
+                               const HalfSpace & hs2 ) const;
+
+    /**
+       Computes the border of the upper and of the lower convex hull
+       from the starting points inPts[0] (up) and outPts[0]
+       down, along the constraint N2.p <= c2 while the vertices
+       satisfy the constraint N3.p <= c3. The vertices of the two
+       borders are stored at the end of inPts and outPts.
+       
+       @param inPts (in, out) as input, contains the first point, as
+       output the sequence of points satisfying \a hs2 and \a hs3.
+       
+       @param outPts (in, out) as input, contains the first point, as
+       output the sequence of points not satisfying \a hs2 and satisfying
+       \a hs3.
+       
+       @param BV the Bezout vector of the vector between inPts[ 0 ] and outPts[ 0 ].
+       
+       @param hs2 the half-space that is approached by the two sequences of points.
+       @param hs3 the limiting half-space which defines the bounds of
+       the approximation.
+    */
+    void getAllPointsOfHull( std::vector<Point> & inPts,
+                             std::vector<Point> & outPts,
+                             const Vector & BV, 
+                             const HalfSpace & hs2,
+                             const HalfSpace & hs3 ) const;
+
+    /**
+       Compute the convex hull of grid points satisfying the
+       constraints N1.P<=c1, N2.P<=c2 and N3.P>=c3.
+       
+       N2.P<=c2 corresponds to the cut two parts of computation: from
+       constraint 1 to constraint 3 and from constraint 3 to
+       constraint 1.
+       
+       The computed vertices are outputed with the output iterator [itOut].
+
+       @param pointRefC1 and pointRefC3 corresponds to grid point lying on
+       the supporting lines of C1 and of C3 resp.
+       
+       @param pos corresponds to an iterator in the list of vertices
+       of the convex, to add the next new vertices
+       
+       NB: the method also computes grid point satisfying N1.P<=c1 and
+       N3.P>=c3 but not satisfying N2.P<=c2. The algorithm uses
+       these points that's why they appear in the code.
+    */
+    template <typename OutputIterator>
+    OutputIterator computeConvexHullBorder( OutputIterator itOut,
+                                            const Point & pointRefC1, 
+                                            const Point & pointRefC3,
+                                            const HalfSpace & hs1,
+                                            const HalfSpace & hs2,
+                                            const HalfSpace & hs3 ) const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -291,9 +390,10 @@ namespace DGtal
     /// to be copied when cloning this object. Avoids many dynamic
     /// allocations when using big integers.
     mutable MyIntegerComputer _ic;
-    mutable Integer _a, _b, _c, _c1, _c3, _den, _g;
+    mutable Integer _a, _b, _c, _c1, _c3, _den, _g, _fl, _ce;
     mutable Point _A, _B, _A1, _B1, _A2, _B2;
-    mutable Vector _N;
+    mutable Vector _N, _DV, _u, _v;
+    mutable std::vector<Point> _inPts, _outPts;
 
     // ------------------------- Hidden services ------------------------------
   protected:

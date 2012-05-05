@@ -113,6 +113,22 @@ namespace DGtal
     */
     bool operator()( const Point & p ) const;
 
+    /**
+       @param p any point in the plane.
+       @return 'true' if p is on the boundary of the half-space (i.e. N.p == c ).
+    */
+    bool isOnBoundary( const Point & p ) const;
+
+    /**
+       @return the tangent vector to the half-plane boundary (ie. ( -N.y, N.x ) ).
+    */
+    Vector tangent() const;
+
+    /**
+       Negates the half-space. Only the boundary is common.
+    */
+    void negate();
+
     // ----------------------- Interface --------------------------------------
   public:
 
