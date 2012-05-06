@@ -49,7 +49,7 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool topbotomOrder=true ) throw(DGtal::IOException)
+DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool topbotomOrder ) throw(DGtal::IOException)
 {
   ifstream infile;
   DGtal::IOException dgtalio;
