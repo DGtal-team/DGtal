@@ -21,7 +21,7 @@ namespace DGtal {
 
 [TOC]
 
-@author David Coeurjolly
+@writers David Coeurjolly
 
 This part of the manual describes the DGtal volumetric package and its
 classes. 
