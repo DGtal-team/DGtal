@@ -482,7 +482,9 @@ getCoefficientIntersection( Integer & fl, Integer & ce,
   getDotProduct( _m_c0, p, N );
   getDotProduct( _m_c1, u, N );
   _m_c2 = c - _m_c0;
-  getFloorCeilDiv( fl, ce, _m_c2, _m_c1 );
+  fl = floorDiv( _m_c2, _m_c1 );
+  ce = ceilDiv( _m_c2, _m_c1 );
+  // getFloorCeilDiv( fl, ce, _m_c2, _m_c1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
