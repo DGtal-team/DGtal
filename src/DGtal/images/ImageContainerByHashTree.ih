@@ -76,7 +76,7 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
 	trace.error() << "ImageContainerByHashTree::Constructor: error !" << endl;
-	trace.error() << "requested depth to hight for the key type" << endl;
+	trace.error() << "requested depth too high for the key type" << endl;
 	trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
 
 	setDepth ( acceptedDepth );
@@ -122,7 +122,7 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
-                      << " requested depth to hight for the key type" << endl;
+                      << " requested depth too high for the key type" << endl;
         trace.error() << "accepted: " << acceptedDepth 
                       << " Requested: " << depth << endl;
         setDepth ( acceptedDepth );
@@ -165,7 +165,7 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
-                      << " requested depth too hight for the key type" << endl;
+                      << " requested depth too high for the key type" << endl;
         trace.error() << "accepted: " << acceptedDepth 
                       << " Requested: " << depth << endl;
         setDepth ( acceptedDepth );
