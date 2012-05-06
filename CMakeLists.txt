@@ -58,3 +58,5 @@ ENDIF(BUILD_EXAMPLES)
 # Install settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
+
+
