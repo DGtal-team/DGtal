@@ -93,7 +93,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref GeometryPackage
   - \ref TopologyPackage
   - \ref ImagePackage
-  - \ref pageMathematicsPackage
+  - \ref pageAlgebraicPackage
   - \ref pageArithmeticPackage
 
 @section manuals_dgtal Helpers and tools
