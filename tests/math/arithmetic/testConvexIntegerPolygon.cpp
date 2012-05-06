@@ -264,7 +264,7 @@ bool exhaustiveTestConvexIntegerPolygon()
           int g = IntegerComputer<int>::staticGcd( x , y );
           x /= g; y /= g;
           int c = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 20 ) - 20;
-          HalfSpace h( Vector( x, y ), 8 );
+          HalfSpace h( Vector( x, y ), c );
           trace.info() << "[" << j << " size=" << cip2.size() << "]"
                        << " cut by (" << x << "," << y << ")," << c << std::endl;
           ++nb, nbok += checkCut( cip2, h ) ? 1 : 0;
@@ -279,6 +279,60 @@ bool exhaustiveTestConvexIntegerPolygon()
   return nbok == nb;
 }
 
+/**
+ * Example of a test. To be completed.
+ *
+ */
+template <typename Space>
+bool specificTestConvexIntegerPolygon()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef typename Space::Point Point;
+  typedef typename Space::Vector Vector;
+  typedef typename Space::Integer Integer;
+  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef typename CIP::Point3I Point3I;
+  typedef typename CIP::Domain Domain;
+  typedef typename CIP::HalfSpace HalfSpace;
+  typedef typename CIP::Iterator Iterator;
+  typedef typename CIP::ConstIterator ConstIterator;
+  typedef typename CIP::SizeCouple SizeCouple;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+
+  CIP cip;
+  cip.push_back( Point( 0, 0 ) );
+  cip.push_back( Point( 8, -3 ) );
+  cip.push_back( Point( 17, 2 ) );
+  cip.push_back( Point( 21, 13 ) );
+  cip.push_back( Point( 13, 19 ) );
+  cip.push_back( Point( 6, 17 ) );
+  cip.push_back( Point( -3, 6 ) );
+  HalfSpace hs1( Vector( -5, 11 ), 8 ); //12
+  HalfSpace hs2( Vector( -3, -11 ), 8 ); //-37
+  ++nb, nbok += checkCut( cip, hs1 ) ? 1 : 0;
+
+  Domain d = cip.boundingBoxDomain();
+  Board2D board;
+  board << SetMode( d.className(), "Grid" ) << d;
+  DigitalSet aSet( d );
+  ConstIterator itv = cip.begin();
+  ++itv; ++itv; ++itv; ++itv; ++itv; ++itv; ++itv;
+  HalfSpace hs( cip.halfSpace( itv ) );
+  Shapes<Domain>::makeSetFromPointPredicate( aSet, hs );
+  Color col1( 100, 180, 100 );
+  Color col2( 130, 200, 130 );
+  board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
+        << aSet;
+  board << SetMode( cip.className(), "Transparent" ) << cip;
+  board.saveEPS( "cip3.eps" );
+  board.clear();
+
+  ++nb, nbok += checkCut( cip, hs2 ) ? 1 : 0;
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -290,7 +344,8 @@ int main( int, char** )
   typedef SpaceND<2, DGtal::BigInteger> Z2I;
   bool res = testConvexIntegerPolygon<Z2>()
     && testConvexIntegerPolygon<Z2I>()
-    && exhaustiveTestConvexIntegerPolygon<Z2>();
+    //&& exhaustiveTestConvexIntegerPolygon<Z2>();
+    && specificTestConvexIntegerPolygon<Z2>();
   //&& exhaustiveTestConvexIntegerPolygon<Z2I>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
