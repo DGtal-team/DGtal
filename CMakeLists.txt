@@ -4,17 +4,21 @@
 project (DGtal)
 cmake_minimum_required (VERSION 2.6) 
 
+# By default, do not warn when built on machines using only VS Express:
+IF(NOT DEFINED CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS)
+    SET(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_NO_WARNINGS ON)
+ENDIF()
+
 # -----------------------------------------------------------------------------
 # Define variables and cmake parameters, and display some information
 # -----------------------------------------------------------------------------
 SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 SET(DGtal_VERSION_MAJOR 0)
-SET(DGtal_VERSION_MINOR 4)
-SET(DGtal_VERSION_PATCH 1devel)
+SET(DGtal_VERSION_MINOR 5)
+SET(DGtal_VERSION_PATCH 0devel)
 SET(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 SET(VERSION ${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH})
-
 # -----------------------------------------------------------------------------
 # Common build options/settings
 # -----------------------------------------------------------------------------
@@ -44,15 +48,15 @@ INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 # Add subdirectories
 #------------------------------------------------------------------------------
 add_subdirectory(src)
-add_subdirectory(tools)
 
 OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
 
-
 # -----------------------------------------------------------------------------
 # Install settings
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/Install.cmake)
+
+

@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/CSinglePassConstRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,88 +50,61 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRange
   /**
-     Description of \b concept '\b CSinglePassRange' <p>
-     @ingroup Concepts
-    
-     \brief Aim: Defines the concept describing a range.
-     
-     <p> Refinement of CSinglePassConstRange
-    
-     <p> Provided types:
+DescriptionDescription of \b concept '\b CSinglePassRange' ###
+@ingroup Concepts
 
-     - Iterator: the iterator type, a model of iterator concept
-          (see boost concept SinglePassIteratorConcept).
+\brief Aim: Defines the concept describing a range.
 
-     <p> Notation:
+### Refinement of CSinglePassConstRange
 
-     - x an object of a model of CSinglePassConstRange.
-     
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t begin </td>
-     <td class=CExpression>      \t x.begin() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      Iterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t end </td>
-     <td class=CExpression>      \t x.end() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      Iterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-    
-     <p> Notes <br>
+### Provided types:
 
-     @tparam T the type that is checked. T should be a model of CSinglePassRange.
+- Iterator: the iterator type, a model of iterator concept
+(see boost concept SinglePassIteratorConcept).
+
+### Notation:
+
+- x an object of a model of CSinglePassConstRange.
+
+Name | Expression | Type requirements | Return type | Precondition | Semantics | Post condition | Complexity|
+-----|------------|-------------------|-------------|--------------|-----------|----------------|-----------|
+begin| x.begin()  |                   | Iterator    |              |           |                |           |
+end  | x.end()    |                   | Iterator    |              |           |                |           |
+
+
+### Invariants
+
+### Models
+
+### Notes
+
+@tparam T the type that is checked. T should be a model of CSinglePassRange.
 
    */
   template <typename T>
-  struct CSinglePassRange :  CSinglePassConstRange<T>
+  struct CSinglePassRange :  CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
    typedef typename T::Iterator Iterator;
 
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<Iterator> ));
- 
+
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
-      Iterator it=i.begin();
-      it=i.end();
+ Iterator it=i.begin();
+ it=i.end();
     };
 
   private:
     T i;
   }; // end of concept CSinglePassRange
-  
+
 } // namespace DGtal
 
 
 
-//                                                                           //
+//                                        //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CSinglePassRange_h

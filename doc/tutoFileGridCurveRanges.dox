@@ -19,14 +19,7 @@ namespace DGtal {
 /*!
 @page tutoFileGridCurveRanges Tutorial "File -> Grid Curve -> Ranges"
 @writers Tristan Roussillon
-
-Table of contents:
- -# \ref secttutofileGridCurveRanges0
- -# \ref secttutofileGridCurveRanges1
- -# \ref secttutofileGridCurveRanges2
- -# \ref secttutofileGridCurveRanges3 
- -# \ref secttutofileGridCurveRanges4 
-  
+[TOC]
 
 \section secttutofileGridCurveRanges0 Declaration
 

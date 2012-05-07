@@ -58,7 +58,7 @@ using namespace DGtal;
 template<typename Image>
 void randomSeeds(Image &image, const unsigned int nb, const int value)
 {
-  typename Image::Point p, low = image.lowerBound();
+  typename Image::Point p, low = image.domain().lowerBound();
   typename Image::Vector ext;
 
   ext = image.extent();
@@ -81,7 +81,7 @@ int main()
   
   //Input image with unsigned char values
   typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
-  Image image ( a, b );
+  Image image ( Z2i::Domain(a, b ));
 
   //We fill the image with the 128 value
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
@@ -114,15 +114,15 @@ int main()
   unsigned int maxv=0;
   //We compute the maximum DT value on the Linf map
   for ( DTLInf::OutputImage::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
-    if ( (*it) > maxv)  maxv = (*it);
+    if ( (*it) > maxv)  maxv = (unsigned int)(*it);
   unsigned int maxv2=0;
   //We compute the maximum DT value on the L2 map
   for ( DTL2::OutputImage::ConstIterator it = resultL2.begin(), itend = resultL2.end();it != itend; ++it)
-    if ( (*it) > maxv2)  maxv2 = (*it);
+    if ( (*it) > maxv2)  maxv2 = (unsigned int)(*it);
   unsigned int maxv1=0;
   //We compute the maximum DT value on the L1 map
   for ( DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend = resultL1.end();it != itend; ++it)
-    if ( (*it) > maxv1)  maxv1 = (*it);
+    if ( (*it) > maxv1)  maxv1 = (unsigned int)(*it);
   
   
   trace.warning() << resultL2 << " maxValue= "<<maxv2<< endl;

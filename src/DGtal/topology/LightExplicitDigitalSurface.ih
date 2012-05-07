@@ -175,6 +175,27 @@ DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfelPredicate() 
 {
   return mySurfelPredicate;
 }
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TSurfelPredicate>
+inline
+const
+typename DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Surfel &
+DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::surfel() const
+{
+  return mySurfel;
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace, typename TSurfelPredicate>
+inline
+void
+DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::setSurfel(const Surfel& aSurfel)
+{
+  mySurfel = aSurfel; 
+  ASSERT( myKSpace.sIsSurfel( mySurfel ) );
+  ASSERT( mySurfelPredicate( mySurfel ) ); 
+
+  myTracker = Tracker( *this, mySurfel ); 
+}
 
 //-----------------------------------------------------------------------------
 // --------- CDigitalSurfaceContainer realization -------------------------

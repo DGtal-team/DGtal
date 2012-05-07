@@ -4,6 +4,7 @@ SET(DGTAL_TESTS_SRC
    dgtalBoard2D-3-custom-classes
    dgtalBoard2D-3-custom-points
    dgtalBoard2D-4-colormaps
+   logoDGtal
    )
 
 
@@ -19,7 +20,7 @@ if( WITH_CAIRO )
     dgtalBoard3DTo2D-5-custom
     dgtalBoard3DTo2D-6
     dgtalBoard3DTo2D-KSCell
-)
+  )
 endif ( WITH_CAIRO )
 
 

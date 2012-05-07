@@ -55,120 +55,120 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CCommutativeRing
   /**
-     Description of \b concept '\b CCommutativeRing' <p>
+Description of \b concept '\b CCommutativeRing' <p>
      @ingroup Concepts
-    
+
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring.
-     
-     <p> Refinement of boost::Assignable<T>,
+
+ ### Refinement of boost::Assignable<T>,
      boost::EqualityComparable<T>, boost::LessThanComparable<T>
-    
-     <p> Associated types :
-    
-     <p> Notation
+
+ ### Associated types :
+
+ ### Notation
      - \t X : A type that is a model of CCommutativeRing
      - \t x, \t y  : Object of type Integer
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-     <tr> 
-     <td class=CName> \b Name </td> 
+
+ ### Definitions
+
+ ### Valid expressions and
+     <table>
+     <tr>
+     <td class=CName> \b Name </td>
      <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CRequirements> \b Type requirements </td>
      <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CPrecondition> \b Precondition </td>
+     <td class=CSemantics> \b Semantics </td>
+     <td class=CPostCondition> \b Postcondition </td>
      <td class=CComplexity> \b Complexity </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Construction from basic integer type </td>
-     <td class=CExpression>      X( i ) </td> 
+     <td class=CExpression>      X( i ) </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       \t X represents the integer \t i</td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       \t X represents the integer \t i</td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Addition </td>
-     <td class=CExpression>      \t x + \t y </td> 
+     <td class=CExpression>      \t x + \t y </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       addition of two numbers </td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       addition of two numbers </td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Subtraction </td>
-     <td class=CExpression>      \t x - \t y </td> 
+     <td class=CExpression>      \t x - \t y </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       subtraction of two numbers </td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       subtraction of two numbers </td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Multiplication </td>
-     <td class=CExpression>      \t x - \t y </td> 
+     <td class=CExpression>      \t x - \t y </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       subtraction of two numbers </td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       subtraction of two numbers </td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Opposite operator </td>
-     <td class=CExpression>      - \t x </td> 
+     <td class=CExpression>      - \t x </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       defines the opposite of \t x (\t x + \t -x = 0) </td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       defines the opposite of \t x (\t x + \t -x = 0) </td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>             \t X should have a 0 (neutral
-     element for addition) </td> 
+     element for addition) </td>
      <td class=CExpression>      \t X( 0 ) </td>
-     <td class=CRequirements>    </td> 
+     <td class=CRequirements>    </td>
      <td class=CReturnType>      \t X </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value 0</td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       the value 0</td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>             \t X should have  a 1 (neutral
-     element for multiplication)</td> 
+     element for multiplication)</td>
      <td class=CExpression>      \t X ( 1 )  </td>
-     <td class=CRequirements>     </td> 
+     <td class=CRequirements>     </td>
      <td class=CReturnType>      \t X </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       the value 1</td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       the value 1</td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
+
+ ### Invariants###
+
+ ### Models###
        DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
-    
-     <p> Notes <br>
-   
-     @tparam T the type that should be a model of commutative ring.
+
+ ### Notes###
+
+@tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : boost::Assignable<T>, 
+  struct CCommutativeRing : boost::Assignable<T>,
     boost::EqualityComparable<T>, boost::LessThanComparable<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -181,16 +181,16 @@ namespace DGtal
       ConceptUtils::sameType( c, T( a+b ) );
       ConceptUtils::sameType( c, T( -a ) );
       ConceptUtils::sameType( c, T( a-b ) );
-      ConceptUtils::sameType( c, T( a*b ) );  
-      ConceptUtils::sameType( c, T( 0 ) );  
-      ConceptUtils::sameType( c, T( 1 ) );  
+      ConceptUtils::sameType( c, T( a*b ) );
+      ConceptUtils::sameType( c, T( 0 ) );
+      ConceptUtils::sameType( c, T( 1 ) );
 
       ///The 0 and 1 neutral elements should be tested.
-    }   
+    }
     // ------------------------- Internals ------------------------------------
   private:
     T a,b,c;
-  
+
   };
 } // namespace DGtal
 

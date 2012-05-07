@@ -40,7 +40,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-
+#include "DGtal/base/CConstBidirectionalRange.h"
 
 using namespace DGtal;
 using namespace std;
@@ -65,7 +65,7 @@ bool testSimpleHyperRectDomain()
   // Checking that HyperRectDomain is a model of CDomain.
   typedef HyperRectDomain<Space4Type> HRDomain4;
   BOOST_CONCEPT_ASSERT(( CDomain< HRDomain4 > ));
-  BOOST_CONCEPT_ASSERT(( CConstRange<HRDomain4> ));
+  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<HRDomain4> ));
       
   ///Empty domain using the default constructor
   HyperRectDomain<Space4Type> myEmptyDomain;
@@ -121,7 +121,7 @@ bool testIterator()
     itend = myHyperRectDomain.rend(); it != itend; ++it )
     trace.warning() << ( *it ) << std::endl;
   
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
   trace.emphase() << "Iterator 2d (permutation initializer list): ";
   for ( HyperRectDomain<TSpace>::ConstSubRange::ConstIterator 
     it = myHyperRectDomain.subRange( {1, 0} ).begin();
@@ -190,7 +190,7 @@ bool testIterator()
     trace.info() << ( *it ) << std::endl;
 
   
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
   trace.emphase() << "Iterator 4d by using order different from lexicographic initializer list: ";
   for ( HyperRectDomain<TSpace4D>::ConstSubRange::ConstIterator
     it = myHyperRectDomain4D.subRange( {3, 2, 1, 0}).begin();

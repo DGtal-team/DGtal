@@ -90,7 +90,10 @@ init( const KSpace* space,
 {
   mySpace = space;
   mySurfelAdj = adj;
-  setSurfel( aSurfel );
+  mySurfel = aSurfel;
+  myOrthDir = mySpace->sOrthDir( aSurfel );
+  myOrthDirect = mySpace->sDirect( aSurfel, myOrthDir );
+
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>

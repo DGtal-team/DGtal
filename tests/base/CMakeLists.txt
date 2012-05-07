@@ -3,9 +3,14 @@ SET(DGTAL_TESTS_SRC
    testOrderedAlphabet
    testCirculator
    testConstIteratorAdapter
-   testModifier
    testProgressBar
    testBasicFunctors
+   testConstRangeAdapter
+   testOutputIteratorAdapter
+   testClock
+   testTrace
+   testStatistics
+   testcpp11
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

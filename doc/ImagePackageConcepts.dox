@@ -1,0 +1,51 @@
+/**
+ * @file imagePackageConcepts.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature imagePackageConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page imgPackageConcepts Image Concepts
+@writers David Coeurjolly
+
+
+
+ @dot
+digraph GIMAGE {
+  rankdir=BT;
+
+subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+    "CValue" -> CImageContainer [label="use",style=dashed] ;
+
+    CImage -> CConstImage;
+    CImage -> CTrivialImage;
+    CConstImage -> CTrivialConstImage;
+    CTrivialImage -> CTrivialConstImage;
+
+    label="Images";
+  }
+  CValue -> boost_DefaultConstructible;
+  CValue -> boost_Assignable;
+  CValue-> boost_EqualityComparable;
+
+  }
+@enddot
+
+*/
+
+}
