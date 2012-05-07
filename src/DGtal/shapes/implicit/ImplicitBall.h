@@ -95,8 +95,7 @@ namespace DGtal
     inline
     Value operator()(const RealPoint &aPoint) const
     {
-      return NumberTraits<Integer>::castToDouble(myRadius) - 
-        (aPoint - myCenter ).norm();
+		return NumberTraits<Integer>::castToDouble((const DGtal::int32_t)myRadius) - (aPoint - myCenter ).norm();
     }
     
     inline

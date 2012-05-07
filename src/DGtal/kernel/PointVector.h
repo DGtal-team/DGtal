@@ -51,7 +51,7 @@
 #include <vector>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CRange.h"
+#include "DGtal/base/CBidirectionalRange.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
@@ -59,8 +59,16 @@
 #include "DGtal/io/Color.h"
 //#include "DGtal/io/Display3D.h"
 
-
-
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -130,7 +138,7 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * PointVector is a model of CRange.
+   * PointVector is a model of CBidirectionalRange.
    * 
    * @see testPointVector.cpp
    *
@@ -212,13 +220,13 @@ namespace DGtal
      */
     PointVector( const Component & x, const Component & y, const Component & z, const Component & t );
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     /**
      * Constructor from initializer list.
      * @param the initializer list.
      */
     PointVector( std::initializer_list<Component> init );
-#endif // CPP0X_INITIALIZER_LIST
+#endif // CPP11_INITIALIZER_LIST
 
     /** Constructor taking apoint and a functor as parameters.
      *  The new point is initialized by the result of functor f
@@ -258,7 +266,7 @@ namespace DGtal
     Self & operator= ( const Self & pv );
 
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
@@ -512,7 +520,7 @@ namespace DGtal
      * @param v a vector that is dot-producted to *this.
      * @return the dot product of this and v.
      */
-    Component dot( const Self &v);
+    Component dot( const Self &v) const;
 
     /**
      * Addition operator with assignement.

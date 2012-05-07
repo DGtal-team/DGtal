@@ -15,7 +15,10 @@
  **/
 
 #pragma once
+
+#ifndef _MSC_VER
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
 
 
 /**
@@ -245,12 +248,12 @@ namespace DGtal
   public:
     
     /**
-     * @return the complement of this set in the domain.
-     *
-     * NB: be aware of the overhead cost when returning the object.
+     * Computes the complement in the domain of this set
+     * @param ito an output iterator
+     * @tparam TOutputIterator a model of output iterator
      */
-    CDigitalSetArchetype<Domain> computeComplement() const
-    { return *this; }
+   template< typename TOutputIterator >
+    void computeComplement(TOutputIterator& ito) const {}
 
     /**
      * Builds the complement in the domain of the set [other_set] in

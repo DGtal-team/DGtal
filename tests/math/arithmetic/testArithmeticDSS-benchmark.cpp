@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testArithmeticDSS.cpp
+ * @file testArithmeticDSS-benchmark.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
@@ -53,7 +53,7 @@ bool checkSubArithmeticDSS( const DSL & D,
 {
   typedef typename DSL::Fraction Fraction;
   typedef typename DSL::Integer Integer;
-  typedef typename DSL::Size Size;
+  typedef typename DSL::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
@@ -67,18 +67,58 @@ bool checkSubArithmeticDSS( const DSL & D,
   while ( ( dss.end() != it_end )
           && ( dss.extendForward() ) ) {}
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
-            << dss.getA() << " " << dss.getB() << " " << dss.getMu() 
+            << dss.getA() << " " << dss.getB() << " " << dss.getMu() << " "
+            << A[0] << " " << A[1] << " " << B[0] << " " << B[1] 
             << std::endl;
 
   return true;
 }
 
+// template <typename Fraction>
+// bool testSubStandardDSLQ0( unsigned int nbtries )
+// {
+//   typedef StandardDSLQ0<Fraction> DSL;
+//   typedef typename Fraction::Integer Integer;
+//   typedef typename Fraction::Quotient Quotient;
+//   typedef typename DSL::Point Point;
+//   typedef typename DSL::ConstIterator ConstIterator;
+//   typedef typename DSL::Point2I Point2I;
+//   typedef typename DSL::Vector2I Vector2I;
+//   IntegerComputer<Integer> ic;
+
+//   std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
+//   for ( unsigned int i = 0; i < nbtries; ++i )
+//     {
+//       Integer a( random() % 12000 + 1 );
+//       Integer b( random() % 12000 + 1 );
+//       if ( ic.gcd( a, b ) == 1 )
+//         {
+//           for ( Integer mu = 0; mu < 5; ++mu )
+//             {
+//               DSL D( a, b, random() % 10000 );
+//               for ( Integer x = 0; x < 10; ++x )
+//                 {
+//                   Integer x1 = random() % 1000;
+//                   Integer x2 = x1 + 1 + ( random() % 1000 );
+//                   Point A = D.lowestY( x1 );
+//                   Point B = D.lowestY( x2 );
+//                   checkSubArithmeticDSS<DSL>( D, A, B );
+//                 }
+//             }
+//         }
+//     }
+//   return true;
+// }
+
 template <typename Fraction>
-bool testSubArithmeticDSS( unsigned int nbtries )
+bool testSubStandardDSLQ0( unsigned int nbtries, 
+                           typename Fraction::Integer moda, 
+                           typename Fraction::Integer modb, 
+                           typename Fraction::Integer modx )
 {
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
-  typedef typename Fraction::Size Size;
+  typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::Point Point;
   typedef typename DSL::ConstIterator ConstIterator;
   typedef typename DSL::Point2I Point2I;
@@ -86,19 +126,20 @@ bool testSubArithmeticDSS( unsigned int nbtries )
   typedef ArithmeticalDSS<ConstIterator, Integer, 4> ADSS;
   IntegerComputer<Integer> ic;
 
+  std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
-      Integer a( random() % 12000 + 1 );
-      Integer b( random() % 12000 + 1 );
+      Integer a( random() % moda + 1 );
+      Integer b( random() % modb + 1 );
       if ( ic.gcd( a, b ) == 1 )
         {
           for ( Integer mu = 0; mu < 5; ++mu )
             {
-              DSL D( a, b, random() % 10000 );
+              DSL D( a, b, random() % (moda+modb) );
               for ( Integer x = 0; x < 10; ++x )
                 {
-                  Integer x1 = random() % 1000;
-                  Integer x2 = x1 + 1 + ( random() % 1000 );
+                  Integer x1 = random() % modx;
+                  Integer x2 = x1 + 1 + ( random() % modx );
                   Point A = D.lowestY( x1 );
                   Point B = D.lowestY( x2 );
                   checkSubArithmeticDSS<DSL>( D, A, B );
@@ -113,12 +154,18 @@ bool testSubArithmeticDSS( unsigned int nbtries )
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int , char** )
+int main( int argc, char** argv)
 {
   typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef SB::Fraction Fraction;
-  testSubArithmeticDSS<Fraction>( 10000 );
+  typedef Fraction::Integer Integer;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 10000;
+  Integer moda = ( argc > 2 ) ? atoll( argv[ 2 ] ) : 12000;
+  Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 12000;
+  Integer modx = ( argc > 4 ) ? atoll( argv[ 4 ] ) : 1000;
+  testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );
   return true;
 }
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

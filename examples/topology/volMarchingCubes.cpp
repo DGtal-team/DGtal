@@ -15,13 +15,14 @@
 //! [volMarchingCubes-basicIncludes]
 #include <iostream>
 #include <queue>
+#include "DGtal/base/Common.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/images/ImageLinearCellEmbedder.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/shapes/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -38,7 +39,7 @@ using namespace Z3i;
 
 void usage( int, char** argv )
 {
-  std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT>" << std::endl;
+  std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <Adj>" << std::endl;
   std::cerr << "\t - displays the boundary of the shape stored in vol file <fileName.vol>." << std::endl;
   std::cerr << "\t - voxel v belongs to the shape iff its value I(v) follows minT <= I(v) <= maxT." << std::endl;
   std::cerr << "\t - 0: interior adjacency, 1: exterior adjacency." << std::endl;
@@ -63,16 +64,16 @@ int main( int argc, char** argv )
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
   SetPredicate<DigitalSet> set3dPredicate( set3d );
-  SetFromImage<DigitalSet>::append<Image>(set3d, image, 
+  SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           minThreshold, maxThreshold);
   trace.endBlock();
   //! [volMarchingCubes-readVol]
-  
-  
+
+
   //! [volMarchingCubes-KSpace]
   trace.beginBlock( "Construct the Khalimsky space from the image domain." );
   KSpace ks;
-  bool space_ok = ks.init( image.domain().lowerBound(), 
+  bool space_ok = ks.init( image.domain().lowerBound(),
                            image.domain().upperBound(), true );
   if (!space_ok)
     {
@@ -95,7 +96,7 @@ int main( int argc, char** argv )
   MySetOfSurfels theSetOfSurfels( ks, surfAdj );
   Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
                                    ks, set3dPredicate,
-                                   image.domain().lowerBound(), 
+                                   image.domain().lowerBound(),
                                    image.domain().upperBound() );
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
@@ -106,7 +107,7 @@ int main( int argc, char** argv )
   //! [volMarchingCubes-makingOFF]
   trace.beginBlock( "Making OFF surface <marching-cube.off>. " );
   typedef CanonicEmbedder< Space > MyEmbedder;
-  typedef 
+  typedef
     ImageLinearCellEmbedder< KSpace, Image, MyEmbedder > CellEmbedder;
   CellEmbedder cellEmbedder;
   MyEmbedder trivialEmbedder;

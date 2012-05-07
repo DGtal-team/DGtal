@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/CImageContainer.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -66,7 +66,7 @@ namespace DGtal
     typedef typename TImage::Value Value;
   
     
-    BOOST_CONCEPT_ASSERT(( CImageContainer<Image> ));
+    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     
 
     /** 

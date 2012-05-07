@@ -135,8 +135,9 @@ You may obtain the following visualisation:
 }
 
 /**
-* \example digitalSetFromVol.cpp
+* \example io/digitalSetFromVol.cpp
 **/
+
 /**
-* \example digitalSetFromPointList.cpp
+* \example io/digitalSetFromPointList.cpp
 **/
