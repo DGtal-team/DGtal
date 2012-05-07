@@ -36,11 +36,11 @@ namespace DGtal {
 
 @writers Felix Fontein, Jacques-Olivier Lachaud
 
-@since 5.0
+@since 0.5
 
 @b LICENSE: LGPL
 
-Part of \ref pageMathematicsPackage.
+Part of \ref pageAlgebraicPackage.
 
 @b Module @b Overview
 
