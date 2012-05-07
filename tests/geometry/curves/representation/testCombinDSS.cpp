@@ -33,26 +33,32 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <fstream>
+#include <list>
+#include <vector>
+
 #include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/geometry/curves/representation/CombinatorialDSS.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "ConfigTest.h"
 #include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
-#include <time.h>
-#include <list>
-#include <vector>
 #include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class CombinDSS.
 ///////////////////////////////////////////////////////////////////////////////
 
 
+typedef FreemanChain<int> Contour;
+typedef FreemanChain<int>::Point Point;
+typedef FreemanChain<int>::Vector Vector;
 
 
 
@@ -61,13 +67,10 @@ using namespace DGtal;
  */
 bool testCombinatorialDSS() 
 {
-  typedef int Coordinate;
-  typedef FreemanChain<Coordinate> ContourType; 
-  typedef ContourType::ConstIterator ConstIterator;
+  typedef Contour::ConstIterator ConstIterator;
   typedef string::const_iterator codeIterator;
-  //typedef CombinatorialDSS<codeIterator, Coordinate> CombinatorialDSS;
-  typedef CombinatorialDSS< list<char>::iterator, Coordinate> CombinatorialDSS_list;
-  typedef CombinatorialDSS<codeIterator, Coordinate> CombinatorialDSS_string;
+  typedef CombinatorialDSS< list<char>::iterator, int> CombinatorialDSS_list;
+  typedef CombinatorialDSS<codeIterator, int> CombinatorialDSS_string;
 
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_list> ));
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_string> ));
@@ -78,8 +81,7 @@ bool testCombinatorialDSS()
   std::string filename = testPath + "samples/france.fc";
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
-  ContourType theContour(fst);
-  //ContourType theContour("0003003003");
+  Contour theContour(fst);
 
   list<char> l;
   //for (unsigned int i=0; i<theContour.size(); ++i )
@@ -141,19 +143,17 @@ bool testCombinatorialDSS()
  */
 bool CompareToArithmetical()
 {
-  typedef int Coordinate;
-  typedef FreemanChain<Coordinate> ContourType; 
-  typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> ReferenceType;
   typedef string::const_iterator codeIterator;
-  typedef CombinatorialDSS<codeIterator, Coordinate> TestedType;
+  typedef CombinatorialDSS<codeIterator, int> TestedType;
+  typedef ArithmeticalDSS<Contour::ConstIterator,int,4> ReferenceType;
 
   trace.beginBlock ( "Comparing to ArithmeticalDSS" );
 
   std::string filename = testPath + "samples/manche.fc";
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
-  ContourType theContour(fst);
-  ContourType::ConstIterator it = theContour.begin();
+  Contour theContour(fst);
+  Contour::ConstIterator it = theContour.begin();
   TestedType C;
   C.init( it );
   ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
@@ -209,11 +209,8 @@ bool CompareToArithmetical()
 
 bool testInGreedySegmentation( )
 {
-  typedef FreemanChain<int> Contour; 
-  typedef Contour::Point Point;
-  typedef Contour::Vector Vector;
   typedef CombinatorialDSS<string::const_iterator, int> combinDSS;
-  typedef GreedySegmentation<combinDSS> combinDecomposition;
+  typedef GreedySegmentation<combinDSS> combinSegmentation;
 
   std::string filename = testPath + "samples/BigBall.fc";
   std::fstream fst;
@@ -221,9 +218,9 @@ bool testInGreedySegmentation( )
   Contour theContour(fst);
 
   trace.beginBlock ( "Test CombinatorialDSS in greedy segmentation" );
-  combinDecomposition combin_dec( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
+  combinSegmentation combin_dec( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
   vector<combinDSS> theCombinDSS;
-  for ( combinDecomposition::SegmentComputerIterator i = combin_dec.begin();
+  for ( combinSegmentation::SegmentComputerIterator i = combin_dec.begin();
        i != combin_dec.end(); ++i ) 
     {
       combinDSS c( *i );
@@ -233,6 +230,63 @@ bool testInGreedySegmentation( )
   trace.endBlock();
 
   return ok;
+}
+
+
+bool showGreedySegmantation()
+{
+  trace.beginBlock ( "Example dgtalboard-greedy-combindss" );
+
+  typedef CombinatorialDSS<string::const_iterator,int> combinDSS;
+  typedef GreedySegmentation<combinDSS> Decomposition;
+  typedef ArithmeticalDSS< combinDSS::ConstPointIterator, int, 4> arithDSS;
+
+  std::stringstream ss(stringstream::in | stringstream::out);
+  ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
+  Contour theContour( ss );
+
+  Decomposition theDecomposition( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
+  Point p1( 0, 0 );
+  Point p2( 31, 31 );
+  Domain domain( p1, p2 );
+  Board2D aBoard;
+  aBoard << SetMode( domain.className(), "Grid" )
+   << domain
+   << SetMode( "PointVector", "Grid" )
+   << theContour;
+  //for each segment
+  aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
+  string className = "ArithmeticalDSS/BoundingBox";
+  Point p;
+  p.at(0) = 31;
+  p.at(1) = 16;
+  for ( Decomposition::SegmentComputerIterator i = theDecomposition.begin();
+  i != theDecomposition.end(); ++i ) 
+    {
+      combinDSS segment(*i);
+      // set the position of the combinatorilDSS and compute the start point of
+      // the next one.
+      segment.setPosition( p );
+      Vector v = segment.getLastPoint() - segment.getFirstPoint();
+      combinDSS::ConstIterator it = segment.end();
+      Vector lastStep = segment.displacement( *(--it) );
+      p += v - lastStep;
+
+      // Build an ArithmeticDSS from the CombinatorialDSS.
+      arithDSS toShow( segment.pointBegin() );
+      while( toShow.end() != segment.pointEnd() )
+        {
+          toShow.extendForward();
+        }
+      std::cout << segment << std::endl;
+      std::cout << toShow << std::endl;
+      aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) )
+       << toShow; // draw each segment
+      
+    } 
+  aBoard.saveSVG("dgtalboard-greedy-combindss.svg");
+  trace.endBlock();
+  return 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -247,7 +301,9 @@ int main( int argc, char** argv )
 
   bool res = testCombinatorialDSS()     
     && CompareToArithmetical() 
-    && testInGreedySegmentation();
+    && testInGreedySegmentation()
+    && showGreedySegmantation();
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

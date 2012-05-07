@@ -164,6 +164,15 @@ DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator= ( const Self & other
   return *this;
 }
 
+
+template < typename TConstIterator, typename TInteger >
+inline
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Self 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSelf( ) const
+{
+  return CombinatorialDSS( );
+}
+
 /**
  * @param other the object to compare with.
  */
