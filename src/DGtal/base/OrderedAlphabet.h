@@ -396,9 +396,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
-#if defined(BUILD_INLINE)
 #include "DGtal/base/OrderedAlphabet.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

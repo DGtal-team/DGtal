@@ -43,7 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/images/CValue.h"
+#include "DGtal/base/CLabel.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CColorMap
   /**
-   * Description of \b concept \b 'CColorMap' <p>
+   * DescriptionDescription of \b concept \b 'CColorMap' <p>
    * @ingroup Concepts
    * \brief Aim: Defines the concept describing a color map. A color map converts
    * a value within a given range into an RGB triple.
@@ -69,7 +69,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
@@ -80,21 +80,21 @@ namespace DGtal
    * <td> </td> <td> </td> <td> </td> <td> </td>
    * </tr>
    * <tr> 
-   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>LibBoard::Color</td>
+   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>DGtal::Color</td>
    * <td>min &le; value &le; max </td> <td>Returns a color computed after the position of \em value \em within
    * the range [min,max]</td> <td> </td> <td> </td>
    * </tr>
    * </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    *        GradientColorMap
    *        HueShadeColorMap
    *        ColorBrightnessColorMap 
    *        GrayScaleColorMap
    *        RandomColorMap
-   * <p> Notes <br>
+   * <p> Notes###
    */
   template <typename CMap>
   struct CColorMap
@@ -104,7 +104,7 @@ namespace DGtal
     
     typedef typename CMap::Value Value;
     
-    BOOST_CONCEPT_ASSERT(( CValue<Value> ));
+    BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
     
     BOOST_CONCEPT_USAGE( CColorMap )
     {

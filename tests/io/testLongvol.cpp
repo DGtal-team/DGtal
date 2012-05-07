@@ -62,7 +62,7 @@ bool testLongvol()
   
   typedef ImageContainerBySTLVector<Z3i::Domain,DGtal::uint64_t> Image;
   typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
-  Image image(a,b);
+  Image image(Z3i::Domain(a,b));
   
   image.setValue(c,45693);
   
@@ -71,10 +71,12 @@ bool testLongvol()
   Image image2 =  LongvolReader<Image>::importLongvol("export-longvol.longvol");
   
   bool allFine= true;
+  Image::ConstIterator ito = image.begin();
   for(Image::ConstIterator it = image2.begin(), itend=image2.end();
-      it != itend; ++it)
-    allFine &= (image(it) == image2(it));
-
+      it != itend; ++it, ++ito)
+    if (((*it) != 0 ) || ((*ito) != 0))
+    allFine &= ( ((*it)*(*ito)) != 0);
+      
   nbok += allFine ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "

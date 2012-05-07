@@ -1,12 +1,12 @@
 
 /**
  * @file topologyPackageConcepts.dox
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/03/16
  *
- * Documentation file for feature topologyPackageConcepts
+ * Documentation file for feature TopologyPackageConcepts
  *
  * This file is part of the DGtal library.
  */
@@ -18,33 +18,87 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page topoPackageConcepts Topology Concepts
-@writers David Coeurjolly
-
-
+@page TopologyPackageConcepts Topology Concepts and Models
+@writers Jacques-Olivier Lachaud
 
  @dot   
-digraph GTOPO {
-  rankdir=BT;
+digraph GTOPOLOGY {
+    rankdir= BT
+
+    subgraph cluster_ext {
+	rank = same;
+        style=invis;
+        subgraph cluster_1 {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="base";
+
+                 CConstSinglePassRange ; 
+                 CPredicate; 
+        }
+        subgraph cluster_2 {
+                 style=filled;
+                 color=white;
+                 node [style=filled,color=orange];
+                 label="boost";
+
+                 boost_CopyConstructible;
+        }
+    }
   
-subgraph cluster_0 {
-    style=filled;
-    color=lightgrey;
-    node [style=filled,color=white];
-          
-    CDigitalSurfaceContainer;
-    CDigitalSurfaceTracker;
-    CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
-    
-    CDomainAdjacency -> CAdjacency ; 
-    label="Topology";
-  }
+    subgraph cluster_0 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label="topology (main concepts)";
+
+        CDigitalSurfaceContainer;
+        CDigitalSurfaceTracker;
+	CUndirectedSimpleGraph;
+        CDomainAdjacency; 
+	CAdjacency;
+        CUndirectedSimpleLocalGraph;
+        CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
+        CDomainAdjacency -> CAdjacency ; 
+        CVertexPredicate;
+        CSurfelPredicate;
+    }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
-    CUndirectedSimpleGraph -> CConstSinglePassRange;
-   
- 
-  }
+    CUndirectedSimpleLocalGraph -> CConstSinglePassRange;
+    CVertexPredicate -> CPredicate;
+    CSurfelPredicate -> CPredicate;
+  
+    subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="topology (main models)";
+
+        MetricAdjacency;
+        DigitalSurface;
+
+        DigitalSetBoundary;
+        ImplicitDigitalSurface;
+        LightImplicitDigitalSurface;
+        SetOfSurfels;
+        ExplicitDigitalSurface;
+        LightExplicitDigitalSurface;
+
+
+    }
+
+    MetricAdjacency -> CAdjacency;
+    DigitalSurface -> CUndirectedSimpleGraph;
+    DigitalSetBoundary -> CDigitalSurfaceContainer;
+    ImplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightImplicitDigitalSurface -> CDigitalSurfaceContainer;
+    SetOfSurfels -> CDigitalSurfaceContainer;
+    ExplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightExplicitDigitalSurface -> CDigitalSurfaceContainer;
+
+}
 @enddot
 
 */

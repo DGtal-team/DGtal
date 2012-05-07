@@ -1,0 +1,89 @@
+
+/**
+ * @file ArithmeticPackageConcepts.dox
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature ArithmeticPackageConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page pageArithmeticPackageConcepts Arithmetic Concepts and Models
+@writers Jacques-Olivier Lachaud
+
+ @dot   
+digraph GARITHMETIC {
+    rankdir= BT
+
+    subgraph cluster_ext {
+	rank = same;
+        style=invis;
+        subgraph cluster_packages {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="base";
+
+                 CBackInsertable;
+                 CConstSinglePassRange;
+        }
+        subgraph cluster_boost {
+                 style=filled;
+                 color=white;
+                 node [style=filled,color=orange];
+                 label="boost";
+
+                 boost_CopyConstructible;
+                 boost_DefaultConstructible;
+                 boost_Assignable;
+        }
+    }
+  
+    subgraph cluster_concepts {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label="arithmetic (main concepts)";
+
+        CPositiveIrreducibleFraction;
+    }
+    CPositiveIrreducibleFraction -> CBackInsertable;
+    CPositiveIrreducibleFraction -> CConstSinglePassRange;
+    CPositiveIrreducibleFraction -> boost_DefaultConstructible;
+    CPositiveIrreducibleFraction -> boost_CopyConstructible;
+    CPositiveIrreducibleFraction -> boost_Assignable;
+  
+    subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="arithmetic (main models)";
+
+        SternBrocot_Fraction;
+        LightSternBrocot_Fraction;
+        LighterSternBrocot_Fraction;
+        IntegerComputer
+    }
+
+    SternBrocot_Fraction -> CPositiveIrreducibleFraction;
+    LightSternBrocot_Fraction -> CPositiveIrreducibleFraction;
+    LighterSternBrocot_Fraction -> CPositiveIrreducibleFraction;
+    IntegerComputer -> boost_DefaultConstructible;
+    IntegerComputer -> boost_CopyConstructible;
+    IntegerComputer -> boost_Assignable;
+}
+@enddot
+
+*/
+
+}

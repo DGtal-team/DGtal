@@ -125,6 +125,17 @@ DGtal::GeometricalDSS<TConstIterator>::getReverse() const
   return Reverse(); 
 }
 
+
+template <typename TConstIterator>
+inline
+typename DGtal::GeometricalDSS<TConstIterator>::Self
+DGtal::GeometricalDSS<TConstIterator>::getSelf() const
+{
+  return Self(); 
+}
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
