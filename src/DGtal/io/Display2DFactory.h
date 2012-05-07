@@ -186,15 +186,18 @@ void draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & );
     
 // ImageContainerByHashTree
 template <typename C, typename Domain, typename Value, typename HashKey>
-  void drawImageRecursive( DGtal::Board2D & aBoard, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-			   HashKey key,
-			   const double p[2],
-			   const double len,
-			   LibBoard::Board & board,
-			   const C& cmap );
+void drawImageRecursive( DGtal::Board2D & aBoard, 
+                         const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                         HashKey key,
+                         const double p[2],
+                         const double len,
+                         LibBoard::Board & board,
+                         const C& cmap );
 
 template <typename C, typename Domain, typename Value, typename HashKey>
-  void drawImage( Board2D & board, const experimental::ImageContainerByHashTree<Domain, Value, HashKey> &, const Value &, const Value & );
+void drawImage( Board2D & board,
+                const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> &, 
+                const Value &, const Value & );
 // ImageContainerByHashTree
 
 

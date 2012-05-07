@@ -54,6 +54,17 @@
 
 //#include "DGtal/io/Display3D.h"
 
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -340,8 +351,7 @@ namespace DGtal
    *
    * @tparam dim the dimension of the digital space.
    * @tparam TInteger the Integer class used to specify the arithmetic computations (default type = int32).
-   * NB: Essentially a backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   * NB: Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
   */
   template < Dimension dim,
              typename TInteger = DGtal::int32_t >
@@ -387,7 +397,7 @@ namespace DGtal
 
     template <typename CellType>
     struct AnyCellCollection : public std::deque<CellType> {
-      typedef CellType ValueType;
+      typedef CellType Value;
       typedef typename std::deque<CellType> Container;
       typedef typename std::deque<CellType>::iterator Iterator;
       typedef typename std::deque<CellType>::const_iterator ConstIterator;
@@ -471,12 +481,12 @@ namespace DGtal
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the minimal coordinate in the [k]-dimension.
-    */
+     */
     Integer min( Dimension k ) const;
     /**
        @param k a coordinate (from 0 to 'dim()-1').
        @return the maximal coordinate in the [k]-dimension.
-    */
+     */
     Integer max( Dimension k ) const;
     /**
        @return the lower bound for digital points in this space.
@@ -674,7 +684,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void uSetCoord( Cell & c, Dimension k, const Integer & i ) const;
+    void uSetCoord( Cell & c, Dimension k, Integer i ) const;
 
     /**
      * Sets the [k]-th digital coordinate of [c] to [i].
@@ -682,7 +692,7 @@ namespace DGtal
      * @param k any valid dimension.
      * @param i an integer coordinate within the space.
      */
-    void sSetCoord( SCell & c, Dimension k, const Integer & i ) const;
+    void sSetCoord( SCell & c, Dimension k, Integer i ) const;
 
     /**
      * Sets the Khalimsky coordinates of [c] to [kp].
@@ -943,8 +953,7 @@ namespace DGtal
        @param p any cell.
        @param k the tested coordinate.
        
-       @return true if [p] cannot have its [k]-coordinate augmented
-       without leaving the space.
+       @return true if [p] has its [k]-coordinate within the allowed bounds.
     */
     bool uIsInside( const Cell & p, Dimension k ) const;
  
@@ -1116,6 +1125,15 @@ namespace DGtal
        without leaving the space.
     */
     bool sIsMax( const SCell & p, Dimension k ) const;
+
+    /**
+       Useful to check if you are going out of the space.
+       @param p any cell.
+       @param k the tested coordinate.
+       
+       @return true if [p] has its [k]-coordinate within the allowed bounds.
+    */
+    bool sIsInside( const SCell & p, Dimension k ) const;
 
     /**
        Useful to check if you are going out of the space.

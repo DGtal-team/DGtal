@@ -247,12 +247,19 @@ Steps:
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ArithmeticalDSS & operator= ( const Self & other );
+    Self& operator= ( const Self & other );
 
     /**
      * @return a reverse version of '*this'.
      */
     Reverse getReverse() const;
+    
+    /** 
+     * @return an instance of Self 
+     */
+    
+    Self getSelf() const;
+    
 
     /**
      * Equality operator.

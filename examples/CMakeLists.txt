@@ -2,9 +2,9 @@
 
 
 # Make sure the compiler can find include files.
-if ( CPP0X_INITIALIZER_LIST )
+if ( CPP11_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif ( CPP0X_INITIALIZER_LIST )
+endif ( CPP11_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
 include_directories (${PROJECT_SOURCE_DIR}/src/)
@@ -25,8 +25,10 @@ configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in
 #------Examples subdirectories ------
 
 add_subdirectory(io)
+add_subdirectory(images)
 add_subdirectory(geometry)
 add_subdirectory(doc-examples)
 add_subdirectory(tutorial-examples)
 add_subdirectory(topology)
+add_subdirectory(math)
 

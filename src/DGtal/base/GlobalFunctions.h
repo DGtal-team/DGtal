@@ -61,7 +61,7 @@ namespace DGtal
    * @return the minimum between a and b.
    */
   template<typename T>
-  T min(const T & a, const T&b)
+  T minDGtal(const T & a, const T & b)
   {
     BOOST_CONCEPT_ASSERT((boost::EqualityComparable<T>));
     BOOST_CONCEPT_ASSERT((boost::LessThanComparable<T>));
@@ -82,7 +82,7 @@ namespace DGtal
    * @return the maximum between a and b.
    */
   template<typename T>
-  T max(const T & a, const T&b)
+  T maxDGtal(const T & a, const T & b)
   {
     BOOST_CONCEPT_ASSERT((boost::EqualityComparable<T>));
     BOOST_CONCEPT_ASSERT((boost::LessThanComparable<T>));

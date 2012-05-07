@@ -29,7 +29,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
-
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
@@ -377,7 +376,7 @@ namespace DGtal
 
 
 // AngleLinearMinimizer
-INLINE
+inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::AngleLinearMinimizer & /*a*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
@@ -484,7 +483,8 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDSS<TConstItera
 // GeometricalDCA
 template <typename TConstIterator>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstIterator> & /*g*/,
+					 std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_GeometricalDCA; 
@@ -512,7 +512,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::HyperRectDomain<TSpace> & 
 // ImageContainerByHashTree
 template <typename Domain, typename Value, typename HashKey  >
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const experimental::ImageContainerByHashTree<Domain, Value, HashKey > & /*icbht*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ImageContainerByHashTree<Domain, Value, HashKey > & /*icbht*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_ImageContainerByHashTree;

@@ -79,7 +79,7 @@ public:
   iterator_type base() const
   { return current; }
 
-  const reference operator*() const
+  /*const*/ reference operator*() const
   { return *prev; }
 
   reference operator*()
@@ -313,7 +313,7 @@ namespace DGtal
     typedef TPoint& reference;
     typedef typename TPoint::Dimension Dimension;
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     HyperRectDomain_subIterator(const TPoint & p, const TPoint& lower,
         const TPoint &upper,
         std::initializer_list<Dimension> subDomain)

@@ -115,7 +115,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPPM(const std::string & filename, const Image &aImage, 
-        const Value & minV, const Value & maxV);
+			  const Value & minV, const Value & maxV, bool topbotomOrder=true);
 
     /** 
      * Export an Image with PPM3Dformat. The colormap specified
@@ -149,7 +149,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
-        const Value & minV, const Value & maxV,  bool saveASCII=false);
+			  const Value & minV, const Value & maxV,  bool saveASCII=false, bool topbotomOrder=true);
   
 
     /** 
@@ -165,7 +165,7 @@ namespace DGtal
      * @return true if no errors occur.
      */
     static bool exportPGM3D(const std::string & filename, const Image &aImage, 
-          const Value & minV, const Value & maxV);
+			    const Value & minV, const Value & maxV);
     
   };
 }//namespace

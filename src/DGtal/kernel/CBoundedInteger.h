@@ -54,56 +54,56 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBoundedInteger
   /**
-     Description of \b concept '\b CBoundedInteger' <p>     
+DescriptionDescription of \b concept '\b CBoundedInteger' <p>
      @ingroup Concepts
-    
-     \brief Aim: The concept CBoundedInteger specifies what are the bounded 
+
+     \brief Aim: The concept CBoundedInteger specifies what are the bounded
      integer numbers. Hence, it is a refinement of CInteger Concept
      ensuring that the numbers are bounded.
-     
-     <p> Refinement of CInteger<T>
-    
-     <p> Associated types :
-    
-     <p> Notation
+
+ ### Refinement of CInteger<T>
+
+ ### Associated types :
+
+ ### Notation
      - \t X : A type that is a model of CBoundedInteger
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
+
+ ### Definitions
+
+ ### Valid expressions and
      <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
+     <tr>
+     <td class=CName> \b Name </td>
      <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CRequirements> \b Type requirements </td>
      <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CPrecondition> \b Precondition </td>
+     <td class=CSemantics> \b Semantics </td>
+     <td class=CPostCondition> \b Postcondition </td>
      <td class=CComplexity> \b Complexity </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsBounded. </td>
-     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td> 
+     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td>
      <td class=CRequirements>    TagTrue </td>
      <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       </td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br> 
-     
+
+ ### Invariants###
+
+ ### Models###
+
      short, int, unsigned int, long long, unsigned long long,
      uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
-    
-     <p> Notes <br>
-    
-     @tparam T the type that is checked. T should be a model of
+
+ ### Notes###
+
+@tparam T the type that is checked. T should be a model of
      CBoundedInteger.
    */
   template <typename T>
@@ -113,22 +113,22 @@ namespace DGtal
   public:
     BOOST_CONCEPT_USAGE(CBoundedInteger)
     {
-      
+
       // Bounded Integer should have a TagTrue tag to IsBounded type.
       ConceptUtils::checkTrue( myIsBounded );
-  
+
     }
-      
+
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
     typename NumberTraits<T>::IsBounded myIsBounded;
-   
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CBoundedInteger
-  
+
 } // namespace DGtal
 
 //                                                                           //

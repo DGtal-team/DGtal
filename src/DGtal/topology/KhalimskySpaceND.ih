@@ -731,7 +731,7 @@ template < Dimension dim, typename TInteger>
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger>::
-uSetCoord( Cell & c, Dimension k, const Integer & i ) const
+uSetCoord( Cell & c, Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
@@ -744,7 +744,7 @@ template < Dimension dim, typename TInteger>
 inline
 void
 DGtal::KhalimskySpaceND< dim, TInteger>::
-sSetCoord( SCell & c, Dimension k, const Integer & i ) const
+sSetCoord( SCell & c, Dimension k, Integer i ) const
 {
   ASSERT( k < DIM );
   i = ( i << 1 ) + ( c.myCoordinates[ k ] & 1 );
@@ -880,7 +880,7 @@ bool
 DGtal::KhalimskySpaceND< dim, TInteger>::
 uIsSurfel( const Cell & b ) const
 {
-  return udim( b ) == ( DIM - 1 );
+  return uDim( b ) == ( DIM - 1 );
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>
@@ -1201,6 +1201,16 @@ DGtal::KhalimskySpaceND< dim, TInteger >::
 sIsMax( const SCell & p, Dimension k ) const
 {
   return p.myCoordinates[ k ] >= myCellUpper.myCoordinates[ k ];
+}
+//-----------------------------------------------------------------------------
+template < Dimension dim, typename TInteger>
+inline
+bool 
+DGtal::KhalimskySpaceND< dim, TInteger>::
+sIsInside( const SCell & p, Dimension k ) const
+{
+  return (p.myCoordinates[ k ] <= sLast(p).myCoordinates[ k ]) &&
+    (p.myCoordinates[ k ] >= sFirst(p).myCoordinates[ k ]);
 }
 //-----------------------------------------------------------------------------
 template < Dimension dim, typename TInteger>

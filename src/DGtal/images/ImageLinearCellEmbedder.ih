@@ -29,7 +29,10 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-//////////////////////////////////////////////////////////////////////////////
+
+//self include
+#include "DGtal/images/ImageLinearCellEmbedder.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
@@ -56,8 +59,8 @@ template < typename TKSpace, typename TImage, typename TEmbedder >
 inline
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 ImageLinearCellEmbedder( const ImageLinearCellEmbedder & other )
-  : myPtrK( other.myPtrK ), 
-    myPtrImage( other.myPtrImage ), 
+  : myPtrK( other.myPtrK ),
+    myPtrImage( other.myPtrImage ),
     myPtrEmbedder( other.myPtrEmbedder ),
     myIsoValue( other.myIsoValue )
 {}
@@ -80,10 +83,10 @@ operator=( const ImageLinearCellEmbedder & other )
 //-----------------------------------------------------------------------------
 template < typename TKSpace, typename TImage, typename TEmbedder >
 inline
-void 
+void
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 init( const KSpace & K, const Image & f, const Embedder & e,
-      Value iso_value )
+      ImageValue iso_value )
 {
   myPtrK = &K;
   myPtrImage = &f;
@@ -107,22 +110,31 @@ typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 embedCell( const Cell & cell ) const
 {
+  return this->operator()( cell );
+}
+//-----------------------------------------------------------------------------
+template < typename TKSpace, typename TImage, typename TEmbedder >
+inline
+typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
+DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
+operator()( const Cell & cell ) const
+{
   ASSERT( this->isValid() );
   // embed first the spel related to the cell.
   Point p1( myPtrK->uCoords( cell ) );
   RealPoint x1( embed( p1 ) );
-  Value y1 = (*myPtrImage)( p1 );
-  for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell ); 
+  ImageValue y1 = (*myPtrImage)( p1 );
+  for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell );
         qit != 0; ++qit )
     { // cell is closed along this dimension.
       // estimate coordinate by interpolation, looking for f(...)=0.
       Dimension k = *qit;
       Point p2( p1 ); --p2[ k ];
       RealPoint x2( embed( p2 ) );
-      Value y2 = (*myPtrImage)( p2 );
-      x1[ k ] -= NumberTraits<Value>::castToDouble( y1 - myIsoValue ) 
+      ImageValue y2 = (*myPtrImage)( p2 );
+      x1[ k ] -= NumberTraits<ImageValue>::castToDouble( y1 - myIsoValue )
         * ( x2[ k ] - x1[ k ] )
-        / NumberTraits<Value>::castToDouble( y2 - y1 );
+        / NumberTraits<ImageValue>::castToDouble( y2 - y1 );
     }
   return x1;
 }
@@ -137,18 +149,18 @@ embedSCell( const SCell & scell ) const
   // embed first the spel related to the cell.
   Point p1( myPtrK->sCoords( scell ) );
   RealPoint x1( embed( p1 ) );
-  Value y1 = (*myPtrImage)( p1 );
-  for ( typename KSpace::DirIterator qit = myPtrK->sOrthDirs( scell ); 
+  ImageValue y1 = (*myPtrImage)( p1 );
+  for ( typename KSpace::DirIterator qit = myPtrK->sOrthDirs( scell );
         qit != 0; ++qit )
     { // cell is closed along this dimension.
       // estimate coordinate by interpolation, looking for f(...)=0.
       Dimension k = *qit;
       Point p2( p1 ); --p2[ k ];
       RealPoint x2( embed( p2 ) );
-      Value y2 = (*myPtrImage)( p2 );
-      x1[ k ] -= NumberTraits<Value>::castToDouble( y1 - myIsoValue ) 
+      ImageValue y2 = (*myPtrImage)( p2 );
+      x1[ k ] -= NumberTraits<ImageValue>::castToDouble( y1 - myIsoValue )
         * ( x2[ k ] - x1[ k ] )
-        / NumberTraits<Value>::castToDouble( y2 - y1 );
+        / NumberTraits<ImageValue>::castToDouble( y2 - y1 );
     }
   return x1;
 }
@@ -191,7 +203,7 @@ isValid() const
 template < typename TKSpace, typename TImage, typename TEmbedder >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder> & object )
 {
   object.selfDisplay( out );
