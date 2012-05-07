@@ -474,7 +474,10 @@ getFirstPointsOfHull
   std::cerr << "[CIP::getFirstPointsOfHull] in=" << inPt 
             << " out=" << outPt << " v=" << v << std::endl;
 #endif //DEBUG_ConvexIntegerPolygon
-
+  ASSERT( hs1.isOnBoundary( inPt ) );
+  ASSERT( hs1.isOnBoundary( outPt ) );
+  ASSERT( hs2( inPt ) );
+  ASSERT( ( exactIntersection && hs2( outPt ) ) || ( ! exactIntersection && ! hs2( outPt ) ) );
   return exactIntersection;
 }
 
@@ -507,6 +510,8 @@ getAllPointsOfHull( std::vector<Point> & inPts,
                     const HalfSpace & hs2,
                     const HalfSpace & hs3 ) const
 {
+  ASSERT( hs2.N != hs3.N );
+
   // _A and _B represents the last computed vertex above and below the constraint resp.
   // _u, _v pair of Bezout vectors.
   _v = BV;
@@ -527,24 +532,56 @@ getAllPointsOfHull( std::vector<Point> & inPts,
                 << " B=" << _B << " v= " << _v << std::endl;
 #endif // DEBUG_ConvexIntegerPolygon
       if ( _ic.dotProduct( _v, hs2.N ) < NumberTraits<Integer>::ZERO ) 
-	{ // second configuration, we find a new B.
+	{ //------ second configuration, we find a new B --------------------
 	  _ic.getCoefficientIntersection( _fl, _ce,
                                           _B, _v, hs2.N, hs2.c );
-	  _B += _v * _fl;
-	  outPts.push_back( _B );
+          _u = _B; _u += _v *_fl;
+          if ( hs3( _u ) )
+            { // Point is still within bounds.
+              _B = _u;
+              outPts.push_back( _B );
 #ifdef DEBUG_ConvexIntegerPolygon
-          std::cerr << "[CIP::getAllPointsOfHull] add B=" << _B << std::endl;
+              std::cerr << "[CIP::getAllPointsOfHull] add B=" << _B << std::endl;
 #endif // ifdef DEBUG_ConvexIntegerPolygon
+            }
+          else 
+            { // Point is too far away. Check intersection with hs3 instead.
+              _ic.getCoefficientIntersection( _fl, _ce,
+                                              _B, _v, hs3.N, hs3.c );
+              _B += _v * _fl;
+              outPts.push_back( _B );
+#ifdef DEBUG_ConvexIntegerPolygon
+              std::cerr << "[CIP::getAllPointsOfHull] add B=" << _B << std::endl;
+#endif //ifdef DEBUG_ConvexIntegerPolygon
+              ASSERT( hs3( _B ) );
+              break; // necessarily the last point.
+            }
 	}
       else 
-	{ //first configuration, we find a new A
+	{ //----- first configuration, we find a new A -----------------------
 	  _ic.getCoefficientIntersection( _fl, _ce,
                                           _A, _v, hs2.N, hs2.c );
-	  _A += _v * _fl;
-	  inPts.push_back( _A );
+          _u = _A; _u += _v *_fl;
+          if ( hs3( _u ) )
+            { // Point is still within bounds.
+              _A = _u;
+              inPts.push_back( _A );
 #ifdef DEBUG_ConvexIntegerPolygon
-          std::cerr << "[CIP::getAllPointsOfHull] add A=" << _A << std::endl;
+              std::cerr << "[CIP::getAllPointsOfHull] add A=" << _A << std::endl;
 #endif //ifdef DEBUG_ConvexIntegerPolygon
+            }
+          else
+            { // Point is too far away. Check intersection with hs3 instead.
+              _ic.getCoefficientIntersection( _fl, _ce,
+                                              _A, _v, hs3.N, hs3.c );
+              _A += _v * _fl;
+              inPts.push_back( _A );
+#ifdef DEBUG_ConvexIntegerPolygon
+              std::cerr << "[CIP::getAllPointsOfHull] add A=" << _A << std::endl;
+#endif //ifdef DEBUG_ConvexIntegerPolygon
+              ASSERT( hs3( _A ) );
+              break; // necessarily the last point.
+            }
 	}
       // update u and v
       _u = _B;
@@ -555,11 +592,12 @@ getAllPointsOfHull( std::vector<Point> & inPts,
     }
   // when the loop finishes, we have to complete the computation
   // of each convex hull
-  if ( ! hs3( _A ) ) // A does not satisfy C3, we remove it.
-    inPts.pop_back();
-  else if ( ! hs3( _B ) ) // B does not satisfy C3, we remove it
-    outPts.pop_back();
-  else if ( hs2.isOnBoundary( _A ) ) // A lies on C2 so A is also a vertex of outPts
+  // if ( ! hs3( _A ) ) // A does not satisfy C3, we remove it.
+  //   inPts.pop_back();
+  // else if ( ! hs3( _B ) ) // B does not satisfy C3, we remove it
+  //   outPts.pop_back();
+  // else 
+  if ( hs2.isOnBoundary( _A ) ) // A lies on C2 so A is also a vertex of outPts
     outPts.push_back( _A );
   else if ( hs2.isOnBoundary( _B ) ) // B lies on C2 so B is also a vertex of inPts
     inPts.push_back( _B );

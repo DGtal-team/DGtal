@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
-#define DEBUG_ConvexIntegerPolygon
+//#define DEBUG_ConvexIntegerPolygon
 
 #include "DGtal/base/Common.h"
 #include "DGtal/math/arithmetic/ConvexIntegerPolygon.h"
@@ -252,18 +252,18 @@ bool exhaustiveTestConvexIntegerPolygon()
   for ( unsigned int j = 0; j < 1000; ++j )
     {
       CIP cip2 = cip;
-      for ( unsigned int i = 0; i < 10; ++i )
+      int x = 0;
+      int y = 0;
+      while ( ( x == 0 ) && ( y == 0 ) )
         {
-          int x = 0;
-          int y = 0;
-          while ( ( x == 0 ) && ( y == 0 ) )
-            {
-              x = myRandom( 31 ) - 15;
-              y = myRandom( 31 ) - 15;
-            }
-          int g = IntegerComputer<int>::staticGcd( x , y );
-          x /= g; y /= g;
-          int c = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 20 ) - 20;
+          x = myRandom( 63 ) - 31;
+          y = myRandom( 63 ) - 31;
+        }
+      int g = IntegerComputer<int>::staticGcd( x , y );
+      x /= g; y /= g;
+      int c = myRandom( 4 ) *x + myRandom( 4 ) * y + myRandom( 40 ) + 40;
+      for ( unsigned int i = 0; i < 10; ++i, c -= myRandom( 40 ) )
+        {
           HalfSpace h( Vector( x, y ), c );
           trace.info() << "[" << j << " size=" << cip2.size() << "]"
                        << " cut by (" << x << "," << y << ")," << c << std::endl;
@@ -326,6 +326,9 @@ bool specificTestConvexIntegerPolygon()
   board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
         << aSet;
   board << SetMode( cip.className(), "Transparent" ) << cip;
+  Point p( 0, 0 );
+  board << CustomStyle( p.className(), new CustomColors( Color::Red, Color::Red ) )
+        << p;
   board.saveEPS( "cip3.eps" );
   board.clear();
 
@@ -344,8 +347,8 @@ int main( int, char** )
   typedef SpaceND<2, DGtal::BigInteger> Z2I;
   bool res = testConvexIntegerPolygon<Z2>()
     && testConvexIntegerPolygon<Z2I>()
-    //&& exhaustiveTestConvexIntegerPolygon<Z2>();
-    && specificTestConvexIntegerPolygon<Z2>();
+    && exhaustiveTestConvexIntegerPolygon<Z2>();
+  //&& specificTestConvexIntegerPolygon<Z2>();
   //&& exhaustiveTestConvexIntegerPolygon<Z2I>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

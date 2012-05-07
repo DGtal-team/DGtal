@@ -296,7 +296,7 @@ namespace DGtal
        @param inPt (in/out) as input, a point on \a hs1, as output, a
        point on \a hs1 satisfying \a hs2. @pre \a inPt must belong to \a hs1.
 
-       @param inPt (returns) a point on \a hs1 not satisfying \a hs2.
+       @param outPt (returns) a point on \a hs1 not satisfying \a hs2.
 
        @return 'true' iff the intersection oh \a hs1 and \a hs2 is
        exact. In this case, outPt is equal to inPt and is at the
