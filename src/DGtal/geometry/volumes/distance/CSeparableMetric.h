@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSeparableMetric
   /**
-   * Description of \b concept '\b CSeparableMetric' <p>
+   * DescriptionDescription of \b concept '\b CSeparableMetric' <p>
    * @ingroup Concepts
    * Aim: The concept CSeparableMetric specifies what are the classes
    * that implement a model of separable metrics.
@@ -67,7 +67,7 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
@@ -79,11 +79,11 @@ namespace DGtal
    * </tr>
    * </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    *    l_0, l_1 and l_2 metrics defined in the SeparableMetricHelper.H
-   * <p> Notes <br>
+   * <p> Notes###
    */
   template <typename T>
   struct CSeparableMetric

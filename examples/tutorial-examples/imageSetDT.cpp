@@ -36,9 +36,13 @@
 //! [ImageSetDT-includes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
+#include "DGtal/kernel/sets/DigitalSetInserter.h"
+
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 
 #include "DGtal/io/boards/Board2D.h"
@@ -78,7 +82,8 @@ int main()
 
 
   Z2i::DigitalSet mySet(image.domain());
-  SetFromImage<Z2i::DigitalSet>::append<Image>(mySet, image, 0,135);
+  DigitalSetInserter<Z2i::DigitalSet> inserter(mySet); 
+  setFromImage(image, inserter, 1, 135);
   aBoard.clear();
   aBoard << mySet.domain()
 	 << mySet;
@@ -90,8 +95,10 @@ int main()
   typedef DTL2::OutputImage OutputImage;
   DTL2 dt;
 
+  typedef IntervalThresholder<Image::Value> Binarizer; 
+  Binarizer b(1, 135); 
   OutputImage result = dt.compute(image, 
-				  IntervalForegroundPredicate<Image>(image,0,135));
+            PointFunctorPredicate<Image,Binarizer>(image, b)); 
   //! [ImageSetDT-DT]
  
 

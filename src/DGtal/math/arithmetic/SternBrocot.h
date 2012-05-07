@@ -45,7 +45,10 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -67,20 +70,20 @@ namespace DGtal
 
    @param TInteger the integral type chosen for the fractions.
 
-   @param TSize the integral type chosen for the
+   @param TQuotient the integral type chosen for the
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
   */
-  template <typename TInteger, typename TSize = int32_t>
+  template <typename TInteger, typename TQuotient = int32_t>
   class SternBrocot
   {
   public:
     typedef TInteger Integer;
-    typedef TSize Size;
-    typedef SternBrocot<Integer,Size> Self;
+    typedef TQuotient Quotient;
+    typedef SternBrocot<Integer,Quotient> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
 
   public:
 
@@ -112,7 +115,7 @@ namespace DGtal
          @param descendant_right1 the node that is the right descendant or 0 (if none exist).
          @param inverse1 the node that is its inverse.
        */
-      Node( Integer p1, Integer q1, Size u1, Size k1, 
+      Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
 	    Node* ascendant_left1, Node* ascendant_right1, 
 	    Node* descendant_left1, Node* descendant_right1,
 	    Node* inverse1 );
@@ -122,9 +125,9 @@ namespace DGtal
       /// the denominator;
       Integer q;
       /// the quotient (last coefficient of its continued fraction).
-      Size u;
+      Quotient u;
       /// the depth (1+number of coefficients of its continued fraction).
-      Size k;
+      Quotient k;
       /// the node that is the left ascendant.
       Node* ascendantLeft;
       /// the node that is the right ascendant.
@@ -137,15 +140,36 @@ namespace DGtal
       Node* inverse;
     };
 
-    /// A fraction is simply a pointer to the corresponding node.
+    /**
+       @brief This fraction is a model of CPositiveIrreducibleFraction.
+
+       It represents a positive irreducible fraction, i.e. some p/q
+       qith gcd(p,q)=1. It is an inner class of SternBrocot. This
+       representation of a fraction is simply a pointer to the
+       corresponding node in this tree.
+    */
     class Fraction {
     public:
       typedef TInteger Integer;
-      typedef TSize Size;
-      typedef SternBrocot<TInteger,TSize> SB;
-      
+      typedef TQuotient Quotient;
+      typedef SternBrocot<TInteger,TQuotient> SternBrocotTree;
+      typedef typename SternBrocotTree::Fraction Self;
+      typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
+      typedef std::pair<Quotient, Quotient> Value;
+      typedef std::vector<Quotient> CFracSequence;
+      typedef InputIteratorWithRankOnSequence<CFracSequence,Quotient> ConstIterator;
+
+      // --------------------- std types ------------------------------
+      typedef Value value_type;
+      typedef ConstIterator const_iterator;
+      typedef const value_type & const_reference;
+
+    private:
+      Node* myNode; 
+
+    public:
       /** 
-          Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+          Any fraction p/q. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
           
           @param aP the numerator (>=0)
@@ -156,17 +180,31 @@ namespace DGtal
           
           @return the corresponding fraction in the Stern-Brocot tree.
           
-          NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+          NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
           are the partial quotients of aP/aQ.
       */
       Fraction( Integer aP, Integer aQ,
-                Fraction ancestor = SB::zeroOverOne() );
+                Fraction ancestor = SternBrocotTree::zeroOverOne() );
 
       /**
 	 Default constructor.
          @param sb_node the associated node (or 0 for null fraction).
       */
       Fraction( Node* sb_node = 0 );
+
+      /**
+         Copy constructor.
+         @param other the object to clone.
+      */
+      Fraction( const Self & other );
+
+      /**
+         Assignment
+         @param other the object to clone.
+         @return a reference to 'this'.
+      */
+      Self& operator=( const Self & other );
+
       /// @return 'true' iff it is the null fraction 0/0.
       bool null() const;
       /// @return its numerator;
@@ -174,9 +212,9 @@ namespace DGtal
       /// @return its denominator;
       Integer q() const;
       /// @return its quotient (last coefficient of its continued fraction).
-      Size u() const;
+      Quotient u() const;
       /// @return its depth (1+number of coefficients of its continued fraction).
-      Size k() const;
+      Quotient k() const;
       /// @return its left descendant (construct it if it does not exist yet).
       Fraction left() const;
       /// @return its right descendant (construct it if it does not exist yet).
@@ -197,7 +235,7 @@ namespace DGtal
 
          @todo Do it in O(1)... but require to change the data structure.
       */
-      Fraction father( Size m ) const;
+      Fraction father( Quotient m ) const;
       /**
 	 @return the previous partial of this fraction in O(1), ie
 	 [u0,...,u{k-1},uk] => [u0,...,u{k-1}]. Otherwise said, it is
@@ -215,14 +253,44 @@ namespace DGtal
 	 @return the partial fraction of depth kp, ie. [u0,...,uk] =>
 	 [u0,...,ukp]
       */
-      Fraction partial( Size kp ) const;
+      Fraction partial( Quotient kp ) const;
       /**
 	 @param i a positive integer smaller or equal to k()+2.
 
 	 @return the partial fraction of depth k()-i, ie. [u0,...,uk] =>
 	 [u0,...,u{k-i}]
       */
-      Fraction reduced( Size i ) const;
+      Fraction reduced( Quotient i ) const;
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         Useful to create output iterators, for instance with
+
+         @code
+         typedef ... Fraction; 
+         Fraction f;
+         std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
+         @endcode
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */
+      void push_back( const std::pair<Quotient, Quotient> & quotient );
+
+      /**
+         Modifies this fraction \f$[u_0,...,u_k]\f$ to obtain the
+         fraction \f$[u_0,...,u_k,m]\f$. The depth of the quotient
+         must be given, since continued fractions have two writings
+         \f$[u_0,...,u_k]\f$ and \f$[u_0,...,u_k - 1, 1]\f$.
+
+         See push_back for creating output iterators.
+
+         @param quotient the pair \f$(m,k+1)\f$.
+      */         
+      void pushBack( const std::pair<Quotient, Quotient> & quotient );
 
       /**
 	 Splitting formula, O(1) time complexity. This fraction should
@@ -244,20 +312,14 @@ namespace DGtal
 	 @param f2 (returns) the right part of the split (right pattern).
 	 @param nb2 (returns) the number of repetition of the right pattern
       */
-      void getSplitBerstel( Fraction & f1, Size & nb1, 
-			    Fraction & f2, Size & nb2 ) const; 
+      void getSplitBerstel( Fraction & f1, Quotient & nb1, 
+			    Fraction & f2, Quotient & nb2 ) const; 
 
       /**
 	 @param quotients (returns) the coefficients of the continued
 	 fraction of 'this'.
       */
-      void cfrac( std::vector<Size> & quotients ) const;
-
-      /**
-         @param other another fraction "compatible" with this one.
-         @return the mediant fraction of this and other.
-      */
-      Fraction mediant( Fraction other ) const;
+      void getCFrac( std::vector<Quotient> & quotients ) const;
 
       /**
          @param p1 a numerator.
@@ -288,6 +350,12 @@ namespace DGtal
 
       /**
          @param other any fraction.
+         @return 'true' iff this is different from other.
+      */
+      bool operator!=( const Fraction & other ) const;
+
+      /**
+         @param other any fraction.
          @return 'true' iff this is < to other.
       */
       bool operator<( const Fraction & other ) const;
@@ -304,8 +372,18 @@ namespace DGtal
        */
       void selfDisplay ( std::ostream & out ) const;
 
-    private:
-      Node* myNode; 
+      /**
+         @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
+         NB: \f$ O(\sum_i u_i) \f$ operation. 
+      */
+      ConstIterator begin() const;
+
+      /**
+         @return a const iterator pointing after the end of the sequence of quotients of this fraction.
+         NB: O(1) operation.
+      */
+      ConstIterator end() const;
+      
     };
 
 
@@ -318,6 +396,11 @@ namespace DGtal
      */
     ~SternBrocot();
 
+    /**
+       @return the (only) instance of SternBrocot.
+    */
+    static SternBrocot & instance();
+
     /** The fraction 0/1 */
     static Fraction zeroOverOne();
 
@@ -325,7 +408,7 @@ namespace DGtal
     static Fraction oneOverZero();
 
     /** 
-	Any fraction p/q with gcd(p,q)=1. Complexity is in \f$ \sum_i
+	Any fraction p/q. Complexity is in \f$ \sum_i
 	u_i \f$, where u_i are the partial quotients of p/q.
 
 	@param p the numerator (>=0)
@@ -336,7 +419,7 @@ namespace DGtal
 	
 	@return the corresponding fraction in the Stern-Brocot tree.
 
-        NB: Complexity is bounded by \f$ 2 \sum_ u_i \f$, where u_i
+        NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
         are the partial quotients of p/q.
     */
     static Fraction fraction( Integer p, Integer q,
@@ -359,30 +442,26 @@ namespace DGtal
     bool isValid() const;
 
     /// The total number of fractions in the current tree.
-    static Size nbFractions;
+    Quotient nbFractions;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
+    /// Singleton class.
+    static SternBrocot* singleton;
 
-    // ------------------------- Datas ----------------------------------------
-  private:
-
-    static Node myVirtualZeroOverOne;
-    static Node myZeroOverOne;
-    static Node myOneOverZero;
-    static Node myOneOverOne;
+    Node* myZeroOverOne;
+    Node* myOneOverZero;
+    Node* myOneOverOne;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+  private:
 
     /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
+     * Constructor. Hidden since singleton class.
      */
     SternBrocot();
-
-  private:
 
     /**
      * Copy constructor.
@@ -411,10 +490,10 @@ namespace DGtal
    * @param object the object of class 'SternBrocot' to write.
    * @return the output stream after the writing.
    */
-  // template <typename TInteger, typename TSize>
+  // template <typename TInteger, typename TQuotient>
   // std::ostream&
   // operator<< ( std::ostream & out, 
-  //              const typename SternBrocot<TInteger, TSize>::Fraction & object );
+  //              const typename SternBrocot<TInteger, TQuotient>::Fraction & object );
 
 } // namespace DGtal
 

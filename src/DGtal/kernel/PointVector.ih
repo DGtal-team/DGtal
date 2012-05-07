@@ -139,7 +139,7 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
     myArray[ i ] =  NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component> init)
@@ -150,7 +150,7 @@ DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component
   for ( ; i < dim; ++i)
     myArray[i] =  NumberTraits<TComponent>::ZERO;
 }
-#endif // CPP0X_INITIALIZER_LIST
+#endif // CPP11_INITIALIZER_LIST
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
@@ -164,7 +164,7 @@ inline
 DGtal::PointVector<dim, TComponent>::PointVector ( const PointVector<dim,OtherComponent> & other )
 {
   for ( Dimension i = 0; i < dimension; ++i )
-    this->myArray[ i ] = static_cast<OtherComponent>(other[ i ]);
+    this->myArray[ i ] = (int)(static_cast<OtherComponent>(other[ i ]));
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -204,7 +204,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ReverseIterator
 DGtal::PointVector<dim, TComponent>::rbegin()
 {
-  return myArray.begin();
+  return myArray.rbegin();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -212,7 +212,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ReverseIterator
 DGtal::PointVector<dim, TComponent>::rend()
 {
-  return myArray.end();
+  return myArray.rend();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -220,7 +220,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
 DGtal::PointVector<dim, TComponent>::rbegin() const
 {
-  return myArray.begin();
+  return myArray.rbegin();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -228,7 +228,7 @@ inline
 typename DGtal::PointVector<dim, TComponent>::ConstReverseIterator
 DGtal::PointVector<dim, TComponent>::rend() const
 {
-  return myArray.end();
+  return myArray.rend();
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
@@ -315,7 +315,7 @@ DGtal::PointVector<dim, TComponent>::operator= ( const DGtal::PointVector<dim,Co
   return *this;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>&
@@ -513,7 +513,7 @@ DGtal::PointVector<dim,TComponent>::operator/= ( const Component coeff )
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
-DGtal::PointVector<dim, TComponent>::dot( const Self& v )
+DGtal::PointVector<dim, TComponent>::dot( const Self& v ) const 
 {
   Component dotprod= NumberTraits<Component>::ZERO;
   for ( Dimension i = 0; i < dim; ++i )
