@@ -667,7 +667,7 @@ void draw( DGtal::Board2D & board,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void drawImageRecursive( DGtal::Board2D & aBoard,
-    const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+    const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
       HashKey key,
       const double p[2],
       const double len,
@@ -716,7 +716,7 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void drawImage( Board2D & board,
-                const experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
    static const HashKey ROOT_KEY = static_cast<HashKey>(1);

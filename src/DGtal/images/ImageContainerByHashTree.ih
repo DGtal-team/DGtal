@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -58,7 +59,7 @@ namespace DGtal
 
   template < typename Domain, typename Value, typename HashKey>
   inline
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey>
+  ImageContainerByHashTree<Domain, Value, HashKey>
   ::ImageContainerByHashTree ( const unsigned int hashKeySize,
 			       const unsigned int depth,
 			       const Value defaultValue )
@@ -75,7 +76,7 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
 	trace.error() << "ImageContainerByHashTree::Constructor: error !" << endl;
-	trace.error() << "requested depth to hight for the key type" << endl;
+	trace.error() << "requested depth too high for the key type" << endl;
 	trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
 
 	setDepth ( acceptedDepth );
@@ -93,10 +94,56 @@ namespace DGtal
     addNode ( defaultValue, ROOT_KEY );
   }
   
-  
+
   template < typename Domain, typename Value, typename HashKey>
   inline
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey>
+  ImageContainerByHashTree<Domain, Value, HashKey>
+  ::ImageContainerByHashTree ( const Domain &aDomain,
+                               const unsigned int hashKeySize,
+                               const Value defaultValue ):
+    myDomain(aDomain),  myKeySize ( hashKeySize )
+  {
+    myOrigin = aDomain.lowerBound() ;
+    //Consistency check of the hashKeysize
+    ASSERT ( hashKeySize <= sizeof ( HashKey ) *8 );
+    
+    Point p1 = myDomain.lowerBound();
+    Point p2 = myDomain.upperBound();
+
+    myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
+    
+    int maxSize = 0;
+    for ( unsigned int i = 0; i < dim; ++i )
+      if ( maxSize < p1[i] - p2[i] )
+        maxSize = p1[i] - p2[i];
+    unsigned int depth = (unsigned int)(ceil ( log ( (double) maxSize ) / log((double) 2.0) ));
+    
+    unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
+    if ( depth > acceptedDepth )
+      {
+        trace.error() << "ImageContainerByHashTree::Constructor: error !"
+                      << " requested depth too high for the key type" << endl;
+        trace.error() << "accepted: " << acceptedDepth 
+                      << " Requested: " << depth << endl;
+        setDepth ( acceptedDepth );
+      }
+    else
+      setDepth ( depth );
+
+    //init the array
+    myArraySize = 1 << hashKeySize;
+    myData = new Node*[myArraySize];
+    for ( unsigned int i = 0; i < myArraySize; ++i )
+      myData[i] = 0;
+    //add the default value
+    addNode ( defaultValue, ROOT_KEY );
+  }
+  
+
+
+  template < typename Domain, typename Value, typename HashKey>
+  inline
+  ImageContainerByHashTree<Domain, Value, HashKey>
   ::ImageContainerByHashTree ( const unsigned int hashKeySize,
 			       const Point & p1,
 			       const Point & p2,
@@ -116,13 +163,13 @@ namespace DGtal
     
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
-    {
-      trace.error() << "ImageContainerByHashTree::Constructor: error !"
-		    << " requested depth to hight for the key type" << endl;
-      trace.error() << "accepted: " << acceptedDepth 
-		    << " Requested: " << depth << endl;
-      setDepth ( acceptedDepth );
-    }
+      {
+        trace.error() << "ImageContainerByHashTree::Constructor: error !"
+                      << " requested depth too high for the key type" << endl;
+        trace.error() << "accepted: " << acceptedDepth 
+                      << " Requested: " << depth << endl;
+        setDepth ( acceptedDepth );
+      }
     else
       setDepth ( depth );
 
@@ -140,38 +187,38 @@ namespace DGtal
   // access methods
   // ---------------------------------------------------------------------
 
-//------------------------------------------------------------------------------
-template < typename Domain, typename Value, typename HashKey>
-inline
-const typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::Domain&
-experimental::ImageContainerByHashTree<Domain, Value, HashKey >::domain() const
-{
-  return myDomain;
-}
+  //------------------------------------------------------------------------------
+  template < typename Domain, typename Value, typename HashKey>
+  inline
+  const typename ImageContainerByHashTree<Domain, Value, HashKey >::Domain&
+  ImageContainerByHashTree<Domain, Value, HashKey >::domain() const
+  {
+    return myDomain;
+  }
 
-//------------------------------------------------------------------------------
-template < typename Domain, typename Value, typename HashKey>
-inline
-typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
-experimental::ImageContainerByHashTree<Domain, Value, HashKey >::range() const
-{
-  return ConstRange( myDomain.begin(), myDomain.end(), *this );
-}
+  //------------------------------------------------------------------------------
+  template < typename Domain, typename Value, typename HashKey>
+  inline
+  typename ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
+  ImageContainerByHashTree<Domain, Value, HashKey >::range() const
+  {
+    return ConstRange( myDomain.begin(), myDomain.end(), *this );
+  }
 
-//------------------------------------------------------------------------------
-template < typename Domain, typename Value, typename HashKey>
-inline
-typename experimental::ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
-experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator()
-{
-  return OutputIterator( *this );
-}
+  //------------------------------------------------------------------------------
+  template < typename Domain, typename Value, typename HashKey>
+  inline
+  typename ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
+  ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator()
+  {
+    return OutputIterator( *this );
+  }
 
 
   template < typename Domain, typename Value, typename HashKey>
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const Point& aPoint, const Value value )
+  ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const Point& aPoint, const Value value )
   {
     setValue ( getKey ( aPoint ), value );
   }
@@ -180,72 +227,72 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey>
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const HashKey key, const Value value )
+  ImageContainerByHashTree<Domain, Value, HashKey >::setValue ( const HashKey key, const Value value )
   {
     HashKey brothers[myN-1];
 
     bool broValue = ( key != static_cast<HashKey> ( 1 ) );
     myMorton.brotherKeys ( key, brothers );
     for ( unsigned int i = 0; i < myN - 1; ++ i )
-    {
-      Node* n = getNode ( brothers[i] );
-      if ( ! ( n && ( n->getObject() == value ) ) )
       {
-        broValue = false;
-        break;
+        Node* n = getNode ( brothers[i] );
+        if ( ! ( n && ( n->getObject() == value ) ) )
+          {
+            broValue = false;
+            break;
+          }
       }
-    }
 
     if ( broValue )
-    {
-      setValue ( myMorton.parentKey ( key ), value );
-      return;
-    }
+      {
+        setValue ( myMorton.parentKey ( key ), value );
+        return;
+      }
 
     // if the key already exists
     Node* n = getNode ( key );
     if ( n )
-    {
-      n->getObject() = value;
-      return;
-    }
+      {
+        n->getObject() = value;
+        return;
+      }
 
     //if there's a leaf above the requested node
     HashKey iterKey = key;
     std::list< HashKey > nodeList;
     while ( iterKey != 0 )
-    {
-      //  cerr << "while(iter)..." << endl;
-      n = getNode ( iterKey );
-      if ( n )
       {
-        Value tempVal = n->getObject();
-        if ( tempVal == value )
-          return;
-        removeNode ( iterKey );
-        for ( typename std::list< HashKey >::iterator  it = nodeList.begin();
-            it != nodeList.end();
-            it++ )
-        {
-          //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
-          addNode ( tempVal, *it );
-        }
-        addNode ( value, key );
-        //cerr << "return " << endl;
-        return;
+        //  cerr << "while(iter)..." << endl;
+        n = getNode ( iterKey );
+        if ( n )
+          {
+            Value tempVal = n->getObject();
+            if ( tempVal == value )
+              return;
+            removeNode ( iterKey );
+            for ( typename std::list< HashKey >::iterator  it = nodeList.begin();
+                  it != nodeList.end();
+                  it++ )
+              {
+                //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
+                addNode ( tempVal, *it );
+              }
+            addNode ( value, key );
+            //cerr << "return " << endl;
+            return;
+          }
+        else
+          {
+            //cerr << " + " << endl;
+            HashKey brothersH[myN-1];
+            myMorton.brotherKeys ( iterKey, brothersH );
+            for ( unsigned int i = 0; i < myN - 1; ++i )
+              {
+                nodeList.push_front ( brothersH[i] );
+              }
+          }
+        iterKey >>= dim;
       }
-      else
-      {
-        //cerr << " + " << endl;
-        HashKey brothersH[myN-1];
-        myMorton.brotherKeys ( iterKey, brothersH );
-        for ( unsigned int i = 0; i < myN - 1; ++i )
-        {
-          nodeList.push_front ( brothersH[i] );
-        }
-      }
-      iterKey >>= dim;
-    }
     addNode ( value, key );
     unsigned int nbRecur = myTreeDepth - getKeyDepth ( key ) + 1;
     HashKey children[myN];
@@ -259,31 +306,31 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
 
   template < typename Domain, typename Value, typename HashKey  >
   inline
-  Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const HashKey key ) const
+  Value ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const HashKey key ) const
   {
     return get ( key );
   }
   template < typename Domain, typename Value, typename HashKey  >
   inline
-  Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const Point &aPoint ) const
+  Value ImageContainerByHashTree<Domain, Value, HashKey  >::operator() ( const Point &aPoint ) const
   {
     return get ( aPoint );
   }
 
   template < typename Domain, typename Value, typename HashKey >
   inline
-  Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const HashKey key ) const
+  Value ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const HashKey key ) const
   {
 
     HashKey iterKey = key;
     // node above the requested node
     while ( iterKey != 0 )
-    {
-      Node* n = getNode ( iterKey );
-      if ( n )
-        return n->getObject();
-      iterKey >>= dim;
-    }
+      {
+        Node* n = getNode ( iterKey );
+        if ( n )
+          return n->getObject();
+        iterKey >>= dim;
+      }
     //if the node is deeper than the one requested
     return blendChildren ( key );
   }
@@ -291,27 +338,27 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
 
   template < typename Domain, typename Value, typename HashKey >
   inline
-  Value experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::reverseGet ( const HashKey key ) const
+  Value ImageContainerByHashTree<Domain, Value, HashKey  >::reverseGet ( const HashKey key ) const
   {
 
     HashKey iterKey = key;
     // node above the requested node
     HashKey limit = myDepthMask << 1;
     while ( iterKey < limit )
-    {
-      Node* n = getNode ( iterKey );
-      if ( n )
-        return blendChildren ( key );
-      iterKey <<= dim;
-    }
+      {
+        Node* n = getNode ( iterKey );
+        if ( n )
+          return blendChildren ( key );
+        iterKey <<= dim;
+      }
     iterKey = key;
     while ( iterKey != 0 )
-    {
-      Node* n = getNode ( iterKey );
-      if ( n )
-        return n->getObject();
-      iterKey >>= dim;
-    }
+      {
+        Node* n = getNode ( iterKey );
+        if ( n )
+          return n->getObject();
+        iterKey >>= dim;
+      }
     return 0;
   }
 
@@ -319,7 +366,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey>
   inline
   Value
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const Point & aPoint ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::get ( const Point & aPoint ) const
   {
     return get ( getKey ( aPoint ) );
   }
@@ -328,30 +375,30 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey >
   inline
   Value
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
   {
     //cerr << "ImageContainerByHashTree::upWardGet" << endl;
     HashKey aKey = key;
 
     while ( aKey )
-    {
-      HashKey key2 = getIntermediateKey ( aKey );
-      Node* iter = myData[key2];
-
-      while ( iter != 0 )
       {
-        if ( iter->getKey() == aKey )
-          return iter->getObject();
-        iter = iter->getNext();
+        HashKey key2 = getIntermediateKey ( aKey );
+        Node* iter = myData[key2];
+
+        while ( iter != 0 )
+          {
+            if ( iter->getKey() == aKey )
+              return iter->getObject();
+            iter = iter->getNext();
+          }
+        aKey >>= dim; // transorm the key to search in an upper level
       }
-      aKey >>= dim; // transorm the key to search in an upper level
-    }
   }
 
   template < typename Domain, typename Value, typename HashKey  >
   inline
   HashKey
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getKey ( const Point & aPoint ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getKey ( const Point & aPoint ) const
   {
     HashKey result = 0;
     Point currentPos = aPoint - myOrigin;
@@ -368,7 +415,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   HashKey
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getIntermediateKey ( HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getIntermediateKey ( HashKey key ) const
   {
     return ( key & myPreComputedIntermediateMask );
   }
@@ -377,27 +424,27 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   bool
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::Iterator::next()
+  ImageContainerByHashTree<Domain, Value, HashKey  >::Iterator::next()
   {
     if ( myNode )
-    {
-      myNode = myNode->getNext();
-      if ( myNode )
       {
-        return true;
+        myNode = myNode->getNext();
+        if ( myNode )
+          {
+            return true;
+          }
+        else
+          {
+            do
+              {
+                myNode = myContainerData[++myCurrentCell];
+                if ( myCurrentCell >= myArraySize )
+                  return false;
+              }
+            while ( !myNode );
+            return true;
+          }
       }
-      else
-      {
-        do
-        {
-          myNode = myContainerData[++myCurrentCell];
-          if ( myCurrentCell >= myArraySize )
-            return false;
-        }
-        while ( !myNode );
-        return true;
-      }
-    }
     return false;
   }
 
@@ -408,50 +455,50 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   bool
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::removeNode ( HashKey key )
+  ImageContainerByHashTree<Domain, Value, HashKey  >::removeNode ( HashKey key )
   {
     HashKey key2 = getIntermediateKey ( key );
     Node* iter = myData[key2];
     // if the node is the first in the list we have to modify the pointer stored in myData
     if ( iter && ( iter->getKey() == key ) )
-    {
-      myData[key2] = iter->getNext();
-      delete iter;
-      return true;
-    }
-    while ( iter )
-    {
-      Node* next = iter->getNext();
-      if ( next )
       {
-        if ( next->getKey() == key )
-        {
-          iter->setNext ( next->getNext() );
-          delete next;
-          return true;
-        }
+        myData[key2] = iter->getNext();
+        delete iter;
+        return true;
       }
-      iter = iter->getNext();
-    }
+    while ( iter )
+      {
+        Node* next = iter->getNext();
+        if ( next )
+          {
+            if ( next->getKey() == key )
+              {
+                iter->setNext ( next->getNext() );
+                delete next;
+                return true;
+              }
+          }
+        iter = iter->getNext();
+      }
     return false;
   }
   
   template < typename Domain, typename Value, typename HashKey  >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::recursiveRemoveNode ( HashKey key, unsigned int nbRecursions )
+  ImageContainerByHashTree<Domain, Value, HashKey  >::recursiveRemoveNode ( HashKey key, unsigned int nbRecursions )
   {
     if ( removeNode ( key ) )
       return;
     if ( --nbRecursions > 0 )
-    {
-      HashKey children[myN];
-      myMorton.childrenKeys ( key, children );
-      for ( unsigned int i = 0; i < myN; ++i )
       {
-	recursiveRemoveNode ( children[i], nbRecursions );
+        HashKey children[myN];
+        myMorton.childrenKeys ( key, children );
+        for ( unsigned int i = 0; i < myN; ++i )
+          {
+            recursiveRemoveNode ( children[i], nbRecursions );
+          }
       }
-    }
   }
 
 
@@ -463,7 +510,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::setDepth ( unsigned int depth )
+  ImageContainerByHashTree<Domain, Value, HashKey  >::setDepth ( unsigned int depth )
   {
     myTreeDepth = depth;
     mySpanSize = 1 << depth;
@@ -475,13 +522,13 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   unsigned int
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getKeyDepth ( HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getKeyDepth ( HashKey key ) const
   {
     for ( int i = ( sizeof ( HashKey ) << 3 ) - 1; i >= 0; --i )
       if ( key & ( static_cast<HashKey> ( 1 ) << i ) )
-      {
-        return ( i ) / dim;
-      }
+        {
+          return ( i ) / dim;
+        }
     return 0;
   }
 
@@ -489,30 +536,30 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   int*
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getCoordinatesFromKey ( HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getCoordinatesFromKey ( HashKey key ) const
   {
     //remove the first bit equal 1
     for ( int i = ( sizeof ( HashKey ) << 3 ) - 1; i >= 0; --i )
-    {
-      if ( key & Bits::mask<HashKey> ( i ) )
       {
-        key &= ~Bits::mask<HashKey> ( i );
-        break;
+        if ( key & Bits::mask<HashKey> ( i ) )
+          {
+            key &= ~Bits::mask<HashKey> ( i );
+            break;
+          }
       }
-    }
     int* coordinates = new int[dim];
     //deinterleave the bits
     for ( unsigned int i = 0; i < dim; ++i )
-    {
-      coordinates[i] = 0;
-      for ( unsigned int bitPos = 0; bitPos < ( sizeof ( HashKey ) << 3 ) / dim; ++bitPos )
       {
-  if ( key & Bits::mask ( bitPos*dim + i ) )
-        {
-          coordinates[i] |= Bits::mask<HashKey> ( bitPos );
-        }
+        coordinates[i] = 0;
+        for ( unsigned int bitPos = 0; bitPos < ( sizeof ( HashKey ) << 3 ) / dim; ++bitPos )
+          {
+            if ( key & Bits::mask ( bitPos*dim + i ) )
+              {
+                coordinates[i] |= Bits::mask<HashKey> ( bitPos );
+              }
+          }
       }
-    }
     return coordinates;
   }
 
@@ -520,7 +567,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey  >
   inline
   bool
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::isKeyValid ( HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::isKeyValid ( HashKey key ) const
   {
     if ( !key )
       return false;
@@ -533,9 +580,9 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
         break;
 
     if ( i % dim )
-    {
-      return false;
-    }
+      {
+        return false;
+      }
 
     return true;
   }
@@ -547,7 +594,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value , typename HashKey >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( ostream& out, bool displayKeys ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( ostream& out, bool displayKeys ) const
   {
     out << "ImageContainerByHashTree::printState" << endl;
     out << "depth: " << myTreeDepth << " (" << Bits::bitString ( myDepthMask ) << ")" << endl;
@@ -558,70 +605,70 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, ostream& out, bool displayKeys ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, ostream& out, bool displayKeys ) const
   {
     unsigned int level = getKeyDepth ( key );
     for ( unsigned int i = 0; i < level; ++i )
       out << "  ";
     Node* n = getNode ( key );
     if ( n )
-    {
-      out << " < " << n->getObject() << " > ";
-      if ( displayKeys )
-        out << Bits::bitString ( key, 8 );
-      out << endl;
-    }
+      {
+        out << " < " << n->getObject() << " > ";
+        if ( displayKeys )
+          out << Bits::bitString ( key, 8 );
+        out << endl;
+      }
     else
-    {
-      out << " < x > ";
-      if ( displayKeys )
-        out << Bits::bitString ( key, 8 );
-      out << endl;
-    }
+      {
+        out << " < x > ";
+        if ( displayKeys )
+          out << Bits::bitString ( key, 8 );
+        out << endl;
+      }
 
     if ( level < myTreeDepth )
-    {
-      HashKey children[myN];
-      myMorton.childrenKeys ( key, children );
-      for ( unsigned int i = 0; i < myN; ++i )
-        printTree ( children[i], out, displayKeys );
-    }
+      {
+        HashKey children[myN];
+        myMorton.childrenKeys ( key, children );
+        for ( unsigned int i = 0; i < myN; ++i )
+          printTree ( children[i], out, displayKeys );
+      }
   }
 
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( ostream& out, unsigned int nbBits ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( ostream& out, unsigned int nbBits ) const
   {
     out << "ImageContainerByHashTree::printInternalState ----------------------------------" << endl;
     out << "| <template> dim = " << dim << " myN = " << myN << endl;
     out << "| tree depth = " << myTreeDepth << " mask = " << Bits::bitString ( myDepthMask ) << endl;
 
     for ( unsigned int i = 0; i < ( 1 << myKeySize ); ++i )
-    {
-      out << "| " << Bits::bitString ( i, myKeySize ) << " [";
-      if ( myData[i] )
       {
-        out << "-]->(";
-        if ( nbBits )
-          out << Bits::bitString ( myData[i]->getKey(), nbBits ) << ":";
-        out << myData[i]->getObject() << ")";
-        Node* iter = myData[i]->getNext();
-        while ( iter )
-        {
-          out << "->(";
-          if ( nbBits )
-            out << Bits::bitString ( myData[i]->getKey(), nbBits ) << ":";
-          out << iter->getObject() << ")";
-          iter = iter->getNext();
-        }
-        out << endl;
+        out << "| " << Bits::bitString ( i, myKeySize ) << " [";
+        if ( myData[i] )
+          {
+            out << "-]->(";
+            if ( nbBits )
+              out << Bits::bitString ( myData[i]->getKey(), nbBits ) << ":";
+            out << myData[i]->getObject() << ")";
+            Node* iter = myData[i]->getNext();
+            while ( iter )
+              {
+                out << "->(";
+                if ( nbBits )
+                  out << Bits::bitString ( myData[i]->getKey(), nbBits ) << ":";
+                out << iter->getObject() << ")";
+                iter = iter->getNext();
+              }
+            out << endl;
+          }
+        else
+          {
+            cout << "x]" << endl;
+          }
       }
-      else
-      {
-        cout << "x]" << endl;
-      }
-    }
 
     out << "| image size: " << getSpanSize() << "^" << dim << " (" << std::pow ( getSpanSize(), dim ) *sizeof ( Value ) << " bytes)" << endl;
     out << "| " << getNbNodes() << " nodes - Empty lists: " << getNbEmptyLists() << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << endl;
@@ -633,18 +680,18 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( ostream& out ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( ostream& out ) const
   {
     unsigned int nbNodes = getNbNodes();
     unsigned int totalSize = sizeof ( *this ) + ( 1 << myKeySize ) * sizeof ( Node* ) + nbNodes * sizeof ( Node );
 
     out << "[ImageContainerByHashTree]:  Dimension=" << ( int ) dim << ", HashKey size="
-    << myKeySize << ", Depth=" << myTreeDepth << ", image size=" << getSpanSize()
-    << "^" << ( int ) dim << " (" << std::pow ( ( double ) getSpanSize(), ( double ) dim ) *sizeof ( Value )
-    << " bytes)" << ", " << nbNodes << " nodes" << ", Empty lists=" << getNbEmptyLists()
-    << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << ", Average collisions=" << getAverageCollisions()
-    << ", Max collisions " << getMaxCollisions()
-    << ", total memory usage=" << totalSize << " bytes" << endl;
+        << myKeySize << ", Depth=" << myTreeDepth << ", image size=" << getSpanSize()
+        << "^" << ( int ) dim << " (" << std::pow ( ( double ) getSpanSize(), ( double ) dim ) *sizeof ( Value )
+        << " bytes)" << ", " << nbNodes << " nodes" << ", Empty lists=" << getNbEmptyLists()
+        << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << ", Average collisions=" << getAverageCollisions()
+        << ", Max collisions " << getMaxCollisions()
+        << ", total memory usage=" << totalSize << " bytes" << endl;
   }
 
 
@@ -652,23 +699,23 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   unsigned int
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes ( unsigned int intermediateKey ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes ( unsigned int intermediateKey ) const
   {
     if ( !myData[intermediateKey] )
-    {
-      return 0;
-    }
-    else
-    {
-      unsigned int count = 1;
-      Node* n = myData[intermediateKey]->getNext();
-      while ( n )
       {
-        ++count;
-        n = n->getNext();
+        return 0;
       }
-      return count;
-    }
+    else
+      {
+        unsigned int count = 1;
+        Node* n = myData[intermediateKey]->getNext();
+        while ( n )
+          {
+            ++count;
+            n = n->getNext();
+          }
+        return count;
+      }
   }
 
 
@@ -676,14 +723,14 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   unsigned int
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes() const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getNbNodes() const
   {
     unsigned int count = 0;
     unsigned int arraySize = 1 << myKeySize;
     for ( unsigned int i = 0; i < arraySize; ++i )
-    {
-      count += getNbNodes ( i );
-    }
+      {
+        count += getNbNodes ( i );
+      }
     return count;
   }
 
@@ -691,15 +738,15 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   unsigned int
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getNbEmptyLists() const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getNbEmptyLists() const
   {
     unsigned int count = 0;
     unsigned int arraySize =  1 << myKeySize;
     for ( unsigned int i = 0; i < arraySize; ++i )
-    {
-      if ( !myData[i] )
-        count++;
-    }
+      {
+        if ( !myData[i] )
+          count++;
+      }
     return count;
   }
 
@@ -707,25 +754,25 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template<typename Domain, typename Value, typename HashKey  >
   inline
   double
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::getAverageCollisions() const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::getAverageCollisions() const
   {
     double count = 0;
     double nbLists = 0;
     unsigned int arraySize = 1 << myKeySize;
     for ( unsigned int i = 0; i < arraySize; ++i )
-    {
-      if ( myData[i] )
       {
-        count += getNbNodes ( i ) - 1;
-        nbLists++;
+        if ( myData[i] )
+          {
+            count += getNbNodes ( i ) - 1;
+            nbLists++;
+          }
       }
-    }
     if ( nbLists == 0 )
-    {
-      trace.error() << "ImageContainerByHashTree::getAverageCollision() - error" << endl
-      << "the container is empty !" << endl;
-      return 0;
-    }
+      {
+        trace.error() << "ImageContainerByHashTree::getAverageCollision() - error" << endl
+                      << "the container is empty !" << endl;
+        return 0;
+      }
     return count / nbLists;
   }
 
@@ -734,92 +781,92 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template <typename Domain, typename Value, typename HashKey  >
   inline
   unsigned int
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::getMaxCollisions() const
+  ImageContainerByHashTree<Domain, Value, HashKey >::getMaxCollisions() const
   {
     unsigned int count = 0;
     unsigned int arraySize = 1 << myKeySize;
     for ( unsigned int i = 0; i < arraySize; ++i )
-    {
-      if ( myData[i] )
       {
-        unsigned int collision = getNbNodes ( i ) - 1;
-        if ( collision > count )
-        {
-          count = collision;
-        }
+        if ( myData[i] )
+          {
+            unsigned int collision = getNbNodes ( i ) - 1;
+            if ( collision > count )
+              {
+                count = collision;
+              }
+          }
       }
-    }
     return count;
   }
 
-//------------------------------------------------------------------------------
+  //------------------------------------------------------------------------------
   template <typename Domain, typename Value, typename HashKey  >
   inline
   std::string
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::className() const
+  ImageContainerByHashTree<Domain, Value, HashKey >::className() const
   {
     return "ImageContainerByHashTree";
   }
 
   template <typename Domain, typename Value, typename HashKey  >
   Value
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey  >::blendChildren ( HashKey key ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::blendChildren ( HashKey key ) const
   {
     Node* n = getNode ( key );
     if ( n )
-    {
-      return n->getObject();
-    }
-    else
-    {
-      HashKey children[myN];
-      myMorton.childrenKeys ( key, children );
-      float result = 0;
-      for ( unsigned int i = 0; i < myN; ++i )
       {
-  result += blendChildren ( children[i] );
+        return n->getObject();
       }
-      return static_cast<Value> ( result / myN );
-    }
+    else
+      {
+        HashKey children[myN];
+        myMorton.childrenKeys ( key, children );
+        float result = 0;
+        for ( unsigned int i = 0; i < myN; ++i )
+          {
+            result += blendChildren ( children[i] );
+          }
+        return static_cast<Value> ( result / myN );
+      }
   }
 
 
   template <typename Domain, typename Value, typename HashKey  >
   bool
-  experimental::ImageContainerByHashTree<Domain, Value, HashKey >::checkIntegrity ( HashKey key, bool leafAbove ) const
+  ImageContainerByHashTree<Domain, Value, HashKey >::checkIntegrity ( HashKey key, bool leafAbove ) const
   {
     trace.info() << "Checking key=" << key << endl;
     if ( !isKeyValid ( key ) )
-    {
-      trace.error() << "checkIntegrity->invalid key " << Bits::bitString ( key );
-      trace.info() << endl;
-      ASSERT ( 1 == 0 );
-    }
+      {
+        trace.error() << "checkIntegrity->invalid key " << Bits::bitString ( key );
+        trace.info() << endl;
+        ASSERT ( 1 == 0 );
+      }
 
     Node* n = getNode ( key );
 
     if ( ( n != 0 ) && ( leafAbove ) )
-    {
-      trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << endl
-      << "at key " << Bits::bitString ( key ) << endl
-      << "several leafs found" << endl;
-      return false;
-    }
-
-    if ( getKeyDepth ( key ) >= myTreeDepth )
-    {
-      if ( leafAbove || n )
-      {
-        return true;
-      }
-      else
       {
         trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << endl
-        << "at key " << Bits::bitString ( key ) << endl
-        << "no leaf found" << endl;
+                      << "at key " << Bits::bitString ( key ) << endl
+                      << "several leafs found" << endl;
         return false;
       }
-    }
+
+    if ( getKeyDepth ( key ) >= myTreeDepth )
+      {
+        if ( leafAbove || n )
+          {
+            return true;
+          }
+        else
+          {
+            trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << endl
+                          << "at key " << Bits::bitString ( key ) << endl
+                          << "no leaf found" << endl;
+            return false;
+          }
+      }
 
     HashKey children[myN];
     myMorton.childrenKeys ( key, children );
@@ -842,7 +889,7 @@ experimental::ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator(
   template < typename Domain, typename Value, typename HashKey>
   inline
   void
-  experimental::ImageContainerByHashTree< Domain, Value, HashKey>::selfDisplay ( std::ostream & out )
+  ImageContainerByHashTree< Domain, Value, HashKey>::selfDisplay ( std::ostream & out )
   {
     printInfo ( out );
   }
