@@ -40,65 +40,90 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TInteger>::~CombinatorialDSS()
-{}
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::CombinatorialDSS()
+{ }
 
 
-
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TInteger>::init(ConstIterator i)
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::~CombinatorialDSS()
+{ }
+
+
+
+
+template < typename TConstIterator, typename TInteger >
+inline
+void 
+DGtal::CombinatorialDSS<TConstIterator, TInteger>::init( 
+                    const ConstIterator & it,
+                    const Point & start,
+                    Vector (*displacements) (Code) )
 {
-  init( i.myDSS->myCodes, i.myDSS->myCodesLength, i.getIndex(), *i, i.myDSS->myDisplacements );
-}
+  myCodeHandler.init( this, it );
+  myFirstLetter = 0;
 
+  myBegin = it;
+  myEnd = it;
+  ++myEnd;
 
-
-template <typename TInteger>
-inline
-void DGtal::CombinatorialDSS<TInteger>::init(const FreemanChainCode & fc)
-{
-  init( fc.chain.c_str(), static_cast<Size>( fc.size() ), 0, fc.firstPoint(), FreemanChainCode::displacement );
-}
-
-
-template <typename TInteger>
-inline
-void DGtal::CombinatorialDSS<TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
-{
-  init( it.getChain()->chain.c_str(), static_cast<Size>( it.getChain()->size()), 
-       it.getPosition(), *it, FreemanChainCode::displacement);
-}
-
-template <typename TInteger>
-inline
-void DGtal::CombinatorialDSS<TInteger>::init( 
-             const Code * theCode, 
-             Size codeLength, 
-             Index firstLetter, 
-             const Point & start,
-             Vector (*displacements) (Code) )
-{
-  myCodes = theCode;
-  myCodesLength = codeLength;
-  myNbRepeat = 1;
-  myFirstLetter = myLastLetter = myPatternBegin  = myPatternEnd = myNextBefore =
-    myNextAfter = firstLetter; myFirstPoint = start;
-  myLastPoint = myFirstPoint + FreemanChainCode::displacement( getCode( myFirstLetter) );
+  myLastLetter = 0;
+  myPatternBegin = 0;
+  myPatternEnd = 0;
   myLeftPatternLength = 0;
+  myNextBefore =0;
+  myNextAfter = 0; 
+  myNbRepeat = 1;
+
   myDisplacements = displacements;
+
+  myFirstPoint = start;
+  myLastPoint = myFirstPoint + 
+    FreemanChainCode::displacement( getCode( myFirstLetter) );
+
 }
+
+
+
+template < typename TConstIterator, typename TInteger >
+inline
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const ConstPointIterator & i)
+{
+  *this = *( i.getDSS() );
+}
+
+
+
+template < typename TConstIterator, typename TInteger >
+inline
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const FreemanChainCode & fc)
+{
+  init( fc.chain.begin(), fc.firstPoint(), FreemanChainCode::displacement );
+}
+
+
+
+template < typename TConstIterator, typename TInteger >
+inline
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::init(const typename FreemanChainCode::ConstIterator& it)
+{
+  std::string::const_iterator string_it = it.getChain()->chain.begin();
+  string_it += it.getPosition();
+  init( string_it, *it, FreemanChainCode::displacement );
+}
+
 
 /**
  * @param other the object to clone.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TInteger>::CombinatorialDSS ( const Self & other ) :
-  myCodes             ( other.myCodes ),
-  myCodesLength       ( other.myCodesLength ),
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::CombinatorialDSS ( const Self & other ) :
+  myCodeHandler       ( other.myCodeHandler ),
+  myBegin             ( other.myBegin ),
+  myEnd               ( other.myEnd ),
   myFirstPoint        ( other.myFirstPoint ),
   myLastPoint         ( other.myLastPoint ),
   myFirstLetter       ( other.myFirstLetter ),
@@ -117,13 +142,14 @@ DGtal::CombinatorialDSS<TInteger>::CombinatorialDSS ( const Self & other ) :
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-DGtal::CombinatorialDSS<TInteger> & 
-DGtal::CombinatorialDSS<TInteger>::operator= ( const Self & other )
+DGtal::CombinatorialDSS<TConstIterator,TInteger> & 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator= ( const Self & other )
 {
-  myCodes             = other.myCodes;
-  myCodesLength       = other.myCodesLength;
+  myCodeHandler       = other.myCodeHandler;
+  myBegin             = other.myBegin;
+  myEnd               = other.myEnd;
   myFirstPoint        = other.myFirstPoint;
   myLastPoint         = other.myLastPoint;
   myFirstLetter       = other.myFirstLetter;
@@ -141,17 +167,12 @@ DGtal::CombinatorialDSS<TInteger>::operator= ( const Self & other )
 /**
  * @param other the object to compare with.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::operator==( const Self & other ) const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator==( const Self & other ) const
 {
-  return ( 
-          ( myFirstPoint == other.myFirstPoint) && ( myLastPoint == other.myLastPoint) 
-         ) || ( 
-          ( myFirstPoint == other.myFirstPoint) && ( myLastPoint == other.myLastPoint) 
-         );
+  return ( ( begin() == other.begin() ) && ( end() == other.end() ) );
 }
-
 
 
 /**
@@ -159,9 +180,9 @@ bool DGtal::CombinatorialDSS<TInteger>::operator==( const Self & other ) const
  * @return 'false' if equal
  * 'true' otherwise
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::operator!=( const Self & other ) const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const Self & other ) const
 {
   return !(*this == other);
 }
@@ -170,10 +191,10 @@ bool DGtal::CombinatorialDSS<TInteger>::operator!=( const Self & other ) const
 /**
  * @param other the object to compare with.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
 bool 
-DGtal::CombinatorialDSS<TInteger>::operator==( const ArithmeticalDSS & other) const
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator==( const ArithmeticalDSS & other) const
 {
   return  ( ( ( getFirstPoint() == other.getFirstPoint() ) && 
              ( getLastPoint() == other.getLastPoint() ) ) 
@@ -187,58 +208,33 @@ DGtal::CombinatorialDSS<TInteger>::operator==( const ArithmeticalDSS & other) co
  * @return 'false' if equal
  * 'true' otherwise
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
 bool 
-DGtal::CombinatorialDSS<TInteger>::operator!=( const ArithmeticalDSS & other) const
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const ArithmeticalDSS & other) const
 {
   return !( *this == other );
 }
 
 
 
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Reverse
-DGtal::CombinatorialDSS<TInteger>::getReverse() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Reverse
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getReverse() const
 {
   return Reverse();
 }
 
-/**
- * Tests whether the current DSS can be extended at the front or at
- * the back depending on the iterator given as argument.  Computes
- * the parameters of the extended DSS if yes.
- * @return 'true' if yes, 'false' otherwise.
- */
-/* 
- * template <typename TInteger>
- * inline
- * bool DGtal::CombinatorialDSS<TInteger>::extendForward(ConstIterator it)
- * {
- *   // Normal cases
- *   if ( (Index) it.getPosition() == myLastLetter + 1) 
- *     return extendForward();
- *   if ( (Index) it.getPosition() == myFirstLetter - 1) 
- *     return extendBackward();
- *   if ( (Index) it.getPosition() == (myLastLetter+1) % (Size) myFC->size() ) 
- *     return extendForward();
- *   if ( (Index) it.getPosition() == (myFirstLetter-1) % (Size) myFC->size() ) 
- *     return extendBackward();
- *   ASSERT(false && "[CombinatorialDSS::extendForward(ConstIterator it)] iterator 'it' is not valid");
- * }
- */
 
 
 /**
  * @return 'true' if yes, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::extendForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendForward()
 {
-  if (myLastLetter == myCodesLength )
-    return false;
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
 
@@ -294,6 +290,7 @@ bool DGtal::CombinatorialDSS<TInteger>::extendForward()
   } else {
     return false;
   }
+  ++myEnd;
   ++myLastLetter;
   myLastPoint += FreemanChainCode::displacement( getCode( myLastLetter ) );
   return true;
@@ -303,20 +300,12 @@ bool DGtal::CombinatorialDSS<TInteger>::extendForward()
 /**
  * @return 'true' if yes, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::extendBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::extendBackward()
 {
-  if ( myFirstLetter == 0 )
-    {
-      return false;
-    }
-  Code letterRead = getCode( myFirstLetter - 1);
+  Code letterRead = getCode( myFirstLetter - 1 );
   Code letterExpected = getCode( myNextBefore );
-
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::extendBackward()]\n";
-  //cout << "letterRead = getCode(" << myFirstLetter-1 << ") = " << letterRead << endl;
-  //cout << "letterExpected = getCode(" << myNextBefore << ") = " << letterExpected << endl;
 
   // Test if the new letter forms a longer suffix of the main pattern
   // If the new letter is not what was expected, either the main pattern
@@ -394,6 +383,7 @@ bool DGtal::CombinatorialDSS<TInteger>::extendBackward()
     //cout << "Case 7" << endl;
     return false;
   }
+  --myBegin;
   --myFirstLetter;
   myFirstPoint -= FreemanChainCode::displacement( getCode( myFirstLetter ) );
   return true;
@@ -404,11 +394,10 @@ bool DGtal::CombinatorialDSS<TInteger>::extendBackward()
 /**
  * @return 'true' if the first point is removed, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::retractForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractForward()
 {
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::retractForward(" << myFirstLetter << ")]" << endl;
 
   if ( myNextBefore != myPatternEnd ) {
     //Normal case
@@ -482,6 +471,7 @@ bool DGtal::CombinatorialDSS<TInteger>::retractForward()
     }
   }
 
+  ++myBegin;
   myFirstPoint += FreemanChainCode::displacement( getCode( myFirstLetter ) );
   ++myFirstLetter;
   return true;
@@ -491,12 +481,10 @@ bool DGtal::CombinatorialDSS<TInteger>::retractForward()
 /**
  * @return 'true' if the last point is removed, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::retractBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::retractBackward()
 {
-  //cout << "[DGtal::CombinatorialDSS<TInteger>::retractBackward(" << myLastPoint << ")]" << endl;
-
   if ( myNextAfter != myPatternBegin ) {
     // Normal case
     //cout << "Case 1" << endl;
@@ -565,6 +553,7 @@ bool DGtal::CombinatorialDSS<TInteger>::retractBackward()
       myLeftPatternLength = 0;
     }
   }
+  --myEnd;
   myLastPoint -= FreemanChainCode::displacement( getCode( myLastLetter ) );
   --myLastLetter;
   return true;
@@ -574,12 +563,10 @@ bool DGtal::CombinatorialDSS<TInteger>::retractBackward()
 /**
  * @return 'true' if yes, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::isExtendableForward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableForward()
 {
-  if (myLastLetter == myCodesLength )
-    return false;
   Code letterRead = getCode( myLastLetter + 1 );
   Code letterExpected = getCode( myNextAfter );
   if ( letterRead == letterExpected ) 
@@ -606,12 +593,10 @@ bool DGtal::CombinatorialDSS<TInteger>::isExtendableForward()
 /**
  * @return 'true' if yes, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::isExtendableBackward()
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isExtendableBackward()
 {
-  if ( myFirstLetter == 0 )
-    return false;
   Code letterRead = getCode( myFirstLetter - 1);
   Code letterExpected = getCode( myNextBefore );
   if ( letterRead == letterExpected ) 
@@ -633,14 +618,33 @@ bool DGtal::CombinatorialDSS<TInteger>::isExtendableBackward()
     return false;
 }
 
+template < typename TConstIterator, typename TInteger >
+inline
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::setPosition( 
+   const DGtal::CombinatorialDSS<TConstIterator, TInteger>::Point & p )
+{
+  Vector v = myLastPoint - myFirstPoint;
+  myFirstPoint = p;
+  myLastPoint  = p+v;
+}
+
+
+template < typename TConstIterator, typename TInteger >
+inline
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::translate( 
+   const DGtal::CombinatorialDSS<TConstIterator, TInteger>::Vector & v )
+{
+  myFirstPoint += v;
+  myLastPoint  += v;
+}
 
 
 /**
  * @returns 'false' if the data is incoherent.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::isValid() const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isValid() const
 {
   return (
       ( myFirstLetter  <= myPatternBegin ) &&
@@ -662,29 +666,21 @@ bool DGtal::CombinatorialDSS<TInteger>::isValid() const
  * @param out the output stream where the object is written.
  */
 
-template <typename T>
+template < typename TConstIterator, typename TInteger >
 inline
 void
-DGtal::CombinatorialDSS<T>::selfDisplay ( std::ostream & out ) const
+DGtal::CombinatorialDSS<TConstIterator, TInteger >::selfDisplay ( std::ostream & out ) const
 {
   std::string s;
-  if (myFirstLetter > 0 )
-    {
-      s += myCodes[myFirstLetter-1]; 
-      s += ".";
-    }
   for (int i=myFirstLetter; i<= myLastLetter; i++) 
-    s += myCodes[i];
-  if (myLastLetter + 1 < myCodesLength )
-    {
-      s += ".";
-      s += myCodes[myLastLetter+1];
-    }
+    s += getCode( i );
+  s += ".";
+  for (int i=myLastLetter+1; i<myLastLetter+4 ; i++) 
+    s += getCode( i );
   Integer a,b,mu,omega;
   getArithmeticalDescription(a,b,mu,omega);
   out << "[CombinatorialDSS]\n";
   out << "myCodes             = " << s << "\n";
-  out << "myCodesLength       = " << myCodesLength << "\n";
   out << "myFirstPoint        = " << myFirstPoint << "\n";
   out << "myLastPoint         = " << myLastPoint << "\n";
   out << "myFirstLetter       = " << myFirstLetter << "\n";
@@ -707,11 +703,11 @@ DGtal::CombinatorialDSS<T>::selfDisplay ( std::ostream & out ) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename T>
+template < typename TConstIterator, typename TInteger >
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-      const CombinatorialDSS<T> & object )
+      const CombinatorialDSS<TConstIterator, TInteger> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -721,11 +717,11 @@ DGtal::operator<< ( std::ostream & out,
 /**
  * @returns the small letter over which the DSS is written.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-//DGtal::CombinatorialDSS<TInteger>::Code 
-typename DGtal::CombinatorialDSS<TInteger>::Code
-DGtal::CombinatorialDSS<TInteger>::getSmallLetter() const
+//DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code 
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getSmallLetter() const
 {
   return getCode( myPatternBegin );
 }
@@ -734,10 +730,10 @@ DGtal::CombinatorialDSS<TInteger>::getSmallLetter() const
 /**
  * @returns the big letter over which the DSS is written.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Code
-DGtal::CombinatorialDSS<TInteger>::getBigLetter() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getBigLetter() const
 {
   return getCode( myPatternEnd );
 }
@@ -750,8 +746,8 @@ DGtal::CombinatorialDSS<TInteger>::getBigLetter() const
 /*
  * template <typename TInteger>
  * inline
- * typename DGtal::CombinatorialDSS<TInteger>::Code
- * DGtal::CombinatorialDSS<TInteger>::getCode(Index pos) const
+ * typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
+ * DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos) const
  * {
  *   int fcSize = (int) myFC->size();
  *   if ( pos < 0 ) 
@@ -762,16 +758,20 @@ DGtal::CombinatorialDSS<TInteger>::getBigLetter() const
  * }
  */
 
-/*
- * @param a position in the FreemanChain
- * @returns the letter at the given position
- */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Code
-DGtal::CombinatorialDSS<TInteger>::getCode(Index pos) const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos)  
 {
-  return myCodes[pos];
+  return myCodeHandler.getCode( pos  );
+}
+
+template < typename TConstIterator, typename TInteger >
+inline
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Code
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getCode(Index pos)  const
+{
+  return myCodeHandler.getCode( pos  );
 }
 
 
@@ -780,10 +780,10 @@ DGtal::CombinatorialDSS<TInteger>::getCode(Index pos) const
 * Computes the length of the main pattern.
 * @returns the length of the main pattern
 */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Size
-DGtal::CombinatorialDSS<TInteger>::mainPatternLength() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternLength() const
 {
   return myPatternEnd - myPatternBegin + 1;
 }
@@ -792,12 +792,12 @@ DGtal::CombinatorialDSS<TInteger>::mainPatternLength() const
 * Computes the vector defined by the main pattern.
 * @returns the vector defined by the main pattern.
 */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Vector
-DGtal::CombinatorialDSS<TInteger>::mainPatternVector() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Vector
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::mainPatternVector() const
 {
-  ConstIterator it = begin();
+  ConstPointIterator it = pointBegin();
   while ( ! isUL ( it.getIndex() ) )
     ++it;
   Point p_uf = *it;
@@ -815,10 +815,10 @@ DGtal::CombinatorialDSS<TInteger>::mainPatternVector() const
 /**
  * @returns the length of the suffix read.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Size
-DGtal::CombinatorialDSS<TInteger>::suffixLength() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::suffixLength() const
 {
   return ( myPatternEnd - myNextBefore );
 }
@@ -827,10 +827,10 @@ DGtal::CombinatorialDSS<TInteger>::suffixLength() const
 /**
  * @returns the length of the prefix read.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Size
-DGtal::CombinatorialDSS<TInteger>::prefixLength() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Size
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::prefixLength() const
 {
   return ( myNextAfter - myPatternBegin );
 }
@@ -840,9 +840,9 @@ DGtal::CombinatorialDSS<TInteger>::prefixLength() const
  * @returns 'true' if this letter is an "upper leaning point"
  *   'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::isUL ( Index pos ) const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isUL ( Index pos ) const
 {
   return ( (pos == myPatternBegin) || ( pos == myPatternEnd ) );
 }
@@ -854,9 +854,9 @@ bool DGtal::CombinatorialDSS<TInteger>::isUL ( Index pos ) const
  * @returns 'true' if this letter leads to a "lower leaning point"
  *   'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::nextIsLL ( Index pos ) const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::nextIsLL ( Index pos ) const
 {
   return ( (pos - myPatternBegin) == mainPatternLength() - myLeftPatternLength - 1) ;
 }
@@ -866,9 +866,9 @@ bool DGtal::CombinatorialDSS<TInteger>::nextIsLL ( Index pos ) const
  * @returns 'true' if this letter comes from a "lower leaning point"
  *   'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::previousIsLL ( Index pos ) const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::previousIsLL ( Index pos ) const
 {
   return ( (pos - myPatternBegin) == mainPatternLength() - myLeftPatternLength ) ;
 }
@@ -877,48 +877,66 @@ bool DGtal::CombinatorialDSS<TInteger>::previousIsLL ( Index pos ) const
 /**
  * @returns 'true' is the DSS is trivial, 'false' otherwise.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-bool DGtal::CombinatorialDSS<TInteger>::isTrivial() const
+bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::isTrivial() const
 {
   // If there is no left subpattern, then the DSS is trivial.
   return ( myLeftPatternLength == 0 );
 }
 
 
+template < typename TConstIterator, typename TInteger >
+inline
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstIterator 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::begin() const
+{
+  return myBegin;
+}
+
+template < typename TConstIterator, typename TInteger >
+inline
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstIterator 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::end() const
+{
+  return myEnd;
+}
+
 
 /**
  * @return an iterator pointing on the first point of the chain.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::ConstIterator 
-DGtal::CombinatorialDSS<TInteger>::begin() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstPointIterator 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointBegin() const
 {
-  return ConstIterator( this, myFirstLetter, myFirstPoint );
+  return ConstPointIterator( this, myFirstLetter, myFirstPoint );
 }
 
 
 /**
  * @return an iterator pointing on the last point of the chain.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::ConstIterator 
-DGtal::CombinatorialDSS<TInteger>::end() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::ConstPointIterator 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::pointEnd() const
 {
-  ConstIterator it ( this, myLastLetter+1, myLastPoint );
+  ConstPointIterator it ( this, myLastLetter+1, myLastPoint );
   return ++it;
 }
+
+
 
 
 /**
  * @return the value of 'a' in the DSS equation
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Integer
-DGtal::CombinatorialDSS<TInteger>::getA() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getA() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -928,10 +946,10 @@ DGtal::CombinatorialDSS<TInteger>::getA() const
 /**
  * @return the value of 'b' in the DSS equation
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Integer
-DGtal::CombinatorialDSS<TInteger>::getB() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getB() const
 {
   Integer a,b,mu,omega;
   getArithmeticalDescription ( a, b, mu, omega);
@@ -943,13 +961,13 @@ DGtal::CombinatorialDSS<TInteger>::getB() const
 /**
  * @return the value of 'mu' in the DSS equation
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Integer
-DGtal::CombinatorialDSS<TInteger>::getMu() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getMu() const
 {
   Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega);
+  getArithmeticalDescription ( a, b, mu, omega );
   return mu;
 }
 
@@ -957,13 +975,13 @@ DGtal::CombinatorialDSS<TInteger>::getMu() const
 /**
  * @return the value of 'omega' in the DSS equation
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Integer
-DGtal::CombinatorialDSS<TInteger>::getOmega() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getOmega() const
 {
   Integer a,b,mu,omega;
-  getArithmeticalDescription ( a, b, mu, omega);
+  getArithmeticalDescription ( a, b, mu, omega );
   return omega;
 }
 
@@ -974,18 +992,18 @@ DGtal::CombinatorialDSS<TInteger>::getOmega() const
  * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
  * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TInteger>::getArithmeticalDescription(
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescription(
     Integer &a, Integer &b, Integer &mu, Integer &omega ) const
 {
-  ConstIterator itBegin = begin();
+  ConstPointIterator itBegin = pointBegin();
   while ( itBegin.getIndex() != myPatternBegin ) 
     itBegin++;
-  ConstIterator itEnd = end();
+  ConstPointIterator itEnd = pointEnd();
   while ( itEnd.getIndex() != myPatternEnd+1 ) 
     itEnd--;
-  ConstIterator it;
+  ConstPointIterator it;
   Size myRightPatternLenght = mainPatternLength() - myLeftPatternLength;
   it = itBegin;
   for (int i=0; i<myRightPatternLenght; i++)
@@ -1003,13 +1021,13 @@ void DGtal::CombinatorialDSS<TInteger>::getArithmeticalDescription(
 }
 
 
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-void DGtal::CombinatorialDSS<TInteger>::computeLeaningPoints( 
+void DGtal::CombinatorialDSS<TConstIterator,TInteger>::computeLeaningPoints( 
               Point & uf, Point & ul, 
               Point & lf, Point & ll ) const
 {
-  ConstIterator it = begin();
+  ConstPointIterator it = pointBegin();
   while ( ! isUL ( it.getIndex() ) )
     ++it;
   uf = *it;
@@ -1038,10 +1056,10 @@ void DGtal::CombinatorialDSS<TInteger>::computeLeaningPoints(
 /**
  * @return first upper leaning point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getUf() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1052,10 +1070,10 @@ DGtal::CombinatorialDSS<TInteger>::getUf() const
 /**
  * @return last upper leaning point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getUl() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getUl() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1066,10 +1084,10 @@ DGtal::CombinatorialDSS<TInteger>::getUl() const
 /**
  * @return first lower leaning point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getLf() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLf() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1080,10 +1098,10 @@ DGtal::CombinatorialDSS<TInteger>::getLf() const
 /**
  * @return last lower leaning point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getLl() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLl() const
 {
   Point uf, ul, lf, ll;
   computeLeaningPoints( uf, ul, lf, ll );
@@ -1095,19 +1113,19 @@ DGtal::CombinatorialDSS<TInteger>::getLl() const
  * @param a code.
  * @returns the vector defined by that code.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Vector 
-DGtal::CombinatorialDSS<TInteger>::displacement( Code c ) const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Vector 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::displacement( Code c ) const
 {
   return this->myDisplacements( c );
 }
 
 
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Integer 
-DGtal::CombinatorialDSS<TInteger>::getRemainder(const Point & aPoint) const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Integer 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getRemainder(const Point & aPoint) const
 {
   Integer a,b,mu,omega;
   Integer x = aPoint[0];
@@ -1128,10 +1146,10 @@ DGtal::CombinatorialDSS<TInteger>::getRemainder(const Point & aPoint) const
  * Accessor to the first added point to the DSS
  * @return point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getFirstPoint() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getFirstPoint() const
 {
   return myFirstPoint;
 }
@@ -1141,14 +1159,13 @@ DGtal::CombinatorialDSS<TInteger>::getFirstPoint() const
  * Accessor to the last added point to the DSS
  * @return point.
  */
-template <typename TInteger>
+template < typename TConstIterator, typename TInteger >
 inline
-typename DGtal::CombinatorialDSS<TInteger>::Point 
-DGtal::CombinatorialDSS<TInteger>::getLastPoint() const
+typename DGtal::CombinatorialDSS<TConstIterator,TInteger>::Point 
+DGtal::CombinatorialDSS<TConstIterator,TInteger>::getLastPoint() const
 {
   return myLastPoint;
 }
-
 
 
 /**
