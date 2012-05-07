@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -49,28 +50,28 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointFunctor
   /**
-     Description of \b concept '\b CPointFunctor' <p>
+Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
      \brief Aim: Defines a functor on points.
      
      Associates values to points.
     
-     <p> Refinement of Assignable
+ ### Refinement of CUnaryFunctor
     
-     <p> Associated types :
+ ### Associated types :
     
      - Point : specifies the type for a point (inner type).
-     - Point : specifies the type for a value (inner type).
+     - Value : specifies the type for a value (inner type).
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CPointFunctor
      - \t x : Object of type \t X
      - \t p : Object of type Point
      - \t v : Object of type Value
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
      <tr> 
      <td class=CName> \b Name </td> 
@@ -94,32 +95,26 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
      - Shapes and images are models of (refinements of) this concept  
     
-     <p> Notes <br>
+ ### Notes###
    */
   template <typename T>
-  struct CPointFunctor : boost::Assignable<T>
+  struct CPointFunctor
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
     typedef typename T::Value Value;
 
-    BOOST_CONCEPT_USAGE( CPointFunctor )
-    {
-      // x( p ) returns myV.
-      ConceptUtils::sameType( myV, myF.operator() ( myPoint ) );
-    }
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,Value> ));
+
     // ------------------------- Private Datas --------------------------------
   private:
-    T myF;
-    Point myPoint;
-    Value myV;
     // ------------------------- Internals ------------------------------------
   private:
     

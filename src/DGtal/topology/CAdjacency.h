@@ -53,7 +53,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CAdjacency
   /**
-   * Description of \b concept '\b CAdjacency' <p>
+   * DescriptionDescription of \b concept '\b CAdjacency' <p>
    * @ingroup Concepts
    *
    * \brief Aim: The concept CAdjacency defines an elementary
@@ -79,7 +79,7 @@ namespace DGtal
    * - \c p1, \c p2 : an object of type \ref Point.
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
@@ -123,13 +123,13 @@ namespace DGtal
    *
    * </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    *
    * - MetricAdjacency, DomainAdjacency
    *
-   * <p> Notes <br>
+   * <p> Notes###
    */
   template <typename Adj>
   struct CAdjacency

@@ -1,9 +1,9 @@
 /**
  * @file FAQDGtalCmake.dox
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @authors David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr ) - Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/01/25
+ * @date 2012/05/04
  * 
  * Documentation file for feature FAQDGtalCmake
  *
@@ -17,41 +17,43 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake DGtal Project Build System (cmake)
-@author David Coeurjolly
+@page FAQDGtalCmake How to build DGtal (with cmake)
+@authors David Coeurjolly - Martial Tola
 
 
-This part of the manual describes how the build sequence of the  DGtal
-project is managed and how to extend DGtal with new classes and examples. 
+This part of the manual describes how to build DGtal on Linux, Mac OS X and Windows. 
 
-
-Table of contents:
- -# \ref intro
-  -# \ref linux 
-  -# \ref macos
-  -# \ref win   
- -# \ref cmakeDGtal
- -# \ref howtos  
-   -# \ref newclass
-   -# \ref newtest
-   -# \ref newexample
-   -# \ref newdep
-   -# \ref newdoc
+[TOC]
 
 \section intro Introduction and first build
 
-The DGTal library uses <a href="http://www.cmake.org">cmake</a> to
-manage the project build on various systems. With the same project
-description syntax, cmake can do various things:
-  - Check the compiler and its options
-  - Check and locate the project dependencies
-  - Generate different build  backends (Unix makefile, VisualStudio
-  projects,..), also called generators.
-  - Create documentation build rules
-  - Manage unit tests
-  - ...
+The DGtal library uses <a href="http://www.cmake.org">cmake</a> to
+manage the project build on various systems.
 
 \subsection linux Build on Linux-based distributions
+
+To build DGtal in is minimal configuration, you need at least these dependencies:
+
+- \e cmake (optionally cmake-gui),
+- \e g++,
+- \e doxygen >= 1.8.0,
+- \e graphviz,
+- \e boost >= 1.42.0 and boost-program-options.
+
+To build DGtal in is full configuration, you need these dependencies too:
+
+- \e gmp,
+- \e cairo,
+- \e qglviewer,
+- \e graphicsmagick,
+- \e insighttoolkit >= 4.0.0,
+- \e gdcm.
+
+For example, from a clean Ubuntu installation, you just need to do that to install all the dependencies:
+@code
+sudo apt-get install cmake g++ doxygen graphviz libboost-dev libboost-program-options-dev
+sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev
+@endcode
 
 An important feature of cmake is the "out-of-source" build
 process. Let us suppose that DGtal sources are in the DGTALSOURCES
@@ -63,9 +65,14 @@ cd build
 @endcode
 
 Next, use the cmake command to generate your Unix Makefile project
-(default generator on unix/linux):
+(default generator on Unix/Linux) like below for the minimal DGtal configuration:
 @code
 cmake ..
+@endcode
+
+For the full DGtal configuration, you have to set these options with cmake:
+@code
+cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
@@ -75,169 +82,60 @@ sudo make install
 @endcode
 
 
-\subsection macos Build on Mac Os
+\subsection macos Build on Mac OS X
 
-Since recent MacOs distribution are unix-like operating systems. The
+@todo Describe the process to install DGtal dependencies with <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and/or <a href="http://www.macports.org/">MacPorts</a>
+
+Since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal is to follow Unix/Linux instructions.
 
-@todo Describe the process to compile DGtal with XCode
 
+\subsection win Build on Windows / Visual Studio
 
-\subsection win Build on Windows/Visual Studio
+@todo Describe the process to compile or install dependencies (boost, gmp-mpir, cairo, qglviewer, qt, ...) for x86 (vs2008) and x64 (vs2010)
 
-Use the Cmake Windows interface to generate your Visual Studio
+Use the cmake Windows interface (cmake-gui) to generate your Visual Studio
 project. Again, a good practise is to specify a different folder in
-which cmake and VS will put their build results.
+which cmake and Visual Studio will put their build results.
 
-On windows, there is no canonical locations on the folder
-tree where cmake could find the include files and the DLL of the DGtal
-dependencies. Hence, you will probably have to manually set the paths
-to find the boost headers and DLL for example.
+On windows, there is no specific locations on the folder
+tree where cmake could find the include files and DLLs shared libraries of the DGtal
+dependencies. Hence, you will have to \b manually set the paths
+to find the dependencies.
 
-Once the VS project as been  created, you just have to simply open it
-with VS.
+For example, with cmake-gui,
+  - \e the \b boost dependency must be set with a new \b BOOST_ROOT \b path option (with "+ Add Entry" button)
+  - \e the \b gmp-mpir dependency must be set with \b GMPXX_LIBRARIES (mpir.lib \b and \b not mpirxx.lib, important!) and \b GMP_LIBRARIES (mpir.lib too) \b file options and \b GMP_INCLUDE_DIR \b path option
+  - \e the \b cairo dependency must be set with \b CAIRO_LIBRAIRIES (cairo.lib \b and \b not cairo-static.lib, important!) \b file option and \b CAIRO_INCLUDE_DIRS \b path option
+  - \e the \b qglviewer dependency must be set with \b QGLVIEWER_LIBRARY_DEBUG (QGLViewerd2.lib) and \b QGLVIEWER_LIBRARY_RELEASE (QGLViewer2.lib) \b file options and \b QGLVIEWER_INCLUDE_DIR \b path option
 
-@todo Add snapshots?
+Important:
+- \e \b BUILD_SHARED_LIBS (ON/OFF) must be \b OFF actually on \b Windows!
+
+Once the Visual Studio project as been  created, you just have to simply open it
+with VS and compile it (but for the moment there are still compilation errors on Windows with some modules...).
+
 
 \section cmakeDGtal DGtal cmake options
 
-In DGtal CmakeLists, serval options can be specified to custom the
+In DGtal CMakeLists.txt, several options can be specified to custom the
 library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) such as:
   - \e CMAKE_BUILD_TYPE
-     - \b Debug: debug mode (e.g.  C++ debug flags, DEBUG variable, ...)
-     - \b Release: release build (optimized C++ compiler options, NDEBUG variable,...)
+     - \b Debug: debug mode (e.g. C++ debug flags, DEBUG variable, ...)
+     - \b Release: release build (e.g. optimized C++ compiler options, NDEBUG variable, ...)
   - \e CMAKE_INSTALL_PREFIX: a string containing the DGtal install path
   (e.g. by default on some linux: "/usr/local/").
 
-Beside these options, user can also specify:
+Beside these options, user can also specify these options:
 
 - \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
 - \e BUILD_TESTING (ON/OFF): to build the test suite (default: ON)
-- \e BUILD_TOOLS (ON/OFF): to build DGtal tools (default: ON)
-- \e BUILD_INLINE_FUNCTIONS (ON/OFF): to build inline functions (default: ON)
+
 - \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
- (default: OFF). If set to ON and in Debug build type, verbose
+ (default: OFF). If set to ON and in \b Debug build type, verbose
 debug messages are traced out.
 
-- \e BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) \todo Default should be OFF on windows (to test).
-
-
-
-
-
-\section howtos HowTos
-
-\subsection newclass Add a new class in DGtal
-
-To add a new class on linux, we encourage you to use the dedicated script in
-the <em>DGTALSOURCES/dev/scripts</em> folder. More precisely:
- - Create a new profile in <em>DGTALSOURCES/dev/profiles</em> (check existing
- profile files to see the syntax and the name of the brand new file
- should match with you system login
- - Then, the <em>DGTALSOURCES/dev/scripts/newclass.sh</em> script allows you
- to create a new class from several models. E.g.
-@code
-newclass.sh MyNewDomainClass kernel/domains
-@endcode
-will create three files in the <em>DGTALSOURCES/src/DGtal/kernel/domains</em>
-folder:
-  - MyNewDomainClass.h
-  - MyNewDomainClass.ih for inlined functions
-  - MyNewDomainClass.cpp for definitions of methods.
-
-If you intend to create a class with template arguments (usually the
-case in DGtal), use the <em>newtemplateclass.sh</em> script instead (it will
-only generate .h and .ih files).
-
-You can now edit the files and add them to the build system.
-
-If your class contains a implementation file (i.e. a CPP file), it
-must be added to the list of prerequisites for the main DGtal lib
-target. Hence, let us suppose that you would like to insert <em>DGTALSOURCES/src/DGtal/kernel/domains/MyNewDomainClass.*</em>
-in the build system.  Hence, you have to edit the corresponding
-<em>DGTALSOURCES/src/DGtal/kernel/ModuleSRC.txt</em> file in order to add a new line with
-<em>DGtal/kernel/domains/MyNewDomainClass</em>. Indeed Each DGtal module (<em>kernel</em> module in
-this example) has got a <em>ModuleSRC.txt</em> file containing the list of
-classes to add to the DGtal lib target.
-
-If your class is  a templated class, you don't have to edit the
-ModuleSRC.txt file.
-
-
-
-\subsection newtest Add a new test file class
-
-In DGtal, we use a test suite in order to check the consistence of the
-library through the time. When you add a new class, it's very
-important to add one or more tests files in the folder
-@code
-DGTALSOURCES/tests/MODULE/
-@endcode
-
-Basically, a test file is an executable with a return code <em>0</em> if all
-the tests of the file are satisfied and <em>1</em> otherwise. Unit testing is
-a method by which individual units of source code are tested to
-determine if they are fit for use. If they are, the return code <em>0</em> is used.
-In the <em>dev</em>
-folder, there is script and a file skeleton that help you creating a
-test file for a given functionality. In that case, you can simply 
-
-@code
-newtest.sh MyNewDomainClass kernel/
-@endcode
-
-This script will add a <em>testMyDomainClass.cpp</em> in the
-<em>DGTALSOURES/tests/kernel</em> folder. You can now edit this file to create
-your test. The last step is to add it to the build system. To do that,
-just edit the <em>DGTALSOURES/tests/kernel/CMakeLists.txt</em> file and add a
-new line with <em>testMyDomainClass</em> in the test suite.
-
-To run all the DGtal tests, you can either build the <em>tests</em> target on
-VS or to a <em>make test</em> on linux.
-
-
-\subsection newexample Add a new example file in DGtal
-
-
-To add a new example (clean and educational piece of code), the
-process is similar to the previous section with the script 
-@code
-newexample.sh simpleExample kernel/
-@endcode
-
-
-\subsection newdep Add a new dependency in DGtal
-
-To add a new dependency  (e.g. ExtraLib in the following), several
-things have to be done:
-
- -# Create an appropriate <em>FindExtraLib.cmake</em> script in the
-    \e DGTALSOURCES/cmake/ folder;
- -# Edit the file <em> DGTALSOURCES/cmake/CheckDGtalDependencies.cmake</em> and
-    cute/paste a new block starting with the <em>FIND</em> cmake command. If
-    cmake detects the library, it is important to append such lib to
-    the \e DGtalLibDependencies variable.
-
- -# If the dependency is detected, a C definition "USE_<DEP>" must be defined and 
-transfered to the compiler (e.g. "USE_ITK")
-
-
-
-\subsection newdoc Add a new documentation file
-
-
-For each DGtal feature or module, specific documentations are required
-(user-guide and manual). The documentation file must be a  valid
-doxygen file, added in to the module folder (e.g.
-<em>src/DGtal/kernel/domains/newDomain.dox</em>). To easily create
-such file, you can use the
-    <em>DGTALSOURCES}/dev/scripts/newdocumentation.sh</em> script. Once
-    you're done, edit the
-    file <em>DGTALSOURCES/src/DGtal/base/Config.h.in</em> and add a
-    <em>\\ref</em> to the new
-    section added in the new file <em>newdomain.dox</em>.
-
-
+- \e \b BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows!
 */
 
 }

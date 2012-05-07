@@ -57,15 +57,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
-     Description of \b concept '\b CSpace' <p>
-     @ingroup Concepts
+ Description of \b concept '\b CSpace' <p>
+ @ingroup Concepts
     
-     \brief Aim: Defines the concept describing a digital space, ie a
-     cartesian product of integer lines.
+ \brief Aim: Defines the concept describing a digital space, ie a
+ cartesian product of integer lines.
      
-     <p> Refinement of
+ ### Refinement of
     
-     <p> Provided types :
+ ### Provided types :
 
      - Space: the type itself.
      - Integer: the type for the components or coordinates of the
@@ -76,46 +76,30 @@ namespace DGtal
        model of CUnsignedInteger
      - Size: the type for measuring distances or counting elements in
        this space. Must be a model of CUnsignedInteger
+     - RealPoint: the type for a point in the real vector space of same dimension.
+     - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
 
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CSpace
-     - \t x, \t y  : Object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and semantics
 
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t X should have a static \c dimension. </td>
-     <td class=CExpression>      \t x.dimension </td> 
-     <td class=CRequirements>    static member has type \t Dimension </td>
-     <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-    
-     <p> Notes <br>
+| Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
+|---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
+| dimension     | \e X::dimension  |                   |               |              | X should have a static member \c dimension of type \c Dimension. | | |
 
-     @tparam T the type that is checked. T should be a model of
-     CSpace.
+    
+ ### Invariants###
+    
+ ### Models###
+
+ - SpaceND is the usual model of CSpace.
+    
+ ### Notes###
+
+ @tparam T the type that is checked. T should be a model of CSpace.
 
    */
   template <typename T>
@@ -125,13 +109,16 @@ namespace DGtal
   public:
     typedef typename T::Space Space;
     typedef typename T::Integer Integer;
-    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
     typedef typename T::Point Point;
     typedef typename T::Vector Vector;
     typedef typename T::Dimension Dimension;
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
     typedef typename T::Size Size;
+    typedef typename T::RealPoint RealPoint;
+    typedef typename T::RealVector RealVector;
+    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
+    BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
     BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
+
     BOOST_CONCEPT_USAGE( CSpace )
     {
       //Should have a static dimension.

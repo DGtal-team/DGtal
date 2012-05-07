@@ -12,17 +12,8 @@ This part of the manual describes how to import and export images
 in various formats. This document is dedicated both to DGtal users and
 developers.
 
-Table of contents:
- -# \ref usage
-   -# \ref colormaps
- -# \ref fileformat  
-   -# \ref io2D
-   -# \ref io3D
-   -# \ref nDio
-   -# \ref pointListnD
- -# \ref io_examples
-   -# \ref importDigitalSet 
-   -# \ref importPointList
+[TOC]
+
 \section usage Overall usage
 
 TODO
@@ -144,8 +135,9 @@ You may obtain the following visualisation:
 }
 
 /**
-* \example digitalSetFromVol.cpp
+* \example io/digitalSetFromVol.cpp
 **/
+
 /**
-* \example digitalSetFromPointList.cpp
+* \example io/digitalSetFromPointList.cpp
 **/

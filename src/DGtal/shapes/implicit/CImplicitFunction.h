@@ -50,25 +50,25 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CImplicitFunction
   /**
-     Description of \b concept '\b CImplicitFunction' <p>
+Description of \b concept '\b CImplicitFunction' <p>
      @ingroup Concepts
 
      @brief Aim: Describes any function of the form f(x), where x is
      some real point in the given space, and f(x) is some value.
      
-     <p> Associated types :
+ ### Associated types :
     
      - RealPoint: the type for the domain
      - Value: the type for the range
 
-     <p> Notation
+ ### Notation
      - \c X : A type that is a model of CImplicitFunction
      - \c f : objet of type X
      - \c a : objet of type RealPoint
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -93,15 +93,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
      - ImplicitBall, ImplicitPolynomial3Shape, ImplicitHyperCube, ImplicitRoundedHyperCube, ImplicitNorm1Ball
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CImplicitFunction.
+@tparam T the type that should be a model of CImplicitFunction.
    */
   template <typename T> 
   struct CImplicitFunction 

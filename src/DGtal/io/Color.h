@@ -105,12 +105,12 @@ namespace DGtal
       : myRed(aGrayValue),myGreen(aGrayValue), myBlue(aGrayValue), myAlpha(aAlphaValue) { }
 
 
-   /**
-    * Constructor.
-    *
-    * @param aRedValue, aGreenValue, aBlueValue: the three color components (set to -1)
-    * @param alpha: color transparency (default value =255);.
-    */
+    /**
+     * Constructor.
+     *
+     * @param aRedValue, aGreenValue, aBlueValue: the three color components (set to -1)
+     * @param alpha: color transparency (default value =255);.
+     */
     
     Color( const bool aValidColor = true )
       : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
@@ -121,9 +121,9 @@ namespace DGtal
     }
     
     Color& setRGBi( const unsigned char aRedValue,
-       const unsigned char aGreenValue,
-       const unsigned char aBlueValue,
-       const unsigned char aAlphaValue );
+		    const unsigned char aGreenValue,
+		    const unsigned char aBlueValue,
+		    const unsigned char aAlphaValue );
 
     
     void red( const unsigned char aRedValue );
@@ -140,7 +140,7 @@ namespace DGtal
     
     unsigned char blue() const ;
 
-   unsigned char alpha() const ;
+    unsigned char alpha() const ;
 
     bool valid() const;
 
@@ -160,9 +160,9 @@ namespace DGtal
 
 
     Color & setRGBf( float red, 
-         float green,
-         float blue,
-         float alpha = 1.0 );
+		     float green,
+		     float blue,
+		     float alpha = 1.0 );
   
     bool operator==( const Color & aColor ) const;
 
@@ -214,7 +214,7 @@ namespace DGtal
 
 
 
-   /**
+    /**
      * Copy constructor.
      * @param other the object to clone.
      * Forbidden by default.

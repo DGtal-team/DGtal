@@ -80,8 +80,8 @@ int main()
   std::string filenameImage = examplesPath + "samples/contourS.gif";
   Image img = reader.importImage( filenameImage );
   
-  Point ptInf = img.lowerBound(); 
-  Point ptSup = img.upperBound(); 
+  Point ptInf = img.domain().lowerBound(); 
+  Point ptSup = img.domain().upperBound(); 
   unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
   unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
   
