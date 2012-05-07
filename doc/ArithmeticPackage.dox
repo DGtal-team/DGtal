@@ -40,6 +40,8 @@ namespace DGtal {
 @author Xavier Provençal
 @author Mouhammad Said
 
+@since 0.5
+
 @b LICENSE: LGPL
 
 

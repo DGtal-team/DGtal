@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Mathematics.dox
+ * @file Algebraic.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/05
  *
- * Documentation file for feature Mathematics
+ * Documentation file for feature Algebraic
  *
  * This file is part of the DGtal library.
  */
@@ -33,25 +33,35 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page pageMathematicsPackage  Mathematics package
+@page pageAlgebraicPackage  Algebraic package
+
+@author Jacques-Olivier Lachaud
+@author Felix Fontein
+@author David Coeurjolly
+
+@since 0.5
 
 @b LICENSE: LGPL
 
 
 @b Package @b Overview
 
-This package gathers various mathematical subpackages and modules, which
-constitute the algebraic and arithmetic foundations of DGtal.
+This package gathers various mathematical subpackages and modules,
+which constitute the algebraic foundations of DGtal. For now, it
+consists in a module for defining multivariate polynomials.
 
-@b Modules or @b Subpackages
+@b Modules or @b Subpackage
+- \ref moduleNumber
+- \ref modulePolynomial
 
-- \ref pageArithmeticPackage
-  - \ref dgtal_irreducible_fraction
-  - \ref dgtal_digital_straightness
-- Algebraic package
-  - \ref modulePolynomial
+@b Package @b Concepts @b Overview
 
 @b Related @b documentation @b pages
+
+@b Related @b examples
+
+- polynomial-derivative.cpp, polynomial2-derivative.cpp.
+- trackImplicitPolynomialSurfaceToOFF.cpp
 
 
 */
