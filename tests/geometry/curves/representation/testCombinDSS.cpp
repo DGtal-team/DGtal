@@ -39,6 +39,9 @@
 #include "ConfigTest.h"
 #include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
 #include <time.h>
+#include <list>
+#include <vector>
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -61,9 +64,13 @@ bool testCombinatorialDSS()
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> ContourType; 
   typedef ContourType::ConstIterator ConstIterator;
-  typedef CombinatorialDSS<Coordinate> CombinatorialDSS;
+  typedef string::const_iterator codeIterator;
+  //typedef CombinatorialDSS<codeIterator, Coordinate> CombinatorialDSS;
+  typedef CombinatorialDSS< list<char>::iterator, Coordinate> CombinatorialDSS_list;
+  typedef CombinatorialDSS<codeIterator, Coordinate> CombinatorialDSS_string;
 
-  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS> ));
+  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_list> ));
+  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_string> ));
   //BOOST_CONCEPT_ASSERT(( CSegment<CombinatorialDSS> ));
 
   trace.beginBlock ( "Test \'extend\' and \'retract\'" );
@@ -72,17 +79,55 @@ bool testCombinatorialDSS()
   std::fstream fst;
   fst.open (filename.c_str(), std::ios::in);
   ContourType theContour(fst);
+  //ContourType theContour("0003003003");
 
+  list<char> l;
+  //for (unsigned int i=0; i<theContour.size(); ++i )
+  for ( string::const_iterator it = theContour.chain.begin(); it != theContour.chain.end(); ++it )
+    {
+      l.push_back( *it );
+    }
+
+  list<char>::iterator it = l.begin();
+
+  CombinatorialDSS_list C1;
+  C1.init( it, theContour.firstPoint() );
+
+  CombinatorialDSS_list C2;
+  C2.init( C1.begin() );
+
+  CombinatorialDSS_string C3;
+  C3.init( theContour );
+
+  CombinatorialDSS_string C4;
+  C4.init( theContour.begin() );
 
   int nbRetract = 0;
-  CombinatorialDSS C;
-  C.init( theContour.begin() );
-  while ( C.getLastPoint() != theContour.lastPoint() ) 
+  while ( C3.end() != theContour.chain.end() )
     {
-      if ( ! C.extendForward() )  
+      bool b1 = C1.extendForward();
+      bool b2 = C2.extendForward();
+      bool b3 = C3.extendForward();
+      bool b4 = C4.extendForward();
+      if ( b1 && b2 && b3 && b4 )
         {
-          C.retractForward();
+        }
+      else if ( !b1 && !b2 && !b3 && !b4 )
+        {
+          C1.retractForward();
+          C2.retractForward();
+          C3.retractForward();
+          C4.retractForward();
           ++nbRetract;
+        }
+      else
+        {
+          cout << b1 << " " << b2 << " " << b3 << " " << b4 << endl;
+          cout << C1 << endl;
+          cout << C2 << endl;
+          cout << C3 << endl;
+          cout << C4 << endl;
+          return false;
         }
     }
   trace.endBlock();
@@ -93,14 +138,14 @@ bool testCombinatorialDSS()
 /**
  * Builds CombinatorialDSS and ArithmeticalDSS in the fourth quadrants and
  * compares them, if both are equals, the test is passed.
- *
  */
 bool CompareToArithmetical()
 {
   typedef int Coordinate;
   typedef FreemanChain<Coordinate> ContourType; 
   typedef ArithmeticalDSS<ContourType::ConstIterator,Coordinate,4> ReferenceType;
-  typedef CombinatorialDSS<Coordinate> TestedType;
+  typedef string::const_iterator codeIterator;
+  typedef CombinatorialDSS<codeIterator, Coordinate> TestedType;
 
   trace.beginBlock ( "Comparing to ArithmeticalDSS" );
 
@@ -109,14 +154,12 @@ bool CompareToArithmetical()
   fst.open (filename.c_str(), std::ios::in);
   ContourType theContour(fst);
   ContourType::ConstIterator it = theContour.begin();
-  for (int i=0; i<10; i++) it++;
-  CombinatorialDSS<int> C;
-  C.init(it);
+  TestedType C;
+  C.init( it );
   ArithmeticalDSS<FreemanChain<int>::ConstIterator, int, 4> A(it);
   A.extendForward(); 
-  int nbPts = 2;
   bool res = true;
-  while ( C.getLastPoint() != theContour.lastPoint() ) 
+  while ( C.end() != theContour.chain.end() ) 
     {
       bool a = A.extendForward();
       bool c = C.extendForward();
@@ -164,6 +207,33 @@ bool CompareToArithmetical()
 
 
 
+bool testInGreedySegmentation( )
+{
+  typedef FreemanChain<int> Contour; 
+  typedef Contour::Point Point;
+  typedef Contour::Vector Vector;
+  typedef CombinatorialDSS<string::const_iterator, int> combinDSS;
+  typedef GreedySegmentation<combinDSS> combinDecomposition;
+
+  std::string filename = testPath + "samples/BigBall.fc";
+  std::fstream fst;
+  fst.open (filename.c_str(), std::ios::in);
+  Contour theContour(fst);
+
+  trace.beginBlock ( "Test CombinatorialDSS in greedy segmentation" );
+  combinDecomposition combin_dec( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
+  vector<combinDSS> theCombinDSS;
+  for ( combinDecomposition::SegmentComputerIterator i = combin_dec.begin();
+       i != combin_dec.end(); ++i ) 
+    {
+      combinDSS c( *i );
+      theCombinDSS.push_back( c );
+    } 
+  bool ok = ( theCombinDSS.size() == 1593 );
+  trace.endBlock();
+
+  return ok;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -175,7 +245,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testCombinatorialDSS() && CompareToArithmetical();
+  bool res = testCombinatorialDSS()     
+    && CompareToArithmetical() 
+    && testInGreedySegmentation();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
