@@ -34,8 +34,7 @@ namespace DGtal {
 /*!
 @page modulePolynomial  Polynomial module
 
-@author Felix Fontein
-@author Jacques-Olivier Lachaud
+@writers Felix Fontein, Jacques-Olivier Lachaud
 
 @since 5.0
 

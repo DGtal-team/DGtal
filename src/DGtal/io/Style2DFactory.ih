@@ -512,7 +512,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::HyperRectDomain<TSpace> & 
 // ImageContainerByHashTree
 template <typename Domain, typename Value, typename HashKey  >
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const experimental::ImageContainerByHashTree<Domain, Value, HashKey > & /*icbht*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ImageContainerByHashTree<Domain, Value, HashKey > & /*icbht*/, std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);
   return new DefaultDrawStyle_ImageContainerByHashTree;
