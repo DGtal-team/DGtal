@@ -57,7 +57,6 @@ using namespace Z2i;
 
 
 typedef FreemanChain<int> Contour;
-typedef FreemanChain<int>::Point Point;
 typedef FreemanChain<int>::Vector Vector;
 
 
@@ -75,7 +74,7 @@ bool testCombinatorialDSS()
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_list> ));
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_string> ));
 
-  trace.beginBlock ( "Test \'extend\' and \'retract\'" );
+  trace.beginBlock ( "Test different initialization methods" );
 
   std::string filename = testPath + "samples/france.fc";
   std::fstream fst;
@@ -172,12 +171,14 @@ bool CompareToArithmetical()
           A.retractForward();
           C.retractForward();
         }
-      if ( C != A )
+      // Compare positions
+      if ( ( C.getFirstPoint() != A.getFirstPoint() ) || ( C.getLastPoint() != A.getLastPoint() )  )
         {
           res = false;
           cout << "Equality test error\n";
           break;
         }
+      // Compare arithmetic parameters
       if ( ( C.getA() != A.getA() ) || ( C.getB() != A.getB() ) ||
            ( C.getMu() != A.getMu() ) || ( C.getOmega() != A.getOmega() ) ||
            ( C.getUf() != A.getUf() ) || ( C.getUl() != A.getUl() ) ||
@@ -207,6 +208,7 @@ bool CompareToArithmetical()
 
 bool testInGreedySegmentation( )
 {
+
   typedef CombinatorialDSS<string::const_iterator, int> combinDSS;
   typedef GreedySegmentation<combinDSS> combinSegmentation;
 
@@ -231,6 +233,15 @@ bool testInGreedySegmentation( )
 }
 
 
+/**
+ * This test is an adaptation to CombinatorialDSS of
+ * 'examples/geometre/curves/representation/greedy-dss-decomposition.cpp' where
+ * is uses ArithmeticDSS.
+ *
+ * It produces a slightly different decomposition since in a greedy-segmentation,
+ * consecutive ArithmeticDSS overlap a single point while CombinatorialDSS 
+ * overlap on a code and thus on two points.
+ */
 bool showGreedySegmantation()
 {
   trace.beginBlock ( "Example testCombinDSS-greedy" );
@@ -281,6 +292,7 @@ bool showGreedySegmantation()
   trace.endBlock();
   return 1;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :

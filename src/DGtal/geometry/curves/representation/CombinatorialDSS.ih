@@ -62,7 +62,7 @@ DGtal::CombinatorialDSS<TConstIterator, TInteger>::init(
                     const Point & start,
                     Vector (*displacements) (Code) )
 {
-  myCodeHandler.init( this, it );
+  myCodeHandler.init( it );
   myFirstLetter = 0;
 
   myBegin = it;
@@ -194,36 +194,6 @@ bool DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const Self & 
 {
   return !(*this == other);
 }
-
-
-/**
- * @param other the object to compare with.
- */
-template < typename TConstIterator, typename TInteger >
-inline
-bool 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator==( const ArithmeticalDSS & other) const
-{
-  return  ( ( ( getFirstPoint() == other.getFirstPoint() ) && 
-             ( getLastPoint() == other.getLastPoint() ) ) 
-           || ( ( getFirstPoint() == other.getLastPoint() ) && 
-               ( getLastPoint() == other.getFirstPoint() ) ) 
-  );
-}
-
-/**
- * @param other the object to compare with.
- * @return 'false' if equal
- * 'true' otherwise
- */
-template < typename TConstIterator, typename TInteger >
-inline
-bool 
-DGtal::CombinatorialDSS<TConstIterator,TInteger>::operator!=( const ArithmeticalDSS & other) const
-{
-  return !( *this == other );
-}
-
 
 
 template < typename TConstIterator, typename TInteger >
