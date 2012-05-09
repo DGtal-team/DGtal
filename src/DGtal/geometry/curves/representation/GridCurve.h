@@ -87,27 +87,27 @@ namespace DGtal
     * @tparam TKSpace Khalimsky space
     
     Using the namespace Z2i, defined in StdDefs.h, you can instanciate a grid curve as follows:
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveDeclaration
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveDeclaration
 
      This object provides several IO services. 
      For instance, you can read a grid curve from a data file, 
      which contains the (digital) coordinates of the 0-cells (pointels): 
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDataFile
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveFromDataFile
      Note that if the first and last 0-cells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
      as closed. In case (i), the last 0-cell is removed, whereas in case (ii), a 1-cell is added. 
      
      You can also build a grid curve from the contour of a digital set as follows: 
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveFromDigitalSet
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveFromDigitalSet
     
      To save a grid curve in a data file, GridCurve provides the special method writeVectorToStream():
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveToDataFile
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveToDataFile
     
      The stream mechanism is used to display the true content of the grid curve: 
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveStandardOutput
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveStandardOutput
 
      In 2d, the grid curve can be drawn in a vector graphics file as follows:
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveToGraphics
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveToGraphics
      See @ref dgtal_dgtalboard to learn more about the 2d drawing mechanism
      used in DGtal. 
 
@@ -144,7 +144,7 @@ namespace DGtal
     Each range can be displayed in the standard output or can be drawn
     (except CodesRange) in a vector graphics file as shown in the 
     following snippet: 
-    @snippet geometry/exampleGridCurve2d.cpp GridCurveIncidentPointsRangeIO
+    @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveIncidentPointsRangeIO
     
      Moreover, each range has the following inner types: 
 
@@ -164,7 +164,7 @@ namespace DGtal
      
      You can use these services to iterate over the elements of a given range
      as follows: 
-     @snippet geometry/exampleGridCurve2d.cpp GridCurveRangeIterators
+     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveRangeIterators
          
     * @see exampleGridCurve2d.cpp testGridCurve.cpp
     */

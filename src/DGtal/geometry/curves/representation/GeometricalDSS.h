@@ -81,7 +81,7 @@ namespace DGtal
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
-   * @snippet geometry/exampleGeometricalDSS.cpp GeometricalDSSUsage
+   * @snippet geometry/curves/representation/exampleGeometricalDSS.cpp GeometricalDSSUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *

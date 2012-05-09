@@ -79,7 +79,7 @@ namespace DGtal
    *
    *
    * Here is a short example of how to use this class:
-   * @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+   * @snippet geometry/curves/representation/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
    *
    * You must get: 
    *
