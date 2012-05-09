@@ -226,6 +226,7 @@ Steps:
     /**
      * Constructor with initialisation
      * @param it an iterator on 2D points
+     * @see init
      */
     ArithmeticalDSS(const ConstIterator& it);
 
@@ -249,17 +250,16 @@ Steps:
      */
     Self& operator= ( const Self & other );
 
+    /** 
+     * @return a default-constructed instance of Self 
+     */
+    Self getSelf() const;
+
     /**
-     * @return a reverse version of '*this'.
+     * @return a default-constructed instance of Reverse
      */
     Reverse getReverse() const;
-    
-    /** 
-     * @return an instance of Self 
-     */
-    
-    Self getSelf() const;
-    
+        
 
     /**
      * Equality operator.

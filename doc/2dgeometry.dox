@@ -258,7 +258,6 @@ called <em>segment</em>.
 More precisely, a segment is a valid and not empty range. 
 Any model of the concept CSegment, should have the following inner types: 
 
- - Self (its own type)
  - ConstIterator
 
 and the following methods: 
@@ -335,15 +334,31 @@ To cope with this problem, the models of CForwardSegmentComputer, which is a ref
 CTrivialSegmentComputer, should define the following nested type:
 
  - Self (its own type)
+
  - Reverse (like Self but based on reverse iterators) 
 
-Reverse is a type that behaves like Self but with reverse iterators. In order to get a 
-reverse copy of a segment computer, the following method should be defined:   
+Reverse is a type that behaves like Self but with reverse iterators. 
+Moreover, in order to build an instance of Self (resp. Reverse) from 
+a segment computer, the following method should be defined:   
 
- - Reverse getReverse() : get a reverse copy
+ - Self getSelf() : returns an instance of Self
+
+ - Reverse getReverse() : returns an instance of Reverse
+
+The returned objects may not be full copies of this, 
+may not have the same internal state as this, but 
+must be constructed from the same input parameters
+so that they can detect segments verifying the same property. 
+For instance, in digital geometry, k-arcs detection may be implemented 
+as a segment computer constructed from the input parameter k indicating
+the adjacency to use. In this case, getSelf and getReverse methods
+ must return segment computers based on the k-adjacency too. 
+These segment computers may be not valid before calling the init method.    
 
 As the name suggests, forward segment computers can only extend themselves in the forward
-direction, but this direction is relative to the direction of the underlying iterators. 
+direction, but this direction is relative to the direction of the underlying iterators
+(the direction given by operator++ for instances of Self, 
+but the direction given by operator-- for instances of Reverse) 
 They cannot extend themselves in two directions at the same time around an element 
 contrary to bidirectional segment computers. 
 

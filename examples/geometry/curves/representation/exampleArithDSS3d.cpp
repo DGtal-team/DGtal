@@ -44,11 +44,10 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "../examples/ConfigExamples.h"
+#include "ConfigExamples.h"
 
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
-#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
-#include "DGtal/geometry/curves/representation/MaximalSegments.h"
+#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
 
 using namespace std;
@@ -65,15 +64,14 @@ int main( int argc, char** argv )
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
-  typedef GreedyDecomposition<SegmentComputer> Decomposition;
-//  typedef MaximalSegments<SegmentComputer> Decomposition;
+  typedef SaturatedSegmentation<SegmentComputer> Decomposition;
 
   string inputFilename = examplesPath + "samples/sinus.dat"; 
   vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
 
 
   SegmentComputer algo;
-  Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
+  Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
   
   ///////////////////////////////////
   //display  
@@ -88,7 +86,7 @@ int main( int argc, char** argv )
   viewer  << SetMode3D(p.className(), "Grid");
 
     unsigned int c = 0;
-    Decomposition::SegmentIterator i = theDecomposition.begin();
+    Decomposition::SegmentComputerIterator i = theDecomposition.begin();
     for ( ; i != theDecomposition.end(); ++i) {
       SegmentComputer currentSegmentComputer(*i);
        viewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
@@ -96,7 +94,6 @@ int main( int argc, char** argv )
        viewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
       viewer << currentSegmentComputer;  
       //cerr << currentSegmentComputer << endl;
-      
       c++;
     } 
  
