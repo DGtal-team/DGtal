@@ -263,6 +263,13 @@ namespace DGtal
        */
       struct ConstPointIterator
         {
+
+          typedef bidirectional_iterator_tag iterator_category;
+          typedef Point value_type;
+          typedef Index difference_type;
+          typedef Point * pointer;
+          typedef Point & reference;
+
           const CombinatorialDSS * myDSS;
           Index i;
           Point p;
@@ -300,11 +307,16 @@ namespace DGtal
               return i != other.i;
             }
 
+          Index operator-( const ConstPointIterator other) const
+            {
+              return i - other.i;
+            }
+
 
           /**
            * Copy operator
            */
-          ConstPointIterator& operator=( ConstPointIterator & other)
+          ConstPointIterator& operator=( const ConstPointIterator & other)
             {
               i = other.i;
               myDSS = other.myDSS;
@@ -462,6 +474,13 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       CombinatorialDSS & operator= ( const Self & other );
+
+      /**
+       * @returns an uninitialized instance of CombinatorialDSS.
+       */
+      Self getSelf( ) const;
+
+
 
       /**
        * Equality operator.
