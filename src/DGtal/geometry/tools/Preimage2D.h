@@ -79,13 +79,13 @@ namespace DGtal
    * @tparam Shape  a model of COrientableHypersurface
    *
    * You can define your preimage type from a given shape type as follows:
-   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromStraightLine
+   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageTypedefFromStraightLine
    *
    * Here is another example:
-   * @snippet geometry/examplePreimage.cpp PreimageTypedefFromCircle
+   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageTypedefFromCircle
    *
    * Then, here is the basic usage of this class:
-   * @snippet geometry/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
+   * @snippet geometry/curves/tools/examplePreimage.cpp PreimageUsageFromIncidentPointsRange
    *
    * @see examplePreimage.cpp testPreimage.cpp
    */
