@@ -48,7 +48,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/curves/representation/FreemanChain.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/OrderedAlphabet.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -114,14 +113,9 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Vector;
 
 
-      typedef char Code;
+      typedef typename iterator_traits<ConstIterator>::value_type Code;
       typedef int Size;
       typedef int Index;
-
-      //Arithmetical DSS, for comparaison purpose
-      typedef DGtal::ArithmeticalDSS< 
-        typename FreemanChainCode::ConstIterator, Integer, 4 > 
-        ArithmeticalDSS;
 
       //The basic steps associate to the codes are given by a function `f: Code -> Vector` 
       typedef Vector (*DisplacementFct) (Code);
@@ -140,10 +134,8 @@ namespace DGtal
         public :
           CodeHandler()
             { }
-          void init( CombinatorialDSS * dss, 
-                      const TIterator & it ) 
+          void init( const TIterator & it ) 
             { 
-              myDSS = dss;
               myIter = it;
             }
 
@@ -163,7 +155,6 @@ namespace DGtal
             }
 
         private :
-          CombinatorialDSS * myDSS;
           vector<Code> myCodes;
           TIterator myIter;
         };
@@ -179,10 +170,8 @@ namespace DGtal
           CodeHandler()
             {
             }
-          void init( CombinatorialDSS * dss, 
-                      const TIterator & it ) 
+          void init( const TIterator & it ) 
             { 
-              myDSS = dss;
               myFirst = it;
               myLast = it;
             }
@@ -219,7 +208,6 @@ namespace DGtal
             }
 
         private :
-          CombinatorialDSS * myDSS;
           vector<Code> myPosCodes;
           vector<Code> myNegCodes;
           TIterator myFirst;
@@ -236,7 +224,7 @@ namespace DGtal
             CodeHandler()
               { }
 
-            void init ( CombinatorialDSS * , const TIterator & it ) 
+            void init ( const TIterator & it ) 
             { 
               myIter = it;
             }
@@ -496,19 +484,6 @@ namespace DGtal
        */
       bool operator!=( const Self & other ) const;
 
-      /**
-       * Equatlity operator, comparing with ArithmericalDSS
-       * @param other the object to compare with.
-       */
-      bool operator==( const ArithmeticalDSS & other) const;
-
-      /**
-       * Difference operator, comparing with ArithmeticalDSS.
-       * @param other the object to compare with.
-       * @return 'false' if equal
-       * 'true' otherwise
-       */
-      bool operator!=( const ArithmeticalDSS & other ) const;
 
       /**
        * @return a reverse version of '*this'.
