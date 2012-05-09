@@ -3,12 +3,12 @@ Posted on May, 9th, 2012 by David Coeurjolly
 
 Many changes have been pushed to this release with a lot of nice
 tools.  Before going into details component by component, we would
-like to focus on couple of new cool features:
+like to focus on a couple of new cool features:
 
   - new arithmetic package (fractions, models of fraction,
     Stern-Brocot, Continuous fraction,...)
   - new nD DigitalSurface model (collections of (n-1) topological cells
-    with many tools/utilities to scan surface elements)
+    with many tools/utilities to track surface elements)
   - update of the build system to make easier the use of DGtal in your
     projects.
   - DGtal and DGtalTools
@@ -23,7 +23,7 @@ like to focus on couple of new cool features:
     development process. Please have a look to this project to get
     nice tools built upon the DGtal library.
 
-  - cmake scripts and DGtalConfig has been widely updated to make
+  - cmake scripts and DGtalConfig have been widely updated to make
     easier the use of the library in your own code
 
   - We are debugging both the code and the scripts to make it compile
