@@ -62,10 +62,10 @@ namespace DGtal
    * Description of template class 'CombinatorialDSS' <p>
    * \brief Aim:
    *
-   * A combinatorial DSS is a specialized type of DSS where that reads codes of
-   * a FreemanChain as input.
+   * A combinatorial DSS is a specialized type of 4-connected DSS that reads
+   * codes of a Freeman chain as input.
    * 
-   * In general, the FreemanChain code of a DSS has the following form :
+   * In general, the Freeman coding of a 4-connected DSS has the following form : 
    * 's.c^k.p' where 'k>0', 'c' is a Christoffel word, 's' is a suffix of 'c'
    * and 'p' a prefix of 'c'.
    *
@@ -74,7 +74,7 @@ namespace DGtal
    * to one of the axes , in this case the DSS is called 'trivial', and
    * when the DSS has only one upper leaning point.
    *
-   * This class is a model of the concept CSegmentComputer.
+   * This class is a model of the concept CBidirectionalSegmentComputer.
    *
    * @tparam TConstIterator the type of iterator used to read the input codes
    * (preferably of category 'random_access_iterator_tag').
