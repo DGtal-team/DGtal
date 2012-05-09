@@ -46,7 +46,7 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e cairo,
 - \e qglviewer,
 - \e graphicsmagick,
-- \e insighttoolkit >= 4.0.0,
+- \e insighttoolkit,
 - \e gdcm.
 
 For example, from a clean Ubuntu installation, you just need to do that to install all the dependencies:
@@ -84,10 +84,56 @@ sudo make install
 
 \subsection macos Build on Mac OS X
 
-@todo Describe the process to install DGtal dependencies with <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and/or <a href="http://www.macports.org/">MacPorts</a>
+First of all,
 
-Since recent Mac OS systems are unix-like operating systems, the
-easiest way to compile DGtal is to follow Unix/Linux instructions.
+- \e download and install Xcode : <a href="https://developer.apple.com/xcode/">https://developer.apple.com/xcode/</a>
+- \e with recent version of Xcode (for example 4.3.x) you need then to install the 'Command Line Tools' for Xcode. You can install them from inside Xcode's Download preferences. Finally, you also need to do that command:
+@code
+sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+@endcode
+- \e download and install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then update it:
+@code
+/usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
+brew update
+@endcode
+
+To build DGtal in is minimal configuration, you need at least these dependencies:
+
+- \e cmake (optionally cmake-gui),
+- \e doxygen >= 1.8.0,
+- \e graphviz,
+- \e boost >= 1.42.0 and boost-program-options.
+
+To build DGtal in is full configuration, you need these dependencies too:
+
+- \e gmp,
+- \e cairo,
+- \e libqglviewer,
+- \e graphicsmagick,
+- \e insighttoolkit.
+
+For example, from a clean Mac OS X Lion (10.7) installation, you first need to do that to install all the dependencies:
+@code
+brew install cmake doxygen graphviz boost
+brew install gmp cairo libqglviewer graphicsmagick
+sudo ln -s "/usr/local/Cellar/libqglviewer/2.3.15/QGLViewer.framework" "/Library/Frameworks/QGLViewer.framework"
+@endcode
+\b here \b 2.3.15 is an example but you may need to adjust the version number...
+
+Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
+@code
+tar zxvf InsightToolkit-4.1.0.tar.gz
+cd InsightToolkit-4.1.0
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+@endcode
+\b here \b 4.1.0 is an example but you may need to adjust the version number...
+
+Then, since recent Mac OS systems are unix-like operating systems, the
+easiest way to compile DGtal with cmake/make is to follow Linux-based instructions.
 
 
 \subsection win Build on Windows / Visual Studio
