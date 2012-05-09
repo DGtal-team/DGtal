@@ -182,17 +182,15 @@ namespace DGtal
     */
     bool operator!=( const Self & other) const;
 
-    /**
-     * Accessor to an instance of the reverse type.
-     */
-     Reverse getReverse() const; 
-
-     /** 
-     * @return an instance of Self 
-     */
-    
+    /** 
+     * @return a default-constructed instance of Self 
+     */    
     Self getSelf() const;
 
+    /**
+     * @return a default-constructed instance of Reverse.
+     */
+     Reverse getReverse() const; 
 
 
     // ----------------------- Interface --------------------------------------
