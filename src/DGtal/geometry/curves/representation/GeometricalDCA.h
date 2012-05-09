@@ -102,7 +102,7 @@ namespace DGtal
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
    *
-   * @snippet geometry/exampleGeometricalDCA.cpp GeometricalDCAUsage
+   * @snippet geometry/curves/representation/exampleGeometricalDCA.cpp GeometricalDCAUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
   *
@@ -182,17 +182,15 @@ namespace DGtal
     */
     bool operator!=( const Self & other) const;
 
-    /**
-     * Accessor to an instance of the reverse type.
-     */
-     Reverse getReverse() const; 
-
-     /** 
-     * @return an instance of Self 
-     */
-    
+    /** 
+     * @return a default-constructed instance of Self 
+     */    
     Self getSelf() const;
 
+    /**
+     * @return a default-constructed instance of Reverse.
+     */
+     Reverse getReverse() const; 
 
 
     // ----------------------- Interface --------------------------------------

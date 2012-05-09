@@ -46,7 +46,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
-#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 
 using namespace DGtal;
 using namespace std;
@@ -65,7 +65,7 @@ bool testDSSreco()
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
-
+  
   std::vector<Point> sequence;
   sequence.push_back(Point(0,0,0));
   sequence.push_back(Point(1,0,0));
@@ -87,23 +87,21 @@ bool testDSSreco()
   // Adding step
   trace.beginBlock("Add points while it is possible and display the result");
 
-    SegmentComputer algo;  
-    Iterator i = sequence.begin();  
-    algo.init(i);
-    trace.info() << "init with " << (*i) << std::endl;
-    ++i;
+  SegmentComputer algo;  
+  Iterator i = sequence.begin();  
+  algo.init(i);
+  trace.info() << "init with " << (*i) << std::endl;
 
-
-    while ( (i!=sequence.end())
-          &&(algo.extendForward(i)) ) {
-      trace.info() << "extended with " << (*i) << std::endl;
-      ++i;
+    while ( (algo.end() != sequence.end())
+	    && algo.extendForward()) {
+      trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
+    
     trace.info() << algo << " " << algo.isValid() << std::endl;
 
-  trace.endBlock();
+    trace.endBlock();
 
-  return true;  
+  return ( algo.isValid() && (algo.end() == (sequence.begin()+13)) );  
 }
 
 
@@ -118,7 +116,7 @@ bool testSegmentation()
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef ArithmeticalDSS3d<Iterator,int,4> SegmentComputer;  
-  typedef deprecated::GreedyDecomposition<SegmentComputer> Decomposition;
+  typedef GreedySegmentation<SegmentComputer> Decomposition;
 
   std::vector<Point> sequence;
   sequence.push_back(Point(0,0,0));
@@ -142,10 +140,10 @@ bool testSegmentation()
   trace.beginBlock("Segmentation test");
 
     SegmentComputer algo;
-    Decomposition theDecomposition(sequence.begin(), sequence.end(), algo, false);
+    Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
            
     unsigned int c = 0;
-    Decomposition::SegmentIterator i = theDecomposition.begin();
+    Decomposition::SegmentComputerIterator i = theDecomposition.begin();
     for ( ; i != theDecomposition.end(); ++i) {
       SegmentComputer currentSegmentComputer(*i);
       trace.info() << currentSegmentComputer << std::endl;  //standard output
@@ -166,7 +164,7 @@ int main(int argc, char **argv)
   trace.info() << endl;
 
   bool res = testDSSreco() 
-// && testSegmentation()
+        && testSegmentation()
   ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -96,7 +96,7 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics> check wether x can be extended to x.end() or not </td> 
+        <td class=CSemantics> checks whether x can be extended to x.end() or not </td> 
         <td class=CPostCondition>       </td> 
         <td class=CComplexity>      </td>
       </tr>
@@ -106,7 +106,7 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics> check wether x can be extended to x.end() or not, extend if true </td> 
+        <td class=CSemantics> check whether x can be extended to x.end() or not, extends if true </td> 
         <td class=CPostCondition>       </td> 
         <td class=CComplexity>     </td>
       </tr>
