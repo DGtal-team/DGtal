@@ -74,7 +74,6 @@ bool testCombinatorialDSS()
 
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_list> ));
   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_string> ));
-  //BOOST_CONCEPT_ASSERT(( CSegment<CombinatorialDSS> ));
 
   trace.beginBlock ( "Test \'extend\' and \'retract\'" );
 
@@ -84,7 +83,6 @@ bool testCombinatorialDSS()
   Contour theContour(fst);
 
   list<char> l;
-  //for (unsigned int i=0; i<theContour.size(); ++i )
   for ( string::const_iterator it = theContour.chain.begin(); it != theContour.chain.end(); ++it )
     {
       l.push_back( *it );
@@ -235,7 +233,7 @@ bool testInGreedySegmentation( )
 
 bool showGreedySegmantation()
 {
-  trace.beginBlock ( "Example dgtalboard-greedy-combindss" );
+  trace.beginBlock ( "Example testCombinDSS-greedy" );
 
   typedef CombinatorialDSS<string::const_iterator,int> combinDSS;
   typedef GreedySegmentation<combinDSS> Decomposition;
@@ -264,13 +262,11 @@ bool showGreedySegmantation()
   i != theDecomposition.end(); ++i ) 
     {
       combinDSS segment(*i);
-      // set the position of the combinatorilDSS and compute the start point of
-      // the next one.
+      // set the position of the combinatorilDSS 
       segment.setPosition( p );
-      Vector v = segment.getLastPoint() - segment.getFirstPoint();
-      combinDSS::ConstIterator it = segment.end();
-      Vector lastStep = segment.displacement( *(--it) );
-      p += v - lastStep;
+      // Since both DSS overlap on one code, the start point of the next one is
+      // the penultimate point of the current one.
+      p = *( --( --( segment.pointEnd() )));
 
       // Build an ArithmeticDSS from the CombinatorialDSS.
       arithDSS toShow( segment.pointBegin() );
@@ -278,13 +274,10 @@ bool showGreedySegmantation()
         {
           toShow.extendForward();
         }
-      std::cout << segment << std::endl;
-      std::cout << toShow << std::endl;
-      aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) )
-       << toShow; // draw each segment
-      
+      aBoard << CustomStyle( className, new CustomPenColor( Color::Blue ) ) 
+        << toShow; // draw each segment
     } 
-  aBoard.saveSVG("dgtalboard-greedy-combindss.svg");
+  aBoard.saveSVG("testCombinDSS-greedy.svg");
   trace.endBlock();
   return 1;
 }
