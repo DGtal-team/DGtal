@@ -11,6 +11,7 @@ like to focus on couple of new cool features:
     with many tools/utilities to scan surface elements)
   - update of the build system to make easier the use of DGtal in your
     projects.
+  - DGtal and DGtalTools
   - many bugfixes..
 
 * Overall  Project
