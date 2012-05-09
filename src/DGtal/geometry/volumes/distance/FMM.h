@@ -64,9 +64,26 @@ namespace DGtal
 
   namespace details
   {
+  /////////////////////////////////////////////////////////////////////////////
+  // template class PointValueCompare
+  /**
+   * Description of template class 'PointValueCompare' <p>
+   * \brief Aim: Small binary predicate to order candidates points 
+   * according to their (absolute) distance value. 
+   *
+   * @tparam T model of pair Point-Value
+   */
     template<typename T>
     class PointValueCompare {
     public: 
+      /**
+       * Comparison function
+       *
+       * @param a an object of type T
+       * @param b another object of type T
+       *
+       * @return 'true' if a<b but 'false' otherwise
+       */
       bool operator()(const T& a, const T& b) 
       {
 	if ( std::abs(a.second) == std::abs(b.second) ) 
@@ -87,7 +104,7 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM) for nd distance transforms.
    *
-   * In this approach, a signed distance function is computing at 
+   * In this approach, a signed distance function is computed at 
    * each digital point by marching out from an initial set of points, 
    * for which the values of the signed distance are known. This set
    * is an initialization of the so-called @e accepted @e point @e set. 
@@ -104,7 +121,7 @@ namespace DGtal
    *
    * Then the point of smallest tentative value is added to the set of
    * accepted points. The tentative values of the candidates adjacent 
-   * to the newly added point are updated using the the distance value
+   * to the newly added point are updated using the distance value
    * of the newly added point. The search of the point of smallest
    * tentative value is accelerated using a STL set of pairs (point, 
    * tentative value).  
@@ -278,14 +295,19 @@ namespace DGtal
   public:
     
     /** 
-     * Computes the distance map
+     * Computation of the signed distance function by marching out
+     * from the initial set of accepted points. 
+     * While it is possible, the candidate of min distance is 
+     * inserted into the set of accepted points. 
+     *
+     * @see computeOneStep
      */
     void compute();
  
     /** 
-     * Insert the candidate of min distance into the set 
+     * Inserts the candidate of min distance into the set 
      * of accepted points if it is possible and then 
-     * update the set of candidate points. 
+     * updates the distance values associated to the candidate points. 
      *
      * @param aPoint inserted point (if inserted)
      * @param aValue its distance value (if inserted)
@@ -307,6 +329,7 @@ namespace DGtal
     /** 
      * Maximal distance value in the set of accepted points. 
      *
+     * @return maximal distance value
      */
     Value max() const;
 
@@ -443,8 +466,9 @@ namespace DGtal
     void init();
     
     /** 
-     * Insert the candidate of min distance into the set 
-     * of accepted points and update the set of candidate points. 
+     * Inserts the candidate of min distance into the set 
+     * of accepted points and updates the distance values
+     * of the candidate points. 
      *
      * @param aPoint inserted point (if true)
      * @param aValue distance value of the inserted point (if true)
@@ -455,18 +479,19 @@ namespace DGtal
     bool addNewAcceptedPoint(Point& aPoint, Value& aValue);
 
     /** 
-     * Update the set of candidate points with the neigbors of @a aPoint. 
+     * Updates the distance values of the neighbors of @a aPoint
+     * belonging to the set of accepted points
      *
      * @param aPoint any point
      */
     void update(const Point& aPoint);
 
     /** 
-     * Test a new point as a candidate. 
+     * Tests a new point as a candidate. 
      * If it is not yet accepted 
-     * and if the point predicate return 'true', 
-     * compute its distance and insert it 
-     * into the set candidate points. 
+     * and if the point predicate returns 'true', 
+     * computes its distance and inserts it 
+     * into the set of candidate points. 
      *
      * @param aPoint any point
      *

@@ -69,10 +69,10 @@ namespace DGtal
    * equal to 1). 
    *
    * The computed value is such that the upwind gradient of the 
-   * distance map is one, ie. it the minimum solution \f$ \Phi \f$ 
+   * distance map is one, ie. it is the minimum solution \f$ \Phi \f$ 
    * over all quadrants, verifying the following quadratic equation:
    * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 \f$
-   * where \f$ \Phi_i \f$ is the distance value of the point preceding
+   * where \f$ \Phi_i \f$ is the distance value of the point preceeding
    * or following p along the \f$ i \f$ axis. 
    *
    * @note This class deals with positive or negative distance values
