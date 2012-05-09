@@ -88,7 +88,7 @@ Description of \b concept '\b CForwardSegmentComputer' <p>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> X::Reverse     </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics> get a reverse copy of x </td> 
+        <td class=CSemantics> returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) </td> 
         <td class=CPostCondition>       </td> 
         <td class=CComplexity>      </td>
       </tr>
