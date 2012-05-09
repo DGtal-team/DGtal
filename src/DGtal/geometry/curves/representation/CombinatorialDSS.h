@@ -62,28 +62,19 @@ namespace DGtal
    * Description of template class 'CombinatorialDSS' <p>
    * \brief Aim:
    *
-   * A combinatorial DSS is a specialized type of DSS where input points
-   * are given by an array of Codes considered as a FreemanChain.
-   *
-   * This class uses the fact that the part of a Freeman chain code that,
-   * in general, is a DSS has the following form : 's.c^k.p' where 'k>0',
-   * 'c' is a Christoffel word, 's' is a suffix of 'c' and 'p' a prefix
-   * of 'c'.
+   * A combinatorial DSS is a specialized type of DSS where that reads codes of
+   * a FreemanChain as input.
+   * 
+   * In general, the FreemanChain code of a DSS has the following form :
+   * 's.c^k.p' where 'k>0', 'c' is a Christoffel word, 's' is a suffix of 'c'
+   * and 'p' a prefix of 'c'.
    *
    * More precisely 'c' codes the path between two consecutive upper
    * leaning points so the only exceptions are where the DSS is parallel
    * to one of the axes , in this case the DSS is called 'trivial', and
    * when the DSS has only one upper leaning point.
    *
-   * One interest of this class is to provide the function
-   * 'longestChristoffelPrefix'. A Christoffel word is a particular type of
-   * pattern in a 4-connected DSS such that both the starting point and the end
-   * point are upper leaning points (see Berstel, Lauve, Reutenauer and Saliola
-   * [2008]).
-   *
-   *
    * This class is a model of the concept CSegmentComputer.
-   *
    *
    * @tparam TConstIterator the type of iterator used to read the input codes
    * (preferably of category 'random_access_iterator_tag').
@@ -247,7 +238,7 @@ namespace DGtal
     public :
 
       /**
-       * Basic iterator on the points of the DSS
+       * Iterator on the points of the DSS
        */
       struct ConstPointIterator
         {
@@ -396,16 +387,16 @@ namespace DGtal
 
 
       /**
-       * Initialize from input iterator. A DSS of length 1 is initialize using
-       * the iterator. 
+       * Initialize from input iterator. A DSS of length 1 is initialize from
+       * the iterator.
        *
        * By default, displacements are defined as : 
        * '0' -> (1,0), '1' -> (0,1), '2' -> (-1,0), '3' -> (0,-1)
        *
        * @param itFirst the first code to include in the DSS.
+       * @oaram start the position where the DSS starts.
        * @param displacement, the function that defines displacement vectors
        * from codes.
-       * @oaram start the position where the DSS starts.
        */
       void init( const ConstIterator & it, 
                 const Point & start = Point(0,0),
