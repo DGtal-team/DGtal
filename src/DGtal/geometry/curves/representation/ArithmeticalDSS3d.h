@@ -124,6 +124,7 @@ namespace DGtal
     /**
      * Constructor with initialisation
      * @param it an iterator
+     * @see init
      */
     ArithmeticalDSS3d(const ConstIterator& it);
 
@@ -148,12 +149,12 @@ namespace DGtal
     ArithmeticalDSS3d & operator= ( const ArithmeticalDSS3d & other );
 
     /** 
-     * @return a constructed instance of Self.
+     * @return a default-constructed instance of Self.
      */
     Self getSelf() const;
 
     /** 
-     * @return a constructed instance of Reverse.
+     * @return a default-constructed instance of Reverse.
      */
     Reverse getReverse() const;
 
