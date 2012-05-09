@@ -98,9 +98,12 @@ like to focus on couple of new cool features:
 
   - Complete refactoring of Images and ImageContainers (more
     consistent design)
+  
   - Documentation added
+
   - Graph of concepts added in the documentation
   
+
 * Package Geometry
 
   - New SegmentComputer (a.k.a. geometrical primitives to use for
