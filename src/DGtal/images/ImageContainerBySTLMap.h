@@ -67,43 +67,6 @@
 namespace DGtal
 {
 
-  namespace details
-  {
-  ///////////////////////////////////////////////////////////////////////////
-  // Helper class
-    /**
-     * Class template for the comparison of the points in the map.
-     */
-    struct PointComparator
-    {
-    /** 
-     * comparator
-     * 
-     * @param p a first point
-     * @param q a second point
-     * @return 'true' if p < q, 'false' otherwise
-     *
-     * @tparam T a type of point
-     */
-      template < typename T >
-      bool operator()(const T& p, const T& q) const 
-      {
-	typename T::ConstReverseIterator rp = p.rbegin(); 
-	typename T::ConstReverseIterator rpEnd = p.rend(); 
-	typename T::ConstReverseIterator rq = q.rbegin(); 
-  	while (rp != rpEnd)
-  	  {
-  	    if (*rp < *rq) return true; 
-  	    if (*rp > *rq) return false; 
-  	    rp++; rq++;  
-  	  }
-  	//each pair of coordinates are equal
-  	return false; 
-      }
-
-    }; 
-  }
-
   /////////////////////////////////////////////////////////////////////////////
   // class ImageContainerBySTLMap
   /**
@@ -130,15 +93,13 @@ namespace DGtal
 
   template <typename TDomain, typename TValue>
   class ImageContainerBySTLMap: 
-    public std::map<typename TDomain::Point, TValue,
-		    details::PointComparator >
+    public std::map<typename TDomain::Point, TValue >
   {
 
   public:
 
     typedef ImageContainerBySTLMap<TDomain,TValue> Self; 
-    typedef std::map<typename TDomain::Point, TValue,
-		     details::PointComparator > Parent; 
+    typedef std::map<typename TDomain::Point, TValue > Parent; 
 
     /// domain
     BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));

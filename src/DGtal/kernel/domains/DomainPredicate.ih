@@ -65,6 +65,7 @@ DGtal::DomainPredicate<TDomain>
     {
       myDomain = other.myDomain; 
     }
+  return *this; 
 }
 
 //------------------------------------------------------------------------------
