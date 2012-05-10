@@ -188,18 +188,18 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~GridCurve(){};
+    ~GridCurve();
 
     /**
      * Constructor.
      * @param aKSpace the Khalimsky space where the grid curve lies. 
      */
-    GridCurve(const KSpace& aKSpace) : myK(aKSpace) {};
+    GridCurve(const KSpace& aKSpace);
 
     /**
      * Default Constructor.
      */
-    GridCurve(){};
+    GridCurve();
 
 
     /**
@@ -266,9 +266,15 @@ namespace DGtal
     // ------------------------- private Datas --------------------------------
   private:
     /**
-     * Khalimsky space
+     * Pointer on a Khalimsky space
      */
-    KSpace myK;
+    const KSpace* myKPtr;
+    /**
+     * bool equal to 'true' if this owns the Khalimsky space
+     * but 'false' otherwise
+     */
+    bool myFlagIsOwned;
+
     /**
      * list of 0-cells
      */

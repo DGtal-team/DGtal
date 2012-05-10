@@ -40,7 +40,68 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
+template <typename TKSpace>
+DGtal::GridCurve<TKSpace>::~GridCurve()
+{
+  if (myFlagIsOwned) 
+    delete myKPtr; 
+}
 
+template <typename TKSpace>
+DGtal::GridCurve<TKSpace>::GridCurve()
+  : myKPtr( new KSpace() ), myFlagIsOwned( true )
+{
+}
+
+template <typename TKSpace>
+DGtal::GridCurve<TKSpace>::GridCurve(const KSpace& aKSpace)
+  : myKPtr( &aKSpace ), myFlagIsOwned( false )
+{
+}
+
+template <typename TKSpace>
+DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
+  : myFlagIsOwned( aOther.myFlagIsOwned ), my0SCells( aOther.my0SCells ), my1SCells( aOther.my1SCells )
+{
+  if (myFlagIsOwned)
+    myKPtr = new KSpace( *aOther.myKPtr ); //owned copy
+  else
+    myKPtr = aOther.myKPtr; //copy of the alias
+}
+
+template <typename TKSpace>
+typename DGtal::GridCurve<TKSpace> & 
+DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
+{
+  if ( this != &aOther )
+    {
+      my0SCells = aOther.my0SCells;
+      my1SCells = aOther.my1SCells;
+
+      //free old space
+      if (myFlagIsOwned)
+        delete myKPtr; 
+      //acquire new space
+      myFlagIsOwned = aOther.myFlagIsOwned;
+      if (myFlagIsOwned)
+        myKPtr = new KSpace( *aOther.myKPtr ); //owned copy
+      else
+        myKPtr = aOther.myKPtr; //copy of the alias
+    }
+  return *this;
+}
+
+template <typename TKSpace>
+inline
+bool
+DGtal::GridCurve<TKSpace>::isValid() const
+{
+  return (myKPtr != NULL) 
+    && ( my0SCells.size() > 0 ) 
+    && ( my1SCells.size() > 0 )
+    && ( (my0SCells.size() - my1SCells.size()) >= 1 )
+    && ( (my0SCells.size() - my1SCells.size()) <= 0 );
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,7 +113,7 @@ inline
 typename DGtal::GridCurve<TKSpace>::SCell
 DGtal::GridCurve<TKSpace>::PointTo0SCell(const Point& aPoint) 
 {
-  return myK.sPointel(aPoint,myK.NEG);
+  return myKPtr->sPointel(aPoint,myKPtr->NEG);
 }
 
 template <typename TKSpace>
@@ -63,11 +124,11 @@ DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector
 
   ASSERT( (aVector.norm(Vector::L_1) == 1) );
 
-  SCell pointel( myK.sPointel(aPoint,myK.NEG) );
+  SCell pointel( myKPtr->sPointel(aPoint,myKPtr->NEG) );
 
   typename KSpace::Space::Dimension d = 0;
   while ( aVector[d] == 0 ) ++d;
-  return myK.sIncident( pointel,d,(aVector[d]>0)?myK.POS:myK.NEG );
+  return myKPtr->sIncident( pointel,d,(aVector[d]>0)?myKPtr->POS:myKPtr->NEG );
 }
 
 
@@ -152,7 +213,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
   if (it != itEnd)
   {
     currentSCell = *it;
-    SCell firstPointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    SCell firstPointel( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
     
     my0SCells.push_back( firstPointel );
     my1SCells.push_back( currentSCell );
@@ -160,11 +221,11 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
     //other scells
     for (++it; it != itEnd; ++it) {
 
-      SCell expectedPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+      SCell expectedPointel( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
       currentSCell = *it; 
-      SCell pointel( myK.sIndirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+      SCell pointel( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
 
-      if ( myK.sKCoords(pointel) != myK.sKCoords(expectedPointel) ) { //disconnected !
+      if ( myKPtr->sKCoords(pointel) != myKPtr->sKCoords(expectedPointel) ) { //disconnected !
         throw ConnectivityException(); 
       }
 
@@ -173,7 +234,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVect
     }
 
     //if open, add a pointel
-    SCell lastPointel( myK.sDirectIncident( currentSCell, *myK.sDirs( currentSCell ) ) );
+    SCell lastPointel( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
     if ( lastPointel != firstPointel )
     {
       my0SCells.push_back( lastPointel ); 
@@ -191,7 +252,7 @@ DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out )
 {
   typename Storage::const_iterator i = my0SCells.begin();
   while (i != my0SCells.end()) {
-    Point p = myK.sCoords(*i); 
+    Point p = myKPtr->sCoords(*i); 
     for (unsigned int k = 0; k < Point::dimension; ++k) {
       out << p[k] << " ";
     }
@@ -200,35 +261,6 @@ DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out )
   }  
 }
 
-template <typename TKSpace>
-DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
-  : myK( aOther.myK ), my0SCells( aOther.my0SCells ), my1SCells( aOther.my1SCells )
-{
-}
-
-template <typename TKSpace>
-typename DGtal::GridCurve<TKSpace> & 
-DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
-{
-  if ( this != &aOther )
-    {
-      myK = aOther.myK;
-      my0SCells = aOther.my0SCells;
-      my1SCells = aOther.my1SCells;
-    }
-  return *this;
-}
-
-template <typename TKSpace>
-inline
-bool
-DGtal::GridCurve<TKSpace>::isValid() const
-{
-  return ( my0SCells.size() > 0 ) 
-    && ( my1SCells.size() > 0 )
-    && ( (my0SCells.size() - my1SCells.size()) >= 1 )
-    && ( (my0SCells.size() - my1SCells.size()) <= 0 );
-}
 
 template <typename TKSpace>
 inline

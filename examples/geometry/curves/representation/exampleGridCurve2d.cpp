@@ -74,8 +74,17 @@ int main( int argc, char** argv )
 
   string square = examplesPath + "samples/smallSquare.dat";
   
+    // domain
+    Point lowerBound( -50, -50 );
+    Point upperBound( 50, 50 );
+
   //! [GridCurveDeclaration]
-  Curve c1,c2; 
+  //default construction
+  Curve c1; 
+
+  //from a Khalimsky space
+  K2 ks; ks.init( lowerBound, upperBound, true ); 
+  Curve c2( ks ); 
   //! [GridCurveDeclaration]
   
   trace.emphase() << "Input" << endl;
@@ -90,13 +99,10 @@ int main( int argc, char** argv )
   }
   trace.info() << "\t from a digital set " << endl;
   {
-    // domain
-    Point lowerBound( -50, -50 );
-    Point upperBound( 50, 50 );
-    Domain domain( lowerBound, upperBound );
 
     // digital set: diamond of radius 30 centered at the origin
     Point o( 0, 0 );
+    Domain domain( lowerBound, upperBound );
     DigitalSet set( domain );
     for ( Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
     {
@@ -105,7 +111,6 @@ int main( int argc, char** argv )
     
     //! [GridCurveFromDigitalSet]
     vector<Point> boundaryPoints;                              //boundary points to retrieve
-    K2 ks; ks.init( lowerBound, upperBound, true );   //Khalimsky space 
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
     SetPredicate<DigitalSet> predicate( set );             //predicate from the digital set
 
