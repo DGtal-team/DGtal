@@ -35,9 +35,7 @@ manage the project build on various systems.
 To build DGtal in is minimal configuration, you need at least these dependencies:
 
 - \e cmake (optionally cmake-gui),
-- \e g++,
-- \e doxygen >= 1.8.0,
-- \e graphviz,
+- \e c++ compiler (g++, clang++,...)
 - \e boost >= 1.42.0 and boost-program-options.
 
 To build DGtal in is full configuration, you need these dependencies too:
@@ -47,7 +45,11 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e qglviewer,
 - \e graphicsmagick,
 - \e insighttoolkit,
-- \e gdcm.
+
+If you want to generate the documentation, you would need:
+- \e doxygen >= 1.8.0,
+- \e graphviz,
+
 
 For example, from a clean Ubuntu installation, you just need to do that to install all the dependencies:
 @code
