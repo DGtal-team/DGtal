@@ -6,7 +6,7 @@ tools.  Before going into details component by component, we would
 like to focus on a couple of new cool features:
 
   - new arithmetic package (fractions, models of fraction,
-    Stern-Brocot, Continuous fraction,...)
+    Stern-Brocot, continued fraction,...)
   - new nD DigitalSurface model (collections of (n-1) topological cells
     with many tools/utilities to track surface elements)
   - update of the build system to make easier the use of DGtal in your
