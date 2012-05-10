@@ -741,8 +741,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
 {
   SmallObject Gkappa_X
   = geodesicNeighborhood( topology().kappa(),
-      v,
-      Space::dimension );
+      v, Space::dimension );
 
   if ( Gkappa_X.computeConnectedness() == CONNECTED )
   {
@@ -750,11 +749,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
       return false;
     SmallComplementObject Glambda_compX
     = geodesicNeighborhoodInComplement( topology().lambda(),
-        v,
-        Space::dimension );
+        v, Space::dimension );
     return ( Glambda_compX.computeConnectedness()
-        == CONNECTED )
-        && ( ! Glambda_compX.pointSet().empty() );
+	     == CONNECTED )
+      && ( ! Glambda_compX.pointSet().empty() );
   }
   return false;
 }

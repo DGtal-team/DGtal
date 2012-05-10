@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake How to build DGtal
+@page FAQDGtalCmake Building DGtal
 @writers David Coeurjolly - Martial Tola
 
 
