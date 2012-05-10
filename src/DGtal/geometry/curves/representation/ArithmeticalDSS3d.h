@@ -53,7 +53,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
-#include "DGtal/base/Modifier.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -74,9 +74,6 @@ namespace DGtal
   class ArithmeticalDSS3d
   {
 
-
-/* \TODO 6 and 26-connectivity */
-
     // ----------------------- Types ------------------------------
   public:
 
@@ -88,8 +85,8 @@ namespace DGtal
 
     //requiered types
     typedef TIterator ConstIterator;
-    typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS3d<ConstIterator,TInteger,connectivity> Self; 
+    typedef ArithmeticalDSS3d<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
 
 
     //points and vectors
@@ -105,18 +102,14 @@ namespace DGtal
     typedef DGtal::PointVector<3,double> VectorD3d;
         
     // adapters for iterator
-    typedef deprecated::Point3dTo2dXY<Coordinate> XYModifier;
-    typedef deprecated::Point3dTo2dXZ<Coordinate> XZModifier;
-    typedef deprecated::Point3dTo2dYZ<Coordinate> YZModifier;
-    typedef ConstIteratorAdapter<ConstIterator,XYModifier,Point2d> XYIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,XZModifier,Point2d> XZIteratorAdapter; 
-    typedef ConstIteratorAdapter<ConstIterator,YZModifier,Point2d> YZIteratorAdapter; 
+    typedef Projector<SpaceND<2,Coordinate> > Projector2d;
+    
+    typedef ConstIteratorAdapter<ConstIterator,Projector2d,Point2d> IteratorAdapter; 
     
 
-    //2d-arithmeticalDSS recognition algorithms
-    typedef DGtal::ArithmeticalDSS<XYIteratorAdapter,TInteger,connectivity> XYArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<XZIteratorAdapter,TInteger,connectivity> XZArithmeticalDSS;
-    typedef DGtal::ArithmeticalDSS<YZIteratorAdapter,TInteger,connectivity> YZArithmeticalDSS;
+    //2d-arithmeticalDSS recognition algorithm
+    typedef DGtal::ArithmeticalDSS<IteratorAdapter,TInteger,connectivity> ArithmeticalDSS2d;
+    
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -131,6 +124,7 @@ namespace DGtal
     /**
      * Constructor with initialisation
      * @param it an iterator
+     * @see init
      */
     ArithmeticalDSS3d(const ConstIterator& it);
 
@@ -153,6 +147,16 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     ArithmeticalDSS3d & operator= ( const ArithmeticalDSS3d & other );
+
+    /** 
+     * @return a default-constructed instance of Self.
+     */
+    Self getSelf() const;
+
+    /** 
+     * @return a default-constructed instance of Reverse.
+     */
+    Reverse getReverse() const;
 
     /**
      * Equality operator.
@@ -182,28 +186,31 @@ namespace DGtal
      
 
     /**
-     * Tests whether the union between a point 
-     * (adding to the front of the DSS 
-     * with respect to the scan orientaion) 
-     * and a DSS is a DSS. 
-     * Computes the parameters of the new DSS 
+     * Tests whether the current DSS can be extended at the front. 
+     * Computes the parameters of the extended DSS if yes. 
      * with the adding point if true.
-     * @param itf an iterator on a sequence of points
-     * @return 'true' if the union is a DSS, 'false' otherwise.
+     * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendForward(const ConstIterator & it);
-
+    bool extendForward();
+    
+    
+    /** 
+     * Tests whether the 3d DSS can be extended at the front. 
+     *
+     * @return 'true' if yes, 'false' otherwise
+     */   
+    bool isExtendableForward();
 
     // ------------------------- Accessors ------------------------------
 
     /**
-      * Computes the parameters 
-      * (direction, intercept, thickness)
-      * of the DSS
-      * @param direction
-      * @param intercept
-      * @param thickness
-      */
+     * Computes the parameters 
+     * (direction, intercept, thickness)
+     * of the DSS
+     * @param direction
+     * @param intercept
+     * @param thickness
+     */
     void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
 
     /**
@@ -211,6 +218,18 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
+
+    /**
+     *  
+     * @return begin iterator of the 3d DSS range.
+     */
+    ConstIterator begin() const;
+    /**
+     * @return end iterator of the 3d DSS range.
+     */
+    ConstIterator end() const;
+
 
     // ------------------ Display ------------------------------------------
 
@@ -230,22 +249,23 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   protected:
 
-    //2d-arithmeticalDSS recognition algorithms
-    XYArithmeticalDSS myXYalgo;
-    XZArithmeticalDSS myXZalgo;
-    YZArithmeticalDSS myYZalgo;
+    /// projectors
+    Projector2d myProjXY, myProjXZ, myProjYZ;
 
-    //first (at the front) and last (at the back) points of the DSS
-    ConstIterator myF, myL;
+    /// 2d-arithmeticalDSS recognition algorithms
+    ArithmeticalDSS2d myXYalgo;
+    ArithmeticalDSS2d myXZalgo;
+    ArithmeticalDSS2d myYZalgo;
+
+    /// begin and end iterators
+    ConstIterator myBegin, myEnd;
+    
 
     // ------------------------- Private Datas --------------------------------
 
   private:
 
-
-
-
-
+    
   }; // end of class ArithmeticalDSS3d
 
 

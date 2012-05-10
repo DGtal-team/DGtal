@@ -217,7 +217,7 @@ bool testExtendretractForward()
   //forward scan and store each DSS4
   trace.info() << "forward scan" << std::endl;
 
-  while ( (newDSS4 != contour.end())
+  while ( (newDSS4.end() != contour.end())
     &&(newDSS4.extendForward()) ) {
     v1.push_back(newDSS4);
   }
