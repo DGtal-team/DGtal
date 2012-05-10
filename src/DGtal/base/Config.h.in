@@ -95,17 +95,15 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref GeometryPackage
   - \ref TopologyPackage
   - \ref ImagePackage
+  - \ref IOPackage
 
 @section manuals_dgtal Helpers and tools
 
   - \ref tutorials
-  - \ref dgtal_dgtalboard
-  - \ref threeD_visu
 
 
    
 @section manueldev Manual pages for DGtal developers
-  - \ref FAQDGtalCmake
   - \ref FAQGit
   
   
