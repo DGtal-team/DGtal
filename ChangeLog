@@ -109,7 +109,7 @@ like to focus on a couple of new cool features:
 
   - New SegmentComputer (a.k.a. geometrical primitives to use for
     recognition, curve decomposition,...) : ArithDSS3D (3D DSS), DCA
-    (Digital Circular Arcs), ...
+    (Digital Circular Arcs), CombinatorialDSSS, ...
 
   - New normal vector field estimation based on elementary normal
     vector convolution in n-D
