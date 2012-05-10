@@ -17,8 +17,8 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake How to build DGtal (with cmake)
-@authors David Coeurjolly - Martial Tola
+@page FAQDGtalCmake How to build DGtal
+@writers David Coeurjolly - Martial Tola
 
 
 This part of the manual describes how to build DGtal on Linux, Mac OS X and Windows. 
@@ -30,7 +30,6 @@ This part of the manual describes how to build DGtal on Linux, Mac OS X and Wind
 The DGtal library uses <a href="http://www.cmake.org">cmake</a> to
 manage the project build on various systems.
 
-\subsection linux Build on Linux-based distributions
 
 To build DGtal in is minimal configuration, you need at least these dependencies:
 
@@ -44,17 +43,21 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e cairo,
 - \e qglviewer,
 - \e graphicsmagick,
-- \e insighttoolkit,
+- \e insighttoolkit (ITK),
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
-- \e graphviz,
+- \e graphviz
 
 
-For example, from a clean Ubuntu installation, you just need to do that to install all the dependencies:
+\subsection linux Build on Linux-based distributions
+
+From a clean Ubuntu installation, you can download and install all
+dependencies using:
 @code
-sudo apt-get install cmake g++ doxygen graphviz libboost-dev libboost-program-options-dev
-sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev
+sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
+sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
+libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev doxygen graphviz
 @endcode
 
 An important feature of cmake is the "out-of-source" build
@@ -93,34 +96,21 @@ First of all,
 @code
 sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
 @endcode
+
+To install DGtal dependencies, we can use any of the available package managers (MacPort,
+fink, homebrew). However, for DGtal, we recommend to use Homebrew (simpler, faster,...):
+
 - \e download and install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then update it:
 @code
 /usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
 brew update
 @endcode
 
-To build DGtal in is minimal configuration, you need at least these dependencies:
-
-- \e cmake (optionally cmake-gui),
-- \e doxygen >= 1.8.0,
-- \e graphviz,
-- \e boost >= 1.42.0 and boost-program-options.
-
-To build DGtal in is full configuration, you need these dependencies too:
-
-- \e gmp,
-- \e cairo,
-- \e libqglviewer,
-- \e graphicsmagick,
-- \e insighttoolkit.
-
-For example, from a clean Mac OS X Lion (10.7) installation, you first need to do that to install all the dependencies:
+From a clean Mac OS X Lion (10.7) installation, you first need to do that to install all the dependencies:
 @code
 brew install cmake doxygen graphviz boost
 brew install gmp cairo libqglviewer graphicsmagick
-sudo ln -s "/usr/local/Cellar/libqglviewer/2.3.15/QGLViewer.framework" "/Library/Frameworks/QGLViewer.framework"
 @endcode
-\b here \b 2.3.15 is an example but you may need to adjust the version number...
 
 Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
 @code
@@ -142,11 +132,11 @@ easiest way to compile DGtal with cmake/make is to follow Linux-based instructio
 
 @todo Describe the process to compile or install dependencies (boost, gmp-mpir, cairo, qglviewer, qt, ...) for x86 (vs2008) and x64 (vs2010)
 
-Use the cmake Windows interface (cmake-gui) to generate your Visual Studio
-project. Again, a good practise is to specify a different folder in
-which cmake and Visual Studio will put their build results.
+First, use the cmake Windows interface (cmake-gui) to generate your Visual Studio
+project. Again, a good practise is to specify a different build
+folder.
 
-On windows, there is no specific locations on the folder
+On windows, there are no specific locations in the folder
 tree where cmake could find the include files and DLLs shared libraries of the DGtal
 dependencies. Hence, you will have to \b manually set the paths
 to find the dependencies.
