@@ -108,7 +108,7 @@ Description of \b concept '\b CSegment' <p>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> Self   </td>
         <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns an uninitialized instance of Self </td> 
+        <td class=CSemantics> returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) </td> 
         <td class=CPostCondition>       </td> 
         <td class=CComplexity> depends on the internal structures defined in Self </td>
       </tr>
