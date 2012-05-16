@@ -546,7 +546,589 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   private:
 
+
   }; // end of class MetricAdjacency
+
+    /** Specialize 26-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 3, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 3, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 3 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 <= 3 ) && ( n1 != 0 );
+	}
+      return false;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighborhood( const Point & p, OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x-1, y-1, z-1 );
+      *out_it++ = Point(  x  , y-1, z-1 );
+      *out_it++ = Point(  x+1, y-1, z-1 );
+      *out_it++ = Point(  x-1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x+1, y-1, z   );
+      *out_it++ = Point(  x-1, y-1, z+1 );
+      *out_it++ = Point(  x  , y-1, z+1 );
+      *out_it++ = Point(  x+1, y-1, z+1 );
+      *out_it++ = Point(  x-1, y  , z-1 );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x+1, y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      *out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x-1, y  , z+1 );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x+1, y  , z+1 );
+      *out_it++ = Point(  x-1, y+1, z-1 );
+      *out_it++ = Point(  x  , y+1, z-1 );
+      *out_it++ = Point(  x+1, y+1, z-1 );
+      *out_it++ = Point(  x-1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z   );
+      *out_it++ = Point(  x+1, y+1, z   );
+      *out_it++ = Point(  x-1, y+1, z+1 );
+      *out_it++ = Point(  x  , y+1, z+1 );
+      *out_it++ = Point(  x+1, y+1, z+1 );
+    }
+
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+      Point q( p[ 0 ] - 1, p[ 1 ] - 1, p[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z+1
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+    }
+
+    template < typename OutputIterator >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x-1, y-1, z-1 );
+      *out_it++ = Point(  x  , y-1, z-1 );
+      *out_it++ = Point(  x+1, y-1, z-1 );
+      *out_it++ = Point(  x-1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x+1, y-1, z   );
+      *out_it++ = Point(  x-1, y-1, z+1 );
+      *out_it++ = Point(  x  , y-1, z+1 );
+      *out_it++ = Point(  x+1, y-1, z+1 );
+      *out_it++ = Point(  x-1, y  , z-1 );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x+1, y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      //*out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x-1, y  , z+1 );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x+1, y  , z+1 );
+      *out_it++ = Point(  x-1, y+1, z-1 );
+      *out_it++ = Point(  x  , y+1, z-1 );
+      *out_it++ = Point(  x+1, y+1, z-1 );
+      *out_it++ = Point(  x-1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z   );
+      *out_it++ = Point(  x+1, y+1, z   );
+      *out_it++ = Point(  x-1, y+1, z+1 );
+      *out_it++ = Point(  x  , y+1, z+1 );
+      *out_it++ = Point(  x+1, y+1, z+1 );
+    }
+
+    template <typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+       Point q( p[ 0 ] - 1, p[ 1 ] - 1, p[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z+1
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+    }
+
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=3*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+    /** Specialize 18-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 2, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 2, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 2 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 <= 2 ) && ( n1 != 0 );
+	}
+      return false;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighborhood( const Point & p, OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x  , y-1, z-1 );
+      *out_it++ = Point(  x-1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x+1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z+1 );
+      *out_it++ = Point(  x-1, y  , z-1 );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x+1, y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      *out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x-1, y  , z+1 );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x+1, y  , z+1 );
+      *out_it++ = Point(  x  , y+1, z-1 );
+      *out_it++ = Point(  x-1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z   );
+      *out_it++ = Point(  x+1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z+1 );
+    }
+
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ] - 1, p[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z-1
+      // z
+      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z+1
+      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z+1
+   }
+
+    template < typename OutputIterator >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x  , y-1, z-1 );
+      *out_it++ = Point(  x-1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x+1, y-1, z   );
+      *out_it++ = Point(  x  , y-1, z+1 );
+      *out_it++ = Point(  x-1, y  , z-1 );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x+1, y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      //*out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x-1, y  , z+1 );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x+1, y  , z+1 );
+      *out_it++ = Point(  x  , y+1, z-1 );
+      *out_it++ = Point(  x-1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z   );
+      *out_it++ = Point(  x+1, y+1, z   );
+      *out_it++ = Point(  x  , y+1, z+1 );
+    }
+
+    template <typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ] - 1, p[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z-1
+      // z
+      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      // z+1
+      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z+1
+ 
+    }
+
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=2*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+    /** Specialize 6-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 1, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 1, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 1 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 == 1 );
+	}
+      return false;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighborhood( const Point & p, OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      *out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x  , y+1, z   );
+     }
+
+    template < typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ], p[ 2 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y  , z-1
+      ++q[ 2 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z
+      ++q[ 2 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
+      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x+1, y  , z
+      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y-1, z
+      q[ 1 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y+1, z
+   }
+
+    template < typename OutputIterator >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it )
+    {
+      Integer x = p[ 0 ];
+      Integer y = p[ 1 ];
+      Integer z = p[ 2 ];
+  
+      *out_it++ = Point(  x  , y-1, z   );
+      *out_it++ = Point(  x  , y  , z-1 );
+      *out_it++ = Point(  x-1, y  , z   );
+      //*out_it++ = Point(  x  , y  , z   );
+      *out_it++ = Point(  x+1, y  , z   );
+      *out_it++ = Point(  x  , y  , z+1 );
+      *out_it++ = Point(  x  , y+1, z   );
+    }
+
+    template <typename OutputIterator, typename PointPredicate >
+    inline
+    static
+    void writeProperNeighborhood( const Point & p, 
+          OutputIterator & out_it,
+          const PointPredicate & pred )
+    {
+      Point q( p[ 0 ], p[ 1 ], p[ 2 ] - 1 );
+      if ( pred( q ) ) *out_it++ = q;                     // x  , y  , z-1
+      q[ 2 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y  , z+1
+      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z
+      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x+1, y  , z
+      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y-1, z
+      q[ 1 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y+1, z
+    }
+
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=1*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+
 
 }
 
