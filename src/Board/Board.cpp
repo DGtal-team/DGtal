@@ -529,7 +529,14 @@ Board::fillPolyline( const std::vector<Point> & points,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Polyline( points, true, DGtal::Color::None, _state.penColor,
+  std::vector<Point> v = points;
+  std::vector<Point>::iterator it = v.begin();
+  std::vector<Point>::iterator end = v.end();
+  while ( it != end ) {
+    (*it) = _state.unit( *it );
+    ++it;
+  }
+  _shapes.push_back( new Polyline( v, true, DGtal::Color::None, _state.penColor,
            0.0f,
            _state.lineStyle,
            _state.lineCap,
