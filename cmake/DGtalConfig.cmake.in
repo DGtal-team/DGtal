@@ -3,13 +3,17 @@
 #  DGTAL_INCLUDE_DIRS - include directories for DGtal
 #  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
 #  DGTAL_LIBRARIES    - libraries to link against
+#  DGTAL_VERSION      - version of the DGtal library
  
 # Tell the user project where to find our headers and libraries
 set(DGTAL_INCLUDE_DIRS "@DGTAL_INCLUDE_DIRS@;@DGtalLibInc@")
 set(DGTAL_LIBRARY_DIRS "@DGTAL_LIB_DIR@")
+set(DGTAL_VERSION "@DGTAL_VERSION@")
+
  
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
+
 
 
 #------------------------------------------------------------------------------
@@ -40,12 +44,10 @@ ENDIF(MSVC)
 IF(MSVC)
 
   ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
-  
-#------------------------------------------------------------------------------
-# for GMP / MPIR (MT)
-#------------------------------------------------------------------------------
-SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
-
+  #------------------------------------------------------------------------------
+  # for GMP / MPIR (MT)
+  #------------------------------------------------------------------------------
+  SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
 ENDIF(MSVC)
 
 
@@ -68,9 +70,10 @@ IF(@ITK_FOUND_DGTAL@)
   ADD_DEFINITIONS("-DWITH_ITK ")
   SET(WITH_ITK 1)
   #--------------------------------------------
-  #ITK bugfix (we need explicit link_directory)
+  #ITK issue (we need an explicit find_package)
   #--------------------------------------------
-  link_directories( @ITK_LIBRARY_DIRS@)
+  FIND_PACKAGE(ITK REQUIRED)
+  INCLUDE( ${ITK_USE_FILE} )
 ENDIF(@ITK_FOUND_DGTAL@)
 
 IF(@CAIRO_FOUND_DGTAL@)
