@@ -132,7 +132,8 @@ IF(WITH_ITK)
     SET(ITK_FOUND_DGTAL 1)
     INCLUDE(${ITK_USE_FILE})
     MESSAGE(STATUS "ITK found ${ITK_USE_FILE}.")
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
+ 
+   SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     ADD_DEFINITIONS(" -DWITH_ITK ")
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
 
