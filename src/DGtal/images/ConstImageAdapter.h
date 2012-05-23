@@ -131,7 +131,7 @@ namespace DGtal
      * @param other the object to clone.
      */
     ConstImageAdapter ( const ConstImageAdapter & other )
-      : myImg(other.myImg), myF(other.myF), myR( new ImageRange(*myR) ) {}
+      : myImg(other.myImg), myF(other.myF), myR( new ImageRange(*other.myR) ) {}
 
     /**
      * Assignment.
