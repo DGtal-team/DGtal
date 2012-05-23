@@ -72,7 +72,7 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
-bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
+bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
