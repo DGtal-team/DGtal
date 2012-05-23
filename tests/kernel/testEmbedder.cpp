@@ -102,8 +102,6 @@ bool testEmbedder()
   BOOST_CONCEPT_ASSERT(( CWithGradientMap< MyDSEmbedder2 > ));
 
   trace.beginBlock ( "Testing block ..." );
-  MyEmbedder1 emb1;
-  MyEmbedder2 emb2;
   KSpace K;
   MyCellEmbedder3 cemb3( K );
   MySCellEmbedder1 scemb1( K );
