@@ -287,7 +287,70 @@ DGtal::GridCurve<TKSpace>::isOpen() const
   return (! isClosed() );
 }
 
+//------------------------------------------------------------------------------
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::ConstIterator
+DGtal::GridCurve<TKSpace>::begin() const
+{
+  return mySCells.begin(); 
+}
 
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::ConstIterator
+DGtal::GridCurve<TKSpace>::end() const
+{
+  return mySCells.end(); 
+}
+
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::ConstReverseIterator
+DGtal::GridCurve<TKSpace>::rbegin() const
+{
+  return mySCells.rbegin(); 
+}
+
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::ConstReverseIterator
+DGtal::GridCurve<TKSpace>::rend() const
+{
+  return mySCells.rend(); 
+}
+
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::SCell
+DGtal::GridCurve<TKSpace>::back() const
+{
+  return mySCells.back(); 
+}
+
+template <typename TKSpace>
+inline
+void
+DGtal::GridCurve<TKSpace>::push_back( const SCell& aSCell )
+{
+  pushBack(aSCell); 
+}
+
+template <typename TKSpace>
+inline
+void
+DGtal::GridCurve<TKSpace>::pushBack( const SCell& aSCell )
+{
+  mySCells.push_back(aSCell); 
+}
+
+template <typename TKSpace>
+inline
+typename DGtal::GridCurve<TKSpace>::Storage::size_type
+DGtal::GridCurve<TKSpace>::size() const
+{
+  return mySCells.size(); 
+}
 //------------------------------------------------------------------------------
 // ---------------- DISPLAY ----------------------------------------------------
 //------------------------------------------------------------------------------

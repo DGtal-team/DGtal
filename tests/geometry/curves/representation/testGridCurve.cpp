@@ -71,14 +71,15 @@ bool testIOGridCurve(const string& filename)
 
 //////////////////////////////////////////
   trace.info() << endl;
-  trace.info() << "Reading GridCurve d=" << d << endl;
+  trace.info() << "Reading GridCurve d=" << d << " "; 
   
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
   c.initFromVectorStream(instream);
 
-  cout << c << endl;
+  trace.info() << "(" << c.size() << ") elts" << std::endl; 
+  trace.info() << c << endl;
 
 ///////////////////////////////////////////
   std::stringstream s; 

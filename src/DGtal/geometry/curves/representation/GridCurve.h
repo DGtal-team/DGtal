@@ -285,7 +285,7 @@ namespace DGtal
 
 
     /**
-     * Checks whether the grid curve is open of closed. 
+     * Checks whether the grid curve is open or closed. 
      * Signed cells directly incident to the last scell
      * and indirectly incident to the first scell
      * should be the same in case of a closed grid curve.
@@ -300,7 +300,57 @@ namespace DGtal
      */
     bool isOpen() const;
 
+    // ----------------------- container interface ------------------------------
+
+    typedef typename Storage::const_iterator const_iterator; 
+    typedef typename Storage::const_iterator ConstIterator; 
+    typedef typename Storage::const_reverse_iterator const_reverse_iterator; 
+    typedef typename Storage::const_reverse_iterator ConstReverseIterator; 
+
+    /**
+     * @return begin iterator on scells
+     */
+    ConstIterator begin() const; 
+
+    /**
+     * @return end iterator on scells
+     */
+    ConstIterator end() const; 
      
+    /**
+     * @return reverse begin iterator on scells
+     */
+    ConstReverseIterator rbegin() const; 
+
+    /**
+     * @return reverse end iterator on scells
+     */
+    ConstReverseIterator rend() const; 
+
+    /**
+     * @return last scell
+     */
+    SCell back() const; 
+
+    /**
+     * Back insertion of @e aSCell
+     * @param aSCell any signed cell
+     * @see pushBack
+     * NB: this alias is kept for STL compliance
+     */
+    void push_back(const SCell& aSCell); 
+
+    /**
+     * Back insertion of @e aSCell
+     * @param aSCell any signed cell
+     */
+    void pushBack(const SCell& aSCell); 
+
+    /**
+     * @return number of scells
+     */
+    typename Storage::size_type size() const; 
+
     // ------------------------- private Datas --------------------------------
   private:
     /**
