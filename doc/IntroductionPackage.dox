@@ -49,6 +49,7 @@ also illustrate a mechanism to use DGtal in your own project.
 
 @b Modules
  - \ref moduleIntroduction  
+ - \ref FAQDGtalCmake
  - \ref HowToUseDGtal
 
 

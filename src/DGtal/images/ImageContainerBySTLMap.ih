@@ -100,7 +100,7 @@ DGtal::ImageContainerBySTLMap<TDomain,TValue>::setValue(const Point &aPoint, con
 {
   ASSERT( this->domain().isInside( aPoint ) ); 
   std::pair<typename std::map<Point,Value>::iterator, bool> 
-    res = insert( std::pair<Point,Value>(aPoint, aValue) ); 
+    res = this->insert( std::pair<Point,Value>(aPoint, aValue) ); 
   if (res.second == false)
     res.first->second = aValue; 
 }

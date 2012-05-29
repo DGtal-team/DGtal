@@ -113,8 +113,8 @@ namespace DGtal
     // static constants
     static const Dimension dimension = Domain::dimension;
 
-    typedef ConstRangeFromPointAdapter<typename Image::ConstRange, 
-		       TFunctor, TValue> ConstRange; 
+    typedef typename Image::ConstRange ImageRange; 
+    typedef ConstRangeFromPointAdapter<ImageRange, TFunctor, TValue> ConstRange; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -123,13 +123,15 @@ namespace DGtal
      * @param aImg any image 
      * @param aF any functor
      */
-    ConstImageAdapter(const Image &aImg, const TFunctor &aF): myImg(&aImg), myF(&aF) {}
+    ConstImageAdapter(const Image &aImg, const TFunctor &aF)
+      : myImg(&aImg), myF(&aF), myR( new ImageRange( aImg.constRange() ) ) {}
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ConstImageAdapter ( const ConstImageAdapter & other ): myImg(other.myImg), myF(other.myF) {}
+    ConstImageAdapter ( const ConstImageAdapter & other )
+      : myImg(other.myImg), myF(other.myF), myR( new ImageRange(*other.myR) ) {}
 
     /**
      * Assignment.
@@ -138,15 +140,21 @@ namespace DGtal
      */
     ConstImageAdapter & operator= ( const ConstImageAdapter & other )
     {
-      myImg = other.myImg; 
-      myF = other.myF; 
+      if (this != &other)
+	{
+	  myImg = other.myImg; 
+	  myF = other.myF;
+	  delete myR; 
+	  myR = new ImageRange( *other.myR ); 
+	}
+      return *this; 
     }
 
 
     /**
      * Destructor.
      */
-    ~ConstImageAdapter() {}
+    ~ConstImageAdapter() { delete myR; }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -180,7 +188,7 @@ namespace DGtal
      */
     ConstRange constRange() const
     {
-      return ConstRange(myImg->constRange(), *myF);
+      return ConstRange(*myR, *myF);
     }
 
     /**
@@ -223,6 +231,14 @@ namespace DGtal
      * Aliasing pointer on the underlying functor
      */
     const TFunctor* myF; 
+
+    /**
+     * Owning pointer on the range of the image values
+     * (stored to be able to use the range adapter, 
+     * which is light and requires that the range 
+     * to adapt exists during the life of the adapter)
+     */
+    const ImageRange* myR; 
 
   }; // end of class ConstImageAdapter
 

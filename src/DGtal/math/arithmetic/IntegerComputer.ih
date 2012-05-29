@@ -334,7 +334,7 @@ convergent( const std::vector<Integer> & quotients,
   _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ONE );
   _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
   if ( k >= quotients.size() ) 
-    k = quotients.size() - 1;
+    k = (quotients.size() - 1);
   for ( unsigned int i = 0; i <= k; ++i )
     {
       _m_bezout[ 0 ].push_back( quotients[ i ] * _m_bezout[ 0 ][ i + 1 ]

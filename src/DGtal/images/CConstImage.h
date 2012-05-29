@@ -132,7 +132,6 @@ namespace DGtal
     typedef typename I::ConstRange ConstRange;
     BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
 
-
     BOOST_CONCEPT_USAGE(CConstImage)
     {
       ConceptUtils::sameType(i.domain(), d);

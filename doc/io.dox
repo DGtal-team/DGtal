@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
 @page image_io Image and digital object import/export
-@author David Coeurjolly
+@writers David Coeurjolly
 
 This part of the manual describes how to import and export images
 in various formats. This document is dedicated both to DGtal users and
@@ -49,9 +49,9 @@ and VolWriter
 
 \subsection pointListnD Point list format in n-D
 
-	 The static class \c PointListReader allows to read discrete
-	points represented in simple file where each line represent a
-	single point. 
+The static class \c PointListReader allows to read discrete
+points represented in simple file where each line represent a
+single point. 
 	
 	
 
@@ -135,8 +135,9 @@ You may obtain the following visualisation:
 }
 
 /**
-* \example digitalSetFromVol.cpp
+* \example io/digitalSetFromVol.cpp
 **/
+
 /**
-* \example digitalSetFromPointList.cpp
+* \example io/digitalSetFromPointList.cpp
 **/

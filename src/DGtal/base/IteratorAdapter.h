@@ -188,7 +188,7 @@ namespace DGtal
     /**
      *  @return constant pointer on a member of the element pointed to by @a myCurrentIt.
      */
-    const pointer operator->() const
+    pointer operator->() const
     {
       return & this->operator*(); 
     }

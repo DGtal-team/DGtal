@@ -42,6 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CConstSinglePassRange.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -175,10 +179,10 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 
 | Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
 |---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
-| dimension     | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| DIM           | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| POS           | \e x.POS         |                   | \e Sign       |              | the positive sign for cells           |                |            |
-| NEG           | \e x.NEG         |                   | \e Sign       |              | the negative sign for cells           |                |            |
+| dimension     | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| DIM           | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| POS           | \e X::POS        |                   | \e Sign       |              | the positive sign for cells           |                |            |
+| NEG           | \e X::NEG        |                   | \e Sign       |              | the negative sign for cells           |                |            |
 |               |                  |                   |               |              |                                       |                |            |
 | initialization|\e x.\e init(p1, p2, b)| b is \c bool | \c bool       |              | initializes the space so that cells are within the bounds p1 and p2, returns true iff the initialization was valid (ie, such bounds are representable with these integers).      |                |            |
 | Size or width | \e x.size( \e k )    |               | \e Integer    |              | returns the size/width of the space along the axis \e k | |         |
@@ -201,8 +205,8 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 |               |                  |                   |               |              |                                       |                |            |
 | Get Khalimsky coordinate| \e x.uKCoord(\e c, \e k)|  | \e Integer    |              | returns the Khalimsky coordinate of cell \e c along axis \e k | |   |
 | Get digital coordinate| \e x.uCoord(\e c, \e k)|     | \e Integer    |              | returns the digital coordinate of cell \e c along axis \e k | |     |
-| Get Khalimsky coordinates| \e x.uKCoords(\e c, \e k)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
-| Get digital coordinates| \e x.uCoords(\e c, \e k)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
+| Get Khalimsky coordinates| \e x.uKCoords(\e c)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
+| Get digital coordinates| \e x.uCoords(\e c)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
 | Get Khalimsky coordinate| \e x.sKCoord(\e sc, \e k)|  | \e Integer   |              | returns the Khalimsky coordinate of signed cell \e sc along axis \e k | | |
 | Get digital coordinate| \e x.sCoord(\e sc, \e k)|     | \e Integer   |              | returns the digital coordinate of signed cell \e sc along axis \e k | | |
 | Get Khalimsky coordinates| \e x.sKCoords(\e sc, \e k)| | \e Point    |              | returns the Khalimsky coordinates of signed cell \e sc |       |    |
@@ -353,7 +357,10 @@ public:
 
   BOOST_CONCEPT_USAGE( CCellularGridSpaceND )
   {
-    // ConceptUtils::sameType( myA, T::staticMember );
+    ConceptUtils::sameType( myDim, T::dimension );
+    ConceptUtils::sameType( myDim, T::DIM );
+    ConceptUtils::sameType( mySign, T::POS );
+    ConceptUtils::sameType( mySign, T::NEG );
     ConceptUtils::sameType( myBool, myX.init( myP1, myP2, myBool ) );
     checkConstConstraints();
   }
