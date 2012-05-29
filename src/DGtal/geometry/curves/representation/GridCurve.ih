@@ -163,8 +163,8 @@ DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIte
     if (v.norm(Vector::L_1) != 1) { //disconnected !
       throw ConnectivityException(); 
     }
-
     mySCells.push_back( PointVectorTo1SCell(p,v) );
+
   }
 
 
@@ -204,26 +204,28 @@ DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIte
   //first scell
   TIterator it = itb;
   if (it != ite)
-  {
-    SCell currentSCell = *it;
-    mySCells.push_back( currentSCell );
-
-    //other scells
-    for (++it; it != ite; ++it) {
-
-      SCell expectedIncidentSCell( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-      currentSCell = *it; 
-      SCell incidentSCell( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-
-      if ( myKPtr->sKCoords(incidentSCell) != myKPtr->sKCoords(expectedIncidentSCell) ) { //disconnected !
-        throw ConnectivityException(); 
-      }
-
+    {
+      SCell currentSCell = *it;
       mySCells.push_back( currentSCell );
-    }
 
-    return true;
-  } else return false; //empty range
+      //other scells
+      for (++it; it != ite; ++it) 
+	{
+
+	  SCell expectedS( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
+	  currentSCell = *it; 
+	  SCell s( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
+
+	  if ( myKPtr->sKCoords(s) != myKPtr->sKCoords(expectedS) ) 
+	    { //disconnected !
+	      throw ConnectivityException(); 
+	    }
+
+	  mySCells.push_back( currentSCell );
+	}
+
+      return true;
+    } else return false; //empty range
 
 }
 
