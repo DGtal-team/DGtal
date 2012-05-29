@@ -819,7 +819,7 @@ inline
 typename DGtal::PointVector<2,TInteger>
 DGtal::FreemanChain<TInteger>::displacement( char aCode )
 {
-#ifdef CPP0X_INITIALIZER_LIST  
+#ifdef CPP11_INITIALIZER_LIST  
   switch ( aCode ) 
   {
     case '0':  return Point({1,0}); 
@@ -839,7 +839,7 @@ DGtal::FreemanChain<TInteger>::displacement( char aCode )
     case '3':  t[1]--; return Point( t );
   }
   return  Point( t ); 
-#endif //CPP0X_INITIALIZER_LIST
+#endif //CPP11_INITIALIZER_LIST
 }
 
 

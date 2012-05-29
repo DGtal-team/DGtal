@@ -62,8 +62,8 @@ int main()
 
   trace.endBlock();
 
-#ifdef CPP0X_INITIALIZER_LIST
-  trace.beginBlock ( "Example range with CPP0X initializer list" );
+#ifdef CPP11_INITIALIZER_LIST
+  trace.beginBlock ( "Example range with CPP11 initializer list" );
   
   for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
    it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();

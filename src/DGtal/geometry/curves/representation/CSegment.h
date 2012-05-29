@@ -102,6 +102,16 @@ Description of \b concept '\b CSegment' <p>
         <td class=CPostCondition>       </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
+       <tr> 
+        <td class=CName> getSelf method  </td> 
+        <td class=CExpression> x.getSelf()     </td>
+        <td class=CRequirements>    </td> 
+        <td class=CReturnType> Self   </td>
+        <td class=CPrecondition>    </td> 
+        <td class=CSemantics> returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) </td> 
+        <td class=CPostCondition>       </td> 
+        <td class=CComplexity> depends on the internal structures defined in Self </td>
+      </tr>
 
      </table>
 
@@ -130,6 +140,9 @@ Description of \b concept '\b CSegment' <p>
     {
       ConceptUtils::sameType( it, myX.begin() );
       ConceptUtils::sameType( it, myX.end() );
+      
+      ConceptUtils::sameType( myX, myX.getSelf() );
+      
     }
     // ------------------------- Private Datas --------------------------------
   private:

@@ -16,7 +16,7 @@ namespace DGtal {
 
 
 @page geometry2d Analysis of one-dimensional discrete structures
-@author Tristan Roussillon
+@writers Tristan Roussillon
 
 @date 2011/08/31
 
@@ -33,17 +33,14 @@ The goal is to provide tools that help in analysing any one-dimensional
 discrete structures in a generic framework. These structures are assumed 
 to be constant, not mutable. This is a (not exhaustive) 
 list of such structures used in digital geometry: 
- - digital curves
 
-   - 2d, 3d, nd
+- digital curves
+    - 2d, 3d, nd
+    - 4-connected, 8-connected, disconnected
+    - interpixels, pixels
+    - open, closed
 
-   - 4-connected, 8-connected, disconnected
-
-   - interpixels, pixels
-
-   - open, closed
-
- - chaincodes
+- chaincodes
 
 \subsection geometryBasicConcepts Iterators/Circulators and Ranges.
 
@@ -126,22 +123,16 @@ It stores a list of alternated (signed) 0-cells and 1-cells,
 
 - in nd:   
     - SCellsRange to iterate over the (signed) cells (0-cells or 1-cells),
-
     - PointsRange to iterate over the 0-cells viewed as integer points,
-
     - MidPointsRange to iterate over the midpoint of the 1-cells,
-
     - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
     (the point stands for the starting point of the arrow, the vector gives
     the orientation or the arrow). 
 
 - in 2d: 
     - InnerPointsRange to iterate over the 2-cells, viewed as integer points, that are <em>directly</em> incident to the (signed) 1-cells,
-
     - OuterPointsRange to iterate over the 2-cells, viewed as integer points, that are <em>indirectly</em> incident to the (signed) 1-cells,
-
     - IncidentPointsRange to iterate over the pairs of 2-cells that are incident to the 1-cells (both inner points and outer points),
-
     - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}. 
 
 
@@ -149,21 +140,13 @@ It stores a list of alternated (signed) 0-cells and 1-cells,
 You can get an access to these nine ranges through the following methods: 
 
 - get0SCellsRange()
-
 - get1SCellsRange()
-
 - getPointsRange()
-
 - getMidPointsRange()
-
 - getArrowsRange()
-
 - getInnerPointsRange()
-
 - getOuterPointsRange()
-
 - getIncidentPointsRange()
-
 - getCodesRange()
 
 
@@ -191,11 +174,8 @@ FreemanChain is 2-dimensional and 4-connected digital curve
 stored as a string of codes {0,1,2,3} as follows: 
 
 - 0 for a horizontal step to the right 
-
 - 1 for a vertical step to the up
-
 - 2 for a horizontal step to the left
-
 - 3 for a vertical step to the bottom
 
 As GridCurve, it provides a CodesRange. 
@@ -203,33 +183,25 @@ As GridCurve, it provides a CodesRange.
 Each range has the following inner types: 
 
 - ConstIterator
-
 - ConstReverseIterator
-
 - ConstCirculator
-
 - ConstReverseCirculator
 
 
 And each range provides these (circular)iterator services: 
 
 - begin() : begin ConstIterator
-
 - end() : end ConstIterator
-
 - rbegin() : begin ConstReverseIterator
-
 - rend() : end ConstReverseIterator
-
 - c() : ConstCirculator
-
 - rc() : ConstReverseCirculator
 
 
 You can use these services to iterate over the elements of a given range
 as follows:
  
-@snippet geometry/exampleGridCurve2d.cpp GridCurveRangeIterators
+@snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveRangeIterators
 
 Since GridCurve and FreemanChain have both a method isClosed(), 
 you can decide to use a classic iterator or a circulator at 
@@ -258,7 +230,6 @@ called <em>segment</em>.
 More precisely, a segment is a valid and not empty range. 
 Any model of the concept CSegment, should have the following inner types: 
 
- - Self (its own type)
  - ConstIterator
 
 and the following methods: 
@@ -335,15 +306,31 @@ To cope with this problem, the models of CForwardSegmentComputer, which is a ref
 CTrivialSegmentComputer, should define the following nested type:
 
  - Self (its own type)
+
  - Reverse (like Self but based on reverse iterators) 
 
-Reverse is a type that behaves like Self but with reverse iterators. In order to get a 
-reverse copy of a segment computer, the following method should be defined:   
+Reverse is a type that behaves like Self but with reverse iterators. 
+Moreover, in order to build an instance of Self (resp. Reverse) from 
+a segment computer, the following method should be defined:   
 
- - Reverse getReverse() : get a reverse copy
+ - Self getSelf() : returns an instance of Self
+
+ - Reverse getReverse() : returns an instance of Reverse
+
+The returned objects may not be full copies of this, 
+may not have the same internal state as this, but 
+must be constructed from the same input parameters
+so that they can detect segments verifying the same property. 
+For instance, in digital geometry, k-arcs detection may be implemented 
+as a segment computer constructed from the input parameter k indicating
+the adjacency to use. In this case, getSelf and getReverse methods
+ must return segment computers based on the k-adjacency too. 
+These segment computers may be not valid before calling the init method.    
 
 As the name suggests, forward segment computers can only extend themselves in the forward
-direction, but this direction is relative to the direction of the underlying iterators. 
+direction, but this direction is relative to the direction of the underlying iterators
+(the direction given by operator++ for instances of Self, 
+but the direction given by operator-- for instances of Reverse) 
 They cannot extend themselves in two directions at the same time around an element 
 contrary to bidirectional segment computers. 
 
@@ -375,11 +362,11 @@ devoted to the dynamic recognition of DSSs,
 
  Here is a short example of how to use this class in the 4-connected case:
 
- @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+ @snippet geometry/curves/representation/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
 
- @snippet geometry/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
+ @snippet geometry/curves/representation/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
 
  These snippets are drawn from ArithmeticalDSS.cpp. 
  
@@ -399,15 +386,11 @@ as the nested ConstIterator type. Moreover, some tasks can be made faster for a
 given kind of segment computer than for another kind of segment computer. 
 That's why many generic functions are provided in @href SegmentComputerUtils.h:
 
- - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension, 
-
- - maximalRetraction, oppositeEndMaximalRetraction,  
-
- - longestSegment, 
-
- - firstMaximalSegment, lastMaximalSegment, mostCenteredMaximalSegment,
-
- - previousMaximalSegment, nextMaximalSegment,
+- maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension, 
+- maximalRetraction, oppositeEndMaximalRetraction,  
+- longestSegment, 
+- firstMaximalSegment, lastMaximalSegment, mostCenteredMaximalSegment,
+- previousMaximalSegment, nextMaximalSegment,
 
 These functions are used in the segmentation algorithms introduced below. 
 
@@ -418,9 +401,9 @@ valid property P.
 A <em>segmentation</em> is a subset of the whole set of segments, 
 such that:
   
- i. each element of the range belongs to a segment of the subset and 
+i. each element of the range belongs to a segment of the subset and 
 
- ii.  no segment contains another segment of the subset. 
+ii.  no segment contains another segment of the subset. 
 
 Due to (ii), the segments of a segmentation can be ordered without ambiguity
 (according to the position of their first element for instance). 

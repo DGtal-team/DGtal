@@ -90,7 +90,7 @@ int main( int /*argc*/, char** /*argv*/ )
       new CustomColors(  Color( 255, 255, 0 ),
              Color( 192, 192, 0 ) ));
   
-  GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
+  GradientColorMap<int> cmap_grad( 0, (const int)vectBdrySCell.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
@@ -125,7 +125,7 @@ int main( int /*argc*/, char** /*argv*/ )
   std::vector< std::vector<Z2i::SCell> > vectContoursBdrySCell;
   Surfaces<Z2i::KSpace>::extractAll2DSCellContours( vectContoursBdrySCell,
                 ks, SAdj, set2dPredicate );
-  GradientColorMap<int> cmap_grad3( 0, vectContoursBdrySCell.size() );
+  GradientColorMap<int> cmap_grad3( 0, (const int)vectContoursBdrySCell.size() );
   cmap_grad3.addColor( Color( 50, 50, 255 ) );
   cmap_grad3.addColor( Color( 255, 0, 0 ) );
   cmap_grad3.addColor( Color( 20, 200, 0 ) );

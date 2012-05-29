@@ -231,6 +231,10 @@ namespace DGtal
     Adjacency & surfelAdjacency();
     /// accessor to surfel predicate.
     const SurfelPredicate & surfelPredicate() const;
+    /// accessor to starting surfel.
+    const Surfel & surfel() const;
+    /// mutator to starting surfel.
+    void setSurfel(const Surfel& aSurfel);
 
     // --------- CDigitalSurfaceContainer realization -------------------------
   public:

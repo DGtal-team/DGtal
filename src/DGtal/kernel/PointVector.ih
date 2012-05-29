@@ -139,7 +139,7 @@ DGtal::PointVector<dim, TComponent>::PointVector( const Component & x,
     myArray[ i ] =  NumberTraits<TComponent>::ZERO;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component> init)
@@ -150,7 +150,7 @@ DGtal::PointVector<dim, TComponent>::PointVector(std::initializer_list<Component
   for ( ; i < dim; ++i)
     myArray[i] =  NumberTraits<TComponent>::ZERO;
 }
-#endif // CPP0X_INITIALIZER_LIST
+#endif // CPP11_INITIALIZER_LIST
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
@@ -315,7 +315,7 @@ DGtal::PointVector<dim, TComponent>::operator= ( const DGtal::PointVector<dim,Co
   return *this;
 }
 //------------------------------------------------------------------------------
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
 template<Dimension dim, typename TComponent>
 inline
 DGtal::PointVector<dim, TComponent>&

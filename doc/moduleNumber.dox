@@ -18,8 +18,8 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleNumber Documentation for Number package
-@author David Coeurjolly
+@page moduleNumber Integer Models
+@writers David Coeurjolly
 [TOC]
 
 @section overV Overview
