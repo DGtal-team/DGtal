@@ -372,8 +372,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
   inputStream.close();
 
   res = res 
-    && testRange<GridCurve::SCellsRange>(c.get0SCellsRange())
-    && testRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
     && testPairsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
@@ -384,8 +383,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 ;
 
   res = res 
-    && testDisplayRange<GridCurve::SCellsRange>(c.get0SCellsRange())
-    && testDisplayRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testDisplayRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testDisplayRange<GridCurve::PointsRange>(c.getPointsRange())
     && testDisplayRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
     && testDisplayRange<GridCurve::ArrowsRange>(c.getArrowsRange())
@@ -396,8 +394,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 ;
 
   res = res 
-    && testDrawRange<GridCurve::SCellsRange>(c.get0SCellsRange(),"0cells","Grid")
-    && testDrawRange<GridCurve::SCellsRange>(c.get1SCellsRange(),"1cells","Grid")
+    && testDrawRange<GridCurve::SCellsRange>(c.getSCellsRange(),"1cells","Grid")
     && testDrawRange<GridCurve::PointsRange>(c.getPointsRange(),"Points","Paving")
     && testDrawRange<GridCurve::MidPointsRange>(c.getMidPointsRange(),"MidPoints","Paving")
     && testDrawRange<GridCurve::ArrowsRange>(c.getArrowsRange(),"Arrows","Paving")

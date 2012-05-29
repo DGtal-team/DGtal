@@ -61,7 +61,7 @@ DGtal::GridCurve<TKSpace>::GridCurve(const KSpace& aKSpace)
 
 template <typename TKSpace>
 DGtal::GridCurve<TKSpace>::GridCurve( const GridCurve<KSpace> & aOther )
-  : myFlagIsOwned( aOther.myFlagIsOwned ), my0SCells( aOther.my0SCells ), my1SCells( aOther.my1SCells )
+  : myFlagIsOwned( aOther.myFlagIsOwned ), mySCells( aOther.mySCells )
 {
   if (myFlagIsOwned)
     myKPtr = new KSpace( *aOther.myKPtr ); //owned copy
@@ -75,8 +75,7 @@ DGtal::GridCurve<TKSpace>::operator=( const GridCurve<KSpace> & aOther )
 {
   if ( this != &aOther )
     {
-      my0SCells = aOther.my0SCells;
-      my1SCells = aOther.my1SCells;
+      mySCells = aOther.mySCells;
 
       //free old space
       if (myFlagIsOwned)
@@ -96,25 +95,13 @@ inline
 bool
 DGtal::GridCurve<TKSpace>::isValid() const
 {
-  return (myKPtr != NULL) 
-    && ( my0SCells.size() > 0 ) 
-    && ( my1SCells.size() > 0 )
-    && ( (my0SCells.size() - my1SCells.size()) >= 1 )
-    && ( (my0SCells.size() - my1SCells.size()) <= 0 );
+  return ( (myKPtr != NULL) 
+    && ( mySCells.size() > 0 ) );
 }
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
-
-
-template <typename TKSpace>
-inline
-typename DGtal::GridCurve<TKSpace>::SCell
-DGtal::GridCurve<TKSpace>::PointTo0SCell(const Point& aPoint) 
-{
-  return myKPtr->sPointel(aPoint,myKPtr->NEG);
-}
 
 template <typename TKSpace>
 inline
@@ -131,23 +118,44 @@ DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector
   return myKPtr->sIncident( pointel,d,(aVector[d]>0)?myKPtr->POS:myKPtr->NEG );
 }
 
+//////////////////////////////////////////////////////////////////////////////
 
+//deprecated
 template <typename TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) 
 {
+  return initFromPointsVector( aVectorOfPoints ); 
+}
 
-  my0SCells.clear(); 
-  my1SCells.clear(); 
-  
-  //create sequence of grid points and grid edges
-  typename std::vector<Point>::const_iterator i, j; 
+template <typename TKSpace>
+inline
+bool
+DGtal::GridCurve<TKSpace>::initFromPointsVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) 
+{
+  try {
+    return initFromPointsRange( aVectorOfPoints.begin(), aVectorOfPoints.end() );
+  } catch (DGtal::ConnectivityException& /*e*/) {
+    throw ConnectivityException();
+    return false; 
+  } 
+}
 
-  i = aVectorOfPoints.begin();
-  j = i; ++j;
+template <typename TKSpace>
+template <typename TIterator>
+inline
+bool
+DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIterator& ite )  throw(ConnectivityException) 
+{
 
-  for ( ; j != aVectorOfPoints.end(); ++i, ++j) {
+  mySCells.clear(); 
+
+  TIterator i = itb; 
+  TIterator j = itb; 
+  ++j; 
+
+  for ( ; j != ite; ++i, ++j) {
 
     Point p = *i; 
     Vector v = *j - p;
@@ -156,23 +164,70 @@ DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPo
       throw ConnectivityException(); 
     }
 
-    my0SCells.push_back( PointTo0SCell(p) );
-    my1SCells.push_back( PointVectorTo1SCell(p,v) );
+    mySCells.push_back( PointVectorTo1SCell(p,v) );
   }
 
 
-  Point first = *aVectorOfPoints.begin();
+  Point first = *itb;
   Point last = *i;
   Vector v(first - last); 
   if (v.norm(Vector::L_1) == 1) {               
-    my1SCells.push_back( PointVectorTo1SCell(last,v) );
-    my0SCells.push_back( PointTo0SCell(last) );
-  } else if (first != last) {
-    my0SCells.push_back( PointTo0SCell(last) );
+    mySCells.push_back( PointVectorTo1SCell(last,v) );
   }
 
   return true;
 }
+
+
+template <typename TKSpace>
+inline
+bool
+DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException)
+{
+  try {
+    return initFromSCellsRange( aVectorOfSCells.begin(), aVectorOfSCells.end() ); 
+  } catch (DGtal::ConnectivityException& /*e*/) {
+    throw ConnectivityException();
+    return false; 
+  }
+}
+
+template <typename TKSpace>
+template <typename TIterator> 
+inline
+bool
+DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIterator& ite ) throw(ConnectivityException)
+{
+
+  mySCells.clear(); 
+  
+  //first scell
+  TIterator it = itb;
+  if (it != ite)
+  {
+    SCell currentSCell = *it;
+    mySCells.push_back( currentSCell );
+
+    //other scells
+    for (++it; it != ite; ++it) {
+
+      SCell expectedIncidentSCell( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
+      currentSCell = *it; 
+      SCell incidentSCell( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
+
+      if ( myKPtr->sKCoords(incidentSCell) != myKPtr->sKCoords(expectedIncidentSCell) ) { //disconnected !
+        throw ConnectivityException(); 
+      }
+
+      mySCells.push_back( currentSCell );
+    }
+
+    return true;
+  } else return false; //empty range
+
+}
+
+//------------------------------------------------------------------------------
 
 template <typename TKSpace>
 inline
@@ -186,7 +241,7 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
   if (v.size() == 0) throw IOException(); 
   
   try {
-    return DGtal::GridCurve<TKSpace>::initFromVector(v);
+    return initFromPointsVector(v);
   } catch (DGtal::ConnectivityException& /*e*/) {
     throw ConnectivityException();
     return false; 
@@ -195,82 +250,33 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
 
 template <typename TKSpace>
 inline
-bool
-DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException)
-{
-
-  my0SCells.clear(); 
-  my1SCells.clear(); 
-  
-  //create sequence of grid points and grid edges
-  //aVectorOfSCells is assumed to be counter-clockwise oriented
-  typename std::vector<SCell>::const_iterator it, itEnd; 
-  it = aVectorOfSCells.begin();
-  itEnd = aVectorOfSCells.end();
-  SCell currentSCell; 
-
-  //first scell
-  if (it != itEnd)
-  {
-    currentSCell = *it;
-    SCell firstPointel( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-    
-    my0SCells.push_back( firstPointel );
-    my1SCells.push_back( currentSCell );
-
-    //other scells
-    for (++it; it != itEnd; ++it) {
-
-      SCell expectedPointel( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-      currentSCell = *it; 
-      SCell pointel( myKPtr->sIndirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-
-      if ( myKPtr->sKCoords(pointel) != myKPtr->sKCoords(expectedPointel) ) { //disconnected !
-        throw ConnectivityException(); 
-      }
-
-      my0SCells.push_back( pointel );
-      my1SCells.push_back( currentSCell );
-    }
-
-    //if open, add a pointel
-    SCell lastPointel( myKPtr->sDirectIncident( currentSCell, *myKPtr->sDirs( currentSCell ) ) );
-    if ( lastPointel != firstPointel )
-    {
-      my0SCells.push_back( lastPointel ); 
-    }
-
-    return true;
-  } else return false; //empty range
-
-}
-
-template <typename TKSpace>
-inline
 void
 DGtal::GridCurve<TKSpace>::writeVectorToStream( std::ostream & out ) 
 {
-  typename Storage::const_iterator i = my0SCells.begin();
-  while (i != my0SCells.end()) {
-    Point p = myKPtr->sCoords(*i); 
-    for (unsigned int k = 0; k < Point::dimension; ++k) {
-      out << p[k] << " ";
-    }
-    out << std::endl;
-    ++i;
-  }  
+  PointsRange r = getPointsRange(); 
+  for (typename PointsRange::ConstIterator it = r.begin(), itEnd = r.end(); 
+       it != itEnd; ++it) 
+    {
+      Point p = *it; 
+      for (unsigned int k = 0; k < Point::dimension; ++k) {
+	out << p[k] << " ";
+      }
+      out << std::endl;
+    }  
 }
 
+//------------------------------------------------------------------------------
 
 template <typename TKSpace>
 inline
 bool
 DGtal::GridCurve<TKSpace>::isClosed() const
 {
-  //closed grid curves have as many 0-cells as 1-cells
-  //because the convention is that open grid curves
-  //always begin and end with 0-cells
-  return ( my0SCells.size() == my1SCells.size() );
+  SCell first = *mySCells.begin(); 
+  SCell last = *mySCells.rbegin(); 
+  SCell nextLast( myKPtr->sDirectIncident( last , *myKPtr->sDirs( last ) ) );
+  SCell previousFirst( myKPtr->sIndirectIncident( first, *myKPtr->sDirs( first ) ) );
+  return ( myKPtr->sKCoords(nextLast) == myKPtr->sKCoords(previousFirst) );
 }
 
 template <typename TKSpace>
@@ -291,20 +297,11 @@ inline
 void
 DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[GridCurve]" << std::endl;
-  out << "#0-cell 1-cell" << std::endl;
-  typename Storage::const_iterator i0 = my0SCells.begin();
-  typename Storage::const_iterator i1 = my1SCells.begin();
-  while (i1 != my1SCells.end()) 
-  {
-    out << *i0 << *i1<< std::endl;
-    ++i1;
-    ++i0;
+  out << "[" << className() << "]" << std::endl;
+  for(unsigned int i=0; i< mySCells.size(); i++){
+    out << mySCells.at(i) << " ";
   }
-  if (i0 != my0SCells.end())
-  {
-    out << *i0 << std::endl;
-  }
+  out << std::endl; 
 }
 //------------------------------------------------------------------------------
 
@@ -329,11 +326,8 @@ inline
 void 
 DGtal::GridCurve<TKSpace>::selfDraw(Board2D & aBoard) const
 {
-  for(unsigned int i=0; i< my0SCells.size(); i++){
-    aBoard << my0SCells.at(i);
-  }
-  for(unsigned int i=0; i< my1SCells.size(); i++){
-    aBoard << my1SCells.at(i);
+  for(unsigned int i=0; i< mySCells.size(); i++){
+    aBoard << mySCells.at(i);
   }
 }
 
