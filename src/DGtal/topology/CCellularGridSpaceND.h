@@ -62,7 +62,7 @@ these spaces obtained by cartesian product, cells have a cubic shape
 that depends on the dimension: 0-cells are points, 1-cells are unit
 segments, 2-cells are squares, 3-cells are cubes, and so on.
 
-Thsi concept is rather complex since it gathers all possible
+This concept is rather complex since it gathers all possible
 operations on cells. The idea is that only the space knows what are
 the cells, how to compute their adjacent or incident cells, how to
 extract their coordinates, where are the bounds, what is the topology
@@ -87,6 +87,7 @@ details.
 
 ### Refinement of
 
+- boost::DefaultConstructible
 - boost::CopyConstructible
 
 ### Associated types :
@@ -146,6 +147,8 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   space has a parallelepipedic shape bounded by the given
   coordinates. Any valid cell has then \e digital coordinates
   in-between \e p1 and \e p2 (included).
+- when it is default constructed, it is bounded by points \e -p and \e p
+ (\e p is model dependant)
 - \b digital coordinates are the natural coordinates of the cells of
   maximal dimension in the cellular space. For instance, it represents
   the coordinates of the pixels in an image. Two adjacent pixels have
@@ -311,7 +314,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
  */
 template <typename T>
 struct CCellularGridSpaceND 
-  : boost::CopyConstructible<T>
+  : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
 {
   // ----------------------- Concept checks ------------------------------
 public:

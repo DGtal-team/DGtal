@@ -56,6 +56,7 @@
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SCellsFunctors.h"
 
@@ -175,6 +176,7 @@ namespace DGtal
 
   public: 
     typedef TKSpace KSpace; 
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< KSpace > )); 
   
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Point Vector;
@@ -198,6 +200,7 @@ namespace DGtal
 
     /**
      * Default Constructor.
+     * (the underlying Khalimsky space is default constructed). 
      */
     GridCurve();
 
