@@ -99,7 +99,7 @@ namespace DGtal
 
     /**
      * Standard constructor from two iterators
-     * and one functor.
+     * and one functor (stored as an aliasing pointer).
      * @param itb begin iterator.
      * @param ite end iterator.
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
@@ -107,35 +107,40 @@ namespace DGtal
      */
     ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
 		      const TFunctor& aFunctor )
-      : myBegin(itb), myEnd(ite), myFunctor(&aFunctor) {}
+      : myBegin(itb), myEnd(ite), myFunctor(&aFunctor), myFlagIsOwned(false) {}
+
+    /**
+     * Standard constructor from two iterators
+     * and one pointer on a functor (stored as an owning pointer).
+     * @param itb begin iterator.
+     * @param ite end iterator.
+     * @param aFunctorPtr pointer on a functor used to adapt on-the-fly the elements of the range
+     *
+     */
+    ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
+		      const TFunctor* aFunctorPtr )
+      : myBegin(itb), myEnd(ite), myFunctor(aFunctorPtr), myFlagIsOwned(true) {}
 
     /**
      * Copy constructor.
      * @param other the iterator to clone.
      */
     ConstRangeAdapter( const ConstRangeAdapter & other )
-      : myBegin(other.myBegin), myEnd(other.myEnd), myFunctor(other.myFunctor) {}
-  
-    /**
-     * Assignment.
-     * @param other the iterator to copy.
-     * @return a reference on 'this'.
-     */
-    ConstRangeAdapter& operator= ( const ConstRangeAdapter & other )
-    {  
-      if ( this != &other )
-	{
-	  myBegin = other.myBegin;
-	  myEnd = other.myEnd;
-	  myFunctor = other.myFunctor;
-	}
-      return *this;
-    }
+      : myBegin(other.myBegin), myEnd(other.myEnd), myFlagIsOwned(other.myFlagIsOwned) 
+      { 
+  if (myFlagIsOwned)
+    myFunctor = new TFunctor( *other.myFunctor ); //owned copy
+  else
+    myFunctor = other.myFunctor; //copy of the alias
+      }    
 
     /**
      * Destructor. Does nothing.
      */
-    ~ConstRangeAdapter() {}
+    ~ConstRangeAdapter() 
+      {
+        if (myFlagIsOwned) delete myFunctor; 
+      }
 
     /**
      * Checks the validity/consistency of the object.
@@ -150,10 +155,9 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const 
     {
-      typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
       out << "[ConstRangeAdapter]" << std::endl; 
       out << "\t"; 
-      std::copy( myBegin, myEnd, ostream_iterator<Value>(out, ", ") ); 
+      std::copy( this->begin(), this->end(), ostream_iterator<TReturnType>(out, ", ") ); 
       out << std::endl; 
     }
 
@@ -177,9 +181,23 @@ namespace DGtal
      */
     TIterator myEnd; 
     /**
-     * Aliasing pointer on the underlying functor
+     * Pointer on the underlying functor
      */
     const TFunctor* myFunctor; 
+    /**
+     * bool equal to true if @a myFunctor is owned
+     */
+    bool myFlagIsOwned; 
+
+    // ------------------------- private methods --------------------------------
+   private:
+  
+    /**
+     * Assignment.
+     * @param other the iterator to copy.
+     * @return a reference on 'this'.
+     */
+    ConstRangeAdapter& operator= ( const ConstRangeAdapter & other );
 
     // ------------------------- iterator services --------------------------------
   public:
@@ -234,6 +252,33 @@ namespace DGtal
 
   }; //end class ConstRangeAdapter
 
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ConstRangeAdapter'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ConstRangeAdapter' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TIterator, typename TFunctor, typename TReturnType>
+  std::ostream&
+  operator<< ( std::ostream & out, const ConstRangeAdapter<TIterator, TFunctor, TReturnType> & object )
+   {
+     object.selfDisplay( out ); 
+     return out; 
+   } 
+
+  /** //To move elsewhere ?
+   * Overloads 'operator<<' for displaying STL pairs.
+   * @param out the output stream where the object is written.
+   * @param object the STL pair to write.
+   * @return the output stream after the writing.
+   */
+  template <typename A, typename B>
+  std::ostream&
+  operator<< ( std::ostream & out, const std::pair<A, B> & object )
+   {
+     out << object.first << "|" << object.second; 
+     return out; 
+   } 
 } // namespace DGtal
 
   ///////////////////////////////////////////////////////////////////////////////

@@ -49,6 +49,7 @@
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 #include "DGtal/geometry/curves/representation/FP.h"
 #include "DGtal/geometry/curves/representation/FreemanChain.h"
 #include "DGtal/geometry/curves/representation/GeometricalDSS.h"
@@ -168,10 +169,58 @@ void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIterator> &
 
     
 // GridCurve
-// we use setStyle because of inner classes
+template <typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const GridCurve<TKSpace> & object );
 // GridCurve
     
+// SCellsRange
+template <typename TIterator, typename TSCell>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & object );
+// SCellsRange
     
+// PointsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object );
+// PointsRange
+
+// MidPointsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           typename TKSpace::Space::RealPoint> & object );
+// MidPointsRange
+
+// ArrowsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & object );
+// ArrowsRange
+
+// InnerPointsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, 
+           typename TKSpace::Point > & object );
+// InnerPointsRange
+
+// OuterPointsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, 
+           typename TKSpace::Point > & object );
+// OuterPointsRange
+
+// IncidentPointsRange
+template <typename TIterator, typename TKSpace>
+void draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Point> > & object );
+// IncidentPointsRange
+
 // HyperRectDomain
 template<typename TSpace>
 void drawAsGrid( DGtal::Board2D & aboard, const DGtal::HyperRectDomain<TSpace> & );
