@@ -226,7 +226,6 @@ bool testImageCopyShort()
   Z2i::Domain domain(a,b);
 
   MyImage image(  new VImage(domain) );
-
   trace.info() << "Image constructed: "<< image <<std::endl;
 
   MyImage image2(  VImage(domain) );
