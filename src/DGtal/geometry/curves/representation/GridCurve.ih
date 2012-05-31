@@ -101,14 +101,13 @@ DGtal::GridCurve<TKSpace>::isValid() const
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline methods                                          //
+// private methods                                                           //
 
 template <typename TKSpace>
 inline
 typename DGtal::GridCurve<TKSpace>::SCell
 DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector& aVector) 
 {
-
   ASSERT( (aVector.norm(Vector::L_1) == 1) );
 
   SCell pointel( myKPtr->sPointel(aPoint,myKPtr->NEG) );
@@ -118,13 +117,26 @@ DGtal::GridCurve<TKSpace>::PointVectorTo1SCell(const Point& aPoint, const Vector
   return myKPtr->sIncident( pointel,d,(aVector[d]>0)?myKPtr->POS:myKPtr->NEG );
 }
 
+template <typename TKSpace>
+inline
+bool
+DGtal::GridCurve<TKSpace>::isInside(const SCell& aSCell) const
+{
+  bool flag = true; 
+  for (Dimension k = 0; ( (k < KSpace::dimension)&&(flag) ); ++k)
+    {
+      flag = myKPtr->sIsInside( aSCell, k ); 
+    }
+  return flag; 
+}
+
 //////////////////////////////////////////////////////////////////////////////
 
 //deprecated
 template <typename TKSpace>
 inline
 bool
-DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) 
+DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints ) 
 {
   return initFromPointsVector( aVectorOfPoints ); 
 }
@@ -132,21 +144,24 @@ DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPo
 template <typename TKSpace>
 inline
 bool
-DGtal::GridCurve<TKSpace>::initFromPointsVector( const std::vector<Point>& aVectorOfPoints )  throw(ConnectivityException) 
+DGtal::GridCurve<TKSpace>::initFromPointsVector( const std::vector<Point>& aVectorOfPoints )  
 {
   try {
     return initFromPointsRange( aVectorOfPoints.begin(), aVectorOfPoints.end() );
-  } catch (DGtal::ConnectivityException& /*e*/) {
+  } catch (DGtal::ConnectivityException& /*ce*/) {
     throw ConnectivityException();
     return false; 
-  } 
+  } catch (DGtal::InputException& /*ie*/) {
+    throw InputException();
+    return false; 
+  }
 }
 
 template <typename TKSpace>
 template <typename TIterator>
 inline
 bool
-DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIterator& ite )  throw(ConnectivityException) 
+DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIterator& ite )  
 {
 
   mySCells.clear(); 
@@ -163,7 +178,11 @@ DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIte
     if (v.norm(Vector::L_1) != 1) { //disconnected !
       throw ConnectivityException(); 
     }
-    mySCells.push_back( PointVectorTo1SCell(p,v) );
+    SCell s = PointVectorTo1SCell(p,v); 
+    if ( ! isInside( s ) ) { //out of space !
+      throw InputException(); 
+    }
+    mySCells.push_back( s );
 
   }
 
@@ -172,6 +191,8 @@ DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIte
   Point last = *i;
   Vector v(first - last); 
   if (v.norm(Vector::L_1) == 1) {               
+    SCell s = PointVectorTo1SCell(last,v); 
+    ASSERT( isInside( s ) ); //never out of space
     mySCells.push_back( PointVectorTo1SCell(last,v) );
   }
 
@@ -182,12 +203,15 @@ DGtal::GridCurve<TKSpace>::initFromPointsRange( const TIterator& itb, const TIte
 template <typename TKSpace>
 inline
 bool
-DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException)
+DGtal::GridCurve<TKSpace>::initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) 
 {
   try {
     return initFromSCellsRange( aVectorOfSCells.begin(), aVectorOfSCells.end() ); 
-  } catch (DGtal::ConnectivityException& /*e*/) {
+  } catch (DGtal::ConnectivityException& /*ce*/) {
     throw ConnectivityException();
+    return false; 
+  } catch (DGtal::InputException& /*ie*/) {
+    throw InputException();
     return false; 
   }
 }
@@ -196,7 +220,7 @@ template <typename TKSpace>
 template <typename TIterator> 
 inline
 bool
-DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIterator& ite ) throw(ConnectivityException)
+DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIterator& ite )
 {
 
   mySCells.clear(); 
@@ -220,7 +244,10 @@ DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIte
 	    { //disconnected !
 	      throw ConnectivityException(); 
 	    }
-
+	  if ( isInside( currentSCell ) ) 
+	    { //out of space !
+	      throw InputException(); 
+	    }
 	  mySCells.push_back( currentSCell );
 	}
 
@@ -244,8 +271,11 @@ DGtal::GridCurve<TKSpace>::initFromVectorStream(std::istream & in )
   
   try {
     return initFromPointsVector(v);
-  } catch (DGtal::ConnectivityException& /*e*/) {
+  } catch (DGtal::ConnectivityException& /*ce*/) {
     throw ConnectivityException();
+    return false; 
+  } catch (DGtal::InputException& /*ie*/) {
+    throw InputException();
     return false; 
   }
 }

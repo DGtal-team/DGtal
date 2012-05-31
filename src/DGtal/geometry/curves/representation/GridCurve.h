@@ -246,14 +246,14 @@ namespace DGtal
      * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
      * @see initFromPointsRange
      */
-    bool initFromVector( const std::vector<Point>& aVectorOfPoints ) throw(ConnectivityException);
+    bool initFromVector( const std::vector<Point>& aVectorOfPoints );
 
     /**
      * Init from a STL vector of points.
      * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
      * @see initFromPointsRange
      */
-    bool initFromPointsVector( const std::vector<Point>& aVectorOfPoints ) throw(ConnectivityException);
+    bool initFromPointsVector( const std::vector<Point>& aVectorOfPoints ); 
 
     /**
      * Init from a range of points.
@@ -261,16 +261,14 @@ namespace DGtal
      * @param ite end iterator
      */
     template <typename TIterator>
-    bool initFromPointsRange( const TIterator& itb, const TIterator& ite ) throw(ConnectivityException);
-
-
+    bool initFromPointsRange( const TIterator& itb, const TIterator& ite );
 
     /**
      * Init from a STL vector of signed cells.
      * @param aVectorOfSCells the vector containing the sequence of signed cells. 
      * @see initFromSCellsRange
      */
-    bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException);
+    bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells );
 
     /**
      * Init from a range of signed cells.
@@ -278,7 +276,7 @@ namespace DGtal
      * @param ite end iterator
      */
     template <typename TIterator>
-    bool initFromSCellsRange( const TIterator& itb, const TIterator& ite ) throw(ConnectivityException);
+    bool initFromSCellsRange( const TIterator& itb, const TIterator& ite );
 
 
     // ----------------------- open/closed ------------------------------
@@ -378,10 +376,18 @@ namespace DGtal
   private:
 
     /**
-     * @return the signed 1-cell associated to a pair point - shift vector, 
-     * both of integer coordinates 
+     * @param aPoint any point
+     * @param aVector any vector of L1 norm equal to 1
+     * @return the signed 1-cell associated to a pair point - shift vector 
+     * (both in digital coordinates)
      */
     SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
+    /**
+     * @param aSCell any signed cell
+     * @return 'true' if @a aSCell is within the underlying Khalimsky space
+     * and 'false' otherwise
+     */
+    bool isInside(const SCell& aSCell) const;
     
 
     // ------------------------- Drawing services --------------------------------
