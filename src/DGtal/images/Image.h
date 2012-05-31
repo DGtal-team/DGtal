@@ -94,14 +94,23 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    Image() {trace.warning() << "default "<<std::endl;};
+    Image() {
+#ifdef DEBUG_VERBOSE
+trace.warning() << "Image Ctor default "<<std::endl;
+#endif
+
+    };
 
     /**
      * Constructor from a pointer on the underlying image container.
      */
     Image(ImageContainer *anImageContainer):
       myImagePointer(anImageContainer)
-    { trace.warning() << "fromPointer "<<std::endl;}
+    {
+#ifdef DEBUG_VERBOSE
+    trace.warning() << "Image Ctor fromPointer "<<std::endl;
+#endif
+    }
 
     /**
      * Copy.
@@ -109,7 +118,11 @@ namespace DGtal
      */
     Image(const CowPtr<ImageContainer> &anImageContainerCowPointer):
       myImagePointer(anImageContainerCowPointer)
-    { trace.warning() << "fromCow  "<<std::endl;}
+    {
+      #ifdef DEBUG_VERBOSE
+trace.warning() << "Image Ctor fromCow  "<<std::endl;
+#endif
+    }
 
     /**
      * Copy.
@@ -117,7 +130,11 @@ namespace DGtal
       */
    Image(const ImageContainer &other):
       myImagePointer(other)
-      { trace.warning() << "fromConstRef "<<std::endl;}
+      {
+          #ifdef DEBUG_VERBOSE
+trace.warning() << "Image Ctor fromConstRef "<<std::endl;
+#endif
+      }
 
    /**
      * Assignment.
@@ -126,7 +143,9 @@ namespace DGtal
      */
     Image & operator= ( const Image & other )
     {
-       trace.warning() << "assign "<<std::endl;
+      #ifdef DEBUG_VERBOSE
+ trace.warning() << "Image assignment "<<std::endl;
+#endif
       if (&other != this)
 	{
 	  myImagePointer = other.myImagePointer;
