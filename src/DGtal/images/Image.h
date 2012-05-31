@@ -94,14 +94,14 @@ namespace DGtal
     /**
      * Default constructor.
      */
-    Image();
+    Image() {trace.warning() << "default "<<std::endl;};
 
     /**
      * Constructor from a pointer on the underlying image container.
      */
     Image(ImageContainer *anImageContainer):
       myImagePointer(anImageContainer)
-    { }
+    { trace.warning() << "fromPointer "<<std::endl;}
 
     /**
      * Copy.
@@ -109,15 +109,15 @@ namespace DGtal
      */
     Image(const CowPtr<ImageContainer> &anImageContainerCowPointer):
       myImagePointer(anImageContainerCowPointer)
-    { }
+    { trace.warning() << "fromCow  "<<std::endl;}
 
     /**
      * Copy.
      * @param other an object of same type to copy.
       */
-    Image(const ImageContainer &other):
+   Image(const ImageContainer &other):
       myImagePointer(other)
-    { }
+      { trace.warning() << "fromConstRef "<<std::endl;}
 
    /**
      * Assignment.
@@ -126,6 +126,7 @@ namespace DGtal
      */
     Image & operator= ( const Image & other )
     {
+       trace.warning() << "assign "<<std::endl;
       if (&other != this)
 	{
 	  myImagePointer = other.myImagePointer;
@@ -176,18 +177,6 @@ namespace DGtal
     {
       return myImagePointer->range();
     }
-
-    //obsolete
-    // /**
-    //  * Returns the range of the underlying image
-    //  * to iterate over its values
-    //  *
-    //  * @return a range.
-    //  */
-    // OutputIterator outputIterator()
-    // {
-    //   return myImagePointer->outputIterator();
-    // }
 
     /////////////////// Accessors //////////////////
 
