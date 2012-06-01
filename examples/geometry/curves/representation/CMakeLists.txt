@@ -30,6 +30,7 @@ ENDIF(MAGICK++_FOUND)
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_EXAMPLES_QGL_SRC
      exampleArithDSS3d
+     exampleGridCurve3d
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})

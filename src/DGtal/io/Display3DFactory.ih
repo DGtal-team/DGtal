@@ -918,7 +918,101 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 }
 // SignedKhalimskyCell
 
+// GridCurve
+template< typename TKSpace >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::GridCurve<TKSpace> & gc)
+{
+  typedef typename DGtal::GridCurve<TKSpace>::SCellsRange Range; 
+  Range r = gc.getSCellsRange();
+  for ( typename Range::ConstIterator it = r.begin(), itEnd = r.end(); 
+        it != itEnd; ++it )
+    {
+       draw( display, *it ); 
+    } 
+}
+// GridCurve
 
+// SCellsRange
+template <typename TIterator, typename TSCell>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
+{
+    typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	      draw( display, *it);
+      }
+}
+// SCellsRange
+
+// PointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving"); 
+	display << *it;
+      }
+}
+// PointsRange
+
+// MidPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           typename TKSpace::Space::RealPoint> & object )
+{
+    typedef typename TKSpace::Space::RealPoint RPoint;
+    typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Grid"); 
+	display << *it;
+      }
+}
+// MidPointsRange
+
+// ArrowsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef typename TKSpace::Vector Vector; 
+    typedef std::pair<Point, Vector> Arrow;
+    typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      { //display the associated cell
+	      draw( display, *(it.base()) ); 
+      }
+}
+// ArrowsRange
 //
 
 
