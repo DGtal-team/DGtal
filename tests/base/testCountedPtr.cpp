@@ -50,18 +50,57 @@ bool testCountedPtr()
 
   trace.beginBlock ( "Testing CountedPtr ..." );
 
-  int value=5;
-  CountedPtr<int> p( &value );
+  int *value=new int(5);
+  CountedPtr<int> p( value );
   nbok += p.unique() ? 1 : 0;
   nb++;
-  trace.info() << p <<std::endl;
+  trace.info() << p << " value=" << *p<< std::endl;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "unique" << std::endl;
+
+  *p = 6;
+  trace.info() << p << " value=" << *p<< std::endl;
+  nbok += p.unique() ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "unique" << std::endl;
 
   trace.endBlock();
 
   return nbok == nb;
 }
+
+
+bool testCountedPtrCopy()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing CountedPtr copy..." );
+
+  int *value= new int(5);
+  CountedPtr<int> p( value );
+  nbok += p.unique() ? 1 : 0;
+  nb++;
+  trace.info() << p <<std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "unique" << std::endl;
+
+  CountedPtr<int> q ( p );
+
+  nbok += p.unique() ? 0: 1;
+  nb++;
+  trace.info() << p <<std::endl;
+  trace.info() << q<<std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "not unique anymore" << std::endl;
+
+
+  trace.endBlock();
+
+  return nbok == nb;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -74,7 +113,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testCountedPtr(); // && ... other tests
+  bool res = testCountedPtr() && testCountedPtrCopy(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

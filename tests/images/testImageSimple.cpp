@@ -228,15 +228,17 @@ bool testImageCopyShort()
   MyImage image(  new VImage(domain) );
   trace.info() << "Image constructed: "<< image <<std::endl;
 
-  MyImage image2(  VImage(domain) );
-  trace.info() << "Image constructed (bis): "<< image2 <<std::endl;
-
-
-  MyImage image3;
-  nbok += (image3.getPointer().count()== 2) ? 1 : 0;
+  VImage myImageC( domain );
+  MyImage imageFromConstRef ( myImageC );
+  trace.info() << "Image constructed (from constRef): "<< imageFromConstRef <<std::endl;
+  nbok += (imageFromConstRef.getPointer().count()== 2) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
+         << "unique" << std::endl;
+
+  MyImage image3;
+  trace.info() << "Image constructed (degulat): "<< image3 <<std::endl;
+
 
   trace.info() <<  "default: "<< image3 <<std::endl;
   image3 = image;
@@ -250,10 +252,16 @@ bool testImageCopyShort()
   trace.info() << "(" << nbok << "/" << nb << ") "
         << "true == true" << std::endl;
 
-  image3.setValue(Z2i::Point(1,1), 4);;
+  image3.setValue(Z2i::Point(1,1), 4);
   trace.info() <<  "setValue on assigned: "<< image3 <<std::endl;
   nbok += (image3.getPointer().count()== 2) ? 1 : 0;
   nb++;
+
+  MyImage image4(image3);
+  trace.info() << "Image constructed (copy): "<< image4 <<std::endl;
+  nbok += (image4.getPointer().count()== 3) ? 1 : 0;
+  nb++;
+
 
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;

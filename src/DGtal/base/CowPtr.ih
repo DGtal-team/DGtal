@@ -63,7 +63,7 @@ inline
 bool
 DGtal::CowPtr<T>::isValid() const
 {
-    return true;
+    return myPtr->isValid();
 }
 
 
@@ -74,7 +74,7 @@ DGtal::CowPtr<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const CowPtr<T> & object )
 {
   object.selfDisplay( out );

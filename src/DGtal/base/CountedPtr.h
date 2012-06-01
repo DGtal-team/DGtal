@@ -66,7 +66,7 @@ namespace DGtal
     typedef T element_type;
 
     explicit CountedPtr(T* p = 0) // allocate a new counter
-        : myCounter(0) { myCounter = new counter(p);} //DC: unnecc if (p) myCounter = new counter(p);}
+        : myCounter(0) { if (p) myCounter = new counter(p);}
     ~CountedPtr()
         {release();}
     CountedPtr(const CountedPtr& r) throw()

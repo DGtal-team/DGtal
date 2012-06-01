@@ -103,6 +103,7 @@ trace.warning() << "Image Ctor default "<<std::endl;
 
     /**
      * Constructor from a pointer on the underlying image container.
+     * (data pointer is acquired, ownership transfer)
      */
     Image(ImageContainer *anImageContainer):
       myImagePointer(anImageContainer)
@@ -113,7 +114,8 @@ trace.warning() << "Image Ctor default "<<std::endl;
     }
 
     /**
-     * Copy.
+     * Constructor from Copy on write pointer.
+     * (data is not copied if read-only)
      * @param anImageContainerCowPointer a COW-pointer on the underlying container.
      */
     Image(const CowPtr<ImageContainer> &anImageContainerCowPointer):
@@ -125,18 +127,33 @@ trace.warning() << "Image Ctor fromCow  "<<std::endl;
     }
 
     /**
-     * Copy.
+     * Constructor from ImageContainer const reference
+     * (data is duplicated).
      * @param other an object of same type to copy.
-      */
+     */
    Image(const ImageContainer &other):
-      myImagePointer(other)
+      myImagePointer(new ImageContainer(other) )
       {
-          #ifdef DEBUG_VERBOSE
+#ifdef DEBUG_VERBOSE
 trace.warning() << "Image Ctor fromConstRef "<<std::endl;
 #endif
       }
 
+
    /**
+     * Copy Constructor
+     * (data is not copied here).
+     * @param other an object of same type to copy.
+     */
+   Image(const Image &other):
+      myImagePointer(other.myImagePointer )
+      {
+          #ifdef DEBUG_VERBOSE
+trace.warning() << "Image copy Ctor  "<<std::endl;
+#endif
+      }
+
+      /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
@@ -254,12 +271,12 @@ trace.warning() << "Image Ctor fromConstRef "<<std::endl;
 
 
     /**
-     *
-     * @return a const reference to the image container data.
+     * Returns the smart pointer on the Image container data.
+     * @return a const ImagePointer.
      */
     const ImagePointer getPointer() const
     {
-      return ImagePointer(myImagePointer);
+      return myImagePointer;
     }
 
     // ------------------------- Protected Datas ------------------------------
