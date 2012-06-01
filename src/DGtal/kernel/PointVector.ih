@@ -631,7 +631,7 @@ DGtal::PointVector<dim, TComponent>::norm (const
         tmp += fabs (  NumberTraits<Component>::castToDouble(at( i ) ));
       break;
     case L_infty:
-      tmp = NumberTraits<Component>::castToDouble( at( 0 ));
+      tmp = fabs( NumberTraits<Component>::castToDouble( at( 0 )));
       for ( Dimension i = 1; i < dimension; i++ )
         if ( tmp < fabs ( NumberTraits<Component>::castToDouble(at ( i ) ) ))
           tmp = fabs ( NumberTraits<Component>::castToDouble(at ( i ) ));
