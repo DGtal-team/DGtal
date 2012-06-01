@@ -51,7 +51,10 @@ inline
 void
 DGtal::CountedPtr<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[CountedPtr nbcounts=" << myCounter->count << "]";
+  if (isValid())
+    out << "[CountedPtr nbcounts=" << myCounter->count << "]";
+  else
+    out << "[CountedPtr to NULL]";
 }
 
 /**
@@ -63,7 +66,7 @@ inline
 bool
 DGtal::CountedPtr<T>::isValid() const
 {
-    return true;
+    return myCounter;
 }
 
 
@@ -74,7 +77,7 @@ DGtal::CountedPtr<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const CountedPtr<T> & object )
 {
   object.selfDisplay( out );
