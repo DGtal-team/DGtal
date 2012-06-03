@@ -244,7 +244,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIte
 	    { //disconnected !
 	      throw ConnectivityException(); 
 	    }
-	  if ( isInside( currentSCell ) ) 
+	  if ( ! isInside( currentSCell ) ) 
 	    { //out of space !
 	      throw InputException(); 
 	    }
