@@ -11,6 +11,7 @@ SET(DGTAL_TESTS_SRC
    testTrace
    testStatistics
    testcpp11
+   testCountedPtr
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
