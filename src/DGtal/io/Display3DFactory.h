@@ -249,6 +249,25 @@ namespace DGtal
                std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & );
     // ArrowsRange
 
+    // InnerPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & );
+    // InnerPointsRange
+
+    // OuterPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & );
+    // OuterPointsRange
+
+    // IncidentPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+               std::pair<typename TKSpace::Point, typename TKSpace::Point > > & );
+    // IncidentPointsRange
+
     //
     
     

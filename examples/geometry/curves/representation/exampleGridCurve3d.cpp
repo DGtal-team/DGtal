@@ -20,9 +20,9 @@
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/09
+ * @date 2012/06/03
  *
- * @brief An example file for GridCurve.
+ * @brief An example file for GridCurve in 3d.
  *
  * This file is part of the DGtal library.
  */

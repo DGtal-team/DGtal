@@ -1013,6 +1013,72 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       }
 }
 // ArrowsRange
+
+// InnerPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving");
+  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+	display << *it;
+      }
+}
+// InnerPointsRange
+
+// OuterPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving");
+  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+	display << *it;
+      }
+}
+// OuterPointsRange
+
+// IncidentPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Point > > & object )
+{
+    typedef std::pair<typename TKSpace::Point, typename TKSpace::Point > Pair; 
+    typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+  Pair pair( *it ); 
+	display << SetMode3D(pair.first.className(),"Paving");
+  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+	display << pair.first;
+  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+	display << pair.second;
+      }
+}
+// IncidentPointsRange
+
 //
 
 
