@@ -116,8 +116,15 @@ namespace DGtal
      * @param s a scell
      * @return the corresponding point.
      */
-    Output operator()(const Input& s) const
+    Output operator()(const Input& aSCell) const
     {
+      Input s = aSCell; 
+      while ( myK->sDim(s) > 0 )
+	{
+	  Input tmp( myK->sIndirectIncident( s, *myK->sDirs( s ) ) );
+	  ASSERT( myK->sDim(tmp) < myK->sDim(s) ); 
+	  s = tmp; 
+	}
       return Output( myK->sCoords(s) );
     }
       
