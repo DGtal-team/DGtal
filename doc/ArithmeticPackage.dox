@@ -35,10 +35,7 @@ namespace DGtal {
 /*!
 @page pageArithmeticPackage  Arithmetic package
 
-@author Jacques-Olivier Lachaud
-@author Emilie Charrier
-@author Xavier Provençal
-@author Mouhammad Said
+@managers Jacques-Olivier Lachaud
 
 @since 0.5
 
@@ -66,8 +63,8 @@ with Mouhammad Said).
 
 @b Modules
 
-- \ref dgtal_irreducible_fraction
-- \ref dgtal_digital_straightness
+- \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Emilie Charrier)
+- \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Xavier Provençal, Mouhammad Said)
 
 
 @b Package @b Concepts @b Overview
