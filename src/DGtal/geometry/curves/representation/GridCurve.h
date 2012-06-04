@@ -74,29 +74,26 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
     /**
-    * @brief Aim: describes an
-    * alternative sequence of signed 0-cell (pointels) and 1-cell (linels)
-    * in any dimension, closed or open. For instance, the
-    * topological boundary of a simply connected digital set is a
-    * closed grid curve in 2d. 
-  
-    * Note that an open grid curve always begins and ends with a 0-cell
-    * so that the number of 0-cells is equal to the number of 1-cells plus one.  
-    * A closed gird curve always begins with a 0-cell too, but always ends
-    * with a 1-cell, so that is has as many 0-cells as 1-cells. 
-    * 
-    * @tparam TKSpace Khalimsky space
+    * @brief Aim: describes, in a cellular space of dimension n, 
+    a closed of open sequence of signed d-cells (or d-scells), 
+    d being either equal to 1 or (n-1). 
+
+    For instance, the topological boundary of a simply connected 
+    digital set is a closed sequence of 1-scells in 2d. 
+     
+    @tparam TKSpace Khalimsky space, a model of CCellularGridSpaceND
     
     Using the namespace Z2i, defined in StdDefs.h, you can instanciate a grid curve as follows:
     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveDeclaration
 
      This object provides several IO services. 
      For instance, you can read a grid curve from a data file, 
-     which contains the (digital) coordinates of the 0-cells (pointels): 
+     which contains the (digital) coordinates of the 0-cells (pointels) in nd: 
     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveFromDataFile
-     Note that if the first and last 0-cells of the file have the same coordinates (i)
+     Note that if the first and last 0-scells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
-     as closed. In case (i), the last 0-cell is removed, whereas in case (ii), a 1-cell is added. 
+     as closed, ie. scells directly incident to the last signed cell and indirectly incident 
+     to the first signed cell are the same.
      
      You can also build a grid curve from the contour of a digital set as follows: 
     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveFromDigitalSet
@@ -114,26 +111,26 @@ namespace DGtal
 
      Moreover, this object provides several ranges as nested types: 
     
-    - in nd:
-        - SCellsRange to iterate over the (signed) cells (0-cells or 1-cells),
-        - PointsRange to iterate over the 0-cells viewed as integer points,
-        - MidPointsRange to iterate over the midpoint of the 1-cells,
-        - ArrowsRange to iterator over the (signed) 1-cells viewed as a pair point-vector
-        (the point stands for the starting point of the arrow, the vector gives
-        the orientation or the arrow). 
-    - in 2d: 
-        - InnerPointsRange to iterate over the 2-cells, viewed as integer points, 
-        that are <em>directly</em> incident to the (signed) 1-cells,
-        - OuterPointsRange to iterate over the 2-cells, viewed as integer points, 
-        that are <em>indirectly</em> incident to the (signed) 1-cells,
-        - IncidentPointsRange to iterate over the pairs of 2-cells 
-        that are incident to the 1-cells (both inner points and outer points),
-        - CodesRange to iterate over the (signed) 1-cells viewed as codes {0,1,2,3}
+     - SCellsRange to iterate over the d-scells
+     - PointsRange to iterate over the digital coordinates of the 0-scells
+     that are directly incident to the d-scells
+     - MidPointsRange to iterate over the real coordinates of the d-scells
+     - ArrowsRange to iterate over the arrows coding the 1-scells.
+     Note that an arrow is a pair point-vector:
+     the point codes the digital coordinates of the 1-scell, 
+     the vector gives the topology and sign of the 1-scell. 
+     - InnerPointsRange to iterate over the digital coordinates of the n-scells
+     that are @e directly incident to the (n-1)-scells.  
+      - OuterPointsRange to iterate over the digital coordinates of the n-scells
+     that are @e indirectly incident to the (n-1)-scells.
+     - IncidentPointsRange to iterate over the pairs of inner and outer points
+     (defined as above)
+     - CodesRange to iterate over the codes {0,1,2,3} of the 1-scells 
+     (only available if n = 2)
     
-     You can get an access to these nine ranges through the following methods: 
+     You can get an access to these eight ranges through the following methods: 
 
-    - get0SCellsRange()
-    - get1SCellsRange()
+    - getSCellsRange()
     - getPointsRange()
     - getMidPointsRange()
     - getArrowsRange()
@@ -170,7 +167,7 @@ namespace DGtal
     * @see exampleGridCurve2d.cpp testGridCurve.cpp
     */
 
-  template <typename TKSpace>
+  template <typename TKSpace = KhalimskySpaceND<2> >
   class GridCurve
   {
 
@@ -204,31 +201,6 @@ namespace DGtal
      */
     GridCurve();
 
-
-    /**
-     * Init.
-     * @param aVectorOfPoints the vector containing the sequence of grid points. 
-     */
-    bool initFromVector( const std::vector<Point>& aVectorOfPoints ) throw(ConnectivityException);
-
-    /**
-     * Init.
-     * @param in any input stream,
-     */
-    bool initFromVectorStream(std::istream & in );
-
-    /**
-     * Init.
-     * @param aVectorOfSCells the vector containing the sequence of signed 1-cells. 
-     */
-    bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells ) throw(ConnectivityException);
-
-    /**
-     * Outputs the grid curve to the stream @a out.
-     * @param out any output stream,
-     */
-    void writeVectorToStream( std::ostream & out );
-
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -254,18 +226,131 @@ namespace DGtal
      */
     bool isValid() const;
 
+    // ----------------------- streams ------------------------------
 
     /**
-     * @return 'true' if grid curve is open, 'false' otherwise
+     * Init.
+     * @param in any input stream,
      */
-    bool isOpen() const;
+    bool initFromVectorStream(std::istream & in );
 
     /**
+     * Outputs the grid curve to the stream @a out.
+     * @param out any output stream,
+     */
+    void writeVectorToStream( std::ostream & out );
+
+    // ----------------------- Initializations ------------------------------
+
+    /**
+     * Deprecated name, use initFromPointsVector instead
+     * Init.
+     * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
+     * @see initFromPointsRange
+     */
+    bool initFromVector( const std::vector<Point>& aVectorOfPoints );
+
+    /**
+     * Init from a STL vector of points.
+     * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
+     * @see initFromPointsRange
+     */
+    bool initFromPointsVector( const std::vector<Point>& aVectorOfPoints ); 
+
+    /**
+     * Init from a range of points.
+     * @param itb begin iterator
+     * @param ite end iterator
+     */
+    template <typename TIterator>
+    bool initFromPointsRange( const TIterator& itb, const TIterator& ite );
+
+    /**
+     * Init from a STL vector of signed cells.
+     * @param aVectorOfSCells the vector containing the sequence of signed cells. 
+     * @see initFromSCellsRange
+     */
+    bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells );
+
+    /**
+     * Init from a range of signed cells.
+     * @param itb begin iterator
+     * @param ite end iterator
+     */
+    template <typename TIterator>
+    bool initFromSCellsRange( const TIterator& itb, const TIterator& ite );
+
+
+    // ----------------------- open/closed ------------------------------
+
+
+    /**
+     * Checks whether the grid curve is open or closed. 
+     * Signed cells directly incident to the last scell
+     * and indirectly incident to the first scell
+     * should be the same in case of a closed grid curve.
+     *
      * @return 'true' if grid curve is closed, 'false' otherwise
      */
     bool isClosed() const;
 
+    /**
+     * @return 'true' if the grid curve is not closed, 'false' otherwise
+     * @see isClosed
+     */
+    bool isOpen() const;
+
+    // ----------------------- container interface ------------------------------
+
+    typedef typename Storage::const_iterator const_iterator; 
+    typedef typename Storage::const_iterator ConstIterator; 
+    typedef typename Storage::const_reverse_iterator const_reverse_iterator; 
+    typedef typename Storage::const_reverse_iterator ConstReverseIterator; 
+
+    /**
+     * @return begin iterator on scells
+     */
+    ConstIterator begin() const; 
+
+    /**
+     * @return end iterator on scells
+     */
+    ConstIterator end() const; 
      
+    /**
+     * @return reverse begin iterator on scells
+     */
+    ConstReverseIterator rbegin() const; 
+
+    /**
+     * @return reverse end iterator on scells
+     */
+    ConstReverseIterator rend() const; 
+
+    /**
+     * @return last scell
+     */
+    SCell back() const; 
+
+    /**
+     * Back insertion of @e aSCell
+     * @param aSCell any signed cell
+     * @see pushBack
+     * NB: this alias is kept for STL compliance
+     */
+    void push_back(const SCell& aSCell); 
+
+    /**
+     * Back insertion of @e aSCell
+     * @param aSCell any signed cell
+     */
+    void pushBack(const SCell& aSCell); 
+
+    /**
+     * @return number of scells
+     */
+    typename Storage::size_type size() const; 
+
     // ------------------------- private Datas --------------------------------
   private:
     /**
@@ -279,13 +364,10 @@ namespace DGtal
     bool myFlagIsOwned;
 
     /**
-     * list of 0-cells
+     * list of signed cells
      */
-    Storage my0SCells; 
-    /**
-     * list of 1-cells
-     */
-    Storage my1SCells; 
+    Storage mySCells; 
+
 
     // ------------------------- Public Datas --------------------------------
   public:
@@ -296,14 +378,18 @@ namespace DGtal
   private:
 
     /**
-     * @return the signed 0-cell associated to a point of integer coordinates 
-     */
-    SCell PointTo0SCell(const Point& aPoint);
-    /**
-     * @return the signed 1-cell associated to a pair point - shift vector, 
-     * both of integer coordinates 
+     * @param aPoint any point
+     * @param aVector any vector of L1 norm equal to 1
+     * @return the signed 1-cell associated to a pair point - shift vector 
+     * (both in digital coordinates)
      */
     SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
+    /**
+     * @param aSCell any signed cell
+     * @return 'true' if @a aSCell is within the underlying Khalimsky space
+     * and 'false' otherwise
+     */
+    bool isInside(const SCell& aSCell) const;
     
 
     // ------------------------- Drawing services --------------------------------
@@ -346,19 +432,11 @@ namespace DGtal
     #include "DGtal/geometry/curves/representation/GridCurveRanges.ih"
 
     /**
-     * Accessor to the range of signed 0-cells
+     * Accessor to the range of signed cells
      * @return an instance of SCellsRange
      */
-    typename GridCurve::SCellsRange get0SCellsRange() const {
-      return SCellsRange(my0SCells);
-    } 
-
-    /**
-     * Accessor to the range of signed 1-cells
-     * @return an instance of SCellsRange
-     */
-    typename GridCurve::SCellsRange get1SCellsRange() const {
-      return SCellsRange(my1SCells);
+    typename GridCurve::SCellsRange getSCellsRange() const {
+      return SCellsRange(mySCells);
     } 
 
     /**
