@@ -37,16 +37,7 @@ namespace DGtal {
 
 @managers David Coeurjolly, Bertrand Kerautret
 
-
-@author David Coeurjolly
-@author Sebastien Fourey
-@author Bertrand Kerautret
-@author Jacques-Olivier Lachaud
-@author Nicolas Normand
-@author Martial Tola
-
-
-@b LICENSE: LGPL / GPL if you use QGLViewer (viewer3D)xs
+@b LICENSE: LGPL.  GPL if you use QGLViewer (Viewer3D)
 
 
 @b Package @b Overview
@@ -65,10 +56,6 @@ In this package, we present DGtal tools and utilities to import/export images an
 
 @b Package @b Concepts @b Overview
  - \ref xxxPackageConcepts
-
-
-@b Related @b documentation @b pages
- - \ref PageRef
 
 
 

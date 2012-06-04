@@ -90,12 +90,13 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
 
   - \ref IntroductionPackage
   - \ref KernelPackage
-  - \ref pageAlgebraicPackage
   - \ref pageArithmeticPackage
   - \ref GeometryPackage
   - \ref TopologyPackage
+  - \ref pageMathPackage
   - \ref ImagePackage
   - \ref IOPackage
+  
 
 @section manuals_dgtal Helpers and tools
 
