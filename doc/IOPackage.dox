@@ -35,9 +35,12 @@ namespace DGtal {
 /*!
 @page IOPackage  IO package
 
+@managers David Coeurjolly, Bertrand Kerautret
+
+
 @author David Coeurjolly
 @author Sebastien Fourey
-@author Bertranrd Kerautret
+@author Bertrand Kerautret
 @author Jacques-Olivier Lachaud
 @author Nicolas Normand
 @author Martial Tola
@@ -52,9 +55,9 @@ In this package, we present DGtal tools and utilities to import/export images an
 
 @b Modules
 
-- \ref dgtal_dgtalboard
-- \ref threeD_visu
-- \ref image_io
+- \ref dgtal_dgtalboard (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
+- \ref threeD_visu (Bertrand Kerautret, Martial Tola)
+- \ref image_io (David Coeurjolly)
 
 @b Package @b Concepts @b Overview
 
