@@ -74,12 +74,14 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
     /**
-    * @brief Aim: describes a sequence of signed d-cells, closed or open, 
-    * basically 1-cells or (n-1)-cells, in a space of dimension n (d <= n).
-    * For instance, the topological boundary of a simply connected 
-    * digital set is a closed sequence of 1-cells in 2d. 
-    * 
-    * @tparam TKSpace Khalimsky space, a model of CCellularGridSpaceND
+    * @brief Aim: describes, in a cellular space of dimension n, 
+    a closed of open sequence of signed d-cells (or d-scells), 
+    d being either equal to 1 or (n-1). 
+
+    For instance, the topological boundary of a simply connected 
+    digital set is a closed sequence of 1-scells in 2d. 
+     
+    @tparam TKSpace Khalimsky space, a model of CCellularGridSpaceND
     
     Using the namespace Z2i, defined in StdDefs.h, you can instanciate a grid curve as follows:
     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveDeclaration
@@ -88,7 +90,7 @@ namespace DGtal
      For instance, you can read a grid curve from a data file, 
      which contains the (digital) coordinates of the 0-cells (pointels) in nd: 
     @snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveFromDataFile
-     Note that if the first and last 0-cells of the file have the same coordinates (i)
+     Note that if the first and last 0-scells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
      as closed, ie. scells directly incident to the last signed cell and indirectly incident 
      to the first signed cell are the same.
@@ -109,22 +111,22 @@ namespace DGtal
 
      Moreover, this object provides several ranges as nested types: 
     
-     - SCellsRange to iterate over the signed d-cells (0 <= d <= n),
-     - PointsRange to iterate over the signed d-cells viewed as digital points 
-     (of integer coordinates) (0 <= d <= n),
-     - MidPointsRange to iterate over the signed d-cells viewed as real points 
-     (of double coordinates) (0 <= d <= n),
-     - ArrowsRange to iterator over the signed d-cells viewed as a pairs point-vector:
-     the point stands for the starting point of the arrow, the vector gives
-     the orientation or the arrow (meaningful for d = 1 and n >= 2). 
-     - InnerPointsRange to iterate over the (d+1)-cells, viewed as digital points, 
-     that are <em>directly</em> incident to the signed d-cells (meaningful for d = n-1 and n >= 2)
-     - OuterPointsRange to iterate over the (d+1)-cells, viewed as digital points, 
-     that are <em>indirectly</em> incident to the signed d-cells (meaningful for d = n-1 and n >= 2)
-     - IncidentPointsRange to iterate over the pairs of (d+1)-cells 
-     that are incident to the signed d-cells (both inner points and outer points) 
-     (meaningful for d = n-1 and n >= 2)
-     - CodesRange to iterate over the signed d-cells viewed as codes {0,1,2,3} (only valid if n = 2 and d = 1)
+     - SCellsRange to iterate over the d-scells
+     - PointsRange to iterate over the digital coordinates of the 0-scells
+     that are directly incident to the d-scells
+     - MidPointsRange to iterate over the real coordinates of the d-scells
+     - ArrowsRange to iterate over the arrows coding the 1-scells.
+     Note that an arrow is a pair point-vector:
+     the point codes the digital coordinates of the 1-scell, 
+     the vector gives the topology and sign of the 1-scell. 
+     - InnerPointsRange to iterate over the digital coordinates of the n-scells
+     that are @e directly incident to the (n-1)-scells.  
+      - OuterPointsRange to iterate over the digital coordinates of the n-scells
+     that are @e indirectly incident to the (n-1)-scells.
+     - IncidentPointsRange to iterate over the pairs of inner and outer points
+     (defined as above)
+     - CodesRange to iterate over the codes {0,1,2,3} of the 1-scells 
+     (only available if n = 2)
     
      You can get an access to these eight ranges through the following methods: 
 
