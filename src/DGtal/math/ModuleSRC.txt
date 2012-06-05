@@ -2,9 +2,5 @@
 ##
 
 SET(DGTAL_SRC ${DGTAL_SRC} 
-		DGtal/math/arithmetic/ModuloComputer
-		DGtal/math/arithmetic/SternBrocot
-		DGtal/math/arithmetic/LightSternBrocot
-		DGtal/math/arithmetic/LighterSternBrocot
 		DGtal/math/AngleLinearMinimizer)
 

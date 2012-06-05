@@ -43,9 +43,9 @@
 #include <iostream>
 #include <string>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/arithmetic/CPositiveIrreducibleFraction.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/SternBrocot.h"
+#include "DGtal/arithmetic/CPositiveIrreducibleFraction.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/SternBrocot.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -282,7 +282,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/Pattern.ih"
+#include "DGtal/arithmetic/Pattern.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
