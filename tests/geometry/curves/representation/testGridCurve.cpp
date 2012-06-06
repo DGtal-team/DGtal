@@ -190,7 +190,7 @@ bool testRange(const Range &aRange)
 {
 
   trace.info() << endl;
-  trace.info() << "Testing Range" << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " elts)" << endl;
   
   typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
   std::vector<Value> v1,v2,v3,v4; 
@@ -254,7 +254,7 @@ bool testPairsRange(const Range &aRange)
 {
 
   trace.info() << endl;
-  trace.info() << "Testing Range" << endl;
+  trace.info() << "Testing Range (" << aRange.size() << " pairs)" << endl;
   
 {
   trace.info() << "Forward" << endl;
@@ -281,7 +281,7 @@ bool testDisplayRange(const Range &aRange)
 {
 
   trace.info() << endl;
-  trace.info() << "Displaying Range" << endl;
+  trace.info() << "Displaying Range (" << aRange.size() << " elts)" << endl;
   trace.info() << aRange << endl;
   
   return true;
@@ -295,7 +295,7 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   s << aName << "Range.eps"; 
   
   trace.info() << endl;
-  trace.info() << "Drawing " << s.str() << " " << endl;
+  trace.info() << "Drawing " << s.str() << " (" << aRange.size() << " elts)" << endl;
   
   //board
   Board2D aBoard;
@@ -318,7 +318,8 @@ template <typename Range>
 void testRangeConceptChecking()
 {
     BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Range> ));
-    BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<Range> ));
+    //BOOST_CONCEPT_ASSERT(( CConstRange<Range> ));
+    //pb ConstReverseIterator or ReverseConstIterator ?
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -342,17 +343,6 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
 
-/////////// ranges test
-  typedef GridCurve<K2> GridCurve;
-
-testRangeConceptChecking<GridCurve::SCellsRange>();
-testRangeConceptChecking<GridCurve::PointsRange>();
-testRangeConceptChecking<GridCurve::MidPointsRange>();
-testRangeConceptChecking<GridCurve::ArrowsRange>();
-testRangeConceptChecking<GridCurve::InnerPointsRange>();
-testRangeConceptChecking<GridCurve::OuterPointsRange>();
-testRangeConceptChecking<GridCurve::IncidentPointsRange>();
-
 ///////// general tests
   bool res = testIOGridCurve<K2>(sinus2D4)
     && testIOGridCurve<K3>(sinus3D)
@@ -363,6 +353,17 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
     && testIsOpen(sinus2D4,true)
     && testIsOpen(square,false); 
 
+/////////// ranges test
+  typedef GridCurve<K2> GridCurve;
+
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::SCellsRange>();
+testRangeConceptChecking<GridCurve::PointsRange>();
+testRangeConceptChecking<GridCurve::MidPointsRange>();
+testRangeConceptChecking<GridCurve::ArrowsRange>();
+testRangeConceptChecking<GridCurve::InnerPointsRange>();
+testRangeConceptChecking<GridCurve::OuterPointsRange>();
+testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 
   //reading grid curve
   GridCurve c; 

@@ -53,14 +53,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/PointListReader.h"
 
-#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/Circulator.h"
-#include "DGtal/base/ConstRangeAdapter.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 
 #include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SCellsFunctors.h"
+
+#include "DGtal/io/boards/Board2D.h"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -212,13 +213,6 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     GridCurve & operator=( const GridCurve & other );
-
-    // ----------------------- common ------------------------------
-
-    /**
-     * @return the style name used for drawing this object.
-     */
-    std::string className() const;
 
     /**
      * Writes/Displays the object on an output stream.
@@ -398,104 +392,109 @@ namespace DGtal
     bool isInside(const SCell& aSCell) const;
     
 
+    // ------------------------- Drawing services --------------------------------
+  public: 
+
+    /**
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
+    DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
+    
+    friend DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GridCurve<TKSpace> &aGC, std::string mode = "" )
+    {
+      return aGC.defaultStyle(mode);
+    }
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
+
+    /**
+       Draw the object on a Board2D board
+       @param board the output board where the object is drawn.
+    */
+    void selfDraw(Board2D & board ) const;
+
+    friend void draw(Board2D & aBoard, const DGtal::GridCurve<TKSpace> &aGC)
+    {
+      aGC.selfDraw(aBoard);
+    }
     
     // ------------------------- inner classes --------------------------------
 
   public: 
 
-    ///////////////////////// SCellsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, DefaultFunctor, SCell >  SCellsRange; 
+    ///////////////////////////////////////////////////////////////////////////////
+    // Includes range inner types.
+    #include "DGtal/geometry/curves/representation/GridCurveRanges.ih"
 
     /**
+     * Accessor to the range of signed cells
      * @return an instance of SCellsRange
      */
-    SCellsRange getSCellsRange() const {
-      return SCellsRange(mySCells.begin(), mySCells.end(), new DefaultFunctor() );
+    typename GridCurve::SCellsRange getSCellsRange() const {
+      return SCellsRange(mySCells);
     } 
 
-    ///////////////////////// PointsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToPoint<KSpace>, Point >  PointsRange; 
-
     /**
+     * Accessor to the range of the points of integer coordinates,
+     * which are associated to 0-cells of the grid curve 
      * @return an instance of PointsRange
      */
-    PointsRange getPointsRange() const {
-      return PointsRange(mySCells.begin(), mySCells.end(), new SCellToPoint<KSpace>(*myKPtr) );
+    typename GridCurve::PointsRange getPointsRange() const {
+      return PointsRange(this);
     } 
 
-    ///////////////////////// MidPointsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToMidPoint<KSpace>, 
-                               typename KSpace::Space::RealPoint >  MidPointsRange; 
-
     /**
+     * Accessor to the range of the (real coordinates of the) midpoints of each 1-cell
      * @return an instance of MidPointsRange
      */
-    MidPointsRange getMidPointsRange() const {
-      return MidPointsRange(mySCells.begin(), mySCells.end(), new SCellToMidPoint<KSpace>(*myKPtr) );
+    typename GridCurve::MidPointsRange getMidPointsRange() const {
+      return MidPointsRange(this);
     } 
-
-    ///////////////////////// ArrowsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToArrow<KSpace>, 
-                               std::pair<Point,Vector> >  ArrowsRange; 
 
     /**
+     * Accessor to the range of the pairs point - shift vector
+     * (of integer coordinates) associated to the 1-cells of the grid curve 
      * @return an instance of ArrowsRange
      */
-    ArrowsRange getArrowsRange() const {
-      return ArrowsRange(mySCells.begin(), mySCells.end(), new SCellToArrow<KSpace>(*myKPtr) );
+    typename GridCurve::ArrowsRange getArrowsRange() const {
+      return ArrowsRange(this);
     } 
-
-    ///////////////////////// InnerPointsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToInnerPoint<KSpace>, 
-                               Point >  InnerPointsRange; 
 
     /**
-     * @return an instance of ArrowsRange
+     * @return an instance of InnerPointsRange
      */
-    InnerPointsRange getInnerPointsRange() const {
-      return InnerPointsRange(mySCells.begin(), mySCells.end(), new SCellToInnerPoint<KSpace>(*myKPtr) );
+    typename GridCurve::InnerPointsRange getInnerPointsRange() const {
+      return InnerPointsRange(this);
     } 
-
-    ///////////////////////// OuterPointsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToOuterPoint<KSpace>, 
-                               Point >  OuterPointsRange; 
 
     /**
      * @return an instance of OuterPointsRange
      */
-    OuterPointsRange getOuterPointsRange() const {
-      return OuterPointsRange(mySCells.begin(), mySCells.end(), new SCellToOuterPoint<KSpace>(*myKPtr) );
+    typename GridCurve::OuterPointsRange getOuterPointsRange() const {
+      return OuterPointsRange(this);
     } 
-
-    ///////////////////////// IncidentPointsRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToIncidentPoints<KSpace>, 
-                               std::pair<Point, Point> >  IncidentPointsRange; 
 
     /**
      * @return an instance of IncidentPointsRange
      */
-    IncidentPointsRange getIncidentPointsRange() const {
-      return IncidentPointsRange(mySCells.begin(), mySCells.end(), new SCellToIncidentPoints<KSpace>(*myKPtr) );
+    typename GridCurve::IncidentPointsRange getIncidentPointsRange() const {
+      return IncidentPointsRange(this);
     } 
-    ///////////////////////// CodesRange
-
-    typedef ConstRangeAdapter< typename Storage::const_iterator, SCellToCode<KSpace>, char >  CodesRange; 
 
     /**
      * @return an instance of CodesRange
      */
     typename GridCurve::CodesRange getCodesRange() const {
-      return CodesRange( mySCells.begin(), mySCells.end(), new SCellToCode<KSpace>(*myKPtr) );    
+      return CodesRange(this);
     } 
 
   }; // end of class GridCurve
+
 
 
 
