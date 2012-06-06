@@ -34,6 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
+#include "DGtal/geometry/curves/representation/FreemanChain.h"
 #include "DGtal/geometry/curves/representation/GridCurve.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
@@ -73,6 +74,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   string square = examplesPath + "samples/smallSquare.dat";
+  string S = examplesPath + "samples/contourS.fc";
   
     // domain
     Point lowerBound( -50, -50 );
@@ -110,19 +112,30 @@ int main( int argc, char** argv )
     }
     
     //! [GridCurveFromDigitalSet]
-    vector<Point> boundaryPoints;                              //boundary points to retrieve
+    vector<SCell> contour;                           //contour
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
-    SetPredicate<DigitalSet> predicate( set );             //predicate from the digital set
+    SetPredicate<DigitalSet> predicate( set );       //predicate (from the digital set)
 
     //tracking and init grid curve
     SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
-    Surfaces<KSpace>::track2DBoundaryPoints( boundaryPoints, ks, sAdj, predicate, s );
-    c2.initFromVector( boundaryPoints );
+    Surfaces<KSpace>::track2DBoundary( contour, ks, sAdj, predicate, s );
+    c2.initFromSCellsVector( contour );
     //! [GridCurveFromDigitalSet]
   }
   
-// @TODO trace.info() << "\t from a FreemanChain (from a file) " << endl; 
+  trace.info() << "\t from a FreemanChain (from a file) " << endl; 
+  {
+    fstream inputStream;
+    inputStream.open (S.c_str(), ios::in);
+    FreemanChain<int> fc(inputStream);
+    inputStream.close();
 
+    Curve c; 
+    //! [GridCurveFromFreemanChain]
+    c.initFromPointsRange( fc.begin(), fc.end() ); 
+    //! [GridCurveFromFreemanChain]
+
+  }
 
   trace.emphase() << "Output" << endl;
   trace.info() << "\t standard output " << endl;
@@ -170,7 +183,7 @@ int main( int argc, char** argv )
     Domain aDomain( low,up );
 
     {//1cellsRange
-      Curve::SCellsRange r = c1.get1SCellsRange(); 
+      Curve::SCellsRange r = c1.getSCellsRange(); 
       
       trace.info() << r << endl;
       
