@@ -33,10 +33,10 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/LightSternBrocot.h"
-#include "DGtal/math/arithmetic/Pattern.h"
-#include "DGtal/math/arithmetic/StandardDSLQ0.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/LightSternBrocot.h"
+#include "DGtal/arithmetic/Pattern.h"
+#include "DGtal/arithmetic/StandardDSLQ0.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
