@@ -17,52 +17,56 @@
 #pragma once
 
 /**
- * @file CTrivialSegmentComputer.h
+ * @file CIncrementalSegmentComputer.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/08/31
  *
- * Header file for concept CTrivialSegmentComputer.cpp
+ * Header file for concept CIncrementalSegmentComputer.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CTrivialSegmentComputer_RECURSES)
-#error Recursive header files inclusion detected in CTrivialSegmentComputer.h
-#else // defined(CTrivialSegmentComputer_RECURSES)
+#if defined(CIncrementalSegmentComputer_RECURSES)
+#error Recursive header files inclusion detected in CIncrementalSegmentComputer.h
+#else // defined(CIncrementalSegmentComputer_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CTrivialSegmentComputer_RECURSES
+#define CIncrementalSegmentComputer_RECURSES
 
-#if !defined CTrivialSegmentComputer_h
+#if !defined CIncrementalSegmentComputer_h
 /** Prevents repeated inclusion of headers. */
-#define CTrivialSegmentComputer_h
+#define CIncrementalSegmentComputer_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/representation/CSegment.h"
+#include "DGtal/geometry/curves/representation/CSegmentFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CTrivialSegmentComputer
+  // class CIncrementalSegmentComputer
   /**
-Description of \b concept '\b CTrivialSegmentComputer' <p>
+Description of \b concept '\b CIncrementalSegmentComputer' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing the most trivial segment computer,  
-    ie. a model of CSegment that can extend itself. 
+     @brief Aim: Defines the concept describing an incremental segment computer,  
+    ie. a model of CSegmentFactory that can, in addition, incrementally check 
+    whether or not an implicit predicate P is true. 
+    In other words, it can control its own extension from a range of one element
+    (in the direction that is relative to the underlying iterator)
+    so that an implicit predicate P remains true.  
      
- ### Refinement of CSegment 
+ ### Refinement of CSegmentFactory
     
  ### Associated types : 
-    the same as CSegment
+    the same as CSegmentFactory
   
  ### Notation
-     - \t X : A type that is a model of CTrivialSegmentComputer
+     - \t X : A type that is a model of CIncrementalSegmentComputer
      - \t x, \t y : object of type X
      - \t i : object of type X::ConstIterator
   
@@ -87,7 +91,7 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
         <td class=CReturnType> void     </td>
         <td class=CPrecondition>    </td> 
         <td class=CSemantics> set a segment to i      </td> 
-        <td class=CPostCondition>       </td> 
+        <td class=CPostCondition>  x is valid and P is true  </td> 
         <td class=CComplexity> O(1)     </td>
       </tr>
       <tr> 
@@ -95,9 +99,9 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
         <td class=CExpression> x.isExtendableForward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
-        <td class=CPrecondition>    </td> 
+        <td class=CPrecondition>  x is valid and P is true    </td> 
         <td class=CSemantics> checks whether x can be extended to x.end() or not </td> 
-        <td class=CPostCondition>       </td> 
+        <td class=CPostCondition>  x is valid and P is true       </td> 
         <td class=CComplexity>      </td>
       </tr>
       <tr> 
@@ -105,29 +109,46 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
         <td class=CExpression> x.extendForward()     </td>
         <td class=CRequirements>    </td> 
         <td class=CReturnType> bool     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> check whether x can be extended to x.end() or not, extends if true </td> 
-        <td class=CPostCondition>       </td> 
+        <td class=CPrecondition>  x is valid and P is true    </td> 
+        <td class=CSemantics> check whether x can be extended to x.end() or not, only extend if true </td> 
+        <td class=CPostCondition>  x is valid and P is true      </td> 
         <td class=CComplexity>     </td>
       </tr>
      </table>
     
  ### Invariants###
+
+Models of CIncrementalSegmentComputer garantee that 
+for each iterator it from s.begin() to s.end(), the range [s.begin(), it) is 
+a segment such that P is true. 
+    
+@code
+for ( ConstIterator it = s.begin(), 
+      ConstIterator itEnd = s.end();
+      it != itEnd; ++it)
+  { // [s.begin(), it) is a segment:
+    s.init( s.begin() ); 
+    bool flag = true; 
+    while ( (s.end() != it)&&(flag) ) { flag = s.extend(); }
+    ASSERT( flag ); 
+  }
+@endcode
+
     
  ### Models###
     
  ### Notes###
 
-@tparam T the type that should be a model of CTrivialSegmentComputer.
+@tparam T the type that should be a model of CIncrementalSegmentComputer.
    */
   template <typename T> 
-  struct CTrivialSegmentComputer : CSegment<T>
+  struct CIncrementalSegmentComputer : CSegmentFactory<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
 
     // Methods
-    BOOST_CONCEPT_USAGE( CTrivialSegmentComputer )
+    BOOST_CONCEPT_USAGE( CIncrementalSegmentComputer )
     {
       typename T::ConstIterator i(myI);
       myX.init(myI);     
@@ -144,14 +165,14 @@ Description of \b concept '\b CTrivialSegmentComputer' <p>
     // ------------------------- Internals ------------------------------------
   private:
     
-  }; // end of concept CTrivialSegmentComputer
+  }; // end of concept CIncrementalSegmentComputer
   
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CTrivialSegmentComputer_h
+#endif // !defined CIncrementalSegmentComputer_h
 
-#undef CTrivialSegmentComputer_RECURSES
-#endif // else defined(CTrivialSegmentComputer_RECURSES)
+#undef CIncrementalSegmentComputer_RECURSES
+#endif // else defined(CIncrementalSegmentComputer_RECURSES)
