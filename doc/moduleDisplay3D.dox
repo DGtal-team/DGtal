@@ -11,6 +11,8 @@ namespace DGtal {
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
  * 
+
+@author Bertrand Kerautret, Martial Tola
  
 [TOC]
 
