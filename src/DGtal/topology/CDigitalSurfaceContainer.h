@@ -43,6 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/Topology.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
+#include "DGtal/topology/CDigitalSurfaceTracker.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -189,6 +191,8 @@ Description of \b concept '\b CDigitalSurfaceContainer' <p>
     typedef typename T::Size Size;
 
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<SurfelConstIterator> ));
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<KSpace> ));
+    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSurfaceContainer )

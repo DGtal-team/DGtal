@@ -598,7 +598,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/LighterSternBrocot.ih"
+#include "DGtal/arithmetic/LighterSternBrocot.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -31,7 +31,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
