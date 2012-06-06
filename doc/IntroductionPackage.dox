@@ -35,9 +35,9 @@ namespace DGtal {
 /*!
 @page IntroductionPackage Preliminaries
    
-@since 0.4
 
-@author David Coeurjolly
+@managers David Coeurjolly, Jacques-Olivier Lachaud
+@since 0.4
 
 
 @b Package @b Overview
@@ -48,9 +48,9 @@ also illustrate a mechanism to use DGtal in your own project.
 
 
 @b Modules
- - \ref moduleIntroduction  
- - \ref FAQDGtalCmake
- - \ref HowToUseDGtal
+ - \ref moduleIntroduction (Tristan Roussillon)
+ - \ref FAQDGtalCmake (Martial Tola, David Coeurjolly)
+ - \ref HowToUseDGtal (David Coeurjolly)
 
 
  @b Related @b documentation @b pages

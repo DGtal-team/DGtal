@@ -35,10 +35,7 @@ namespace DGtal {
 /*!
 @page pageArithmeticPackage  Arithmetic package
 
-@author Jacques-Olivier Lachaud
-@author Emilie Charrier
-@author Xavier Provençal
-@author Mouhammad Said
+@managers Jacques-Olivier Lachaud
 
 @since 0.5
 
@@ -59,15 +56,15 @@ provided, as well as fast algorithms to recognize digital straight
 subsegments.
 
 Parts of this package are backports from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene): 
-class IntegerComputer (written with Emilie Charrier), class
+class IntegerComputer, class
 SternBrocot (written with Xavier Provençal), algorithms
 StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS (written
 with Mouhammad Said).
 
 @b Modules
 
-- \ref dgtal_irreducible_fraction
-- \ref dgtal_digital_straightness
+- \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Xavier Provençal)
+- \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Mouhammad Said)
 
 
 @b Package @b Concepts @b Overview
