@@ -32,10 +32,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/SternBrocot.h"
-#include "DGtal/math/arithmetic/Pattern.h"
-#include "DGtal/math/arithmetic/StandardDSLQ0.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/SternBrocot.h"
+#include "DGtal/arithmetic/Pattern.h"
+#include "DGtal/arithmetic/StandardDSLQ0.h"
 #include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
 ///////////////////////////////////////////////////////////////////////////////
 

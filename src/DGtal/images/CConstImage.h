@@ -124,7 +124,6 @@ namespace DGtal
 
   public:
 
-    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
     //Inner types
     typedef typename I::Domain Domain;
     BOOST_CONCEPT_ASSERT((CDomain<Domain>));

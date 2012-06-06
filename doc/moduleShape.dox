@@ -18,7 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
   @page moduleShape Shapes, Shapers and Digitizers 
-@writers David Coeurjolly
+@author Jacques-Olivier Lachaud, David Coeurjolly
 
 [TOC]
   
