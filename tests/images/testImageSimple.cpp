@@ -209,6 +209,65 @@ bool testImageCopy()
 
   return nbok == nb;
 }
+bool testImageCopyShort()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing smart copy of Image..." );
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+  typedef Image<VImage > MyImage;
+  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+
+  Z2i::Point a(0,0);
+  Z2i::Point b(32,32);
+  Z2i::Point c(12, 14);
+
+  Z2i::Domain domain(a,b);
+
+  MyImage image(  new VImage(domain) );
+  trace.info() << "Image constructed: "<< image <<std::endl;
+
+  VImage myImageC( domain );
+  MyImage imageFromConstRef ( myImageC );
+  trace.info() << "Image constructed (from constRef): "<< imageFromConstRef <<std::endl;
+  nbok += (imageFromConstRef.getPointer().count()== 2) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "unique" << std::endl;
+
+  MyImage image3;
+  trace.info() << "Image constructed (degulat): "<< image3 <<std::endl;
+
+
+  trace.info() <<  "default: "<< image3 <<std::endl;
+  image3 = image;
+  nbok += (image3.getPointer().count()== 3) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.info() <<  "assignment: "<< image3 <<std::endl;
+  nbok += (image3.getPointer().count()== 3) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+        << "true == true" << std::endl;
+
+  image3.setValue(Z2i::Point(1,1), 4);
+  trace.info() <<  "setValue on assigned: "<< image3 <<std::endl;
+  nbok += (image3.getPointer().count()== 2) ? 1 : 0;
+  nb++;
+
+  MyImage image4(image3);
+  trace.info() << "Image constructed (copy): "<< image4 <<std::endl;
+  nbok += (image4.getPointer().count()== 3) ? 1 : 0;
+  nb++;
+
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+
+  return nbok == nb;
+}
 
 bool testImageScan()
 {
@@ -260,7 +319,9 @@ int main( int argc, char** argv )
   bool res = testSelfCheckConcept()
     && testCreate()
     && testAPI()
-    && testImageCopy() && testImageScan(); // && ... other tests
+    && testImageCopy() && testImageScan()
+    && testImageCopyShort();// && ... other tests
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

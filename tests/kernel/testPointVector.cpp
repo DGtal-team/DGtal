@@ -43,7 +43,7 @@ using namespace std;
 
 /**
  *
- * A PointVector may represent either a  point or a 
+ * A PointVector may represent either a  point or a
  * vector depending on the context. For performance reasons, these
  * two types are just aliases. The user should take care how to use
  * it depending on the context. For instance, adding two points has
@@ -66,7 +66,7 @@ using namespace std;
  * p.at(1) = 2.0;  // p = {0.0, 2.0, 0.0, 0.0, 0.0}
  * q.at(3) = -5.5   // q = {0.0, 0.0, 0.0, -5.5, 0.0}
  * r =  p + q ;   //  r = {0.0, 2.0, 0.0, -5.5, 0.0}
- * 
+ *
  * d = r.norm( DGtal::PointVector::L_infty ); // d = 5.5
  * ...
  * @endcode
@@ -129,7 +129,7 @@ bool testMaxMin()
  **/
 bool testSimplePoint()
 {
-  PointVector<3, int>  aPVInt3; 
+  PointVector<3, int>  aPVInt3;
 
   int t[]={-3 ,4 ,4 ,0};
   PointVector<4,int> aPoint(t);
@@ -209,7 +209,7 @@ bool testIterator()
 {
   PointVector<25,int> aPoint;
   PointVector<4, int> avector;
-  
+
   trace.beginBlock("Point Iterator Test");
 
   for (unsigned int i=0;i<25;++i)
@@ -230,7 +230,7 @@ bool testIterator()
 bool testOperators()
 {
   trace.beginBlock("Point Operators Test");
-  
+
   DGtal::int32_t t1[] = {1,2,3,4};
   PointVector<4, DGtal::int32_t> p1( t1 );
   DGtal::int32_t t2[]= {5,4,3,2};
@@ -238,6 +238,7 @@ bool testOperators()
 
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
   trace.info() << "p1+p2: "<<p1+p2 <<std::endl;
+  trace.info() << "p1*2+p2: "<<p1*2+p2 <<std::endl;
   trace.info() << "p1-p2: "<<p1-p2 <<std::endl;
   trace.info() << "inf(p1,p2): "<<p1.inf(p2) <<std::endl;
   trace.info() << "sup(p1,p2): "<<p1.sup(p2) <<std::endl;
@@ -245,7 +246,7 @@ bool testOperators()
 
   trace.endBlock();
 
-  return true; 
+  return true;
 }
 
 bool testIntegerNorms()
@@ -258,14 +259,14 @@ bool testIntegerNorms()
   DGtal::int32_t t2[]= {4,5,3,2};
   PointVector<4,DGtal::int32_t> p2(t2);
   PointVector<4,DGtal::int32_t> p = p2 - p1;
-  
+
   trace.beginBlock ( "Checking Integer norm1" );
   trace.info() << "p1: "<<p1 <<", "<<"p2: "<<p2 <<std::endl;
-  nbok += p.norm1() == 8 ? 1 : 0; 
+  nbok += p.norm1() == 8 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "L1(p2-p1): "<< p.norm1() << "( == 8 ?)" << std::endl;
-  nbok += p.normInfinity() == 4 ? 1 : 0; 
+  nbok += p.normInfinity() == 4 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Linfty(p2-p1): "<< p.normInfinity()  << "( == 4 ?)"
@@ -278,11 +279,11 @@ bool testIntegerNorms()
 int main()
 {
   bool res;
-  res =  testSimplePoint()  
+  res =  testSimplePoint()
     && testSimpleVector()
-    && testNorms()  
-    && testIterator() 
-    && testComparison() 
+    && testNorms()
+    && testIterator()
+    && testComparison()
     && testOperators()
     && testIntegerNorms()
     && testMaxMin();
