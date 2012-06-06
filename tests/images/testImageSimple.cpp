@@ -266,10 +266,43 @@ bool testImageCopyShort()
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
 
-
   return nbok == nb;
 }
 
+bool testImageScan()
+{
+    unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing Image scan ..." );
+  typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+  typedef Image<VImage > MyImage;
+  BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
+
+  Z2i::Point a(0,0);
+  Z2i::Point b(32,32);
+  Z2i::Point c(12, 14);
+
+  Z2i::Domain domain(a,b);
+  MyImage image( new VImage(domain) );
+
+  typedef MyImage::Range::Iterator Iterator;
+  typedef MyImage::Domain::ConstIterator DomainConstIterator;
+
+  //Setting values iterating on the domain points
+  for(Iterator it = image.range().begin(), itend = image.range().end();
+      it != itend; ++it)
+    *it =  42 ; // (*it) is a container cell
+
+
+  //Fast init of the image using container built-in iterator
+  for(DomainConstIterator it = image.domain().begin(), itend = image.domain().end();
+      it != itend; ++it)
+      image.setValue( *it , 42 );  // (*it) is a Point
+
+
+   return nbok == nb;
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -286,8 +319,9 @@ int main( int argc, char** argv )
   bool res = testSelfCheckConcept()
     && testCreate()
     && testAPI()
-    && testImageCopy()
+    && testImageCopy() && testImageScan()
     && testImageCopyShort();// && ... other tests
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
