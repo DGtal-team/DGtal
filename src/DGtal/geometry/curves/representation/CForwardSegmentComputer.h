@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/representation/CTrivialSegmentComputer.h"
+#include "DGtal/geometry/curves/representation/CIncrementalSegmentComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -51,51 +51,44 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CForwardSegmentComputer
   /**
-Description of \b concept '\b CForwardSegmentComputer' <p>
+     Description of \b concept '\b CForwardSegmentComputer' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing a forward segment computer,  
-    ie. a model of CSegment that can extend itself (in the direction that is relative to 
-    the underlying iterator). 
+     @brief Aim: Defines the concept describing a forward segment computer.  
+    Like any model of CIncrementalSegmentComputer, it can control its own extension 
+    (in the direction that is relative to the underlying iterator)
+    so that an implicit predicate P remains true. However, contrary to models 
+    of CIncrementalSegmentComputer, it garantees that P is also true for any 
+    subrange of the whole segment at any time. This extra constraint is necessary
+    to be able to incrementally check whether or not the segment is maximal.     
      
- ### Refinement of CTrivialSegmentComputer 
+ ### Refinement of CIncrementalSegmentComputer 
     
- ### Associated types : the same as CTrivialSegmentComputer +
-    - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
-    instead of Self::ConstIterator as the underlying iterator
+ ### Associated types : 
+     - same as CIncrementalSegmentComputer
   
  ### Notation
      - \t X : A type that is a model of CForwardSegmentComputer
      - \t x : object of type X
      - \t r : object of type X::Reverse
-  
- ### Definitions
-    
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName> conversion  </td> 
-        <td class=CExpression> x.getReverse()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> X::Reverse     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-     </table>
-    
+     
  ### Invariants###
+
+Contrary to models of CIncrementalSegmentComputer, 
+models of CForwardSegmentComputer also garantee that 
+for each iterator it from s.begin() to s.end(), 
+the range [it, s.end()) is a segment such that P is true. 
     
+@code
+for ( ConstIterator it = s.begin(), 
+      ConstIterator itEnd = s.end();
+      it != itEnd; ++it)
+  { // [it, itEnd) is a segment:
+    bool flag = true; 
+    while ( (s.end() != itEnd)&&(flag) ) { flag = s.extend(); }
+    ASSERT( flag ); 
+  }
+@endcode
+
  ### Models###
     
  ### Notes###
@@ -103,21 +96,14 @@ Description of \b concept '\b CForwardSegmentComputer' <p>
 @tparam T the type that should be a model of CForwardSegmentComputer.
    */
   template <typename T> 
-  struct CForwardSegmentComputer : CTrivialSegmentComputer<T>
+  struct CForwardSegmentComputer : CIncrementalSegmentComputer<T>
   {
+    //no new syntactic constraints to check
     // ----------------------- Concept checks ------------------------------
   public:
-    // Inner types
-    typedef typename T::Reverse Reverse;
-    // Methods
-    BOOST_CONCEPT_USAGE( CForwardSegmentComputer )
-    {
-      ConceptUtils::sameType( myRx, myX.getReverse() );
-    }
+
     // ------------------------- Private Datas --------------------------------
   private:
-    T myX; // only if T is default constructible.
-    Reverse myRx; 
   
     // ------------------------- Internals ------------------------------------
   private:
