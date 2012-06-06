@@ -318,7 +318,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my0SCells.size();
+    return myC->mySCells.size();
   }
   /**
    * Checks the validity/consistency of the object.
@@ -424,7 +424,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my0SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -432,7 +432,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my0SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -545,7 +545,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
   /**
    * Checks the validity/consistency of the object.
@@ -652,7 +652,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -660,7 +660,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -772,7 +772,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
 
   /**
@@ -890,7 +890,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -898,7 +898,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -1011,7 +1011,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
 
   /**
@@ -1120,7 +1120,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -1128,7 +1128,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -1241,7 +1241,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
 
   /**
@@ -1348,7 +1348,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -1356,7 +1356,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -1470,7 +1470,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
 
   /**
@@ -1587,7 +1587,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -1595,7 +1595,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
@@ -1675,7 +1675,10 @@ public:
   /**
    * Constructor.
    */
-  CodesRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(*myC->myKPtr)){}
+  CodesRange(const GridCurve* aGridCurve ): myC(aGridCurve), myFunctor(Functor(*myC->myKPtr))
+  {
+    BOOST_STATIC_ASSERT(( KSpace::dimension == 2 )); 
+  }
 
   /**
    * Copy constructor.
@@ -1709,7 +1712,7 @@ public:
    */
   typename Storage::size_type size() const 
   {
-    return myC->my1SCells.size();
+    return myC->mySCells.size();
   }
 
   /**
@@ -1762,7 +1765,7 @@ public:
    * @return begin iterator
    */
   ConstIterator begin() const {
-    return ConstIterator( myC->my1SCells.begin(), myFunctor );
+    return ConstIterator( myC->mySCells.begin(), myFunctor );
   }
 
   /**
@@ -1770,7 +1773,7 @@ public:
    * @return end iterator
    */
   ConstIterator end() const {
-    return ConstIterator( myC->my1SCells.end(), myFunctor );
+    return ConstIterator( myC->mySCells.end(), myFunctor );
   }
 
   /**
