@@ -18,7 +18,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page moduleSpacePointVectorDomain Digital Spaces, Points, Vectors and Domains
-@writers David Coeurjolly,  Guillaume Damiand
+@authors David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand
 
 
 This part of the manual describes the DGtal kernel and its

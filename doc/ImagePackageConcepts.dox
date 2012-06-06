@@ -26,6 +26,7 @@ namespace DGtal {
 digraph GIMAGE {
   rankdir=BT;
  subgraph cluster_ext {
+ 	rank = same;
         style=invis;
         subgraph cluster_1 {
                  style=filled;
@@ -44,28 +45,28 @@ digraph GIMAGE {
 
                  CPointFunctor ;  
 		 CDomain;
-	//	 CConstBidirectionalRangeFromPoint;
-	//	 CBidirectionalOutputRangeFromPoint;
+		 CConstBidirectionalRangeFromPoint;
+		 CBidirectionalOutputRangeFromPoint;
 		 }
-		 }
+	 }
 
 subgraph cluster_0 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    "CValue" -> CImageContainer [label="use",style=dashed] ;
+    label="Image (main concepts)";
 
+    
     CImage -> CConstImage;
     CImage -> CTrivialImage;
     CConstImage -> CTrivialConstImage;
     CTrivialImage -> CTrivialConstImage;
 
-    label="Images";
   }
   CLabel -> CTrivialConstImage [label="use",style=dashed] ;
   CDomain -> CConstImage [label="use",style=dashed] ;
-//  CConstBidirectionalRangeFromPoint -> CConstImage [label="use",style=dashed] ;
-// CBidirectionalOutputRangeFromPoint -> CImage[label="use",style=dashed] ;
+  CConstBidirectionalRangeFromPoint -> CConstImage [label="use",style=dashed] ;
+  CBidirectionalOutputRangeFromPoint -> CImage[label="use",style=dashed] ;
   CTrivialConstImage -> CPointFunctor;
 
  subgraph cluster_models {
@@ -86,8 +87,6 @@ subgraph cluster_0 {
 	ImageContainerBySTLMap -> CImage;
 	ImageContainerByHashTree -> CImage;
 	ImageContainerByITKImage -> CImage;
-
-
 
  }
 @enddot

@@ -34,8 +34,7 @@ namespace DGtal {
 /*!
 @page TopologyPackage Topology package
    
-@author Jacques-Olivier Lachaud
-@author Bertrand Kerautret
+@managers Jacques-Olivier Lachaud
 
 @since 0.4
 
@@ -58,10 +57,10 @@ Since 0.4.1, high-level classes are provided to navigate onto digital
 surfaces and to represent the topology on the surface.
 
 @b Modules
- - \ref dgtal_topology
- - \ref dgtal_cellular_topology
- - \ref dgtal_digital_surface
- - \ref dgtal_helpers_surfaces
+ - \ref dgtal_topology (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \ref dgtal_cellular_topology (Jacques-Olivier Lachaud)
+ - \ref dgtal_digital_surface (Jacques-Olivier Lachaud)
+ - \ref dgtal_helpers_surfaces (Jacques-Olivier Lachaud, Bertrand Kerautret)
 
 
  @b Package @b Concepts @b Overview

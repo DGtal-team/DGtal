@@ -44,8 +44,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/Pattern.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/Pattern.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -409,7 +409,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/StandardDSLQ0.ih"
+#include "DGtal/arithmetic/StandardDSLQ0.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

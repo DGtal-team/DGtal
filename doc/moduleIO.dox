@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
 @page image_io Image and digital object import/export
-@writers David Coeurjolly
+@authors David Coeurjolly
 
 This part of the manual describes how to import and export images
 in various formats. This document is dedicated both to DGtal users and

@@ -19,7 +19,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page moduleNumber Integer Models
-@writers David Coeurjolly
+@authors David Coeurjolly, Jacques-Olivier Lachaud
 [TOC]
 
 @section overV Overview
