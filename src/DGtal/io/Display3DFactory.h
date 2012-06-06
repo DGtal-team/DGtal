@@ -53,7 +53,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
-
+#include "DGtal/geometry/curves/representation/GridCurve.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -217,8 +217,57 @@ namespace DGtal
     template< Dimension dim, typename TInteger >
     static void draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
     // SignedKhalimskyCell
+   
+    // GridCurve
+    template< typename TKSpace >
+    static void draw( Display3D & display, const DGtal::GridCurve<TKSpace> & );
+    // GridCurve 
     
-    
+    // SCellsRange
+    template < typename TIterator, typename TSCell >
+    static void draw( DGtal::Display3D & display, 
+          const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & );
+    // SCellsRange
+
+    // PointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & );
+    // PointsRange
+
+    // MidPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+               typename TKSpace::Space::RealPoint> & );
+    // MidPointsRange
+
+    // ArrowsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+               std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & );
+    // ArrowsRange
+
+    // InnerPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & );
+    // InnerPointsRange
+
+    // OuterPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & );
+    // OuterPointsRange
+
+    // IncidentPointsRange
+    template <typename TIterator, typename TKSpace>
+    static void draw( Display3D & display, 
+               const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+               std::pair<typename TKSpace::Point, typename TKSpace::Point > > & );
+    // IncidentPointsRange
+
     //
     
     

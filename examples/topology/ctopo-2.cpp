@@ -39,6 +39,7 @@
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/boards/Board2D.h"
 
 #include "ConfigExamples.h"
 
