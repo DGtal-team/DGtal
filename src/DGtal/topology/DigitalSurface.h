@@ -125,8 +125,6 @@ namespace DGtal
       typedef typename KSpace::template SurfelMap<Value>::Type Type;
     };
 
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
-    
     // ----------------------- UndirectedSimpleGraph --------------------------
   public:
     /// Defines the type for a vertex.

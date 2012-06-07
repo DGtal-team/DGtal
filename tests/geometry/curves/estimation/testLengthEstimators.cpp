@@ -232,7 +232,7 @@ bool testDisplay(double radius, double h)
     //ranges
     ArrowsRange ra = gridcurve.getArrowsRange(); 
     PointsRange rp = gridcurve.getPointsRange(); 
-    SCellsRange rc = gridcurve.get1SCellsRange(); 
+    SCellsRange rc = gridcurve.getSCellsRange(); 
     
     //Explicit reshaping for drawing purposes
     Z2i::DigitalSet set(domain);

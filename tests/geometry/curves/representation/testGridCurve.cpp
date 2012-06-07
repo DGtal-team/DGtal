@@ -71,14 +71,15 @@ bool testIOGridCurve(const string& filename)
 
 //////////////////////////////////////////
   trace.info() << endl;
-  trace.info() << "Reading GridCurve d=" << d << endl;
+  trace.info() << "Reading GridCurve d=" << d << " "; 
   
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
   c.initFromVectorStream(instream);
 
-  cout << c << endl;
+  trace.info() << "(" << c.size() << ") elts" << std::endl; 
+  trace.info() << c << endl;
 
 ///////////////////////////////////////////
   std::stringstream s; 
@@ -372,8 +373,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
   inputStream.close();
 
   res = res 
-    && testRange<GridCurve::SCellsRange>(c.get0SCellsRange())
-    && testRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
     && testPairsRange<GridCurve::ArrowsRange>(c.getArrowsRange())
@@ -384,8 +384,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 ;
 
   res = res 
-    && testDisplayRange<GridCurve::SCellsRange>(c.get0SCellsRange())
-    && testDisplayRange<GridCurve::SCellsRange>(c.get1SCellsRange())
+    && testDisplayRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testDisplayRange<GridCurve::PointsRange>(c.getPointsRange())
     && testDisplayRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
     && testDisplayRange<GridCurve::ArrowsRange>(c.getArrowsRange())
@@ -396,8 +395,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 ;
 
   res = res 
-    && testDrawRange<GridCurve::SCellsRange>(c.get0SCellsRange(),"0cells","Grid")
-    && testDrawRange<GridCurve::SCellsRange>(c.get1SCellsRange(),"1cells","Grid")
+    && testDrawRange<GridCurve::SCellsRange>(c.getSCellsRange(),"1cells","Grid")
     && testDrawRange<GridCurve::PointsRange>(c.getPointsRange(),"Points","Paving")
     && testDrawRange<GridCurve::MidPointsRange>(c.getMidPointsRange(),"MidPoints","Paving")
     && testDrawRange<GridCurve::ArrowsRange>(c.getArrowsRange(),"Arrows","Paving")

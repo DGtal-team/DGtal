@@ -41,8 +41,8 @@ template<Dimension dim, typename Container>
 inline
 std::bitset<dim> DGtal::setDimensionsIn( const Container &dimensions )
 {
-  std::bitset<dim> t1; 
-  for ( typename Container::const_iterator it=dimensions.begin(); 
+  std::bitset<dim> t1;
+  for ( typename Container::const_iterator it=dimensions.begin();
   it!=dimensions.end(); ++it )
     {
       ASSERT( *it<dim );
@@ -56,7 +56,7 @@ inline
 std::bitset<dim> DGtal::setDimensionsNotIn( const Container &dimensions )
 {
   std::bitset<dim> t1; t1.set();
-  for ( typename Container::const_iterator it=dimensions.begin(); 
+  for ( typename Container::const_iterator it=dimensions.begin();
   it!=dimensions.end(); ++it )
     {
       ASSERT( *it<dim );
@@ -249,7 +249,7 @@ DGtal::PointVector<dim, TComponent>::at ( Dimension i ) const
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
-inline 
+inline
 typename DGtal::PointVector<dim, TComponent>::Component &
 DGtal::PointVector<dim, TComponent>::at( Dimension i )
 {
@@ -267,7 +267,7 @@ DGtal::PointVector<dim, TComponent>::operator[]( Dimension i ) const
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
-inline 
+inline
 typename DGtal::PointVector<dim, TComponent>::Component &
 DGtal::PointVector<dim, TComponent>::operator[]( Dimension i )
 {
@@ -501,19 +501,19 @@ DGtal::PointVector<dim,TComponent>::operator/ ( const Self& v ) const
 //------------------------------------------------------------------------------
 template<Dimension dim,typename TComponent>
 inline
-DGtal::PointVector<dim,TComponent> & 
+DGtal::PointVector<dim,TComponent> &
 DGtal::PointVector<dim,TComponent>::operator/= ( const Component coeff )
 {
   for ( Dimension i = 0; i < dimension; ++i )
     this->myArray[ i ] /= coeff;
   return *this;
 }
-   
+
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Component
-DGtal::PointVector<dim, TComponent>::dot( const Self& v ) const 
+DGtal::PointVector<dim, TComponent>::dot( const Self& v ) const
 {
   Component dotprod= NumberTraits<Component>::ZERO;
   for ( Dimension i = 0; i < dim; ++i )
@@ -595,7 +595,7 @@ DGtal::PointVector<dim, TComponent>::min( ) const
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Iterator
-DGtal::PointVector<dim, TComponent>::maxElement(  ) 
+DGtal::PointVector<dim, TComponent>::maxElement(  )
 {
   return  std::max_element(this->begin(), this->end());
 }
@@ -603,7 +603,7 @@ DGtal::PointVector<dim, TComponent>::maxElement(  )
 template<Dimension dim, typename TComponent>
 inline
 typename DGtal::PointVector<dim, TComponent>::Iterator
-DGtal::PointVector<dim, TComponent>::minElement( ) 
+DGtal::PointVector<dim, TComponent>::minElement( )
 {
   return  std::min_element(this->begin(), this->end());
 }
@@ -631,7 +631,7 @@ DGtal::PointVector<dim, TComponent>::norm (const
         tmp += fabs (  NumberTraits<Component>::castToDouble(at( i ) ));
       break;
     case L_infty:
-      tmp = NumberTraits<Component>::castToDouble( at( 0 ));
+      tmp = fabs( NumberTraits<Component>::castToDouble( at( 0 )));
       for ( Dimension i = 1; i < dimension; i++ )
         if ( tmp < fabs ( NumberTraits<Component>::castToDouble(at ( i ) ) ))
           tmp = fabs ( NumberTraits<Component>::castToDouble(at ( i ) ));
@@ -649,8 +649,8 @@ DGtal::PointVector<dim, TComponent>::norm1() const
   UnsignedComponent val
     ( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : UnsignedComponent(-myArray[ 0 ]) );
   for ( Dimension i = 1; i < dimension; ++i )
-    val += ( myArray[ i ] >= 0 ) 
-      ? myArray[ i ] 
+    val += ( myArray[ i ] >= 0 )
+      ? myArray[ i ]
       : UnsignedComponent(-myArray[ i ]);
   return val;
 }
@@ -661,11 +661,11 @@ typename DGtal::PointVector<dim, TComponent>::UnsignedComponent
 DGtal::PointVector<dim, TComponent>::normInfinity() const
 {
   ASSERT ( dimension > 0 );
+  UnsignedComponent tmp;
   UnsignedComponent val( ( myArray[ 0 ] >= 0 ) ? myArray[ 0 ] : -myArray[ 0 ] );
   for ( Dimension i = 1; i < dimension; ++i )
     {
-      UnsignedComponent tmp( ( myArray[ i ] >= 0 )
-           ? myArray[ i ] : -myArray[ i ] );
+      tmp =  ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ] ;
       if ( tmp > val )
   val = tmp;
     }
@@ -706,7 +706,7 @@ DGtal::PointVector<dim,TComponent>::base( Dimension k, Component val )
 //------------------------------------------------------------------------------
 template<Dimension dim,typename TComponent>
 inline
-void 
+void
 DGtal::PointVector<dim,TComponent>::selfDisplay( std::ostream & out ) const
 {
   out << "[PointVector] {";

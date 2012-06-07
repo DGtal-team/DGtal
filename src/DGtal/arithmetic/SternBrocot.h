@@ -500,7 +500,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/SternBrocot.ih"
+#include "DGtal/arithmetic/SternBrocot.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

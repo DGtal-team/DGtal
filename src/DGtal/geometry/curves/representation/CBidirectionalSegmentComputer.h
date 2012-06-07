@@ -103,7 +103,9 @@ Description of \b concept '\b CBidirectionalSegmentComputer' <p>
  ### Invariants###
     
  ### Models###
-    
+
+   ArithmeticalDSS3d, GeometricalDSS, GeometricalDCA    
+
  ### Notes###
 
 @tparam T the type that should be a model of CBidirectionalSegmentComputer.
