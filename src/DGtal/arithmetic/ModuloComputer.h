@@ -217,7 +217,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/ModuloComputer.ih"
+#include "DGtal/arithmetic/ModuloComputer.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
