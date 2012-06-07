@@ -213,7 +213,7 @@ node in the Stern-Brocot tree. Looking for a reduced partial is just moving
 from node to node.
 
 @code
-#include "DGtal/math/arithmetic/SternBrocot.h"
+#include "DGtal/arithmetic/SternBrocot.h"
 ...
 typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
 typedef SB::Fraction Fraction;
@@ -274,7 +274,7 @@ lies in the access to the children of a node. Here, a map type M is
    your fractions.
 
 @code
-#include "DGtal/math/arithmetic/LighterSternBrocot.h"
+#include "DGtal/arithmetic/LighterSternBrocot.h"
 ...
 typedef SternBrocot<DGtal::int64_t, DGtal::int32_t, DGtal::StdMapRebinder> SB;
 typedef SB::Fraction Fraction;
@@ -353,16 +353,16 @@ where \f$ p'=p/g, q'=q/g \f$. We follow the example convergents.cpp.
 
 First we give the correct includes:
 
-@snippet math/arithmetic/convergents.cpp convergents-basicIncludes
+@snippet arithmetic/convergents.cpp convergents-basicIncludes
 
 Then the useful types:
 
-@snippet math/arithmetic/convergents.cpp convergents-types
+@snippet arithmetic/convergents.cpp convergents-types
 
 The program is given \e p and \e q in arguments \e argv. The fraction is
 instantiated as follows:
 
-@snippet math/arithmetic/convergents.cpp convergents-instantiation
+@snippet arithmetic/convergents.cpp convergents-instantiation
 
 \subsection dgtal_irrfrac_sec3_3 Obtaining quotients
 
@@ -373,7 +373,7 @@ advise you to store the begin() iterator in a variable. Then, all other
 operations with iterators (copy, displacement, comparison, dereferenciation) are O(1).
 We display the quotients of the fraction \e f as follows.
 
-@snippet math/arithmetic/convergents.cpp convergents-cfrac
+@snippet arithmetic/convergents.cpp convergents-cfrac
 
 \note The iterator value is the pair \f$ (u_i,i) \f$ where \f$ 0 \le i \le k \f$ 
 and \e k is the depth of the fraction. The type is therefore a \c std::pair<Size,Size>.
@@ -385,14 +385,14 @@ One way of obtaining all the convergents of a fraction is simply to create the f
 progressively by adding quotients one at a time. You may use the methods \c pushBack or \c push_back 
 to do so. This can be done as follows:
 
-@snippet math/arithmetic/convergents.cpp convergents-convergents
+@snippet arithmetic/convergents.cpp convergents-convergents
 
 You may now execute this program to get the quotients and the convergents of a 
 given fraction. We give below several examples:
 
 @verbatim
 # A Fibonacci fraction
-$ ./examples/math/arithmetic/convergents 21 34
+$ ./examples/arithmetic/convergents 21 34
 z = [0,1,1,1,1,1,1,2]
 z_0 = 0 / 1
 z_1 = 1 / 1
@@ -404,7 +404,7 @@ z_6 = 8 / 13
 z_7 = 21 / 34
 
 # Approximations of pi
-$ ./examples/math/arithmetic/convergents 103993 33102
+$ ./examples/arithmetic/convergents 103993 33102
 z = [3,7,15,1,292]
 z_0 = 3 / 1
 z_1 = 22 / 7
@@ -413,7 +413,7 @@ z_3 = 355 / 113
 z_4 = 103993 / 33102
 
 # A huge fraction
-$ ./examples/math/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
+$ ./examples/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
 z = [0,17,1,3,1,1,12,1,2,33,2,1,1,1,1,49,1,1,1,1,17,34,1,1,304,1,2,1,1,1,2,1,48,1,20,2,3,5,1,1,16,9,1,1,5,1,2,2,7,4,3,1,7,1,1,17,1,1,29,1,12,2,5]
 z_0 = 0 / 1
 z_1 = 1 / 17
@@ -436,13 +436,13 @@ for computing a fraction from its quotients looks like:
 
 @see fraction.cpp
 
-@snippet math/arithmetic/fraction.cpp fraction-from-quotients
+@snippet arithmetic/fraction.cpp fraction-from-quotients
 
 which gives
 
 @verbatim
 # More precise approximation of pi
-$ ./examples/math/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
+$ ./examples/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
 z = 80143857 / 25510582
 @endverbatim
 
@@ -500,7 +500,7 @@ successive \f$ \lfloor x \rfloor \f$ gives the successive quotients of
 the rational approximation. You may have a look at example
 approximation.cpp.
 
-@snippet math/arithmetic/approximation.cpp approximation-process
+@snippet arithmetic/approximation.cpp approximation-process
 
 
 \subsection dgtal_irrfrac_sec3_9 Standard arithmetic operations '+', '-', '*', '/'
@@ -524,7 +524,7 @@ development.
 
 @verbatim
 # Approximations of pi
-$ ./examples/math/arithmetic/convergents 103993 33102
+$ ./examples/arithmetic/convergents 103993 33102
 z = [3,7,15,1,292]
 z_0 = 3 / 1
 z_1 = 22 / 7
@@ -533,7 +533,7 @@ z_3 = 355 / 113
 z_4 = 103993 / 33102
 @endverbatim
 
-\example math/arithmetic/convergents.cpp
+\example arithmetic/convergents.cpp
 */
 
 /**
@@ -545,7 +545,7 @@ z_4 = 103993 / 33102
 
 @verbatim
 # A huge fraction
-$ ./examples/math/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
+$ ./examples/arithmetic/convergents-biginteger 243224233245235253407096734543059 4324213412343432913758138673203834
 z = [0,17,1,3,1,1,12,1,2,33,2,1,1,1,1,49,1,1,1,1,17,34,1,1,304,1,2,1,1,1,2,1,48,1,20,2,3,5,1,1,16,9,1,1,5,1,2,2,7,4,3,1,7,1,1,17,1,1,29,1,12,2,5]
 z_0 = 0 / 1
 z_1 = 1 / 17
@@ -560,7 +560,7 @@ z_40 = 832739221613445323225 / 14805030169237188131024
 z_62 = 243224233245235253407096734543059 / 4324213412343432913758138673203834
 @endverbatim
 
-\example math/arithmetic/convergents-biginteger.cpp
+\example arithmetic/convergents-biginteger.cpp
 */
 
 /**
@@ -570,11 +570,11 @@ z_62 = 243224233245235253407096734543059 / 4324213412343432913758138673203834
 
 @verbatim
 # More precise approximation of pi
-$ ./examples/math/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
+$ ./examples/arithmetic/fraction 3 7 15 1 292 1 1 1 2 1 3 1 14
 z = 80143857 / 25510582
 @endverbatim
 
-\example math/arithmetic/fraction.cpp
+\example arithmetic/fraction.cpp
 */
 
 /**
@@ -583,19 +583,19 @@ z = 80143857 / 25510582
 @see \ref dgtal_irrfrac_sec3_8
 
 @verbatim
-$ ./examples/math/arithmetic/approximation 1.33333333333333
+$ ./examples/arithmetic/approximation 1.33333333333333
 z = 1 / 1 =~ 1
 z = 4 / 3 =~ 1.333333333333333
 z = 4 / 3
 
-$./examples/math/arithmetic/approximation 1.33333333333338
+$./examples/arithmetic/approximation 1.33333333333338
 z = 1 / 1 =~ 1
 z = 3 / 2 =~ 1.5
 z = 4 / 3 =~ 1.333333333333333
 z = 9523805234895 / 7142853926171 =~ 1.33333333333338
 z = 9523805234895 / 7142853926171
 
-$ ./examples/math/arithmetic/approximation 3.141592654 
+$ ./examples/arithmetic/approximation 3.141592654 
 z = 3 / 1 =~ 3
 z = 22 / 7 =~ 3.142857142857143
 z = 333 / 106 =~ 3.141509433962264
@@ -609,7 +609,7 @@ z = 38515772 / 12259951 =~ 3.141592654000004
 z = 38515772 / 12259951
 @endverbatim
 
-\example math/arithmetic/approximation.cpp
+\example arithmetic/approximation.cpp
 */
 
 }
