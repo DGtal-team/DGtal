@@ -862,7 +862,6 @@ void drawAsGrid( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.setPenColor(Color::Black);
   board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
        (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
 }

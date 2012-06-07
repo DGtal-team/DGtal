@@ -7,7 +7,7 @@ namespace DGtal {
   /**
 
 @page dgtal_dgtalboard Board2D: a stream mechanism for displaying 2D digital objects
-@writers Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola.
+@authors Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola.
 
 This part of the manual describes how to export DGtal objects
 into graphics files (and later buffers). For now, it is limited

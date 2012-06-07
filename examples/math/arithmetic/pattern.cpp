@@ -18,8 +18,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include "DGtal/math/arithmetic/LighterSternBrocot.h"
-#include "DGtal/math/arithmetic/Pattern.h"
+#include "DGtal/arithmetic/LighterSternBrocot.h"
+#include "DGtal/arithmetic/Pattern.h"
 //! [pattern-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////

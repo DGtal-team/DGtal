@@ -54,21 +54,18 @@ namespace DGtal
   /**
 Description of \b concept '\b CSegment' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing a segment of a range,
-    ie. a valid and not empty subrange.
+     @brief Aim: Defines the concept describing a segment,
+    ie. a valid and not empty range.
 
  ### Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>, boost::EqualityComparable<T>
 
  ### Associated types :
-    - Self, the type itself
     - ConstIterator, the type used to iterate over the
-    elements of the segment
+    elements of the segment, a model of bidirectional iterator
 
  ### Notation
      - \t X : A type that is a model of CSegment
      - \t x, \t y : object of type X
-
- ### Definitions
 
  ### Valid expressions and semantics
      <table>
@@ -102,25 +99,26 @@ Description of \b concept '\b CSegment' <p>
         <td class=CPostCondition>       </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
-       <tr> 
-        <td class=CName> getSelf method  </td> 
-        <td class=CExpression> x.getSelf()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> Self   </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity> depends on the internal structures defined in Self </td>
-      </tr>
 
      </table>
 
  ### Invariants###
-     The range [x.begin(),x.end()) is valid and not empty
+     The range [x.begin(),x.end()) is valid (x.end() is reachable from x.begin())
+     and not empty (x.begin() != x.end()).
 
  ### Models###
 
  ### Notes###
+
+A class of segments @f$ \Sigma_P @f$ is a set of segments 
+such that for each segment of the set, 
+a given predicate @f$ P @f$ is true: 
+@f$ \forall s \in \Sigma_P,  P(s) = \text{true} @f$.
+
+Segment computers, which refines CSegment, are segment
+that can control their own extension so that a given 
+predicate remains true. 
+
 
 @tparam T the type that should be a model of CSegment.
    */
@@ -130,7 +128,6 @@ Description of \b concept '\b CSegment' <p>
     // ----------------------- Concept checks ------------------------------
   public:
     // Inner types
-    typedef typename T::Self Self;
     typedef typename T::ConstIterator ConstIterator;
     //Uncomment if all iterators have been cleaned
     //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<T> ));
@@ -139,10 +136,7 @@ Description of \b concept '\b CSegment' <p>
     BOOST_CONCEPT_USAGE( CSegment )
     {
       ConceptUtils::sameType( it, myX.begin() );
-      ConceptUtils::sameType( it, myX.end() );
-      
-      ConceptUtils::sameType( myX, myX.getSelf() );
-      
+      ConceptUtils::sameType( it, myX.end() );      
     }
     // ------------------------- Private Datas --------------------------------
   private:
