@@ -9,6 +9,3 @@ FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   target_link_libraries (${FILE} DGtal DGtalIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
-
-
-add_subdirectory(arithmetic)
