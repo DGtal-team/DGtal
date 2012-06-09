@@ -54,29 +54,29 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class IntegerComputer
   /**
-     Description of template class 'IntegerComputer' <p> \brief Aim:
-     This class gathers several types and methods to make computation
-     with integers.
+Description of template class 'IntegerComputer' <p> \brief Aim:
+This class gathers several types and methods to make computation
+with integers.
 
-     This class is especially useful with using big integers (like
-     GMP), since a substantial part of the execution time cames from
-     the allocation/desallocation of integers. The idea is that the
-     user instantiate once this object and computes gcd, bezout,
-     continued fractions with it.
+This class is especially useful with using big integers (like
+GMP), since a substantial part of the execution time cames from
+the allocation/desallocation of integers. The idea is that the
+user instantiate once this object and computes gcd, bezout,
+continued fractions with it.
 
-     To be thread-safe, each thread \b must instantiate an
-     IntegerComputer.
+To be thread-safe, each thread \b must instantiate an
+IntegerComputer.
 
-     It is a model of boost::CopyConstructible,
-     boost::DefaultConstructible, boost::Assignable. All its member data are
-     \b mutable.
+It is a model of boost::CopyConstructible,
+boost::DefaultConstructible, boost::Assignable. All its member data are
+\b mutable.
 
-     It is a backport of <a
-     href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+It is a backport of <a
+href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
 
-     @tparam TInteger any model of integer, like \c int, \c long int,
-     \c int64_t, \c BigInteger (when GMP is installed).
-xs   
+@tparam TInteger any model of integer (CInteger), like \c int, \c long int,
+\c int64_t, \c BigInteger (when GMP is installed).
+   
    */
   template <typename TInteger>
   class IntegerComputer
