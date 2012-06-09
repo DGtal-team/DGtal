@@ -113,7 +113,7 @@ Description of \b concept '\b CSegment' <p>
 A class of segments @f$ \Sigma_P @f$ is a set of segments 
 such that for each segment of the set, 
 a given predicate @f$ P @f$ is true: 
-@f$ \forall s \in \Sigma_P,  P(s) = \text{true} @f$.
+@f$ \forall s \in \Sigma_P,  P(s) = \textrm{true} @f$.
 
 Segment computers, which refines CSegment, are segment
 that can control their own extension so that a given 
