@@ -40,7 +40,7 @@
  #include "DGtal/io/viewers/Viewer3D.h"
  #include "DGtal/topology/SetOfSurfels.h"
  #include "DGtal/io/colormaps/GradientColorMap.h"
-
+#include "DGtal/topology/SCellsFunctors.h"
 ///////////////////////////////////////////////////////////////////////////////
 
  using namespace std;
@@ -122,9 +122,14 @@
 
 //----------------------------------------------------------------------- Drawing the ball  && giving a color to the surfels( depending on the curvature)
   unsigned int nbSurfels = 0;
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); it != it_end; ++it, ++nbSurfels )
+  SCellToMidPoint<KSpace> midpoint(K);
+
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), 
+	  it_end = theSetOfSurfels.end(); 
+	it != it_end; ++it, ++nbSurfels )
   {
-    RealPoint A((double)(*it).myCoordinates[0],(double)(*it).myCoordinates[1],(double)(*it).myCoordinates[0]);
+    RealPoint A = midpoint( *it );
+
     DGtal::StarShaped3D<Space>::AngularCoordinates  Angles= ball1.parameter(A);
     double curvature =ball1.meanCurvature(Angles);
     viewer <<   CustomColors3D( Color::Black, cmap_grad( curvature));

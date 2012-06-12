@@ -27,20 +27,20 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
- #include <QtGui/QApplication>
- #include "DGtal/shapes/parametric/Ball3D.h"
- #include "DGtal/helpers/StdDefs.h"
- #include <iostream>
- #include "DGtal/shapes/GaussDigitizer.h"
- #include "DGtal/io/Color.h"
- #include "DGtal/kernel/sets/SetPredicate.h"
- #include "DGtal/topology/SurfelAdjacency.h"
- #include "DGtal/topology/DigitalSurface.h"
- #include "DGtal/topology/helpers/BoundaryPredicate.h"
- #include "DGtal/io/viewers/Viewer3D.h"
- #include "DGtal/topology/SetOfSurfels.h"
- #include "DGtal/io/colormaps/GradientColorMap.h"
-
+#include <QtGui/QApplication>
+#include "DGtal/shapes/parametric/Ball3D.h"
+#include "DGtal/helpers/StdDefs.h"
+#include <iostream>
+#include "DGtal/shapes/GaussDigitizer.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/helpers/BoundaryPredicate.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/topology/SetOfSurfels.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/topology/SCellsFunctors.h"
 ///////////////////////////////////////////////////////////////////////////////
 
  using namespace std;
@@ -111,18 +111,27 @@
 
 
 
-//----------------------------------------------------------------------- Specifing a color map
+//-----------------------------------------------------------------------
+//Specifing a color map
+
   GradientColorMap<double> cmap_grad( 10, 20 );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
 
-//----------------------------------------------------------------------- Drawing the ball  && giving a color to the surfels( depending on the curvature)
+//-----------------------------------------------------------------------
+//Drawing the ball  && giving a color to the surfels( depending on the
+//curvature)
+
   unsigned int nbSurfels = 0;
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); it != it_end; ++it, ++nbSurfels )
+  SCellToMidPoint<KSpace> midpoint(K);
+
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
+	it != it_end; ++it, ++nbSurfels )
   {
-    RealPoint A((double)(*it).myCoordinates[0],(double)(*it).myCoordinates[1],(double)(*it).myCoordinates[0]);
+    RealPoint A = midpoint( *it );
+
     DGtal::StarShaped3D<Space>::AngularCoordinates  Angles= ball1.parameter(A);
     double curvature =ball1.meanCurvature(Angles);
     viewer <<   CustomColors3D( Color::Black, cmap_grad( curvature));
