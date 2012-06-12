@@ -76,7 +76,7 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
     typedef  pair<double,double> AngularCoordinates;
      
-   /**
+    /**
      * Constructor.
      */
     StarShaped3D()
@@ -100,36 +100,23 @@ namespace DGtal
     // ------------------------- Abstract services ----------------------------
   public:
 
-
-
     /**
      * @return the lower bound of the shape bounding box.
      *
      */
     virtual RealPoint getLowerBound() const = 0;
     
-
-
-
-
     /**
      * @return the upper bound of the shape bounding box.
      *
      */
     virtual RealPoint getUpperBound() const = 0;
-    
-
-
-
 
     /**
      * @return the center of the star-shaped object.
      */
     virtual RealPoint center() const = 0;
     
-
-
-
     /**
      * @param p any point in the sapce.
      *
@@ -138,32 +125,26 @@ namespace DGtal
      */
     virtual AngularCoordinates parameter( const RealPoint & p ) const = 0;
 
-
-
-
-
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t is a couple of Theta && Phi wich are 2 angles
+     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]. 
      *
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
      */
     virtual RealPoint x( const AngularCoordinates t ) const = 0;
 
-
-
-
-
-
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (gradf(M).
      */
     virtual RealPoint gradient( const AngularCoordinates t) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
      */
@@ -172,7 +153,8 @@ namespace DGtal
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
      */
@@ -180,25 +162,31 @@ namespace DGtal
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rtt(M)) wich is second the partial derivative with respect to Teta(twice).
+     * @return the vector (rtt(M)) wich is second the partial
+     * derivative with respect to Teta(twice).
      */
     virtual RealPoint rtt( const AngularCoordinates t) const = 0;
 
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial derivative with respect to Phi.
+     * @return the vector (rpp(M)) wich is second the partial
+     * derivative with respect to Phi.
      */
     virtual RealPoint rpp( const AngularCoordinates t) const = 0;
 
         /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial derivative with respect to Teta then Phi.
+     * @return the vector (rpp(M)) wich is second the partial
+     * derivative with respect to Teta then Phi.
      */
     virtual RealPoint rtp( const AngularCoordinates t) const = 0;
 
@@ -231,10 +219,11 @@ namespace DGtal
     
  /*   
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t is a couple of Teta && Phi wich are 2 angles
+    respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (x'(t),y'(t),z'(t)) made unitary which is the unit
-     * tangent to the shape boundary.  
+     * @return the vector (x'(t),y'(t),z'(t)) made unitary which is
+     * the unit tangent to the shape boundary.  
      */
 /*    
    virtual  RealPoint tangent( AngularCoordinates t ) const;
@@ -244,7 +233,8 @@ namespace DGtal
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
      *
      * @return the vector normal made unitary which is the unit
      * normal to the shape boundary looking inside the shape.  
@@ -252,7 +242,8 @@ namespace DGtal
     virtual RealPoint normal( AngularCoordinates t ) const;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
      *
      * @return the gaussian curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -262,7 +253,8 @@ namespace DGtal
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi] 
+     * @param t is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi] 
      *
      * @return the mean curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -272,21 +264,33 @@ namespace DGtal
 
 
     /**
-     * @param t1 is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
-     * @param t2 is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].  further from [t1].
-     * @param nb the number of points used to estimate the arclength between x(Teta1,Phi1) and x(Teta2,Phi2).
+     * @param t1 is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t2 is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].  further from
+     * [t1].
+     * @param nb the number of points used to estimate the arclength
+     * between x(Teta1,Phi1) and x(Teta2,Phi2).
      * @return the estimated arclength.
      */
-    virtual double arclength( AngularCoordinates t1, AngularCoordinates t2, unsigned int nb ) const;
+    virtual double arclength( AngularCoordinates t1, 
+			      AngularCoordinates t2, 
+			      unsigned int nb ) const;
 
 
     /**
-     * @param t1 is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
-     * @param t2 is a couple of Teta && Phi wich are 2 angles respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].  further from [t1].
-     * @param nb the number of points used to estimate the surface between x(Teta1,Phi1) and x(Teta2,Phi2).
+     * @param t1 is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi]. 
+     * @param t2 is a couple of Teta && Phi wich are 2 angles
+     * respectivly  between [-Pi/2,Pi/2) and [-Pi,Pi].  further from
+     * [t1].
+     * @param nb the number of points used to estimate the surface
+     * between x(Teta1,Phi1) and x(Teta2,Phi2).
      * @return the estimated surfacelength.
      */
-    virtual double surfacelength( AngularCoordinates t1, AngularCoordinates t2, unsigned int nb ) const;
+    virtual double surfacelength( AngularCoordinates t1, 
+				  AngularCoordinates t2, 
+				  unsigned int nb ) const;
 
 
 
@@ -321,14 +325,7 @@ namespace DGtal
 
   private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    //StarShaped3D ( const StarShaped3D & other );
-
-    /**
+     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.

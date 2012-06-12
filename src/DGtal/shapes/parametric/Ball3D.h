@@ -107,7 +107,9 @@ namespace DGtal
     RealPoint getLowerBound() const
     {
 
-      return RealPoint(myCenter[0] - myRadius, myCenter[1] - myRadius , myCenter[2] - myRadius  );
+      return RealPoint(myCenter[0] - myRadius, 
+		       myCenter[1] - myRadius , 
+		       myCenter[2] - myRadius  );
     }
 
     /**
@@ -116,7 +118,9 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return RealPoint(myCenter[0] + myRadius , myCenter[1] + myRadius, myCenter[2] + myRadius);
+      return RealPoint(myCenter[0] + myRadius , 
+		       myCenter[1] + myRadius, 
+		       myCenter[2] + myRadius);
     }
 
     /**
@@ -130,7 +134,8 @@ namespace DGtal
     /**
      * @param p any point in the space.
      *
-     * @return the couple of angles parameters Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
+     * @return the couple of angles parameters Teta && Phi wich are
+     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
      * this point for the shape.
      */
     AngularCoordinates parameter( const RealPoint & p ) const;
