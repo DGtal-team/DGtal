@@ -32,6 +32,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/io/Display2DFactory.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -127,7 +128,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
   trace.info() << "  [draw]";
 #endif
 
-  draw(*this, object);
+  DGtal::Display2DFactory::draw(*this, object);
 #ifdef DEBUG_VERBOSE
   std::cerr << std::endl;
 #endif
