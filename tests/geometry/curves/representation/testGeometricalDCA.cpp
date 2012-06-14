@@ -45,7 +45,6 @@
 
 //Segment computer and DCA
 #include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
-#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "DGtal/geometry/curves/representation/GeometricalDCA.h"
 
@@ -53,6 +52,9 @@
 #include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 #include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
+//boards
+#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "ConfigTest.h"
 
