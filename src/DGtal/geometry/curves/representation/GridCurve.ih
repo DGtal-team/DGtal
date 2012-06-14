@@ -244,7 +244,7 @@ DGtal::GridCurve<TKSpace>::initFromSCellsRange( const TIterator& itb, const TIte
 	    { //disconnected !
 	      throw ConnectivityException(); 
 	    }
-	  if ( isInside( currentSCell ) ) 
+	  if ( ! isInside( currentSCell ) ) 
 	    { //out of space !
 	      throw InputException(); 
 	    }
@@ -383,8 +383,7 @@ DGtal::GridCurve<TKSpace>::size() const
 {
   return mySCells.size(); 
 }
-//------------------------------------------------------------------------------
-// ---------------- DISPLAY ----------------------------------------------------
+
 //------------------------------------------------------------------------------
 
 template <typename TKSpace>
@@ -398,15 +397,7 @@ DGtal::GridCurve<TKSpace>::selfDisplay ( std::ostream & out ) const
   }
   out << std::endl; 
 }
-//------------------------------------------------------------------------------
 
-template <typename TKSpace>
-inline
-DGtal::DrawableWithBoard2D*
-DGtal::GridCurve<TKSpace>::defaultStyle( std::string /*mode*/ ) const
-{
-  return new DrawableWithBoard2D; 
-}
 //------------------------------------------------------------------------------
 template <typename TKSpace>
 inline
@@ -415,16 +406,7 @@ DGtal::GridCurve<TKSpace>::className() const
 {
   return "GridCurve";
 }
-//------------------------------------------------------------------------------
-template <typename TKSpace>
-inline
-void 
-DGtal::GridCurve<TKSpace>::selfDraw(Board2D & aBoard) const
-{
-  for(unsigned int i=0; i< mySCells.size(); i++){
-    aBoard << mySCells.at(i);
-  }
-}
+
 
 
 
