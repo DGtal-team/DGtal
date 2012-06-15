@@ -39,8 +39,8 @@ options "Set up Git", "Create a Repo", "Fork a Repo" and "Be Social"
 
 Github documentation is quite straightforward (see help/set up git in the Github web site). 
 
-In order to be to establish a secure connection between your computer and github servers, 
-in order to be able to "push" changes to github servers, two methods are available:
+In order to be to establish a secure connection between your computer and github servers
+and to be able to "push" changes to github servers, two methods are available:
 the SSH method or the HTTPS method, which is now recommended.  
 
 Note that in the HTTPS method, URLs look like "https://github.com/yourlogin/DGtal.git",
