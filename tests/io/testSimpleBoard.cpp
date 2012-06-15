@@ -80,7 +80,7 @@ bool testSimpleBoard()
   board << apoint;
 
   board.setPenColorRGBi( 255, 0, 0 );
-  draw(board, apoint, p2);
+  Display2DFactory::draw(board, apoint, p2);
 
   board.scale(10);
 
@@ -121,7 +121,7 @@ bool testDomain()
 
     PointVector<3,int> pl;
     //An assert should be raised 
-    //draw(b2, pl);
+    //Display2DFactory::draw(b2, pl);
 
     return true;
 }

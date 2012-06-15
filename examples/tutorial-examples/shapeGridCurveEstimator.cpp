@@ -147,9 +147,9 @@ int main()
     ::track2DBoundaryPoints( boundaryPoints, ks, sAdj, dig, bel );
   //reset grid curve and its points range
   c.initFromVector( boundaryPoints );
-  r = c.getPointsRange(); 
+  Range r2 = c.getPointsRange(); 
   //estimate length
-  DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
+  DSSlength.init( h, r2.begin(), r2.end(), c.isClosed() );
   double length2 = DSSlength.eval();
   trace.info() << "Length (h=" << h << "): " << length2 << endl;  
   //! [shapeGridCurveEstimator-higher]

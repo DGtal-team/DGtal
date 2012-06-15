@@ -35,13 +35,14 @@
 #include "DGtal/geometry/curves/representation/GridCurve.h"
 
 #include "DGtal/geometry/curves/representation/CBidirectionalSegmentComputer.h"
-#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "DGtal/geometry/curves/representation/GeometricalDSS.h"
 
 #include "DGtal/geometry/curves/representation/GreedySegmentation.h"
 #include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
 
+#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 #include "ConfigTest.h"
 
