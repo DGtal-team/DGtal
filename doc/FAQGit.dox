@@ -225,8 +225,7 @@ And you can also remove the associated remote branch
 @code
 git push origin :cool-feature
 @endcode
-
-8- Note that is you have two local branch: cool-feature and cool-feature-trying-something 
+  
 
 \section sectGITCommands Useful git commands
 
