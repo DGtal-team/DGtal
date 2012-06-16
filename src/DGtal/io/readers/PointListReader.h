@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h" 
+#include "DGtal/geometry/curves/FreemanChain.h" 
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

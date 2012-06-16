@@ -50,8 +50,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/representation/GreedyDecomposition.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/GreedyDecomposition.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

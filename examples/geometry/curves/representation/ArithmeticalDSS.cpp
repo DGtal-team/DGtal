@@ -34,8 +34,8 @@
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
