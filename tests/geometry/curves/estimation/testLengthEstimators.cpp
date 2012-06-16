@@ -63,6 +63,7 @@
 
 #include "ConfigTest.h"
 
+#include "DGtal/io/boards/Board2D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -245,34 +246,34 @@ bool testDisplay(double radius, double h)
     
     board.clear();
     board << domain;
-    
-    for( PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
-         it != ite; ++it)
-      board << (*it);
+    board << rp; 
+    // for( PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
+    //      it != ite; ++it)
+    //   board << (*it);
     board.saveSVG( "Ranges-Points.svg" );
     
 
     board.clear();
     board << domain;
-    
-    for( SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
-         it != ite; ++it)
-      board << (*it);
+    board << rc; 
+    // for( SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
+    //      it != ite; ++it)
+    //   board << (*it);
     board.saveSVG( "Ranges-SCells.svg" );
     
 
     board.clear();
     board << domain;
-    Z2i::Space::Vector shift;
-    board.setPenColor( Color::Black );
-    for(  ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
-          it != itend;   
-          ++it)
-      {
-        shift =   (*it).second ;
-        draw(board, shift, (*it).first );
-      }
-
+    board << ra; 
+    // Z2i::Space::Vector shift;
+    // board.setPenColor( Color::Black );
+    // for(  ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
+    //       it != itend;   
+    //       ++it)
+    //   {
+    //     shift =   (*it).second ;
+    //     draw(board, shift, (*it).first );
+    //   }
     board.saveSVG( "Ranges-Arrows.svg" );
 
   }    

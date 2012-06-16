@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -38,6 +39,7 @@
 
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 
 #include "ConfigExamples.h"

@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"

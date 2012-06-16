@@ -76,7 +76,7 @@ int main()
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
   aBoard.clear();
-  drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
+  Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
   aBoard.saveEPS("imageDomainTuto2.eps");
   //! [ImageSetDT-board1]
 
@@ -108,7 +108,7 @@ int main()
   typedef DGtal::HueShadeColorMap<OutputImage::Value,2> HueTwice;
 
   aBoard.clear();
-  drawImage<HueTwice>(aBoard, result, (OutputImage::Value)0, (OutputImage::Value)maxDT);
+  Display2DFactory::drawImage<HueTwice>(aBoard, result, (OutputImage::Value)0, (OutputImage::Value)maxDT);
   aBoard.saveEPS("imageDomainTuto3.eps");
   //! [ImageSetDT-DTvis]
 
