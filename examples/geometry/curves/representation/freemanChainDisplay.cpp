@@ -38,7 +38,7 @@
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/BasicTypes.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/io/readers/MagickReader.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
