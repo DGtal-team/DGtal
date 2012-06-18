@@ -59,7 +59,7 @@
 #include "DGtal/io/boards/Board2D.h"
 
 //segmentation
-#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
