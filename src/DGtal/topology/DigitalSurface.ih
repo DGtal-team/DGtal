@@ -679,7 +679,7 @@ exportEmbeddedSurfaceAs3DNOFF
   BOOST_CONCEPT_ASSERT(( CWithGradientMap< CellEmbedder > ));
 
   typedef typename CellEmbedder::GradientMap GradientMap;
-  typedef typename CellEmbedder::Cell Cell;
+  typedef typename CellEmbedder::Cell MyCell;
   typedef typename CellEmbedder::RealPoint RealPoint;
   typedef typename CellEmbedder::RealVector RealVector;
   typedef DGtal::uint64_t Number;
@@ -719,7 +719,7 @@ exportEmbeddedSurfaceAs3DNOFF
   for ( ConstIterator it = begin(), it_end = end();
         it != it_end; ++it )
     {
-      Cell c = K.unsigns( *it );
+      MyCell c = K.unsigns( *it );
       p = cembedder( c );
       v = gradMap( c );
       //cembedder.embedSCell( *it, p, v );
@@ -760,7 +760,7 @@ exportAs3DNOFF
   BOOST_CONCEPT_ASSERT(( CWithGradientMap< SCellEmbedderWithGradientMap > ));
 
   typedef typename SCellEmbedderWithGradientMap::GradientMap GradientMap;
-  typedef typename SCellEmbedderWithGradientMap::SCell SCell;
+  typedef typename SCellEmbedderWithGradientMap::SCell MySCell;
   typedef typename SCellEmbedderWithGradientMap::RealPoint RealPoint;
   typedef typename SCellEmbedderWithGradientMap::RealVector RealVector;
   typedef DGtal::uint64_t Number;
@@ -799,7 +799,7 @@ exportAs3DNOFF
   for ( ConstIterator it = begin(), it_end = end();
         it != it_end; ++it )
     {
-      SCell c = *it;
+      MySCell c = *it;
       p = scembedder( c );
       v = gradMap( c );
       //cembedder.embedSCell( *it, p, v );

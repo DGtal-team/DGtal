@@ -24,14 +24,11 @@ ENDIF(MSVC)
 # Remove some MS Visual c++ flags
 #------------------------------------------------------------------------------
 IF(MSVC)
-
   ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
-  
-#------------------------------------------------------------------------------
-# for GMP / MPIR (MT)
-#------------------------------------------------------------------------------
-SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
-
+  #------------------------------------------------------------------------------
+  # for GMP / MPIR (MT)
+  #------------------------------------------------------------------------------
+  SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
 ENDIF(MSVC)
 
 
