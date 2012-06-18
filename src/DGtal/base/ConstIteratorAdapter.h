@@ -96,9 +96,15 @@ namespace DGtal
     /** 
      * Copy operator
      * 
-     * @param other the object to copy.
+     * @param other the object of type Self to copy.
      */
-    ConstIteratorAdapter( const ConstIteratorAdapter& other ): Parent(other) {}
+    ConstIteratorAdapter( const Self& other ): Parent( static_cast<const Parent&>(other) ) {}
+    /** 
+     * Copy operator
+     * 
+     * @param other the object of type Parent to copy.
+     */
+    ConstIteratorAdapter( const Parent& other ): Parent(other) {}
     /** 
      * Assignement operator
      * 
