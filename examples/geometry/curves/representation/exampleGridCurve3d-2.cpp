@@ -49,7 +49,7 @@
 #include "DGtal/kernel/sets/DigitalSetInserter.h"
 #include "DGtal/io/Color.h"
 
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 #include "ConfigExamples.h"
 
