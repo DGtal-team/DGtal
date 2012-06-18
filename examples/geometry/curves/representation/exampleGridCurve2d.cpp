@@ -34,8 +34,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/io/boards/Board2D.h"

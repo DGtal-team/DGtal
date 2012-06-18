@@ -46,14 +46,14 @@
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 //////////////////////////////////////////////////////////////////////////////
 

@@ -57,7 +57,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
