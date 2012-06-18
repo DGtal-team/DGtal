@@ -602,8 +602,90 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
   return myConnectedness;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Graph services ------------------------------
 
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
+{
+  return myPointSet->begin();
+}
 
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
+{
+  return myPointSet->end();
+}
+
+/*template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::size() const
+{
+  return myPointSet->size();
+}*/
+// Already defined !
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
+{
+  return Domain::dimension*2 - 2;  // taken elsewhere, probably wrong
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::degree
+( const Vertex & v ) const
+{
+  return neighborhoodSize( v );
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename OutputIterator>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v ) const
+{
+  SmallObject neighbors = neighborhood( v );
+  for( typename SmallObject::DigitalSet::Iterator n = neighbors.pointSet().begin();
+        n != neighbors.pointSet().end();
+        n++ )
+  {
+    *it++ = n;
+  }
+}
+
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename OutputIterator, typename VertexPredicate>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v,
+                const VertexPredicate & pred ) const
+{
+  //BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
+  SmallObject neighbors = neighborhood( v );
+  Vertex s;
+  for( typename SmallObject::DigitalSet::Iterator n = neighbors.pointSet().begin();
+        n != neighbors.pointSet().end();
+        n++ )
+  {
+    if( pred( s ) ) 
+    {
+      *it++ = s;
+    }
+  }
+}
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Simple points -------------------------------
 

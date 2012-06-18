@@ -47,6 +47,8 @@
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/Topology.h"
+// Added for graph support
+//#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -104,6 +106,18 @@ namespace DGtal
       typedef Object<ReverseTopology, DigitalSet> ComplementObject;
       typedef Object<DigitalTopology, SmallSet> SmallObject;
       typedef Object<ReverseTopology, SmallSet> SmallComplementObject;
+
+      // Added for graph support ...
+      typedef TDigitalSet VertexSet;
+      typedef typename DigitalSet::Point Vertex;
+      // Size already done (typedef typename DigitalSet::Point Point;)
+      //template <typename Value> struct VertexMap {
+      //  /*?*/typedef typename KSpace::template SurfelMap<Value>::Type Type;
+      //};
+      typedef typename DigitalSet::ConstIterator ConstIterator;
+
+      //BOOST_CONCEPT_ASSERT((CUndirectedSimpleLocalGraph<Object>));
+      // ... End added
 
 
       /**
@@ -385,7 +399,29 @@ namespace DGtal
        */
       Connectedness computeConnectedness() const;
 
-
+      // ----------------------- Graph services ------------------------------
+    public:
+      
+      ConstIterator begin() const;
+      
+      ConstIterator end() const;
+      
+      Size degree( const Vertex & v ) const;
+      
+      Size bestCapacity() const;
+      
+      template <typename OutputIterator>
+      void
+      writeNeighbors( OutputIterator &it ,
+                      const Vertex & v ) const;
+      
+      template <typename OutputIterator, typename VertexPredicate>
+      void
+      writeNeighbors( OutputIterator &it ,
+                      const Vertex & v,
+                      const VertexPredicate & pred) const;
+      
+      
       // ----------------------- Simple points -------------------------------
     public:
 
@@ -455,6 +491,7 @@ namespace DGtal
        * Connectedness of this object. Either CONNECTED, DISCONNECTED, or UNKNOWN.
        */
       mutable Connectedness myConnectedness;
+      
 
       // ------------------------- Hidden services ------------------------------
     protected:
