@@ -50,7 +50,7 @@
 //! [shapeGridCurveEstimator-trackingIncludes]
 //tracking grid curve
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 //! [shapeGridCurveEstimator-trackingIncludes]
 
 //! [shapeGridCurveEstimator-estimationIncludes]

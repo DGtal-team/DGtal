@@ -39,7 +39,7 @@
 #include "DGtal/shapes/parametric/Flower2D.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/shapes/CDigitalOrientedShape.h"
 #include "DGtal/shapes/CDigitalBoundedShape.h"
 
