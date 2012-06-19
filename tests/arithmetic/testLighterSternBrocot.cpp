@@ -40,7 +40,7 @@
 #include "DGtal/arithmetic/LighterSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
