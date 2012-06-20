@@ -108,10 +108,19 @@ struct IteratorToCirculatorTagTraits<boost::random_access_traversal_tag> {
 
 //from ConstIteratorAdapter based on boost::transform_iterator
 template <>
+struct IteratorToCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
+    typedef  forward_circulator_tag iterator_category;
+};
+
+template <>
+struct IteratorToCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
+    typedef  bidirectional_circulator_tag iterator_category;
+};
+
+template <>
 struct IteratorToCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
     typedef  random_access_circulator_tag iterator_category;
 };
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -188,6 +197,19 @@ struct IteratorAndCirculatorTagTraits<boost::random_access_traversal_tag> {
     typedef  IteratorType  type;
     typedef  RandomAccessCategory iterator_category;
 };
+
+template <>
+struct IteratorAndCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
+    typedef  IteratorType  type;
+    typedef  ForwardCategory iterator_category;
+};
+
+template <>
+struct IteratorAndCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
+    typedef  IteratorType  type;
+    typedef  BidirectionalCategory iterator_category;
+};
+
 template <>
 struct IteratorAndCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
     typedef  IteratorType  type;
@@ -243,6 +265,74 @@ struct IteratorCirculatorTraits<T const*>
   typedef T const&                   Reference;
 };
 
+
+/////////////////////////////
+namespace detail
+{
+
+  template <typename IC> 
+  struct hasNestedType 
+  {
+    //checking if IC has nested type 'Type'
+    //from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
+    typedef char yes[1]; 
+    typedef char no[2]; 
+    
+    template <typename C>
+    static yes& test(typename C::Type*);
+
+    template <typename C>
+    static no& test(C*);
+
+    static const bool value = sizeof(test<IC>(NULL)) == sizeof(yes); 
+  };
+
+  template <typename IC, bool flagHasNestedType = false> 
+  struct isCirculator 
+  {
+    static const bool value = false; 
+  };
+
+  template <typename IC> 
+  struct isCirculator<IC,true> 
+  {
+    //from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
+    typedef char yes[1]; 
+    typedef char no[2]; 
+    
+    static yes& test(CirculatorType);
+
+    static no& test(IteratorType);
+
+    static const bool value = ( sizeof(test(typename IC::Type())) == sizeof(yes) ); 
+  };
+
+}
+  template <typename IC> 
+  struct isCirculator 
+  {
+    static const bool value = detail::isCirculator<IC, detail::hasNestedType<IC>::value >::value; 
+  };
+
+namespace detail
+{
+  template<bool b = false>
+  struct GetIteratorTypeImpl 
+  {
+    typedef IteratorType Type; 
+  };
+  template<>
+  struct GetIteratorTypeImpl<true> 
+  {
+    typedef CirculatorType Type; 
+  };
+}
+
+template<typename IC>
+struct GetIteratorType {
+public: 
+  typedef typename detail::GetIteratorTypeImpl<isCirculator<IC>::value >::Type Type; 
+};
 
 
 } // namespace DGtal

@@ -61,7 +61,7 @@ namespace detail {
   template< typename IC > 
   inline
   bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
-// does not work with reverse circulator 
+// using isValid method does not work with reverse circulator 
 //(generally speaking adapters of circulators that does not have any isValid method)
 //    return ( ( c1.isValid() ) && ( c2.isValid() ) );  
     IC c; //c is not valid
@@ -73,15 +73,15 @@ namespace detail {
 template< typename IC> 
 inline
 bool isEmpty( const IC& itb, const IC& ite ){
-  return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
+  return !detail::isNotEmpty<IC>( itb, ite, typename GetIteratorType<IC>::Type() );
 }
 
 template< typename IC> 
 inline
 bool isNotEmpty( const IC& itb, const IC& ite ){
-  return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
+  return detail::isNotEmpty<IC>( itb, ite, typename GetIteratorType<IC>::Type() );
 }
-
+  
 } // namespace DGtal
 
 
