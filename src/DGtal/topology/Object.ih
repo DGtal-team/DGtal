@@ -38,7 +38,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/topology/Object.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -635,7 +635,8 @@ inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
 {
-  return topology().kappa();
+  //return adjacency().maxNeighbors();
+  return myTopo->kappa().bestCapacity();
 }
 
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -656,29 +657,6 @@ writeNeighbors( OutputIterator & it,
                 const Vertex & v ) const
 {
   SmallObject neighbors = properNeighborhood( v );
-  
-  //it = neighbors.pointSet().begin();
-  //it = pointSet().end();
-  /*typedef std::vector<Point> Container;
-  typedef typename Container::iterator ContainerIterator;
-  typedef typename DigitalSet::Iterator DigitalSetIterator;
-
-  // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( v, back_ins_it );
-
-  // A neighborhood is small, so is defined the digital object.
-  SmallObject neighA( myTopo, pointSet().domain() );
-  const ContainerIterator it_end( neigh.end() );
-  const DigitalSetIterator not_found( pointSet().end() );
-  SmallSet & neighASet = neighA.pointSet();
-  for ( ContainerIterator cit = neigh.begin();
-      cit != it_end;
-      ++cit )
-    if ( pointSet().find( *cit ) != not_found )
-      //neighASet.insertNew( *cit ); // insertNew is guaranteed by construction.
-      *it++ = *cit;*/
   
   for( typename SmallObject::ConstIterator n = neighbors.begin();
         n != neighbors.end();

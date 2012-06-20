@@ -30,11 +30,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
+#include "DGtal/helpers/StdDefs.h"
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
+
+
 
 using namespace std;
 using namespace DGtal;
@@ -165,6 +168,29 @@ bool testMetricAdjacency()
   return nbok == nb;
 }
 
+
+bool testLocalGraphModel()
+{
+  
+  trace.beginBlock ( "Testing graph model" );
+  unsigned int nbok=0,nb=0;
+  
+  typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
+  
+  
+  nbok += Adj::bestCapacity() == 72 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "Within, bestCapacity : " << Adj::bestCapacity()
+         << "== 72 ?" << std::endl;
+  trace.endBlock();
+
+  
+  
+  return nbok == nb;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -176,7 +202,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMetricAdjacency(); // && ... other tests
+  bool res = testMetricAdjacency() && testLocalGraphModel(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
