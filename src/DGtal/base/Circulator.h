@@ -80,7 +80,8 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-      typedef TIterator                                            Iterator;
+      typedef CirculatorType                                      Type; 
+      typedef TIterator                                           Iterator;
       typedef Circulator<TIterator>                               Self;
 
       typedef typename IteratorToCirculatorTagTraits<

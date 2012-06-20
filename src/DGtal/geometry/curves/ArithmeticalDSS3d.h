@@ -86,7 +86,7 @@ namespace DGtal
     //requiered types
     typedef TIterator ConstIterator;
     typedef ArithmeticalDSS3d<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS3d<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS3d<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
 
 
     //points and vectors
