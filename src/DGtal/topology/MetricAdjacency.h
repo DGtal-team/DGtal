@@ -125,6 +125,13 @@ namespace DGtal
     bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ); 
 
     /**
+     * @return maximum number of neighbors for this adjacency
+     */
+    static
+    typename TSpace::Size bestCapacity();
+    
+    
+    /**
      * Outputs the whole neighborhood of point [p] satisfying the
      * given predicate as a sequence of *out_it++ = ...
      *

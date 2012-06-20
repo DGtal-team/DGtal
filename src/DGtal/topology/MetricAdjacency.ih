@@ -29,13 +29,13 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -60,6 +60,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Adjacency services -----------------------------
+
 
 /**
  * @param p1 any point in this space.
@@ -98,6 +99,41 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
       return ( n1 <= maxNorm1 ) && ( n1 != 0 );
     }
   return false;
+}
+
+/**
+ * @return maximum number of neighbors for this adjacency
+ */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename TSpace::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
+{
+  Dimension result = 0;
+  for( Dimension i = dimension; i > dimension - maxNorm1; i-- )
+  {
+    // factorial defined ? Temporary implementation
+    int m = i - 1;
+    Dimension mFactorial = 1;
+    for( Dimension j = 2; j <= m; j++)
+    {
+      mFactorial *= j;
+    }
+    Dimension nFactorial = 1;
+    for( Dimension j = 2; j <= dimension; j++)
+    {
+      nFactorial *= j;
+    }
+    Dimension n_minus_mFactorial = 1;
+    for( Dimension j = 2; j <= dimension - m; j++)
+    {
+      n_minus_mFactorial *= j;
+    }
+    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
+    result += mDimNeighbors;
+  }
+  
+  return result;
 }
 
 /**
@@ -322,6 +358,13 @@ namespace DGtal {
       return false;
     }
 
+    inline
+    static
+    typename TSpace::Size bestCapacity()
+    {
+      return 8;
+    }
+    
     template <typename OutputIterator>
     inline
     static
@@ -463,6 +506,14 @@ namespace DGtal {
       Vector v( p2 - p1 );
       return v.norm1() == 1;
     }
+    
+    inline
+    static
+    typename TSpace::Size bestCapacity()
+    {
+      return 4;
+    }
+    
 
     template <typename OutputIterator>
     inline
@@ -594,6 +645,13 @@ namespace DGtal {
       return false;
     }
 
+    inline
+    static
+    typename TSpace::Size bestCapacity()
+    {
+      return 26;
+    }
+    
     template <typename OutputIterator>
     inline
     static
@@ -833,6 +891,13 @@ namespace DGtal {
 	}
       return false;
     }
+    
+    inline
+    static
+    typename TSpace::Size bestCapacity()
+    {
+      return 18;
+    }
 
     template <typename OutputIterator>
     inline
@@ -1033,6 +1098,13 @@ namespace DGtal {
 	  return ( n1 == 1 );
 	}
       return false;
+    }
+    
+    inline
+    static
+    typename TSpace::Size bestCapacity()
+    {
+      return 6;
     }
 
     template <typename OutputIterator>

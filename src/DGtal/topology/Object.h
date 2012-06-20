@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <string>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -111,12 +112,11 @@ namespace DGtal
       typedef TDigitalSet VertexSet;
       typedef typename DigitalSet::Point Vertex;
       // Size already done (typedef typename DigitalSet::Point Point;)
-      //template <typename Value> struct VertexMap {
-      //  /*?*/typedef typename KSpace::template SurfelMap<Value>::Type Type;
-      //};
+      template <typename Value> struct VertexMap {
+        typedef typename std::map<Vertex, Value>::Type Type;
+      };
       typedef typename DigitalSet::ConstIterator ConstIterator;
 
-      //BOOST_CONCEPT_ASSERT((CUndirectedSimpleLocalGraph<Object>));
       // ... End added
 
 

@@ -35,6 +35,8 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/topology/BreadthFirstVisitor.h"
 #include <set>
 #include <iterator>
 ///////////////////////////////////////////////////////////////////////////////
@@ -53,6 +55,9 @@ bool testBreadthFirstPropagation()
   typedef Z2i::Point Point;
   typedef Z2i::Domain Domain;
   typedef Z2i::DigitalSet DigitalSet;
+  typedef Z2i::Object4_8 Object;
+  
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Z2i::Object4_8> ));
   
   Point p1( -50, -50 );
   Point p2( 50, 50 );
@@ -73,9 +78,10 @@ bool testBreadthFirstPropagation()
   Shapes<Domain>::addNorm2Ball( shape_set, c6, 12 );
   Shapes<Domain>::addNorm1Ball( shape_set, c7, 4 );
 
-  Z2i::Object4_8 obj(Z2i::dt4_8, shape_set);
+  Object obj(Z2i::dt4_8, shape_set);
   
-  GradientColorMap<int> cmap_grad( 0, shape_set.size() );
+  
+  GradientColorMap<int> cmap_grad( 0, 52);//shape_set.size() );
   cmap_grad.addColor( Color( 0, 0, 200 ) );
   cmap_grad.addColor( Color( 0, 0, 50 ) );
   
@@ -86,7 +92,21 @@ bool testBreadthFirstPropagation()
   
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
-  Z2i::Object4_8::ConstIterator it = obj.begin();
+  
+  
+  cout << "Best capacity : " << obj.bestCapacity() << endl;
+  
+  BreadthFirstVisitor<Object, set<Point> > bfv (obj, c1);
+  
+  
+  while( !bfv.finished() )
+  {
+    image.setValue(bfv.current().first, bfv.current().second);
+    bfv.expand();
+  }
+  
+/*  Z2i::Object4_8::ConstIterator it = obj.begin();
+  
   
   Point start = *obj.begin();
   
@@ -101,7 +121,7 @@ bool testBreadthFirstPropagation()
   
   image.setValue(start, value);
   
-  typedef typename std::vector<Point>/*Z2i::Object4_8::SmallObject::DigitalSet*/ Container;
+  typedef typename std::vector<Point>/*Z2i::Object4_8::SmallObject::DigitalSet*//* Container;
   
   while( !pointsToCompute.empty() )
   {
@@ -120,7 +140,7 @@ bool testBreadthFirstPropagation()
       }
     }
   }
-  
+  */
   
   string specificStyle = p1.className() + "/Paving";
   
@@ -128,19 +148,29 @@ bool testBreadthFirstPropagation()
   it != shape_set.end();
   ++it )
   {
-    if( image(*it) >= 0 )
+    if( image(*it) == 0)
     {
       board << CustomStyle( specificStyle,
         new CustomColors( Color::Black,
-        cmap_grad( image(*it) ) ) )
+        Color::Red ) )
       << *it;
     }
     else
     {
-      board << CustomStyle( specificStyle,
-        new CustomColors( Color::Black,
-        cmap_grad( 0 ) ) )
-      << *it;
+      if( image(*it) > 0 )
+      {
+	board << CustomStyle( specificStyle,
+	  new CustomColors( Color::Black,
+	  cmap_grad( image(*it) ) ) )
+	<< *it;
+      }
+      else
+      {
+	board << CustomStyle( specificStyle,
+	  new CustomColors( Color::Black,
+	  cmap_grad( 0 ) ) )
+	<< *it;
+      }
     }
   }
   
