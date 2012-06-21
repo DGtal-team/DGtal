@@ -80,7 +80,7 @@ bool testSCellsFunctors()
     K3 theKSpace; 
     SCellToPoint<K3> m(theKSpace); 
     K3::SCell s; 
-    theKSpace.sSetKCoords( s, K3::Point(7,6,8) );
+    theKSpace.sSetKCoords( s, K3::Point(5,6,8) );
     K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
     nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0;
