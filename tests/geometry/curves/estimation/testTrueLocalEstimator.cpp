@@ -257,7 +257,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
     
       tang1.init( h, r.begin(), r.end(), &aShape, true);
-      tang2.init( h, r.begin(), r.end(), true );
+      tang2.init( h, r.begin(), r.end() );
       // tang2.init( h, r.begin(), r.end(), &aShape, true);
       
       typename TrueCurvature::ConstIterator it = r.begin();
