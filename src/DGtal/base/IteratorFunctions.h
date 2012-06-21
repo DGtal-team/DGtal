@@ -73,13 +73,13 @@ namespace detail {
 template< typename IC> 
 inline
 bool isEmpty( const IC& itb, const IC& ite ){
-  return !detail::isNotEmpty<IC>( itb, ite, typename GetIteratorType<IC>::Type() );
+  return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
 }
 
 template< typename IC> 
 inline
 bool isNotEmpty( const IC& itb, const IC& ite ){
-  return detail::isNotEmpty<IC>( itb, ite, typename GetIteratorType<IC>::Type() );
+  return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
 }
   
 } // namespace DGtal
