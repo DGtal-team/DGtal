@@ -80,14 +80,12 @@ namespace DGtal
     // ----------------------- Types ------------------------------
   public:
 
-      typedef CirculatorType                                      Type; 
       typedef TIterator                                           Iterator;
       typedef Circulator<TIterator>                               Self;
 
-      typedef typename IteratorToCirculatorTagTraits<
-           //typename boost::detail::iterator_traits<TIterator>::iterator_category >
-	      typename boost::iterator_traversal<TIterator>::type >
-              ::iterator_category 
+      typedef CirculatorType                                      Type; 
+
+      typedef typename boost::iterator_category<TIterator>::type
                                                                      iterator_category;
 
       typedef typename iterator_traits<TIterator>::value_type        value_type;
@@ -161,7 +159,10 @@ namespace DGtal
           myCurrentIt = other.myCurrentIt;
           myBeginIt = other.myBeginIt;
           myEndIt = other.myEndIt;
-          myFlagIsValid = other.myFlagIsValid;
+	  if (myBeginIt != myEndIt) 
+	    myFlagIsValid = true; 
+	  else 
+	    myFlagIsValid = false;
         }
       return *this;
     }
@@ -179,7 +180,10 @@ namespace DGtal
           myCurrentIt = other.base();
           myBeginIt = other.begin();
           myEndIt = other.end();
-          myFlagIsValid = other.isValid();
+	  if (myBeginIt != myEndIt) 
+	    myFlagIsValid = true; 
+	  else 
+	    myFlagIsValid = false;
         }
       return *this;
     }

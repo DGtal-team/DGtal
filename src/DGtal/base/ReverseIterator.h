@@ -75,7 +75,7 @@ namespace DGtal
 
    public:
 
-      typedef typename GetIteratorType<Iterator>::Type Type; 
+      typedef typename IteratorCirculatorTraits<Iterator>::Type Type; 
 
       ReverseIterator() {}
 

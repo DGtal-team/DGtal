@@ -98,54 +98,34 @@ bool testIsNotEmpty(const Iterator& itb, const Iterator& ite, const bool& aFlagI
   return (isNotEmpty(itb,ite) == aFlagIsNotEmpty ); 
 }
 
-
-  template< typename IC > 
-  inline
-  bool getTag( const IC& , std::random_access_iterator_tag ) {
-    cout << "random_access_iterator_tag" << endl;
-    return true;
-  }
-
-  template< typename IC > 
-  inline
-  bool getTag( const IC& , random_access_circulator_tag ) {
-    cout << "random_access_circulator_tag" << endl;
-    return true;
-  }
-
-  template< typename IC > 
-  inline
-  bool getTag( const IC& , RandomAccessCategory ) {
-    cout << "RandomAccessCategory" << endl;
-    return true;
-  }
-
 template< typename IC> 
 inline
-bool getGeneralTag( const IC& ic){
-  return getTag<IC>( ic, typename IteratorCirculatorTraits<IC>::Category() );
+bool getGeneralTag( const IC& /*ic*/){
+  cout << typeid( typename IteratorCirculatorTraits<IC>::Category() ).name() << endl; 
+  return true; 
 }
 
 template< typename IC> 
 inline
-bool getSpecificTag( const IC& ic){
-  return getTag<IC>( ic, typename IC::iterator_category() );
+bool getSpecificTag( const IC& /*ic*/){
+  cout << typeid( typename IC::iterator_category() ).name() << endl; 
+  return true; 
 }
 
 
-  template< typename IC > 
-  inline
-  bool getType( const IC& , IteratorType ) {
-    cout << "IteratorType" << endl;
-    return true;
-  }
+template< typename IC > 
+inline
+bool getType( const IC& , IteratorType ) {
+  cout << "IteratorType" << endl;
+  return true;
+}
 
-  template< typename IC > 
-  inline
-  bool getType( const IC& , CirculatorType ) {
-    cout << "CirculatorType" << endl;
-    return true;
-  }
+template< typename IC > 
+inline
+bool getType( const IC& , CirculatorType ) {
+  cout << "CirculatorType" << endl;
+  return true;
+}
 
 template< typename IC> 
 inline
