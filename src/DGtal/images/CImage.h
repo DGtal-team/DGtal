@@ -60,26 +60,26 @@ namespace DGtal
  * Aim: Defines the concept describing a read/write image,
  * having an output iterator.
  *
- * <p> Refinement of
+### Refinement of
  *
  *  CTrivialImage and CConstImage
  *
- * <p> Associated types:
+### Associated types:
  * - the same as CTrivialImage
  * - the same as CConstImage
  * - \a Range : type of the Range
  *
  *
- * <p> Notation
+ ### Notation
  * - \t X : A type that is a model of CImage
  * - \t x : Object of type X
  * - \t aPoint : Object of type Point
  * - \t aValue : Object of type Value
  *
  *
- * <p> Definitions
+ ### Definitions
  *
- * <p> Valid expressions and
+ ### Valid expressions and
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
@@ -88,11 +88,13 @@ namespace DGtal
 
 
  *
- * <p> Invariants###
- *
- * <p> Models###
+### Invariants
+
+### Models
  * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
- * <p> Notes###
+ *
+
+### Notes
  *
  */
 
