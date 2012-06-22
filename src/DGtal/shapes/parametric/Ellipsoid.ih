@@ -1,0 +1,289 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file Ellipsoid.ih
+ * @author Anis Benyoub (\c anis.benyoub@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/06/05
+ *
+ * Header file for module Ellipsoid.cpp
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <iostream>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+    typedef  pair<double,double> AngularCoordinates;
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+DGtal::Ellipsoid<T>::~Ellipsoid()
+{
+}
+
+template <typename T>
+inline
+DGtal::Ellipsoid<T>::Ellipsoid( const double x0, const double y0, const double  z0, const double a, const double b, const double  c):
+  myFactors(a,b,c), myCenter(x0,y0,z0) 
+{}
+
+
+template <typename T>
+inline
+DGtal::Ellipsoid<T>::Ellipsoid(const RealPoint &aPoint, const RealPoint &aFactors):
+  myFactors(aFactors), myCenter(aPoint) 
+{}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// ------------- Implementation of 'StarShaped' services ------------------
+
+/**
+ * @param p any point in the space.
+ *
+ * @return the angle parameters wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
+ * this point for the shape.
+ */
+template <typename T>
+inline
+AngularCoordinates
+DGtal::Ellipsoid<T>::parameter( const RealPoint & pp ) const
+{
+  RealPoint p( pp );
+  p -= myCenter;
+  AngularCoordinates angle ; 
+  RealPoint l=p;
+  
+  
+  if((fabs(l[0])<0.0001)&&(fabs(l[1])<0.0001))
+  {
+    angle.first=0;
+    if(l[2]>0)
+    angle.second=0;
+    if(l[2]<0)
+    angle.second=M_PI;
+  }
+  else
+  {
+  angle.first=atan(l[1]/l[0]);
+  if(l[1]>=0)
+  angle.second=asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
+  if(l[1]<0)
+  angle.second=-asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
+  }
+  
+  /*
+  if ( ( fabs(l[1])==0 )&& ( fabs(l[0])==0 ) )
+  {
+    angle.first=0;
+  }
+  else
+  {
+    
+    if((l[1]>0.0))
+     angle.first= atan(l[0]/sqrt(l[0]*l[0]+l[1]*l[1]));
+  
+      if((l[1]<0.0))
+     angle.first= 2*M_PI-atan(l[0]/sqrt(l[0]*l[0]+l[1]*l[1]));
+  }
+    if(l[2]==0)
+    {
+	angle.second = M_PI/2.0;
+    }
+    else
+    {
+      double norme=sqrt(l[0]*l[0]+l[1]*l[1]+l[2]*l[2]);
+      angle.second=acos(l[2]/norme);
+    }
+  */
+  
+  return angle;
+}
+
+/**
+ * @param t any angle between 0 and 2*Pi.
+ *
+ * @return the vector (x(t),y(t)) which is the position on the
+ * shape boundary.
+ */
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::x( AngularCoordinates t ) const
+{
+  RealPoint c( myFactors[0]*cos(t.first)*cos(t.second),myFactors[1]*cos(t.first)*sin(t.second),myFactors[2]*sin(t.first));   
+   c += myCenter;
+  
+
+  return c;
+}
+
+
+
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (gradf(M)).
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::gradient( const AngularCoordinates t) const 
+{
+  RealPoint p= x(t);
+  double x=2*(p[0]-myCenter[0])/(myFactors[0]*myFactors[0]);
+  double y =2*(p[1]-myCenter[1])/(myFactors[1]*myFactors[1]);
+  double z=2*(p[2]-myCenter[2]/(myFactors[2]*myFactors[2]));
+  return RealPoint(x,y,z);
+}
+
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between[-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::rt( const AngularCoordinates t) const 
+{
+	return RealPoint(-myFactors[0]*sin(t.first)*sin(t.second),myFactors[1]*cos(t.first)*sin(t.second),0);
+}
+
+
+
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (rp(M)) wich is the partial derivative with respect to Phi.
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::rp( const AngularCoordinates t) const 
+{
+  return RealPoint(myFactors[0]*cos(t.first)*cos(t.second),myFactors[1]*sin(t.first )*cos(t.second),-myFactors[2]*sin(t.second));
+}
+
+
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (rtt(M)) wich is second the partial derivative with respect to Teta(twice).
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::rtt( const AngularCoordinates t) const 
+{
+  return RealPoint(-myFactors[0]*cos(t.first)*sin(t.second),-myFactors[1]*sin(t.first)*sin(t.second),0);
+}
+
+
+
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (rpp(M)) wich is second the partial derivative with respect to Phi(twice).
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::rpp( const AngularCoordinates t) const 
+{
+  return RealPoint(-myFactors[0]*cos(t.first)*sin(t.second),-myFactors[1]*sin(t.first)*sin(t.second),-cos(t.second));
+}
+    
+/**
+* @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+*
+* @return the vector (rpp(M)) wich is second the partial derivatif with respect to Teta then Phi.
+*/
+template <typename T>
+inline
+typename DGtal::Ellipsoid<T>::RealPoint 
+DGtal::Ellipsoid<T>::rtp( const AngularCoordinates t) const 
+{
+  return RealPoint(-myFactors[0]*sin(t.first)*cos(t.second),myFactors[1]*cos(t.first)*cos(t.second),0);
+}
+    
+
+    
+    
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::Ellipsoid<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[Ellipsoid] center= "<<myCenter<<" Factors a,b,c ="<<myFactors;
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::Ellipsoid<T>::isValid() const
+{
+    return true;
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+      const Ellipsoid<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
