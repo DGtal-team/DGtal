@@ -83,6 +83,10 @@ namespace DGtal
     public:
 
      /**
+       * Default constructor.
+      */
+    SCellToPoint() : myK(NULL) { }
+     /**
        * Constructor.
        * @param aK a Khalimsky space
       */
@@ -118,6 +122,7 @@ namespace DGtal
      */
     Output operator()(const Input& aSCell) const
     {
+      ASSERT( myK );
       Input s = aSCell; 
       while ( myK->sDim(s) > 0 )
 	{
@@ -165,6 +170,10 @@ namespace DGtal
     public:
       
      /**
+       * Default constructor.
+      */
+    SCellToMidPoint() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -198,6 +207,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       Output o( myK->sKCoords(s) );
       o /= 2;
       return o;
@@ -234,6 +244,10 @@ namespace DGtal
     public:
     
      /**
+       * Default constructor.
+      */
+    SCellToArrow() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -268,6 +282,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       //starting point of the arrow
       Input pointel( myK->sIndirectIncident( s, *myK->sDirs( s ) ) );
       Point p( myK->sCoords( pointel ) );   //integer coordinates
@@ -310,6 +325,10 @@ namespace DGtal
     public:
       
      /**
+       * Default constructor.
+      */
+    SCellToInnerPoint() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -343,6 +362,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       Input pixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
@@ -380,6 +400,10 @@ namespace DGtal
     public:
       
      /**
+       * Default constructor.
+      */
+    SCellToOuterPoint() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -413,6 +437,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       Input pixel( myK->sDirectIncident( s, *myK->sOrthDirs( s ) ) );
       return Output( myK->sCoords( pixel ) ); //integer coordinates
     }
@@ -452,6 +477,10 @@ namespace DGtal
     public:
       
      /**
+       * Default constructor.
+      */
+    SCellToIncidentPoints() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -485,6 +514,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       //inner point
       Input innerPixel( myK->sIndirectIncident( s, *myK->sOrthDirs( s ) ) );
       //outer point
@@ -527,6 +557,10 @@ namespace DGtal
     public:
       
      /**
+       * Default constructor.
+      */
+    SCellToCode() : myK(NULL) { }
+     /**
        *  Constructor.
        * @param aK a Khalimsky space
       */
@@ -560,6 +594,7 @@ namespace DGtal
      */
     Output operator()(const Input& s) const
     {
+      ASSERT( myK ); 
       //starting point of the arrow
       Input pointel( myK->sIndirectIncident( s, *myK->sDirs( s ) ) );
       Point p( myK->sCoords( pointel ) );   //integer coordinates
