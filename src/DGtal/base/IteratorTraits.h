@@ -82,9 +82,9 @@ namespace detail
     static yes& test(typename C::Type*);
 
     template <typename C>
-    static no& test(C*);
+    static no& test(...);
 
-    static const bool value = sizeof(test<IC>(NULL)) == sizeof(yes); 
+    static const bool value = sizeof(test<IC>(0)) == sizeof(yes); 
   };
 
 /////////////////////////////////////////////////////////////////////////////
