@@ -137,6 +137,26 @@ namespace DGtal
     inline
     RealVector gradient( const RealPoint &aPoint ) const;
 
+// ------------------------------------------------------------ Added by Anis Benyoub
+
+    /**
+       @param aPoint any point in the Euclidean space.
+       @return the mean curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double meanCurvature( const RealPoint &aPoint ) const;
+
+
+    /**
+       @param aPoint any point in the Euclidean space.
+       @return the gaussian curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double gaussianCurvature( const RealPoint &aPoint ) const;
+
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
     
