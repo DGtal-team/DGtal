@@ -46,8 +46,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS3d.h"
-#include "DGtal/geometry/curves/representation/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
+#include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
 
 using namespace std;

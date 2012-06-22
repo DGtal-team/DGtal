@@ -206,7 +206,7 @@ And each range provides these (circular)iterator services:
 You can use these services to iterate over the elements of a given range
 as follows:
  
-@snippet geometry/curves/representation/exampleGridCurve2d.cpp GridCurveRangeIterators
+@snippet geometry/curves/exampleGridCurve2d.cpp GridCurveRangeIterators
 
 Since GridCurve and FreemanChain have both a method isClosed(), 
 you can decide to use a classic iterator or a circulator at 
@@ -379,11 +379,11 @@ devoted to the dynamic recognition of DSSs,
 
  Here is a short example of how to use this class in the 4-connected case:
 
- @snippet geometry/curves/representation/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
+ @snippet geometry/curves/ArithmeticalDSS.cpp ArithmeticalDSS4Usage
 
  Here is a short example of how to use this class in the 8-connected case:
 
- @snippet geometry/curves/representation/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
+ @snippet geometry/curves/ArithmeticalDSS.cpp ArithmeticalDSS8Usage
 
  These snippets are drawn from ArithmeticalDSS.cpp. 
  

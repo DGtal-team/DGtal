@@ -38,9 +38,9 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
-#include "DGtal/geometry/curves/representation/GreedySegmentation.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
