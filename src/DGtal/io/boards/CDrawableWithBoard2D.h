@@ -46,6 +46,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/Display2DFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -117,7 +118,7 @@ namespace DGtal
       ConceptUtils::sameType( myS, myT.className() );
 
       //Drawable model should be associated to global functions draw and defaultStyle.
-      draw(myB, myT);
+      DGtal::Display2DFactory::draw(myB, myT);
       ConceptUtils::sameType( myD, defaultStyle( myT) );
     }
 

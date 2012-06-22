@@ -55,18 +55,18 @@ namespace DGtal
    * Aim: Defines the concept describing a read-only image,
    * which is a refinement of CPointFunctor.
    *
-   * <p> Refinement of CPointFunctor
+###  Refinement of CPointFunctor
    *
-   * <p> Associated types :
+###  Associated types :
    * - \t Domain: type of the image domain, model of concept CDomain
    *
-   * <p> Notation
+###  Notation
    * - \t X : A type that is a model of CTrivialConstImage
    * - \t x, \t y  : Object of type X
    *
-   * <p> Definitions
+###  Definitions
    *
-   * <p> Valid expressions and
+###  Valid expressions and
       <table>
       <tr>
         <td class=CName> \b Name </td>
@@ -94,9 +94,9 @@ namespace DGtal
     </table>
 
    *
-   * <p> Invariants###
+###  Invariants
    *
-   * <p> Models###
+###  Models
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
    *
    */

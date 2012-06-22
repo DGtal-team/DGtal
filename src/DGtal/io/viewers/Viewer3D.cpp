@@ -574,6 +574,7 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
     }
     if ( ( e->key() ==Qt::Key_C ) ) // MT
     {
+	handled=true;
         GLint    Viewport[4];
         GLdouble Projection[16], Modelview[16];
         //Unused matrix so I remove it (DC)

@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 

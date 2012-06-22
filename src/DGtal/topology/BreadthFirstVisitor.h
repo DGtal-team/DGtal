@@ -57,23 +57,23 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class BreadthFirstVisitor
   /**
-     Description of template class 'BreadthFirstVisitor' <p> \brief
-     Aim: This class is useful to perform a breadth-first exploration
-     of a graph given a starting point or set (called initial core).
-    
-     The expander implements a breadth-first algorithm on the graph of
-     adjacencies. It can be used not only to detect connected
-     component but also to identify the layers of the object located
-     at a given distance of a starting set.
-    
-     The \b core of the expander is at the beginning the set of points
-     at distance 0. Each layer is at a different distance from the
-     initial core. The expander move layer by layer but the user is
-     free to navigate on each layer.
-    
-     @tparam TObject the type of the digital object.
-    
-     @code
+  Description of template class 'BreadthFirstVisitor' <p> \brief
+  Aim: This class is useful to perform a breadth-first exploration
+  of a graph given a starting point or set (called initial core).
+ 
+  The expander implements a breadth-first algorithm on the graph of
+  adjacencies. It can be used not only to detect connected
+  component but also to identify the layers of the object located
+  at a given distance of a starting set.
+ 
+  The \b core of the expander is at the beginning the set of points
+  at distance 0. Each layer is at a different distance from the
+  initial core. The expander move layer by layer but the user is
+  free to navigate on each layer.
+ 
+  @tparam TObject the type of the digital object.
+ 
+  @code
      Graph g( ... );
      Graph::Vertex p( ... );
      BreadthFirstVisitor< Graph > visitor( g, p );
@@ -86,8 +86,8 @@ namespace DGtal
        }
      @endcode
     
-     @see testBreadthFirstVisitor.cpp
-     @see testObject.cpp
+   @see testBreadthFirstVisitor.cpp
+   @see testObject.cpp
    */
   template < typename TGraph, 
              typename TMarkSet = typename TGraph::VertexSet >

@@ -37,10 +37,15 @@ options "Set up Git", "Create a Repo", "Fork a Repo" and "Be Social"
 
 \subsection subsectGIT12 Set up git
 
-Github documentation is quite straightforward. The goal to to
-activate your account with a SSH key to be able to "push" changes to
-github servers. If you do not activate the SSH access, you'll be able to
-push your edits via the HTTP protocol but we  prefer the first variant.
+Github documentation is quite straightforward (see help/set up git in the Github web site). 
+
+In order to be to establish a secure connection between your computer and github servers
+and to be able to "push" changes to github servers, two methods are available:
+the SSH method or the HTTPS method, which is now recommended.  
+
+Note that in the HTTPS method, URLs look like "https://github.com/yourlogin/DGtal.git",
+whereas in the SSH method URLs look like "git@github.com:yourlogin/DGtal.git". 
+The HTTPS method is used below. 
 
 In the meantime, you can also update your account settings
 (https://github.com/account)
@@ -65,13 +70,13 @@ Once you have fork the initial DGtal repository,
 you can clone your fork to have a local copy of your own (remote) copy of DGtal:
 
 @code
-git clone git@github.com:yourlogin/DGtal.git
+git clone https://github.com/yourlogin/DGtal.git
 @endcode
 
 In order to easily access to the initial DGtal repository, 
 you can set it as a remote repository, called "upstream": 
 @code
-git remote add upstream git@github.com:DGtal-team/DGtal.git
+git remote add upstream https://github.com/DGtal-team/DGtal.git
 @endcode
 
 Git remotes are great because they allows to have multiple pull/push
@@ -143,12 +148,9 @@ git branch
 Note also that the branch marked with a star is your 
 current local branch. At this point you should see
 
-@code
- * master
- cool-feature
+- * master
+- cool-feature
 @endcode
-
-(the '*' indicates your current active branch).
 
 2- Jump onto your new local branch:
 
@@ -163,13 +165,33 @@ After taping the command "git branch" you should see now:
 3- Add files, edit files, commit local branch
 
 @code
-git commit -a -m "This commit concerns the cool-feature....."
+git add newFile
+git commit -a -m "This commit concerns the cool-feature in newFile ..."
 @endcode
+
+Note that you can use the command "git status" or "git log" to have useful infos
+about the current branch state and the commits history. 
 
 4- Push to your fork (you have to be online)
 
 @code
 git push origin cool-feature
+@endcode
+
+This creates a new branch in your remote copy of DGtal, 
+which is called "cool-feature", like your local branch. 
+
+But this is a shortcut to: 
+
+@code
+git push origin cool-feature:cool-feature
+@endcode
+
+You can thus give a different name for 
+your remote branch as follows:  
+
+@code
+git push origin cool-feature:another-name
 @endcode
 
 
@@ -198,11 +220,12 @@ git branch -d cool-feature
 @endcode
 
 And you can also remove the associated remote branch 
-(because everything should be merged into the "master" of either your fork, or the main DGtal master):
+(because everything should be merged into either the "master" of your fork, or the "master" of DGtal-team):
 
 @code
 git push origin :cool-feature
 @endcode
+  
 
 \section sectGITCommands Useful git commands
 

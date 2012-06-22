@@ -217,7 +217,7 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
   lastPoint[2] = e-1;
 
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
-  TImageContainer image(firstPoint,lastPoint);
+  TImageContainer image(domain);
 
   getline( infile, str );
   istringstream str2_in( str );
