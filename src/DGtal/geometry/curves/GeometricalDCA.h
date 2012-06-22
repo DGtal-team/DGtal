@@ -117,7 +117,7 @@ namespace DGtal
     //requiered types
     typedef TConstIterator ConstIterator;
     typedef GeometricalDCA<ConstIterator> Self; 
-    typedef GeometricalDCA<std::reverse_iterator<ConstIterator> > Reverse;
+    typedef GeometricalDCA<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 

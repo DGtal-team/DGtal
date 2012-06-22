@@ -42,8 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/Circulator.h"
-#include "DGtal/base/CUnaryFunctor.h"
+#include <boost/iterator/transform_iterator.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,12 +52,11 @@ namespace DGtal
   // template class IteratorAdapter
   /**
    * Description of template class 'IteratorAdapter' <p>
-   * \brief This class adapts any iterator (at least forward)
+   * \brief This class adapts any lvalue iterator
    * so that operator* returns a member on the element pointed 
    * to by the iterator, instead the element itself.
    *
    * @tparam TIterator the type of the iterator to adapt
-   * (at least forward) 
    *
    * To achieve this goal, the adapter is based on a functor f
    * given at construction so that operator* calls f(*it), 
@@ -73,269 +71,74 @@ namespace DGtal
    *
    * @tparam TReturnType the type of the element returned by the underlying functor
    *
-   * NB: the underlying functor is stored in the adapter as aliasing pointer
-   * in order to avoid copies. As a consequence the pointed object must exist 
-   * and must not be deleted during the use of the adapter.
    */
-  template <typename TIterator, typename TFunctor, typename TReturnType>
-  class IteratorAdapter
+  template <typename TIterator, typename TFunctor, typename TReturnType = typename TFunctor::Value>
+  class IteratorAdapter:
+    public boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType  > 
   {
 
-    BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<TIterator> ));
-    typedef typename IteratorCirculatorTraits<TIterator>::Value TArgument;  
+  BOOST_CONCEPT_ASSERT(( boost_concepts::LvalueIteratorConcept<TIterator> ));
 
-    //--------------- inner types --------------------------------
   public: 
-    
-    typedef IteratorAdapter<TIterator, TFunctor, TReturnType> Self;
-    typedef TIterator Iterator;
-    typedef TFunctor Functor;
-  
-    typedef TReturnType value_type; 
-    typedef value_type* pointer;
-    typedef value_type& reference;
-    typedef typename iterator_traits<TIterator>::difference_type difference_type;
-    typedef typename iterator_traits<TIterator>::iterator_category iterator_category;
 
-  private: 
+    /** this class **/
+    typedef IteratorAdapter< TIterator, TFunctor, TReturnType > Self; 
+    /** parent class **/
+    typedef boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType > Parent; 
 
-    typedef const Functor* FunctorPtr; 
-  
-    // ------------------------- Protected Datas ------------------------------
-  protected:
-    /**
-     * Underlying iterator
+    /** 
+     * Default constructor
      */
-    Iterator myCurrentIt;
-    /**
-     * Aliasing pointer on a (constant) functor
+    IteratorAdapter(): Parent() {}
+    /** 
+     * Constructor from an iterator and a functor
+     * 
+     * @param iter any iterator
+     * @param functor any functor 
      */
-    FunctorPtr myFunctorPtr; 
-  
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ----------------------- Standard services ------------------------------
-  public:
-    /**
-     *  The default constructor default-initializes the members
+    IteratorAdapter( const TIterator& iter, TFunctor func ): Parent(iter,func) {}
+    /** 
+     * Copy operator
+     * 
+     * @param other the object of type Self to copy.
      */
-    IteratorAdapter() 
-      : myCurrentIt(), myFunctorPtr() { }
-    
-    /**
-     *  Constructor.
-     * @param it an iterator to adapt
-     * @param f the functor that transforms
-     * the pointed element into another element
+    IteratorAdapter( const Self& other ): Parent( static_cast<const Parent&>(other) ) {}
+    /** 
+     * Copy operator
+     * 
+     * @param other the object of type Parent to copy.
      */
-    IteratorAdapter(const Iterator& it, const Functor& f) 
-      : myCurrentIt(it), myFunctorPtr(&f) { }
-
-    /**
-     *  Copy constructor.
-     * @param other an iterator adapter
+    IteratorAdapter( const Parent& other ): Parent(other) {}
+    /** 
+     * Assignement operator
+     * 
+     * @param other the object of type Self to copy.
+     * @return this
      */
-    IteratorAdapter(const IteratorAdapter& other)
-      : myCurrentIt(other.myCurrentIt), 
-	myFunctorPtr(other.myFunctorPtr) { }
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-    IteratorAdapter & operator= ( const IteratorAdapter & other ) 
+    Self& operator=( const Self& other )
     {
-      if ( this != &other )
-        {
-          myCurrentIt = other.myCurrentIt;
-          myFunctorPtr = other.myFunctorPtr;
-        }
-      return *this;
+      if (this != &other)
+	Parent::operator=( static_cast<const Parent&>(other) ); 
+      return *this; 
+    } 
+    /** 
+     * Assignement operator
+     * 
+     * @param other the object of type Parent to copy.
+     * @return this
+     */
+    Self& operator=( const Parent& other )
+    {
+      if (this != &other)
+	  Parent::operator=(other); 
+      return *this; 
     }
-
-    /**
+    /** 
      * Destructor.
+     *
      */
     ~IteratorAdapter() {}
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     *  @return  member @a myCurrentIt, the underlying iterator.
-     */
-    Iterator base() const
-    { return myCurrentIt; }
-
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const { return true;}
-
-    /**
-     *  @return constant reference on a member of the element pointed to by @a myCurrentIt.
-     */
-    const reference operator*() const 
-    { 
-      BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, const TArgument&, const TReturnType& > )); 
-      return myFunctorPtr->operator()(*myCurrentIt); 
-    }
-
-    /**
-     *  @return constant pointer on a member of the element pointed to by @a myCurrentIt.
-     */
-    pointer operator->() const
-    {
-      return & this->operator*(); 
-    }
-
-    /**
-     *  @return reference on a member of the element pointed to by @a myCurrentIt.
-     */
-    reference operator*()
-    { 
-      BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, TArgument&, TReturnType& > )); 
-      return myFunctorPtr->operator()(*myCurrentIt); 
-    }
-
-    /**
-     *  @return pointer on a member of the element pointed to by @a myCurrentIt.
-     */
-    pointer operator->()
-    {
-      return & this->operator*(); 
-    }
-
-    /**
-     *  Pre-increment
-     */
-    Self& operator++()
-    {
-      ++myCurrentIt;
-      return *this;
-    }
-
-    /**
-     * Post-increment
-     */
-    Self operator++(int)
-    {
-      Self tmp = *this;
-      operator++(); 
-      return tmp;
-    }
-
-
-    /**
-     *  Pre-decrement
-     */
-    Self& operator--()
-    {
-      --myCurrentIt;
-      return *this;
-    }
-
-    /**
-     * Post-decrement
-     */
-    Self operator--(int)
-    {
-      Self tmp = *this;
-      operator--(); 
-      return tmp;
-    }
-
-    // ----------------------- Random access operators --------------------------------------
-  public:
-
-    Self& operator+=( difference_type d ) {
-      myCurrentIt += d;
-      return *this;
-    }
-    Self operator+( difference_type d) const {
-      Self tmp = *this;
-      return tmp += d;
-    }
-    Self operator-( difference_type d) const {
-      Self tmp = *this;
-      return tmp += -d;
-    }
-    Self& operator-=( difference_type d) { return operator+=( -d); }
-
-    difference_type operator-( const Self& other) const {
-      return myCurrentIt - other.myCurrentIt;
-    }
-    reference operator[]( difference_type d) const {
-      Self tmp = *this;
-      tmp += d;
-      return *tmp;
-    }
-
-    /**
-     *  Equality operator
-     */
-    bool operator==( const Self& other) const 
-    { 
-      return (myCurrentIt == other.myCurrentIt);
-    }
-    /**
-     *  difference_type operator
-     */
-    bool operator!=( const Self& other) const 
-    { 
-      return !(*this == other); 
-    }
-    
-    // ----------------------- Comparisons operators --------------------------------------
-    /**
-     *  Less operator
-     */
-    bool operator<( const Self& other) const 
-    { 
-      return (myCurrentIt < other.myCurrentIt);
-    }
-    /**
-     *  Less or equal operator
-     */
-    bool operator<=( const Self& other) const 
-    { 
-      return (myCurrentIt <= other.myCurrentIt);
-    }
-    /**
-     *  Greater
-     */
-    bool operator>( const Self& other) const 
-    { 
-      return (myCurrentIt > other.myCurrentIt);
-    }
-    /**
-     *  Greater or equal operator
-     */
-    bool operator>=( const Self& other) const 
-    { 
-      return (myCurrentIt >= other.myCurrentIt);
-    }
-    
-    // ------------------------- Hidden services ------------------------------
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  }; // end of class IteratorAdapter
-
-  template <typename TIterator, typename TFunctor, typename TReturnType >
-  IteratorAdapter<TIterator,TFunctor,TReturnType> 
-  operator+(typename IteratorCirculatorTraits<TIterator>::Difference d, 
-	    IteratorAdapter<TIterator,TFunctor,TReturnType> & object )
-  {
-    IteratorAdapter<TIterator,TFunctor,TReturnType> tmp = object;
-    return tmp += d;
-  }
+  };
 
 } // namespace DGtal
 

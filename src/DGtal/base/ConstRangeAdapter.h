@@ -43,6 +43,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/BasicFunctors.h"
+//#include "boost/iterator/reverse_iterator.hpp"
+#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "boost/concept_check.hpp"
@@ -84,16 +86,17 @@ namespace DGtal
   class ConstRangeAdapter
   {
 
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TIterator> )); 
+  BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<TIterator> ));
 
     // ------------------------- inner types --------------------------------
   public: 
   
     typedef ConstIteratorAdapter<TIterator,TFunctor,TReturnType> ConstIterator; 
-    typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+    typedef ReverseIterator<ConstIterator> ConstReverseIterator;
 
     typedef Circulator<ConstIterator> ConstCirculator;
-    typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+    typedef ReverseIterator<ConstCirculator> ConstReverseCirculator;
 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Difference Difference; 
     // ------------------------- standard services --------------------------------

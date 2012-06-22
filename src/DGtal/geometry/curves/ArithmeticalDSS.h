@@ -50,6 +50,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/geometry/curves/SegmentComputerUtils.h"
@@ -199,7 +200,7 @@ Steps:
     //requiered types
     typedef TIterator ConstIterator;
     typedef ArithmeticalDSS<ConstIterator,TInteger,connectivity> Self; 
-    typedef ArithmeticalDSS<std::reverse_iterator<ConstIterator>,TInteger,connectivity> Reverse;
+    typedef ArithmeticalDSS<ReverseIterator<ConstIterator>,TInteger,connectivity> Reverse;
 
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 

@@ -133,7 +133,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-ArithmeticalDSS<std::reverse_iterator<TIterator>,TInteger,connectivity>
+typename ArithmeticalDSS<TIterator,TInteger,connectivity>::Reverse
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 ::getReverse() const {
   return Reverse(); 
