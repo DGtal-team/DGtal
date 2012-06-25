@@ -66,6 +66,284 @@ namespace DGtal
 //////////////////////////////////////////////////////////////////////////////
   namespace detail
   {
+  /////////////////////////////////////////////////////////////////////////////
+  // class PosIndepScaleIndepSCFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'PosIndepScaleIndepSCFunctor' <p> Aim: 
+   * estimates a geometrical quantity from a segment computer. 
+   * The estimation is neither position-dependant 
+   * nor scale-dependant (e.g. tangent or normal 
+   * estimation from straight primitives). 
+   *
+   * @tparam TSegmentComputer a model of segment computer. 
+   *
+   * The computation is delegated to a functor.  
+   *
+   * @tparam Functor a functor
+   */
+
+  template <typename TSegmentComputer, typename Functor, 
+	    typename ReturnType = typename Functor::Quantity>
+  class PosIndepScaleIndepSCFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef TSegmentComputer SegmentComputer;
+    typedef ReturnType Quantity;
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() 
+    {
+      return true; 
+    };
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Init method
+     * Does nothing 
+     */
+    void init( const double& ) {};
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+			 const SegmentComputer& aSC, 
+			 const bool&,
+			 const bool& ) const 
+    {
+      return this->operator()( aSC ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()(const SegmentComputer& aSC) const 
+    {
+      Functor f; 
+      return f( aSC ); 
+    };
+
+  }; // end of class PosIndepScaleIndepSCFunctor
+
+  /////////////////////////////////////////////////////////////////////////////
+  // class PosIndepScaleDepSCFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'PosIndepScaleDepSCFunctor' <p> Aim: 
+   * estimates a geometrical quantity from a segment computer. 
+   * The estimation is not position-dependant,
+   * but is scale-dependant (e.g. curvature or radius
+   * estimation from circular primitives). 
+   *
+   * @tparam TSegmentComputer a model of segment computer. 
+   *
+   * The computation is delegated to a functor.  
+   *
+   * @tparam Functor a functor
+   */
+
+  template <typename TSegmentComputer, typename Functor, 
+	    typename ReturnType = typename Functor::Quantity>
+  class PosIndepScaleDepSCFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef TSegmentComputer SegmentComputer;
+    typedef ReturnType Quantity;
+
+    // ----------------------- internal data ------------------------------
+  public:
+    double myH; 
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Default constructor.
+     * NB: not valid.
+     */
+    PosIndepScaleDepSCFunctor()
+      : myH( 0.0 )
+    {
+    }
+    /**
+     * Copy constructor.
+     * @param other the object to copy.
+     */
+    PosIndepScaleDepSCFunctor( const PosIndepScaleDepSCFunctor& other )
+      : myH( other.myH )
+    {
+    }
+    /**
+     * Assignement.
+     * @param other the object to copy.
+     */
+    PosIndepScaleDepSCFunctor& operator=( const PosIndepScaleDepSCFunctor& other )
+    {
+      if (this != &other)
+	{
+	  myH = other.myH; 
+	}
+      return *this; 
+    }
+    /**
+     * Destructor
+     */
+    ~PosIndepScaleDepSCFunctor() {}
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() 
+    {
+      return (myH > 0); 
+    };
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Init method: set @e myH
+     */
+    void init( const double& aH ) 
+    {
+      myH = aH;
+      ASSERT( isValid() ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+			 const SegmentComputer& aSC, 
+			 const bool&,
+			 const bool& ) const 
+    {
+      return this->operator()( aSC ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()(const SegmentComputer& aSC) const 
+    {
+      Functor f; 
+      return f( aSC, myH ); 
+    };
+
+  }; // end of class PosIndepScaleDepSCFunctor
+
+  /////////////////////////////////////////////////////////////////////////////
+  // class PosDepScaleIndepSCFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'PosDepScaleIndepSCFunctor' <p> Aim: 
+   * estimates a geometrical quantity from a segment computer. 
+   * The estimation is not scale dependant but position dependant
+   * (e.g. tangent or normal estimation from high-order primitives). 
+   *
+   * @tparam TSegmentComputer a model of segment computer. 
+   *
+   * The computation is delegated to a functor.  
+   *
+   * @tparam Functor a functor
+   */
+
+  template <typename TSegmentComputer, typename Functor, 
+	    typename ReturnType = typename Functor::Quantity>
+  class PosDepScaleIndepSCFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef TSegmentComputer SegmentComputer;
+    typedef ReturnType Quantity;
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() 
+    {
+      return true; 
+    };
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Init method
+     * Does nothing 
+     */
+    void init( const double& ) {};
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+			 const SegmentComputer& aSC, 
+			 const bool&,
+			 const bool& ) const 
+    {
+      return this->operator()( aSC ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param it position where the estimation is done.
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()(const typename SegmentComputer::ConstIterator& it, 
+			const SegmentComputer& aSC) const 
+    {
+      Functor f; 
+      return f( it, aSC ); 
+    };
+
+  }; // end of class PosDepScaleIndepSCFunctor
+
   /**
    * Description of class 'TangentAngleFromDSS' <p> Aim: 
    * computes the tangent orientation of a DSS 
@@ -125,83 +403,88 @@ namespace DGtal
 	return Quantity(aDSS.getB(), aDSS.getA());
       }
     }; 
-  /////////////////////////////////////////////////////////////////////////////
-  // class TangentFromDSSBaseFunctor
-  /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'TangentFromDSSBaseFunctor' <p> Aim: 
-   * computes the tangent vector of a DSS. 
-   *
-   * @tparam DSSComputer a model of straight segment computer, 
-   * having @a getA() and @a getB() methods. 
-   *
-   * The computation is delegated to a functor.  
-   *
-   * @tparam Functor a functor
+   * Description of class 'CurvatureFromDCA' <p> Aim: 
+   * computes the curvature from a GeometricalDCA
+   * at a given grid step
    */
+    struct CurvatureFromDCA
+    {      
+    public:
+      typedef double Quantity; 
 
-  template <typename DSSComputer, typename Functor, typename ReturnType = typename Functor::Quantity>
-  class TangentFromDSSBaseFunctor
-  {
+      template<typename DCA>
+      Quantity operator() (const DCA& aDCA, const Quantity& aH = 1.0) const 
+      {
+  	if ( aDCA.isStraight() )
+  	  return 0.0; 
+	else
+	return ( aDCA.getSeparatingCircle().getCurvature() / aH );
+      }
+    }; 
+  /**
+   * Description of class 'NormalVectorFromDCA' <p> Aim: 
+   * estimates the normal at a given position from a GeometricalDCA. 
+   */
+    struct NormalVectorFromDCA
+    {      
+    public:
+      typedef PointVector<2,double> Quantity; 
 
-  public: 
+      template<typename DCA>
+      Quantity operator() (const typename DCA::ConstIterator& it, 
+  			   const DCA& aDCA) const 
+      {
+	typedef typename DCA::ConstIterator ConstIterator; 
+	typedef typename DCA::Pair Pair; 
+	typedef typename DCA::Point Point;
+	typedef typename Point::Coordinate Coordinate; 
+	
+  	if ( !aDCA.isStraight() )
+  	  {
+  	    //separating circle center
+  	    double c0, c1, r; 
+  	    aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+  	    //point
+	    Pair pair = *it; 
+	    Point i = pair.first; 
+	    Point o = pair.second;
+	    double m0 = NumberTraits<Coordinate>::castToDouble(i[0]+o[0]) / 2.0; 
+	    double m1 = NumberTraits<Coordinate>::castToDouble(i[1]+o[1]) / 2.0;
+	    //normal vector 
+	    double v0 = m0 - c0; 
+	    double v1 = m1 - c1; 
+	    double n = std::sqrt(v0*v0 + v1*v1); 
+	    return Quantity( v0/n, v1/n );
+  	  }
+  	else
+  	  {
+	    double a, b, c; 
+	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c); 
+	    double n = std::sqrt(a*a + b*b); 
+  	    return Quantity( a/n, b/n ); 
+  	  }
+      }
+    }; 
 
-    // ----------------------- inner type ------------------------------
-    typedef DSSComputer SegmentComputer;
-    typedef ReturnType Quantity;
+  /**
+   * Description of class 'TangentVectorFromDCA' <p> Aim: 
+   * estimates the tangent at a given position from a GeometricalDCA. 
+   */
+    struct TangentVectorFromDCA
+    {      
+    public:
+      typedef PointVector<2,double> Quantity; 
 
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() 
-    {
-      return true; 
-    };
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Init method
-     * Does nothing 
-     */
-    void init( const double& ) {};
-
-    /**
-     * Operator()
-     *
-     * @return the tangent estimated at @a it
-     *
-     * @param it the position at which the tangent is estimated.
-     * @param aDSS a DSSComputer. 
-     */
-    Quantity operator()( const typename DSSComputer::ConstIterator& /*it*/, 
-			 const DSSComputer& aDSS, 
-			 const bool&,
-			 const bool& ) const 
-    {
-      return this->operator()( aDSS ); 
-    };
-
-    /**
-     * Operator()
-     *
-     * @return the tangent estimated from @a aDSS
-     *
-     * @param aDSS a DSSComputer. 
-     */
-    Quantity operator()(const DSSComputer& aDSS) const 
-    {
-      Functor f; 
-      return f( aDSS ); 
-    };
-
-  }; // end of class TangentFromDSSFunctor
-
+      template<typename DCA>
+      Quantity operator() (const typename DCA::ConstIterator& it, 
+  			   const DCA& aDCA) const 
+      {
+	NormalVectorFromDCA f; 
+	Quantity normal = f(it, aDCA); 
+	return Quantity( normal[1], normal[0] ); 
+      }
+    }; 
 
   }//namespace detail
 
@@ -210,9 +493,11 @@ namespace DGtal
   //-------------------------------------------------------------------------------------------
   template <typename DSSComputer>
   class TangentFromDSSFunctor: 
-    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS>
+    public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS>
   {
-    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS> Super; 
+    typedef 
+    detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS> 
+    Super; 
 
   public: 
     /**
@@ -230,9 +515,11 @@ namespace DGtal
   //-------------------------------------------------------------------------------------------
   template <typename DSSComputer>
   class TangentVectorFromDSSFunctor: 
-    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> >
+    public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> >
   {
-    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> > Super; 
+    typedef 
+    detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> > 
+    Super; 
 
   public: 
     /**
@@ -251,9 +538,11 @@ namespace DGtal
   //-------------------------------------------------------------------------------------------
   template <typename DSSComputer>
   class TangentAngleFromDSSFunctor: 
-    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentAngleFromDSS>
+    public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentAngleFromDSS>
   {
-    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentAngleFromDSS> Super; 
+    typedef 
+    detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentAngleFromDSS> 
+    Super; 
 
   public: 
     /**
@@ -269,7 +558,77 @@ namespace DGtal
 
   }; 
 
+  //-------------------------------------------------------------------------------------------
+  template <typename DCAComputer>
+  class CurvatureFromDCAFunctor: 
+    public detail::PosIndepScaleDepSCFunctor<DCAComputer, 
+						detail::CurvatureFromDCA>
+  {
+    typedef 
+    detail::PosIndepScaleDepSCFunctor<DCAComputer, detail::CurvatureFromDCA> 
+    Super; 
 
+  public: 
+    /**
+     * Default Constructor.
+     */
+    CurvatureFromDCAFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    CurvatureFromDCAFunctor( const CurvatureFromDCAFunctor & other ): Super(other) {};
+
+  }; 
+
+  //-------------------------------------------------------------------------------------------
+  template <typename DCAComputer>
+  class NormalFromDCAFunctor: 
+    public detail::PosDepScaleIndepSCFunctor<DCAComputer, 
+						detail::NormalVectorFromDCA>
+  {
+    typedef 
+    detail::PosDepScaleIndepSCFunctor<DCAComputer, detail::TangentVectorFromDCA> 
+    Super; 
+
+  public: 
+    /**
+     * Default Constructor.
+     */
+    NormalFromDCAFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    NormalFromDCAFunctor( const NormalFromDCAFunctor & other ): Super(other) {};
+
+  }; 
+
+  //-------------------------------------------------------------------------------------------
+  template <typename DCAComputer>
+  class TangentFromDCAFunctor: 
+    public detail::PosDepScaleIndepSCFunctor<DCAComputer, 
+						detail::TangentVectorFromDCA>
+  {
+    typedef 
+    detail::PosDepScaleIndepSCFunctor<DCAComputer, detail::TangentVectorFromDCA> 
+    Super; 
+
+  public: 
+    /**
+     * Default Constructor.
+     */
+    TangentFromDCAFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    TangentFromDCAFunctor( const TangentFromDCAFunctor & other ): Super(other) {};
+
+  }; 
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
