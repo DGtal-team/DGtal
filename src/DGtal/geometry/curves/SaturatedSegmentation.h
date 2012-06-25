@@ -479,7 +479,7 @@ namespace DGtal
     ConstIterator myStop;
   
     /**
-     * Mode: either "Frist", "MostCentered" (default), "Last"
+     * Mode: either "First", "MostCentered" (default), "Last"
      */
     std::string myMode; 
 

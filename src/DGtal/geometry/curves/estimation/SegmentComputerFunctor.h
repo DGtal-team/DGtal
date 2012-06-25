@@ -50,7 +50,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-
+#include "boost/utility.hpp"
 
 
 
@@ -61,200 +61,222 @@
 namespace DGtal
 {
 
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+  namespace detail
+  {
+  /**
+   * Description of class 'TangentAngleFromDSS' <p> Aim: 
+   * computes the tangent orientation of a DSS 
+   * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+   */
+    struct TangentAngleFromDSS
+    {      
+    public:
+      typedef double Quantity; 
+
+      template<typename DSS>
+      Quantity operator() (const DSS& aDSS) const 
+      {
+	Quantity a = (Quantity) NumberTraits<typename DSS::Integer>
+	  ::castToInt64_t(aDSS.getA());      
+	Quantity b = (Quantity) NumberTraits<typename DSS::Integer>
+	  ::castToInt64_t(aDSS.getB());      
+
+	return std::atan2(a,b);
+      }
+    }; 
+  /**
+   * Description of class 'NormalizedTangentVectorFromDSS' <p> Aim: 
+   * computes the unit vector of a DSS 
+   */
+    struct NormalizedTangentVectorFromDSS
+    {      
+    public:
+      typedef DGtal::PointVector<2,double> RealVector; 
+      typedef RealVector Quantity;
+
+      template<typename DSS>
+      Quantity operator() (const DSS& aDSS) const 
+      {
+	double x = NumberTraits<typename DSS::Integer>
+	  ::castToDouble( aDSS.getB() ); 
+	double y = NumberTraits<typename DSS::Integer>
+	  ::castToDouble( aDSS.getA() );
+	RealVector v(x,y); 
+	double norm = v.norm(RealVector::L_2);
+	v /= norm; 
+	return v;
+      }
+    }; 
+  /**
+   * Description of class 'TangentVectorFromDSS' <p> Aim: 
+   * computes the tangent vector of a DSS 
+   */
+    template<typename DSS>
+    struct TangentVectorFromDSS
+    {      
+    public:
+      typedef typename DSS::Vector Quantity;
+
+      Quantity operator() (const DSS& aDSS) const 
+      {
+	return Quantity(aDSS.getB(), aDSS.getA());
+      }
+    }; 
   /////////////////////////////////////////////////////////////////////////////
-  // class TangentFromDSSFunctor
+  // class TangentFromDSSBaseFunctor
   /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'TangentFromDSSFunctor' <p> Aim: 
-   * computes the normalized tangent vector of a DSS 
+   * Description of class 'TangentFromDSSBaseFunctor' <p> Aim: 
+   * computes the tangent vector of a DSS. 
    *
-   * @tparam DSSComputer a model for concept CSegmentComputer.
+   * @tparam DSSComputer a model of straight segment computer, 
+   * having @a getA() and @a getB() methods. 
+   *
+   * The computation is delegated to a functor.  
+   *
+   * @tparam Functor a functor
    */
 
-  template <typename DSSComputer>
-  class TangentFromDSSFunctor
+  template <typename DSSComputer, typename Functor, typename ReturnType = typename Functor::Quantity>
+  class TangentFromDSSBaseFunctor
   {
 
   public: 
 
     // ----------------------- inner type ------------------------------
-    typedef DGtal::PointVector<2,double> RealVector;
-    typedef RealVector Value;
+    typedef DSSComputer SegmentComputer;
+    typedef ReturnType Quantity;
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Destructor.
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
      */
-    ~TangentFromDSSFunctor(){};
-
-    /**
-     * Default Constructor.
-     */
-    TangentFromDSSFunctor(){};
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    TangentFromDSSFunctor( const TangentFromDSSFunctor &  ) {};
-
-
+    bool isValid() 
+    {
+      return true; 
+    };
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Operator() 
-     * @return the tangent at [aPoint]
-     * @param aPoint the point at which the tangent is estimated.
-     * @param aDSS a DSSComputer. 
-     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
-     * be extended at back and false otherwise. 
-     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
-     * be extended at front and false otherwise.  
+     * Init method
+     * Does nothing 
      */
-    Value operator()( const typename DSSComputer::Point& , 
-                      const DSSComputer& aDSS, 
-                      const double& = 1 ,
-                      const bool& = false ,
-                      const bool& = false) const {
+    void init( const double& ) {};
 
-      double x = NumberTraits<typename DSSComputer::Integer>
-      ::castToDouble( aDSS.getB() ); 
-      double y = NumberTraits<typename DSSComputer::Integer>
-      ::castToDouble( aDSS.getA() );
-      RealVector v(x,y); 
-      double norm = v.norm(RealVector::L_2);
-      v /= norm; 
-      return v;
+    /**
+     * Operator()
+     *
+     * @return the tangent estimated at @a it
+     *
+     * @param it the position at which the tangent is estimated.
+     * @param aDSS a DSSComputer. 
+     */
+    Quantity operator()( const typename DSSComputer::ConstIterator& /*it*/, 
+			 const DSSComputer& aDSS, 
+			 const bool&,
+			 const bool& ) const 
+    {
+      return this->operator()( aDSS ); 
     };
 
     /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
+     * Operator()
+     *
+     * @return the tangent estimated from @a aDSS
+     *
+     * @param aDSS a DSSComputer. 
      */
-    bool isValid() const
+    Quantity operator()(const DSSComputer& aDSS) const 
     {
-      return true;
+      Functor f; 
+      return f( aDSS ); 
     };
-
-
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-
-
-
-    // ------------------------- Internal --------------------------------
-  private:
-
- 
 
   }; // end of class TangentFromDSSFunctor
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class TangentAngleFromDSSFunctor
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of class 'TangentAngleFromDSSFunctor' <p> Aim: 
-   * computes the tangent orientation (in radians) from the 
-   * getA() and getB() methods returning the components of the main
-   * direction vector of a segment 
-   *
-   * @tparam DSSComputer a model for concept CSegmentComputer.
-   */
 
+  }//namespace detail
+
+
+
+  //-------------------------------------------------------------------------------------------
   template <typename DSSComputer>
-  class TangentAngleFromDSSFunctor
+  class TangentFromDSSFunctor: 
+    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS>
   {
+    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS> Super; 
 
   public: 
-
-    // ----------------------- inner type ------------------------------
-  typedef double Value;
-
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Destructor.
-     */
-    ~TangentAngleFromDSSFunctor(){};
-
     /**
      * Default Constructor.
      */
-    TangentAngleFromDSSFunctor(){};
+    TangentFromDSSFunctor(): Super() {};
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    TangentAngleFromDSSFunctor( const TangentAngleFromDSSFunctor & other ) {};
+    TangentFromDSSFunctor( const TangentFromDSSFunctor & other ): Super(other) {};
+  }; 
 
+  //-------------------------------------------------------------------------------------------
+  template <typename DSSComputer>
+  class TangentVectorFromDSSFunctor: 
+    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> >
+  {
+    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> > Super; 
 
-
-
-
-    // ----------------------- Interface --------------------------------------
-  public:
+  public: 
+    /**
+     * Default Constructor.
+     */
+    TangentVectorFromDSSFunctor(): Super() {};
 
     /**
-     * Operator() 
-     * @return the tangent orientation at [aPoint]
-     * (angle in [-pi,+pi] radians between the tangent and the x-axis).
-     * @param aPoint the point at which the tangent is estimated.
-     * @param aDSS a DSSComputer. 
-     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
-     * be extended at back and false otherwise. 
-     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
-     * be extended at front and false otherwise.  
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    Value operator()( const typename DSSComputer::Point& , 
-                      const DSSComputer& aDSS, 
-                      const double& = 1/*h = 1*/, 
-                      const bool& = false/*isExtendableAtBack = false*/,
-                      const bool& = false/*isExtendableAtFront = false*/) const {
+    TangentVectorFromDSSFunctor( const TangentVectorFromDSSFunctor & other ): Super(other) {};
 
-      Value a = (Value) NumberTraits<typename DSSComputer::Integer>
-                        ::castToInt64_t(aDSS.getA());      
-      Value b = (Value) NumberTraits<typename DSSComputer::Integer>
-                        ::castToInt64_t(aDSS.getB());      
+  }; 
 
-      return std::atan2(a,b);
-    };
+  //-------------------------------------------------------------------------------------------
+  template <typename DSSComputer>
+  class TangentAngleFromDSSFunctor: 
+    public detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentAngleFromDSS>
+  {
+    typedef detail::TangentFromDSSBaseFunctor<DSSComputer, detail::TangentAngleFromDSS> Super; 
+
+  public: 
+    /**
+     * Default Constructor.
+     */
+    TangentAngleFromDSSFunctor(): Super() {};
 
     /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
+     * Copy constructor.
+     * @param other the object to clone.
      */
-    bool isValid() const
-    {
-      return true;
-    };
+    TangentAngleFromDSSFunctor( const TangentAngleFromDSSFunctor & other ): Super(other) {};
+
+  }; 
 
 
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-
-
-
-    // ------------------------- Internal --------------------------------
-  private:
-
- 
-
-  }; // end of class TangentAngleFromDSSFunctor
-
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CurvatureFromDSSLengthFunctor
-  /////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+  namespace detail
+  {
   /**
-   * Description of class 'CurvatureFromDSSLengthFunctor' <p> Aim: 
+   * Description of class 'CurvatureFromDSSLength' <p> Aim: 
    * computes the curvature k from the length l of a DSS as follow: 
    * 1/k = l*l/8 + 1/2
    *
@@ -262,175 +284,26 @@ namespace DGtal
    *  Coeurjolly, D. and Miguet, S. and Tougne, L.
    *  "Discrete Curvature Based on Osculating Circle Estimation", 
    * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
-   *
-   * @tparam DSSComputer a model for concept CSegmentComputer.
    */
+    struct CurvatureFromDSSLength
+    {      
+    public:
+      typedef double Quantity; 
 
-  template <typename DSSComputer>
-  class CurvatureFromDSSLengthFunctor
-  {
+      template<typename DSS>
+      Quantity operator() (const DSS& aDSS) const 
+      {
+	typedef typename DSS::Vector Vector; 
+	//length
+	Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
+	Quantity l = v.norm(Vector::L_2);
+	//result
+	return 1/( (l*l)/8 + 0.5 );  
+      }
+    }; 
 
-  public: 
-
-    // ----------------------- inner type ------------------------------
-    typedef double Value;
-
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Destructor.
-     */
-    ~CurvatureFromDSSLengthFunctor(){};
-
-    /**
-     * Default Constructor.
-     */
-    CurvatureFromDSSLengthFunctor(){};
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & /*other*/ ) {};
-
-
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Operator() 
-     * @return the curvature at [aPoint]
-     * @param aPoint the point at which the curvature is estimated.
-     * @param aDSS a DSSComputer. 
-     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
-     * be extended at back and false otherwise. 
-     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
-     * be extended at front and false otherwise.  
-     */
-    Value operator()( const typename DSSComputer::Point& /*aPoint*/, 
-                      const DSSComputer& aDSS, 
-                      const double& h = 1, 
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false) const {
-
-      //types
-      typedef typename DSSComputer::Integer Integer; 
-      typedef typename DSSComputer::ConstIterator ConstIterator; 
-
-      //curvature value
-      Value k = 0;  
-
-      //begin and end iterators
-      //(back point on the first point)
-      //(front point after the last point)
-      ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();  
-
-      if (isExtendableAtBack) {
-        if (isExtendableAtFront) {
-
-          --back;
-          ++front; 
-
-          //parameters
-          Integer mu = aDSS.getMu();
-          Integer omega = aDSS.getOmega();
-
-          //cases
-          if ( (aDSS.getRemainder(*back)<=mu-1)&&
-               (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS) )/h; 
-          } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
-                (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-            k = -getValue( getLength(aDSS) )/h; 
-          } //else                                                  //inflection
-
-        } else {
-
-          --back;
-
-          //parameters
-          Integer mu = aDSS.getMu();
-          Integer omega = aDSS.getOmega();
-
-          //cases
-          if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS) )/h; 
-          } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-            k = -getValue( getLength(aDSS) )/h; 
-          } //else                                                 //inflection
-
-        }
-      } else if (isExtendableAtFront) {
-
-          ++front; 
-
-          //parameters
-          Integer mu = aDSS.getMu();
-          Integer omega = aDSS.getOmega();
-
-          //cases
-          if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS) )/h; 
-          } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-            k = -getValue( getLength(aDSS) )/h; 
-          } //else                                                  //inflection
-
-      } //else cannot be extended: k is set to 0
-
-      return k;
-    };
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const
-    {
-      return true;
-    };
-
-
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-
-
-
-    // ------------------------- Internal --------------------------------
-  private:
-
-   /*
-   * @param aDSS a DSSComputer. 
-   * @return the length l of a DSS
-   * defined as the length of the straight segment 
-   * linking the two ends of the DSS
-   */
-   Value getLength(const DSSComputer& aDSS) const {
-      typedef typename DSSComputer::Vector Vector; 
-      Vector v(aDSS.getFrontPoint() - aDSS.getBackPoint()); 
-      return v.norm(Vector::L_2); 
-   }
-
-   /*
-   * @param the length l
-   * @return the curvature k from the length l of a DSS as follow: 
-   * 1/k = l*l/8 + 1/2
-   */
-   Value getValue(const Value& l = 1) const {
-      return 1/( (l*l)/8 + 0.5 ); 
-   }
- 
-
-  }; // end of class CurvatureFromDSSLengthFunctor
-
-  /////////////////////////////////////////////////////////////////////////////
-  // class CurvatureFromDSSFunctor
-  /////////////////////////////////////////////////////////////////////////////
   /**
-   * Description of class 'CurvatureFromDSSFunctor' <p> Aim: 
+   * Description of class 'CurvatureFromDSSLengthAndWidth' <p> Aim: 
    * computes the curvature k from 
    * the length l and the width w of a DSS as follow: 
    * 1/k = (l*l)/(8*w) + w/2
@@ -439,18 +312,55 @@ namespace DGtal
    *  Coeurjolly, D. and Miguet, S. and Tougne, L.
    *  "Discrete Curvature Based on Osculating Circle Estimation", 
    * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   */
+    struct CurvatureFromDSSLengthAndWidth
+    {      
+    public:
+      typedef double Quantity; 
+
+      template<typename DSS>
+      Quantity operator() (const DSS& aDSS) const 
+      {
+	typedef typename DSS::Vector Vector; 
+	//length
+	Vector v = ( *aDSS.begin() - *boost::prior(aDSS.end()) ); 
+	Quantity l = v.norm(Vector::L_2);
+	//width
+	Vector t( aDSS.getB(), aDSS.getA() );
+	Quantity w = 1.0 / v.norm(Vector::L_2); 
+	//result
+	return 1.0/( (l*l)/(8*w) + w/2 ); 
+      }
+    }; 
+
+  /////////////////////////////////////////////////////////////////////////////
+  // class CurvatureFromDSSBaseFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'CurvatureFromDSSBaseFunctor' <p> Aim: 
+   * computes a curvature quantity from a DSS.
    *
-   * @tparam DSSComputer a model for concept CSegmentComputer.
+   * @tparam DSSComputer a model of DSS
+   *
+   * The computation is delegated to a functor. 
+   *
+   * @tparam Functor a model of unary functor
+   * taking a DSS as input and returning a double
+   *
    */
 
-  template <typename DSSComputer>
-  class CurvatureFromDSSFunctor
+  template <typename DSSComputer, typename Functor = detail::CurvatureFromDSSLength >
+  class CurvatureFromDSSBaseFunctor
   {
 
   public: 
 
-    // ----------------------- inner type ------------------------------
-    typedef double Value;
+    // ----------------------- inner type ------------------------------------
+    typedef DSSComputer SegmentComputer; 
+    typedef double Quantity;
+
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor< Functor, SegmentComputer, Quantity > ));  
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -458,52 +368,95 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~CurvatureFromDSSFunctor(){};
+    ~CurvatureFromDSSBaseFunctor(){};
 
     /**
      * Default Constructor.
      */
-    CurvatureFromDSSFunctor(){};
+    CurvatureFromDSSBaseFunctor(): myH(0.0) {};
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & /*other*/ ) {};
+    CurvatureFromDSSBaseFunctor( const CurvatureFromDSSBaseFunctor & other ): myH( other.myH) {};
 
+    /**
+     * Assignement
+     * @param other the object to clone.
+     */
+    CurvatureFromDSSBaseFunctor& operator=( const CurvatureFromDSSBaseFunctor & other )
+    {
+      if (this != &other)
+	{
+	  myH = other.myH;
+	}
+      return *this; 
+    };
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() 
+    {
+      return (myH > 0); 
+    };
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Operator() 
-     * @return the curvature at [aPoint]
-     * @param aPoint the point at which the curvature is estimated.
-     * @param aDSS a DSSComputer. 
-     * @param isExtendableAtBack a bool equal to 'true' if [aDSS] can 
-     * be extended at back and false otherwise. 
-     * @param isExtendableAtFront a bool equal to 'true' if [aDSS] can 
-     * be extended at front and false otherwise.  
+     * Init method
+     * @param aH grid step.
      */
-    Value operator()( const typename DSSComputer::Point& /*aPoint*/, 
+    void init( const double& aH = 1.0  ) 
+    {
+      if (aH > 0)
+   	myH = aH; 
+      else 
+   	{
+   	  std::cerr << "[DGtal::CurvatureFromDSSBaseFunctor<DSSComputer>::init(const double& aH)]"
+   		    << " ERROR. aH should be strictly greater than 0." << std::endl;
+   	  throw InputException(); 
+   	}
+    };
+
+
+    /**
+     * Operator() 
+     * 
+     * @return the curvature at position @a it
+     * @param it the position at which the curvature is estimated.
+     * @param aDSS a DSSComputer. 
+     * @param isExtendableAtBack a bool equal to 'true' if @a aDSS 
+     * has connected points at the back
+     * @param isExtendableAtFront a bool equal to 'true' if @a aDSS 
+     * has connected points at the front  
+     */
+    Quantity operator()( const typename DSSComputer::ConstIterator& /*it*/, 
                       const DSSComputer& aDSS, 
-                      const double& h = 1, 
-                      const bool& isExtendableAtBack = false,
-                      const bool& isExtendableAtFront = false) const {
+                      const bool& isExtendableAtBack,
+                      const bool& isExtendableAtFront ) const {
 
       //types
       typedef typename DSSComputer::Integer Integer; 
       typedef typename DSSComputer::ConstIterator ConstIterator; 
 
+      //functor
+      Functor f; 
+
       //curvature value
-      Value k = 0;  
+      Quantity k = 0;  
 
       //begin and end iterators
       //(back point on the first point)
-      //(front point after the last point)
-      ConstIterator front = aDSS.getFront();
-      ConstIterator back = aDSS.getBack();  
+      //(front point on the last point)
+      ConstIterator back = aDSS.begin();  
+      ConstIterator front = aDSS.end();
+      --front; 
+      ASSERT( back != front); 
 
       if (isExtendableAtBack) {
         if (isExtendableAtFront) {
@@ -518,10 +471,10 @@ namespace DGtal
           //cases
           if ( (aDSS.getRemainder(*back)<=mu-1)&&
                (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = f(aDSS) / myH; 
           } else if ( (aDSS.getRemainder(*back)>=mu+omega)&&
                 (aDSS.getRemainder(*front)>=mu+omega) ) {           //concave
-            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = -f(aDSS) / myH; 
           } //else                                                  //inflection
 
         } else {
@@ -534,9 +487,9 @@ namespace DGtal
 
           //cases
           if ( (aDSS.getRemainder(*back)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = f(aDSS) / myH; 
           } else if ( (aDSS.getRemainder(*back)>=mu+omega) ) {     //concave
-            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = -f(aDSS) / myH; 
           } //else                                                 //inflection
 
         }
@@ -550,9 +503,9 @@ namespace DGtal
 
           //cases
           if ( (aDSS.getRemainder(*front)<=mu-1) ) {                //convex
-            k = getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = f(aDSS) / myH; 
           } else if ( (aDSS.getRemainder(*front)>=mu+omega) ) {     //concave
-            k = -getValue( getLength(aDSS), getWidth(aDSS) )/h; 
+            k = -f(aDSS) / myH; 
           } //else                                                  //inflection
 
       } //else cannot be extended: k is set to 0
@@ -560,62 +513,65 @@ namespace DGtal
       return k;
     };
 
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const
-    {
-      return true;
-    };
-
-
-
-    // ------------------------- Public Datas --------------------------------
-  public:
-
-
 
     // ------------------------- Internal --------------------------------
   private:
 
-   /*
-   * @param aDSS a DSSComputer. 
-   * @return the length l of a DSS
-   * defined as the length of the straight segment 
-   * linking the two ends of the DSS
-   */
-   Value getLength(const DSSComputer& aDSS) const {
-      typedef typename DSSComputer::Vector Vector; 
-      Vector v(aDSS.getFrontPoint() - aDSS.getBackPoint()); 
-      return v.norm(Vector::L_2); 
-   }
+    /** grid step */
+    double myH; 
 
-   /*
-   * @param aDSS a DSSComputer. 
-   * @return the width w of a DSS
-   * defined as 1/sqrt(a*a + b*b)
-   */
-   Value getWidth(const DSSComputer& aDSS) const {
-      typedef typename DSSComputer::Vector Vector; 
-      Vector v( aDSS.getB(), aDSS.getA() ); 
-      return 1/v.norm(Vector::L_2); 
-   }
-
-
-   /*
-   * @param the length l
-   * @param the width w
-   * @return the curvature k from 
-   * the length l and the width w of a DSS as follow: 
-   * 1/k = (l*l)/(8*w) + w/2
-   */
-   Value getValue(const Value& l = 1, const Value& w = 1) const {
-      return 1/( (l*l)/(8*w) + w/2 ); 
-   }
  
 
-  }; // end of class CurvatureFromDSSLengthFunctor
+  }; // end of class CurvatureFromDSSBaseFunctor
+
+  }//namespace detail
+
+
+
+  //-------------------------------------------------------------------------------------------
+  template <typename DSSComputer>
+  class CurvatureFromDSSLengthFunctor: 
+    public detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLength >
+  {
+
+    typedef detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLength > Super; 
+ 
+  public: 
+    /**
+     * Default Constructor.
+     */
+    CurvatureFromDSSLengthFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & other ): Super(other) {};
+
+  }; 
+
+  //-------------------------------------------------------------------------------------------
+  template <typename DSSComputer>
+  class CurvatureFromDSSFunctor: 
+    public detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLengthAndWidth >
+  {
+
+    typedef detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLengthAndWidth > Super; 
+ 
+  public: 
+    /**
+     * Default Constructor.
+     */
+    CurvatureFromDSSFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & other ): Super(other) {};
+
+  }; 
+
 
 } // namespace DGtal
 
