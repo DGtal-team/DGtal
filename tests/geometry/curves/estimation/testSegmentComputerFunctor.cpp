@@ -83,15 +83,45 @@ bool testTangentFromDSS(
   trace.info() << endl;
 
   trace.info() << "building and using the functor " << endl;
+  const double epsilon = 0.00001;
 
-  //default constructor
-  TangentAngleFromDSSFunctor<DSSComputer> f; 
-  //call
-  double v1 = f(*begin,dss); 
-  double v2 = std::atan2((double)dss.getA(),(double)dss.getB());
-  trace.info() << "Tangent orientation : " << v1 << " == " << v2 << endl;
+  int nb = 0; 
+  int nbok = 0; 
 
-  return (v1 == v2);
+  { //angle
+    TangentAngleFromDSSFunctor<DSSComputer> f; 
+    double q1 = f(dss); 
+    double q2 = std::atan2((double)dss.getA(),(double)dss.getB());
+    trace.info() << "Tangent orientation : " << q1 << " == " << q2 << endl;
+    nbok += (std::abs(q1 - q2) < epsilon)?1:0;
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  }
+
+  { //vector
+    TangentVectorFromDSSFunctor<DSSComputer> f; 
+    typedef typename TangentVectorFromDSSFunctor<DSSComputer>::Quantity Quantity; 
+    Quantity q1 = f(dss); 
+    Quantity q2 = Quantity(dss.getB(), dss.getA()); 
+    trace.info() << "Tangent vector : " << q1 << " == " << q2 << endl;
+    nbok += (q1 == q2)?1:0; 
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  }
+
+  { //unit vector
+    TangentFromDSSFunctor<DSSComputer> f; 
+    typedef typename TangentFromDSSFunctor<DSSComputer>::Quantity Quantity; 
+    Quantity q1 = f(dss);
+    double n = std::sqrt( (double)dss.getA()*dss.getA() + (double)dss.getB()*dss.getB() );
+    Quantity q2 = Quantity((double)dss.getB()/n, (double)dss.getA()/n); 
+    trace.info() << "Normalized tangent vector : " << q1 << " == " << q2 << endl;
+    nbok += ((std::abs(q1[0] - q2[0]) < epsilon)&&(std::abs(q1[1] - q2[1]) < epsilon))?1:0; 
+    nb++; 
+    trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  }
+
+  return (nb == nbok); 
 }
 
 
@@ -101,7 +131,7 @@ bool testTangentFromDSS(
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class GridCurve" );
+  trace.beginBlock ( "Testing segment computer functors" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
