@@ -227,7 +227,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.ih"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerFunctors.h"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

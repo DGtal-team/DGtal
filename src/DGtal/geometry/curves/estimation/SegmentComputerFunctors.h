@@ -18,7 +18,7 @@
 
 /**
  * @file SegmentComputerFunctor.h
- * @brief Computes tangent, tangent angle, curvature from DSS.
+ * @brief Various local estimators from segment computers.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -27,8 +27,6 @@
  *
  *
  * @date 2011/06/28
- *
- * Header file for module SegmentComputerFunctor.cpp
  *
  * This file is part of the DGtal library.
  *
@@ -52,9 +50,6 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "boost/utility.hpp"
 
-
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -74,7 +69,7 @@ namespace DGtal
    * estimates a geometrical quantity from a segment computer. 
    * The estimation is neither position-dependant 
    * nor scale-dependant (e.g. tangent or normal 
-   * estimation from straight primitives). 
+   * estimation from 'straight' primitives). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
    *
@@ -153,7 +148,7 @@ namespace DGtal
    * estimates a geometrical quantity from a segment computer. 
    * The estimation is not position-dependant,
    * but is scale-dependant (e.g. curvature or radius
-   * estimation from circular primitives). 
+   * estimation from 'circular' primitives). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
    *
@@ -332,7 +327,7 @@ namespace DGtal
      *
      * @return the estimation
      *
-     * @param it position where the estimation is done.
+     * @param it position where the estimation has to be done.
      * @param aSC an instance of segment computer. 
      */
     Quantity operator()(const typename SegmentComputer::ConstIterator& it, 
@@ -351,7 +346,7 @@ namespace DGtal
    * Description of class 'PosDepScaleDepSCFunctor' <p> Aim: 
    * estimates a geometrical quantity from a segment computer. 
    * The estimation is both position-dependant and scale-dependant 
-   * (typically distance of a point with respect to the underlying curve). 
+   * (typically distance of a point to an underlying curve). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
    *
@@ -476,6 +471,20 @@ namespace DGtal
     public:
       typedef double Quantity; 
 
+
+    /**
+     * Operator()
+     *
+     * @return the angle of type double
+     * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+     *
+     * @param aDSS an instance of segment computer
+     * devoted to the DSS recognition.
+     *
+     * @tparam DSS a model of segment computer,
+     * which must have methods getA() and getB()
+     * returning the y- and x-component of the tangent vector.
+     */
       template<typename DSS>
       Quantity operator() (const DSS& aDSS) const 
       {
@@ -497,6 +506,18 @@ namespace DGtal
       typedef DGtal::PointVector<2,double> RealVector; 
       typedef RealVector Quantity;
 
+    /**
+     * Operator()
+     *
+     * @return normalized tangent 
+     *
+     * @param aDSS an instance of segment computer
+     * devoted to the DSS recognition.
+
+     * @tparam DSS a model of segment computer,
+     * which must have methods getA() and getB()
+     * returning the y- and x-component of the tangent vector.
+     */
       template<typename DSS>
       Quantity operator() (const DSS& aDSS) const 
       {
@@ -520,6 +541,18 @@ namespace DGtal
     public:
       typedef typename DSS::Vector Quantity;
 
+    /**
+     * Operator()
+     *
+     * @return tangent vector 
+     *
+     * @param aDSS an instance of segment computer
+     * devoted to the DSS recognition.
+
+     * @tparam DSS a model of segment computer,
+     * which must have methods getA() and getB()
+     * returning the y- and x-component of the tangent vector.
+     */
       Quantity operator() (const DSS& aDSS) const 
       {
 	return Quantity(aDSS.getB(), aDSS.getA());
@@ -534,8 +567,8 @@ namespace DGtal
    * for a scanning in a counter-clockwise (CCW) 
    * orientation, 'false' otherwise. 
    * For instance, the estimated curvature of 
-   * a digital circle, scanned in a CCW orientation, 
-   * is positive. 
+   * a digital circle, scanned in a CCW (resp. CW)
+   * orientation, is positive (resp. negative). 
    */
     template<bool isCCW = true>
     struct CurvatureFromDCA
@@ -543,8 +576,21 @@ namespace DGtal
     public:
       typedef double Quantity; 
 
+    /**
+     * Operator()
+     *
+     * @return curvature 
+     *
+     * @param aDCA an instance of segment computer
+     * devoted to the DCA recognition.
+     * @param aH grid step
+     *
+     * @tparam DCA a model of segment computer
+     * devoted to the DCA recognition, 
+     * basically GeometricalDCA.
+     */
       template<typename DCA>
-      Quantity operator() (const DCA& aDCA, const Quantity& aH = 1.0) const 
+      Quantity operator() (const DCA& aDCA, const double& aH = 1.0) const 
       {
   	if ( aDCA.isStraight() )
   	  return 0.0; 
@@ -576,6 +622,20 @@ namespace DGtal
     public:
       typedef PointVector<2,double> Quantity; 
 
+
+    /**
+     * Operator()
+     *
+     * @return normal at @e it 
+     *
+     * @param it position where the estimation has to be done
+     * @param aDCA an instance of segment computer
+     * devoted to the DCA recognition.
+     *
+     * @tparam DCA a model of segment computer
+     * devoted to the DCA recognition, 
+     * basically GeometricalDCA.
+     */
       template<typename DCA>
       Quantity operator() (const typename DCA::ConstIterator& it, 
   			   const DCA& aDCA) const 
@@ -624,6 +684,21 @@ namespace DGtal
     public:
       typedef PointVector<2,double> Quantity; 
 
+    /**
+     * Operator()
+     *
+     * @return tangent at @e it 
+     *
+     * @param it position where the estimation has to be done
+     * @param aDCA an instance of segment computer
+     * devoted to the DCA recognition.
+     *
+     * @tparam DCA a model of segment computer
+     * devoted to the DCA recognition, 
+     * basically GeometricalDCA.
+     *
+     * @see NormalVectorFromDCA
+     */
       template<typename DCA>
       Quantity operator() (const typename DCA::ConstIterator& it, 
   			   const DCA& aDCA) const 
@@ -644,6 +719,22 @@ namespace DGtal
     public:
       typedef std::pair<double,double> Quantity; 
 
+    /**
+     * Operator()
+     *
+     * @return distances (in a pair) of the 
+     * inner and outer points pointed by @e it
+     * to the separating circle of @e aDCA
+     *
+     * @param it position where the estimation has to be done
+     * @param aDCA an instance of segment computer
+     * devoted to the DCA recognition.
+     * @param aH grid step
+     *
+     * @tparam DCA a model of segment computer
+     * devoted to the DCA recognition, 
+     * basically GeometricalDCA.
+     */
       template<typename DCA>
       Quantity operator() (const typename DCA::ConstIterator& it, 
   			   const DCA& aDCA, const double& aH) const 
@@ -699,6 +790,14 @@ namespace DGtal
 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'TangentFromDSSFunctor' <p> Aim: 
+   * estimates the (normalized) tangent vector from a DSS
+   * recognized by some segment computers. 
+   *
+   * @tparam DSSComputer a model of segment computer
+   * devoted the DSS recognition
+   */
   template <typename DSSComputer>
   class TangentFromDSSFunctor: 
     public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::NormalizedTangentVectorFromDSS>
@@ -712,7 +811,6 @@ namespace DGtal
      * Default Constructor.
      */
     TangentFromDSSFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -721,6 +819,14 @@ namespace DGtal
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'TangentVectorFromDSSFunctor' <p> Aim: 
+   * estimates the (not normalized) tangent vector from the slope
+   * parameters of a DSS recognized by a segment computer. 
+   *
+   * @tparam DSSComputer a model of segment computer
+   * devoted the DSS recognition
+   */
   template <typename DSSComputer>
   class TangentVectorFromDSSFunctor: 
     public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentVectorFromDSS<DSSComputer> >
@@ -734,16 +840,23 @@ namespace DGtal
      * Default Constructor.
      */
     TangentVectorFromDSSFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     TangentVectorFromDSSFunctor( const TangentVectorFromDSSFunctor & other ): Super(other) {};
-
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'TangentAngleFromDSSFunctor' <p> Aim: 
+   * estimates the tangent angle from a DSS
+   * recognized by some segment computers. 
+   * (angle in [-pi,+pi] radians between the tangent and the x-axis).
+   *
+   * @tparam DSSComputer a model of segment computer
+   * devoted the DSS recognition
+   */
   template <typename DSSComputer>
   class TangentAngleFromDSSFunctor: 
     public detail::PosIndepScaleIndepSCFunctor<DSSComputer, detail::TangentAngleFromDSS>
@@ -757,16 +870,31 @@ namespace DGtal
      * Default Constructor.
      */
     TangentAngleFromDSSFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     TangentAngleFromDSSFunctor( const TangentAngleFromDSSFunctor & other ): Super(other) {};
-
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'CurvatureFromDCAFunctor' <p> Aim: 
+   * estimates the curvature from a DCA
+   * recognized by a segment computer, 
+   * basically GeometricalDCA.
+   *
+   * @tparam DCAComputer a model of segment computer
+   * devoted the DCA recognition
+   *
+   * @tparam isCCW boolean equal to 'true' (default)
+   * for a scanning in a counter-clockwise (CCW) 
+   * orientation, 'false' otherwise, i.e in a 
+   * clockwise orientation (CW). 
+   * For instance, the estimated curvature of 
+   * a digital circle, scanned in a CCW (resp. CW)
+   * orientation, is positive (resp. negative). 
+   */
   template <typename DCAComputer, bool isCCW = true>
   class CurvatureFromDCAFunctor: 
     public detail::PosIndepScaleDepSCFunctor<DCAComputer, 
@@ -781,23 +909,29 @@ namespace DGtal
      * Default Constructor.
      */
     CurvatureFromDCAFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     CurvatureFromDCAFunctor( const CurvatureFromDCAFunctor & other ): Super(other) {};
-
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'NormalFromDCAFunctor' <p> Aim: 
+   * estimates the (normalized) normal vector at some position from a DCA
+   * recognized by a segment computer, basically GeometricalDCA.
+   *
+   * @tparam DCAComputer a model of segment computer
+   * devoted the DCA recognition
+   */
   template <typename DCAComputer>
   class NormalFromDCAFunctor: 
     public detail::PosDepScaleIndepSCFunctor<DCAComputer, 
 						detail::NormalVectorFromDCA>
   {
     typedef 
-    detail::PosDepScaleIndepSCFunctor<DCAComputer, detail::TangentVectorFromDCA> 
+    detail::PosDepScaleIndepSCFunctor<DCAComputer, detail::NormalVectorFromDCA> 
     Super; 
 
   public: 
@@ -805,16 +939,22 @@ namespace DGtal
      * Default Constructor.
      */
     NormalFromDCAFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     NormalFromDCAFunctor( const NormalFromDCAFunctor & other ): Super(other) {};
-
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'TangentFromDCAFunctor' <p> Aim: 
+   * estimates the (normalized) tangent vector at some position from a DCA
+   * recognized by a segment computer, basically GeometricalDCA.
+   *
+   * @tparam DCAComputer a model of segment computer
+   * devoted the DCA recognition
+   */
   template <typename DCAComputer>
   class TangentFromDCAFunctor: 
     public detail::PosDepScaleIndepSCFunctor<DCAComputer, 
@@ -829,15 +969,23 @@ namespace DGtal
      * Default Constructor.
      */
     TangentFromDCAFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     TangentFromDCAFunctor( const TangentFromDCAFunctor & other ): Super(other) {};
-
   }; 
+
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'DistanceFromDCAFunctor' <p> Aim: 
+   * estimates the (Euclidean) distance of some points to 
+   * the separating circle of a DCA recognized by a 
+   * segment computer, basically GeometricalDCA.
+   *
+   * @tparam DCAComputer a model of segment computer
+   * devoted the DCA recognition
+   */
   template <typename DCAComputer>
   class DistanceFromDCAFunctor: 
     public detail::PosDepScaleDepSCFunctor<DCAComputer, 
@@ -852,14 +1000,13 @@ namespace DGtal
      * Default Constructor.
      */
     DistanceFromDCAFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     DistanceFromDCAFunctor( const DistanceFromDCAFunctor & other ): Super(other) {};
-
   }; 
+
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////
@@ -867,8 +1014,9 @@ namespace DGtal
   {
   /**
    * Description of class 'CurvatureFromDSSLength' <p> Aim: 
-   * computes the curvature k from the length l of a DSS as follow: 
-   * 1/k = l*l/8 + 1/2
+   * Computes the curvature @f$ k @f$ from the discrete length @f$ l @f$ of a DSS 
+   * as follow: 
+   * @f$ 1/k = l*l/8 + 1/2 @f$
    *
    * @note Adaption from 
    *  Coeurjolly, D. and Miguet, S. and Tougne, L.
@@ -894,9 +1042,9 @@ namespace DGtal
 
   /**
    * Description of class 'CurvatureFromDSSLengthAndWidth' <p> Aim: 
-   * computes the curvature k from 
-   * the length l and the width w of a DSS as follow: 
-   * 1/k = (l*l)/(8*w) + w/2
+   * computes the curvature @f$ k @f$ from 
+   * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow: 
+   *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
    *
    * @note Adaption from 
    *  Coeurjolly, D. and Miguet, S. and Tougne, L.
@@ -928,9 +1076,10 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    * Description of class 'CurvatureFromDSSBaseFunctor' <p> Aim: 
-   * computes a curvature quantity from a DSS.
+   * computes a curvature quantity from the length and/or the width of a DSS.
    *
-   * @tparam DSSComputer a model of DSS
+   * @tparam DSSComputer a model of segment computer 
+   * devoted to the DSS recognition.
    *
    * The computation is delegated to a functor. 
    *
@@ -1119,6 +1268,27 @@ namespace DGtal
 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'CurvatureFromDSSLengthFunctor' <p> Aim: 
+   * estimates the curvature from a DSS
+   * recognized by a segment computer.
+   *
+   * The curvature @f$ k @f$ is defined from the discrete length @f$ l @f$ 
+   * of a DSS as follow: 
+   * @f$ 1/k = l*l/8 + 1/2 @f$
+   *
+   * @note Adaption from 
+   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
+   *  "Discrete Curvature Based on Osculating Circle Estimation", 
+   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   *
+   * In this approach, the DSS is viewed as the chord 
+   * at a distance h (the grid step) to the osculating circle. 
+   * Unfortunately, maximal DSS are in general too short.
+   *
+   * @tparam DSSComputer a model of segment computer
+   * devoted the DSS recognition
+   */
   template <typename DSSComputer>
   class CurvatureFromDSSLengthFunctor: 
     public detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLength >
@@ -1131,16 +1301,31 @@ namespace DGtal
      * Default Constructor.
      */
     CurvatureFromDSSLengthFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     CurvatureFromDSSLengthFunctor( const CurvatureFromDSSLengthFunctor & other ): Super(other) {};
-
   }; 
 
   //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'CurvatureFromDSSLengthFunctor' <p> Aim: 
+   * estimates the curvature from a DSS
+   * recognized by a segment computer.
+   *
+   * The curvature @f$ k @f$ is defined from 
+   * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow: 
+   *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
+   *
+   * @note Adaption from 
+   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
+   *  "Discrete Curvature Based on Osculating Circle Estimation", 
+   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   *
+   * @tparam DSSComputer a model of segment computer
+   * devoted the DSS recognition
+   */
   template <typename DSSComputer>
   class CurvatureFromDSSFunctor: 
     public detail::CurvatureFromDSSBaseFunctor<DSSComputer, detail::CurvatureFromDSSLengthAndWidth >
@@ -1153,13 +1338,11 @@ namespace DGtal
      * Default Constructor.
      */
     CurvatureFromDSSFunctor(): Super() {};
-
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     CurvatureFromDSSFunctor( const CurvatureFromDSSFunctor & other ): Super(other) {};
-
   }; 
 
 
