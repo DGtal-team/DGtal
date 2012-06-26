@@ -79,6 +79,23 @@ init( const Polynomial3 & poly )
   myDerivatives[ 0 ] = derivative<0>( poly );
   myDerivatives[ 1 ] = derivative<1>( poly );
   myDerivatives[ 2 ] = derivative<2>( poly );
+
+  Fx= myDerivatives[ 0 ];
+  Fy= myDerivatives[ 1 ];
+  Fz= myDerivatives[ 2 ];
+
+  Fxx= derivative<0>(myDerivatives[ 0 ]) ;
+  Fxy= derivative<1>(myDerivatives[ 0 ]) ;
+  Fxz= derivative<2>(myDerivatives[ 0 ]) ;
+
+  Fyx= derivative<0>(myDerivatives[ 1 ]) ;
+  Fyy= derivative<1>(myDerivatives[ 1 ]) ;
+  Fyz= derivative<2>(myDerivatives[ 1 ]) ;
+
+
+  Fzx= derivative<0>(myDerivatives[ 2 ]) ;
+  Fzy= derivative<1>(myDerivatives[ 2 ]) ;
+  Fzz= derivative<2>(myDerivatives[ 2 ]) ;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -139,23 +156,38 @@ double
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 meanCurvature( const RealPoint &aPoint ) const
 {
-double Dx= myDerivatives[ 0 ]( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-double Dy= myDerivatives[ 1 ]( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-double Dz= myDerivatives[ 2 ]( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-double Norm=sqrt(Dx*Dx+Dy*Dy+Dz*Dz);
+Polynomial3 U= myDerivatives[ 0 ];
+Polynomial3 V= myDerivatives[ 1 ];
+Polynomial3 W= myDerivatives[ 2 ];
+Polynomial3 N=U*U+V*V+W*W;
 
 
-Polynomial3 N1 = derivative<0>( myDerivatives[ 0 ]);
-Polynomial3 N2 = derivative<1>( myDerivatives[ 1 ]);
-Polynomial3 N3 = derivative<2>( myDerivatives[ 2 ]);
+Polynomial3 Ux=  derivative<0>(U);
+Polynomial3 Vy=  derivative<1>(V);
+Polynomial3 Wz=  derivative<2>(W);
+
+Polynomial3 Nx=  derivative<0>(N);
+Polynomial3 Ny=  derivative<1>(N);
+Polynomial3 Nz=  derivative<2>(N);
+
+double  Nvalue = N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ]);
+double N2= Nvalue*Nvalue;
 
 
+
+double A=(Ux( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double B =(U( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+
+
+double C=(Vy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double D =(V( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Ny( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+
+double E=(Wz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double F =(W( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
 
 
 return 
-    ( N1 ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] )/Norm +
-	 N2 ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] )/Norm +
-	N3( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))/Norm;
+    ( (A-B)/N2+ (C-D)/N2 +(E-F)/N2);
 
 }
 
@@ -169,32 +201,32 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::
 gaussianCurvature( const RealPoint &aPoint ) const
 {
   
-double Fx=(myDerivatives[ 0 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fy=(myDerivatives[ 1 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fz=(myDerivatives[ 2 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double vFx= Fx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFy= Fy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFz= Fz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-double Fxx=(derivative<0>(myDerivatives[ 0 ]) ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fxy=(derivative<1>(myDerivatives[ 0 ]) ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fxz=(derivative<2>(myDerivatives[ 0 ]) ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double vFxx= Fxx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFxy= Fxy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFxz= Fxz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-double Fyx=(derivative<0>(myDerivatives[ 1 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fyy=(derivative<1>(myDerivatives[ 1 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fyz=(derivative<2>(myDerivatives[ 1 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-
-
-double Fzx=(derivative<0>(myDerivatives[ 2 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fzy=(derivative<1>(myDerivatives[ 2 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-double Fzz=(derivative<2>(myDerivatives[ 2 ])( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double vFyx= Fyx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFyy= Fyy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFyz= Fyz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
 
+double vFzx = Fzx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFzy = Fzy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFzz = Fzz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-double A = Fz*(Fxx*Fz-2.0*Fx*Fxz)+Fx*Fx*Fzz;
 
-double B = Fz*(Fyy*Fz-2.0*Fy*Fyz)+Fy*Fy*Fzz;
 
-double C = Fz*(-Fx*Fyz+Fxy*Fz-Fxz*Fy)+Fx*Fy*Fzz;
+double A = vFz*(vFxx*vFz-2.0*vFx*vFxz)+vFx*vFx*vFzz;
 
-double D=Fz*(Fx*Fx+Fy*Fy+Fz*Fz);
+double B = vFz*(vFyy*vFz-2.0*vFy*vFyz)+vFy*vFy*vFzz;
+
+double C = vFz*(-vFx*vFyz+vFxy*vFz-vFxz*vFy)+vFx*vFy*vFzz;
+
+double D = vFz*(vFx*vFx+vFy*vFy+vFz*vFz);
 
 double G= (A*B-C*C)/(D*D);
 
