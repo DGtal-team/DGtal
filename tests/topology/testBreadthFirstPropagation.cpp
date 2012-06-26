@@ -90,9 +90,6 @@ bool testBreadthFirstPropagation()
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
   
-  
-  cout << "Best capacity : " << obj.bestCapacity() << endl;
-  
   BreadthFirstVisitor<Object, set<Point> > bfv (obj, c1);
   
   
