@@ -175,7 +175,13 @@ bool testLocalGraphModel()
   trace.beginBlock ( "Testing graph model" );
   unsigned int nbok=0,nb=0;
   
-  typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
+  typedef SpaceND<6> Space6D;
+  typedef Space6D::Point Point;
+  Point p0(0, 0, 0, 0, 0, 0, 0);
+  Point p1(0, 0, 0, 0, 0, 0, 1);
+  Point p2(0, 0, 0, 0, 0, 0, 2);
+  Point p3(0, 0, 0, 0, 0, 1, 1);
+  typedef DGtal::MetricAdjacency<SpaceND<6,int>, 1>  Adj;
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Adj> ));
   
   
