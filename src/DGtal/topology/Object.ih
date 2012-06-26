@@ -665,14 +665,23 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::
 writeNeighbors( OutputIterator & it,
                 const Vertex & v ) const
 {
-  SmallObject neighbors = properNeighborhood( v );
-  
-  for( typename SmallObject::ConstIterator n = neighbors.begin();
-        n != neighbors.end();
-        n++ )
-  {
-    *it++ = *n;
-  }
+  typedef std::vector<Vertex> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeProperNeighborhood( v, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  for ( ContainerConstIterator cit = neigh.begin();
+      cit != it_end;
+      ++cit )
+    if ( pointSet().find( *cit ) != not_found )
+      *it++ = *cit;
 }
 
 /**
@@ -700,18 +709,23 @@ writeNeighbors( OutputIterator & it,
                 const Vertex & v,
                 const VertexPredicate & pred ) const
 {
-  SmallObject neighbors = neighborhood( v );
-  Vertex s;
-  for( typename SmallObject::Iterator n = neighbors.begin();
-        n != neighbors.end();
-        n++ )
-  {
-    s = *n;
-    if( pred( s ) ) 
-    {
-      *it++ = s;
-    }
-  }
+  typedef std::vector<Vertex> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container neigh;
+  std::back_insert_iterator< Container > back_ins_it( neigh );
+  adjacency().writeProperNeighborhood( v, back_ins_it );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( neigh.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  for ( ContainerConstIterator cit = neigh.begin();
+      cit != it_end;
+      ++cit )
+    if ( pointSet().find( *cit ) != not_found && pred(*cit) )
+      *it++ = *cit;
 }
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Simple points -------------------------------

@@ -232,6 +232,8 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Local graph services -----------------------------
 
+
+
 /**
  * @return maximum number of neighbors for this adjacency
  */
@@ -240,29 +242,8 @@ inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
 {
-  Dimension result = 0;
-  for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
-  {
-    Dimension mFactorial = 1;
-    for( Dimension j = 2; j <= m; j++)
-    {
-      mFactorial *= j;
-    }
-    Dimension nFactorial = 1;
-    for( Dimension j = 2; j <= dimension; j++)
-    {
-      nFactorial *= j;
-    }
-    Dimension n_minus_mFactorial = 1;
-    for( Dimension j = 2; j <= dimension - m; j++)
-    {
-      n_minus_mFactorial *= j;
-    }
-    // number of neighbors of dimension m next to an n-dimensional hypercube
-    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
-    result += mDimNeighbors;
-  }
-  return result;
+  static Size myCapacity = computeCapacity();
+  return myCapacity;
 }
 
 /**
@@ -370,6 +351,39 @@ DGtal::operator<< ( std::ostream & out,
   return out;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of hidden services                                         //
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity() 
+{
+  Dimension result = 0;
+  for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
+  {
+    Dimension mFactorial = 1;
+    for( Dimension j = 2; j <= m; j++)
+    {
+      mFactorial *= j;
+    }
+    Dimension nFactorial = 1;
+    for( Dimension j = 2; j <= dimension; j++)
+    {
+      nFactorial *= j;
+    }
+    Dimension n_minus_mFactorial = 1;
+    for( Dimension j = 2; j <= dimension - m; j++)
+    {
+      n_minus_mFactorial *= j;
+    }
+    // number of neighbors of dimension m next to an n-dimensional hypercube
+    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
+    result += mDimNeighbors;
+  }
+  return result;
+}
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -392,7 +406,7 @@ namespace DGtal {
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -581,7 +595,7 @@ namespace DGtal {
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -747,7 +761,7 @@ namespace DGtal {
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -1029,7 +1043,7 @@ namespace DGtal {
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -1272,7 +1286,7 @@ namespace DGtal {
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
