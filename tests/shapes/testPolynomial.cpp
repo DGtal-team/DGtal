@@ -199,8 +199,9 @@ int main( int argc, char** argv )
     double a=ishape.gaussianCurvature(A);
 //    double a= ishape.meanCurvature(A);
     if(a!=a)
-    a=0;
-    cout<<a<<endl;
+    {
+        a=0;
+    }
     viewer <<   CustomColors3D( Color::Black, cmap_grad( a));
     viewer << *it;
   }
