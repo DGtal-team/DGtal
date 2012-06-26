@@ -156,15 +156,15 @@ double
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 meanCurvature( const RealPoint &aPoint ) const
 {
-Polynomial3 U= myDerivatives[ 0 ];
-Polynomial3 V= myDerivatives[ 1 ];
-Polynomial3 W= myDerivatives[ 2 ];
+Polynomial3 U= Fx;
+Polynomial3 V= Fy;
+Polynomial3 W= Fz;
 Polynomial3 N=U*U+V*V+W*W;
 
 
-Polynomial3 Ux=  derivative<0>(U);
-Polynomial3 Vy=  derivative<1>(V);
-Polynomial3 Wz=  derivative<2>(W);
+Polynomial3 Ux=  Fxx;
+Polynomial3 Vy=  Fyy;
+Polynomial3 Wz=  Fzz;
 
 Polynomial3 Nx=  derivative<0>(N);
 Polynomial3 Ny=  derivative<1>(N);
