@@ -180,6 +180,24 @@ namespace DGtal
     Polynomial3 myPolynomial;
     /// The gradient 3-polynomials (computed).
     Polynomial3 myDerivatives[ 3 ];
+
+    // Partial deriatives
+    Polynomial3 Fx;
+    Polynomial3 Fy;
+    Polynomial3 Fz;
+
+    Polynomial3 Fxx;
+    Polynomial3 Fxy;
+    Polynomial3 Fxz;
+
+    Polynomial3 Fyx;
+    Polynomial3 Fyy;
+    Polynomial3 Fyz;
+
+    Polynomial3 Fzx;
+    Polynomial3 Fzy;
+    Polynomial3 Fzz;
+
    
     // ------------------------- Hidden services ------------------------------
   protected:

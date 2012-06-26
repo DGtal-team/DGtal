@@ -150,27 +150,57 @@ int main( int argc, char** argv )
     viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
 
+
+
+//-----------------------------------------------------------------------
+// Looking for the min and max values
+
+  double minCurv=1;
+  double maxCurv=0;
+  SCellToMidPoint<KSpace> midpoint(K);
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
+	it != it_end; ++it)
+  {
+
+    RealPoint A = midpoint( *it );
+    double a=ishape.gaussianCurvature(A);
+//    double a= ishape.meanCurvature(A);
+    if(a>maxCurv)
+    {
+	maxCurv=a;
+    }
+    if(a<minCurv)
+    {
+	minCurv=a;
+    }
+
+
+
+  }
+
+
 //-----------------------------------------------------------------------
 //Specifing a color map
 
-  GradientColorMap<double> cmap_grad( 0, 1 );
+  GradientColorMap<double> cmap_grad( minCurv, maxCurv );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
-
+//------------------------------------------------------------------------------------
+//drawing
   unsigned int nbSurfels = 0;
-  SCellToMidPoint<KSpace> midpoint(K);
+
   for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
 	it != it_end; ++it, ++nbSurfels )
   {
 
     RealPoint A = midpoint( *it );
-//  double a=ishape.gaussianCurvature(A);
-    double a= ishape.meanCurvature(A);
+    double a=ishape.gaussianCurvature(A);
+//    double a= ishape.meanCurvature(A);
     if(a!=a)
     a=0;
-    
+    cout<<a<<endl;
     viewer <<   CustomColors3D( Color::Black, cmap_grad( a));
     viewer << *it;
   }
