@@ -62,7 +62,8 @@ namespace DGtal
    * This class is useful for limiting adjacencies that are defined
    * for unlimited spaces.
    *
-   * Model of CAdjacency.
+   * \b Model of CAdjacency.
+   * \b Model of CUndirectedSimpleLocalGraph.
    *
    * @tparam TDomain the type of the domain.
    * @tparam TAdjacency the type of the adjacency.
