@@ -35,7 +35,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/topology/CUndirectedSimpleGraph.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
 #include <set>
 #include <iterator>
@@ -57,7 +57,7 @@ bool testBreadthFirstPropagation()
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
   
-  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Z2i::Object4_8> ));
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
   
   Point p1( -50, -50 );
   Point p2( 50, 50 );
@@ -174,7 +174,7 @@ bool testBreadthFirstPropagation()
     }
   }
   
-  board.saveEPS( "testGraph.eps");
+  board.saveEPS("testGraph.eps");
 }
 
 int main( int argc, char** argv )

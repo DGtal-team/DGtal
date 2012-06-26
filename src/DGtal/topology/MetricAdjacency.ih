@@ -101,40 +101,6 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
   return false;
 }
 
-/**
- * @return maximum number of neighbors for this adjacency
- */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-inline
-typename TSpace::Size 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
-{
-  Dimension result = 0;
-  for( Dimension i = dimension; i > dimension - maxNorm1; i-- )
-  {
-    // factorial defined ? Temporary implementation
-    int m = i - 1;
-    Dimension mFactorial = 1;
-    for( Dimension j = 2; j <= m; j++)
-    {
-      mFactorial *= j;
-    }
-    Dimension nFactorial = 1;
-    for( Dimension j = 2; j <= dimension; j++)
-    {
-      nFactorial *= j;
-    }
-    Dimension n_minus_mFactorial = 1;
-    for( Dimension j = 2; j <= dimension - m; j++)
-    {
-      n_minus_mFactorial *= j;
-    }
-    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
-    result += mDimNeighbors;
-  }
-  
-  return result;
-}
 
 /**
  * Outputs the whole neighborhood of point [p] satisfying the
@@ -263,6 +229,105 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
     }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Local graph services -----------------------------
+
+/**
+ * @return maximum number of neighbors for this adjacency
+ */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
+{
+  Dimension result = 0;
+  for( Dimension i = dimension; i > dimension - maxNorm1; i-- )
+  {
+    // factorial defined ? Temporary implementation
+    int m = i - 1;
+    Dimension mFactorial = 1;
+    for( Dimension j = 2; j <= m; j++)
+    {
+      mFactorial *= j;
+    }
+    Dimension nFactorial = 1;
+    for( Dimension j = 2; j <= dimension; j++)
+    {
+      nFactorial *= j;
+    }
+    Dimension n_minus_mFactorial = 1;
+    for( Dimension j = 2; j <= dimension - m; j++)
+    {
+      n_minus_mFactorial *= j;
+    }
+    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
+    result += mDimNeighbors;
+  }
+  return result;
+}
+
+/**
+ * @param v any vertex
+ * 
+ * @return the number of neighbors of this vertex
+ */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
+( const Vertex & v )
+{
+  vector<Vertex> vertices;
+  back_insert_iterator< vector<Vertex> > back_it(vertices);
+  writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+  return vertices.size();
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
+ */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename OutputIterator>
+inline
+void  
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
+( OutputIterator &it, const Vertex & v )
+{
+  writeProperNeighborhood<OutputIterator>( v, it );
+}
+
+/**
+  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * output iterator
+  * 
+  * 
+  * @tparam OutputObjectIterator the type of an output iterator writing
+  * in a container of vertices.
+  * 
+  * @tparam VertexPredicate the type of the predicate
+  * 
+  * @param it the output iterator
+  * 
+  * @param v the vertex whose neighbors will be written
+  * 
+  * @param pred the predicate that must be satisfied
+  */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename OutputIterator, typename VertexPredicate>
+void
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+{
+  writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -327,6 +392,14 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
   
     // ----------------------- Standard services ------------------------------
   public:
@@ -356,13 +429,6 @@ namespace DGtal {
     return ( n1 <= 2 ) && ( n1 != 0 );
   }
       return false;
-    }
-
-    inline
-    static
-    typename TSpace::Size bestCapacity()
-    {
-      return 8;
     }
     
     template <typename OutputIterator>
@@ -444,7 +510,44 @@ namespace DGtal {
       ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
     }
+    
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 8;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      vector<Vertex> vertices;
+      back_insert_iterator< vector<Vertex> > back_it(vertices);
+      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+      return vertices.size();
+    }
 
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      writeProperNeighborhood<OutputIterator>( v, it );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+    }
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -481,7 +584,15 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-  
+
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+    
     // ----------------------- Standard services ------------------------------
   public:
   
@@ -506,14 +617,6 @@ namespace DGtal {
       Vector v( p2 - p1 );
       return v.norm1() == 1;
     }
-    
-    inline
-    static
-    typename TSpace::Size bestCapacity()
-    {
-      return 4;
-    }
-    
 
     template <typename OutputIterator>
     inline
@@ -577,6 +680,42 @@ namespace DGtal {
       if ( pred( q ) ) *out_it++ = q;
     }
 
+    // ---------------------- Local graph services ----------------------------
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 4;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      vector<Vertex> vertices;
+      back_insert_iterator< vector<Vertex> > back_it(vertices);
+      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+      return vertices.size();
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      writeProperNeighborhood<OutputIterator>( v, it );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+    }
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -614,6 +753,14 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
   
     // ----------------------- Standard services ------------------------------
   public:
@@ -643,13 +790,6 @@ namespace DGtal {
 	  return ( n1 <= 3 ) && ( n1 != 0 );
 	}
       return false;
-    }
-
-    inline
-    static
-    typename TSpace::Size bestCapacity()
-    {
-      return 26;
     }
     
     template <typename OutputIterator>
@@ -824,6 +964,43 @@ namespace DGtal {
       ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
     }
 
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 26;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      vector<Vertex> vertices;
+      back_insert_iterator< vector<Vertex> > back_it(vertices);
+      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+      return vertices.size();
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      writeProperNeighborhood<OutputIterator>( v, it );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+    }    
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -861,6 +1038,14 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
   
     // ----------------------- Standard services ------------------------------
   public:
@@ -890,13 +1075,6 @@ namespace DGtal {
 	  return ( n1 <= 2 ) && ( n1 != 0 );
 	}
       return false;
-    }
-    
-    inline
-    static
-    typename TSpace::Size bestCapacity()
-    {
-      return 18;
     }
 
     template <typename OutputIterator>
@@ -1032,6 +1210,43 @@ namespace DGtal {
  
     }
 
+    // ---------------------- Local graph services ----------------------------   
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 18;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      vector<Vertex> vertices;
+      back_insert_iterator< vector<Vertex> > back_it(vertices);
+      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+      return vertices.size();
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      writeProperNeighborhood<OutputIterator>( v, it );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+    }
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -1069,6 +1284,14 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
   
     // ----------------------- Standard services ------------------------------
   public:
@@ -1098,13 +1321,6 @@ namespace DGtal {
 	  return ( n1 == 1 );
 	}
       return false;
-    }
-    
-    inline
-    static
-    typename TSpace::Size bestCapacity()
-    {
-      return 6;
     }
 
     template <typename OutputIterator>
@@ -1175,6 +1391,43 @@ namespace DGtal {
       q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x+1, y  , z
       --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y-1, z
       q[ 1 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y+1, z
+    }
+    
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 6;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      vector<Vertex> vertices;
+      back_insert_iterator< vector<Vertex> > back_it(vertices);
+      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+      return vertices.size();
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      writeProperNeighborhood<OutputIterator>( v, it );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
     }
 
     // ----------------------- Interface --------------------------------------
