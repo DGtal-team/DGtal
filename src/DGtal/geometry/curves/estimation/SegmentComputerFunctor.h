@@ -344,6 +344,128 @@ namespace DGtal
 
   }; // end of class PosDepScaleIndepSCFunctor
 
+  /////////////////////////////////////////////////////////////////////////////
+  // class PosDepScaleDepSCFunctor
+  /////////////////////////////////////////////////////////////////////////////
+  /**
+   * Description of class 'PosDepScaleDepSCFunctor' <p> Aim: 
+   * estimates a geometrical quantity from a segment computer. 
+   * The estimation is both position-dependant and scale-dependant 
+   * (typically distance of a point with respect to the underlying curve). 
+   *
+   * @tparam TSegmentComputer a model of segment computer. 
+   *
+   * The computation is delegated to a functor.  
+   *
+   * @tparam Functor a functor
+   */
+
+  template <typename TSegmentComputer, typename Functor, 
+	    typename ReturnType = typename Functor::Quantity>
+  class PosDepScaleDepSCFunctor
+  {
+
+  public: 
+
+    // ----------------------- inner type ------------------------------
+    typedef TSegmentComputer SegmentComputer;
+    typedef ReturnType Quantity;
+
+    // ----------------------- internal data ------------------------------
+  public:
+    double myH; 
+
+    // ----------------------- Standard services ------------------------------
+  public:
+
+    /**
+     * Default constructor.
+     * NB: not valid.
+     */
+    PosDepScaleDepSCFunctor()
+      : myH( 0.0 )
+    {
+    }
+    /**
+     * Copy constructor.
+     * @param other the object to copy.
+     */
+    PosDepScaleDepSCFunctor( const PosDepScaleDepSCFunctor& other )
+      : myH( other.myH )
+    {
+    }
+    /**
+     * Assignement.
+     * @param other the object to copy.
+     */
+    PosDepScaleDepSCFunctor& operator=( const PosDepScaleDepSCFunctor& other )
+    {
+      if (this != &other)
+	{
+	  myH = other.myH; 
+	}
+      return *this; 
+    }
+    /**
+     * Destructor
+     */
+    ~PosDepScaleDepSCFunctor() {}
+
+    /**
+     * Checks the validity/consistency of the object.
+     * @return 'true' if the object is valid, 'false' otherwise.
+     */
+    bool isValid() 
+    {
+      return (myH > 0); 
+    };
+
+    // ----------------------- Interface --------------------------------------
+  public:
+
+    /**
+     * Init method: set @e myH
+     */
+    void init( const double& aH ) 
+    {
+      myH = aH;
+      ASSERT( isValid() ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+			 const SegmentComputer& aSC, 
+			 const bool&,
+			 const bool& ) const 
+    {
+      return this->operator()( aSC ); 
+    };
+
+    /**
+     * Operator()
+     *
+     * @return the estimation
+     *
+     * @param it position where the estimation is performed
+     * @param aSC an instance of segment computer. 
+     */
+    Quantity operator()(const typename SegmentComputer::ConstIterator& it, 
+			const SegmentComputer& aSC) const 
+    {
+      Functor f; 
+      return f( it, aSC, myH ); 
+    };
+
+  }; // end of class PosDepScaleDepSCFunctor
+
+    ///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
   /**
    * Description of class 'TangentAngleFromDSS' <p> Aim: 
    * computes the tangent orientation of a DSS 
@@ -406,8 +528,16 @@ namespace DGtal
   /**
    * Description of class 'CurvatureFromDCA' <p> Aim: 
    * computes the curvature from a GeometricalDCA
-   * at a given grid step
+   * at a given grid step.
+   *
+   * @tparam isCCW boolean equal to 'true' 
+   * for a scanning in a counter-clockwise (CCW) 
+   * orientation, 'false' otherwise. 
+   * For instance, the estimated curvature of 
+   * a digital circle, scanned in a CCW orientation, 
+   * is positive. 
    */
+    template<bool isCCW = true>
     struct CurvatureFromDCA
     {      
     public:
@@ -420,6 +550,21 @@ namespace DGtal
   	  return 0.0; 
 	else
 	return ( aDCA.getSeparatingCircle().getCurvature() / aH );
+      }
+    }; 
+    template<>
+    struct CurvatureFromDCA<false>
+    {      
+    public:
+      typedef double Quantity; 
+
+      template<typename DCA>
+      Quantity operator() (const DCA& aDCA, const Quantity& aH = 1.0) const 
+      {
+  	if ( aDCA.isStraight() )
+  	  return 0.0; 
+	else
+	return - ( aDCA.getSeparatingCircle().getCurvature() / aH );
       }
     }; 
   /**
@@ -454,13 +599,16 @@ namespace DGtal
 	    //normal vector 
 	    double v0 = m0 - c0; 
 	    double v1 = m1 - c1; 
+	    //norm
 	    double n = std::sqrt(v0*v0 + v1*v1); 
 	    return Quantity( v0/n, v1/n );
   	  }
   	else
   	  {
+	    //separating straight line and normal vector
 	    double a, b, c; 
-	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c); 
+	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c);
+	    //norm
 	    double n = std::sqrt(a*a + b*b); 
   	    return Quantity( a/n, b/n ); 
   	  }
@@ -483,6 +631,66 @@ namespace DGtal
 	NormalVectorFromDCA f; 
 	Quantity normal = f(it, aDCA); 
 	return Quantity( normal[1], normal[0] ); 
+      }
+    }; 
+
+  /**
+   * Description of class 'DistanceFromDCA' <p> Aim: 
+   * estimates the distance of a given pair of points
+   * to the seperating circle of a DCA. 
+   */
+    struct DistanceFromDCA
+    {      
+    public:
+      typedef std::pair<double,double> Quantity; 
+
+      template<typename DCA>
+      Quantity operator() (const typename DCA::ConstIterator& it, 
+  			   const DCA& aDCA, const double& aH) const 
+      {
+	typedef typename DCA::ConstIterator ConstIterator; 
+	typedef typename DCA::Pair Pair; 
+	typedef typename DCA::Point Point;
+	typedef typename Point::Coordinate Coordinate; 
+	
+  	if ( !aDCA.isStraight() )
+  	  {
+  	    //separating circle center
+  	    double c0, c1, r; 
+  	    aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+  	    //points
+	    Pair pair = *it; 
+	    Point i = pair.first; 
+	    Point o = pair.second;
+	    //distances
+	    double distI0 = NumberTraits<Coordinate>::castToDouble(i[0]) - c0; 
+	    double distI1 = NumberTraits<Coordinate>::castToDouble(i[1]) - c1;
+	    double distI = std::sqrt( distI0*distI0 + distI1*distI1 ) - r; 
+	    double distO0 = NumberTraits<Coordinate>::castToDouble(o[0]) - c0; 
+	    double distO1 = NumberTraits<Coordinate>::castToDouble(o[1]) - c1;
+	    double distO = std::sqrt( distO0*distO0 + distO1*distO1 ) - r; 
+	    return Quantity( distI*aH, distO*aH );
+  	  }
+  	else
+  	  {
+	    //separating straight line
+	    double a, b, c; 
+	    aDCA.getGeometricalDSSPtr()->getParameters(a, b, c); 
+	    //norm
+	    double n = std::sqrt(a*a + b*b); 
+  	    //points
+	    Pair pair = *it; 
+	    Point i = pair.first; 
+	    Point o = pair.second;
+	    //distances
+	    double rI = NumberTraits<Coordinate>::castToDouble(i[0])*a + 
+	      NumberTraits<Coordinate>::castToDouble(i[1])*b + c;
+	    double distI = rI / n; 
+	    double rO = NumberTraits<Coordinate>::castToDouble(o[0])*a + 
+	      NumberTraits<Coordinate>::castToDouble(o[1])*b + c;
+	    double distO = rO / n; 
+  	    return Quantity( distI*aH, distO*aH ); 
+  	  }
       }
     }; 
 
@@ -559,13 +767,13 @@ namespace DGtal
   }; 
 
   //-------------------------------------------------------------------------------------------
-  template <typename DCAComputer>
+  template <typename DCAComputer, bool isCCW = true>
   class CurvatureFromDCAFunctor: 
     public detail::PosIndepScaleDepSCFunctor<DCAComputer, 
-						detail::CurvatureFromDCA>
+					     detail::CurvatureFromDCA<isCCW> >
   {
     typedef 
-    detail::PosIndepScaleDepSCFunctor<DCAComputer, detail::CurvatureFromDCA> 
+    detail::PosIndepScaleDepSCFunctor<DCAComputer, detail::CurvatureFromDCA<isCCW> > 
     Super; 
 
   public: 
@@ -627,6 +835,29 @@ namespace DGtal
      * @param other the object to clone.
      */
     TangentFromDCAFunctor( const TangentFromDCAFunctor & other ): Super(other) {};
+
+  }; 
+  //-------------------------------------------------------------------------------------------
+  template <typename DCAComputer>
+  class DistanceFromDCAFunctor: 
+    public detail::PosDepScaleDepSCFunctor<DCAComputer, 
+					   detail::DistanceFromDCA>
+  {
+    typedef 
+    detail::PosDepScaleDepSCFunctor<DCAComputer, detail::DistanceFromDCA> 
+    Super; 
+
+  public: 
+    /**
+     * Default Constructor.
+     */
+    DistanceFromDCAFunctor(): Super() {};
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    DistanceFromDCAFunctor( const DistanceFromDCAFunctor & other ): Super(other) {};
 
   }; 
 //////////////////////////////////////////////////////////////////////////////
