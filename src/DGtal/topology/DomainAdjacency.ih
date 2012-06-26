@@ -192,7 +192,7 @@ DGtal::operator<< ( std::ostream & out,
 template <typename TDomain, typename TAdjacency>
 inline
 typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
-DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity()
+DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
 {
   return myAdjacency.bestCapacity();
 }
@@ -206,7 +206,7 @@ template <typename TDomain, typename TAdjacency>
 inline
 typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
 DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
-( const Vertex & v )
+( const Vertex & v ) const
 {
   return myAdjacency.degree( v );
 }
@@ -227,9 +227,9 @@ template <typename OutputIterator>
 inline
 void  
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
-( OutputIterator &it, const Vertex & v )
+( OutputIterator &it, const Vertex & v ) const
 {
-  myAdjacency.writeNeighbors<OutputIterator>( v, it );
+  myAdjacency.writeProperNeighborhood( v, it, myPred );//writeNeighbors<OutputIterator>( v, it );
 }
 
 /**
@@ -252,9 +252,19 @@ template <typename TDomain, typename TAdjacency>
 template <typename OutputIterator, typename VertexPredicate>
 void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
-( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
-  myAdjacency.writeNeighbors<OutputIterator, VertexPredicate>( v, it, pred );
+  vector<Vertex> vect;
+  back_insert_iterator< vector<Vertex> > out_it(vect);
+  myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
+  for( typename vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
+  {
+    if( pred(*cit) )
+    {
+      *it++ = *cit;
+    }
+  }
+  //myAdjacency.writeNeighbors<OutputIterator, VertexPredicate>( v, it, pred );
 }
 
 //                                                                           //

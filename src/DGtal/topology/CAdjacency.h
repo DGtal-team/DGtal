@@ -45,6 +45,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,7 +66,7 @@ namespace DGtal
    * sense of Herman. In other words, and adjacency relation define a
    * neighborhood graph on the points of a digital domain.
    *
-   * <p> Refinement of
+   * <p> Refinement of CUndirectedSimpleLocalGraph
    *
    * <p> Associated types (must be defined in the model):
    *
@@ -132,7 +133,8 @@ namespace DGtal
    * <p> Notes###
    */
   template <typename Adj>
-  struct CAdjacency
+  struct CAdjacency : 
+    CUndirectedSimpleLocalGraph<Adj>
   {
     // ----------------------- Concept checks ------------------------------
   public:
