@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/topology/MetricAdjacency.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -181,6 +181,80 @@ DGtal::operator<< ( std::ostream & out,
 {
   object.selfDisplay( out );
   return out;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Local graph services -----------------------------
+
+/**
+ * @return maximum number of neighbors for this adjacency
+ */
+template <typename TDomain, typename TAdjacency>
+inline
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity()
+{
+  return myAdjacency.bestCapacity();
+}
+
+/**
+ * @param v any vertex
+ * 
+ * @return the number of neighbors of this vertex
+ */
+template <typename TDomain, typename TAdjacency>
+inline
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
+( const Vertex & v )
+{
+  return myAdjacency.degree( v );
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
+ */
+template <typename TDomain, typename TAdjacency>
+template <typename OutputIterator>
+inline
+void  
+DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
+( OutputIterator &it, const Vertex & v )
+{
+  myAdjacency.writeNeighbors<OutputIterator>( v, it );
+}
+
+/**
+  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * output iterator
+  * 
+  * 
+  * @tparam OutputObjectIterator the type of an output iterator writing
+  * in a container of vertices.
+  * 
+  * @tparam VertexPredicate the type of the predicate
+  * 
+  * @param it the output iterator
+  * 
+  * @param v the vertex whose neighbors will be written
+  * 
+  * @param pred the predicate that must be satisfied
+  */
+template <typename TDomain, typename TAdjacency>
+template <typename OutputIterator, typename VertexPredicate>
+void
+DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+{
+  myAdjacency.writeNeighbors<OutputIterator, VertexPredicate>( v, it, pred );
 }
 
 //                                                                           //

@@ -45,6 +45,7 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/topology/CAdjacency.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -82,6 +83,15 @@ namespace DGtal
     typedef TDomain Domain;
     typedef DomainPredicate< Domain > Predicate;
 
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef typename DigitalSetSelector< Domain,
+      SMALL_DS + HIGH_ITER_DS >::Type VertexSet;
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+    
     // ----------------------- Standard services ------------------------------
   public:
     
@@ -215,7 +225,59 @@ namespace DGtal
     template <typename OutputIterator>
     void writeProperNeighborhood( const Point & p, 
           OutputIterator & out_it ) const;
-
+	  
+// ----------------------- Local graph services --------------------------
+    
+    /**
+     * @return maximum number of neighbors for this adjacency
+     */
+    Size bestCapacity();
+    
+    /**
+     * @param v any vertex
+     * 
+     * @return the number of neighbors of this vertex
+     */
+    Size degree( const Vertex & v );
+    
+    /**
+     * Writes the neighbors of a vertex using an output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be writen
+     */
+    template <typename OutputIterator>
+    void  
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v );
+    
+    /**
+     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @tparam VertexPredicate the type of the predicate
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be written
+     * 
+     * @param pred the predicate that must be satisfied
+     */
+    template <typename OutputIterator, typename VertexPredicate>
+    void
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v,
+		    const VertexPredicate & pred);
+    
     // ----------------------- Interface --------------------------------------
   public:
 
