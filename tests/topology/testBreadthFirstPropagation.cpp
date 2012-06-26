@@ -63,25 +63,22 @@ bool testBreadthFirstPropagation()
   Point p2( 50, 50 );
   Domain domain( p1, p2 );
   Point c1( -2, -1 );
-  Point c1bis( -2, 4 );
-  Point c2( 5, 0 );
-  Point c3( -5, 4 );
-  Point c4( -14, 5 );
-  Point c5( -30, -15 );
-  Point c6( -10, -20 );
-  Point c7( 12, -1 );
+  Point c2( -14, 5 );
+  Point c3( -30, -15 );
+  Point c4( -10, -20 );
+  Point c5( 12, -1 );
   DigitalSet shape_set( domain );
   
   Shapes<Domain>::addNorm2Ball( shape_set, c1, 9 );
-  Shapes<Domain>::addNorm1Ball( shape_set, c4, 9 );
-  Shapes<Domain>::addNorm1Ball( shape_set, c5, 10 );
-  Shapes<Domain>::addNorm2Ball( shape_set, c6, 12 );
-  Shapes<Domain>::addNorm1Ball( shape_set, c7, 4 );
+  Shapes<Domain>::addNorm1Ball( shape_set, c2, 9 );
+  Shapes<Domain>::addNorm1Ball( shape_set, c3, 10 );
+  Shapes<Domain>::addNorm2Ball( shape_set, c4, 12 );
+  Shapes<Domain>::addNorm1Ball( shape_set, c5, 4 );
 
   Object obj(Z2i::dt4_8, shape_set);
   
   
-  GradientColorMap<int> cmap_grad( 0, 52);//shape_set.size() );
+  GradientColorMap<int> cmap_grad( 0, 52);
   cmap_grad.addColor( Color( 0, 0, 200 ) );
   cmap_grad.addColor( Color( 0, 0, 50 ) );
   
@@ -104,43 +101,6 @@ bool testBreadthFirstPropagation()
     image.setValue(bfv.current().first, bfv.current().second);
     bfv.expand();
   }
-  
-/*  Z2i::Object4_8::ConstIterator it = obj.begin();
-  
-  
-  Point start = *obj.begin();
-  
-  set<Point> visitedPoints;
-  queue<Point> pointsToCompute;
-  
-  visitedPoints.insert(start);
-  pointsToCompute.push(start);
-  
-  Point p;
-  int value = 2;
-  
-  image.setValue(start, value);
-  
-  typedef typename std::vector<Point>/*Z2i::Object4_8::SmallObject::DigitalSet*//* Container;
-  
-  while( !pointsToCompute.empty() )
-  {
-    value ++;
-    p = pointsToCompute.front();
-    pointsToCompute.pop();
-    Container neighbors;//( domain );
-    std::back_insert_iterator<Container> insertit ( neighbors );
-    obj.writeNeighbors(insertit, p);
-    for( typename Container::iterator it = neighbors.begin(); it != neighbors.end(); it++ )
-    {
-      if( visitedPoints.insert(*it).second == true )
-      {
-        pointsToCompute.push(*it);
-        image.setValue(*it, value);
-      }
-    }
-  }
-  */
   
   string specificStyle = p1.className() + "/Paving";
   

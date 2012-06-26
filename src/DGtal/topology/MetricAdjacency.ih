@@ -241,10 +241,8 @@ typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
 {
   Dimension result = 0;
-  for( Dimension i = dimension; i > dimension - maxNorm1; i-- )
+  for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
   {
-    // factorial defined ? Temporary implementation
-    int m = i - 1;
     Dimension mFactorial = 1;
     for( Dimension j = 2; j <= m; j++)
     {
@@ -260,6 +258,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity()
     {
       n_minus_mFactorial *= j;
     }
+    // number of neighbors of dimension m next to an n-dimensional hypercube
     Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
     result += mDimNeighbors;
   }
@@ -277,9 +276,6 @@ typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
 ( const Vertex & v )
 {
-  //vector<Vertex> vertices;
-  //back_insert_iterator< vector<Vertex> > back_it(vertices);
-  //writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
   return bestCapacity();
 }
 
@@ -973,7 +969,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      return 26
+      return 26;
     }
 
     template <typename OutputIterator>

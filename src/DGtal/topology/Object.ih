@@ -700,7 +700,6 @@ writeNeighbors( OutputIterator & it,
                 const Vertex & v,
                 const VertexPredicate & pred ) const
 {
-  //BOOST_CONCEPT_ASSERT(( CVertexPredicate< VertexPredicate > ));
   SmallObject neighbors = neighborhood( v );
   Vertex s;
   for( typename SmallObject::Iterator n = neighbors.begin();
