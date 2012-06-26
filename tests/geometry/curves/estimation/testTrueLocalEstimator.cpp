@@ -44,8 +44,6 @@
 #include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
-
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -258,16 +256,12 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
     
       tang1.init( h, r.begin(), r.end(), &aShape, true);
       tang2.init( h, r.begin(), r.end() );
-      // tang2.init( h, r.begin(), r.end(), &aShape, true);
-      
-      typename TrueCurvature::ConstIterator it = r.begin();
-      typename TrueCurvature::ConstIterator itend = r.end();
       
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
 
      
-      trace.info()<< "Comparison at "<< *it <<" = "
+      trace.info()<< "Comparison at "<< *r.begin() <<" = "
       << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
       << " : tan "
       << ComparatorTan::compareVectors( tang1, tang2, r.begin())

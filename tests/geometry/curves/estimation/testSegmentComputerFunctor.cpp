@@ -37,7 +37,7 @@
 
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/GeometricalDCA.h"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerFunctors.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
