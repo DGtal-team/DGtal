@@ -1,30 +1,30 @@
 /**
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU Lesser General Public License as
-* published by the Free Software Foundation, either version 3 of the
-* License, or (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with this program. If not, see <http://www.gnu.org/licenses/>.
-*
-**/
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
 /**
-* @file testPolynomial.cpp
-* @ingroup tests
-* @author Anis Benyoub (anis.benyoub@insa-lyon.fr)
-* Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
-*
-* @date 2012/06/21
-*
-*
-* This file is part of the DGtal library.
-*/
+ * @file testPolynomial.cpp
+ * @ingroup tests
+ * @author Anis Benyoub (anis.benyoub@insa-lyon.fr)
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/06/21
+ *
+ *
+ * This file is part of the DGtal library.
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -46,6 +46,7 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include <boost/math/special_functions/fpclassify.hpp>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -144,67 +145,65 @@ int main( int argc, char** argv )
  
 
 
-    QApplication application(argc,argv);
-    Viewer3D viewer;
-    viewer.show();
-    viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
+  QApplication application(argc,argv);
+  Viewer3D viewer;
+  viewer.show();
+  viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
 
 
 
 
-//-----------------------------------------------------------------------
-// Looking for the min and max values
+  //-----------------------------------------------------------------------
+  // Looking for the min and max values
 
   double minCurv=1;
   double maxCurv=0;
   SCellToMidPoint<KSpace> midpoint(K);
   for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
 	it != it_end; ++it)
-  {
-
-    RealPoint A = midpoint( *it );
-    double a=ishape.gaussianCurvature(A);
-//    double a= ishape.meanCurvature(A);
-    if(a>maxCurv)
     {
-	maxCurv=a;
+
+      RealPoint A = midpoint( *it );
+      //double a=ishape.gaussianCurvature(A);
+      double a= ishape.meanCurvature(A);
+      if( boost::math::isnan(a))
+	a=0;
+      else
+	if(a>maxCurv)
+	  maxCurv=a;
+	else
+	  if(a<minCurv)
+	    minCurv=a;
     }
-    if(a<minCurv)
-    {
-	minCurv=a;
-    }
 
 
-
-  }
-
-
-//-----------------------------------------------------------------------
-//Specifing a color map
+  //-----------------------------------------------------------------------
+  //Specifing a color map
 
   GradientColorMap<double> cmap_grad( minCurv, maxCurv );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
-//------------------------------------------------------------------------------------
-//drawing
+  //------------------------------------------------------------------------------------
+  //drawing
   unsigned int nbSurfels = 0;
 
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), 
+	  it_end = theSetOfSurfels.end(); 
 	it != it_end; ++it, ++nbSurfels )
-  {
-
-    RealPoint A = midpoint( *it );
-    double a=ishape.gaussianCurvature(A);
-//    double a= ishape.meanCurvature(A);
-    if(a!=a)
     {
-        a=0;
+
+      RealPoint A = midpoint( *it );
+      //double a=ishape.gaussianCurvature(A);
+      double a= ishape.meanCurvature(A);
+      if( boost::math::isnan(a))
+      	{
+      	  a=0;
+      	}
+      viewer <<   CustomColors3D( Color::Black, cmap_grad( a));
+      viewer << *it;
     }
-    viewer <<   CustomColors3D( Color::Black, cmap_grad( a));
-    viewer << *it;
-  }
 
 
 
