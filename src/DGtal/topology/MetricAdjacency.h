@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -90,7 +91,7 @@ namespace DGtal
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't fit since MetricAdjacency has no domain
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't fit since MetricAdjacency has no domain
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
@@ -281,10 +282,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-
+    
     // ------------------------- Hidden services ------------------------------
   protected:
-
+    static Size computeCapacity();
 
   private:
 
