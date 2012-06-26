@@ -61,7 +61,8 @@ namespace DGtal
    * 26 adjacencies in 3D, and the \f$ \omega \f$ and \f$ \alpha \f$
    * adjacencies in nD.
    *
-   * \b Model of a CAdjacency.
+   * \b Model of CAdjacency.
+   * \b Model of CUndirectedSimpleLocalGraph.
    *
    * @tparam TSpace any digital space (see concept CSpace).
    *
@@ -90,7 +91,7 @@ namespace DGtal
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
-    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    typedef std::vector<Vertex> VertexSet; // DigitalSet doesn't fit since MetricAdjacency has no domain
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };

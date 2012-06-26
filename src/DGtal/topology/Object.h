@@ -48,8 +48,6 @@
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/topology/Topology.h"
-// Added for graph support
-//#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,6 +76,8 @@ namespace DGtal
    * "DrawAdjacencies". In this case the set of points and the
    * adjacency relations are displayed.
    *
+   * \b Model of CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph.
+   * 
    * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam TDigitalSet any model of CDigitalSet.*
    *
@@ -108,7 +108,7 @@ namespace DGtal
       typedef Object<DigitalTopology, SmallSet> SmallObject;
       typedef Object<ReverseTopology, SmallSet> SmallComplementObject;
 
-      // Added for graph support ...
+      // Required by CUndirectedSimpleLocalGraph
       typedef TDigitalSet VertexSet;
       typedef typename DigitalSet::Point Vertex;
       template <typename Value> struct VertexMap {
@@ -116,7 +116,7 @@ namespace DGtal
       };
       typedef typename DigitalSet::ConstIterator ConstIterator;
       
-      // taken from DigitalSurface
+      // Required by CUndirectedSimpleGraph
       struct Edge
       {
 	Vertex vertices [2];
