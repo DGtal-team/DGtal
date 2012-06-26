@@ -35,6 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -171,11 +172,11 @@ bool testMetricAdjacency()
 
 bool testLocalGraphModel()
 {
-  
   trace.beginBlock ( "Testing graph model" );
   unsigned int nbok=0,nb=0;
   
   typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Adj> ));
   
   
   nbok += Adj::bestCapacity() == 72 ? 1 : 0; 

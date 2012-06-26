@@ -621,24 +621,11 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
   return myPointSet->end();
 }
 
-/*template <typename TDigitalTopology, typename TDigitalSet>
-inline
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
-DGtal::Object<TDigitalTopology, TDigitalSet>::size() const
-{
-  return myPointSet->size();
-}*/
-// Already defined !
-
-template <typename TDigitalTopology, typename TDigitalSet>
-inline
-typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
-DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
-{
-  //return adjacency().maxNeighbors();
-  return myTopo->kappa().bestCapacity();
-}
-
+/** 
+ * @param v any vertex of the object
+ * 
+ * @return the number of neighbors of this vertex
+ */
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
@@ -648,6 +635,28 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::degree
   return neighborhoodSize( v );
 }
 
+/**
+ * @return the maximum number of neighbors for a vertex of this object
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
+{
+  return myTopo->kappa().bestCapacity();
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be writeNeighbors
+ */
 template <typename TDigitalTopology, typename TDigitalSet>
 template <typename OutputIterator>
 inline
@@ -666,6 +675,22 @@ writeNeighbors( OutputIterator & it,
   }
 }
 
+/**
+ * Writes the neighbors of a vertex which satisfy a predicate using an 
+ * output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @tparam VertexPredicate the type of the predicate
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
+ * 
+ * @param pred the predicate that must be satisfied
+ */
 template <typename TDigitalTopology, typename TDigitalSet>
 template <typename OutputIterator, typename VertexPredicate>
 inline

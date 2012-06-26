@@ -111,12 +111,46 @@ namespace DGtal
       // Added for graph support ...
       typedef TDigitalSet VertexSet;
       typedef typename DigitalSet::Point Vertex;
-      // Size already done (typedef typename DigitalSet::Point Point;)
       template <typename Value> struct VertexMap {
-        typedef typename std::map<Vertex, Value>::Type Type;
+        typedef typename std::map<Vertex, Value> Type;
       };
       typedef typename DigitalSet::ConstIterator ConstIterator;
-
+      
+      // taken from DigitalSurface
+      struct Edge
+      {
+	Vertex vertices [2];
+	
+	/** 
+          Constructor from vertices.
+          @param v1 the first vertex.
+          @param v2 the second vertex.
+	*/
+	Edge( const Vertex & v1, const Vertex & v2 )
+	{
+	  if ( v1 <= v2 ) 
+	    {
+	      vertices[ 0 ] = v1;
+	      vertices[ 1 ] = v2;
+	    }
+	  else
+	    {
+	      vertices[ 0 ] = v2;
+	      vertices[ 1 ] = v1;
+	    }
+	}
+	bool operator==( const Edge & other ) const
+	{
+	  return ( vertices[ 0 ] == other.vertices[ 0 ] )
+	    && ( vertices[ 1 ] == other.vertices[ 1 ] );
+	}
+	bool operator<( const Edge & other ) const
+	{
+	  return ( vertices[ 0 ] < other.vertices[ 0 ] )
+	    || ( ( vertices[ 0 ] == other.vertices[ 0 ] )
+		&& ( vertices[ 1 ] < other.vertices[ 1 ] ) );
+	}
+      };
       // ... End added
 
 
@@ -406,15 +440,50 @@ namespace DGtal
       
       ConstIterator end() const;
       
+      /** 
+       * @param v any vertex of the object
+       * 
+       * @return the number of neighbors of this vertex
+       */
       Size degree( const Vertex & v ) const;
       
+      /**
+       * @return the maximum number of neighbors for a vertex of this object
+       */
       Size bestCapacity() const;
       
+      /**
+       * Writes the neighbors of a vertex using an output iterator
+       * 
+       * 
+       * @tparam OutputObjectIterator the type of an output iterator writing
+       * in a container of vertices.
+       * 
+       * @param it the output iterator
+       * 
+       * @param v the vertex whose neighbors will be writeNeighbors
+       */
       template <typename OutputIterator>
       void
       writeNeighbors( OutputIterator &it ,
                       const Vertex & v ) const;
-      
+
+      /**
+       * Writes the neighbors of a vertex which satisfy a predicate using an 
+       * output iterator
+       * 
+       * 
+       * @tparam OutputObjectIterator the type of an output iterator writing
+       * in a container of vertices.
+       * 
+       * @tparam VertexPredicate the type of the predicate
+       * 
+       * @param it the output iterator
+       * 
+       * @param v the vertex whose neighbors will be written
+       * 
+       * @param pred the predicate that must be satisfied
+       */
       template <typename OutputIterator, typename VertexPredicate>
       void
       writeNeighbors( OutputIterator &it ,
