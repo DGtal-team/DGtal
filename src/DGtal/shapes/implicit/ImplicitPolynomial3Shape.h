@@ -137,6 +137,26 @@ namespace DGtal
     inline
     RealVector gradient( const RealPoint &aPoint ) const;
 
+// ------------------------------------------------------------ Added by Anis Benyoub
+
+    /**
+       @param aPoint any point in the Euclidean space.
+       @return the mean curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double meanCurvature( const RealPoint &aPoint ) const;
+
+
+    /**
+       @param aPoint any point in the Euclidean space.
+       @return the gaussian curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double gaussianCurvature( const RealPoint &aPoint ) const;
+
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
     
@@ -160,6 +180,24 @@ namespace DGtal
     Polynomial3 myPolynomial;
     /// The gradient 3-polynomials (computed).
     Polynomial3 myDerivatives[ 3 ];
+
+    // Partial deriatives
+    Polynomial3 Fx;
+    Polynomial3 Fy;
+    Polynomial3 Fz;
+
+    Polynomial3 Fxx;
+    Polynomial3 Fxy;
+    Polynomial3 Fxz;
+
+    Polynomial3 Fyx;
+    Polynomial3 Fyy;
+    Polynomial3 Fyz;
+
+    Polynomial3 Fzx;
+    Polynomial3 Fzy;
+    Polynomial3 Fzz;
+
    
     // ------------------------- Hidden services ------------------------------
   protected:
