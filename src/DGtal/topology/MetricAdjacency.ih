@@ -29,13 +29,13 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 #include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -277,10 +277,10 @@ typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
 ( const Vertex & v )
 {
-  vector<Vertex> vertices;
-  back_insert_iterator< vector<Vertex> > back_it(vertices);
-  writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-  return vertices.size();
+  //vector<Vertex> vertices;
+  //back_insert_iterator< vector<Vertex> > back_it(vertices);
+  //writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
+  return bestCapacity();
 }
 
 /**
@@ -526,10 +526,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      vector<Vertex> vertices;
-      back_insert_iterator< vector<Vertex> > back_it(vertices);
-      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-      return vertices.size();
+      return 8;
     }
 
     template <typename OutputIterator>
@@ -694,10 +691,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      vector<Vertex> vertices;
-      back_insert_iterator< vector<Vertex> > back_it(vertices);
-      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-      return vertices.size();
+      return 4;
     }
 
     template <typename OutputIterator>
@@ -979,10 +973,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      vector<Vertex> vertices;
-      back_insert_iterator< vector<Vertex> > back_it(vertices);
-      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-      return vertices.size();
+      return 26
     }
 
     template <typename OutputIterator>
@@ -1225,10 +1216,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      vector<Vertex> vertices;
-      back_insert_iterator< vector<Vertex> > back_it(vertices);
-      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-      return vertices.size();
+      return 18;
     }
 
     template <typename OutputIterator>
@@ -1408,10 +1396,7 @@ namespace DGtal {
     Size
     degree( const Vertex & v )
     {
-      vector<Vertex> vertices;
-      back_insert_iterator< vector<Vertex> > back_it(vertices);
-      writeProperNeighborhood< back_insert_iterator< vector<Vertex> > >( v, back_it );
-      return vertices.size();
+      return 6;
     }
 
     template <typename OutputIterator>
