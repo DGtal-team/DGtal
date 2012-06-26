@@ -142,7 +142,7 @@ bool testFromDCA(
   int nbok = 0; 
 
   { //curvature
-    CurvatureFromDCAFunctor<DCAComputer> f; 
+    CurvatureFromDCAFunctor<DCAComputer,false> f; 
     f.init(1.0); 
     double q1 = f(dca);
     f.init(0.1); 
@@ -163,6 +163,26 @@ bool testFromDCA(
     trace.info() << "Tangent: " << q1 << " == [PointVector] {1, 0} " << std::endl; 
     nbok += (std::abs(q1[0]-1.0) < epsilon)
       && (std::abs(q1[1]) < epsilon) ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  }
+
+  { //position
+    DistanceFromDCAFunctor<DCAComputer> f; 
+    typedef typename DistanceFromDCAFunctor<DCAComputer>::Quantity Quantity; 
+    typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
+    f.init(1.0); 
+    Quantity q1 = f( it, dca ); 
+    trace.info() << "Position (h=1): " << q1.first << " (<=0), " << q1.second << " (>0) " << std::endl; 
+    f.init(0.1);
+    Quantity q2 = f( it, dca ); 
+    trace.info() << "Position (h=0.1): " << q2.first << " (<=0), " << q2.second << " (>0) " << std::endl; 
+    nbok += ( (q1.first < epsilon)
+	      && (q1.second > -epsilon)
+	      && (std::abs((q1.second - q1.first) - 1) < epsilon)
+	      && (q2.first < epsilon)
+	      && (q2.second > -epsilon) 
+	      && (std::abs((q2.second - q2.first) - 0.1) < epsilon) )? 1 : 0; 
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
   }
