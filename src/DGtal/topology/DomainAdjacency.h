@@ -63,7 +63,6 @@ namespace DGtal
    * for unlimited spaces.
    *
    * \b Model of CAdjacency.
-   * \b Model of CUndirectedSimpleLocalGraph.
    *
    * @tparam TDomain the type of the domain.
    * @tparam TAdjacency the type of the adjacency.
@@ -232,14 +231,14 @@ namespace DGtal
     /**
      * @return maximum number of neighbors for this adjacency
      */
-    Size bestCapacity();
+    Size bestCapacity() const;
     
     /**
      * @param v any vertex
      * 
      * @return the number of neighbors of this vertex
      */
-    Size degree( const Vertex & v );
+    Size degree( const Vertex & v ) const;
     
     /**
      * Writes the neighbors of a vertex using an output iterator
@@ -255,7 +254,7 @@ namespace DGtal
     template <typename OutputIterator>
     void  
     writeNeighbors( OutputIterator &it ,
-		    const Vertex & v );
+		    const Vertex & v ) const;
     
     /**
      * Writes the neighbors of a vertex which satisfy a predicate using an 
@@ -277,7 +276,7 @@ namespace DGtal
     void
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v,
-		    const VertexPredicate & pred);
+		    const VertexPredicate & pred) const;
     
     // ----------------------- Interface --------------------------------------
   public:

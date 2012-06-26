@@ -62,7 +62,6 @@ namespace DGtal
    * adjacencies in nD.
    *
    * \b Model of CAdjacency.
-   * \b Model of CUndirectedSimpleLocalGraph.
    *
    * @tparam TSpace any digital space (see concept CSpace).
    *
