@@ -229,7 +229,8 @@ void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
-  myAdjacency.writeProperNeighborhood( v, it, myPred );//writeNeighbors<OutputIterator>( v, it );
+  //myAdjacency.writeProperNeighborhood( v, it, myPred );//writeNeighbors<OutputIterator>( v, it );
+  myAdjacency.writeNeighbors( it, v );
 }
 
 /**
@@ -256,7 +257,8 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 {
   vector<Vertex> vect;
   back_insert_iterator< vector<Vertex> > out_it(vect);
-  myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
+  //myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
+  myAdjacency.writeNeighbors( out_it, v, myPred );
   for( typename vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
   {
     if( pred(*cit) )
