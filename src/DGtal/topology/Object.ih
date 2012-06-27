@@ -322,7 +322,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeNeighborhood( p, back_ins_it );
+  //adjacency().writeNeighborhood( p, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, p );
+  neigh.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
@@ -360,7 +362,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeNeighborhood( p, back_ins_it );
+  //adjacency().writeNeighborhood( p, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, p );
+  neigh.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
@@ -398,7 +402,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( p, back_ins_it );
+  //adjacency().writeProperNeighborhood( p, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
@@ -437,7 +442,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( p, back_ins_it );
+  //adjacency().writeProperNeighborhood( p, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
@@ -672,7 +678,8 @@ writeNeighbors( OutputIterator & it,
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( v, back_ins_it );
+  //adjacency().writeProperNeighborhood( v, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, v );
 
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
@@ -716,7 +723,8 @@ writeNeighbors( OutputIterator & it,
   // Intermediate container that is fast writable.
   Container neigh;
   std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( v, back_ins_it );
+  //adjacency().writeProperNeighborhood( v, back_ins_it );
+  adjacency().writeNeighbors( back_ins_it, v );
 
   // A neighborhood is small, so is defined the digital object.
   const ContainerConstIterator it_end( neigh.end() );
@@ -758,7 +766,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Intermediate container that is fast writable.
   Container local_points;
   std::back_insert_iterator< Container > back_ins_it( local_points );
-  alpha.writeProperNeighborhood( p, back_ins_it, limitedX.predicate() );
+  //alpha.writeProperNeighborhood( p, back_ins_it, limitedX.predicate() );
+  alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
 
   // Construct local domain.
   Point p1( p );
@@ -816,7 +825,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   Container local_points;
   std::back_insert_iterator< Container > back_ins_it( local_points );
   NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
-  alpha.writeNeighborhood( p, back_ins_it, not_pred_is_in_X );
+  //alpha.writeNeighborhood( p, back_ins_it, not_pred_is_in_X );
+  alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
+  
 
   // Construct local domain.
   Point p1( p );

@@ -278,7 +278,24 @@ void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 ( OutputIterator &it, const Vertex & v )
 {
-  writeProperNeighborhood<OutputIterator>( v, it );
+  //writeProperNeighborhood<OutputIterator>( v, it );
+  Point p1( v );
+  for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
+    --(*iter);
+  Point p2( v );
+  for ( typename Point::Iterator iter = p2.begin(); iter != p2.end(); ++iter )
+    ++(*iter);
+  typedef HyperRectDomain<Space> LocalDomain;
+  LocalDomain domain( p1, p2 );
+  for ( typename LocalDomain::ConstIterator iter = domain.begin();
+  iter != domain.end();
+  ++iter )
+    {
+      Vector vect( v - *iter );
+      typename Vector::UnsignedComponent n1 = vect.norm1();
+      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
+	*it++ = *iter;
+    }
 }
 
 /**
@@ -303,7 +320,24 @@ void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
 {
-  writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+  //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+  Point p1( v );
+  for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
+    --(*iter);
+  Point p2( v );
+  for ( typename Point::Iterator iter = p2.begin(); iter != p2.end(); ++iter )
+    ++(*iter);
+  typedef HyperRectDomain<Space> LocalDomain;
+  LocalDomain domain( p1, p2 );
+  for ( typename LocalDomain::ConstIterator iter = domain.begin();
+  iter != domain.end();
+  ++iter )
+    {
+      Vector vect( v - *iter );
+      typename Vector::UnsignedComponent n1 = vect.norm1();
+      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) && (pred(*iter)) )
+	*it++ = *iter;
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -544,7 +578,17 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      writeProperNeighborhood<OutputIterator>( v, it );
+      //writeProperNeighborhood<OutputIterator>( v, it );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      *it++ = Vertex(  x-1, y-1  );
+      *it++ = Vertex(  x  , y-1  );
+      *it++ = Vertex(  x+1, y-1  );
+      *it++ = Vertex(  x-1, y    );
+      *it++ = Vertex(  x+1, y    );
+      *it++ = Vertex(  x-1, y+1  );
+      *it++ = Vertex(  x  , y+1  );
+      *it++ = Vertex(  x+1, y+1  );
     }
     
     template <typename OutputIterator, typename VertexPredicate>
@@ -552,7 +596,18 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      Vertex q( v[ 0 ] - 1, v[ 1 ] - 1 );
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
     }
     
     // ----------------------- Interface --------------------------------------
@@ -709,7 +764,13 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      writeProperNeighborhood<OutputIterator>( v, it );
+      //writeProperNeighborhood<OutputIterator>( v, it );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      *it++ = Vertex(  x  , y-1  );
+      *it++ = Vertex(  x-1, y    );
+      *it++ = Vertex(  x+1, y    );
+      *it++ = Vertex(  x  , y+1  );
     }
     
     template <typename OutputIterator, typename VertexPredicate>
@@ -717,7 +778,14 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      Vertex q( v[ 0 ], v[ 1 ] - 1 );
+      if ( pred( q ) ) *it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
+      --q[ 0 ]; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
     }
     
     // ----------------------- Interface --------------------------------------
@@ -991,7 +1059,38 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      writeProperNeighborhood<OutputIterator>( v, it );
+      //writeProperNeighborhood<OutputIterator>( v, it );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x-1, y-1, z-1 );
+      *it++ = Vertex(  x  , y-1, z-1 );
+      *it++ = Vertex(  x+1, y-1, z-1 );
+      *it++ = Vertex(  x-1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x+1, y-1, z   );
+      *it++ = Vertex(  x-1, y-1, z+1 );
+      *it++ = Vertex(  x  , y-1, z+1 );
+      *it++ = Vertex(  x+1, y-1, z+1 );
+      *it++ = Vertex(  x-1, y  , z-1 );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x+1, y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x-1, y  , z+1 );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x+1, y  , z+1 );
+      *it++ = Vertex(  x-1, y+1, z-1 );
+      *it++ = Vertex(  x  , y+1, z-1 );
+      *it++ = Vertex(  x+1, y+1, z-1 );
+      *it++ = Vertex(  x-1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z   );
+      *it++ = Vertex(  x+1, y+1, z   );
+      *it++ = Vertex(  x-1, y+1, z+1 );
+      *it++ = Vertex(  x  , y+1, z+1 );
+      *it++ = Vertex(  x+1, y+1, z+1 );
     }
     
     template <typename OutputIterator, typename VertexPredicate>
@@ -999,7 +1098,45 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      Vertex q( v[ 0 ] - 1, v[ 1 ] - 1, v[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z+1
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
     }    
     
     // ----------------------- Interface --------------------------------------
@@ -1234,7 +1371,30 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      writeProperNeighborhood<OutputIterator>( v, it );
+      //writeProperNeighborhood<OutputIterator>( v, it );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x  , y-1, z-1 );
+      *it++ = Vertex(  x-1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x+1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z+1 );
+      *it++ = Vertex(  x-1, y  , z-1 );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x+1, y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x-1, y  , z+1 );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x+1, y  , z+1 );
+      *it++ = Vertex(  x  , y+1, z-1 );
+      *it++ = Vertex(  x-1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z   );
+      *it++ = Vertex(  x+1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z+1 );
     }
     
     template <typename OutputIterator, typename VertexPredicate>
@@ -1242,7 +1402,33 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      Vertex q( v[ 0 ], v[ 1 ] - 1, v[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *it++ = q;                     // x  , y-1, z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x  , y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z-1
+      // z
+      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z+1
+      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;                     // x  , y-1, z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x  , y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z+1
     }
     
     // ----------------------- Interface --------------------------------------
@@ -1414,7 +1600,18 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      writeProperNeighborhood<OutputIterator>( v, it );
+      //writeProperNeighborhood<OutputIterator>( v, it );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x  , y+1, z   );
     }
     
     template <typename OutputIterator, typename VertexPredicate>
@@ -1422,7 +1619,14 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
+      Vertex q( v[ 0 ], v[ 1 ], v[ 2 ] - 1 );
+      if ( pred( q ) ) *it++ = q;                     // x  , y  , z-1
+      q[ 2 ] += 2; if ( pred( q ) ) *it++ = q;        // x  , y  , z+1
+      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;        // x+1, y  , z
+      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y-1, z
+      q[ 1 ] += 2; if ( pred( q ) ) *it++ = q;        // x  , y+1, z
     }
 
     // ----------------------- Interface --------------------------------------
