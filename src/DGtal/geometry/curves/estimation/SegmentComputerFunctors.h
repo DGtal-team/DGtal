@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file SegmentComputerFunctor.h
+ * @file SegmentComputerFunctors.h
  * @brief Various local estimators from segment computers.
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
@@ -30,18 +30,18 @@
  *
  * This file is part of the DGtal library.
  *
- * @see testSegmentComputerFunctor.cpp
+ * @see testSegmentComputerFunctors.cpp
  */
 
-#if defined(SegmentComputerFunctor_RECURSES)
-#error Recursive header files inclusion detected in SegmentComputerFunctor.h
-#else // defined(SegmentComputerFunctor_RECURSES)
+#if defined(SegmentComputerFunctors_RECURSES)
+#error Recursive header files inclusion detected in SegmentComputerFunctors.h
+#else // defined(SegmentComputerFunctors_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define SegmentComputerFunctor_RECURSES
+#define SegmentComputerFunctors_RECURSES
 
-#if !defined SegmentComputerFunctor_h
+#if !defined SegmentComputerFunctors_h
 /** Prevents repeated inclusion of headers. */
-#define SegmentComputerFunctor_h
+#define SegmentComputerFunctors_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -67,8 +67,8 @@ namespace DGtal
   /**
    * Description of class 'PosIndepScaleIndepSCFunctor' <p> Aim: 
    * estimates a geometrical quantity from a segment computer. 
-   * The estimation is neither position-dependant 
-   * nor scale-dependant (e.g. tangent or normal 
+   * The estimation is neither position-dependent 
+   * nor scale-dependent (e.g. tangent or normal 
    * estimation from 'straight' primitives). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
@@ -88,6 +88,13 @@ namespace DGtal
     // ----------------------- inner type ------------------------------
     typedef TSegmentComputer SegmentComputer;
     typedef ReturnType Quantity;
+
+    // ----------------------- Internal data  ------------------------------
+  public:
+    /**
+     * Functor used for the estimation
+     */
+    Functor myFunctor; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -134,8 +141,7 @@ namespace DGtal
      */
     Quantity operator()(const SegmentComputer& aSC) const 
     {
-      Functor f; 
-      return f( aSC ); 
+      return myFunctor( aSC ); 
     };
 
   }; // end of class PosIndepScaleIndepSCFunctor
@@ -146,8 +152,8 @@ namespace DGtal
   /**
    * Description of class 'PosIndepScaleDepSCFunctor' <p> Aim: 
    * estimates a geometrical quantity from a segment computer. 
-   * The estimation is not position-dependant,
-   * but is scale-dependant (e.g. curvature or radius
+   * The estimation is not position-dependent,
+   * but is scale-dependent (e.g. curvature or radius
    * estimation from 'circular' primitives). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
@@ -170,7 +176,14 @@ namespace DGtal
 
     // ----------------------- internal data ------------------------------
   public:
+    /**
+     * Grid step
+     */
     double myH; 
+    /**
+     * Functor used for the estimation
+     */
+    Functor myFunctor; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -180,7 +193,7 @@ namespace DGtal
      * NB: not valid.
      */
     PosIndepScaleDepSCFunctor()
-      : myH( 0.0 )
+      : myH( 0.0 ), myFunctor()
     {
     }
     /**
@@ -253,8 +266,7 @@ namespace DGtal
      */
     Quantity operator()(const SegmentComputer& aSC) const 
     {
-      Functor f; 
-      return f( aSC, myH ); 
+      return myFunctor( aSC, myH ); 
     };
 
   }; // end of class PosIndepScaleDepSCFunctor
@@ -265,7 +277,7 @@ namespace DGtal
   /**
    * Description of class 'PosDepScaleIndepSCFunctor' <p> Aim: 
    * estimates a geometrical quantity from a segment computer. 
-   * The estimation is not scale dependant but position dependant
+   * The estimation is not scale dependent but position dependent
    * (e.g. tangent or normal estimation from high-order primitives). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
@@ -285,6 +297,13 @@ namespace DGtal
     // ----------------------- inner type ------------------------------
     typedef TSegmentComputer SegmentComputer;
     typedef ReturnType Quantity;
+
+    // ----------------------- Internal data  ------------------------------
+  public:
+    /**
+     * Functor used for the estimation
+     */
+    Functor myFunctor; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -333,8 +352,7 @@ namespace DGtal
     Quantity operator()(const typename SegmentComputer::ConstIterator& it, 
 			const SegmentComputer& aSC) const 
     {
-      Functor f; 
-      return f( it, aSC ); 
+      return myFunctor( it, aSC ); 
     };
 
   }; // end of class PosDepScaleIndepSCFunctor
@@ -345,7 +363,7 @@ namespace DGtal
   /**
    * Description of class 'PosDepScaleDepSCFunctor' <p> Aim: 
    * estimates a geometrical quantity from a segment computer. 
-   * The estimation is both position-dependant and scale-dependant 
+   * The estimation is both position-dependent and scale-dependent 
    * (typically distance of a point to an underlying curve). 
    *
    * @tparam TSegmentComputer a model of segment computer. 
@@ -368,8 +386,14 @@ namespace DGtal
 
     // ----------------------- internal data ------------------------------
   public:
+    /**
+     * Grid step
+     */
     double myH; 
-
+    /**
+     * Functor used for the estimation
+     */
+    Functor myFunctor; 
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -378,7 +402,7 @@ namespace DGtal
      * NB: not valid.
      */
     PosDepScaleDepSCFunctor()
-      : myH( 0.0 )
+      : myH( 0.0 ), myFunctor()
     {
     }
     /**
@@ -453,8 +477,7 @@ namespace DGtal
     Quantity operator()(const typename SegmentComputer::ConstIterator& it, 
 			const SegmentComputer& aSC) const 
     {
-      Functor f; 
-      return f( it, aSC, myH ); 
+      return myFunctor( it, aSC, myH ); 
     };
 
   }; // end of class PosDepScaleDepSCFunctor
@@ -712,7 +735,7 @@ namespace DGtal
   /**
    * Description of class 'DistanceFromDCA' <p> Aim: 
    * estimates the distance of a given pair of points
-   * to the seperating circle of a DCA. 
+   * to the separating circle of a DCA. 
    */
     struct DistanceFromDCA
     {      
@@ -890,7 +913,7 @@ namespace DGtal
    * @tparam isCCW boolean equal to 'true' (default)
    * for a scanning in a counter-clockwise (CCW) 
    * orientation, 'false' otherwise, i.e in a 
-   * clockwise orientation (CW). 
+   * clockwise (CW) orientation. 
    * For instance, the estimated curvature of 
    * a digital circle, scanned in a CCW (resp. CW)
    * orientation, is positive (resp. negative). 
@@ -1351,7 +1374,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined SegmentComputerFunctor_h
+#endif // !defined SegmentComputerFunctors_h
 
-#undef SegmentComputerFunctor_RECURSES
-#endif // else defined(SegmentComputerFunctor_RECURSES)
+#undef SegmentComputerFunctors_RECURSES
+#endif // else defined(SegmentComputerFunctors_RECURSES)
