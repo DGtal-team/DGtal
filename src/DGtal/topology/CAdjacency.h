@@ -150,10 +150,6 @@ namespace DGtal
       // check isProperlyAdjacentTo
       ConceptUtils::sameType( myBool, 
             myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
-      // Check writeNeighborhood
-      myAdj.writeNeighborhood( myP1, myInserter );
-      // Check writeProperNeighborhood
-      myAdj.writeProperNeighborhood( myP1, myInserter );
     }
 
     // ------------------------- Private Datas --------------------------------
