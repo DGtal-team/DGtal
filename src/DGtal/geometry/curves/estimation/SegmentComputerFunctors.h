@@ -331,14 +331,15 @@ namespace DGtal
      *
      * @return the estimation
      *
+     * @param it position where the estimation has to be done.
      * @param aSC an instance of segment computer. 
      */
-    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+    Quantity operator()( const typename SegmentComputer::ConstIterator& it, 
 			 const SegmentComputer& aSC, 
 			 const bool&,
 			 const bool& ) const 
     {
-      return this->operator()( aSC ); 
+      return this->operator()( it, aSC ); 
     };
 
     /**
@@ -456,14 +457,15 @@ namespace DGtal
      *
      * @return the estimation
      *
+     * @param it position where the estimation is performed
      * @param aSC an instance of segment computer. 
      */
-    Quantity operator()( const typename SegmentComputer::ConstIterator&, 
+    Quantity operator()( const typename SegmentComputer::ConstIterator& it, 
 			 const SegmentComputer& aSC, 
 			 const bool&,
 			 const bool& ) const 
     {
-      return this->operator()( aSC ); 
+      return this->operator()( it, aSC ); 
     };
 
     /**
