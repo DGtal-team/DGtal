@@ -102,60 +102,6 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator, typename PointPredicate >
-inline
-void
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeNeighborhood( const Point & p, 
-         OutputIterator & out_it,
-         const PointPredicate & pred ) const
-{
-  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-  //   Predicate;
-  // Predicate combinedPred( pred, myPred, andBF2 );
-  // myAdjacency.writeNeighborhood( p, out_it, combinedPred );
-  myAdjacency.writeNeighborhood( p, out_it, pred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator>
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeNeighborhood( const Point & p, 
-         OutputIterator & out_it ) const
-{
-  myAdjacency.writeNeighborhood( p, out_it, myPred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator, typename PointPredicate >
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeProperNeighborhood( const Point & p, 
-         OutputIterator & out_it,
-         const PointPredicate & pred ) const
-{
-  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-  //   Predicate;
-  // Predicate combinedPred( pred, myPred, andBF2 );
-  // myAdjacency.writeProperNeighborhood( p, out_it, combinedPred );
-  myAdjacency.writeProperNeighborhood( p, out_it, pred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator>
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeProperNeighborhood( const Point & p, 
-         OutputIterator & out_it ) const
-{
-  myAdjacency.writeProperNeighborhood( p, out_it, myPred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
 inline
 void
 DGtal::DomainAdjacency<TDomain,TAdjacency>
