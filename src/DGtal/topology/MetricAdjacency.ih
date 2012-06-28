@@ -101,134 +101,6 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
   return false;
 }
 
-
-/**
- * Outputs the whole neighborhood of point [p] satisfying the
- * given predicate as a sequence of *out_it++ = ...
- *
- * @tparam OutputIterator any output iterator (like
- * std::back_insert_iterator< std::vector<int> >).
- *
- * @tparam PointPredicate any predicate object (defaut is true functor)
- *
- * @param p any point of this space.
- * @param out_it any output iterator.
- * @param pred the predicate.
- */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator, typename PointPredicate>
-void 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
-::writeNeighborhood
-( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( pred( *it ) ) )
-  *out_it++ = *it;
-    }
-}
-
-/**
- * Outputs the whole neighborhood of point [p] as a sequence of
- * *out_it++ = ...
- *
- * @tparam OutputIterator any output iterator (like
- * std::back_insert_iterator< std::vector<int> >).
- *
- * @param p any point of this space.
- * @param out_it any output iterator.
- */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator>
-void 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
-::writeNeighborhood
-( const Point & p, OutputIterator & out_it )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( n1 <= maxNorm1 )
-  *out_it++ = *it;
-    }
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator, typename PointPredicate>
-void
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
-( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 )  && ( pred( *it ) ) )
-  *out_it++ = *it;
-    }
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator>
-void
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
-( const Point & p, OutputIterator & out_it )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
-  *out_it++ = *it;
-    }
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Local graph services -----------------------------
 
@@ -278,7 +150,6 @@ void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 ( OutputIterator &it, const Vertex & v )
 {
-  //writeProperNeighborhood<OutputIterator>( v, it );
   Point p1( v );
   for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
     --(*iter);
@@ -320,7 +191,6 @@ void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
 {
-  //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
   Point p1( v );
   for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
     --(*iter);
@@ -475,86 +345,6 @@ namespace DGtal {
       return false;
     }
     
-    template <typename OutputIterator>
-    inline
-    static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-  
-      *out_it++ = Point(  x-1, y-1  );
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x+1, y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x  , y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x-1, y+1  );
-      *out_it++ = Point(  x  , y+1  );
-      *out_it++ = Point(  x+1, y+1  );
-    }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-    }
-
-    template < typename OutputIterator >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x-1, y-1  );
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x+1, y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x-1, y+1  );
-      *out_it++ = Point(  x  , y+1  );
-      *out_it++ = Point(  x+1, y+1  );
-    }
-
-    template <typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      //      std::cerr << "Z2_8.writeProperNeighborhood(,,Pred)" << std::endl;
-
-      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-    }
-    
     // ---------------------- Local graph services ----------------------------
   public:
     
@@ -578,7 +368,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      //writeProperNeighborhood<OutputIterator>( v, it );
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       *it++ = Vertex(  x-1, y-1  );
@@ -596,7 +385,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
       Vertex q( v[ 0 ] - 1, v[ 1 ] - 1 );
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
@@ -680,68 +468,6 @@ namespace DGtal {
       return v.norm1() == 1;
     }
 
-    template <typename OutputIterator>
-    inline
-    static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x  , y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x  , y+1  );
-    }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ], p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-    }
-
-    template <typename OutputIterator>
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x  , y+1  );
-    }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      // std::cerr << "Z2_4.writeProperNeighborhood(,,Pred)" << std::endl;
-      Point q( p[ 0 ], p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-    }
-
     // ---------------------- Local graph services ----------------------------
     
     inline
@@ -764,7 +490,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      //writeProperNeighborhood<OutputIterator>( v, it );
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       *it++ = Vertex(  x  , y-1  );
@@ -778,7 +503,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
       Vertex q( v[ 0 ], v[ 1 ] - 1 );
       if ( pred( q ) ) *it++ = q;
       --q[ 0 ]; ++q[ 1 ]; 
@@ -863,178 +587,6 @@ namespace DGtal {
 	}
       return false;
     }
-    
-    template <typename OutputIterator>
-    inline
-    static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x-1, y-1, z-1 );
-      *out_it++ = Point(  x  , y-1, z-1 );
-      *out_it++ = Point(  x+1, y-1, z-1 );
-      *out_it++ = Point(  x-1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x+1, y-1, z   );
-      *out_it++ = Point(  x-1, y-1, z+1 );
-      *out_it++ = Point(  x  , y-1, z+1 );
-      *out_it++ = Point(  x+1, y-1, z+1 );
-      *out_it++ = Point(  x-1, y  , z-1 );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x+1, y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      *out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x-1, y  , z+1 );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x+1, y  , z+1 );
-      *out_it++ = Point(  x-1, y+1, z-1 );
-      *out_it++ = Point(  x  , y+1, z-1 );
-      *out_it++ = Point(  x+1, y+1, z-1 );
-      *out_it++ = Point(  x-1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z   );
-      *out_it++ = Point(  x+1, y+1, z   );
-      *out_it++ = Point(  x-1, y+1, z+1 );
-      *out_it++ = Point(  x  , y+1, z+1 );
-      *out_it++ = Point(  x+1, y+1, z+1 );
-    }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ] - 1, p[ 1 ] - 1, p[ 2 ] - 1 );
-      // z-1
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z+1
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-    }
-
-    template < typename OutputIterator >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x-1, y-1, z-1 );
-      *out_it++ = Point(  x  , y-1, z-1 );
-      *out_it++ = Point(  x+1, y-1, z-1 );
-      *out_it++ = Point(  x-1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x+1, y-1, z   );
-      *out_it++ = Point(  x-1, y-1, z+1 );
-      *out_it++ = Point(  x  , y-1, z+1 );
-      *out_it++ = Point(  x+1, y-1, z+1 );
-      *out_it++ = Point(  x-1, y  , z-1 );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x+1, y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      //*out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x-1, y  , z+1 );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x+1, y  , z+1 );
-      *out_it++ = Point(  x-1, y+1, z-1 );
-      *out_it++ = Point(  x  , y+1, z-1 );
-      *out_it++ = Point(  x+1, y+1, z-1 );
-      *out_it++ = Point(  x-1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z   );
-      *out_it++ = Point(  x+1, y+1, z   );
-      *out_it++ = Point(  x-1, y+1, z+1 );
-      *out_it++ = Point(  x  , y+1, z+1 );
-      *out_it++ = Point(  x+1, y+1, z+1 );
-    }
-
-    template <typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-       Point q( p[ 0 ] - 1, p[ 1 ] - 1, p[ 2 ] - 1 );
-      // z-1
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q; // skip (x,y,z)
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z+1
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-    }
 
     // ---------------------- Local graph services ----------------------------
   public:
@@ -1059,7 +611,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      //writeProperNeighborhood<OutputIterator>( v, it );
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
@@ -1098,7 +649,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
       Vertex q( v[ 0 ] - 1, v[ 1 ] - 1, v[ 2 ] - 1 );
       // z-1
       if ( pred( q ) ) *it++ = q;
@@ -1215,139 +765,6 @@ namespace DGtal {
       return false;
     }
 
-    template <typename OutputIterator>
-    inline
-    static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x  , y-1, z-1 );
-      *out_it++ = Point(  x-1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x+1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z+1 );
-      *out_it++ = Point(  x-1, y  , z-1 );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x+1, y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      *out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x-1, y  , z+1 );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x+1, y  , z+1 );
-      *out_it++ = Point(  x  , y+1, z-1 );
-      *out_it++ = Point(  x-1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z   );
-      *out_it++ = Point(  x+1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z+1 );
-    }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ], p[ 1 ] - 1, p[ 2 ] - 1 );
-      // z-1
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z-1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z-1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z-1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z-1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z-1
-      // z
-      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z+1
-      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z+1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z+1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z+1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z+1
-   }
-
-    template < typename OutputIterator >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x  , y-1, z-1 );
-      *out_it++ = Point(  x-1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x+1, y-1, z   );
-      *out_it++ = Point(  x  , y-1, z+1 );
-      *out_it++ = Point(  x-1, y  , z-1 );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x+1, y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      //*out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x-1, y  , z+1 );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x+1, y  , z+1 );
-      *out_it++ = Point(  x  , y+1, z-1 );
-      *out_it++ = Point(  x-1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z   );
-      *out_it++ = Point(  x+1, y+1, z   );
-      *out_it++ = Point(  x  , y+1, z+1 );
-    }
-
-    template <typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ], p[ 1 ] - 1, p[ 2 ] - 1 );
-      // z-1
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z-1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z-1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z-1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z-1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z-1
-      // z
-      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q; // skip (x,y,z)
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      // z+1
-      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y-1, z+1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z+1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;           // x+1, y  , z+1
-      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y+1, z+1
- 
-    }
-
     // ---------------------- Local graph services ----------------------------   
   public:
     
@@ -1371,7 +788,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      //writeProperNeighborhood<OutputIterator>( v, it );
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
@@ -1402,7 +818,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
       Vertex q( v[ 0 ], v[ 1 ] - 1, v[ 2 ] - 1 );
       // z-1
       if ( pred( q ) ) *it++ = q;                     // x  , y-1, z-1
@@ -1506,76 +921,6 @@ namespace DGtal {
 	}
       return false;
     }
-
-    template <typename OutputIterator>
-    inline
-    static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      *out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x  , y+1, z   );
-     }
-
-    template < typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ], p[ 1 ], p[ 2 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y  , z-1
-      ++q[ 2 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z
-      ++q[ 2 ]; if ( pred( q ) ) *out_it++ = q;           // x  , y  , z+1
-      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x+1, y  , z
-      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y-1, z
-      q[ 1 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y+1, z
-   }
-
-    template < typename OutputIterator >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      Integer z = p[ 2 ];
-  
-      *out_it++ = Point(  x  , y-1, z   );
-      *out_it++ = Point(  x  , y  , z-1 );
-      *out_it++ = Point(  x-1, y  , z   );
-      //*out_it++ = Point(  x  , y  , z   );
-      *out_it++ = Point(  x+1, y  , z   );
-      *out_it++ = Point(  x  , y  , z+1 );
-      *out_it++ = Point(  x  , y+1, z   );
-    }
-
-    template <typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      Point q( p[ 0 ], p[ 1 ], p[ 2 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;                     // x  , y  , z-1
-      q[ 2 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y  , z+1
-      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *out_it++ = q; // x-1, y  , z
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x+1, y  , z
-      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *out_it++ = q; // x  , y-1, z
-      q[ 1 ] += 2; if ( pred( q ) ) *out_it++ = q;        // x  , y+1, z
-    }
     
     // ---------------------- Local graph services ----------------------------
   public:
@@ -1600,7 +945,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      //writeProperNeighborhood<OutputIterator>( v, it );
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
@@ -1619,7 +963,6 @@ namespace DGtal {
     static
     void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      //writeProperNeighborhood<OutputIterator, VertexPredicate>( v, it, pred );
       Vertex q( v[ 0 ], v[ 1 ], v[ 2 ] - 1 );
       if ( pred( q ) ) *it++ = q;                     // x  , y  , z-1
       q[ 2 ] += 2; if ( pred( q ) ) *it++ = q;        // x  , y  , z+1
