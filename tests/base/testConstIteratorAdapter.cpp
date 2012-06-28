@@ -34,6 +34,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
+#include "DGtal/base/Circulator.h"
 
 #include <boost/concept_check.hpp>
 
@@ -53,8 +54,8 @@ using namespace DGtal;
 bool testProjection()
 {
 
-  bool flag1 = true; 
-  bool flag2 = true; 
+  unsigned int nb = 0; 
+  unsigned int nbok = 0; 
   
   typedef PointVector<3,int> Point3;
   typedef PointVector<2,int> Point2;
@@ -66,7 +67,9 @@ bool testProjection()
 
   typedef ConstIteratorAdapter<Iterator3,Projector2,Point2> Adapter; 
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
-  BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Adapter> ));
+
+  BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<Adapter> ));
+  BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<Adapter> ));
   
   //range of 3d Points
   std::vector<Point3> r;
@@ -124,22 +127,49 @@ bool testProjection()
     }
 
   //comparison
-  flag1 = std::equal( rtrue.begin(), rtrue.end(), aitBegin ); 
+  if ( std::equal( rtrue.begin(), rtrue.end(), aitBegin ) == true )
+    nbok++; 
+  nb++; 
+  trace.info() << nbok << "/" << nb << std::endl;   
 
+  //basic operators
+  trace.info() << "basic operators (operator==)" << endl; 
+  if ( ( ait != aitBegin ) && ( ait == aitEnd ) )
+    nbok++; 
+  nb++; 
+  trace.info() << nbok << "/" << nb << std::endl;   
+  
   //random access
   ait = (aitBegin + 3);
   ait += 1;
   ait = 1 + ait; 
-  trace.info() << "operations on random access operators" << endl; 
+  trace.info() << "random access operators (operator+)" << endl; 
   trace.info() << *(aitBegin.base()) << *aitBegin << endl; 
   trace.info() << "+5" << std::endl; 
   trace.info() << *(ait.base()) << *ait << endl; 
-  flag2 = (*ait == Point2(3,1)); 
-  trace.info() << flag2 << std::endl;   
-  trace.endBlock();
+  if ( ( *ait == Point2(3,1) ) == true )
+    nbok++; 
+  nb++; 
+  trace.info() << nbok << "/" << nb << std::endl;   
 
+  trace.info() << "backward scanning" << endl; 
+  std::reverse_iterator<Adapter> raitBegin( aitEnd ); 
+  if ( std::equal( rtrue.rbegin(), rtrue.rend(), raitBegin ) == true )
+    nbok++; 
+  nb++; 
+  trace.info() << nbok << "/" << nb << std::endl;   
+  
+  trace.info() << "circular scanning" << endl; 
+  Circulator<Adapter> caitBegin( aitBegin, aitBegin, aitEnd ); 
+  if ( std::equal( rtrue.begin(), rtrue.end(), caitBegin ) == true )
+    nbok++; 
+  nb++; 
+  trace.info() << nbok << "/" << nb << std::endl;   
+  
+
+  trace.endBlock();
     
-  return flag1 && flag2;
+  return (nb == nbok);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

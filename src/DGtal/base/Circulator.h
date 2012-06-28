@@ -41,169 +41,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include<iterator>
-
+#include "DGtal/base/IteratorTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // tag classes 
-struct IteratorType {};
-struct CirculatorType {};
-
-  //tags dedicated for circulators only
-struct forward_circulator_tag 
-{
-  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
-};
-struct bidirectional_circulator_tag 
-{
-  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
-  operator std::bidirectional_iterator_tag() { return std::bidirectional_iterator_tag(); }
-};
-struct random_access_circulator_tag 
-{
-  operator std::forward_iterator_tag() { return std::forward_iterator_tag(); }
-  operator std::bidirectional_iterator_tag() { return std::bidirectional_iterator_tag(); }
-};
-
-  //tags valid for both iterator or circulator
-struct ForwardCategory {};
-struct BidirectionalCategory {};
-struct RandomAccessCategory {};
-
-  /////////////////////////////////////////////////////////////////////////////
-  // traits classes 
-
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of template class 'IteratorCirculatorTagTraits' <p>
-   * \brief Aim: 
-   *  Provides the category of the iterator (resp. circulator)  
-   * {ForwardCategory,BidirectionalCategory,RandomAccessCategory}
-   * and the type {IteratorType,CirculatorType}
-   * 
-   * @tparam C any category
-   */
-
-//default
-template <typename C>
-struct IteratorCirculatorTagTraits {
-    typedef  IteratorType  type;
-    typedef  C  iterator_category;
-};
-
-//for DGtal circulators
-template <>
-struct IteratorCirculatorTagTraits<forward_circulator_tag> {
-    typedef  CirculatorType  type;
-    typedef  ForwardCategory iterator_category;
-};
-
-template <>
-struct IteratorCirculatorTagTraits<bidirectional_circulator_tag> {
-    typedef  CirculatorType  type;
-    typedef  BidirectionalCategory iterator_category;
-};
-
-template <>
-struct IteratorCirculatorTagTraits<random_access_circulator_tag> {
-    typedef  CirculatorType  type;
-    typedef  RandomAccessCategory iterator_category;
-};
-
-//for STL iterators
-template <>
-struct IteratorCirculatorTagTraits<std::forward_iterator_tag> {
-    typedef  IteratorType  type;
-    typedef  ForwardCategory iterator_category;
-};
-
-template <>
-struct IteratorCirculatorTagTraits<std::bidirectional_iterator_tag> {
-    typedef  IteratorType  type;
-    typedef  BidirectionalCategory iterator_category;
-};
-
-template <>
-struct IteratorCirculatorTagTraits<std::random_access_iterator_tag> {
-    typedef  IteratorType  type;
-    typedef  RandomAccessCategory iterator_category;
-};
-
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of template class 'IteratorCirculatorTraits' <p>
-   * \brief Aim: 
-   *  Provides definition types for both iterators and circulators:   
-   *  Type, Category, Value, Difference, Pointer and Reference. 
-   *
-   * @tparam IC any iterator or circulator
-   */
-
-template <typename IC>
-struct IteratorCirculatorTraits {
-
-  typedef typename IteratorCirculatorTagTraits
-          <typename IC::iterator_category>::type
-                                                                 Type;
-
-  typedef typename IteratorCirculatorTagTraits
-          <typename IC::iterator_category>::iterator_category
-                                                                 Category;
-
-  typedef typename IC::value_type                                Value;
-  typedef typename IC::difference_type                           Difference;
-  typedef typename IC::pointer                                   Pointer;
-  typedef typename IC::reference                                 Reference;
-
-};
-
-template <class T>
-struct IteratorCirculatorTraits<T*> {
-  typedef IteratorType               Type; 
-  typedef RandomAccessCategory       Category;
-  typedef T                          Value;
-  typedef ptrdiff_t                  Difference;
-  typedef T*                         Pointer;
-  typedef T&                         Reference;
-};
-
-
-
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * Description of template class 'CirculatorTagTraits' <p>
-   * \brief Aim: 
-   *  Transform std::forward_iterator_tag into forward_circulator_tag
-   *  Transform std::bidirectional_iterator_tag into bidirectional_circulator_tag
-   *  Transform std::random_access_iterator_tag into random_access_circulator_tag
-   * 
-   * @tparam T any tag
-   */
-
-template <typename T>
-struct CirculatorTagTraits {
-    typedef  T  iterator_category;
-};
-
-template <>
-struct CirculatorTagTraits<std::forward_iterator_tag> {
-    typedef  forward_circulator_tag iterator_category;
-};
-
-
-template <>
-struct CirculatorTagTraits<std::bidirectional_iterator_tag> {
-    typedef  bidirectional_circulator_tag iterator_category;
-};
-
-
-template <>
-struct CirculatorTagTraits<std::random_access_iterator_tag> {
-    typedef  random_access_circulator_tag iterator_category;
-};
 
   /////////////////////////////////////////////////////////////////////////////
   // template class Circulator
@@ -237,11 +80,12 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
     // ----------------------- Types ------------------------------
   public:
 
-      typedef TIterator                                            Iterator;
+      typedef TIterator                                           Iterator;
       typedef Circulator<TIterator>                               Self;
 
-      typedef typename CirculatorTagTraits<
-           typename iterator_traits<TIterator>::iterator_category >::iterator_category 
+      typedef CirculatorType                                      Type; 
+
+      typedef typename boost::iterator_category<TIterator>::type
                                                                      iterator_category;
 
       typedef typename iterator_traits<TIterator>::value_type        value_type;
@@ -315,7 +159,10 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
           myCurrentIt = other.myCurrentIt;
           myBeginIt = other.myBeginIt;
           myEndIt = other.myEndIt;
-          myFlagIsValid = other.myFlagIsValid;
+	  if (myBeginIt != myEndIt) 
+	    myFlagIsValid = true; 
+	  else 
+	    myFlagIsValid = false;
         }
       return *this;
     }
@@ -333,7 +180,10 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
           myCurrentIt = other.base();
           myBeginIt = other.begin();
           myEndIt = other.end();
-          myFlagIsValid = other.isValid();
+	  if (myBeginIt != myEndIt) 
+	    myFlagIsValid = true; 
+	  else 
+	    myFlagIsValid = false;
         }
       return *this;
     }
@@ -522,58 +372,13 @@ struct CirculatorTagTraits<std::random_access_iterator_tag> {
   }; // end of class Circulator
 
 
-  /////////////////////////////////////////////////////////////////////////////
-  // template functions isNotEmpty
-
-namespace detail {
-
-  template< typename IC > 
-  inline
-  bool isEmpty( const IC& itb, const IC& ite, IteratorType ) {
-    return itb == ite;
-  }
-
-  template< typename IC > 
-  inline
-  bool isEmpty( const IC& c1, const IC& c2, CirculatorType) {
-    IC c; 
-    return ( (c1 == c ) || ( c2 == c ) );  
-  }
-
-  template< typename IC > 
-  inline
-  bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
-    return itb != ite;
-  }
-
-  template< typename IC > 
-  inline
-  bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
-    IC c; 
-    return ( (c1 != c ) && ( c2 != c ) );  
-  }
-
-} 
-
-template< typename IC> 
-inline
-bool isEmpty( const IC& itb, const IC& ite ){
-  return detail::isEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-}
-
-template< typename IC> 
-inline
-bool isNotEmpty( const IC& itb, const IC& ite ){
-  return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-}
-
-
 } // namespace DGtal
 
+#include "DGtal/base/IteratorFunctions.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/geometry/2d/Circulator.ih"
+//#include "DGtal/base/Circulator.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
