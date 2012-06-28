@@ -3,7 +3,7 @@
 
 # Make sure the compiler can find include files.
 if ( CPP11_INITIALIZER_LIST )
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
 endif ( CPP11_INITIALIZER_LIST )
 
 # Make sure the compiler can find include files.
