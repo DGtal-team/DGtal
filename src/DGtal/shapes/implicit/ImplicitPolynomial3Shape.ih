@@ -79,6 +79,23 @@ init( const Polynomial3 & poly )
   myDerivatives[ 0 ] = derivative<0>( poly );
   myDerivatives[ 1 ] = derivative<1>( poly );
   myDerivatives[ 2 ] = derivative<2>( poly );
+
+  Fx= myDerivatives[ 0 ];
+  Fy= myDerivatives[ 1 ];
+  Fz= myDerivatives[ 2 ];
+
+  Fxx= derivative<0>(myDerivatives[ 0 ]) ;
+  Fxy= derivative<1>(myDerivatives[ 0 ]) ;
+  Fxz= derivative<2>(myDerivatives[ 0 ]) ;
+
+  Fyx= derivative<0>(myDerivatives[ 1 ]) ;
+  Fyy= derivative<1>(myDerivatives[ 1 ]) ;
+  Fyz= derivative<2>(myDerivatives[ 1 ]) ;
+
+
+  Fzx= derivative<0>(myDerivatives[ 2 ]) ;
+  Fzy= derivative<1>(myDerivatives[ 2 ]) ;
+  Fzz= derivative<2>(myDerivatives[ 2 ]) ;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -127,8 +144,95 @@ gradient( const RealPoint &aPoint ) const
     ( myDerivatives[ 0 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ),
       myDerivatives[ 1 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ),
       myDerivatives[ 2 ] ( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ) );
+
 }
 
+
+// ------------------------------------------------------------ Added by Anis Benyoub
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+double
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+meanCurvature( const RealPoint &aPoint ) const
+{
+Polynomial3 U= Fx;
+Polynomial3 V= Fy;
+Polynomial3 W= Fz;
+Polynomial3 N=U*U+V*V+W*W;
+
+
+Polynomial3 Ux=  Fxx;
+Polynomial3 Vy=  Fyy;
+Polynomial3 Wz=  Fzz;
+
+Polynomial3 Nx=  derivative<0>(N);
+Polynomial3 Ny=  derivative<1>(N);
+Polynomial3 Nz=  derivative<2>(N);
+
+double  Nvalue = N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ]);
+double N2= Nvalue*Nvalue;
+
+
+
+double A=(Ux( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double B =(U( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+
+
+double C=(Vy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double D =(V( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Ny( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+
+double E=(Wz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+double F =(W( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+
+
+return 
+    ( (A-B)/N2+ (C-D)/N2 +(E-F)/N2);
+
+}
+
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+inline
+double
+DGtal::ImplicitPolynomial3Shape<TSpace>::
+gaussianCurvature( const RealPoint &aPoint ) const
+{
+  
+double vFx= Fx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFy= Fy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFz= Fz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+
+double vFxx= Fxx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFxy= Fxy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFxz= Fxz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+
+double vFyx= Fyx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFyy= Fyy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFyz= Fyz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+
+
+double vFzx = Fzx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFzy = Fzy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+double vFzz = Fzz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+
+
+
+double A = vFz*(vFxx*vFz-2.0*vFx*vFxz)+vFx*vFx*vFzz;
+
+double B = vFz*(vFyy*vFz-2.0*vFy*vFyz)+vFy*vFy*vFzz;
+
+double C = vFz*(-vFx*vFyz+vFxy*vFz-vFxz*vFy)+vFx*vFy*vFzz;
+
+double D = vFz*(vFx*vFx+vFy*vFy+vFz*vFz);
+
+double G= (A*B-C*C)/(D*D);
+
+return G;
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

@@ -45,6 +45,7 @@
 #include <boost/static_assert.hpp>
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
+#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/SegmentComputerUtils.h"
 
 #include "DGtal/geometry/tools/Preimage2D.h"
@@ -96,7 +97,7 @@ namespace DGtal
     //requiered types
     typedef TConstIterator ConstIterator;
     typedef GeometricalDSS<ConstIterator> Self; 
-    typedef GeometricalDSS<std::reverse_iterator<ConstIterator> > Reverse;
+    typedef GeometricalDSS<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
