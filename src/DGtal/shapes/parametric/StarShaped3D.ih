@@ -138,20 +138,25 @@ DGtal::StarShaped3D<TSpace>::meanCurvature( AngularCoordinates t) const
 {
   typedef typename Space::RealPoint RealPoint;
   
-  RealPoint n = normal(t);
+
   RealPoint art = rt(t);
   RealPoint arp = rp(t);
   RealPoint artt = rtt(t);
   RealPoint arpp = rpp(t);
   RealPoint artp = rtp(t);
 
+  RealPoint n(art[1]*arp[2]-art[2]*arp[1],art[2]*arp[0]-art[0]*arp[2],art[0]*arp[1]-art[1]*arp[0]);
+  double norme= sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+  n[0]=n[0]/norme;
+  n[1]=n[1]/norme;
+  n[2]=n[2]/norme;
   double E = art[0] * art[0]+ art[1] * art[1]+ art[2] * art[2];
   double F= art[0] * arp[0]+ art[1] * arp[1]+ art[2] * arp[2];
   double G = arp[0] * arp[0]+ arp[1] * arp[1]+ arp[2] * arp[2];
   double L = artt[0] * n[0]+ artt[1] * n[1]+ artt[2] * n[2];
   double M = artp[0] * n[0]+ artp[1] * n[1]+ artp[2] * n[2];
   double N = arpp[0] * n[0]+ arpp[1] * n[1]+ arpp[2] * n[2];
-  double H = (E*N-2*F*M+G*L)/(2*(E*G-F*F));
+  double H = (E*N-2.0f*F*M+G*L)/(2.0f*(E*G-F*F));
     
 
 
@@ -176,13 +181,18 @@ DGtal::StarShaped3D<TSpace>::gaussianCurvature( AngularCoordinates t ) const
   
   typedef typename Space::RealPoint RealPoint;
   
-  RealPoint n = normal(t);
   RealPoint art = rt(t);
   RealPoint arp = rp(t);
   RealPoint artt = rtt(t);
   RealPoint arpp = rpp(t);
   RealPoint artp = rtp(t);
 
+
+  RealPoint n(art[1]*arp[2]-art[2]*arp[1],art[2]*arp[0]-art[0]*arp[2],art[0]*arp[1]-art[1]*arp[0]);
+  double norme= sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
+  n[0]=n[0]/norme;
+  n[1]=n[1]/norme;
+  n[2]=n[2]/norme;
   double E = art[0] * art[0]+ art[1] * art[1]+ art[2] * art[2];
   double F= art[0] * arp[0]+ art[1] * arp[1]+ art[2] * arp[2];
   double G = arp[0] * arp[0]+ arp[1] * arp[1]+ arp[2] * arp[2];
