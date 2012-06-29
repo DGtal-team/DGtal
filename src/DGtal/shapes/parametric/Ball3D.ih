@@ -87,33 +87,19 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
   if((fabs(l[0])<0.0001)&&(fabs(l[1])<0.0001))
   {
     angle.first=0;
-    if(l[2]>0)
+    if(l[2]>=0)
     angle.second=0;
     if(l[2]<0)
     angle.second=M_PI;
   }
   else
   {
-  angle.first=atan2(l[1],l[0]);
+  angle.first=atan(l[1]/l[0]);
   if(l[1]>=0)
   angle.second=asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
   if(l[1]<0)
   angle.second=-asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
   }
-  
-// angle.first=0;
-// angle.first=0;
-// if ( ( p[0] == 0.0 ) && ( p[1] == 0.0 ) && ( p[2] == 0.0 ) )
-// {
-// return angle;
-// }
-// else
-// {
-// RealPoint l=p;
-// angle.first= acos((l[0]+ l[1])/(l[0]*l[0] +l[1]*l[1]+ l[2]*l[2]));
-// angle.second = acos((l[2])/(l[0]*l[0] + l[1]*l[1] + l[2]*l[2]));
-// }
-//
   return angle;
 }
 
@@ -162,7 +148,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rt( const AngularCoordinates t) const
 {
-return RealPoint(-sin(t.first)*sin(t.second),cos(t.first)*sin(t.second),0);
+return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
 }
 
 
@@ -177,7 +163,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rp( const AngularCoordinates t) const
 {
-  return RealPoint(cos(t.first)*cos(t.second),sin(t.first)*cos(t.second),-sin(t.second));
+  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),myRadius*cos(t.second));
 }
 
 
@@ -191,7 +177,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rtt( const AngularCoordinates t) const
 {
-  return RealPoint(-cos(t.first)*sin(t.second),-sin(t.first)*sin(t.second),0);
+  return RealPoint(-myRadius*cos(t.first)*cos(t.second),-myRadius*sin(t.first)*cos(t.second),0);
 }
 
 
@@ -206,7 +192,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rpp( const AngularCoordinates t) const
 {
-  return RealPoint(-cos(t.first)*sin(t.second),-sin(t.first)*sin(t.second),-cos(t.second));
+  return RealPoint(-myRadius*cos(t.first)*cos(t.second),-myRadius*sin(t.first)*cos(t.second),-myRadius*sin(t.second));
 }
     
 /**
@@ -219,7 +205,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rtp( const AngularCoordinates t) const
 {
-  return RealPoint(-sin(t.first)*cos(t.second),cos(t.first)*cos(t.second),0);
+  return RealPoint(myRadius*sin(t.first)*sin(t.second),-myRadius*cos(t.first)*sin(t.second),0);
 }
     
 

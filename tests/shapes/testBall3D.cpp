@@ -112,9 +112,34 @@
 
 
 //-----------------------------------------------------------------------
+// Looking for the min and max values
+
+  double minCurv=1;
+  double maxCurv=0;
+  SCellToMidPoint<KSpace> midpoint(K);
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
+	it != it_end; ++it)
+  {
+
+    RealPoint A = midpoint( *it );
+    DGtal::StarShaped3D<Space>::AngularCoordinates Angles= ball1.parameter(A);
+    double a =ball1.meanCurvature(Angles);
+//    double a =ball1.gaussianCurvature(Angles);
+
+    if(a>maxCurv)
+    {
+	maxCurv=a;
+    }
+    if(a<minCurv)
+    {
+	minCurv=a;
+    }
+  }
+
+//-----------------------------------------------------------------------
 //Specifing a color map
 
-  GradientColorMap<double> cmap_grad( 10, 20 );
+  GradientColorMap<double> cmap_grad( minCurv, maxCurv+1	 );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
@@ -125,7 +150,7 @@
 //curvature)
 
   unsigned int nbSurfels = 0;
-  SCellToMidPoint<KSpace> midpoint(K);
+
 
   for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
 it != it_end; ++it, ++nbSurfels )
@@ -134,6 +159,7 @@ it != it_end; ++it, ++nbSurfels )
 
     DGtal::StarShaped3D<Space>::AngularCoordinates Angles= ball1.parameter(A);
     double curvature =ball1.meanCurvature(Angles);
+//    double curvature =ball1.gaussianCurvature(Angles);
     viewer << CustomColors3D( Color::Black, cmap_grad( curvature));
     viewer << *it;
   }
