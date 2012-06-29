@@ -62,7 +62,7 @@ namespace DGtal
    *
    * @tparam TSpace the Digital space definition.
    */
-  
+
   template < typename TSpace >
   class ImplicitPolynomial3Shape
   {
@@ -76,32 +76,32 @@ namespace DGtal
     typedef typename Space::Integer Integer;
     typedef MPolynomial< 3, Ring > Polynomial3;
     typedef Ring Value;
-    
+
     BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
-    
-    /** 
+
+    /**
         Constructor from an arbitrary polynomial.
-        
+
         @param poly any multivariate polynomial (the number of
         variables is the dimension of the space)
     */
     ImplicitPolynomial3Shape( const Polynomial3 & poly );
-    
+
     /**
        Assignment.
        @param other the object to copy.
        @return a reference on 'this'.
      */
     ImplicitPolynomial3Shape & operator= ( const ImplicitPolynomial3Shape & other );
-    
-    /** 
+
+    /**
         Destructor.
-    */    
+    */
     ~ImplicitPolynomial3Shape();
 
-    /** 
+    /**
         Initialize from an arbitrary polynomial.
-        
+
         @param poly any multivariate polynomial (the number of
         variables is the dimension of the space)
     */
@@ -109,13 +109,13 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
        @param aPoint any point in the Euclidean space.
        @return the value of the polynomial at \a aPoint.
     */
     double operator()(const RealPoint &aPoint) const;
-    
+
     /**
        @param aPoint any point in the Euclidean space.
        @return 'true' if the polynomial value is > 0.
@@ -159,7 +159,7 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -178,27 +178,25 @@ namespace DGtal
   private:
     /// The 3-polynomial defining the implicit shape.
     Polynomial3 myPolynomial;
-    /// The gradient 3-polynomials (computed).
-    Polynomial3 myDerivatives[ 3 ];
 
     // Partial deriatives
-    Polynomial3 Fx;
-    Polynomial3 Fy;
-    Polynomial3 Fz;
+    Polynomial3 myFx;
+    Polynomial3 myFy;
+    Polynomial3 myFz;
 
-    Polynomial3 Fxx;
-    Polynomial3 Fxy;
-    Polynomial3 Fxz;
+    Polynomial3 myFxx;
+    Polynomial3 myFxy;
+    Polynomial3 myFxz;
 
-    Polynomial3 Fyx;
-    Polynomial3 Fyy;
-    Polynomial3 Fyz;
+    Polynomial3 myFyx;
+    Polynomial3 myFyy;
+    Polynomial3 myFyz;
 
-    Polynomial3 Fzx;
-    Polynomial3 Fzy;
-    Polynomial3 Fzz;
+    Polynomial3 myFzx;
+    Polynomial3 myFzy;
+    Polynomial3 myFzz;
 
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -210,7 +208,7 @@ namespace DGtal
 
   private:
 
-    
+
   }; // end of class ImplicitPolynomial3Shape
 
 
@@ -221,7 +219,7 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename T>
-  std::ostream&
+  std::ostream &
   operator<< ( std::ostream & out, const ImplicitPolynomial3Shape<T> & object );
 
 } // namespace DGtal
