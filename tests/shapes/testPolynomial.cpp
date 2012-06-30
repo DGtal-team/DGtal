@@ -70,17 +70,17 @@ void usage( int /*argc*/, char** argv )
 int main( int argc, char** argv )
 {
   if ( argc < 9 )
-    {
-      usage( argc, argv );
-      return 1;
-    }
+  {
+    usage( argc, argv );
+    return 1;
+  }
   double p1[ 3 ];
   double p2[ 3 ];
   for ( unsigned int i = 0; i < 3; ++i )
-    {
-      p1[ i ] = atof( argv[ 2+i ] );
-      p2[ i ] = atof( argv[ 5+i ] );
-    }
+  {
+    p1[ i ] = atof( argv[ 2 + i ] );
+    p2[ i ] = atof( argv[ 5 + i ] );
+  }
   double step = atof( argv[ 8 ] );
 
 
@@ -98,35 +98,35 @@ int main( int argc, char** argv )
   Polynomial3Reader reader;
   std::string poly_str = argv[ 1 ];
   std::string::const_iterator iter
-    = reader.read( P, poly_str.begin(), poly_str.end() );
+      = reader.read( P, poly_str.begin(), poly_str.end() );
   if ( iter != poly_str.end() )
-    {
-      std::cerr << "ERROR: I read only <"
-                << poly_str.substr( 0, iter - poly_str.begin() )
-                << ">, and I built P=" << P << std::endl;
-      return 1;
-    }
-  
+  {
+    std::cerr << "ERROR: I read only <"
+              << poly_str.substr( 0, iter - poly_str.begin() )
+              << ">, and I built P=" << P << std::endl;
+    return 1;
+  }
+
 
   ImplicitShape ishape( P );
   DigitalShape dshape;
   dshape.attach( ishape );
   dshape.init( RealPoint( p1 ), RealPoint( p2 ), step );
   Domain domain = dshape.getDomain();
- 
-  
+
+
   KSpace K;
-  
+
   bool space_ok = K.init( domain.lowerBound(),
-                          domain.upperBound(), true 
+                          domain.upperBound(), true
                           );
-  if (!space_ok)
-    {
-      trace.error() << "Error in the Khamisky space construction."<<std::endl;
-      return 2;
-    }
- 
-  typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
+  if ( !space_ok )
+  {
+    trace.error() << "Error in the Khamisky space construction." << std::endl;
+    return 2;
+  }
+
+  typedef SurfelAdjacency< KSpace::dimension > MySurfelAdjacency;
   MySurfelAdjacency surfAdj( true ); // interior in all directions.
 
 
@@ -135,17 +135,17 @@ int main( int argc, char** argv )
   typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
 
- 
+
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
-  Surfel bel = Surfaces<KSpace>::findABel( K, dshape, 100000 );
-  Surfaces<KSpace>::trackBoundary( theSetOfSurfels.surfelSet(),
+  Surfel bel = Surfaces< KSpace >::findABel( K, dshape, 100000 );
+  Surfaces< KSpace >::trackBoundary( theSetOfSurfels.surfelSet(),
                                    K, surfAdj,
                                    dshape, bel );
 
- 
 
 
-  QApplication application(argc,argv);
+
+  QApplication application( argc, argv );
   Viewer3D viewer;
   viewer.show();
   viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
@@ -156,31 +156,42 @@ int main( int argc, char** argv )
   //-----------------------------------------------------------------------
   // Looking for the min and max values
 
-  double minCurv=1;
-  double maxCurv=0;
-  SCellToMidPoint<KSpace> midpoint(K);
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end(); 
-	it != it_end; ++it)
-    {
+  double minCurv = 1;
+  double maxCurv = 0;
+  SCellToMidPoint< KSpace > midpoint( K );
+  for ( std::set< SCell >::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
+        it != it_end; ++it)
+  {
 
-      RealPoint A = midpoint( *it );
-      //double a=ishape.gaussianCurvature(A);
-      double a= ishape.meanCurvature(A);
-      if( boost::math::isnan(a))
-	a=0;
-      else
-	if(a>maxCurv)
-	  maxCurv=a;
-	else
-	  if(a<minCurv)
-	    minCurv=a;
+    RealPoint A = midpoint( *it ) * step;
+    //double a = ishape.gaussianCurvature( A );
+    double a = ishape.meanCurvature( A );
+    //trace.info() << a << std::endl;
+    if ( boost::math::isnan( a ))
+    {
+      a = 0;
     }
+    else
+    {
+      if ( a > maxCurv )
+      {
+        maxCurv = a;
+      }
+      else if ( a < minCurv )
+      {
+          minCurv = a;
+      }
+    }
+  }
+
+  trace.info() << " Min = " << minCurv << std::endl;
+  trace.info() << " Max = " << maxCurv << std::endl;
 
 
   //-----------------------------------------------------------------------
   //Specifing a color map
 
-  GradientColorMap<double> cmap_grad( minCurv, maxCurv );
+  GradientColorMap< double > cmap_grad( minCurv, maxCurv );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
@@ -189,28 +200,24 @@ int main( int argc, char** argv )
   //drawing
   unsigned int nbSurfels = 0;
 
-  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), 
-	  it_end = theSetOfSurfels.end(); 
-	it != it_end; ++it, ++nbSurfels )
-    {
+  for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(),
+        it_end = theSetOfSurfels.end();
+        it != it_end; ++it, ++nbSurfels )
+  {
 
-      RealPoint A = midpoint( *it );
-      //double a=ishape.gaussianCurvature(A);
-      double a= ishape.meanCurvature(A);
-      if( boost::math::isnan(a))
-      	{
-      	  a=0;
-      	}
-      viewer <<   CustomColors3D( Color::Black, cmap_grad( a));
-      viewer << *it;
+    RealPoint A = midpoint( *it ) * step;
+    //double a=ishape.gaussianCurvature(A);
+    double a = ishape.meanCurvature( A );
+    if ( boost::math::isnan( a ))
+    {
+      a = 0;
     }
 
-
+    viewer << CustomColors3D( Color::Black, cmap_grad( a ));
+    viewer << *it;
+  }
 
   viewer << Viewer3D::updateDisplay;
 
   return application.exec();
-
-
-  return 0;
 }
