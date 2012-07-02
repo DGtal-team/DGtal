@@ -200,6 +200,11 @@ namespace DGtal
     Polynomial3 myFzz;
 
 
+    // Precomputed Polynoms useful for curvature computations
+    Polynomial3 myUpPolynome;
+    Polynomial3 myLowPolynome;
+
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
