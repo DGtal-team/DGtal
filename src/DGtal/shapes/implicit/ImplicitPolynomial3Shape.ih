@@ -159,43 +159,38 @@ gradient( const RealPoint &aPoint ) const
 
 // ------------------------------------------------------------ Added by Anis Benyoub
 //-----------------------------------------------------------------------------
+
+/**
+ * @param aPoint any point in the Euclidean space.
+ * This computation is based on the hessian formula of the mean curvature
+ * k=-(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
+ * we define it as positive for a sphere
+ * @return the mean curvature value of the polynomial at \a aPoint.
+ * 
+*/
 template <typename TSpace>
 inline
 double
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 meanCurvature( const RealPoint &aPoint ) const
 {
-  Polynomial3 U= myFx;
-  Polynomial3 V= myFy;
-  Polynomial3 W= myFz;
-  Polynomial3 N=U*U+V*V+W*W;
 
 
-  Polynomial3 Ux=  myFxx;
-  Polynomial3 Vy=  myFyy;
-  Polynomial3 Wz=  myFzz;
+  Polynomial3 upPolynomial = myFx*(myFx*myFxx+myFy*myFyx+myFz*myFzx)+
+				myFy*(myFx*myFxy+myFy*myFyy+myFz*myFzy)+
+				myFz*(myFx*myFxz+myFy*myFyz+myFz*myFzz)-
+				( myFx*myFx +myFy*myFy+myFz*myFz )*(myFxx+myFyy+myFzz);
 
-  Polynomial3 Nx=  derivative<0>(N);
-  Polynomial3 Ny=  derivative<1>(N);
-  Polynomial3 Nz=  derivative<2>(N);
-
-  double  Nvalue = N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ]);
-  double N2= Nvalue*Nvalue;
-
-  double A=(Ux( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-  double B =(U( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+  Polynomial3 K= myFx*myFx +myFy*myFy+myFz*myFz;
 
 
-  double C=(Vy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-  double D =(V( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Ny( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
+  double temp= K( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  temp = sqrt(temp);
+  double downValue = 2*(temp*temp*temp);
+  double upValue = upPolynomial( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-  double E=(Wz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(N( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
-  double F =(W( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ))*(Nz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] ));
 
-
-  return
-      ( (A-B)/N2+ (C-D)/N2 +(E-F)/N2);
-
+  return -(upValue/downValue);
 }
 
 

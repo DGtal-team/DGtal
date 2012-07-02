@@ -141,6 +141,9 @@ namespace DGtal
 
     /**
        @param aPoint any point in the Euclidean space.
+       This computation is based on the hessian formula of the mean curvature
+       k=(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
+       we define it as positive for a sphere
        @return the mean curvature value of the polynomial at \a aPoint.
     */
     inline
