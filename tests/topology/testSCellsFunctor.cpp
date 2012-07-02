@@ -79,7 +79,7 @@ bool testSCellsFunctors()
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
     SCellToPoint<K3> m(theKSpace); 
-    K3::SCell s; 
+    K3::SCell s(K3::Point(0,0,0), true); //default point and orientation 
     theKSpace.sSetKCoords( s, K3::Point(5,6,8) );
     K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
