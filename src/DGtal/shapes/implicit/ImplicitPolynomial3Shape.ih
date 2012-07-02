@@ -105,6 +105,13 @@ init( const Polynomial3 & poly )
   myFzx= derivative<0>( myFz );
   myFzy= derivative<1>( myFz );
   myFzz= derivative<2>( myFz );
+
+  myUpPolynome = myFx*(myFx*myFxx+myFy*myFyx+myFz*myFzx)+
+				myFy*(myFx*myFxy+myFy*myFyy+myFz*myFzy)+
+				myFz*(myFx*myFxz+myFy*myFyz+myFz*myFzz)-
+				( myFx*myFx +myFy*myFy+myFz*myFz )*(myFxx+myFyy+myFzz);
+
+  myLowPolynome = myFx*myFx +myFy*myFy+myFz*myFz;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace>
@@ -174,20 +181,10 @@ double
 DGtal::ImplicitPolynomial3Shape<TSpace>::
 meanCurvature( const RealPoint &aPoint ) const
 {
-
-
-  Polynomial3 upPolynomial = myFx*(myFx*myFxx+myFy*myFyx+myFz*myFzx)+
-				myFy*(myFx*myFxy+myFy*myFyy+myFz*myFzy)+
-				myFz*(myFx*myFxz+myFy*myFyz+myFz*myFzz)-
-				( myFx*myFx +myFy*myFy+myFz*myFz )*(myFxx+myFyy+myFzz);
-
-  Polynomial3 K= myFx*myFx +myFy*myFy+myFz*myFz;
-
-
-  double temp= K( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  double temp= myLowPolynome( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   temp = sqrt(temp);
   double downValue = 2*(temp*temp*temp);
-  double upValue = upPolynomial( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  double upValue = myUpPolynome( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
 
   return -(upValue/downValue);
