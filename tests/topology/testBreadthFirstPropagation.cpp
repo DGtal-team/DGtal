@@ -131,7 +131,7 @@ bool testBreadthFirstPropagation()
     }
   }
   
-  board.saveEPS("testGraph.eps");
+  board.saveEPS("testBreadthFirstPropagation.eps");
 }
 
 int main( int argc, char** argv )
