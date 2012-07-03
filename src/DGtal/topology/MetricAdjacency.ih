@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include <boost/math/special_functions/binomial.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -267,23 +268,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity()
   for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
   {
     Dimension mFactorial = 1;
-    for( Dimension j = 2; j <= m; j++)
-    {
-      mFactorial *= j;
-    }
-    Dimension nFactorial = 1;
-    for( Dimension j = 2; j <= dimension; j++)
-    {
-      nFactorial *= j;
-    }
-    Dimension n_minus_mFactorial = 1;
-    for( Dimension j = 2; j <= dimension - m; j++)
-    {
-      n_minus_mFactorial *= j;
-    }
-    // number of neighbors of dimension m next to an n-dimensional hypercube
-    Dimension mDimNeighbors = pow(2, dimension - m) * nFactorial / mFactorial / n_minus_mFactorial;
-    result += mDimNeighbors;
+    result += pow(2, dimension - m) * static_cast<Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
   }
   return result;
 }

@@ -320,17 +320,17 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, p );
-  neigh.push_back( p );
+  local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -359,16 +359,16 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, p );
-  neigh.push_back( p );
+  local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   Size nb = 0;
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -398,16 +398,16 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -437,15 +437,15 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   Size nb = 0;
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -471,7 +471,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
   //typedef typename Domain::Predicate Predicate;
 
   // Intermediate container that is fast writable.
-  Container neigh;
+  local_points.clear();
   const DigitalSet & mySet = pointSet();
   Object<DigitalTopology, DigitalSet> output( topology(),
       domain() );
@@ -484,13 +484,13 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
       it != it_end;
       ++it )
   {
-    std::back_insert_iterator< Container > back_ins_it( neigh );
+    std::back_insert_iterator< Container > back_ins_it( local_points );
     // Computing neighborhood within domain.
     topology().lambda().writeNeighbors
     ( back_ins_it, *it, domain().predicate() );
     // Checks if any point is not in the object.
-    const ContainerConstIterator itc_end( neigh.end() );
-    for ( ContainerConstIterator itc = neigh.begin();
+    const ContainerConstIterator itc_end( local_points.end() );
+    for ( ContainerConstIterator itc = local_points.begin();
         itc != itc_end;
         ++itc )
       if ( pointSet().find( *itc ) == it_end )
@@ -498,7 +498,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
         outputSet.insertNew( *it );
         break;
       }
-    neigh.clear();
+    local_points.clear();
   }
   return output;
 }
@@ -672,15 +672,14 @@ writeNeighbors( OutputIterator & it,
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  //adjacency().writeProperNeighborhood( v, back_ins_it );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, v );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
-  for ( ContainerConstIterator cit = neigh.begin();
+  for ( ContainerConstIterator cit = local_points.begin();
       cit != it_end;
       ++cit )
     if ( pointSet().find( *cit ) != not_found )
@@ -717,15 +716,14 @@ writeNeighbors( OutputIterator & it,
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  //adjacency().writeProperNeighborhood( v, back_ins_it );
+  local_points.clear();
+  std::back_insert_iterator< Container > back_ins_it( local_points );
   adjacency().writeNeighbors( back_ins_it, v );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
-  for ( ContainerConstIterator cit = neigh.begin();
+  for ( ContainerConstIterator cit = local_points.begin();
       cit != it_end;
       ++cit )
     if ( pointSet().find( *cit ) != not_found && pred(*cit) )
@@ -760,7 +758,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
-  Container local_points;
+  local_points.clear();
   std::back_insert_iterator< Container > back_ins_it( local_points );
   //alpha.writeProperNeighborhood( p, back_ins_it, limitedX.predicate() );
   alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );

@@ -590,6 +590,7 @@ namespace DGtal
 
       // ------------------------- internals ------------------------------------
     private:
+      mutable std::vector<Vertex> local_points;
 
   }; // end of class Object
 
