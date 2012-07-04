@@ -30,11 +30,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
+#include "DGtal/helpers/StdDefs.h"
+
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 ///////////////////////////////////////////////////////////////////////////////
+
+
 
 using namespace std;
 using namespace DGtal;
@@ -66,17 +70,17 @@ bool testMetricAdjacency()
   Point p( 3, -5, 10 );
 
 
-  trace.beginBlock ( "Testing neighborhood of" );
+  trace.beginBlock ( "Testing neighbors of" );
   Adj6::selfDisplay( trace.info() );
   trace.info() << " p = " << p << std::endl;
   vector<Point> neigh6;
   back_insert_iterator< vector<Point> > bii6( neigh6 );
-  Adj6::writeNeighborhood( p, bii6 );
-  nbok += neigh6.size() == 7 ? 1 : 0; 
+  Adj6::writeNeighbors( bii6, p );
+  nbok += neigh6.size() == 6 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Card(6-neigh): " << neigh6.size() 
-         << "== 7 ?" << std::endl;
+         << "== 6 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   unsigned int nb_correct = 0;
   for ( unsigned int i = 0; i < neigh6.size(); ++i )
@@ -104,12 +108,12 @@ bool testMetricAdjacency()
   trace.info() << " p = " << p << std::endl;
   vector<Point> neigh18;
   back_insert_iterator< vector<Point> > bii18( neigh18 );
-  Adj18::writeNeighborhood( p, bii18 );
-  nbok += neigh18.size() == 19 ? 1 : 0; 
+  Adj18::writeNeighbors( bii18, p );
+  nbok += neigh18.size() == 18 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Card(18-neigh): " << neigh18.size() 
-         << "== 19 ?" << std::endl;
+         << "== 18 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
   for ( unsigned int i = 0; i < neigh18.size(); ++i )
@@ -136,12 +140,12 @@ bool testMetricAdjacency()
   trace.info() << " p = " << p << std::endl;
   vector<Point> neigh26;
   back_insert_iterator< vector<Point> > bii26( neigh26 );
-  Adj26::writeNeighborhood( p, bii26 );
-  nbok += neigh26.size() == 27 ? 1 : 0; 
+  Adj26::writeNeighbors( bii26, p );
+  nbok += neigh26.size() == 26 ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Card(26-neigh): " << neigh26.size() 
-         << "== 27 ?" << std::endl;
+         << "== 26 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
   for ( unsigned int i = 0; i < neigh26.size(); ++i )
@@ -165,6 +169,29 @@ bool testMetricAdjacency()
   return nbok == nb;
 }
 
+
+bool testLocalGraphModel()
+{
+  trace.beginBlock ( "Testing graph model" );
+  unsigned int nbok=0,nb=0;
+
+  typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Adj> ));
+  
+  
+  nbok += Adj::bestCapacity() == 72 ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "Within, bestCapacity : " << Adj::bestCapacity()
+         << "== 72 ?" << std::endl;
+  trace.endBlock();
+
+  
+  
+  return nbok == nb;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -176,7 +203,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMetricAdjacency(); // && ... other tests
+  bool res = testMetricAdjacency() && testLocalGraphModel(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
