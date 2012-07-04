@@ -50,7 +50,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef ImageSelector < Z2i::Domain, int>::Type Image;
-bool testBreadthFirstPropagation()
+void testBreadthFirstPropagation()
 {
   typedef Z2i::Point Point;
   typedef Z2i::Domain Domain;
