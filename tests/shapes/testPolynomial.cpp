@@ -67,6 +67,39 @@ void usage( int /*argc*/, char** argv )
   std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
 
+  typedef Space::RealPoint RealPoint;
+  typedef RealPoint::Coordinate Ring;
+  typedef MPolynomial<3, Ring> Polynomial3;
+  typedef MPolynomialReader<3, Ring> Polynomial3Reader;
+  typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
+  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
+  typedef DigitalShape::PointEmbedder DigitalEmbedder;
+
+RealPoint newtonGradient(ImplicitShape anImplicitPolynomial, RealPoint & aPoint, double anAccuracy)
+{
+   RealPoint gradient= anImplicitPolynomial.gradient(aPoint);
+   RealPoint pointTemp=aPoint;
+
+   while((fabs(anImplicitPolynomial(pointTemp))>=anAccuracy) && (gradient.norm()>=anAccuracy))
+   {
+        double a=gradient.norm();
+	RealPoint normalizedGradient= RealPoint(gradient[0]/a,gradient[1]/a,gradient[2]/a);
+        double alpha =anAccuracy*0.1;
+	if(anImplicitPolynomial(pointTemp)>0)
+	{
+		alpha=-alpha;
+	}
+	else
+	{
+
+	}
+	
+	pointTemp=pointTemp+normalizedGradient*alpha;
+	gradient=  anImplicitPolynomial.gradient(pointTemp);
+
+   }
+return pointTemp;
+}
 int main( int argc, char** argv )
 {
   if ( argc < 9 )
@@ -85,13 +118,7 @@ int main( int argc, char** argv )
 
 
 
-  typedef Space::RealPoint RealPoint;
-  typedef RealPoint::Coordinate Ring;
-  typedef MPolynomial<3, Ring> Polynomial3;
-  typedef MPolynomialReader<3, Ring> Polynomial3Reader;
-  typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
-  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
-  typedef DigitalShape::PointEmbedder DigitalEmbedder;
+
 
 
   Polynomial3 P;
@@ -164,9 +191,9 @@ int main( int argc, char** argv )
   {
 
     RealPoint A = midpoint( *it ) * step;
-    //double a = ishape.gaussianCurvature( A );
-    double a = ishape.meanCurvature( A );
-    //trace.info() << a << std::endl;
+    A = ishape.nearestPoint (A,0.01,200,0.1);
+//    double a = ishape.meanCurvature( A );
+    double a=ishape.gaussianCurvature(A);
     if ( boost::math::isnan( a ))
     {
       a = 0;
@@ -205,9 +232,11 @@ int main( int argc, char** argv )
         it != it_end; ++it, ++nbSurfels )
   {
 
+
     RealPoint A = midpoint( *it ) * step;
-    //double a=ishape.gaussianCurvature(A);
-    double a = ishape.meanCurvature( A );
+    A = ishape.nearestPoint (A,0.01,200,0.1);
+    double a=ishape.gaussianCurvature(A);
+//    double a = ishape.meanCurvature( A );
     if ( boost::math::isnan( a ))
     {
       a = 0;

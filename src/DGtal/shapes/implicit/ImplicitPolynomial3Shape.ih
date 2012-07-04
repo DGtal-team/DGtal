@@ -232,6 +232,43 @@ gaussianCurvature( const RealPoint &aPoint ) const
   return G;
 
 }
+
+
+/**
+@param aPoint any point in the Euclidean space.
+@return the nearest point on the surface to the one given in parameter.
+*/
+template <typename TSpace>
+inline
+typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint 
+DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, double accuracy, int maxIter, double gamma ) const
+{
+   RealPoint gradient= (*this).gradient(aPoint);
+   RealPoint X=aPoint;
+   int numberIter=0;
+   while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
+   {
+
+
+        double norm=gradient.norm();
+	RealPoint normalizedGradient= RealPoint(gradient[0]/norm,gradient[1]/norm,gradient[2]/norm);
+        double alpha =gamma;
+	if((*this)(X)>0)
+	{
+		alpha=-alpha;
+	}
+	else
+	{
+
+	}
+	
+	X=X+normalizedGradient*alpha;
+	gradient=  (*this).gradient(X);
+	numberIter++;
+   }
+	return X;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
