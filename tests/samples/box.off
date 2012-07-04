@@ -1,4 +1,13 @@
 OFF
+#
+#  cube.off
+
+
+#  A cube.
+#  There is extra RGBA color information specified for the faces.
+#
+
+
 8 6 0
 -0.500000 -0.500000 0.500000
 0.500000 -0.500000 0.500000

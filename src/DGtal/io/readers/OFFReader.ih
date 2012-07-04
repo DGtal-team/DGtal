@@ -76,11 +76,22 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
       trace.error() << "OFFReader : No OFF format in " << aFilename << endl;
       throw dgtalio;
     }
-
+  
+  // Processing comments
+  do
+    {
+      getline( infile, str );
+      if ( ! infile.good() ){
+	trace.error() << "OFFReader : Invalid format in " << aFilename << endl;
+	throw dgtalio;
+      } 
+    }
+  while ( str[ 0 ] == '#' || str=="");
+  istringstream str_in( str );
   int nbPoints, nbFaces, nbEdges;
-  infile >> nbPoints;
-  infile >> nbFaces;
-  infile >> nbEdges;
+  str_in >> nbPoints;
+  str_in >> nbFaces;
+  str_in >> nbEdges;
 
   // Reading mesh vertex 
   for(unsigned int i=0; i<nbPoints; i++){
