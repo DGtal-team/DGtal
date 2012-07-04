@@ -1,0 +1,167 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MeshFromPoints.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2012/06/29
+ *
+ * Implementation of inline methods defined in MeshFromPoints.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+DGtal::MeshFromPoints<T>::~MeshFromPoints()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::MeshFromPoints<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[MeshFromPoints]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::MeshFromPoints<T>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+    
+
+
+template<typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
+{
+  TPoint p;
+  myDimension = p.dimension;
+  for(int i =0; i< vertexSet.size(); i++){
+    myVertexList.push_back(vertexSet.at(i));
+  }
+
+}    
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addVertex(const TPoint &point)
+{
+  myVertexList.push_back(point);
+}    
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3)
+{
+  TriangularFace triangleFace;
+  triangleFace.indexVertex1= indexVertex1;
+  triangleFace.indexVertex2= indexVertex2;
+  triangleFace.indexVertex3= indexVertex3;
+  myTriangularFaceList.push_back(triangleFace);
+}    
+
+
+
+
+template<typename TPoint>
+inline
+const TPoint &
+DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i)
+{
+  return myVertexList.at(i);
+}    
+
+
+
+template<typename TPoint>
+inline
+const typename  DGtal::MeshFromPoints<TPoint>::TriangularFace &
+DGtal::MeshFromPoints<TPoint>::getTriangularFace(unsigned int i)
+{
+  return myTriangularFaceList.at(i);
+}    
+
+
+
+
+
+
+
+
+
+
+
+
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const MeshFromPoints<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
