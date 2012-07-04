@@ -157,6 +157,13 @@ namespace DGtal
     inline
     double gaussianCurvature( const RealPoint &aPoint ) const;
 
+    /**
+       @param aPoint any point in the Euclidean space.
+       @return the nearest point on the surface to the one given in parameter.
+    */
+
+    inline
+    RealPoint  nearestPoint(  const RealPoint &aPoint, double accuracy, int maxIter, double gamma  ) const;
 
 
 
