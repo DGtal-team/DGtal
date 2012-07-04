@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <string>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
@@ -75,6 +76,8 @@ namespace DGtal
    * "DrawAdjacencies". In this case the set of points and the
    * adjacency relations are displayed.
    *
+   * \b Model of CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph.
+   * 
    * @tparam TDigitalTopology any realization of DigitalTopology.
    * @tparam TDigitalSet any model of CDigitalSet.*
    *
@@ -104,6 +107,51 @@ namespace DGtal
       typedef Object<ReverseTopology, DigitalSet> ComplementObject;
       typedef Object<DigitalTopology, SmallSet> SmallObject;
       typedef Object<ReverseTopology, SmallSet> SmallComplementObject;
+
+      // Required by CUndirectedSimpleLocalGraph
+      typedef TDigitalSet VertexSet;
+      typedef typename DigitalSet::Point Vertex;
+      template <typename Value> struct VertexMap {
+        typedef typename std::map<Vertex, Value> Type;
+      };
+      typedef typename DigitalSet::ConstIterator ConstIterator;
+      
+      // Required by CUndirectedSimpleGraph
+      struct Edge
+      {
+	Vertex vertices [2];
+	
+	/** 
+          Constructor from vertices.
+          @param v1 the first vertex.
+          @param v2 the second vertex.
+	*/
+	Edge( const Vertex & v1, const Vertex & v2 )
+	{
+	  if ( v1 <= v2 ) 
+	    {
+	      vertices[ 0 ] = v1;
+	      vertices[ 1 ] = v2;
+	    }
+	  else
+	    {
+	      vertices[ 0 ] = v2;
+	      vertices[ 1 ] = v1;
+	    }
+	}
+	bool operator==( const Edge & other ) const
+	{
+	  return ( vertices[ 0 ] == other.vertices[ 0 ] )
+	    && ( vertices[ 1 ] == other.vertices[ 1 ] );
+	}
+	bool operator<( const Edge & other ) const
+	{
+	  return ( vertices[ 0 ] < other.vertices[ 0 ] )
+	    || ( ( vertices[ 0 ] == other.vertices[ 0 ] )
+		&& ( vertices[ 1 ] < other.vertices[ 1 ] ) );
+	}
+      };
+      // ... End added
 
 
       /**
@@ -385,7 +433,64 @@ namespace DGtal
        */
       Connectedness computeConnectedness() const;
 
+      // ----------------------- Graph services ------------------------------
+    public:
+      
+      ConstIterator begin() const;
+      
+      ConstIterator end() const;
+      
+      /** 
+       * @param v any vertex of the object
+       * 
+       * @return the number of neighbors of this vertex
+       */
+      Size degree( const Vertex & v ) const;
+      
+      /**
+       * @return the maximum number of neighbors for a vertex of this object
+       */
+      Size bestCapacity() const;
+      
+      /**
+       * Writes the neighbors of a vertex using an output iterator
+       * 
+       * 
+       * @tparam OutputObjectIterator the type of an output iterator writing
+       * in a container of vertices.
+       * 
+       * @param it the output iterator
+       * 
+       * @param v the vertex whose neighbors will be writeNeighbors
+       */
+      template <typename OutputIterator>
+      void
+      writeNeighbors( OutputIterator &it ,
+                      const Vertex & v ) const;
 
+      /**
+       * Writes the neighbors of a vertex which satisfy a predicate using an 
+       * output iterator
+       * 
+       * 
+       * @tparam OutputObjectIterator the type of an output iterator writing
+       * in a container of vertices.
+       * 
+       * @tparam VertexPredicate the type of the predicate
+       * 
+       * @param it the output iterator
+       * 
+       * @param v the vertex whose neighbors will be written
+       * 
+       * @param pred the predicate that must be satisfied
+       */
+      template <typename OutputIterator, typename VertexPredicate>
+      void
+      writeNeighbors( OutputIterator &it ,
+                      const Vertex & v,
+                      const VertexPredicate & pred) const;
+      
+      
       // ----------------------- Simple points -------------------------------
     public:
 
@@ -455,6 +560,7 @@ namespace DGtal
        * Connectedness of this object. Either CONNECTED, DISCONNECTED, or UNKNOWN.
        */
       mutable Connectedness myConnectedness;
+      
 
       // ------------------------- Hidden services ------------------------------
     protected:
@@ -484,6 +590,7 @@ namespace DGtal
 
       // ------------------------- internals ------------------------------------
     private:
+      mutable std::vector<Vertex> local_points;
 
   }; // end of class Object
 

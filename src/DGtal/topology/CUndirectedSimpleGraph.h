@@ -111,7 +111,7 @@ Description of \b concept '\b CUndirectedSimpleGraph' <p>
     
  ### Models###
 
-     - DigitalSurface
+     - DigitalSurface, Object
 
  ### Notes###
 
