@@ -77,7 +77,36 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
       throw dgtalio;
     }
 
+  int nbPoints, nbFaces, nbEdges;
+  infile >> nbPoints;
+  infile >> nbFaces;
+  infile >> nbEdges;
 
+  // Reading mesh vertex 
+  for(unsigned int i=0; i<nbPoints; i++){
+    TPoint p;
+    infile >> p.x;
+    infile >> p.y;
+    infile >> p.z;
+    aMesh.addVertex(p);
+  }
+  
+  // Reading mesh faces
+  for(unsigned int j=0; j<nbFaces; j++){
+    // Reading the number of face vertex
+    unsigned int aNbFaceVertex;
+    infile >> aNbFaceVertex;
+    vector<unsigned int> aFace;
+    for (unsigned int j=0; j< aNbFaceVertex; j++){
+      unsigned int anIndex;
+      infile >> anIndex;
+      aFace.push_back(anIndex);
+    }
+    aMesh.addFace(aFace);
+  }
+  
+  //Todo processing optional colors...
+  
   
 }
 

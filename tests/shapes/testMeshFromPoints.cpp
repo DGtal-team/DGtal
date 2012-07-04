@@ -73,15 +73,15 @@ bool testMeshFromPoints()
   aMesh.addTriangularFace(0,1,2);
   aMesh.addTriangularFace(3,4,5);
   
-  MeshFromPoints<Point>::TriangularFace tface0 = aMesh.getTriangularFace(0);
-  MeshFromPoints<Point>::TriangularFace tface1 = aMesh.getTriangularFace(1);
-  Point p0f0 = aMesh.getVertex(tface0.indexVertex1);
-  Point p1f0 = aMesh.getVertex(tface0.indexVertex2);
-  Point p2f0 = aMesh.getVertex(tface0.indexVertex3);
+  MeshFromPoints<Point>::MeshFace tface0 = aMesh.getFace(0);
+  MeshFromPoints<Point>::MeshFace tface1 = aMesh.getFace(1);
+  Point p0f0 = aMesh.getVertex(tface0.at(0));
+  Point p1f0 = aMesh.getVertex(tface0.at(1));
+  Point p2f0 = aMesh.getVertex(tface0.at(2));
 
-  Point p0f1 = aMesh.getVertex(tface1.indexVertex1);
-  Point p1f1 = aMesh.getVertex(tface1.indexVertex2);
-  Point p2f1 = aMesh.getVertex(tface1.indexVertex3);
+  Point p0f1 = aMesh.getVertex(tface1.at(0));
+  Point p1f1 = aMesh.getVertex(tface1.at(1));
+  Point p2f1 = aMesh.getVertex(tface1.at(2));
   trace.info() << "Set of points" << endl;
   trace.info() << p0 << p1 << p2 << endl;
   trace.info() << p3 << p4 << p5 << endl;

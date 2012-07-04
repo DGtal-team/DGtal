@@ -64,15 +64,16 @@ namespace DGtal
     // ----------------------- associated types ------------------------------
   public:
     
-    typedef typename TPoint::Coordinate Coordinate;
+
     typedef TPoint Point;
 
-
-    struct TriangularFace{
-      unsigned int indexVertex1;
-      unsigned int indexVertex2;
-      unsigned int indexVertex3;
-    };
+    typedef vector<unsigned int> MeshFace;
+    
+    // struct TriangularFace{
+    //   unsigned int indexVertex1;
+    //   unsigned int indexVertex2;
+    //   unsigned int indexVertex3;
+    // };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -86,11 +87,6 @@ namespace DGtal
   public:
 
 
-    /**
-     * Constructor.
-     * 
-     */
-    MeshFromPoints(unsigned int dimension);    
    
     
 
@@ -118,6 +114,30 @@ namespace DGtal
      * 
      **/    
     void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3);
+
+
+    /**
+     * Add a quad face given from index position.
+     *
+     * @param indexVertex1: the index of the first vertex face.
+     * @param indexVertex2: the index of the second vertex face.
+     * @param indexVertex2: the index of the second vertex face.
+     * 
+     **/    
+    void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
+		     unsigned int indexVertex3, unsigned int indexVertex4);
+    
+    
+   /**
+     * Add a quad face given from index position.
+     *
+     * @param indexVertex1: the index of the first vertex face.
+     * @param indexVertex2: the index of the second vertex face.
+     * @param indexVertex2: the index of the second vertex face.
+     * 
+     **/    
+    void addFace(const vector<unsigned int> &listIndex);
+    
     
    
     
@@ -136,7 +156,21 @@ namespace DGtal
      * @param i: the index of the face.
      * @return the face of index i. 
      **/
-    const TriangularFace &  getTriangularFace(unsigned int i);
+    const MeshFace &  getFace(unsigned int i);
+   
+    
+    
+    /**
+     * Return the number of faces contained on the mesh object.
+     * @return the number of faces.
+     **/
+    const unsigned int   nbFaces();
+
+    /**
+     * Return the number of faces contained on the mesh object.
+     * @return the number of faces.
+     **/
+    const unsigned int   nbVertex();
     
 
     
@@ -157,18 +191,12 @@ namespace DGtal
     // ------------------------- Protected Datas ------------------------------
   private:
 
-    /**
-     * Dimension of the mesh point.
-     * 
-     */
-    
-    unsigned int myDimension;
     
 
 
     // ------------------------- Private Datas --------------------------------
   private:
-    vector<TriangularFace>  myTriangularFaceList;
+    vector<MeshFace>  myFaceList;
     vector<Point>  myVertexList;
     
 
