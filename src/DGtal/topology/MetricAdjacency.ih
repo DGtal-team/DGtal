@@ -267,7 +267,6 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity()
   Dimension result = 0;
   for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
   {
-    Dimension mFactorial = 1;
     result += ( (dimension - m) << 1 ) * static_cast<Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
   }
   return result;

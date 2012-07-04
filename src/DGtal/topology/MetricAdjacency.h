@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <set>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
