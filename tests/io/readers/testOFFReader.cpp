@@ -33,11 +33,27 @@
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 #include "DGtal/io/readers/OFFReader.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
+
+
+
+struct Point3D{
+  double  x, y,z;
+};
+
+
+typedef Point3D Point;
+
+
+
+ 
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,11 +73,22 @@ bool testOFFReader()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  trace.endBlock();
+  
+  std::string filenameOFF = testPath + "samples/box.off";
   vector<Point> vPoints;
   MeshFromPoints<Point> a3DMesh(vPoints);
-  OFFReader<Point> importOFFFile(
   
+  OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
+  trace.info() << "Nb Vertex of the imported mesh: " << a3DMesh.nbVertex()<< endl;
+  trace.info() << "Nb Faces of the imported mesh: " << a3DMesh.nbFaces()<< endl;
+  
+  MeshFromPoints<Point>::MeshFace aFace = a3DMesh.getFace(0);
+  trace.info() << "Face 1: pt1 " << aFace.at(0)
+	       << " pt2: " << aFace.at(1) 
+	       << " pt3: " << aFace.at(2);
+
+  
+  trace.endBlock();  
   return nbok == nb;
 }
 

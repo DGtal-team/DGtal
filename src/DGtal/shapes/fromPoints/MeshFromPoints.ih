@@ -86,8 +86,6 @@ template<typename TPoint>
 inline
 DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
 {
-  TPoint p;
-  myDimension = p.dimension;
   for(int i =0; i< vertexSet.size(); i++){
     myVertexList.push_back(vertexSet.at(i));
   }
@@ -109,13 +107,31 @@ DGtal::MeshFromPoints<TPoint>::addVertex(const TPoint &point)
 template<typename TPoint>
 inline
 void
-DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3)
+DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, 
+						 unsigned int indexVertex3)
 {
-  TriangularFace triangleFace;
-  triangleFace.indexVertex1= indexVertex1;
-  triangleFace.indexVertex2= indexVertex2;
-  triangleFace.indexVertex3= indexVertex3;
-  myTriangularFaceList.push_back(triangleFace);
+  MeshFace triangleFace;
+  triangleFace.push_back(indexVertex1);
+  triangleFace.push_back(indexVertex2);
+  triangleFace.push_back(indexVertex3);
+  myFaceList.push_back(triangleFace);
+}    
+
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
+					   unsigned int indexVertex3, unsigned int indexVertex4)
+{
+  MeshFace triangleFace;
+  triangleFace.push_back(indexVertex1);
+  triangleFace.push_back(indexVertex2);
+  triangleFace.push_back(indexVertex3);
+  triangleFace.push_back(indexVertex4);
+  myFaceList.push_back(triangleFace);
 }    
 
 
@@ -133,11 +149,39 @@ DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i)
 
 template<typename TPoint>
 inline
-const typename  DGtal::MeshFromPoints<TPoint>::TriangularFace &
-DGtal::MeshFromPoints<TPoint>::getTriangularFace(unsigned int i)
+const typename  DGtal::MeshFromPoints<TPoint>::MeshFace &
+DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i)
 {
-  return myTriangularFaceList.at(i);
+  return myFaceList.at(i);
 }    
+
+
+template<typename TPoint>
+inline
+const unsigned int 
+DGtal::MeshFromPoints<TPoint>::nbFaces()
+{
+  return myFaceList.size();
+}
+
+template<typename TPoint>
+inline
+const unsigned int 
+DGtal::MeshFromPoints<TPoint>::nbVertex()
+{
+  return myVertexList.size();
+}
+
+
+template<typename TPoint>
+inline
+void 
+DGtal::MeshFromPoints<TPoint>:: addFace(const vector<unsigned int> &listIndex){
+  for(int i=0;i < listIndex.size();i++){
+    myFaceList.push_back(listIndex);
+  }
+  
+}
 
 
 
