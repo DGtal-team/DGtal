@@ -133,7 +133,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     
  ### Models###
 
-     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
+     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
 
  ### Notes###
 
