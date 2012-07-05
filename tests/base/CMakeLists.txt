@@ -12,6 +12,7 @@ SET(DGTAL_TESTS_SRC
    testStatistics
    testcpp11
    testCountedPtr
+   testBits
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
