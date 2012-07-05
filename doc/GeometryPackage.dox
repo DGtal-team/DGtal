@@ -63,6 +63,8 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
 
+- \ref moduleWatershed (Jérémy Gaillard)
+
 
 @b Package @b Concepts @b Overview
 

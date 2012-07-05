@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ?Mathematics.dox?
+ * @file Watershed.dox
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  * Institut National des Sciences Appliquées (INSA), France
  *
@@ -40,7 +40,7 @@ namespace DGtal {
 
 @b LICENSE: LGPL
 
-Part of \ref pageTopologyPackage.
+Part of \ref pageGeometryPackage.
 
 \section Watershed Overview
 
