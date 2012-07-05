@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
