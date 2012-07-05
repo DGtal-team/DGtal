@@ -67,7 +67,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::Watershed(const TGraph & aGr
   trace.beginBlock("Importing graph");
   for( typename Graph::ConstIterator it = aGraph.begin(); it != aGraph.end(); it++ )
   {
-    mySet->insert/*New*/(*it);
+    mySet->insert(*it);
   }
   trace.endBlock();
 }
@@ -121,7 +121,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
       Vertex p = *it;
       outMap.setValue(p, MASK);
       // For each neighbor
-      VertexVector neighbors;  // DigitalSet do not allow insert iterators atm
+      VertexVector neighbors;
       back_insert_iterator< VertexVector > insertIt(neighbors);
       myGraph.writeNeighbors(insertIt, *it);
       for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
@@ -197,7 +197,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
           Vertex newp = fifo.front();
           fifo.pop();
           // For each neighbor
-          VertexVector neighbors;  // DigitalSet does not allow insert iterators atm
+          VertexVector neighbors;
           back_insert_iterator< VertexVector > insertIt(neighbors);
           myGraph.writeNeighbors(insertIt, newp);
           for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
@@ -273,7 +273,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const Ve
     Value vLabel = outMap(pqueue.top().first);
     pqueue.pop();
     // For each neighbour
-    VertexVector neighbors;  // DigitalSet does not allow insert iterators atm
+    VertexVector neighbors;
     back_insert_iterator< VertexVector > insertIt(neighbors);
     myGraph.writeNeighbors(insertIt, v);
     for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
@@ -374,7 +374,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
     trace.beginBlock("Generating markers");
     
     int count = 0;
-    int next = generator();//poissonRand(totalVoxels/N/1000)*1000;  // random number generator fails for big numbers
+    int next = generator();
     cout << next << endl;
     for(typename VertexSet::iterator it = mySet->begin(); it!=mySet->end(); ++it)
     {
@@ -382,7 +382,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
       {
         markers.insert(*it);
         count = 0;
-        next = generator();//poissonRand(totalVoxels/N/1000)*1000;
+        next = generator();
       }
       else
       {
@@ -434,7 +434,7 @@ template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
 DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heuristic(int N, int M)
-// Bof/à retravailler
+// TODO : Rework method
 {
   trace.beginBlock("Computing stochastic heuristic");
   VertexMap finalMap = this->segmentation_stochastic(N, M);
@@ -443,13 +443,13 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heur
   trace.beginBlock("Creating new heightmap");
   for( typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++ ) {
     Value newValue;
-    if( finalMap(*it) > 5*M )// && finalMap.find(*it)->second / M < 6 )
+    if( finalMap(*it) > 5*M )
     {
-      newValue = 1;//newValue = /*1;*/(myValueMap.find(*it)->second*M - finalMap.find(*it)->second) > 1 ? (myValueMap.find(*it)->second*M - finalMap.find(*it)->second) : 1;
+      newValue = 1;
     }
     else
     {
-      newValue = 2;//finalMap.find(*it)->second*M;
+      newValue = 2;
     }
     finalMap.setValue(*it, newValue);
   }
