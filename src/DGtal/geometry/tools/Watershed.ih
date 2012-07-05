@@ -30,6 +30,9 @@
 #include <queue>
 #include <math.h>
 #include "DGtal/topology/BreadthFirstVisitor.h"
+#include <boost/random/poisson_distribution.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/variate_generator.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,10 +51,17 @@ const int INIT = -2;
 const int MASK = -3;
 const int INQUEUE = -4;
 
-
+/**
+ * Constructor
+ * 
+ * @param aGraph graph on which the segmentation is made
+ * 
+ * @param values a data structure which binds a value for each graph vertex
+ * 
+ */
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::Watershed(const TGraph & aGraph, const TVertexMap & values)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::Watershed(const TGraph & aGraph, const TVertexMap & values)
   :myGraph(aGraph), myValueMap(values), mySet(new VertexSet())
 {
   trace.beginBlock("Importing graph");
@@ -67,13 +77,13 @@ inline
 /**
  * Return a segmented image where each point of the image contains the
  * segment number which he is associated to.
- * @param an image containing information about thickness
+ * 
  * @return the segmented image
  */
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
 {
   typedef vector<Vertex> VertexVector;
   int current_label = 0;
@@ -209,11 +219,19 @@ typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
   return outMap;
 }
 
-
+/**
+ * Return a segmented image where each point of the image contains the
+ * segment number which he is associated to. The watershed uses a 
+ * set of markers instead of local minima as water sources.
+ *
+ * @param markerSet a set of vertices contained by the graph
+ * 
+ * @return the segmented image
+ */ 
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const VertexSet &markerSet)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const VertexSet &markerSet)
 {
   typedef vector<Vertex> VertexVector;
   typedef pair<Vertex, Value> Vpair; 
@@ -290,26 +308,9 @@ typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
 }
 
 
-int poissonRand(int lambda)
-{
-  int k = 0;
-  double L = exp(-1*lambda);
-  double p = 1;
-  double u;
-  do
-  {
-    k++;
-    u = (rand() % 1000) / 1000.0;
-    p = p*u;
-  }
-  while (p > L); 
-  return (k-1);
-}
-
-
 template<typename TGraph, typename TVertexMap, class TLessFunctor>
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::Value
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::gaussianFilter(const VertexMap & vMap, const Vertex & v)	// not really a gaussian filter
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::gaussianFilter(const VertexMap & vMap, const Vertex & v)	// not really a gaussian filter
 {
   typedef vector<Vertex> VertexVector;
   BreadthFirstVisitor<TGraph, VertexSet> bfv( myGraph );
@@ -330,15 +331,33 @@ typename Watershed<TGraph, TVertexMap, TLessFunctor>::Value
   return result / div;  
 }
 
+/**
+ * Return an image where each point contains a value representing
+ * the probability of the presence of a watershed. The higher the value, the
+ * bigger the probability.
+ * This method executes several watershed based on a random set of markers 
+ * to deduce the probabilistic function.
+ * 
+ * @param N the number of markers placed at each iteration
+ * 
+ * @param M the number of iterations
+ * 
+ * @return the watershed probabilistic function
+ */ 
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int N, int M)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int N, int M)
 {
   VertexMap intermediateMap(myValueMap);
   VertexMap finalMap(myValueMap);
   
   int totalVoxels = mySet->size();
+  
+  typename boost::poisson_distribution<int, double> poisson(totalVoxels/N);
+  typename boost::mt19937 random;
+  boost::variate_generator<boost::mt19937, boost::poisson_distribution<int, double> > generator(random, poisson);
+
   
   for(typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++) {
     finalMap.setValue(*it, 0);
@@ -355,14 +374,15 @@ typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
     trace.beginBlock("Generating markers");
     
     int count = 0;
-    int next = poissonRand(totalVoxels/N/1000)*1000;  // random number generator fails for big numbers
+    int next = generator();//poissonRand(totalVoxels/N/1000)*1000;  // random number generator fails for big numbers
+    cout << next << endl;
     for(typename VertexSet::iterator it = mySet->begin(); it!=mySet->end(); ++it)
     {
       if( count == next )
       {
         markers.insert(*it);
         count = 0;
-        next = poissonRand(totalVoxels/N/1000)*1000;
+        next = generator();//poissonRand(totalVoxels/N/1000)*1000;
       }
       else
       {
@@ -399,11 +419,21 @@ typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
   return finalMap;
 }
 
-
+/**
+ * Return a segmented image where each point of the image contains the
+ * segment number which he is associated to. The watershed is based on
+ * the probabilistic function computed by segmentation_stochastic(N, M).
+ * 
+ * @param N the number of markers placed at each iteration
+ * 
+ * @param M the number of iterations
+ * 
+ * @return the watershed probabilistic function
+ */
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
-/*DGtal::*/Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heuristic(int N, int M)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heuristic(int N, int M)
 // Bof/à retravailler
 {
   trace.beginBlock("Computing stochastic heuristic");

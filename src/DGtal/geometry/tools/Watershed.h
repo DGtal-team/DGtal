@@ -42,19 +42,17 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CowPtr.h"
-// TODO : clean includes
 
 //////////////////////////////////////////////////////////////////////////////
 
-// namespace DGtal (not yet)
+namespace DGtal {
 /////////////////////////////////////////////////////////////////////////////
 // class Watershed
 /**
  * Description of class 'Watershed' <p>
  * 
- * @brief Define utilites to transform a thickness-parametered image into a segmented image
- * using a Watershed algorithm
-  TODO : better description
+ * @brief Define utilites to perform a segmentation of a value-mapped graph 
+ * using watershed algorithms
  */
 // Template class Image
 template < typename TGraph, typename TVertexMap/*typename TValue*/, class TLessFunctor >
@@ -102,20 +100,61 @@ class Watershed
   // ----------------------- Interface --------------------------------------
   public:
   
-    Watershed(const Graph & aGraph,  const VertexMap & values);
+  /**
+   * Constructor
+   * 
+   * @param aGraph graph on which the segmentation is made
+   * 
+   * @param values a data structure which binds a value for each graph vertex
+   * 
+   */
+    Watershed(const Graph & aGraph, const VertexMap & values);
     
   /**
    * Return a segmented image where each point of the image contains the
-   * segment number which he is associated to. TODO : rewrite, outdated
-   * @param an image containing information about thickness
+   * segment number which he is associated to.
+   * 
    * @return the segmented image
    */ 
     VertexMap segmentation();
     
+  /**
+   * Return a segmented image where each point of the image contains the
+   * segment number which he is associated to. The watershed uses a 
+   * set of markers instead of local minima as water sources.
+   * 
+   * @param markerSet a set of vertices contained by the graph
+   * 
+   * @return the segmented image
+   */ 
     VertexMap segmentation_marker(const VertexSet &markerSet);
     
+  /**
+   * Return an image where each point contains a value representing
+   * the probability of the presence of a watershed. The higher the value, the
+   * bigger the probability.
+   * This method executes several watershed based on a random set of markers 
+   * to deduce the probabilistic function.
+   * 
+   * @param N the number of markers placed at each iteration
+   * 
+   * @param M the number of iterations
+   * 
+   * @return the watershed probabilistic function
+   */ 
     VertexMap segmentation_stochastic(int N, int M);
-    
+        
+  /**
+   * Return a segmented image where each point of the image contains the
+   * segment number which he is associated to. The watershed is based on
+   * the probabilistic function computed by segmentation_stochastic(N, M).
+   * 
+   * @param N the number of markers placed at each iteration
+   * 
+   * @param M the number of iterations
+   * 
+   * @return the watershed probabilistic function
+   */     
     VertexMap segmentation_stochastic_heuristic(int N, int M);
   
   
@@ -133,13 +172,13 @@ class Watershed
     // ------------------------- Hidden services ------------------------------
   protected:
     Value gaussianFilter(const VertexMap & vMap, const Vertex & v);
-
+    Watershed();
     // ------------------------- Internals ------------------------------------
   private:
     
   }; // end of class Watershed
 
-// } // namespace DGtal
+} // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods
