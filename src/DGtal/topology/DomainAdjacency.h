@@ -41,10 +41,12 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
 #include "DGtal/topology/CAdjacency.h"
+#include "DGtal/kernel/sets/DigitalSetSelector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,7 +63,7 @@ namespace DGtal
    * This class is useful for limiting adjacencies that are defined
    * for unlimited spaces.
    *
-   * Model of CAdjacency.
+   * \b Model of CAdjacency.
    *
    * @tparam TDomain the type of the domain.
    * @tparam TAdjacency the type of the adjacency.
@@ -82,6 +84,15 @@ namespace DGtal
     typedef TDomain Domain;
     typedef DomainPredicate< Domain > Predicate;
 
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef typename DigitalSetSelector< Domain,
+      SMALL_DS + HIGH_ITER_DS >::Type VertexSet;
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+    
     // ----------------------- Standard services ------------------------------
   public:
     
@@ -140,82 +151,58 @@ namespace DGtal
      */
     bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ) const; 
 
+// ----------------------- Local graph services --------------------------
+    
     /**
-     * Outputs the whole neighborhood of point [p] satisfying the
-     * given predicate as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @tparam PointPredicate any predicate object.
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     * @param pred the predicate.
-     *
-     * NB: It is up to the user to add a predicate to guarantee that
-     * the neighborhood is included in the domain. To do so, you may
-     * just mix your predicate with the object predicate() with a
-     * BinaryPointPredicate AND.
+     * @return maximum number of neighbors for this adjacency
      */
-    template <typename OutputIterator, 
-        typename PointPredicate>
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred ) const;
-
+    Size bestCapacity() const;
+    
     /**
-     * Outputs the whole neighborhood of point [p] (restricted to this
-     * domain) as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
+     * @param v any vertex
+     * 
+     * @return the number of neighbors of this vertex
+     */
+    Size degree( const Vertex & v ) const;
+    
+    /**
+     * Writes the neighbors of a vertex using an output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be writen
      */
     template <typename OutputIterator>
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it ) const;
-
+    void  
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v ) const;
+    
     /**
-     * Outputs the whole neighborhood of point [p] (except p itself)
-     * satisfying the given predicate as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @tparam PointPredicate any predicate object
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     * @param pred the predicate.
-     *
-     * NB: It is up to the user to add a predicate to guarantee that
-     * the neighborhood is included in the domain. To do so, you may
-     * just mix your predicate with the object predicate() with a
-     * BinaryPointPredicate AND.
+     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @tparam VertexPredicate the type of the predicate
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be written
+     * 
+     * @param pred the predicate that must be satisfied
      */
-    template <typename OutputIterator, 
-        typename PointPredicate>
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred ) const;
-
-    /**
-     * Outputs the whole neighborhood of point [p] (except p itself,
-     * restricted to this domain) as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     */
-    template <typename OutputIterator>
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it ) const;
-
+    template <typename OutputIterator, typename VertexPredicate>
+    void
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v,
+		    const VertexPredicate & pred) const;
+    
     // ----------------------- Interface --------------------------------------
   public:
 

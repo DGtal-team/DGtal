@@ -34,7 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
   #ifdef WITH_VISU3D_QGLVIEWER
 #include <QtGui/qapplication.h>
