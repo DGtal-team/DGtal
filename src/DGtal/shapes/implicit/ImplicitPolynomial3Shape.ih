@@ -235,9 +235,14 @@ gaussianCurvature( const RealPoint &aPoint ) const
 
 
 /**
-@param aPoint any point in the Euclidean space.
-@return the nearest point on the surface to the one given in parameter.
-*/
+ *@param aPoint any point in the Euclidean space.
+ *@param accuracy refers to the precision 
+ *@param maxIter refers to the maximum iterations the fonction user authorises
+ *@param gamma refers to the step
+ * This function is very useful for mean and gaussian curvature computation (If the set step is big) .For a small one ( <0.5) it's less
+ * usefull
+ *@return the nearest point on the surface to the one given in parameter.
+ */
 template <typename TSpace>
 inline
 typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint 
@@ -248,8 +253,6 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, 
    int numberIter=0;
    while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
    {
-
-
         double norm=gradient.norm();
 	RealPoint normalizedGradient= RealPoint(gradient[0]/norm,gradient[1]/norm,gradient[2]/norm);
         double alpha =gamma;

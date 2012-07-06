@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -127,7 +128,7 @@ namespace DGtal
     }*/
 
     std::string myClassname;
-    DrawableWithDisplay3D * myStyle;
+    CountedPtr<DrawableWithDisplay3D> myStyle;
   };
 
 

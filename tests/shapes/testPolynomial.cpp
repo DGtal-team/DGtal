@@ -75,31 +75,8 @@ void usage( int /*argc*/, char** argv )
   typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
   typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
-RealPoint newtonGradient(ImplicitShape anImplicitPolynomial, RealPoint & aPoint, double anAccuracy)
-{
-   RealPoint gradient= anImplicitPolynomial.gradient(aPoint);
-   RealPoint pointTemp=aPoint;
 
-   while((fabs(anImplicitPolynomial(pointTemp))>=anAccuracy) && (gradient.norm()>=anAccuracy))
-   {
-        double a=gradient.norm();
-	RealPoint normalizedGradient= RealPoint(gradient[0]/a,gradient[1]/a,gradient[2]/a);
-        double alpha =anAccuracy*0.1;
-	if(anImplicitPolynomial(pointTemp)>0)
-	{
-		alpha=-alpha;
-	}
-	else
-	{
 
-	}
-	
-	pointTemp=pointTemp+normalizedGradient*alpha;
-	gradient=  anImplicitPolynomial.gradient(pointTemp);
-
-   }
-return pointTemp;
-}
 int main( int argc, char** argv )
 {
   if ( argc < 9 )
@@ -115,10 +92,6 @@ int main( int argc, char** argv )
     p2[ i ] = atof( argv[ 5 + i ] );
   }
   double step = atof( argv[ 8 ] );
-
-
-
-
 
 
   Polynomial3 P;
