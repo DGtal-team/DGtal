@@ -161,11 +161,11 @@ if more than 3 values and N = 2, M = 4
 	      {
 		Value v1 = values[ N - 1 ];
 		std::copy_backward( values + idx, values + N - 1, values + N );
-		data.nextBlock->insert( 0, v1 );
+		data.nextBlock->insert( 0, size - N, v1 );
 		values[ idx ] = v;
 	      }
 	    else
-	      data.nextBlock->insert( idx - N, v );
+	      data.nextBlock->insert( idx - N, size - N, v );
 	  }
 	++size;
       }
@@ -173,12 +173,12 @@ if more than 3 values and N = 2, M = 4
       inline 
       void erase( unsigned int idx )
       {
-	std::cerr << "FirstBlock::erase(" << idx << ")"
-		  << " this=" << this
-		  << " next=" << data.nextBlock
-		  << std::endl;
+	// std::cerr << "FirstBlock::erase(" << idx << ")"
+	// 	  << " this=" << this
+	// 	  << " next=" << data.nextBlock
+	// 	  << std::endl;
 	ASSERT( idx < size );
-	if ( size <= N )
+	if ( size <= ( N + 1 ) )
 	  {
 	    // works also in the case we use 'data' to store a N+1-th value.
 	    std::copy( values + idx + 1, values + size, values + idx );
@@ -208,40 +208,61 @@ if more than 3 values and N = 2, M = 4
       inline AnyBlock() : next( 0 ) {}
 
       inline
-      void insert( unsigned int idx, const Value & v )
+      void insert( unsigned int idx, unsigned int size, const Value & v )
       {
+        ASSERT( idx <= size );
 	if ( idx >= M ) 
 	  {
 	    if ( next == 0 )
 	      {
 		ASSERT( idx == M );
 		next = new AnyBlock;
+                next->values[ 0 ] = v;
 	      }
-	    next->insert( idx - M, v );
+            else
+              next->insert( idx - M, size - M, v );
 	  }
-	else
-	  {
-	    Value v1 = values[ M - 1 ];
-	    std::copy_backward( values + idx, values + M - 1, values + M );
-	    values[ idx ] = v;
-	    if ( next == 0 )
-	      {
-		next = new AnyBlock;
-		next->values[ 0 ] = v1;
-	      }
-	    else
-	      next->insert( 0, v1 );
+	else 
+	  { // idx < M
+            if ( size < ( M - 1) )
+              {
+                std::copy_backward( values + idx, values + size, 
+                                    values + size + 1 );
+                values[ idx ] = v;
+              }
+            else
+              {
+                Value v1 = values[ M - 1 ];
+                std::copy_backward( values + idx, values + M - 1, values + M );
+                values[ idx ] = v;
+                if ( size >= M )
+                  {
+                    if ( next == 0 )
+                      {
+                        ASSERT( size == M );
+                        next = new AnyBlock;
+                        next->values[ 0 ] = v1;
+                      }
+                    else
+                      next->insert( 0, size - M, v1 );
+                  }
+              }
 	  }
       }
 
       inline 
       AnyBlock* erase( unsigned int idx, unsigned int size )
       {
-	std::cerr << "AnyBlock::erase(" << idx << "," << size << ")" 
-		  << " this=" << this
-		  << " next=" << next
-		  << std::endl;
-	ASSERT( size > 1 );
+	// std::cerr << "AnyBlock::erase(" << idx << "," << size << ")" 
+	// 	  << " this=" << this
+	// 	  << " next=" << next
+	// 	  << std::endl;
+        if ( size == 1 )
+          {
+            ASSERT( idx == 0 );
+            delete this;
+            return 0;
+          }
 	if ( idx < M )
 	  {
 	    std::copy( values + idx + 1, values + M, values + idx );
@@ -249,13 +270,7 @@ if more than 3 values and N = 2, M = 4
 	      {
 		ASSERT( size > M );
 		values[ M - 1 ] = next->values[ 0 ];
-		if ( size == M + 1 )
-		  {
-		    delete next;
-		    next = 0;
-		  }
-		else
-		  next = next->erase( 0, size - M );
+                next = next->erase( 0, size - M );
 	      }
 	  }
 	else
