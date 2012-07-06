@@ -13,6 +13,7 @@ SET(DGTAL_TESTS_SRC
    testcpp11
    testCountedPtr
    testBits
+   testIndexedListWithBlocks
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
