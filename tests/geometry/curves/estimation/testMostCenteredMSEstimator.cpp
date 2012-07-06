@@ -72,12 +72,12 @@ bool test(const I& itb, const I& ite)
   typedef I ConstIterator;//constIterator
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
   typedef ArithmeticalDSS<ConstIterator,typename Point::Coordinate,4> SegmentComputer;//segmentComputer
-  typedef TangentVectorFromDSSFunctor<SegmentComputer> Functor; //functor
-  typedef typename Functor::Quantity Value; //value
-  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> Estimator;//estimator
+  typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
+  typedef typename SCEstimator::Quantity Value; //value
+  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
 
   SegmentComputer sc;
-  Functor f; 
+  SCEstimator f; 
 
   Estimator e(sc,f); 
   e.init(1,itb,ite);

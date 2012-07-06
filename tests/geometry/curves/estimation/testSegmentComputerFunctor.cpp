@@ -37,7 +37,7 @@
 
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/GeometricalDCA.h"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctors.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -81,8 +81,9 @@ bool testTangentFromDSS(
   int nbok = 0; 
 
   { //angle
-    TangentAngleFromDSSFunctor<DSSComputer> f; 
-    double q1 = f(dss); 
+    TangentAngleFromDSSEstimator<DSSComputer> f; 
+    f.attach(dss); 
+    double q1 = f.eval(itb); 
     double q2 = std::atan2((double)dss.getA(),(double)dss.getB());
     trace.info() << "Tangent orientation : " << q1 << " == " << q2 << endl;
     nbok += (std::abs(q1 - q2) < epsilon)?1:0;
@@ -91,9 +92,10 @@ bool testTangentFromDSS(
   }
 
   { //vector
-    TangentVectorFromDSSFunctor<DSSComputer> f; 
-    typedef typename TangentVectorFromDSSFunctor<DSSComputer>::Quantity Quantity; 
-    Quantity q1 = f(dss); 
+    TangentVectorFromDSSEstimator<DSSComputer> f; 
+    typedef typename TangentVectorFromDSSEstimator<DSSComputer>::Quantity Quantity; 
+    f.attach(dss); 
+    Quantity q1 = f.eval(itb); 
     Quantity q2 = Quantity(dss.getB(), dss.getA()); 
     trace.info() << "Tangent vector : " << q1 << " == " << q2 << endl;
     nbok += (q1 == q2)?1:0; 
@@ -102,9 +104,10 @@ bool testTangentFromDSS(
   }
 
   { //unit vector
-    TangentFromDSSFunctor<DSSComputer> f; 
-    typedef typename TangentFromDSSFunctor<DSSComputer>::Quantity Quantity; 
-    Quantity q1 = f(dss);
+    TangentFromDSSEstimator<DSSComputer> f; 
+    typedef typename TangentFromDSSEstimator<DSSComputer>::Quantity Quantity; 
+    f.attach(dss); 
+    Quantity q1 = f.eval(itb); 
     double n = std::sqrt( (double)dss.getA()*dss.getA() + (double)dss.getB()*dss.getB() );
     Quantity q2 = Quantity((double)dss.getB()/n, (double)dss.getA()/n); 
     trace.info() << "Normalized tangent vector : " << q1 << " == " << q2 << endl;
@@ -142,11 +145,12 @@ bool testFromDCA(
   int nbok = 0; 
 
   { //curvature
-    CurvatureFromDCAFunctor<DCAComputer,false> f; 
-    f.init(1.0); 
-    double q1 = f(dca);
-    f.init(0.1); 
-    double q2 = f(dca);    
+    CurvatureFromDCAEstimator<DCAComputer,false> f; 
+    f.init(1.0, itb, ite);
+    f.attach(dca); 
+    double q1 = f.eval(itb);
+    f.init(0.1, itb, ite); 
+    double q2 = f.eval(itb);    
     trace.info() << "Curvature (h=1): " << q1 << std::endl; 
     trace.info() << "Curvature (h=0.1): " << q2 << std::endl; 
     nbok += ((q1 >= 0)&&(q1 < 1)&&(q2 >= 0)&&(q2 < 10)
@@ -156,10 +160,11 @@ bool testFromDCA(
   }
 
   { //tangent
-    TangentFromDCAFunctor<DCAComputer> f; 
-    typedef typename TangentFromDCAFunctor<DCAComputer>::Quantity Quantity; 
+    TangentFromDCAEstimator<DCAComputer> f; 
+    f.attach(dca); 
+    typedef typename TangentFromDCAEstimator<DCAComputer>::Quantity Quantity; 
     typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite); 
-    Quantity q1 = f( it, dca ); 
+    Quantity q1 = f.eval( it ); 
     trace.info() << "Tangent: " << q1 << " == [PointVector] {1, 0} " << std::endl; 
     nbok += (std::abs(q1[0]-1.0) < epsilon)
       && (std::abs(q1[1]) < epsilon) ? 1 : 0; 
@@ -168,14 +173,16 @@ bool testFromDCA(
   }
 
   { //position
-    DistanceFromDCAFunctor<DCAComputer> f; 
-    typedef typename DistanceFromDCAFunctor<DCAComputer>::Quantity Quantity; 
+    DistanceFromDCAEstimator<DCAComputer> f; 
+    typedef typename DistanceFromDCAEstimator<DCAComputer>::Quantity Quantity; 
     typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
-    f.init(1.0); 
-    Quantity q1 = f( it, dca ); 
+    f.init(1.0, itb, ite);
+    f.attach(dca); 
+    Quantity q1 = f.eval( it ); 
     trace.info() << "Position (h=1): " << q1.first << " (<=0), " << q1.second << " (>0) " << std::endl; 
-    f.init(0.1);
-    Quantity q2 = f( it, dca ); 
+    f.init(0.1, itb, ite);
+    f.attach(dca); 
+    Quantity q2 = f.eval( it ); 
     trace.info() << "Position (h=0.1): " << q2.first << " (<=0), " << q2.second << " (>0) " << std::endl; 
     nbok += ( (q1.first < epsilon)
 	      && (q1.second > -epsilon)
