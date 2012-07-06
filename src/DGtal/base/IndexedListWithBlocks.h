@@ -53,7 +53,26 @@ namespace DGtal
   /**
      Description of template class 'IndexedListWithBlocks' <p> \brief
      Aim: Represents a mixed list/array structure which is useful in
-     some context.
+     some context. It is essentially a list of blocks.
+
+@verbatim
+if less than 3 values and N = 2
++------+------+------+------+------+
+| size | V[0] | V[1] | ...  |  0   |
++------+------+------+------+------+
+
+if only 3 values and N = 2
++------+------+------+------+------+
+| size | V[0] | V[1] | V[2] | V[3] |
++------+------+------+------+------+
+
+if more than 3 values and N = 2, M = 4
++------+------+------+------+------+        +------+------+------+------+------+
+| size | V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
++------+------+------+------+------+        +------+------+------+------+------+
+
+@endverbatim
+
 
      Such a structure is useful when:
      - the user knows at which position/index lies its value.
@@ -74,6 +93,8 @@ namespace DGtal
   template <typename TValue, unsigned int N, unsigned int M>
   class IndexedListWithBlocks
   {
+    BOOST_STATIC_ASSERT( N >= 1 );
+    BOOST_STATIC_ASSERT( M >= 2 );
   public:
     // ----------------------- Public types ------------------------------
     typedef TValue Value;
@@ -93,48 +114,217 @@ namespace DGtal
     };
 
     /// Represents the first block in the container.
+    /// Internal structure.
     struct FirstBlock {
       inline
       FirstBlock() : size( 0 )
       { data.nextBlock = 0; }
 
       inline
-      Value shiftFromTill( unsigned int i1, unsigned int i2 )
+      void insert( unsigned int idx, const Value & v )
       {
-        Value* p1 = values + i1; 
-        Value tmp = *p2;
-        std::memmove( p1, p1 + 1, ( i2 - i1 ) * sizeof(Value) );
-        return tmp;
+	if ( size <= N )
+	  {
+	    ASSERT( idx <= size );
+	    // works also in the case we use 'data' to store a N+1-th value.
+	    std::copy_backward( values + idx, values + size, values + size + 1 );
+	    values[ idx ] = v;
+	  }
+	else if ( size == (N+1) )
+	  {
+	    ASSERT( idx <= size );
+	    // This cannot be tested.
+	    // ASSERT( data.nextBlock == 0 );
+	    AnyBlock* next = new AnyBlock;
+	    if ( idx < N )
+	      {
+		next->values[ 0 ] = values[ N - 1 ];
+		next->values[ 1 ] = data.lastValue;
+		std::copy_backward( values + idx, values + N - 1, values + N );
+		values[ idx ] = v;
+	      }
+	    else if ( idx == N )
+	      {
+		next->values[ 0 ] = v;
+		next->values[ 1 ] = data.lastValue;
+	      }
+	    else if ( idx > N )
+	      {
+		next->values[ 0 ] = data.lastValue;
+		next->values[ 1 ] = v;
+	      }
+	    data.nextBlock = next;
+	  }
+	else // size > N + 1
+	  {
+	    if ( idx < N )
+	      {
+		Value v1 = values[ N - 1 ];
+		std::copy_backward( values + idx, values + N - 1, values + N );
+		data.nextBlock->insert( 0, v1 );
+		values[ idx ] = v;
+	      }
+	    else
+	      data.nextBlock->insert( idx - N, v );
+	  }
+	++size;
       }
+
       unsigned int size;
       Value values[ N ];
       ValueOrBlockPointer data;
     };
 
     /// Represents a block (except the first) in the container.
+    /// Internal structure.
     struct AnyBlock {
-      inline
-      AnyBlock()
-      { data.nextBlock = 0; }
+      inline AnyBlock() : next( 0 ) {}
 
       inline
-      Value shiftFromTill( unsigned int i1, unsigned int i2 )
+      void insert( unsigned int idx, const Value & v )
       {
-        Value* p1 = values + i1; 
-        Value tmp = *p2;
-        std::memmove( p1, p1 + 1, ( i2 - i1 ) * sizeof(Value) );
-        return tmp;
+	if ( idx >= M ) 
+	  {
+	    if ( next == 0 )
+	      {
+		ASSERT( idx == M );
+		next = new AnyBlock;
+	      }
+	    next->insert( idx - M, v );
+	  }
+	else
+	  {
+	    Value v1 = values[ M - 1 ];
+	    std::copy_backward( values + idx, values + M - 1, values + M );
+	    values[ idx ] = v;
+	    if ( next == 0 )
+	      {
+		next = new AnyBlock;
+		next->values[ 0 ] = v1;
+	      }
+	    else
+	      next->insert( 0, v1 );
+	  }
       }
 
       Value values[ M ];
-      ValueOrBlockPointer data;
+      AnyBlock* next;
     };
 
-    struct Iterator {
-      unsigned int idx;
-      unsigned int nbValues;
-      Value* values;
-      AnyBlock* next;
+    /**
+       Pseudo-random iterator to visit IndexedListWithBlocks (it is
+       only a random forward iterator).  Model of
+       boost::ForwardIterator. Provides also + and += arithmetic.
+    */
+    class Iterator {
+    public:
+      typedef Iterator Self;
+      typedef TValue Value;
+      typedef Value* Pointer;
+      typedef Value& Reference;
+      typedef unsigned int DifferenceType; //< only positive offsets allowed.
+
+      // ----------------------- std types ----------------------------------
+      typedef Value value_type;
+      typedef std::size_t size_type;
+      typedef DifferenceType difference_type;
+      typedef Pointer pointer;
+      typedef Reference reference;
+      typedef const Reference const_reference;
+      typedef std::forward_iterator_tag iterator_category;
+
+
+    protected:
+      unsigned int myIdx;      //< current index in \a myValues of the iterator
+      unsigned int myNbValues; //< number of valid values in array \a myValues
+      Value* myValues;         //< array of \a myNbValues values.
+      AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+
+      friend class IndexedListWithBlocks;
+
+    protected:
+      /**
+	 Constructor from first block and index. Used by class IndexedListWithBlocks.
+      */
+      Iterator( FirstBlock & block, unsigned int idx );
+      
+    public:
+      /**
+	 Default destructor.
+      */
+      ~Iterator();
+
+      /**
+	 Default constructor.
+      */
+      Iterator();
+
+      /**
+	 Copy constructor.
+	 @param other the object to clone.
+      */
+      Iterator( const Iterator & other );
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       */
+      Self & operator= ( const Self & other );
+      
+      /**
+	 Dereference operator.
+	 @return the current value of the iterator, if valid.
+      */
+      Reference operator*() const;
+     
+      /**
+	 Pointer dereference operator.
+	 @return a non-mutable pointer on the current value.
+      */  
+      Pointer operator->() const;
+      
+      /** 
+	  Pre-increment operator.
+	  @return a reference to itself.
+      */
+      Self& operator++();
+      
+      /** 
+	  Post-increment operator.
+	  @return a reference to itself.
+      */
+      Self operator++( int );
+
+      /** 
+	  Addition operator. Moves the iterator at position + \a n.
+	  @param n any positive integer
+	  @return a reference to itself.
+      */
+      Self& operator+=( DifferenceType n );
+
+      /** 
+	  Positive offset dereference operator. Moves the iterator at position + \a n.
+	  @param n any positive integer
+	  @return a reference to itself.
+      */
+      Reference operator[]( DifferenceType n ) const;
+    
+      /**
+	 Equality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on the same element.
+      */
+      bool operator==( const Self & other ) const;
+      
+      /**
+	 Inequality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on different elements.
+      */
+      bool operator!=( const Self & other ) const;
+      
+      
     };
 
     // ----------------------- Standard services ------------------------------
@@ -215,6 +405,16 @@ namespace DGtal
     */
     void erase( unsigned int idx );
 
+    /**
+       @return an iterator pointing on the first element in the container.
+    */
+    Iterator begin();
+
+    /**
+       @return an iterator pointing after the last element in the container.
+    */
+    Iterator end();
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -222,7 +422,7 @@ namespace DGtal
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const;
+    void selfDisplay ( std::ostream & out );
 
     /**
      * Checks the validity/consistency of the object.
@@ -263,7 +463,7 @@ namespace DGtal
   template  <typename TValue, unsigned int N, unsigned int M>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const IndexedListWithBlocks<TValue, N, M> & object );
+               IndexedListWithBlocks<TValue, N, M> & object );
 
 } // namespace DGtal
 

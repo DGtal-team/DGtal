@@ -31,20 +31,75 @@
 #include <cstdio>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IndexedListWithBlocks.h"
 
 using namespace DGtal;
 using namespace std;
 
+template <typename Container1, typename Container2>
+bool
+isEqual( Container1 & c1, Container2 & c2 )
+{
+  return ( c1.size() == c2.size() )
+    && std::equal( c1.begin(), c1.end(), c2.begin() );
+}
+
+template <typename VContainer1, typename LContainer2>
+void insert( VContainer1 & c1, LContainer2 & c2, unsigned int idx, double v )
+{
+  c1.insert( c1.begin() + idx, v );
+  c2.insert( idx, v );
+}
+
+template <typename VContainer1, typename LContainer2>
+bool
+checkInsert( VContainer1 & v, LContainer2 & l,
+	     unsigned int nb )
+{
+  for ( unsigned int i = 0; i < nb; ++i )
+    {
+      unsigned int idx = random() % ( l.size() + 1 );
+      double val = ( (double)random() ) / RAND_MAX;
+      insert( v, l, idx, val );
+    }
+  return isEqual( v, l );
+}
+
+
 int main()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
   trace.beginBlock ( "Testing IndexedListWithBlocks" );
-  IndexedListWithBlocks<double, 2, 4> l;
-  std::cout << "l=" << l << std::endl; 
+  IndexedListWithBlocks<double, 2, 6> l;
+  vector<double> v;
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, 0, 4.5 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, 0, 10.1 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, 1, 3.7 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, 2, 8.4 );
+  insert( v, l, 1, 2.1 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, 2, -3.0 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  insert( v, l, v.size(), -13.1 );
+  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  ++nb, nbok += checkInsert( v, l, 100 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
   trace.endBlock();
-  return nb == nbok;
+  return ( nb == nbok ) ? 0 : 1;
 }
 /** @ingroup Tests **/
