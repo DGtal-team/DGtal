@@ -40,7 +40,7 @@ namespace DGtal {
 
 @b LICENSE: LGPL
 
-Part of \ref pageGeometryPackage.
+Part of \ref GeometryPackage.
 
 \section Watershed Overview
 
@@ -50,7 +50,7 @@ for graphs provided with a value map.
 \section WatershedDetails Let us go into details
 
 The watershed class is templated by three classes :
-  - TGraph which is a model of UndirectedSimpleLocalGraph
+  - TGraph which is a model of CUndirectedSimpleGraph
   - TVertexMap which is a model of CImage ?
   - TLessFunctor which is a functor that describes the "less"
   comparison
@@ -98,39 +98,13 @@ of filtering.
 
   \subsection WatershedExample Usage example
   
-@code
-#include "DGtal/io/writers/LongvolWriter.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/Watershed.h"
+First we create an image and an object :
+  
+@snippet geometry/tools/testWatershed.cpp Initialization
 
-typedef ImageContainerBySTLVector < Z3i::Domain, int> Image;
-typedef Object18_6 Object;
-template class comp
-{
-public:
-  comp() {}
-  bool
-  operator() (const int & i1, const int & i2)
-  {
-    return i1 > i2;
-  }
-};
+Then, we launch the watershed :
 
-int main()
-{
-  Image image = LongvolReader<Image>::importLongvol("Volume.longvol");
-  SetFromImage<Z3i::DigitalSet>::append<Image>(set, image, 0, 255);
-  Object object = Object(Z3i::dt18_6, set);
-  
-  Watershed< Object, Image, comp > ws(object, LVimage);
-  
-  Image output = ws.segmentation();
-  
-  return 0;
-}
-@endcode
+@snippet geometry/tools/testWatershed.cpp WatershedLaunch
 
 */
 

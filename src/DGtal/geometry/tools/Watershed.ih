@@ -45,8 +45,8 @@ using namespace std;
 // Interface - public :
   
 
-
-const int WSHED = 255;
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+const TVertexMap::Value DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::WSHED = 255;
 const int INIT = -2;
 const int MASK = -3;
 const int INQUEUE = -4;
@@ -140,7 +140,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
     // While there are still points to analyse
     while( !fifo.empty() )
     {
-      flag = false; // Not in base algorithm
+      //flag = false; // Not in base algorithm
       Vertex p = fifo.front();
       fifo.pop();
       

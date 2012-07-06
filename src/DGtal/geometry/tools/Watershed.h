@@ -53,16 +53,22 @@ namespace DGtal {
  * 
  * @brief Define utilites to perform a segmentation of a value-mapped graph 
  * using watershed algorithms
+ * 
+ * 
+ * @tparam TGraph any model of CUndirectedSimpleGraph.
+ * @tparam TVertexMap any model of C?.
+ * @tparam TLessFunctor a functor defining the less comparison
+ * 
  */
 // Template class Image
-template < typename TGraph, typename TVertexMap/*typename TValue*/, class TLessFunctor >
+template < typename TGraph, typename TVertexMap, class TLessFunctor = std::less<typename TVertexMap::Value> >
 class Watershed
 {
 
   
   // ----------------------- Standard services ------------------------------
   public:
-  //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<TGraph> ));
+  //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<TGraph> ));
   typedef TGraph Graph;
   typedef typename TVertexMap::Value Value;
   typedef typename TGraph::Vertex Vertex;
@@ -91,6 +97,8 @@ class Watershed
       }
   };
   typedef /*typename TGraph::template VertexMap<TValue>::Type*/TVertexMap VertexMap;
+  
+  const static Value WSHED;
   
   
   //template<typename Value> struct VertexMap {
