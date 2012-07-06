@@ -52,6 +52,7 @@ typedef Point3D Point;
 
 
 
+
  
 
 
@@ -75,9 +76,11 @@ bool testOFFReader()
 	       << "true == true" << std::endl;
   
   std::string filenameOFF = testPath + "samples/box.off";
-  vector<Point> vPoints;
-  MeshFromPoints<Point> a3DMesh(vPoints);
+  //  vector<Point> vPoints;
+  //MeshFromPoints<Point> a3DMesh(vPoints);
   
+  MeshFromPoints<Point> a3DMesh;
+
   OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
   trace.info() << "Nb Vertex of the imported mesh: " << a3DMesh.nbVertex()<< endl;
   trace.info() << "Nb Faces of the imported mesh: " << a3DMesh.nbFaces()<< endl;

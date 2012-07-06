@@ -39,11 +39,20 @@
 // ----------------------- Standard services ------------------------------
 
 /**
+ * Constructor.
+ */
+template <typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints()
+{
+}
+
+/**
  * Destructor.
  */
-template <typename T>
+template <typename TPoint>
 inline
-DGtal::MeshFromPoints<T>::~MeshFromPoints()
+DGtal::MeshFromPoints<TPoint>::~MeshFromPoints()
 {
 }
 
@@ -54,10 +63,10 @@ DGtal::MeshFromPoints<T>::~MeshFromPoints()
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <typename TPoint>
 inline
 void
-DGtal::MeshFromPoints<T>::selfDisplay ( std::ostream & out ) const
+DGtal::MeshFromPoints<TPoint>::selfDisplay ( std::ostream & out ) const
 {
   out << "[MeshFromPoints]";
 }
@@ -66,10 +75,10 @@ DGtal::MeshFromPoints<T>::selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename T>
+template <typename TPoint>
 inline
 bool
-DGtal::MeshFromPoints<T>::isValid() const
+DGtal::MeshFromPoints<TPoint>::isValid() const
 {
     return true;
 }
@@ -84,7 +93,7 @@ DGtal::MeshFromPoints<T>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<Point> &vertexSet)
 {
   for(int i =0; i< vertexSet.size(); i++){
     myVertexList.push_back(vertexSet.at(i));
@@ -97,7 +106,7 @@ DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
 template<typename TPoint>
 inline
 void
-DGtal::MeshFromPoints<TPoint>::addVertex(const TPoint &point)
+DGtal::MeshFromPoints<TPoint>::addVertex(const Point &point)
 {
   myVertexList.push_back(point);
 }    
@@ -110,11 +119,11 @@ void
 DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 						 unsigned int indexVertex3)
 {
-  MeshFace triangleFace;
-  triangleFace.push_back(indexVertex1);
-  triangleFace.push_back(indexVertex2);
-  triangleFace.push_back(indexVertex3);
-  myFaceList.push_back(triangleFace);
+  MeshFace aFace;
+  aFace.push_back(indexVertex1);
+  aFace.push_back(indexVertex2);
+  aFace.push_back(indexVertex3);
+  myFaceList.push_back(aFace);
 }    
 
 
@@ -126,12 +135,12 @@ void
 DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 					   unsigned int indexVertex3, unsigned int indexVertex4)
 {
-  MeshFace triangleFace;
-  triangleFace.push_back(indexVertex1);
-  triangleFace.push_back(indexVertex2);
-  triangleFace.push_back(indexVertex3);
-  triangleFace.push_back(indexVertex4);
-  myFaceList.push_back(triangleFace);
+  MeshFace aFace;
+  aFace.push_back(indexVertex1);
+  aFace.push_back(indexVertex2);
+  aFace.push_back(indexVertex3);
+  aFace.push_back(indexVertex4);
+  myFaceList.push_back(aFace);
 }    
 
 
@@ -140,7 +149,7 @@ DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned i
 template<typename TPoint>
 inline
 const TPoint &
-DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i)
+DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i) const 
 {
   return myVertexList.at(i);
 }    
@@ -149,8 +158,8 @@ DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i)
 
 template<typename TPoint>
 inline
-const typename  DGtal::MeshFromPoints<TPoint>::MeshFace &
-DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i)
+const typename  DGtal::MeshFromPoints<TPoint>::MeshFace & 
+DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i) const
 {
   return myFaceList.at(i);
 }    
@@ -159,7 +168,7 @@ DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i)
 template<typename TPoint>
 inline
 const unsigned int 
-DGtal::MeshFromPoints<TPoint>::nbFaces()
+DGtal::MeshFromPoints<TPoint>::nbFaces() const
 {
   return myFaceList.size();
 }
@@ -167,7 +176,7 @@ DGtal::MeshFromPoints<TPoint>::nbFaces()
 template<typename TPoint>
 inline
 const unsigned int 
-DGtal::MeshFromPoints<TPoint>::nbVertex()
+DGtal::MeshFromPoints<TPoint>::nbVertex() const
 {
   return myVertexList.size();
 }
@@ -176,7 +185,7 @@ DGtal::MeshFromPoints<TPoint>::nbVertex()
 template<typename TPoint>
 inline
 void 
-DGtal::MeshFromPoints<TPoint>:: addFace(const vector<unsigned int> &listIndex){
+DGtal::MeshFromPoints<TPoint>::addFace(const vector<unsigned int> &listIndex){
   for(int i=0;i < listIndex.size();i++){
     myFaceList.push_back(listIndex);
   }
@@ -187,6 +196,14 @@ DGtal::MeshFromPoints<TPoint>:: addFace(const vector<unsigned int> &listIndex){
 
 
 
+//------------------------------------------------------------------------------
+template<typename TPoint>
+inline
+std::string
+DGtal::MeshFromPoints<TPoint>::className() const
+{
+  return "MeshFromPoints";
+}
 
 
 
@@ -195,11 +212,15 @@ DGtal::MeshFromPoints<TPoint>:: addFace(const vector<unsigned int> &listIndex){
 
 
 
-template <typename T>
+
+
+
+
+template <typename TPoint>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		  const MeshFromPoints<T> & object )
+		    const MeshFromPoints<TPoint> & object )
 {
   object.selfDisplay( out );
   return out;
