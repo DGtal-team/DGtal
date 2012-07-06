@@ -50,7 +50,8 @@ template <typename TPoint>
 inline
 void
 DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename, 
-				MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException)
+					MeshFromPoints<TPoint> & aMesh, 
+					bool invertVertexOrder) throw(DGtal::IOException)
 {
   ifstream infile;
   DGtal::IOException dgtalio;
@@ -100,10 +101,13 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
     infile >> p.y;
     infile >> p.z;
     aMesh.addVertex(p);
+    // Needed since a line can also contain vertex colors
+    getline(infile, str);
   }
   
+  
   // Reading mesh faces
-  for(unsigned int j=0; j<nbFaces; j++){
+  for(unsigned int i=0; i<nbFaces; i++){
     // Reading the number of face vertex
     unsigned int aNbFaceVertex;
     infile >> aNbFaceVertex;
@@ -113,7 +117,17 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
       infile >> anIndex;
       aFace.push_back(anIndex);
     }
+    if( invertVertexOrder ){
+      for(unsigned int j=0; j < aFace.size()/2; j++){
+	unsigned int tmp=aFace.at(j);
+	aFace.at(j)=aFace.at(aFace.size()-1-j);
+	aFace.at(aFace.size()-1-j)=tmp;
+      }
+    }
     aMesh.addFace(aFace);
+    // Needed since a can also contain vertex colors
+    getline(infile, str);
+    
   }
   
   //Todo processing optional colors...

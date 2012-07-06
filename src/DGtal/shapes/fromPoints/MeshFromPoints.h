@@ -57,32 +57,52 @@ namespace DGtal
   template <typename TPoint >
   class MeshFromPoints
   {
-
-
     
 
+    
+    
     // ----------------------- associated types ------------------------------
   public:
     
-
     typedef TPoint Point;
-
     typedef vector<unsigned int> MeshFace;
     
-    // struct TriangularFace{
-    //   unsigned int indexVertex1;
-    //   unsigned int indexVertex2;
-    //   unsigned int indexVertex3;
-    // };
+
+
 
     // ----------------------- Standard services ------------------------------
   public:
+    /**
+     * Constructor.
+     * 
+     */
+    MeshFromPoints();    
+    
+    /**
+     * Constructor.
+     * 
+     */    
+    MeshFromPoints(const vector<Point> &vertexSet);
 
     /**
      * Destructor.
      */
     ~MeshFromPoints();
 
+
+
+
+    // --------------- CDrawableWithDisplay3D  realization -------------------
+  public:    
+    
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
+
+
+    
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -90,11 +110,6 @@ namespace DGtal
    
     
 
-    /**
-     * Constructor.
-     * 
-     */
-    MeshFromPoints(const vector<TPoint> &vertexSet);    
    
   
     /**
@@ -129,13 +144,10 @@ namespace DGtal
     
     
    /**
-     * Add a quad face given from index position.
-     *
-     * @param indexVertex1: the index of the first vertex face.
-     * @param indexVertex2: the index of the second vertex face.
-     * @param indexVertex2: the index of the second vertex face.
-     * 
-     **/    
+    * Add a quad face given from index position.
+    *
+    * 
+    **/    
     void addFace(const vector<unsigned int> &listIndex);
     
     
@@ -147,7 +159,7 @@ namespace DGtal
      * @param i: the index of the vertex.
      * @return the vertex of index i. 
      **/
-    const Point &  getVertex(unsigned int i);
+    const Point & getVertex(unsigned int i) const;
     
     
     
@@ -156,7 +168,7 @@ namespace DGtal
      * @param i: the index of the face.
      * @return the face of index i. 
      **/
-    const MeshFace &  getFace(unsigned int i);
+    const MeshFace & getFace(unsigned int i) const;
    
     
     
@@ -164,13 +176,13 @@ namespace DGtal
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int   nbFaces();
+    const unsigned int nbFaces() const;
 
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int   nbVertex();
+    const unsigned int  nbVertex() const;
     
 
     
@@ -204,11 +216,7 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    MeshFromPoints();
+  
 
 
           
@@ -252,9 +260,9 @@ namespace DGtal
    * @param object the object of class 'MeshFromPoints' to write.
    * @return the output stream after the writing.
    */
-  template <typename T>
+  template <typename TPoint>
   std::ostream&
-  operator<< ( std::ostream & out, const MeshFromPoints<T> & object );
+  operator<< ( std::ostream & out, const MeshFromPoints<TPoint> & object );
 
 } // namespace DGtal
 

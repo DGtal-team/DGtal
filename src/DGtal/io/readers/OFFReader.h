@@ -78,7 +78,7 @@ public:
   */
   
   static  void  importOFFFile(const std::string & filename, 
-				   MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException);
+			      MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
   
 
   
