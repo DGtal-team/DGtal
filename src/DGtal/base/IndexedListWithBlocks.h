@@ -170,6 +170,33 @@ if more than 3 values and N = 2, M = 4
 	++size;
       }
 
+      inline 
+      void erase( unsigned int idx )
+      {
+	std::cerr << "FirstBlock::erase(" << idx << ")"
+		  << " this=" << this
+		  << " next=" << data.nextBlock
+		  << std::endl;
+	ASSERT( idx < size );
+	if ( size <= N )
+	  {
+	    // works also in the case we use 'data' to store a N+1-th value.
+	    std::copy( values + idx + 1, values + size, values + idx );
+	  }
+	else // size > N + 1
+	  {
+	    if ( idx < N )
+	      {
+		std::copy( values + idx + 1, values + N, values + idx );
+		values[ N - 1 ] = data.nextBlock->values[ 0 ];
+		data.nextBlock = data.nextBlock->erase( 0, size - N );
+	      }
+	    else
+	      data.nextBlock = data.nextBlock->erase( idx - N, size - N );
+	  }
+	--size;
+      }
+
       unsigned int size;
       Value values[ N ];
       ValueOrBlockPointer data;
@@ -206,6 +233,36 @@ if more than 3 values and N = 2, M = 4
 	      next->insert( 0, v1 );
 	  }
       }
+
+      inline 
+      AnyBlock* erase( unsigned int idx, unsigned int size )
+      {
+	std::cerr << "AnyBlock::erase(" << idx << "," << size << ")" 
+		  << " this=" << this
+		  << " next=" << next
+		  << std::endl;
+	ASSERT( size > 1 );
+	if ( idx < M )
+	  {
+	    std::copy( values + idx + 1, values + M, values + idx );
+	    if ( next != 0 )
+	      {
+		ASSERT( size > M );
+		values[ M - 1 ] = next->values[ 0 ];
+		if ( size == M + 1 )
+		  {
+		    delete next;
+		    next = 0;
+		  }
+		else
+		  next = next->erase( 0, size - M );
+	      }
+	  }
+	else
+	  next = next->erase( idx - M, size - M );
+	return this;
+      }
+
 
       Value values[ M ];
       AnyBlock* next;
