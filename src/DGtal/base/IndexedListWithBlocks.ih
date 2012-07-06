@@ -357,6 +357,17 @@ insert( unsigned int idx, const Value & value )
   ASSERT( idx <= size() ); // end is ok.
   myFirstBlock.insert( idx, value );
 }
+//-----------------------------------------------------------------------------
+template <typename TValue, unsigned int N, unsigned int M>
+inline
+void
+DGtal::IndexedListWithBlocks<TValue, N, M>::
+erase( unsigned int idx )
+{
+  ASSERT( idx < size() ); // end is not ok.
+  myFirstBlock.erase( idx );
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>

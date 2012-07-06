@@ -68,6 +68,26 @@ checkInsert( VContainer1 & v, LContainer2 & l,
   return isEqual( v, l );
 }
 
+template <typename VContainer1, typename LContainer2>
+void erase( VContainer1 & c1, LContainer2 & c2, unsigned int idx )
+{
+  c1.erase( c1.begin() + idx );
+  c2.erase( idx );
+}
+
+template <typename VContainer1, typename LContainer2>
+bool
+checkErase( VContainer1 & v, LContainer2 & l,
+	    unsigned int nb )
+{
+  for ( unsigned int i = 0; i < nb; ++i )
+    {
+      unsigned int idx = random() % ( l.size() + 1 );
+      erase( v, l, idx );
+    }
+  return isEqual( v, l );
+}
+
 
 int main()
 {
@@ -98,6 +118,8 @@ int main()
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
   ++nb, nbok += checkInsert( v, l, 100 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  ++nb, nbok += checkErase( v, l, 50 ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
   trace.endBlock();
   return ( nb == nbok ) ? 0 : 1;
