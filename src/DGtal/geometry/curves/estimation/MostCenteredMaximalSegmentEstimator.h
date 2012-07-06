@@ -47,7 +47,7 @@
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Circulator.h"
 
-#include "DGtal/geometry/curves/estimation/CSegmentComputerFunctor.h"
+#include "DGtal/geometry/curves/estimation/CSegmentComputerEstimator.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 
@@ -60,24 +60,26 @@ namespace DGtal
   // template class MostCenteredMaximalSegmentEstimator
   /**
    * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim: Computes a quantity to each element of a range associated to 
-   * the most centered maximal segment  
+   * \brief Aim: Assigns to each element of a range a quantity estimated from 
+   * the most centered maximal segment passing through this element. 
+   *
+   * This class is a model of CLocalGeometricEstimator.
    *
    * @tparam SegmentComputer at least a model of CForwardSegmentComputer
-   * @tparam SCFunctor a model of CSegmentComputerFunctor
+   * @tparam SCEstimator a model of CSegmentComputerEstimator
    */
-  template <typename SegmentComputer, typename SCFunctor>
+  template <typename SegmentComputer, typename SCEstimator>
   class MostCenteredMaximalSegmentEstimator
   {
 
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<SegmentComputer> )); 
-    BOOST_CONCEPT_ASSERT(( CSegmentComputerFunctor<SCFunctor> )); 
+    BOOST_CONCEPT_ASSERT(( CSegmentComputerEstimator<SCEstimator> )); 
 
     // ----------------------- Types ------------------------------
   public:
 
     typedef typename SegmentComputer::ConstIterator ConstIterator;
-    typedef typename SCFunctor::Quantity Quantity;
+    typedef typename SCEstimator::Quantity Quantity;
 
     typedef SaturatedSegmentation<SegmentComputer> Segmentation; 
     typedef typename Segmentation::SegmentComputerIterator SegmentIterator; 
@@ -93,10 +95,10 @@ namespace DGtal
     /**
      * Constructor.
      * @param aSegmentComputer
-     * @param aSCFunctor
+     * @param aSCEstimator
      */
     MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
-                                        const SCFunctor& aSCFunctor);
+                                        const SCEstimator& aSCEstimator);
 
     /**
      * Destructor.
@@ -163,8 +165,8 @@ namespace DGtal
     /** segmentComputer used to segment */ 
     SegmentComputer mySC; 
 
-    /** functor estimating the quantity from a point and a segmentComputer */ 
-    SCFunctor mySCFunctor;
+    /** object estimating the quantity from segmentComputer */ 
+    SCEstimator mySCEstimator;
 
     // ------------------------- Internal services ------------------------------
 
@@ -227,7 +229,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.ih"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctors.h"
+#include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
