@@ -45,11 +45,6 @@ using namespace std;
 // Interface - public :
   
 
-template <typename TGraph, typename TVertexMap, class TLessFunctor>
-const TVertexMap::Value DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::WSHED = 255;
-const int INIT = -2;
-const int MASK = -3;
-const int INQUEUE = -4;
 
 /**
  * Constructor
@@ -62,13 +57,14 @@ const int INQUEUE = -4;
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::Watershed(const TGraph & aGraph, const TVertexMap & values)
-  :myGraph(aGraph), myValueMap(values), mySet(new VertexSet())
+  :myGraph(aGraph), myValueMap(values)/*, mySet(new VertexSet())*/
 {
   trace.beginBlock("Importing graph");
-  for( typename Graph::ConstIterator it = aGraph.begin(); it != aGraph.end(); it++ )
+  /*for( typename Graph::ConstIterator it = aGraph.begin(); it != aGraph.end(); it++ )
   {
     mySet->insert(*it);
-  }
+  }*/
+  WSHED = aGraph.size();
   trace.endBlock();
 }
 
@@ -85,6 +81,10 @@ inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
 DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
 {
+  Value INIT = WSHED + 1;;
+  Value MASK = WSHED + 2;
+  Value INQUEUE = WSHED + 3;
+  
   typedef vector<Vertex> VertexVector;
   int current_label = 0;
   bool flag = false;
@@ -96,15 +96,15 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
   Graph outGraph(myGraph);
   VertexMap outMap(myValueMap);
   // Sort the points of image by thickness value and initialisation of outGraph
-  std::map<Value, VertexSet, MapComparison> heightMap;
-  for( typename VertexSet::const_iterator it = mySet->begin(); it != mySet->end(); it++ ){
+  std::map<Value, VertexVector, MapComparison> heightMap;
+  for( typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++ ){
     outMap.setValue(*it, INIT);
     int value = myValueMap(*it);
     if( heightMap.find(value) == heightMap.end() )
     {
-      heightMap.insert(pair< int, VertexSet >(value, VertexSet()));
+      heightMap.insert(pair< int, VertexVector >(value, VertexVector()));
     }
-    heightMap.find(value)->second.insert(*it);
+    heightMap.find(value)->second.push_back(*it);
   }
   trace.endBlock();
   
@@ -113,10 +113,10 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
   int heightNumber = heightMap.size();
   int heightCount = 1;
   // For every height of the heigthmap
-  for(typename map<int, VertexSet>::iterator mit = heightMap.begin(); mit != heightMap.end(); mit++)
+  for(typename map<int, VertexVector>::iterator mit = heightMap.begin(); mit != heightMap.end(); mit++)
   {
     // For every point at the height h
-    for(typename VertexSet::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
+    for(typename VertexVector::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
     {
       Vertex p = *it;
       outMap.setValue(p, MASK);
@@ -127,7 +127,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
       for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
       {
         Vertex np = *nit;
-        if( outMap(np) > 0 || outMap(np) == WSHED )
+        if( outMap(np) < WSHED || outMap(np) == WSHED )
         {
           outMap.setValue(p, INQUEUE);
           fifo.push(p);
@@ -151,13 +151,13 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
       for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
       {
         Vertex np = *nit; // A neighbor
-        if( outMap(np) > 0 && outMap(np) != WSHED )
+        if( outMap(np) < WSHED && outMap(np) != WSHED )
         {
           if( outMap(p) == INQUEUE || (outMap(p) == WSHED && flag == true ))
           {
             outMap.setValue(p, outMap(np));
           }
-          else if( (outMap(p) > 0 && outMap(p) != WSHED) && outMap(p) != outMap(np) )
+          else if( (outMap(p) < WSHED && outMap(p) != WSHED) && outMap(p) != outMap(np) )
           {
             outMap.setValue(p, WSHED);
             flag = false;
@@ -182,7 +182,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
     
     // Check for new minima
     // For every point at the height h
-    for(typename VertexSet::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
+    for(typename VertexVector::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
     {
       Vertex p = *it;
       if( outMap(p) == MASK )
@@ -214,6 +214,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
     }
     trace.progressBar(heightCount++, heightNumber);
   }
+  trace.info() << endl;
   trace.endBlock();
   
   return outMap;
@@ -229,10 +230,14 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
  * @return the segmented image
  */ 
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
+template <typename TVertexSet>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
-DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const VertexSet &markerSet)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationFromMarkers(const TVertexSet &markerSet)
 {
+  Value INIT = WSHED + 1;
+  typedef TVertexSet VertexSet;
+  //BOOST_CONCEPT_ASSERT(( CSinglePassRange<VertexSet> ))
   typedef vector<Vertex> VertexVector;
   typedef pair<Vertex, Value> Vpair; 
     
@@ -248,7 +253,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const Ve
   trace.beginBlock("Initialising image");
   
   // Initialise image
-  for(typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++){
+  for(typename Graph::iterator it = myGraph.begin(); it != myGraph.end(); it++){
     outMap.setValue(*it, INIT);
   }
   
@@ -286,7 +291,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_marker(const Ve
         outMap.setValue(nv, vLabel);
       }
       // If the point is already occupied, it becomes a watershed
-      if( outMap(nv) > 0 && outMap(nv) != outMap(v) && outMap(v) != WSHED )
+      if( outMap(nv) < WSHED && outMap(nv) != outMap(v) && outMap(v) != WSHED )
       {
         if( initialPoints.find(nv) == initialPoints.end() )
         {
@@ -312,6 +317,7 @@ template<typename TGraph, typename TVertexMap, class TLessFunctor>
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::Value
 DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::gaussianFilter(const VertexMap & vMap, const Vertex & v)	// not really a gaussian filter
 {
+  typedef std::set<Vertex> VertexSet;
   typedef vector<Vertex> VertexVector;
   BreadthFirstVisitor<TGraph, VertexSet> bfv( myGraph );
   int div = 8;
@@ -347,19 +353,20 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::gaussianFilter(const VertexM
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
-DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int N, int M)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationStochastic(int N, int M)
 {
+  typedef std::set<Vertex> VertexSet;
   VertexMap intermediateMap(myValueMap);
   VertexMap finalMap(myValueMap);
   
-  int totalVoxels = mySet->size();
+  int totalVoxels = myGraph.size();
   
   typename boost::poisson_distribution<int, double> poisson(totalVoxels/N);
   typename boost::mt19937 random;
   boost::variate_generator<boost::mt19937, boost::poisson_distribution<int, double> > generator(random, poisson);
 
   
-  for(typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++) {
+  for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++) {
     finalMap.setValue(*it, 0);
   }
   
@@ -376,7 +383,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
     int count = 0;
     int next = generator();
     cout << next << endl;
-    for(typename VertexSet::iterator it = mySet->begin(); it!=mySet->end(); ++it)
+    for(typename Graph::ConstIterator it = myGraph.begin(); it!=myGraph.end(); ++it)
     {
       if( count == next )
       {
@@ -395,11 +402,11 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
     
     trace.beginBlock("Watershedding with markers");
     
-    intermediateMap = this->segmentation_marker(markers);
+    intermediateMap = this->segmentationFromMarkers<VertexSet>(markers);
     
     trace.endBlock();
     
-    for(typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++){
+    for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++){
       if(intermediateMap(*it) == WSHED)
       {
           finalMap.setValue(*it, finalMap(*it) + gaussianFilter(intermediateMap, *it));
@@ -409,7 +416,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
   }
   
   // For the purpose of testing and visualising the complete image
-  for(typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++) {
+  for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++) {
     finalMap.setValue(*it, finalMap(*it) + 1);
   }
   
@@ -433,15 +440,15 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic(int 
 template <typename TGraph, typename TVertexMap, class TLessFunctor>
 inline
 typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
-DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heuristic(int N, int M)
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationStochasticHeuristic(int N, int M)
 // TODO : Rework method
 {
   trace.beginBlock("Computing stochastic heuristic");
-  VertexMap finalMap = this->segmentation_stochastic(N, M);
+  VertexMap finalMap = this->segmentationStochastic(N, M);
   trace.endBlock();
   
   trace.beginBlock("Creating new heightmap");
-  for( typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++ ) {
+  for( typename Graph::iterator it = myGraph.begin(); it != myGraph.end(); it++ ) {
     Value newValue;
     if( finalMap(*it) > 5*M )
     {
@@ -456,7 +463,7 @@ DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation_stochastic_heur
   trace.endBlock();
   
   VertexMap test = this->segmentation();
-  for( typename VertexSet::iterator it = mySet->begin(); it != mySet->end(); it++ ) {
+  for( typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++ ) {
     if( test(*it) == WSHED )
     {
       finalMap.setValue(*it, finalMap(*it) + 1);

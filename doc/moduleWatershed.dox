@@ -73,12 +73,12 @@ algorithm, i.e. using as flooding markers the local minimas of the
 value map.
 
 
-Watershed::segmentation_marker(const VertexSet &markerSet)
+Watershed::segmentationFromMarkers(const VertexSet &markerSet)
 
 Same as above, but the markers are chosen by the user.
 
 
-Watershed::segmentation_stochastic(int N, int M)
+Watershed::segmentationStochastic(int N, int M)
 
 This method computes several segmentation using a random set of
 markers positionned on the graph and deduces a probabilistic repartition
@@ -88,7 +88,7 @@ function of the watersheds.
 This method returns the probabilistic function.
 
 
-Watershed::segmentation_stochastic_heuristic(int N, int M)
+Watershed::segmentationStochasticHeuristic(int N, int M)
 
 This method uses the probabilistic function as the base for a
 classic watershedding algorithm. It is basically a combination

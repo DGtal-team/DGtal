@@ -83,8 +83,13 @@ int main()
   //! [Initialization]
   
   trace.beginBlock("Simple Watershed test");
-  Watershed<Object4_8, Image> ws(object, image);
+  
+  //! [WatershedLaunch]
+  typedef Watershed<Object4_8, Image> watershed;
+  watershed ws(object, image);
   Image result = ws.segmentation();
+  //! [WatershedLaunch]
+  
   trace.endBlock();
   
   Board2D board;
@@ -102,7 +107,7 @@ int main()
   it != object.pointSet().end();
   ++it )
   {
-    if( result(*it) == Watershed<Object4_8, Image>::WSHED )
+    if( result(*it) == ws.getWatershedValue() )
     {
       board << CustomStyle( specificStyle,
 	  new CustomColors( Color::Black,
@@ -111,7 +116,6 @@ int main()
     }
     else
     {
-      cout << result(*it) << " " << image(*it) << endl;
       board << CustomStyle( specificStyle,
 	  new CustomColors( Color::Black,
 	  cmap_grad( result(*it) ) ) )

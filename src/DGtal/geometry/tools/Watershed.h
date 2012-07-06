@@ -42,6 +42,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/CowPtr.h"
+#include "DGtal/topology/CUndirectedSimpleGraph.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -68,7 +69,7 @@ class Watershed
   
   // ----------------------- Standard services ------------------------------
   public:
-  //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<TGraph> ));
+  BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<TGraph> ));
   typedef TGraph Graph;
   typedef typename TVertexMap::Value Value;
   typedef typename TGraph::Vertex Vertex;
@@ -98,7 +99,6 @@ class Watershed
   };
   typedef /*typename TGraph::template VertexMap<TValue>::Type*/TVertexMap VertexMap;
   
-  const static Value WSHED;
   
   
   //template<typename Value> struct VertexMap {
@@ -131,11 +131,13 @@ class Watershed
    * segment number which he is associated to. The watershed uses a 
    * set of markers instead of local minima as water sources.
    * 
+   * @tparam TVertexSet any model of CSinglePassRange on vertices
+   * 
    * @param markerSet a set of vertices contained by the graph
    * 
    * @return the segmented image
    */ 
-    VertexMap segmentation_marker(const VertexSet &markerSet);
+    template<typename TVertexSet> VertexMap segmentationFromMarkers(const TVertexSet &markerSet);
     
   /**
    * Return an image where each point contains a value representing
@@ -150,7 +152,7 @@ class Watershed
    * 
    * @return the watershed probabilistic function
    */ 
-    VertexMap segmentation_stochastic(int N, int M);
+    VertexMap segmentationStochastic(int N, int M);
         
   /**
    * Return a segmented image where each point of the image contains the
@@ -163,15 +165,32 @@ class Watershed
    * 
    * @return the watershed probabilistic function
    */     
-    VertexMap segmentation_stochastic_heuristic(int N, int M);
+    VertexMap segmentationStochasticHeuristic(int N, int M);
+    
+    inline
+    Value getWatershedValue()
+    {
+      return WSHED;
+    }
   
   
     // ------------------------- Protected Datas ------------------------------
   protected:
-    //CowPtr<ImageContainer> image;
-    const VertexMap & myValueMap;
-    CowPtr<VertexSet> mySet;
+    
+    /**
+     * Reference to the graph given in the constructor
+     */
     const Graph & myGraph;
+    
+    /**
+     * Reference to the data structure containing the value mapping of myGraph
+     */
+    const VertexMap & myValueMap;
+    
+    /**
+     * Value assigned to a watershed
+     */
+    Value WSHED;
     
     // ------------------------- Private Datas --------------------------------
   private:
