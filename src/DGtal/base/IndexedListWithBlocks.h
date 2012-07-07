@@ -98,6 +98,26 @@ if more than 3 values and N = 2, M = 4
   public:
     // ----------------------- Public types ------------------------------
     typedef TValue Value;
+    typedef std::ptrdiff_t DifferenceType;
+    typedef std::size_t SizeType;
+    typedef Value& Reference;
+    typedef Value* Pointer;
+    typedef const Value& ConstReference;
+    typedef const Value* ConstPointer;
+
+    class Iterator;
+    class ConstIterator;
+
+    // ----------------------- Standard types ------------------------------
+    typedef Value value_type;
+    typedef DifferenceType difference_type;
+    typedef Reference reference;
+    typedef Pointer pointer;
+    typedef ConstReference const_reference;
+    typedef ConstPointer const_pointer;
+    typedef SizeType size_type;
+    typedef Iterator iterator;
+    typedef ConstIterator const_iterator;
     
     struct FirstBlock; //< Forward declaration
     struct AnyBlock; //< Forward declaration
@@ -294,7 +314,7 @@ if more than 3 values and N = 2, M = 4
       typedef TValue Value;
       typedef Value* Pointer;
       typedef Value& Reference;
-      typedef unsigned int DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -302,7 +322,7 @@ if more than 3 values and N = 2, M = 4
       typedef DifferenceType difference_type;
       typedef Pointer pointer;
       typedef Reference reference;
-      typedef const Reference const_reference;
+      //typedef const Reference const_reference;
       typedef std::forward_iterator_tag iterator_category;
 
 
@@ -399,6 +419,125 @@ if more than 3 values and N = 2, M = 4
       
     };
 
+
+    /**
+       Pseudo-random iterator to visit IndexedListWithBlocks (it is
+       only a random forward iterator).  Model of
+       boost::ForwardIterator. Provides also + and += arithmetic.
+    */
+    class ConstIterator {
+    public:
+      typedef ConstIterator Self;
+      typedef TValue Value;
+      typedef const Value* Pointer;
+      typedef const Value& Reference;
+      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+
+      // ----------------------- std types ----------------------------------
+      typedef Value value_type;
+      typedef std::size_t size_type;
+      typedef DifferenceType difference_type;
+      typedef Pointer pointer;
+      typedef Reference reference;
+      // typedef Reference const_reference;
+      typedef std::forward_iterator_tag iterator_category;
+
+
+    protected:
+      unsigned int myIdx;      //< current index in \a myValues of the iterator
+      unsigned int myNbValues; //< number of valid values in array \a myValues
+      const Value* myValues;   //< array of \a myNbValues values.
+      const AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+
+      friend class IndexedListWithBlocks;
+
+    protected:
+      /**
+	 Constructor from first block and index.
+         Used by class IndexedListWithBlocks.
+      */
+      ConstIterator( const FirstBlock & block, unsigned int idx );
+      
+    public:
+      /**
+	 Default destructor.
+      */
+      ~ConstIterator();
+
+      /**
+	 Default constructor.
+      */
+      ConstIterator();
+
+      /**
+	 Copy constructor.
+	 @param other the object to clone.
+      */
+      ConstIterator( const ConstIterator & other );
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       */
+      Self & operator= ( const Self & other );
+      
+      /**
+	 Dereference operator.
+	 @return the current value of the iterator, if valid.
+      */
+      Reference operator*() const;
+     
+      /**
+	 Pointer dereference operator.
+	 @return a non-mutable pointer on the current value.
+      */  
+      Pointer operator->() const;
+      
+      /** 
+	  Pre-increment operator.
+	  @return a reference to itself.
+      */
+      Self& operator++();
+      
+      /** 
+	  Post-increment operator.
+	  @return a reference to itself.
+      */
+      Self operator++( int );
+
+      /** 
+	  Addition operator. Moves the iterator at position + \a n.
+	  @param n any positive integer
+	  @return a reference to itself.
+      */
+      Self& operator+=( DifferenceType n );
+
+      /** 
+	  Positive offset dereference operator. Moves the iterator at position + \a n.
+	  @param n any positive integer
+	  @return a reference to itself.
+      */
+      Reference operator[]( DifferenceType n ) const;
+    
+      /**
+	 Equality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on the same element.
+      */
+      bool operator==( const Self & other ) const;
+      
+      /**
+	 Inequality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on different elements.
+      */
+      bool operator!=( const Self & other ) const;
+      
+      
+    };
+
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -431,7 +570,22 @@ if more than 3 values and N = 2, M = 4
     /**
        The number of values stored in the structure. O(1) complexity.
      */
-    unsigned int size() const;
+    SizeType size() const;
+
+    /**
+       @return 'true' if and only if the container is empty. O(1)
+     */
+    bool empty() const;
+
+    /**
+       The maximum number of values storable in the structure.
+     */
+    SizeType max_size() const;
+
+    /**
+       The number of values currently allocated in the structure.
+     */
+    SizeType capacity() const;
 
     /**
        Removes all the values stored in the structure. O(b)
@@ -487,6 +641,16 @@ if more than 3 values and N = 2, M = 4
     */
     Iterator end();
 
+    /**
+       @return an iterator pointing on the first element in the container.
+    */
+    ConstIterator begin() const;
+
+    /**
+       @return an iterator pointing after the last element in the container.
+    */
+    ConstIterator end() const;
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -494,7 +658,7 @@ if more than 3 values and N = 2, M = 4
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out );
+    void selfDisplay ( std::ostream & out ) const;
 
     /**
      * Checks the validity/consistency of the object.
@@ -535,7 +699,7 @@ if more than 3 values and N = 2, M = 4
   template  <typename TValue, unsigned int N, unsigned int M>
   std::ostream&
   operator<< ( std::ostream & out, 
-               IndexedListWithBlocks<TValue, N, M> & object );
+               const IndexedListWithBlocks<TValue, N, M> & object );
 
 } // namespace DGtal
 
