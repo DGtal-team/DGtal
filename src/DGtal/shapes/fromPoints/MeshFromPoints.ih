@@ -85,6 +85,7 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 

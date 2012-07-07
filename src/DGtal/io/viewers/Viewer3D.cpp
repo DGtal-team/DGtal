@@ -104,8 +104,8 @@ DGtal::Viewer3D::drawWithNames()
 void
 DGtal::Viewer3D::draw()
 {
-  //  glPushMatrix();
-  // glMultMatrixd ( manipulatedFrame()->matrix() );
+    glPushMatrix();
+   glMultMatrixd ( manipulatedFrame()->matrix() );
     for ( unsigned int i =0; i< myClippingPlaneList.size(); i++ )
     {
         clippingPlaneD3D cp = myClippingPlaneList.at ( i );
@@ -153,15 +153,22 @@ DGtal::Viewer3D::draw()
     glLineWidth ( myMeshDefaultLineWidth /distCam );
     glDisable(GL_CULL_FACE);
     glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+1 ) );
+    if(myViewWire){
+      glLineWidth ( myMeshDefaultLineWidth /distCam );
+      glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+2 ) );
+    }
+
     
-    
-    glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+2 ) );
+    glDisable(GL_CULL_FACE);
+    glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+3 ) );
     
     if(myViewWire){
       glLineWidth ( myMeshDefaultLineWidth /distCam );
-      glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+3 ) );
+      glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+4 ) );
     }
-    
+
+    glDisable(GL_CULL_FACE);
+    glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +myPointSetList.size()+5 ) );
     
 
     // Drawing all Khalimsky Space Cells
@@ -174,8 +181,8 @@ DGtal::Viewer3D::draw()
     {
         glDrawGLLinel ( myKSLinelList.at ( i ) );
     }
-
-    //    glPopMatrix();
+    
+        glPopMatrix();
 }
 
 #if defined( max )
@@ -217,8 +224,8 @@ DGtal::Viewer3D::init()
     myCurrentfShiftVisuKSSurfels=0.0;
     myDefaultColor= Color ( 255, 255, 255 );
     camera()->showEntireScene();
-    setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triange faces" );
-    setKeyDescription ( Qt::Key_T, "Sort elements for display improvements" );
+    setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
+    setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
     setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
     setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
     setKeyDescription ( Qt::Key_C, "Show camera informations." );
@@ -279,6 +286,19 @@ DGtal::Viewer3D::sortQuadFromCamera()
 
 
 
+void
+DGtal::Viewer3D::sortPolygonFromCamera()
+{
+  compFarthestPolygonFromCamera comp;
+  comp.posCam= camera()->position();
+  
+  DGtal::trace.info() << "sort polygon size" << myPolygonList.size() << std::endl;
+  sort ( myPolygonList.begin(), myPolygonList.end(), comp );
+    
+}
+
+
+
 
 
 void
@@ -322,9 +342,7 @@ DGtal::Viewer3D::postSelection ( const QPoint& point )
 void
 DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 {
-
-
-    unsigned int nbList= ( unsigned int ) ( myVoxelSetList.size() + myLineSetList.size() + myPointSetList.size() +3 );
+    unsigned int nbList= ( unsigned int ) ( myVoxelSetList.size() + myLineSetList.size() + myPointSetList.size() +5 );
     glDeleteLists ( myListToAff, myNbListe );
     myListToAff = glGenLists ( nbList );
     myNbListe=0;
@@ -354,7 +372,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
                 ++s_it )
         {
 
-            glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
+	  glColor4ub ( ( *s_it ).R, ( *s_it ).G, ( *s_it ).B, ( *s_it ).T );
             double _width= ( *s_it ).width;
 
             //z+
@@ -478,59 +496,65 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     glNewList ( GLuint ( myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+1 ), GL_COMPILE );
     myNbListe++;
     glPushName ( myNbListe );
+    glBegin ( GL_QUADS );
     for ( unsigned int i=0; i<myQuadList.size(); i++ )
       {
-        glBegin ( GL_QUADS );
+        
+	glColor4ub ( myQuadList.at ( i ).R, myQuadList.at ( i ).G, myQuadList.at ( i ).B, myQuadList.at ( i ).T );
         glNormal3f ( -myQuadList.at ( i ).nx, -myQuadList.at ( i ).ny ,-myQuadList.at ( i ).nz );
-        glNormal3f ( -myQuadList.at ( i ).nx, -myQuadList.at ( i ).ny ,-myQuadList.at ( i ).nz );
-        glNormal3f ( -myQuadList.at ( i ).nx, -myQuadList.at ( i ).ny ,-myQuadList.at ( i ).nz );
-        glNormal3f ( -myQuadList.at ( i ).nx, -myQuadList.at ( i ).ny ,-myQuadList.at ( i ).nz );
+        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
+        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
+        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
+        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
 
-        glColor4ub ( myQuadList.at ( i ).R, myQuadList.at ( i ).G, myQuadList.at ( i ).B, myQuadList.at ( i ).T );
-        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
-        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
-        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
-        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
-        glEnd();
-        glDisable ( GL_LIGHTING );
-        glBegin ( GL_LINES );
-        glColor4ub ( 150.0,150.0,150.0,255.0 );
-	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
-        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
-        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
-        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
-	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
-        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
-        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
-        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
-	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
-        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
-        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
-        glEnd();
-        glEnable ( GL_LIGHTING );
-    }
-  glEnd();
+      }
+    glEnd();
   glEndList();
+  
+    glNewList ( GLuint ( myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+2 ), GL_COMPILE );
+    myNbListe++;
+    glPushName ( myNbListe );
+    glDisable ( GL_LIGHTING );
+    glBegin ( GL_LINES );
+    for ( unsigned int i=0; i<myQuadList.size(); i++ )
+      {
+	glColor4ub ( 150.0,150.0,150.0,255.0 );
+	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
+        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
+        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
+        glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
+	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
+        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
+        glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
+        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
+	glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
+        glVertex3f ( myQuadList.at ( i ).x4, myQuadList.at ( i ).y4, myQuadList.at ( i ).z4 );
+        glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
+        
+    }
+    glEnable ( GL_LIGHTING );
+    glEnd();    
+    glEndList();
   ///
   
-  glNewList ( GLuint  (myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+2 ), GL_COMPILE );
+  glNewList ( GLuint  (myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+3 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
+  glEnable ( GL_LIGHTING );  
   glBegin ( GL_TRIANGLES );  
+  
   for ( unsigned int i=0; i<myTriangleList.size(); i++ )
     {
-	//glDisable(GL_CULL_FACE);
-
+      glColor4ub ( myTriangleList.at ( i ).R, myTriangleList.at ( i ).G, myTriangleList.at ( i ).B, myTriangleList.at ( i ).T );  
       glNormal3f ( -myTriangleList.at ( i ).nx, -myTriangleList.at ( i ).ny ,-myTriangleList.at ( i ).nz );
-      glColor4ub ( myTriangleList.at ( i ).R, myTriangleList.at ( i ).G, myTriangleList.at ( i ).B, myTriangleList.at ( i ).T );
       glVertex3f ( myTriangleList.at ( i ).x1, myTriangleList.at ( i ).y1, myTriangleList.at ( i ).z1 );
       glVertex3f ( myTriangleList.at ( i ).x2, myTriangleList.at ( i ).y2, myTriangleList.at ( i ).z2 );        
       glVertex3f ( myTriangleList.at ( i ).x3, myTriangleList.at ( i ).y3, myTriangleList.at ( i ).z3 );
     }   
   glEnd();
   glEndList();
-
-  glNewList ( GLuint  (myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+3 ), GL_COMPILE );
+  
+  glNewList ( GLuint  (myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+4 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   
@@ -549,6 +573,27 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     }
   glEnd();
   glEnable ( GL_LIGHTING );
+  glEndList();
+
+
+
+  // Displaying polygonal faces...
+  glNewList ( GLuint  (myListToAff+myLineSetList.size() +myVoxelSetList.size() +myPointSetList.size()+5 ), GL_COMPILE );
+  myNbListe++;
+  glPushName ( myNbListe );
+  for ( unsigned int i=0; i<myPolygonList.size(); i++ )
+    {
+      glBegin ( GL_POLYGON );
+      glColor4ub ( myPolygonList.at ( i ).R, myPolygonList.at ( i ).G, myPolygonList.at ( i ).B, myPolygonList.at ( i ).T );
+      glNormal3f ( -myPolygonList.at ( i ).nx, -myPolygonList.at ( i ).ny ,-myPolygonList.at ( i ).nz );
+      vector<pointD3D> vectVertex = myPolygonList.at ( i ).vectPoints;
+      for(int j=0;j < vectVertex.size();j++){
+
+	glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
+      }
+      glEnd();
+    }
+
   glEndList();
 
 
@@ -660,6 +705,7 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
         sortSurfelFromCamera();
 	sortTriangleFromCamera();
 	sortQuadFromCamera();
+	sortPolygonFromCamera();
         DGtal::trace.info() << " [done]"<< std::endl;
         updateList(false);
         updateGL();

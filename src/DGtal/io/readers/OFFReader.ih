@@ -132,7 +132,7 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
   
   //Todo processing optional colors...
   
-  
+   
 }
 
 

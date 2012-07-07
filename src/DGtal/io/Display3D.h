@@ -345,7 +345,7 @@ namespace DGtal
      * @param vectPointsPolygon: a vector containing the polygon vertex.
      */
     
-    virtual void addPolygon(std::vector<pointD3D> vectPointsPolygon);
+    virtual void addPolygon(std::vector<pointD3D> vectPointsPolygon, DGtal::Color aColor);
 
     
 
@@ -609,7 +609,7 @@ namespace DGtal
    /// Represent all the drawed triangles
     ///
     
-    std::vector<polygonD3D> myPolygonSetList;
+    std::vector<polygonD3D> myPolygonList;
     
 
     /// Used to define if GL_TEST_DEPTH is used. 
