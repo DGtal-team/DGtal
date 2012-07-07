@@ -246,7 +246,8 @@ gaussianCurvature( const RealPoint &aPoint ) const
 template <typename TSpace>
 inline
 typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint 
-DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, double accuracy, int maxIter, double gamma ) const
+DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, const double accuracy, 
+                                                       const int maxIter, const double gamma ) const
 {
    RealPoint gradient= (*this).gradient(aPoint);
    RealPoint X=aPoint;
