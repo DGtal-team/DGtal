@@ -125,12 +125,12 @@ DGtal::StarShaped3D<TSpace>::normal( AngularCoordinates t ) const
 
 
 /**
-* @param t is a couple of Teta && Phi wich are 2 angles respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]
-*
-* @return the mean curvature at point (x(t),y(t),z(t)), positive
-* is convex, negative is concave when shape is to the left and
-* the shape boundary is followed counterclockwise.
-*/
+ * @param t is a couple of Teta && Phi wich are 2 angles respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]
+ *
+ * @return the mean curvature at point (x(t),y(t),z(t)), positive
+ * is convex, negative is concave when shape is to the left and
+ * the shape boundary is followed counterclockwise.
+ */
 template<typename TSpace>
 inline
 double
@@ -167,12 +167,12 @@ DGtal::StarShaped3D<TSpace>::meanCurvature( AngularCoordinates t) const
 
 
 /**
-* @param t is a couple of Teta && Phi wich are 2 angles respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the gaussian curvature at point (x(t),y(t),z(t)), positive
-* is convex, negative is concave when shape is to the left and
-* the shape boundary is followed counterclockwise.
-*/
+ * @param t is a couple of Teta && Phi wich are 2 angles respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the gaussian curvature at point (x(t),y(t),z(t)), positive
+ * is convex, negative is concave when shape is to the left and
+ * the shape boundary is followed counterclockwise.
+ */
 template<typename TSpace>
 inline
 double
@@ -224,15 +224,15 @@ DGtal::StarShaped3D<TSpace>::arclength( AngularCoordinates t1, AngularCoordinate
   double l = 0.0;
   for ( unsigned int i = 1; i <= nb; ++i )
     {
-       AngularCoordinates t;
-       t.first = ( ( t2.first - t1.first ) * i ) / nb;
-       t.second = ( ( t2.second - t1.second ) * i ) / nb;
-       AngularCoordinates h;
-       h.first=t1.first + t.first;
-       h.second=t1.second + t.second;
-       RealPoint x1( x( h ) );
+      AngularCoordinates t;
+      t.first = ( ( t2.first - t1.first ) * i ) / nb;
+      t.second = ( ( t2.second - t1.second ) * i ) / nb;
+      AngularCoordinates h;
+      h.first=t1.first + t.first;
+      h.second=t1.second + t.second;
+      RealPoint x1( x( h ) );
       l += sqrt( ( x1[0] - x0[0] )*( x1[0] - x0[0] )
-         + ( x1[1] - x0[1] )*( x1[1] - x0[1] ) + ( x1[2] - x0[2] )*( x1[2] - x0[2] ) );
+                 + ( x1[1] - x0[1] )*( x1[1] - x0[1] ) + ( x1[2] - x0[2] )*( x1[2] - x0[2] ) );
       x0 = x1;
     }
   return l;
@@ -258,19 +258,19 @@ DGtal::StarShaped3D<TSpace>::surfacelength( AngularCoordinates t1, AngularCoordi
   double l = 0.0;
   for ( unsigned int i = 1; i <= nb; ++i )
     {
-       AngularCoordinates t;
-       t.first = ( ( t2.first - t1.first ) * i ) / nb;
-       RealPoint x1( x( make_pair(t1.first +t.first ,t1.second) ) );
-       for ( unsigned int j = 1; j <= nb; ++j )
-{
-            t.second = ( ( t2.second - t1.second ) * i ) / nb;
-      RealPoint x1( x( make_pair(t1.first ,t1.second + t.second) ) );
-      l += sqrt( (( x1[0] - x0[0] )*( x1[0] - x0[0] )
-                 + ( x1[1] - x0[1] )*( x1[1] - x0[1] ) + ( x1[2] - x0[2] )*( x1[2] - x0[2] ) ) /2);
-            x0 = x1;
-    }
+      AngularCoordinates t;
+      t.first = ( ( t2.first - t1.first ) * i ) / nb;
+      RealPoint x1( x( make_pair(t1.first +t.first ,t1.second) ) );
+      for ( unsigned int j = 1; j <= nb; ++j )
+        {
+          t.second = ( ( t2.second - t1.second ) * i ) / nb;
+          RealPoint x1( x( make_pair(t1.first ,t1.second + t.second) ) );
+          l += sqrt( (( x1[0] - x0[0] )*( x1[0] - x0[0] )
+                      + ( x1[1] - x0[1] )*( x1[1] - x0[1] ) + ( x1[2] - x0[2] )*( x1[2] - x0[2] ) ) /2);
+          x0 = x1;
+        }
 
-     }
+    }
   return l;
 }
 
@@ -321,7 +321,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-        const StarShaped3D<T> & object )
+                    const StarShaped3D<T> & object )
 {
   object.selfDisplay( out );
   return out;

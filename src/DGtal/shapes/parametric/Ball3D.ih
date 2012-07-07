@@ -40,7 +40,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-    typedef pair<double,double> AngularCoordinates;
+typedef pair<double,double> AngularCoordinates;
 /**
  * Destructor.
  */
@@ -85,21 +85,21 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
   
   
   if((fabs(l[0])<0.0001)&&(fabs(l[1])<0.0001))
-  {
-    angle.first=0;
-    if(l[2]>=0)
-    angle.second=0;
-    if(l[2]<0)
-    angle.second=M_PI;
-  }
+    {
+      angle.first=0;
+      if(l[2]>=0)
+        angle.second=0;
+      if(l[2]<0)
+        angle.second=M_PI;
+    }
   else
-  {
-  angle.first=atan(l[1]/l[0]);
-  if(l[1]>=0)
-  angle.second=asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
-  if(l[1]<0)
-  angle.second=-asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
-  }
+    {
+      angle.first=atan(l[1]/l[0]);
+      if(l[1]>=0)
+        angle.second=asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
+      if(l[1]<0)
+        angle.second=-asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
+    }
   return angle;
 }
 
@@ -122,10 +122,10 @@ DGtal::Ball3D<T>::x( AngularCoordinates t ) const
 
 
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the vector (gradf(M)).
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the vector (gradf(M)).
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
@@ -139,25 +139,25 @@ DGtal::Ball3D<T>::gradient( const AngularCoordinates t) const
 }
 
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the vector (rt(M)) wich is the first partial derivative with respect to Teta.
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the vector (rt(M)) wich is the first partial derivative with respect to Teta.
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rt( const AngularCoordinates t) const
 {
-return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
+  return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
 }
 
 
 
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
@@ -168,10 +168,10 @@ DGtal::Ball3D<T>::rp( const AngularCoordinates t) const
 
 
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the vector (rtt(M)) wich is second the second partial derivative with respect to Teta(twice).
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the vector (rtt(M)) wich is second the second partial derivative with respect to Teta(twice).
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
@@ -183,10 +183,10 @@ DGtal::Ball3D<T>::rtt( const AngularCoordinates t) const
 
 
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
-*
-* @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi(twice).
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ *
+ * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi(twice).
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
@@ -196,10 +196,10 @@ DGtal::Ball3D<T>::rpp( const AngularCoordinates t) const
 }
     
 /**
-* @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi]
-*
-* @return the vector (rtp(M)) wich is second the partial derivatif with respect to Teta then Phi.
-*/
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi]
+ *
+ * @return the vector (rtp(M)) wich is second the partial derivatif with respect to Teta then Phi.
+ */
 template <typename T>
 inline
 typename DGtal::Ball3D<T>::RealPoint
@@ -235,7 +235,7 @@ inline
 bool
 DGtal::Ball3D<T>::isValid() const
 {
-    return true;
+  return true;
 }
 
 
@@ -249,7 +249,7 @@ template <typename T>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-      const Ball3D<T> & object )
+                    const Ball3D<T> & object )
 {
   object.selfDisplay( out );
   return out;
