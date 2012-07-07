@@ -48,7 +48,7 @@ In this package, we present DGtal tools and utilities to import/export images an
 
 - \ref dgtal_dgtalboard (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
 - \ref threeD_visu (Bertrand Kerautret, Martial Tola)
-- \ref image_io (David Coeurjolly)
+- \ref image_io (David Coeurjolly, Bertrand Kerautret)
 
 @b Package @b Concepts @b Overview
 

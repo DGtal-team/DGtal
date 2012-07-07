@@ -53,6 +53,42 @@ namespace DGtal
   /**
    * Description of template class 'MeshFromPoints' <p>
    * \brief Aim:
+   * This class is defined to represent a surface mesh through a set a
+   * vertex and a set of faces represented by its vertex index.
+   *
+   *
+   * This class was defined to import and display a mesh from different formats like OFF file format. 
+   * Since it realized the concept of CDrawableWithDisplay3D we can display an MeshFromPoints with a Display3D object:
+   *  @code
+   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+   #include "DGtal/io/viewers/Viewer3D.h"
+   #include "DGtal/helpers/StdDefs.h"
+   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+   #include <QtGui/qapplication.h>
+   ...
+   
+   QApplication application(argc,argv);
+   Viewer3D viewer;
+   viewer.show();     
+   // Mesh construction
+   MeshFromPoints<Point> aMesh;
+   aMesh.addVertex(Point(0,0,0));
+   aMesh.addVertex(Point(1,0,0));
+   aMesh.addVertex(Point(1,1,0));
+  
+   aMesh.addTriangularFace(0, 1, 2);
+   // Mesh display
+   
+   viewer.setFillColor(DGtal::Color(240,240,240,150));
+   viewer.setLineColor(DGtal::Color(150,0,0,254));
+   viewer << anImportedMesh;
+   viewer << Viewer3D::updateDisplay;
+   @endcode 
+   *
+   * 
+   *
+   * @see  OFFReader meshFromOFF.
+   *
    */
   template <typename TPoint >
   class MeshFromPoints
@@ -63,8 +99,10 @@ namespace DGtal
     
     // ----------------------- associated types ------------------------------
   public:
-    
-    typedef TPoint Point;
+    /**
+     * Structure for representing the faces from the vertex index.
+     **/
+
     typedef vector<unsigned int> MeshFace;
     
 
@@ -82,7 +120,7 @@ namespace DGtal
      * Constructor.
      * 
      */    
-    MeshFromPoints(const vector<Point> &vertexSet);
+    MeshFromPoints(const vector<TPoint> &vertexSet);
 
     /**
      * Destructor.
@@ -116,7 +154,7 @@ namespace DGtal
      * Adding new vertex.
      *
      **/
-    void addVertex(const Point &vertex);
+    void addVertex(const TPoint &vertex);
       
     
   
@@ -145,7 +183,7 @@ namespace DGtal
     
    /**
     * Add a quad face given from index position.
-    *
+    * @param listIndex: the index of all the face vertex.
     * 
     **/    
     void addFace(const vector<unsigned int> &listIndex);
@@ -159,7 +197,7 @@ namespace DGtal
      * @param i: the index of the vertex.
      * @return the vertex of index i. 
      **/
-    const Point & getVertex(unsigned int i) const;
+    const TPoint & getVertex(unsigned int i) const;
     
     
     
@@ -209,7 +247,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     vector<MeshFace>  myFaceList;
-    vector<Point>  myVertexList;
+    vector<TPoint>  myVertexList;
     
 
     

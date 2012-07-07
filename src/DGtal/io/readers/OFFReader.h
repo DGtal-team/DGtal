@@ -55,8 +55,25 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class OFFMesh
 /**
- * Description of class 'OFFReader' <p>
- * \brief Aim:
+ * Description of class 'OFFReader' <p> \brief Aim: Defined to import
+ * OFF surface mesh. It allows to import a MeshFromPoints object but do not takes
+ * into accouts the optional color faces.
+ * 
+ * Example of typical use:
+ * @code
+ // importating the mesh
+ MeshFromPoints<Display3D::pointD3D> anImportedMesh;
+ OFFReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+ //Displaying the resulting mesh with Viewed3D 
+ viewer.setFillColor(DGtal::Color(240,240,240,150));
+ viewer.setLineColor(DGtal::Color(150,0,0,254));
+ viewer << anImportedMesh;
+ viewer << Viewer3D::updateDisplay;
+ @endcode
+ *
+ *
+ * \todo Process the face color information.
+ * @see MeshFromPoints
  */
 
 
@@ -73,7 +90,8 @@ public:
   * Main method to import OFF meshes file (Geomview Object File Format) 
   * 
   * @param filename the file name to import.
-  * 
+  * @param aMesh: (return) the mesh object to be imported.
+  * @param invertVertexOrder: used to invert (default value=false) the order of imported points (important for normal orientation). 
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
