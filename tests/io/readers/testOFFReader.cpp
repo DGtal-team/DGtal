@@ -76,8 +76,6 @@ bool testOFFReader()
 	       << "true == true" << std::endl;
   
   std::string filenameOFF = testPath + "samples/box.off";
-  //  vector<Point> vPoints;
-  //MeshFromPoints<Point> a3DMesh(vPoints);
   
   MeshFromPoints<Point> a3DMesh;
 

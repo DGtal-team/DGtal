@@ -178,6 +178,14 @@ public:
    **/
   
   void sortQuadFromCamera();
+
+
+  /**
+   *  Sort all polygons from the camera.
+   *
+   *
+   **/
+  void sortPolygonFromCamera();
     
 
     /**
@@ -332,6 +340,39 @@ protected:
             return dist1>dist2;
         }
     };
+
+
+
+
+  struct compFarthestPolygonFromCamera
+    {
+      qglviewer::Vec posCam;
+      bool operator() ( polygonD3D q1, polygonD3D q2 )
+      {
+	double c1x, c1y, c1z=0.0;
+	double c2x, c2y, c2z=0.0;
+	for(int i=0; i< q1.vectPoints.size(); i++){
+	  c1x+=q1.vectPoints.at(i).x;
+	  c1y+=q1.vectPoints.at(i).y;
+	  c1z+=q1.vectPoints.at(i).z;
+	}
+	for(int i=0; i< q2.vectPoints.size(); i++){
+	  c2x+=q2.vectPoints.at(i).x;
+	  c2y+=q2.vectPoints.at(i).y;
+	  c2z+=q2.vectPoints.at(i).z;
+	}
+	
+	qglviewer::Vec center1 ( c1x/(double)q1.vectPoints.size(),c1y/(double)q1.vectPoints.size(), c1z/(double)q1.vectPoints.size() );
+	qglviewer::Vec center2 ( c2x/(double)q2.vectPoints.size(),c2y/(double)q2.vectPoints.size(), c2z/(double)q2.vectPoints.size() );
+
+	double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
+	double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
+	return dist1>dist2;
+      }
+  };
+
+
+
 
 
 

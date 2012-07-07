@@ -63,7 +63,7 @@ void DGtal::cross (double dst[3], double srcA[3], double srcB[3])
 }
 
 /**
- * Normalize the input 3d vector.
+ * Normalgize the input 3d vector.
  * @param vec source & destination vector.
  */
 static inline  
@@ -71,11 +71,9 @@ void
 DGtal::normalize (double vec[3])
 {
   const double squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-  const double invLen = 1.0 /  sqrt (squaredLen);
-
-  vec[0] *= invLen;
-  vec[1] *= invLen;
-  vec[2] *= invLen;
+  vec[0] /= sqrt (squaredLen);
+  vec[1] /= sqrt (squaredLen);
+  vec[2] /= sqrt (squaredLen);
 }
 
 inline
@@ -261,10 +259,14 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
   double u[3]; double v [3]; double n [3]; 
   u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
   v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
-  cross(n, v, u );
+  cross(n, u, v );
   normalize(n);
 
-  
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning quad not added due to identical vertex... "<<endl;
+    return;
+  }
+
   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
   aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
@@ -297,11 +299,16 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
   triangleD3D aTriangle;
   double u[3]; double v [3]; double n [3]; 
-  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
+    u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
   v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  cross(n, u, v );
   cross(n, u, v );
   normalize(n);
   
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning triangle not added due to identical vertex... "<<endl;
+    return;
+  }
   
   aTriangle.x1=x1; aTriangle.y1=y1; aTriangle.z1=z1;
   aTriangle.x2=x2; aTriangle.y2=y2; aTriangle.z2=z2;
@@ -325,7 +332,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
 inline
 void 
-DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon)
+DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGtal::Color aColor)
 {
   polygonD3D aPolygon;
   for(int i=0; i< vectPointsPolygon.size();i++){
@@ -347,19 +354,28 @@ DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon)
   double y3= vectPointsPolygon.at(2).y;
   double z3= vectPointsPolygon.at(2).z;
 
-  
   double u[3]; double v [3]; double n [3]; 
   u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
   v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
   cross(n, u, v );
   normalize(n);  
   
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning polygin not added due to identical vertex... "<<endl;
+    return;
+  }
+
   aPolygon.nx= n[0];
   aPolygon.ny= n[1];
   aPolygon.nz= n[2];
   
+  aPolygon.R=aColor.red();
+  aPolygon.G=aColor.green();
+  aPolygon.B=aColor.blue();
+  aPolygon.T=aColor.alpha();
   
-  myPolygonSetList.push_back(aPolygon);  
+  
+  myPolygonList.push_back(aPolygon);  
 
 }
 

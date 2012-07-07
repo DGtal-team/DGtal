@@ -76,8 +76,18 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 			   p2.x, p2.y, p2.z, 
 			   p3.x, p3.y, p3.z, display.getFillColor());
      }else if(aNum>4){
-       
-       
+       vector<Display3D::pointD3D> vectPoly;
+       for(int i=0; i< aFace.size(); i++){
+	 Display3D::pointD3D pt;
+	 pt.x= aMesh.getVertex(aFace.at(i)).x;
+	 pt.y=aMesh.getVertex(aFace.at(i)).y;
+	 pt.z=aMesh.getVertex(aFace.at(i)).z;
+	 vectPoly.push_back(pt);
+	   
+
+       }
+       display.addPolygon(vectPoly, display.getFillColor());
+       //trace.error()<< "draw done"<<endl;
      }else{
        trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
      }
