@@ -47,31 +47,27 @@ using namespace DGtal;
 
 
 
-
-struct Point3f{
-  double  x, y, z;
-};
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
 {
-  
-  std::string inputFilename = examplesPath + "samples/angel.off"; 
-  
+    
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show();     
   // The template parameter of the following vector is set Display3D::pointD3D to display constraints.  
-  MeshFromPoints<Point3f> anImportedMesh;
-  OFFReader<Point3f>::importOFFFile(inputFilename, anImportedMesh, true);
+  //! [ImportOFFfile]
+  std::string inputFilename = examplesPath + "samples/angel.off";   
+  MeshFromPoints<Display3D::pointD3D> anImportedMesh;
+  OFFReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+  //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
+    //! [displayOFFfile]
   viewer.setFillColor(DGtal::Color(240,240,240,150));
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
   viewer << Viewer3D::updateDisplay;
-  
+      //! [displayOFFfile]
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////

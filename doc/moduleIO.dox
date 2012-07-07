@@ -52,7 +52,13 @@ and VolWriter
 The static class \c PointListReader allows to read discrete
 points represented in simple file where each line represent a
 single point. 
-	
+
+
+
+\subsection mesh3D 3D Surface Mesh
+The static class \c OFFReader allows to import MeshFromPoints from OFF file format.
+Acutally this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangular, quadrilateral and polygonal. Notes that MeshFromPoints can be directly display with Viewer3D.
+ 	
 	
 
 \section io_examples Example
@@ -127,6 +133,31 @@ You may obtain the following visualisation:
 \image html visuPointList.png "Visualisation of 3d imported point list " 
 \image latex visuPointList.png "Visualisation of 3d imported point list" width=5cm
 
+\subsection importMesh3D Import 3D mesh from OFF file
+
+The following example (<a
+href="examples_2io_2meshFromOFF_8cpp-example.html" >meshFromOFF.cpp
+</a>) show in few line how to import and display a OFF 3D mesh.
+Import of the an example off file:
+
+
+@snippet io/meshFromOFF.cpp ImportOFFfile
+
+
+
+Displaying the result:
+
+@snippet io/meshFromOFF.cpp displayOFFfile
+
+
+You may obtain the following visualisation:
+
+\image html visuImportOFF.png  "Visualisation of 3d imported point list "  width=5cm
+\image latex visuImportOFF.png  "Visualisation of 3d imported point list" width=5cm
+
+
+
+@endcode
 
 
 
@@ -140,4 +171,9 @@ You may obtain the following visualisation:
 
 /**
 * \example io/digitalSetFromPointList.cpp
+**/
+
+
+/**
+* \example io/meshFromOFF.cpp
 **/

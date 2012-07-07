@@ -94,7 +94,7 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<Point> &vertexSet)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
 {
   for(int i =0; i< vertexSet.size(); i++){
     myVertexList.push_back(vertexSet.at(i));
@@ -107,7 +107,7 @@ DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<Point> &vertexSet)
 template<typename TPoint>
 inline
 void
-DGtal::MeshFromPoints<TPoint>::addVertex(const Point &point)
+DGtal::MeshFromPoints<TPoint>::addVertex(const TPoint &point)
 {
   myVertexList.push_back(point);
 }    
