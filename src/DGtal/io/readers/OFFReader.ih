@@ -50,7 +50,7 @@ template <typename TPoint>
 inline
 void
 DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename, 
-					MeshFromPoints<TPoint> & aMesh, 
+					DGtal::MeshFromPoints<TPoint> & aMesh, 
 					bool invertVertexOrder) throw(DGtal::IOException)
 {
   ifstream infile;
