@@ -28,36 +28,31 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <QtGui/qapplication.h>
+
 #include "DGtal/base/Common.h"
-#include "DGtal/io/readers/OFFReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/Display3D.h"
-#include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
+//! [includeImportOFF]
+#include "DGtal/io/readers/OFFReader.h"
+
+#include <QtGui/qapplication.h>
+#include "DGtal/io/Display3D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+//! [includeImportOFF]
 
 ///////////////////////////////////////////////////////////////////////////////
-
 using namespace std;
 using namespace DGtal;
-   
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
-{
-    
+{    
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show();     
-  // The template parameter of the following vector is set Display3D::pointD3D to display constraints.  
   //! [ImportOFFfile]
   std::string inputFilename = examplesPath + "samples/angel.off";   
+  // Since the input points are not necessary integers we use the PointD3D from Display3D.
   MeshFromPoints<Display3D::pointD3D> anImportedMesh;
   OFFReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
   //! [ImportOFFfile]
