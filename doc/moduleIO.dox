@@ -135,17 +135,19 @@ You may obtain the following visualisation:
 
 \subsection importMesh3D Import 3D mesh from OFF file
 
-The following example (<a
-href="examples_2io_2meshFromOFF_8cpp-example.html" >meshFromOFF.cpp
+The following example (<a href="io_2meshFromOFF_8cpp-example.html"> meshFromOFF.cpp
 </a>) show in few line how to import and display a OFF 3D mesh.
-Import of the an example off file:
+Add the following headers to access to OFF reader and  Viewer3D:
 
+
+@snippet io/meshFromOFF.cpp includeImportOFF
+
+then omport an example  ".off" file from the example/sample directory:
 
 @snippet io/meshFromOFF.cpp ImportOFFfile
 
 
-
-Displaying the result:
+Display the result:
 
 @snippet io/meshFromOFF.cpp displayOFFfile
 
@@ -175,5 +177,11 @@ You may obtain the following visualisation:
 
 
 /**
+*  Example of OFF file importation and display.
+
+   @see \ref importMesh3D
+
+   @image html visuAngleExample.png   "Visualisation of the sample/angel.off file"
+
 * \example io/meshFromOFF.cpp
 **/
