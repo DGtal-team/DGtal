@@ -177,7 +177,7 @@ namespace DGtal
 
     /**
        @param l any label in 0..L-1
-       @return the index of the label l in this set, starting from 0. If the label is not set, returns L.
+       @return the index of the label l in this set, starting from 0. If the label is not set, returns L (ie. size()).
     */
     SizeType index( Label l ) const;
     
