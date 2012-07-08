@@ -140,10 +140,13 @@ namespace DGtal
 // ------------------------------------------------------------ Added by Anis Benyoub
 
     /**
-       @param aPoint any point in the Euclidean space.
+       Mean curvature estimation.
        This computation is based on the hessian formula of the mean curvature
        k=(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
-       we define it as positive for a sphere
+        
+       @pre @a a Point must be close to the surface.
+
+       @param aPoint any point in the Euclidean space.
        @return the mean curvature value of the polynomial at \a aPoint.
     */
     inline
@@ -151,12 +154,33 @@ namespace DGtal
 
 
     /**
+       Gaussian curvature estimation at @a aPoint 
+       @pre @a aPoint must be close to the surface. 
+
        @param aPoint any point in the Euclidean space.
        @return the gaussian curvature value of the polynomial at \a aPoint.
     */
     inline
     double gaussianCurvature( const RealPoint &aPoint ) const;
 
+    /**
+       Perform a gradient descent in order to move a point @a aPoint
+       closer to the implicit surface. More precisely, we use a
+       sequence: x_n = x_(n-1) - gamma.gradient(x_(n-1).
+       The descent is stopped if @a maxIter is reached or if |x_n -
+       x_(n-1)| < accuracy. 
+       
+       @param aPoint any point in the Euclidean space.
+       @param accuracy distance criterion to stop the descent.
+       @param maxIter fixes the maximum number of steps.
+       @param gamma coefficient associated with the gradient.
+       @return the nearest point on the surface to the one given in parameter.
+    */
+    inline
+    RealPoint  nearestPoint(  const RealPoint &aPoint, 
+                              const double accuracy, 
+                              const int maxIter  , 
+                              const double gamma ) const;
 
 
 
