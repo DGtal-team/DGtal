@@ -14,6 +14,7 @@ SET(DGTAL_TESTS_SRC
    testCountedPtr
    testBits
    testIndexedListWithBlocks
+   testLabels
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
