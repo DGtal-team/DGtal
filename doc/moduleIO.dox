@@ -57,7 +57,7 @@ single point.
 
 \subsection mesh3D 3D Surface Mesh
 The static class \c OFFReader allows to import MeshFromPoints from OFF file format.
-Acutally this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangular, quadrilateral and polygonal. Notes that MeshFromPoints can be directly display with Viewer3D.
+Actually this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangular, quadrilateral and polygonal. Notes that MeshFromPoints can be directly display with Viewer3D.
  	
 	
 

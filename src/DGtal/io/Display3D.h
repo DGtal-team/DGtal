@@ -176,6 +176,7 @@ namespace DGtal
 	case 1: {return y;}
 	case 2: {return z;}
 	}
+	return 0.0;
       };
       double  x, y, z;
       unsigned int R,G,B,T;
