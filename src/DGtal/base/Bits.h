@@ -289,6 +289,53 @@ namespace DGtal
 	    : idx + nbSetBits( static_cast<DGtal::uint32_t>( n & 0xffffffffLL ) );
 	}
     }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint8_t n )
+    {
+      return myLSB[ n ];
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint16_t n )
+    {
+      return ( n & 0xff ) 
+        ? leastSignificantBit( (DGtal::uint8_t) n )
+        : 8 + leastSignificantBit( (DGtal::uint8_t) (n>>8) );
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint32_t n )
+    {
+      return ( n & 0xffff ) 
+        ? leastSignificantBit( (DGtal::uint16_t) n )
+        : 16 + leastSignificantBit( (DGtal::uint16_t) (n>>16) );
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint64_t n )
+    {
+      return ( n & 0xffffffffLL ) 
+        ? leastSignificantBit( (DGtal::uint32_t) n )
+        : 32 + leastSignificantBit( (DGtal::uint32_t) (n>>32) );
+    }
+ 
 	  
     /**
        Lookup table for counting the number of bits set to 1 in a byte.

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testIndexedListWithBlocks.cpp
+ * @file testLabels.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
@@ -33,8 +33,8 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
+#include <bitset>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/IndexedListWithBlocks.h"
 #include "DGtal/base/Labels.h"
 
 using namespace DGtal;
@@ -44,15 +44,23 @@ template <typename Container1, typename Container2>
 bool
 isEqual( Container1 & c1, Container2 & c2 )
 {
-  return ( c1.size() == c2.size() )
-    && std::equal( c1.begin(), c1.end(), c2.begin() );
+  if ( c1.size() == c2.size() )
+    {
+      for ( unsigned int i = 0; i < c1.size(); ++i )
+        {
+          if ( c1.test( i ) != c2.test( i ) )
+            return false;
+        }
+      return true;
+    }
+  return false;
 }
 
 template <typename VContainer1, typename LContainer2>
-void insert( VContainer1 & c1, LContainer2 & c2, unsigned int idx, double v )
+void insert( VContainer1 & c1, LContainer2 & c2, unsigned int idx )
 {
-  c1.insert( c1.begin() + idx, v );
-  c2.insert( idx, v );
+  c1.set( idx );
+  c2.set( idx );
 }
 
 template <typename VContainer1, typename LContainer2>
@@ -62,9 +70,8 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() + 1 );
-      double val = ( (double)random() ) / RAND_MAX;
-      insert( v, l, idx, val );
+      unsigned int idx = random() % ( l.size() );
+      insert( v, l, idx );
     }
   return isEqual( v, l );
 }
@@ -72,8 +79,8 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 template <typename VContainer1, typename LContainer2>
 void erase( VContainer1 & c1, LContainer2 & c2, unsigned int idx )
 {
-  c1.erase( c1.begin() + idx );
-  c2.erase( idx );
+  c1.reset( idx );
+  c2.reset( idx );
 }
 
 template <typename VContainer1, typename LContainer2>
@@ -92,40 +99,34 @@ checkErase( VContainer1 & v, LContainer2 & l,
 
 int main()
 {
-  typedef IndexedListWithBlocks<double, 2, 10> MyIndexedList;
-  BOOST_CONCEPT_ASSERT(( boost::Container< MyIndexedList > ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::Iterator > ));
-  BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::ConstIterator > ));
+  typedef Labels<80, uint32_t> MyLabels;
+  typedef bitset<80> MyBitset;
+
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  trace.beginBlock ( "Testing IndexedListWithBlocks" );
-  MyIndexedList l;
-  vector<double> v;
+  trace.beginBlock ( "Testing Labels" );
+  MyLabels l;
+  MyBitset v;
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, 0, 4.5 );
+  insert( v, l, 15 );
+  insert( v, l, 4 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, 0, 10.1 );
+  insert( v, l, 62 );
+  insert( v, l, 4 );
+  insert( v, l, 78 );
+  insert( v, l, 31 );
+  insert( v, l, 32 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, 1, 3.7 );
+  checkInsert( v, l, 40 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, 2, 8.4 );
-  insert( v, l, 1, 2.1 );
+  checkErase( v, l, 200 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, 2, -3.0 );
-  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  insert( v, l, v.size(), -13.1 );
-  ++nb, nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  ++nb, nbok += checkInsert( v, l, 10000 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 10000 insertions" << std::endl; 
-  ++nb, nbok += checkErase( v, l, 10000 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 10000 deletions l=" << l << std::endl; 
+
   trace.endBlock();
   return ( nb == nbok ) ? 0 : 1;
 }

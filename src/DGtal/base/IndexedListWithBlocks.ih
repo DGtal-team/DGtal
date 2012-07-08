@@ -472,15 +472,12 @@ void
 DGtal::IndexedListWithBlocks<TValue, N, M>::
 clear()
 {
-  unsigned int s = N + 1; // there is one more stored value in the last block.
-  
   AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
-  while ( s < myFirstBlock.size  )
+  while ( nextBlock != 0 )
     {
       AnyBlock* ptr = nextBlock;
       nextBlock = nextBlock->next;
       delete ptr;
-      s += M;
     }
   myFirstBlock.size = 0;
   myFirstBlock.data.nextBlock = 0;
