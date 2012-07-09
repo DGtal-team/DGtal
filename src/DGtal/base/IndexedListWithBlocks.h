@@ -202,8 +202,32 @@ if more than 3 values and N = 2, M = 4
 	  {
 	    // works also in the case we use 'data' to store a N+1-th value.
 	    std::copy( values + idx + 1, values + size, values + idx );
+            data.nextBlock = 0;
 	  }
-	else // size > N + 1
+	else if ( size == N + 2 )
+	  { 
+	    if ( idx < N )
+	      {
+		std::copy( values + idx + 1, values + N, values + idx );
+		values[ N - 1 ] = data.nextBlock->values[ 0 ];
+                Value tmp = data.nextBlock->values[ 1 ];
+		delete data.nextBlock;
+                data.lastValue = tmp;
+	      }
+	    else if ( idx == N )
+              {
+                Value tmp = data.nextBlock->values[ 1 ];
+		delete data.nextBlock;
+                data.lastValue = tmp;
+              }
+            else // idx == N + 1
+              {
+                Value tmp = data.nextBlock->values[ 0 ];
+		delete data.nextBlock;
+                data.lastValue = tmp;
+              }
+	  }
+	else // size > N + 2
 	  {
 	    if ( idx < N )
 	      {
