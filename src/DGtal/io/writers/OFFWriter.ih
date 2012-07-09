@@ -68,7 +68,7 @@ namespace DGtal {
 	}
 	
 	DGtal::Color col = vectColorFaces.at(indexFace);
-	out << (int) col.red() << " "<< (int) col.green() << " "<< (int) col.blue() << " " << (int) col.alpha()<< endl ;
+	out << ((double) col.red())/255.0 << " "<< ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 << " " << ((double) col.alpha())/255.0<< endl ;
 	position+=nbVertex+1;
 	indexFace++;
       }

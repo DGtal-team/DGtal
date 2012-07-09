@@ -732,7 +732,7 @@ DGtal::Display3D::exportToMesh(){
   vector< unsigned int>  vectFaces;
   vector<pointD3D> vectVertex;
   vector<DGtal::Color> vectColorFaces;  
-    
+  unsigned int vertexIndex=0;
   for (unsigned int i=0; i< myKSSurfelList.size(); i++){
     quadD3D quad = myKSSurfelList.at(i);
     pointD3D p1, p2, p3, p4;
@@ -744,7 +744,7 @@ DGtal::Display3D::exportToMesh(){
     vectVertex.push_back(p2);
     vectVertex.push_back(p3);
     vectVertex.push_back(p4);
-
+    vertexIndex+=4;
     vectFaces.push_back(4);
     vectFaces.push_back(i*4);
     vectFaces.push_back(i*4+1);
@@ -752,6 +752,87 @@ DGtal::Display3D::exportToMesh(){
     vectFaces.push_back(i*4+3);
     vectColorFaces.push_back(DGtal::Color(quad.R, quad.G, quad.B, quad.T));
   }
+
+  
+  for(int j=0; j<myVoxelSetList.size(); j++){
+    for (unsigned int i=0; i< myVoxelSetList.at(j).size(); i++){
+      voxelD3D voxel = myVoxelSetList.at(j).at(i);
+      pointD3D p1, p2, p3, p4, p5, p6, p7, p8;
+      double width= voxel.width;
+
+      p1.x = voxel.x-width; p1.y = voxel.y+width; p1.z = voxel.z+width;
+      p2.x = voxel.x+width; p2.y = voxel.y+width; p2.z = voxel.z+width;      
+      p3.x = voxel.x+width; p3.y = voxel.y-width; p3.z = voxel.z+width;
+      p4.x = voxel.x-width; p4.y = voxel.y-width; p4.z = voxel.z+width;      
+      p5.x = voxel.x-width; p5.y = voxel.y+width; p5.z = voxel.z-width;
+      
+      p6.x = voxel.x+width; p6.y = voxel.y+width; p6.z = voxel.z-width;     
+      p7.x = voxel.x+width; p7.y = voxel.y-width; p7.z = voxel.z-width;
+      p8.x = voxel.x-width; p8.y = voxel.y-width; p8.z = voxel.z-width;
+      
+      vectVertex.push_back(p1);
+      vectVertex.push_back(p2);
+      vectVertex.push_back(p3);
+      vectVertex.push_back(p4);
+      vectVertex.push_back(p5);
+      vectVertex.push_back(p6);
+      vectVertex.push_back(p7);
+      vectVertex.push_back(p8);
+      
+      //z+
+      vectFaces.push_back(4);      
+      vectFaces.push_back(vertexIndex);
+      vectFaces.push_back(vertexIndex+3);
+      vectFaces.push_back(vertexIndex+2);
+      vectFaces.push_back(vertexIndex+1);
+      
+      //z-
+      vectFaces.push_back(4);      
+      vectFaces.push_back(vertexIndex+4);
+      vectFaces.push_back(vertexIndex+5);
+      vectFaces.push_back(vertexIndex+6);
+      vectFaces.push_back(vertexIndex+7);
+      
+      //y+
+      vectFaces.push_back(4);
+      vectFaces.push_back(vertexIndex+1);
+      vectFaces.push_back(vertexIndex+2);
+      vectFaces.push_back(vertexIndex+6);
+      vectFaces.push_back(vertexIndex+5);
+      //y-
+      vectFaces.push_back(4);
+      vectFaces.push_back(vertexIndex);
+      vectFaces.push_back(vertexIndex+4);
+      vectFaces.push_back(vertexIndex+7);
+      vectFaces.push_back(vertexIndex+3);
+      
+      //x+
+      vectFaces.push_back(4);
+      vectFaces.push_back(vertexIndex);
+      vectFaces.push_back(vertexIndex+1);
+      vectFaces.push_back(vertexIndex+5);
+      vectFaces.push_back(vertexIndex+4);
+
+      //x- 
+      vectFaces.push_back(4);
+      vectFaces.push_back(vertexIndex+3);
+      vectFaces.push_back(vertexIndex+7);
+      vectFaces.push_back(vertexIndex+6);
+      vectFaces.push_back(vertexIndex+2);
+      
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      vectColorFaces.push_back(DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+  
+      vertexIndex+=8;
+    }
+  }
+
+
+
   trace.info() << "generating faces done" << endl;
   OFFWriter<pointD3D>::export2OFF("test.off", vectVertex, vectFaces,vectFaces.size()/5, vectColorFaces);
   
