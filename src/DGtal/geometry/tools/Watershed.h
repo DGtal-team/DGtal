@@ -120,7 +120,7 @@ class Watershed
     
   /**
    * Return a segmented image where each point of the image contains the
-   * segment number which he is associated to.
+   * region label which he is associated to.
    * 
    * @return the segmented image
    */ 
@@ -128,7 +128,7 @@ class Watershed
     
   /**
    * Return a segmented image where each point of the image contains the
-   * segment number which he is associated to. The watershed uses a 
+   * region label which he is associated to. The watershed uses a 
    * set of markers instead of local minima as water sources.
    * 
    * @tparam TVertexSet any model of CSinglePassRange on vertices
@@ -156,7 +156,7 @@ class Watershed
         
   /**
    * Return a segmented image where each point of the image contains the
-   * segment number which he is associated to. The watershed is based on
+   * region label which he is associated to. The watershed is based on
    * the probabilistic function computed by segmentation_stochastic(N, M).
    * 
    * @param N the number of markers placed at each iteration
