@@ -147,25 +147,25 @@ if more than 3 datas and N = 2, M = 4
     typedef ConstIterator iterator;
     typedef ConstIterator const_iterator;
     
-    struct FirstBlock; //< Forward declaration
-    struct AnyBlock; //< Forward declaration
+    struct __FirstBlock; //< Forward declaration
+    struct __AnyBlock; //< Forward declaration
 
     union BlockPointer {
-      FirstBlock* first;
-      AnyBlock* any;
+      __FirstBlock* first;
+      __AnyBlock* any;
     };
 
     /// Used in first block to finish it or to point to the next block.
     union DataOrBlockPointer {
       Data lastData; // used when at the end of the list
-      AnyBlock* nextBlock;  // used otherwise
+      __AnyBlock* nextBlock;  // used otherwise
     };
 
     /// Represents the first block in the container.
     /// Internal structure.
-    struct FirstBlock {
+    struct __FirstBlock {
       inline
-      FirstBlock() 
+      __FirstBlock() 
       { data.nextBlock = 0; }
 
       inline
@@ -183,7 +183,7 @@ if more than 3 datas and N = 2, M = 4
 	    ASSERT( idx <= size );
 	    // This cannot be tested.
 	    // ASSERT( data.nextBlock == 0 );
-	    AnyBlock* next = new AnyBlock;
+	    __AnyBlock* next = new __AnyBlock;
 	    if ( idx < N )
 	      {
 		next->datas[ 0 ] = datas[ N - 1 ];
@@ -220,7 +220,7 @@ if more than 3 datas and N = 2, M = 4
       inline 
       void erase( unsigned int idx, unsigned int size )
       {
-	// std::cerr << "FirstBlock::erase(" << idx << ")"
+	// std::cerr << "__FirstBlock::erase(" << idx << ")"
 	// 	  << " this=" << this
 	// 	  << " next=" << data.nextBlock
 	// 	  << std::endl;
@@ -273,8 +273,8 @@ if more than 3 datas and N = 2, M = 4
 
     /// Represents a block (except the first) in the container.
     /// Internal structure.
-    struct AnyBlock {
-      inline AnyBlock() : next( 0 ) {}
+    struct __AnyBlock {
+      inline __AnyBlock() : next( 0 ) {}
 
       inline
       void insert( unsigned int idx, unsigned int size, const Data & v )
@@ -285,7 +285,7 @@ if more than 3 datas and N = 2, M = 4
 	    if ( next == 0 )
 	      {
 		ASSERT( idx == M );
-		next = new AnyBlock;
+		next = new __AnyBlock;
                 next->datas[ 0 ] = v;
 	      }
             else
@@ -309,7 +309,7 @@ if more than 3 datas and N = 2, M = 4
                     if ( next == 0 )
                       {
                         ASSERT( size == M );
-                        next = new AnyBlock;
+                        next = new __AnyBlock;
                         next->datas[ 0 ] = v1;
                       }
                     else
@@ -320,9 +320,9 @@ if more than 3 datas and N = 2, M = 4
       }
 
       inline 
-      AnyBlock* erase( unsigned int idx, unsigned int size )
+      __AnyBlock* erase( unsigned int idx, unsigned int size )
       {
-	// std::cerr << "AnyBlock::erase(" << idx << "," << size << ")" 
+	// std::cerr << "__AnyBlock::erase(" << idx << "," << size << ")" 
 	// 	  << " this=" << this
 	// 	  << " next=" << next
 	// 	  << std::endl;
@@ -349,7 +349,7 @@ if more than 3 datas and N = 2, M = 4
 
 
       Data datas[ M ];
-      AnyBlock* next;
+      __AnyBlock* next;
     };
 
     /**
@@ -379,7 +379,7 @@ if more than 3 datas and N = 2, M = 4
       unsigned int myIdx;      //< current index in \a myDatas of the iterator
       unsigned int myNbDatas; //< number of valid datas in array \a myDatas
       Data* myDatas;         //< array of \a myNbDatas datas.
-      AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+      __AnyBlock* myNext;        //< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -387,7 +387,7 @@ if more than 3 datas and N = 2, M = 4
       /**
 	 Constructor from first block and index. Used by class LabelledMap.
       */
-      BlockIterator( FirstBlock & block, unsigned int idx, unsigned int size );
+      BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size );
       
     public:
       /**
@@ -496,7 +496,7 @@ if more than 3 datas and N = 2, M = 4
       unsigned int myIdx;      //< current index in \a myDatas of the iterator
       unsigned int myNbDatas; //< number of valid datas in array \a myDatas
       const Data* myDatas;   //< array of \a myNbDatas datas.
-      const AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+      const __AnyBlock* myNext;  //< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -505,7 +505,7 @@ if more than 3 datas and N = 2, M = 4
 	 Constructor from first block and index.
          Used by class LabelledMap.
       */
-      BlockConstIterator( const FirstBlock & block, unsigned int idx, unsigned int size );
+      BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int size );
       
     public:
       /**
@@ -1042,7 +1042,7 @@ if more than 3 datas and N = 2, M = 4
     /**
        Stores the first block of datas.
     */
-    FirstBlock myFirstBlock;
+    __FirstBlock myFirstBlock;
 
     // ------------------------- Hidden services ------------------------------
   protected:
