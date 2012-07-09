@@ -118,7 +118,7 @@ namespace DGtal
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-      bool isValid() 
+      bool isValid() const
       {
 	return (mySCPtr != 0); 
       };
@@ -142,6 +142,15 @@ namespace DGtal
         myBegin = itb;
         myEnd = ite; 
       }
+
+      /**
+       * Attach the estimator to @e aSC
+       * @param aSC an instance of segment computer. 
+       */
+      void attach(const SegmentComputer& aSC) 
+      {
+	mySCPtr = &aSC; 
+      };
 
       /**
        * Unique estimation 
@@ -182,15 +191,6 @@ namespace DGtal
 
         return result; 
       }
-
-      /**
-       * Attach the estimator to @e aSC
-       * @param aSC an instance of segment computer. 
-       */
-      void attach(const SegmentComputer& aSC) 
-      {
-	mySCPtr = &aSC; 
-      };
 
     }; // end of class PosIndepScaleIndepSCEstimator
 
@@ -293,7 +293,7 @@ namespace DGtal
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-      bool isValid() 
+      bool isValid() const 
       {
 	return (myH > 0)&&(mySCPtr != 0); 
       };
@@ -318,11 +318,21 @@ namespace DGtal
       }
 
       /**
+       * Attach the estimator to @e aSC
+       * @param aSC an instance of segment computer. 
+       */
+      void attach(const SegmentComputer& aSC) 
+      {
+	mySCPtr = &aSC; 
+	ASSERT( mySCPtr ); 
+      };
+
+      /**
        * Estimation depending on @e myH 
        * @param it any iterator (unused) 
        * @return the estimated quantity
        */
-      Quantity eval(const ConstIterator& /*it*/)
+      Quantity eval(const ConstIterator& /*it*/) const
       {
 	ASSERT( isValid() ); 
         return myFunctor( *mySCPtr, myH ); 
@@ -339,7 +349,7 @@ namespace DGtal
        */
       template <typename OutputIterator>
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-			  OutputIterator result)
+			  OutputIterator result) const
       {
 	ASSERT( isValid() ); 
 
@@ -356,16 +366,6 @@ namespace DGtal
 
         return result; 
       }
-
-      /**
-       * Attach the estimator to @e aSC
-       * @param aSC an instance of segment computer. 
-       */
-      void attach(const SegmentComputer& aSC) 
-      {
-	mySCPtr = &aSC; 
-	ASSERT( mySCPtr ); 
-      };
 
     }; // end of class PosIndepScaleDepSCEstimator
 
@@ -425,7 +425,7 @@ namespace DGtal
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-      bool isValid() 
+      bool isValid() const 
       {
 	return (mySCPtr != 0); 
       };
@@ -451,11 +451,20 @@ namespace DGtal
       }
 
       /**
+       * Attach the estimator to @e aSC
+       * @param aSC an instance of segment computer. 
+       */
+      void attach(const SegmentComputer& aSC) 
+      {
+	mySCPtr = &aSC; 
+      };
+
+      /**
        * Unique estimation 
        * @param it any iterator
        * @return the estimated quantity
        */
-      Quantity eval(const ConstIterator& it)
+      Quantity eval(const ConstIterator& it) const
       {
 	ASSERT( mySCPtr ); 
         return myFunctor( it, *mySCPtr ); 
@@ -472,7 +481,7 @@ namespace DGtal
        */
       template <typename OutputIterator>
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-			  OutputIterator result)
+			  OutputIterator result) const
       {
 	ASSERT( mySCPtr ); 
 
@@ -489,16 +498,6 @@ namespace DGtal
 
         return result; 
       }
-
-      /**
-       * Attach the estimator to @e aSC
-       * @param aSC an instance of segment computer. 
-       */
-      void attach(const SegmentComputer& aSC) 
-      {
-	mySCPtr = &aSC; 
-      };
-
 
     }; // end of class PosDepScaleIndepSCEstimator
 
@@ -600,7 +599,7 @@ namespace DGtal
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-      bool isValid() 
+      bool isValid() const 
       {
 	return (myH > 0)&&(mySCPtr != 0); 
       };
@@ -625,11 +624,21 @@ namespace DGtal
       }
 
       /**
+       * Attach the estimator to @e aSC
+       * @param aSC an instance of segment computer. 
+       */
+      void attach(const SegmentComputer& aSC) 
+      {
+	mySCPtr = &aSC; 
+	ASSERT( mySCPtr ); 
+      };
+
+      /**
        * Unique estimation 
        * @param it any iterator 
        * @return the estimated quantity
        */
-      Quantity eval(const ConstIterator& it)
+      Quantity eval(const ConstIterator& it) const
       {
 	ASSERT( isValid() ); 
         return myFunctor( it, *mySCPtr, myH ); 
@@ -646,7 +655,7 @@ namespace DGtal
        */
       template <typename OutputIterator>
       OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-			  OutputIterator result)
+			  OutputIterator result) const 
       {
 	ASSERT( isValid() ); 
 
@@ -663,16 +672,6 @@ namespace DGtal
 
         return result; 
       }
-
-      /**
-       * Attach the estimator to @e aSC
-       * @param aSC an instance of segment computer. 
-       */
-      void attach(const SegmentComputer& aSC) 
-      {
-	mySCPtr = &aSC; 
-	ASSERT( mySCPtr ); 
-      };
 
     }; // end of class PosDepScaleDepSCEstimator
 
@@ -1387,7 +1386,7 @@ namespace DGtal
        * Checks the validity/consistency of the object.
        * @return 'true' if the object is valid, 'false' otherwise.
        */
-      bool isValid() 
+      bool isValid() const
       {
 	return (myH > 0)&&(mySCPtr != 0); 
       };

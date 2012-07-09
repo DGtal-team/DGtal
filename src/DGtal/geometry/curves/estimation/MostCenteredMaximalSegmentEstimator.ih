@@ -105,11 +105,6 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 	       SegmentIterator& /*first*/, SegmentIterator& last, 
 	       OutputIterator result, IteratorType ) 
 {
-/*
-  for (ConstIterator it = itCurrent; it != ite; ++it) {
-    *result++ = mySCEstimator(it, *last, last.intersectPrevious(), last.intersectNext() ); 
-  }
-*/
   mySCEstimator.attach( *last ); 
   result = mySCEstimator.eval( itCurrent, ite, result );
   return result; 
@@ -132,30 +127,15 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
       ++itEnd; //(ceil)
       mySCEstimator.attach( *last ); 
       result = mySCEstimator.eval( itCurrent, itEnd, result );
-/*
-      for (ConstIterator it = itCurrent; it != itEnd; ++it) {
-	*result++ = mySCEstimator(it, *last, last.intersectPrevious(), last.intersectNext() ); 
-      }
-*/
       itCurrent = itEnd; 
       //first segment
       mySCEstimator.attach( *first ); 
       result = mySCEstimator.eval( itCurrent, ite, result );
-/*
-      for (ConstIterator it = itCurrent; it != ite; ++it) {
-	*result++ = mySCEstimator(it, *first, first.intersectPrevious(), first.intersectNext() ); 
-      }
-*/
     }
   else 
     { //(sub range)
       mySCEstimator.attach( *last ); 
       result = mySCEstimator.eval( itCurrent, ite, result );
-/*
-      for (ConstIterator it = itCurrent; it != ite; ++it) {
-	*result++ = mySCEstimator(it, *last, last.intersectPrevious(), last.intersectNext() ); 
-      }
-*/
     }
   return result; 
 }
@@ -194,21 +174,8 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 	if (nextSegIt == segItEnd ) 
 	  {    //only one maximal segment                         
-
-	  mySCEstimator.attach( *segIt ); 
-	  result = mySCEstimator.eval( itb, ite, result );
-/*
-	    // do-while loop to deal with the case of a circular segment
-	    if (isNotEmpty(itb, ite))
-	      {
-		ConstIterator it = itb; 
-		do
-		  {
-		    *result++ = mySCEstimator(it, *segIt, segIt.intersectPrevious(), segIt.intersectNext() );
-		    ++it; 
-		  } while (it != ite);
-	      }
-*/
+	    mySCEstimator.attach( *segIt ); 
+	    result = mySCEstimator.eval( itb, ite, result );
 	  } 
 	else 
 	  {   //strictly more than one maximal segment
@@ -223,11 +190,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 
 	        mySCEstimator.attach( *segIt ); 
 	        result = mySCEstimator.eval( itCurrent, itEnd, result );
-/*
-		for (ConstIterator it = itCurrent; it != itEnd; ++it) {
-		  *result++ = mySCEstimator(it, *segIt, segIt.intersectPrevious(), segIt.intersectNext() ); 
-		}
-*/
+
 		itCurrent = itEnd; 
 
 		segIt = nextSegIt;
@@ -267,7 +230,6 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
       if (isNotEmpty(it,myEnd)) 
 	{
 	  mostCenteredMaximalSegment( mySC, it, myBegin, myEnd );
-	  mySCEstimator.init( myH, mySC.begin(), mySC.end() ); //TODO is there previous/next maximal segments ? 
 	  mySCEstimator.attach( mySC ); 
 	  return mySCEstimator.eval( it );
 	}

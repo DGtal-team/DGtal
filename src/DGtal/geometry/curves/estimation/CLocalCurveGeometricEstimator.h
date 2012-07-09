@@ -113,17 +113,10 @@ namespace DGtal
       //init method
       myX.init( myH, myItb, myIte ); 
 
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-
-      //eval methods
       ConceptUtils::sameType( myQ, myX.eval( myItb ) );
       ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
-
     }
+
     // ------------------------- Private Datas --------------------------------
   private:
     T myX;
@@ -131,7 +124,9 @@ namespace DGtal
     double myH; 
     ConstIterator myItb, myIte; 
     Quantity myQ;
-    boost::iterator_archetype<Quantity,boost::iterator_archetypes::writable_iterator_t,boost::incrementable_traversal_tag > myIto; 
+    boost::iterator_archetype<Quantity,
+			      boost::iterator_archetypes::writable_iterator_t,
+			      boost::incrementable_traversal_tag > myIto; 
 
     // ------------------------- Internals ------------------------------------
   private:

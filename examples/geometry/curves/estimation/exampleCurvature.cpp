@@ -107,11 +107,11 @@ estimatorOnShapeDigitization( const string& name,
       if (gridcurve.isOpen())
         { 
 	  typedef GeometricalDCA<ClassicIterator> SegmentComputer;
-	  typedef CurvatureFromDCAFunctor<SegmentComputer> Functor;
-	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> CurvatureEstimator;
+	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
+	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
 	  SegmentComputer sc;
-	  Functor f; 
-	  CurvatureEstimator estimator(sc, f);
+	  SCEstimator sce; 
+	  CurvatureEstimator estimator(sc, sce);
 	  std::cout << "# open grid curve" << endl;
           estimator.init( h, r.begin(), r.end() );
           estimator.eval( r.begin(), r.end(), std::back_inserter(estimations) ); 
@@ -119,11 +119,11 @@ estimatorOnShapeDigitization( const string& name,
       else
         { 
 	  typedef GeometricalDCA<CircularIterator> SegmentComputer;
-	  typedef CurvatureFromDCAFunctor<SegmentComputer> Functor;
-	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> CurvatureEstimator;
+	  typedef CurvatureFromDCAEstimator<SegmentComputer> SCEstimator;
+	  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> CurvatureEstimator;
 	  SegmentComputer sc;
-	  Functor f; 
-	  CurvatureEstimator estimator(sc, f);
+	  SCEstimator sce;
+	  CurvatureEstimator estimator(sc, sce);
 	  std::cout << "# closed grid curve" << endl;
           estimator.init( h, r.c(), r.c() );
           estimator.eval( r.c(), r.c(), std::back_inserter(estimations) ); 

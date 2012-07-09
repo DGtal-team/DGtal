@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/estimation/CLocalGeometricEstimator.h"
+#include "DGtal/geometry/curves/estimation/CLocalCurveGeometricEstimator.h"
 #include "DGtal/geometry/curves/CSegment.h"
 //////////////////////////////////////////////////////////////////////////////
 

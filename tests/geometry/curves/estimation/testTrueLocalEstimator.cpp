@@ -238,7 +238,7 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
 
       typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
   SegmentComputer;
-      typedef TangentFromDSSFunctor<SegmentComputer> Functor;
+      typedef TangentFromDSSEstimator<SegmentComputer> Functor;
       typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
   MSTangentEstimator;
 
