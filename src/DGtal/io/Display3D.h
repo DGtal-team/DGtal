@@ -475,6 +475,23 @@ namespace DGtal
     void updateBoundingBox(double x, double y, double z);
   
 
+    /**
+     * Compute the mesh from the quad elements.
+     *
+     * @param vectVertex : (return)  the set of vertex.
+     * @param vectFaces: (return) the set of faces.
+     *
+     **/
+    
+    
+    void exportToMesh();
+
+    
+    
+    //void computeQuadMesh(vector<pointD3D> &vectVertex, vector<vector unsigned int>  &vectFaces);
+  
+
+
   
     /**
      * Draws the drawable [object] in this board. It should satisfy

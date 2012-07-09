@@ -33,8 +33,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-
 #include "DGtal/io/Display3DFactory.h"
+#include "DGtal/io/writers/OFFWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -723,6 +723,44 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
       std::cerr <<"Warning maximal clipping plane added" << endl;
     }
 }
+
+
+
+inline
+void 
+DGtal::Display3D::exportToMesh(){ 			       
+  vector< unsigned int>  vectFaces;
+  vector<pointD3D> vectVertex;
+  vector<DGtal::Color> vectColorFaces;  
+    
+  for (unsigned int i=0; i< myKSSurfelList.size(); i++){
+    quadD3D quad = myKSSurfelList.at(i);
+    pointD3D p1, p2, p3, p4;
+    p1.x=quad.x1; p1.y=quad.y1 ;p1.z=quad.z1;
+    p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
+    p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
+    p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
+    vectVertex.push_back(p1);
+    vectVertex.push_back(p2);
+    vectVertex.push_back(p3);
+    vectVertex.push_back(p4);
+
+    vectFaces.push_back(4);
+    vectFaces.push_back(i*4);
+    vectFaces.push_back(i*4+1);
+    vectFaces.push_back(i*4+2);
+    vectFaces.push_back(i*4+3);
+    vectColorFaces.push_back(DGtal::Color(quad.R, quad.G, quad.B, quad.T));
+  }
+  OFFWriter<pointD3D>::export2OFF("test.off", vectVertex, vectFaces,vectFaces.size()* 4, vectColorFaces);
+  
+}
+
+
+
+
+
+
 
 inline
 void
