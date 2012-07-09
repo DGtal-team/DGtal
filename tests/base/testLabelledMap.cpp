@@ -85,7 +85,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
     {
       unsigned int idx = random() % ( l.max_size() );
       erase( v, l, idx );
-      std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl; 
+      //std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl; 
     }
   return isEqual( v, l );
 }
@@ -142,10 +142,10 @@ int main()
   // it = l.insert( it, std::make_pair( 9, 5.5 ) );
   // l.insert( it, std::make_pair( 9, 10.5 ) );
   // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  ++nb, nbok += checkInsert( v, l, 100 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 100 insertions l=" << l << std::endl; 
-  ++nb, nbok += checkErase( v, l, 100 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 100 deletions l=" << l << std::endl; 
+  ++nb, nbok += checkInsert( v, l, 1000 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") 1000 insertions l=" << l << std::endl; 
+  ++nb, nbok += checkErase( v, l, 1000 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") 1000 deletions l=" << l << std::endl; 
   trace.endBlock();
   return ( nb == nbok ) ? 0 : 1;
 }
