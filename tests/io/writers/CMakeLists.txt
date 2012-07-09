@@ -1,6 +1,5 @@
 SET(DGTAL_TESTS_SRC_IO_WRITERS
-       testPNMRawWriter 
-       testOFFWriter)
+       testPNMRawWriter )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_WRITERS})
