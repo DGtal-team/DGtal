@@ -215,7 +215,6 @@ if more than 3 datas and N = 2, M = 4
 	    else
 	      data.nextBlock->insert( idx - N, size - N, v );
 	  }
-	++size;
       }
 
       inline 
@@ -230,8 +229,32 @@ if more than 3 datas and N = 2, M = 4
 	  {
 	    // works also in the case we use 'data' to store a N+1-th data.
 	    std::copy( datas + idx + 1, datas + size, datas + idx );
+            data.nextBlock = 0;
 	  }
-	else // size > N + 1
+	else if ( size == N + 2 )
+	  { 
+	    if ( idx < N )
+	      {
+		std::copy( datas + idx + 1, datas + N, datas + idx );
+		datas[ N - 1 ] = data.nextBlock->datas[ 0 ];
+                Data tmp = data.nextBlock->datas[ 1 ];
+		delete data.nextBlock;
+                data.lastData = tmp;
+	      }
+	    else if ( idx == N )
+              {
+                Data tmp = data.nextBlock->datas[ 1 ];
+		delete data.nextBlock;
+                data.lastData = tmp;
+              }
+            else // idx == N + 1
+              {
+                Data tmp = data.nextBlock->datas[ 0 ];
+		delete data.nextBlock;
+                data.lastData = tmp;
+              }
+	  }
+	else // size > N + 2
 	  {
 	    if ( idx < N )
 	      {
@@ -242,7 +265,6 @@ if more than 3 datas and N = 2, M = 4
 	    else
 	      data.nextBlock = data.nextBlock->erase( idx - N, size - N );
 	  }
-	--size;
       }
 
       Data datas[ N ];
@@ -763,6 +785,9 @@ if more than 3 datas and N = 2, M = 4
       */
       bool operator!=( const Self & other ) const;
 
+
+      Data & _data() const;
+      const Data & _const_data() const;
     };
     
     /// non-mutable class via iterators.
@@ -818,18 +843,122 @@ if more than 3 datas and N = 2, M = 4
     SizeType capacity() const;
 
     /**
-       Removes all the datas stored in the structure. O(b)
-       complexity.
+       Removes all the datas stored in the structure. 
      */
     void clear();
 
     /**
-       Insertion of a new data at given label. Non-standard (should
-       return a pair<iterator,bool>).
+       Follows std::count. 
 
-       @param val a pair<label,data>
+       @param key any label
+       @return 0 if the key is not present in container, 1 otherwise.
     */
-    void insert( const Value & val );
+    SizeType count( const Key & key ) const;
+
+    /**
+       Follows std::operator[]. Given a key \a key, returns a
+       reference to the associated data.
+
+       @param key any label
+       @return a reference to the associated data.
+    */
+    Data & operator[]( const Key & key );
+
+    /**
+       Read-only version. Follows std::operator[]. Given a key \a key,
+       returns a reference to the associated data.
+
+       @param key any label
+       @return a const reference to the associated data.
+    */
+    const Data & operator[]( const Key & key ) const;
+
+    /**
+       A read-write accessor to the data associated to an \b existing key.
+
+       @param key any label (such that count(key)==1)
+       @return a reference to the associated data.
+    */
+    Data & fastAt( const Key & key );
+
+    /**
+       A read-only accessor to the data associated to an \b existing key.
+
+       @param key any label (such that count(key)==1)
+       @return a const reference to the associated data.
+    */
+    const Data & fastAt( const Key & key ) const;
+
+    /**
+       Insertion of a new data at given label. Follows std::insert
+       return a pair<iterator,bool>).  Note that the data is
+       associated to key only if key was not present in the container.
+
+       @param val a pair<key,data>. 
+
+       @return a pair <iterator,bool> where iterator points on the
+       pair (key,data) while the boolean is true if a new element was
+       indeed created. 
+
+       NB: This method is provided to follow the
+       std::AssociativeContainer concept. You are discourage to use
+       this functions since the correct iterator must be recomputed at
+       each insert. Prefer operator[] or fastAt.
+    */
+    std::pair<Iterator, bool> insert( const Value & val );
+
+    /**
+       Inserts the pair \a val (key,data) in the container, where position is a hint
+
+       @param position an iterator used as a hint to find the good
+       place. Unused here.
+       @param val a pair (key,data)
+       @return an iterator on the inserted element.
+
+       NB: This method is provided to follow the
+       std::AssociativeContainer concept. You are discourage to use
+       this functions since the correct iterator must be recomputed at
+       each insert. Prefer operator[] or fastAt.
+    */
+    Iterator insert( Iterator position, const Value & val );
+
+    /**
+       Erases the pair (key,data) pointed by \a iterator.
+
+       @param position any valid iterator in the container.
+    */
+    void erase( Iterator position );
+
+    /**
+       Erases the element of key \a key.
+       
+       @param key any key (in 0..L-1)
+       @return the number of elements deleted (0 or 1).
+    */
+    SizeType erase( Key key );
+
+    /**
+       Erases the elements in the range [first,last).
+
+       @param first a valid iterator.
+       @param last a valid iterator.
+
+       NB: to clear the container, prefer clear() instead of erase( begin(), end() ).
+       @see clear
+    */
+    void erase( Iterator first, Iterator last );
+
+    /// @return an iterator pointing on the first element in the container.
+    ConstIterator begin() const;
+
+    /// @return an iterator pointing after the last element in the container.
+    ConstIterator end() const;
+
+
+    /**
+       Removes all the datas stored in the block structure. 
+     */
+    void blockClear();
 
     /**
        Random unprotected read-write access to data at position \a idx
@@ -858,7 +987,7 @@ if more than 3 datas and N = 2, M = 4
        @param data the data to insert.
        NB: O( n ), E = O( n - idx )
     */
-    void blockInsert( unsigned int idx, const Data & data );
+    void blockInsert( unsigned int idx, unsigned int block_size, const Data & data );
 
     /**
        Removal of a data at a given position. Following datas are shifted.
@@ -874,12 +1003,6 @@ if more than 3 datas and N = 2, M = 4
 
     // /// @return an iterator pointing after the last element in the container.
     // Iterator end();
-
-    /// @return an iterator pointing on the first element in the container.
-    ConstIterator begin() const;
-
-    /// @return an iterator pointing after the last element in the container.
-    ConstIterator end() const;
 
     /// @return an iterator pointing on the first element in the container.
     BlockIterator blockBegin();

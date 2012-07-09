@@ -62,7 +62,7 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() + 1 );
+      unsigned int idx = random() % ( l.max_size() );
       double val = ( (double)random() ) / RAND_MAX;
       insert( v, l, idx, val );
     }
@@ -72,7 +72,7 @@ checkInsert( VContainer1 & v, LContainer2 & l,
 template <typename VContainer1, typename LContainer2>
 void erase( VContainer1 & c1, LContainer2 & c2, unsigned int idx )
 {
-  c1.erase( c1.begin() + idx );
+  c1.erase( idx );
   c2.erase( idx );
 }
 
@@ -83,16 +83,27 @@ checkErase( VContainer1 & v, LContainer2 & l,
 {
   for ( unsigned int i = 0; i < nb; ++i )
     {
-      unsigned int idx = random() % ( l.size() );
+      unsigned int idx = random() % ( l.max_size() );
       erase( v, l, idx );
+      std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl; 
     }
   return isEqual( v, l );
 }
 
-
+template <typename AContainer>
+void display( ostream & out, const AContainer & C )
+{
+  out << "C = ";
+  for ( typename AContainer::const_iterator it = C.begin(), it_end = C.end();
+        it != it_end; ++it )
+    {
+      out << " (" << (*it).first << "," << (*it).second << ")";
+    }
+  out << std::endl;
+}
 int main()
 {
-  typedef LabelledMap<double, 16, DGtal::uint8_t, 2, 7> MyLabelledMap;
+  typedef LabelledMap<double, 32, DGtal::uint16_t, 2, 7> MyLabelledMap;
   // BOOST_CONCEPT_ASSERT(( boost::Container< MyIndexedList > ));
   // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::Iterator > ));
   // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::ConstIterator > ));
@@ -116,6 +127,7 @@ int main()
   insert( v, l, 1, 2.1 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  display( std::cout, v );
   insert( v, l, 1, -3.0 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
@@ -125,10 +137,15 @@ int main()
   insert( v, l, 2, -7.1 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-  // ++nb, nbok += checkInsert( v, l, 10000 ) ? 1 : 0;
-  // std::cout << "(" << nbok << "/" << nb << ") 10000 insertions" << std::endl; 
-  // ++nb, nbok += checkErase( v, l, 10000 ) ? 1 : 0;
-  // std::cout << "(" << nbok << "/" << nb << ") 10000 deletions l=" << l << std::endl; 
+  // MyLabelledMap::Iterator it = l.insert( l.begin(), std::make_pair( 7, 4.4 ) );
+  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  // it = l.insert( it, std::make_pair( 9, 5.5 ) );
+  // l.insert( it, std::make_pair( 9, 10.5 ) );
+  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  ++nb, nbok += checkInsert( v, l, 100 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") 100 insertions l=" << l << std::endl; 
+  ++nb, nbok += checkErase( v, l, 100 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") 100 deletions l=" << l << std::endl; 
   trace.endBlock();
   return ( nb == nbok ) ? 0 : 1;
 }
