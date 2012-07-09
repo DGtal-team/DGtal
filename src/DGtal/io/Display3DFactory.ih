@@ -42,12 +42,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 				    const DGtal::MeshFromPoints<TPoint> & aMesh )
 {
   std::string mode = display.getMode( aMesh.className() );
-  if ( mode == "Faces" )
+  if ( mode == "Faces"  || mode=="")
     drawAsFaces( display, aMesh );
-  else if ( ( mode == "" ) )
-  {
-    drawAsFaces( display, aMesh );
-  }
+
 }
 
 template <typename TPoint>

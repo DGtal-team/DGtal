@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file digitalSetFromVol.cpp
+ * @file meshFromOFF.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/07/05
  *
- * An example file named mesFromPoints.
+ * An example file named meshFromOFF.
  *
  * This file is part of the DGtal library.
  */

@@ -63,7 +63,7 @@ void DGtal::cross (double dst[3], double srcA[3], double srcB[3])
 }
 
 /**
- * Normalgize the input 3d vector.
+ * Normalize the input 3d vector.
  * @param vec source & destination vector.
  */
 static inline  
