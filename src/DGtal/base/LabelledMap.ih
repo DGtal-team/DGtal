@@ -61,7 +61,7 @@ BlockIterator( const Self & other)
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::
-BlockIterator( FirstBlock & block, unsigned int idx, unsigned int size )
+BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 {
   ASSERT( idx <= size );
   if ( size <= N+1 )
@@ -246,7 +246,7 @@ BlockConstIterator( const Self & other)
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::
-BlockConstIterator( const FirstBlock & block, unsigned int idx, unsigned int size )
+BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int size )
 {
   ASSERT( idx <= size );
   if ( size <= N+1 )
@@ -662,12 +662,12 @@ LabelledMap( const LabelledMap & other )
   : myFirstBlock( other.myFirstBlock )
 {
   unsigned int s = N + 1; // there is one more stored data in the last block.
-  const AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
-  AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
+  const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
+  __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
   myLabels = other.myLabels;
   while ( s < size() )
     {
-      *currentPointer = new AnyBlock( *nextBlock );
+      *currentPointer = new __AnyBlock( *nextBlock );
       s += M;
       currentPointer = & ( currentPointer->data.nextBlock );
     }
@@ -685,11 +685,11 @@ operator=( const LabelledMap & other )
       myFirstBlock = other.myFirstBlock;
       // there is one more stored data in the last block.
       unsigned int s = N + 1; 
-      const AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
-      AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
+      const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
+      __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
       while ( s < myFirstBlock.size  )
         {
-          *currentPointer = new AnyBlock( *nextBlock );
+          *currentPointer = new __AnyBlock( *nextBlock );
           s += M;
           currentPointer = & ( (*currentPointer)->next );
         }
@@ -714,10 +714,10 @@ void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 blockClear()
 {
-  AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
+  __AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
   while ( nextBlock != 0 )
     {
-      AnyBlock* ptr = nextBlock;
+      __AnyBlock* ptr = nextBlock;
       nextBlock = nextBlock->next;
       delete ptr;
     }
@@ -781,7 +781,7 @@ blockAt( unsigned int idx ) const
   if ( ( idx < N ) || ( ( idx == N ) && ( size() == N+1 ) ) )
     // Note here that we use contiguity between datas and data.lastData.
     return myFirstBlock.datas[ idx ];
-  const AnyBlock* ptr = myFirstBlock.data.nextBlock;
+  const __AnyBlock* ptr = myFirstBlock.data.nextBlock;
   idx -= N;
   while ( idx > M )
     {
@@ -801,7 +801,7 @@ blockAt( unsigned int idx )
   if ( ( idx < N ) || ( ( idx == N ) && ( size() == N+1 ) ) )
     // Note here that we use contiguity between datas and data.lastData.
     return myFirstBlock.datas[ idx ];
-  AnyBlock* ptr = myFirstBlock.data.nextBlock;
+  __AnyBlock* ptr = myFirstBlock.data.nextBlock;
   idx -= N;
   while ( idx > M )
     {
