@@ -224,6 +224,7 @@ DGtal::Viewer3D::init()
     myCurrentfShiftVisuKSSurfels=0.0;
     myDefaultColor= Color ( 255, 255, 255 );
     camera()->showEntireScene();
+    setKeyDescription ( Qt::Key_E, "Export the current display into OFF file (just Voxel, surfel and KSSurfel for now)." );
     setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
     setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
     setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
