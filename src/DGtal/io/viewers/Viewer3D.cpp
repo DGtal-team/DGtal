@@ -689,7 +689,14 @@ void
 DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
 {
     bool handled = false;
-
+    if ( ( e->key() ==Qt::Key_E ) )
+      {
+	trace.info() << "exporting mesh..." ;
+	exportToMesh();
+	trace.info() << "[done]"<< endl ;
+    }
+    
+    
     if ( ( e->key() ==Qt::Key_W ) )
     {
       myViewWire=!myViewWire;

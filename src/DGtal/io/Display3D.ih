@@ -752,7 +752,8 @@ DGtal::Display3D::exportToMesh(){
     vectFaces.push_back(i*4+3);
     vectColorFaces.push_back(DGtal::Color(quad.R, quad.G, quad.B, quad.T));
   }
-  OFFWriter<pointD3D>::export2OFF("test.off", vectVertex, vectFaces,vectFaces.size()* 4, vectColorFaces);
+  trace.info() << "generating faces done" << endl;
+  OFFWriter<pointD3D>::export2OFF("test.off", vectVertex, vectFaces,vectFaces.size()/5, vectColorFaces);
   
 }
 

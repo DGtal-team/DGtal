@@ -59,6 +59,7 @@ namespace DGtal {
 	out << vectVertex.at(i).x << " " << vectVertex.at(i).y << " "<< vectVertex.at(i).z << endl;	
       }
       int position=0;
+      int indexFace=0;
       while(position < vectFaces.size()){
 	unsigned int nbVertex = vectFaces.at(position);
 	out << nbVertex << " " ;
@@ -66,9 +67,10 @@ namespace DGtal {
 	  out << vectFaces.at(position+j+1)<< " " ;
 	}
 	
-	DGtal::Color col = vectColorFaces.at(position);
+	DGtal::Color col = vectColorFaces.at(indexFace);
 	out << (int) col.red() << " "<< (int) col.green() << " "<< (int) col.blue() << " " << (int) col.alpha()<< endl ;
 	position+=nbVertex+1;
+	indexFace++;
       }
       
       
