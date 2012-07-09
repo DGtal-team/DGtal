@@ -134,7 +134,7 @@ namespace DGtal
       /**
 	 Constructor from word address. 
          @param address is some Labels.myLabels
-         @param firstWord is 0 or __DGTAL_LABELS_NBWORDS
+         @param firstWord is 0 (begin) or __DGTAL_LABELS_NBWORDS (end)
       */
       ConstEnumerator( const Word* address, SizeType firstWord );
 

@@ -291,8 +291,8 @@ DGtal::Labels<L, TWord>::
 count() const
 {
   SizeType n = 0;
-  Word* p1 = myLabels;
-  Word* p2 = myLabels + __DGTAL_LABELS_NBWORDS;
+  const Word* p1 = myLabels;
+  const Word* p2 = myLabels + __DGTAL_LABELS_NBWORDS;
   while ( p1 != p2 ) 
     n += Bits::nbSetBits( *p1++ );
   return n;
@@ -325,7 +325,7 @@ getLabels( std::vector<Label> & labels ) const
       while ( w ) // extract labels within word
         {
           fsb = Bits::firstSetBit( w );
-          labels.push_back( l + Bits::leastSignificantBit( fsb ) );
+          labels.push_back( l + Bits::leastSignificantBit( fsb ) - 1 );
           w -= fsb;
         }
       l += __DGTAL_WORD_NBDIGITS;
@@ -339,12 +339,14 @@ DGtal::Labels<L, TWord>::
 index( Label l ) const
 {
   ASSERT( l < L );
-  Word* p1 = myLabels;
-  Word* p2 = myLabels + _word( l );
+  const Word* p1 = myLabels;
+  const Word* p2 = myLabels + _word( l );
   register SizeType i = 0;
   while ( p1 != p2 ) 
     i += Bits::nbSetBits( *p1++ );
-  return i + Bits::indexInSetBits( *p1, _digit( l ) );
+  return ( _mask( l ) & *p1 ) 
+    ? i + Bits::indexInSetBits( *p1, _digit( l ) ) - 1
+    : L;
 }
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
