@@ -1,6 +1,7 @@
 SET(DGTAL_TESTS_SRC
   testLengthEstimators
   testTrueLocalEstimator
+  testEstimatorComparator
   testSegmentComputerEstimators
   testMostCenteredMSEstimator
   )
