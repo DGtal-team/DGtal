@@ -68,25 +68,26 @@ bool testOFFReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  trace.beginBlock ( "Testing block ..." );  
   nb++;
+  std::string filenameOFF = testPath + "samples/box.off";  
+  MeshFromPoints<Point> a3DMesh;
+  bool importOK= OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
+  nbok += importOK ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   
-  std::string filenameOFF = testPath + "samples/box.off";
-  
-  MeshFromPoints<Point> a3DMesh;
-
-  OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
-  trace.info() << "Nb Vertex of the imported mesh: " << a3DMesh.nbVertex()<< endl;
-  trace.info() << "Nb Faces of the imported mesh: " << a3DMesh.nbFaces()<< endl;
   
   MeshFromPoints<Point>::MeshFace aFace = a3DMesh.getFace(0);
-  trace.info() << "Face 1: pt1 " << aFace.at(0)
-	       << " pt2: " << aFace.at(1) 
-	       << " pt3: " << aFace.at(2);
+  bool isWellImported = (a3DMesh.nbVertex()==8) &&  (a3DMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
+  nbok+=isWellImported? 1: 0;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
+  
+  
+  
+
+  
 
   
   trace.endBlock();  

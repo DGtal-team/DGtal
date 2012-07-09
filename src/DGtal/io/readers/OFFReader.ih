@@ -48,7 +48,7 @@
 
 template <typename TPoint>
 inline
-void
+bool
 DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename, 
 					DGtal::MeshFromPoints<TPoint> & aMesh, 
 					bool invertVertexOrder) throw(DGtal::IOException)
@@ -131,7 +131,7 @@ DGtal::OFFReader<TPoint>::importOFFFile(const std::string & aFilename,
   }
   
   //Todo processing optional colors...
-  
+  return true;
    
 }
 

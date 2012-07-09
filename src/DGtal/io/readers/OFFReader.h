@@ -95,7 +95,7 @@ public:
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
-  static  void  importOFFFile(const std::string & filename, 
+  static  bool  importOFFFile(const std::string & filename, 
 			      MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
   
 
@@ -117,11 +117,10 @@ public:
 }// namespace DGtal
 
 
+
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#if !defined(BUILD_INLINE)
 #include "DGtal/io/readers/OFFReader.ih"
-#endif
 
 
 //                                                                           //
