@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testSegmentComputerFunctor.cpp
+ * @file testSegmentComputerEstimators.cpp
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
@@ -24,7 +24,7 @@
  *
  * @date 2011/06/28
 
- * Functions for testing classes in SegmentComputerFunctor.h
+ * Functions for testing classes in SegmentComputerEstimators.h
  *
  * This file is part of the DGtal library.
  */
@@ -51,12 +51,12 @@ using namespace DGtal;
 using namespace LibBoard;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing classes in SegmentComputerFunctor.h.
+// Functions for testing classes in SegmentComputerEstimators.h.
 ///////////////////////////////////////////////////////////////////////////////
 
 
 /**
- * TangentFromDSSFunctor
+ * Tangent from DSS
  *
  */
 template<typename DSSComputer>

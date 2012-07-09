@@ -60,13 +60,24 @@ namespace DGtal
   // template class MostCenteredMaximalSegmentEstimator
   /**
    * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim: Assigns to each element of a range a quantity estimated from 
-   * the most centered maximal segment passing through this element. 
+   * \brief Aim: A model of CLocalCurveGeometricEstimator that assigns to each 
+   * element of a (sub)range a quantity estimated from the most centered 
+   * maximal segment passing through this element. 
    *
-   * This class is a model of CLocalGeometricEstimator.
-   *
+   Here is a basic example of curvature estimation: 
+   - 1. Construct an instance from a segment computer and a segment computer estimator
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredConstruction
+   - 2. Initialize it with a range @e r and a grid step @e h
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredInit
+   - 3. Get the estimations
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredEvaluation
+
    * @tparam SegmentComputer at least a model of CForwardSegmentComputer
    * @tparam SCEstimator a model of CSegmentComputerEstimator
+   *
+   * @see testMostCenteredMSEstimator.cpp
+   * @see exampleCurvature.cpp
+   * @see SaturatedSegmentation.h 
    */
   template <typename SegmentComputer, typename SCEstimator>
   class MostCenteredMaximalSegmentEstimator
@@ -74,6 +85,8 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<SegmentComputer> )); 
     BOOST_CONCEPT_ASSERT(( CSegmentComputerEstimator<SCEstimator> )); 
+    BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
+			  typename SCEstimator::SegmentComputer >::value ));
 
     // ----------------------- Types ------------------------------
   public:
