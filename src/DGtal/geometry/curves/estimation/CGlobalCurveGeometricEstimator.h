@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CLocalGeometricEstimator.h
+ * @file CGlobalGeometricEstimator.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/21
  *
- * Header file for concept CLocalGeometricEstimator.cpp
+ * Header file for concept CGlobalGeometricEstimator.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CLocalGeometricEstimator_RECURSES)
-#error Recursive header files inclusion detected in CLocalGeometricEstimator.h
-#else // defined(CLocalGeometricEstimator_RECURSES)
+#if defined(CGlobalGeometricEstimator_RECURSES)
+#error Recursive header files inclusion detected in CGlobalGeometricEstimator.h
+#else // defined(CGlobalGeometricEstimator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CLocalGeometricEstimator_RECURSES
+#define CGlobalGeometricEstimator_RECURSES
 
-#if !defined CLocalGeometricEstimator_h
+#if !defined CGlobalGeometricEstimator_h
 /** Prevents repeated inclusion of headers. */
-#define CLocalGeometricEstimator_h
+#define CGlobalGeometricEstimator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -50,13 +50,12 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CLocalGeometricEstimator
+  // class CGlobalGeometricEstimator
   /**
-     Description of \b concept '\b CLocalGeometricEstimator' <p>
+     Description of \b concept '\b CGlobalGeometricEstimator' <p>
      @ingroup Concepts
      @brief Aim: This concept describes an object that can process 
-     a range so as to return one estimated quantity for each element 
-     of the range (or a given subrange). 
+     a range so as to return one estimated quantity for the whole range. 
 
      ### Refinement of 
      - boost::DefaultConstructible
@@ -66,7 +65,7 @@ namespace DGtal
      - Quantity
 
      ### Notation
-     - \e X : A type that is a model of CLocalGeometricEstimator
+     - \e X : A type that is a model of CGlobalGeometricEstimator
      - \e x : object of type X
      - \e h : double
      - \e itb, ite, it : objects of type ConstIterator
@@ -76,24 +75,24 @@ namespace DGtal
 
      ### Valid expressions and semantics
 
-     | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
-     |----------------+-------------------------------+---+------------------------------+--------------+-------------------------------------------+---+-----------------|
-     | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
-     | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
-     | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |
+     | Name           | Expression            |   | Return type | Precondition | Semantics                          |   | Complexity      |
+     |----------------+-----------------------+---+-------------+--------------+------------------------------------+---+-----------------|
+     | Initialization | x.init( h, itb, ite ) |   | void        | h > 0        | Grid step and range initialization |   | constant        |
+     | Evaluation     | x.eval( )             |   | Quantity    |              | Estimation of the quantity         |   | model dependant |
 
      ### Invariants
 
      ### Models
 
-     MostCenteredMaximalSegmentEstimator TrueLocalEstimatorOnPoints
+     TrueGlobalEstimatorOnPoints L1LengthEstimator TwoStepLocalLengthEstimator
+     DSSLengthEstimator FPLengthEstimator MLPLengthEstimator 
 
      ### Notes
 
-     @tparam T the type that should be a model of CLocalGeometricEstimator.
+     @tparam T the type that should be a model of CGlobalGeometricEstimator.
   */
   template <typename T>
-  struct CLocalGeometricEstimator: 
+  struct CGlobalGeometricEstimator: 
     boost::DefaultConstructible<T>
   {
 
@@ -108,13 +107,12 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept< ConstIterator > ));
 
 
-    BOOST_CONCEPT_USAGE( CLocalGeometricEstimator )
+    BOOST_CONCEPT_USAGE( CGlobalGeometricEstimator )
     {
       //init method
       myX.init( myH, myItb, myIte ); 
 
-      ConceptUtils::sameType( myQ, myX.eval( myItb ) );
-      ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
+      ConceptUtils::sameType( myQ, myX.eval( ) );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -124,21 +122,18 @@ namespace DGtal
     double myH; 
     ConstIterator myItb, myIte; 
     Quantity myQ;
-    boost::iterator_archetype<Quantity,
-			      boost::iterator_archetypes::writable_iterator_t,
-			      boost::incrementable_traversal_tag > myIto; 
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CLocalGeometricEstimator
+  }; // end of concept CGlobalGeometricEstimator
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CLocalGeometricEstimator_h
+#endif // !defined CGlobalGeometricEstimator_h
 
-#undef CLocalGeometricEstimator_RECURSES
-#endif // else defined(CLocalGeometricEstimator_RECURSES)
+#undef CGlobalGeometricEstimator_RECURSES
+#endif // else defined(CGlobalGeometricEstimator_RECURSES)
