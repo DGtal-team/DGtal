@@ -100,6 +100,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
 int main()
 {
   typedef Labels<80, uint32_t> MyLabels;
+  typedef MyLabels::ConstIterator LabelsConstIterator;
   typedef bitset<80> MyBitset;
 
   unsigned int nb = 0;
@@ -126,7 +127,10 @@ int main()
   checkErase( v, l, 200 );
   ++nb, nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
-
+  for ( LabelsConstIterator it = l.begin(), it_end = l.end();
+        it != it_end; ++it )
+    std::cout << " " << *it;
+  std::cout << std::endl;
   trace.endBlock();
   return ( nb == nbok ) ? 0 : 1;
 }

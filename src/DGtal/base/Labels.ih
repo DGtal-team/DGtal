@@ -38,7 +38,144 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+// class DGtal::Labels<L, TWord>::ConstEnumerator
+
+///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+DGtal::Labels<L, TWord>::ConstEnumerator::
+~ConstEnumerator()
+{}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+DGtal::Labels<L, TWord>::ConstEnumerator::
+ConstEnumerator()
+  : myWordAddress( 0 ), myLabel( 0 )
+{}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+DGtal::Labels<L, TWord>::ConstEnumerator::
+ConstEnumerator( const Word* address, SizeType firstWord )
+  : myWordAddress( address + firstWord ), 
+    myWordLabel( firstWord * __DGTAL_WORD_NBDIGITS )
+{
+  ASSERT( firstWord <= __DGTAL_LABELS_NBWORDS );
+  if ( firstWord != __DGTAL_LABELS_NBWORDS )
+    {
+      myWord = *myWordAddress++;
+      this->operator++(); // find first bit
+    }
+  else
+    {
+      myWord = 0;
+      myLabel = 0;
+    }
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+DGtal::Labels<L, TWord>::ConstEnumerator::
+ConstEnumerator( const ConstEnumerator & other )
+  : myWordAddress( other.myWordAddress ), myWordLabel( other.myWordLabel ),
+    myLabel( other.myLabel ), myWord( other.myWord )
+{}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Self &
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator= ( const Self & other )
+{
+  if ( this != &other )
+    {
+      myWordAddress = other.myWordAddress;
+      myWordLabel = other.myWordLabel;
+      myLabel = other.myLabel;
+      myWord = other.myWord;
+    }
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Reference 
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator*() const
+{
+  return myLabel;
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Pointer  
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator->() const
+{
+  return &myLabel;
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Self&
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator++()
+{
+  ASSERT( ( myWordLabel < ( __DGTAL_LABELS_NBWORDS 
+                            * __DGTAL_WORD_NBDIGITS ) ) );
+  while ( myWord == 0 )
+    {
+      myWordLabel += __DGTAL_WORD_NBDIGITS;
+      if ( myWordLabel == ( __DGTAL_LABELS_NBWORDS 
+                            * __DGTAL_WORD_NBDIGITS ) )
+        {
+          myLabel = 0;
+          return *this;
+        }
+      myWord = *myWordAddress++;
+    }
+  ASSERT( myWord != 0 );
+  Word fsb = Bits::firstSetBit( myWord );
+  myLabel = myWordLabel + Bits::leastSignificantBit( fsb );
+  myWord -= fsb;
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstEnumerator::Self
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator++( int )
+{
+  ConstEnumerator tmp( *this );
+  this->operator++();
+  return tmp;
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+bool
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator==( const Self & other ) const
+{
+  return ( myWordAddress == other.myWordAddress )
+    && ( myLabel == other.myLabel );
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+bool
+DGtal::Labels<L, TWord>::ConstEnumerator::
+operator!=( const Self & other ) const
+{
+  return ( myWordAddress != other.myWordAddress )
+    || ( myLabel != other.myLabel );
+}
+
+
 
 //-----------------------------------------------------------------------------
 template <unsigned int L, typename TWord>
@@ -209,6 +346,25 @@ index( Label l ) const
     i += Bits::nbSetBits( *p1++ );
   return i + Bits::indexInSetBits( *p1, _digit( l ) );
 }
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstIterator
+DGtal::Labels<L, TWord>::
+begin() const
+{
+  return ConstIterator( myLabels, 0 );
+}
+//-----------------------------------------------------------------------------
+template <unsigned int L, typename TWord>
+inline
+typename DGtal::Labels<L, TWord>::ConstIterator
+DGtal::Labels<L, TWord>::
+end() const
+{
+  return ConstIterator( myLabels, __DGTAL_LABELS_NBWORDS );
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
