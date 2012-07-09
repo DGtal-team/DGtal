@@ -93,6 +93,106 @@ namespace DGtal
     /// Returns the mask for the label l (1 << _digit( l )).
     static Word _mask( Label l );
 
+  public:
+    /**
+       This class is used to enumerate the set values in the Labels container.
+       A model of boost::ForwardIterator.
+    */
+    class ConstEnumerator {
+    public:
+      typedef ConstEnumerator Self;
+      typedef Label Value;
+      typedef const Value* Pointer;
+      typedef const Value& Reference;
+      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+
+      // ----------------------- std types ----------------------------------
+      typedef Value value_type;
+      typedef std::size_t size_type;
+      typedef DifferenceType difference_type;
+      typedef Pointer pointer;
+      typedef Reference reference;
+      typedef std::forward_iterator_tag iterator_category;
+
+    private:
+      const Word* myWordAddress;  //< current address of word
+      Label myWordLabel;//< index of first label of the current word.
+      Label myLabel;    //< current label
+      Word myWord;      //< current word (modified until 0).
+      
+    public:
+      /**
+	 Default destructor.
+      */
+      ~ConstEnumerator();
+
+      /**
+	 Default constructor (Invalid).
+      */
+      ConstEnumerator();
+
+      /**
+	 Constructor from word address. 
+         @param address is some Labels.myLabels
+         @param firstWord is 0 or __DGTAL_LABELS_NBWORDS
+      */
+      ConstEnumerator( const Word* address, SizeType firstWord );
+
+      /**
+	 Copy constructor.
+	 @param other the object to clone.
+      */
+      ConstEnumerator( const ConstEnumerator & other );
+
+      /**
+       * Assignment.
+       * @param other the object to copy.
+       * @return a reference on 'this'.
+       */
+      Self & operator= ( const Self & other );
+      
+      /**
+	 Dereference operator.
+	 @return the current value of the iterator, if valid.
+      */
+      Reference operator*() const;
+     
+      /**
+	 Pointer dereference operator.
+	 @return a non-mutable pointer on the current value.
+      */  
+      Pointer operator->() const;
+      
+      /** 
+	  Pre-increment operator.
+	  @return a reference to itself.
+      */
+      Self& operator++();      
+      /** 
+	  Post-increment operator.
+	  @return a reference to itself.
+      */
+      Self operator++( int );
+    
+      /**
+	 Equality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on the same element.
+      */
+      bool operator==( const Self & other ) const;
+      
+      /**
+	 Inequality operator.
+	 @param other any other iterator.
+	 @return 'true' iff the iterators points on different elements.
+      */
+      bool operator!=( const Self & other ) const;
+
+    };
+
+    typedef ConstEnumerator ConstIterator;
+    typedef ConstIterator const_iterator;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -180,6 +280,16 @@ namespace DGtal
        @return the index of the label l in this set, starting from 0. If the label is not set, returns L (ie. size()).
     */
     SizeType index( Label l ) const;
+
+    /**
+       @return an iterator pointing on the first valid label.
+    */
+    ConstIterator begin() const;
+
+    /**
+       @return an iterator pointing after the last valid label.
+    */
+    ConstIterator end() const;
     
     // ----------------------- Interface --------------------------------------
   public:
