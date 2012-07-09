@@ -612,8 +612,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
       glColor4ub ( myPolygonList.at ( i ).R, myPolygonList.at ( i ).G, myPolygonList.at ( i ).B, myPolygonList.at ( i ).T );
       glNormal3f ( -myPolygonList.at ( i ).nx, -myPolygonList.at ( i ).ny ,-myPolygonList.at ( i ).nz );
       vector<pointD3D> vectVertex = myPolygonList.at ( i ).vectPoints;
-      for(int j=0;j < vectVertex.size();j++){
-
+      for(unsigned int j=0;j < vectVertex.size();j++){
 	glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
       }
       glEnd();
@@ -622,16 +621,16 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   
 
   // Sixth list: Wired version of polygonal face.
-  glNewList ( GLuint  (myListToAff + nbListOfPrimitives +5 ), GL_COMPILE );
+  glNewList ( GLuint  (myListToAff + nbListOfPrimitives +6 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
   glDisable ( GL_LIGHTING );
   glBegin ( GL_LINES );
   for ( unsigned int i=0; i<myPolygonList.size(); i++ )
     {
-      glColor4ub ( myPolygonList.at ( i ).R, myPolygonList.at ( i ).G, myPolygonList.at ( i ).B, myPolygonList.at ( i ).T );      
+      glColor4ub ( myCurrentLineColor.red(), myCurrentLineColor.green(), myCurrentLineColor.blue() , myCurrentLineColor.alpha() );
       vector<pointD3D> vectVertex = myPolygonList.at ( i ).vectPoints;
-      for(int j=0;j < vectVertex.size();j++){
+      for(unsigned int j=0;j < vectVertex.size();j++){
 	glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
 	glVertex3f ( vectVertex.at((j+1)%vectVertex.size()).x, vectVertex.at((j+1)%vectVertex.size()).y, vectVertex.at ( (j+1)%vectVertex.size() ).z );
       }
