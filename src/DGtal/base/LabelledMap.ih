@@ -848,6 +848,124 @@ insert ( Iterator position, const Value & val )
     }
   return position;
 }
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+std::pair< typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator,
+           typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator >
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+equal_range( const Key & x )
+{
+  Iterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first == x ) return std::make_pair( it, ++it );
+      else if ( (*it).first > x ) return std::make_pair( it, it );
+    }
+  return std::make_pair( it_end, it_end );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+std::pair< typename DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator,
+           typename DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator >
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+equal_range( const Key & x ) const
+{
+  ConstIterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first == x ) return std::make_pair( it, ++it );
+      else if ( (*it).first > x ) return std::make_pair( it, it );
+    }
+  return std::make_pair( it_end, it_end );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+find( const Key & x )
+{
+  Iterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first == x ) return it;
+      else if ( (*it).first > x ) return it_end;
+    }
+  return it_end;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+find( const Key & x ) const
+{
+  ConstIterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first == x ) return it;
+      else if ( (*it).first > x ) return it_end;
+    }
+  return it_end;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+lower_bound( const Key & x )
+{
+  Iterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first >= x ) return it;
+    }
+  return it_end;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+lower_bound( const Key & x ) const
+{
+  ConstIterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first >= x ) return it;
+    }
+  return it_end;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+upper_bound( const Key & x )
+{
+  Iterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first > x ) return it;
+    }
+  return it_end;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+upper_bound( const Key & x ) const
+{
+  ConstIterator it = begin(), it_end = end();
+  for ( ; it != it_end; ++it )
+    {
+      if ( (*it).first > x ) return it;
+    }
+  return it_end;
+}
 
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -869,24 +987,26 @@ blockErase( unsigned int idx )
   ASSERT( idx < size() ); // end is not ok.
   myFirstBlock.erase( idx, size() );
 }
-// //-----------------------------------------------------------------------------
-// template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
-// inline
-// typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
-// DGtal::LabelledMap<TData, L, TWord, N, M>::
-// begin()
-// {
-//   return Iterator( myLabels.begin(), blockBegin() );
-// }
-// //-----------------------------------------------------------------------------
-// template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
-// inline
-// typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
-// DGtal::LabelledMap<TData, L, TWord, N, M>::
-// end()
-// {
-//   return Iterator( myLabels.end(), blockEnd() );
-// }
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+begin()
+{
+  const Self* ptr = (const Self *) this;
+  return Iterator( myLabels.begin(), ptr->blockBegin() );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+end()
+{
+  const Self* ptr = (const Self *) this;
+  return Iterator( myLabels.end(), ptr->blockEnd() );
+}
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline

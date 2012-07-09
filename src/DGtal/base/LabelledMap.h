@@ -116,6 +116,7 @@ if more than 3 datas and N = 2, M = 4
     BOOST_STATIC_ASSERT( M >= 2 );
   public:
     // ----------------------- Public types ------------------------------
+    typedef LabelledMap<TData, L, TWord, N, M> Self;
     typedef TData Data;
     typedef TWord Word;
     typedef Labels<L, Word> LabelsType;
@@ -136,6 +137,7 @@ if more than 3 datas and N = 2, M = 4
     class ConstIterator; //< Forward declaration
 
     // ----------------------- Standard types ------------------------------
+    typedef Key key_type;
     typedef Value value_type;
     typedef Data data_type;
     typedef DifferenceType difference_type;
@@ -854,6 +856,187 @@ if more than 3 datas and N = 2, M = 4
     /// @return an iterator pointing after the last element in the container.
     ConstIterator end() const;
 
+    /// @return an iterator pointing on the first element in the container.
+    Iterator begin();
+
+    /// @return an iterator pointing after the last element in the container.
+    Iterator end();
+
+    /**
+       Get range of equal elements.
+
+       Returns the bounds of a range that includes all the elements in
+       the container with a key that compares equal to x. Here, the range will
+       include one element at most.
+
+       If x does not match any key in the container, the range
+       returned has a length of zero, with both iterators pointing to
+       the element with nearest key greater than x, if any, or to
+       map::end if x is greater than all the elements in the
+       container.
+
+       @param x any key in 0..L-1
+
+       @return a pair, where its member pair::first is an iterator to
+       the lower bound of the range with the same value as the one
+       that would be returned by lower_bound(x), and pair::second is
+       an iterator to the upper bound of the range with the same value
+       as the one that would be returned by upper_bound(x).
+     */
+    std::pair<Iterator, Iterator> equal_range( const Key & x );
+
+    /**
+       Get range of equal elements.
+       
+       Returns the bounds of a range that includes all the elements in
+       the container with a key that compares equal to x. Here, the range will
+       include one element at most.
+
+       If x does not match any key in the container, the range
+       returned has a length of zero, with both iterators pointing to
+       the element with nearest key greater than x, if any, or to
+       map::end if x is greater than all the elements in the
+       container.
+
+       @param x any key in 0..L-1
+
+       @return a pair, where its member pair::first is an iterator to
+       the lower bound of the range with the same value as the one
+       that would be returned by lower_bound(x), and pair::second is
+       an iterator to the upper bound of the range with the same value
+       as the one that would be returned by upper_bound(x).
+     */
+    std::pair<ConstIterator, ConstIterator> equal_range( const Key & x ) const;
+
+    /**
+       Get iterator to element.
+
+       Searches the container for an element with \a x as key and
+       returns an iterator to it if found, otherwise it returns an
+       iterator to end() (the element past the end of the container).
+
+       NB: Another member function, count(), can be used to just check
+       whether a particular key exists. 'count( x ) == 1' is faster
+       than 'find( x ) != end()'.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return An iterator to the element, if the specified key value
+       is found, end() if the specified key is not found in the
+       container.
+    */
+    Iterator find ( const Key & x );
+
+    /**
+       Get iterator to element.
+
+       Searches the container for an element with \a x as key and
+       returns an iterator to it if found, otherwise it returns an
+       iterator to end() (the element past the end of the container).
+
+       NB: Another member function, count(), can be used to just check
+       whether a particular key exists. 'count( x ) == 1' is faster
+       than 'find( x ) != end()'.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return An iterator to the element, if the specified key value
+       is found, end() if the specified key is not found in the
+       container.
+    */
+    ConstIterator find ( const Key & x ) const;
+
+    /**
+       Return iterator to lower bound.
+
+       Returns an iterator pointing to the first element in the
+       container whose key does not compare less than \a x (using the
+       container's comparison object), i.e. it is either equal or
+       greater.
+
+       Unlike upper_bound(), this member function returns an iterator
+       to the element also if it compares equal to \a x and not only
+       if it compares greater.
+
+       Notice that, internally, all the elements in this container are
+       always ordered by their keys, therefore all the elements that
+       follow the one returned by this function will have a key that
+       compares greater than x.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return an iterator to the the first element in the container
+       whose key does not compare less than \a x.
+    */
+    Iterator lower_bound( const Key & x );
+
+    /**
+       Return iterator to lower bound.
+
+       Returns an iterator pointing to the first element in the
+       container whose key does not compare less than \a x, i.e. it is
+       either equal or greater.
+
+       Unlike upper_bound(), this member function returns an iterator
+       to the element also if it compares equal to \a x and not only
+       if it compares greater.
+
+       Notice that, internally, all the elements in this container are
+       always ordered by their keys, therefore all the elements that
+       follow the one returned by this function will have a key that
+       compares greater than x.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return an iterator to the the first element in the container
+       whose key does not compare less than \a x.
+    */
+    ConstIterator lower_bound ( const Key & x ) const;
+
+    /**
+       Return iterator to upper bound.
+
+       Returns an iterator pointing to the first element in the
+       container whose key compares greater than \a x. (>x)
+
+       Unlike lower_bound(), this member function does not return an
+       iterator to the element if its key compares equal to \a x, but
+       only if it compares strictly greater.
+
+       Notice that, internally, all the elements in this container are
+       always ordered by their keys, therefore all the elements that
+       follow the one returned by this function will have a key that
+       compares greater than x.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return an iterator to the the first element in the container
+       whose key compares greater than \a x.
+    */
+    Iterator upper_bound ( const Key & x );
+
+    /**
+       Return iterator to upper bound.
+
+       Returns an iterator pointing to the first element in the
+       container whose key compares greater than \a x. (>x)
+
+       Unlike lower_bound(), this member function does not return an
+       iterator to the element if its key compares equal to \a x, but
+       only if it compares strictly greater.
+
+       Notice that, internally, all the elements in this container are
+       always ordered by their keys, therefore all the elements that
+       follow the one returned by this function will have a key that
+       compares greater than x.
+
+       @param x Key to be searched for (in 0..L-1)
+
+       @return an iterator to the the first element in the container
+       whose key compares greater than \a x.
+    */
+    ConstIterator upper_bound ( const Key & x ) const;
+
 
     /**
        Removes all the datas stored in the block structure. 
@@ -898,11 +1081,6 @@ if more than 3 datas and N = 2, M = 4
     */
     void blockErase( unsigned int idx );
 
-    // /// @return an iterator pointing on the first element in the container.
-    // Iterator begin();
-
-    // /// @return an iterator pointing after the last element in the container.
-    // Iterator end();
 
     /// @return an iterator pointing on the first element in the container.
     BlockIterator blockBegin();

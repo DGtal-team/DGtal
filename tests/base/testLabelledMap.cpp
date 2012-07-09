@@ -147,6 +147,18 @@ int main()
   ++nb, nbok += checkErase( v, l, 1000 ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") 1000 deletions l=" << l << std::endl; 
   trace.endBlock();
+  trace.beginBlock ( "Testing LabelledMap" );
+  ++nb, nbok += checkInsert( v, l, 10 ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") 10 deletions l=" << l << std::endl; 
+  std::pair< MyLabelledMap::Iterator,
+             MyLabelledMap::Iterator > pair1 = l.equal_range( 7 );
+  std::cout << "Range(7)=[" << (*pair1.first).first << "," << (*pair1.second).first << ")" << std::endl;
+  ++nb, nbok += ( pair1.first == l.lower_bound( 7 ) ) ? 1 : 0;
+  ++nb, nbok += ( pair1.second == l.upper_bound( 7 ) ) ? 1 : 0;
+  std::cout << "(" << nbok << "/" << nb << ") equal_range, lower_bound." << std::endl; 
+  
+  trace.endBlock();
+
   return ( nb == nbok ) ? 0 : 1;
 }
 /** @ingroup Tests **/
