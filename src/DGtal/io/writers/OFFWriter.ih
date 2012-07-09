@@ -45,44 +45,44 @@ namespace DGtal {
   bool 
   OFFWriter<TPoint>::export2OFF(const std::string & filename, const  std::vector<TPoint> &vectVertex,
 				const std::vector<unsigned int > &vectFaces,	unsigned int numFaces,			  
-			const std::vector<DGtal::Color> &vectColorFaces) throw(DGtal::IOException){
+				const std::vector<DGtal::Color> &vectColorFaces) throw(DGtal::IOException){
     DGtal::IOException dgtalio;
     ofstream out;
     try
       {
 	out.open(filename.c_str());
-      out << "OFF"<< endl;
-      out << "# generated from OFFWriter from the DGTal library"<< endl;
-      out << vectVertex.size() << " " << numFaces << " " << 0 << " " << endl;
+	out << "OFF"<< endl;
+	out << "# generated from OFFWriter from the DGTal library"<< endl;
+	out << vectVertex.size() << " " << numFaces << " " << 0 << " " << endl;
       
-      for(unsigned int i=0; i<vectVertex.size(); i++){
-	out << vectVertex.at(i).x << " " << vectVertex.at(i).y << " "<< vectVertex.at(i).z << endl;	
-      }
-      int position=0;
-      int indexFace=0;
-      while(position < vectFaces.size()){
-	unsigned int nbVertex = vectFaces.at(position);
-	out << nbVertex << " " ;
-	for(int j=0; j< nbVertex; j++){
-	  out << vectFaces.at(position+j+1)<< " " ;
+	for(unsigned int i=0; i<vectVertex.size(); i++){
+	  out << vectVertex.at(i).x << " " << vectVertex.at(i).y << " "<< vectVertex.at(i).z << endl;	
 	}
+	int position=0;
+	int indexFace=0;
+	while(position < vectFaces.size()){
+	  unsigned int nbVertex = vectFaces.at(position);
+	  out << nbVertex << " " ;
+	  for(int j=0; j< nbVertex; j++){
+	    out << vectFaces.at(position+j+1)<< " " ;
+	  }
 	
-	DGtal::Color col = vectColorFaces.at(indexFace);
-	out << ((double) col.red())/255.0 << " "<< ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 << " " << ((double) col.alpha())/255.0<< endl ;
-	position+=nbVertex+1;
-	indexFace++;
-      }
+	  DGtal::Color col = vectColorFaces.at(indexFace);
+	  out << ((double) col.red())/255.0 << " "<< ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 << " " << ((double) col.alpha())/255.0<< endl ;
+	  position+=nbVertex+1;
+	  indexFace++;
+	}
       
       
       
-    }catch( ... )
+      }catch( ... )
       {
 	std::cout << "OFF writer IO error on export " << filename << endl;
 	throw dgtalio;
       }
   
   
-}
+  }
   
 
 
