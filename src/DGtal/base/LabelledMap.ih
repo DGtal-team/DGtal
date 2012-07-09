@@ -618,6 +618,24 @@ operator!=( const Self & other ) const
 {
   return myLabelsIt != other.myLabelsIt;
 }
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data&
+DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator::
+_data() const
+{
+  return const_cast<Data&>( *myBlockIt );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+const typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data&
+DGtal::LabelledMap<TData, L, TWord, N, M>::ConstIterator::
+_const_data() const
+{
+  return *myBlockIt;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // class LabelledMap
@@ -634,7 +652,7 @@ inline
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 ~LabelledMap()
 {
-  clear();
+  blockClear();
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -663,7 +681,7 @@ operator=( const LabelledMap & other )
 {
   if ( this != &other )
     {
-      clear();
+      blockClear();
       myFirstBlock = other.myFirstBlock;
       // there is one more stored data in the last block.
       unsigned int s = N + 1; 
@@ -686,6 +704,16 @@ void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 clear()
 {
+  blockClear();
+  myLabels.reset();
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+void
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+blockClear()
+{
   AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
   while ( nextBlock != 0 )
     {
@@ -693,7 +721,6 @@ clear()
       nextBlock = nextBlock->next;
       delete ptr;
     }
-  myLabels.reset();
   myFirstBlock.data.nextBlock = 0;
 }
 //-----------------------------------------------------------------------------
@@ -733,6 +760,15 @@ capacity() const
   return ( size() <= (N+1) )
     ? N+1
     : ( 1 + ( size() - 1 - N ) / M ) * M + N;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::SizeType
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+count( const Key & key ) const
+{
+  return myLabels.test( key ) ? 1 : 0;
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -777,7 +813,107 @@ blockAt( unsigned int idx )
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline
+const typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+operator[]( const Key & key ) const
+{
+  ASSERT( key < L ); 
+  bool exists = myLabels.test( key );
+  if ( ! exists ) 
+    {
+      unsigned int block_size = size();
+      myLabels.set( key ); // must be done before so that 'index' works.
+      blockInsert( myLabels.index( key ), block_size, Data() );
+    }
+  else
+    {
+      return blockAt( myLabels.index( key ) );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+operator[]( const Key & key )
+{
+  ASSERT( key < L ); 
+  bool exists = myLabels.test( key );
+  if ( ! exists ) 
+    {
+      unsigned int block_size = size();
+      myLabels.set( key ); // must be done before so that 'index' works.
+      blockInsert( myLabels.index( key ), block_size, Data() );
+    }
+  else
+    {
+      return blockAt( myLabels.index( key ) );
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+const typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+fastAt( const Key & key ) const
+{
+  ASSERT( key < L ); 
+  ASSERT( myLabels.test( key ) );
+  return blockAt( myLabels.index( key ) );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+fastAt( const Key & key )
+{
+  ASSERT( key < L ); 
+  ASSERT( myLabels.test( key ) );
+  return blockAt( myLabels.index( key ) );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
 void
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+erase( Iterator position )
+{
+  Key key = (*position).first;
+  ASSERT( myLabels.test( key ) );
+  blockErase( myLabels.index( key ) );
+  myLabels.reset( key );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::SizeType
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+erase( Key key )
+{
+  if ( myLabels.test( key ) )
+    {
+      blockErase( myLabels.index( key ) );
+      myLabels.reset( key );
+      return 1;
+    }
+  return 0;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+void
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+erase( Iterator first, Iterator last )
+{
+  for ( ; first != last; ++first )
+    erase( first );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+std::pair<typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator, bool>
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 insert( const Value & val )
 {
@@ -785,15 +921,39 @@ insert( const Value & val )
   bool exists = myLabels.test( val.first );
   if ( ! exists ) 
     {
-      SizeType block_size = size();
-      myLabels.set( val.first );
-      myFirstBlock.insert( myLabels.index( val.first ), block_size,
-                           val.second );
+      unsigned int block_size = size();
+      myLabels.set( val.first ); // must be done before so that 'index' works.
+      blockInsert( myLabels.index( val.first ), block_size, val.second );
     }
-  else
+  Iterator position = begin();
+  while ( (*position).first != val.first ) 
     {
-      blockAt( myLabels.index( val.first ) ) = val.second;
+      // std::cerr << "[" << (*position).first << "]" << std::endl;
+      ++position;
     }
+  return std::make_pair( position, exists );
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+insert ( Iterator position, const Value & val )
+{
+  ASSERT( val.first < L ); 
+  if ( ! myLabels.test( val.first ) )
+    {
+      unsigned int block_size = size();
+      myLabels.set( val.first ); // must be done before so that 'index' works.
+      blockInsert( myLabels.index( val.first ), block_size, val.second );
+    }
+  position = begin(); 
+  while ( (*position).first != val.first ) 
+    {
+      //std::cerr << "[" << (*position).first << "]" << std::endl;
+      ++position;
+    }
+  return position;
 }
 
 //-----------------------------------------------------------------------------
@@ -801,10 +961,10 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
-blockInsert( unsigned int idx, const Data & data )
+blockInsert( unsigned int idx, unsigned int block_size, const Data & data )
 {
-  ASSERT( idx <= size() ); // end is ok.
-  myFirstBlock.insert( idx, data );
+  ASSERT( idx <= block_size ); // end is ok.
+  myFirstBlock.insert( idx, block_size, data );
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -814,7 +974,7 @@ DGtal::LabelledMap<TData, L, TWord, N, M>::
 blockErase( unsigned int idx )
 {
   ASSERT( idx < size() ); // end is not ok.
-  myFirstBlock.erase( idx );
+  myFirstBlock.erase( idx, size() );
 }
 // //-----------------------------------------------------------------------------
 // template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
