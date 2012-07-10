@@ -605,9 +605,9 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
-blockClear( unsigned int size )
+blockClear( unsigned int theSize )
 {
-  if ( size != N+1 )
+  if ( theSize != N+1 )
     {
       __AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
       while ( nextBlock != 0 )
@@ -875,7 +875,13 @@ equal_range( const Key & x )
   Iterator it = begin(), it_end = end();
   for ( ; it != it_end; ++it )
     {
-      if ( (*it).first == x ) return std::make_pair( it, ++it );
+      if ( (*it).first == x )
+        { 
+          // JOL: g++ does not compile correctly:
+          // return std::make_pair( it, ++it );
+          it_end = it; ++it_end;
+          return std::make_pair( it, it_end );
+        }
       else if ( (*it).first > x ) return std::make_pair( it, it );
     }
   return std::make_pair( it_end, it_end );

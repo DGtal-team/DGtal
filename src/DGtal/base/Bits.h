@@ -110,7 +110,7 @@ namespace DGtal
     template <typename T>
     static inline  T firstSetBit(T val)
     {
-      return (val & -val | val & (~val + 1));
+      return ( (val & -val) | (val & (~val + 1)) );
     }
 
 
