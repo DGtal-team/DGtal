@@ -33,7 +33,7 @@
 #include "DGtal/io/Color.h"
 #include "ConfigExamples.h"
 //! [includeImportOFF]
-#include "DGtal/io/readers/OFFReader.h"
+#include "DGtal/io/readers/MeshReader.h"
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/Display3D.h"
@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/angel.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
   MeshFromPoints<Display3D::pointD3D> anImportedMesh;
-  OFFReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+  MeshReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
     //! [displayOFFfile]

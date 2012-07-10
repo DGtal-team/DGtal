@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file OFFReader.h
+ * @file MeshReader.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/06/29
  *
- * Header file for module OFFReader.cpp
+ * Header file for module MeshReader.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(OFFReader_RECURSES)
-#error Recursive header files inclusion detected in OFFReader.h
-#else // defined(OFFReader_RECURSES)
+#if defined(MeshReader_RECURSES)
+#error Recursive header files inclusion detected in MeshReader.h
+#else // defined(MeshReader_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define OFFReader_RECURSES
+#define MeshReader_RECURSES
 
-#if !defined OFFReader_h
+#if !defined MeshReader_h
 /** Prevents repeated inclusion of headers. */
-#define OFFReader_h
+#define MeshReader_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -55,7 +55,7 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class OFFMesh
 /**
- * Description of class 'OFFReader' <p> \brief Aim: Defined to import
+ * Description of class 'MeshReader' <p> \brief Aim: Defined to import
  * OFF surface mesh. It allows to import a MeshFromPoints object but do not takes
  * into accouts the optional color faces.
  * 
@@ -63,7 +63,7 @@ namespace DGtal
  * @code
  // importating the mesh
  MeshFromPoints<Display3D::pointD3D> anImportedMesh;
- OFFReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+ MeshReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
  //Displaying the resulting mesh with Viewed3D 
  viewer.setFillColor(DGtal::Color(240,240,240,150));
  viewer.setLineColor(DGtal::Color(150,0,0,254));
@@ -80,7 +80,7 @@ namespace DGtal
 
 
 template <typename TPoint> 
-struct OFFReader
+struct MeshReader
 {
     // ----------------------- Standard services ------------------------------
 public:
@@ -119,7 +119,7 @@ public:
   
 
 
-}; // end of class OFFReader
+}; // end of class MeshReader
 
 
 
@@ -135,13 +135,13 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/readers/OFFReader.ih"
+#include "DGtal/io/readers/MeshReader.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined OFFReader_h
+#endif // !defined MeshReader_h
 
-#undef OFFReader_RECURSES
-#endif // else defined(OFFReader_RECURSES)
+#undef MeshReader_RECURSES
+#endif // else defined(MeshReader_RECURSES)
