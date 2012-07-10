@@ -325,8 +325,9 @@ getLabels( std::vector<Label> & labels ) const
       while ( w ) // extract labels within word
         {
           fsb = Bits::firstSetBit( w );
-          labels.push_back( l + Bits::leastSignificantBit( fsb ) - 1 );
+          labels.push_back( l + Bits::leastSignificantBit( fsb )  );
           w -= fsb;
+          ASSERT( index( labels.back() ) == ( labels.size() - 1 ) );
         }
       l += __DGTAL_WORD_NBDIGITS;
     }
