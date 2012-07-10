@@ -545,7 +545,7 @@ inline
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 ~LabelledMap()
 {
-  blockClear();
+  blockClear( size() );
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -605,14 +605,17 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
-blockClear()
+blockClear( unsigned int size )
 {
-  __AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
-  while ( nextBlock != 0 )
+  if ( size != N+1 )
     {
-      __AnyBlock* ptr = nextBlock;
-      nextBlock = nextBlock->next;
-      delete ptr;
+      __AnyBlock* nextBlock = myFirstBlock.data.nextBlock;
+      while ( nextBlock != 0 )
+        {
+          __AnyBlock* ptr = nextBlock;
+          nextBlock = nextBlock->next;
+          delete ptr;
+        }
     }
   myFirstBlock.data.nextBlock = 0;
 }
