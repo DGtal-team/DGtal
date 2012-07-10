@@ -1066,8 +1066,9 @@ if more than 3 datas and N = 2, M = 4
 
     /**
        Removes all the datas stored in the block structure. 
+       @param size must be the current size of the block structure.
      */
-    void blockClear();
+    void blockClear( unsigned int size );
 
     /**
        Random unprotected read-write access to data at position \a idx
