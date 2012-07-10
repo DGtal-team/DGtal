@@ -619,8 +619,10 @@ if more than 3 datas and N = 2, M = 4
     public:
       friend class LabelledMap;
       typedef ConstIterator Self;
-      typedef const typename LabelledMap<TData, L, TWord, N, M>::Value Value;
-      typedef Value* Pointer;
+      // The following line is removed so that gcc-4.2 and gcc-4.6 compiles. 
+      //typedef typename LabelledMap<TData, L, TWord, N, M>::Value Value;
+      typedef const Value* Pointer;
+      /// Note the trick here. The reference is a rvalue. Works only for const iterator.
       typedef Value Reference;
       typedef std::ptrdiff_t DifferenceType;
 
