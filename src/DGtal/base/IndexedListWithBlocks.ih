@@ -528,16 +528,18 @@ DGtal::IndexedListWithBlocks<TValue, N, M>::
 operator[]( unsigned int idx ) const
 {
   ASSERT( idx < size() );
-  if ( idx <= N )
-    // Note here that we use contiguity between values and data.lastValue.
+  if ( idx < N )
     return myFirstBlock.values[ idx ];
+  else if ( ( idx == N ) && ( size() == N+1 ) )
+    return myFirstBlock.data.lastValue;
   const AnyBlock* ptr = myFirstBlock.data.nextBlock;
   idx -= N;
-  while ( idx > M )
+  while ( idx >= M )
     {
       idx -= M;
       ptr = ptr->next;
     }
+  ASSERT( ptr != 0 );
   return ptr->values[ idx ];
 }
 //-----------------------------------------------------------------------------
@@ -548,16 +550,18 @@ DGtal::IndexedListWithBlocks<TValue, N, M>::
 operator[]( unsigned int idx )
 {
   ASSERT( idx < size() );
-  if ( idx <= N )
-    // Note here that we use contiguity between values and data.lastValue.
+  if ( idx < N )
     return myFirstBlock.values[ idx ];
+  else if ( ( idx == N ) && ( size() == N+1 ) )
+    return myFirstBlock.data.lastValue;
   AnyBlock* ptr = myFirstBlock.data.nextBlock;
   idx -= N;
-  while ( idx > M )
+  while ( idx >= M )
     {
       idx -= M;
       ptr = ptr->next;
     }
+  ASSERT( ptr != 0 );
   return ptr->values[ idx ];
 }
 //-----------------------------------------------------------------------------
