@@ -186,7 +186,7 @@ namespace DGtal
     * @param listIndex: the index of all the face vertex.
     * 
     **/    
-    void addFace(const vector<unsigned int> &listIndex);
+    void addFace(const MeshFace &aFace);
     
     
    

@@ -74,23 +74,41 @@ bool testOFFReader()
   MeshFromPoints<Point> a3DMesh;
   bool importOK= OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
   nbok += importOK ? 1 : 0; 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
   
   
+  nb++;
   MeshFromPoints<Point>::MeshFace aFace = a3DMesh.getFace(0);
   bool isWellImported = (a3DMesh.nbVertex()==8) &&  (a3DMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
-  nbok+=isWellImported? 1: 0;
+  nbok+=isWellImported? 1: 0; 
+  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  
-  
-  
 
-  
 
+  nb++;
+  std::string filenameOFS = testPath + "samples/testMesh.ofs";  
+  MeshFromPoints<Point> a3DMesh2;
+  bool importOK2= OFFReader<Point>::importOFSFile(filenameOFS, a3DMesh2);
+  nbok += importOK2 ? 1 : 0; 
   
+  nb++;
+  MeshFromPoints<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
+  bool isWellImported2 = (a3DMesh2.nbVertex()==32) &&  (a3DMesh2.nbFaces()==60) && (aFace2.size()==3) && (aFace2.at(0)==0);
+  nbok+=isWellImported2? 1: 0;
+
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "true == true" << std::endl;
   trace.endBlock();  
+
+  
+  
+
+  
+
+  
+  
   return nbok == nb;
 }
 
