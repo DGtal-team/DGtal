@@ -158,8 +158,8 @@ DGtal::Viewer3D::draw()
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+1 ) );
   if(myViewWire){
-    glLineWidth ( myMeshDefaultLineWidth /distCam );
-    glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
+      glLineWidth ( myMeshDefaultLineWidth /distCam );
+      glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
   }
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
@@ -189,7 +189,38 @@ DGtal::Viewer3D::draw()
     {
       glDrawGLLinel ( myKSLinelList.at ( i ) );
     }
+ 
+  
+
     
+
+  // Drawing all Khalimsky Space Cells
+
+  for ( unsigned int i=0; i< myKSPointelList.size(); i++ )
+    {
+      glDrawGLPointel ( myKSPointelList.at ( i ) );
+    }
+  for ( unsigned int i=0; i< myKSLinelList.size(); i++ )
+    {
+      glDrawGLLinel ( myKSLinelList.at ( i ) );
+    }
+    
+
+
+    
+
+  // Drawing all Khalimsky Space Cells
+
+  for ( unsigned int i=0; i< myKSPointelList.size(); i++ )
+    {
+      glDrawGLPointel ( myKSPointelList.at ( i ) );
+    }
+  for ( unsigned int i=0; i< myKSLinelList.size(); i++ )
+    {
+      glDrawGLLinel ( myKSLinelList.at ( i ) );
+    }
+    
+
   glPopMatrix();
 }
 
@@ -634,8 +665,8 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 	glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
 	glVertex3f ( vectVertex.at((j+1)%vectVertex.size()).x, vectVertex.at((j+1)%vectVertex.size()).y, vectVertex.at ( (j+1)%vectVertex.size() ).z );
       }
-      glEnd();
     }
+  glEnd();
   glEndList();
   
 
