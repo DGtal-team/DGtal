@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testOFFReader.cpp
+ * @file testMeshReader.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/07/04
  *
- * Functions for testing class OFFReader.
+ * Functions for testing class MeshReader.
  *
  * This file is part of the DGtal library.
  */
@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-#include "DGtal/io/readers/OFFReader.h"
+#include "DGtal/io/readers/MeshReader.h"
 #include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigTest.h"
@@ -58,13 +58,13 @@ typedef Point3D Point;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class OFFReader.
+// Functions for testing class MeshReader.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testOFFReader()
+bool testMeshReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -72,7 +72,7 @@ bool testOFFReader()
   nb++;
   std::string filenameOFF = testPath + "samples/box.off";  
   MeshFromPoints<Point> a3DMesh;
-  bool importOK= OFFReader<Point>::importOFFFile(filenameOFF, a3DMesh);
+  bool importOK= MeshReader<Point>::importOFFFile(filenameOFF, a3DMesh);
   nbok += importOK ? 1 : 0; 
   
   
@@ -89,7 +89,7 @@ bool testOFFReader()
   nb++;
   std::string filenameOFS = testPath + "samples/testMesh.ofs";  
   MeshFromPoints<Point> a3DMesh2;
-  bool importOK2= OFFReader<Point>::importOFSFile(filenameOFS, a3DMesh2);
+  bool importOK2= MeshReader<Point>::importOFSFile(filenameOFS, a3DMesh2);
   nbok += importOK2 ? 1 : 0; 
   
   nb++;
@@ -117,13 +117,13 @@ bool testOFFReader()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class OFFReader" );
+  trace.beginBlock ( "Testing class MeshReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testOFFReader(); // && ... other tests
+  bool res = testMeshReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
