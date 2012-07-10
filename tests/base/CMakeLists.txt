@@ -16,6 +16,7 @@ SET(DGTAL_TESTS_SRC
    testIndexedListWithBlocks
    testLabels
    testLabelledMap
+   testLabelledMap-benchmark
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

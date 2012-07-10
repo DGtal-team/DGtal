@@ -171,18 +171,29 @@ if more than 3 datas and N = 2, M = 4
       { data.nextBlock = 0; }
 
       inline
-      void insert( unsigned int idx, unsigned int size, const Data & v )
+      Data & insert( unsigned int idx, unsigned int size, const Data & v )
       {
-	if ( size <= N )
+        ASSERT( idx <= size );
+	if ( size < N )
 	  {
-	    ASSERT( idx <= size );
-	    // works also in the case we use 'data' to store a N+1-th data.
 	    std::copy_backward( datas + idx, datas + size, datas + size + 1 );
-	    datas[ idx ] = v;
+	    return ( datas[ idx ] = v );
+	  }
+	else if ( size == N )
+	  {
+            if ( idx < N )
+              {
+                data.lastData = datas[ N - 1 ];
+                std::copy_backward( datas + idx, datas + N - 1, datas + N );
+                return ( datas[ idx ] = v );
+              }
+            else // idx == N
+              {
+                return ( data.lastData = v );
+              }
 	  }
 	else if ( size == (N+1) )
 	  {
-	    ASSERT( idx <= size );
 	    // This cannot be tested.
 	    // ASSERT( data.nextBlock == 0 );
 	    __AnyBlock* next = new __AnyBlock;
@@ -191,19 +202,21 @@ if more than 3 datas and N = 2, M = 4
 		next->datas[ 0 ] = datas[ N - 1 ];
 		next->datas[ 1 ] = data.lastData;
 		std::copy_backward( datas + idx, datas + N - 1, datas + N );
-		datas[ idx ] = v;
+                data.nextBlock = next;
+		return ( datas[ idx ] = v );
 	      }
 	    else if ( idx == N )
 	      {
-		next->datas[ 0 ] = v;
 		next->datas[ 1 ] = data.lastData;
+                data.nextBlock = next;
+		return ( next->datas[ 0 ] = v );
 	      }
-	    else if ( idx > N )
+	    else //if ( idx > N )
 	      {
 		next->datas[ 0 ] = data.lastData;
-		next->datas[ 1 ] = v;
+                data.nextBlock = next;
+                return ( next->datas[ 1 ] = v );
 	      }
-	    data.nextBlock = next;
 	  }
 	else // size > N + 1
 	  {
@@ -212,10 +225,10 @@ if more than 3 datas and N = 2, M = 4
 		Data v1 = datas[ N - 1 ];
 		std::copy_backward( datas + idx, datas + N - 1, datas + N );
 		data.nextBlock->insert( 0, size - N, v1 );
-		datas[ idx ] = v;
+		return ( datas[ idx ] = v );
 	      }
 	    else
-	      data.nextBlock->insert( idx - N, size - N, v );
+	      return data.nextBlock->insert( idx - N, size - N, v );
 	  }
       }
 
@@ -279,44 +292,52 @@ if more than 3 datas and N = 2, M = 4
       inline __AnyBlock() : next( 0 ) {}
 
       inline
-      void insert( unsigned int idx, unsigned int size, const Data & v )
+      Data & insert( unsigned int idx, unsigned int size, const Data & v )
       {
         ASSERT( idx <= size );
 	if ( idx >= M ) 
 	  {
 	    if ( next == 0 )
 	      {
+		ASSERT( size == M );
 		ASSERT( idx == M );
 		next = new __AnyBlock;
-                next->datas[ 0 ] = v;
+                return ( next->datas[ 0 ] = v );
 	      }
             else
-              next->insert( idx - M, size - M, v );
+              {
+		ASSERT( size > M );
+                return next->insert( idx - M, size - M, v );
+              }
 	  }
 	else 
 	  { // idx < M
-            if ( size < ( M - 1) )
+            if ( size <= ( M - 1) ) // ( size < ( M - 1) )
               {
+                ASSERT( next == 0 );
                 std::copy_backward( datas + idx, datas + size, 
                                     datas + size + 1 );
-                datas[ idx ] = v;
+                return ( datas[ idx ] = v );
               }
             else
               {
                 Data v1 = datas[ M - 1 ];
                 std::copy_backward( datas + idx, datas + M - 1, datas + M );
-                datas[ idx ] = v;
-                if ( size >= M )
+                // if ( size >= M )
+                //   {
+                if ( next == 0 )
                   {
-                    if ( next == 0 )
-                      {
-                        ASSERT( size == M );
-                        next = new __AnyBlock;
-                        next->datas[ 0 ] = v1;
-                      }
-                    else
-                      next->insert( 0, size - M, v1 );
+                    ASSERT( size == M );
+                    next = new __AnyBlock;
+                    next->datas[ 0 ] = v1;
                   }
+                else
+                  {
+                    ASSERT( size > M );
+                    next->insert( 0, size - M, v1 );
+                  }
+                // }
+                return ( datas[ idx ] = v );
               }
 	  }
       }
@@ -723,7 +744,12 @@ if more than 3 datas and N = 2, M = 4
 
     // ----------------------- Container services -----------------------------
   public:
-    
+
+    /**
+       @return a reference to the labels.
+    */
+    const LabelsType & labels() const;
+
     /**
        The number of datas stored in the structure. O(1) complexity.
      */
@@ -1070,7 +1096,7 @@ if more than 3 datas and N = 2, M = 4
        @param data the data to insert.
        NB: O( n ), E = O( n - idx )
     */
-    void blockInsert( unsigned int idx, unsigned int block_size, const Data & data );
+    Data & blockInsert( unsigned int idx, unsigned int block_size, const Data & data );
 
     /**
        Removal of a data at a given position. Following datas are shifted.
