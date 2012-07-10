@@ -101,6 +101,21 @@ public:
 
   
 
+ /** 
+  * Main method to import OFS meshes file (an equivalent of OFF format) 
+  * 
+  * @param filename the file name to import.
+  * @param aMesh: (return) the mesh object to be imported.
+  * @param invertVertexOrder: used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @return an instance of the imported mesh: MeshFromPoint.
+  */
+  
+  static  bool  importOFSFile(const std::string & filename, 
+			      MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+  
+
+  
+
   
 
 

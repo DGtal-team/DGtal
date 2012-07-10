@@ -186,11 +186,8 @@ DGtal::MeshFromPoints<TPoint>::nbVertex() const
 template<typename TPoint>
 inline
 void 
-DGtal::MeshFromPoints<TPoint>::addFace(const vector<unsigned int> &listIndex){
-  for(int i=0;i < listIndex.size();i++){
-    myFaceList.push_back(listIndex);
-  }
-  
+DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace){
+  myFaceList.push_back(aFace);
 }
 
 
