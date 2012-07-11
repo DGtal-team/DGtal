@@ -56,7 +56,12 @@ namespace DGtal
    * Description of template class 'SimpleMatrix' <p>
    * \brief Aim: implements basic MxN Matrix services.
    *
+   * This class defines simple matrix with static size. Computations
+   * are performed in the euclidean ring associated with the type @a TComponent.
+   *
    * @tparam TComponent any model of CEuclideanRing
+   * @tparam TM number of rows of the matrix
+   * @tparam TN number of columns of the matrix
    */
   template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   class SimpleMatrix
@@ -212,6 +217,15 @@ namespace DGtal
     Self  operator*(const Component & aScalar) const;
  
     /** 
+     * Product between the matrix 'this' and a scalar
+     * 
+     * @param aScalar the scalar coefficient
+     * 
+     * @return the resulting a reference to the matrix
+     */
+    Self & operator*=(const Component & aScalar);
+ 
+    /** 
      * Division of a matrix by a scalar.
      * 
      * @param aScalar the scalar value
@@ -220,6 +234,14 @@ namespace DGtal
      */
     Self  operator/(const Component & aScalar) const;
 
+    /** 
+     * Division of a matrix by a scalar.
+     * 
+     * @param aScalar the scalar value
+     * 
+     * @return a reference to the updated matrix
+     */
+    Self & operator/=(const Component & aScalar) ;
     
     /** 
      * Product between the matrix 'this' and @a aMatrix.
