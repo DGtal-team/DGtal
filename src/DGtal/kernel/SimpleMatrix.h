@@ -54,7 +54,7 @@ namespace DGtal
   // template class SimpleMatrix
   /**
    * Description of template class 'SimpleMatrix' <p>
-   * \brief Aim: implements basic Matrix services.
+   * \brief Aim: implements basic MxN Matrix services.
    *
    * @tparam TComponent any model of CEuclideanRing
    */
@@ -67,8 +67,8 @@ namespace DGtal
     static const DGtal::Dimension M = TM;
     static const DGtal::Dimension N = TN;
     
-    typedef PointVector<M,Component> RowVector;
-    typedef PointVector<N,Component> ColumnVector;
+    typedef PointVector<N,Component> RowVector;
+    typedef PointVector<M,Component> ColumnVector;
 
     typedef SimpleMatrix<Component,TM,TN> Self;
 
@@ -96,6 +96,31 @@ namespace DGtal
      * 
      */
     void clear();
+
+
+    /** 
+     * Set a constant scalar to each matrix component.
+     * 
+     * @param aScalar the scalar
+     */
+    void constant(const Component &aScalar);
+
+
+    /** 
+     * Get row vector.
+     * 
+     * @param i the row index
+     * @return the i-th row
+     */
+    RowVector row(const DGtal::Dimension i) const;
+
+    /** 
+     * Get column vector.
+     * 
+     * @param j the column index.
+     * @return the j-th column
+     */
+    ColumnVector column(const DGtal::Dimension j) const;
 
     /** 
      * Set a value at position (i,j).
@@ -162,7 +187,7 @@ namespace DGtal
     /** 
      * Substract between the matrix 'this' and @a aMatrix.
      * 
-     * @param aMatrix the matrix to add to self.
+     * @param aMatrix the matrix to substract to self.
      * 
      * @return the difference matrix
      */
@@ -171,20 +196,59 @@ namespace DGtal
     /** 
      * Substract and assignment between the matrix 'this' and @a aMatrix.
      * 
-     * @param aMatrix the matrix to add to self.
+     * @param aMatrix the matrix to substract to self.
      * 
      * @return a reference to the result
      */
     Self & operator-=(const Self & aMatrix);
 
     /** 
-     * Product between the matrix 'this' and @a aMatrix.
+     * Product between the matrix 'this' and a scalar
      * 
-     * @param aMatrix the matrix to add to self.
+     * @param aScalar the scalar coefficient
      * 
-     * @return the product matrix
+     * @return the resulting matrix
      */
-    //  SimpleMatrix<Component,N,N>  operator*(const SimpleMatrix<Component,N,M> & aMatrix) const;
+    Self  operator*(const Component & aScalar) const;
+ 
+    /** 
+     * Division of a matrix by a scalar.
+     * 
+     * @param aScalar the scalar value
+     * 
+     * @return the resulting matrix
+     */
+    Self  operator/(const Component & aScalar) const;
+
+    
+    /** 
+     * Product between the matrix 'this' and @a aMatrix.
+     * @note the product is O(N^3) for NxN matrices.
+     *
+     * @param aMatrix the NxM matrix to multiply
+     * 
+     * @return the product MxM matrix 
+     */
+    SimpleMatrix<Component,TM,TM>  operator*(const SimpleMatrix<Component,N,M> & aMatrix) const;
+    
+   
+    /** 
+     * Product between the matrix and a Column vector.
+     * @note the product is O(N^3) for NxN matrices.
+     *
+     * @param aMatrix the NxM matrix to multiply
+     * 
+     * @return the product MxM matrix 
+     */
+    ColumnVector  operator*(const RowVector & aVector) const;
+    
+   
+    /** 
+     * Transpose the  matrix.
+     *
+     * @return the transposted NxM matrix 
+     */
+    SimpleMatrix<Component,TN,TM> transpose() const;
 
     /**
      * Destructor.
