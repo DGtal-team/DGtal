@@ -360,7 +360,7 @@ namespace DGtal
      * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
      */
     template<typename Adapter>
-    Adapter* initConvexityConcavity( const typename Adapter::DSS &aDSS );
+    Adapter* initConvexityConcavity( typename Adapter::DSS &aDSS );
 
     /**
      * Removing step
@@ -397,19 +397,13 @@ namespace DGtal
      * Adding step in the closed case
      * @param currentDSS a DSS lying on the range to process
      * @param adapter an Adapter to @a currentDSS
-     * @param aPoint last leaning point of the last MS
-     * used to stop the algorithm (when @a aPoint ==
-     * @a adapter->lastLeaningPoint() )
-     * @return 'false' if the algorithm has to stop
-     * and 'true' otherwise
      *
      * @tparam Adapter type that adapts a DSS computer 
      * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
      */
     template<typename Adapter>
-    bool addingStep( typename Adapter::DSS &currentDSS, 
-		     Adapter* adapter, 
-		     const typename Adapter::DSS::Point& aPoint);
+    void addingStep( typename Adapter::DSS &currentDSS, 
+		     Adapter* adapter);
 
     // /**
     //  * Main routine
