@@ -233,6 +233,24 @@ bool testColRow()
   return nbok == nb; 
 }
 
+bool testCofactor()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  typedef DGtal::SimpleMatrix<double,3,4> MAT;
+  MAT mat;
+  for(DGtal::Dimension i = 0; i< 3; ++i)
+    for(DGtal::Dimension j = 0; j< 4; ++j)
+      mat.setComponent(i,j,i+j);
+  
+  trace.beginBlock("Cofactor tests...");
+  trace.info() << mat<<std::endl;
+  trace.info() << mat.cofactor() << std::endl;
+
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -244,7 +262,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow(); // && ... other tests
+  bool res = testSimpleMatrix() && testArithm() && testColRow() && testCofactor(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,6 +58,11 @@ DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix()
 {
   for ( DGtal::Dimension i = 0; i < M*N; ++i )
     myValues[ i ] = NumberTraits<Component>::ZERO;
+
+  //Cofactor coefs computation
+  for (DGtal::Dimension i=0; i<M; i++)
+    for (DGtal::Dimension j=0; j<N; j++)
+      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j));
 }
 //------------------------------------------------------------------------------
 
@@ -263,6 +269,18 @@ DGtal::SimpleMatrix<T, M,N>::operator*(const T& other) const
   for (DGtal::Dimension i=0; i<M*N; i++)
     resultat.myValues[i] = other*myValues[i];
     
+  return resultat;
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+DGtal::SimpleMatrix<T, M,N>  
+DGtal::SimpleMatrix<T, M,N>::cofactor() const
+{
+  Self resultat;
+  for (DGtal::Dimension i=0; i<M; i++)
+    for (DGtal::Dimension j=0; j<N; j++)
+      resultat.setComponent( i,j, myCofactorCoefs[i*N+j]*this->operator()(i,j));
   return resultat;
 }
 //------------------------------------------------------------------------------
