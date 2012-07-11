@@ -112,7 +112,7 @@ if more than 3 datas and N = 2, M = 4
   class LabelledMap
   {
     BOOST_STATIC_ASSERT( L >= 1 );
-    BOOST_STATIC_ASSERT( N >= 1 );
+    BOOST_STATIC_ASSERT( N >= 0 );
     BOOST_STATIC_ASSERT( M >= 2 );
   public:
     // ----------------------- Public types ------------------------------

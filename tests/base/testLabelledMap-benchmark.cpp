@@ -34,6 +34,9 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#include <forward_list>
+#endif
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_smallint.hpp>
 #include <boost/random/uniform_01.hpp>
@@ -233,6 +236,165 @@ public:
 };
 
 
+#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+
+/**
+   Array[X][Y] of forward_list< pair<L,Value> > Another intermediate
+   approach which favors less memory and more computation time.
+
+   Approximately same memory usage or 20% more as LabelledMap (for
+   good values of N and M). Approximately 2 to 4 times slower than
+   LabelledMap for most operations.
+
+   Note that 2000*2000*32 takes 216Mb.
+*/
+template <typename Value, unsigned int L, unsigned int X, unsigned int Y>
+class ArrayXYOfList {
+  typedef typename std::pair<uint16_t, Value> MyPair;
+  typedef typename std::forward_list<MyPair> MyList;
+  typedef typename MyList::iterator Iterator;
+  typedef typename MyList::const_iterator ConstIterator;
+  MyList _data[ X ][ Y ];
+
+public:
+  inline
+  ArrayXYOfList()
+  {
+  }
+
+  inline 
+  void clear()
+  {
+      for ( unsigned int y = 0; y < Y; ++y )
+        for ( unsigned int x = 0; x < X; ++x )
+          _data.clear();
+  }
+
+  inline 
+  const Value & value( unsigned int l, unsigned int x, unsigned int y )
+  {
+    MyList & list = _data[ x ][ y ];
+    Iterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        if ( it->first == l ) return it->second;
+      }
+    if ( it == it_end ) 
+      {
+        list.emplace_front( std::make_pair( l, Value() ) );
+        return list.front().second;
+      }
+  }
+  inline 
+  unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
+  {
+    MyList & list = _data[ x ][ y ];
+    Iterator it_prev = list.before_begin();
+    Iterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        if ( it->first == l )
+          {
+            list.erase_after( it_prev );
+            return 1;
+          }
+        it_prev = it;
+      }
+    return 0;
+  }
+
+  inline 
+  void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
+  {
+    MyList & list = _data[ x ][ y ];
+    Iterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        if ( it->first == l ) 
+          {
+            it->second = val;
+            return;
+          }
+      }
+    if ( it == it_end ) 
+        list.emplace_front( std::make_pair( l, val ) );
+  }
+  inline 
+  void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
+  {
+    MyList & list = _data[ x ][ y ];
+    Iterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        if ( it->first == l ) 
+          {
+            it->second = val;
+            return;
+          }
+      }
+    if ( it == it_end ) 
+      list.emplace_front( std::make_pair( l, val ) );
+  }
+  inline
+  bool hasLabel( unsigned int l, unsigned int x, unsigned int y ) const
+  {
+    const MyList & list = _data[ x ][ y ];
+    ConstIterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        if ( it->first == l ) return true;
+      }
+    return false;
+  }
+  inline 
+  void getLabels( std::vector<unsigned int> & labels, 
+                  unsigned int x, unsigned int y ) const
+  {
+    labels.clear();
+    const MyList & list = _data[ x ][ y ];
+    ConstIterator it = list.begin(), it_end = list.end(); 
+    for ( ; it != it_end; ++it )
+      {
+        labels.push_back( (*it).first );
+      }
+  }
+  inline
+  unsigned int nbLabels( unsigned int x, unsigned int y ) const
+  {
+    const MyList & list = _data[ x ][ y ];
+    ConstIterator it = list.begin(), it_end = list.end(); 
+    unsigned int n = 0;
+    for ( ; it != it_end; ++it )
+      ++n;
+    return n;
+  }
+  inline 
+  void display ( ostream & out, unsigned int l, unsigned int x, unsigned int y )
+  {}
+
+
+  inline
+  unsigned long long area() const
+  {
+    unsigned long long total = 0;
+    for ( unsigned int y = 0; y < Y; ++y )
+      for ( unsigned int x = 0; x < X; ++x )
+        {
+          unsigned int size = nbLabels( x, y );
+          total += sizeof( Value* )
+            + ( size ) *
+            ( sizeof( Value ) // one value per node
+              + sizeof( Value* ) // one pointers
+              + 2 // uint16_t
+              + 8 // dynamic allocation );
+              );
+        }
+    return total;
+  }
+};
+
+#endif
+
 /**
    Array[X][Y] of LabelledMap<L>
 
@@ -427,8 +589,8 @@ int main()
   static const unsigned int Y = 1000;
   static const unsigned int L = 16;
   typedef DGtal::uint8_t Word;
-  static const unsigned int N = 2;
-  static const unsigned int M = 8;
+  static const unsigned int N = 1;
+  static const unsigned int M = 5;
   /// Probability that there is no data at this location.
   static const double PROBA_NO_LABEL = 0.5;
   /// If there is a possibility to have a data, this probability is
@@ -439,9 +601,13 @@ int main()
 
   typedef ArrayLXY<Value, L, X, Y> MyArrayLXY;
   typedef ArrayXYOfMap<Value, L, X, Y> MyArrayXYOfMap;
+#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+  typedef ArrayXYOfList<Value, L, X, Y> MyArrayXYOfList;
+#endif
   typedef ArrayXYOfLabelledMap<Value, L, X, Y, Word, N, M > MyArrayXYOfLabelledMap;
 
   //----------------------------------------------------------------------
+  trace.beginBlock ( "---------- ArrayLXY ---------------" );
   trace.beginBlock ( "Generating ArrayLXY" );
   MyArrayLXY* arrayLXY = new MyArrayLXY( -1.0 );
   generateData< MyArrayLXY, L, X, Y> ( *arrayLXY, PROBA_NO_LABEL, PROBA_LABEL );
@@ -474,8 +640,10 @@ int main()
   trace.beginBlock ( "Delete ArrayLXY" );
   delete arrayLXY;
   trace.endBlock();
+  trace.endBlock();
 
   //----------------------------------------------------------------------
+  trace.beginBlock ( "---------- ArrayXYOfMap ---------------" );
   trace.beginBlock ( "Generating ArrayXYOfMap" );
   MyArrayXYOfMap* arrayXYOfMap = new MyArrayXYOfMap();
   generateData< MyArrayXYOfMap, L, X, Y> ( *arrayXYOfMap, PROBA_NO_LABEL, PROBA_LABEL );
@@ -508,8 +676,48 @@ int main()
   trace.beginBlock ( "Delete ArrayXYOfMap" );
   delete arrayXYOfMap;
   trace.endBlock();
+  trace.endBlock();
+
+#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+  //----------------------------------------------------------------------
+  trace.beginBlock ( "---------- ArrayXYOfList ---------------" );
+  trace.beginBlock ( "Generating ArrayXYOfList" );
+  MyArrayXYOfList* arrayXYOfList = new MyArrayXYOfList();
+  generateData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList, PROBA_NO_LABEL, PROBA_LABEL );
+  trace.endBlock();
+
+  trace.beginBlock ( "Memory usage in ArrayXYOfList" );
+  std::cerr << arrayXYOfList->area() << " bytes." << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Sum all values ArrayXYOfList" );
+  sumAllData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList );
+  trace.endBlock();
+
+  trace.beginBlock ( "Sum label 0 values ArrayXYOfList" );
+  sumOneData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList, 0 );
+  trace.endBlock();
+
+  trace.beginBlock ( "Sum label 15 values ArrayXYOfList" );
+  sumOneData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList, 15 );
+  trace.endBlock();
+
+  trace.beginBlock ( "Locate places (3, 7, 8) in ArrayXYOfList" );
+  locateThreeData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList, 3, 7, 8 );
+  trace.endBlock();
+
+  trace.beginBlock ( "Erase label 9 in ArrayXYOfList" );
+  eraseOneData< MyArrayXYOfList, L, X, Y> ( *arrayXYOfList, 9 );
+  trace.endBlock();
+
+  trace.beginBlock ( "Delete ArrayXYOfList" );
+  delete arrayXYOfList;
+  trace.endBlock();
+  trace.endBlock();
+#endif
 
   //----------------------------------------------------------------------
+  trace.beginBlock ( "---------- ArrayXYOfLabelledMap ---------------" );
   trace.beginBlock ( "Generating ArrayXYOfLabelledMap" );
   MyArrayXYOfLabelledMap* arrayXYOfLabelledMap = new MyArrayXYOfLabelledMap;
   generateData< MyArrayXYOfLabelledMap, L, X, Y > ( *arrayXYOfLabelledMap, PROBA_NO_LABEL, PROBA_LABEL );
@@ -541,6 +749,7 @@ int main()
 
   trace.beginBlock ( "Delete ArrayXYOfLabelledMap" );
   delete arrayXYOfLabelledMap;
+  trace.endBlock();
   trace.endBlock();
 
   return 0;
