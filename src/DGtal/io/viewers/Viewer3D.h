@@ -129,9 +129,9 @@ public:
     DGtal::Color myDefaultBackgroundColor;
     DGtal::Color myDefaultColor;
     bool myIsBackgroundDefault;
-
-
-
+  bool myViewWire;
+  
+  
     /**
      * Set the default color for future drawing.
      *
@@ -164,8 +164,29 @@ public:
 
     void sortSurfelFromCamera();
 
+  /**
+   *  Sort all triangle from the camera.
+   *
+   *
+   **/
+  
+  void sortTriangleFromCamera();
+  /**
+   *  Sort all triangle from the camera.
+   *
+   *
+   **/
+  
+  void sortQuadFromCamera();
 
 
+  /**
+   *  Sort all polygons from the camera.
+   *
+   *
+   **/
+  void sortPolygonFromCamera();
+    
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -214,10 +235,10 @@ public:
 private:
 
 
-    GLuint myListToAff;
-    unsigned int myNbListe;
-    qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
-    QPoint myPosSelector;
+  GLuint myListToAff;
+  unsigned int myNbListe;
+  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
+  QPoint myPosSelector;
 
 public:
 
@@ -290,20 +311,68 @@ protected:
     }
     ;
 
+
+    struct compFarthestTriangleFromCamera
+    {
+      qglviewer::Vec posCam;
+      bool operator() ( triangleD3D t1, triangleD3D t2 )
+      {
+            qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
+            qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
+	    double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
+            double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
+     
+	return dist1>dist2;
+      }
+    };
+
     struct compFarthestSurfelFromCamera
     {
         qglviewer::Vec posCam;
         bool operator() ( quadD3D q1, quadD3D q2 )
         {
-            qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
-            qglviewer::Vec center2 ( ( q2.x1+q2.x2+q2.x3+q2.x4 ) /4.0, ( q2.y1+q2.y2+q2.y3+q2.y4 ) /4.0, ( q2.z1+q2.z2+q2.z3+q2.z4 ) /4.0 );
 
+	qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
+	qglviewer::Vec center2 ( ( q2.x1+q2.x2+q2.x3+q2.x4 ) /4.0, ( q2.y1+q2.y2+q2.y3+q2.y4 ) /4.0, ( q2.z1+q2.z2+q2.z3+q2.z4 ) /4.0 );
 
             double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
             double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
             return dist1>dist2;
         }
     };
+
+
+
+
+  struct compFarthestPolygonFromCamera
+    {
+      qglviewer::Vec posCam;
+      bool operator() ( polygonD3D q1, polygonD3D q2 )
+      {
+	double c1x, c1y, c1z=0.0;
+	double c2x, c2y, c2z=0.0;
+	for(int i=0; i< q1.vectPoints.size(); i++){
+	  c1x+=q1.vectPoints.at(i).x;
+	  c1y+=q1.vectPoints.at(i).y;
+	  c1z+=q1.vectPoints.at(i).z;
+	}
+	for(int i=0; i< q2.vectPoints.size(); i++){
+	  c2x+=q2.vectPoints.at(i).x;
+	  c2y+=q2.vectPoints.at(i).y;
+	  c2z+=q2.vectPoints.at(i).z;
+	}
+	
+	qglviewer::Vec center1 ( c1x/(double)q1.vectPoints.size(),c1y/(double)q1.vectPoints.size(), c1z/(double)q1.vectPoints.size() );
+	qglviewer::Vec center2 ( c2x/(double)q2.vectPoints.size(),c2y/(double)q2.vectPoints.size(), c2z/(double)q2.vectPoints.size() );
+
+	double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
+	double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
+	return dist1>dist2;
+      }
+  };
+
+
+
 
 
 
