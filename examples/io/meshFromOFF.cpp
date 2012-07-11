@@ -51,7 +51,7 @@ int main( int argc, char** argv )
   Viewer3D viewer;
   viewer.show();     
   //! [ImportOFFfile]
-  std::string inputFilename = examplesPath + "samples/angel.off";   
+  std::string inputFilename = examplesPath + "samples/tref.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
   MeshFromPoints<Display3D::pointD3D> anImportedMesh;
   anImportedMesh << inputFilename;

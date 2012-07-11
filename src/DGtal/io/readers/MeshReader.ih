@@ -72,8 +72,9 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       trace.error() << "MeshReader : can't read " << aFilename << endl;
       throw dgtalio;
     }
-  if ( str != "OFF")
+  if ( str.substr(0,3) != "OFF")
     {
+      cerr <<"*" <<str<<"*"<< endl;
       trace.error() << "MeshReader : No OFF format in " << aFilename << endl;
       throw dgtalio;
     }
