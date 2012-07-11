@@ -223,6 +223,16 @@ DGtal::SimpleMatrix<T, M, N>::operator*(const DGtal::SimpleMatrix<T,N,M>& other)
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension M, DGtal::Dimension N>
 inline
+DGtal::SimpleMatrix<T, M,N> &  
+DGtal::SimpleMatrix<T, M, N>::operator/=(const T& other) 
+{
+  for (DGtal::Dimension i=0; i<M*N; i++)
+    this->myValues[i] /= other;
+    
+  return *this;
+}//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
 DGtal::SimpleMatrix<T, M,N>  
 DGtal::SimpleMatrix<T, M, N>::operator/(const T& other) const
 {
@@ -231,6 +241,17 @@ DGtal::SimpleMatrix<T, M, N>::operator/(const T& other) const
     resultat.myValues[i] = myValues[i]/other;
     
   return resultat;
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+DGtal::SimpleMatrix<T, M,N> & 
+DGtal::SimpleMatrix<T, M,N>::operator*=(const T& other)
+{
+  for (DGtal::Dimension i=0; i<M*N; i++)
+    this->myValues[i] *= other;
+    
+  return *this;
 }
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension M, DGtal::Dimension N>
