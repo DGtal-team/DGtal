@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+//#include "DGtal/io/readers/MeshReader.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -94,7 +95,7 @@ namespace DGtal
   class MeshFromPoints
   {
     
-
+    
     
     
     // ----------------------- associated types ------------------------------
@@ -145,10 +146,8 @@ namespace DGtal
   public:
 
 
-   
+      
     
-
-   
   
     /**
      * Adding new vertex.
@@ -188,9 +187,7 @@ namespace DGtal
     **/    
     void addFace(const MeshFace &aFace);
     
-    
    
-    
     
     /**
      * Return a reference to the vertex of index i.
@@ -222,7 +219,14 @@ namespace DGtal
      **/
     const unsigned int  nbVertex() const;
     
-
+    
+    
+    /**
+     * Invert the face order (useful when normal is deducted from vertex order).
+     *
+     **/
+    
+    void invertVertexFaceOrder();
     
     
     

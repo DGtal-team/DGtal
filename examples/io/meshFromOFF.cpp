@@ -54,15 +54,16 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/angel.off";   
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
   MeshFromPoints<Display3D::pointD3D> anImportedMesh;
-  MeshReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+  anImportedMesh << inputFilename, false;
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
-    //! [displayOFFfile]
+  //! [displayOFFfile]
+  anImportedMesh.invertVertexFaceOrder();  
   viewer.setFillColor(DGtal::Color(240,240,240,150));
   viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
   viewer << Viewer3D::updateDisplay;
-      //! [displayOFFfile]
+  //! [displayOFFfile]
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////
