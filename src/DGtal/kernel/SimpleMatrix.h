@@ -59,6 +59,9 @@ namespace DGtal
    * This class defines simple matrix with static size. Computations
    * are performed in the euclidean ring associated with the type @a TComponent.
    *
+   * This class also defines types for row and column vectors as
+   * specialized PointVector types.
+   *
    * @tparam TComponent any model of CEuclideanRing
    * @tparam TM number of rows of the matrix
    * @tparam TN number of columns of the matrix
