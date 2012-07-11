@@ -68,23 +68,30 @@ namespace DGtal
    *  getUf(), getUl(), getLf(), getLl()
    *
    */
-   template <typename ArithmeticalDSS>
+  template <typename ArithmeticalDSS>
   class Adapter 
   {
-    protected:
-      /**
-       *  A pointer to an instance of ArithmeticalDSS
-       */
-      ArithmeticalDSS* myDSS;
-    public:
-      /**
-       *  @return the first upper or lower leaning point
-       */
-      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
-      /**
-       *  @return the last upper or lower leaning point
-       */
-      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
+  protected:
+    /**
+     *  Aliasing pointer to an instance of ArithmeticalDSS
+     */
+    ArithmeticalDSS* myDSS;
+  public:
+    /**
+     * Destructor 
+     * ( virtual to disable warnings [-Wdelete-non-virtual-dtor] )
+     */
+    virtual ~Adapter() {}
+    /**
+     * First leaning point accessor 
+     * @return the first upper or lower leaning point
+     */
+    virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
+    /**
+     * Last leaning point accessor 
+     * @return the last upper or lower leaning point
+     */
+    virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
   };
 
   /**
