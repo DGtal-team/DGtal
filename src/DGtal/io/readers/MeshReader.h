@@ -63,7 +63,8 @@ namespace DGtal
  * @code
  // importating the mesh
  MeshFromPoints<Display3D::pointD3D> anImportedMesh;
- MeshReader<Display3D::pointD3D>::importOFFFile(inputFilename, anImportedMesh, true);
+ anImportedMesh <<  inputFilename;
+
  //Displaying the resulting mesh with Viewed3D 
  viewer.setFillColor(DGtal::Color(240,240,240,150));
  viewer.setLineColor(DGtal::Color(150,0,0,254));
@@ -79,7 +80,7 @@ namespace DGtal
 
 
 
-template <typename TPoint> 
+  template <typename TPoint> 
 struct MeshReader
 {
     // ----------------------- Standard services ------------------------------
@@ -96,7 +97,7 @@ public:
   */
   
   static  bool  importOFFFile(const std::string & filename, 
-			      MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
   
 
   
@@ -111,12 +112,12 @@ public:
   */
   
   static  bool  importOFSFile(const std::string & filename, 
-			      MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
   
 
   
 
-  
+
 
 
 }; // end of class MeshReader
@@ -126,7 +127,17 @@ public:
 
 
 
-
+  /**
+   *  'operator<<' for importing objects of class 'MeshFromPoints'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'MeshFromPoints' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPoint>
+  bool
+  operator<< (  MeshFromPoints<TPoint> & mesh, const std::string &filename );
+  
+  
 
 
 }// namespace DGtal

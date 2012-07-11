@@ -28,6 +28,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////////
+
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -90,6 +91,9 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 // Implementation of inline functions                                        //
 
     
+
+
+
 
 
 template<typename TPoint>
@@ -189,6 +193,23 @@ void
 DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace){
   myFaceList.push_back(aFace);
 }
+
+
+template<typename TPoint> 
+inline     
+void 
+DGtal::MeshFromPoints<TPoint>::invertVertexFaceOrder(){
+  for(unsigned int i=0; i<myFaceList.size(); i++){
+    vector<unsigned int> & aFace =  myFaceList.at(i);
+    for(unsigned int j=0; j < aFace.size()/2; j++){
+      unsigned int tmp=aFace.at(j);
+      aFace.at(j)=aFace.at(aFace.size()-1-j);
+      aFace.at(aFace.size()-1-j)=tmp;
+    }
+  }
+}
+
+    
 
 
 

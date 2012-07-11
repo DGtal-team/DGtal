@@ -72,7 +72,7 @@ bool testMeshReader()
   nb++;
   std::string filenameOFF = testPath + "samples/box.off";  
   MeshFromPoints<Point> a3DMesh;
-  bool importOK= MeshReader<Point>::importOFFFile(filenameOFF, a3DMesh);
+   bool importOK = a3DMesh << filenameOFF;
   nbok += importOK ? 1 : 0; 
   
   
@@ -89,7 +89,7 @@ bool testMeshReader()
   nb++;
   std::string filenameOFS = testPath + "samples/testMesh.ofs";  
   MeshFromPoints<Point> a3DMesh2;
-  bool importOK2= MeshReader<Point>::importOFSFile(filenameOFS, a3DMesh2);
+  bool importOK2=  a3DMesh2 << filenameOFS;
   nbok += importOK2 ? 1 : 0; 
   
   nb++;
