@@ -62,6 +62,21 @@ bool testSimpleMatrix()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
+  
+  M34d matrix;
+  bool res=true;
+
+  matrix.constant(12.3);
+  trace.info() << matrix;
+  for(DGtal::Dimension i = 0; i< 3; ++i)
+    for(DGtal::Dimension j = 0; j< 4; ++j)
+        res = res && (matrix(i,j) == 12.3);
+  nbok += res ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "all equals to 12.3" << std::endl;
+  
+
   trace.endBlock();
   
   return nbok == nb;
@@ -74,9 +89,15 @@ bool testArithm()
   
   
   typedef SimpleMatrix<double,3,4> M34d;
+  typedef SimpleMatrix<double,4,3> M43d;
+  typedef SimpleMatrix<double,3,3> M33d;
   
-  M34d m34d;
+  M34d m34d, two,four;
   M34d m34dbis, resadd, ressub;
+  
+  two.constant(2);
+  four.constant(4);
+  
   for(DGtal::Dimension i = 0; i< 3; ++i)
     for(DGtal::Dimension j = 0; j< 4; ++j)
       {
@@ -86,6 +107,7 @@ bool testArithm()
         ressub.setComponent(i,j,i*j-(double)i-(double)j);
       }
   
+
   trace.info() << m34d <<std::endl;
   trace.info() << m34dbis<<std::endl;
  
@@ -118,18 +140,97 @@ bool testArithm()
 	       << "ok simple" << std::endl;
   trace.endBlock();
   
-  trace.beginBlock ( "Testing product ..." ); 
-  nbok += ((m34d - m34dbis) == ressub) ? 1 : 0; 
+  trace.beginBlock ( "Testing scalar product/divide ..." ); 
+  nbok += ( (two*2.0) == four) ? 1 : 0; 
   nb++;
   trace.info()<<ressub<<std::endl;
-  trace.info()<<m34d - m34dbis<<std::endl;
-  
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "ok simple" << std::endl;
+	       << " [2]*2 == [4]" << std::endl;
+ 
+  nbok += ( two == four/2.0) ? 1 : 0; 
+  nb++;
+  trace.info()<<ressub<<std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << " [2]= [4]/2" << std::endl;
   trace.endBlock();
+  
+
+  trace.beginBlock ( "Testing transpose ..." ); 
+  M43d transp = m34d.transpose();
+  nbok += (transp.transpose() == m34d) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << "ok idem potent" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing product ..." ); 
+ 
+  M43d one;
+  M33d eight33;
+
+  one.constant(1);
+  eight33.constant(8);
+  trace.info() << two * one<<std::endl;
+  nbok += (two * one  == eight33) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " [2]*[1] = [8]" << std::endl;
+  trace.endBlock();
+
+
   
   return nbok == nb;
 
+}
+
+bool testColRow()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  DGtal::SimpleMatrix<double,3,4> mat;
+  for(DGtal::Dimension i = 0; i< 3; ++i)
+    for(DGtal::Dimension j = 0; j< 4; ++j)
+      mat.setComponent(i,j,i+j);
+  
+  trace.beginBlock("Get Row");
+  trace.info() << mat <<std::endl;
+  DGtal::SimpleMatrix<double,3,4>::RowVector row;
+  row = mat.row(1);
+  trace.info() << row << std::endl;
+  nbok += (row[1] == 2 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " row value" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock("Get Col");
+  DGtal::SimpleMatrix<double,3,4>::ColumnVector col;
+  col = mat.column(1);
+  trace.info() << row << std::endl;
+  nbok += (col[1] == 2 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " col value" << std::endl;
+  trace.endBlock();
+
+  
+
+  trace.beginBlock("Prod Matrix x Row^t");
+  //Row vector is a dim 4 vector
+  DGtal::SimpleMatrix<double,3,4>::RowVector r(1,2,3,4);
+  DGtal::SimpleMatrix<double,3,4>::ColumnVector c;
+  c = mat*r;
+  DGtal::SimpleMatrix<double,3,4>::ColumnVector expected(20,30,40);
+  
+  trace.info() << c << std::endl;
+  nbok += (c == expected) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " mat*row^t" << std::endl;
+  trace.endBlock();
+
+  return nbok == nb; 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -143,7 +244,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm(); // && ... other tests
+  bool res = testSimpleMatrix() && testArithm() && testColRow(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

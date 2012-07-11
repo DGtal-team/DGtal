@@ -70,6 +70,47 @@ DGtal::SimpleMatrix<T ,TM, TN>::SimpleMatrix(const Self& other)
 
 //---------------------------------------------------------------------------
 template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+void
+DGtal::SimpleMatrix<T, TM, TN>::clear()
+{
+  for ( DGtal::Dimension i = 0; i < M*N; ++i )
+    myValues[ i ] = NumberTraits<T>::ZERO;
+}
+//---------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+void
+DGtal::SimpleMatrix<T, TM, TN>::constant(const T &aSc)
+{
+  for ( DGtal::Dimension i = 0; i < M*N; ++i )
+    myValues[ i ] = aSc;
+}
+//---------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+typename DGtal::SimpleMatrix<T, TM, TN>::RowVector
+DGtal::SimpleMatrix<T, TM, TN>::row(const DGtal::Dimension i) const
+{
+  ASSERT(i<M);
+  RowVector v;
+  for ( DGtal::Dimension j = 0; j < N; ++j )
+    v[ j ] = this->operator()(i,j);
+  return v;
+}
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+typename DGtal::SimpleMatrix<T, TM, TN>::ColumnVector
+DGtal::SimpleMatrix<T, TM, TN>::column(const DGtal::Dimension j) const
+{
+  ASSERT(j<N);
+  ColumnVector v;
+  for ( DGtal::Dimension i = 0; i < M; ++i )
+    v[ i ] = this->operator()(i,j);
+  return v;
+}
+//---------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
 template<typename TC>
 inline
 DGtal::SimpleMatrix<T, TM, TN> &
@@ -130,29 +171,79 @@ DGtal::SimpleMatrix<T, TM, TN>::operator==(const Self& other) const
 {
   return myValues == other.myValues;
 }
+
 //------------------------------------------------------------------------------
-/*template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
 inline
-DGtal::SimpleMatrix<T, N,N>  
-DGtal::SimpleMatrix<T, M, N>::operator*(const SimpleMatrix<T,N,M>& other) const
+typename DGtal::SimpleMatrix<T, TN, TM> 
+DGtal::SimpleMatrix<T, TM, TN>::transpose() const
 {
-  SimpleMatrix<T,TN,TN> res;
-  T e = NumberTraits<T>::ZERO;
+  DGtal::SimpleMatrix<T, TN, TM> res;
   for (DGtal::Dimension i=0; i<M; i++)
     for (DGtal::Dimension j=0; j<N; j++)
+      res.setComponent(j,i, this->operator()(i,j)); 
+  return res;
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+typename DGtal::SimpleMatrix<T,M,N>::ColumnVector  
+DGtal::SimpleMatrix<T, M, N>::operator*(const RowVector& other) const
+{
+  ColumnVector res;
+  T e = NumberTraits<T>::ZERO;
+  for (DGtal::Dimension i=0; i<M; i++)
+    for (DGtal::Dimension k=0; k<N; k++)
+      res[i]  += this->operator()(i, k )*other[k];
+  
+  return res;
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+typename DGtal::SimpleMatrix<T,M,M>  
+DGtal::SimpleMatrix<T, M, N>::operator*(const DGtal::SimpleMatrix<T,N,M>& other) const
+{
+  SimpleMatrix<T,M,M> res;
+  T e = NumberTraits<T>::ZERO;
+  for (DGtal::Dimension i=0; i<M; i++)
+    for (DGtal::Dimension j=0; j<M; j++)
       {
         for (DGtal::Dimension k=0; k<N; k++)
           {
-            e += myValues[k*M + i]*other.myValues[j*M + k];
+            e += this->operator()(i, k )*other(k ,j );
           }
              
-        res.myValues[j*M + i] = e;
+        res.setComponent(i,j,e);
         
         e = NumberTraits<T>::ZERO;
       }
   return res;
-  }*/
-
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+DGtal::SimpleMatrix<T, M,N>  
+DGtal::SimpleMatrix<T, M, N>::operator/(const T& other) const
+{
+  Self resultat;
+  for (DGtal::Dimension i=0; i<M*N; i++)
+    resultat.myValues[i] = myValues[i]/other;
+    
+  return resultat;
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+DGtal::SimpleMatrix<T, M,N>  
+DGtal::SimpleMatrix<T, M,N>::operator*(const T& other) const
+{
+  Self resultat;
+  for (DGtal::Dimension i=0; i<M*N; i++)
+    resultat.myValues[i] = other*myValues[i];
+    
+  return resultat;
+}
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
 inline
@@ -160,7 +251,9 @@ void
 DGtal::SimpleMatrix<T, TM, TN>::setComponent(const DGtal::Dimension i, const DGtal::Dimension j, 
                                        const T &aValue)
 {
-  myValues[j*M + i] = aValue;
+  ASSERT(i<M);
+  ASSERT(j<N);
+  myValues[i*N + j] = aValue;
 }
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
@@ -168,7 +261,9 @@ inline
 T
 DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i, const DGtal::Dimension j) const
 {
-  return myValues[j*M + i];
+  ASSERT(i<M);
+  ASSERT(j<N);  
+  return myValues[i*N + j];
 }
 
 ///////////////////////////////////////////////////////////////////////////////
