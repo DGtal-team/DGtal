@@ -145,7 +145,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename, 
 					 DGtal::MeshFromPoints<TPoint> & aMesh, 
-					 bool invertVertexOrder) throw(DGtal::IOException)
+					 bool invertVertexOrder, double scale) throw(DGtal::IOException)
 {
   ifstream infile;
   DGtal::IOException dgtalio;
@@ -192,6 +192,9 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
     infile >> p.x;
     infile >> p.y;
     infile >> p.z;
+    p.x*=scale;
+    p.y*=scale;
+    p.z*=scale;
     aMesh.addVertex(p);
     // Needed since a line can also contain vertex colors
     getline(infile, str);
@@ -237,10 +240,10 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
   DGtal::operator<< (   MeshFromPoints<TPoint> & mesh, const std::string &filename ){
     string extension = filename.substr(filename.find_last_of(".") + 1);
     if(extension== "off") {
-      DGtal::MeshReader<TPoint>::importOFFFile(filename, mesh, false);
+      DGtal::MeshReader<TPoint>::importOFFFile(filename, mesh);
       return true;
     }else if(extension== "ofs") {
-      DGtal::MeshReader< TPoint>::importOFSFile(filename, mesh, false);
+      DGtal::MeshReader< TPoint>::importOFSFile(filename, mesh);
       return true;
     }
     

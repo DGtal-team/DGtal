@@ -108,13 +108,14 @@ public:
   * @param filename the file name to import.
   * @param aMesh: (return) the mesh object to be imported.
   * @param invertVertexOrder: used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @param scale: used to avoid to display tiny shapes (since OFS shapes are genrally included in a 1x1x1 cube)
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
   static  bool  importOFSFile(const std::string & filename, 
-			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false, double scale=50.0) throw(DGtal::IOException);
   
-
+  
   
 
 
