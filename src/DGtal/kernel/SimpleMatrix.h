@@ -275,6 +275,14 @@ namespace DGtal
      */
     SimpleMatrix<Component,TN,TM> transpose() const;
 
+
+    /** 
+     * Cofactor matrix computation.
+     * 
+     * @return the cofactor matrix.
+     */
+    Self cofactor() const;
+
     /**
      * Destructor.
      */
@@ -302,6 +310,10 @@ namespace DGtal
 
     ///Matrix values containers.
     boost::array< Component, M*N>  myValues;
+
+    ///Static computation of cofactor coefficients
+    /// @todo should be static 
+    boost::array< Component, M*N>  myCofactorCoefs;
 
     // ------------------------- Hidden services ------------------------------
   protected:
