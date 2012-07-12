@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cstring>
+#include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Labels.h"
@@ -1176,6 +1177,73 @@ if more than 3 datas and N = 2, M = 4
   std::ostream&
   operator<< ( std::ostream & out, 
                const LabelledMap<TData, L, TWord, N, M> & object );
+
+  namespace detail {
+
+    /**
+       Functor used to compute the best parameters for minimizing the
+       memory usage of a LabelledMap structure.
+    */
+    struct LabelledMapMemFunctor 
+    { 
+      double _p; double _q;
+      unsigned int _sL;
+      unsigned int _sV;      
+      unsigned int _sP;
+      unsigned int _sA;
+      LabelledMapMemFunctor( double p, double q,
+                             unsigned int sL, unsigned int sV,
+                             unsigned int sP, unsigned int sA )
+        : _p( p ), _q( q ), _sL( sL ), _sV( sV ), _sP( sP ), _sA( sA )
+      {}
+      
+      inline
+      double fctNM( unsigned int N, unsigned int M ) const
+      {
+        double alpha0 = _sL + _sV * ( N+1 );
+        double beta0 = _sV * M + _sA + _sP;
+        return alpha0 
+          + beta0 * _q * pow(1.0 - _p, (double)N+1) 
+          * ( 1.0 + pow(1.0 - _p, (double)M-1 ) 
+              / ( 1.0 - pow(1.0 - _p, (double)M ) ) );
+      }
+      inline
+      double fctNMpq( unsigned int N, unsigned int M, double p, double q ) const
+      {
+        double alpha0 = _sL + _sV * ( N+1 );
+        double beta0 = _sV * M + _sA + _sP;
+        return alpha0 
+          + beta0 * q * pow(1.0 - p, (double)N+1) 
+          * ( 1.0 + pow(1.0 - p, (double)M-1 ) 
+              / ( 1.0 - pow(1.0 - p, (double)M ) ) );
+      }
+
+    };
+
+    /**
+       Tries to find the best values N and M which will minimized the
+       memory usage of a LabelledMap, for the distribution specified by
+       the parameters.
+     
+       @tparam TValue the type of data that will be stored.
+
+       @param L the total number of labels.
+
+       @param prob_no_data Probability that there is no data at this location.
+     
+       @param prob_one_data If there is a possibility to have a data,
+       this probability is used to define a geometric distribution that
+       defines the number of data (ie valid labels) at this place. The
+       smaller, the higher is the expectation. 0.5 means E(X) = 1.
+     
+       @return the pair (N,M) that minimizes the memory usage of a
+       LabelledMap for the given distribution.
+    */
+    template <typename TData>
+    std::pair< unsigned int, unsigned int >
+    argminLabelledMapMemoryUsageForGeometricDistribution
+    ( unsigned int L, double prob_no_data, double prob_one_data );
+  }
 
 } // namespace DGtal
 
