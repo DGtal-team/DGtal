@@ -29,7 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/base/ExpressionTemplates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -56,12 +55,12 @@ template <typename T, DGtal::Dimension TM, DGtal::Dimension TN>
 inline
 DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix()
 {
-  for ( DGtal::Dimension i = 0; i < M*N; ++i )
+  for ( DGtal::Dimension i = 0; i < TM*TN; ++i )
     myValues[ i ] = NumberTraits<Component>::ZERO;
 
   //Cofactor coefs computation
-  for (DGtal::Dimension i=0; i<M; i++)
-    for (DGtal::Dimension j=0; j<N; j++)
+  for (DGtal::Dimension i=0; i<TM; i++)
+    for (DGtal::Dimension j=0; j<TN; j++)
       myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j));
 }
 //------------------------------------------------------------------------------
@@ -148,6 +147,81 @@ DGtal::SimpleMatrix<T, TM, TN>::operator+=(const Self& other)
     myValues[ i ] += other.myValues[i];
   return *this;
 }
+
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T
+DGtal::SimpleMatrix<T, TM, TN>::determinant2x2() const
+{
+  ASSERT(TM == 2);
+  ASSERT(TN == 2);
+  return this->operator()(0,0)*this->operator()(1,1) -
+    this->operator()(0,1)*this->operator()(1,0);
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T
+DGtal::SimpleMatrix<T, TM, TN>::determinant3x3() const
+{
+  ASSERT(TM == 3);
+  ASSERT(TN == 3);
+  return this->operator()(0,0) * ( (this->operator()(1,1)*this->operator()(2,2))-
+                                   (this->operator()(1,2)*this->operator()(2,1)) )-
+    this->operator()(1,0) * ( (this->operator()(0,1)*this->operator()(2,2))-
+                              (this->operator()(0,2)*this->operator()(2,1)) )
+    + this->operator()(2,0) * ( (this->operator()(0,1)*this->operator()(1,2))-
+                                (this->operator()(0,2)*this->operator()(1,1)) );
+}//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T
+DGtal::SimpleMatrix<T, TM, TN>::determinant() const
+{
+  ASSERT(TM == TN);
+  if (TM == 2)
+    return determinant2x2();
+  else
+    if (TM == 3)
+      return determinant3x3();
+    else
+      {
+        T d = NumberTraits<T>::ZERO;
+        for(DGtal::Dimension i= 0; i< M; ++i)
+          d += this->operator()(i,0) * cofactor(i,0);
+        return d;
+      }
+ }
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+T
+DGtal::SimpleMatrix<T, TM, TN>::minor(DGtal::Dimension ai, DGtal::Dimension aj) const
+{
+  ASSERT(TM == TN);
+  SimpleMatrix<T,TM-1,TN-1> mat;
+  DGtal::Dimension indexR=0;
+  DGtal::Dimension indexC=0;
+  for (DGtal::Dimension i=0; i<TM; i++)
+    for (DGtal::Dimension j=0; j<TN; j++)
+      {
+        if (i!=ai && j!=aj)
+          {
+            mat.setComponent(indexR,indexC, this->operator()(i,j));
+            indexC++;
+          }
+        if (indexC==M)
+          {
+            indexC=0;
+            indexR++;
+          }
+        if (indexR==M)
+          return mat.determinant();
+      }
+ 
+  return mat.determinant();
+ }
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
 inline
@@ -274,14 +348,25 @@ DGtal::SimpleMatrix<T, M,N>::operator*(const T& other) const
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension M, DGtal::Dimension N>
 inline
-DGtal::SimpleMatrix<T, M,N>  
-DGtal::SimpleMatrix<T, M,N>::cofactor() const
+T
+DGtal::SimpleMatrix<T, M,N>::cofactor(DGtal::Dimension i, DGtal::Dimension j ) const
 {
-  Self resultat;
+  return minor(i,j)*myCofactorCoefs[i*N+j];
+}
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension M, DGtal::Dimension N>
+inline
+DGtal::SimpleMatrix<T, M,N>
+DGtal::SimpleMatrix<T, M,N>::cofactor( ) const
+{
+  DGtal::SimpleMatrix<T, M,N> mat;
+  ASSERT( M == N);
+  
   for (DGtal::Dimension i=0; i<M; i++)
-    for (DGtal::Dimension j=0; j<N; j++)
-      resultat.setComponent( i,j, myCofactorCoefs[i*N+j]*this->operator()(i,j));
-  return resultat;
+    for (DGtal::Dimension j=0; j<M; j++)
+      mat.setComponent( i, j , cofactor(i,j));
+
+  return mat;
 }
 //------------------------------------------------------------------------------
 template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
