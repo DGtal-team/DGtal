@@ -76,7 +76,21 @@ namespace DGtal
     static bool export2OFF(const std::string & filename, const  std::vector<TPoint> &vectVertex,
 			   const std::vector <unsigned int>  &vectFaces,	unsigned int numFaces,				  
 			   const std::vector<DGtal::Color> &vectColorFaces) throw(DGtal::IOException);
-			   
+
+
+    /** 
+     * Export mesh data towards a OFF format..
+     * 
+     * @param filename name of the output file
+     * @param aViewer containing exported information
+     *
+     * @return true if no errors occur.
+     */
+    
+    static bool export2OFF(const std::string & filename, const  MeshFromPoints<TPoint>  &aMesh, 
+      bool exportColor=false) throw(DGtal::IOException);
+  
+  
   };
 			   
 }//namespace

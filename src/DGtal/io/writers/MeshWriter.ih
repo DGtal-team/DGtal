@@ -83,8 +83,52 @@ namespace DGtal {
   
   
   }
-  
 
+
+  template<typename TPoint>
+  bool 
+  MeshWriter<TPoint>::export2OFF(const std::string & filename, 
+				 const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
+    DGtal::IOException dgtalio;
+    ofstream out;
+    try
+      {
+	out.open(filename.c_str());
+	out << "OFF"<< endl;
+	out << "# generated from MeshWriter from the DGTal library"<< endl;
+	out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << endl;
+	
+	for(unsigned int i=0; i< aMesh.nbVertex(); i++){
+	  out << aMesh.getVertex(i).x << " " << aMesh.getVertex(i).y << " "<< aMesh.getVertex(i).z << endl;	
+	}
+	int position=0;
+	int indexFace=0;
+	for (int i=0; i< aMesh.nbFaces(); i++){
+	  vector<unsigned int>  aFace = aMesh.getFace(i);
+	  out << aFace.size() << " " ;
+	  for(int j=0; j<aFace.size(); j++){
+	    unsigned int indexVertex = aFace.at(j);
+	    out << indexVertex << " " ;
+	    
+	  }
+	  DGtal::Color col = aMesh.getFaceColor(i);
+	  if(exportColor){
+	    out << " ";
+	    out << ((double) col.red())/255.0 << " "
+		<< ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
+		<< " " << ((double) col.alpha())/255.0 ;
+	  }
+	    
+	  out << endl;
+	}
+      
+      }catch( ... )
+      {
+	std::cout << "OFF writer IO error on export " << filename << endl;
+	throw dgtalio;
+      }
+        
+  }
 
 }//namespace
 

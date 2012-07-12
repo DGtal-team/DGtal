@@ -553,7 +553,10 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
+  
+
   glBegin ( GL_QUADS );
+
   for ( unsigned int i=0; i<myQuadList.size(); i++ )
     {        
       glColor4ub ( myQuadList.at ( i ).R, myQuadList.at ( i ).G, myQuadList.at ( i ).B, myQuadList.at ( i ).T );
