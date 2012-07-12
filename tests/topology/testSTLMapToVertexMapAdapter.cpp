@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file AssociativeContainerToVertexMapAdapter.cpp
+ * @file STLMapToVertexMapAdapter.cpp
  * @ingroup Tests
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  * Institut National des Sciences Appliquées - INSA, France
  *
  * @date 2012/07/12
  *
- * Functions for testing class AssociativeContainerToVertexMapAdapter.
+ * Functions for testing class STLMapToVertexMapAdapter.
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/topology/CVertexMap.h"
-#include "DGtal/topology/AssociativeContainerToVertexMapAdapter.h"
+#include "DGtal/topology/STLMapToVertexMapAdapter.h"
 #include <map>
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,7 +45,7 @@ using namespace DGtal;
 
 /**
  *
- * This file tests the adaptation of a stl map to a vertex map.
+ * This file tests the adaptation of a STL map to a vertex map.
  * 
  */
 
@@ -59,12 +59,11 @@ bool testMapToVertexMap()
   typedef typename Z2i::Point Vertex;
   typedef int Value;
   typedef map<Vertex, Value> Map;
-  typedef AssociativeContainerToVertexMapAdapter<Map> VertexMap;
+  typedef STLMapToVertexMapAdapter<Map> VertexMap;
   VertexMap myMap;
   BOOST_CONCEPT_ASSERT((CVertexMap<VertexMap>));
   myMap.setValue(Point(1,1), 10);
   myMap.setValue(Point(2,3), 2);
-  myMap.find(Point(1,1));
   
   return (myMap(Point(1,1)) == 10 && myMap(Point(2,3)) == 2);
 }
@@ -76,7 +75,7 @@ bool testMapToVertexMap()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class AssociativeContainerToVertexMapAdapter" );
+  trace.beginBlock ( "Testing class STLMapToVertexMapAdapter" );
 
   bool res = testMapToVertexMap(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
