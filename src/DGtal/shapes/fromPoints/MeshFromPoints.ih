@@ -99,8 +99,9 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet, bool saveFaceColor)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
 {
+  mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++){
     myVertexList.push_back(vertexSet.at(i));
   }
@@ -143,7 +144,7 @@ inline
 void
 DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 					   unsigned int indexVertex3, unsigned int indexVertex4, 
-					  const  DGtal::Color &aColor)
+					   const DGtal::Color &aColor)
 {
   MeshFace aFace;
   aFace.push_back(indexVertex1);
@@ -157,6 +158,20 @@ DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned i
 }    
 
 
+
+template<typename TPoint>
+inline
+void 
+DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor){
+  myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }else{
+    trace.warning()<< "Color information not stored"<<endl;
+  }
+
+
+}
 
 
 template<typename TPoint>
@@ -197,19 +212,12 @@ DGtal::MeshFromPoints<TPoint>::nbVertex() const
 template<typename TPoint>
 inline
 const DGtal::Color & 
-DGtal::MeshFromPoints<TPoint>::getColor(unsigned int i) const{
+DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
   if(mySaveFaceColor){
     return myFaceColorList.at(i);
   }else{
     return DGtal::Color::White;
   }
-}
-
-template<typename TPoint>
-inline
-void 
-DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace, const DGtal::Color &aColor){
-  myFaceList.push_back(aFace);
 }
 
 

@@ -114,15 +114,19 @@ namespace DGtal
   public:
     /**
      * Constructor.
+     * By default the constructed mesh does not contain nor store color information about the mesh.
+     * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
+     * 
      * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
     MeshFromPoints(bool saveFaceColor=false);    
     
     /**
-     * Constructor.
-     * @param saveFaceColor: used to memorize the color of a face (default= false) 
+     * Constructor by usung a vertex set as init.
+     * The color are not stored in this case.
+     * @param vertexSet: the set of vertex. 
      */    
-    MeshFromPoints(const vector<TPoint> &vertexSet, bool saveFaceColor=false);
+    MeshFromPoints(const vector<TPoint> &vertexSet);
 
     /**
      * Destructor.
@@ -145,11 +149,8 @@ namespace DGtal
     
     // ----------------------- Interface --------------------------------------
   public:
-
-
-      
     
-  
+    
     /**
      * Adding new vertex.
      *
@@ -180,7 +181,7 @@ namespace DGtal
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
 		     unsigned int indexVertex3, unsigned int indexVertex4,
-		     const DGtal::Color &aColor=DGtal::Color::White);
+		     const DGtal::Color & aColor=DGtal::Color::White);
     
     
    /**
@@ -215,8 +216,8 @@ namespace DGtal
      * @param i: the index of the face.
      * @return the color of the face of index i. 
      **/
-    const DGtal::Color & getColor(unsigned int i) const;
-  
+    const Color & getFaceColor(unsigned int i) const;
+    
 
 
     
