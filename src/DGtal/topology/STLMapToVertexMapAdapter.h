@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file AssociativeContainerToVertexMapAdapter.h
+ * @file STLMapToVertexMapAdapter.h
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  * Institut National des Sciences Appliquées - INSA, France
  *
  * @date 2012/07/11
  *
- * Header file for template class AssociativeContainerToVertexMapAdapter
+ * Header file for template class STLMapToVertexMapAdapter
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(AssociativeContainerToVertexMapAdapter_RECURSES)
-#error Recursive header files inclusion detected in AssociativeContainerToVertexMapAdapter.h
-#else // defined(AssociativeContainerToVertexMapAdapter_RECURSES)
+#if defined(STLMapToVertexMapAdapter_RECURSES)
+#error Recursive header files inclusion detected in STLMapToVertexMapAdapter.h
+#else // defined(STLMapToVertexMapAdapter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define AssociativeContainerToVertexMapAdapter_RECURSES
+#define STLMapToVertexMapAdapter_RECURSES
 
-#if !defined AssociativeContainerToVertexMapAdapter_h
+#if !defined STLMapToVertexMapAdapter_h
 /** Prevents repeated inclusion of headers. */
-#define AssociativeContainerToVertexMapAdapter_h
+#define STLMapToVertexMapAdapter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -47,25 +47,24 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class AssociativeContainerToVertexMapAdapter
+  // template class STLMapToVertexMapAdapter
   /**
-  Description of template class 'AssociativeContainerToVertexMapAdapter' <p> \brief
-  Aim: This class adapts an associative container of the STL (such as map) to
-  the CVertexMap concept
+  Description of template class 'STLMapToVertexMapAdapter' <p> \brief
+  Aim: This class adapts any map of the STL to the CVertexMap concept
   
  
-  @tparam TAssociativeContainer the type of the associative container.
+  @tparam TMap the type of the associative container.
  
 
    */
-  template < typename TAssociativeContainer >
-  class AssociativeContainerToVertexMapAdapter :
-    public TAssociativeContainer
+  template < typename TMap >
+  class STLMapToVertexMapAdapter :
+    public TMap
   {
     // ----------------------- Associated types ------------------------------
   public:
-    typedef AssociativeContainerToVertexMapAdapter<TAssociativeContainer> Self;
-    typedef TAssociativeContainer Container;
+    typedef STLMapToVertexMapAdapter<TMap> Self;
+    typedef TMap Container;
     typedef typename Container::value_compare Compare;
     typedef typename Container::allocator_type Allocator;
     typedef typename Container::key_type Vertex;
@@ -80,13 +79,13 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    AssociativeContainerToVertexMapAdapter() : Container() {}
+    STLMapToVertexMapAdapter() : Container() {}
     
-    template <class InputIterator> AssociativeContainerToVertexMapAdapter( InputIterator first,
+    template <class InputIterator> STLMapToVertexMapAdapter( InputIterator first,
 	InputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator() )
 	: Container( first, last, comp, alloc ) {}
     
-    AssociativeContainerToVertexMapAdapter( AssociativeContainerToVertexMapAdapter & other ) 
+    STLMapToVertexMapAdapter( STLMapToVertexMapAdapter & other ) 
 	: Container( other ) {}
 
     void setValue(Vertex v, Value val)
@@ -96,7 +95,9 @@ namespace DGtal
     
     Value operator()(Vertex v)
     {
-      return Container::find(v)->second;
+      typename Container::const_iterator it = Container::find(v);
+      ASSERT( it != this->end() );
+      return it->second;
     }
     
 
@@ -122,7 +123,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class AssociativeContainerToVertexMapAdapter
+  }; // end of class STLMapToVertexMapAdapter
 
 
  
@@ -131,7 +132,7 @@ namespace DGtal
 
 
 
-#endif // !defined AssociativeContainerToVertexMapAdapter_h
+#endif // !defined STLMapToVertexMapAdapter_h
 
-#undef AssociativeContainerToVertexMapAdapter_RECURSES
-#endif // else defined(AssociativeContainerToVertexMapAdapter_RECURSES)
+#undef STLMapToVertexMapAdapter_RECURSES
+#endif // else defined(STLMapToVertexMapAdapter_RECURSES)
