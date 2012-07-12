@@ -850,8 +850,7 @@ DGtal::Display3D::exportToMesh(){
     }
   }
 
-
-
+  
   trace.info() << "generating faces done." << endl;
   MeshWriter<pointD3D>::export2OFF("exportedMesh.off", vectVertex, vectFaces,vectFaces.size()/5, vectColorFaces);
   trace.info() << "file exported in file: exportedMesh.off." << endl;
