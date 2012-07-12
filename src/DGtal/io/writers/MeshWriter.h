@@ -66,7 +66,7 @@ namespace DGtal
    
 
     /** 
-     * Export an Image with the Vol format.
+     * Export mesh data towards a OFF format..
      * 
      * @param filename name of the output file
      * @param aViewer containing exported information

@@ -612,27 +612,19 @@ namespace DGtal
     std::vector< lineD3D > myKSLinelList;
   
   
-    /// Represent all the drawed planes
-    ///
-
+    // Represents all the planes drawn in the Display3D
     std::vector< quadD3D > myQuadList;
 
 
-   /// Represent all the drawed triangles
-    ///
-
+    // Represents all the triangles drawn in the Display3D
     std::vector< triangleD3D > myTriangleList;
-
-
-   /// Represent all the drawed triangles
-    ///
     
+
+   // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
     
-
+    
     /// Used to define if GL_TEST_DEPTH is used. 
-    ///
-  
     std::vector<bool> myListVoxelDepthTest;
 
     float myMeshDefaultLineWidth;

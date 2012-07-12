@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-//#include "DGtal/io/readers/MeshReader.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,10 +52,11 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class MeshFromPoints
   /**
-   * Description of template class 'MeshFromPoints' <p>
-   * \brief Aim:
+   * Description of template class 'MeshFromPoints' <p> \brief Aim:
    * This class is defined to represent a surface mesh through a set a
-   * vertex and a set of faces represented by its vertex index.
+   * vertex and a set of faces represented by its vertex index. By
+   * default it does not memorize the color Face and all faces will
+   * have the white color. 
    *
    *
    * This class was defined to import and display a mesh from different formats like OFF file format. 
@@ -113,15 +114,15 @@ namespace DGtal
   public:
     /**
      * Constructor.
-     * 
+     * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
-    MeshFromPoints();    
+    MeshFromPoints(bool saveFaceColor=false);    
     
     /**
      * Constructor.
-     * 
+     * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */    
-    MeshFromPoints(const vector<TPoint> &vertexSet);
+    MeshFromPoints(const vector<TPoint> &vertexSet, bool saveFaceColor=false);
 
     /**
      * Destructor.
@@ -165,7 +166,8 @@ namespace DGtal
      * @param indexVertex2: the index of the second vertex face.
      * 
      **/    
-    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3);
+    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
+			   const DGtal::Color &aColor=DGtal::Color::White);
 
 
     /**
@@ -177,7 +179,8 @@ namespace DGtal
      * 
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
-		     unsigned int indexVertex3, unsigned int indexVertex4);
+		     unsigned int indexVertex3, unsigned int indexVertex4,
+		     const DGtal::Color &aColor=DGtal::Color::White);
     
     
    /**
@@ -185,7 +188,7 @@ namespace DGtal
     * @param listIndex: the index of all the face vertex.
     * 
     **/    
-    void addFace(const MeshFace &aFace);
+    void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
    
     
@@ -204,7 +207,19 @@ namespace DGtal
      * @return the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
-   
+
+
+
+    /**
+     * Return a reference to a  face Color of index i.
+     * @param i: the index of the face.
+     * @return the color of the face of index i. 
+     **/
+    const DGtal::Color & getColor(unsigned int i) const;
+  
+
+
+    
     
     
     /**
@@ -252,8 +267,8 @@ namespace DGtal
   private:
     vector<MeshFace>  myFaceList;
     vector<TPoint>  myVertexList;
-    
-
+    vector<DGtal::Color> myFaceColorList;
+    bool mySaveFaceColor;
     
     // ------------------------- Hidden services ------------------------------
   protected:
