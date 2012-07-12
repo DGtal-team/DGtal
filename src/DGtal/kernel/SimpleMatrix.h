@@ -113,7 +113,6 @@ namespace DGtal
      */
     void constant(const Component &aScalar);
 
-
     /** 
      * Get row vector.
      * 
@@ -277,11 +276,56 @@ namespace DGtal
 
 
     /** 
+     * Cofactor of the matrix at position (i,j).
+     * 
+     * @return the cofactor at (i,j).
+     */
+    Component cofactor(DGtal::Dimension i,
+                       DGtal::Dimension j) const;
+   
+    /** 
      * Cofactor matrix computation.
      * 
      * @return the cofactor matrix.
      */
     Self cofactor() const;
+     
+    /** 
+     * Return the minor (i,j) of the current matrix
+     * 
+     * @param i row index
+     * @param j column index
+     * 
+     * @return the minor (i,j)
+     */
+    Component minor(DGtal::Dimension i, 
+                    DGtal::Dimension j) const;
+
+    /** 
+     * Returns the determinant of square matrix.
+     * Slow method for large matrices.
+     * @pre this must be NxN
+     * 
+     * @return the determinant.
+     */
+    Component determinant() const;
+
+  
+    /** 
+     * Returns the determinant of 3x3 matrix.
+     * @pre this must be 3x3
+     * 
+     * @return the determinant.
+     */
+    Component determinant3x3() const;
+
+    /** 
+     * Returns the determinant of 2x2 matrix.
+     * @pre this must be 2x2
+     * 
+     * @return the determinant.
+     */
+    Component determinant2x2() const;
 
     /**
      * Destructor.
@@ -305,6 +349,8 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   private:
+ 
+    
     // ------------------------- Private Datas --------------------------------
   private:
 
