@@ -233,21 +233,35 @@ bool testColRow()
   return nbok == nb; 
 }
 
-bool testCofactor()
+bool testDetCofactor()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  typedef DGtal::SimpleMatrix<double,3,4> MAT;
-  MAT mat;
-  for(DGtal::Dimension i = 0; i< 3; ++i)
-    for(DGtal::Dimension j = 0; j< 4; ++j)
-      mat.setComponent(i,j,i+j);
-  
-  trace.beginBlock("Cofactor tests...");
-  trace.info() << mat<<std::endl;
-  trace.info() << mat.cofactor() << std::endl;
+  typedef DGtal::SimpleMatrix<double,2,2> MAT2;
+  MAT2 mat2;
+  mat2.setComponent(0,0,1);
+  mat2.setComponent(1,1,2);
 
+  trace.beginBlock("det2x2 tests...");
+  trace.info() << mat2<<std::endl;
+  trace.info() << mat2.determinant2x2() << std::endl;
+  nbok += (mat2.determinant2x2() == 2) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " 2" << std::endl;
+  trace.endBlock();
+
+  typedef DGtal::SimpleMatrix<double,3,3> MAT;
+  MAT mat;
+  mat.setComponent(0,0,1);
+  mat.setComponent(1,1,2);
+  mat.setComponent(2,2,4);
+  
+  trace.beginBlock("det3x3 tests...");
+  trace.info() << mat<<std::endl;
+  trace.info() << mat.determinant3x3() << std::endl;
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -262,7 +276,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() && testCofactor(); // && ... other tests
+  bool res = testSimpleMatrix() && testArithm() && testColRow() && testDetCofactor(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
