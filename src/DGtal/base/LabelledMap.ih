@@ -574,7 +574,7 @@ operator=( const LabelledMap & other )
 {
   if ( this != &other )
     {
-      blockClear();
+      blockClear( size() );
       myFirstBlock = other.myFirstBlock;
       // there is one more stored data in the last block.
       unsigned int s = N + 1; 
@@ -597,7 +597,7 @@ void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 clear()
 {
-  blockClear();
+  blockClear( size() );
   myLabels.reset();
 }
 //-----------------------------------------------------------------------------
@@ -1155,6 +1155,32 @@ DGtal::operator<< ( std::ostream & out,
 {
   object.selfDisplay( out );
   return out;
+}
+
+template <typename TData>
+std::pair< unsigned int, unsigned int >
+DGtal::detail::argminLabelledMapMemoryUsageForGeometricDistribution
+( unsigned int L, double prob_no_data, double prob_one_data )
+{
+  unsigned int sL = 2 * ( ( ( L - 1 ) / 16 ) + 1 ); // word of 16bits
+  // std::cerr << "L=" << L  << " sL=" << sL << std::endl;
+  LabelledMapMemFunctor F( prob_one_data, prob_no_data, sL, sizeof( TData ),
+                           sizeof( TData* ), 2 );
+  double m = -1.0;
+  unsigned int Nopt = 0;
+  unsigned int Mopt = 0;
+  for ( unsigned int N = 1; N < L; ++N )
+    for ( unsigned int M = 2; M < (L-N); ++M )
+      {
+        // std::cerr << "Fmem(" << N << "," << M << ")=" 
+        //           << F.fctNM( N, M ) << std::endl;
+        if ( ( m < 0.0 ) || ( F.fctNM( N, M ) < m ) )
+          {
+            Nopt = N; Mopt = M; 
+            m = F.fctNM( Nopt, Mopt );
+          }
+      }
+  return std::make_pair( Nopt, Mopt );
 }
 
 //                                                                           //

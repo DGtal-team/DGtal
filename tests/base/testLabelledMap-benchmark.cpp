@@ -168,7 +168,7 @@ public:
   {
       for ( unsigned int y = 0; y < Y; ++y )
         for ( unsigned int x = 0; x < X; ++x )
-          _data.clear();
+          _data[ x ][ y ].clear();
   }
 
   inline 
@@ -267,7 +267,7 @@ public:
   {
       for ( unsigned int y = 0; y < Y; ++y )
         for ( unsigned int x = 0; x < X; ++x )
-          _data.clear();
+          _data[ x ][ y ].clear();
   }
 
   inline 
