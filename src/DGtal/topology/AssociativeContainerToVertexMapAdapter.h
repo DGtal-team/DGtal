@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/Common.h"
-#include <../Lib/AQA/src/ntl-5.5.2/include/NTL/GF2XVec.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,7 +60,7 @@ namespace DGtal
    */
   template < typename TAssociativeContainer >
   class AssociativeContainerToVertexMapAdapter :
-    TAssociativeContainer
+    public TAssociativeContainer
   {
     // ----------------------- Associated types ------------------------------
   public:
@@ -92,13 +91,14 @@ namespace DGtal
 
     void setValue(Vertex v, Value val)
     {
-      *this[v] = val;
+      (*this)[v] = val;
     }
     
     Value operator()(Vertex v)
     {
-      return find(v);
+      return Container::find(v)->second;
     }
+    
 
 
 

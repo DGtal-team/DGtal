@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
+   testAssociativeContainerToVertexMapAdapter
    testBreadthFirstPropagation
    testCellularGridSpaceND
    testDigitalSurface
