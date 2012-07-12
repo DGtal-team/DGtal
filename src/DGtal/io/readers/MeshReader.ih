@@ -163,6 +163,8 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       }else{
 	aMesh.addFace(aFace);
       }
+    }else{
+      aMesh.addFace(aFace);
     }
   }
   
