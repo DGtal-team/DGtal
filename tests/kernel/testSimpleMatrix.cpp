@@ -245,8 +245,8 @@ bool testDetCofactor()
 
   trace.beginBlock("det2x2 tests...");
   trace.info() << mat2<<std::endl;
-  trace.info() << mat2.determinant2x2() << std::endl;
-  nbok += (mat2.determinant2x2() == 2) ? 1 : 0; 
+  trace.info() << mat2.determinant() << std::endl;
+  nbok += (mat2.determinant() == 2) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   	       << " 2" << std::endl;
@@ -260,8 +260,30 @@ bool testDetCofactor()
   
   trace.beginBlock("det3x3 tests...");
   trace.info() << mat<<std::endl;
-  trace.info() << mat.determinant3x3() << std::endl;
+  nbok += (mat.determinant() == 8) ? 1 : 0; 
+   nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " 8" << std::endl;
   trace.endBlock();
+
+
+  typedef DGtal::SimpleMatrix<double,4,4> MAT44;
+  MAT44 mat44;
+  mat44.setComponent(0,0,1);
+  mat44.setComponent(1,1,2);
+  mat44.setComponent(2,2,4);
+  mat44.setComponent(3,3,4);
+  
+  trace.beginBlock("det4x4 tests...");
+  trace.info() << mat44 <<std::endl;
+  trace.info() << mat44.determinant() << std::endl;
+  nbok += (mat44.determinant() == 32) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " 32" << std::endl;
+  trace.endBlock();
+
+
   return nbok == nb;
 }
 
