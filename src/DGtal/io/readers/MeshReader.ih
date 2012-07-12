@@ -124,16 +124,49 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
 	aFace.at(aFace.size()-1-j)=tmp;
       }
     }
-    aMesh.addFace(aFace);
+    
     // Needed since a can also contain vertex colors
     getline(infile, str);
-    
-  }
+    // Contains colors:
+    bool findValidColor=true;
+    if(str!=""){
+      istringstream inColor(str);
+      double colorR, colorG, colorB, colorT;
+      findValidColor=inColor.good();
+      if(findValidColor && inColor.good()){
+	inColor >> colorR;
+      }
+      findValidColor &=!inColor.fail();
+      if(findValidColor && inColor.good()){
+	inColor >> colorG;
+      }
+      findValidColor &=!inColor.fail();
+      if(findValidColor && inColor.good()){
+	inColor >> colorB;
+      }
+      findValidColor &=!inColor.fail();
+      
+      if(findValidColor && inColor.good()){
+	inColor >> colorT;
+	// Since alpha is optional:
+	if(inColor.fail()){
+	  colorT=1.0;
+	}
 
+      }else{
+	colorT=1.0;
+      }
+      if(findValidColor){
+	DGtal::Color c((unsigned int)(colorR*255.0), (unsigned int)(colorG*255.0),
+		       (unsigned int)(colorB*255.0), (unsigned int)(colorT*255.0));
+	aMesh.addFace(aFace, c);
+      }else{
+	aMesh.addFace(aFace);
+      }
+    }
+  }
   
-  //Todo processing optional colors...
   return true;
-   
 }
 
 
