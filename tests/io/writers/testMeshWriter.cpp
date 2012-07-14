@@ -30,53 +30,48 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/Display3D.h"
+#include "DGtal/helpers/StdDefs.h" 
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 #include "DGtal/io/writers/MeshWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class MeshWriter.
 ///////////////////////////////////////////////////////////////////////////////
+
+
 /**
  * Example of a test. To be completed.
  *
  */
 bool testMeshWriter()
 {
-  unsigned int nbok = 1;
+  unsigned int nbok = 0;
   unsigned int nb = 0;
-  // Constructing the object to export in OFF format
-  vector<Display3D::pointD3D > vectVertex;
-  Display3D::pointD3D p1,p2,p3,p4;
-  p1.x=0.0; p1.y=0.0; p1.z=0.0;
-  p2.x=1.0; p2.y=0.0; p2.z=0.0;
-  p3.x=1.0; p3.y=1.0; p3.z=0.0;
-  p4.x=0.0; p4.y=1.0; p4.z=0.0;
+  // Constructing the mesh to export in OFF format
+  MeshFromPoints<Point> aMesh(true);
   
-  vectVertex.push_back(p1);
-  vectVertex.push_back(p2);
-  vectVertex.push_back(p3);
-  vectVertex.push_back(p4);
+  vector<Point> vectVertex;
+  Point p1(0, 0, 0);
+  Point p2(1, 0, 0);
+  Point p3(1, 1, 0);
+  Point p4(0, 1, 0);
   
+  aMesh.addVertex(p1);
+  aMesh.addVertex(p2);
+  aMesh.addVertex(p3);
+  aMesh.addVertex(p4);  
   
-  vector<unsigned int> vectFaces;
-  vectFaces.push_back(4);
-  vectFaces.push_back(0);
-  vectFaces.push_back(1);
-  vectFaces.push_back(2);
-  vectFaces.push_back(3);
-
-  
-  // Adding color to faces
   vector<DGtal::Color> vectColor;
-  DGtal::Color col (25,0,0, 200);
-  vectColor.push_back(col);
-
-  bool isOK = MeshWriter<Display3D::pointD3D>::export2OFF("test.off",vectVertex, vectFaces,1, vectColor);
+  DGtal::Color col (250,0,0, 200);
   
+  aMesh.addQuadFace(0,1,2,3, col);
+  
+  bool isOK = aMesh >> "test.off";
   
   
   trace.beginBlock ( "Testing block ..." );

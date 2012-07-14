@@ -169,14 +169,23 @@ namespace DGtal
     ///
     
     struct pointD3D{
-      double operator[]( unsigned int i ) const{
+      const double & operator[]( unsigned int i ) const{
 	assert(i<3);
 	switch (i){
 	case 0: {return x;}
 	case 1: {return y;}
 	case 2: {return z;}
 	}
-	return 0.0;
+	return x;
+      };
+       double & operator[]( unsigned int i ) {
+	assert(i<3);
+	switch (i){
+	case 0: {return x;}
+	case 1: {return y;}
+	case 2: {return z;}
+	}
+	return x;
       };
       double  x, y, z;
       unsigned int R,G,B,T;
