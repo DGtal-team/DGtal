@@ -43,7 +43,27 @@ using namespace DGtal;
 
 
 
-struct Point3D{
+struct Point3D{  
+  const double & operator[]( unsigned int i ) const{
+    assert(i<3);
+    switch (i){
+    case 0: {return x;}
+    case 1: {return y;}
+    case 2: {return z;}
+    }
+    return x;
+  };
+
+   double & operator[]( unsigned int i ) {
+    assert(i<3);
+    switch (i){
+    case 0: {return x;}
+    case 1: {return y;}
+    case 2: {return z;}
+    }
+    return x;
+  };
+  
   double  x, y,z;
 };
 

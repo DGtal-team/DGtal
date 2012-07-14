@@ -43,9 +43,8 @@
 #include <iostream>
 #include <string>
 #include <boost/static_assert.hpp>
-#include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/colormaps/CColorMap.h"
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -65,18 +64,6 @@ namespace DGtal
 
    
 
-    /** 
-     * Export mesh data towards a OFF format..
-     * 
-     * @param filename name of the output file
-     * @param aViewer containing exported information
-     *
-     * @return true if no errors occur.
-     */
-    static bool export2OFF(const std::string & filename, const  std::vector<TPoint> &vectVertex,
-			   const std::vector <unsigned int>  &vectFaces,	unsigned int numFaces,				  
-			   const std::vector<DGtal::Color> &vectColorFaces) throw(DGtal::IOException);
-
 
     /** 
      * Export mesh data towards a OFF format..
@@ -92,6 +79,23 @@ namespace DGtal
   
   
   };
+
+
+
+
+
+  /**
+   *  'operator<<' for importing objects of class 'MeshFromPoints'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'MeshFromPoints' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TPoint>
+  bool
+  operator >> (  MeshFromPoints<TPoint> & mesh, const std::string &filename );
+  
+  
+
 			   
 }//namespace
 
