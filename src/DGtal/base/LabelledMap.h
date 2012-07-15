@@ -61,6 +61,12 @@ namespace DGtal
      the number of used labels is much less than L. The objective is
      to minimize the memory usage.
 
+     Model of boost::AssociativeContainer,
+     boost::PairAssociativeContainer,
+     boost::UniqueAssociativeContainer. As such, it is refinement of
+     boost::ForwardContainer and boost::Container.  It is also a model
+     of boost::Assignable, boost::CopyConstructible.
+
 @verbatim
 V[ 0 ] is the data of the first set label.
 V[ 1 ] is the data of the second set label.
@@ -136,11 +142,13 @@ if more than 3 datas and N = 2, M = 4
 
     //class Iterator;      //< Forward declaration
     class ConstIterator; //< Forward declaration
-
+    class KeyCompare;    //< Forward declaration
+    class ValueCompare;  //< Forward declaration
     // ----------------------- Standard types ------------------------------
     typedef Key key_type;
     typedef Value value_type;
     typedef Data data_type;
+    typedef Data mapped_type;
     typedef DifferenceType difference_type;
     typedef Reference reference;
     typedef Pointer pointer;
@@ -149,7 +157,9 @@ if more than 3 datas and N = 2, M = 4
     typedef SizeType size_type;
     typedef ConstIterator iterator;
     typedef ConstIterator const_iterator;
-    
+    typedef KeyCompare key_compare;
+    typedef ValueCompare value_compare;
+
     struct __FirstBlock; //< Forward declaration
     struct __AnyBlock; //< Forward declaration
 
@@ -718,7 +728,26 @@ if more than 3 datas and N = 2, M = 4
     
     /// non-mutable class via iterators.
     typedef ConstIterator Iterator;
+    /// Key comparator class. Always natural ordering.
+    class KeyCompare {
+    public:
+      inline KeyCompare() {}
+      inline bool operator()( Key k1, Key k2 ) const
+      {
+        return k1 < k2;
+      }
+    };
+    /// Value comparator class. Always natural ordering between keys.
+    class ValueCompare {
+    public:
+      inline ValueCompare() {}
+      inline bool operator()( const Value & v1, const Value & v2 ) const
+      {
+        return v1.first < v2.first;
+      }
+    };
 
+    
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -732,6 +761,18 @@ if more than 3 datas and N = 2, M = 4
      * @param other the object to clone.
      */
     LabelledMap ( const LabelledMap & other );
+
+    /**
+       Constructor from range.
+       
+       @tparam InputIterator model of boost::InputIterator whose
+       value type is convertible to Value.
+       
+       @param first an iterator on the first value of the range.
+       @param last an iterator after the last value of the range.
+    */
+    template <typename InputIterator>
+    LabelledMap( InputIterator first, InputIterator last );
 
     /**
      * Assignment.
@@ -772,6 +813,31 @@ if more than 3 datas and N = 2, M = 4
        The number of datas currently allocated in the structure.
      */
     SizeType capacity() const;
+
+    /**
+       @return a comparator object for two keys. Corresponds to k1 < k2.
+    */
+    KeyCompare key_comp() const;
+
+    /**
+       @return a comparator object for two values. Corresponds to v1.first < v2.first.
+    */
+    ValueCompare value_comp() const;
+
+    /**
+       Swap content. Exchanges the content of the container with the
+       content of mp, which is another map object containing elements
+       of the same type. Sizes may differ.
+
+       After the call to this member function, the elements in this
+       container are those which were in mp before the call, and the
+       elements of mp are those which were in this. 
+
+       NB: not exactly standard ! The iterators pointing on the first
+       block change roles ! The other references and pointers remain
+       valid for the swapped objects.
+    */
+    void swap( Self & other );
 
     /**
        Removes all the datas stored in the structure. 
@@ -852,6 +918,20 @@ if more than 3 datas and N = 2, M = 4
        each insert. Prefer operator[] or fastAt.
     */
     Iterator insert( Iterator position, const Value & val );
+
+    /**
+       Insertion from range. Insert all values in the range. Be
+       careful that if a value in the container has the same key as a
+       value in the range, then the mapped data is not changed.
+       
+       @tparam InputIterator model of boost::InputIterator whose
+       value type is convertible to Value.
+       
+       @param first an iterator on the first value of the range.
+       @param last an iterator after the last value of the range.
+    */
+    template <typename InputIterator>
+    void insert( InputIterator first, InputIterator last );
 
     /**
        Erases the pair (key,data) pointed by \a iterator.

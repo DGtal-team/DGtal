@@ -104,7 +104,9 @@ void display( ostream & out, const AContainer & C )
 int main()
 {
   typedef LabelledMap<double, 32, DGtal::uint16_t, 2, 7> MyLabelledMap;
-  // BOOST_CONCEPT_ASSERT(( boost::Container< MyIndexedList > ));
+  BOOST_CONCEPT_ASSERT(( boost::AssociativeContainer< MyLabelledMap > ));
+  BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< MyLabelledMap > ));
+  BOOST_CONCEPT_ASSERT(( boost::UniqueAssociativeContainer< MyLabelledMap > ));
   // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::Iterator > ));
   // BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< MyIndexedList::ConstIterator > ));
   unsigned int nb = 0;

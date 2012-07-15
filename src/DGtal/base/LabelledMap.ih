@@ -537,7 +537,7 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 LabelledMap()
-{ // default constructor of myFirstBlock is automatically called.
+{ // default constructor of myLabels and myFirstBlock is automatically called.
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -567,6 +567,19 @@ LabelledMap( const LabelledMap & other )
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+template <typename InputIterator>
+inline
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+LabelledMap( InputIterator first, InputIterator last )
+{ // default constructor of myLabels and myFirstBlock is automatically called.
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator< InputIterator > ));
+  for ( ; first != last; ++first )
+    {
+      this->operator[]( first->first ) = first->second;
+    }
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline
 DGtal::LabelledMap<TData, L, TWord, N, M> &
 DGtal::LabelledMap<TData, L, TWord, N, M>::
@@ -575,18 +588,19 @@ operator=( const LabelledMap & other )
   if ( this != &other )
     {
       blockClear( size() );
+      myLabels = other.myLabels;
+      unsigned int theSize = other.size();
       myFirstBlock = other.myFirstBlock;
       // there is one more stored data in the last block.
       unsigned int s = N + 1; 
       const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
       __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
-      while ( s < myFirstBlock.size  )
+      while ( s < theSize  )
         {
           *currentPointer = new __AnyBlock( *nextBlock );
           s += M;
           currentPointer = & ( (*currentPointer)->next );
         }
-      myLabels = other.myLabels;
     }
   return *this;
 }
@@ -665,6 +679,34 @@ capacity() const
   return ( size() <= (N+1) )
     ? N+1
     : ( 1 + ( size() - 1 - N ) / M ) * M + N;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::KeyCompare
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+key_comp() const
+{
+  return KeyCompare();
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::ValueCompare
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+value_comp() const
+{
+  return ValueCompare();
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+inline
+void
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+swap( Self & other )
+{
+  std::swap( myLabels, other.myLabels );
+  std::swap( myFirstBlock, other.myFirstBlock );
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -863,6 +905,26 @@ insert ( Iterator position, const Value & val )
       ++position;
     }
   return position;
+}
+//-----------------------------------------------------------------------------
+template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
+template <typename InputIterator>
+inline
+void
+DGtal::LabelledMap<TData, L, TWord, N, M>::
+insert( InputIterator first, InputIterator last )
+{ 
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator< InputIterator > ));
+  for ( ; first != last; ++first )
+    {
+      Key k = first->first;
+      if ( ! myLabels.test( k ) )
+        {
+          unsigned int block_size = size();
+          myLabels.set( k ); // must be done before so that 'index' works.
+          blockInsert( myLabels.index( k ), block_size, first->second );
+        }
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
