@@ -554,7 +554,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   myNbListe++;
   glPushName ( myNbListe );
   
-
+  glEnable ( GL_LIGHTING );  
   glBegin ( GL_QUADS );
 
   for ( unsigned int i=0; i<myQuadList.size(); i++ )
@@ -767,8 +767,8 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
   bool handled = false;
 
   if( e->key() == Qt::Key_E){
-    trace.info() << "exporting mesh..." ;
-    exportToMesh();
+    trace.info() << "Exporting mesh..." ;
+    (*this) >> "exportedMesh.off";
     trace.info() << "[done]"<< endl ;
   }
 

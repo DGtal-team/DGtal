@@ -6,7 +6,7 @@ namespace DGtal {
 
 /*!
 @page image_io Image and digital object import/export
-@authors David Coeurjolly
+@authors David Coeurjolly and Bertrand Kerautret
 
 This part of the manual describes how to import and export images
 in various formats. This document is dedicated both to DGtal users and
@@ -56,9 +56,19 @@ single point.
 
 
 \subsection mesh3D 3D Surface Mesh
-The static class \c OFFReader allows to import MeshFromPoints from OFF file format.
-Actually this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangular, quadrilateral and polygonal. Notes that MeshFromPoints can be directly display with Viewer3D.
- 	
+The static class \c MeshReader allows to import MeshFromPoints from OFF or OFS file format.
+Actually this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that MeshFromPoints can be directly displayed with Viewer3D.
+
+The mesh importation can be done automatically from the extension file name by using the "<<" operator. For instance (see. \ref importMesh3D ):
+
+
+@snippet io/meshFromOFF.cpp ImportOFFfile
+
+You can also export a MeshFromPoints object by using the operator
+(">>"). Notes that the class Display3D permits also to generate a
+MeshFromPoints which can be exported (see. \ref exportMesh3D).
+
+
 	
 
 \section io_examples Example
@@ -136,16 +146,15 @@ You may obtain the following visualisation:
 \subsection importMesh3D Import 3D mesh from OFF file
 
 The following example (<a href="io_2meshFromOFF_8cpp-example.html"> meshFromOFF.cpp
-</a>) show in few line how to import and display a OFF 3D mesh.
+</a>) shows in few lines how to import and display an OFF 3D mesh.
 Add the following headers to access to OFF reader and  Viewer3D:
 
 
 @snippet io/meshFromOFF.cpp includeImportOFF
 
-then omport an example  ".off" file from the example/sample directory:
+then import an example  ".off" file from the example/sample directory:
 
 @snippet io/meshFromOFF.cpp ImportOFFfile
-
 
 Display the result:
 
@@ -154,13 +163,65 @@ Display the result:
 
 You may obtain the following visualisation:
 
-\image html visuImportOFF.png  "Visualisation of 3d imported point list "  width=5cm
-\image latex visuImportOFF.png  "Visualisation of 3d imported point list" width=5cm
+\image html  visuTrefExample.png   "Visualisation of 3d imported Mesh "  width=5cm
+\image latex  visuTrefExample.png  "Visualisation of 3d imported Mesh" width=5cm
+
+You can also import large scale mesh, like the one of classic Angel scan ( available here: \href http://www.cc.gatech.edu/projects/large_models/ )
+
+\image html visuImportOFF.png  "Visualisation of the 3d angel "  width=5cm
+\image latex visuImportOFF.png  "Visualisation of the 3d  angel" width=5cm
 
 
 
+
+
+\subsection exportMesh3D Export 3D mesh in OFF and OBJ format
+
+The following example (<a href="io_2display3DToOFF_8cpp-example.html"> display3DToOFF.cpp </a>  shows in few lines how to export in OFF format a
+MeshFromPoints object. This object will be exported from a Display3D
+object (see. display3DToOFF). 
+
+
+
+@snippet io/display3DToOFF.cpp ExampleDisplay3DToOFF
+
+
+
+
+Notes that the export can also be done in two steps:
+
+
+@code 
+// The parameter true is used to specify that we store the face colors.
+MeshFromPoints aMesh(true);
+viewer >> aMesh;
+aMesh >> "exporMeshToOFF.off"
 @endcode
 
+
+The resulting mesh can be visualized for instance by using meshlab;
+
+
+\image html  visuDisplay3DToOFF.png  "Visualization of the exported mesh "  width=5cm
+\image latex visuDisplay3DToOFF.png  "Visualization of the exported mesh" width=5cm
+
+
+
+
+This code can be useful if you want to generate illustrations in the
+U3D format. For instance by using the U3D/PDF export from MeshLab or
+JReality (\href www3.math.tu-berlin.de/jreality/). You can for
+instance generate some exports in pdf like this example:
+
+
+\image html  visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
+\image latex visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
+
+
+
+
+
+(see this pdf file: \href https://liris.cnrs.fr/dgtal/wordpress/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
 
 
 */
@@ -181,7 +242,19 @@ You may obtain the following visualisation:
 
    @see \ref importMesh3D
 
-   @image html visuAngleExample.png   "Visualisation of the sample/angel.off file"
+   @image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
 
 * \example io/meshFromOFF.cpp
+**/
+
+
+
+/**
+*  Example of OFF generation from a Display3D object.
+
+   @see \ref exportMesh3D
+
+   @image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (\ref http://meshlab.sourceforge.net). "
+
+* \example io/display3DToOFF.cpp
 **/

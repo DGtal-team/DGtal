@@ -31,8 +31,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h" 
+//! [MeshWriterUseIncludes]
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 #include "DGtal/io/writers/MeshWriter.h"
+//! [MeshWriterUseIncludes]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -52,31 +54,35 @@ bool testMeshWriter()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
+  //! [MeshWriterUseMeshCreation]
   // Constructing the mesh to export in OFF format
-  MeshFromPoints<Point> aMesh(true);
-  
+  MeshFromPoints<Point> aMesh(true);  
   vector<Point> vectVertex;
   Point p1(0, 0, 0);
   Point p2(1, 0, 0);
   Point p3(1, 1, 0);
-  Point p4(0, 1, 0);
-  
+  Point p4(0, 1, 0);  
   aMesh.addVertex(p1);
   aMesh.addVertex(p2);
   aMesh.addVertex(p3);
   aMesh.addVertex(p4);  
-  
+
   vector<DGtal::Color> vectColor;
   DGtal::Color col (250,0,0, 200);
-  
   aMesh.addQuadFace(0,1,2,3, col);
-  
+  //! [MeshWriterUseMeshCreation]
+  //! [MeshWriterUseMeshExport]
   bool isOK = aMesh >> "test.off";
-  
+  //! [MeshWriterUseMeshExport]
+  nb++;
+  bool isOK2 = aMesh >> "test.obj";
+  nb++;
   
   trace.beginBlock ( "Testing block ..." );
   nbok += isOK ? 1 : 0; 
-  nb++;
+  nbok += isOK2 ? 1 : 0; 
+
+ 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();

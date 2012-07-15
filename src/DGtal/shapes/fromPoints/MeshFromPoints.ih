@@ -166,8 +166,6 @@ DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Colo
   myFaceList.push_back(aFace);
   if(mySaveFaceColor){
     myFaceColorList.push_back(aColor);
-  }else{
-    trace.warning()<< "Color information not stored"<<endl;
   }
 
 
@@ -239,10 +237,6 @@ DGtal::MeshFromPoints<TPoint>::invertVertexFaceOrder(){
 
     
 
-
-
-
-
 //------------------------------------------------------------------------------
 template<typename TPoint>
 inline
@@ -251,13 +245,6 @@ DGtal::MeshFromPoints<TPoint>::className() const
 {
   return "MeshFromPoints";
 }
-
-
-
-
-
-
-
 
 
 

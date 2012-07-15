@@ -61,35 +61,24 @@ namespace DGtal
    *
    * This class was defined to import and display a mesh from different formats like OFF file format. 
    * Since it realized the concept of CDrawableWithDisplay3D we can display an MeshFromPoints with a Display3D object:
-   *  @code
-   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-   #include "DGtal/io/viewers/Viewer3D.h"
-   #include "DGtal/helpers/StdDefs.h"
-   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-   #include <QtGui/qapplication.h>
-   ...
+   *
+   * First we have to include the following header files:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInclude 
+   *
+   * Prepare display using QGLviewer: Viewer3D
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInitDisplay 
+   *
+   * Construct a MeshFromPoints with various faces:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseMeshCreation
    
-   QApplication application(argc,argv);
-   Viewer3D viewer;
-   viewer.show();     
-   // Mesh construction
-   MeshFromPoints<Point> aMesh;
-   aMesh.addVertex(Point(0,0,0));
-   aMesh.addVertex(Point(1,0,0));
-   aMesh.addVertex(Point(1,1,0));
-  
-   aMesh.addTriangularFace(0, 1, 2);
-   // Mesh display
-   
-   viewer.setFillColor(DGtal::Color(240,240,240,150));
-   viewer.setLineColor(DGtal::Color(150,0,0,254));
-   viewer << anImportedMesh;
-   viewer << Viewer3D::updateDisplay;
+   * Displaying the result:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseDisplay
+
    @endcode 
    *
    * 
    *
-   * @see  OFFReader meshFromOFF.
+   * @see  MeshReader MeshWriter meshFromOFF.
    *
    */
   template <typename TPoint >
