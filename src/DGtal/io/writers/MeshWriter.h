@@ -54,7 +54,23 @@ namespace DGtal
   // template class MeshWriter
   /**
    * Description of template struct 'MeshWriter' <p>
-   * \brief Aim: Export a 3D Image using the Vol formats.
+   * \brief Aim: Export a Mesh (MeshFromPoints object) in different format as OFF and OBJ).
+   * 
+   * The exportation can be done automatically according the input file
+   * extension with the ">>" operator  
+   * 
+   * Example of typical use: 
+   * First you have to add the following include files:
+   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseIncludes
+   * Then you create a simple MeshFromPoints object:
+   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshCreation
+   * Finally you can export directly the MeshFromPoints object: 
+   * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshExport
+   *
+   *
+   * @see MeshFromPoints MeshWriter
+   *
+   * \brief 
    *
    */
   template <typename TPoint>
@@ -66,33 +82,49 @@ namespace DGtal
 
 
     /** 
-     * Export mesh data towards a OFF format..
+     * Export MeshFromPoints towards a OFF format.
      * 
-     * @param filename name of the output file
-     * @param aViewer containing exported information
-     *
+     * @param aFilename name of the output file
+     * @param aMesh the MeshFromPoints object to be exported.
+     * @param exportColor true to export colors (default false). 
      * @return true if no errors occur.
      */
     
-    static bool export2OFF(const std::string & filename, const  MeshFromPoints<TPoint>  &aMesh, 
+    static bool export2OFF(const std::string & aFilename, const  MeshFromPoints<TPoint>  &aMesh, 
       bool exportColor=false) throw(DGtal::IOException);
   
   
-  };
 
+
+    /** 
+     * Export a MeshFromPoints towards a OBJ format.
+     * 
+     * @param aFilename name of the output file
+     * @param aMesh the MeshFromPoints object to be exported.
+     * @return true if no errors occur.
+     */
+    
+    static bool export2OBJ(const std::string & aFilename, const  MeshFromPoints<TPoint>  &aMesh) throw(DGtal::IOException);
+       
+    
+  };
+  
 
 
 
 
   /**
-   *  'operator<<' for importing objects of class 'MeshFromPoints'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'MeshFromPoints' to write.
-   * @return the output stream after the writing.
+   *  'operator<<' for exporting objects of class 'MeshFromPoints'.
+   *  This operator automatically selects the good method according to
+   *  the filename extension (off, obj).
+   *  
+   * @param aMesh: the mesh to be exported.
+   * @param aFilename: the filename of the file to be exported. 
+   * @return true, if the export was successful. 
    */
   template <typename TPoint>
   bool
-  operator >> (  MeshFromPoints<TPoint> & mesh, const std::string &filename );
+  operator >> (  MeshFromPoints<TPoint> & aMesh, const std::string & aFilename );
   
   
 

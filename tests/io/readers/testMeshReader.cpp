@@ -30,8 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+//! [MeshReaderUseIncludes]
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 #include "DGtal/io/readers/MeshReader.h"
+//! [MeshReaderUseIncludes]
 #include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigTest.h"
@@ -90,9 +92,11 @@ bool testMeshReader()
   unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );  
   nb++;
+//! [MeshReaderUseImport]
   std::string filenameOFF = testPath + "samples/box.off";  
   MeshFromPoints<Point> a3DMesh;
-   bool importOK = a3DMesh << filenameOFF;
+  bool importOK = a3DMesh << filenameOFF;
+//! [MeshReaderUseImport]
   nbok += importOK ? 1 : 0; 
   
   

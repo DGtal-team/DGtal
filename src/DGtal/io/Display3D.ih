@@ -35,7 +35,6 @@
 #include "DGtal/io/CDrawableWithDisplay3D.h"
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/writers/MeshWriter.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -748,8 +747,8 @@ DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 
 inline
 void 
-DGtal::Display3D::exportToMesh(){ 			       
-  MeshFromPoints<pointD3D> aMesh(true);
+DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const { 			       
+
   unsigned int vertexIndex=0;
   
   for (unsigned int i=0; i< myKSSurfelList.size(); i++){
@@ -823,10 +822,7 @@ DGtal::Display3D::exportToMesh(){
     }
   }
 
-  
-  trace.info() << "generating faces done." << endl;
-  MeshWriter<pointD3D>::export2OFF("exportedMesh.off", aMesh, true);
-  trace.info() << "file exported in file: exportedMesh.off." << endl;
+
 }
 
 
@@ -862,7 +858,30 @@ DGtal::operator<< ( std::ostream & out,
 }
 
 
+inline
+void
+DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh)
+{
+  aDisplay3D.exportToMesh(aMesh);
+}
 
+
+
+inline
+void
+DGtal::operator>> ( const Display3D &aDisplay3D,  string aFilename)
+{
+  // exporting with a mesh containing color (parameter constructor to true):
+  DGtal::MeshFromPoints<Display3D::pointD3D> mesh(true);
+  aDisplay3D >> mesh;
+  trace.info() << "generating faces done." << endl;
+  mesh >> aFilename;
+  trace.info() << "file exported in file: " << aFilename << endl;
+}
+
+
+
+  
 
 
 //                                                                           //

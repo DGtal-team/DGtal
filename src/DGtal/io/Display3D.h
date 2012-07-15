@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -216,8 +216,10 @@ namespace DGtal
     virtual ~Display3D(){};
 
 
-  protected:  
-    Display3D(){};
+    Display3D(){ 
+      myCurrentFillColor = Color ( 220, 220, 220 );
+      myCurrentLineColor = Color ( 22, 22, 222, 50 );
+    };
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -483,17 +485,20 @@ namespace DGtal
   
     void updateBoundingBox(double x, double y, double z);
   
+
+    
+    
     /**
-     * Compute the mesh from the quad elements.
-     *
-     * @param vectVertex : (return)  the set of vertex.
-     * @param vectFaces: (return) the set of faces.
+     * Export as MeshFromPoints the current displayed elements.
+     * 
+     * @param aMesh : (return)  the mesh containing the elements of the display.
      *
      **/
     
+    void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
     
-    void exportToMesh();
-  
+    
+    
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
@@ -694,12 +699,40 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<< ( std::ostream & out, const Display3D & object );
+  operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
 
 
 
+  /**
+   * Operator ">>" to export a Display3D into a MeshFromPoints
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh);
+  
+  
+
+
+  /**
+   * Operator ">>" to export a Display3D directly a file
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  
+  
+
+  
 } // namespace DGtal
 
 
