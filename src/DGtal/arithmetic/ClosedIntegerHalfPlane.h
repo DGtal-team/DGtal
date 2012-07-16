@@ -168,7 +168,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/ClosedIntegerHalfPlane.ih"
+#include "DGtal/arithmetic/ClosedIntegerHalfPlane.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
