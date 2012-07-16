@@ -44,13 +44,11 @@
 template<typename TPoint>
 inline
 bool 
-MeshWriter<TPoint>::export2OFF(const std::string & aFilename, 
+MeshWriter<TPoint>::export2OFF(ostream & out, 
 			       const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
-  ofstream out;
   try
     {
-      out.open(aFilename.c_str());
       out << "OFF"<< endl;
       out << "# generated from MeshWriter from the DGTal library"<< endl;
       out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << endl;
@@ -76,12 +74,12 @@ MeshWriter<TPoint>::export2OFF(const std::string & aFilename,
 	}  
 	out << endl;
       }
-      
     }catch( ... )
     {
-      trace.error() << "OFF writer IO error on export " << aFilename << endl;
+      trace.error() << "OFF writer IO error on export " << endl;
       throw dgtalio;
     }        
+  
   return true;
 }
 
@@ -93,14 +91,12 @@ MeshWriter<TPoint>::export2OFF(const std::string & aFilename,
 template<typename TPoint>
 inline
 bool 
-MeshWriter<TPoint>::export2OBJ(const std::string & aFilename, 
+MeshWriter<TPoint>::export2OBJ(ostream &out, 
 			       const  DGtal::MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
-  ofstream out;
   try
     {
-      out.open(aFilename.c_str());
-      out << "# "<< aFilename <<  endl;
+      out << "#  OBJ format"<< endl;
       out << "# generated from MeshWriter from the DGTal library"<< endl;
       out << endl;
       out << "o anObj" << endl;
@@ -124,7 +120,7 @@ MeshWriter<TPoint>::export2OBJ(const std::string & aFilename,
       out << endl;
     }catch( ... )
     {
-      trace.error() << "OBJ writer IO error on export " << aFilename << endl;
+      trace.error() << "OBJ writer IO error on export "  << endl;
       throw dgtalio;
     }
   return true;
@@ -139,15 +135,15 @@ inline
 bool
 DGtal::operator>> (   MeshFromPoints<TPoint> & aMesh, const std::string & aFilename ){
   string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
+  ofstream out;
+  out.open(aFilename.c_str());
   if(extension== "off") {
-    return DGtal::MeshWriter<TPoint>::export2OFF(aFilename, aMesh, true);
+    return DGtal::MeshWriter<TPoint>::export2OFF(out, aMesh, true);
   }else if(extension== "obj") {
-    return DGtal::MeshWriter<TPoint>::export2OBJ(aFilename, aMesh);
+    return DGtal::MeshWriter<TPoint>::export2OBJ(out, aMesh);
   }
+  out.close();
   return false;
 } 
-
-
-
 
 
