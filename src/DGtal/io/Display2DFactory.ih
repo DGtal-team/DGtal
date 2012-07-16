@@ -1167,17 +1167,20 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   board.myModes[ sm.myClassname ] = sm.myMode;
 }
 
-template <typename Space>
+template <typename TSpace, typename TSequence>
 inline
-void draw( DGtal::Board2D & aBoard, const DGtal::ConvexIntegerPolygon<Space> & cip )
+void 
+DGtal::Display2DFactory::draw
+( DGtal::Board2D & aBoard, 
+  const DGtal::ConvexIntegerPolygon<TSpace, TSequence> & cip )
 {
   typedef typename LibBoard::Point BoardPoint;
-  typedef typename DGtal::ConvexIntegerPolygon<Space>::Point CIPPoint;
-  typedef typename DGtal::ConvexIntegerPolygon<Space>::ConstIterator ConstIterator;
-  typedef typename DGtal::ConvexIntegerPolygon<Space>::Integer Integer;
+  typedef typename DGtal::ConvexIntegerPolygon<TSpace>::Point CIPPoint;
+  typedef typename DGtal::ConvexIntegerPolygon<TSpace>::ConstIterator ConstIterator;
+  typedef typename DGtal::ConvexIntegerPolygon<TSpace>::Integer Integer;
   std::string mode = aBoard.getMode( cip.className() );
   ASSERT( mode=="Filled" || mode=="" || mode=="Transparent" ||
-          ("draw(Board2D & aBoard, const DGtal::ConvexIntegerPolygon<Space> & cip): Unknown mode "+mode)==""  );
+          ("draw(Board2D & aBoard, const DGtal::ConvexIntegerPolygon<Space,Sequence> & cip): Unknown mode "+mode)==""  );
   
   std::vector<BoardPoint> pts;
 
