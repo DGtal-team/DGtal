@@ -68,7 +68,7 @@ bool testHashTree()
   typedef Space4Type::Integer Integer;
 
   //Default image selector = STLVector
-  typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
+  typedef ImageContainerByHashTree<TDomain, int > Image;
 
   const Integer t[ ] = { 1, 2, 3 ,4};
   const Integer t2[ ] = { 5, 5, 3 ,4};
@@ -77,6 +77,9 @@ bool testHashTree()
 
   ///Domain characterized by points a and b
   Image myImage ( 3, 3,0 );
+
+  ///Domain characterized by points a and b
+  Image myImage2 ( TDomain(a,b) );
 
   trace.info() << myImage;
   nbok += true ? 1 : 0;
@@ -107,7 +110,7 @@ bool testGetSetVal()
 
 
   //Default image selector = STLVector
-  typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
+  typedef ImageContainerByHashTree<TDomain, int > Image;
   typedef ImageContainerBySTLVector<TDomain, int> ImageVector;
 
   Point a( 1,1 );
@@ -171,10 +174,10 @@ bool testGetSetVal()
   trace.info() << myImage;
   trace.info() << myImageV;
 
-  drawImage<HueTwice>(board, myImage, 0, 255);
+  Display2DFactory::drawImage<HueTwice>(board, myImage, 0, 255);
   board.saveSVG( "hashtree.svg" );
   board.clear();
-  drawImage<HueTwice>(board, myImageV, 0, 255);
+  Display2DFactory::drawImage<HueTwice>(board, myImageV, 0, 255);
   board.saveSVG( "hashtree-vector.svg" );
   
 
@@ -233,7 +236,7 @@ bool testBadKeySizes()
 
 
   //Default image selector = STLVector
-  typedef experimental::ImageContainerByHashTree<TDomain, char> Image;
+  typedef ImageContainerByHashTree<TDomain, char> Image;
   Point d(128,128);
 
   trace.beginBlock ( "Test maximal depth >  number of bits of the HashKey type" );
@@ -248,7 +251,7 @@ bool testBadKeySizes()
   trace.endBlock();
   
   //Default image selector = STLVector
-  typedef experimental::ImageContainerByHashTree<TDomain, unsigned int, DGtal::uint32_t> Image2;
+  typedef ImageContainerByHashTree<TDomain, unsigned int, DGtal::uint32_t> Image2;
   trace.beginBlock ( "Changing the HashKey type" );
   Image2 myImage3( 3, 80, 0 );
   trace.info() << myImage3;

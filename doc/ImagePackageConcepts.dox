@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page imgPackageConcepts Image Concepts
+@page imgPackageConcepts Main Image Concepts
 @writers David Coeurjolly
 
 
@@ -25,25 +25,70 @@ namespace DGtal {
  @dot
 digraph GIMAGE {
   rankdir=BT;
+ subgraph cluster_ext {
+ 	rank = same;
+        style=invis;
+        subgraph cluster_1 {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="base";
+
+                 CLabel;  
+		 }
+
+        subgraph cluster_1 {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="kernel";
+
+                 CPointFunctor ;  
+		 CDomain;
+		 CConstBidirectionalRangeFromPoint;
+		 CBidirectionalOutputRangeFromPoint;
+		 }
+	 }
 
 subgraph cluster_0 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-    "CValue" -> CImageContainer [label="use",style=dashed] ;
+    label="Image (main concepts)";
 
+    
     CImage -> CConstImage;
     CImage -> CTrivialImage;
     CConstImage -> CTrivialConstImage;
     CTrivialImage -> CTrivialConstImage;
 
-    label="Images";
   }
-  CValue -> boost_DefaultConstructible;
-  CValue -> boost_Assignable;
-  CValue-> boost_EqualityComparable;
+  CLabel -> CTrivialConstImage [label="use",style=dashed] ;
+  CDomain -> CConstImage [label="use",style=dashed] ;
+  CConstBidirectionalRangeFromPoint -> CConstImage [label="use",style=dashed] ;
+  CBidirectionalOutputRangeFromPoint -> CImage[label="use",style=dashed] ;
+  CTrivialConstImage -> CPointFunctor;
 
-  }
+ subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="Image (main models)";
+
+	Image;
+	ImageContainerBySTLVector;
+	ImageContainerBySTLMap;
+	ImageContainerByHashTree;
+	ImageCotnainerByITKImage;
+    }
+    
+	Image -> CImage;
+	ImageContainerBySTLVector -> CImage;
+	ImageContainerBySTLMap -> CImage;
+	ImageContainerByHashTree -> CImage;
+	ImageContainerByITKImage -> CImage;
+
+ }
 @enddot
 
 */

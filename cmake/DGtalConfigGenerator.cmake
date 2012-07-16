@@ -12,8 +12,8 @@ endif( WITH_VISU3D )
 # Not working on cmake 2.6, I remove this option but keep the codeline (DC)
 
 # Create a DGtalConfig.cmake file for the use from the build tree
-set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-set(DGTAL_LIB_DIR "${PROJECT_BINARY_DIR}/DGtal")
+set(DGTAL_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}/src" "${PROJECT_BINARY_DIR}/src")
+set(DGTAL_LIB_DIR "${PROJECT_BINARY_DIR}/src")
 set(DGTAL_CMAKE_DIR "${PROJECT_BINARY_DIR}")
 
 configure_file(${CMAKE_MODULE_PATH}/DGtalConfig.cmake.in

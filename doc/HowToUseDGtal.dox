@@ -18,9 +18,10 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page HowToUseDGtal How to use DGtal in my own project ?
-\tableofcontents
-@author David Coeurjolly
+@writers David Coeurjolly
 
+
+[TOC]
 
 Once you have installed the DGtal library, this documentation
 describes the ways to link your project and the installed DGtal libs

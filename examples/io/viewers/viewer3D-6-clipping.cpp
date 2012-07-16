@@ -60,16 +60,14 @@ int main( int argc, char** argv )
  DigitalSet shape_set( domain );
  
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+ 
  viewer << SetMode3D( shape_set.className(), "Both" );
  viewer << shape_set;
  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
  viewer <<  SetMode3D( p1.className(), "Paving" );
  
- //viewer << ClippingPlane(1,0,0,-4.9);
+ viewer << ClippingPlane(1,0,0,-4.9);
  viewer << ClippingPlane(0,1,0.3,-10); 
- 
- 
- 
  
  viewer << Viewer3D::updateDisplay;
  return application.exec();

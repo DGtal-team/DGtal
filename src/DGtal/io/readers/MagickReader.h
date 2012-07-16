@@ -76,9 +76,10 @@ namespace DGtal
      * template parameter ImageContainer.
      * 
      * @param filename the file name to import.
+     * @param topbotomOrder if true, the point of coordinate (0,0) will be the bottom left corner image point (default) else the center of image coordinate will be the top left of the image (not usual).  
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importImage(const std::string & filename) throw(DGtal::IOException);
+    static ImageContainer importImage(const std::string & filename, bool topbotomOrder = true) throw(DGtal::IOException);
     
   }; // end of class MagickReader
 

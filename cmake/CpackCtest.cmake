@@ -40,12 +40,22 @@ INCLUDE(CPack)
 # -----------------------------------------------------------------------------
 ENABLE_TESTING()
 include(CTest)
-if (BUILD_TESTING)
+
+OPTION(DGTAL_BUILD_TESTING "Build testing." ON)
+SET(BUILD_TESTING ${DGTAL_BUILD_TESTING} CACHE BOOL "" FORCE)
+# Hide BUILD_TESTING as user tend to always turn all options on and then complains when something
+# does not work 'by default'
+MARK_AS_ADVANCED(BUILD_TESTING)
+
+if (DGTAL_BUILD_TESTING)
+  message(STATUS "Build test files enabled")
   if (CMAKE_COMPILER_IS_GNUCXX)
-    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -pedantic -W -Wshadow -Wunused-variable  -Wunused-parameter -Wunused-function        -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall -pedantic -W -Wshadow -Wunused-variable  -Wunused-parameter -Wunused-function        -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCXX)
   if (CMAKE_COMPILER_IS_GNUCC)
-    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -pedantic -fprofile-arcs -ftest-coverage")
+    SET(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall -W -Wno-long-long -pedantic -fprofile-arcs -ftest-coverage")
   endif (CMAKE_COMPILER_IS_GNUCC)
   add_subdirectory (tests)
-endif (BUILD_TESTING)
+ELSE (DGTAL_BUILD_TESTING)
+  message(STATUS "Build test files disabled")
+endif (DGTAL_BUILD_TESTING)

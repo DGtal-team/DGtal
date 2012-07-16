@@ -57,20 +57,20 @@ namespace DGtal
    * Aim: Defines the concept describing a read-only image,
    * which is a refinement of CPointFunctor.
    *
-   * <p> Refinement of CTrivialConstImage
+### Refinement of CTrivialConstImage
    *
-   * <p> Associated types :
+###  Associated types :
    * - \t Domain: type of the image domain, model of concept CDomain
    * - \t ConstRange: type of range of image values,
    * model of concept CConstBidirectionalRangeFromPoint
    *
-   * <p> Notation
+###  Notation
    * - \t X : A type that is a model of CConstImage
    * - \t x, \t y  : Object of type X
    *
-   * <p> Definitions
+###  Definitions
    *
-   * <p> Valid expressions and
+###  Valid expressions and
       <table>
       <tr>
         <td class=CName> \b Name </td>
@@ -109,12 +109,12 @@ namespace DGtal
     </table>
 
    *
-   * <p> Invariants###
+###  Invariants
    *
-   * <p> Models###
+###  Model
    * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
    *
-   * <p> Notes###
+###  Notes
    *
    */
 
@@ -124,14 +124,12 @@ namespace DGtal
 
   public:
 
-    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
     //Inner types
     typedef typename I::Domain Domain;
     BOOST_CONCEPT_ASSERT((CDomain<Domain>));
 
     typedef typename I::ConstRange ConstRange;
     BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
-
 
     BOOST_CONCEPT_USAGE(CConstImage)
     {

@@ -35,10 +35,8 @@ namespace DGtal {
 /*!
 @page KernelPackage Kernel package
    
-@author Jacques-Olivier Lachaud
-@author David Coeurjolly
-@author Guillaume Damiand 
-@author Sebastien Fourey
+@managers Jacques-Olivier Lachaud, David Coeurjolly, Tristan Roussillon
+
 
 @since 0.4
 
@@ -53,18 +51,19 @@ number types considered in DGtal, fundamental structures such as the
 digital space, the digital domain, as well as basic linear algebra
 tools.
 
-@b Modules
-- \ref moduleNumber
-- \ref moduleSpacePointVectorDomain
-- \ref moduleDigitalSets  
+@b Modules      
+- \ref moduleNumber (David Coeurjolly, Jacques-Olivier Lachaud)
+- \ref moduleSpacePointVectorDomain (David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand)
+- \ref moduleDigitalSets  (Jacques-Olivier Lachaud, Sebastien Fourey)
 
 
- @b Package @b Concepts @b Overview
- - \ref kernelPackageConcepts
+
+@b Package @b Concepts @b Overview
+- \ref kernelPackageConcepts
 
 
- @b Related @b documentation @b pages
- - \ref PageRef
+@b Related @b documentation @b pages
+- \ref PageRef
 
 
 

@@ -7,6 +7,11 @@ SET(DGTAL_TESTS_SRC
    testBasicFunctors
    testConstRangeAdapter
    testOutputIteratorAdapter
+   testClock
+   testTrace
+   testStatistics
+   testcpp11
+   testCountedPtr
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

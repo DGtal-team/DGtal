@@ -30,12 +30,13 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include <boost/math/special_functions/binomial.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/topology/MetricAdjacency.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -60,6 +61,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Adjacency services -----------------------------
+
 
 /**
  * @param p1 any point in this space.
@@ -100,133 +102,114 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
   return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Local graph services -----------------------------
+
+
+
 /**
- * Outputs the whole neighborhood of point [p] satisfying the
- * given predicate as a sequence of *out_it++ = ...
- *
- * @tparam OutputIterator any output iterator (like
- * std::back_insert_iterator< std::vector<int> >).
- *
- * @tparam PointPredicate any predicate object (defaut is true functor)
- *
- * @param p any point of this space.
- * @param out_it any output iterator.
- * @param pred the predicate.
+ * @return maximum number of neighbors for this adjacency
  */
 template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator, typename PointPredicate>
-void 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
-::writeNeighborhood
-( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
 {
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( pred( *it ) ) )
-  *out_it++ = *it;
-    }
+  static Size myCapacity = computeCapacity();
+  return myCapacity;
 }
 
 /**
- * Outputs the whole neighborhood of point [p] as a sequence of
- * *out_it++ = ...
- *
- * @tparam OutputIterator any output iterator (like
- * std::back_insert_iterator< std::vector<int> >).
- *
- * @param p any point of this space.
- * @param out_it any output iterator.
+ * @param v any vertex
+ * 
+ * @return the number of neighbors of this vertex
+ */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
+( const Vertex & v )
+{
+  return bestCapacity();
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
  */
 template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 template <typename OutputIterator>
-void 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>
-::writeNeighborhood
-( const Point & p, OutputIterator & out_it )
+inline
+void  
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
+( OutputIterator &it, const Vertex & v )
 {
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
+  Point p1( v );
+  for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
+    --(*iter);
+  Point p2( v );
+  for ( typename Point::Iterator iter = p2.begin(); iter != p2.end(); ++iter )
+    ++(*iter);
   typedef HyperRectDomain<Space> LocalDomain;
   LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
+  for ( typename LocalDomain::ConstIterator iter = domain.begin();
+  iter != domain.end();
+  ++iter )
     {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( n1 <= maxNorm1 )
-  *out_it++ = *it;
-    }
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator, typename PointPredicate>
-void
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
-( const Point & p, OutputIterator & out_it, const PointPredicate & pred )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
-      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 )  && ( pred( *it ) ) )
-  *out_it++ = *it;
-    }
-}
-
-//-----------------------------------------------------------------------------
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
-template <typename OutputIterator>
-void
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeProperNeighborhood
-( const Point & p, OutputIterator & out_it )
-{
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
-  typedef HyperRectDomain<Space> LocalDomain;
-  LocalDomain domain( p1, p2 );
-  for ( typename LocalDomain::ConstIterator it = domain.begin();
-  it != domain.end();
-  ++it )
-    {
-      Vector v( p - *it );
-      typename Vector::UnsignedComponent n1 = v.norm1();
+      Vector vect( v - *iter );
+      typename Vector::UnsignedComponent n1 = vect.norm1();
       if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) )
-  *out_it++ = *it;
+	*it++ = *iter;
     }
 }
 
+/**
+  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * output iterator
+  * 
+  * 
+  * @tparam OutputObjectIterator the type of an output iterator writing
+  * in a container of vertices.
+  * 
+  * @tparam VertexPredicate the type of the predicate
+  * 
+  * @param it the output iterator
+  * 
+  * @param v the vertex whose neighbors will be written
+  * 
+  * @param pred the predicate that must be satisfied
+  */
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename OutputIterator, typename VertexPredicate>
+void
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+{
+  Point p1( v );
+  for ( typename Point::Iterator iter = p1.begin(); iter != p1.end(); ++iter )
+    --(*iter);
+  Point p2( v );
+  for ( typename Point::Iterator iter = p2.begin(); iter != p2.end(); ++iter )
+    ++(*iter);
+  typedef HyperRectDomain<Space> LocalDomain;
+  LocalDomain domain( p1, p2 );
+  for ( typename LocalDomain::ConstIterator iter = domain.begin();
+  iter != domain.end();
+  ++iter )
+    {
+      Vector vect( v - *iter );
+      typename Vector::UnsignedComponent n1 = vect.norm1();
+      if ( ( n1 <= maxNorm1 ) && ( n1 != 0 ) && (pred(*iter)) )
+	*it++ = *iter;
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -273,6 +256,22 @@ DGtal::operator<< ( std::ostream & out,
   return out;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of hidden services                                         //
+template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+inline
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity() 
+{
+  Dimension result = 0;
+  for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
+  {
+    result += ( (dimension - m) << 1 ) * static_cast<Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
+  }
+  return result;
+}
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -291,6 +290,14 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
   
     // ----------------------- Standard services ------------------------------
   public:
@@ -321,87 +328,60 @@ namespace DGtal {
   }
       return false;
     }
+    
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 8;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      return 8;
+    }
 
     template <typename OutputIterator>
     inline
     static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-  
-      *out_it++ = Point(  x-1, y-1  );
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x+1, y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x  , y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x-1, y+1  );
-      *out_it++ = Point(  x  , y+1  );
-      *out_it++ = Point(  x+1, y+1  );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      *it++ = Vertex(  x-1, y-1  );
+      *it++ = Vertex(  x  , y-1  );
+      *it++ = Vertex(  x+1, y-1  );
+      *it++ = Vertex(  x-1, y    );
+      *it++ = Vertex(  x+1, y    );
+      *it++ = Vertex(  x-1, y+1  );
+      *it++ = Vertex(  x  , y+1  );
+      *it++ = Vertex(  x+1, y+1  );
     }
-
-    template < typename OutputIterator, typename PointPredicate >
+    
+    template <typename OutputIterator, typename VertexPredicate>
     inline
     static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      Vertex q( v[ 0 ] - 1, v[ 1 ] - 1 );
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
       q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
     }
-
-    template < typename OutputIterator >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
-    {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x-1, y-1  );
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x+1, y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x-1, y+1  );
-      *out_it++ = Point(  x  , y+1  );
-      *out_it++ = Point(  x+1, y+1  );
-    }
-
-    template <typename OutputIterator, typename PointPredicate >
-    inline
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
-    {
-      //      std::cerr << "Z2_8.writeProperNeighborhood(,,Pred)" << std::endl;
-
-      Point q( p[ 0 ] - 1, p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-    }
-
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -438,7 +418,15 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-  
+
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+    
     // ----------------------- Standard services ------------------------------
   public:
   
@@ -464,68 +452,50 @@ namespace DGtal {
       return v.norm1() == 1;
     }
 
-    template <typename OutputIterator>
+    // ---------------------- Local graph services ----------------------------
+    
     inline
     static
-    void writeNeighborhood( const Point & p, OutputIterator & out_it )
+    Size bestCapacity()
     {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x  , y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x  , y+1  );
+      return 4;
     }
-
-    template < typename OutputIterator, typename PointPredicate >
+    
     inline
     static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
+    Size
+    degree( const Vertex & v )
     {
-      Point q( p[ 0 ], p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      ++q[ 0 ]; if ( pred( q ) ) *out_it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
+      return 4;
     }
 
     template <typename OutputIterator>
     inline
     static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it )
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
     {
-      Integer x = p[ 0 ];
-      Integer y = p[ 1 ];
-      *out_it++ = Point(  x  , y-1  );
-      *out_it++ = Point(  x-1, y    );
-      *out_it++ = Point(  x+1, y    );
-      *out_it++ = Point(  x  , y+1  );
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      *it++ = Vertex(  x  , y-1  );
+      *it++ = Vertex(  x-1, y    );
+      *it++ = Vertex(  x+1, y    );
+      *it++ = Vertex(  x  , y+1  );
     }
-
-    template < typename OutputIterator, typename PointPredicate >
+    
+    template <typename OutputIterator, typename VertexPredicate>
     inline
     static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred )
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
     {
-      // std::cerr << "Z2_4.writeProperNeighborhood(,,Pred)" << std::endl;
-      Point q( p[ 0 ], p[ 1 ] - 1 );
-      if ( pred( q ) ) *out_it++ = q;
+      Vertex q( v[ 0 ], v[ 1 ] - 1 );
+      if ( pred( q ) ) *it++ = q;
       --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
-      q[ 0 ] += 2; if ( pred( q ) ) *out_it++ = q;
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
       --q[ 0 ]; ++q[ 1 ]; 
-      if ( pred( q ) ) *out_it++ = q;
+      if ( pred( q ) ) *it++ = q;
     }
-
+    
     // ----------------------- Interface --------------------------------------
   public:
   
@@ -546,7 +516,470 @@ namespace DGtal {
     // ------------------------- Internals ------------------------------------
   private:
 
+
   }; // end of class MetricAdjacency
+
+    /** Specialize 26-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 3, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 3, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 3 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 <= 3 ) && ( n1 != 0 );
+	}
+      return false;
+    }
+
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 26;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      return 26;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x-1, y-1, z-1 );
+      *it++ = Vertex(  x  , y-1, z-1 );
+      *it++ = Vertex(  x+1, y-1, z-1 );
+      *it++ = Vertex(  x-1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x+1, y-1, z   );
+      *it++ = Vertex(  x-1, y-1, z+1 );
+      *it++ = Vertex(  x  , y-1, z+1 );
+      *it++ = Vertex(  x+1, y-1, z+1 );
+      *it++ = Vertex(  x-1, y  , z-1 );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x+1, y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x-1, y  , z+1 );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x+1, y  , z+1 );
+      *it++ = Vertex(  x-1, y+1, z-1 );
+      *it++ = Vertex(  x  , y+1, z-1 );
+      *it++ = Vertex(  x+1, y+1, z-1 );
+      *it++ = Vertex(  x-1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z   );
+      *it++ = Vertex(  x+1, y+1, z   );
+      *it++ = Vertex(  x-1, y+1, z+1 );
+      *it++ = Vertex(  x  , y+1, z+1 );
+      *it++ = Vertex(  x+1, y+1, z+1 );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      Vertex q( v[ 0 ] - 1, v[ 1 ] - 1, v[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z+1
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+    }    
+    
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=3*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+    /** Specialize 18-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 2, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 2, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 2 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 <= 2 ) && ( n1 != 0 );
+	}
+      return false;
+    }
+
+    // ---------------------- Local graph services ----------------------------   
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 18;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      return 18;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x  , y-1, z-1 );
+      *it++ = Vertex(  x-1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x+1, y-1, z   );
+      *it++ = Vertex(  x  , y-1, z+1 );
+      *it++ = Vertex(  x-1, y  , z-1 );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x+1, y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x-1, y  , z+1 );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x+1, y  , z+1 );
+      *it++ = Vertex(  x  , y+1, z-1 );
+      *it++ = Vertex(  x-1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z   );
+      *it++ = Vertex(  x+1, y+1, z   );
+      *it++ = Vertex(  x  , y+1, z+1 );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      Vertex q( v[ 0 ], v[ 1 ] - 1, v[ 2 ] - 1 );
+      // z-1
+      if ( pred( q ) ) *it++ = q;                     // x  , y-1, z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x  , y  , z-1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z-1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z-1
+      // z
+      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
+      q[ 0 ] -= 2; ++q[ 1 ]; 
+      if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
+      // z+1
+      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
+      if ( pred( q ) ) *it++ = q;                     // x  , y-1, z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x  , y  , z+1
+      ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z+1
+      --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z+1
+    }
+    
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=2*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+    /** Specialize 6-adjacency. */
+  template <typename TSpace>
+  class MetricAdjacency<TSpace, 1, 3>
+  {
+    BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
+    // ----------------------- public types ------------------------------
+  public:
+    // Required by CAdjacency
+    typedef TSpace Space;
+    typedef typename Space::Point Point;
+    typedef MetricAdjacency<Space, 1, 3> Adjacency;
+
+    typedef typename Space::Integer Integer;
+    typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't seem to fit (MetricAdjacency has no domain)
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
+  
+    // ----------------------- Standard services ------------------------------
+  public:
+  
+    MetricAdjacency() {}
+    ~MetricAdjacency() {}
+  
+    // ----------------------- Adjacency services -----------------------------
+  public:
+
+    inline
+    static
+    bool isAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      return ( v.normInfinity() <= 1 ) && ( v.norm1() <= 1 );
+    }
+
+    inline
+    static
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 )
+    {
+      Vector v( p2 - p1 );
+      if ( v.normInfinity() <= 1 )
+	{
+	  typename Vector::UnsignedComponent n1 = v.norm1();
+	  return ( n1 == 1 );
+	}
+      return false;
+    }
+    
+    // ---------------------- Local graph services ----------------------------
+  public:
+    
+    inline
+    static
+    Size bestCapacity()
+    {
+      return 6;
+    }
+    
+    inline
+    static
+    Size
+    degree( const Vertex & v )
+    {
+      return 6;
+    }
+
+    template <typename OutputIterator>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v )
+    {
+      Integer x = v[ 0 ];
+      Integer y = v[ 1 ];
+      Integer z = v[ 2 ];
+  
+      *it++ = Vertex(  x  , y-1, z   );
+      *it++ = Vertex(  x  , y  , z-1 );
+      *it++ = Vertex(  x-1, y  , z   );
+      //*it++ = Vertex(  x  , y  , z   );
+      *it++ = Vertex(  x+1, y  , z   );
+      *it++ = Vertex(  x  , y  , z+1 );
+      *it++ = Vertex(  x  , y+1, z   );
+    }
+    
+    template <typename OutputIterator, typename VertexPredicate>
+    inline
+    static
+    void writeNeighbors( OutputIterator &it, const Vertex & v, const VertexPredicate & pred)
+    {
+      Vertex q( v[ 0 ], v[ 1 ], v[ 2 ] - 1 );
+      if ( pred( q ) ) *it++ = q;                     // x  , y  , z-1
+      q[ 2 ] += 2; if ( pred( q ) ) *it++ = q;        // x  , y  , z+1
+      --q[ 0 ], --q[ 2 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z
+      q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;        // x+1, y  , z
+      --q[ 0 ], --q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y-1, z
+      q[ 1 ] += 2; if ( pred( q ) ) *it++ = q;        // x  , y+1, z
+    }
+
+    // ----------------------- Interface --------------------------------------
+  public:
+  
+    static
+    void selfDisplay ( std::ostream & out )
+    {
+      out << "[MetricAdjacency Z3*"
+	  << " n1<=1*" << " ]";
+    }
+  
+    static
+    bool isValid() { return true; }
+
+  private:
+    MetricAdjacency ( const MetricAdjacency & other );
+    MetricAdjacency & operator= ( const MetricAdjacency & other );
+
+    // ------------------------- Internals ------------------------------------
+  private:
+
+  }; // end of class MetricAdjacency
+
+
+
 
 }
 
