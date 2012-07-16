@@ -33,7 +33,7 @@
 //#define DEBUG_ConvexIntegerPolygon
 
 #include "DGtal/base/Common.h"
-#include "DGtal/math/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
 

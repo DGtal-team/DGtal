@@ -47,8 +47,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/math/arithmetic/IntegerComputer.h"
-#include "DGtal/math/arithmetic/ClosedIntegerHalfPlane.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/arithmetic/ClosedIntegerHalfPlane.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -420,7 +420,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/math/arithmetic/ConvexIntegerPolygon.ih"
+#include "DGtal/arithmetic/ConvexIntegerPolygon.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
