@@ -84,13 +84,13 @@ namespace DGtal
     /** 
      * Export MeshFromPoints towards a OFF format.
      * 
-     * @param aFilename name of the output file
+     * @param out: the output stream of the exported OFF object.
      * @param aMesh the MeshFromPoints object to be exported.
      * @param exportColor true to export colors (default false). 
      * @return true if no errors occur.
      */
     
-    static bool export2OFF(const std::string & aFilename, const  MeshFromPoints<TPoint>  &aMesh, 
+    static bool export2OFF(std::ostream &out, const  MeshFromPoints<TPoint>  &aMesh, 
       bool exportColor=false) throw(DGtal::IOException);
   
   
@@ -99,12 +99,12 @@ namespace DGtal
     /** 
      * Export a MeshFromPoints towards a OBJ format.
      * 
-     * @param aFilename name of the output file
-     * @param aMesh the MeshFromPoints object to be exported.
+     * @param out: the output stream of the exported OBJ object.
+     * @param aMesh: the MeshFromPoints object to be exported.
      * @return true if no errors occur.
      */
     
-    static bool export2OBJ(const std::string & aFilename, const  MeshFromPoints<TPoint>  &aMesh) throw(DGtal::IOException);
+    static bool export2OBJ(std::ostream &out, const  MeshFromPoints<TPoint>  &aMesh) throw(DGtal::IOException);
        
     
   };
@@ -114,7 +114,7 @@ namespace DGtal
 
 
   /**
-   *  'operator<<' for exporting objects of class 'MeshFromPoints'.
+   *  'operator>>' for exporting objects of class 'MeshFromPoints'.
    *  This operator automatically selects the good method according to
    *  the filename extension (off, obj).
    *  
@@ -124,8 +124,26 @@ namespace DGtal
    */
   template <typename TPoint>
   bool
-  operator >> (  MeshFromPoints<TPoint> & aMesh, const std::string & aFilename );
+  operator >> (  MeshFromPoints<TPoint> & aMesh,  const std::string & aFilename  );
   
+
+
+
+
+  /**
+   *  'operator>>' for exporting objects of class 'MeshFromPoints' in OFF format.
+   *  
+   * @param aMesh: the mesh to be exported.
+   * @param out: the output of the OFF exportation. 
+   * @return true, if the export was successful. 
+   */
+  template <typename TPoint>
+  bool
+  operator >> (  MeshFromPoints<TPoint> & aMesh, ostream &out );
+  
+
+
+
   
 
 			   
