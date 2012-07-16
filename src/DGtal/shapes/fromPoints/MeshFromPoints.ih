@@ -44,8 +44,9 @@
  */
 template <typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints()
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(bool saveFaceColor)
 {
+  mySaveFaceColor=saveFaceColor;
 }
 
 /**
@@ -100,6 +101,7 @@ template<typename TPoint>
 inline
 DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
 {
+  mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++){
     myVertexList.push_back(vertexSet.at(i));
   }
@@ -122,13 +124,16 @@ template<typename TPoint>
 inline
 void
 DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, 
-						 unsigned int indexVertex3)
+						 unsigned int indexVertex3, const DGtal::Color &aColor)
 {
   MeshFace aFace;
   aFace.push_back(indexVertex1);
   aFace.push_back(indexVertex2);
   aFace.push_back(indexVertex3);
   myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
 }    
 
 
@@ -138,7 +143,8 @@ template<typename TPoint>
 inline
 void
 DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
-					   unsigned int indexVertex3, unsigned int indexVertex4)
+					   unsigned int indexVertex3, unsigned int indexVertex4, 
+					   const DGtal::Color &aColor)
 {
   MeshFace aFace;
   aFace.push_back(indexVertex1);
@@ -146,9 +152,24 @@ DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned i
   aFace.push_back(indexVertex3);
   aFace.push_back(indexVertex4);
   myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
 }    
 
 
+
+template<typename TPoint>
+inline
+void 
+DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor){
+  myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
+
+
+}
 
 
 template<typename TPoint>
@@ -186,13 +207,18 @@ DGtal::MeshFromPoints<TPoint>::nbVertex() const
   return myVertexList.size();
 }
 
-
 template<typename TPoint>
 inline
-void 
-DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace){
-  myFaceList.push_back(aFace);
+const DGtal::Color & 
+DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
+  if(mySaveFaceColor){
+    return myFaceColorList.at(i);
+  }else{
+    return DGtal::Color::White;
+  }
 }
+
+
 
 
 template<typename TPoint> 
@@ -211,10 +237,6 @@ DGtal::MeshFromPoints<TPoint>::invertVertexFaceOrder(){
 
     
 
-
-
-
-
 //------------------------------------------------------------------------------
 template<typename TPoint>
 inline
@@ -223,13 +245,6 @@ DGtal::MeshFromPoints<TPoint>::className() const
 {
   return "MeshFromPoints";
 }
-
-
-
-
-
-
-
 
 
 

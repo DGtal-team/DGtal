@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testMeshReader.cpp
+ * @file testMeshWriter.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2012/07/04
+ * @date 2012/07/08
  *
- * Functions for testing class MeshReader.
+ * Functions for testing class MeshWriter.
  *
  * This file is part of the DGtal library.
  */
@@ -30,109 +30,62 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-//! [MeshReaderUseIncludes]
+#include "DGtal/helpers/StdDefs.h" 
+//! [MeshWriterUseIncludes]
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-#include "DGtal/io/readers/MeshReader.h"
-//! [MeshReaderUseIncludes]
-#include "DGtal/helpers/StdDefs.h"
-
-#include "ConfigTest.h"
-
+#include "DGtal/io/writers/MeshWriter.h"
+//! [MeshWriterUseIncludes]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-
-
-
-struct Point3D{  
-  const double & operator[]( unsigned int i ) const{
-    assert(i<3);
-    switch (i){
-    case 0: {return x;}
-    case 1: {return y;}
-    case 2: {return z;}
-    }
-    return x;
-  };
-
-   double & operator[]( unsigned int i ) {
-    assert(i<3);
-    switch (i){
-    case 0: {return x;}
-    case 1: {return y;}
-    case 2: {return z;}
-    }
-    return x;
-  };
-  
-  double  x, y,z;
-};
-
-
-typedef Point3D Point;
-
-
-
-
- 
-
-
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class MeshReader.
+// Functions for testing class MeshWriter.
 ///////////////////////////////////////////////////////////////////////////////
+
+
 /**
  * Example of a test. To be completed.
  *
  */
-bool testMeshReader()
+bool testMeshWriter()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing block ..." );  
-  nb++;
-//! [MeshReaderUseImport]
-  std::string filenameOFF = testPath + "samples/box.off";  
-  MeshFromPoints<Point> a3DMesh;
-  bool importOK = a3DMesh << filenameOFF;
-//! [MeshReaderUseImport]
-  nbok += importOK ? 1 : 0; 
-  
-  
-  nb++;
-  MeshFromPoints<Point>::MeshFace aFace = a3DMesh.getFace(0);
-  bool isWellImported = (a3DMesh.nbVertex()==8) &&  (a3DMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
-  nbok+=isWellImported? 1: 0; 
-  
+  //! [MeshWriterUseMeshCreation]
+  // Constructing the mesh to export in OFF format
+  MeshFromPoints<Point> aMesh(true);  
+  vector<Point> vectVertex;
+  Point p1(0, 0, 0);
+  Point p2(1, 0, 0);
+  Point p3(1, 1, 0);
+  Point p4(0, 1, 0);  
+  aMesh.addVertex(p1);
+  aMesh.addVertex(p2);
+  aMesh.addVertex(p3);
+  aMesh.addVertex(p4);  
 
+  vector<DGtal::Color> vectColor;
+  DGtal::Color col (250,0,0, 200);
+  aMesh.addQuadFace(0,1,2,3, col);
+  //! [MeshWriterUseMeshCreation]
+  //! [MeshWriterUseMeshExport]
+  bool isOK = aMesh >> "test.off";
+  //! [MeshWriterUseMeshExport]
+  nb++;
+  bool isOK2 = aMesh >> "test.obj";
+  nb++;
+  
+  trace.beginBlock ( "Testing block ..." );
+  nbok += isOK ? 1 : 0; 
+  nbok += isOK2 ? 1 : 0; 
+
+ 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-
-
-  nb++;
-  std::string filenameOFS = testPath + "samples/testMesh.ofs";  
-  MeshFromPoints<Point> a3DMesh2;
-  bool importOK2=  a3DMesh2 << filenameOFS;
-  nbok += importOK2 ? 1 : 0; 
-  
-  nb++;
-  MeshFromPoints<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
-  bool isWellImported2 = (a3DMesh2.nbVertex()==32) &&  (a3DMesh2.nbFaces()==60) && (aFace2.size()==3) && (aFace2.at(0)==0);
-  nbok+=isWellImported2? 1: 0;
-
-
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();  
-
-  
-  
-
-  
-
-  
-  
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -141,16 +94,18 @@ bool testMeshReader()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class MeshReader" );
+  trace.beginBlock ( "Testing class MeshWriter" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMeshReader(); // && ... other tests
+  bool res = testMeshWriter(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+
