@@ -62,7 +62,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
-#include "DGtal/math/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -314,15 +314,16 @@ static void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
 static void draw( DGtal::Board2D & board, const DGtal::SetMode & );
 
 
-/**
-   Draw method on Board for ConvexIntegerPolygon.
-
-   @param aBoard an instance of Board2D.
-   @param cip an instance of convex integer polygon.
-*/
-template <typename Space>
-inline
-void draw( DGtal::Board2D & aBoard, const DGtal::ConvexIntegerPolygon<Space> & cip );
+   /**
+      Draw method on Board for ConvexIntegerPolygon.
+      
+      @param aBoard an instance of Board2D.
+      @param cip an instance of convex integer polygon.
+   */
+   template <typename TSpace, typename TSequence>
+   static
+   void draw( DGtal::Board2D & aBoard, 
+              const DGtal::ConvexIntegerPolygon<TSpace, TSequence> & cip );
 
     
   }; // end of struct Display2DFactory
