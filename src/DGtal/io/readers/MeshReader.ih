@@ -98,9 +98,10 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
   // Reading mesh vertex 
   for(unsigned int i=0; i<nbPoints; i++){
     TPoint p;
-    infile >> p.x;
-    infile >> p.y;
-    infile >> p.z;
+    double x,y,z;
+    infile >> p[0];
+    infile >> p[1];
+    infile >> p[2];
     aMesh.addVertex(p);
     // Needed since a line can also contain vertex colors
     getline(infile, str);
@@ -124,16 +125,51 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
 	aFace.at(aFace.size()-1-j)=tmp;
       }
     }
-    aMesh.addFace(aFace);
+    
     // Needed since a can also contain vertex colors
     getline(infile, str);
-    
-  }
+    // Contains colors:
+    bool findValidColor=true;
+    if(str!=""){
+      istringstream inColor(str);
+      double colorR, colorG, colorB, colorT;
+      findValidColor=inColor.good();
+      if(findValidColor && inColor.good()){
+	inColor >> colorR;
+      }
+      findValidColor &=!inColor.fail();
+      if(findValidColor && inColor.good()){
+	inColor >> colorG;
+      }
+      findValidColor &=!inColor.fail();
+      if(findValidColor && inColor.good()){
+	inColor >> colorB;
+      }
+      findValidColor &=!inColor.fail();
+      
+      if(findValidColor && inColor.good()){
+	inColor >> colorT;
+	// Since alpha is optional:
+	if(inColor.fail()){
+	  colorT=1.0;
+	}
 
+      }else{
+	colorT=1.0;
+      }
+      if(findValidColor){
+	DGtal::Color c((unsigned int)(colorR*255.0), (unsigned int)(colorG*255.0),
+		       (unsigned int)(colorB*255.0), (unsigned int)(colorT*255.0));
+	aMesh.addFace(aFace, c);
+      }else{
+	aMesh.addFace(aFace);
+      }
+    }else{
+      aMesh.addFace(aFace);
+    }
+  }
   
-  //Todo processing optional colors...
   return true;
-   
 }
 
 
@@ -190,12 +226,12 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
   // Reading mesh vertex 
   for(unsigned int i=0; i<nbPoints; i++){
     TPoint p;
-    infile >> p.x;
-    infile >> p.y;
-    infile >> p.z;
-    p.x*=scale;
-    p.y*=scale;
-    p.z*=scale;
+    infile >> p[0];
+    infile >> p[1];
+    infile >> p[2];
+    p[0]*=scale;
+    p[1]*=scale;
+    p[2]*=scale;
     aMesh.addVertex(p);
     // Needed since a line can also contain vertex colors
     getline(infile, str);
@@ -250,6 +286,11 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
     
     return false;
   }
+
+
+
+
+
 
 
 //                                                                           //
