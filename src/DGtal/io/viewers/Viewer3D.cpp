@@ -263,6 +263,7 @@ DGtal::Viewer3D::init()
   myCurrentfShiftVisuKSSurfels=0.0;
   myDefaultColor= Color ( 255, 255, 255 );
   camera()->showEntireScene();
+  setKeyDescription ( Qt::Key_E, "Export the current display into OFF file (just Voxel, surfel and KSSurfel for now)." );  
   setKeyDescription ( Qt::Key_W, "Switch display with and without wired view of triangle and quad faces." );
   setKeyDescription ( Qt::Key_T, "Sort elements for display improvements." );
   setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
@@ -552,7 +553,10 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   glNewList ( GLuint ( myListToAff +nbListOfPrimitives + 1 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
+  
+  glEnable ( GL_LIGHTING );  
   glBegin ( GL_QUADS );
+
   for ( unsigned int i=0; i<myQuadList.size(); i++ )
     {        
       glColor4ub ( myQuadList.at ( i ).R, myQuadList.at ( i ).G, myQuadList.at ( i ).B, myQuadList.at ( i ).T );
@@ -761,6 +765,13 @@ void
 DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
 {
   bool handled = false;
+
+  if( e->key() == Qt::Key_E){
+    trace.info() << "Exporting mesh..." ;
+    (*this) >> "exportedMesh.off";
+    trace.info() << "[done]"<< endl ;
+  }
+
 
   if ( ( e->key() ==Qt::Key_W ) )
     {

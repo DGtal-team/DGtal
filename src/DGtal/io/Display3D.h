@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -169,14 +169,23 @@ namespace DGtal
     ///
     
     struct pointD3D{
-      double operator[]( unsigned int i ) const{
+      const double & operator[]( unsigned int i ) const{
 	assert(i<3);
 	switch (i){
 	case 0: {return x;}
 	case 1: {return y;}
 	case 2: {return z;}
 	}
-	return 0.0;
+	return x;
+      };
+       double & operator[]( unsigned int i ) {
+	assert(i<3);
+	switch (i){
+	case 0: {return x;}
+	case 1: {return y;}
+	case 2: {return z;}
+	}
+	return x;
       };
       double  x, y, z;
       unsigned int R,G,B,T;
@@ -207,8 +216,10 @@ namespace DGtal
     virtual ~Display3D(){};
 
 
-  protected:  
-    Display3D(){};
+    Display3D(){ 
+      myCurrentFillColor = Color ( 220, 220, 220 );
+      myCurrentLineColor = Color ( 22, 22, 222, 50 );
+    };
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -475,7 +486,19 @@ namespace DGtal
     void updateBoundingBox(double x, double y, double z);
   
 
-  
+    
+    
+    /**
+     * Export as MeshFromPoints the current displayed elements.
+     * 
+     * @param aMesh : (return)  the mesh containing the elements of the display.
+     *
+     **/
+    
+    void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
+    
+    
+    
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
@@ -603,27 +626,19 @@ namespace DGtal
     std::vector< lineD3D > myKSLinelList;
   
   
-    /// Represent all the drawed planes
-    ///
-
+    // Represents all the planes drawn in the Display3D
     std::vector< quadD3D > myQuadList;
 
 
-   /// Represent all the drawed triangles
-    ///
-
+    // Represents all the triangles drawn in the Display3D
     std::vector< triangleD3D > myTriangleList;
-
-
-   /// Represent all the drawed triangles
-    ///
     
+
+   // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
     
-
+    
     /// Used to define if GL_TEST_DEPTH is used. 
-    ///
-  
     std::vector<bool> myListVoxelDepthTest;
 
     float myMeshDefaultLineWidth;
@@ -684,12 +699,40 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<< ( std::ostream & out, const Display3D & object );
+  operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
 
 
 
+  /**
+   * Operator ">>" to export a Display3D into a MeshFromPoints
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh);
+  
+  
+
+
+  /**
+   * Operator ">>" to export a Display3D directly a file
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  
+  
+
+  
 } // namespace DGtal
 
 
