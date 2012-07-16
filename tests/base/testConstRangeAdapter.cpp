@@ -34,7 +34,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/CConstSinglePassRange.h"
+#include "DGtal/base/CConstBidirectionalRange.h"
 #include "DGtal/base/ConstRangeAdapter.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -123,7 +123,7 @@ bool testRange(const Range &aRange)
 template <typename Range>
 void testRangeConceptChecking()
 {
-  BOOST_CONCEPT_ASSERT(( CConstSinglePassRange<Range> ));
+  BOOST_CONCEPT_ASSERT(( CConstBidirectionalRange<Range> ));
 }
 
 /*
@@ -148,6 +148,7 @@ int main( int argc, char** argv )
   typedef ConstRangeAdapter<std::vector<int>::iterator, DefaultFunctor, int > SimpleRange; 
   DefaultFunctor df; 
   SimpleRange r1(v.begin(), v.end(), df); 
+
 
   //2) thresholded range of integers
   typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 

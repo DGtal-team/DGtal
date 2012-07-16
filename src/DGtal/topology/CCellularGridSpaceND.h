@@ -42,6 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CConstSinglePassRange.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CUnsignedInteger.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,7 +62,7 @@ these spaces obtained by cartesian product, cells have a cubic shape
 that depends on the dimension: 0-cells are points, 1-cells are unit
 segments, 2-cells are squares, 3-cells are cubes, and so on.
 
-Thsi concept is rather complex since it gathers all possible
+This concept is rather complex since it gathers all possible
 operations on cells. The idea is that only the space knows what are
 the cells, how to compute their adjacent or incident cells, how to
 extract their coordinates, where are the bounds, what is the topology
@@ -83,6 +87,7 @@ details.
 
 ### Refinement of
 
+- boost::DefaultConstructible
 - boost::CopyConstructible
 
 ### Associated types :
@@ -142,6 +147,8 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
   space has a parallelepipedic shape bounded by the given
   coordinates. Any valid cell has then \e digital coordinates
   in-between \e p1 and \e p2 (included).
+- when it is default constructed, it is bounded by points \e -p and \e p
+ (\e p is model dependant)
 - \b digital coordinates are the natural coordinates of the cells of
   maximal dimension in the cellular space. For instance, it represents
   the coordinates of the pixels in an image. Two adjacent pixels have
@@ -175,10 +182,10 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 
 | Name          | Expression       | Type requirements | Return type   | Precondition | Semantics                             | Post condition | Complexity |
 |---------------|------------------|-------------------|---------------|--------------|---------------------------------------|----------------|------------|
-| dimension     | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| DIM           | \e x.dimension   |                   | \e Dimension  |              | the dimension of the space            |                |            |
-| POS           | \e x.POS         |                   | \e Sign       |              | the positive sign for cells           |                |            |
-| NEG           | \e x.NEG         |                   | \e Sign       |              | the negative sign for cells           |                |            |
+| dimension     | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| DIM           | \e X::dimension  |                   | \e Dimension  |              | the dimension of the space            |                |            |
+| POS           | \e X::POS        |                   | \e Sign       |              | the positive sign for cells           |                |            |
+| NEG           | \e X::NEG        |                   | \e Sign       |              | the negative sign for cells           |                |            |
 |               |                  |                   |               |              |                                       |                |            |
 | initialization|\e x.\e init(p1, p2, b)| b is \c bool | \c bool       |              | initializes the space so that cells are within the bounds p1 and p2, returns true iff the initialization was valid (ie, such bounds are representable with these integers).      |                |            |
 | Size or width | \e x.size( \e k )    |               | \e Integer    |              | returns the size/width of the space along the axis \e k | |         |
@@ -201,8 +208,8 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
 |               |                  |                   |               |              |                                       |                |            |
 | Get Khalimsky coordinate| \e x.uKCoord(\e c, \e k)|  | \e Integer    |              | returns the Khalimsky coordinate of cell \e c along axis \e k | |   |
 | Get digital coordinate| \e x.uCoord(\e c, \e k)|     | \e Integer    |              | returns the digital coordinate of cell \e c along axis \e k | |     |
-| Get Khalimsky coordinates| \e x.uKCoords(\e c, \e k)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
-| Get digital coordinates| \e x.uCoords(\e c, \e k)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
+| Get Khalimsky coordinates| \e x.uKCoords(\e c)| | \e Point     |              | returns the Khalimsky coordinates of cell \e c |       |            |
+| Get digital coordinates| \e x.uCoords(\e c)|   | \e Point      |              | returns the digital coordinates of cell \e c |         |            |
 | Get Khalimsky coordinate| \e x.sKCoord(\e sc, \e k)|  | \e Integer   |              | returns the Khalimsky coordinate of signed cell \e sc along axis \e k | | |
 | Get digital coordinate| \e x.sCoord(\e sc, \e k)|     | \e Integer   |              | returns the digital coordinate of signed cell \e sc along axis \e k | | |
 | Get Khalimsky coordinates| \e x.sKCoords(\e sc, \e k)| | \e Point    |              | returns the Khalimsky coordinates of signed cell \e sc |       |    |
@@ -307,7 +314,7 @@ for ( KSpace::DirIterator q = x.uDirs( c ); q != 0; ++q )
  */
 template <typename T>
 struct CCellularGridSpaceND 
-  : boost::CopyConstructible<T>
+  : boost::DefaultConstructible<T>, boost::CopyConstructible<T>
 {
   // ----------------------- Concept checks ------------------------------
 public:
@@ -353,7 +360,10 @@ public:
 
   BOOST_CONCEPT_USAGE( CCellularGridSpaceND )
   {
-    // ConceptUtils::sameType( myA, T::staticMember );
+    ConceptUtils::sameType( myDim, T::dimension );
+    ConceptUtils::sameType( myDim, T::DIM );
+    ConceptUtils::sameType( mySign, T::POS );
+    ConceptUtils::sameType( mySign, T::NEG );
     ConceptUtils::sameType( myBool, myX.init( myP1, myP2, myBool ) );
     checkConstConstraints();
   }

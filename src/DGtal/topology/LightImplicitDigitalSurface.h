@@ -56,30 +56,30 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class LightImplicitDigitalSurface
   /**
-     Description of template class 'LightImplicitDigitalSurface' <p>
-     \brief Aim: A model of CDigitalSurfaceContainer which defines the
-     digital surface as the boundary of an implicitly define
-     shape. The whole boundary is not precomputed nor stored. You may
-     use an iterator to visit it.
+  Description of template class 'LightImplicitDigitalSurface' <p>
+  \brief Aim: A model of CDigitalSurfaceContainer which defines the
+  digital surface as the boundary of an implicitly define
+  shape. The whole boundary is not precomputed nor stored. You may
+  use an iterator to visit it.
 
-     It is also a model of CUndirectedSimplePreGraph, so as to be able
-     to visit itself with a BreadthFirstVisitor. The "Light" or
-     lazyness is implemented this way.
-     
-     @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
-     for the cellular grid space.
-     
-     @tparam TPointPredicate a model of CPointPredicate: this functor
-     defines the inside of a shape on points where it is true.
-   */
+  It is also a model of CUndirectedSimpleLocalGraph, so as to be able
+  to visit itself with a BreadthFirstVisitor. The "Light" or
+  lazyness is implemented this way.
+  
+  @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
+  for the cellular grid space.
+  
+  @tparam TPointPredicate a model of CPointPredicate: this functor
+  defines the inside of a shape on points where it is true.
+*/
   template <typename TKSpace, typename TPointPredicate>
   class LightImplicitDigitalSurface
   {
   public:
 
-    /**
-       A model of CDigitalSurfaceTracker for LightImplicitDigitalSurface.
-    */
+ /**
+ A model of CDigitalSurfaceTracker for LightImplicitDigitalSurface.
+ */
     class Tracker
     {
     public:

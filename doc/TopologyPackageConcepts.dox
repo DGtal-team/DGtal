@@ -63,9 +63,13 @@ digraph GTOPOLOGY {
         CDomainAdjacency -> CAdjacency ; 
         CVertexPredicate;
         CSurfelPredicate;
+        CCellularGridSpaceND;
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
+    CDigitalSurfaceContainer -> CDigitalSurfaceTracker [label="use",style=dashed];
+    CDigitalSurfaceContainer -> CCellularGridSpaceND [label="use",style=dashed];
+
     CUndirectedSimpleLocalGraph -> CConstSinglePassRange;
     CVertexPredicate -> CPredicate;
     CSurfelPredicate -> CPredicate;
@@ -90,13 +94,16 @@ digraph GTOPOLOGY {
     }
 
     MetricAdjacency -> CAdjacency;
-    DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSetBoundary -> CDigitalSurfaceContainer;
     ImplicitDigitalSurface -> CDigitalSurfaceContainer;
-    LightImplicitDigitalSurface -> CDigitalSurfaceContainer;
     SetOfSurfels -> CDigitalSurfaceContainer;
     ExplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightImplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightImplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
     LightExplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightExplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
+    DigitalSurface -> CUndirectedSimpleGraph;
+    DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
 
 }
 @enddot

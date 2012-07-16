@@ -41,6 +41,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <set>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -61,7 +63,7 @@ namespace DGtal
    * 26 adjacencies in 3D, and the \f$ \omega \f$ and \f$ \alpha \f$
    * adjacencies in nD.
    *
-   * \b Model of a CAdjacency.
+   * \b Model of CAdjacency.
    *
    * @tparam TSpace any digital space (see concept CSpace).
    *
@@ -86,6 +88,14 @@ namespace DGtal
 
     // Others
     typedef typename Space::Vector Vector;
+    
+    // Required by CUndirectedSimpleLocalGraph
+    typedef Point Vertex;
+    typedef typename Space::Size Size;
+    typedef std::set<Vertex> VertexSet; // DigitalSet doesn't fit since MetricAdjacency has no domain
+    template <typename Value> struct VertexMap {
+      typedef typename std::map<Vertex, Value> Type;
+    };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -124,76 +134,62 @@ namespace DGtal
     static
     bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ); 
 
+    
+    // ----------------------- Local graph services --------------------------
+    
     /**
-     * Outputs the whole neighborhood of point [p] satisfying the
-     * given predicate as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @tparam PointPredicate any predicate type.
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     * @param pred the predicate.
+     * @return maximum number of neighbors for this adjacency
      */
-    template <typename OutputIterator, 
-        typename PointPredicate>
     static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred );
-
-
+    Size bestCapacity();
+    
     /**
-     * Outputs the whole neighborhood of point [p] as a sequence of
-     * *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
+     * @param v any vertex
+     * 
+     * @return the number of neighbors of this vertex
+     */
+    static
+    Size degree( const Vertex & v );
+    
+    /**
+     * Writes the neighbors of a vertex using an output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be writen
      */
     template <typename OutputIterator>
     static
-    void writeNeighborhood( const Point & p, 
-          OutputIterator & out_it );
-
+    void  
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v );
+    
     /**
-     * Outputs the whole neighborhood of point [p] (except p itself)
-     * satisfying the given predicate as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @tparam PointPredicate any predicate type.
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     * @param pred the predicate.
+     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * output iterator
+     * 
+     * 
+     * @tparam OutputObjectIterator the type of an output iterator writing
+     * in a container of vertices.
+     * 
+     * @tparam VertexPredicate the type of the predicate
+     * 
+     * @param it the output iterator
+     * 
+     * @param v the vertex whose neighbors will be written
+     * 
+     * @param pred the predicate that must be satisfied
      */
-    template <typename OutputIterator, 
-        typename PointPredicate >
+    template <typename OutputIterator, typename VertexPredicate>
     static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it,
-          const PointPredicate & pred );
-
-    /**
-     * Outputs the whole neighborhood of point [p] (except p itself)
-     * as a sequence of *out_it++ = ...
-     *
-     * @tparam OutputIterator any output iterator (like
-     * std::back_insert_iterator< std::vector<int> >).
-     *
-     * @param p any point of this space.
-     * @param out_it any output iterator.
-     */
-    template <typename OutputIterator>
-    static
-    void writeProperNeighborhood( const Point & p, 
-          OutputIterator & out_it );
+    void
+    writeNeighbors( OutputIterator &it ,
+		    const Vertex & v,
+		    const VertexPredicate & pred);
     
     // ----------------------- Interface --------------------------------------
   public:
@@ -216,10 +212,10 @@ namespace DGtal
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-
+    
     // ------------------------- Hidden services ------------------------------
   protected:
-
+    static Size computeCapacity();
 
   private:
 

@@ -35,9 +35,7 @@ namespace DGtal {
 /*!
 @page GeometryPackage Geometry package
 
-@author Tristan Roussillon
-@author David Coeurjolly
-@author Jacques-Olivier Lachaud
+@managers Tristan Roussillon, David Coeurjolly, Jacques-Olivier Lachaud
 @since 0.3
 
 @b LICENSE: LGPL
@@ -57,10 +55,13 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 @b Modules
 
-- \ref geometry2d
-- \ref moduleEsimators
-- \ref volpackage
-- \ref moduleShape
+- \ref modulegeometry2d  (Tristan Roussillon)
+
+- \ref moduleEsimators  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
+
+- \ref moduleVolumetric (David Coeurjolly)
+
+- \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
 
 
 @b Package @b Concepts @b Overview
@@ -70,12 +71,8 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 @b Related @b documentation @b pages
 
-@b Related @b examples @b and @b tools
+@b Related @b examples
 
-- shapeGenerator.cpp
-- contourGenerator.cpp
-- lengthEstimators.cpp
-- estimatorComparator.cpp
 - distancetransform3D.cpp
 - distancetransform2D.cpp
 */

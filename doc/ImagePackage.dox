@@ -35,7 +35,7 @@ namespace DGtal {
 /*!
 @page ImagePackage  Image package
    
-@author David Coeurjolly
+@managers David Coeurjolly
 
 @since 0.4
 
@@ -47,14 +47,13 @@ namespace DGtal {
 This package aims to implement Image models and data-structures.
 
 @b Modules
- - \ref moduleImage
+ - \ref moduleImage (Tristan Roussillon, David Coeurjolly)
 
  @b Package @b Concepts @b Overview
  - \ref imgPackageConcepts
 
 
  @b Related @b documentation @b pages
- - \ref image_io
  - \ref dgtalITK
 
 

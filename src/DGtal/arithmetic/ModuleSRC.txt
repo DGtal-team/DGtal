@@ -1,0 +1,8 @@
+## Sources associated to the module math
+##
+
+SET(DGTAL_SRC ${DGTAL_SRC} 
+		DGtal/arithmetic/ModuloComputer
+		DGtal/arithmetic/SternBrocot
+		DGtal/arithmetic/LightSternBrocot
+		DGtal/arithmetic/LighterSternBrocot)

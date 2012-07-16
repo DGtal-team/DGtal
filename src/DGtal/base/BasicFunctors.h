@@ -99,7 +99,7 @@ namespace DGtal
   return x;
     }
   };
-}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Some basic unary functors that may be useful
 //////////////////////////////////////////////////////////////////////////////
@@ -204,6 +204,10 @@ namespace DGtal
   {
   public:
     /** 
+     * Default constructor
+     */
+    Composer(): myF1(NULL), myF2(NULL) {}
+    /** 
      * Constructor
      * @param aF1 any Functor
      * @param aF2 any Functor
@@ -246,6 +250,8 @@ namespace DGtal
     inline
     ReturnType operator()(const TInput& aInput) const
     {
+      ASSERT( myF1 ); 
+      ASSERT( myF2 ); 
       return myF2->operator()( myF1->operator()( aInput ) );
     }
 
@@ -664,6 +670,8 @@ private:
     }
     
   }; 
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 
 

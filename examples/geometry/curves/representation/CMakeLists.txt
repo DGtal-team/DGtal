@@ -2,7 +2,6 @@ SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
   ArithmeticalDSS
   convex-and-concave-parts
-  freemanChainFromImage
   exampleGridCurve2d
   exampleGeometricalDSS
   exampleGeometricalDCA
@@ -27,5 +26,17 @@ IF(MAGICK++_FOUND)
 ENDIF(MAGICK++_FOUND)
 
 
+### Test with QGLViewer
+if (  WITH_VISU3D_QGLVIEWER )
+   SET(DGTAL_EXAMPLES_QGL_SRC
+     exampleArithDSS3d
+     exampleGridCurve3d
+     exampleGridCurve3d-2
+   )
+  FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
+   add_executable(${FILE} ${FILE})
+    target_link_libraries ( ${FILE} DGtalIO DGtal)   
+  ENDFOREACH(FILE)
 
+endif ( WITH_VISU3D_QGLVIEWER   )
 

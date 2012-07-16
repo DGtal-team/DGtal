@@ -37,7 +37,7 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename ) throw(DGtal::IOException)
+DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename, bool topbotomOrder ) throw(DGtal::IOException)
 {
   int w,h;
   const Magick::PixelPacket *cacheRead;
@@ -85,7 +85,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename )
   
   for(; it != itend; ++it)
     {
-      const Magick::PixelPacket *pixel = cacheRead + w * ( h - 1 - (*it)[1] ) + (*it)[0];
+      const Magick::PixelPacket *pixel = cacheRead + w * ((topbotomOrder)? ( h - 1 - (*it)[1] ): (*it)[1] ) + (*it)[0];
       ///@todo create converters RGB->Value
       val = (pixel->red + pixel->green + pixel->blue) % 256;
       // std::cout<<" valread= "<< (int)val << std::endl;

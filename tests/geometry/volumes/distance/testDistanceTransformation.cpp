@@ -110,7 +110,7 @@ bool testDistanceTransformation()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
+  Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
   board.saveSVG ( "image-preDT.svg" );
   //We just iterate on the Domain points and print out the point coordinates.
   std::copy ( image.begin(),
@@ -137,7 +137,7 @@ bool testDistanceTransformation()
 
 
   board.clear();
-  drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
+  Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
   board.saveSVG ( "image-postDT.svg" );
 
 
@@ -184,7 +184,7 @@ bool testDistanceTransformationNeg()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)1);
+  Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)1);
   board.saveSVG ( "image-preDT-neg.svg" );
 
 
@@ -220,7 +220,7 @@ bool testDistanceTransformationNeg()
   trace.warning() << result << endl;
 
   board.clear();
-  drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv);
+  Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv);
   board.saveSVG ( "image-postDT-neg.svg" );
 
 
@@ -272,7 +272,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
   
   board.clear();
@@ -282,7 +282,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  drawImage<Hue>(board, result0, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result0, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DTSet-linfty.svg" );
   
   board.clear();
@@ -292,7 +292,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DTSet-l1.svg" );
   trace.endBlock();
 
@@ -336,7 +336,7 @@ bool testDistanceTransformationBorder()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  drawImage<Hue>(board, image, (unsigned int)0, (unsigned int)150);
+  Display2DFactory::drawImage<Hue>(board, image, (unsigned int)0, (unsigned int)150);
   board.saveSVG ( "image-preDT-border.svg" );
 
 
@@ -362,7 +362,7 @@ bool testDistanceTransformationBorder()
 
 
   board.clear();
-  drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1); 
+  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1); 
   board.saveSVG ( "image-postDT-border.svg" );
 
 
@@ -534,7 +534,7 @@ bool testChessboard()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-linfty.svg" );
   trace.info()<< "done"<<endl;
 
@@ -552,7 +552,7 @@ bool testChessboard()
   
   trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
-  drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-l1.svg" );
   trace.info()<< "done"<<endl;
   
@@ -567,7 +567,7 @@ bool testChessboard()
   
   trace.info()<< "Exporting to SVG L2"<<endl;
   board.clear();
-  drawImage<Hue>(board, result2, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, result2, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-l2.svg" );
   trace.info()<< "done"<<endl;
   trace.info() << result << endl;
