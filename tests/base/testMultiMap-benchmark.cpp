@@ -37,10 +37,12 @@
 #if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
 #include <forward_list>
 #endif
+#include <boost/version.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_smallint.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/geometric_distribution.hpp>
+#include <boost/random/variate_generator.hpp>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
@@ -48,6 +50,13 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/LabelledMap.h"
+
+// Before 1.47, random number generation in boost.
+// Since 1.47, random number generation in boost::random. 
+#define BOOST_MAJOR_VERSION  (BOOST_VERSION / 100000)
+#define BOOST_MINOR_VERSION  (( BOOST_VERSION / 100) % 1000)
+#define BOOST_SUBMINOR_VERSION  (BOOST_VERSION % 100)
+
 
 using namespace DGtal;
 using namespace std;
@@ -572,6 +581,48 @@ public:
 };
 
 
+// template <typename MapLXY>
+// unsigned int
+// generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_label )
+// {
+//   BOOST_RANDOM_NAMESPACE::mt19937 rng;         // produces randomness out of thin air
+//   rng.seed( 0 );
+//   BOOST_RANDOM_NAMESPACE::uniform_smallint<> diceL(0, L-1);  
+//   BOOST_RANDOM_NAMESPACE::uniform_01<> diceDouble;
+//   BOOST_RANDOM_NAMESPACE::geometric_distribution<> diceNbLabels( proba_label ); // Y
+//   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
+//   std::cerr << "E(Y)=" << ( (1-proba_label)/proba_label )
+//             << " Var(Y)=" << ( (1-proba_label)/(proba_label*proba_label) )
+//             << std::endl;
+//   unsigned int X = m.X;
+//   unsigned int Y = m.Y;
+//   unsigned int total = 0;
+//   for ( unsigned int y = 0; y < Y; ++y )
+//     for ( unsigned int x = 0; x < X; ++x )
+//       {
+//         if ( diceDouble( rng ) >= proba_no_label )
+//           {
+//             unsigned int nb = diceNbLabels( rng );
+//             for ( unsigned int i = 0; i < nb; ++i )
+//               {
+//                 unsigned int l = diceL( rng );
+//                 double v = diceDouble( rng );
+//                 // if ( ( x == 408 ) && ( y == 171 ) )
+//                 //   {
+//                 //     std::cerr << "+ Insert( " << l << ", " << v << " ) l=";
+//                 //     m.display ( std::cerr, l, x, y );
+//                 //   }
+//                 m.setValue( v, l, x, y );
+//               }
+//             total += nb;
+//           }
+//       }
+//   std::cerr << "- " << total << " insertions." << endl;
+//   return total;
+// }
+
+// boost::random is different since 1.47
+#if (BOOST_MAJOR_VERSION >= 1 ) && (BOOST_MINOR_VERSION >= 47 )
 template <typename MapLXY>
 unsigned int
 generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_label )
@@ -598,11 +649,6 @@ generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_la
               {
                 unsigned int l = diceL( rng );
                 double v = diceDouble( rng );
-                // if ( ( x == 408 ) && ( y == 171 ) )
-                //   {
-                //     std::cerr << "+ Insert( " << l << ", " << v << " ) l=";
-                //     m.display ( std::cerr, l, x, y );
-                //   }
                 m.setValue( v, l, x, y );
               }
             total += nb;
@@ -611,6 +657,46 @@ generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_la
   std::cerr << "- " << total << " insertions." << endl;
   return total;
 }
+#else
+// boost::random is different since 1.47, below <= 1.46
+template <typename MapLXY>
+unsigned int
+generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_label )
+{
+  boost::mt19937 rng;         // produces randomness out of thin air
+  rng.seed( 0 );
+  boost::uniform_smallint<> diceL(0, L-1);  
+  boost::uniform_01<> diceDouble;
+  boost::geometric_distribution<> nbLabelsDist( proba_label ); // Y
+  boost::variate_generator
+    <boost::mt19937&, 
+     boost::geometric_distribution<> > diceNbLabels( rng, nbLabelsDist);
+  // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
+  std::cerr << "E(Y)=" << ( (1-proba_label)/proba_label )
+            << " Var(Y)=" << ( (1-proba_label)/(proba_label*proba_label) )
+            << std::endl;
+  unsigned int X = m.X;
+  unsigned int Y = m.Y;
+  unsigned int total = 0;
+  for ( unsigned int y = 0; y < Y; ++y )
+    for ( unsigned int x = 0; x < X; ++x )
+      {
+        if ( diceDouble( rng ) >= proba_no_label )
+          {
+            unsigned int nb = diceNbLabels();
+            for ( unsigned int i = 0; i < nb; ++i )
+              {
+                unsigned int l = diceL( rng );
+                double v = diceDouble( rng );
+                m.setValue( v, l, x, y );
+              }
+            total += nb;
+          }
+      }
+  std::cerr << "- " << total << " insertions." << endl;
+  return total;
+}
+#endif
 
 template <typename MapLXY>
 double 

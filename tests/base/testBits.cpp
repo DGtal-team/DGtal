@@ -103,6 +103,6 @@ int main()
   trace.info() << "- checksum = " << val2 << std::endl;
   trace.endBlock();
   ++nb, nbok += val == val2 ? 1 : 0;
-  return nb == nbok;
+  return ( nb == nbok ) ? 0 : 1;
 }
 /** @ingroup Tests **/
