@@ -37,14 +37,22 @@
 #if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
 #include <forward_list>
 #endif
+#include <boost/version.hpp>
 #include <boost/random/mersenne_twister.hpp>
 #include <boost/random/uniform_smallint.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/geometric_distribution.hpp>
-
+#include <boost/random/variate_generator.hpp>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/LabelledMap.h"
+
+// Before 1.47, random number generation in boost.
+// Since 1.47, random number generation in boost::random. 
+#define BOOST_MAJOR_VERSION  (BOOST_VERSION / 100000)
+#define BOOST_MINOR_VERSION  (( BOOST_VERSION / 100) % 1000)
+#define BOOST_SUBMINOR_VERSION  (BOOST_VERSION % 100)
+
 
 using namespace DGtal;
 using namespace std;
@@ -480,7 +488,8 @@ public:
 
 };
 
-
+// boost::random is different since 1.47
+#if (BOOST_MAJOR_VERSION >= 1 ) && (BOOST_MINOR_VERSION >= 47 )
 template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
 unsigned int
 generateData( MapLXY & m, double proba_no_label, double proba_label )
@@ -505,11 +514,6 @@ generateData( MapLXY & m, double proba_no_label, double proba_label )
               {
                 unsigned int l = diceL( rng );
                 double v = diceDouble( rng );
-                // if ( ( x == 408 ) && ( y == 171 ) )
-                //   {
-                //     std::cerr << "+ Insert( " << l << ", " << v << " ) l=";
-                //     m.display ( std::cerr, l, x, y );
-                //   }
                 m.setValue( v, l, x, y );
               }
             total += nb;
@@ -518,6 +522,44 @@ generateData( MapLXY & m, double proba_no_label, double proba_label )
   std::cerr << "- " << total << " insertions." << endl;
   return total;
 }
+#else
+// boost::random is different since 1.47, below <= 1.46
+template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
+unsigned int
+generateData( MapLXY & m, double proba_no_label, double proba_label )
+{
+  boost::mt19937 rng;         // produces randomness out of thin air
+  rng.seed( 0 );
+  boost::uniform_smallint<> diceL(0, L-1);  
+  boost::uniform_01<> diceDouble;
+  boost::geometric_distribution<> nbLabelsDist( proba_label ); // Y
+  boost::variate_generator
+    <boost::mt19937&, 
+     boost::geometric_distribution<> > diceNbLabels( rng, nbLabelsDist);
+  // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
+  std::cerr << "E(Y)=" << ( (1-proba_label)/proba_label )
+            << " Var(Y)=" << ( (1-proba_label)/(proba_label*proba_label) )
+            << std::endl;
+  unsigned int total = 0;
+  for ( unsigned int y = 0; y < Y; ++y )
+    for ( unsigned int x = 0; x < X; ++x )
+      {
+        if ( diceDouble( rng ) >= proba_no_label )
+          {
+            unsigned int nb = diceNbLabels();
+            for ( unsigned int i = 0; i < nb; ++i )
+              {
+                unsigned int l = diceL( rng );
+                double v = diceDouble( rng );
+                m.setValue( v, l, x, y );
+              }
+            total += nb;
+          }
+      }
+  std::cerr << "- " << total << " insertions." << endl;
+  return total;
+}
+#endif
 
 template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
 double 
@@ -585,19 +627,19 @@ eraseOneData( MapLXY & m, unsigned int l )
 int main()
 {
   typedef double Value;
-  static const unsigned int X = 1000;
-  static const unsigned int Y = 1000;
+  static const unsigned int X = 100;
+  static const unsigned int Y = 100;
   static const unsigned int L = 16;
   typedef DGtal::uint8_t Word;
   static const unsigned int N = 1;
   static const unsigned int M = 5;
   /// Probability that there is no data at this location.
-  static const double PROBA_NO_LABEL = 0.5;
+  static const double PROBA_NO_LABEL = 0.75;
   /// If there is a possibility to have a data, this probability is
   /// used to define a geometric distribution that defines the number
   /// of data (ie valid labels) at this place. The smaller, the higher
   /// is the expectation. 0.5 means E(X) = 1.
-  static const double PROBA_LABEL = 0.2;
+  static const double PROBA_LABEL = 0.5;
 
   typedef ArrayLXY<Value, L, X, Y> MyArrayLXY;
   typedef ArrayXYOfMap<Value, L, X, Y> MyArrayXYOfMap;
