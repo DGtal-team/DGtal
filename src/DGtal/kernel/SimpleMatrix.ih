@@ -606,8 +606,7 @@ T
 DGtal::SimpleMatrix<T,2,2>::cofactor(const DGtal::Dimension i,
 				     const DGtal::Dimension j ) const
 {
-  ASSERT(false && "Should not be called in this specilization");
-  return NumberTraits<T>::ONE;
+  return this->operator()((i+1) % 2,(j+1) % 2);
 }
 //------------------------------------------------------------------------------
 template<typename T>
