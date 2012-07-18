@@ -55,26 +55,31 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class OFFMesh
 /**
- * Description of class 'MeshReader' <p> \brief Aim: Defined to import
- * OFF surface mesh. It allows to import a MeshFromPoints object but do not takes
+ * Description of class 'MeshReader' <p> 
+ * \brief Aim: Defined to import
+ * OFF and OFS surface mesh. It allows to import a MeshFromPoints object and takes
  * into accouts the optional color faces.
  * 
- * Example of typical use:
- * @code
- // importating the mesh
- MeshFromPoints<Display3D::pointD3D> anImportedMesh;
- anImportedMesh <<  inputFilename;
+ * The importation can be done automatically according the input file
+ * extension with the operator << 
+ * 
+ * Example of typical use: 
+ Add these include files:
+ @snippet tests/io/readers/testMeshReader.cpp MeshReaderUseIncludes
 
- //Displaying the resulting mesh with Viewed3D 
- viewer.setFillColor(DGtal::Color(240,240,240,150));
+ And automatic import the MeshFromPoints through the filename extension:
+ 
+ @snippet tests/io/readers/testMeshReader.cpp MeshReaderUseImport
+ 
+ Then you can also display the resulting with a Viewer3D:
+ @code
  viewer.setLineColor(DGtal::Color(150,0,0,254));
- viewer << anImportedMesh;
+ viewer << a3DMesh;
  viewer << Viewer3D::updateDisplay;
  @endcode
  *
  *
- * \todo Process the face color information.
- * @see MeshFromPoints
+ * @see MeshFromPoints MeshWriter
  */
 
 
