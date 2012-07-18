@@ -413,7 +413,7 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
 template <typename TKSpace>
 template <typename PointPredicate>
 void
-DGtal::Surfaces<TKSpace>::track2DBoundary
+DGtal::Surfaces<TKSpace>::track2DSliceBoundary
 ( std::vector<SCell> & aSCellContour2D,
   const KSpace & K,
   const Dimension & trackDir,
