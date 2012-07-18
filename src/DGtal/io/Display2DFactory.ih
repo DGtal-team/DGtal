@@ -333,7 +333,8 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    draw(board, *it);
+  
 }
 // DigitalSetBySTLSet
 
@@ -350,7 +351,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   if (Domain::dimension == 2)
   {
     for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+      draw(board, *it);
   }
   else
     ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
