@@ -54,7 +54,7 @@ namespace DGtal
   // template class SimpleMatrix
   /**
    * Description of template class 'SimpleMatrix' <p>
-   * \brief Aim: implements basic MxN Matrix services (M,N>1).
+   * \brief Aim: implements basic MxN Matrix services (M,N>=1).
    *
    * This class defines simple matrix with static size. Computations
    * are performed in the euclidean ring associated with the type @a TComponent.
@@ -83,8 +83,8 @@ namespace DGtal
     typedef SimpleMatrix<Component,TM,TN> Self;
 
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TComponent> ));
-    BOOST_STATIC_ASSERT(TM > 1 );
-    BOOST_STATIC_ASSERT(TM > 1 );
+    BOOST_STATIC_ASSERT(TM > 0 );
+    BOOST_STATIC_ASSERT(TM > 0 );
     
     /** 
      * Create a static mxn matrix.
