@@ -493,7 +493,7 @@ track2DSurface( std::vector<SCell> & aSCellContour,
 		const SCell & start_surfel )
 {
   BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
-  BOOST_STATIC_ASSERT( K.dimension == 2 );
+  ASSERT( KSpace::dimension == 2 );
 
   SCell b= start_surfel;  // current surfel
   SCell bn; // neighboring surfel
