@@ -9,6 +9,7 @@ SET(DGTAL_TESTS_SRC_KERNEL
    testImagesSetsUtilities
    testBasicPointFunctors
    testEmbedder
+   testSimpleMatrix
    )
 
 
