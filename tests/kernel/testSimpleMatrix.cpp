@@ -287,6 +287,15 @@ bool testDetCofactor()
   return nbok == nb;
 }
 
+bool testM1Matrix()
+{
+  trace.beginBlock("Mx1 matrix test");
+  SimpleMatrix<double, 3,1> mat;
+  trace.info() << mat<<std::endl;
+  trace.endBlock();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -298,7 +307,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() && testDetCofactor(); // && ... other tests
+  bool res = testSimpleMatrix() && testArithm() && testColRow() && testDetCofactor() && testM1Matrix(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
