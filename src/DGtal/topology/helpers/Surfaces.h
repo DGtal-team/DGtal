@@ -296,8 +296,9 @@ namespace DGtal
 
     /**
        Function that extracts the boundary of a 2D shape (specified by
-       a predicate on point) in a 2D KSpace. The
-       boundary is returned as a vector of surfels.
+       a predicate on point) in a 2D KSpace. The boundary is returned
+       as a vector of surfels. The surfels are guaranteed to be in the
+       direct orientation ordering.
 
        Creates a vector of signed surfels whose elements represents a
        2D boundary component of a digital shape described by a
@@ -338,7 +339,8 @@ namespace DGtal
     /**
        Function that extracts a 2D slice of the boundary of a nD shape
        (specified by a predicate on point) in a nD KSpace. The
-       boundary is returned as a vector of surfels.
+       boundary is returned as a vector of surfels. The surfels are
+       guaranteed to be in the direct orientation ordering.
 
        Creates a vector of signed surfels whose elements represents a
        2D boundary component of a digital shape described by a
@@ -381,6 +383,102 @@ namespace DGtal
 			       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
 			       const PointPredicate & pp,
 			       const SCell & start_surfel );
+
+
+    /**
+       Function that extracts a 1d-contour (specified by a predicate
+       on surfel) in a 2D KSpace. The boundary is returned as a vector
+       of surfels. The surfels are guaranteed to be in the direct
+       orientation ordering.
+
+       Creates a vector of signed surfels whose elements represents a
+       component of a digital surface described by a
+       SurfelPredicate. The algorithm tracks surfels along the surface
+       by starting from the given \a start_surfel. All surfels are
+       returned so as to follow the direct orientation. If the surface
+       is open, the first surfel is at one extremity (the indirect
+       extremity) while the last surfel is at the other
+       extremity. Otherwise, the first surfel is \a start_surfel.
+       
+       @tparam SurfelPredicate a model of CSurfelPredicate, meaning a
+       functor taking a Surfel (SCell) and returning 'true' whenever
+       the surfel belongs to the digital surface. Models include
+       FrontierPredicate and BoundaryPredicate.
+       
+       @param aSCellContour (modified) a vector of cells (which are
+       all surfels), containing the ordered list of surfels that forms
+       the connected component containing surfel [start_surfel].
+       
+       @param K any space of dimension 2.
+
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+
+       @param sp an instance of a model of CSurfelPredicate, for
+       instance a FrontierPredicate or a BoundaryPredicate.
+
+       @param start_surfel a signed surfel such that sp(start_surfel) is true.
+    */
+    template <typename SurfelPredicate >
+    static 
+    void track2DSurface( std::vector<SCell> & aSCellContour,
+			 const KSpace & K,
+			 const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			 const SurfelPredicate & sp,
+			 const SCell & start_surfel );
+
+
+
+    /**
+       Function that extracts a 2D slice of a n-1 digital surface
+       (specified by a predicate on surfel) in a nD KSpace. The
+       boundary is returned as a vector of surfels. The surfels (of
+       dimension n-1) are guaranteed to be in the direct orientation
+       ordering.
+
+       Creates a vector of signed surfels whose elements represents a
+       component of a slice of digital surface described by a
+       SurfelPredicate. The algorithm tracks surfels along the surface
+       by starting from the given \a start_surfel and by moving along
+       the directions \a trackDir and the orthogonal direction to \a
+       start_surfel. All surfels are returned so as to follow the
+       direct orientation. If the surface is open, the first surfel is
+       at one extremity (the indirect extremity) while the last surfel
+       is at the other extremity. Otherwise, the first surfel is \a
+       start_surfel.
+
+       @tparam SurfelPredicate a model of CSurfelPredicate, meaning a
+       functor taking a Surfel (SCell) and returning 'true' whenever
+       the surfel belongs to the digital surface.  Models include
+       FrontierPredicate and BoundaryPredicate.
+       
+       @param aSCellContour (modified) a vector of cells (which are
+       all surfels), containing the ordered list of surfels that forms
+       the connected component of the digital surface slice containing
+       surfel \a start_surfel and the direction \a trackDir.
+        
+       @param K any space (dimension is arbitrary).
+
+       @param trackDir the initial track direction at [start_surfel],
+       should be different from the orthogonal direction of
+       [start_surfel].
+
+       @param surfel_adj the surfel adjacency chosen for the tracking.
+
+       @param sp an instance of a model of CSurfelPredicate, for
+       instance a FrontierPredicate or a BoundaryPredicate.
+
+       @param start_surfel a signed surfel such that sp(start_surfel) is true.
+    */
+    template <typename SurfelPredicate>
+    static 
+    void track2DSliceSurface( std::vector<SCell> & aSCellContour,
+			       const KSpace & K, 
+			       const Dimension & trackDir,
+			       const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+			       const SurfelPredicate & sp,
+			       const SCell & start_surfel );
+
+
 
     /**
        Function that extracts the boundary of a 2D shape (specified by
