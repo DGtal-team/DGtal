@@ -128,7 +128,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
       mySCEstimator.attach( *last ); 
       result = mySCEstimator.eval( itCurrent, itEnd, result );
       itCurrent = itEnd; 
-      if (itCurrent != itEnd) 
+      if (itCurrent != ite) 
 	{
 	  //first segment
 	  mySCEstimator.attach( *first ); 
