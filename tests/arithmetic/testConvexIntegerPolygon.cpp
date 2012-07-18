@@ -249,7 +249,7 @@ bool exhaustiveTestConvexIntegerPolygon()
   trace.endBlock();
 
   trace.beginBlock ( "Check cuts..." );
-  for ( unsigned int j = 0; j < 1000; ++j )
+  for ( unsigned int j = 0; j < 100; ++j )
     {
       CIP cip2 = cip;
       int x = 0;
@@ -336,6 +336,51 @@ bool specificTestConvexIntegerPolygon()
   return nbok == nb;
 }
 
+template <typename Space>
+bool
+checkOutputConvexHullBorder()
+{
+  typedef typename Space::Point Point;
+  typedef typename Space::Vector Vector;
+  typedef typename Space::Integer Integer;
+  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef typename CIP::Point3I Point3I;
+  typedef typename CIP::Domain Domain;
+  typedef typename CIP::HalfSpace HalfSpace;
+  typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
+  IntegerComputer<Integer> ic;
+
+  Point c1( 0, 0 );
+  Point c3( 30, 0 );
+  Point A( -10, -2 );
+  Point B( 40, 27 );
+  Point In( 1, 0 );
+  HalfSpace hs1( c1, c1 + Vector( 0, 1 ), In, ic );
+  HalfSpace hs2( A, B, In, ic );
+  HalfSpace hs3( c3, c3 + Vector( 0, 1 ), In, ic );
+  CIP cip;
+  cip.push_back( c1 );
+  cip.computeConvexHullBorder( std::back_inserter( cip ), c1, c3, hs1, hs2, hs3 );
+  cip.push_back( c3 );
+
+  Domain d = cip.boundingBoxDomain();
+  Board2D board;
+  board << SetMode( d.className(), "Grid" ) << d;
+  DigitalSet aSet( d );
+  Shapes<Domain>::makeSetFromPointPredicate( aSet, hs2 );
+  Color col1( 100, 180, 100 );
+  Color col2( 220, 250, 220 );
+  board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
+        << aSet;
+  board << SetMode( cip.className(), "Transparent" ) << cip;
+  // Point p( 0, 0 );
+  // board << CustomStyle( p.className(), new CustomColors( Color::Red, Color::Red ) )
+  //       << p;
+  board.saveEPS( "cip4.eps" );
+  board.clear();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -347,7 +392,8 @@ int main( int, char** )
   typedef SpaceND<2, DGtal::BigInteger> Z2I;
   bool res = testConvexIntegerPolygon<Z2>()
     && testConvexIntegerPolygon<Z2I>()
-    && exhaustiveTestConvexIntegerPolygon<Z2>();
+    && exhaustiveTestConvexIntegerPolygon<Z2>()
+    && checkOutputConvexHullBorder<Z2>();
   //&& specificTestConvexIntegerPolygon<Z2>();
   //&& exhaustiveTestConvexIntegerPolygon<Z2I>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
