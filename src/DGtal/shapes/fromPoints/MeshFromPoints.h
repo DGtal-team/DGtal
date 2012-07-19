@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ namespace DGtal
      * Structure for representing the faces from the vertex index.
      **/
 
-    typedef vector<unsigned int> MeshFace;
+    typedef std::vector<unsigned int> MeshFace;
     
 
 
@@ -115,7 +116,7 @@ namespace DGtal
      * The color are not stored in this case.
      * @param vertexSet: the set of vertex. 
      */    
-    MeshFromPoints(const vector<TPoint> &vertexSet);
+    MeshFromPoints(const std::vector<TPoint> &vertexSet);
 
     /**
      * Destructor.
@@ -255,9 +256,9 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    vector<MeshFace>  myFaceList;
-    vector<TPoint>  myVertexList;
-    vector<DGtal::Color> myFaceColorList;
+    std::vector<MeshFace>  myFaceList;
+    std::vector<TPoint>  myVertexList;
+    std::vector<DGtal::Color> myFaceColorList;
     bool mySaveFaceColor;
     
     // ------------------------- Hidden services ------------------------------
