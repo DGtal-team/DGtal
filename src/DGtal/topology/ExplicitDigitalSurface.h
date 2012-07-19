@@ -61,6 +61,13 @@ namespace DGtal
      predicate telling whether a given surfel belongs or not to the
      shape boundary. Compute once the boundary of the surface with a
      tracking.
+
+     Note that in the 2D case, this object corresponds to a digital
+     contour made of linels, ordered as a direct orientation
+     sequence. If the contour is open, then begin() returns one
+     extremity while end() is the surfel past the last extremity. If
+     the contour is closed, then begin() is the surfel given at the
+     instantiation of the object.
      
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
