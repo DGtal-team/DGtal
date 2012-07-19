@@ -61,7 +61,7 @@ DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix()
   //Cofactor coefs computation
   for (DGtal::Dimension i=0; i<TM; i++)
     for (DGtal::Dimension j=0; j<TN; j++)
-      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j));
+      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j+2));
 }
 //------------------------------------------------------------------------------
 
