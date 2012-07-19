@@ -61,7 +61,7 @@ DGtal::SimpleMatrix<T,TM, TN>::SimpleMatrix()
   //Cofactor coefs computation
   for (DGtal::Dimension i=0; i<TM; i++)
     for (DGtal::Dimension j=0; j<TN; j++)
-      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j+2));
+      myCofactorCoefs[i*N+j] = static_cast<T>(std::pow(-1.0f, (float)i+j));
 }
 //------------------------------------------------------------------------------
 
@@ -211,10 +211,10 @@ DGtal::SimpleMatrix<T, TM, TN>::inverse() const
 {
   BOOST_STATIC_ASSERT(TM == TN);
 
-  SimpleMatrix<T,TN,TM> r = cofactor().transpose();
+  SimpleMatrix<T,TM,TM> r = cofactor().transpose();
   for (DGtal::Dimension i=0; i<TM; i++)
-    for (DGtal::Dimension j=0; j<TN; j++)
-      r.setComponent(i,j, r(i,j)*myCofactorCoefs[i*N+j]);
+    for (DGtal::Dimension j=0; j<TM; j++)
+      r.setComponent(i,j, r(i,j)*myCofactorCoefs[i*M+j]);
   
   //determinant
   T det = determinant();
