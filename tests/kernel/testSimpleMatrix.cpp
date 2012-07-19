@@ -296,6 +296,59 @@ bool testM1Matrix()
   return true;
 }
 
+bool testInverse()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+ 
+  trace.beginBlock("Inverse tests 2X2...");
+  
+  typedef DGtal::SimpleMatrix<double,2,2> MAT2;
+  MAT2 mat2;
+  mat2.setComponent(0,0,1);
+  mat2.setComponent(1,1,2);
+
+  MAT2 Id2;
+  Id2.identity();
+
+  trace.info() << mat2<<std::endl;
+  trace.info() << mat2.inverse() << std::endl;
+  nbok += (( mat2 * mat2.inverse() )== Id2 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " M*M^-1=Id" << std::endl;
+ 
+  trace.endBlock();
+
+  trace.beginBlock("Inverse tests 6x6 random...");
+  
+  typedef DGtal::SimpleMatrix<double,6,6> MAT6;
+  MAT6 mat;
+  
+  for(unsigned int i=0; i< 6; i++)
+    for(unsigned int j=0; j< 6; j++)
+      mat.setComponent(i,j, rand() % 10);
+  
+  MAT6 Id6;
+  Id6.identity();
+  
+  trace.info() << "M ="<<mat<<std::endl;
+  trace.info() << "M^-1 =" <<mat.inverse() << std::endl;
+  trace.info() << "det(M)= "<<mat.determinant() <<std::endl;
+  trace.info() << mat*mat.inverse() << std::endl;
+
+  
+  nbok += (( mat * mat.inverse() )== Id6 ) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  	       << " 2" << std::endl;
+ 
+  trace.endBlock();
+
+
+  return nbok == nb; 
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -307,7 +360,9 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() && testDetCofactor() && testM1Matrix(); // && ... other tests
+  bool res = testSimpleMatrix() && testArithm() && testColRow()
+    && testDetCofactor() && testM1Matrix()
+    && testInverse(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
