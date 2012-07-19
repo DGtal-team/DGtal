@@ -332,10 +332,10 @@ bool testInverse()
   MAT6 Id6;
   Id6.identity();
   
-  trace.info() << "M ="<<mat<<std::endl;
-  trace.info() << "M^-1 =" <<mat.inverse() << std::endl;
+  trace.info() << "M= "<<mat<<std::endl;
+  trace.info() << "M^-1=" <<mat.inverse() << std::endl;
   trace.info() << "det(M)= "<<mat.determinant() <<std::endl;
-  trace.info() << mat*mat.inverse() << std::endl;
+  trace.info() << "M*M^-1= "<<mat.inverse()*mat << std::endl;
 
   
   nbok += (( mat * mat.inverse() )== Id6 ) ? 1 : 0; 
