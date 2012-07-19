@@ -149,6 +149,48 @@ namespace DGtal
    * \brief Aim:
    */
   template <typename TMatrix>
+  struct SimpleMatrixSpecializations<TMatrix,1,1>
+  {
+    // ----------------------- Standard services ------------------------------
+  public:
+    
+    typedef typename TMatrix::Component Component;
+    typedef TMatrix Matrix;
+   
+    BOOST_STATIC_ASSERT( 1 == TMatrix::M );
+    BOOST_STATIC_ASSERT( 1 == TMatrix::N );
+ 
+    /** 
+     * Return the minor determinant (i,j) of the current matrix
+     * 
+     * @param i row index
+     * @param j column index
+     * 
+     * @return the minor (i,j)
+     */
+    static Component minorDeterminant(const Matrix &aM,
+                                      const DGtal::Dimension i, 
+                                      const DGtal::Dimension j);
+    
+    /** 
+     * Returns the determinant of square matrix.
+     * Slow method for large matrices.
+     * @pre this must be NxN
+     * 
+     * @return the determinant.
+     */
+    static Component determinant(const Matrix &aM);
+
+
+  }; // end of class SimpleMatrixSpecializations
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SimpleMatrixSpecializations
+  /**
+   * Description of template class 'SimpleMatrixSpecializations' <p>
+   * \brief Aim:
+   */
+  template <typename TMatrix>
   struct SimpleMatrixSpecializations<TMatrix,3,3>
   {
     // ----------------------- Standard services ------------------------------
