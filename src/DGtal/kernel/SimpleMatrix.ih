@@ -215,10 +215,7 @@ DGtal::SimpleMatrix<T, TM, TN>::inverse() const
   BOOST_STATIC_ASSERT(TM == TN);
 
   SimpleMatrix<T,TM,TM> r = cofactor().transpose();
-  for (DGtal::Dimension i=0; i<TM; i++)
-    for (DGtal::Dimension j=0; j<TM; j++)
-      r.setComponent(i,j, r(i,j)*myCofactorCoefs[i*M+j]);
-  
+
   //determinant
   T det = determinant();
   ASSERT(det != 0);

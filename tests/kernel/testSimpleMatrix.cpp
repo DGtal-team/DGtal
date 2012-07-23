@@ -338,10 +338,6 @@ bool testInverse()
   trace.info() << "M*M^-1= "<<mat.inverse()*mat << std::endl;
 
   
-  nbok += (( mat * mat.inverse() )== Id6 ) ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-  	       << " 2" << std::endl;
  
   trace.endBlock();
 
