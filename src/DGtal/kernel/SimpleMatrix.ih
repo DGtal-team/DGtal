@@ -70,7 +70,10 @@ inline
 DGtal::SimpleMatrix<T ,TM, TN>::SimpleMatrix(const Self& other)
 {
   for ( DGtal::Dimension i = 0; i < M*N; ++i )
+  {
     myValues[ i ] = other.myValues[i];
+    myCofactorCoefs[ i ] = other.myCofactorCoefs[i];
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -454,7 +457,10 @@ inline
 DGtal::SimpleMatrix<T ,2, 2>::SimpleMatrix(const Self& other)
 {
   for ( DGtal::Dimension i = 0; i < M*N; ++i )
+  {
     myValues[ i ] = other.myValues[i];
+    myCofactorCoefs[ i ] = other.myCofactorCoefs[i];
+  }
 }
 
 //---------------------------------------------------------------------------
@@ -779,7 +785,10 @@ inline
 DGtal::SimpleMatrix<T ,3, 3>::SimpleMatrix(const Self& other)
 {
   for ( DGtal::Dimension i = 0; i < M*N; ++i )
+  {
     myValues[ i ] = other.myValues[i];
+    myCofactorCoefs[ i ] = other.myCofactorCoefs[i];
+  }
 }
 
 //---------------------------------------------------------------------------
