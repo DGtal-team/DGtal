@@ -112,7 +112,7 @@ namespace DGtal
 ###  Invariants
    *
 ###  Model
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
+   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
    *
 ###  Notes
    *

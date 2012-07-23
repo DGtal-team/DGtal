@@ -87,6 +87,7 @@ namespace DGtal
       typedef typename Domain::Dimension Dimension;
       typedef typename Domain::Integer Integer;
       typedef typename Domain::Size Size;
+      typedef Point Vertex;
 
       typedef typename itk::Image< TValue, dimension> ITKImage;
       typedef typename ITKImage::Pointer ITKImagePointer;

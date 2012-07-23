@@ -70,7 +70,7 @@ namespace DGtal
    *
    * The ImageContainerByHashTree relies on a tree model implemented
    * using a hash table based on Morton Codes.  A Morton hash key is
-   * obatained from coordinates by interleaving the binary
+   * obtained from coordinates by interleaving the binary
    * representations of the coordinate values.  This means the
    * coordinates have to be of integer type for the morton code to be
    * valid.
@@ -106,7 +106,7 @@ namespace DGtal
    *
    * Warning ! For performances this container's access method never
    * check for a key's validity.  Trying to access an invalid key may
-   * destroy the validity off the tree's structure and/or get the
+   * destroy the validity of the tree's structure and/or get the
    * program stuck into an infinite loop.
    *
    * The method isKeyValid(..) is provided to verify the validity of a
@@ -142,6 +142,7 @@ namespace DGtal
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
+    typedef Point Vertex;
 
     /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
