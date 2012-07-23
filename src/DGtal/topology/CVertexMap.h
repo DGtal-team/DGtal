@@ -20,7 +20,8 @@
  * @file CVertexMap.h
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  * Institut National des Sciences Appliquées - INSA, France
- *
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/07/11
  *
  * Header file for concept CVertexMap.cpp
@@ -54,8 +55,12 @@ namespace DGtal
   /**
     *  Description of \b concept '\b CVertexMap' <p>
     * @ingroup Concepts
-    * \brief Aim: Defines a map of vertices.
-    * 
+    * \brief Aim: models of CVertexMap concept implement mapping
+    * between graph vertices and values.
+    *
+    * This concept is associated with concepts related to graph  in
+    * DGtal (CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph)
+    *
     * Associates values to vertices.
     
  ### Associated types :
@@ -74,48 +79,20 @@ namespace DGtal
  
  
  ###  Valid expressions and
-      <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
 
-      <tr>
-        <td class=CName> set value </td>
-        <td class=CExpression> x.setValue(v, val) </td>
-        <td class=CRequirements>  </td>
-        <td class=CReturnType>  </td>
-        <td class=CPrecondition>  </td>
-        <td class=CSemantics> set a given value val to a given vertex v </td>
-        <td class=CPostCondition>  </td>
-        <td class=CComplexity>  </td>
-      </tr>
-      
-      <tr>
-        <td class=CName> access value </td>
-        <td class=CExpression> x(v) </td>
-        <td class=CRequirements>  </td>
-        <td class=CReturnType> val </td>
-        <td class=CPrecondition>  </td>
-        <td class=CSemantics> the value at vertex v </td>
-        <td class=CPostCondition>  </td>
-        <td class=CComplexity>  </td>
-      </tr>
+| Name      | Expression              | Type requirements                           | Return type | Precondition | Semantics                                 | Post condition | Complexity |
+|-----------+-------------------------+---------------------------------------------+-------------+--------------+-------------------------------------------+----------------+------------|
+| Set value | x.setValue(vertex, val) | vertex of type Vertex and val of type Value | void        |              | set a given value val to a given vertex v |                |            |
+| Accessor  | x(vertex)               | vertex of type Vertex                       | Value       |              | Access to the value at vertex             |                |            |
 
-
-    </table>
     
 ###  Invariants
    *
 
 ###  Models
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+   * ImageContainerBySTLVector, ImageContainerBySTLMap
+   * ImageContainerByITKImage, ImageContainerByHashTree
+   * Any adapted type from STLMapToVertexMapAdapter  
         
  ### Notes###
    */

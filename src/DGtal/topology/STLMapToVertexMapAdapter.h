@@ -50,7 +50,7 @@ namespace DGtal
   // template class STLMapToVertexMapAdapter
   /**
   Description of template class 'STLMapToVertexMapAdapter' <p> \brief
-  Aim: This class adapts any map of the STL to the CVertexMap concept
+  Aim: This class adapts any map of the STL to match with the CVertexMap concept
   
  
   @tparam TMap the type of the associative container.
@@ -99,29 +99,6 @@ namespace DGtal
       ASSERT( it != this->end() );
       return it->second;
     }
-    
-
-
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-
-    // ------------------------- Protected Datas ------------------------------
-  private:
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
 
   }; // end of class STLMapToVertexMapAdapter
 
