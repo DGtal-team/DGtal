@@ -128,7 +128,7 @@ template <typename TSpace, Dimension maxNorm1, Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
-( const Vertex & v )
+( const Vertex & /* v */ )
 {
   return bestCapacity();
 }
@@ -342,7 +342,7 @@ namespace DGtal {
     inline
     static
     Size
-    degree( const Vertex & v )
+    degree( const Vertex & /* v */ )
     {
       return 8;
     }
@@ -464,7 +464,7 @@ namespace DGtal {
     inline
     static
     Size
-    degree( const Vertex & v )
+    degree( const Vertex & /* v */ )
     {
       return 4;
     }
@@ -585,7 +585,7 @@ namespace DGtal {
     inline
     static
     Size
-    degree( const Vertex & v )
+    degree( const Vertex & /* v */ )
     {
       return 26;
     }
@@ -762,7 +762,7 @@ namespace DGtal {
     inline
     static
     Size
-    degree( const Vertex & v )
+    degree( const Vertex & /* v */ )
     {
       return 18;
     }
@@ -919,7 +919,7 @@ namespace DGtal {
     inline
     static
     Size
-    degree( const Vertex & v )
+    degree( const Vertex & /* v */ )
     {
       return 6;
     }
