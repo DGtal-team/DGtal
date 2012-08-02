@@ -1,0 +1,522 @@
+ /**
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU Lesser General Public License as
+* published by the Free Software Foundation, either version 3 of the
+* License, or (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program. If not, see <http://www.gnu.org/licenses/>.
+*
+**/
+
+/**
+* @file InputListener.cpp
+* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+* Liris CNRS
+*
+* @date 2012/06/10
+*
+* Implementation of methods defined in InputListener.h
+*
+* This file is part of the DGtal library.
+*/
+
+///////////////////////////////////////////////////////////////////////////////
+#include "InputListener.h"
+#include <iostream>
+#include "time.h"
+///////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////
+// class InputListener
+///////////////////////////////////////////////////////////////////////////////
+namespace DGtal
+{
+    template<> DGtal::InputListener* DGtal::Singleton<DGtal::InputListener>::mySingleton = 0;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+
+
+/**
+ * Constructor.
+ */
+InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aViewer, Ogre::Camera * aCamera, Ogre::SceneManager * aSceneManager ) :
+    myWindow ( aWindow ), myViewer ( aViewer )
+
+{
+
+  // Camera Intiate
+  myCamera = aCamera;
+  Ogre::SceneNode * aNode=aSceneManager->getRootSceneNode()->createChildSceneNode();
+  aNode->setPosition(myViewer->goodCameraPosition());
+  myCameraMan = new CameraMan (aNode, myCamera );
+
+    size_t windowHnd = 0;
+    std::ostringstream windowHndStr;
+    
+    myWindow->getCustomAttribute("WINDOW", &windowHnd);
+    windowHndStr << windowHnd;
+
+   OIS::ParamList pl;
+	pl.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
+	#if defined OIS_WIN32_PLATFORM
+	pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_FOREGROUND" )));
+	pl.insert(std::make_pair(std::string("w32_mouse"), std::string("DISCL_NONEXCLUSIVE")));
+	pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_FOREGROUND")));
+	pl.insert(std::make_pair(std::string("w32_keyboard"), std::string("DISCL_NONEXCLUSIVE")));
+	#elif defined OIS_LINUX_PLATFORM
+	pl.insert(std::make_pair(std::string("x11_mouse_grab"), std::string("false")));
+	pl.insert(std::make_pair(std::string("x11_mouse_hide"), std::string("false")));
+	pl.insert(std::make_pair(std::string("x11_keyboard_grab"), std::string("false")));
+	pl.insert(std::make_pair(std::string("XAutoRepeatOn"), std::string("true")));
+	#endif
+    
+    myInputManager = OIS::InputManager::createInputSystem( pl );
+
+    //Create all devices (We only catch joystick exceptions here, as, most people have Key/Mouse)
+    myKeyboard = static_cast<OIS::Keyboard*>(myInputManager->createInputObject( OIS::OISKeyboard, true ));
+    myMouse = static_cast<OIS::Mouse*>(myInputManager->createInputObject( OIS::OISMouse, true ));
+
+    myMouse->setEventCallback(this);
+    myKeyboard->setEventCallback(this);
+    // End flag initate
+    myShutdown = false;
+
+    // Other Flags initate
+    myMouseRightClicked = false;
+    myMouseLeftClicked = false ;
+
+
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+	// Cursor initating
+	myMouseCursor = new MouseCursor();
+    myMouseCursor->setImage("cursor.png");
+    myMouseCursor->setVisible(true);
+    myMouseCursor->setWindowDimensions(myWindow->getWidth(), myWindow->getHeight());
+#endif    
+    
+    
+  const OIS::MouseState &ms = myMouse->getMouseState();
+  ms.width = myWindow->getWidth();
+  ms.height = myWindow->getHeight();
+ 
+
+
+  // Other initating
+  myIsInShiftMode = false;
+  mySceneMgr = aSceneManager;
+
+  //Register as a Window listener
+  Ogre::WindowEventUtilities::addWindowEventListener(myWindow, this);
+  myViewer->resetPosition(myWindow->getHeight(),myWindow->getWidth());
+
+
+  // Initiating timer
+  myTimer = OGRE_NEW Ogre::Timer();
+  myTimer->reset();
+
+  myWindow->setActive(true);
+  myTime =-1;
+
+}
+
+
+
+/**
+* Destructor.
+*/
+InputListener::~InputListener()
+{
+  myInputManager->destroyInputObject ( myKeyboard );
+  myInputManager->destroyInputObject ( myMouse );
+  delete myCameraMan;
+  OIS::InputManager::destroyInputSystem ( myInputManager );
+}
+
+
+
+/**
+  * the rendering method
+  */
+bool InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
+{
+  if ( myMouse )
+    myMouse->capture();
+
+  if ( myKeyboard )
+    myKeyboard->capture();
+
+  if ( myWindow->isClosed() || myShutdown )
+    return false;
+
+ updateViewer(evt.timeSinceLastFrame);
+
+  return true;
+}
+
+
+/**
+*  Updates some attributes of the viewer
+* 
+*/
+void InputListener::updateViewer(double timeSinceLastFrame)
+{
+      myCameraMan->render ( timeSinceLastFrame );
+      myMouseX= myMouse->getMouseState().X.abs;
+      myMouseY=myMouse->getMouseState().Y.abs;
+      if(myMouseLeftClicked && myCameraMan->isTurning() && (abs(myMouse->getMouseState().X.rel) == 0)&&(myMouse->getMouseState().Y.rel==0))
+      {
+         double a =(double)clock()/CLOCKS_PER_SEC;
+         if(abs(a-myTime)>0.01)
+         { 
+	       myCameraMan->stopTurning();
+           myTime=-1;
+         }
+      }
+
+          
+}
+/**
+  * Method that initiate the inputManager (First frame)
+  */
+bool InputListener::frameStarted ( const Ogre::FrameEvent & evt )
+{
+  return true;
+}
+
+
+/**
+  * The last frame
+  */
+bool InputListener::frameEnded ( const Ogre::FrameEvent &evt )
+{
+  return true;
+}
+
+
+
+/**
+  * Handles a key press
+  */
+bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
+{
+  switch ( evt.key )
+    {
+
+      case OIS::KC_ESCAPE:
+        myShutdown = true;
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->abortManupulating();
+          }
+
+        return false;
+        break;
+
+
+      case::OIS::KC_SUBTRACT:
+
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->newManipulatingValue ( -1 );
+          }
+
+        break;
+
+      case::OIS::KC_ADD:
+
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->newManipulatingValue ( 1 );
+          }
+        break;
+
+
+
+      case OIS::KC_P:
+
+        myViewer->changeAxisVisibility();
+        break;
+	
+	
+      case OIS::KC_R :
+	  resetSCPosition();
+       break;
+
+      
+       case OIS::KC_M :
+	  myViewer->more();
+       break;
+       case OIS::KC_L :
+	  myViewer->less();
+       break;
+       
+
+
+       case OIS::KC_N :
+	  myViewer->moreTransparency();
+       break;
+       case OIS::KC_B :
+	  myViewer->lessTransparency();
+       break;
+
+
+       case OIS::KC_H :
+	  myViewer->showHelp();
+       break;
+       case OIS::KC_C :
+	  myViewer->printScene();
+       break;
+
+
+       case OIS::KC_O :
+	  myViewer->changeWristVisibility();
+       break;
+
+
+       case OIS::KC_F :
+	  myViewer->flipBackgroundColor();
+       break;
+
+
+       case OIS::KC_G :
+	 myViewer->flipPlaneVisibility();
+      break;
+       case OIS::KC_X :
+	 myViewer->exportToXml("scene");
+      break;
+
+
+       case OIS::KC_T :
+	 myViewer->flipTextVisibility();
+	break;
+
+
+       case OIS::KC_S :
+	if((!myIsInShiftMode)&&(myViewer->isInSelectionMode()))
+	 myViewer->confirmSelection();
+
+
+      default:
+        break;
+
+    }
+
+  myCameraMan->handleKeyPress ( evt );
+
+  return true;
+
+}
+
+
+
+/**
+  * Handles a mouse press
+  */
+bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+{
+  if ( !myIsInShiftMode && ( id == OIS::MB_Left ) )
+    {
+      myMouseX= myMouse->getMouseState().X.abs;
+      myMouseY=myMouse->getMouseState().Y.abs;
+    }
+
+  if ( id == OIS::MB_Left)
+    {
+      myMouseLeftClicked = true;
+    }
+
+  if ( id == OIS::MB_Right )
+    {
+      myMouseRightClicked = true;
+    }
+    return true;
+}
+
+
+
+/**
+  * Handles a mouse release
+  */
+bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
+{
+    if ( !myIsInShiftMode && ( id == OIS::MB_Left ) )
+    {
+      if(myCameraMan->isTurning() && (myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
+      {
+	  //   myCameraMan->stopTurning();
+         myTime=-1;
+      }
+      if((myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
+      {
+         myViewer->lookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
+      }
+    }
+  if ( id == OIS::MB_Left )
+    {
+      myMouseLeftClicked = false;
+    }
+
+  if ( id == OIS::MB_Right )
+    {
+      myMouseRightClicked = false;
+    }
+
+  return true;
+}
+
+
+
+/**
+  * Handles a key release
+  */
+bool InputListener::keyReleased ( const OIS::KeyEvent &e )
+{
+
+  switch ( e.key )
+    {
+
+      case OIS::KC_CAPITAL:
+        myIsInShiftMode = !myIsInShiftMode;
+        break;
+      default:
+        break;
+
+    }
+
+
+  myCameraMan->handleKeyRelease ( e );
+
+  return true;
+}
+
+
+
+
+/**
+  * Handles a mouse move
+  */
+bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
+{
+  if ( !myIsInShiftMode )
+    {
+
+
+      if ( myMouseLeftClicked && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
+        {
+          myCameraMan->setSceneCenter ( myViewer->getSceneCenter() );
+          myCameraMan->turnCamera ( e.state.X.rel, e.state.Y.rel );
+          myTime =(double)clock()/CLOCKS_PER_SEC;
+
+        }
+
+      else if ( myMouseRightClicked  && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
+        {
+          myCameraMan->setSceneCenter ( myViewer->getSceneCenter() );
+          myCameraMan->translateCamera ( e.state.X.rel, e.state.Y.rel );
+          myViewer->setSceneCenter ( myCameraMan->getNewSceneCenter() );
+        }
+
+    }
+
+  myCameraMan->handleMouseMove ( e );
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+  myMouseCursor->updatePosition(e.state.X.abs,e.state.Y.abs);
+#endif    
+
+
+  return true;
+}
+
+
+
+
+/**
+  * Handles a window resize
+  */
+void InputListener::windowResized ( Ogre::RenderWindow* rw )
+{
+  myViewer->resetPosition(rw->getHeight(),rw->getWidth());
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+  myMouseCursor->setWindowDimensions(rw->getWidth(), rw->getHeight());
+#endif
+
+}
+
+
+/**
+* 
+*/
+void InputListener::windowMoved(Ogre::RenderWindow * rw)
+{
+}
+/**
+  * makes the render loop stop
+  */
+void InputListener::stopRendering ( )
+{
+  myShutdown = true;
+}
+
+
+
+
+/**
+  * makes the render loop starts
+  */
+void InputListener::startRendering ( )
+{
+  myShutdown = false;
+}
+
+
+/**
+* Resets the position of the scene center
+*/
+void InputListener::resetSCPosition()
+{
+         Ogre::Vector3 OldPosition=myViewer->getSceneCenter();
+         myViewer->computeSceneCenter();
+	 myViewer->updateWrist();
+  	 Ogre::Vector3 resetpos(myViewer->getSceneCenter());
+	 Ogre::Vector3 transPos=resetpos + myCameraMan->getSceneNode()->getPosition();
+	 myCameraMan->setSceneCenter (resetpos);
+	 myCameraMan->moveCameraman(OldPosition);
+	 
+}
+
+
+/**
+  * Handles a window close
+  */
+void InputListener::windowClosed(Ogre::RenderWindow* rw)
+{
+    myShutdown=true;
+
+}
+/**
+* Resets the upAxis of the camera
+*/
+/*
+void InputListener::resetupAxis()
+{
+         Ogre::Vector3 OldPosition=myViewer->getSceneCenter();
+         myViewer->computeSceneCenter();
+	 myViewer->updateWrist();
+  	 Ogre::Vector3 resetpos(myViewer->getSceneCenter());
+	 Ogre::Vector3 transPos=resetpos + myCameraMan->getSceneNode()->getPosition();
+	 myCameraMan->setSceneCenter (resetpos);
+	 myCameraMan->moveCameraman(OldPosition);
+	 
+}*/
