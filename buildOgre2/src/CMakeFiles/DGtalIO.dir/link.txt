@@ -1,1 +1,0 @@
-/usr/bin/c++  -fPIC  -DCPP11_INITIALIZER_LIST -std=c++0x -DCPP11_AUTO -std=c++0x   -shared -Wl,-soname,libDGtalIO.so -o libDGtalIO.so CMakeFiles/DGtalIO.dir/DGtal/io/boards/Board2D.cpp.o libDGtal.so -Wl,-Bstatic -lboost_program_options-mt -Wl,-Bdynamic -lOgreMain -lOIS -Wl,-rpath,/home/anisbenyoub/Libraries/DGtal/buildOgre2/src: 
