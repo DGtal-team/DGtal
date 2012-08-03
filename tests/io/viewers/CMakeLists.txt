@@ -39,3 +39,9 @@ if ( WITH_VISU3D_IV )
   ENDFOREACH(FILE)
 
 endif ( WITH_VISU3D_IV )
+
+### Visu Ogre
+
+add_subdirectory(OGRE)
+
+

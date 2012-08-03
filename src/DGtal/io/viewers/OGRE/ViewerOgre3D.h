@@ -48,13 +48,13 @@
 #include <DGtal/io/Color.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/OGRE/OgreEntity.h"
+#include "OgreEntity.h"
 #include "DGtal/io/viewers/OGRE/DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/viewers/OGRE/CommonOgre.h"
 #include "DGtal/io/viewers/OGRE/TextZone.h"
 #include "DGtal/io/viewers/OGRE/DGtalSingleton.h"			
-#include <DGtal/io/viewers/OGRE/OgreFontManager.h> 
+#include <OgreFontManager.h> 
 #include "DGtal/io/viewers/OGRE/XMLExporter.h"
 //////////////////////////////////////////////////////////////////////////////
 

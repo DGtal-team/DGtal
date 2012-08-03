@@ -159,7 +159,7 @@ namespace DGtal
 #if !defined(BUILD_INLINE)
 #endif
 
-
+#include "mousecursor.ih"
     /**
     * Overloads 'operator<<' for displaying objects of class 'XXX'.
     * @param out the output stream where the object is written.

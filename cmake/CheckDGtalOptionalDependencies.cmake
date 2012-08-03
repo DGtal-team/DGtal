@@ -278,51 +278,6 @@ if(NOT WITH_VISU3D_QGLVIEWER)
 else(NOT WITH_VISU3D_QGLVIEWER)
   set( WITH_VISU3D 1 )
 endif(NOT WITH_VISU3D_QGLVIEWER)
-# -----------------------------------------------------------------------------
-# Look for Ogre for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(OGRE_FOUND_DGTAL 0)
-IF(WITH_OGRE)
-if(UNIX AND NOT APPLE)
-
-if(NOT DEFINED OGRE_PLUGINS)
-	if(EXISTS "/usr/local/lib/OGRE/")
-                set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
-        elseif(EXISTS "/usr/lib/OGRE/")
-                set(OGRE_PLUGINS "/usr/lib/OGRE/")
-        elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
-                set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
-        else()
-	     message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
-        endif(EXISTS "/usr/local/lib/OGRE/")
-endif()
-
-	if(EXISTS "/usr/local/lib/OGRE/cmake")
-	  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-
-	 elseif(EXISTS "/usr/share/OGRE/cmake")
-	     set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
-	  else ()
-	     message(SEND_ERROR "Failed to find module path, please set OGRE_DIR variable to the folder containing FindOgre.cmake")
-             find_package(OGRE_FIND REQUIRED)
-	 endif(EXISTS "/usr/local/lib/OGRE/cmake")
-
- endif(UNIX AND NOT APPLE)
-    find_package(OGRE REQUIRED)
-  if(OGRE_FOUND)
-
-    find_package(OIS REQUIRED)
-      message(STATUS  "libOgre found.")
-    include_directories( ${OGRE_INCLUDE_DIR} ${OIS_INCLUDE_DIR})
-    set ( WITH_VISU3D_OGRE 1 )
-    set(OGRE_FOUND_DGTAL 1)
-    ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
-    SET(DGtalLibDependencies ${DGtalLibDependencies} ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  )
-  else ( OGRE_FOUND )
-    message(FATAL_ERROR  "libOgre not found (or OIS not found).  Check the cmake variables associated to this package or disable it." )
-  endif (OGRE_FOUND)
-ENDIF(WITH_OGRE)
 
 
 # -----------------------------------------------------------------------------
@@ -343,5 +298,51 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
     message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+
+
+# -----------------------------------------------------------------------------
+# Look for Ogre for 3D display.
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+set(OGRE_FOUND_DGTAL 0)
+IF(WITH_OGRE)
+	if(UNIX AND NOT APPLE)
+
+		if(NOT DEFINED OGRE_PLUGINS)
+			if(EXISTS "/usr/local/lib/OGRE/")
+				set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
+			elseif(EXISTS "/usr/lib/OGRE/")
+				set(OGRE_PLUGINS "/usr/lib/OGRE/")
+			elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
+				set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
+			else()
+			     message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
+			endif(EXISTS "/usr/local/lib/OGRE/")
+		endif()
+
+		  if(EXISTS "/usr/local/lib/OGRE/cmake")
+		  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
+		 	elseif(EXISTS "/usr/share/OGRE/cmake")
+		     	set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
+		  else ()
+		     message(SEND_ERROR "Failed to find module path, please set OGRE_DIR variable to the folder containing FindOgre.cmake")
+		     find_package(OGRE_FIND REQUIRED)
+		  endif(EXISTS "/usr/local/lib/OGRE/cmake")
+
+	endif(UNIX AND NOT APPLE)
+
+	    find_package(OGRE REQUIRED)
+	    if(OGRE_FOUND)
+	    find_package(OIS REQUIRED)
+	    message(STATUS  "libOgre found.")
+	    include_directories( ${OGRE_INCLUDE_DIR} ${OIS_INCLUDE_DIR})	
+	    set ( WITH_VISU3D_OGRE 1 )
+	    set(OGRE_FOUND_DGTAL 1)
+	    ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
+	    SET(DGtalLibDependencies ${DGtalLibDependencies} ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  )
+	  else ( OGRE_FOUND )
+	    message(FATAL_ERROR  "Ogre not found.  Check the cmake variables associated to this package or disable it." )
+	  endif ( OGRE_FOUND )
+ENDIF(WITH_OGRE)
 
 message(STATUS "-------------------------------------------------------------------------------")

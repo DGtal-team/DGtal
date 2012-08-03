@@ -133,6 +133,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
+#include "TextZone.ih"
 #if !defined(BUILD_INLINE)
 #endif
 

@@ -1,0 +1,50 @@
+material Texture/Selected
+ {
+	technique
+	{
+		pass
+		{
+			diffuse 1.0 1.0 1.0
+			specular 0.500000 0.500000 0.500000 12.500000
+			
+			texture_unit
+            {
+                texture selected.jpg
+            }
+		}
+	}
+ }
+material Texture/Unselected
+ {
+	technique
+	{
+		pass
+		{
+			diffuse 1.0 1.0 1.0
+			specular 0.500000 0.500000 0.500000 12.500000
+			
+			texture_unit
+            {
+                texture unselected.jpg
+            }
+		}
+	}
+ }
+
+
+material Texture/Group
+ {
+	technique
+	{
+		pass
+		{
+			diffuse 1.0 1.0 1.0
+			specular 0.500000 0.500000 0.500000 12.500000
+			
+			texture_unit
+            {
+                texture groupSelected.jpg
+            }
+		}
+	}
+ }

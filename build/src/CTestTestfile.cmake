@@ -1,0 +1,6 @@
+# CMake generated Testfile for 
+# Source directory: /home/anisbenyoub/Libraries/DGtal/src
+# Build directory: /home/anisbenyoub/Libraries/DGtal/build/src
+# 
+# This file includes the relevent testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
