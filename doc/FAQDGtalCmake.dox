@@ -44,6 +44,7 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e qglviewer,
 - \e graphicsmagick,
 - \e insighttoolkit (ITK).
+- \e ogre, ois.
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
@@ -56,7 +57,7 @@ From a clean Ubuntu installation, you can download and install all
 dependencies using:
 @code
 sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
-sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
+sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev libogre-dev libois-dev
 libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev doxygen graphviz
 @endcode
 
@@ -77,8 +78,20 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true
+cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true -DWITH_OGRE=true
 @endcode
+
+If you have an error message that tells you that the cmake Variable OGRE_PLUGINS is unset, you can set it by calling 
+@code
+cmake .. -DOGRE_PLUGINS=<PATH>
+@endcode
+If you don't know the location of Ogre's plugins path you can use the following commands.
+
+@code
+updatedb
+locate RenderSystem_GL.so
+@endcode
+
 
 If no error occurs, you can build the DGtal lib and install it:
 @code
