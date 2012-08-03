@@ -220,10 +220,11 @@ ViewerOgre3D::~ViewerOgre3D()
   */
 ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 {
-  myDirectory = requirementPath;
+  mySourceDirectory = sourcePath;
+  myBinaryDirectory = binaryPath;
   myLogManager = new  Ogre::LogManager();
-  myLogManager->createLog(myDirectory+"Ogre.log" , true, false, true); 
-  myRoot = new Ogre::Root ( myDirectory+"plugins.cfg", myDirectory+"ogre.cfg", "" );
+  myLogManager->createLog(myBinaryDirectory+"Ogre.log" , true, false, true); 
+  myRoot = new Ogre::Root ( myBinaryDirectory+"plugins.cfg", mySourceDirectory+"ogre.cfg", "" );
 
   //Chargement des ressources et configuration
   initMaterials();
@@ -335,7 +336,7 @@ void ViewerOgre3D::initMaterials()
 {
   //Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
   Ogre::ConfigFile cf;
-  cf.load ( myDirectory+"resources.cfg" );
+  cf.load ( mySourceDirectory+"resources.cfg" );
   Ogre::ConfigFile::SectionIterator sectionIter = cf.getSectionIterator();
 
   Ogre::String sectionName, typeName, dataName;
@@ -352,7 +353,7 @@ void ViewerOgre3D::initMaterials()
           typeName = i->first;
           dataName = i->second;
 
-          Ogre::ResourceGroupManager::getSingleton().addResourceLocation ( myDirectory+dataName, typeName, sectionName );
+          Ogre::ResourceGroupManager::getSingleton().addResourceLocation ( mySourceDirectory+dataName, typeName, sectionName );
         }
     }
 

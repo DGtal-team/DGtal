@@ -814,7 +814,8 @@ namespace DGtal
      */
     Ogre::MaterialPtr  myTempMaterial;
 
-    std::string myDirectory;
+    std::string mySourceDirectory;
+    std::string myBinaryDirectory;
 	
     Ogre::LogManager * myLogManager;
 	

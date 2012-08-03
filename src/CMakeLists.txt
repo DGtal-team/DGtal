@@ -15,6 +15,9 @@ include(DGtal/math/ModuleSRC.txt)
 include(Board/ModuleSRC.txt)
 
 
+## Viewer dependency
+add_subdirectory(DGtal/io/viewers)
+
 
 # Create a library called "DGtal".
 # The extension is already found. Any number of sources could be listed here.
