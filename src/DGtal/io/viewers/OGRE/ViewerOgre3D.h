@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "OGRE/Ogre.h"
+#include <OGRE/Ogre.h>
 #include <list>
 
 #include <vector>
