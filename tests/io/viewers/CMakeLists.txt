@@ -43,5 +43,5 @@ endif ( WITH_VISU3D_IV )
 ### Visu Ogre
 if(WITH_VISU3D_OGRE)
 add_subdirectory(OGRE)
-if(WITH_VISU3D_OGRE)
+endif(WITH_VISU3D_OGRE)
 
