@@ -12,7 +12,7 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." ON)
+OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
@@ -76,10 +76,28 @@ message(STATUS "Checking the dependencies: ")
 # Check CPP11
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
+SET(C11_FOUND_DGTAL 0)
 IF(WITH_C11)
   INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP11.cmake)
+  IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO)
+    SET(C11_FOUND_DGTAL 1)
+    IF (CPP11_AUTO)
+      IF (CPP11_INITIALIZER_LIST)
+        MESSAGE(STATUS "C++11 features enabled: [auto, initializer-list]")
+      ELSE()
+        MESSAGE(STATUS "C++11 features enabled: [auto]")
+      ENDIF()
+    ELSE()
+      IF(CPP11_INITIALIZER_LIST)
+        MESSAGE(STATUS "C++11 features enabled: [initializer-list]")
+      ENDIF()
+    ENDIF()
+  ELSE()
+    MESSAGE(FATAL_ERROR "Your compiler does not support some c++11 features (auto, initializer-list). Please specify another C++ compiler of disable this WITH_C11 option.")
+  ENDIF()
 ENDIF(WITH_C11)
 
+  
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
 # (They are not compulsory).
