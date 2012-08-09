@@ -11,9 +11,6 @@ try_compile( CPP11_INITIALIZER_LIST
 if ( CPP11_INITIALIZER_LIST )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP11_INITIALIZER_LIST")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-  message(STATUS "[c++11] with initializer_list" )
-else ( CPP11_INITIALIZER_LIST )
-  message(STATUS "[c++11] initializer_list not found" )
 endif ( CPP11_INITIALIZER_LIST )
 
 try_compile( CPP11_AUTO 
@@ -25,11 +22,6 @@ try_compile( CPP11_AUTO
 if ( CPP11_AUTO )
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCPP11_AUTO")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-  
-
-  message(STATUS "[c++11] with auto" )
-else ( CPP11_AUTO )
-  message(STATUS "[c++11] auto not found" )
 endif ( CPP11_AUTO )
 
 
