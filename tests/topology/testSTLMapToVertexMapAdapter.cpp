@@ -55,8 +55,8 @@ using namespace DGtal;
 
 bool testMapToVertexMap()
 {
-  typedef typename Z2i::Point Point;
-  typedef typename Z2i::Point Vertex;
+  typedef  Z2i::Point Point;
+  typedef  Z2i::Point Vertex;
   typedef int Value;
   typedef map<Vertex, Value> Map;
   typedef STLMapToVertexMapAdapter<Map> VertexMap;
