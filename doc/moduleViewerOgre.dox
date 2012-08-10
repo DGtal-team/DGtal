@@ -1,0 +1,584 @@
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+ * @page moduleviewerogre3d ViewerOgre3D : An interactive viewer
+ *
+ * This part of the manual describes how to use the diffenrent modes of the viewer 
+ * 
+
+@author Anis Benyoub
+ 
+  \section DGtalGLV_ViewerOgre ViewerOgre3D: a stream mechanism for interacting with 3D scenes
+
+
+
+  This class ViewerOgre3D defines the stream mechanism to
+  display 3d primitives (like PointVector, DigitalSetBySTLSet, Object
+  ...). It permits to display 3D scenes, with different complex objects
+  and give the possibility to interact with them. 
+ *
+ \section DGtal_Section View mode
+First to use the ViewerOgre3D stream, you need to include the following hearders:
+ *
+@code
+ #include "DGtal/io/viewers/OGRE/ViewerOgre3D.h"
+@endcode
+ *	
+ *
+ *	
+
+The first step to visualize 3D object with Viewer3D is to create the Viewer from the main(): 
+@code
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
+@endcode
+
+Then we can display some 3D primitives:
+@code
+ Point p1( 0, 0, 0 );
+ Point p2( 5, 5 ,5 );
+ Point p3( 2, 3, 4 );
+ Domain domain( p1, p2 );
+
+ viewer << domain;  
+ viewer << p1 << p2 << p3; 
+
+* @endcode
+and finnaly, if you just want to visualize your objects.
+@code
+viewer.start();
+@endcode
+
+*
+* You should obtain the following visualisation:
+*
+* \image html viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+
+
+
+
+* \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
+*
+*
+* The ViewerOgre3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
+*
+*
+* @code
+
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+  shape_set.erase(Point(3,3,3));
+  shape_set.erase(Point(6,6,6)); 
+  viewer << shape_set;
+  viewer.start(); 
+
+ @endcode
+*
+
+*
+* You should obtain the following visualisation:
+*
+* \image html dgtalsetogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex dgtalsetogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+* Node that the set is blue, that's due to selection.
+*
+*
+* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
+*
+* Some digital elements (like Object, PointVector, ArithmeticalDSS3d) may have several possible ways to be rendered as a graphical object. For instance, a voxel may be seen more as a small sphere or more as a unit cube. In the same idea, a digital object may or may not be represented with its adjacency relations. Otherwise said, one may wish to see the set, another may wish to see the graph.
+
+You may choose a mode for a drawable element by outputing on the stream a SetMode object. You just have to specify the classname (the easiest way is to call the method className() on an instance of the correct type) and the desired mode (a string). An Object is sensitive to the mode "" (default, just the set is displayed).
+*
+*@code
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+  DGtal::Z3i::Point p2 ( 2, 5, 7 );
+  DGtal::Z3i::Point p5 ( 9, -5, 10 );
+  View << DGtal::SetViewerMode3D(p1.className(),"Paving");
+  View << p1;
+  View << DGtal::SetViewerMode3D(p1.className(),"");
+  View << p2;	
+  View << p3;	
+  View.start();
+@endcode
+* 
+*or change the  mode
+*
+@code
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+  DGtal::Z3i::Point p2 ( 2, 5, 7 );
+  DGtal::Z3i::Point p3 ( 9, -5, 10 );
+  View << DGtal::SetViewerMode3D(p1.className(),"Grid");
+  View << p1;
+  View << p2;	
+  View << p3;	
+  View.start();
+@endcode
+
+
+* You should obtain the following visualisation for the first example:
+*
+* \image html pavingogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex pavingogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+* And for the second:
+*
+* \image html gridogre.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex gridogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
+
+* Node that in each example there is a point in red (it's due to selection (see below)).
+
+* \section  DGtalGLV_Mode Useful modes for several 3D drawable elements 
+
+
+\subsection DGtalGLV_ModeListing Listing of different modes
+
+As for \c Board2D the object can be displayed with different possible mode:
+
+  - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
+  - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
+  - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
+  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+
+
+
+
+\subsection DGtalGLV_ModeOtherExamples Others Examples
+
+Others mode examples are illustrated for class KhalimskyCell and class Mesh.
+
+*<CENTER>
+*<TABLE> 
+*<TR>
+*<TD  align=CENTER>
+ \image html viewerMeshImport.png "Mesh visualization  with ViewerOgre3D." 
+ \image latex viewerMeshImport.png "Mesh visualization  with ViewerOgre3D." width=5cm
+</TD>
+<TD  align=CENTER>
+ \image html viewerKhalimsky.jpg "KhalimskyCell visualization  with ViewerOgre3D." 
+ \image latex viewerKhalimsky.jpg "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+</TD>
+* </TR>
+*</TABLE>
+*</CENTER>
+
+
+\section  DGtalGLV_Custom Changing the style for displaying drawable elements.
+
+As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
+
+
+-  CustomColors3D: to change the color used to display surface primitive (GL_QUADS) and the pen color (LINE/POINTS) ;
+
+
+
+The custom color can be applied by an instance of the CustomColors3D as follow:
+
+
+The 4 Colors are :
+
+
+	    SelfIlluminationColor
+
+
+            AmbientIlluminationColor
+
+
+	    DiphuseIlluminationColor
+
+
+	    SpecularIlluminationColor
+
+
+And the last parameter is the texture (Note that it should be in the same folder that the binary).
+@code 
+  viewer << DGtal::CustomViewerColors3D(DGtal::Color(255,0,0,100),
+				DGtal::Color(255,0,0,100),DGtal::Color(255,0,0,100),
+				DGtal::Color(255,0,0,100),"unselected.jpg");
+  viewer << p4 << p5 ;
+@endcode
+
+
+
+\section DGtalGLV_CLipping Adding clipping planes 
+
+It also possible through the stream mechanism to add clipping plane
+with the object \c ClippingPlane. We just have to add the real plane
+equation and adding as for displaying an element. 
+
+
+@code 
+  View << DGtal::ViewerClippingPlane ( 1, 0, 0, -4.9 );
+  View << DGtal::ViewerClippingPlane ( 0, 1, 0.3, -10 );
+@endcode 
+
+\section DGtalGLV_Camera Camera parameters 
+
+You can set some default camera parameters by using ViewerCameraPosition, ViewerCameraDirection, ViewerCameraUpVector or ViewerCameraZNearFar parameters.
+@code 
+  View << DGtal::ViewerCameraPosition ( 2.500000, 2.500000, 16.078199 )
+  << DGtal::ViewerCameraDirection ( 0.000000, 0.000000, -1.000000 )
+  << DGtal::ViewerCameraUpVector ( 0.000000, 1.000000, 0.000000 );
+  View << DGtal::ViewerCameraZNearFar ( 0.1, 200 );
+@endcode 
+
+
+
+\section DGtal_mode2 Selection mode
+
+\section DGtal_Interactions Basic interactions 
+ This viewer permits to interact individualy with the objects that are put in the scene.
+ For example, by clicking on objects, the object's texture changes and you can apply some changes by using keyboard shortcuts,  as scaling the object's container, changing the transparency...
+
+\section DGtal_Instream Instream mechanism
+An instream mechanism can be used to get the dgtal corresponding objects of a selected node. You need to click on the scene object, and validate it by using the S key. For example:
+@code 
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
+
+  DGtal::Z3i::Point p4 ( 30, 30 , 30 );
+  DGtal::Z3i::Point p5 ( -30, -30 , -30 );
+  DGtal::Z3i::Domain domain ( p4, p5 );
+
+  DGtal::Z3i::DigitalSet shape_set1 ( domain );
+  DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
+  View << shape_set1;
+
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+
+  View >> p1;
+  shape_set1.erase ( p1 );
+
+  View >> p1;
+  shape_set1.erase ( p1 );
+
+  View.clearScene();
+  View << shape_set1;
+  View.start();
+
+@endcode 
+
+	This code creates a scene with a DGtalset and permits to select to point that will be removed from the initial set.
+
+
+For example, if you want to select a non visible point of the DGtalset, you can scale the set by using the associated shortcut and then validate your selection by the S key.
+
+This selection mode may, for example, permit to sculpt something starting from a cube..
+ 
+
+
+
+*<CENTER>
+*<TABLE> 
+*<TR>
+*<TD  align=CENTER>
+ \image html viewerSelection1.png "Mesh visualization  with ViewerOgre3D." 
+ \image latex viewerSelection1.png "Mesh visualization  with ViewerOgre3D." width=5cm
+</TD>
+<TD  align=CENTER>
+ \image html viewerSelection2.png "KhalimskyCell visualization  with ViewerOgre3D." 
+ \image latex viewerSelection2.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+</TD>
+<TD  align=CENTER>
+ \image html viewerSelection3.png "KhalimskyCell visualization  with ViewerOgre3D." 
+ \image latex viewerSelection3.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+</TD>
+* </TR>
+*</TABLE>
+*</CENTER>
+
+
+
+\section DGtal_mode3 Manipulate mode
+
+An dynamic manipulating mode can be used to get watch a set's evolution for a custom user specified function. Here is an example:
+
+We define our manipulating function, here it's very simple function that returns the aValue first voxels of the set:
+@code
+DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
+{
+      DGtal::Z3i::Point p4( 30, 30 ,30 );
+      DGtal::Z3i::Point p5( -30, -30 ,-30 );
+      DGtal::Z3i::Domain domain( p4, p5 );
+      
+      DGtal::Z3i::DigitalSet * shape_set1 = new DGtal::Z3i::DigitalSet( domain );
+
+      
+        typedef typename std::set<DGtal::Z3i::Point>::const_iterator ConstIterator;
+
+      int nbOfPoints=0;
+      
+      for ( ConstIterator it = aSet.begin(); (it != aSet.end())&&(nbOfPoints<aValue); ++it )
+	{
+	  nbOfPoints++;
+	  shape_set1->insert((*it));
+	}
+      
+      
+      return * shape_set1;
+}
+@endcode
+ Then the main code
+@code 
+  new ViewerOgre3D();
+  DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
+
+  DGtal::Z3i::Point p4 ( 30, 30 , 30 );
+  DGtal::Z3i::Point p5 ( -30, -30 , -30 );
+  DGtal::Z3i::Domain domain ( p4, p5 );
+
+  DGtal::Z3i::DigitalSet shape_set1 ( domain );
+  DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
+
+  View.manipulate ( shape_set1, setModify  , 1, 150, 5 );
+@endcode 
+
+	By using the + and - keys, we can go through the range value and watch the set's evolution.
+This example remains a simple one, more complex stuff can be done using this mode.
+
+
+\section DGtal_developper Developper guide.
+This section aims to clarify the way to develop the ogre viewer. 
+
+\section DGtal_AddingObject Adding an Object
+
+For example adding a new dgtal object support to the viewer.
+
+
+2 (+1) Steps must be done:
+
+	\t Adding the support in Display3DFactory.
+
+
+	\t Adding default style support.
+
+
+	\t (Adding the ogre primitives)
+
+
+
+Here we will add a virtual DGtal object that we will call Foo made of DGtal voxels, with 3 draw modes.
+
+In DisplayFactory.h we add the following code:
+
+@code
+      //---------------------------------------------------------------------------Foo
+      
+      //Generic method
+      template<typename Type>
+      static void draw( ViewerOgre3D & viewer, const DGtal::Foo<Type> & f );
+      
+      // Paving/Voxel drawing
+       template<typename Type>
+      static void drawAsPaving( ViewerOgre3D & viewer, const DGtal::Foo<Type> & f );
+      
+      //Transparent Paving/Voxel drawing
+      template<typename Type>
+      static void drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::Foo<Type> & f );
+      
+      
+      // Grid/Point drawing
+      template<typename Type>
+      static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::Foo<Type> & f  );
+@endcode
+
+In DisplayFactory.ih we add the following code:
+
+@code
+
+template<typename Type>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+    const DGtal::Foo<Type> & f )
+{
+  ASSERT(Domain::Space::dimension == 3);
+  
+  std::string mode = viewer.getMode( s.className() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( viewer, s );
+  else if ( mode == "PavingTransp" )
+  {
+    drawAsPavingTransparent( viewer, s );
+  }
+  else if ( mode == "Grid" )
+    drawAsGrid( viewer, s );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( viewer, s );
+      drawAsGrid( viewer, s );
+    }
+}
+
+
+// This is pseudo code :
+// Paving/Voxel drawing
+template<typename Type>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, 
+						const DGtal::Foo<Type> & f )
+{
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+  // Going through the dgtal Object, You must make a loop here, iterator it: 
+    {
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+                                  theNode->createChildSceneNode() ,theNode->getName());
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+      typedef typename Type::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<Foo<Type> >  * aSet = new DrawableWithOgreWrapper<Foo<Type> > ( f );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+
+@endcode
+
+And that's it !
+
+If the primitive you need in your new object, you sould add a new "addObject" method in the viewer.
+
+\section DGtal_AddingInteraction Adding an Interaction
+
+
+
+For example if you want to add a new viewer interaction, you should add your key catch in the InputListenner.ih, for example when the user presses the 8 key.
+@code
+
+bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
+{
+  switch ( evt.key )
+    {
+
+      case OIS::KC_ESCAPE:
+        myShutdown = true;
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->abortManupulating();
+          }
+
+        return false;
+        break;
+
+
+      case::OIS::KC_SUBTRACT:
+
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->newManipulatingValue ( -1 );
+          }
+
+        break;
+
+      case::OIS::KC_ADD:
+
+        if ( myViewer->isInManupulatingMode() )
+          {
+            myViewer->newManipulatingValue ( 1 );
+          }
+        break;
+
+	
+//  A lot of code
+   
+ 
+       case OIS::KC_8 :
+	 myViewer->newInteraction();
+
+      default:
+        break;
+
+    }
+
+  myCameraMan->handleKeyPress ( evt );
+
+  return true;
+
+}
+@endcode
+
+Then add in the Viewer you method newInterraction.
+
+And that's it !
+
+\section DGtal_ModifyingStyles Modifing styles
+
+
+Modifying the default styles:
+
+You should modify the Style3DFactory class, for example DGtalSetBySTLSet paving default style. We Can modify the 4 illuinations and the default texture.
+Here is the code you must change:
+
+@code
+
+  struct Ogre_DefaultDrawStylePaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+            Viewer.setAmbientIlluminationColor(DGtal::Color(0,255,0,255));
+	    Viewer.setSpecularIlluminationColor(DGtal::Color(0,255,0,255));
+	    Viewer.setDiphuseIlluminationColor(DGtal::Color(0,255,0,255));
+	    Viewer.setSelfIlluminationColor(DGtal::Color(0,255,0,255));
+	    Viewer.setTexture("unselected.jpg");
+    }
+  };
+@endcode
+
+Note that the defaut texture must be in the Ressource/media folder.
+	
+*/
+
+}
+
+

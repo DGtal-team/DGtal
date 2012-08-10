@@ -55,8 +55,7 @@ bool testSelection()
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
   View << shape_set1;
 
-  DGtal::Z3i::Point p10 ( 30, 30 , 30 );
-  View << p10;
+
 
   /*
   View << DGtal::ViewerClippingPlane ( 1, 0, 0, -4.9 );
@@ -66,8 +65,7 @@ bool testSelection()
   << DGtal::ViewerCameraUpVector ( 0.000000, 1.000000, 0.000000 );
   View << DGtal::ViewerCameraZNearFar ( 0.1, 200 );
   */
-  DGtal::Z3i::Point p1 ( 0, 0, 0 );
-  DGtal::Z3i::Point p2 ( 0, 0 , 0 );
+  DGtal::Z3i::Point p1 ( 0, 0 , 0 );
 
 
   /*
@@ -78,14 +76,13 @@ bool testSelection()
 
 
   View >> p1;
-
-  View >> p2;
-
   shape_set1.erase ( p1 );
-  shape_set1.erase ( p2 );
+
+  View >> p1;
+  shape_set1.erase ( p1 );
+
   View.clearScene();
 
-// On met le nouvel objet
   View << shape_set1;
   View.start();
 

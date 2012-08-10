@@ -242,7 +242,6 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
         break;
 
 
-
       case OIS::KC_P:
 
         myViewer->changeAxisVisibility();
@@ -354,14 +353,14 @@ bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID
     {
       if(myCameraMan->isTurning() && (myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
       {
-	  //   myCameraMan->stopTurning();
          myTime=-1;
       }
-      if((myMouseX== myMouse->getMouseState().X.abs)&&(myMouseY==myMouse->getMouseState().Y.abs))
+    }
+
+      if(id == OIS::MB_Middle)
       {
          myViewer->lookForIt ( myMouse->getMouseState().X.abs, myMouse->getMouseState().Y.abs, myWindow->getHeight(), myWindow->getWidth() );
       }
-    }
   if ( id == OIS::MB_Left )
     {
       myMouseLeftClicked = false;

@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
 #include <iostream>
+#include "DGtal/io/viewers/OGRE/Functions.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 

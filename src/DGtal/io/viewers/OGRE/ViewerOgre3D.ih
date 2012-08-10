@@ -33,7 +33,6 @@
 //////////////////////////////////////////////////////////////////////////////
 #include "DGtal/io/viewers/OGRE/ViewerOgre3D.h"
 #include "DGtal/io/viewers/OGRE/Ogre3DDisplayFactory.h"
-#include "DGtal/io/viewers/OGRE/Functions.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/viewers/OGRE/Style3DFactory.h"
 #include "DGtal/io/viewers/OGRE/CommonOgre.h"
@@ -1632,6 +1631,7 @@ void ViewerOgre3D::showHelp()
   cout<<"\t\t Mouse interactions:\n"<<endl;
   cout<<"\t\t\t Right clic and drag: Translates the scene."<<endl;
   cout<<"\t\t\t Left clic and drag: Turns the scene around the scene center."<<endl;
+  cout<<"\t\t\t Middle clic : Selects a scene object."<<endl;
   cout<<"\t\t\t Mouse roll: Zoom.\n"<<endl;
   
   
