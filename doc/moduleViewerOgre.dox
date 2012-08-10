@@ -503,7 +503,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer,
 
 And that's it !
 
-If the primitive you need in your new object, you sould add a new "addObject" method in the viewer.
+If the primitive you need in your new object isn't in the one already handled, you should add a new "addObject" method in the viewer with your primitive.
 
 \section DGtal_AddingInteraction Adding an Interaction
 
