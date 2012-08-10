@@ -1323,7 +1323,7 @@ void ViewerOgre3D::updateManipulateDisplay()
     step = stepconvert.str();
     
     
-    myMode->setCaption("Mode: Manipulate / Current Value: "+  current +" / Max: "+  max +" / Mix: "+  min +" / Step: "+  step );
+    myMode->setCaption("Mode: Manipulate / Current Value: "+  current +" / Max: "+  max +" / Min: "+  min +" / Step: "+  step );
 
 }
 

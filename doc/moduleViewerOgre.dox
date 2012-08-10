@@ -357,6 +357,22 @@ DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
 This example remains a simple one, more complex stuff can be done using this mode.
 
 
+*<CENTER>
+*<TABLE> 
+*<TR>
+*<TD  align=CENTER>
+ \image html viewerManipulate1.png "Mesh visualization  with ViewerOgre3D." 
+ \image latex viewerManipulate1.png "Mesh visualization  with ViewerOgre3D." width=5cm
+</TD>
+<TD  align=CENTER>
+ \image html viewerManipulate2.png "KhalimskyCell visualization  with ViewerOgre3D." 
+ \image latex viewerManipulate2.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+</TD>
+* </TR>
+*</TABLE>
+*</CENTER>
+
+
 \section DGtal_developper Developper guide.
 This section aims to clarify the way to develop the ogre viewer. 
 
