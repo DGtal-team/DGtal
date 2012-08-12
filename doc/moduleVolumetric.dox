@@ -24,7 +24,7 @@ namespace DGtal {
 @author David Coeurjolly
 
 This part of the manual describes the DGtal volumetric package and its
-classes. 
+classes. We focus here on separable process based volumetric analysis such as distance transformation, reverse distance transformation and medial axis extraction.
 
 
 
