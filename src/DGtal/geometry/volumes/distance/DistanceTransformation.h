@@ -73,11 +73,20 @@ namespace DGtal
    * is given as a mapping point<->values implemented as an image
    * model OutputImage.
    *
+   * The point predicate could be:
+   *  - the result of the thresholding of an image (for example using SimpleThresholdForegroundPredicate)
+   *  - a predicate constructed from a digital set (for example using SetPredicate)
+   *  - ...
    *
+   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TPointPredicate point predicate returning true for points
+   * from which we compute the distance (model of CPointPredicate)
    * @tparam p the static integer value to define the l_p metric.
    * @tparam IntegerLong (optional) type used to represent exact
    * distance value according to p (default: DGtal::uint64_t)
    *
+   * @see distancetransform2D.cpp
+   * @see distantetransform3D.cpp
    */
   template < typename TSpace,
              typename TPointPredicate,

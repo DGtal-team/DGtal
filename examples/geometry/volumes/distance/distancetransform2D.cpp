@@ -77,8 +77,9 @@ int main()
 {
   trace.beginBlock ( "Example distancetransform2D" );
 
+  //! [DTDef]
   Z2i::Point a ( 0, 0 );
-  Z2i::Point b ( 32, 32);
+  Z2i::Point b ( 127, 127);
   
   //Input image with unsigned char values
   typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
@@ -88,23 +89,29 @@ int main()
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     (*it)=128;
   //We generate 16 seeds with 0 values.
-  randomSeeds(image,1,0);
+  randomSeeds(image,16,0);
+  //! [DTDef]
 
+  //! [DTColormaps]
   //Colormap used for the SVG output
-  typedef HueShadeColorMap<long int, 1> HueTwice;
+  typedef HueShadeColorMap<long int, 2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
-  
+  //! [DTColormaps]
+
+
   //Input shape output
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
   board.saveSVG("inputShape.svg");
 
+  //! [DTPredicate]
   //Point Predicate from random seed image
   typedef SimpleThresholdForegroundPredicate<Image> PointPredicate;
   PointPredicate predicate(image,0);
-  
-  
+  //! [DTPredicate]  
+
+  //! [DTCompute]
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, 2> DTL2;
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, 0> DTLInf;
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, 1> DTL1;
@@ -117,7 +124,9 @@ int main()
   DTL2::OutputImage resultL2 = dtL2.compute (  );
   DTLInf::OutputImage resultLinf = dtLinf.compute (  );
   DTL1::OutputImage resultL1 = dtL1.compute (  );
-  
+  //! [DTCompute]
+
+
   DGtal::int64_t maxv=0;
   //We compute the maximum DT value on the Linf map
   for ( DTLInf::OutputImage::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
