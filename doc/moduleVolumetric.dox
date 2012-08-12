@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleVolumetric nD Volumetric Package
+@page moduleVolumetric nD Volumetric Analysis using Separable Processes Package
 
 [TOC]
 
@@ -167,6 +167,12 @@ type validity (based on the image size and dimension to have a tighter
 estimation).
 
 Here you have the resulting distance images using appropriate colormaps.
+@image html example-DT-L1.png "l_1 distance transformation in 2D" 
+@image latex example-DT-L1.png "l_1 distance transformation in 2D"  width=7cm
+@image html example-DT-L2.png "l_2 distance transformation in 2D" 
+@image latex example-DT-L2.png "l_2 distance transformation in 2D"  width=7cm
+@image html example-DT-Linf.png "l_infty distance transformation in 2D" 
+@image latex example-DT-Linf.png "l_infty distance transformation in 2D"  width=7cm
 
 
 If you want to characterize @f$ X @f$ as a digital set, here you have
@@ -176,7 +182,7 @@ Z2i::Domain domain(Z2i::Point(-10,-10), Z2i::Point(10,10));
 Z2i::DigitalSet aSet(domain);
 
 aSet.insertNew(Point(2,2));
-//... more point insertion
+//... more point insertions
 
 //Predicate construction
 typedef DGtal::SetPredicate<Z2i::DigitalSet> Predicate;
@@ -191,7 +197,8 @@ DGtal::DistanceTransformtion<Z2i::Space, Predicate, 2>::OutputImage out = dt.com
 
 
 A simple example applying the 3D transform (see distancetransform3D.cpp). This program outputs these images (L1 metric): 
- @image html resuExDistanceTransform3D.png 
+@image html resuExDistanceTransform3D.png "l_1 distance transformation in 3D" 
+@image latex resuExDistanceTransform3D.png "l_1 distance transformation in 3D"  width=5cm
 
 
 
