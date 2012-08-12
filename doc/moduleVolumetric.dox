@@ -166,7 +166,10 @@ DistanceTransformation::checkTypesValidity can check at runtime the
 type validity (based on the image size and dimension to have a tighter
 estimation).
 
-Here you have the resulting distance images using appropriate colormaps.
+Here you have the resulting distance images using appropriate
+colormaps (note that for the l_2 metric, the square of the distance is
+mapped.
+
 @image html example-DT-L1.png "l_1 distance transformation in 2D" 
 @image latex example-DT-L1.png "l_1 distance transformation in 2D"  width=7cm
 @image html example-DT-L2.png "l_2 distance transformation in 2D" 
