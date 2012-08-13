@@ -21,10 +21,4 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/Contents/MacOS)
 endif(APPLE)
 
 
-#configure_file(${PROJECT_SOURCE_DIR}/../Requirements.h.in 
-#  ${PROJECT_SOURCE_DIR}/../Requirements.h)
-
-#configure_file(${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg.in 
-#  ${PROJECT_SOURCE_DIR}/../Requirements/plugins.cfg)
-
 

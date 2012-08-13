@@ -13,6 +13,7 @@ message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
 OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." ON)
+OPTION(WITH_OBJC "With obj-c support (For Ogre3D viewer on mac." OFF)
 OPTION(WITH_OGRE "With the render engine Ogre for 3D visualisation." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
@@ -28,6 +29,13 @@ ELSE(WITH_C11)
 message(STATUS "      WITH_C11          false")
 ENDIF(WITH_C11)
 
+
+IF(WITH_OBJC)
+SET (LIST_OPTION ${LIST_OPTION} [objc]\ )
+message(STATUS "      WITH_OBJC          true")
+ELSE(WITH_OBJC)
+message(STATUS "      WITH_OBJC          false")
+ENDIF(WITH_OBJC)
 
 IF(WITH_OGRE)
 SET (LIST_OPTION ${LIST_OPTION} [OGRE]\ )
@@ -299,7 +307,13 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 
-
+# -----------------------------------------------------------------------------
+# Check OBJC
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+IF(WITH_OBJC)
+  INCLUDE(${CMAKE_MODULE_PATH}/CheckOBJC.cmake)
+ENDIF(WITH_OBJC)
 # -----------------------------------------------------------------------------
 # Look for Ogre for 3D display.
 # (They are not compulsory).
