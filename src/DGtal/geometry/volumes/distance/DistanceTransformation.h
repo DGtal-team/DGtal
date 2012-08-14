@@ -46,7 +46,6 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-//#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImage.h"
@@ -86,7 +85,7 @@ namespace DGtal
    * distance value according to p (default: DGtal::uint64_t)
    *
    * @see distancetransform2D.cpp
-   * @see distantetransform3D.cpp
+   * @see distancetransform3D.cpp
    */
   template < typename TSpace,
              typename TPointPredicate,
