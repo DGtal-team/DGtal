@@ -40,6 +40,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,6 +77,7 @@ int main()
 {
   trace.beginBlock ( "Example distancetransform2D" );
 
+  //! [DTDef]
   Z2i::Point a ( 0, 0 );
   Z2i::Point b ( 127, 127);
   
@@ -87,58 +89,83 @@ int main()
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     (*it)=128;
   //We generate 16 seeds with 0 values.
-  randomSeeds(image,50,0);
+  randomSeeds(image,16,0);
+  //! [DTDef]
 
+  //! [DTColormaps]
   //Colormap used for the SVG output
   typedef HueShadeColorMap<long int, 2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
-  
+  //! [DTColormaps]
+
+
   //Input shape output
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)129);
   board.saveSVG("inputShape.svg");
 
-  typedef  DistanceTransformation<Image, 2> DTL2;
-  typedef  DistanceTransformation<Image, 0> DTLInf;
-  typedef  DistanceTransformation<Image, 1> DTL1;
+  //! [DTPredicate]
+  //Point Predicate from random seed image
+  typedef SimpleThresholdForegroundPredicate<Image> PointPredicate;
+  PointPredicate predicate(image,0);
+  //! [DTPredicate]  
+
+  //! [DTCompute]
+  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 2> DTL2;
+  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 0> DTLInf;
+  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 1> DTL1;
  
-  DTL2 dtL2;
-  DTLInf dtLinf;
-  DTL1 dtL1;
+ 
+  DTL2 dtL2( image.domain(), predicate );
+  DTLInf dtLinf(image.domain(), predicate );
+  DTL1 dtL1(image.domain(),  predicate );
   
-  DTL2::OutputImage resultL2 = dtL2.compute ( image );
-  DTLInf::OutputImage resultLinf = dtLinf.compute ( image );
-  DTL1::OutputImage resultL1 = dtL1.compute ( image );
-  
-  unsigned int maxv=0;
+  DTL2::OutputImage resultL2 = dtL2.compute (  );
+  DTLInf::OutputImage resultLinf = dtLinf.compute (  );
+  DTL1::OutputImage resultL1 = dtL1.compute (  );
+  //! [DTCompute]
+
+
+  DGtal::int64_t maxv=0;
   //We compute the maximum DT value on the Linf map
   for ( DTLInf::OutputImage::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
-    if ( (*it) > maxv)  maxv = (unsigned int)(*it);
-  unsigned int maxv2=0;
+    if ( (*it) > maxv)  maxv = (DGtal::int64_t)(*it);
+
+  DGtal::int64_t maxv2=0;
   //We compute the maximum DT value on the L2 map
   for ( DTL2::OutputImage::ConstIterator it = resultL2.begin(), itend = resultL2.end();it != itend; ++it)
-    if ( (*it) > maxv2)  maxv2 = (unsigned int)(*it);
-  unsigned int maxv1=0;
+    if ( (*it) > maxv2)  maxv2 = (DGtal::int64_t)(*it);
+  DGtal::int64_t maxv1=0;
+ 
   //We compute the maximum DT value on the L1 map
   for ( DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend = resultL1.end();it != itend; ++it)
-    if ( (*it) > maxv1)  maxv1 = (unsigned int)(*it);
+    if ( (*it) > maxv1)  maxv1 = (DGtal::int64_t)(*it);
   
   
   trace.warning() << resultL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultL2, (DGtal::int64_t)0, (DGtal::int64_t)maxv2 + 1);
+  Display2DFactory::drawImage<HueTwice>(board, resultL2, (DGtal::int64_t)0, maxv2 + 1);
   board.saveSVG ( "example-DT-L2.svg" );
 
   trace.warning() << resultL1 << " maxValue= "<<maxv1<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultL1, (DGtal::int64_t)0, (DGtal::int64_t)maxv1 + 1);
+  Display2DFactory::drawImage<HueTwice>(board, resultL1, (DGtal::int64_t)0, maxv1 + 1);
   board.saveSVG ( "example-DT-L1.svg" );
 
   trace.warning() << resultLinf << " maxValue= "<<maxv<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultLinf, (DGtal::int64_t)0, (DGtal::int64_t)maxv + 1);
+  Display2DFactory::drawImage<HueTwice>(board, resultLinf, (DGtal::int64_t)0, maxv + 1);
   board.saveSVG ( "example-DT-Linf.svg" );
+
+
+  //We compute the maximum DT value on the L2 map
+  for ( unsigned int j=0;j<33;j++)
+    {
+      for(unsigned int i=0; i<33; i++)
+        trace.info()<< resultL2(Z2i::Point(i,j)) << " ";
+      trace.info()<<std::endl;
+    }
 
   trace.endBlock();
   return 0;
