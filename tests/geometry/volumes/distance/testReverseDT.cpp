@@ -37,6 +37,8 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -94,13 +96,13 @@ bool testReverseDT()
     }
 
  
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
  
-  DistanceTransformation<Image, 2 > dt;
-  typedef DistanceTransformation<Image,2>::OutputImage ImageDT;
+  DistanceTransformation<Z2i::Space, Predicate, 2 > dt(Z2i::Domain(a,b), aPredicate);
+  typedef DistanceTransformation<Z2i::Space, Predicate,2>::OutputImage ImageDT;
 
-  dt.checkTypesValidity ( image );
-
-  ImageDT result = dt.compute ( image );
+  ImageDT result = dt.compute (  );
 
 
   //ReverseDT  
@@ -178,13 +180,13 @@ bool testReverseDTL1()
     }
 
  
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
  
-  DistanceTransformation<Image, 1 > dt;
-  typedef DistanceTransformation<Image,1>::OutputImage ImageDT;
+  DistanceTransformation<Z2i::Space, Predicate, 1> dt(Z2i::Domain(a,b), aPredicate);
+  typedef DistanceTransformation<Z2i::Space, Predicate,1>::OutputImage ImageDT;
 
-  dt.checkTypesValidity ( image );
-
-  ImageDT result = dt.compute ( image );
+  ImageDT result = dt.compute (  );
 
 
   //ReverseDT  
@@ -249,9 +251,8 @@ bool testReverseDTL1simple()
   typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
  
 
- 
-  DistanceTransformation<Image, 1 > dt;
-  typedef DistanceTransformation<Image,1>::OutputImage ImageDT;
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  typedef DistanceTransformation<Z2i::Space, Predicate,1>::OutputImage ImageDT;
 
 
   ImageDT result ( Z2i::Domain(a, b ));
@@ -326,13 +327,14 @@ bool testReverseDTSet()
     }
 
  
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
  
-  DistanceTransformation<Image, 2 > dt;
-  typedef DistanceTransformation<Image,2>::OutputImage ImageDT;
+  DistanceTransformation<Z2i::Space, Predicate, 2> dt(Z2i::Domain(a,b), aPredicate);
+  typedef DistanceTransformation<Z2i::Space, Predicate,2>::OutputImage ImageDT;
 
-  dt.checkTypesValidity ( image );
-
-  ImageDT result = dt.compute ( image );
+ 
+  ImageDT result = dt.compute (  );
 
 
   //ReverseDT  

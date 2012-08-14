@@ -17,14 +17,14 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleVolumetric nD Volumetric Package
+@page moduleVolumetric nD Volumetric Analysis using Separable Processes Package
 
 [TOC]
 
 @author David Coeurjolly
 
 This part of the manual describes the DGtal volumetric package and its
-classes. 
+classes. We focus here on separable process based volumetric analysis such as distance transformation, reverse distance transformation and medial axis extraction.
 
 
 
@@ -71,8 +71,8 @@ tools can be used on a wider class of metrics (see [HIRA_96] or
 can be considered. 
 
 In DGtal, we have chosen to separate the metric from the algorithmic
-decomposition. We discuss in section \ref sep on the construction of
-a separable metric type. 
+details. We discuss in section \ref sep on the construction of a
+separable metric type.
 
 \section dt Distance Transformation
 
@@ -101,18 +101,20 @@ numbers @f$ (x_i-y_i)^p@f$.
 
 As a consequence, the class DistanceTransformation is parametrized by
 three elements:
-* an Input image type
-* and a static number "p" used to define the @f$l_p@f$ metric
+- a type representing the underlying digital space (model of CSpace);
+- a type representing the object @f$ X @f$ as a point predicate (model
+ of CPointPredicate)  ;
+- and a static number "p" used to define the @f$l_p@f$ metric.
 
-An optional IntegerLong template parameter with default type
+An optional fourth IntegerLong template parameter with default type
 DGtal::int64_t can be specified to represent the sums of @f$x_i^p@f$
 values. This type is important because it corresponds to the Value
 type of the DistanceTransformation::OutputImage type that is used to
 store the output result.
 
 Hence, the DistanceTransformation class provides 
-* a output image type;
-* a method to compute the distance transformation of an input image.
+- a output image type;
+- a method to compute the distance transformation of an input image.
 
 
 @note The output image type provided by DistanceTransformation is a
@@ -121,34 +123,85 @@ the input image type and whose value type is IntegerLong to return
 exact values.
   
 
+The class constructor has got two arguments:
+- a domain on which the computation is done;
+- an instance of the point predicate.
 
-For example (using the DGtal::StdDefs shortcuts):
+@warning The point predicate must be defined (i.e. must return true or
+false) for each point of the input domain.
+
+
+
+
+For example (using the DGtal::StdDefs shortcuts), let us consider the
+following input:
+
+@snippet examples/geometry/volumes/distance/distancetransform2D.cpp DTDef
+
+In this example, the image is filled with 128 values and 16 random
+sites are set to 0 (function randomSeeds). 
+
+From this image, we need to construct a point predicate which will
+return true for 128 values and false otherwise. Hence, we use a simple
+threshold:
+
+@snippet examples/geometry/volumes/distance/distancetransform2D.cpp DTPredicate
+
+
+Now, the following code computes the distance transformation on this image
+for the  @f$l_1@f$,  @f$l_2@f$  and  @f$l_\infty@f$ metrics (see
+distancetransform2D.cpp for a complete example) .
+
+@snippet examples/geometry/volumes/distance/distancetransform2D.cpp DTCompute
+
+
+
+Few comments can be made from this example. First, Z2i::Image is
+defined on a Z2i::Domain whose pixel coordinates
+Z2i::Space::Coordinate have type DGtal::int32_t. In this example, we
+have used the default DGtal::uint64_t type to store sum of two square
+of Coordinate differences.  Since the capacity of the output image
+value type is important for memory issues, the method
+DistanceTransformation::checkTypesValidity can check at runtime the
+type validity (based on the image size and dimension to have a tighter
+estimation).
+
+Here you have the resulting distance images using appropriate
+colormaps (note that for the l_2 metric, the square of the distance values are
+mapped).
+
+@image html example-DT-L1.png "l_1 distance transformation in 2D" 
+@image latex example-DT-L1.png "l_1 distance transformation in 2D"  width=7cm
+@image html example-DT-L2.png "l_2 distance transformation in 2D" 
+@image latex example-DT-L2.png "l_2 distance transformation in 2D"  width=7cm
+@image html example-DT-Linf.png "l_infty distance transformation in 2D" 
+@image latex example-DT-Linf.png "l_infty distance transformation in 2D"  width=7cm
+
+
+If you want to characterize @f$ X @f$ as a digital set, here you have
+an example of the predicate construction:
 @code
-Z2i::Point a ( 0, 0 );
-Z2i::Point b ( 127, 127);
+Z2i::Domain domain(Z2i::Point(-10,-10), Z2i::Point(10,10));
+Z2i::DigitalSet aSet(domain);
 
-//Input image with unsigned char values
-typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
-Image image ( a, b );
+aSet.insertNew(Point(2,2));
+//... more point insertions
 
-//...
-// set values in image (by default 0-value pixels are background
-// pixels, otherwise, see ForegroundPredicate in DistanceTransformation).
-//...
+//Predicate construction
+typedef DGtal::SetPredicate<Z2i::DigitalSet> Predicate;
+Predicate aPredicate(aSet);
 
-//Definition of the DistanceTransformation operator for the l_2 metric
-typedef DistanceTransformation< Image, 2> DTL2;
-typedef DTL2::OutputImage OutputImage
-DTL2 dt;
+//DT computation (euclidean metric)
+DGtal::DistanceTransformtion<Z2i::Space, Predicate, 2> dt(domain,aPredicate);
 
-OutputImage result = dt.compute( image );
+DGtal::DistanceTransformtion<Z2i::Space, Predicate, 2>::OutputImage out = dt.compute();
 @endcode
 
-Few comments can be made from this example. First, Z2i::Image is defined on a Z2i::Domain whose pixel coordinates Z2i::Space::Coordinate have type DGtal::int32_t. In this example, we have used the default DGtal::uint64_t type to store sum of two square of Coordinate differences.  Since the capacity of the output image value type is important for memory issues, the method DistanceTransformation::checkTypesValidity can check at runtime the type validity (based on the image size and dimension to have a tighter estimation).
 
 
 A simple example applying the 3D transform (see distancetransform3D.cpp). This program outputs these images (L1 metric): 
- @image html resuExDistanceTransform3D.png 
+@image html resuExDistanceTransform3D.png "l_1 distance transformation in 3D" 
+@image latex resuExDistanceTransform3D.png "l_1 distance transformation in 3D"  width=5cm
 
 
 
@@ -178,12 +231,16 @@ Image image ( a, b );
 // pixels, otherwise, see ForegroundPredicate in DistanceTransformation).
 //...
 
+// Point predicate construction
+typedef SimpleThresholdForegroundPredicate<Image> PointPredicate;
+PointPredicate predicate(image,0);
+ 
 //Definition of the DistanceTransformation operator for the l_2 metric
-typedef DistanceTransformation< Image, 2> DTL2;
+typedef DistanceTransformation< Z2i::Space, Predicate, 2> DTL2;
 typedef DTL2::OutputImage OutputImage
-DTL2 dt;
+DTL2 dt(Domain(a,b), predicate);
 
-OutputImage result = dt.compute( image );
+OutputImage result = dt.compute(  );
 
 //Definition of the ReverseDistanceTransformation opertor for the l_2
 //metric
