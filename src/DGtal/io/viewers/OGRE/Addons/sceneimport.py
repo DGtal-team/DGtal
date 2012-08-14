@@ -65,9 +65,13 @@ class Cube:
 		#Create a single cube.
 		self.tempMesh = Blender.Mesh.Primitives.Cube(1)
 		self.ob = Blender.Object.New("Mesh",name)
-	 	self.ob.LocX=int(attrs["x"])
-	 	self.ob.LocY=int(attrs["y"])
-	 	self.ob.LocZ=int(attrs["z"])
+	 	self.ob.LocX=float(attrs["posx"])
+	 	self.ob.LocY=float(attrs["posy"])
+	 	self.ob.LocZ=float(attrs["posz"])
+	 	scalex=float(attrs["scalex"])*100
+	 	scaley=float(attrs["scaley"])*100
+	 	scalez=float(attrs["scalez"])*100
+		self.ob.setSize([scalex, scaley, scalez])
 	 	self.ob.link(self.tempMesh)
 	 	aScene.scene.link(self.ob)
 
@@ -76,12 +80,16 @@ class Sphere:
     global IMPORT_SCALE_FACTOR
     def __init__(self,name, attrs,aScene):
 		print("Got a Sphere")	    
-        #Create a single cube.
+        #Create a single sphere.
 		self.tempMesh = Blender.Mesh.Primitives.UVsphere(10,10,0.3)
 		self.ob = Blender.Object.New("Mesh",name)
-	 	self.ob.LocX=int(attrs["x"])
-	 	self.ob.LocY=int(attrs["y"])
-	 	self.ob.LocZ=int(attrs["z"])
+	 	self.ob.LocX=float(attrs["posx"])
+	 	self.ob.LocY=float(attrs["posy"])
+	 	self.ob.LocZ=float(attrs["posz"])
+	 	scalex=float(attrs["scalex"])*400
+	 	scaley=float(attrs["scaley"])*400
+	 	scalez=float(attrs["scalez"])*400
+		self.ob.setSize([scalex, scaley, scalez])
 	 	self.ob.link(self.tempMesh)
 	 	aScene.scene.link(self.ob)
 	 	
@@ -95,7 +103,7 @@ class Light:
 			print("Got a Lamp")	    
 			self.lamp_obj.link( self.lamp_data)
 			aScene.scene.link(self.lamp_obj)
-			self.lamp_obj.loc = int(attrs["x"]), int(attrs["y"]), int(attrs["z"])# position at x,y,z
+			self.lamp_obj.loc = int(attrs["posx"]), int(attrs["posy"]), int(attrs["posz"])# position at x,y,z
 		elif attrs["LightType"]=="Spot" :
 			self.lamp_obj = Blender.Object.New('Lamp')
 			self.lamp_data = Blender.Lamp.New('Spot')
@@ -103,7 +111,7 @@ class Light:
 			self.lamp_obj.link( self.lamp_data)
 			aScene.scene.link(self.lamp_obj)
 			# position object
-			self.lamp_obj.loc = int(attrs["x"]), int(attrs["y"]), int(attrs["z"])# position at x,y,z
+			self.lamp_obj.loc = int(attrs["posx"]), int(attrs["posy"]), int(attrs["posz"])# position at x,y,z
         
 class ManualObject:
     global IMPORT_SCALE_FACTOR
@@ -121,7 +129,7 @@ class Camera:
 		aScene.scene.link(self.cam_obj)
 		print("Got a Camera")	      
 		# position object
-		self.cam_obj.loc = (int(attrs["x"]), int(attrs["y"]), int(attrs["z"]))
+		self.cam_obj.loc = (int(attrs["posx"]), int(attrs["posy"]), int(attrs["posz"]))
 		# rotate camera to look towards origin
 		self.cam_obj.rot = math.radians(90), 0, 0                        
     

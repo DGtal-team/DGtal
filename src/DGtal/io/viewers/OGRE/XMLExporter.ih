@@ -84,9 +84,12 @@ void DGtal::XMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * aN
 	    {	
               Ogre::Entity * anEntity =(Ogre::Entity *)aMovable;
 	      aFile << "<Sphere name=\""<<anEntity->getName();
-	      aFile << "\"  x=\""<<aNode->getPosition().x<< 
-	      "\" y=\""<<aNode->getPosition().y<< 
-	      "\" z=\""<<aNode->getPosition().z<<
+	      aFile << "\"  posx=\""<<aNode->getPosition().x<< 
+	      "\" posy=\""<<aNode->getPosition().y<< 
+	      "\" posz=\""<<aNode->getPosition().z<<
+	      "\" scalex=\""<<aNode->getScale().x<<
+	      "\" scaley=\""<<aNode->getScale().y<<
+	      "\" scalez=\""<<aNode->getScale().z<<
 	      "\" meshFile=\""<<anEntity->getMesh()->getName()<< 
 	      "\" static=\""<<"false"<<"\" />"<<endl;
 	   }
@@ -94,9 +97,12 @@ void DGtal::XMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * aN
 	   {
               Ogre::Entity * anEntity =(Ogre::Entity *)aMovable;
 	      aFile << "<Cube name=\""<<anEntity->getName();
-	      aFile << "\"  x=\""<<aNode->getPosition().x<< 
-	      "\" y=\""<<aNode->getPosition().y<< 
-	      "\" z=\""<<aNode->getPosition().z<<
+	      aFile << "\"  posx=\""<<aNode->getPosition().x<< 
+	      "\" posy=\""<<aNode->getPosition().y<< 
+	      "\" posz=\""<<aNode->getPosition().z<<
+	      "\" scalex=\""<<aNode->getScale().x<<
+	      "\" scaley=\""<<aNode->getScale().y<<
+	      "\" scalez=\""<<aNode->getScale().z<<
 	      "\" meshFile=\""<<anEntity->getMesh()->getName()<< 
 	      "\" static=\""<<"false"<<"\" />"<<endl;
 	   }
@@ -117,14 +123,9 @@ void DGtal::XMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * aN
 	  "\" z=\""<<aNode->getPosition().z<<
 	  "\" />"<<endl;
 	}
-      else if(aMovable->getMovableType()=="Camera")
+      else 
 	{
-//          Ogre::Camera * aCamera =(Ogre::Camera *)aMovable;
-//	  aFile << "<Camera name=\""<<aCamera->getName();
-//	  aFile << " \" x=\""<<aNode->getPosition().x<< 
-//	  " \" y=\""<<aNode->getPosition().y<< 
-//	  "\" z=\""<<aNode->getPosition().z<<
-//	  "\" />"<<endl;
+
 	}
       j++;
     }
