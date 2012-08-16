@@ -43,18 +43,19 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
+//! [ImportPoint1file]
   new ViewerOgre3D();
-  ViewerOgre3D & viewer = ViewerOgre3D::getSingleton();
-  Point p1( 0, 0, 0 );
-  Point p2( 10, 10 , 10 );
-  Domain domain( p1, p2 );
-  DigitalSet shape_set( domain );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  shape_set.erase(Point(3,3,3));
-  shape_set.erase(Point(6,6,6)); 
-  viewer << shape_set;
-  viewer.start(); 
+  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
+  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+  DGtal::Z3i::Point p2 ( 2, 5, 7 );
+  DGtal::Z3i::Point p3 ( 9, -5, 10 );
+  viewer << DGtal::SetViewerMode3D(p1.className(),"Grid");
+  viewer << p1;
+  viewer << DGtal::SetViewerMode3D(p1.className(),"");
+  viewer << p2;	
+  viewer << p3;	
+  viewer.start();
+//! [ImportPoint1file]
   return 0;
 }
 //                                                                           //

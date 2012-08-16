@@ -81,14 +81,14 @@ class Sphere:
     def __init__(self,name, attrs,aScene):
 		print("Got a Sphere")	    
         #Create a single sphere.
-		self.tempMesh = Blender.Mesh.Primitives.UVsphere(10,10,0.3)
+		self.tempMesh = Blender.Mesh.Primitives.UVsphere(10,10,1)
 		self.ob = Blender.Object.New("Mesh",name)
 	 	self.ob.LocX=float(attrs["posx"])
 	 	self.ob.LocY=float(attrs["posy"])
 	 	self.ob.LocZ=float(attrs["posz"])
-	 	scalex=float(attrs["scalex"])*400
-	 	scaley=float(attrs["scaley"])*400
-	 	scalez=float(attrs["scalez"])*400
+	 	scalex=float(attrs["scalex"])*100
+	 	scaley=float(attrs["scaley"])*100
+	 	scalez=float(attrs["scalez"])*100
 		self.ob.setSize([scalex, scaley, scalez])
 	 	self.ob.link(self.tempMesh)
 	 	aScene.scene.link(self.ob)

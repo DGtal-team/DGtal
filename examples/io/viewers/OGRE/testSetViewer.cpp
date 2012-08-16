@@ -43,6 +43,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
+//! [ImportSetfile]
   new ViewerOgre3D();
   ViewerOgre3D & viewer = ViewerOgre3D::getSingleton();
   Point p1( 0, 0, 0 );
@@ -55,6 +56,7 @@ int main( int argc, char** argv )
   shape_set.erase(Point(6,6,6)); 
   viewer << shape_set;
   viewer.start(); 
+//! [ImportSetfile]
   return 0;
 }
 //                                                                           //

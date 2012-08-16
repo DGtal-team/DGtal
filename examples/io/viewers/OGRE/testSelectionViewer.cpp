@@ -43,6 +43,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
+//! [ImportSelectionfile]
   new ViewerOgre3D();
   DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
 
@@ -65,6 +66,7 @@ int main( int argc, char** argv )
   View.clearScene();
   View << shape_set1;
   View.start();
+//! [ImportSelectionfile]
   return 0;
 }
 //                                                                           //

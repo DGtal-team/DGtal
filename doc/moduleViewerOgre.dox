@@ -36,17 +36,13 @@ The first step to visualize 3D object with Viewer3D is to create the Viewer from
   DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
 @endcode
 
+
 Then we can display some 3D primitives:
-@code
- Point p1( 0, 0, 0 );
- Point p2( 5, 5 ,5 );
- Point p3( 2, 3, 4 );
- Domain domain( p1, p2 );
 
- viewer << domain;  
- viewer << p1 << p2 << p3; 
 
-* @endcode
+@snippet io/viewers/OGRE/testDomainViewer.cpp ImportDomainfile
+
+
 and finnaly, if you just want to visualize your objects.
 @code
 viewer.start();
@@ -69,22 +65,7 @@ viewer.start();
 * The ViewerOgre3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
 *
-* @code
-
-  new ViewerOgre3D();
-  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
-  Point p1( 0, 0, 0 );
-  Point p2( 10, 10 , 10 );
-  Domain domain( p1, p2 );
-  DigitalSet shape_set( domain );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  shape_set.erase(Point(3,3,3));
-  shape_set.erase(Point(6,6,6)); 
-  viewer << shape_set;
-  viewer.start(); 
-
- @endcode
+@snippet io/viewers/OGRE/testSetViewer.cpp ImportSetfile
 *
 
 *
@@ -102,34 +83,11 @@ viewer.start();
 
 You may choose a mode for a drawable element by outputing on the stream a SetMode object. You just have to specify the classname (the easiest way is to call the method className() on an instance of the correct type) and the desired mode (a string). An Object is sensitive to the mode "" (default, just the set is displayed).
 *
-*@code
-  new ViewerOgre3D();
-  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
-  DGtal::Z3i::Point p1 ( 0, 0, 0 );
-  DGtal::Z3i::Point p2 ( 2, 5, 7 );
-  DGtal::Z3i::Point p5 ( 9, -5, 10 );
-  View << DGtal::SetViewerMode3D(p1.className(),"Paving");
-  View << p1;
-  View << DGtal::SetViewerMode3D(p1.className(),"");
-  View << p2;	
-  View << p3;	
-  View.start();
-@endcode
+@snippet io/viewers/OGRE/testPoint2Viewer.cpp ImportPoint2file
 * 
 *or change the  mode
 *
-@code
-  new ViewerOgre3D();
-  DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
-  DGtal::Z3i::Point p1 ( 0, 0, 0 );
-  DGtal::Z3i::Point p2 ( 2, 5, 7 );
-  DGtal::Z3i::Point p3 ( 9, -5, 10 );
-  View << DGtal::SetViewerMode3D(p1.className(),"Grid");
-  View << p1;
-  View << p2;	
-  View << p3;	
-  View.start();
-@endcode
+@snippet io/viewers/OGRE/testPoint1Viewer.cpp ImportPoint1file
 
 
 * You should obtain the following visualisation for the first example:
@@ -252,33 +210,12 @@ You can set some default camera parameters by using ViewerCameraPosition, Viewer
 
 \section DGtal_Instream Instream mechanism
 An instream mechanism can be used to get the dgtal corresponding objects of a selected node. You need to click on the scene object, and validate it by using the S key. For example:
-@code 
-  new ViewerOgre3D();
-  DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
 
-  DGtal::Z3i::Point p4 ( 30, 30 , 30 );
-  DGtal::Z3i::Point p5 ( -30, -30 , -30 );
-  DGtal::Z3i::Domain domain ( p4, p5 );
 
-  DGtal::Z3i::DigitalSet shape_set1 ( domain );
-  DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
-  View << shape_set1;
 
-  DGtal::Z3i::Point p1 ( 0, 0, 0 );
+@snippet io/viewers/OGRE/testSelectionViewer.cpp ImportSelectionfile
 
-  View >> p1;
-  shape_set1.erase ( p1 );
-
-  View >> p1;
-  shape_set1.erase ( p1 );
-
-  View.clearScene();
-  View << shape_set1;
-  View.start();
-
-@endcode 
-
-	This code creates a scene with a DGtalset and permits to select to point that will be removed from the initial set.
+	This code creates a scene with a DGtalset and permits to select two points that will be removed from the initial set.
 
 
 For example, if you want to select a non visible point of the DGtalset, you can scale the set by using the associated shortcut and then validate your selection by the S key.
@@ -292,16 +229,16 @@ This selection mode may, for example, permit to sculpt something starting from a
 *<TABLE> 
 *<TR>
 *<TD  align=CENTER>
- \image html viewerSelection1.png "Mesh visualization  with ViewerOgre3D." 
- \image latex viewerSelection1.png "Mesh visualization  with ViewerOgre3D." width=5cm
+ \image html viewerSelection1.png "Selection 1  with ViewerOgre3D." 
+ \image latex viewerSelection1.png "Selection 1  with ViewerOgre3D." width=5cm
 </TD>
 <TD  align=CENTER>
- \image html viewerSelection2.png "KhalimskyCell visualization  with ViewerOgre3D." 
- \image latex viewerSelection2.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+ \image html viewerSelection2.png "Selection 2  with ViewerOgre3D." 
+ \image latex viewerSelection2.png "Selection 2  with ViewerOgre3D." width=5cm
 </TD>
 <TD  align=CENTER>
- \image html viewerSelection3.png "KhalimskyCell visualization  with ViewerOgre3D." 
- \image latex viewerSelection3.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+ \image html viewerSelection3.png "Selection 3  with ViewerOgre3D." 
+ \image latex viewerSelection3.png "Selection 3  with ViewerOgre3D." width=5cm
 </TD>
 * </TR>
 *</TABLE>
@@ -314,44 +251,9 @@ This selection mode may, for example, permit to sculpt something starting from a
 An dynamic manipulating mode can be used to get watch a set's evolution for a custom user specified function. Here is an example:
 
 We define our manipulating function, here it's very simple function that returns the aValue first voxels of the set:
-@code
-DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
-{
-      DGtal::Z3i::Point p4( 30, 30 ,30 );
-      DGtal::Z3i::Point p5( -30, -30 ,-30 );
-      DGtal::Z3i::Domain domain( p4, p5 );
-      
-      DGtal::Z3i::DigitalSet * shape_set1 = new DGtal::Z3i::DigitalSet( domain );
-
-      
-        typedef typename std::set<DGtal::Z3i::Point>::const_iterator ConstIterator;
-
-      int nbOfPoints=0;
-      
-      for ( ConstIterator it = aSet.begin(); (it != aSet.end())&&(nbOfPoints<aValue); ++it )
-	{
-	  nbOfPoints++;
-	  shape_set1->insert((*it));
-	}
-      
-      
-      return * shape_set1;
-}
-@endcode
+@snippet io/viewers/OGRE/testManipulateViewer.cpp ImportManipulateFunctionfile
  Then the main code
-@code 
-  new ViewerOgre3D();
-  DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
-
-  DGtal::Z3i::Point p4 ( 30, 30 , 30 );
-  DGtal::Z3i::Point p5 ( -30, -30 , -30 );
-  DGtal::Z3i::Domain domain ( p4, p5 );
-
-  DGtal::Z3i::DigitalSet shape_set1 ( domain );
-  DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
-
-  View.manipulate ( shape_set1, setModify  , 1, 150, 5 );
-@endcode 
+@snippet io/viewers/OGRE/testManipulateViewer.cpp ImportManipulatefile
 
 	By using the + and - keys, we can go through the range value and watch the set's evolution.
 This example remains a simple one, more complex stuff can be done using this mode.
@@ -361,12 +263,12 @@ This example remains a simple one, more complex stuff can be done using this mod
 *<TABLE> 
 *<TR>
 *<TD  align=CENTER>
- \image html viewerManipulate1.png "Mesh visualization  with ViewerOgre3D." 
- \image latex viewerManipulate1.png "Mesh visualization  with ViewerOgre3D." width=5cm
+ \image html viewerManipulate1.png "Manipulate 1  with ViewerOgre3D." 
+ \image latex viewerManipulate1.png "Manipulate 1  with ViewerOgre3D." width=5cm
 </TD>
 <TD  align=CENTER>
- \image html viewerManipulate2.png "KhalimskyCell visualization  with ViewerOgre3D." 
- \image latex viewerManipulate2.png "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
+ \image html viewerManipulate2.png "Manipulate 2  with ViewerOgre3D." 
+ \image latex viewerManipulate2.png "Manipulate 2  with ViewerOgre3D." width=5cm
 </TD>
 * </TR>
 *</TABLE>

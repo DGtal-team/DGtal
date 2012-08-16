@@ -40,6 +40,8 @@ using namespace DGtal;
 using namespace DGtal::Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
+
+//! [ImportManipulateFunctionfile]
 DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
 {
       DGtal::Z3i::Point p4( 30, 30 ,30 );
@@ -60,10 +62,11 @@ DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
       
       return * shape_set1;
 }
-
+//! [ImportManipulateFunctionfile]
 
 int main( int argc, char** argv )
 {
+//! [ImportManipulatefile]
   new ViewerOgre3D();
   DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
 
@@ -75,6 +78,7 @@ int main( int argc, char** argv )
   DGtal::Shapes<DGtal::Z3i::Domain>::addNorm1Ball ( shape_set1, DGtal::Z3i::Point ( 7, 7, 7 ), 4 );
 
   View.manipulate ( shape_set1, setModify  , 1, 150, 5 );
+//! [ImportManipulatefile]
   return 0;
 }
 //                                                                           //

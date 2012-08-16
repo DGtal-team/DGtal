@@ -43,6 +43,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
+//! [ImportPoint2file]
   new ViewerOgre3D();
   DGtal::ViewerOgre3D & viewer = DGtal::ViewerOgre3D::getSingleton();
   DGtal::Z3i::Point p1 ( 0, 0, 0 );
@@ -54,6 +55,7 @@ int main( int argc, char** argv )
   viewer << p2;	
   viewer << p3;	
   viewer.start();
+//! [ImportPoint2file]
   return 0;
 }
 //                                                                           //
