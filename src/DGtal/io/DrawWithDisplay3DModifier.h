@@ -43,6 +43,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/helpers/StdDefs.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -309,6 +312,32 @@ namespace DGtal
     }*/
     
       double ZNear, ZFar;
+  };
+
+ 
+
+ /**
+   * @brief CameraZNearFar class to set near and far distance.
+   */
+  struct TransformedKSSurfel : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aShift the shift distance (positive or negative).
+     * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
+     */
+    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, double aShift, double aSizeFactor=1.0 )
+    {
+      mySurfel= aSurfel;
+      myShift = aShift;
+      mySizeFactor=aSizeFactor;
+    }
+    
+    DGtal::Z3i::SCell mySurfel;
+    double myShift;
+    double mySizeFactor;
   };
 
  
