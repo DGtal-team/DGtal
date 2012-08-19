@@ -41,6 +41,33 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class VoronoiMap.
 ///////////////////////////////////////////////////////////////////////////////
+
+/* Validate the VoronoiMap
+ */
+template < typename Set, typename Image>
+bool checkVoronoi(const Set &aSet, const Image & voro)
+{
+  typedef typename Image::Point Point;
+  
+  for(typename Image::Domain::ConstIterator it = voro.domain().begin(), itend = voro.domain().end();
+      it != itend; ++it)
+    {
+      Point psite  = voro(*it);
+      Point p = (*it);
+      double d= (p-psite).norm();
+      for(typename Set::ConstIterator itset = aSet.begin(), itendSet = aSet.end(); 
+          itset != itendSet;
+          ++itset)
+        if ((p-(*itset)).norm() < d)
+          {
+            trace.error() << "DT Error at "<<p<<"  Voro:"<<psite<<" ("<<(p-psite).norm()<<")  from set:"
+                          << (*itset) << "("<<(p-(*itset)).norm()<<")"<<std::endl;
+            return false;
+          }
+    }
+  return true;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -63,10 +90,19 @@ bool testVoronoiMap()
       ++it)
     mySet.insertNew( *it );
   
-  mySet.erase( Z2i::Point(0,-6));
-  mySet.erase( Z2i::Point(6,0));
-  mySet.erase( Z2i::Point(-6,0));
- 
+
+  Z2i::DigitalSet sites(domain);
+  
+  sites.insertNew( Z2i::Point(0,-6));
+  sites.insertNew( Z2i::Point(6,0));
+  sites.insertNew( Z2i::Point(-6,0));
+  
+  for(Z2i::DigitalSet::ConstIterator it = sites.begin(), itend = sites.end();
+      it != itend; ++it)
+    mySet.erase (*it);
+  
+
+
   typedef SetPredicate<Z2i::DigitalSet> Predicate;
   Predicate myPredicate(mySet);
 
@@ -99,10 +135,10 @@ bool testVoronoiMap()
 
   board.saveCairo("Voromap.png", Board2D::CairoPNG);
 
-  nbok += true ? 1 : 0; 
+  nbok += checkVoronoi(sites,output) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
+	       << "Voronoi diagram validated" << std::endl;
   trace.endBlock();
   
   
@@ -111,6 +147,226 @@ bool testVoronoiMap()
   return nbok == nb;
 }
 
+
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+template<typename Set>
+bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  Set mySet(aSet.domain());
+  
+  for(typename Set::Domain::ConstIterator it = aSet.domain().begin(), itend = aSet.domain().end(); 
+      it != itend;
+      ++it)
+    mySet.insertNew( *it );
+  
+  
+  for(typename Set::ConstIterator it = aSet.begin(), itend = aSet.end();
+      it != itend; ++it)
+    mySet.erase (*it);
+  
+
+  typedef SetPredicate<Set> Predicate;
+  Predicate myPredicate(mySet);
+
+  //typedef NotPointPredicate<Predicate> NegPredicate;
+  //NegPredicate myNegPredicate( myPredicate );
+
+  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;
+  
+  Voro2 voro(aSet.domain(), myPredicate);
+
+  typename Voro2::OutputImage output = voro.compute();
+
+  if ( (aSet.domain().upperBound()[1] - aSet.domain().lowerBound()[1]) <20)
+    for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
+      {    
+        for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
+          if ( aSet.find( Z2i::Point(i,j) ) != aSet.end() )
+            std::cout <<"X ";
+          else
+            std::cout<<"0 ";
+        trace.info()<<std::endl;
+      }
+  
+  trace.info() << std::endl;
+  
+  if ( (aSet.domain().upperBound()[1] - aSet.domain().lowerBound()[1]) <20)
+    for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
+      {    
+        for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
+          trace.info() << "("<<output( Z2i::Point(i,j))[0]<<","<< output( Z2i::Point(i,j))[1]<<") ";
+        trace.info()<<std::endl;
+      }
+
+
+  Board2D board;
+  for(typename Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = output(*it);
+      unsigned char c = (p[1]*13 + p[0] * 7) % 256;
+      board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
+            << (*it);;
+    }
+
+  std::string filename= "Voromap-"+name+".png";
+  board.saveCairo(filename.c_str(), Board2D::CairoPNG);
+
+ 
+  nbok += checkVoronoi(aSet,output) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Voronoi diagram validated" << std::endl;
+  
+  return nbok == nb;
+}
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+template<typename Set>
+bool testVoronoiMapFromSites(const Set &aSet)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  Set mySet(aSet.domain());
+  
+  for(typename Set::Domain::ConstIterator it = aSet.domain().begin(), itend = aSet.domain().end(); 
+      it != itend;
+      ++it)
+    mySet.insertNew( *it );
+  
+  
+  for(typename Set::ConstIterator it = aSet.begin(), itend = aSet.end();
+      it != itend; ++it)
+    mySet.erase (*it);
+  
+
+  typedef SetPredicate<Set> Predicate;
+  Predicate myPredicate(mySet);
+
+  //typedef NotPointPredicate<Predicate> NegPredicate;
+  //NegPredicate myNegPredicate( myPredicate );
+
+  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;
+  
+  Voro2 voro(aSet.domain(), myPredicate);
+
+  typename Voro2::OutputImage output = voro.compute();
+ 
+  trace.beginBlock("Validating the Voronoi Map");
+  nbok += checkVoronoi(aSet,output) ? 1 : 0; 
+  trace.endBlock();
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Voronoi diagram validated" << std::endl;
+  
+  return nbok == nb;
+}
+
+
+bool testSimple2D()
+{
+
+ Z2i::Point a(-10,-10);
+  Z2i::Point b(10,10);
+  Z2i::Domain domain(a,b);
+
+  Z2i::DigitalSet sites(domain);
+  bool ok;
+
+  trace.beginBlock("Simple2D");
+  sites.insertNew( Z2i::Point(0,-6));
+  sites.insertNew( Z2i::Point(6,0));
+  sites.insertNew( Z2i::Point(-6,0));
+
+  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"simple");
+  trace.endBlock();
+
+  return ok;
+
+}
+
+bool testSimpleRandom2D()
+{
+
+ Z2i::Point a(0,0);
+ Z2i::Point b(256,256);
+  Z2i::Domain domain(a,b);
+
+  Z2i::DigitalSet sites(domain);
+  bool ok;
+
+  trace.beginBlock("Random 2D");
+  for(unsigned int i = 0 ; i < 256; ++i)
+    {
+      Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
+      sites.insert( p );
+    }
+  trace.info()<<std::endl;
+  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random");
+  trace.endBlock();
+
+  return ok;
+
+}
+
+bool testSimple3D()
+{
+
+  Z3i::Point a(-10,-10,-10);
+  Z3i::Point b(10,10,10);
+  Z3i::Domain domain(a,b);
+
+  Z3i::DigitalSet sites(domain);
+  bool ok;
+
+  trace.beginBlock("Simple3D");
+  sites.insertNew( Z3i::Point(0,0,-6));
+  sites.insertNew( Z3i::Point(6,0,0));
+  sites.insertNew( Z3i::Point(-6,0,3));
+
+  ok = testVoronoiMapFromSites<Z3i::DigitalSet>(sites);
+  trace.endBlock();
+
+  return ok;
+
+}
+
+bool testSimpleRandom3D()
+{
+
+  Z3i::Point a(0,0,0);
+  Z3i::Point b(64,64,64);
+  Z3i::Domain domain(a,b);
+  
+  Z3i::DigitalSet sites(domain);
+  bool ok;
+  
+  trace.beginBlock("Random 3D");
+  for(unsigned int i = 0 ; i < 128; ++i)
+    {
+      Z3i::Point p(  rand() % (b[0]) -  a[0], 
+                     rand() % (b[1]) +  a[1],
+                     rand() % (b[2]) +  a[2]  );
+      sites.insert( p );
+    }
+  trace.info()<<std::endl;
+  ok = testVoronoiMapFromSites<Z3i::DigitalSet>(sites);
+  trace.endBlock();
+
+  return ok;
+
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -122,7 +378,11 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testVoronoiMap(); // && ... other tests
+  bool res = testVoronoiMap() 
+    && testSimple2D()
+    &&  testSimpleRandom2D()
+    && testSimple3D() 
+    && testSimpleRandom3D(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
