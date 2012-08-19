@@ -389,6 +389,7 @@ inline
 void
 DGtal::Display3D::addKSSurfel(double x, double y, double z, 
 			      bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+			      double positionShift, double sizeFactor,
 			      bool isSigned, bool aSign, bool basicMode )
 {
   updateBoundingBox(x, y, z);
@@ -409,30 +410,30 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
   
   if(zSurfel)
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x+0.5;  y2= y-0.5;  z2= z-0.5;
-      x3= x+0.5;  y3= y+0.5;  z3= z-0.5;
-      x4= x-0.5;  y4= y+0.5;  z4= z-0.5;
+      x1= x-(0.5*sizeFactor);  y1= y-(0.5*sizeFactor);  z1= z-0.5+positionShift;
+      x2= x+(0.5*sizeFactor);  y2= y-(0.5*sizeFactor);  z2= z-0.5+positionShift;
+      x3= x+(0.5*sizeFactor);  y3= y+(0.5*sizeFactor);  z3= z-0.5+positionShift;
+      x4= x-(0.5*sizeFactor);  y4= y+(0.5*sizeFactor);  z4= z-0.5+positionShift;
       y1+=retract; y2+=retract; y3-=retract; y4-=retract;
       x1+=retract; x2-=retract; x3-=retract; x4+=retract;
       dx=0.0; dy=0.0; dz=width;
     }
   else if(ySurfel)
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x-0.5;  y2= y-0.5;  z2= z+0.5;
-      x3= x+0.5;  y3= y-0.5;  z3= z+0.5;
-      x4= x+0.5;  y4= y-0.5;  z4= z-0.5;    
+      x1= x-(0.5*sizeFactor);  y1= y-0.5+positionShift;  z1= z-(0.5*sizeFactor);
+      x2= x-(0.5*sizeFactor);  y2= y-0.5+positionShift;  z2= z+(0.5*sizeFactor);
+      x3= x+(0.5*sizeFactor);  y3= y-0.5+positionShift;  z3= z+(0.5*sizeFactor);
+      x4= x+(0.5*sizeFactor);  y4= y-0.5+positionShift;  z4= z-(0.5*sizeFactor);    
       x1+=retract; x2+=retract; x3-=retract; x4-=retract;
       z1+=retract; z2-=retract; z3-=retract; z4+=retract;
       dx=0.0; dy=width; dz=0.0;
     }
   else
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x-0.5;  y2= y+0.5;  z2= z-0.5;
-      x3= x-0.5;  y3= y+0.5;  z3= z+0.5;
-      x4= x-0.5;  y4= y-0.5;  z4= z+0.5;
+      x1= x-0.5+positionShift;  y1= y-(0.5*sizeFactor);  z1= z-(0.5*sizeFactor);
+      x2= x-0.5+positionShift;  y2= y+(0.5*sizeFactor);  z2= z-(0.5*sizeFactor);
+      x3= x-0.5+positionShift;  y3= y+(0.5*sizeFactor);  z3= z+(0.5*sizeFactor);
+      x4= x-0.5+positionShift;  y4= y-(0.5*sizeFactor);  z4= z+(0.5*sizeFactor);
       y1+=retract; y2-=retract; y3-=retract; y4+=retract;
       z1+=retract; z2+=retract; z3-=retract; z4-=retract;
       dx=width; dy=0.0; dz=0.0;
@@ -604,7 +605,7 @@ DGtal::Display3D::addKSPointel(double x, double y, double z,
 
 inline
 void 
-DGtal::Display3D::addKSVoxel(int x, int y, int z)
+DGtal::Display3D::addKSVoxel(int x, int y, int z,  double sizeFactor)
 {
   updateBoundingBox(x, y, z);
   voxelD3D v;
@@ -615,7 +616,7 @@ DGtal::Display3D::addKSVoxel(int x, int y, int z)
   v.G=myCurrentFillColor.green();
   v.B=myCurrentFillColor.blue();
   v.T=myCurrentFillColor.alpha();
-  v.width=0.47;  
+  v.width=0.5*sizeFactor;  
   (myVoxelSetList.at(0)).push_back(v);  
 }
 
@@ -840,7 +841,6 @@ DGtal::Display3D::operator<<( const TDrawableWithDisplay3D & object )
   DGtal::Display3DFactory::draw(*this, object);
   return *this;
 }
-
 
 /**
  * Overloads 'operator<<' for displaying objects of class 'Display3D'.
