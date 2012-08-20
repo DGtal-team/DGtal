@@ -1,0 +1,311 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VoronoiMap.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/08/14
+ *
+ * Implementation of inline methods defined in VoronoiMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/lexical_cast.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename S,typename P,DGtal::uint32_t p>
+inline
+DGtal::VoronoiMap<S,P, p>::VoronoiMap(const Domain &aDomain,
+                                      const PointPredicate & aPredicate):
+  myDomain(aDomain), myPointPredicate(aPredicate)
+{
+}
+
+
+/**
+ * Destructor.
+ */
+template <typename S, typename P,DGtal::uint32_t p>
+inline
+DGtal::VoronoiMap<S, P,p>::~VoronoiMap()
+{
+}
+
+
+template <typename S, typename P, DGtal::uint32_t p>
+inline
+typename DGtal::VoronoiMap<S,P, p>::OutputImage
+DGtal::VoronoiMap<S,P, p>::compute ( )
+{
+
+  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
+  myLowerBoundCopy = myDomain.lowerBound();
+  myUpperBoundCopy = myDomain.upperBound();
+  
+  Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
+  OutputImage output ( myDomain );
+  OutputImage swap ( myDomain );
+  bool isSwap = true;
+
+  //Point outside the domain 
+  myInfinity = myDomain.upperBound() + Point::diagonal(1);
+
+  //First step
+  computeFirstStep ( output );
+
+  //We process the remaining dimensions
+  for ( Dimension dim = 1; dim < S::dimension ; dim++ )
+    computeOtherSteps ( output, dim );
+  
+  return output;
+}
+
+
+template <typename S, typename P,DGtal::uint32_t p>
+inline
+void
+DGtal::VoronoiMap<S, P, p>::computeFirstStep ( OutputImage &output ) const
+{
+  trace.beginBlock ( "DT dimension 0" );
+  Point startingPoint = myLowerBoundCopy;
+
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
+  
+  //We setup the subdomain iterator
+  //the iterator will scan dimension using the order:
+  // {n-1, n-2, ... 1} (we skip the '0' dimension.
+  std::vector<Size> subdomain;
+  subdomain.reserve(S::dimension - 1);
+  for (Dimension k = S::dimension-1; k>0 ; --k)
+    subdomain.push_back( k );
+
+  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
+
+  //We process the dimensions to construct a Point
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end(); 
+       it != itend; ++it)
+    {
+      // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
+      computeFirstStep1D (output, (*it) );
+    }
+
+  trace.endBlock();
+}
+
+
+template <typename S, typename P,DGtal::uint32_t p>
+inline
+void
+DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
+                                               const Dimension dim ) const
+{
+  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ) ;
+  trace.beginBlock ( title );
+
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
+  
+  //We setup the subdomain iterator
+  //the iterator will scan dimension using the order:
+  // {n-1, n-2, ... 1} (we skip the '0' dimension).
+
+  std::vector<Size> subdomain;
+  subdomain.reserve(S::dimension - 1);
+  for (unsigned int k = 0; k < S::dimension ; k++)
+    if ( (S::dimension - 1 - k) != dim)
+      subdomain.push_back( S::dimension - 1 - k );
+
+  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
+
+  //We process the dimensions to construct a Point
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    {
+      computeOtherStep1D ( output, (*it), dim );
+    }
+  
+  trace.endBlock();
+
+}
+
+//////////////////////////////////////////////////////////////////////:
+////////////////////////// Phase X
+template <typename S, typename P,DGtal::uint32_t p>
+void
+DGtal::VoronoiMap<S,P,p>::computeFirstStep1D ( OutputImage & output,
+                                               const Point &startingPoint ) const
+{
+  Point prec = startingPoint;
+  Point point = startingPoint;
+
+  if ( myPointPredicate ( point  ) )
+    output.setValue ( point, myInfinity );
+  else
+    output.setValue ( point, point );
+
+  //Forward scan 
+  for ( point[0] = myLowerBoundCopy[0]+1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
+    {
+      // trace.warning() << point << " ";
+      if ( myPointPredicate ( point  ))
+	output.setValue ( point, output ( prec ) );
+      else
+	output.setValue ( point, point );
+
+      prec[0] = point[0];
+    }
+
+
+  //prec is the the rightmost point of "point'
+  prec[0] =  myUpperBoundCopy[0];
+
+
+  //     [.,.,A,A,A,B, B     , C    ]
+  //                   point   prec
+  //Backward scan
+  //Minor optim
+
+  Point psite,precsite;
+  precsite = output(prec);
+  if (precsite == myInfinity)
+    return;
+  
+  //Normal backward scan
+  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >= myLowerBoundCopy[0] ; point[0]-- )
+    {
+      psite = output(point);
+      if (psite[0] != precsite[0])
+        {
+          if ( (psite == myInfinity) ||
+               (( precsite[0] - point[0]  )  <  (point[0] - psite[0])))
+            {
+              output.setValue(point, precsite);
+            }
+          else
+            {
+              precsite = output(point);
+            }
+        }
+      prec[0] = point[0];
+    }
+
+}
+
+
+
+template <typename S,typename P, DGtal::uint32_t p>
+bool
+DGtal::VoronoiMap<S,P,p>::hiddenBy ( const Point &u, 
+                                     const Point &v, 
+                                     const Point &w, 
+                                     const Point &startingPoint,
+                                     const Size dim) const
+{
+  //decide if (a,c) hide b in the lines (startingPoint, dim)
+
+  Abscissa a,b, c;
+  
+  a = v[dim] - u[dim];
+  b = w[dim] - v[dim];
+  c = a + b;  
+  
+  Abscissa d2_v=0, d2_u=0 ,d2_w=0;
+
+  for(Dimension i  = 0 ; i < S::dimension ; i++)
+    if (i != dim)
+      {
+        d2_u += (u[i] - startingPoint[i] ) *(u[i] - startingPoint[i] );
+        d2_v += (v[i] - startingPoint[i] ) *(v[i] - startingPoint[i] );
+        d2_w += (w[i] - startingPoint[i] ) *(w[i] - startingPoint[i] );
+      }
+ 
+  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ; 
+}
+
+
+// //////////////////////////////////////////////////////////////////////:
+// ////////////////////////// Other Phases
+template <typename S,typename P, DGtal::uint32_t p>
+void
+DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
+                                               const Point &startingPoint,
+                                               const Size dim) const
+{
+  std::vector<Point> Sites(myUpperBoundCopy[dim] - myLowerBoundCopy[dim], myInfinity);
+  Point point = startingPoint;
+  Point psite;
+  int nbSites = -1;
+  
+  //Pruning the list of sites
+  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+    {
+      psite = output(point);
+      if ( psite != myInfinity )
+        {
+            
+          while ((nbSites >= 1) && 
+                 ( hiddenBy(Sites[nbSites-1], Sites[nbSites] , psite, startingPoint, dim) ))
+            {
+              nbSites --; 
+            }
+          nbSites++;
+          Sites[nbSites] = psite;
+        }
+      point[dim] ++;
+    }
+  
+ 
+  //No sites found
+  if (nbSites == -1)
+    return;
+
+  int k = 0;
+
+  //Rewriting
+  point[dim] = myLowerBoundCopy[dim];
+  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+    {
+      while ( (k < nbSites) && 
+              ((point - Sites[k]).norm() > (point-Sites[k+1]).norm() ) )
+        k++;
+      
+      output.setValue(point, Sites[k]);
+      point[dim]++;
+    }
+}
+
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+
+
