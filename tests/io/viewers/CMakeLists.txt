@@ -4,14 +4,14 @@
 SET(QGLVIEWER_TESTS_SRC
   testViewer3D
   testDisplayKSCell
-   )
+  )
 
 if (  WITH_VISU3D_QGLVIEWER )
 
   FOREACH(FILE ${QGLVIEWER_TESTS_SRC}) 
-   add_executable(${FILE} ${FILE})
+    add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} DGtalIO DGtal
-                            ${DGtalLibDependencies})   
+      ${DGtalLibDependencies})   
     #add_test(${FILE} ${FILE})
     #not a test since IHM
   ENDFOREACH(FILE)
@@ -24,16 +24,16 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 
 
 SET(DGTALIV_TESTS_SRC
-   testIVViewer
-   volIVViewer
-   )
+  testIVViewer
+  volIVViewer
+  )
 
 if ( WITH_VISU3D_IV )
 
   FOREACH(FILE ${DGTALIV_TESTS_SRC})
     add_executable(${FILE} ${FILE})
     target_link_libraries ( ${FILE} DGtalIO DGtal
-                            ${DGtalLibDependencies})
+      ${DGtalLibDependencies})
     #add_test(${FILE} ${FILE})
     #not a test since IHM
   ENDFOREACH(FILE)
@@ -42,6 +42,6 @@ endif ( WITH_VISU3D_IV )
 
 ### Visu Ogre
 if(WITH_VISU3D_OGRE)
-add_subdirectory(OGRE)
+  add_subdirectory(OGRE)
 endif(WITH_VISU3D_OGRE)
 

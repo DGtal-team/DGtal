@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Check Optional Dependencies
 # -----------------------------------------------------------------------------
-
+INCLUDE(${CMAKE_MODULE_PATH}/Macro.cmake)
 # -----------------------------------------------------------------------------
 # Global options
 # -----------------------------------------------------------------------------
@@ -12,7 +12,6 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_OBJC "With obj-c support (For Ogre3D viewer on mac." OFF)
 OPTION(WITH_OGRE "With the render engine Ogre for 3D visualisation." OFF)
 OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
@@ -29,13 +28,6 @@ ELSE(WITH_C11)
   message(STATUS "      WITH_C11          false")
 ENDIF(WITH_C11)
 
-
-IF(WITH_OBJC)
-  SET (LIST_OPTION ${LIST_OPTION} [objc]\ )
-  message(STATUS "      WITH_OBJC          true")
-ELSE(WITH_OBJC)
-  message(STATUS "      WITH_OBJC          false")
-ENDIF(WITH_OBJC)
 
 IF(WITH_OGRE)
   SET (LIST_OPTION ${LIST_OPTION} [OGRE]\ )
@@ -386,6 +378,7 @@ IF(WITH_OGRE)
       set(CMAKE_MODULE_PATH "${OGRE_HOME}/cmake/;${CMAKE_MODULE_PATH}")
       set(OGRE_PLUGINS "${OGRE_HOME}/lib/")
     endif()
+    ADD_DEFINITIONS("-x objective-c++")
   endif(APPLE)
 
   find_package(OGRE REQUIRED)
