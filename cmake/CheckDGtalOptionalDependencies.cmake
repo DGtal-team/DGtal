@@ -323,12 +323,14 @@ IF(WITH_OGRE)
   if(UNIX AND NOT APPLE)
 
     if(NOT DEFINED OGRE_PLUGINS)
-      if(EXISTS "/usr/local/lib/OGRE/")
+      if(EXISTS "/usr/local/lib/OGRE/") #Ogre built from source (default install path)
 	set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
-      elseif(EXISTS "/usr/lib/OGRE/")
+      elseif(EXISTS "/usr/lib/OGRE/") #Old ubuntu install
 	set(OGRE_PLUGINS "/usr/lib/OGRE/")
-      elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
+      elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/") #Ubuntu12.04-32bits-default
 	set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
+      elseif (EXISTS "/usr/lib/x86_64-linux-gnu/OGRE-1.7.4/") #Ubuntu12.04-64bits-default
+	set(OGRE_PLUGINS  "/usr/lib/x86_64-linux-gnu/OGRE-1.7.4/")
       else()
 	message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
       endif(EXISTS "/usr/local/lib/OGRE/")

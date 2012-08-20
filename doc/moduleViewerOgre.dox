@@ -10,6 +10,8 @@ namespace DGtal {
  * 
 
 @author Anis Benyoub
+
+[TOC]
  
   \section DGtalGLV_ViewerOgre ViewerOgre3D: a stream mechanism for interacting with 3D scenes
 
@@ -407,7 +409,7 @@ And that's it !
 
 If the primitive you need in your new object isn't in the one already handled, you should add a new "addObject" method in the viewer with your primitive.
 
-\section DGtal_AddingInteraction Adding an Interaction
+\subsection DGtal_AddingInteraction Adding an Interaction
 
 
 
@@ -470,7 +472,7 @@ Then add in the Viewer you method newInterraction.
 
 And that's it !
 
-\section DGtal_ModifyingStyles Modifing styles
+\subsection DGtal_ModifyingStyles Modifing styles
 
 
 Modifying the default styles:
