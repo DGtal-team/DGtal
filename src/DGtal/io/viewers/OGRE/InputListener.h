@@ -41,10 +41,11 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 //----------------------------------------------------Includes OIS
-#include <OIS/OIS.h>
-#include "OGRE/Ogre.h"
+#include <OIS.h>
+#include <OGRE/Ogre.h>
 #include "DGtal/io/viewers/OGRE/CameraMan.h"
 #include "DGtal/io/viewers/OGRE/DGtalSingleton.h"			
+
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
 #include "DGtal/io/viewers/OGRE/mousecursor.h"			
 #endif 
@@ -323,3 +324,4 @@ namespace DGtal
 
 #undef XXX_RECURSES
 #endif // else defined(InputListener_RECURSES)
+            

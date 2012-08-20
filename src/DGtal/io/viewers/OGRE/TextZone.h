@@ -41,13 +41,13 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <OgreOverlay.h>
-#include <OgreOverlayManager.h>
-#include <OgreMaterialManager.h>
-#include <OgreTextureManager.h>
-#include <OgreOverlayContainer.h>
-#include <OgreTechnique.h>
-#include "OgreTextAreaOverlayElement.h"
+#include <OGRE/OgreTechnique.h>
+#include <OGRE/OgreOverlay.h>
+#include <OGRE/OgreOverlayManager.h>
+#include <OGRE/OgreMaterialManager.h>
+#include <OGRE/OgreTextureManager.h>
+#include <OGRE/OgreOverlayContainer.h>
+#include <OGRE/OgreTextAreaOverlayElement.h>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

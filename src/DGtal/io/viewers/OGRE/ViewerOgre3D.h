@@ -42,19 +42,19 @@
 // Inclusions
 #include <iostream>
 #include <OGRE/Ogre.h>
+#include <OGRE/OgreFontManager.h> 
+#include <OGRE/OgreEntity.h>
 #include <list>
 
 #include <vector>
 #include <DGtal/io/Color.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
-#include "OgreEntity.h"
 #include "DGtal/io/viewers/OGRE/DGtalNode.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/viewers/OGRE/CommonOgre.h"
 #include "DGtal/io/viewers/OGRE/TextZone.h"
 #include "DGtal/io/viewers/OGRE/DGtalSingleton.h"			
-#include <OgreFontManager.h> 
 #include "DGtal/io/viewers/OGRE/XMLExporter.h"
 //////////////////////////////////////////////////////////////////////////////
 
