@@ -30,6 +30,7 @@ ELSE(BUILD_SHARED_LIBS)
   target_link_libraries(DGtal ${DGtalLibDependencies} )
 ENDIF(BUILD_SHARED_LIBS)
 
+MESSAGE("DEEEEEEEEEEEp ${DGtalLibDependencies}")
 install(TARGETS DGtal
   # IMPORTANT: Add the DGtal library to the "export-set"
   EXPORT DGtalLibraryDepends
