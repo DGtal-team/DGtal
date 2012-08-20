@@ -46,14 +46,14 @@ int main( int argc, char** argv )
 //! [ImportSetfile]
   new ViewerOgre3D();
   ViewerOgre3D & viewer = ViewerOgre3D::getSingleton();
-  Point p1( 0, 0, 0 );
-  Point p2( 10, 10 , 10 );
+  DGtal::Z3i::Point p1( 0, 0, 0 );
+  DGtal::Z3i::Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
   DigitalSet shape_set( domain );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  shape_set.erase(Point(3,3,3));
-  shape_set.erase(Point(6,6,6)); 
+  Shapes<Domain>::addNorm1Ball( shape_set, DGtal::Z3i::Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, DGtal::Z3i::Point( 3, 3, 3 ), 2 );
+  shape_set.erase(DGtal::Z3i::Point(3,3,3));
+  shape_set.erase(DGtal::Z3i::Point(6,6,6)); 
   viewer << shape_set;
   viewer.start(); 
 //! [ImportSetfile]

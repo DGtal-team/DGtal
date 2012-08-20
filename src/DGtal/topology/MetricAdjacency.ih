@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include <boost/math/special_functions/binomial.hpp>
+//#include <boost/math/special_functions/binomial.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -267,7 +267,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity()
   Dimension result = 0;
   for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
   {
-    result += ( (dimension - m) << 1 ) * static_cast<Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
+    result += ( (dimension - m) << 1 ) * static_cast<Dimension>(1);// boost::math::binomial_coefficient<float>(dimension, m) );
   }
   return result;
 }

@@ -317,12 +317,9 @@ void ViewerOgre3D::start()
     
     mAppDelegate = [[AppDelegate alloc] init];
     [[NSApplication sharedApplication] setDelegate:mAppDelegate];
-//	int retVal = NSApplicationMain(0,NULL);
+	int retVal = NSApplicationMain(0,NULL);
 	[mAppDelegate startRendering];
-	sleep(10);
-    cout<<"Fin"<<endl;
 	[pool release];
-	cout<<"J'ai fini"<<endl;
 #endif	
 }
 

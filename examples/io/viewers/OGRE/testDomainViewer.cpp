@@ -46,8 +46,8 @@ int main( int argc, char** argv )
   //! [ImportDomainfile]
   new ViewerOgre3D();
   ViewerOgre3D & viewer = ViewerOgre3D::getSingleton();
-  Point p1( 0, 0, 0 );
-  Point p2( 10, 10 , 10 );
+  DGtal::Z3i::Point p1( 0, 0, 0 );
+  DGtal::Z3i::Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
   viewer<<p1<<p2<<domain;
   viewer.start(); 
