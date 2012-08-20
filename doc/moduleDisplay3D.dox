@@ -195,11 +195,11 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
   - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
   - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
-  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" , "Illustration", "Transparent", "Basic".
 
 
 
-\subsection DGtalGLV_ModeExamplesDomain Examples with \ref Objet modes
+\subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
 The file <a href="viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cxx </a> illustrates several  possible modes to display these objects:
 
@@ -287,7 +287,7 @@ As for Board2D, it is possible to custom the way to display 3D elements by using
 The custom color can be applied by an instance of the CustomColors3D as follow:
 
 @code 
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
 @endcode
 
