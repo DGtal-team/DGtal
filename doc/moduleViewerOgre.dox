@@ -9,7 +9,7 @@ namespace DGtal {
  * This part of the manual describes how to use the diffenrent modes of the viewer 
  * 
 
-@author Anis Benyoub
+@authors Anis Benyoub, David Coeurjolly
 
 [TOC]
  
@@ -424,7 +424,7 @@ For example adding a new dgtal object support to the viewer.
 
 Here we will add a virtual DGtal object that we will call Foo made of DGtal voxels, with 3 draw modes.
 
-In DisplayFactory.h we add the following code:
+In Ogre3DDisplayFactory.h we add the following code:
 
 @code
       //---------------------------------------------------------------------------Foo
@@ -447,7 +447,7 @@ In DisplayFactory.h we add the following code:
       static void drawAsGrid( ViewerOgre3D & viewer, const DGtal::Foo<Type> & f  );
 @endcode
 
-In DisplayFactory.ih we add the following code:
+In  Ogre3DDisplayFactory.ih we add the following code:
 
 @code
 
@@ -602,7 +602,7 @@ And that's it !
 
 Modifying the default styles:
 
-You should modify the Style3DFactory class, for example DGtalSetBySTLSet paving default style. We Can modify the 4 illuinations and the default texture.
+You should modify the OgreStyle3DFactory class, for example DGtalSetBySTLSet paving default style. We Can modify the 4 illuinations and the default texture.
 Here is the code you must change:
 
 @code

@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file   Style3DFactory.h
+ * @file   OgreStyle3DFactory.h
  * @author Anis Benyoub
  * @date   mercredi 11/07/2012
  * 
  * @brief
  *
- * Header file for module Style3DFactory
+ * Header file for module OgreStyle3DFactory
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Style3DFactory_RECURSES)
-#error Recursive header files inclusion detected in Style3DFactory.h
-#else // defined(Style3DFactory_RECURSES)
+#if defined(OgreStyle3DFactory_RECURSES)
+#error Recursive header files inclusion detected in OgreStyle3DFactory.h
+#else // defined(OgreStyle3DFactory_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Style3DFactory_RECURSES
+#define OgreStyle3DFactory_RECURSES
 
-#if !defined Style3DFactory_h
+#if !defined OgreStyle3DFactory_h
 /** Prevents repeated inclusion of headers. */
-#define Style3DFactory_h
+#define OgreStyle3DFactory_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,7 +56,7 @@
 
 namespace DGtal
 {
-struct Style3DFactory
+struct OgreStyle3DFactory
 {
     static void draw( DGtal::ViewerOgre3D & aBoard, DGtal::DrawableWithViewerOgre3D *style )
     {
@@ -138,12 +138,12 @@ static DrawableWithViewerOgre3D* defaultStyle(const ViewerCameraDirection & sm, 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods 
-#include "Style3DFactory.ih"
+#include "OgreStyle3DFactory.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Style3DFactory_h
+#endif // !defined OgreStyle3DFactory_h
 
-#undef Style3DFactory_RECURSES
-#endif // else defined(Style3DFactory_RECURSES)
+#undef OgreStyle3DFactory_RECURSES
+#endif // else defined(OgreStyle3DFactory_RECURSES)

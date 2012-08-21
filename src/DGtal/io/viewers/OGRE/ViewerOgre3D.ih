@@ -34,7 +34,7 @@
 #include "DGtal/io/viewers/OGRE/ViewerOgre3D.h"
 #include "DGtal/io/viewers/OGRE/Ogre3DDisplayFactory.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/io/viewers/OGRE/Style3DFactory.h"
+#include "DGtal/io/viewers/OGRE/OgreStyle3DFactory.h"
 #include "DGtal/io/viewers/OGRE/CommonOgre.h"
 #include "DGtal/io/viewers/OGRE/Requirements.h"
 #include <unistd.h>
@@ -61,13 +61,13 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
   //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
 
-  DGtal::CountedPtr<DrawableWithViewerOgre3D> style( DGtal::Style3DFactory::defaultStyle(object) );
+  DGtal::CountedPtr<DrawableWithViewerOgre3D> style( DGtal::OgreStyle3DFactory::defaultStyle(object) );
    
    
   // Apply default style
   if ( style.get() )
     {
-      DGtal::Style3DFactory::draw(*this, style.get());
+      DGtal::OgreStyle3DFactory::draw(*this, style.get());
     }
     
     
@@ -76,7 +76,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
   if ( it != myStyles.end() ) 
     if ( it->second.get() != 0 )
       {
-	DGtal::Style3DFactory::draw(*this, it->second.get());
+	DGtal::OgreStyle3DFactory::draw(*this, it->second.get());
       }
       
       
@@ -87,13 +87,13 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
     {
       
       // Apply default style for specific mode.
-      CountedPtr<DrawableWithViewerOgre3D> style_mode ( DGtal::Style3DFactory::defaultStyle(object, itm->second) );
+      CountedPtr<DrawableWithViewerOgre3D> style_mode ( DGtal::OgreStyle3DFactory::defaultStyle(object, itm->second) );
       
       if ( style_mode.get() )StyleMapping::const_iterator it = myStyles.find( object.className() );
       if ( it != myStyles.end() ) 
  
 	{
-	  DGtal::Style3DFactory::draw(*this, style_mode.get());
+	  DGtal::OgreStyle3DFactory::draw(*this, style_mode.get());
 	}
       
       
@@ -103,7 +103,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
       if ( it != myStyles.end() ) 
 	if ( it->second.get() != 0 )
 	  {
-	    DGtal::Style3DFactory::draw(*this, it->second.get());
+	    DGtal::OgreStyle3DFactory::draw(*this, it->second.get());
 	  }
     }
     
