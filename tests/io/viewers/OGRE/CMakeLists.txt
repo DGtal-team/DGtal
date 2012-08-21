@@ -5,7 +5,7 @@ SET(DGTAL_TESTS_SRC
   testKalimskySpace
   testManipulate
   testSelection
-  #  testMeshImport
+  testMeshImport
   )	
 if(APPLE)
   
@@ -24,9 +24,3 @@ else()
   ENDFOREACH(FILE)
 endif()
 
-
-
-
-
-configure_file(${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/info.plist.in 
-  ${PROJECT_BINARY_DIR}/tests/io/viewers/OGRE/${FILE}.app/Contents/info.plist)

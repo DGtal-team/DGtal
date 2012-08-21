@@ -382,19 +382,18 @@ bool ViewerOgre3D::initConfigs()
   */
 void ViewerOgre3D::createScene()
 {
-  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 10 );
+  Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 5 );
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
 
-  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.4, 0.4, 0.4 ) );
+  mySceneMgr->setAmbientLight ( Ogre::ColourValue ( 0.6, 0.6, 0.6 ) );
   mySceneMgr->setShadowTechnique(Ogre::SHADOWTYPE_STENCIL_ADDITIVE);
 
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
   light->setType ( Ogre::Light::LT_POINT);
-//  light->setDirection ( Ogre::Vector3 ( 0, -1, 0 ) );
   light->setDiffuseColour ( 1.0, 1.0, 1.0 );
   light->setSpecularColour (1.0, 1.0, 1.0 );
-  light->setPosition ( mySceneCenter);
+  light->setPosition ( Ogre::Vector3(mySceneCenter.x,mySceneCenter.y,getUpperPosition().z+800));
   light->setCastShadows(true);
 
 
@@ -427,9 +426,9 @@ void ViewerOgre3D::createScene()
   Ogre::Plane plan1(Ogre::Vector3::UNIT_Z, 0);
   Ogre::Plane plan2(-Ogre::Vector3::UNIT_Z, 0);
   Ogre::MeshManager::getSingleton().createPlane("sol1",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan1, 500, 500, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
+ 				plan1, 3000, 3000, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
   Ogre::MeshManager::getSingleton().createPlane("sol2",  Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
- 				plan2, 500, 500, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
+ 				plan2, 300, 3000, 10, 10, true, 1, 1, 1,  Ogre::Vector3::UNIT_Y);
   Ogre::Entity *ent1= mySceneMgr->createEntity("EntiteSol", "sol1");
   Ogre::Entity *ent2= mySceneMgr->createEntity("EntiteSol2", "sol2");
 
@@ -696,6 +695,7 @@ Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double
   m_ent->position ( x1*scaleFactor, y1*scaleFactor, z1*scaleFactor );
   m_ent->position ( x2*scaleFactor, y2*scaleFactor, z2*scaleFactor );
   m_ent->end();
+  m_ent->setCastShadows(false);
   m_bodySceneNode->attachObject ( m_ent );
 
   DGtal::Representation * aRepresentation = new Representation ( mySceneMgr, m_ent, m_bodySceneNode, m_ent->getName(), "ManualObject" );
@@ -1011,6 +1011,7 @@ void ViewerOgre3D::drawAxes()
   myAxis->position ( 0, 0, 200 );
 
   myAxis->end();
+  myAxis->setCastShadows(false);
 
   myAxisNode->attachObject ( myAxis );
 }
@@ -1137,7 +1138,7 @@ void ViewerOgre3D::drawWrist()
 
   myWrist->end();
  
-
+  myWrist->setCastShadows(false);
   myWristNode = mySceneMgr->getRootSceneNode()->createChildSceneNode();
   myWristNode->attachObject ( myWrist );
 }
@@ -1732,7 +1733,7 @@ void ViewerOgre3D::flipPlaneVisibility()
 */
 void ViewerOgre3D::updatePlane (  )
 {
-  myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,0.0,0.0) );
+  myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,0.0,scaleFactor) );
 }
 
 

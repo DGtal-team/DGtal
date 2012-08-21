@@ -22,7 +22,7 @@ namespace DGtal {
   ...). It permits to display 3D scenes, with different complex objects
   and give the possibility to interact with them. 
  *
- \section DGtal_Section View mode
+ \subsection DGtal_Section View mode
 First to use the ViewerOgre3D stream, you need to include the following hearders:
  *
 @code
@@ -53,13 +53,16 @@ viewer.start();
 *
 * You should obtain the following visualisation:
 *
-* \image html viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." 
-* \image latex viewerogre3Dpointsdomain.png "Digital point visualization  with ViewerOgre3D." width=5cm
+* \image html viewerDomain1.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex viewerDomain1.png "Digital point visualization  with ViewerOgre3D." width=5cm
 *
 
+* By changing the background color, adding the shadows and turning the camera you can obtain a visualization like this one: 
 
-
-
+*
+* \image html viewerDomain2.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex viewerDomain2.png "Digital point visualization  with ViewerOgre3D." width=5cm
+*
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *
