@@ -230,37 +230,6 @@ DGtal::VoronoiMap<S,P,p>::computeFirstStep1D ( OutputImage & output,
 }
 
 
-
-template <typename S,typename P, DGtal::uint32_t p>
-bool
-DGtal::VoronoiMap<S,P,p>::hiddenBy ( const Point &u, 
-                                     const Point &v, 
-                                     const Point &w, 
-                                     const Point &startingPoint,
-                                     const Size dim) const
-{
-  //decide if (a,c) hide b in the lines (startingPoint, dim)
-
-  Abscissa a,b, c;
-  
-  a = v[dim] - u[dim];
-  b = w[dim] - v[dim];
-  c = a + b;  
-  
-  Abscissa d2_v=0, d2_u=0 ,d2_w=0;
-
-  for(Dimension i  = 0 ; i < S::dimension ; i++)
-    if (i != dim)
-      {
-        d2_u += (u[i] - startingPoint[i] ) *(u[i] - startingPoint[i] );
-        d2_v += (v[i] - startingPoint[i] ) *(v[i] - startingPoint[i] );
-        d2_w += (w[i] - startingPoint[i] ) *(w[i] - startingPoint[i] );
-      }
- 
-  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ; 
-}
-
-
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
 template <typename S,typename P, DGtal::uint32_t p>
@@ -282,7 +251,8 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
         {
             
           while ((nbSites >= 1) && 
-                 ( hiddenBy(Sites[nbSites-1], Sites[nbSites] , psite, startingPoint, dim) ))
+                 ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
+				     psite, startingPoint, dim) ))
             {
               nbSites --; 
             }
@@ -304,7 +274,8 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
       while ( (k < nbSites) && 
-              ((point - Sites[k]).norm() > (point-Sites[k+1]).norm() ) )
+	      ( myMetric.closestPredicate(point, Sites[k], Sites[k+1])
+		!= SeparableMetric::FIRST ))
         k++;
       
       output.setValue(point, Sites[k]);

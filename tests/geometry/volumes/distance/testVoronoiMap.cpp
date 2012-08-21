@@ -182,6 +182,15 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typename Voro2::OutputImage output = voro.compute();
   trace.endBlock();
 
+
+  // trace.beginBlock(" Voro computation (l_1)");
+  // typedef VoronoiMap<typename Set::Space, Predicate, 1> Voro1;  
+  // Voro1 voro1(aSet.domain(), myPredicate);
+  // typename Voro1::OutputImage output1 = voro1.compute();
+  // trace.endBlock();
+
+
+
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
   DT dt(aSet.domain(), myPredicate);
@@ -223,6 +232,21 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
 
   std::string filename= "Voromap-"+name+".svg";
   board.saveSVG(filename.c_str());
+
+  // board.clear();
+
+  // for(typename Voro1::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+  //     it != itend; ++it)
+  //   {
+  //     Z2i::Point p = output(*it);
+  //     unsigned char c = (p[1]*13 + p[0] * 7) % 256;
+  //     board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
+  //           << (*it);;
+  //   }
+
+  // filename= "Voromap-l1-"+name+".svg";
+  // board.saveSVG(filename.c_str());
+
 
  
   nbok += checkVoronoi(aSet,output) ? 1 : 0; 

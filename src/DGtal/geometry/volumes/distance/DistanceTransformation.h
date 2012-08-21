@@ -121,7 +121,7 @@ namespace DGtal
     typedef typename Space::Point::Coordinate Abscissa;
  
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Abscissa ,  IntegerLong , p > SeparableMetric;
+    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
   
 
     /**

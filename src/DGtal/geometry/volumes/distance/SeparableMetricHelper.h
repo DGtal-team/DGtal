@@ -71,16 +71,17 @@ namespace DGtal
    * @warning this  code is node GMP compliant
    * @todo Fix the integer type problems.
    */
-  template <typename TAbscissa, typename TInternalValue, DGtal::uint32_t tp>
+  template <typename TPoint, typename TInternalValue, DGtal::uint32_t tp>
   struct SeparableMetricHelper
   {
     // ----------------------- Standard services ------------------------------
 
     typedef TInternalValue InternalValue;
-    typedef TAbscissa Abscissa;
+    typedef typename TPoint::Coordinate Abscissa;
+    typedef TPoint Point;
     
     
-    BOOST_CONCEPT_ASSERT(( CBoundedInteger<TAbscissa> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedInteger<Abscissa> ));
     BOOST_CONCEPT_ASSERT(( CBoundedInteger<TInternalValue> ));
 
     /**
@@ -184,6 +185,63 @@ namespace DGtal
       ASSERT(false && "Not-Yet-Implemented");
     }
 
+    
+    enum Closest { FIRST=0, SECOND=1, BOTH=2};
+    
+    
+    /** 
+     * Given an origin and two points, this method decides which one
+     * is closest to the origin. This method should be faster than
+     * comparing distance values.
+     * 
+     * @param origin the origin
+     * @param first  the first point
+     * @param second the second point
+     * 
+     * @return a Closest enum: FIRST, SECOND or BOTH.
+     */
+    Closest closestPredicate(const Point &origin, 
+			     const Point &first,
+			     const Point &second) const
+    {
+      InternalValue a=NumberTraits<InternalValue>::ZERO,
+	b=NumberTraits<InternalValue>::ZERO;
+      
+      for(typename Point::Dimension i=0; i <  Point::dimension; i++)
+	{
+	  a += power(abs (origin[i] - first[i]));
+	  b += power(abs (origin[i] - second[i]));
+	}
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
+
+      /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
+     */
+    bool hiddenBy(const Point &a, 
+                  const Point &b,
+                  const Point &c, 
+                  const Point &startingPoint,
+                  const typename Point::UnsignedComponent dim) const
+    {
+      ASSERT(false && "Not-Yet-Implemented");
+    }
 
   }; // end of class SeparableMetricHelper
 
@@ -195,12 +253,13 @@ namespace DGtal
    * L_2 specialization
    *
    */
-  template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricHelper<TAbscissa, TInternalValue, 2>
+  template <typename TPoint, typename TInternalValue>
+  struct SeparableMetricHelper<TPoint, TInternalValue, 2>
   {
     typedef TInternalValue InternalValue;
-    typedef TAbscissa Abscissa;
-    
+    typedef typename TPoint::Coordinate Abscissa;
+    typedef TPoint Point;
+ 
     static const DGtal::uint32_t p = 2;
 
     inline double getApproxValue ( const InternalValue & aInternalValue ) const
@@ -227,9 +286,9 @@ namespace DGtal
         const Abscissa j, const InternalValue hj ) const
     {
       if (   ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) )  >= 0)
-  return (int)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
+	return (Abscissa)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
       else
-  return (int)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) ) -1;
+	return (Abscissa)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) ) -1;
   
     }
 
@@ -243,19 +302,84 @@ namespace DGtal
     {
       return (InternalValue) (i*i);
     }
+    enum Closest { FIRST=0, SECOND=1, BOTH=2};
+    
+    
+    Closest closestPredicate(const Point &origin, 
+			     const Point &first,
+			     const Point &second) const
+    {
+      InternalValue a=NumberTraits<InternalValue>::ZERO,
+	b=NumberTraits<InternalValue>::ZERO;
+      
+      for(typename Point::Dimension i=0; i <  Point::dimension; i++)
+	{
+	  a += (origin[i] - first[i])*(origin[i] - first[i]);
+	  b += (origin[i] - second[i])*(origin[i] - second[i]);
+	}
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
+
+      /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
+     */
+    bool hiddenBy(const Point &u, 
+                  const Point &v,
+                  const Point &w, 
+                  const Point &startingPoint,
+                  const typename Point::UnsignedComponent dim) const
+    {
+      //decide if (a,c) hide b in the lines (startingPoint, dim)
+
+      Abscissa a,b, c;
+  
+      a = v[dim] - u[dim];
+      b = w[dim] - v[dim];
+      c = a + b;  
+  
+      Abscissa d2_v=0, d2_u=0 ,d2_w=0;
+
+      for(Dimension i  = 0 ; i < Point::dimension ; i++)
+	if (i != dim)
+	  {
+	    d2_u += (u[i] - startingPoint[i] ) *(u[i] - startingPoint[i] );
+	    d2_v += (v[i] - startingPoint[i] ) *(v[i] - startingPoint[i] );
+	    d2_w += (w[i] - startingPoint[i] ) *(w[i] - startingPoint[i] );
+	  }
+ 
+      return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ; 
+    }
+  
   };
 
   /**
    * L_1 specialization
    *
    */
-  template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricHelper<TAbscissa, TInternalValue, 1>
+  template <typename TPoint, typename TInternalValue>
+  struct SeparableMetricHelper<TPoint, TInternalValue, 1>
   {
-
+    
     typedef TInternalValue InternalValue;
     static const DGtal::uint32_t p = 1;
-    typedef TAbscissa Abscissa;
+    typedef typename TPoint::Coordinate Abscissa;
+    typedef TPoint Point;
     
 
     inline double getApproxValue ( const InternalValue & aInternalValue ) const
@@ -293,7 +417,7 @@ namespace DGtal
           const Abscissa j, const InternalValue hj ) const
     {
       if (hj <= hi - j + i)
-  return NumberTraits<Abscissa>::max();
+	return NumberTraits<Abscissa>::max();
       if (hi < hj - j + i)
         return NumberTraits<Abscissa>::min();
       return (hi + i - hj + j ) / 2;
@@ -305,19 +429,61 @@ namespace DGtal
       return (InternalValue) abs(i);
     }
 
+    enum Closest { FIRST=0, SECOND=1, BOTH=2};
+    
+    
+    Closest closestPredicate(const Point &origin, 
+			     const Point &first,
+			     const Point &second) const
+    {
+      InternalValue a=(origin-first).norm(Point::L_1),
+	b=(origin-second).norm(Point::L_1);
+      
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
+
+      /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
+     */
+    bool hiddenBy(const Point &a, 
+                  const Point &b,
+                  const Point &c, 
+                  const Point &startingPoint,
+                  const typename Point::UnsignedComponent dim) const
+    {
+      ASSERT(false && "Not-Yet-Implemented");
+    }
+
   }; // end of class SeparableMetricHelper
 
   /**
    * L_infinity specialization
    *
    */
-  template <typename TAbscissa, typename TInternalValue>
-  struct SeparableMetricHelper<TAbscissa, TInternalValue, 0>
+  template <typename TPoint, typename TInternalValue>
+  struct SeparableMetricHelper<TPoint, TInternalValue, 0>
   {
-    typedef TAbscissa Abscissa;
     typedef TInternalValue InternalValue;
     static const DGtal::uint32_t p = 0;
-        
+    typedef typename TPoint::Coordinate Abscissa;
+    typedef TPoint Point;
+ 
 
     inline double getApproxValue ( const InternalValue & aInternalValue ) const
     {
@@ -346,7 +512,7 @@ namespace DGtal
       if (hi <= hj)
         return max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
       else
-        return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
+         return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
@@ -362,6 +528,46 @@ namespace DGtal
       return (InternalValue) abs(i);
     }
 
+     enum Closest { FIRST=0, SECOND=1, BOTH=2};
+    
+    
+    Closest closestPredicate(const Point &origin, 
+			     const Point &first,
+			     const Point &second) const
+    {
+      InternalValue a=(origin-first).norm(Point::L_infty),
+	b=(origin-second).norm(Point::L_infty);
+      
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
+
+      /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
+     */
+    bool hiddenBy(const Point &a, 
+                  const Point &b,
+                  const Point &c, 
+                  const Point &startingPoint,
+                  const typename Point::UnsignedComponent dim) const
+    {
+      ASSERT(false && "Not-Yet-Implemented");
+    }
   }; // end of class SeparableMetricHelper
 
 

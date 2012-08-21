@@ -136,7 +136,7 @@ namespace DGtal
     typedef typename Space::Point::Coordinate Abscissa;
  
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Abscissa ,  IntegerLong , p > SeparableMetric;
+    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
   
     ///Type of resulting image
     typedef ImageContainerBySTLVector<  Domain,
@@ -211,25 +211,6 @@ namespace DGtal
 			     const Size dim,
 			     std::vector<Point> &Sites) const;
     
-    /** 
-     * Given three sites (a,b,c) and a straight line (startingPoint,
-     * dim), we detect if the voronoi cells of a and c @e hide the
-     * voronoi cell of c on the straight line.
-     * 
-     * @param a a site
-     * @param b a site
-     * @param c a site
-     * @param startingPoint starting point of the straight line
-     * @param dim direction of the straight line
-     * 
-     * @return true if (a,c) hides b.
-     */
-    bool hiddenBy(const Point &a, 
-                  const Point &b,
-                  const Point &c, 
-                  const Point &startingPoint,
-                  const Size dim) const;
-
     // ------------------- protected methods ------------------------
   protected:
 
