@@ -1,4 +1,3 @@
-
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -43,7 +42,7 @@
 template <typename TPoint>
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, 
-				    const DGtal::MeshFromPoints<TPoint> & aMesh )
+					const DGtal::MeshFromPoints<TPoint> & aMesh )
 {
   std::string mode = display.getMode( aMesh.className() );
   if ( mode == "Faces"  || mode=="")
@@ -63,52 +62,52 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DG
 
 
   for(unsigned int i=0; i< aMesh.nbFaces(); i++)
-  {
-     typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
-     unsigned int aNum = aFace.size();
-     if(aNum==4)
-     {
-       TPoint  p1 = aMesh.getVertex(aFace.at(0));
-       TPoint  p2 = aMesh.getVertex(aFace.at(1));
-       TPoint  p3 = aMesh.getVertex(aFace.at(2));
-       TPoint  p4 = aMesh.getVertex(aFace.at(3));
+    {
+      typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
+      unsigned int aNum = aFace.size();
+      if(aNum==4)
+	{
+	  TPoint  p1 = aMesh.getVertex(aFace.at(0));
+	  TPoint  p2 = aMesh.getVertex(aFace.at(1));
+	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
+	  TPoint  p4 = aMesh.getVertex(aFace.at(3));
        
-       viewer.addQuad(p1[0], p1[1], p1[2], 
-		       p2[0], p2[1], p2[2], 
-		       p3[0], p3[1], p3[2], 
-		       p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
-     }
-     else if(aNum==3)
-     {
-       TPoint  p1 = aMesh.getVertex(aFace.at(0));
-       TPoint  p2 = aMesh.getVertex(aFace.at(1));
-       TPoint  p3 = aMesh.getVertex(aFace.at(2));
-       viewer.addTriangle(p1[0], p1[1], p1[2], 
-			   p2[0], p2[1], p2[2], 
-			   p3[0], p3[1], p3[2], theNode->createChildSceneNode() ,theNode->getName());
-     }
-     else if(aNum>4)
-     {
-       vector<PointOgre3D> vectPoly;
-       for(int j=0; j< aFace.size(); j++)
-       {
-		 PointOgre3D pt;
-                 pt.x=aMesh.getVertex(aFace.at(j))[0];
-		 pt.y =aMesh.getVertex(aFace.at(j))[1];
-		 pt.z =aMesh.getVertex(aFace.at(j))[2];
-                 vectPoly.push_back(pt);	 
-       }
-       viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
-     }
-     else
-     {
-       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
-     }
+	  viewer.addQuad(p1[0], p1[1], p1[2], 
+			 p2[0], p2[1], p2[2], 
+			 p3[0], p3[1], p3[2], 
+			 p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
+	}
+      else if(aNum==3)
+	{
+	  TPoint  p1 = aMesh.getVertex(aFace.at(0));
+	  TPoint  p2 = aMesh.getVertex(aFace.at(1));
+	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
+	  viewer.addTriangle(p1[0], p1[1], p1[2], 
+			     p2[0], p2[1], p2[2], 
+			     p3[0], p3[1], p3[2], theNode->createChildSceneNode() ,theNode->getName());
+	}
+      else if(aNum>4)
+	{
+	  vector<PointOgre3D> vectPoly;
+	  for(int j=0; j< aFace.size(); j++)
+	    {
+	      PointOgre3D pt;
+	      pt.x=aMesh.getVertex(aFace.at(j))[0];
+	      pt.y =aMesh.getVertex(aFace.at(j))[1];
+	      pt.z =aMesh.getVertex(aFace.at(j))[2];
+	      vectPoly.push_back(pt);	 
+	    }
+	  viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
+	}
+      else
+	{
+	  trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+	}
      
      
 
      
-  } 
+    } 
 }
 
 
@@ -118,7 +117,7 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DG
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const DGtal::ArithmeticalDSS3d<TIterator, TInteger, connectivity> & a )
+					 const DGtal::ArithmeticalDSS3d<TIterator, TInteger, connectivity> & a )
 {
 
   typedef TIterator ConstIterator;
@@ -126,9 +125,9 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 
 
   for (ConstIterator i = a.begin(); i != a.end(); ++i)
-  {
-    viewer << *i;
-  }
+    {
+      viewer << *i;
+    }
 
 }
 
@@ -137,7 +136,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const DGtal::DigitalSetBySTLSet<Domain> & s )
+					 const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   ASSERT(Domain::Space::dimension == 3);
   
@@ -147,9 +146,9 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
   if ( mode == "Paving" || ( mode == "" ) )
     drawAsPaving( viewer, s );
   else if ( mode == "PavingTransp" )
-  {
-    drawAsPavingTransparent( viewer, s );
-  }
+    {
+      drawAsPavingTransparent( viewer, s );
+    }
   else if ( mode == "Grid" )
     drawAsGrid( viewer, s );
   else if ( ( mode == "Both" ) )
@@ -181,9 +180,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer,
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode() ,theNode->getName());
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName());
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -235,9 +234,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode() ,theNode->getName(), 2);
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName(), 2);
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -287,9 +286,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode(),theNode->getName() );
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -324,19 +323,19 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
 template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const DGtal::DigitalSetBySTLVector<Domain> & v )
+					 const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   ASSERT(Domain::Space::dimension == 3);
   
- std::string mode = viewer.getMode( v.className() );
+  std::string mode = viewer.getMode( v.className() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
     drawAsPaving( viewer, v );
   else if ( mode == "PavingTransp" )
-  {
-    drawAsPavingTransparent( viewer, v );
-  }
+    {
+      drawAsPavingTransparent( viewer, v );
+    }
   else if ( mode == "Grid" )
     drawAsGrid( viewer, v );
   else if ( ( mode == "Both" ) )
@@ -354,7 +353,7 @@ template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s)
 {
-    typedef typename Domain::Point Point;
+  typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
 
@@ -372,9 +371,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode(),theNode->getName() );
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -408,7 +407,7 @@ template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s)
 {
-    typedef typename Domain::Point Point;
+  typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
 
@@ -426,9 +425,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode(),theNode->getName() );
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -464,7 +463,7 @@ template<typename Domain>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s )
 {
-      typedef typename Domain::Point Point;
+  typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
   typedef typename std::vector<Point>::const_iterator ConstIterator;
 
@@ -482,9 +481,9 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
   for ( ConstIterator it = s.begin(); it != s.end(); ++it )
     {
       Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
-                                  NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
-                                  theNode->createChildSceneNode() ,theNode->getName());
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName());
 
 
       DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -519,64 +518,64 @@ void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer
 template<typename TSpace>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
-    const DGtal::HyperRectDomain<TSpace> & h )
+					 const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
 
- Ogre::SceneNode * theNode = viewer.getANode();
+  Ogre::SceneNode * theNode = viewer.getANode();
 
   viewer.createMaterial(theNode->getName());
   ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 3)
-  {
-    // Face XY
-    for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
-         z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
-      {
-        for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-             x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-          viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
-                          (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
-        }
-        for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-             y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-          viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
-                          NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
-        }
-      }
+    {
+      // Face XY
+      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
+	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+	{
+	  for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	       x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	    viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+			   (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
+	  }
+	  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+	       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	    viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+			   NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
+	  }
+	}
     
-    // Faces XZ
-    for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-         y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-           x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-        viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
-                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5,theNode,theNode->getName());
-      }
-      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-           z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
-                        NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
-      }
-    }
-    
-    // Faces YZ
-    for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-         x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-      
+      // Faces XZ
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-           y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-        viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
-                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5,theNode,theNode->getName());
+	   y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	  viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+			 (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5,theNode,theNode->getName());
+	}
+	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	  viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+			 NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
+	}
       }
-      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-           z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
-                        (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
+    
+      // Faces YZ
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+      
+	for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
+	     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	  viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+			 (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5,theNode,theNode->getName());
+	}
+	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	  viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+			 (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
+	}
       }
     }
-  }
 }
 
 
@@ -586,7 +585,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
 template < Dimension dim, typename TInteger >
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const DGtal::KhalimskyCell<dim, TInteger> & k )
+					 const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
   
   DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -596,7 +595,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
   
   ASSERT ( dim == 3 );
 
-// used to display surfels located at a same position.
+  // used to display surfels located at a same position.
   double factorVolSurfel = 1.0;
   bool basicMode = false;
   double x = ( double ) ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[0] ) >> 1 );
@@ -613,36 +612,36 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
   switch ( spaceDim )
     {
 
-      case 0:
-        theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
-        break;
+    case 0:
+      theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
+      break;
 
-      case 1:
-        theRepresentation=viewer.addKSLinel ( x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
-        break;
+    case 1:
+      theRepresentation=viewer.addKSLinel ( x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
+      break;
 
-      case 2:
-        theRepresentation=viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd, theNode,theNode->getName() );
-        break;
+    case 2:
+      theRepresentation=viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd, theNode,theNode->getName() );
+      break;
 
-      case 3:
-        theRepresentation=viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
-        break;
+    case 3:
+      theRepresentation=viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
+      break;
     }
     
-      theKalimskyCellNode->setName ( theRepresentation->getName() );
-      theKalimskyCellNode->setRepresentation ( theRepresentation );
-      theRepresentation->setAttachedParent(theKalimskyCellNode);
-      theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
+  theKalimskyCellNode->setName ( theRepresentation->getName() );
+  theKalimskyCellNode->setRepresentation ( theRepresentation );
+  theRepresentation->setAttachedParent(theKalimskyCellNode);
+  theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
       
       
-      viewer.addToList ( theKalimskyCellNode );
-      DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > ( k );
+  viewer.addToList ( theKalimskyCellNode );
+  DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > ( k );
 
-      ASSERT ( aScell );
-      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
-      theKalimskyCellNode->setDGtalObject ( aDrawableObject );
-      viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
+  ASSERT ( aScell );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
+  theKalimskyCellNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
 }
 
 
@@ -651,7 +650,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
-    const DGtal::Object< TDigitalTopology, TDigitalSet > & set )
+					 const DGtal::Object< TDigitalTopology, TDigitalSet > & set )
 {
 
 
@@ -662,7 +661,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
 template<Dimension dim, typename TComponent>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const PointVector<dim, TComponent> & p )
+					 const PointVector<dim, TComponent> & p )
 {
 
   ASSERT(dim == 3);
@@ -680,9 +679,9 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
       drawAsGrid( viewer, p );
     }
   else if( mode=="PavingWired")
-  {
- //   drawAsPavingWired( viewer, p );
-  }
+    {
+      //   drawAsPavingWired( viewer, p );
+    }
 
 }
 
@@ -698,8 +697,8 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
   Ogre::SceneNode * theNode = viewer.getANode();
   viewer.createMaterial(theNode->getName());
   Representation * newPoint = viewer.addPoint ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
-                              NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
-                              NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode,theNode->getName(), 2 );
+						NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode,theNode->getName(), 2 );
 
   ASSERT ( newPoint );
   ASSERT ( theNode );
@@ -733,8 +732,8 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
   
   
   Representation * newPoint = viewer.addVoxel ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
-                              NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
-                              NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode ,theNode->getName());
+						NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode ,theNode->getName());
 
   ASSERT ( newPoint );
   ASSERT ( theNode );
@@ -762,7 +761,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
 template< Dimension dim, typename TInteger >
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
-    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+					 const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
 
   DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
@@ -773,11 +772,11 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
   ASSERT ( dim == 3 );
 
   float x = ( float )
-            ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[0] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[0] ) >> 1 );
   float y = ( float )
-            ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[1] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[1] ) >> 1 );
   float z = ( float )
-            ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[2] ) >> 1 );
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[2] ) >> 1 );
 
   bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
   bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
@@ -785,42 +784,42 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 
 
   unsigned int spaceDim = ( xodd ? 1 : 0 ) + ( yodd ? 1 : 0 ) + ( zodd ? 1 : 0 );
-// pointel
+  // pointel
   
   switch ( spaceDim )
     {
 
-      case 0:
-        theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
-        break;
+    case 0:
+      theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
+      break;
 
-      case 1:
-        theRepresentation=viewer.addKSLinel (x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
-        break;
+    case 1:
+      theRepresentation=viewer.addKSLinel (x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
+      break;
 
-      case 2:
+    case 2:
 
-        theRepresentation= viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd,theNode,theNode->getName() );
-        break;
+      theRepresentation= viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd,theNode,theNode->getName() );
+      break;
 
-      case 3:
-        theRepresentation= viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
-        break;
+    case 3:
+      theRepresentation= viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
+      break;
     }
 	
-      theKalimskyCellNode->setName ( theRepresentation->getName() );
-      theKalimskyCellNode->setRepresentation ( theRepresentation );
-      theRepresentation->setAttachedParent(theKalimskyCellNode);
-      theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
+  theKalimskyCellNode->setName ( theRepresentation->getName() );
+  theKalimskyCellNode->setRepresentation ( theRepresentation );
+  theRepresentation->setAttachedParent(theKalimskyCellNode);
+  theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
       
       
-      viewer.addToList ( theKalimskyCellNode );
-      DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > ( sk );
+  viewer.addToList ( theKalimskyCellNode );
+  DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > ( sk );
 
-      ASSERT ( aScell );
-      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
-      theKalimskyCellNode->setDGtalObject ( aDrawableObject );
-      viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
+  ASSERT ( aScell );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
+  theKalimskyCellNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
 
       
 }
@@ -835,14 +834,14 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
-        const DGtal::SetViewerMode3D & sm3d )
+					const DGtal::SetViewerMode3D & sm3d )
 {
   viewer.myModes[ sm3d.myClassname ] = sm3d.myMode;
 }
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
-        const DGtal::CustomViewerStyle3D & cs3d )
+					const DGtal::CustomViewerStyle3D & cs3d )
 {
   viewer.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
 }
@@ -866,14 +865,14 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::Vi
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::ViewerCameraPosition & cp )
+					 const DGtal::ViewerCameraPosition & cp )
 {
   display.setCameraPosition ( Ogre::Vector3 ( cp.eyex, cp.eyey, cp.eyez ) );
 }
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::ViewerCameraDirection & cd )
+					 const DGtal::ViewerCameraDirection & cd )
 {
   display.setCameraDirection ( Ogre::Vector3 ( cd.dirx, cd.diry, cd.dirz ) );
 }
@@ -887,7 +886,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::Vi
 
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
-    const DGtal::ViewerCameraZNearFar & cz )
+					 const DGtal::ViewerCameraZNearFar & cz )
 {
   display.setNearFar ( cz.ZNear, cz.ZFar );
 }

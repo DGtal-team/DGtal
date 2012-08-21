@@ -16,15 +16,15 @@
 
 /**
  * @file CameraMan.ih
-* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
-* Liris CNRS
-*
-* @date 2012/06/10
-*
-* Header file for module CameraMan.cpp
-*
-* This file is part of the DGtal library.
-*/
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ * Liris CNRS
+ *
+ * @date 2012/06/10
+ *
+ * Header file for module CameraMan.cpp
+ *
+ * This file is part of the DGtal library.
+ */
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -73,8 +73,8 @@ CameraMan::CameraMan (Ogre::SceneNode * aNode, Ogre::Camera * aCamera, int aSpee
 
 
 /**
-* Destructor.
-*/
+ * Destructor.
+ */
 CameraMan::~CameraMan( )
 {
   //Nothing to do
@@ -83,31 +83,31 @@ CameraMan::~CameraMan( )
 
 
 /**
-  * Public method that handles the user key press
-*/
+ * Public method that handles the user key press
+ */
 bool CameraMan::handleKeyPress ( const OIS::KeyEvent & evt )
 {
   switch ( evt.key )
     {
 
-      case OIS::KC_Z :
-        startGoingFoward();
-        break;
+    case OIS::KC_Z :
+      startGoingFoward();
+      break;
 
-      case OIS::KC_S :
-        startGoingBackward();
-        break;
+    case OIS::KC_S :
+      startGoingBackward();
+      break;
 
-      case OIS::KC_Q :
-        startGoingLeftward();
-        break;
+    case OIS::KC_Q :
+      startGoingLeftward();
+      break;
 
-      case OIS::KC_D :
-        startGoingRightward();
-        break;
+    case OIS::KC_D :
+      startGoingRightward();
+      break;
 
-      default :
-        break;
+    default :
+      break;
     }
 
   return false;
@@ -116,35 +116,35 @@ bool CameraMan::handleKeyPress ( const OIS::KeyEvent & evt )
 
 
 /**
-  * Public method that handles the user key Release
-*/
+ * Public method that handles the user key Release
+ */
 bool CameraMan::handleKeyRelease ( const OIS::KeyEvent & evt )
 {
   switch ( evt.key )
     {
 
-      case OIS::KC_CAPITAL :
-        myIsOnShiftMode = !myIsOnShiftMode;
-        break;
+    case OIS::KC_CAPITAL :
+      myIsOnShiftMode = !myIsOnShiftMode;
+      break;
 
-      case OIS::KC_Z :
-        stopGoingFoward();
-        break;
+    case OIS::KC_Z :
+      stopGoingFoward();
+      break;
 
-      case OIS::KC_S :
-        stopGoingBackward();
-        break;
+    case OIS::KC_S :
+      stopGoingBackward();
+      break;
 
-      case OIS::KC_Q :
-        stopGoingLeftward();
-        break;
+    case OIS::KC_Q :
+      stopGoingLeftward();
+      break;
 
-      case OIS::KC_D :
-        stopGoingRightward();
-        break;
+    case OIS::KC_D :
+      stopGoingRightward();
+      break;
 
-      default :
-        break;
+    default :
+      break;
     }
 
   return false;
@@ -152,8 +152,8 @@ bool CameraMan::handleKeyRelease ( const OIS::KeyEvent & evt )
 
 
 /**
-  * Public method that handles the user mouse move
-*/
+ * Public method that handles the user mouse move
+ */
 bool CameraMan::handleMouseMove ( const OIS::MouseEvent & evt )
 {
   myTempMouseMove = Ogre::Vector3 ( -0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -evt.state.Z.rel );
@@ -161,8 +161,8 @@ bool CameraMan::handleMouseMove ( const OIS::MouseEvent & evt )
 }
 
 /**
-  *  Public method that handles the user mouse click
-*/
+ *  Public method that handles the user mouse click
+ */
 bool CameraMan::handleMouseClick ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
 {
 
@@ -170,8 +170,8 @@ bool CameraMan::handleMouseClick ( const OIS::MouseEvent &e, OIS::MouseButtonID 
 }
 
 /**
-  *  Public method that handles the user mouse release
-*/
+ *  Public method that handles the user mouse release
+ */
 bool CameraMan::handleMouseRelease ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
 {
 
@@ -181,8 +181,8 @@ bool CameraMan::handleMouseRelease ( const OIS::MouseEvent &e, OIS::MouseButtonI
 
 
 /**
-  *  Public method that acts on the camera geometric attributes
-*/
+ *  Public method that acts on the camera geometric attributes
+ */
 void CameraMan::render ( double timeSinceLastFrame )
 {
   double step = ( double )timeSinceLastFrame * mySpeed;
@@ -226,7 +226,7 @@ void CameraMan::render ( double timeSinceLastFrame )
           Ogre::Real pitchAngleSign;
 
           pitchAngle = ( 2 * Ogre::Degree ( Ogre::Math::ACos (
-                                              this->myCameraNode->getOrientation().w ) ).valueDegrees() );
+							      this->myCameraNode->getOrientation().w ) ).valueDegrees() );
 
           pitchAngleSign = this->myCameraNode->getOrientation().x;
 
@@ -248,10 +248,10 @@ void CameraMan::render ( double timeSinceLastFrame )
     {
       if ( myTempMouseMove.z != 0 )
         {
-            zoom(myTempMouseMove.z);
+	  zoom(myTempMouseMove.z);
         }
       if((myX!=0) || (myY!=0))
-      {
+	{
 	  myCameraNode->setDirection(mySceneCenter - myCameraNode->_getDerivedPosition(), Ogre::Node::TS_WORLD);
 
 
@@ -271,36 +271,36 @@ void CameraMan::render ( double timeSinceLastFrame )
 	  double disprime= myCameraNode->_getDerivedPosition().distance(mySceneCenter);
 	  Ogre::Vector3 aVect=myCameraNode->_getDerivedOrientation().zAxis()/(myCameraNode->_getDerivedOrientation().zAxis().normalise());
 	  myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+aVect*(norm-disprime));
-      }
+	}
       if(!myIsTurning)
-      {
-         myX=0;
-         myY=0;
-      }
+	{
+	  myX=0;
+	  myY=0;
+	}
       myTempMouseMove = Ogre::Vector3::ZERO;
 
     }
 }
 
 /**
-  *  Public method that makes the camera turns around the centralNode
-  *
-  */
+ *  Public method that makes the camera turns around the centralNode
+ *
+ */
 void CameraMan::turnCamera ( int x, int y )
 {  
   if((x!=0) || (y !=0) )
-  {	
-    myX=x;
-    myY=y;
-    myIsTurning=true;
-  }
+    {	
+      myX=x;
+      myY=y;
+      myIsTurning=true;
+    }
 }
 
 
 /**
-  *  Public method that makes the camera translate
-  *
-  */
+ *  Public method that makes the camera translate
+ *
+ */
 void CameraMan::translateCamera ( double x, double y )
 {
 
@@ -311,9 +311,9 @@ void CameraMan::translateCamera ( double x, double y )
 }
 
 /**
-*  Public method that updates the scene center
-*
-*/
+ *  Public method that updates the scene center
+ *
+ */
 void CameraMan::setSceneCenter ( Ogre::Vector3 aSceneCenter )
 {
   mySceneCenter = aSceneCenter;
@@ -321,47 +321,47 @@ void CameraMan::setSceneCenter ( Ogre::Vector3 aSceneCenter )
 
 
 /**
-*  Public method that translates the cameraMan by aVector
-*
-*/
+ *  Public method that translates the cameraMan by aVector
+ *
+ */
 void CameraMan::moveCameraman ( Ogre::Vector3 aVector )
 {
-//   myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+(mySceneCenter-aVector));
+  //   myCameraNode->setPosition(myCameraNode->_getDerivedPosition()+(mySceneCenter-aVector));
 }
 
 
 /**
-*  Public method that returns the node
-*
-*/
+ *  Public method that returns the node
+ *
+ */
 Ogre::SceneNode * CameraMan::getSceneNode ( )
 {
   return myCameraNode;
 }
 
 /**
-*  Public method that permits to zoom
-*/
+ *  Public method that permits to zoom
+ */
 void CameraMan::zoom(int z)
 {
-      if ( z != 0 )
-        {
-          this->myCameraNode->translate ( myCameraNode->getOrientation().zAxis() *z );
-	 }
+  if ( z != 0 )
+    {
+      this->myCameraNode->translate ( myCameraNode->getOrientation().zAxis() *z );
+    }
 }
 /**
-  *  Public method that sets the initial position
-  */
+ *  Public method that sets the initial position
+ */
 void CameraMan::setInitialPosition(Ogre::Vector3 & newPos)
 {
   myInitialPosition =newPos;
-//  myCameraNode->lookAt(mySceneCenter,Ogre::Node::TS_WORLD);
-//  mySavedOrientation = myCameraNode->getOrientation();
+  //  myCameraNode->lookAt(mySceneCenter,Ogre::Node::TS_WORLD);
+  //  mySavedOrientation = myCameraNode->getOrientation();
 }
 
 /**
-  *  Public method that resets the cameraman orientation and position
-  */
+ *  Public method that resets the cameraman orientation and position
+ */
 void CameraMan::reset()
 {
   myCameraNode->setOrientation(mySavedOrientation);
