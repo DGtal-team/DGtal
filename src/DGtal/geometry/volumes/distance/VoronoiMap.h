@@ -155,16 +155,6 @@ namespace DGtal
 
   public:
 
-    /**
-     * Compute the Voronoi Map of a set of point sites using a
-     * SeparableMetric metric.  The method associates to each point
-     * satisfying the foreground predicate, the closest site for which
-     * the predicate is false. This algorithm is O(d.|domain size|).
-     *
-     * @return the Voronoi map image.
-     */
-    OutputImage compute( ) ;
-
      /**
      * Compute the Voronoi Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
@@ -173,7 +163,7 @@ namespace DGtal
      *
      * @return the Voronoi map image.
      */
-    OutputImage computeFast( ) ;
+    OutputImage compute ( ) ;
 
     
     // ------------------- Private functions ------------------------
