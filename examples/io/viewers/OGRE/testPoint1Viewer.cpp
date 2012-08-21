@@ -51,6 +51,7 @@ int main( int argc, char** argv )
   DGtal::Z3i::Point p3 ( 9, -5, 10 );
   viewer << DGtal::SetViewerMode3D(p1.className(),"Grid");
   viewer << p1;
+  viewer << DGtal::SetViewerMode3D(p1.className(),"");
   viewer << p2;	
   viewer << p3;	
   viewer.start();

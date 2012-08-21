@@ -22,7 +22,7 @@ namespace DGtal {
   ...). It permits to display 3D scenes, with different complex objects
   and give the possibility to interact with them. 
  *
- \subsection DGtal_Section View mode
+ \section DGtal_Section View mode
 First to use the ViewerOgre3D stream, you need to include the following hearders:
  *
 @code
@@ -57,15 +57,15 @@ viewer.start();
 * \image latex viewerDomain1.png "Digital point visualization  with ViewerOgre3D." width=5cm
 *
 
-* By changing the background color, adding the shadows and turning the camera you can obtain a visualization like this one: 
+* By changing the background color, adding the shadows, hiding the text,the wrist, the orthonormal axis  and turning the camera you can obtain a visualization like this one: 
 
 *
 * \image html viewerDomain2.png "Digital point visualization  with ViewerOgre3D." 
 * \image latex viewerDomain2.png "Digital point visualization  with ViewerOgre3D." width=5cm
-*
 
-* \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
-*
+
+\subsection DGtal_VisualizationDigitalSet Visualization of DigitalSet and digital objects
+
 *
 * The ViewerOgre3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
@@ -82,7 +82,7 @@ viewer.start();
 * Node that the set is blue, that's due to selection.
 *
 *
-* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
+* \subsection  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D  
 *
 * Some digital elements (like Object, PointVector, ArithmeticalDSS3d) may have several possible ways to be rendered as a graphical object. For instance, a voxel may be seen more as a small sphere or more as a unit cube. In the same idea, a digital object may or may not be represented with its adjacency relations. Otherwise said, one may wish to see the set, another may wish to see the graph.
 
@@ -97,22 +97,22 @@ You may choose a mode for a drawable element by outputing on the stream a SetMod
 
 * You should obtain the following visualisation for the first example:
 *
-* \image html pavingogre.png "Digital point visualization  with ViewerOgre3D." 
-* \image latex pavingogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+* \image html viewerPoint1.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex  viewerPoint1.png "Digital point visualization  with ViewerOgre3D." width=5cm
 *
 
 * And for the second:
 *
-* \image html gridogre.png "Digital point visualization  with ViewerOgre3D." 
-* \image latex gridogre.png "Digital point visualization  with ViewerOgre3D." width=5cm
+* \image html viewerPoint2.png "Digital point visualization  with ViewerOgre3D." 
+* \image latex viewerPoint2.png "Digital point visualization  with ViewerOgre3D." width=5cm
 *
 
 * Node that in each example there is a point in red (it's due to selection (see below)).
 
-* \section  DGtalGLV_Mode Useful modes for several 3D drawable elements 
+\subsection  DGtalGLV_Mode Useful modes for several 3D drawable elements 
 
 
-\subsection DGtalGLV_ModeListing Listing of different modes
+\subsubsection DGtalGLV_ModeListing Listing of different modes
 
 As for \c Board2D the object can be displayed with different possible mode:
 
@@ -126,7 +126,7 @@ As for \c Board2D the object can be displayed with different possible mode:
 
 
 
-\subsection DGtalGLV_ModeOtherExamples Others Examples
+\subsubsection DGtalGLV_ModeOtherExamples Others Examples
 
 Others mode examples are illustrated for class KhalimskyCell and class Mesh.
 
@@ -146,7 +146,7 @@ Others mode examples are illustrated for class KhalimskyCell and class Mesh.
 *</CENTER>
 
 
-\section  DGtalGLV_Custom Changing the style for displaying drawable elements.
+\subsubsection  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
 As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
 
@@ -183,7 +183,7 @@ And the last parameter is the texture (Note that it should be in the same folder
 
 
 
-\section DGtalGLV_CLipping Adding clipping planes 
+\subsubsection DGtalGLV_CLipping Adding clipping planes 
 
 It also possible through the stream mechanism to add clipping plane
 with the object \c ClippingPlane. We just have to add the real plane
@@ -195,7 +195,7 @@ equation and adding as for displaying an element.
   View << DGtal::ViewerClippingPlane ( 0, 1, 0.3, -10 );
 @endcode 
 
-\section DGtalGLV_Camera Camera parameters 
+\subsubsection DGtalGLV_Camera Camera parameters 
 
 You can set some default camera parameters by using ViewerCameraPosition, ViewerCameraDirection, ViewerCameraUpVector or ViewerCameraZNearFar parameters.
 @code 
@@ -209,11 +209,11 @@ You can set some default camera parameters by using ViewerCameraPosition, Viewer
 
 \section DGtal_mode2 Selection mode
 
-\section DGtal_Interactions Basic interactions 
+\subsection DGtal_Interactions Basic interactions 
  This viewer permits to interact individualy with the objects that are put in the scene.
  For example, by clicking on objects, the object's texture changes and you can apply some changes by using keyboard shortcuts,  as scaling the object's container, changing the transparency...
 
-\section DGtal_Instream Instream mechanism
+\subsection DGtal_Instream Instream mechanism
 An instream mechanism can be used to get the dgtal corresponding objects of a selected node. You need to click on the scene object, and validate it by using the S key. For example:
 
 
@@ -227,8 +227,6 @@ For example, if you want to select a non visible point of the DGtalset, you can 
 
 This selection mode may, for example, permit to sculpt something starting from a cube..
  
-
-
 
 *<CENTER>
 *<TABLE> 
@@ -250,7 +248,6 @@ This selection mode may, for example, permit to sculpt something starting from a
 *</CENTER>
 
 
-
 \section DGtal_mode3 Manipulate mode
 
 An dynamic manipulating mode can be used to get watch a set's evolution for a custom user specified function. Here is an example:
@@ -260,7 +257,11 @@ We define our manipulating function, here it's very simple function that returns
  Then the main code
 @snippet io/viewers/OGRE/testManipulateViewer.cpp ImportManipulatefile
 
-	By using the + and - keys, we can go through the range value and watch the set's evolution.
+
+
+By using the + and - keys, we can go through the range value and watch the set's evolution.
+
+
 This example remains a simple one, more complex stuff can be done using this mode.
 
 
@@ -280,23 +281,156 @@ This example remains a simple one, more complex stuff can be done using this mod
 *</CENTER>
 
 
+\section DGtal_Dynamic Dynamic interactions
+By pressing h button during visualization you can obtain the list of the viewer interactions,
+@code
+-------------------------------------------------------------------------------------------
+Ogre DGtal viewer commands: 
+
+	Common commands to view, manipulate and selection modes:
+
+		 Mouse interactions:
+
+			 Right clic and drag: Translates the scene.
+			 Left clic and drag: Turns the scene around the scene center.
+			 Middle clic : Selects a scene object.
+			 Mouse roll: Zoom.
+
+		 Commands without selection
+
+			 P: Show/Hide the orthonormal basis.
+			 O: Shows/Hides the wirsts.
+			 G: Shows/Hides the shadow plane.
+			 T: Shows/Hides the text.
+			 F: Changes the background color, from black to white and the inverse operation.
+			 R: Resets the camera position.
+			 X: Exports the scene to XML format and saves it to scene.scene.
+			 C: Takes a screen capture of the viewer and saves it to ScreenShot.png 
+			 H: Shows the user help on the standard output. 
+			 Escape: Shuts down the viewer.  
+		 Commands when something is selected
+
+			 M: Sizes up the selection.
+			 L: Sizes down the selection.
+			 N: Increases the selection's transparency.
+			 B: Decreases the selection's transparency.
+
+	Specific commands
+
+			On view mode:
+
+			On manipulate mode:
+
+			 + : Gets to the upper value of the manipulating. 
+			 - : Gets to the lower value of the manipulating. 
+			On selection mode:
+
+			 S : Confirms the selection.
+ 
+	On free 3D explore: (To switch to this mode press MAJ button)
+
+-------------------------------------------------------------------------------------------
+
+@endcode
+
+
+\section DGtal_code Code interactions
+Some interactions are possible by calling methods in your program.
+
+
+\subsection DGtal_code_screenShot Take a snapshot
+
+You can take a screenshot and choose the export format by calling this method
+
+@code
+void 	printScene (std::string name="ScreenShot.png")
+@endcode
+
+
+To take a snapshot named foo, in jpg format, i just have to call this method in the main program.
+@code
+viewer->printScene("foo.jpg");
+@endcode
+
+
+\subsection DGtal_code_ortho Flipping the orthonormal basis visibility
+You can simply do it by calling this method:
+@code
+void 	changeAxisVisibility ()
+@endcode
+
+\subsection DGtal_code_wrist Flipping the wrist visibility
+You can simply do it by calling this method:
+@code
+void 	changeWristVisibility ()
+@endcode
+
+\subsection DGtal_code_background Flipping the background color
+You can change it alternatively from gray to white( and from white to gray):
+@code
+ void 	flipBackgroundColor ()
+@endcode
+
+\subsection DGtal_code_xml Exporting the scene to xml format
+You can export this scene to xml format (the extention of the file will be .scene), and for example using the blender addon to import it into blender by calling this method :
+@code
+void 	exportToXml (std::string aFileName)
+@endcode
+
+To get a xml file named titanic, the code will be
+@code
+viewer->exportToXml("titanic");
+@endcode
+
+
+
+\subsection DGtal_clearing Clearing the scene
+Here is the method you should call to empty the scene from all the DGtal objects.
+@code
+void 	clearScene ()
+@endcode
+
+
+\subsection DGtal_code_lights Adding lights
+Here is respectivly the methods to add Point lights, Spot lights or directional light.
+
+aColor 	the light's Color
+
+
+aPosition  the light's position
+
+
+aDirection   the light's direction
+
+
+aCast	defines if the light cast's shadows or not 
+
+
+@code
+void 	addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition, bool aCast)
+ 
+void 	addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition, DGtal::Z3i::Point aDirection, bool aCast)
+ 
+void 	addDirectionalLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition, DGtal::Z3i::Point aDirection, bool aCast) 
+@endcode
+
 \section DGtal_developper Developper guide.
 This section aims to clarify the way to develop the ogre viewer. 
 
-\section DGtal_AddingObject Adding an Object
+\subsection DGtal_AddingObject Adding an Object
 
 For example adding a new dgtal object support to the viewer.
 
 
 2 (+1) Steps must be done:
 
-	\t Adding the support in Display3DFactory.
+	- Adding the support in Display3DFactory.
 
 
-	\t Adding default style support.
+	- Adding default style support.
 
 
-	\t (Adding the ogre primitives)
+	- (Adding the ogre primitives)
 
 
 
