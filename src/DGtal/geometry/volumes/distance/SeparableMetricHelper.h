@@ -179,7 +179,7 @@ namespace DGtal
      * @return
      */
     Abscissa Sep ( const Abscissa i, const InternalValue hi, 
-       const Abscissa j, const InternalValue hj ) const
+		   const Abscissa j, const InternalValue hj ) const
     {
       ASSERT(false && "Not-Yet-Implemented");
     }

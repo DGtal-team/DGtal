@@ -62,6 +62,38 @@ namespace DGtal
    * Description of template class 'VoronoiMap' <p>
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
+
+   * The algorithm uses a sperable process to construct
+   * partial Voronoi maps which has been described in:
+   *
+   *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). A Linear Time Algorithm
+   *      for Computing Exact Euclidean Distance Transforms of Binary Images in
+   *      Arbitrary Dimensions. IEEE Trans. Pattern Analysis and Machine
+   *      Intelligence, 25pp265-270.
+   *
+   * and 
+   *   
+   *      Coeurjolly, D. (2002). Algorithmique et géométrie discrète pour
+   *      la caractérisation des courbes et des surfaces. PhD Thesis,
+   *      Université Lumière Lyon 2.
+   *
+   *
+   * Given a domain and a point predicate, the compute() method
+   * returns, for each point in the domain, the closest point for
+   * which the predicate if false. Following Computational Geometry
+   * terminoliogy, points for which the predicate is false are "sites"
+   * for the Voronoi map construction.
+   *
+   * The metric is specified by the @a p template parameter which
+   * defines a l_p separable metric.
+   *
+   * If a point is equi-distant to two sites (e.g. if the digital
+   * point belong to a Voronoi cell boundary in the Euclidean space),
+   * this Voronoi map construction will only keep one of them.
+   *
+   * Hence, the result is given as a map (point from the domain,
+   * closest site) implemented using an ImageContainerBySTLVector
+   * whose value type is the type of Point of the predicate.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
@@ -80,7 +112,10 @@ namespace DGtal
   public:
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  
+
+    ///Both Space points and PointPredicate points must be the same.
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
+					  typename TPointPredicate::Point >::value )); 
     
     ///Copy of the space type.
     typedef TSpace Space;
@@ -90,7 +125,6 @@ namespace DGtal
 
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
-
    
     ///@todo comment here
     typedef DGtal::int64_t IntegerLong;
@@ -122,19 +156,24 @@ namespace DGtal
   public:
 
     /**
-     * Compute the Distance Transformation of an image with the
+     * Compute the Voronoi Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
-     * with value satisfying the foreground predicate, its distance to
-     * the closest background point.  This algorithm is
-     * O(d.|domain size|).
+     * satisfying the foreground predicate, the closest site for which
+     * the predicate is false. This algorithm is O(d.|domain size|).
      *
-     * @pre the foreground point predicate @a predicate must be defined on the
-     * domain @a aDomain
-     *
-     *
-     * @return the distance transformation image.
+     * @return the Voronoi map image.
      */
     OutputImage compute( ) ;
+
+     /**
+     * Compute the Voronoi Map of a set of point sites using a
+     * SeparableMetric metric.  The method associates to each point
+     * satisfying the foreground predicate, the closest site for which
+     * the predicate is false. This algorithm is O(d.|domain size|).
+     *
+     * @return the Voronoi map image.
+     */
+    OutputImage computeFast( ) ;
 
     
     // ------------------- Private functions ------------------------
@@ -142,42 +181,59 @@ namespace DGtal
     
     
     /** 
-     * Compute the first step of the separable distance transformation.
+     * Compute the first step of the separable voronoi map construction.
      * 
-     * @param output the output image with the first step DT values
-     * @param predicate the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
+     * @param output the output image with the first VM values
      */
     void computeFirstStep(OutputImage & output) const;
 
     /** 
-     * Compute the 1D DT associated to the first step.
+     * Compute the 1D Voronoi Mpa associated to the first step.
      * 
-     * @param output the output image  with the first step DT values
+     * @param output the partial voronoi map at first step.
      * @param startingPoint a point to specify the starting point of the 1D row
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeFirstStep1D (OutputImage & output, 
 			     const Point &startingPoint) const;
     
     /** 
-     *  Compute the other steps of the separable distance transformation.
+     *  Compute the other steps of the separable Voronoi map.
      * 
-     * @param inputImage the image resulting of the first (or
-     * intermediate) step 
-     * @param output the output image 
+     * @param output the output map
      * @param dim the dimension to process
      */    
     void computeOtherSteps(OutputImage & output,
                            const Dimension dim) const;
+    /** 
+     * Given  a voronoi map valid at dimension @a dim-1, this method
+     * updates the map to make it consistent at dimension @a dim along
+     * the 1D span starting at @a row along the dimension @a
+     * dim.
+     * 
+     * @param output the Voronoi map to update.
+     * @param row starting point of the 1D process.
+     * @param dim dimension of the update.
+     * @param Sites stack of sites (pass as an argument for
+     * performance purposes).
+     */
+    void computeOtherStep1D (OutputImage & output, 
+			     const Point &row, 
+			     const Size dim,
+			     std::vector<Point> &Sites) const;
     
     /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
      */
-     void computeOtherStep1D (OutputImage & output, 
-                              const Point &row, 
-                              const Size dim) const;
-    
     bool hiddenBy(const Point &a, 
                   const Point &b,
                   const Point &c, 
@@ -212,9 +268,6 @@ namespace DGtal
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
     
-    ///Displacement vector to translate temporary images.
-    Vector myDisplacementVector;
-
     ///Value to act as a +infinity value
     Point myInfinity;
 
