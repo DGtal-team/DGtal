@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ using namespace DGtal;
 // Functions for testing class VoronoiMap.
 ///////////////////////////////////////////////////////////////////////////////
 
-/* Validate the VoronoiMap
+/* Is Validate the VoronoiMap
  */
 template < typename Set, typename Image>
 bool checkVoronoi(const Set &aSet, const Image & voro)
@@ -133,12 +134,12 @@ bool testVoronoiMap()
             << (*it);
     }
 
-  board.saveCairo("Voromap.png", Board2D::CairoPNG);
+  board.saveSVG("Voromap.svg");
 
   nbok += checkVoronoi(sites,output) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Voronoi diagram validated" << std::endl;
+	       << "Voronoi diagram is valid !" << std::endl;
   trace.endBlock();
   
   
@@ -185,26 +186,26 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typename Voro2::OutputImage output = voro.compute();
 
   if ( (aSet.domain().upperBound()[1] - aSet.domain().lowerBound()[1]) <20)
-    for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
-      {    
-        for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
-          if ( aSet.find( Z2i::Point(i,j) ) != aSet.end() )
-            std::cout <<"X ";
-          else
-            std::cout<<"0 ";
-        trace.info()<<std::endl;
-      }
+    {
+      for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
+	{    
+	  for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
+	    if ( aSet.find( Z2i::Point(i,j) ) != aSet.end() )
+	      std::cout <<"X ";
+	    else
+	      std::cout<<"0 ";
+	  trace.info()<<std::endl;
+	}
   
-  trace.info() << std::endl;
-  
-  if ( (aSet.domain().upperBound()[1] - aSet.domain().lowerBound()[1]) <20)
-    for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
-      {    
-        for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
-          trace.info() << "("<<output( Z2i::Point(i,j))[0]<<","<< output( Z2i::Point(i,j))[1]<<") ";
-        trace.info()<<std::endl;
-      }
-
+      trace.info() << std::endl;
+      
+      for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
+	{    
+	  for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
+	    trace.info() << "("<<output( Z2i::Point(i,j))[0]<<","<< output( Z2i::Point(i,j))[1]<<") ";
+	  trace.info()<<std::endl;
+	}
+    }
 
   Board2D board;
   for(typename Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
@@ -217,13 +218,13 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
     }
 
   std::string filename= "Voromap-"+name+".png";
-  board.saveCairo(filename.c_str(), Board2D::CairoPNG);
+  board.saveSVG(filename.c_str());
 
  
   nbok += checkVoronoi(aSet,output) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Voronoi diagram validated" << std::endl;
+	       << "Voronoi diagram is valid !" << std::endl;
   
   return nbok == nb;
 }
@@ -240,7 +241,8 @@ bool testVoronoiMapFromSites(const Set &aSet)
   
   Set mySet(aSet.domain());
   
-  for(typename Set::Domain::ConstIterator it = aSet.domain().begin(), itend = aSet.domain().end(); 
+  for(typename Set::Domain::ConstIterator it = aSet.domain().begin(), 
+	itend = aSet.domain().end(); 
       it != itend;
       ++it)
     mySet.insertNew( *it );
@@ -257,18 +259,30 @@ bool testVoronoiMapFromSites(const Set &aSet)
   //typedef NotPointPredicate<Predicate> NegPredicate;
   //NegPredicate myNegPredicate( myPredicate );
 
+  trace.beginBlock(" Voronoi computation");
   typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;
-  
   Voro2 voro(aSet.domain(), myPredicate);
-
   typename Voro2::OutputImage output = voro.compute();
- 
+  trace.endBlock();
+
+  trace.beginBlock(" VoronoiFast computation");
+  Voro2 vorobis(aSet.domain(), myPredicate);
+  typename Voro2::OutputImage outputbis = vorobis.computeFast();
+  trace.endBlock();
+
+  trace.beginBlock(" DT computation");
+  typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
+  DT dt(aSet.domain(), myPredicate);
+  typename DT::OutputImage output2 = dt.compute();
+  trace.endBlock();
+
+
   trace.beginBlock("Validating the Voronoi Map");
-  nbok += checkVoronoi(aSet,output) ? 1 : 0; 
+  nbok += (checkVoronoi(aSet,output) && checkVoronoi(aSet,outputbis) )? 1 : 0; 
   trace.endBlock();
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "Voronoi diagram validated" << std::endl;
+	       << "Voronoi diagram is valid !" << std::endl;
   
   return nbok == nb;
 }
@@ -320,6 +334,7 @@ bool testSimpleRandom2D()
 
 }
 
+
 bool testSimple3D()
 {
 
@@ -346,7 +361,7 @@ bool testSimpleRandom3D()
 {
 
   Z3i::Point a(0,0,0);
-  Z3i::Point b(64,64,64);
+  Z3i::Point b(128,128,128);
   Z3i::Domain domain(a,b);
   
   Z3i::DigitalSet sites(domain);
@@ -360,13 +375,39 @@ bool testSimpleRandom3D()
                      rand() % (b[2]) +  a[2]  );
       sites.insert( p );
     }
-  trace.info()<<std::endl;
   ok = testVoronoiMapFromSites<Z3i::DigitalSet>(sites);
   trace.endBlock();
 
   return ok;
 
 }
+
+
+
+bool testSimple4D()
+{
+
+  typedef SpaceND<4> Space4;
+  Space4::Point a(0,0,0,0);
+  Space4::Point b(5,5,5,5);
+  HyperRectDomain<Space4> domain(a,b);
+
+  DigitalSetBySTLSet< HyperRectDomain<Space4> > sites(domain);
+  bool ok;
+
+  trace.beginBlock("Simple4D");
+  sites.insertNew( Space4::Point(1,4,1,1));
+  sites.insertNew( Space4::Point(3,1,3,1));
+  sites.insertNew( Space4::Point(0,0,0,0));
+
+  ok = testVoronoiMapFromSites<  DigitalSetBySTLSet< HyperRectDomain<Space4> >  >(sites);
+  trace.endBlock();
+
+  return ok;
+
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -382,7 +423,8 @@ int main( int argc, char** argv )
     && testSimple2D()
     &&  testSimpleRandom2D()
     && testSimple3D() 
-    && testSimpleRandom3D(); // && ... other tests
+    && testSimpleRandom3D()
+    && testSimple4D(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

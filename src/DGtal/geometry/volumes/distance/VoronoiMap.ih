@@ -88,6 +88,39 @@ DGtal::VoronoiMap<S,P, p>::compute ( )
   
   return output;
 }
+template <typename S, typename P, DGtal::uint32_t p>
+inline
+typename DGtal::VoronoiMap<S,P, p>::OutputImage
+DGtal::VoronoiMap<S,P, p>::computeFast ( )
+{
+
+  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
+  myLowerBoundCopy = myDomain.lowerBound();
+  myUpperBoundCopy = myDomain.upperBound();
+  
+  Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
+  OutputImage output ( myDomain );
+  OutputImage swap ( myDomain );
+  bool isSwap = true;
+
+  //Point outside the domain 
+  myInfinity = myDomain.upperBound() + Point::diagonal(1);
+
+  //Init 
+  for(typename Domain::ConstIterator it = myDomain.begin(), itend = myDomain.end();
+      it != itend;
+      ++it)
+    if ( myPointPredicate( *it))
+      output.setValue ( *it, myInfinity );
+    else
+      output.setValue ( *it, *it );
+  
+  //We process the remaining dimensions
+  for ( Dimension dim = 0; dim < S::dimension ; dim++ )
+    computeOtherSteps ( output, dim );
+  
+  return output;
+}
 
 
 template <typename S, typename P,DGtal::uint32_t p>
@@ -95,7 +128,7 @@ inline
 void
 DGtal::VoronoiMap<S, P, p>::computeFirstStep ( OutputImage &output ) const
 {
-  trace.beginBlock ( "DT dimension 0" );
+  trace.beginBlock ( "Voro dimension 0" );
   Point startingPoint = myLowerBoundCopy;
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
@@ -129,7 +162,7 @@ void
 DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
                                                const Dimension dim ) const
 {
-  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ) ;
+  std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
@@ -146,12 +179,15 @@ DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
 
+  //We pre-init the stack site
+  std::vector<Point> Sites(myUpperBoundCopy[dim] - myLowerBoundCopy[dim], myInfinity);
+
   //We process the dimensions to construct a Point
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end();
        it != itend; ++it)
     {
-      computeOtherStep1D ( output, (*it), dim );
+      computeOtherStep1D ( output, (*it), dim, Sites);
     }
   
   trace.endBlock();
@@ -259,9 +295,9 @@ template <typename S,typename P, DGtal::uint32_t p>
 void
 DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
                                                const Point &startingPoint,
-                                               const Size dim) const
+                                               const Size dim,
+					       std::vector<Point> &Sites) const
 {
-  std::vector<Point> Sites(myUpperBoundCopy[dim] - myLowerBoundCopy[dim], myInfinity);
   Point point = startingPoint;
   Point psite;
   int nbSites = -1;

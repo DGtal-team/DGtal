@@ -69,7 +69,7 @@ namespace DGtal
    * Given a point predicate and a domain, the compute() method
    * returns for each point of the domain, the closest distance to a
    * point in the domain for which the predicate is false. The result
-   * is given as a mapping point<->values implemented as an image
+   * is given as a map point<->values implemented as an image
    * model OutputImage.
    *
    * The point predicate could be:
@@ -138,7 +138,7 @@ namespace DGtal
   public:
 
     /**
-     * Compute the Distance Transformation of an image with the
+     * Compute the Distance Transformation of a set of point using a 
      * SeparableMetric metric.  The method associates to each point
      * with value satisfying the foreground predicate, its distance to
      * the closest background point.  This algorithm is
@@ -146,7 +146,6 @@ namespace DGtal
      *
      * @pre the foreground point predicate @a predicate must be defined on the
      * domain @a aDomain
-     *
      *
      * @return the distance transformation image.
      */
@@ -173,8 +172,6 @@ namespace DGtal
      * Compute the first step of the separable distance transformation.
      * 
      * @param output the output image with the first step DT values
-     * @param predicate the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeFirstStep(OutputImage & output) const;
 
@@ -183,8 +180,6 @@ namespace DGtal
      * 
      * @param output the output image  with the first step DT values
      * @param startingPoint a point to specify the starting point of the 1D row
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
     void computeFirstStep1D (OutputImage & output, 
 			     const Point &startingPoint) const;
