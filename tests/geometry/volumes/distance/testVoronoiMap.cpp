@@ -233,6 +233,20 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   std::string filename= "Voromap-"+name+".svg";
   board.saveSVG(filename.c_str());
 
+
+  board.clear();
+  for(typename Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = output(*it);
+      if (p != (*it))
+	Display2DFactory::draw( board,   p - (*it), (*it)); 
+    }
+
+  filename= "Voromap-diag-"+name+".svg";
+  board.saveSVG(filename.c_str());
+
+
   // board.clear();
 
   // for(typename Voro1::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
