@@ -51,7 +51,7 @@ If you want to generate the documentation, you would need:
 - \e graphviz.
 
 
-\subsection linux Build on Linux-based distributions
+\section linux Build on Linux-based distributions
 
 From a clean Ubuntu installation, you can download and install all
 dependencies using:
@@ -100,7 +100,7 @@ sudo make install
 @endcode
 
 
-\subsection macos Build on Mac OS X
+\section macos Build on Mac OS X
 
 First of all,
 
@@ -149,7 +149,7 @@ Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based instructions.
 
 
-\subsection win Build on Windows / Visual Studio
+\section win Build on Windows / Visual Studio
 
 First of all,
 
@@ -158,7 +158,7 @@ First of all,
 - download and install Doxygen : http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc
 - download and install Graphviz : http://www.graphviz.org/Download..php
 
-\subsubsection vs2008-32 Procedure with Visual Studio Express 2008 and 32 bit libraries
+\subsection vs2008-32 Procedure with Visual Studio Express 2008 and 32 bit libraries
 
 - download and install Visual Studio Express 2008 SP1 : http://www.microsoft.com/downloads/fr-fr/details.aspx?FamilyID=3254C868-BCB9-412C-95C6-D100C872EC60
 
@@ -193,7 +193,7 @@ qmake -t vclib QGLViewer.pro -spec win32-msvc2008
 - open the \b QGLViewer.vcproj (in QGLViewer folder) with Visual Studio and compile in \b Win32 \b Release mode and then in \b Win32 \b Debug mode 
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
-\subsubsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
+\subsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
 
 - 1) download and install Visual Studio Express 2010 : http://go.microsoft.com/?linkid=9709972
 - 2) download and install Windows SDK 7.1 (ie MSDK for Windows 7 and .NET Framework 4) : http://download.microsoft.com/download/F/1/0/F10113F5-B750-4969-A255-274341AC6BCE/GRMSDKX_EN_DVD.iso
@@ -238,7 +238,7 @@ qmake -t vclib QGLViewer.pro -spec win32-msvc2010
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
 
-\subsubsection cairo Cairo dependency
+\subsection cairo Cairo dependency
 
 Because on Windows, Cairo dependencies are \b MSYS, \b curl, \b zlib, \b libpng, \b pixman and a bit long & not so easy to compile,
 we provide for you the Cairo library and headers files for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2008%20x86.rar">vs2008-32</a> and for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2010%20x64.rar">vs2010-64</a>.
