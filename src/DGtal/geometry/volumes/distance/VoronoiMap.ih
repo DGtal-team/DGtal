@@ -58,40 +58,12 @@ template <typename S, typename P,DGtal::uint32_t p>
 inline
 DGtal::VoronoiMap<S, P,p>::~VoronoiMap()
 {
-}
-
+} 
 
 template <typename S, typename P, DGtal::uint32_t p>
 inline
 typename DGtal::VoronoiMap<S,P, p>::OutputImage
-DGtal::VoronoiMap<S,P, p>::compute ( )
-{
-
-  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
-  myLowerBoundCopy = myDomain.lowerBound();
-  myUpperBoundCopy = myDomain.upperBound();
-  
-  Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
-  OutputImage output ( myDomain );
-  OutputImage swap ( myDomain );
-  bool isSwap = true;
-
-  //Point outside the domain 
-  myInfinity = myDomain.upperBound() + Point::diagonal(1);
-
-  //First step
-  computeFirstStep ( output );
-
-  //We process the remaining dimensions
-  for ( Dimension dim = 1; dim < S::dimension ; dim++ )
-    computeOtherSteps ( output, dim );
-  
-  return output;
-}
-template <typename S, typename P, DGtal::uint32_t p>
-inline
-typename DGtal::VoronoiMap<S,P, p>::OutputImage
-DGtal::VoronoiMap<S,P, p>::computeFast ( )
+DGtal::VoronoiMap<S,P, p>::compute( )
 {
 
   //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)

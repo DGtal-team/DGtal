@@ -176,14 +176,18 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typedef SetPredicate<Set> Predicate;
   Predicate myPredicate(mySet);
 
-  //typedef NotPointPredicate<Predicate> NegPredicate;
-  //NegPredicate myNegPredicate( myPredicate );
-
-  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;
-  
+  trace.beginBlock(" Voro computation");
+  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;  
   Voro2 voro(aSet.domain(), myPredicate);
-
   typename Voro2::OutputImage output = voro.compute();
+  trace.endBlock();
+
+  trace.beginBlock(" DT computation");
+  typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
+  DT dt(aSet.domain(), myPredicate);
+  typename DT::OutputImage output2 = dt.compute();
+  trace.endBlock();
+
 
   if ( (aSet.domain().upperBound()[1] - aSet.domain().lowerBound()[1]) <20)
     {
@@ -217,7 +221,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
             << (*it);;
     }
 
-  std::string filename= "Voromap-"+name+".png";
+  std::string filename= "Voromap-"+name+".svg";
   board.saveSVG(filename.c_str());
 
  
@@ -265,11 +269,6 @@ bool testVoronoiMapFromSites(const Set &aSet)
   typename Voro2::OutputImage output = voro.compute();
   trace.endBlock();
 
-  trace.beginBlock(" VoronoiFast computation");
-  Voro2 vorobis(aSet.domain(), myPredicate);
-  typename Voro2::OutputImage outputbis = vorobis.computeFast();
-  trace.endBlock();
-
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
   DT dt(aSet.domain(), myPredicate);
@@ -278,7 +277,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
 
 
   trace.beginBlock("Validating the Voronoi Map");
-  nbok += (checkVoronoi(aSet,output) && checkVoronoi(aSet,outputbis) )? 1 : 0; 
+  nbok += (checkVoronoi(aSet,output)   )? 1 : 0; 
   trace.endBlock();
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -314,20 +313,28 @@ bool testSimpleRandom2D()
 {
 
  Z2i::Point a(0,0);
- Z2i::Point b(256,256);
+ Z2i::Point b(64,64);
   Z2i::Domain domain(a,b);
 
   Z2i::DigitalSet sites(domain);
   bool ok;
 
   trace.beginBlock("Random 2D");
-  for(unsigned int i = 0 ; i < 256; ++i)
+  for(unsigned int i = 0 ; i < 64; ++i)
     {
       Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
       sites.insert( p );
     }
-  trace.info()<<std::endl;
   ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random");
+  trace.endBlock();
+
+  trace.beginBlock("Random 2D (dense)");
+  for(unsigned int i = 0 ; i < 64*64-64; ++i)
+    {
+      Z2i::Point p(  rand() % (b[0]) -  a[0],  rand() % (b[1]) +  a[1]  );
+      sites.insert( p );
+    }
+  ok = testVoronoiMapFromSites2D<Z2i::DigitalSet>(sites,"random-dense");
   trace.endBlock();
 
   return ok;
@@ -361,14 +368,14 @@ bool testSimpleRandom3D()
 {
 
   Z3i::Point a(0,0,0);
-  Z3i::Point b(128,128,128);
+  Z3i::Point b(64,64,64);
   Z3i::Domain domain(a,b);
   
   Z3i::DigitalSet sites(domain);
   bool ok;
   
   trace.beginBlock("Random 3D");
-  for(unsigned int i = 0 ; i < 128; ++i)
+  for(unsigned int i = 0 ; i < 64; ++i)
     {
       Z3i::Point p(  rand() % (b[0]) -  a[0], 
                      rand() % (b[1]) +  a[1],
