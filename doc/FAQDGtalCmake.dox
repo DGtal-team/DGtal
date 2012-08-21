@@ -125,6 +125,14 @@ brew install cmake doxygen graphviz boost
 brew install gmp cairo libqglviewer graphicsmagick
 @endcode
 
+For the OGRE dependencie, you should first of all download the OgreSDK available on http://www.ogre3d.org/download/sdk , take the macos one and extract it somewhere on your computer. You should then define the envoronment variable OGRE_HOME, it's absolutely necessary to make the dependencie work. 
+Then when you will use the cmake command use is like this:
+@code
+OGRE_HOME=/Applications/OgreSDK/ cmake .. -DWITH_OGRE=true
+@endcode
+
+Note that the slash after the sdk folder is necessary, if your compiler doesn't support Obj-c you can't activate this dependency.
+
 Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
 @code
 tar zxvf InsightToolkit-4.1.0.tar.gz

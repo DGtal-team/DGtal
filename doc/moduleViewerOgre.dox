@@ -20,7 +20,12 @@ namespace DGtal {
   This class ViewerOgre3D defines the stream mechanism to
   display 3d primitives (like PointVector, DigitalSetBySTLSet, Object
   ...). It permits to display 3D scenes, with different complex objects
-  and give the possibility to interact with them. 
+  and give the possibility to interact with them. The Ogre dependencie must be fullfield, please refer to the 
+  following links.
+- \ref linux 
+- \ref macos 
+
+
  *
  \section DGtal_Section View mode
 First to use the ViewerOgre3D stream, you need to include the following hearders:
@@ -116,12 +121,12 @@ You may choose a mode for a drawable element by outputing on the stream a SetMod
 
 As for \c Board2D the object can be displayed with different possible mode:
 
-  - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
-  - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
-  - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
-  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
-  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+- class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
+- class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
+- class Object, modes: "", "DrawAdjacencies", "PavingTransp".
+- class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+- class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+- class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
 
 
 
@@ -130,20 +135,13 @@ As for \c Board2D the object can be displayed with different possible mode:
 
 Others mode examples are illustrated for class KhalimskyCell and class Mesh.
 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
+
  \image html viewerMeshImport.png "Mesh visualization  with ViewerOgre3D." 
  \image latex viewerMeshImport.png "Mesh visualization  with ViewerOgre3D." width=5cm
-</TD>
-<TD  align=CENTER>
+
  \image html viewerKhalimsky.jpg "KhalimskyCell visualization  with ViewerOgre3D." 
  \image latex viewerKhalimsky.jpg "KhalimskyCell visualization  with ViewerOgre3D." width=5cm
-</TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
 
 
 \subsubsection  DGtalGLV_Custom Changing the style for displaying drawable elements.
@@ -161,16 +159,16 @@ The custom color can be applied by an instance of the CustomColors3D as follow:
 The 4 Colors are :
 
 
-	    SelfIlluminationColor
+SelfIlluminationColor
 
 
-            AmbientIlluminationColor
+AmbientIlluminationColor
 
 
-	    DiphuseIlluminationColor
+DiphuseIlluminationColor
 
 
-	    SpecularIlluminationColor
+SpecularIlluminationColor
 
 
 And the last parameter is the texture (Note that it should be in the same folder that the binary).
@@ -228,24 +226,17 @@ For example, if you want to select a non visible point of the DGtalset, you can 
 This selection mode may, for example, permit to sculpt something starting from a cube..
  
 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
+
  \image html viewerSelection1.png "Selection 1  with ViewerOgre3D." 
  \image latex viewerSelection1.png "Selection 1  with ViewerOgre3D." width=5cm
-</TD>
-<TD  align=CENTER>
+
  \image html viewerSelection2.png "Selection 2  with ViewerOgre3D." 
  \image latex viewerSelection2.png "Selection 2  with ViewerOgre3D." width=5cm
-</TD>
-<TD  align=CENTER>
+
+
  \image html viewerSelection3.png "Selection 3  with ViewerOgre3D." 
  \image latex viewerSelection3.png "Selection 3  with ViewerOgre3D." width=5cm
-</TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
 
 
 \section DGtal_mode3 Manipulate mode
@@ -265,20 +256,12 @@ By using the + and - keys, we can go through the range value and watch the set's
 This example remains a simple one, more complex stuff can be done using this mode.
 
 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
  \image html viewerManipulate1.png "Manipulate 1  with ViewerOgre3D." 
  \image latex viewerManipulate1.png "Manipulate 1  with ViewerOgre3D." width=5cm
-</TD>
-<TD  align=CENTER>
+
  \image html viewerManipulate2.png "Manipulate 2  with ViewerOgre3D." 
  \image latex viewerManipulate2.png "Manipulate 2  with ViewerOgre3D." width=5cm
-</TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
 
 
 \section DGtal_Dynamic Dynamic interactions
@@ -382,6 +365,11 @@ To get a xml file named titanic, the code will be
 viewer->exportToXml("titanic");
 @endcode
 
+\subsection DGtal_help  Displaying the list of the diffenrent possible interactions  on the standard output
+Here is the method you should call to display the help.
+@code
+void 	showHelp ()
+@endcode
 
 
 \subsection DGtal_clearing Clearing the scene
@@ -424,13 +412,13 @@ For example adding a new dgtal object support to the viewer.
 
 2 (+1) Steps must be done:
 
-	- Adding the support in Display3DFactory.
+- Adding the support in Display3DFactory.
 
 
-	- Adding default style support.
+- Adding default style support.
 
 
-	- (Adding the ogre primitives)
+- (Adding the ogre primitives)
 
 
 
