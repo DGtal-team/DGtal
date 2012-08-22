@@ -167,24 +167,7 @@ namespace DGtal
 
     
     // ------------------- Private functions ------------------------
-  private:
-    
-    
-    /** 
-     * Compute the first step of the separable voronoi map construction.
-     * 
-     * @param output the output image with the first VM values
-     */
-    void computeFirstStep(OutputImage & output) const;
-
-    /** 
-     * Compute the 1D Voronoi Mpa associated to the first step.
-     * 
-     * @param output the partial voronoi map at first step.
-     * @param startingPoint a point to specify the starting point of the 1D row
-     */
-    void computeFirstStep1D (OutputImage & output, 
-			     const Point &startingPoint) const;
+  private:    
     
     /** 
      *  Compute the other steps of the separable Voronoi map.

@@ -348,7 +348,7 @@ namespace DGtal
       //decide if (a,c) hide b in the lines (startingPoint, dim)
 
       Abscissa a,b, c;
-  
+
       a = v[dim] - u[dim];
       b = w[dim] - v[dim];
       c = a + b;  
@@ -461,13 +461,16 @@ namespace DGtal
      * 
      * @return true if (a,c) hides b.
      */
-    bool hiddenBy(const Point &a, 
-                  const Point &b,
-                  const Point &c, 
+    bool hiddenBy(const Point &u, 
+                  const Point &v,
+                  const Point &w, 
                   const Point &startingPoint,
                   const typename Point::UnsignedComponent dim) const
     {
       ASSERT(false && "Not-Yet-Implemented");
+      Abscissa uv, vw;
+      
+      
     }
 
   }; // end of class SeparableMetricHelper
