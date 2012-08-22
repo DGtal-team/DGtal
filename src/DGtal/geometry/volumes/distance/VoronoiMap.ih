@@ -73,8 +73,7 @@ DGtal::VoronoiMap<S,P, p>::compute( )
   Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
   OutputImage output ( myDomain );
   OutputImage swap ( myDomain );
-  bool isSwap = true;
-
+ 
   //Point outside the domain 
   myInfinity = myDomain.upperBound() + Point::diagonal(1);
 
@@ -93,40 +92,6 @@ DGtal::VoronoiMap<S,P, p>::compute( )
   
   return output;
 }
-
-
-template <typename S, typename P,DGtal::uint32_t p>
-inline
-void
-DGtal::VoronoiMap<S, P, p>::computeFirstStep ( OutputImage &output ) const
-{
-  trace.beginBlock ( "Voro dimension 0" );
-  Point startingPoint = myLowerBoundCopy;
-
-  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
-  
-  //We setup the subdomain iterator
-  //the iterator will scan dimension using the order:
-  // {n-1, n-2, ... 1} (we skip the '0' dimension.
-  std::vector<Size> subdomain;
-  subdomain.reserve(S::dimension - 1);
-  for (Dimension k = S::dimension-1; k>0 ; --k)
-    subdomain.push_back( k );
-
-  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
-
-  //We process the dimensions to construct a Point
-  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
-	 itend = localDomain.subRange( subdomain ).end(); 
-       it != itend; ++it)
-    {
-      // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
-      computeFirstStep1D (output, (*it) );
-    }
-
-  trace.endBlock();
-}
-
 
 template <typename S, typename P,DGtal::uint32_t p>
 inline
@@ -165,70 +130,6 @@ DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
   trace.endBlock();
 
 }
-
-//////////////////////////////////////////////////////////////////////:
-////////////////////////// Phase X
-template <typename S, typename P,DGtal::uint32_t p>
-void
-DGtal::VoronoiMap<S,P,p>::computeFirstStep1D ( OutputImage & output,
-                                               const Point &startingPoint ) const
-{
-  Point prec = startingPoint;
-  Point point = startingPoint;
-
-  if ( myPointPredicate ( point  ) )
-    output.setValue ( point, myInfinity );
-  else
-    output.setValue ( point, point );
-
-  //Forward scan 
-  for ( point[0] = myLowerBoundCopy[0]+1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
-    {
-      // trace.warning() << point << " ";
-      if ( myPointPredicate ( point  ))
-	output.setValue ( point, output ( prec ) );
-      else
-	output.setValue ( point, point );
-
-      prec[0] = point[0];
-    }
-
-
-  //prec is the the rightmost point of "point'
-  prec[0] =  myUpperBoundCopy[0];
-
-
-  //     [.,.,A,A,A,B, B     , C    ]
-  //                   point   prec
-  //Backward scan
-  //Minor optim
-
-  Point psite,precsite;
-  precsite = output(prec);
-  if (precsite == myInfinity)
-    return;
-  
-  //Normal backward scan
-  for ( point[0] = myUpperBoundCopy[0] - 1; point[0] >= myLowerBoundCopy[0] ; point[0]-- )
-    {
-      psite = output(point);
-      if (psite[0] != precsite[0])
-        {
-          if ( (psite == myInfinity) ||
-               (( precsite[0] - point[0]  )  <  (point[0] - psite[0])))
-            {
-              output.setValue(point, precsite);
-            }
-          else
-            {
-              precsite = output(point);
-            }
-        }
-      prec[0] = point[0];
-    }
-
-}
-
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
