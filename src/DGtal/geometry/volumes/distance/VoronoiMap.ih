@@ -144,26 +144,41 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
   Point psite;
   int nbSites = -1;
   
-  //Pruning the list of sites
-  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+  //Pruning the list of sites (dim=0 implies no hibben sites)
+  if (dim==0)
     {
-      psite = output(point);
-      if ( psite != myInfinity )
-        {
-            
-          while ((nbSites >= 1) && 
-                 ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
-				     psite, startingPoint, dim) ))
-            {
-              nbSites --; 
-            }
-          nbSites++;
-          Sites[nbSites] = psite;
-        }
-      point[dim] ++;
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = output(point);
+	  if ( psite != myInfinity )
+	    {
+	      nbSites++;
+	      Sites[nbSites] = psite;
+	    }
+	  point[dim] ++;
+	}
+    }
+  else
+    {
+      //Pruning the list of sites
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = output(point);
+	  if ( psite != myInfinity )
+	    {
+	      while ((nbSites >= 1) && 
+		     ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
+					 psite, startingPoint, dim) ))
+		{
+		  nbSites --; 
+		}
+	      nbSites++;
+	      Sites[nbSites] = psite;
+	    }
+	  point[dim] ++;
+	}
     }
   
- 
   //No sites found
   if (nbSites == -1)
     return;
