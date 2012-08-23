@@ -322,13 +322,9 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 
-# -----------------------------------------------------------------------------
-# Check OBJC
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_OBJC)
-  INCLUDE(${CMAKE_MODULE_PATH}/CheckOBJC.cmake)
-ENDIF(WITH_OBJC)
+
+
+
 # -----------------------------------------------------------------------------
 # Look for Ogre for 3D display.
 # (They are not compulsory).
@@ -361,12 +357,14 @@ IF(WITH_OGRE)
   endif(UNIX AND NOT APPLE)
 
   if(APPLE)
+    INCLUDE(${CMAKE_MODULE_PATH}/CheckOBJC.cmake)
     FIND_LIBRARY(CARBON_LIBRARY Carbon)
     FIND_LIBRARY(COCOA_LIBRARY Cocoa)
     FIND_LIBRARY(IOKIT_LIBRARY IOKit )
     FIND_LIBRARY(FOUNDATION_LIBRARY Foundation )
     MARK_AS_ADVANCED (CARBON_LIBRARY COCOA_LIBRARY)
     SET(EXTRA_LIBS ${CARBON_LIBRARY} ${COCOA_LIBRARY}  ${IOKIT_LIBRARY} ${FOUNDATION_LIBRARY})
+
     set( OGRE_HOME $ENV{OGRE_HOME})
     if(NOT DEFINED OGRE_HOME)
       message("The variable OGRE_HOME is unset, please set it, this cmake lists has very low chances to compile")
@@ -379,6 +377,7 @@ IF(WITH_OGRE)
       set(OGRE_PLUGINS "${OGRE_HOME}/lib/")
     endif()
     ADD_DEFINITIONS("-x objective-c++")
+    set(OGRE_DIR "${OGRE_HOME}" )
   endif(APPLE)
 
   find_package(OGRE REQUIRED)
