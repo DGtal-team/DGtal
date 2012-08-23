@@ -242,11 +242,19 @@ namespace DGtal
 	      
 	      
 	     /**
-              * Flag that the rendering
+              * Flag that manages the rendering
               */  
               bool myShutdown;
 	      
-	      
+	      /**
+	       * Flag that tells if the shift key is pressed
+	       */
+	       bool mySelectionMode;
+
+	      /**
+	       * Flag that tells if the control key is pressed
+	       */
+	      bool myControlMode;
 	      /**
               * The keyboard
               */
