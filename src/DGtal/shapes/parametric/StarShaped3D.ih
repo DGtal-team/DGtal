@@ -118,9 +118,9 @@ inline
 typename DGtal::StarShaped3D<TSpace>::RealPoint
 DGtal::StarShaped3D<TSpace>::normal( AngularCoordinates t ) const
 {
-  RealPoint normal( gradient(t));
-  double norm = sqrt(normal[0]*normal[0] + normal[1]*normal[1] +normal[2]*normal[2]);
-  return (RealPoint(normal[0]/norm,normal[1]/norm,normal[2]/norm));
+  RealPoint aNormal( gradient(t));
+  double norm = sqrt(aNormal[0]*aNormal[0] + aNormal[1]*aNormal[1] +aNormal[2]*aNormal[2]);
+  return (RealPoint(aNormal[0]/norm,aNormal[1]/norm,aNormal[2]/norm));
 }
 
 

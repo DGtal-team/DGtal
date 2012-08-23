@@ -193,7 +193,7 @@ DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i) const
 
 template<typename TPoint>
 inline
-const unsigned int 
+unsigned int 
 DGtal::MeshFromPoints<TPoint>::nbFaces() const
 {
   return myFaceList.size();
@@ -201,7 +201,7 @@ DGtal::MeshFromPoints<TPoint>::nbFaces() const
 
 template<typename TPoint>
 inline
-const unsigned int 
+unsigned int 
 DGtal::MeshFromPoints<TPoint>::nbVertex() const
 {
   return myVertexList.size();
