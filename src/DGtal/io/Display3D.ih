@@ -335,7 +335,7 @@ void
 DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGtal::Color aColor)
 {
   polygonD3D aPolygon;
-  for(int i=0; i< vectPointsPolygon.size();i++){
+  for(unsigned int i=0; i< vectPointsPolygon.size();i++){
     aPolygon.vectPoints.push_back(vectPointsPolygon.at(i));
     aPolygon.R=aColor.red();
     aPolygon.G=aColor.green();
@@ -769,7 +769,7 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
   }
   
   
-  for(int j=0; j<myVoxelSetList.size(); j++){
+  for(unsigned int j=0; j<myVoxelSetList.size(); j++){
     for (unsigned int i=0; i< myVoxelSetList.at(j).size(); i++){
       voxelD3D voxel = myVoxelSetList.at(j).at(i);
       pointD3D p1, p2, p3, p4, p5, p6, p7, p8;

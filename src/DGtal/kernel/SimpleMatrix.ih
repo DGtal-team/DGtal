@@ -271,7 +271,6 @@ typename DGtal::SimpleMatrix<T,M,N>::ColumnVector
 DGtal::SimpleMatrix<T, M, N>::operator*(const RowVector& other) const
 {
   ColumnVector res;
-  T e = NumberTraits<T>::ZERO;
   for (DGtal::Dimension i=0; i<M; i++)
     for (DGtal::Dimension k=0; k<N; k++)
       res[i]  += this->operator()(i, k )*other[k];
