@@ -310,15 +310,12 @@ void ViewerOgre3D::start()
       timeSinceLastFrame = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - startTime;
     }
 #else
-    
-  mAppDelegate = [[AppDelegate alloc] init];
-    	
-  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+        	
+    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
     
   mAppDelegate = [[AppDelegate alloc] init];
   [[NSApplication sharedApplication] setDelegate:mAppDelegate];
   int retVal = NSApplicationMain(0,NULL);
-  [mAppDelegate startRendering];
   [pool release];
 #endif	
 }

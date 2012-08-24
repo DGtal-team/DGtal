@@ -49,22 +49,22 @@ bool testMeshImport()
   new ViewerOgre3D();
   DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
 
-  MeshFromPoints<Point> aMesh(true);
-  aMesh.addVertex(Point(0,0,0));
-  aMesh.addVertex(Point(1,0,0));
-  aMesh.addVertex(Point(1,1,0));
+  MeshFromPoints<DGtal::Z3i::Point> aMesh(true);
+  aMesh.addVertex(DGtal::Z3i::Point(0,0,0));
+  aMesh.addVertex(DGtal::Z3i::Point(1,0,0));
+  aMesh.addVertex(DGtal::Z3i::Point(1,1,0));
 
-  aMesh.addVertex(Point(0,0,1));
-  aMesh.addVertex(Point(1,0,1));
-  aMesh.addVertex(Point(1,1,1));
-  aMesh.addVertex(Point(0,1,1));
+  aMesh.addVertex(DGtal::Z3i::Point(0,0,1));
+  aMesh.addVertex(DGtal::Z3i::Point(1,0,1));
+  aMesh.addVertex(DGtal::Z3i::Point(1,1,1));
+  aMesh.addVertex(DGtal::Z3i::Point(0,1,1));
 
-  aMesh.addVertex(Point(0,1,0));
-  aMesh.addVertex(Point(0,2,0));
-  aMesh.addVertex(Point(0,3,1));
-  aMesh.addVertex(Point(0,2,2));
-  aMesh.addVertex(Point(0,1,2));
-  aMesh.addVertex(Point(0,0,1));
+  aMesh.addVertex(DGtal::Z3i::Point(0,1,0));
+  aMesh.addVertex(DGtal::Z3i::Point(0,2,0));
+  aMesh.addVertex(DGtal::Z3i::Point(0,3,1));
+  aMesh.addVertex(DGtal::Z3i::Point(0,2,2));
+  aMesh.addVertex(DGtal::Z3i::Point(0,1,2));
+  aMesh.addVertex(DGtal::Z3i::Point(0,0,1));
   
   aMesh.addTriangularFace(0, 1, 2, Color(150,0,150,104));
   aMesh.addQuadFace(6,5,4,3, Color::Blue);

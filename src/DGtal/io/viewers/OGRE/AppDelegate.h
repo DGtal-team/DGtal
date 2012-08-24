@@ -73,46 +73,56 @@ static id mAppDelegate;
 
 - (void)startRendering {
     
-//	    NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    mLastFrameTime = 1;
-    mStartTime = 0;
-    mTimer = nil;
+  NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
+  mLastFrameTime = 1;
+  mStartTime = 0;
+  mTimer = nil;
    
-    mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime
-                                              target:self
-                                            selector:@selector(renderOneFrame:)
-                                            userInfo:nil
-                                             repeats:YES];
-//    [pool release];
+  mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime
+  	    target:self
+  	    selector:@selector(renderOneFrame:)
+  	    userInfo:nil
+  	    repeats:YES];
+  //  mTimer = [NSTimer timerWithTimeInterval: (NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime target: self selector: @selector(renderOneFrame:) userInfo: nil repeats: YES];
+ 
+  //  [[NSRunLoop mainRunLoop] addTimer: mTimer forMode: NSRunLoopCommonModes];
+  [pool release];
 }
 - (void)applicationDidFinishLaunching:(NSNotification *)application {
-    mLastFrameTime = 1;
-    mStartTime = 0;
-    mTimer = nil;
+  mLastFrameTime = 1;
+  mStartTime = 0;
+  mTimer = nil;
     
-    [self startRendering];
+  [self startRendering];
 }
+
+
+//- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender 
+//{
+//  return NSTerminateCancel;
+//}
+
 
 - (void)renderOneFrame:(id)sender
 {
-    if(InputListener::getSingletonPtr()->viewerIsRunning() &&
-       Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
+  if(InputListener::getSingletonPtr()->viewerIsRunning() &&
+     Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
     {
-			mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
+      mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
             
-			InputListener::getSingletonPtr()->getKeyBoard()->capture();
-			InputListener::getSingletonPtr()->getMouse()->capture();
+      InputListener::getSingletonPtr()->getKeyBoard()->capture();
+      InputListener::getSingletonPtr()->getMouse()->capture();
             
-			InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
-			ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
+      InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
+      ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
             
-			mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
+      mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
     }
-    else
+  else
     {
-        [mTimer invalidate];
-        mTimer = nil;
-        [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+         [mTimer invalidate];
+         mTimer = nil;
+         [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
     }
 }
 
