@@ -1,9 +1,15 @@
-#import <Foundation/Foundation.h>
-
-int main (int argc, const char * argv[])
+// Fake Object-C++ program
+@interface ClassOne 
 {
-   @autoreleasepool {
-      NSLog (@"Obj-c++ testing !");
-   }
-   return 0;
+  int aNumber;
 }
+@end
+#include <vector>
+
+int main (int /*argc*/, const char ** /*argv[]*/)
+{
+  int a = 6;
+  std::vector<int> vec;
+  return 0;
+}
+
