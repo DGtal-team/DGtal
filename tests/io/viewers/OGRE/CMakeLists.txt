@@ -16,6 +16,10 @@ if(APPLE)
     ADD_CUSTOM_COMMAND(TARGET ${FILE}
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_BINARY_DIR}/tests/io/viewers/OGRE/${FILE} ${PROJECT_BINARY_DIR}/tests/io/viewers/OGRE/${FILE}.app/Contents/MacOS)
+      ADD_CUSTOM_COMMAND(TARGET ${FILE}
+      POST_BUILD
+      COMMAND ${CMAKE_COMMAND} -E remove ${PROJECT_BINARY_DIR}/tests/io/viewers/OGRE/${FILE} )
+      
   ENDFOREACH(FILE)
 else()
   FOREACH(FILE ${DGTAL_TESTS_SRC})
