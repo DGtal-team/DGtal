@@ -24,8 +24,8 @@ if(WITH_VISU3D_OGRE)
   install (CODE "set(INSTALL_INCLUDE_DIR ${INSTALL_INCLUDE_DIR})
   configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/RequirementsInstall.h.in
     ${INSTALL_INCLUDE_DIR}/DGtal/io/viewers/OGRE/Requirements.h )")
-  configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/plugins.cfg.in
-    ${INSTALL_INCLUDE_DIR}/DGtal/io/viewers/OGRE/Ressources/plugins.cfg )
+install(CODE  "configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/plugins.cfg.in
+    ${INSTALL_INCLUDE_DIR}/DGtal/io/viewers/OGRE/Ressources/plugins.cfg )")
 endif(WITH_VISU3D_OGRE)
 
 

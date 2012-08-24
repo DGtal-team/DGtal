@@ -139,7 +139,7 @@ ENDIF(@SOQT_FOUND_DGTAL@ OR @QGLVIEWER_FOUND_DGTAL@)
 
 #-- We force the OGRE rediscovering
 IF(@OGRE_FOUND_DGTAL@ AND APPLE )
-  set(CMAKE_MODULE_PATH "@OGRE_HOME@cmake/;${CMAKE_MODULE_PATH}")
+  set(CMAKE_MODULE_PATH "@OGRE_HOME@/cmake/;${CMAKE_MODULE_PATH}")
   find_package(OGRE REQUIRED )
   ADD_DEFINITIONS("-DWITH_OGRE ")
   ADD_DEFINITIONS("-x objective-c++")
@@ -158,7 +158,7 @@ macro(prepare_executable FILE_NAME)
     file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents)
     file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/MacOS)
     file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/Frameworks)
-    execute_process( COMMAND ${CMAKE_COMMAND}  -E create_symlink @OGRE_HOME@lib/release/Ogre.framework/ ${PATH}/${FILE_NAME}.app/Contents/Frameworks/Ogre.framework )
+    execute_process( COMMAND ${CMAKE_COMMAND}  -E create_symlink @OGRE_HOME@/lib/release/Ogre.framework/ ${PATH}/${FILE_NAME}.app/Contents/Frameworks/Ogre.framework )
     configure_file(${DGtal_DIR}/src/DGtal/io/viewers/OGRE/Ressources/info.plist.in
       ${PATH}/${FILE_NAME}.app/Contents/info.plist)
     set(EXECUTABLE_OUTPUT_PATH  ${PATH}/${FILE_NAME}.app/Contents/MacOS )

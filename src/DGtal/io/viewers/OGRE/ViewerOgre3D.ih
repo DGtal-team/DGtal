@@ -124,20 +124,23 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 template <typename TDrawableWithDisplay3D>
 void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
 {
-  if ( object.className() == "PointVector" )
-    {
-      mySelectionMode = true;
-      myMode->setCaption("Mode: Selection / Select a Point");
-      start();
-      if( (mySelectedDGtalNode!=NULL) &&
-	  (( ( DrawableWithOgreWrapper<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject()->className() == object.className()))
+  
+  mySelectionMode = true;
+  myMode->setCaption("Mode: Selection / Select a Point");
+  start();
+  if( (mySelectedDGtalNode!=NULL) &&
+      (( ( DrawableWithOgreWrapper<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject()->className() == object.className()))
     {
       const TDrawableWithDisplay3D * myPoint  = ( ( DrawableWithOgreWrapper<TDrawableWithDisplay3D> * ) ( mySelectedDGtalNode->getDGtalObject() ) )->getDgtalObject();
       object = ( *myPoint );
       mySelectionMode = false;
       myMode->setCaption("Mode: View");
+    
     }
-}
+  else
+    {
+      //Must raise an exeption
+    }
     
 }
 
