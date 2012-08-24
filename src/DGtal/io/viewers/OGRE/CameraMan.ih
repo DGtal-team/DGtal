@@ -156,7 +156,7 @@ bool CameraMan::handleKeyRelease ( const OIS::KeyEvent & evt )
  */
 bool CameraMan::handleMouseMove ( const OIS::MouseEvent & evt )
 {
-  myTempMouseMove = Ogre::Vector3 ( -0.05f * evt.state.X.rel, -0.05f * evt.state.Y.rel, -evt.state.Z.rel );
+  myTempMouseMove = Ogre::Vector3 ( -0.02f * evt.state.X.rel, -0.02f * evt.state.Y.rel, -0.01*evt.state.Z.rel );
   return false;
 }
 
@@ -261,7 +261,7 @@ void CameraMan::render ( double timeSinceLastFrame )
 	  double norm= distance.normalise();
 	  Ogre::Vector3 theYAxis =myCameraNode->getOrientation().yAxis()/(myCameraNode->getOrientation().yAxis().normalise());
 	  Ogre::Vector3 theXAxis =myCameraNode->getOrientation().xAxis()/(myCameraNode->getOrientation().xAxis().normalise());
-	  Ogre::Vector3 temp =(theYAxis* myY - theXAxis*myX) ;
+	  Ogre::Vector3 temp =(theYAxis* myY*0.5 - theXAxis*myX*0.5 ) ;
 
 
 	  myCameraNode->translate ( temp*norm*timeSinceLastFrame*DefaultCameraRotationSpeed);  
@@ -355,8 +355,6 @@ void CameraMan::zoom(int z)
 void CameraMan::setInitialPosition(Ogre::Vector3 & newPos)
 {
   myInitialPosition =newPos;
-  //  myCameraNode->lookAt(mySceneCenter,Ogre::Node::TS_WORLD);
-  //  mySavedOrientation = myCameraNode->getOrientation();
 }
 
 /**

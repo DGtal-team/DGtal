@@ -129,6 +129,9 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
   myTime =-1;
   myWindow->setDeactivateOnFocusChange(false);
 
+  mySelectionMode=false;
+  myControlMode=false;
+
 
 }
 
@@ -461,7 +464,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 	  else if ( myMouseRightClicked  && ( ( e.state.X.abs != 0 ) && ( e.state.Y.abs != 0 ) && ( e.state.Y.abs != myWindow->getHeight() ) && ( e.state.X.abs != myWindow->getWidth() ) ) )
 	    {
 	      myCameraMan->setSceneCenter ( myViewer->getSceneCenter() );
-	      myCameraMan->translateCamera ( e.state.X.rel, e.state.Y.rel );
+	      myCameraMan->translateCamera ( e.state.X.rel*0.02, e.state.Y.rel*0.02 );
 	      myViewer->setSceneCenter ( myCameraMan->getNewSceneCenter() );
 	    }
 

@@ -72,7 +72,7 @@ namespace DGtal
 
   class InputListener;
 
-  const double scaleFactor= 20.0;
+  const double scaleFactor= 1.0;
   /////////////////////////////////////////////////////////////////////////////
   // class ViewerOgre3D
   /**

@@ -55,7 +55,7 @@ inline
 void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DGtal::MeshFromPoints<TPoint> & aMesh )
 {
 
-  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  DGtalNode * theMeshNode = new DGtalNode ( viewer.getSceneMgr() );
   Ogre::SceneNode * theNode = viewer.getANode();
   viewer.createMaterial(theNode->getName());
   Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
@@ -72,19 +72,47 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DG
 	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
 	  TPoint  p4 = aMesh.getVertex(aFace.at(3));
        
-	  viewer.addQuad(p1[0], p1[1], p1[2], 
-			 p2[0], p2[1], p2[2], 
-			 p3[0], p3[1], p3[2], 
-			 p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
+	  Representation * newQuad= viewer.addQuad(p1[0], p1[1], p1[2], 
+						 p2[0], p2[1], p2[2], 
+						 p3[0], p3[1], p3[2], 
+						 p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
+
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newQuad );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newQuad->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newQuad->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(p1[0], p1[1], p1[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
+			 
 	}
       else if(aNum==3)
 	{
 	  TPoint  p1 = aMesh.getVertex(aFace.at(0));
 	  TPoint  p2 = aMesh.getVertex(aFace.at(1));
 	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
-	  viewer.addTriangle(p1[0], p1[1], p1[2], 
+	  Representation * newTriangle=viewer.addTriangle(p1[0], p1[1], p1[2], 
 			     p2[0], p2[1], p2[2], 
 			     p3[0], p3[1], p3[2], theNode->createChildSceneNode() ,theNode->getName());
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newTriangle );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newTriangle->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newTriangle->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(p1[0], p1[1], p1[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
 	}
       else if(aNum>4)
 	{
@@ -97,13 +125,35 @@ void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DG
 	      pt.z =aMesh.getVertex(aFace.at(j))[2];
 	      vectPoly.push_back(pt);	 
 	    }
-	  viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
+	  Representation * newPoly=viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newPoly );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newPoly->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newPoly->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(aMesh.getVertex(aFace.at(0))[0], aMesh.getVertex(aFace.at(0))[1], aMesh.getVertex(aFace.at(0))[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
 	}
       else
 	{
 	  trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
 	}
-     
+   	theMeshNode->setName ( theVirtualRepresentation->getName() );
+
+  	theMeshNode->setRepresentation ( theVirtualRepresentation );
+  	theMeshNode->setFather ( viewer.getRootDGtalNode() );
+  	viewer.getRootDGtalNode()->addSon ( theMeshNode );
+  	viewer.addToList ( theMeshNode );
+
+  	DrawableWithOgreWrapper<MeshFromPoints<TPoint> >  * m = new DrawableWithOgreWrapper<MeshFromPoints<TPoint> > ( aMesh );
+  	DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) m;
+  	theMeshNode->setDGtalObject ( theDrawableObject );    
      
 
      
