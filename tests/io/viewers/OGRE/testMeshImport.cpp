@@ -59,6 +59,7 @@ bool testMeshImport()
   aMesh.addVertex(DGtal::Z3i::Point(1,1,1));
   aMesh.addVertex(DGtal::Z3i::Point(0,1,1));
 
+
   aMesh.addVertex(DGtal::Z3i::Point(0,1,0));
   aMesh.addVertex(DGtal::Z3i::Point(0,2,0));
   aMesh.addVertex(DGtal::Z3i::Point(0,3,1));

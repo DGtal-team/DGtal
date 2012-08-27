@@ -182,6 +182,13 @@ void Representation::select()
     { 
       ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Selected");
       ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
+
+    }
+  else if(myMovableObjectType=="Mesh")
+    { 
+      ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/MeshSelected");
+      ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
+
     }
 }
 
@@ -197,6 +204,13 @@ void Representation::groupSelect()
     { 
       ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/Group");
       ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
+
+    }
+  else if(myMovableObjectType=="Mesh")
+    { 
+      ((Ogre::Entity*) myMovableObject)->setMaterialName("Texture/MeshGroup");
+      ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
+
     }
 }
 
@@ -312,7 +326,6 @@ void Representation::less( )
  */
 void Representation::moreTransparency( )
 {
-  
 
 }
 
@@ -322,7 +335,7 @@ void Representation::moreTransparency( )
  */
 void Representation::lessTransparency( )
 {
-  std::cout<<"Hello"<<std::endl;
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////

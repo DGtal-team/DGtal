@@ -40,17 +40,21 @@ namespace DGtal
   
   // ------------------------------------------------------------------------------------- MeshFromPoints	
   /**
-   * Default style for the paving  mode.
+   * Default style mode.
    */
   struct Ogre_DefaultDrawStyle_MeshFromPoints : public DrawableWithViewerOgre3D
   {
     /**
-     * Draw the DSS3d on a viewer
+     * Draw the Mesh on a viewer
      * @param board the output board where the object is drawn.
      */
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
-
+      Viewer.setAmbientIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setTexture("unselectedMesh.jpg");
     }
   };
 
@@ -67,7 +71,11 @@ namespace DGtal
      */
     virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
     {
-
+      Viewer.setAmbientIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(150,255,150,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setTexture("unselected.jpg");
     }
   };
   // ------------------------------------------------------------------------------------- ArithmeticalDSS3d
