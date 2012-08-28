@@ -15,16 +15,16 @@
 **/
 
 /**
-* @file testEllipsoid.cpp
-* @ingroup Tests
-* @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
-*
-* @date 2012/°6/05
-*
-* Functions for testing class Ball3D.
-*
-* This file is part of the DGtal library.
-*/
+ * @file testEllipsoid.cpp
+ * @ingroup Tests
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ *
+ * @date 2012/°6/05
+ *
+ * Functions for testing class Ball3D.
+ *
+ * This file is part of the DGtal library.
+ */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -35,31 +35,31 @@
 #include "DGtal/kernel/sets/SetPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
- using namespace std;
- using namespace DGtal;
- using namespace Z3i;
+using namespace std;
+using namespace DGtal;
+using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 
- int main(int argc, char** argv)
- {
+int main(int argc, char** argv)
+{
 
      
    
-   // -------------------------------------------------------------------------- Type declaring
-   typedef Space::RealPoint RealPoint;
-   typedef Ball3D<Space> EuclideanShape;
+  // -------------------------------------------------------------------------- Type declaring
+  typedef Space::RealPoint RealPoint;
+  typedef Ball3D<Space> EuclideanShape;
 
     
    
-   // -------------------------------------------------------------------------- Creating the shape
-    RealPoint c1(0, 0, 0 );
-    EuclideanShape ball1( c1, 10 );	
+  // -------------------------------------------------------------------------- Creating the shape
+  RealPoint c1(0, 0, 0 );
+  EuclideanShape ball1( c1, 10 );	
     
-    cout<<"Arc lenght " << ball1.arclength( make_pair(0.0,0.0), make_pair(0.0,M_PI) , 500 )<<endl;
-    cout<<"Surface lenght " << ball1.surfacelength( make_pair(0.0,0.0), make_pair(M_PI*2.0,M_PI) , 20 )<<endl;
+  cout<<"Arc lenght " << ball1.arclength( make_pair(0.0,0.0), make_pair(0.0,M_PI) , 500 )<<endl;
+  cout<<"Surface lenght " << ball1.surfacelength( make_pair(0.0,0.0), make_pair(M_PI*2.0,M_PI) , 20 )<<endl;
     
 
   return 0;
