@@ -1,5 +1,5 @@
 /**
- * This program is free software: you can redistribute it and/or modify
+ * This Program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as
  * published by the Free Software Foundation, either version 3 of the
  * License, or (at your option) any later version.
@@ -269,11 +269,11 @@ DGtal::StarShaped3D<TSpace>::surfacelength( AngularCoordinates t1, AngularCoordi
           RealPoint xt1p( x( make_pair(t1.first + t.first,t1.second + t.second- step2 ) ) ); 
 	  RealPoint xtp1( x( make_pair(t1.first + t.first - step1,t1.second + t.second) ) );
           double D = sqrt( ( xt1p[0] - xtp[0] )*( xt1p[0] - xtp[0] ) + 
-			 ( xt1p[1] - xtp[1] )*( xt1p[1] - xtp[1] ) + 
-			 ( xt1p[2] - xtp[2] )*( xt1p[2] - xtp[2] ));
-         double d = sqrt( ( xt1p1[0] - xt1p[0] )*( xt1p1[0] - xt1p[0] ) + 
-			 ( xt1p1[1] - xt1p[1] )*( xt1p1[1] - xt1p[1] ) + 
-			 ( xt1p1[2] - xt1p[2] )*( xt1p1[2] - xt1p[2] ));
+			   ( xt1p[1] - xtp[1] )*( xt1p[1] - xtp[1] ) + 
+			   ( xt1p[2] - xtp[2] )*( xt1p[2] - xtp[2] ));
+	  double d = sqrt( ( xt1p1[0] - xt1p[0] )*( xt1p1[0] - xt1p[0] ) + 
+			   ( xt1p1[1] - xt1p[1] )*( xt1p1[1] - xt1p[1] ) + 
+			   ( xt1p1[2] - xt1p[2] )*( xt1p1[2] - xt1p[2] ));
 
 
           l += (d*D);
