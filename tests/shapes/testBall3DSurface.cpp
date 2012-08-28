@@ -15,7 +15,7 @@
 **/
 
 /**
- * @file testEllipsoid.cpp
+ * @file testBall3DSurface.cpp
  * @ingroup Tests
  * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
  *
@@ -52,17 +52,48 @@ int main(int argc, char** argv)
   typedef Space::RealPoint RealPoint;
   typedef Ball3D<Space> EuclideanShape;
 
-    
+  bool test = true;
    
   // -------------------------------------------------------------------------- Creating the shape
+  double  radius = 10;
   RealPoint c1(0, 0, 0 );
-  EuclideanShape ball1( c1, 10 );	
-    
-  cout<<"Arc lenght " << ball1.arclength( make_pair(0.0,0.0), make_pair(0.0,M_PI) , 500 )<<endl;
-  cout<<"Surface lenght " << ball1.surfacelength( make_pair(0.0,0.0), make_pair(M_PI*2.0,M_PI) , 20 )<<endl;
-    
+  EuclideanShape ball1( c1, radius );	
 
-  return 0;
+  trace.beginBlock("Arc length computing");
+  double arcExp = ball1.arclength( make_pair(0.0,0.0), make_pair(0.0,M_PI) ,500 );
+  double arcTheo = M_PI*radius;
+  trace.info() <<"Computed arc length: "<< arcExp <<endl;
+  trace.info() << "Theoric arc length: "<< arcTheo << endl;
+  if(fabs(arcTheo- arcExp) < 0.1)
+    {
+      trace.info() <<"The arc length has a good value"<<endl;	
+    }
+  else
+    {
+      test=false;
+    }
+  trace.endBlock();
+  
+  trace.beginBlock("Surface length computing");
+  double surfaceExp = ball1.surfacelength( make_pair(0.0,0.0), make_pair(M_PI*2,M_PI) ,500 );
+  double surfaceTheo = 4.0*M_PI*radius*radius;
+  trace.info() <<"Computed surface length: "<< surfaceExp <<endl;
+  trace.info() << "Theoric surface length: "<< surfaceTheo << endl;
+  if(fabs(surfaceExp- surfaceTheo) < 0.1)
+    {
+      trace.info() <<"The surface has a good value"<<endl;	
+    }
+  else
+    {
+      test=false;
+    }
+  trace.endBlock();
+
+    
+  if (test)
+    return 0;
+  else
+    return -1;
 }
 // //
 ///////////////////////////////////////////////////////////////////////////////
