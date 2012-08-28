@@ -267,7 +267,6 @@ DGtal::StarShaped3D<TSpace>::surfacelength( AngularCoordinates t1, AngularCoordi
           RealPoint xtp (x( make_pair( t1.first + t.first - step1 ,t1.second + t.second - step2 ) ));
           RealPoint xt1p1( x( make_pair(t1.first + t.first,t1.second + t.second) ) ); 
           RealPoint xt1p( x( make_pair(t1.first + t.first,t1.second + t.second- step2 ) ) ); 
-	  RealPoint xtp1( x( make_pair(t1.first + t.first - step1,t1.second + t.second) ) );
           double D = sqrt( ( xt1p[0] - xtp[0] )*( xt1p[0] - xtp[0] ) + 
 			   ( xt1p[1] - xtp[1] )*( xt1p[1] - xtp[1] ) + 
 			   ( xt1p[2] - xtp[2] )*( xt1p[2] - xtp[2] ));
