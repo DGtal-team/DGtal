@@ -221,26 +221,84 @@ namespace DGtal
 	  return BOTH;
     }
 
+
+   
+    Abscissa binarySearchHidden(const Abscissa &udim, 
+                                const Abscissa &vdim,
+                                const InternalValue &nu,
+                                const InternalValue &nv,
+                                const Abscissa &lower,
+                                const Abscissa &upper) const
+    {
+      
+      //Recurrence stop 
+      if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
+        return lower;
+      
+      Abscissa mid = (lower + upper)/2;
+      InternalValue nuUpdated = nu + (InternalValue) std::pow( abs( udim - mid ), p);
+      InternalValue nvUpdated = nv + (InternalValue) std::pow( abs( vdim - mid ), p);
+      
+      //Recursive call
+      if ( nuUpdated < nvUpdated)
+        return binarySearchHidden(udim,vdim,nu,nv,mid,upper);
+      else
+        return binarySearchHidden(udim,vdim,nu,nv,lower,mid);
+      
+    }
+
       /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
+     *
+     * @pre both voronoi cells associated with @a a and @a b must
+     * intersect the straight line. 
      * 
-     * @param a a site
-     * @param b a site
-     * @param c a site
-     * @param startingPoint starting point of the straight line
+     * @param u a site
+     * @param v a site
+     * @param w a site
+     * @param startingPoint starting point of the segment
+     * @param endPoint starting point of the segment
      * @param dim direction of the straight line
      * 
      * @return true if (a,c) hides b.
      */
-    bool hiddenBy(const Point &a, 
-                  const Point &b,
-                  const Point &c, 
+    bool hiddenBy(const Point &u, 
+                  const Point &v,
+                  const Point &w, 
                   const Point &startingPoint,
+                  const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const
     {
       ASSERT(false && "Not-Yet-Implemented");
+      
+      //Interval bound for the binary search
+      Abscissa lower = startingPoint[dim];
+      Abscissa upper = endPoint[dim];
+      
+      //Partial norm computation
+      // (sum_{i!=dim}  |u_i-v_i|^p
+      InternalValue nu = NumberTraits<InternalValue>::ZERO;
+      InternalValue nv = NumberTraits<InternalValue>::ZERO;
+      InternalValue nw = NumberTraits<InternalValue>::ZERO;
+      for(Dimension i  = 0 ; i < Point::dimension ; i++)
+	if (i != dim)
+	  {
+	    nu += ( InternalValue ) std::pow ( abs(u[i] - startingPoint[i] ) , p);
+	    nv += ( InternalValue ) std::pow ( abs(v[i] - startingPoint[i] ) , p);
+	    nw += ( InternalValue ) std::pow ( abs(w[i] - startingPoint[i] ) , p);
+	  }
+ 
+      //Intersection of voronoi boundary
+      Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper);
+      Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
+      
+      if ( uv > vw )
+        return true;
+      else
+        return false;
+      
     }
 
   }; // end of class SeparableMetricHelper
