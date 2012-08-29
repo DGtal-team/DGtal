@@ -35,6 +35,7 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -42,6 +43,51 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class VoronoiMap.
 ///////////////////////////////////////////////////////////////////////////////
+
+
+template<typename Point>
+double mynorm(const Point &point, const double p)
+{
+  double res=0.0;
+  for(unsigned int i=0; i< Point::dimension; i++)
+    res +=  std::pow ( (double)abs(point[i]) , p);
+  
+  // x^p = exp(p*log(x))
+  return exp( 1.0/p*log(res));
+}
+
+template <typename VoroMap>
+void saveVoroMap(const std::string &filename,const VoroMap &output,const double p)
+{
+  typedef HueShadeColorMap<double,2> Hue;
+  double maxdt=0.0;
+  
+  for ( typename VoroMap::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+	it != itend; ++it)
+    {
+      typename VoroMap::Value point = output(*it);
+      if ( mynorm(point-(*it),p) > maxdt)
+        maxdt = mynorm(point-(*it),p);
+    }
+  trace.error() << "MaxDT="<<maxdt<<std::endl;
+      
+  Board2D board;
+  Hue hue(0,maxdt);
+  
+  for(typename VoroMap::Domain::ConstIterator it = output.domain().begin(), 
+        itend = output.domain().end();
+      it != itend; ++it)
+    {
+      typename VoroMap::Value point = output(*it);
+      
+      board << CustomStyle( (*it).className(), new CustomColors( hue(mynorm(point- (*it),p)), 
+                                                                 hue(mynorm(point- (*it),p))))
+            << (*it);
+    }
+
+  board.saveSVG(filename.c_str());
+}
+
 
 /* Is Validate the VoronoiMap
  */
@@ -189,6 +235,12 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   // typename Voro1::OutputImage output1 = voro1.compute();
   // trace.endBlock();
 
+  trace.beginBlock(" Voronoi computation l_3");
+  typedef VoronoiMap<typename Set::Space, Predicate, 3> Voro6;
+  Voro6 voro6(aSet.domain(), myPredicate);
+  typename Voro6::OutputImage output6 = voro6.compute();
+  trace.endBlock();
+
 
 
   trace.beginBlock(" DT computation");
@@ -232,6 +284,8 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
 
   std::string filename= "Voromap-"+name+".svg";
   board.saveSVG(filename.c_str());
+  filename= "Voromap-hue"+name+".svg";
+  saveVoroMap(filename.c_str(),output,2);
 
 
   board.clear();
@@ -245,6 +299,36 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
 
   filename= "Voromap-diag-"+name+".svg";
   board.saveSVG(filename.c_str());
+  
+  board.clear();
+  for(typename Voro6::OutputImage::Domain::ConstIterator it = output6.domain().begin(), 
+        itend = output6.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = output6(*it);
+      if (p != (*it))
+	Display2DFactory::draw( board,   p - (*it), (*it)); 
+    }
+
+  filename= "Voromap-diag-l6-"+name+".svg";
+  board.saveSVG(filename.c_str());
+
+  board.clear();
+  for(typename Voro6::OutputImage::Domain::ConstIterator it = output6.domain().begin(), itend = output6.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = output6(*it);
+      unsigned char c = (p[1]*13 + p[0] * 7) % 256;
+      board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
+            << (*it);;
+    }
+
+  filename= "Voromap-l6"+name+".svg";
+  board.saveSVG(filename.c_str());
+  filename= "Voromap-hue-l6-"+name+".svg";
+  saveVoroMap(filename.c_str(),output6,3);
+
+
 
 
   // board.clear();
@@ -306,6 +390,14 @@ bool testVoronoiMapFromSites(const Set &aSet)
   Voro2 voro(aSet.domain(), myPredicate);
   typename Voro2::OutputImage output = voro.compute();
   trace.endBlock();
+
+
+  trace.beginBlock(" Voronoi computation l_3");
+  typedef VoronoiMap<typename Set::Space, Predicate, 3> Voro3;
+  Voro3 voro3(aSet.domain(), myPredicate);
+  typename Voro3::OutputImage output3 = voro3.compute();
+  trace.endBlock();
+
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
