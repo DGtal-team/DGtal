@@ -57,11 +57,28 @@ bool testcpp11()
   trace.info() <<  "Auto string = "<< mssg <<std::endl;
 #endif
 
+  trace.endBlock();
+
+#ifdef CPP11_INITIALIZER_LIST
+  trace.info() <<  "initializer list  ok"<<std::endl;
+#endif
+
+
+#ifdef CPP11_ARRAY
+  trace.info() <<  "std::Array ok"<<std::endl;
+#endif
+
+
+#ifdef CPP11_FORWARD_LIST
+  trace.info() <<  "Forward list ok"<<std::endl;
+#endif
+
+
+
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
-  trace.endBlock();
   
   return nbok == nb;
 }
