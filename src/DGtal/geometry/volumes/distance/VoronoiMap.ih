@@ -141,9 +141,13 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
 					       std::vector<Point> &Sites) const
 {
   Point point = startingPoint;
+  Point endpoint = startingPoint;
   Point psite;
   int nbSites = -1;
   
+  //endpoint of the 1D row
+  endpoint[dim] = myUpperBoundCopy[dim];
+
   //Pruning the list of sites (dim=0 implies no hibben sites)
   if (dim==0)
     {
@@ -168,7 +172,7 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
 	    {
 	      while ((nbSites >= 1) && 
 		     ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
-					 psite, startingPoint, dim) ))
+					 psite, startingPoint, endpoint, dim) ))
 		{
 		  nbSites --; 
 		}

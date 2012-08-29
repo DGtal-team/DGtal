@@ -147,7 +147,7 @@ namespace DGtal
      */
     InternalValue power ( const Abscissa pos ) const
     {
-      return ( InternalValue ) std::pow ( pos, p );
+      return ( InternalValue ) std::pow ( (double)pos, (double)p );
     }
 
 
@@ -230,14 +230,20 @@ namespace DGtal
                                 const Abscissa &lower,
                                 const Abscissa &upper) const
     {
+      //trace.info()<< "DT(u)= "<<(nu + (InternalValue) std::pow( (double)abs( udim - lower), (double) p))<<std::endl;
+      // trace.info()<< "DT(v)= "<<(nv + (InternalValue) std::pow( (double)abs( vdim - lower), (double)p))<<std::endl;
+      
+
+      ASSERT(  (nu + (InternalValue) std::pow( (double)abs( udim - lower), (double) p)) <=
+               (nv + (InternalValue) std::pow( (double)abs( vdim - lower), (double)p)));
       
       //Recurrence stop 
       if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
         return lower;
       
       Abscissa mid = (lower + upper)/2;
-      InternalValue nuUpdated = nu + (InternalValue) std::pow( abs( udim - mid ), p);
-      InternalValue nvUpdated = nv + (InternalValue) std::pow( abs( vdim - mid ), p);
+      InternalValue nuUpdated = nu + (InternalValue) std::pow( (double)abs( udim - mid ), (double)p);
+      InternalValue nvUpdated = nv + (InternalValue) std::pow( (double)abs( vdim - mid ), (double)p);
       
       //Recursive call
       if ( nuUpdated < nvUpdated)
@@ -271,12 +277,16 @@ namespace DGtal
                   const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const
     {
-      ASSERT(false && "Not-Yet-Implemented");
       
       //Interval bound for the binary search
       Abscissa lower = startingPoint[dim];
       Abscissa upper = endPoint[dim];
       
+      /*     trace.beginBlock("Hidden");
+      trace.info() << u<<"  "<<v<<"  "<<"   "<<w<<std::endl;
+      trace.info() << startingPoint<<"  "<<endPoint<<std::endl;
+      */
+
       //Partial norm computation
       // (sum_{i!=dim}  |u_i-v_i|^p
       InternalValue nu = NumberTraits<InternalValue>::ZERO;
@@ -285,15 +295,36 @@ namespace DGtal
       for(Dimension i  = 0 ; i < Point::dimension ; i++)
 	if (i != dim)
 	  {
-	    nu += ( InternalValue ) std::pow ( abs(u[i] - startingPoint[i] ) , p);
-	    nv += ( InternalValue ) std::pow ( abs(v[i] - startingPoint[i] ) , p);
-	    nw += ( InternalValue ) std::pow ( abs(w[i] - startingPoint[i] ) , p);
+	    nu += ( InternalValue ) std::pow ( (double)abs(u[i] - startingPoint[i] ) , (double)p);
+	    nv += ( InternalValue ) std::pow ( (double)abs(v[i] - startingPoint[i] ) , (double)p);
+	    nw += ( InternalValue ) std::pow ( (double)abs(w[i] - startingPoint[i] ) , (double)p);
 	  }
  
       //Intersection of voronoi boundary
-      Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper);
+     
+
+      //Optimization if vw lies before starting
+      if ((nv + (InternalValue) std::pow( (double)abs( v[dim] - lower), (double) p)) >
+          (nw + (InternalValue) std::pow( (double)abs( w[dim] - lower), (double)p)))
+        { //trace.endBlock();
+          return true;
+        }
+      //Optimization if vw lies before starting   
+      if ((nu + (InternalValue) std::pow( (double)abs( u[dim] - lower), (double) p)) >
+          (nv + (InternalValue) std::pow( (double)abs( v[dim] - lower), (double)p)))
+        { //trace.endBlock();
+          return false;
+        }
+  
+      //Binary search
+      Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
+      //      trace.info()<<std::endl;
       Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
-      
+#ifdef DEBUG_VERBOSE
+      trace.info() << "Midpoint (u,v) ="<< uv<< " Midpoint (v,w) ="<<vw<<std::endl;
+#endif      
+
+      //trace.endBlock();
       if ( uv > vw )
         return true;
       else
@@ -401,6 +432,7 @@ namespace DGtal
                   const Point &v,
                   const Point &w, 
                   const Point &startingPoint,
+                  const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const
     {
       //decide if (a,c) hide b in the lines (startingPoint, dim)
@@ -523,6 +555,7 @@ namespace DGtal
                   const Point &v,
                   const Point &w, 
                   const Point &startingPoint,
+                  const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const
     {
       ASSERT(false && "Not-Yet-Implemented");
@@ -625,6 +658,7 @@ namespace DGtal
                   const Point &b,
                   const Point &c, 
                   const Point &startingPoint,
+                  const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const
     {
       ASSERT(false && "Not-Yet-Implemented");
