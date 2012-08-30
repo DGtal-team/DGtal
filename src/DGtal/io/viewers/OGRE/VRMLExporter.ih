@@ -122,11 +122,21 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
-	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r<<" "<<lFirstPass->getDiffuse().g<<" "<<lFirstPass->getDiffuse().b<<endl;
+	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r
+					<<" "<<lFirstPass->getDiffuse().g
+					<<" "<<lFirstPass->getDiffuse().b<<endl;
+
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
-	      aFile << "specularColor "<<lFirstPass->getSpecular().r<<" "<<lFirstPass->getSpecular().g<<" "<<lFirstPass->getSpecular().b<<endl;
+	      aFile << "specularColor "<<lFirstPass->getSpecular().r
+					<<" "<<lFirstPass->getSpecular().g<<" "
+					<<lFirstPass->getSpecular().b<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "transparency "<<1-lFirstPass->getAmbient().a<<endl;
+
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
 	      aFile << "}"<<endl;
@@ -216,6 +226,10 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 	      aFile << "specularColor "<<lFirstPass->getSpecular().r
 		    <<" "<<lFirstPass->getSpecular().g
 		    <<" "<<lFirstPass->getSpecular().b<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "transparency "<<1-lFirstPass->getAmbient().a<<endl;
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
