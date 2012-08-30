@@ -50,6 +50,13 @@
 namespace DGtal
 {
 
+/////////////////////////////////////////////////////////////////////////////
+// template class EuclideanShapesAdapter
+/**
+ * Description of template class 'EuclideanShapesAdapter' <p>
+ * \brief Aim:
+ */
+
   /////////////////////////////////////////////////////////////////////////////
   // template class EuclideanShapesUnion
   /**
@@ -68,18 +75,91 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
 
     EuclideanShapesUnion( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
-
-    bool isInside( const RealPoint & p ) const
+      : myShapeA(a),
+        myShapeB(b)
     {
-      return shapeA.isInside( p ) || shapeB.isInside( p );
+      RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+      RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+      RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+      RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+      for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+      {
+        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      }
+      //myCenter = myShapeA.center()
     }
 
+    /**
+     * @param p any point in the plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
+    bool isInside( const RealPoint & p ) const
+    {
+      return myShapeA.isInside( p ) || myShapeB.isInside( p );
+    }
+
+    /**
+     * @param p any point in the digital plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
     bool isInside( const Point & p ) const
     {
-      return shapeA.isInside( p ) || shapeB.isInside( p );
+      return myShapeA.isInside( p ) || myShapeB.isInside( p );
+    }
+
+    /**
+     * @return the lower bound of the shape bounding box.
+     *
+     */
+    RealPoint getLowerBound() const
+    {
+      return myLowerBound;
+    }
+
+    /**
+     * @return the upper bound of the shape bounding box.
+     *
+     */
+    RealPoint getUpperBound() const
+    {
+      return myUpperBound;
+    }
+
+    /**
+     * Return the orienatation of a point with respect to a shape.
+     *
+     * @param p input point
+     *
+     * @return the orientation of the point (<0 means inside, ...)
+     */
+    Orientation orientation( const RealPoint & p) const
+    {
+      if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
+          || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
+      {
+        return INSIDE;
+      }
+      else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
+      {
+        return INSIDE;
+      }
+      else if ( myShapeA.isInside( p ))
+      {
+        return myShapeA.orientation( p );
+      }
+      else if ( myShapeB.isInside( p ))
+      {
+        return myShapeB.orientation( p );
+      }
+      else
+      {
+        return OUTSIDE;
+      }
     }
 
     /**
@@ -130,8 +210,12 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
+    const ShapeA & myShapeA;
+    const ShapeB & myShapeB;
+
+    RealPoint myLowerBound;
+    RealPoint myUpperBound;
+    //RealPoint myCenter;
 
   }; // end of class EuclideanShapesUnion
 
@@ -153,19 +237,88 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
 
     EuclideanShapesIntersection( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
+      : myShapeA(a),
+        myShapeB(b)
+    {
+      RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+      RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+      RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+      RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+      for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+      {
+        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      }
+    }
 
+    /**
+     * @param p any point in the plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
     bool isInside( const RealPoint & p ) const
     {
-      return shapeA.isInside( p ) && shapeB.isInside( p );
+      return myShapeA.isInside( p ) && myShapeB.isInside( p );
     }
 
+    /**
+     * @param p any point in the digital plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
     bool isInside( const Point & p ) const
     {
-      return shapeA.isInside( p ) && shapeB.isInside( p );
+      return myShapeA.isInside( p ) && myShapeB.isInside( p );
     }
+
+    /**
+     * @return the lower bound of the shape bounding box.
+     *
+     */
+    RealPoint getLowerBound() const
+    {
+      return myLowerBound;
+    }
+
+    /**
+     * @return the upper bound of the shape bounding box.
+     *
+     */
+    RealPoint getUpperBound() const
+    {
+      return myUpperBound;
+    }
+
+    /**
+     * Return the orienatation of a point with respect to a shape.
+     *
+     * @param p input point
+     *
+     * @return the orientation of the point (<0 means inside, ...)
+     */
+    Orientation orientation( const RealPoint & p) const
+    {
+      if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
+          || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
+      {
+        return ON;
+      }
+      else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
+      {
+        return ON;
+      }
+      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+      {
+        return INSIDE;
+      }
+      else
+      {
+        return OUTSIDE;
+      }
+    }
+
 
     /**
      * Destructor.
@@ -215,8 +368,12 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
+    const ShapeA & myShapeA;
+    const ShapeB & myShapeB;
+
+    RealPoint myLowerBound;
+    RealPoint myUpperBound;
+    RealPoint myCenter;
 
   }; // end of class EuclideanShapesIntersection
 
@@ -238,19 +395,87 @@ namespace DGtal
     typedef typename Space::RealPoint RealPoint;
 
     EuclideanShapesMinus( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
+      : myShapeA(a),
+        myShapeB(b)
+    {
+      RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+      RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+      RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+      RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+      for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+      {
+        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      }
+    }
 
+    /**
+     * @param p any point in the plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
     bool isInside( const RealPoint & p ) const
     {
-      return shapeA.isInside( p ) && !shapeB.isInside( p );
+      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
     }
 
+    /**
+     * @param p any point in the digital plane.
+     *
+     * @return 'true' if the point is inside the shape, 'false' if it
+     * is strictly outside.
+     */
     bool isInside( const Point & p ) const
     {
-      return shapeA.isInside( p ) && !shapeB.isInside( p );
+      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
     }
+
+    /**
+     * @return the lower bound of the shape bounding box.
+     *
+     */
+    RealPoint getLowerBound() const
+    {
+      return myLowerBound;
+    }
+
+    /**
+     * @return the upper bound of the shape bounding box.
+     *
+     */
+    RealPoint getUpperBound() const
+    {
+      return myUpperBound;
+    }
+
+    /**
+     * Return the orienatation of a point with respect to a shape.
+     *
+     * @param p input point
+     *
+     * @return the orientation of the point (<0 means inside, ...)
+     */
+    Orientation orientation( const RealPoint & p) const
+    {
+      if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON )
+      {
+        return ON;
+      }
+      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+      {
+        return OUTSIDE;
+      }
+      else if ( myShapeA.orientation( p ) == INSIDE )
+      {
+        return INSIDE;
+      }
+      else
+      {
+        return OUTSIDE;
+      }
+    }
+
 
     /**
      * Destructor.
@@ -300,8 +525,12 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
+    const ShapeA & myShapeA;
+    const ShapeB & myShapeB;
+
+    RealPoint myLowerBound;
+    RealPoint myUpperBound;
+    //RealPoint myCenter;
 
   }; // end of class EuclideanShapesMinus
 

@@ -56,256 +56,482 @@ namespace DGtal
    * Description of template class 'DigitalShapesUnion' <p>
    * \brief Aim:
    */
-  template <typename ShapeA, typename ShapeB>
-  class DigitalShapesUnion
+/////////////////////////////////////////////////////////////////////////////
+// template class DigitalShapesUnion
+/**
+ * Description of template class 'DigitalShapesUnion' <p>
+ * \brief Aim:
+ */
+template <typename ShapeA, typename ShapeB>
+class DigitalShapesUnion
+{
+  // ----------------------- Standard services ------------------------------
+public:
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
+  typedef typename ShapeA::Space Space;
+  typedef typename Space::Point Point;
+  typedef typename Space::RealPoint RealPoint;
+
+  DigitalShapesUnion( const ShapeA & a, const ShapeB & b )
+    : myShapeA(a),
+      myShapeB(b)
   {
-    // ----------------------- Standard services ------------------------------
-  public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-    typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
-
-    DigitalShapesUnion( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
-
-    bool isInside( const RealPoint & p ) const
+    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      return shapeA.isInside( p ) || shapeB.isInside( p );
+      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
     }
+    //myCenter = myShapeA.center()
+  }
 
-    bool isInside( const Point & p ) const
-    {
-      return shapeA.isInside( p ) || shapeB.isInside( p );
-    }
-
-    /**
-     * Destructor.
-     */
-    ~DigitalShapesUnion(){}
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    DigitalShapesUnion();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DigitalShapesUnion ( const DigitalShapesUnion & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DigitalShapesUnion & operator= ( const DigitalShapesUnion & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
-
-  }; // end of class DigitalShapesUnion
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class DigitalShapesIntersection
   /**
-   * Description of template class 'DigitalShapesIntersection' <p>
-   * \brief Aim:
+   * @param p any point in the plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
    */
-  template <typename ShapeA, typename ShapeB>
-  class DigitalShapesIntersection
+  bool isInside( const RealPoint & p ) const
   {
-    // ----------------------- Standard services ------------------------------
-  public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-    typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    return myShapeA.isInside( p ) || myShapeB.isInside( p );
+  }
 
-    DigitalShapesIntersection( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
-
-    bool isInside( const RealPoint & p ) const
-    {
-      return shapeA.isInside( p ) && shapeB.isInside( p );
-    }
-
-    bool isInside( const Point & p ) const
-    {
-      return shapeA.isInside( p ) && shapeB.isInside( p );
-    }
-
-    /**
-     * Destructor.
-     */
-    ~DigitalShapesIntersection(){}
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    DigitalShapesIntersection();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DigitalShapesIntersection ( const DigitalShapesIntersection & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DigitalShapesIntersection & operator= ( const DigitalShapesIntersection & other );
-
-    // ------------------------- Internals ------------------------------------
-  private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
-
-  }; // end of class DigitalShapesIntersection
-
-
-  /////////////////////////////////////////////////////////////////////////////
-  // template class DigitalShapesMinus
   /**
-   * Description of template class 'DigitalShapesMinus' <p>
-   * \brief Aim:
+   * @param p any point in the digital plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
    */
-  template <typename ShapeA, typename ShapeB>
-  class DigitalShapesMinus
+  bool isInside( const Point & p ) const
   {
-    // ----------------------- Standard services ------------------------------
-  public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-    typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    return myShapeA.isInside( p ) || myShapeB.isInside( p );
+  }
 
-    DigitalShapesMinus( const ShapeA & a, const ShapeB & b )
-      : shapeA(a),
-        shapeB(b)
-    {}
+  /**
+   * @return the lower bound of the shape bounding box.
+   *
+   */
+  RealPoint getLowerBound() const
+  {
+    return myLowerBound;
+  }
 
-    bool isInside( const RealPoint & p ) const
+  /**
+   * @return the upper bound of the shape bounding box.
+   *
+   */
+  RealPoint getUpperBound() const
+  {
+    return myUpperBound;
+  }
+
+  /**
+   * Return the orienatation of a point with respect to a shape.
+   *
+   * @param p input point
+   *
+   * @return the orientation of the point (<0 means inside, ...)
+   */
+  Orientation orientation( const RealPoint & p) const
+  {
+    if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
+        || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
     {
-      return shapeA.isInside( p ) && !shapeB.isInside( p );
+      return INSIDE;
     }
-
-    bool isInside( const Point & p ) const
+    else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
     {
-      return shapeA.isInside( p ) && !shapeB.isInside( p );
+      return INSIDE;
     }
+    else if ( myShapeA.isInside( p ))
+    {
+      return myShapeA.orientation( p );
+    }
+    else if ( myShapeB.isInside( p ))
+    {
+      return myShapeB.orientation( p );
+    }
+    else
+    {
+      return OUTSIDE;
+    }
+  }
 
-    /**
-     * Destructor.
-     */
-    ~DigitalShapesMinus(){}
+  /**
+   * Destructor.
+   */
+  ~DigitalShapesUnion(){}
 
-    // ----------------------- Interface --------------------------------------
-  public:
+  // ----------------------- Interface --------------------------------------
+public:
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const;
 
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const;
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
+  // ------------------------- Hidden services ------------------------------
+protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    DigitalShapesMinus();
+  /**
+   * Constructor.
+   * Forbidden by default (protected to avoid g++ warnings).
+   */
+  DigitalShapesUnion();
 
-  private:
+private:
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DigitalShapesMinus ( const DigitalShapesMinus & other );
+  /**
+   * Copy constructor.
+   * @param other the object to clone.
+   * Forbidden by default.
+   */
+  DigitalShapesUnion ( const DigitalShapesUnion & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    DigitalShapesMinus & operator= ( const DigitalShapesMinus & other );
+  /**
+   * Assignment.
+   * @param other the object to copy.
+   * @return a reference on 'this'.
+   * Forbidden by default.
+   */
+  DigitalShapesUnion & operator= ( const DigitalShapesUnion & other );
 
-    // ------------------------- Internals ------------------------------------
-  private:
-    const ShapeA & shapeA;
-    const ShapeB & shapeB;
+  // ------------------------- Internals ------------------------------------
+private:
+  const ShapeA & myShapeA;
+  const ShapeB & myShapeB;
 
-  }; // end of class DigitalShapesMinus
+  RealPoint myLowerBound;
+  RealPoint myUpperBound;
+  //RealPoint myCenter;
 
+}; // end of class DigitalShapesUnion
+
+/////////////////////////////////////////////////////////////////////////////
+// template class DigitalShapesIntersection
+/**
+ * Description of template class 'DigitalShapesIntersection' <p>
+ * \brief Aim:
+ */
+template <typename ShapeA, typename ShapeB>
+class DigitalShapesIntersection
+{
+  // ----------------------- Standard services ------------------------------
+public:
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
+  typedef typename ShapeA::Space Space;
+  typedef typename Space::Point Point;
+  typedef typename Space::RealPoint RealPoint;
+
+  DigitalShapesIntersection( const ShapeA & a, const ShapeB & b )
+    : myShapeA(a),
+      myShapeB(b)
+  {
+    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+    {
+      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+    }
+  }
+
+  /**
+   * @param p any point in the plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
+   */
+  bool isInside( const RealPoint & p ) const
+  {
+    return myShapeA.isInside( p ) && myShapeB.isInside( p );
+  }
+
+  /**
+   * @param p any point in the digital plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
+   */
+  bool isInside( const Point & p ) const
+  {
+    return myShapeA.isInside( p ) && myShapeB.isInside( p );
+  }
+
+  /**
+   * @return the lower bound of the shape bounding box.
+   *
+   */
+  RealPoint getLowerBound() const
+  {
+    return myLowerBound;
+  }
+
+  /**
+   * @return the upper bound of the shape bounding box.
+   *
+   */
+  RealPoint getUpperBound() const
+  {
+    return myUpperBound;
+  }
+
+  /**
+   * Return the orienatation of a point with respect to a shape.
+   *
+   * @param p input point
+   *
+   * @return the orientation of the point (<0 means inside, ...)
+   */
+  Orientation orientation( const RealPoint & p) const
+  {
+    if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
+        || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
+    {
+      return ON;
+    }
+    else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
+    {
+      return ON;
+    }
+    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+    {
+      return INSIDE;
+    }
+    else
+    {
+      return OUTSIDE;
+    }
+  }
+
+
+  /**
+   * Destructor.
+   */
+  ~DigitalShapesIntersection(){}
+
+  // ----------------------- Interface --------------------------------------
+public:
+
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const;
+
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const;
+
+  // ------------------------- Hidden services ------------------------------
+protected:
+
+  /**
+   * Constructor.
+   * Forbidden by default (protected to avoid g++ warnings).
+   */
+  DigitalShapesIntersection();
+
+private:
+
+  /**
+   * Copy constructor.
+   * @param other the object to clone.
+   * Forbidden by default.
+   */
+  DigitalShapesIntersection ( const DigitalShapesIntersection & other );
+
+  /**
+   * Assignment.
+   * @param other the object to copy.
+   * @return a reference on 'this'.
+   * Forbidden by default.
+   */
+  DigitalShapesIntersection & operator= ( const DigitalShapesIntersection & other );
+
+  // ------------------------- Internals ------------------------------------
+private:
+  const ShapeA & myShapeA;
+  const ShapeB & myShapeB;
+
+  RealPoint myLowerBound;
+  RealPoint myUpperBound;
+  RealPoint myCenter;
+
+}; // end of class DigitalShapesIntersection
+
+/////////////////////////////////////////////////////////////////////////////
+// template class DigitalShapesMinus
+/**
+ * Description of template class 'DigitalShapesMinus' <p>
+ * \brief Aim:
+ */
+template <typename ShapeA, typename ShapeB>
+class DigitalShapesMinus
+{
+  // ----------------------- Standard services ------------------------------
+public:
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
+  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
+  typedef typename ShapeA::Space Space;
+  typedef typename Space::Point Point;
+  typedef typename Space::RealPoint RealPoint;
+
+  DigitalShapesMinus( const ShapeA & a, const ShapeB & b )
+    : myShapeA(a),
+      myShapeB(b)
+  {
+    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
+    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
+    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
+    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
+    {
+      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
+      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+    }
+  }
+
+  /**
+   * @param p any point in the plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
+   */
+  bool isInside( const RealPoint & p ) const
+  {
+    return myShapeA.isInside( p ) && !myShapeB.isInside( p );
+  }
+
+  /**
+   * @param p any point in the digital plane.
+   *
+   * @return 'true' if the point is inside the shape, 'false' if it
+   * is strictly outside.
+   */
+  bool isInside( const Point & p ) const
+  {
+    return myShapeA.isInside( p ) && !myShapeB.isInside( p );
+  }
+
+  /**
+   * @return the lower bound of the shape bounding box.
+   *
+   */
+  RealPoint getLowerBound() const
+  {
+    return myLowerBound;
+  }
+
+  /**
+   * @return the upper bound of the shape bounding box.
+   *
+   */
+  RealPoint getUpperBound() const
+  {
+    return myUpperBound;
+  }
+
+  /**
+   * Return the orienatation of a point with respect to a shape.
+   *
+   * @param p input point
+   *
+   * @return the orientation of the point (<0 means inside, ...)
+   */
+  Orientation orientation( const RealPoint & p) const
+  {
+    if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON )
+    {
+      return ON;
+    }
+    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+    {
+      return OUTSIDE;
+    }
+    else if ( myShapeA.orientation( p ) == INSIDE )
+    {
+      return INSIDE;
+    }
+    else
+    {
+      return OUTSIDE;
+    }
+  }
+
+
+  /**
+   * Destructor.
+   */
+  ~DigitalShapesMinus(){}
+
+  // ----------------------- Interface --------------------------------------
+public:
+
+  /**
+   * Writes/Displays the object on an output stream.
+   * @param out the output stream where the object is written.
+   */
+  void selfDisplay ( std::ostream & out ) const;
+
+  /**
+   * Checks the validity/consistency of the object.
+   * @return 'true' if the object is valid, 'false' otherwise.
+   */
+  bool isValid() const;
+
+  // ------------------------- Hidden services ------------------------------
+protected:
+
+  /**
+   * Constructor.
+   * Forbidden by default (protected to avoid g++ warnings).
+   */
+  DigitalShapesMinus();
+
+private:
+
+  /**
+   * Copy constructor.
+   * @param other the object to clone.
+   * Forbidden by default.
+   */
+  DigitalShapesMinus ( const DigitalShapesMinus & other );
+
+  /**
+   * Assignment.
+   * @param other the object to copy.
+   * @return a reference on 'this'.
+   * Forbidden by default.
+   */
+  DigitalShapesMinus & operator= ( const DigitalShapesMinus & other );
+
+  // ------------------------- Internals ------------------------------------
+private:
+  const ShapeA & myShapeA;
+  const ShapeB & myShapeB;
+
+  RealPoint myLowerBound;
+  RealPoint myUpperBound;
+  //RealPoint myCenter;
+
+}; // end of class DigitalShapesMinus
 
   /**
    * Overloads 'operator<<' for displaying objects of class 'DigitalShapesAdapter'.
