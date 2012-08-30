@@ -95,23 +95,23 @@ int minimalistEuclideanShapesTests2D()
   std::cout << "NO " << s_minus.isInside( RealPoint(0.0, 2.0) ) << std::endl;
   std::cout << "YES " << s_minus.isInside( RealPoint(-4.0, 0.0) ) << std::endl;
 
-  /*std::cout << "==== Digitalization ====" << std::endl;
-  typedef typename Minus::Space Space;
+  std::cout << "==== Digitalization ====" << std::endl;
+  typedef Minus CurrentShape;
+  typedef typename CurrentShape::Space Space;
   typedef typename Space::Integer Integer;
   typedef typename Space::Vector Vector;
   typedef KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef typename KSpace::SCell SCell;
   typedef HyperRectDomain<Space> Domain;
-  typedef GaussDigitizer< Space, Minus > Digitizer;
+  typedef GaussDigitizer< Space, CurrentShape > Digitizer;
   typedef LightImplicitDigitalSurface< KSpace, Digitizer > LightImplicitDigSurface;
   typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
   typedef typename LightImplicitDigSurface::SurfelConstIterator ConstIterator;
 
   Digitizer dig;
   dig.attach( s_minus );
-  dig.init( Vector(-6.0, -4.0), Vector(6.0, 4.0), 0.1 );
+  dig.init( s_minus.getLowerBound(), s_minus.getUpperBound(), 0.1 );
   Domain domain = dig.getDomain();
-
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
@@ -122,8 +122,8 @@ int minimalistEuclideanShapesTests2D()
   }
 
   SurfelAdjacency<KSpace::dimension> SAdj( true );
-  SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
 
+  SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
   LightImplicitDigSurface LightImplDigSurf( K, dig, SAdj, bel );
   MyDigitalSurface digSurf( LightImplDigSurf );
 
@@ -140,8 +140,14 @@ int minimalistEuclideanShapesTests2D()
                           new CustomColors( Color( 0, 200, 0 ),
                                             Color( 100, 255, 100 ) ) )
           << *it;
-  }*/
+  }
 
+  board << CustomStyle( "olol",
+                        new CustomColors( Color( 200, 0, 0 ),
+                                          Color( 255, 100, 100 ) ) )
+        << Point(0,0);
+
+  board.saveSVG("testUnaryOparationShapes-s_minus.svg");
 
   return 42;
 }
