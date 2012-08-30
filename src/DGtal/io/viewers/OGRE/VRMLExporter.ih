@@ -91,11 +91,15 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 
 	      for(int i=0;i<rank+1;i++)
 		aFile <<"\t";
-      	      aFile << "translation "<<aNode->getPosition().x<<" "<<aNode->getPosition().y<<" "<<aNode->getPosition().z<<endl;
+      	      aFile << "translation "<<aNode->getPosition().x
+		    <<" "<<aNode->getPosition().y<<" "
+		    <<aNode->getPosition().z<<endl;
 
       	      for(int i=0;i<rank+1;i++)
 	        aFile <<"\t";
-              aFile << "scale "<<aNode->getScale().x*100<<" "<<aNode->getScale().y*100<<" "<<aNode->getScale().z*100<<endl;
+              aFile << "scale "<<aNode->getScale().x*100
+		    <<" "<<aNode->getScale().y*100<<" "
+		    <<aNode->getScale().z*100<<endl;
 
     	      for(int i=0;i<rank+1;i++)
 	        aFile <<"\t";
@@ -148,7 +152,7 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
      	      aFile <<"}"<<endl;
 
 
-	     for(int i=0;i<rank+1;i++)
+	      for(int i=0;i<rank+1;i++)
 	        aFile <<"\t";
               aFile << "]"<<endl;
 
@@ -170,11 +174,15 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 
 	      for(int i=0;i<rank+1;i++)
 		aFile <<"\t";
-      	      aFile << "translation "<<aNode->getPosition().x<<" "<<aNode->getPosition().y<<" "<<aNode->getPosition().z<<endl;
+      	      aFile << "translation "<<aNode->getPosition().x
+		    <<" "<<aNode->getPosition().y
+		    <<" "<<aNode->getPosition().z<<endl;
 
       	      for(int i=0;i<rank+1;i++)
 	        aFile <<"\t";
-              aFile << "scale "<<aNode->getScale().x*50<<" "<<aNode->getScale().y*50<<" "<<aNode->getScale().z*50<<endl;
+              aFile << "scale "<<aNode->getScale().x*50
+		    <<" "<<aNode->getScale().y*50
+		    <<" "<<aNode->getScale().z*50<<endl;
 
 
      	      for(int i=0;i<rank+1;i++)
@@ -198,12 +206,16 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
-	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r<<" "<<lFirstPass->getDiffuse().g<<" "<<lFirstPass->getDiffuse().b<<endl;
+	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r
+		    <<" "<<lFirstPass->getDiffuse().g<<" "
+		    <<lFirstPass->getDiffuse().b<<endl;
 
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
-	      aFile << "specularColor "<<lFirstPass->getSpecular().r<<" "<<lFirstPass->getSpecular().g<<" "<<lFirstPass->getSpecular().b<<endl;
+	      aFile << "specularColor "<<lFirstPass->getSpecular().r
+		    <<" "<<lFirstPass->getSpecular().g
+		    <<" "<<lFirstPass->getSpecular().b<<endl;
 
 	      for(int i=0;i<rank+3;i++)
 	        aFile <<"\t";
@@ -226,7 +238,7 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
                 aFile <<"\t";
      	      aFile <<"}"<<endl;
    	      
-	     for(int i=0;i<rank+1;i++)
+	      for(int i=0;i<rank+1;i++)
 	        aFile <<"\t";
               aFile << "]"<<endl;
 
@@ -257,24 +269,24 @@ void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * a
 	        aFile <<"\t";
 	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
 	    }
-           else if(aLight->getType()==Ogre::Light::LT_SPOTLIGHT)
-	     {
- 	        for(int i=0;i<rank+1;i++)
-                  aFile <<"\t";
-	        aFile <<"SpotlLight {"<<endl;
-	        for(int i=0;i<rank+1;i++)
-	          aFile <<"\t";
-	        aFile <<"direction 0.0 0.0 -1.0"<<endl;
-	     }
-           else 
-	     {
- 	        for(int i=0;i<rank+1;i++)
-                  aFile <<"\t";
-	        aFile <<"PointLight {"<<endl;
-	        for(int i=0;i<rank+1;i++)
-	          aFile <<"\t";
-	        aFile <<"direction 0.0 0.0 -1.0"<<endl;
-	     }
+	  else if(aLight->getType()==Ogre::Light::LT_SPOTLIGHT)
+	    {
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"SpotlLight {"<<endl;
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
+	    }
+	  else 
+	    {
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"PointLight {"<<endl;
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
+	    }
  	  for(int i=0;i<rank+1;i++)
             aFile <<"\t";
 	  aFile <<"on TRUE"<<endl;
