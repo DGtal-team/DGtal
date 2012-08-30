@@ -313,6 +313,9 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
     case OIS::KC_X :
       myViewer->exportToXml("scene");
       break;
+    case OIS::KC_V :
+      myViewer->exportToVrml("scene");
+      break;
     case OIS::KC_I :
       myWindow->reposition(0,0);
       break;

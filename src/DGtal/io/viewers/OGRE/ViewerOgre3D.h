@@ -56,6 +56,7 @@
 #include "DGtal/io/viewers/OGRE/TextZone.h"
 #include "DGtal/io/viewers/OGRE/DGtalSingleton.h"			
 #include "DGtal/io/viewers/OGRE/XMLExporter.h"
+#include "DGtal/io/viewers/OGRE/VRMLExporter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -222,6 +223,13 @@ namespace DGtal
      */
     void exportToXml(std::string aFileName );
       
+      
+    /**
+     *  Exports the scene to a vrml file
+     *  @param aFileName name of the file that will contain 
+     *  the vrml version of the scene (do not give the extention)
+     */
+    void exportToVrml(std::string aFileName );
       
     /**
      *  Increases the transparency of the current UNFR

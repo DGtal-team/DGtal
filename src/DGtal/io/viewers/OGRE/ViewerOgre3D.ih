@@ -1845,6 +1845,20 @@ void ViewerOgre3D::exportToXml(std::string aFileName )
   anExporter.exportToFile(mySceneMgr, aFileName);
 }
 
+
+
+/**
+ *  Exports the scene to a vrml file
+ *  @param aFileName name of the file that will contain 
+ *  the vrml version of the scene (do not give the extention)
+ */
+void ViewerOgre3D::exportToVrml(std::string aFileName )
+{
+  DGtal::VRMLExporter anExporter;
+  anExporter.exportToFile(mySceneMgr, aFileName);
+}
+
+
 /**
  * Returns a good position for the camera 
  */
