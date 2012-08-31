@@ -284,6 +284,8 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
 #include "AppDelegate.h"
+#include "MyApplication.h"
+
 #endif
 
 #include <iostream>
@@ -317,10 +319,10 @@ void ViewerOgre3D::start()
 #else
         	
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-    
   mAppDelegate = [[AppDelegate alloc] init];
-  [[NSApplication sharedApplication] setDelegate:mAppDelegate];
-  int retVal = NSApplicationMain(0,NULL);
+  // [[MyApplicationMain sharedApplication] setDelegate:mAppDelegate];
+  [mAppDelegate startRendering];
+  int retVal = MyApplicationMain(0,NULL);
   [pool release];
 #endif	
 }

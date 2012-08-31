@@ -1,0 +1,85 @@
+
+
+#import "MyApplication.h"
+
+int MyApplicationMain(int argc, const char **argv)
+{
+  NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
+  NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+  Class principalClass =
+    NSClassFromString([infoDictionary objectForKey:@"NSPrincipalClass"]);
+
+
+  NSApplication *applicationObject = [principalClass sharedApplication];
+    
+
+   [[NSNotificationCenter defaultCenter]
+   postNotificationName:NSApplicationWillFinishLaunchingNotification
+   object:NSApp];
+   [[NSNotificationCenter defaultCenter]
+   postNotificationName:NSApplicationDidFinishLaunchingNotification
+   object:NSApp];
+	
+  int i=0;
+
+  do
+    {
+      NSEvent *event =
+        [applicationObject
+         nextEventMatchingMask:NSAnyEventMask
+         untilDate:[NSDate distantFuture]
+         inMode:NSDefaultRunLoopMode
+         dequeue:YES];
+		
+      [applicationObject sendEvent:event];
+      [applicationObject updateWindows];
+    } while (InputListener::getSingletonPtr()->viewerIsRunning());
+
+        
+
+	
+  return 0;
+}
+
+@implementation MyApplication
+
+- (void) run
+{
+    cout<<"AAAA"<<endl;
+
+  //	[self finishLaunching];
+  // [[NSNotificationCenter defaultCenter]
+  // postNotificationName:NSApplicationWillFinishLaunchingNotification
+  // object:NSApp];
+  // [[NSNotificationCenter defaultCenter]
+  // postNotificationName:NSApplicationDidFinishLaunchingNotification
+  // object:NSApp];
+	
+  shouldKeepRunning = YES;
+  int i=0;
+  cout<<i<<endl;
+
+  do
+    {
+      NSEvent *event =
+        [self
+         nextEventMatchingMask:NSAnyEventMask
+         untilDate:[NSDate distantFuture]
+         inMode:NSDefaultRunLoopMode
+         dequeue:YES];
+		
+      [self sendEvent:event];
+      [self updateWindows];
+      i++;
+      cout<<i<<endl;
+    } while (shouldKeepRunning);
+}
+
+- (void)terminate:(id)sender
+{
+  shouldKeepRunning = NO;
+}
+
+@end
+

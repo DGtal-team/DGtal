@@ -10,7 +10,7 @@
 #ifdef __OBJC__
 
 #import <Cocoa/Cocoa.h>
-
+#include "MyApplication.h"
 // All this does is suppress some messages in the run log.  NSApplication does not
 // implement buttonPressed and apps without a NIB have no target for the action.
 @implementation NSApplication (_suppressUnimplementedActionWarning)
@@ -120,20 +120,19 @@ static id mAppDelegate;
     }
   else
     {
-         [mTimer invalidate];
-         mTimer = nil;
-         [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+      [mTimer invalidate];
+      mTimer = nil;
     }
 }
 
 - (void)dealloc {
-    if(mTimer)
+  if(mTimer)
     {
-        [mTimer invalidate];
-        mTimer = nil;
+      [mTimer invalidate];
+      mTimer = nil;
     }
     
-    [super dealloc];
+  [super dealloc];
 }
 
 @end
