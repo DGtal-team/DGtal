@@ -224,7 +224,7 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 	}
       return false;
       break;
-    case::OIS::KC_SUBTRACT:
+    case::OIS::KC_Y:
 
       if(myControlMode)
 	{
@@ -241,7 +241,7 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 
 	break;
 
-	case::OIS::KC_ADD:
+	case::OIS::KC_U:
 	  if(myControlMode)
 	    {
 	  myWindow->resize(myWindow->getWidth()*1.25,myWindow->getHeight()*1.25);
@@ -273,7 +273,7 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       resetSCPosition();
       break;
 
-    case OIS::KC_M :
+    case OIS::KC_K :
       myViewer->more();
       break;
     case OIS::KC_L :
@@ -290,10 +290,8 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
     case OIS::KC_H :
       myViewer->showHelp();
       break;
-    case OIS::KC_U :
+    case OIS::KC_J :
       myWindow->setFullscreen(!myWindow->isFullScreen(),myWindow->getWidth(),myWindow->getHeight());
-      myWindow->setDeactivateOnFocusChange(false);
-
       break;
     case OIS::KC_C :
       myViewer->printScene();

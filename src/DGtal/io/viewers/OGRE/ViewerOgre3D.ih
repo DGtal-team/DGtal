@@ -1668,10 +1668,10 @@ void ViewerOgre3D::showHelp()
   cout <<"\t\t\t T: Shows/Hides the text."<<endl;
   cout <<"\t\t\t F: Changes the background color, from black to white and the inverse operation."<<endl;
   cout <<"\t\t\t R: Resets the camera position."<<endl;
-  cout <<"\t\t\t U: Sets full screen."<<endl;
+  cout <<"\t\t\t J: Sets full screen."<<endl;
   cout <<"\t\t\t I: Repositions the camera at (0,0) position."<<endl;
-  cout <<"\t\t\t Left Control +: Scales up the window."<<endl;
-  cout <<"\t\t\t Left Control -: Scales down the window."<<endl;
+  cout <<"\t\t\t Left Control U: Scales up the window."<<endl;
+  cout <<"\t\t\t Left Control Y: Scales down the window."<<endl;
   cout <<"\t\t\t X: Exports the scene to XML format and saves it to scene.scene."<<endl;
   cout <<"\t\t\t C: Takes a screen capture of the viewer and saves it to ScreenShot.png "<<endl;
   cout <<"\t\t\t H: Shows the user help on the standard output. "<<endl;
@@ -1680,7 +1680,7 @@ void ViewerOgre3D::showHelp()
   
   cout<<"\t\t Commands when something is selected\n"<<endl;
 
-  cout<<"\t\t\t M: Sizes up the selection."<<endl;
+  cout<<"\t\t\t K: Sizes up the selection."<<endl;
   cout<<"\t\t\t L: Sizes down the selection."<<endl;
 
   cout<<"\t\t\t N: Increases the selection's transparency."<<endl;
@@ -1691,8 +1691,8 @@ void ViewerOgre3D::showHelp()
   cout<<"\t\t\tOn view mode:\n"<<endl;
 
   cout <<"\t\t\tOn manipulate mode:\n"<<endl;
-  cout <<"\t\t\t + : Gets to the upper value of the manipulating. "<<endl;
-  cout <<"\t\t\t - : Gets to the lower value of the manipulating. "<<endl;
+  cout <<"\t\t\t U : Gets to the upper value of the manipulating. "<<endl;
+  cout <<"\t\t\t Y : Gets to the lower value of the manipulating. "<<endl;
 
 
   cout <<"\t\t\tOn selection mode:\n"<<endl;
