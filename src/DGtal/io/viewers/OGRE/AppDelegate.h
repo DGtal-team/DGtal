@@ -1,5 +1,42 @@
-#ifndef __AppDelegate_H__
-#define __AppDelegate_H__
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file AppDelegate.h
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ * Liris CNRS
+ *
+ * @date 2012/07/13
+ *
+ * Header file for module AppDelegate.mm
+ *
+ * This file is part of the DGtal library.
+ */
+
+#if defined(AppDelegate_RECURSES)
+#error Recursive header files inclusion detected in AppDelegate.h
+#else // defined(AppDelegate_RECURSES)
+/** Prevents recursive inclusion of headers. */
+#define AppDelegate_RECURSES
+
+#if !defined AppDelegate_h
+/** Prevents repeated inclusion of headers. */
+#define AppDelegate_h
 
 #include "OgrePlatform.h"
 
@@ -16,7 +53,7 @@
 @implementation NSApplication (_suppressUnimplementedActionWarning)
 - (void) buttonPressed:(id)sender
 {
-    /* Do nothing */
+/* Do nothing */
 }
 @end
 
@@ -27,10 +64,10 @@
 @interface AppDelegate : NSObject
 #endif
 {
-    NSTimer *mTimer;
-    NSDate *mDate;
-    double mLastFrameTime;
-    double mStartTime;
+  NSTimer *mTimer;
+  NSDate *mDate;
+  double mLastFrameTime;
+  double mStartTime;
 }
 
 - (void)startRendering;
@@ -54,20 +91,20 @@ static id mAppDelegate;
 
 - (double)mLastFrameTime
 {
-    return mLastFrameTime;
+  return mLastFrameTime;
 }
 
 - (void)setLastFrameTime:(double)frameInterval
 {
-    // Frame interval defines how many display frames must pass between each time the
-    // display link fires. The display link will only fire 30 times a second when the
-    // frame internal is two on a display that refreshes 60 times a second. The default
-    // frame interval setting of one will fire 60 times a second when the display refreshes
-    // at 60 times a second. A frame interval setting of less than one results in undefined
-    // behavior.
-    if (frameInterval >= 1)
+  // Frame interval defines how many display frames must pass between each time the
+  // display link fires. The display link will only fire 30 times a second when the
+  // frame internal is two on a display that refreshes 60 times a second. The default
+  // frame interval setting of one will fire 60 times a second when the display refreshes
+  // at 60 times a second. A frame interval setting of less than one results in undefined
+  // behavior.
+  if (frameInterval >= 1)
     {
-        mLastFrameTime = frameInterval;
+      mLastFrameTime = frameInterval;
     }
 }
 
@@ -83,47 +120,39 @@ static id mAppDelegate;
   	    selector:@selector(renderOneFrame:)
   	    userInfo:nil
   	    repeats:YES];
-  //  mTimer = [NSTimer timerWithTimeInterval: (NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime target: self selector: @selector(renderOneFrame:) userInfo: nil repeats: YES];
- 
-  //  [[NSRunLoop mainRunLoop] addTimer: mTimer forMode: NSRunLoopCommonModes];
   [pool release];
 }
-- (void)applicationDidFinishLaunching:(NSNotification *)application {
-  mLastFrameTime = 1;
-  mStartTime = 0;
-  mTimer = nil;
+	    - (void)applicationDidFinishLaunching:(NSNotification *)application {
+	      mLastFrameTime = 1;
+	      mStartTime = 0;
+	      mTimer = nil;
     
-  [self startRendering];
-}
+	      [self startRendering];
+	    }
 
 
-//- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication*)sender 
-//{
-//  return NSTerminateCancel;
-//}
 
-
-- (void)renderOneFrame:(id)sender
-{
-  if(InputListener::getSingletonPtr()->viewerIsRunning() &&
-     Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
-    {
-      mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
+	    - (void)renderOneFrame:(id)sender
+	    {
+	      if(InputListener::getSingletonPtr()->viewerIsRunning() &&
+		 Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
+		{
+		  mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
             
-      InputListener::getSingletonPtr()->getKeyBoard()->capture();
-      InputListener::getSingletonPtr()->getMouse()->capture();
+		  InputListener::getSingletonPtr()->getKeyBoard()->capture();
+		  InputListener::getSingletonPtr()->getMouse()->capture();
             
-      InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
-      ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
+		  InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
+		  ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
             
-      mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
-    }
-  else
-    {
-      [mTimer invalidate];
-      mTimer = nil;
-    }
-}
+		  mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
+		}
+	      else
+		{
+		  [mTimer invalidate];
+		  mTimer = nil;
+		}
+	    }
 
 - (void)dealloc {
   if(mTimer)
@@ -137,6 +166,9 @@ static id mAppDelegate;
 
 @end
 
-#endif
 
 #endif
+#endif /* AppDelegate_H_ */
+
+#undef AppDelegate_RECURSES
+#endif // else defined(AppDelegate_RECURSES)

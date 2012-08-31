@@ -1,6 +1,41 @@
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MyApplication.ih
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ * Liris CNRS
+ *
+ * @date 2012/08/31
+ *
+ * Implementation of inline methods defined in MyApplication.h
+ *
+ * This file is part of the DGtal library.
+ */
 
 
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
 #import "MyApplication.h"
+//////////////////////////////////////////////////////////////////////////////
+
+
 
 int MyApplicationMain(int argc, const char **argv)
 {
@@ -14,10 +49,10 @@ int MyApplicationMain(int argc, const char **argv)
   NSApplication *applicationObject = [principalClass sharedApplication];
     
 
-   [[NSNotificationCenter defaultCenter]
+  [[NSNotificationCenter defaultCenter]
    postNotificationName:NSApplicationWillFinishLaunchingNotification
    object:NSApp];
-   [[NSNotificationCenter defaultCenter]
+  [[NSNotificationCenter defaultCenter]
    postNotificationName:NSApplicationDidFinishLaunchingNotification
    object:NSApp];
 	
@@ -35,46 +70,12 @@ int MyApplicationMain(int argc, const char **argv)
       [applicationObject sendEvent:event];
       [applicationObject updateWindows];
     } while (InputListener::getSingletonPtr()->viewerIsRunning());
-
-        
-
 	
   return 0;
 }
 
 @implementation MyApplication
 
-- (void) run
-{
-    cout<<"AAAA"<<endl;
-
-  //	[self finishLaunching];
-  // [[NSNotificationCenter defaultCenter]
-  // postNotificationName:NSApplicationWillFinishLaunchingNotification
-  // object:NSApp];
-  // [[NSNotificationCenter defaultCenter]
-  // postNotificationName:NSApplicationDidFinishLaunchingNotification
-  // object:NSApp];
-	
-  shouldKeepRunning = YES;
-  int i=0;
-  cout<<i<<endl;
-
-  do
-    {
-      NSEvent *event =
-        [self
-         nextEventMatchingMask:NSAnyEventMask
-         untilDate:[NSDate distantFuture]
-         inMode:NSDefaultRunLoopMode
-         dequeue:YES];
-		
-      [self sendEvent:event];
-      [self updateWindows];
-      i++;
-      cout<<i<<endl;
-    } while (shouldKeepRunning);
-}
 
 - (void)terminate:(id)sender
 {

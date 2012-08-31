@@ -38,6 +38,12 @@
 #include "DGtal/io/viewers/OGRE/CommonOgre.h"
 #include "DGtal/io/viewers/OGRE/Requirements.h"
 #include <unistd.h>
+
+#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
+#include "DGtal/io/viewers/OGRE/AppDelegate.h"
+#include "DGtal/io/viewers/OGRE/MyApplication.h"
+#endif
+
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -282,12 +288,6 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
 
 
-#if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
-#include "AppDelegate.h"
-#include "MyApplication.h"
-
-#endif
-
 #include <iostream>
 using namespace std;
 
@@ -320,7 +320,6 @@ void ViewerOgre3D::start()
         	
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
   mAppDelegate = [[AppDelegate alloc] init];
-  // [[MyApplicationMain sharedApplication] setDelegate:mAppDelegate];
   [mAppDelegate startRendering];
   int retVal = MyApplicationMain(0,NULL);
   [pool release];

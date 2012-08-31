@@ -922,6 +922,8 @@ namespace DGtal
 #include "InputListener.h"
 #include "Ogre3DDisplayFactory.h"
 #include "ViewerOgre3D.ih"
+
+
 #endif /* VIEWEROGRE3D_H_ */
 
 #undef ViewerOgre3D_RECURSES
