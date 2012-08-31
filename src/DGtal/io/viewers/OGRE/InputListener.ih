@@ -228,34 +228,37 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 
       if(myControlMode)
 	{
-	  myWindow->resize(myWindow->getWidth()*0.8,myWindow->getHeight()*0.8);
-	  myViewer->resetPosition(myWindow->getHeight(),myWindow->getWidth());
+	  myWindow->resize(myWindow->getWidth(),myWindow->getHeight());
+	  myViewer->resetPosition(myWindow->getHeight()*0.8,myWindow->getWidth());
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
 	  myMouseCursor->setWindowDimensions(myWindow->getWidth(), myWindow->getHeight());
 #endif  
-	    }
-	else if ( myViewer->isInManupulatingMode() )
-	  {
+	}
+      else if ( myViewer->isInManupulatingMode() )
+	{
 	  myViewer->newManipulatingValue ( -1 );
 	}
 
-	break;
+      break;
 
-	case::OIS::KC_U:
-	  if(myControlMode)
-	    {
+    case::OIS::KC_U:
+      if(myControlMode)
+	{
 	  myWindow->resize(myWindow->getWidth()*1.25,myWindow->getHeight()*1.25);
 	  myViewer->resetPosition(myWindow->getHeight(),myWindow->getWidth());
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
 	  myMouseCursor->setWindowDimensions(myWindow->getWidth(), myWindow->getHeight());
 #endif
+	  const OIS::MouseState &ms = myMouse->getMouseState();
+	  ms.width = myWindow->getWidth();
+	  ms.height = myWindow->getHeight();
 	}
 
-	  else if ( myViewer->isInManupulatingMode() )
-	    {
-	      myViewer->newManipulatingValue ( 1 );
-	    }
-	  break;
+      else if ( myViewer->isInManupulatingMode() )
+	{
+	  myViewer->newManipulatingValue ( 1 );
+	}
+      break;
 
     case OIS::KC_LCONTROL:
       myControlMode=true;
