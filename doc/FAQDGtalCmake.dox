@@ -130,6 +130,11 @@ Then when you will use the cmake command use is like this:
 @code
 OGRE_HOME=/Applications/OgreSDK/ cmake .. -DWITH_OGRE=true
 @endcode
+Or like this :
+@code
+export OGRE_HOME=/Applications/OgreSDK/ 
+cmake .. -DWITH_OGRE=true
+@endcode
 
 Note that the slash after the sdk folder is necessary, if your compiler doesn't support Obj-c you can't activate this dependency.
 

@@ -268,6 +268,7 @@ This example remains a simple one, more complex stuff can be done using this mod
 By pressing h button during visualization you can obtain the list of the viewer interactions,
 @code
 -------------------------------------------------------------------------------------------
+
 Ogre DGtal viewer commands: 
 
 	Common commands to view, manipulate and selection modes:
@@ -276,7 +277,7 @@ Ogre DGtal viewer commands:
 
 			 Right clic and drag: Translates the scene.
 			 Left clic and drag: Turns the scene around the scene center.
-			 Middle clic : Selects a scene object.
+			 Left shift + Left clic : Selects a scene object.
 			 Mouse roll: Zoom.
 
 		 Commands without selection
@@ -287,6 +288,10 @@ Ogre DGtal viewer commands:
 			 T: Shows/Hides the text.
 			 F: Changes the background color, from black to white and the inverse operation.
 			 R: Resets the camera position.
+			 U: Sets full screen.
+			 I: Repositions the camera at (0,0) position.
+			 Left Control +: Scales up the window.
+			 Left Control -: Scales down the window.
 			 X: Exports the scene to XML format and saves it to scene.scene.
 			 C: Takes a screen capture of the viewer and saves it to ScreenShot.png 
 			 H: Shows the user help on the standard output. 
@@ -311,6 +316,8 @@ Ogre DGtal viewer commands:
 			 S : Confirms the selection.
  
 	On free 3D explore: (To switch to this mode press MAJ button)
+
+
 
 -------------------------------------------------------------------------------------------
 
@@ -364,6 +371,18 @@ To get a xml file named titanic, the code will be
 @code
 viewer->exportToXml("titanic");
 @endcode
+
+\subsection DGtal_code_vrml Exporting the scene to vrml format
+You can export this scene to vrml format (the extention of the file will be .wrl), and for example using the blender to import it,  by calling this method :
+@code
+void 	exportToVrml (std::string aFileName)
+@endcode
+
+To get a xml file named titanic, the code will be
+@code
+viewer->exportToVrml("titanic");
+@endcode
+
 
 \subsection DGtal_help  Displaying the list of the diffenrent possible interactions  on the standard output
 Here is the method you should call to display the help.
