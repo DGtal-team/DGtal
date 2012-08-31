@@ -115,7 +115,7 @@ static id myOgreEventCatcher;
   mStartTime = 0;
   mTimer = nil;
    
-  mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f) * mLastFrameTime
+  mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)(1.0f / 60.0f)
   	    target:self
   	    selector:@selector(renderOneFrame:)
   	    userInfo:nil
@@ -142,7 +142,7 @@ static id myOgreEventCatcher;
 		  InputListener::getSingletonPtr()->getKeyBoard()->capture();
 		  InputListener::getSingletonPtr()->getMouse()->capture();
             
-		  InputListener::getSingletonPtr()->updateViewer(mLastFrameTime);
+		  InputListener::getSingletonPtr()->updateViewer(10);
 		  ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
             
 		  mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;

@@ -127,8 +127,6 @@ void DGtal::MouseCursor::setVisible ( bool visible )
   */
 void DGtal::MouseCursor::updatePosition ( int x, int y )
 {
-
-  cout <<x<<endl;
   Ogre::Real rx = x / myWindowWidth;
   Ogre::Real ry = y / myWindowHeight;
   myCursorContainer->setPosition ( clamp ( rx, 0.0f, 1.0f ), clamp ( ry, 0.0f, 1.0f ) );

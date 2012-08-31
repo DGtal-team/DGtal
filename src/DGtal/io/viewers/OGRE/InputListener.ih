@@ -367,7 +367,6 @@ bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonI
 
       if ( id == OIS::MB_Right )
 	{
-	  cout<<"Right clic handled"<<endl;
 	  myMouseRightClicked = true;
 	}
     }
