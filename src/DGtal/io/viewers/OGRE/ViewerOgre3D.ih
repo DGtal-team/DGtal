@@ -40,7 +40,7 @@
 #include <unistd.h>
 
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
-#include "DGtal/io/viewers/OGRE/AppDelegate.h"
+#include "DGtal/io/viewers/OGRE/OgreEventCatcher.h"
 #include "DGtal/io/viewers/OGRE/MyApplication.h"
 #endif
 
@@ -319,7 +319,7 @@ void ViewerOgre3D::start()
 #else
         	
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-  mAppDelegate = [[AppDelegate alloc] init];
+  mYOgreEventCatcher = [[OgreEventCatcher alloc] init];
   [mAppDelegate startRendering];
   int retVal = MyApplicationMain(0,NULL);
   [pool release];
