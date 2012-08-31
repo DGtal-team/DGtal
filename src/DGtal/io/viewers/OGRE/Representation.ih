@@ -222,11 +222,9 @@ void Representation::groupSelect()
  */
 void Representation::unselect()
 {
-  if(myMovableObjectType=="Entity")
-    { 
+
       ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterialName);
       ((Ogre::Entity*) myMovableObject)->setCastShadows(true);
-    }
 }
 
 
