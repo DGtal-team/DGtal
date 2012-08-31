@@ -32,9 +32,31 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/shapes/Shapes.h"
 #include <iostream>
-#include "DGtal/io/viewers/OGRE/Functions.h"
 ///////////////////////////////////////////////////////////////////////////////
 
+
+DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
+{
+  DGtal::Z3i::Point p4( 30, 30 ,30 );
+  DGtal::Z3i::Point p5( -30, -30 ,-30 );
+  DGtal::Z3i::Domain domain( p4, p5 );
+  
+  DGtal::Z3i::DigitalSet * shape_set1 = new DGtal::Z3i::DigitalSet( domain );
+  
+      
+  typedef std::set<DGtal::Z3i::Point>::const_iterator ConstIterator;
+  
+  int nbOfPoints=0;
+  
+  for ( ConstIterator it = aSet.begin(); (it != aSet.end())&&(nbOfPoints<aValue); ++it )
+    {
+      nbOfPoints++;
+      shape_set1->insert((*it));
+    }
+  
+  
+  return * shape_set1;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ViewerOgre3D.
