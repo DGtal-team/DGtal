@@ -24,7 +24,14 @@ namespace DGtal {
   following links.
 - \ref linux 
 - \ref macos 
+  
+The viewer has 3 modes:
 
+ - The first one: the view mode, you can simply visualize the DGtal objects you insert into you the scene and interact with them (turn them, scale them, etc.)
+
+ - The second mode: the selection mode, the viewer waits for the user to select something and validate his choice, then the viewer can return the user's choice.
+
+ - The third mode: the manipulate mode, the viewer permits to the user to watch the evolution of a DGtal object when applying on it a function.
 
  *
  \section DGtal_Section View mode
@@ -218,7 +225,7 @@ An instream mechanism can be used to get the dgtal corresponding objects of a se
 
 @snippet io/viewers/OGRE/testSelectionViewer.cpp ImportSelectionfile
 
-	This code creates a scene with a DGtalset and permits to select two points that will be removed from the initial set.
+This code creates a scene with a DGtalset and permits to select two points that will be removed from the initial set.
 
 
 For example, if you want to select a non visible point of the DGtalset, you can scale the set by using the associated shortcut and then validate your selection by the S key.
@@ -324,7 +331,7 @@ Ogre DGtal viewer commands:
 @endcode
 
 
-\section DGtal_code Code interactions
+\section DGtal_code API help for interactions
 Some interactions are possible by calling methods in your program.
 
 
@@ -339,7 +346,7 @@ void 	printScene (std::string name="ScreenShot.png")
 
 To take a snapshot named foo, in jpg format, i just have to call this method in the main program.
 @code
-viewer->printScene("foo.jpg");
+viewer.printScene("foo.jpg");
 @endcode
 
 
@@ -369,7 +376,7 @@ void 	exportToXml (std::string aFileName)
 
 To get a xml file named titanic, the code will be
 @code
-viewer->exportToXml("titanic");
+viewer.exportToXml("titanic");
 @endcode
 
 \subsection DGtal_code_vrml Exporting the scene to vrml format
@@ -380,7 +387,7 @@ void 	exportToVrml (std::string aFileName)
 
 To get a xml file named titanic, the code will be
 @code
-viewer->exportToVrml("titanic");
+viewer.exportToVrml("titanic");
 @endcode
 
 
