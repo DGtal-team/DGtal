@@ -80,7 +80,7 @@
 @end
 
 #if __LP64__
-static id OgreEventCatcher;
+static id myOgreEventCatcher;
 #endif
 
 @implementation OgreEventCatcher

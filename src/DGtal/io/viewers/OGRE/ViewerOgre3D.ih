@@ -319,8 +319,8 @@ void ViewerOgre3D::start()
 #else
         	
   NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
-  mYOgreEventCatcher = [[OgreEventCatcher alloc] init];
-  [mAppDelegate startRendering];
+  myOgreEventCatcher = [[OgreEventCatcher alloc] init];
+  [myOgreEventCatcher startRendering];
   int retVal = MyApplicationMain(0,NULL);
   [pool release];
 #endif	
