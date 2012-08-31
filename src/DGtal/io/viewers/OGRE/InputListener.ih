@@ -292,8 +292,6 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
       break;
     case OIS::KC_J :
       myWindow->setFullscreen(!myWindow->isFullScreen(),myWindow->getWidth(),myWindow->getHeight());
-      myWindow->setDeactivateOnFocusChange(false);
-
       break;
     case OIS::KC_C :
       myViewer->printScene();
