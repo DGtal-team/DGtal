@@ -1,6 +1,6 @@
 # - Config file for the DGtal package
 # It defines the following variables
-#  DGTAL_INCLUDE_DIRS - include directories for DGtal
+#  Dgtal_INCLUDE_DIRS - include directories for DGtal
 #  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
 #  DGTAL_LIBRARIES    - libraries to link against
 #  DGTAL_VERSION      - version of the DGtal library
@@ -159,11 +159,7 @@ macro(prepare_dgtal_executable FILE_NAME)
     file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/MacOS)
     file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/Frameworks)
     execute_process( COMMAND ${CMAKE_COMMAND}  -E create_symlink @OGRE_HOME@/lib/release/Ogre.framework/ ${PATH}/${FILE_NAME}.app/Contents/Frameworks/Ogre.framework )
-<<<<<<< HEAD
     configure_file(${DGtal_DIR}/src/DGtal/io/viewers/OGRE/Ressources/info.plist.in
-=======
-    configure_file(@DGTAL_INCLUDE_DIRS@/DGtal/io/viewers/OGRE/Ressources/info.plist.in
->>>>>>> 0b295af... Upper case change
       ${PATH}/${FILE_NAME}.app/Contents/info.plist)
     set(EXECUTABLE_OUTPUT_PATH  ${PATH}/${FILE_NAME}.app/Contents/MacOS )
   endif(APPLE AND WITH_OGRE)
