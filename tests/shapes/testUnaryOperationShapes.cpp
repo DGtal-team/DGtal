@@ -74,8 +74,8 @@ int minimalistEuclideanShapesTests2D()
   typedef EuclideanShapesIntersection< Union, ShapeA > Intersection;
   Intersection s_intersec ( s_union, shapeC );
 
-  typedef EuclideanShapesMinus< Union, ShapeA > Minus;
-  Minus s_minus ( s_union, shapeC );
+  typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
+  Minus s_minus ( shapeA, shapeC );
 
   std::cout << "==== Union tests ====" << std::endl;
   std::cout << "NO " << s_union.isInside( RealPoint(-5.5, 0.0) ) << std::endl;
