@@ -38,6 +38,7 @@
 
 /////// Shapes 2D
 #include "DGtal/shapes/parametric/Ball2D.h"
+#include "DGtal/shapes/Shapes.h"
 
 /////// Render 2D
 #include "DGtal/io/boards/Board2D.h"
@@ -63,8 +64,8 @@ int minimalistEuclideanShapesTests2D()
   typedef typename ShapeA::Space::Point Point;
   typedef typename ShapeA::Space::RealPoint RealPoint;
 
-  ShapeA shapeA(-2.5, 0.0, 2.5);
-  ShapeA shapeB(2.5, 0.0, 2.5);
+  ShapeA shapeA(-2.501, 0.0, 2.5013);
+  ShapeA shapeB(2, 0.0, 2.5013);
 
   typedef EuclideanShapesUnion< ShapeA, ShapeA > Union;
   Union s_union ( shapeA, shapeB );
@@ -96,7 +97,7 @@ int minimalistEuclideanShapesTests2D()
   std::cout << "YES " << s_minus.isInside( RealPoint(-4.0, 0.0) ) << std::endl;
 
   std::cout << "==== Digitalization ====" << std::endl;
-  typedef Minus CurrentShape;
+  typedef ShapeA CurrentShape;
   typedef typename CurrentShape::Space Space;
   typedef typename Space::Integer Integer;
   typedef typename Space::Vector Vector;
@@ -109,8 +110,8 @@ int minimalistEuclideanShapesTests2D()
   typedef typename LightImplicitDigSurface::SurfelConstIterator ConstIterator;
 
   Digitizer dig;
-  dig.attach( s_minus );
-  dig.init( s_minus.getLowerBound(), s_minus.getUpperBound(), 0.1 );
+  dig.attach( shapeA );
+  dig.init( shapeA.getLowerBound(), shapeA.getUpperBound(), 0.1 );
   Domain domain = dig.getDomain();
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
@@ -127,7 +128,11 @@ int minimalistEuclideanShapesTests2D()
   LightImplicitDigSurface LightImplDigSurf( K, dig, SAdj, bel );
   MyDigitalSurface digSurf( LightImplDigSurf );
 
-
+  Z2i::DigitalSet aSet(domain);
+  Shapes<Domain>::digitalShaper( aSet, dig );
+  Board2D board2;
+    board2 << aSet;
+    board2.saveSVG ("glop.svg");
 
   std::cout << "==== Render ====" << std::endl;
   Board2D board;
@@ -142,12 +147,35 @@ int minimalistEuclideanShapesTests2D()
           << *it;
   }
 
-  board << CustomStyle( "olol",
-                        new CustomColors( Color( 200, 0, 0 ),
-                                          Color( 255, 100, 100 ) ) )
-        << Point(0,0);
+  Digitizer dig2;
+  dig2.attach( shapeC );
+  dig2.init( shapeC.getLowerBound(), shapeC.getUpperBound(), 0.1 );
+  Domain domain2 = dig.getDomain();
+  KSpace K2;
+  bool ok2 = K2.init( dig2.getLowerBound(), dig2.getUpperBound(), true );
+  if ( ! ok2 )
+  {
+    std::cerr << "[testUnaryOperationShapes]"
+              << " error in creating KSpace." << std::endl;
+    return false;
+  }
 
-  board.saveSVG("testUnaryOparationShapes-s_minus.svg");
+  SurfelAdjacency<KSpace::dimension> SAdj2( true );
+
+  SCell bel2 = Surfaces<KSpace>::findABel( K2, dig2, 10000 );
+  LightImplicitDigSurface LightImplDigSurf2( K2, dig2, SAdj2, bel2 );
+  MyDigitalSurface digSurf2( LightImplDigSurf2 );
+
+  for ( ConstIterator itbegin = digSurf2.begin(), itend = digSurf2.end(), it = itbegin; it != itend; ++it )
+  {
+    ////////////////////
+    board << CustomStyle( (*it).className(),
+                          new CustomColors( Color( 0, 200, 0 ),
+                                            Color( 100, 255, 100 ) ) )
+          << *it;
+  }
+
+  board.saveSVG("testUnaryOparationShapes-two_ball.svg");
 
   return 42;
 }
