@@ -11,7 +11,7 @@ after_script:
 before_script:
   - sudo apt-get -qq install libboost-all-dev
 
-script: cmake . && make
+script: cmake . -DCMAKE_BUILD_TYPE=Debug && make
 
 
 after_script: 
