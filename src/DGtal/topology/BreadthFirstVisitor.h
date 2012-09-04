@@ -71,7 +71,7 @@ namespace DGtal
   initial core. The expander move layer by layer but the user is
   free to navigate on each layer.
  
-  @tparam TObject the type of the digital object.
+  @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
  
   @code
      Graph g( ... );
