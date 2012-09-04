@@ -17,37 +17,38 @@
 #pragma once
 
 /**
- * @file BreadthFirstVisitor.h
+ * @file DepthFirstVisitor.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/11/1
  *
- * Header file for template class BreadthFirstVisitor
+ * Header file for template class DepthFirstVisitor
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(BreadthFirstVisitor_RECURSES)
-#error Recursive header files inclusion detected in BreadthFirstVisitor.h
-#else // defined(BreadthFirstVisitor_RECURSES)
+#if defined(DepthFirstVisitor_RECURSES)
+#error Recursive header files inclusion detected in DepthFirstVisitor.h
+#else // defined(DepthFirstVisitor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define BreadthFirstVisitor_RECURSES
+#define DepthFirstVisitor_RECURSES
 
-#if !defined BreadthFirstVisitor_h
+#if !defined DepthFirstVisitor_h
 /** Prevents repeated inclusion of headers. */
-#define BreadthFirstVisitor_h
+#define DepthFirstVisitor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <queue>
+#include <stack>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
-//#include "DGtal/topology/Object.h"
 #include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -55,13 +56,13 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class BreadthFirstVisitor
+  // template class DepthFirstVisitor
   /**
-  Description of template class 'BreadthFirstVisitor' <p> \brief
-  Aim: This class is useful to perform a breadth-first exploration
+  Description of template class 'DepthFirstVisitor' <p> \brief
+  Aim: This class is useful to perform a depth-first exploration
   of a graph given a starting point or set (called initial core).
  
-  The expander implements a breadth-first algorithm on the graph of
+  The expander implements a depth-first algorithm on the graph of
   adjacencies. It can be used not only to detect connected
   component but also to identify the layers of the object located
   at a given distance of a starting set.
@@ -71,39 +72,38 @@ namespace DGtal
   initial core. The expander move layer by layer but the user is
   free to navigate on each layer.
  
-  @tparam TObject the type of the digital object.
+  @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
  
   @code
      Graph g( ... );
      Graph::Vertex p( ... );
-     BreadthFirstVisitor< Graph > visitor( g, p );
+     DepthFirstVisitor< Graph > visitor( g, p );
      while ( ! visitor.finished() )
        {
-         BreadthFirstVisitor<Graph>::Node node = visitor.current();
+         DepthFirstVisitor<Graph>::Node node = visitor.current();
          std::cout << "Vertex " << node.first 
                    << " at distance " << node.second << std::endl;
          visitor.expand();
        }
      @endcode
     
-   @see testBreadthFirstVisitor.cpp
-   @see testObject.cpp
+   @see testDepthFirstVisitor.cpp
    */
   template < typename TGraph, 
              typename TMarkSet = typename TGraph::VertexSet >
-  class BreadthFirstVisitor
+  class DepthFirstVisitor
   {
     // ----------------------- Associated types ------------------------------
   public:
-    typedef BreadthFirstVisitor<TGraph,TMarkSet> Self;
+    typedef DepthFirstVisitor<TGraph,TMarkSet> Self;
     typedef TGraph Graph;
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
 
-    // Cannot check this since some types using it are incomplete.
     //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
-    // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
+    // Cannot check this since some types using it are incomplete.
+    //BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------
   public:
@@ -112,7 +112,7 @@ namespace DGtal
     /// initial point or set.
     typedef std::pair< Vertex, Size > Node;
     /// Internal data structure for computing the breadth-first expansion.
-    typedef std::queue< Node > NodeQueue;
+    typedef std::stack< Node > NodeQueue;
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
 
@@ -148,7 +148,7 @@ namespace DGtal
     struct ConstIterator 
     {
       typedef ConstIterator<TAccessor> Self;
-      typedef BreadthFirstVisitor<TGraph,TMarkSet> Visitor;
+      typedef DepthFirstVisitor<TGraph,TMarkSet> Visitor;
       typedef TAccessor Accessor;
 
       // stl iterator types.
@@ -184,7 +184,7 @@ namespace DGtal
       operator*() const
       {
         ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
+                && "DGtal::DepthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
         return Accessor::get( myVisitor->current() );
       }
 
@@ -193,7 +193,7 @@ namespace DGtal
       operator->() const
       { 
         ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
+                && "DGtal::DepthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
         return & Accessor::get( operator*() );
       }
 
@@ -245,7 +245,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~BreadthFirstVisitor();
+    ~DepthFirstVisitor();
 
     /**
      * Constructor from the graph only. The visitor is in the state
@@ -253,7 +253,7 @@ namespace DGtal
      *
      * @param graph the graph in which the breadth first traversal takes place.
      */
-    BreadthFirstVisitor( const Graph & graph );
+    DepthFirstVisitor( const Graph & graph );
 
     /**
      * Constructor from a point. This point provides the initial core
@@ -262,7 +262,7 @@ namespace DGtal
      * @param graph the graph in which the breadth first traversal takes place.
      * @param p any vertex of the graph.
      */
-    BreadthFirstVisitor( const Graph & graph, const Vertex & p );
+    DepthFirstVisitor( const Graph & graph, const Vertex & p );
 
     /**
        Constructor from iterators. All vertices visited between the
@@ -277,7 +277,7 @@ namespace DGtal
        @param e the end iterator in a container of vertices. 
     */
     template <typename VertexIterator>
-    BreadthFirstVisitor( const Graph & graph, 
+    DepthFirstVisitor( const Graph & graph, 
                          VertexIterator b, VertexIterator e );
 
 
@@ -409,7 +409,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    BreadthFirstVisitor();
+    DepthFirstVisitor();
 
   private:
 
@@ -418,7 +418,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
+    DepthFirstVisitor ( const DepthFirstVisitor & other );
 
     /**
      * Assignment.
@@ -426,36 +426,36 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    BreadthFirstVisitor & operator= ( const BreadthFirstVisitor & other );
+    DepthFirstVisitor & operator= ( const DepthFirstVisitor & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class BreadthFirstVisitor
+  }; // end of class DepthFirstVisitor
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'BreadthFirstVisitor'.
+   * Overloads 'operator<<' for displaying objects of class 'DepthFirstVisitor'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'BreadthFirstVisitor' to write.
+   * @param object the object of class 'DepthFirstVisitor' to write.
    * @return the output stream after the writing.
    */
   template <typename TGraph, typename TMarkSet >
   std::ostream&
   operator<< ( std::ostream & out, 
-               const BreadthFirstVisitor<TGraph, TMarkSet > & object );
+               const DepthFirstVisitor<TGraph, TMarkSet > & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/BreadthFirstVisitor.ih"
+#include "DGtal/topology/DepthFirstVisitor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined BreadthFirstVisitor_h
+#endif // !defined DepthFirstVisitor_h
 
-#undef BreadthFirstVisitor_RECURSES
-#endif // else defined(BreadthFirstVisitor_RECURSES)
+#undef DepthFirstVisitor_RECURSES
+#endif // else defined(DepthFirstVisitor_RECURSES)
