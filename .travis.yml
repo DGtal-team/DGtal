@@ -5,6 +5,12 @@ compiler:
   - clang
 
 # Change this to your needs
+after_script: 
+  - "make test"
+
+before_script:
+  - apt-get -qq install boost 
+
 script: cmake . && make
 
 
