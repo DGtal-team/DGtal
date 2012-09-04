@@ -1,0 +1,20 @@
+language: cpp
+
+script: "cmake . && make"
+
+compiler: 
+   - cland
+   - gcc
+
+before_script:
+  - "cmake ."
+
+script:
+  - make
+
+after_script: 
+  - "make test"
+
+branches:
+  only: 
+    - only
