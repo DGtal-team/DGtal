@@ -9,7 +9,7 @@ after_script:
   - "make test"
 
 before_script:
-  - sudo apt-get -qq install boost 
+  - sudo apt-get -qq install libboost-all-dev
 
 script: cmake . && make
 
