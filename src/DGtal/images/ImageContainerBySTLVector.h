@@ -138,6 +138,7 @@ public:
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
+    typedef Point Vertex;
 
     /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;

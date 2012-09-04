@@ -109,6 +109,7 @@ namespace DGtal
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
+    typedef Point Vertex;
 
     typedef CountedPtr<const Domain> DomainPtr;    
 

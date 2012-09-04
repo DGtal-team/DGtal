@@ -57,7 +57,7 @@
 #include <boost/concept/requires.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/concept_archetype.hpp>
-
+#include <boost/static_assert.hpp>
 
 #ifdef _MSC_VER
 #define NOMINMAX

@@ -2,12 +2,13 @@ SET(DGTAL_TESTS_SRC_IO_READERS
        testPNMReader
        testVolReader
        testRawReader     
-       testPointListReader  )
+       testPointListReader 
+       testMeshReader )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal DGtalIO)
+  target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
 

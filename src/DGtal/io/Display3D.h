@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -73,6 +73,140 @@ namespace DGtal
   */
   class Display3D
   {
+
+ 
+    // ------------------------- Private Datas --------------------------------
+  private:
+
+
+  protected:
+
+
+
+    /// Structure used to display KSLine in 3D
+    /// @see addKSLinel 
+    ///
+    
+  
+    struct lineD3D{
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double width;
+      unsigned int R,G,B,T;
+      bool isSigned;
+      bool signPos;
+    };
+    
+
+
+    /**
+     * Defines the 3D voxel.
+     */
+
+    struct voxelD3D{      
+      ///  The center coordinate of the voxel.
+      ///
+      int x, y,z;
+      
+      ///  The display color of the voxel.
+      ///
+      unsigned int R,G,B,T;
+      
+      /// The width of a voxel face 
+      ///
+      double width;
+    };
+  
+  
+    /**
+     * Used to define clipping planes (it uses the quadD3D structure)
+     * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
+     **/ 
+  
+    struct clippingPlaneD3D{
+      double a,b,c,d;
+    };
+
+  
+    /**
+     * This structure is used to display clipping planes and the
+     * components of the myKSSurfelList (allowing to set normal and
+     * color).
+     * @see Display3D, Viewer3D, Board3DTo2D
+     **/ 
+    
+    struct  quadD3D{
+      double x1,y1,z1;
+      double x2,y2,z2;
+      double x3,y3,z3;
+      double x4,y4,z4;    
+      double nx, ny, nz;
+      unsigned int R,G,B,T;
+    };
+
+
+
+    /**
+     * This structure is used to display triangle faces.
+     * @see Display3D, Viewer3D, Board3DTo2D
+     **/ 
+    
+    struct  triangleD3D{
+      double x1,y1,z1;
+      double x2,y2,z2;
+      double x3,y3,z3;
+      double nx, ny, nz;
+      unsigned int R,G,B,T;
+    };
+
+
+
+
+
+  public:
+    /// Structure used to display KSPoint in 3D and MeshFromPoints
+    /// @see addKSPointel 
+    ///
+    
+    struct pointD3D{
+      const double & operator[]( unsigned int i ) const{
+	assert(i<3);
+	switch (i){
+	case 0: {return x;}
+	case 1: {return y;}
+	case 2: {return z;}
+	}
+	return x;
+      };
+       double & operator[]( unsigned int i ) {
+	assert(i<3);
+	switch (i){
+	case 0: {return x;}
+	case 1: {return y;}
+	case 2: {return z;}
+	}
+	return x;
+      };
+      double  x, y, z;
+      unsigned int R,G,B,T;
+      bool isSigned;
+      bool signPos;
+      double size;
+    };
+
+
+
+  /**
+     * This structure is used to display polygonal faces.
+     * @see Display3D, Viewer3D, Board3DTo2D
+     **/ 
+    
+    struct  polygonD3D{
+      vector<pointD3D> vectPoints;
+      double nx, ny, nz;
+      unsigned int R,G,B,T;
+    };
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -82,8 +216,10 @@ namespace DGtal
     virtual ~Display3D(){};
 
 
-  protected:  
-    Display3D(){};
+    Display3D(){ 
+      myCurrentFillColor = Color ( 220, 220, 220 );
+      myCurrentLineColor = Color ( 22, 22, 222, 50 );
+    };
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -211,7 +347,28 @@ namespace DGtal
     virtual void addQuad(double x1, double y1, double z1,  double x2, double y2, double z2,
 			 double x3, double y3, double z3,  double x4, double y4, double z4, 
 			 DGtal::Color aColor);
-  
+
+    /**
+     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
+     * @param x1, y1, z1, x2, y2, z2, x3, y3, z3  the four coordinates of the triangle.
+     * @param aColor the quad color.
+     */
+    
+    virtual void addTriangle(double x1, double y1, double z1,  double x2, double y2, double z2,
+			     double x3, double y3, double z3, DGtal::Color aColor);
+    
+
+
+
+    /**
+     * Method to add a specific polygon.
+     * @param vectPointsPolygon: a vector containing the polygon vertex.
+     */
+    
+    virtual void addPolygon(std::vector<pointD3D> vectPointsPolygon, DGtal::Color aColor);
+
+    
+
 
     /**
      * Method to add a line to the current display.
@@ -329,7 +486,19 @@ namespace DGtal
     void updateBoundingBox(double x, double y, double z);
   
 
-  
+    
+    
+    /**
+     * Export as MeshFromPoints the current displayed elements.
+     * 
+     * @param aMesh : (return)  the mesh containing the elements of the display.
+     *
+     **/
+    
+    void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
+    
+    
+    
     /**
      * Draws the drawable [object] in this board. It should satisfy
      * the concept CDrawableWithViewer3D, which requires for instance a
@@ -398,87 +567,6 @@ namespace DGtal
   
   
 
- 
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-
-  protected:
-
-
-    /// Structure used to display KSPoint in 3D
-    /// @see addKSPointel 
-    ///
-    
-    struct pointD3D{
-      double  x, y,z;
-      unsigned int R,G,B,T;
-      bool isSigned;
-      bool signPos;
-      double size;
-    };
-
-
-    /// Structure used to display KSLine in 3D
-    /// @see addKSLinel 
-    ///
-    
-  
-    struct lineD3D{
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double width;
-      unsigned int R,G,B,T;
-      bool isSigned;
-      bool signPos;
-    };
-    
-
-
-    /**
-     * Defines the 3D voxel.
-     */
-
-    struct voxelD3D{      
-      ///  The center coordinate of the voxel.
-      ///
-      int x, y,z;
-      
-      ///  The display color of the voxel.
-      ///
-      unsigned int R,G,B,T;
-      
-      /// The width of a voxel face 
-      ///
-      double width;
-    };
-  
-  
-    /**
-     * Used to define clipping planes (it uses the quadD3D structure)
-     * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
-     **/ 
-  
-    struct clippingPlaneD3D{
-      double a,b,c,d;
-    };
-
-  
-    /**
-     * This structure is used to display clipping planes and the
-     * components of the myKSSurfelList (allowing to set normal and
-     * color).
-     * @see Display3D, Viewer3D, Board3DTo2D
-     **/ 
-
-    struct  quadD3D{
-      double x1,y1,z1;
-      double x2,y2,z2;
-      double x3,y3,z3;
-      double x4,y4,z4;    
-      double nx, ny, nz;
-      unsigned int R,G,B,T;
-    };
 
 
   protected:
@@ -538,19 +626,24 @@ namespace DGtal
     std::vector< lineD3D > myKSLinelList;
   
   
-    /// Represent all the drawed planes
-    ///
-
+    // Represents all the planes drawn in the Display3D
     std::vector< quadD3D > myQuadList;
 
 
+    // Represents all the triangles drawn in the Display3D
+    std::vector< triangleD3D > myTriangleList;
+    
+
+   // Represents all the polygon drawn in the Display3D
+    std::vector<polygonD3D> myPolygonList;
+    
+    
     /// Used to define if GL_TEST_DEPTH is used. 
-    ///
-  
     std::vector<bool> myListVoxelDepthTest;
 
-
-
+    float myMeshDefaultLineWidth;
+    
+    
     // ------------------------- Hidden services ------------------------------
 
     /**
@@ -606,12 +699,40 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   std::ostream&
-  operator<< ( std::ostream & out, const Display3D & object );
+  operator<< ( std::ostream & out, const DGtal::Display3D & object );
 
 
 
 
 
+  /**
+   * Operator ">>" to export a Display3D into a MeshFromPoints
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh);
+  
+  
+
+
+  /**
+   * Operator ">>" to export a Display3D directly a file
+   * 
+   * @param aDisplay3D: the Display3D to be exported.
+   * @param aMesh: (return) the resulting mesh.
+   *
+   **/
+  
+  void
+  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  
+  
+
+  
 } // namespace DGtal
 
 

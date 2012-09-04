@@ -1,0 +1,149 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MeshWriter.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ *
+ * @date 2012/07/08
+ *
+ * Implementation of inline methods defined in MeshWriter.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <fstream>
+#include <set>
+#include "DGtal/io/Color.h"
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+template<typename TPoint>
+inline
+bool 
+MeshWriter<TPoint>::export2OFF(ostream & out, 
+			       const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  try
+    {
+      out << "OFF"<< endl;
+      out << "# generated from MeshWriter from the DGTal library"<< endl;
+      out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << endl;
+	
+      for(unsigned int i=0; i< aMesh.nbVertex(); i++){
+	out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << endl;	
+      }
+      int position=0;
+      int indexFace=0;
+      for (int i=0; i< aMesh.nbFaces(); i++){
+	vector<unsigned int>  aFace = aMesh.getFace(i);
+	out << aFace.size() << " " ;
+	for(int j=0; j<aFace.size(); j++){
+	  unsigned int indexVertex = aFace.at(j);
+	  out << indexVertex << " " ;	    
+	}
+	DGtal::Color col = aMesh.getFaceColor(i);
+	if(exportColor){
+	  out << " ";
+ 	  out << ((double) col.red())/255.0 << " "
+	      << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
+	      << " " << ((double) col.alpha())/255.0 ;
+	}  
+	out << endl;
+      }
+    }catch( ... )
+    {
+      trace.error() << "OFF writer IO error on export " << endl;
+      throw dgtalio;
+    }        
+  
+  return true;
+}
+
+
+
+
+
+
+template<typename TPoint>
+inline
+bool 
+MeshWriter<TPoint>::export2OBJ(ostream &out, 
+			       const  DGtal::MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  try
+    {
+      out << "#  OBJ format"<< endl;
+      out << "# generated from MeshWriter from the DGTal library"<< endl;
+      out << endl;
+      out << "o anObj" << endl;
+      out << endl;
+      
+      // processing vertex
+      for(unsigned int i=0; i< aMesh.nbVertex(); i++){
+	out << "v " << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << endl;	
+      }
+      out << endl;
+      // processing faces:
+      for (int i=0; i< aMesh.nbFaces(); i++){
+	vector<unsigned int>  aFace = aMesh.getFace(i);
+	out << "f " ;
+	for(int j=0; j<aFace.size(); j++){
+	  unsigned int indexVertex = aFace.at(j);
+	  out << (indexVertex+1) << " " ;	    
+	}
+	out << endl;
+      }
+      out << endl;
+    }catch( ... )
+    {
+      trace.error() << "OBJ writer IO error on export "  << endl;
+      throw dgtalio;
+    }
+  return true;
+}
+
+
+
+
+
+template <typename TPoint>
+inline
+bool
+DGtal::operator>> (   MeshFromPoints<TPoint> & aMesh, const std::string & aFilename ){
+  string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
+  ofstream out;
+  out.open(aFilename.c_str());
+  if(extension== "off") {
+    return DGtal::MeshWriter<TPoint>::export2OFF(out, aMesh, true);
+  }else if(extension== "obj") {
+    return DGtal::MeshWriter<TPoint>::export2OBJ(out, aMesh);
+  }
+  out.close();
+  return false;
+} 
+
+

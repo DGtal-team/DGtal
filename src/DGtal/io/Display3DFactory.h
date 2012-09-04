@@ -45,7 +45,7 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-
+#include "DGtal/io/Display3D.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -54,6 +54,9 @@
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -67,6 +70,19 @@ namespace DGtal
    */
   struct Display3DFactory
   {
+
+    // MeshFromPoints    
+    
+    template <typename TPoint>
+    static void drawAsFaces( Display3D & display,  const DGtal::MeshFromPoints<TPoint> & );
+
+    template <typename TPoint>
+    static void draw( Display3D & display, const  DGtal::MeshFromPoints<TPoint> &  );
+    // MeshFromPoints
+
+
+
+
     
     // ArithmeticalDSS3d
     /**
