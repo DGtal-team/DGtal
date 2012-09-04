@@ -1,20 +1,12 @@
 language: cpp
 
-script: "cmake . && make"
+compiler:
+  - gcc
+  - clang
 
-compiler: 
-   - cland
-   - gcc
+# Change this to your needs
+script: cmake . && make
 
-before_script:
-  - "cmake ." 
-
-script:
-  - make
 
 after_script: 
   - "make test"
-
-branches:
-  only: 
-    - only
