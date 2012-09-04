@@ -9,7 +9,7 @@ after_script:
   - "make test"
 
 before_script:
-  - sudo apt-get -qq install libboost-all-dev
+  - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev
 
 script: cmake . -DCMAKE_BUILD_TYPE=Debug && make
 
