@@ -34,6 +34,69 @@
 // Implementation of inline functions and external operators                 //
 
 
+
+// MeshFromPoints    
+template <typename TPoint>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+  std::string mode = display.getMode( aMesh.className() );
+  if ( mode == "Faces"  || mode=="")
+    drawAsFaces( display, aMesh );
+
+}
+
+template <typename TPoint>
+inline
+void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+
+  for(unsigned int i=0; i< aMesh.nbFaces(); i++){
+     typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
+     unsigned int aNum = aFace.size();
+     if(aNum==4){
+       TPoint  p1 = aMesh.getVertex(aFace.at(0));
+       TPoint  p2 = aMesh.getVertex(aFace.at(1));
+       TPoint  p3 = aMesh.getVertex(aFace.at(2));
+       TPoint  p4 = aMesh.getVertex(aFace.at(3));
+       
+       display.addQuad(p1[0], p1[1], p1[2], 
+		       p2[0], p2[1], p2[2], 
+		       p3[0], p3[1], p3[2], 
+		       p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
+     }else if(aNum==3){
+       TPoint  p1 = aMesh.getVertex(aFace.at(0));
+       TPoint  p2 = aMesh.getVertex(aFace.at(1));
+       TPoint  p3 = aMesh.getVertex(aFace.at(2));
+       display.addTriangle(p1[0], p1[1], p1[2], 
+			   p2[0], p2[1], p2[2], 
+			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
+     }else if(aNum>4){
+       vector<Display3D::pointD3D> vectPoly;
+       for(int j=0; j< aFace.size(); j++){
+	 Display3D::pointD3D pt;
+	 pt.x= aMesh.getVertex(aFace.at(j))[0];
+	 pt.y=aMesh.getVertex(aFace.at(j))[1];
+	 pt.z=aMesh.getVertex(aFace.at(j))[2];
+	 vectPoly.push_back(pt);	 
+       }
+       display.addPolygon(vectPoly, aMesh.getFaceColor(i));
+     }else{
+       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+     }
+     
+     
+
+     
+  } 
+}
+
+
+
+// MeshFromPoints
+
+
 // ArithmeticalDSS3d
 template <typename TIterator, typename TInteger, int connectivity>
 inline

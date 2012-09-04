@@ -1,0 +1,266 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file MeshFromPoints.ih
+ * @author Bertrand Kerautret (\c kerautre@loria.fr )
+ * LORIA (CNRS, UMR 7503), University of Nancy, France
+ *
+ * @date 2012/06/29
+ *
+ * Implementation of inline methods defined in MeshFromPoints.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(bool saveFaceColor)
+{
+  mySaveFaceColor=saveFaceColor;
+}
+
+/**
+ * Destructor.
+ */
+template <typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::~MeshFromPoints()
+{
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[MeshFromPoints]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename TPoint>
+inline
+bool
+DGtal::MeshFromPoints<TPoint>::isValid() const
+{
+    return true;
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+    
+
+
+
+
+
+template<typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
+{
+  mySaveFaceColor=false;
+  for(int i =0; i< vertexSet.size(); i++){
+    myVertexList.push_back(vertexSet.at(i));
+  }
+
+}    
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addVertex(const TPoint &point)
+{
+  myVertexList.push_back(point);
+}    
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, 
+						 unsigned int indexVertex3, const DGtal::Color &aColor)
+{
+  MeshFace aFace;
+  aFace.push_back(indexVertex1);
+  aFace.push_back(indexVertex2);
+  aFace.push_back(indexVertex3);
+  myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
+}    
+
+
+
+
+template<typename TPoint>
+inline
+void
+DGtal::MeshFromPoints<TPoint>::addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
+					   unsigned int indexVertex3, unsigned int indexVertex4, 
+					   const DGtal::Color &aColor)
+{
+  MeshFace aFace;
+  aFace.push_back(indexVertex1);
+  aFace.push_back(indexVertex2);
+  aFace.push_back(indexVertex3);
+  aFace.push_back(indexVertex4);
+  myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
+}    
+
+
+
+template<typename TPoint>
+inline
+void 
+DGtal::MeshFromPoints<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor){
+  myFaceList.push_back(aFace);
+  if(mySaveFaceColor){
+    myFaceColorList.push_back(aColor);
+  }
+
+
+}
+
+
+template<typename TPoint>
+inline
+const TPoint &
+DGtal::MeshFromPoints<TPoint>::getVertex(unsigned int i) const 
+{
+  return myVertexList.at(i);
+}    
+
+
+
+template<typename TPoint>
+inline
+const typename  DGtal::MeshFromPoints<TPoint>::MeshFace & 
+DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i) const
+{
+  return myFaceList.at(i);
+}    
+
+
+template<typename TPoint>
+inline
+const unsigned int 
+DGtal::MeshFromPoints<TPoint>::nbFaces() const
+{
+  return myFaceList.size();
+}
+
+template<typename TPoint>
+inline
+const unsigned int 
+DGtal::MeshFromPoints<TPoint>::nbVertex() const
+{
+  return myVertexList.size();
+}
+
+template<typename TPoint>
+inline
+const DGtal::Color & 
+DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
+  if(mySaveFaceColor){
+    return myFaceColorList.at(i);
+  }else{
+    return DGtal::Color::White;
+  }
+}
+
+
+
+
+template<typename TPoint> 
+inline     
+void 
+DGtal::MeshFromPoints<TPoint>::invertVertexFaceOrder(){
+  for(unsigned int i=0; i<myFaceList.size(); i++){
+    vector<unsigned int> & aFace =  myFaceList.at(i);
+    for(unsigned int j=0; j < aFace.size()/2; j++){
+      unsigned int tmp=aFace.at(j);
+      aFace.at(j)=aFace.at(aFace.size()-1-j);
+      aFace.at(aFace.size()-1-j)=tmp;
+    }
+  }
+}
+
+    
+
+//------------------------------------------------------------------------------
+template<typename TPoint>
+inline
+std::string
+DGtal::MeshFromPoints<TPoint>::className() const
+{
+  return "MeshFromPoints";
+}
+
+
+
+
+
+template <typename TPoint>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const MeshFromPoints<TPoint> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

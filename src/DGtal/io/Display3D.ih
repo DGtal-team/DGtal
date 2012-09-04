@@ -1,8 +1,8 @@
 /**
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as
- *  published by the Free Software Foundation, either version 3 of the
- *  License, or  (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public License
+ *  as published by the Free Software Foundation, either version 3 of
+ *  the License, or (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -33,8 +33,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
-
 #include "DGtal/io/Display3DFactory.h"
+#include "DGtal/io/writers/MeshWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -71,11 +71,9 @@ void
 DGtal::normalize (double vec[3])
 {
   const double squaredLen = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
-  const double invLen = 1.0 /  sqrt (squaredLen);
-
-  vec[0] *= invLen;
-  vec[1] *= invLen;
-  vec[2] *= invLen;
+  vec[0] /= sqrt (squaredLen);
+  vec[1] /= sqrt (squaredLen);
+  vec[2] /= sqrt (squaredLen);
 }
 
 inline
@@ -248,37 +246,34 @@ DGtal::Display3D::addLine(double x1, double y1, double z1,  double x2, double y2
 
 inline
 void
-DGtal::Display3D::addQuad(double x1, double y1, double z1,  double x2,
-			  double y2, double z2,
+DGtal::Display3D::addQuad(double x1, double y1, double z1,  
+			  double x2, double y2, double z2,
 			  double x3, double y3, double z3,  
 			  double x4, double y4, double z4, DGtal::Color aColor)
 {
+  quadD3D aQuad;
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   updateBoundingBox(x3, y3, z3);
   updateBoundingBox(x4, y4, z4);
-  quadD3D aQuad;
-  double  ux=x2-x1; 
-  double  uy=y2-y1; 
-  double  uz=z2-z1; 
-  
-  double  vx=x4-x1; 
-  double  vy=y4-y1; 
-  double  vz=z4-z1; 
-  
-  double n[3];
-  n[0]= uy*vz-uz*vy;
-  n[1]= uz*vx-ux*vz;
-  n[2]= ux*vy-uy*vx;
-  double normeN=sqrt(n[0]*n[0]+n[1]*n[1]+n[2]*n[2]);
-  
+  double u[3]; double v [3]; double n [3]; 
+  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
+  v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  cross(n, u, v );
+  normalize(n);
+
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning quad not added due to identical vertex... "<<endl;
+    return;
+  }
+
   aQuad.x1=x1; aQuad.y1=y1; aQuad.z1=z1;
   aQuad.x2=x2; aQuad.y2=y2; aQuad.z2=z2;
   aQuad.x3=x3; aQuad.y3=y3; aQuad.z3=z3;
   aQuad.x4=x4; aQuad.y4=y4; aQuad.z4=z4;
-  aQuad.nx= n[0]/normeN;
-  aQuad.ny= n[1]/normeN;
-  aQuad.nz= n[2]/normeN;
+  aQuad.nx= n[0];
+  aQuad.ny= n[1];
+  aQuad.nz= n[2];
   
   aQuad.R=aColor.red();
   aQuad.G=aColor.green();
@@ -290,6 +285,104 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,  double x2,
 
 
 
+
+
+inline
+void
+DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
+			      double y2, double z2,
+			      double x3, double y3, double z3, DGtal::Color aColor)
+{
+  updateBoundingBox(x1, y1, z1);
+  updateBoundingBox(x2, y2, z2);
+  updateBoundingBox(x3, y3, z3);
+
+  triangleD3D aTriangle;
+  double u[3]; double v [3]; double n [3]; 
+    u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
+  v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  cross(n, u, v );
+  cross(n, u, v );
+  normalize(n);
+  
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning triangle not added due to identical vertex... "<<endl;
+    return;
+  }
+  
+  aTriangle.x1=x1; aTriangle.y1=y1; aTriangle.z1=z1;
+  aTriangle.x2=x2; aTriangle.y2=y2; aTriangle.z2=z2;
+  aTriangle.x3=x3; aTriangle.y3=y3; aTriangle.z3=z3;
+  
+  aTriangle.nx= n[0];
+  aTriangle.ny= n[1];
+  aTriangle.nz= n[2];
+  
+  aTriangle.R=aColor.red();
+  aTriangle.G=aColor.green();
+  aTriangle.B=aColor.blue();
+  aTriangle.T=aColor.alpha();
+  
+  myTriangleList.push_back(aTriangle);  
+}
+
+
+
+
+
+inline
+void 
+DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGtal::Color aColor)
+{
+  polygonD3D aPolygon;
+  for(int i=0; i< vectPointsPolygon.size();i++){
+    aPolygon.vectPoints.push_back(vectPointsPolygon.at(i));
+    aPolygon.R=aColor.red();
+    aPolygon.G=aColor.green();
+    aPolygon.B=aColor.blue();
+    aPolygon.T=aColor.alpha();
+    
+    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(0).y);
+  } 
+
+
+
+  double x1= vectPointsPolygon.at(0).x;
+  double y1= vectPointsPolygon.at(0).y;
+  double z1= vectPointsPolygon.at(0).z;
+
+  double x2= vectPointsPolygon.at(1).x;
+  double y2= vectPointsPolygon.at(1).y;
+  double z2= vectPointsPolygon.at(1).z;
+
+  double x3= vectPointsPolygon.at(2).x;
+  double y3= vectPointsPolygon.at(2).y;
+  double z3= vectPointsPolygon.at(2).z;
+
+  double u[3]; double v [3]; double n [3]; 
+  u[0]=x2-x1; u[1]=y2-y1; u[2]=z2-z1;
+  v[0]=x3-x1; v[1]=y3-y1; v[2]=z3-z1;
+  cross(n, u, v );
+  normalize(n);  
+  
+  if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
+    trace.error()<< "Warning polygin not added due to identical vertex... "<<endl;
+    return;
+  }
+
+  aPolygon.nx= n[0];
+  aPolygon.ny= n[1];
+  aPolygon.nz= n[2];
+  
+  aPolygon.R=aColor.red();
+  aPolygon.G=aColor.green();
+  aPolygon.B=aColor.blue();
+  aPolygon.T=aColor.alpha();
+  
+  
+  myPolygonList.push_back(aPolygon);  
+
+}
 
 
 inline
@@ -652,6 +745,91 @@ DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 
 
 
+inline
+void 
+DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const { 			       
+
+  unsigned int vertexIndex=0;
+  
+  for (unsigned int i=0; i< myKSSurfelList.size(); i++){
+    quadD3D quad = myKSSurfelList.at(i);
+    pointD3D p1, p2, p3, p4;
+    p1.x=quad.x1; p1.y=quad.y1 ;p1.z=quad.z1;
+    p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
+    p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
+    p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
+    aMesh.addVertex(p1);
+    aMesh.addVertex(p2);
+    aMesh.addVertex(p3);
+    aMesh.addVertex(p4);
+    aMesh.addQuadFace(i*4,i*4+1, i*4+2,i*4+3, DGtal::Color(quad.R, quad.G, quad.B, quad.T));
+	
+    vertexIndex+=4;
+    
+  }
+  
+  
+  for(int j=0; j<myVoxelSetList.size(); j++){
+    for (unsigned int i=0; i< myVoxelSetList.at(j).size(); i++){
+      voxelD3D voxel = myVoxelSetList.at(j).at(i);
+      pointD3D p1, p2, p3, p4, p5, p6, p7, p8;
+      double width= voxel.width;
+
+      p1.x = voxel.x-width; p1.y = voxel.y+width; p1.z = voxel.z+width;
+      p2.x = voxel.x+width; p2.y = voxel.y+width; p2.z = voxel.z+width;      
+      p3.x = voxel.x+width; p3.y = voxel.y-width; p3.z = voxel.z+width;
+      p4.x = voxel.x-width; p4.y = voxel.y-width; p4.z = voxel.z+width;      
+      p5.x = voxel.x-width; p5.y = voxel.y+width; p5.z = voxel.z-width;
+      
+      p6.x = voxel.x+width; p6.y = voxel.y+width; p6.z = voxel.z-width;     
+      p7.x = voxel.x+width; p7.y = voxel.y-width; p7.z = voxel.z-width;
+      p8.x = voxel.x-width; p8.y = voxel.y-width; p8.z = voxel.z-width;
+      
+      aMesh.addVertex(p1);
+      aMesh.addVertex(p2);
+      aMesh.addVertex(p3);
+      aMesh.addVertex(p4);
+      aMesh.addVertex(p5);
+      aMesh.addVertex(p6);
+      aMesh.addVertex(p7);
+      aMesh.addVertex(p8);
+      
+      //z+
+      aMesh.addQuadFace(vertexIndex, vertexIndex+3, vertexIndex+2, vertexIndex+1, 
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      //z-
+      aMesh.addQuadFace(vertexIndex+4, vertexIndex+5, vertexIndex+6, vertexIndex+7,
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      //y+
+      aMesh.addQuadFace(vertexIndex+1, vertexIndex+2, vertexIndex+6, vertexIndex+5, 
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      //y-
+      aMesh.addQuadFace(vertexIndex, vertexIndex+4, vertexIndex+7, vertexIndex+3, 
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      //x+
+      aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+5, vertexIndex+4, 
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      //x- 
+      aMesh.addQuadFace(vertexIndex+3, vertexIndex+7, vertexIndex+6, vertexIndex+2,
+			DGtal::Color(voxel.R, voxel.G, voxel.B, voxel.T));
+      
+      vertexIndex+=8;
+    }
+  }
+
+
+}
+
+
+
+
+
+
 template <typename TDrawableWithDisplay3D>
 inline
 DGtal::Display3D & 
@@ -680,7 +858,30 @@ DGtal::operator<< ( std::ostream & out,
 }
 
 
+inline
+void
+DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh)
+{
+  aDisplay3D.exportToMesh(aMesh);
+}
 
+
+
+inline
+void
+DGtal::operator>> ( const Display3D &aDisplay3D,  string aFilename)
+{
+  // exporting with a mesh containing color (parameter constructor to true):
+  DGtal::MeshFromPoints<Display3D::pointD3D> mesh(true);
+  aDisplay3D >> mesh;
+  trace.info() << "generating faces done." << endl;
+  mesh >> aFilename;
+  trace.info() << "file exported in file: " << aFilename << endl;
+}
+
+
+
+  
 
 
 //                                                                           //

@@ -42,94 +42,82 @@
 /**
  * Constructor.
  */
-template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename S,typename P,DGtal::uint32_t p, typename IntLong>
 inline
-DGtal::DistanceTransformation<I, p, IntLong>::DistanceTransformation()
+DGtal::DistanceTransformation<S,P, p, IntLong>::DistanceTransformation(const Domain &aDomain,
+                                                                       const PointPredicate & aPredicate):
+  myDomain(aDomain), myPointPredicate(aPredicate)
 {
 }
+
+
 /**
  * Destructor.
  */
-
-template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename S, typename P,DGtal::uint32_t p, typename IntLong>
 inline
-DGtal::DistanceTransformation<I, p, IntLong>::~DistanceTransformation()
+DGtal::DistanceTransformation<S, P,p, IntLong>::~DistanceTransformation()
 {
 }
 
 
 
 
-template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename S, typename P,DGtal::uint32_t p, typename IntLong>
 inline
 bool
-DGtal::DistanceTransformation<I, p, IntLong>::checkTypesValidity ( const I & aImage )
+DGtal::DistanceTransformation<S,P,p, IntLong>::checkTypesValidity (  ) const
 {
-  typename I::Point::UnsignedComponent maxExtent = ( aImage.domain().upperBound() - 
-						     aImage.domain().lowerBound() ).normInfinity();
-
+  typename Point::UnsignedComponent maxExtent = ( myDomain.upperBound() - 
+                                                  myDomain.lowerBound() ).normInfinity();
+  
   //Estimate worst-case bit size (special case for p=0 == Linfinity
   double bitSize;
-
+  
   if (SeparableMetric::p != 0)
-    bitSize = SeparableMetric::p * (log ((double) I::dimension * 2 * maxExtent ) / log(2.0));
+    bitSize = SeparableMetric::p * (log ((double) S::dimension * 2 * maxExtent ) / log(2.0));
   else
-    bitSize =  sizeof ( typename I::Value ) * 8;
-
+    bitSize =  sizeof ( typename OutputImage::Value ) * 8;
+  
   if ( bitSize > sizeof ( typename OutputImage::Value ) * 8 )
     {
-      trace.warning() << "(DistanceTransformation) The output image Value range may"
+      trace.warning() << "(DistanceTransformation) The output image value range may"
 		      <<" not be sufficient to store the exact values  according to"
-		      <<" the input image extent." << endl;
+		      <<" the input domain extent." << endl;
       return false;
     }
   return true;
 }
 
-template <typename I, DGtal::uint32_t p, typename IntLong>
-template <typename DigitalSet>
+
+template <typename S, typename P, DGtal::uint32_t p, typename IntLong>
 inline
-typename DGtal::DistanceTransformation<I, p, IntLong>::OutputImage
-DGtal::DistanceTransformation<I, p, IntLong>::compute ( const DigitalSet &aSet, const bool addBoundary)
-{
-  //We convert the set to an image and run the image-based algorithm
-  I image = ImageFromSet<I>::template create<DigitalSet>(aSet, 128, addBoundary);
-  trace.info() <<"Temp image="<<image<<std::endl;
-  return compute( image  );
-}
-
-
-
-template <typename I, DGtal::uint32_t p, typename IntLong>
-template <typename Functor>
-inline
-typename DGtal::DistanceTransformation<I, p, IntLong>::OutputImage
-DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage, 
-							const Functor & predicate )
+typename DGtal::DistanceTransformation<S,P, p, IntLong>::OutputImage
+DGtal::DistanceTransformation<S,P, p, IntLong>::compute ( )
 {
 
   //We trace type validdity check result;
-  checkTypesValidity ( aImage );
+  checkTypesValidity ( );
 
   //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
   myLowerBoundCopy = Point(); //(O,O,...O)
-  myUpperBoundCopy = aImage.domain().upperBound() - aImage.domain().lowerBound();
-  myDisplacementVector = aImage.domain().lowerBound();
+  myUpperBoundCopy = myDomain.upperBound() - myDomain.lowerBound();
+  myDisplacementVector = myDomain.lowerBound();
 
   myExtent = myUpperBoundCopy - myLowerBoundCopy;
-  myInfinity  = myMetric.power(static_cast<typename I::Integer>(I::dimension) * 
+  myInfinity  = myMetric.power(static_cast<typename S::Integer>(S::dimension) * 
 			       myExtent.normInfinity() + 1);
-
   
-  OutputImage output ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy ));
-  OutputImage swap ( typename I::Domain(myLowerBoundCopy, myUpperBoundCopy ));
+  Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
+  OutputImage output ( workingDomain );
+  OutputImage swap ( workingDomain );
   bool isSwap = true;
 
   //First step
-  computeFirstStep ( output, predicate );
+  computeFirstStep ( output );
 
   //We process the dimensions swaping the temporary buffers
-  for ( Dimension dim = 1; dim < I::dimension ; dim++ )
+  for ( Dimension dim = 1; dim < S::dimension ; dim++ )
     {
       if ( isSwap )
 	computeOtherSteps ( output, swap, dim );
@@ -154,12 +142,10 @@ DGtal::DistanceTransformation<I, p, IntLong>::compute ( const I & aImage,
 }
 
 
-template <typename I, DGtal::uint32_t p, typename IntLong>
-template <typename Functor>
+template <typename S, typename P,DGtal::uint32_t p, typename IntLong>
 inline
 void
-DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( OutputImage &output, 
-								 const Functor &predicate ) const
+DGtal::DistanceTransformation<S, P, p, IntLong>::computeFirstStep ( OutputImage &output ) const
 {
   trace.beginBlock ( "DT dimension 0" );
   Point startingPoint = myLowerBoundCopy;
@@ -170,8 +156,8 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( OutputImage &ou
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
   std::vector<Size> subdomain;
-  subdomain.reserve(I::dimension - 1);
-  for (Dimension k = I::dimension-1; k>0 ; --k)
+  subdomain.reserve(S::dimension - 1);
+  for (Dimension k = S::dimension-1; k>0 ; --k)
     subdomain.push_back( k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
@@ -181,19 +167,19 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep ( OutputImage &ou
 	 itend = localDomain.subRange( subdomain ).end(); it != itend; ++it)
     {
       // trace.info()  << "Processing 1D slice starting at =" << (*it) << endl;
-      computeFirstStep1D (output, (*it), predicate );
+      computeFirstStep1D (output, (*it) );
     }
 
   trace.endBlock();
 }
 
 
-template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename S, typename P,DGtal::uint32_t p, typename IntLong>
 inline
 void
-DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputImage &input, 
-								  OutputImage &output,
-								  const Dimension dim ) const
+DGtal::DistanceTransformation<S,P, p, IntLong>::computeOtherSteps ( const OutputImage &input, 
+                                                                    OutputImage &output,
+                                                                    const Dimension dim ) const
 {
   std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
@@ -205,10 +191,10 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputIm
   // {n-1, n-2, ... 1} (we skip the '0' dimension.
 
   std::vector<Size> subdomain;
-  subdomain.reserve(I::dimension - 1);
-  for (unsigned int k = 0; k < I::dimension ; k++)
-    if ( (I::dimension - 1 - k) != dim)
-      subdomain.push_back( I::dimension - 1 - k );
+  subdomain.reserve(S::dimension - 1);
+  for (unsigned int k = 0; k < S::dimension ; k++)
+    if ( (S::dimension - 1 - k) != dim)
+      subdomain.push_back( S::dimension - 1 - k );
 
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   Size maxSize = myExtent.normInfinity();
@@ -236,19 +222,17 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeOtherSteps ( const OutputIm
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Phase X
-template <typename I, DGtal::uint32_t p, typename IntLong>
-template <typename ForegroundPredicate>
+template <typename S, typename P,DGtal::uint32_t p, typename IntLong>
 void
-DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( OutputImage & output,
-								   const Point &startingPoint,
-								   const ForegroundPredicate &isForeground ) const
+DGtal::DistanceTransformation<S,P,p, IntLong>::computeFirstStep1D ( OutputImage & output,
+                                                                    const Point &startingPoint ) const
 {
   Point prec = startingPoint;
   Point point = startingPoint;
 
   //PRECOND : output can store 2*(myUpperBoundCopy[0] -  myLowerBoundCopy[0]) in its valuetype
   //INFTY = something > myUpperBoundCopy[0] -  myLowerBoundCopy[0]
-  if ( isForeground ( point + myDisplacementVector ) )
+  if ( myPointPredicate ( point + myDisplacementVector ) )
     output.setValue ( point, myInfinity );
   else
     output.setValue ( point, 0 );
@@ -257,7 +241,7 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( OutputImage &
   for ( point[0] = 1; point[0] <= myUpperBoundCopy[0]; point[0]++ )
     {
       // trace.warning() << point << " ";
-      if ( isForeground ( point  + myDisplacementVector ))
+      if ( myPointPredicate ( point  + myDisplacementVector ))
 	output.setValue ( point, 1 + output ( prec ) );
       else
 	output.setValue ( point, 0 );
@@ -288,14 +272,14 @@ DGtal::DistanceTransformation<I, p, IntLong>::computeFirstStep1D ( OutputImage &
 
 //////////////////////////////////////////////////////////////////////:
 ////////////////////////// Other Phases
-template <typename I, DGtal::uint32_t p, typename IntLong>
+template <typename S,typename P, DGtal::uint32_t p, typename IntLong>
 void
-DGtal::DistanceTransformation<I, p, IntLong>::computeOtherStep1D ( const OutputImage & input,
-								   OutputImage & output,
-								   const Point &startingPoint,
-								   const Size dim,
-								   Abscissa s[],
-								   Abscissa t[] ) const
+DGtal::DistanceTransformation<S,P,p, IntLong>::computeOtherStep1D ( const OutputImage & input,
+                                                                    OutputImage & output,
+                                                                    const Point &startingPoint,
+                                                                    const Size dim,
+                                                                    Abscissa s[],
+                                                                    Abscissa t[] ) const
 {
   Abscissa w;
   Abscissa q = 0;  //index for the stack "head"

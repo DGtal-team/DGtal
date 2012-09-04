@@ -2,6 +2,7 @@ SET(DGTAL_DOC_EX_SRC
   demo-kernel-1
   kernelDomain
   range
+  labelledMapBestParameters
 )
 
 if( WITH_VISU3D_QGLVIEWER  )
