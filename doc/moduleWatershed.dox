@@ -1,0 +1,113 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Watershed.dox
+ * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
+ * Institut National des Sciences Appliquées (INSA), France
+ *
+ * @date 2012/07/04
+ *
+ * @brief Documentation file about the Watershed feature
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleWatershed  Watershed module
+
+@writers Jérémy Gaillard
+
+@since 0.5.1
+
+@b LICENSE: LGPL
+
+Part of \ref GeometryPackage.
+
+\section Watershed Overview
+
+This module provides watershedding segmentation algorithms 
+for graphs provided with a value map.
+
+\section WatershedDetails Let us go into details
+
+The watershed class is templated by three classes :
+  - TGraph which is a model of CUndirectedSimpleGraph
+  - TVertexMap which is a model of CImage ?
+  - TLessFunctor which is a functor that describes the "less"
+  comparison
+
+  \subsection WatershedMainMethods Main methods
+
+All methods return a Vertex map of the type specified in the
+class template. This map contains values corresponding to the
+label of each region that has been segmented or to a watershed
+(value 255). The method segmentation_stochastic is an exception :
+it returns a probabilistic function of the presence of a watershed
+(the higher the value, the more likely it is to find a watershed).
+
+
+
+Watershed::segmentation()
+
+This method computes a segmentation using the standard watershedding
+algorithm, i.e. using as flooding markers the local minimas of the
+value map.
+
+
+Watershed::segmentationFromMarkers(const VertexSet &markerSet)
+
+Same as above, but the markers are chosen by the user.
+
+
+Watershed::segmentationStochastic(int N, int M)
+
+This method computes several segmentation using a random set of
+markers positionned on the graph and deduces a probabilistic repartition
+function of the watersheds.
+  - N is the number of markers places at each iterations
+  - M is the number of iterations
+This method returns the probabilistic function.
+
+
+Watershed::segmentationStochasticHeuristic(int N, int M)
+
+This method uses the probabilistic function as the base for a
+classic watershedding algorithm. It is basically a combination
+of segmentation_stochastic(N, M) and segmentation() with a bit
+of filtering.
+
+
+  \subsection WatershedExample Usage example
+  
+First we create an image and an object :
+  
+@snippet geometry/tools/testWatershed.cpp Initialization
+
+Then, we launch the watershed :
+
+@snippet geometry/tools/testWatershed.cpp WatershedLaunch
+
+*/
+
+}
+
+

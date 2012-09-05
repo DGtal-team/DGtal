@@ -1,0 +1,483 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Watershed.ih
+ * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
+ *
+ * @date 2012/06/06
+ *
+ * Implementation of inline methods defined in Watershed.h
+ *
+ * This file is part of the DGtal library. TODO : not yet
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+#include <queue>
+#include <math.h>
+#include "DGtal/topology/BreadthFirstVisitor.h"
+#include <boost/random/poisson_distribution.hpp>
+#include <boost/random/mersenne_twister.hpp>
+#include <boost/random/variate_generator.hpp>
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace std;
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+  
+
+
+/**
+ * Constructor
+ * 
+ * @param aGraph graph on which the segmentation is made
+ * 
+ * @param values a data structure which binds a value for each graph vertex
+ * 
+ */
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+inline
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::Watershed(const TGraph & aGraph, const TVertexMap & values)
+  :myGraph(aGraph), myValueMap(values)/*, mySet(new VertexSet())*/
+{
+  trace.beginBlock("Importing graph");
+  /*for( typename Graph::ConstIterator it = aGraph.begin(); it != aGraph.end(); it++ )
+  {
+    mySet->insert(*it);
+  }*/
+  WSHED = aGraph.size();
+  trace.endBlock();
+}
+
+
+
+/**
+ * Return a segmented image where each point of the image contains the
+ * segment number which he is associated to.
+ * 
+ * @return the segmented image
+ */
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+inline
+typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentation()
+{
+  Value INIT = WSHED + 1;;
+  Value MASK = WSHED + 2;
+  Value INQUEUE = WSHED + 3;
+  
+  typedef vector<Vertex> VertexVector;
+  int current_label = 0;
+  bool flag = false;
+  int maxHeight = 0;
+  queue<Vertex> fifo;
+  
+    
+  trace.beginBlock("Initialising image and generating heightmap");
+  Graph outGraph(myGraph);
+  VertexMap outMap(myValueMap);
+  // Sort the points of image by thickness value and initialisation of outGraph
+  std::map<Value, VertexVector, MapComparison> heightMap;
+  for( typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++ ){
+    outMap.setValue(*it, INIT);
+    int value = myValueMap(*it);
+    if( heightMap.find(value) == heightMap.end() )
+    {
+      heightMap.insert(pair< int, VertexVector >(value, VertexVector()));
+    }
+    heightMap.find(value)->second.push_back(*it);
+  }
+  trace.endBlock();
+  
+  
+  trace.beginBlock("Watershedding image");
+  int heightNumber = heightMap.size();
+  int heightCount = 1;
+  // For every height of the heigthmap
+  for(typename map<int, VertexVector>::iterator mit = heightMap.begin(); mit != heightMap.end(); mit++)
+  {
+    // For every point at the height h
+    for(typename VertexVector::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
+    {
+      Vertex p = *it;
+      outMap.setValue(p, MASK);
+      // For each neighbor
+      VertexVector neighbors;
+      back_insert_iterator< VertexVector > insertIt(neighbors);
+      myGraph.writeNeighbors(insertIt, *it);
+      for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
+      {
+        Vertex np = *nit;
+        if( outMap(np) < WSHED || outMap(np) == WSHED )
+        {
+          outMap.setValue(p, INQUEUE);
+          fifo.push(p);
+          break;
+        }
+      }
+    }
+
+
+    // While there are still points to analyse
+    while( !fifo.empty() )
+    {
+      //flag = false; // Not in base algorithm
+      Vertex p = fifo.front();
+      fifo.pop();
+      
+      // For each neighbor
+      VertexVector neighbors;
+      back_insert_iterator< VertexVector > insertIt(neighbors);
+      myGraph.writeNeighbors(insertIt, p);
+      for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
+      {
+        Vertex np = *nit; // A neighbor
+        if( outMap(np) < WSHED && outMap(np) != WSHED )
+        {
+          if( outMap(p) == INQUEUE || (outMap(p) == WSHED && flag == true ))
+          {
+            outMap.setValue(p, outMap(np));
+          }
+          else if( (outMap(p) < WSHED && outMap(p) != WSHED) && outMap(p) != outMap(np) )
+          {
+            outMap.setValue(p, WSHED);
+            flag = false;
+          }
+        }
+        else if( outMap(np) == WSHED )
+        {
+          if( outMap(p) == INQUEUE )
+          {
+            outMap.setValue(p, WSHED);
+            flag = true;
+          }
+        }
+        else if( outMap(np) == MASK )
+        {
+          outMap.setValue(np, INQUEUE);
+          fifo.push(np);
+        }
+      }
+    }
+    
+    
+    // Check for new minima
+    // For every point at the height h
+    for(typename VertexVector::const_iterator it = mit->second.begin(); it != mit->second.end(); it++)
+    {
+      Vertex p = *it;
+      if( outMap(p) == MASK )
+      {
+	// New minimum found : a new label is created
+        current_label++;
+        fifo.push(p);
+        outMap.setValue(p, current_label);
+	// Set the label of every neighboring vertices at the same height to current_label
+        while( !fifo.empty() )
+        {
+          Vertex newp = fifo.front();
+          fifo.pop();
+          // For each neighbor
+          VertexVector neighbors;
+          back_insert_iterator< VertexVector > insertIt(neighbors);
+          myGraph.writeNeighbors(insertIt, newp);
+          for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
+          {
+            Vertex np = *nit;
+            if( outMap(np) == MASK )
+            {
+              fifo.push(np);
+              outMap.setValue(np, current_label);
+            }
+          }
+        }
+      }
+    }
+    trace.progressBar(heightCount++, heightNumber);
+  }
+  trace.info() << endl;
+  trace.endBlock();
+  
+  return outMap;
+}
+
+/**
+ * Return a segmented image where each point of the image contains the
+ * segment number which he is associated to. The watershed uses a 
+ * set of markers instead of local minima as water sources.
+ *
+ * @param markerSet a set of vertices contained by the graph
+ * 
+ * @return the segmented image
+ */ 
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+template <typename TVertexSet>
+inline
+typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationFromMarkers(const TVertexSet &markerSet)
+{
+  Value INIT = WSHED + 1;
+  typedef TVertexSet VertexSet;
+  //BOOST_CONCEPT_ASSERT(( CSinglePassRange<VertexSet> ))
+  typedef vector<Vertex> VertexVector;
+  typedef pair<Vertex, Value> Vpair; 
+    
+  priority_queue< Vpair, vector<Vpair>, PairComparison<Vpair> > pqueue;
+  
+  VertexSet initialPoints;
+  
+  VertexMap outMap(myValueMap);
+  
+  int label = 0;
+  
+  
+  trace.beginBlock("Initialising image");
+  
+  // Initialise image
+  for(typename Graph::iterator it = myGraph.begin(); it != myGraph.end(); it++){
+    outMap.setValue(*it, INIT);
+  }
+  
+
+
+  // Insert every marker into the priority queue and initialise their position's value
+  for(typename VertexSet::iterator it = markerSet.begin(); it != markerSet.end(); it++)
+  {
+    label++;
+    outMap.setValue(*it, label);
+    pqueue.push(make_pair(*it, myValueMap(*it)));
+    initialPoints.insert(*it);
+  }
+
+  trace.endBlock();
+
+  trace.beginBlock("Watershedding image");
+
+  while( !pqueue.empty() )
+  {
+    Vertex v = pqueue.top().first;
+    Value vLabel = outMap(pqueue.top().first);
+    pqueue.pop();
+    // For each neighbour
+    VertexVector neighbors;
+    back_insert_iterator< VertexVector > insertIt(neighbors);
+    myGraph.writeNeighbors(insertIt, v);
+    for( typename VertexVector::const_iterator nit = neighbors.begin(); nit != neighbors.end(); nit++ ) 
+    {
+      Vertex nv = *nit;
+      // If the point is free : claim it
+      if( outMap(nv) == INIT && outMap(v) != WSHED )
+      {
+        pqueue.push(make_pair(nv, myValueMap(nv)));
+        outMap.setValue(nv, vLabel);
+      }
+      // If the point is already occupied, it becomes a watershed
+      if( outMap(nv) < WSHED && outMap(nv) != outMap(v) && outMap(v) != WSHED )
+      {
+        if( initialPoints.find(nv) == initialPoints.end() )
+        {
+          outMap.setValue(nv, WSHED);
+        }
+        else
+        {
+          pqueue.push(make_pair(nv, myValueMap(nv)));
+          outMap.setValue(nv, vLabel);
+        }
+      }
+    }
+  }
+  
+  trace.endBlock();
+
+
+  return outMap;
+}
+
+
+template<typename TGraph, typename TVertexMap, class TLessFunctor>
+typename Watershed<TGraph, TVertexMap, TLessFunctor>::Value
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::gaussianFilter(const VertexMap & vMap, const Vertex & v)	// not really a gaussian filter
+{
+  typedef std::set<Vertex> VertexSet;
+  typedef vector<Vertex> VertexVector;
+  BreadthFirstVisitor<TGraph, VertexSet> bfv( myGraph );
+  int div = 8;
+  Value result = 80;
+  while( !bfv.finished() && bfv.current().second != 3 )
+  {
+    Vertex neighbor = bfv.current().first;
+    typename TGraph::Size topologicLength = bfv.current().second;
+    div += (topologicLength == 1) ? 4 : 1;
+    if( vMap(neighbor) == WSHED )
+    {
+      result += (topologicLength == 1) ? 40 : 10;
+    }
+    bfv.expand();
+  }
+
+  return result / div;  
+}
+
+/**
+ * Return an image where each point contains a value representing
+ * the probability of the presence of a watershed. The higher the value, the
+ * bigger the probability.
+ * This method executes several watershed based on a random set of markers 
+ * to deduce the probabilistic function.
+ * 
+ * @param N the number of markers placed at each iteration
+ * 
+ * @param M the number of iterations
+ * 
+ * @return the watershed probabilistic function
+ */ 
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+inline
+typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationStochastic(int N, int M)
+{
+  typedef std::set<Vertex> VertexSet;
+  VertexMap intermediateMap(myValueMap);
+  VertexMap finalMap(myValueMap);
+  
+  int totalVoxels = myGraph.size();
+  
+  typename boost::poisson_distribution<int, double> poisson(totalVoxels/N);
+  typename boost::mt19937 random;
+  boost::variate_generator<boost::mt19937, boost::poisson_distribution<int, double> > generator(random, poisson);
+
+  
+  for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++) {
+    finalMap.setValue(*it, 0);
+  }
+  
+  trace.beginBlock("Stochastic watershed");
+  
+  for( int i = 0; i < M; i++ )
+  { 
+  
+    VertexSet markers;
+    
+    
+    trace.beginBlock("Generating markers");
+    
+    int count = 0;
+    int next = generator();
+    cout << next << endl;
+    for(typename Graph::ConstIterator it = myGraph.begin(); it!=myGraph.end(); ++it)
+    {
+      if( count == next )
+      {
+        markers.insert(*it);
+        count = 0;
+        next = generator();
+      }
+      else
+      {
+        count++;
+      }
+    }
+    
+    trace.endBlock();
+    
+    
+    trace.beginBlock("Watershedding with markers");
+    
+    intermediateMap = this->segmentationFromMarkers<VertexSet>(markers);
+    
+    trace.endBlock();
+    
+    for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++){
+      if(intermediateMap(*it) == WSHED)
+      {
+          finalMap.setValue(*it, finalMap(*it) + gaussianFilter(intermediateMap, *it));
+      }
+    }
+    trace.progressBar(i+1, M);
+  }
+  
+  // For the purpose of testing and visualising the complete image
+  for(typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++) {
+    finalMap.setValue(*it, finalMap(*it) + 1);
+  }
+  
+  trace.endBlock();
+  
+  
+  return finalMap;
+}
+
+/**
+ * Return a segmented image where each point of the image contains the
+ * segment number which he is associated to. The watershed is based on
+ * the probabilistic function computed by segmentation_stochastic(N, M).
+ * 
+ * @param N the number of markers placed at each iteration
+ * 
+ * @param M the number of iterations
+ * 
+ * @return the watershed probabilistic function
+ */
+template <typename TGraph, typename TVertexMap, class TLessFunctor>
+inline
+typename Watershed<TGraph, TVertexMap, TLessFunctor>::VertexMap 
+DGtal::Watershed<TGraph, TVertexMap, TLessFunctor>::segmentationStochasticHeuristic(int N, int M)
+// TODO : Rework method
+{
+  trace.beginBlock("Computing stochastic heuristic");
+  VertexMap finalMap = this->segmentationStochastic(N, M);
+  trace.endBlock();
+  
+  trace.beginBlock("Creating new heightmap");
+  for( typename Graph::iterator it = myGraph.begin(); it != myGraph.end(); it++ ) {
+    Value newValue;
+    if( finalMap(*it) > 5*M )
+    {
+      newValue = 1;
+    }
+    else
+    {
+      newValue = 2;
+    }
+    finalMap.setValue(*it, newValue);
+  }
+  trace.endBlock();
+  
+  VertexMap test = this->segmentation();
+  for( typename Graph::ConstIterator it = myGraph.begin(); it != myGraph.end(); it++ ) {
+    if( test(*it) == WSHED )
+    {
+      finalMap.setValue(*it, finalMap(*it) + 1);
+    }
+  }
+  
+
+  Watershed<Graph, VertexMap, TLessFunctor> ws(myGraph, finalMap);
+  trace.beginBlock("Watershedding final image");
+  finalMap = ws.segmentation();
+  trace.endBlock();
+
+  return finalMap;
+
+
+}
+
