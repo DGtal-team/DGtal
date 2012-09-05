@@ -1,0 +1,18 @@
+language: cpp
+
+compiler:
+  - gcc
+  - clang
+
+# Change this to your needs
+after_script: 
+  - "make test"
+
+before_script:
+  - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev
+
+script: cmake . -DCMAKE_BUILD_TYPE=Debug && make
+
+
+after_script: 
+  - "make test"

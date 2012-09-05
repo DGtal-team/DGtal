@@ -47,7 +47,13 @@
 #include <string>
 #include <bitset>
 #include <algorithm>
+
+#ifdef CPP11_ARRAY
+#include <array>
+#else
 #include <boost/array.hpp>
+#endif 
+
 #include <vector>
 
 #include "DGtal/base/Common.h"
@@ -173,11 +179,17 @@ namespace DGtal
      *  Copy of the Boost::array iterator type
      *
      **/
+#ifdef CPP11_ARRAY
+    typedef typename std::array<Component, dimension>::iterator Iterator;
+    typedef typename std::array<Component, dimension>::const_iterator ConstIterator;
+    typedef typename std::array<Component, dimension>::reverse_iterator ReverseIterator;
+    typedef typename std::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
+#else
     typedef typename boost::array<Component, dimension>::iterator Iterator;
     typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
     typedef typename boost::array<Component, dimension>::reverse_iterator ReverseIterator;
     typedef typename boost::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
-  
+#endif
     /**
      * Constructor.
      */
@@ -766,8 +778,12 @@ namespace DGtal
   //protected:
     
     ///Internal data-structure: boost/array with constant size.
+#ifdef CPP11_ARRAY
+    std::array<Component, dimension> myArray;
+#else
     boost::array<Component, dimension> myArray;
-    
+#endif
+
   }; // end of class PointVector
 
   /// Operator <<
