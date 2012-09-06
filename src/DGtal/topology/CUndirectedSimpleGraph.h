@@ -71,7 +71,7 @@ Description of \b concept '\b CUndirectedSimpleGraph' <p>
      - Size: an integral type to count the number of vertices.
      - Vertex: the type for the vertices of the graph.
      - VertexSet: the type for storing a set of vertices.
-     - VertexMap: a rebinding structure to associate Value to vertices.
+     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
  ### Notation
      - \c X : A type that is a model of CUndirectedSimpleGraph

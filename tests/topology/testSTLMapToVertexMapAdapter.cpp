@@ -15,86 +15,69 @@
  **/
 
 /**
- * @file testcpp11.cpp
+ * @file STLMapToVertexMapAdapter.cpp
  * @ingroup Tests
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
+ * Institut National des Sciences Appliquées - INSA, France
  *
- * @date 2012/04/23
+ * @date 2012/07/12
  *
- * Functions for testing class cpp11.
+ * Functions for testing class STLMapToVertexMapAdapter.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <vector>
+#include "DGtal/helpers/StdDefs.h"
+
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/CVertexMap.h"
+#include "DGtal/topology/STLMapToVertexMapAdapter.h"
+#include <map>
 ///////////////////////////////////////////////////////////////////////////////
+
+
 
 using namespace std;
 using namespace DGtal;
 
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class cpp11.
-///////////////////////////////////////////////////////////////////////////////
 /**
- * Example of a test. To be completed.
  *
+ * This file tests the adaptation of a STL map to a vertex map.
+ * 
  */
-bool testcpp11()
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class Adjacency.
+///////////////////////////////////////////////////////////////////////////////
+
+bool testMapToVertexMap()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
+  typedef  Z2i::Point Point;
+  typedef  Z2i::Point Vertex;
+  typedef int Value;
+  typedef map<Vertex, Value> Map;
+  typedef STLMapToVertexMapAdapter<Map> VertexMap;
+  VertexMap myMap;
+  BOOST_CONCEPT_ASSERT((CVertexMap<VertexMap>));
+  myMap.setValue(Point(1,1), 10);
+  myMap.setValue(Point(2,3), 2);
   
-  trace.beginBlock ( "Testing CPP Auto ..." );
-
-#ifdef CPP11_AUTO
-  auto a= 5.0;
-  auto mssg = "Message";
-
-  trace.info() <<  "Auto value = "<<a<<std::endl;
-  trace.info() <<  "Auto string = "<< mssg <<std::endl;
-#endif
-
-  trace.endBlock();
-
-#ifdef CPP11_INITIALIZER_LIST
-  trace.info() <<  "initializer list  ok"<<std::endl;
-#endif
-
-
-#ifdef CPP11_ARRAY
-  trace.info() <<  "std::Array ok"<<std::endl;
-#endif
-
-
-#ifdef CPP11_FORWARD_LIST
-  trace.info() <<  "Forward list ok"<<std::endl;
-#endif
-
-
-
-  nbok += true ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  
-  return nbok == nb;
+  return (myMap(Point(1,1)) == 10 && myMap(Point(2,3)) == 2);
 }
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class cpp11" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  trace.beginBlock ( "Testing class STLMapToVertexMapAdapter" );
 
-  bool res = testcpp11(); // && ... other tests
+  bool res = testMapToVertexMap(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

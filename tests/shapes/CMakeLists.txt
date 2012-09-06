@@ -25,6 +25,7 @@ SET(DGTAL_TESTS_SRC
   testImplicitFunctionModels
   testShapesFromPoints
   testMeshFromPoints
+  testBall3DSurface
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
