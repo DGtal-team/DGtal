@@ -26,7 +26,7 @@
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/07/04
+ * @date 2012/09/04
  *
  * Header file for module RestrictedImage.cpp
  *
@@ -96,13 +96,13 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
     typedef TDomain SubDomain;
     //typedef typename SubDomain::Point Point; // MT
-    typedef typename SubDomain::Vector Vector;
+    /*typedef typename SubDomain::Vector Vector;
     typedef typename SubDomain::Integer Integer;
     typedef typename SubDomain::Size Size;
     typedef typename SubDomain::Dimension Dimension;
 
     /// static constants
-    static const typename SubDomain::Dimension dimension = SubDomain::dimension;
+    static const typename SubDomain::Dimension dimension = SubDomain::dimension;*/
 
     // ----------------------- Standard services ------------------------------
 
@@ -206,7 +206,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     const Domain & domain() const
     {
-      return myImagePointer->domain();
+      return mySubDomain;
     }
 
     /**
@@ -245,6 +245,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     Value operator()(const Point & aPoint) const
     {
+      ASSERT(this->domain().isInside(aPoint));
       return myImagePointer->operator()(aPoint);
     }
 
@@ -261,6 +262,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     void setValue(const Point &aPoint, const Value &aValue)
     {
+      ASSERT(this->domain().isInside(aPoint));
       myImagePointer->setValue(aPoint,aValue);
     }
 

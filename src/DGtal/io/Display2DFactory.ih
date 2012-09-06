@@ -934,6 +934,36 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
 // ImageContainerBySTLVector
 
 
+// RestrictedImage
+template <typename Colormap, typename D, typename I, typename V>
+inline
+void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
+                                         const DGtal::RestrictedImage<D, I> & i,
+                                         const V &minV,
+                                         const V &maxV )
+{
+  ASSERT(D::dimension == 2);
+
+  Colormap colormap(minV, maxV);
+  Color c;
+  V val;
+  D ldomain(i.domain());
+
+  for (typename D::ConstIterator it =  ldomain.begin();
+       it != ldomain.end(); ++it)
+  {
+    val = i.operator()( (*it) );
+    c = colormap( val );
+    board.setFillColorRGBi( c.red(), c.green(), c.blue());
+    board.drawRectangle( NumberTraits<typename D::Integer>::
+       castToInt64_t((*it)[0]) - 0.5, 
+       NumberTraits<typename D::Integer>::
+       castToInt64_t((*it)[1]) + 0.5, 1, 1);
+  }
+}
+// RestrictedImage
+
+
 // KhalimskyCell
 template < Dimension dim, typename TInteger >
 inline

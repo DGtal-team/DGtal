@@ -57,6 +57,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/RestrictedImage.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
@@ -254,6 +255,12 @@ static void drawImage( Board2D & board,
 template <typename Colormap, typename D, typename V>
   static void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
 // ImageContainerBySTLVector
+
+
+// RestrictedImage
+template <typename Colormap, typename D, typename I, typename V>
+  static void drawImage( DGtal::Board2D & board, const DGtal::RestrictedImage<D, I> &, const V &, const V & );
+// RestrictedImage
     
     
 // KhalimskyCell
