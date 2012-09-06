@@ -367,14 +367,22 @@ namespace DGtal
     
     // ------------------------- Private Datas --------------------------------
   private:
+    
+#ifdef CPP11_ARRAY
+    ///Matrix values containers.
+    std::array< Component, M*N>  myValues;
 
+    ///Static computation of cofactor coefficients
+    /// @todo should be static 
+    std::array< Component, M*N>  myCofactorCoefs;
+#else
     ///Matrix values containers.
     boost::array< Component, M*N>  myValues;
 
     ///Static computation of cofactor coefficients
     /// @todo should be static 
     boost::array< Component, M*N>  myCofactorCoefs;
-
+#endif
     // ------------------------- Hidden services ------------------------------
   protected:
 
