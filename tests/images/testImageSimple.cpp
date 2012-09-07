@@ -165,7 +165,7 @@ bool testImageCopy()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing Image API ..." );
+  trace.beginBlock ( "Testing copy of Image..." );
   typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
   typedef Image<VImage > MyImage;
   BOOST_CONCEPT_ASSERT(( CImage< MyImage > ));
