@@ -50,7 +50,6 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/base/CowPtr.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -59,12 +58,12 @@ namespace DGtal
   // Template class RestrictedImage
   /**
    * Description of template class 'RestrictedImage' <p>
-   * \brief Aim: implements association bewteen points lying in a
-   * digital domain and values.
+   * \brief Aim: implements a restricted image with a given subdomain.
    *
-   * This class is a lightweight proxy on ImageContainers (models of
+   * This class is (like Image class) a lightweight proxy on ImageContainers (models of
    * CImage). RestrictedImage class is also a model of CImage.
    *
+   * @tparam TDomain a domain.
    * @tparam TImageContainer an image container type (model of CImage).
    *
    *
@@ -82,27 +81,23 @@ namespace DGtal
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Domain Domain;
+    //typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     typedef typename TImageContainer::ConstRange ConstRange;
     typedef typename TImageContainer::Range Range;
-    typedef typename TImageContainer::OutputIterator OutputIterator;
+    //typedef typename TImageContainer::OutputIterator OutputIterator;
 
     ///Pointer to the image container data.
-    typedef CowPtr<TImageContainer> ImagePointer;
+    typedef TImageContainer* ImagePointer;
     
     ///SubDomain
     BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
-    typedef TDomain SubDomain;
-    //typedef typename SubDomain::Point Point; // MT
-    /*typedef typename SubDomain::Vector Vector;
-    typedef typename SubDomain::Integer Integer;
-    typedef typename SubDomain::Size Size;
-    typedef typename SubDomain::Dimension Dimension;
+    typedef TDomain Domain;
+    //typedef typename Domain::Dimension Dimension;
 
     /// static constants
-    static const typename SubDomain::Dimension dimension = SubDomain::dimension;*/
+    //static const typename Domain::Dimension dimension = Domain::dimension;
 
     // ----------------------- Standard services ------------------------------
 
@@ -117,58 +112,14 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
 #endif
 
     }
-
-    /**
-     * Constructor from a pointer on the underlying image container.
-     * (data pointer is acquired, ownership transfer)
-     */
-    RestrictedImage(const SubDomain &aDomain, ImageContainer *anImageContainer):
-      mySubDomain(aDomain), myImagePointer(anImageContainer)
+    
+    RestrictedImage(const Domain &aDomain, ImageContainer &anImage):
+      mySubDomain(aDomain), myImagePointer(&anImage)
     {
 #ifdef DEBUG_VERBOSE
-    trace.warning() << "RestrictedImage Ctor fromPointer "<<std::endl;
+    trace.warning() << "RestrictedImage Ctor fromRef "<<std::endl;
 #endif
     }
-
-    /**
-     * Constructor from Copy on write pointer.
-     * (data is not copied if read-only)
-     * @param anImageContainerCowPointer a COW-pointer on the underlying container.
-     */
-    /*RestrictedImage(const CowPtr<ImageContainer> &anImageContainerCowPointer): // MT
-      myImagePointer(anImageContainerCowPointer)
-    {
-      #ifdef DEBUG_VERBOSE
-trace.warning() << "RestrictedImage Ctor fromCow  "<<std::endl;
-#endif
-    }*/
-
-    /**
-     * Constructor from ImageContainer const reference
-     * (data is duplicated).
-     * @param other an object of same type to copy.
-     */
-   RestrictedImage(const SubDomain &aDomain, const ImageContainer &other):
-      mySubDomain(aDomain), myImagePointer(new ImageContainer(other) )
-      {
-#ifdef DEBUG_VERBOSE
-trace.warning() << "RestrictedImage Ctor fromConstRef "<<std::endl;
-#endif
-      }
-
-
-   /**
-     * Copy Constructor
-     * (data is not copied here).
-     * @param other an object of same type to copy.
-     */
-   /*RestrictedImage(const RestrictedImage &other): // MT
-      myImagePointer(other.myImagePointer )
-      {
-          #ifdef DEBUG_VERBOSE
-trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
-#endif
-      }*/
 
       /**
      * Assignment.
@@ -177,7 +128,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     RestrictedImage & operator= ( const RestrictedImage & other )
     {
-      #ifdef DEBUG_VERBOSE
+#ifdef DEBUG_VERBOSE
  trace.warning() << "RestrictedImage assignment "<<std::endl;
 #endif
       if (&other != this)
@@ -190,7 +141,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
 
     /**
      * Destructor.
-     * Does nothing, the cow pointer takes care of everything
+     * Does nothing
      */
     ~RestrictedImage() {}
 
@@ -217,7 +168,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     ConstRange constRange() const
     {
-      return myImagePointer->constRange();
+      return myImagePointer->constRange(); // TODO: cf. DC
     }
 
     /**
@@ -228,7 +179,7 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
      */
     Range range()
     {
-      return myImagePointer->range();
+      return myImagePointer->range(); // TODO: cf. DC
     }
 
     /////////////////// Accessors //////////////////
@@ -290,10 +241,10 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
 
 
     /**
-     * Returns the smart pointer on the Image container data.
+     * Returns the pointer on the Image container data.
      * @return a const ImagePointer.
      */
-    const ImagePointer getPointer() const
+    const ImageContainer * getPointer() const
     {
       return myImagePointer;
     }
@@ -303,13 +254,13 @@ trace.warning() << "RestrictedImage copy Ctor  "<<std::endl;
     // ------------------------- Private Datas --------------------------------
   protected:
 
-    /// Owning smart pointer on the image container
+    /// Owning pointer on the image container
     ImagePointer myImagePointer;
     
     /**
      * The image SubDomain
      */
-    SubDomain mySubDomain;
+    Domain mySubDomain;
 
 
   private:

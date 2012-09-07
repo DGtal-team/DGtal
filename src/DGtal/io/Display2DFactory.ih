@@ -881,7 +881,7 @@ void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
   
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void DGtal::Display2DFactory::drawImage( Board2D & board,
+void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
                 const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
@@ -904,14 +904,17 @@ void DGtal::Display2DFactory::drawImage( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+template <typename Colormap, typename Image>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-                                         const DGtal::ImageContainerBySTLVector<D, V> & i,
-                                         const V &minV,
-                                         const V &maxV )
+                                         const Image & i,
+                                         const typename Image::Value & minV,
+                                         const typename Image::Value & maxV )
 {
+  typedef typename Image::Domain D;
+  typedef typename Image::Value V;
+  
   ASSERT(D::dimension == 2);
 
   Colormap colormap(minV, maxV);
@@ -931,37 +934,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
-// ImageContainerBySTLVector
-
-
-// RestrictedImage
-template <typename Colormap, typename D, typename I, typename V>
-inline
-void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-                                         const DGtal::RestrictedImage<D, I> & i,
-                                         const V &minV,
-                                         const V &maxV )
-{
-  ASSERT(D::dimension == 2);
-
-  Colormap colormap(minV, maxV);
-  Color c;
-  V val;
-  D ldomain(i.domain());
-
-  for (typename D::ConstIterator it =  ldomain.begin();
-       it != ldomain.end(); ++it)
-  {
-    val = i.operator()( (*it) );
-    c = colormap( val );
-    board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[0]) - 0.5, 
-       NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[1]) + 0.5, 1, 1);
-  }
-}
-// RestrictedImage
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
 
 
 // KhalimskyCell
