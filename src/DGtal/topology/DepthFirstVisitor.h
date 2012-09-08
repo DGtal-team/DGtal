@@ -68,9 +68,9 @@ namespace DGtal
   at a given distance of a starting set.
  
   The \b core of the expander is at the beginning the set of points
-  at distance 0. Each layer is at a different distance from the
-  initial core. The expander move layer by layer but the user is
-  free to navigate on each layer.
+  at distance 0. In this visitor, the distance attached to visited
+  nodes correspond to the depth of the node in the breadth-first
+  traveral.
  
   @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
  
@@ -108,10 +108,10 @@ namespace DGtal
     // ----------------------- defined types ------------------------------
   public:
 
-    /// Type stocking the vertex and its topological distance wrt the
+    /// Type stocking the vertex and its topological depth wrt the
     /// initial point or set.
     typedef std::pair< Vertex, Size > Node;
-    /// Internal data structure for computing the breadth-first expansion.
+    /// Internal data structure for computing the depth-first expansion.
     typedef std::stack< Node > NodeQueue;
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
@@ -233,10 +233,10 @@ namespace DGtal
     };
 
     /// const iterator on Vertex for visiting a graph by following a
-    /// breadth first traversal.
+    /// depth first traversal.
     typedef ConstIterator<VertexAccessor> VertexConstIterator;
     /// const iterator on pair (Vertex,distance) for visiting a graph by
-    /// following a breadth first traversal.
+    /// following a depth first traversal.
     typedef ConstIterator<NodeAccessor> NodeConstIterator;
 
     // ----------------------- Standard services ------------------------------
@@ -251,7 +251,7 @@ namespace DGtal
      * Constructor from the graph only. The visitor is in the state
      * 'finished()'. Useful to create an equivalent of 'end()' iterator.
      *
-     * @param graph the graph in which the breadth first traversal takes place.
+     * @param graph the graph in which the depth first traversal takes place.
      */
     DepthFirstVisitor( const Graph & graph );
 
@@ -259,7 +259,7 @@ namespace DGtal
      * Constructor from a point. This point provides the initial core
      * of the visitor.
      *
-     * @param graph the graph in which the breadth first traversal takes place.
+     * @param graph the graph in which the depth first traversal takes place.
      * @param p any vertex of the graph.
      */
     DepthFirstVisitor( const Graph & graph, const Vertex & p );
@@ -267,12 +267,12 @@ namespace DGtal
     /**
        Constructor from iterators. All vertices visited between the
        iterators should be distinct two by two. The so specified set
-       of vertices provides the initial core of the breadth first
-       traversal. These vertices will all have a topological distance
+       of vertices provides the initial core of the depth first
+       traversal. These vertices will all have a topological depth.
        0.
        
        @tparam VertexIterator any type of single pass iterator on vertices.
-       @param graph the graph in which the breadth first traversal takes place.
+       @param graph the graph in which the depth first traversal takes place.
        @param b the begin iterator in a container of vertices. 
        @param e the end iterator in a container of vertices. 
     */
@@ -334,7 +334,7 @@ namespace DGtal
     bool finished() const;
 
     /**
-       Force termination of the breadth first traversal. 'finished()'
+       Force termination of the depth first traversal. 'finished()'
        returns 'true' afterwards and 'current()', 'expand()',
        'ignore()' have no more meaning. Furthermore,
        'markedVertices()' and 'visitedVertices()' both represents the
@@ -398,7 +398,7 @@ namespace DGtal
 
     /**
        Queue storing the vertices that are the next visited ones in
-       the breadth-first traversal of the graph.
+       the depth-first traversal of the graph.
      */
     NodeQueue myQueue;
 
