@@ -27,7 +27,7 @@
  * This file is part of the DGtal library.
  */
  
- ///////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -96,44 +96,88 @@ void testDepthFirstPropagation()
   int cpt=0;
   
   while( !bfv.finished() )
-  {
-    image.setValue(bfv.current().first, ++cpt);
-    bfv.expand();
-  }
+    {
+      image.setValue(bfv.current().first, ++cpt);
+      bfv.expand();
+    }
   
   string specificStyle = p1.className() + "/Paving";
   
   for ( DigitalSet::ConstIterator it = shape_set.begin();
-  it != shape_set.end();
-  ++it )
-  {
-    if( image(*it) == 0)
+        it != shape_set.end();
+        ++it )
     {
-      board << CustomStyle( specificStyle,
-        new CustomColors( Color::Black,
-        Color::Red ) )
-      << *it;
-    }
-    else
-    {
-      if( image(*it) > 0 )
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( image(*it) ) ) )
-	<< *it;
-      }
+      if( image(*it) == 0)
+        {
+          board << CustomStyle( specificStyle,
+                                new CustomColors( Color::Black,
+                                                  Color::Red ) )
+                << *it;
+        }
       else
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( 0 ) ) )
-	<< *it;
-      }
+        {
+          if( image(*it) > 0 )
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( image(*it) ) ) )
+                    << *it;
+            }
+          else
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( 0 ) ) )
+                    << *it;
+            }
+        }
     }
-  }
-  
   board.saveEPS("testDepthFirstPropagation.eps");
+
+  board.clear();
+
+  DepthFirstVisitor<Object, set<Point> > bfv2 (obj, c1);
+  
+  cpt=0;
+  
+  while( !bfv2.finished() )
+    {
+      image.setValue(bfv2.current().first, bfv2.current().second);
+      bfv2.expand();
+    }
+  
+  specificStyle = p1.className() + "/Paving";
+  
+  for ( DigitalSet::ConstIterator it = shape_set.begin();
+        it != shape_set.end();
+        ++it )
+    {
+      if( image(*it) == 0)
+        {
+          board << CustomStyle( specificStyle,
+                                new CustomColors( Color::Black,
+                                                  Color::Red ) )
+                << *it;
+        }
+      else
+        {
+          if( image(*it) > 0 )
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( image(*it) ) ) )
+                    << *it;
+            }
+          else
+            {
+              board << CustomStyle( specificStyle,
+                                    new CustomColors( Color::Black,
+                                                      cmap_grad( 0 ) ) )
+                    << *it;
+            }
+        }
+    }
+  board.saveEPS("testDepthFirstPropagation-distance.eps");
 }
 
 int main( int argc, char** argv )
