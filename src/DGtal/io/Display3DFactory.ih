@@ -1227,12 +1227,9 @@ void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Transform
   }else if(mode=="Basic"){
     basicMode=true;
   }
-  float x = (float) 
-    ( NumberTraits<DGtal::int32_t>::castToInt64_t( aTransformedKSSurfel.mySurfel.myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<DGtal::int32_t>::castToInt64_t( aTransformedKSSurfel.mySurfel.myCoordinates[1] ) >> 1 );
-  float z = (float) 
-    ( NumberTraits<DGtal::int32_t>::castToInt64_t( aTransformedKSSurfel.mySurfel.myCoordinates[2] ) >> 1 );
+  float x =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[0]  >> 1) ;
+  float y =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[1]  >> 1 );
+  float z =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[2]  >> 1 );
   
   bool xodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 0 ] & 1 );
   bool yodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 1 ] & 1 );
