@@ -742,7 +742,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="")){
     basicMode=true;
   }
   double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
@@ -937,7 +937,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="") ){
     basicMode=true;
   }
   float x = (float) 

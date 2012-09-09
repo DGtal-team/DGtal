@@ -45,7 +45,7 @@ First to use the Viewer3D stream, you need to include the following hearders:
  *	
 The following code snippet defines three points and a rectangular
 domain in Z3. It then displays them in a Viewer3D object. The	
-full code is in <a  href="viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
+full code is in <a  href="io_2viewers_2viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *	
 
@@ -87,7 +87,7 @@ Then we can display some 3D primitives:
 
 
  The same visualization can be obtain with the Board2Dto3D class. You
-just need to adapt the camera settings (see example: <a href="dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
+just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
 
 
 @code
@@ -139,7 +139,7 @@ This example should provides a comparable visualization.
  
  @endcode
 *
-* You should obtain the following visualisation (see example: <a href="viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
+* You should obtain the following visualisation (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
 * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D." 
 * \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
@@ -165,7 +165,7 @@ This example should provides a comparable visualization.
  viewer << shape2;
 @endcode
 
-* You should obtain the two following visualisations (see example: <a href="viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cxx </a>):
+* You should obtain the two following visualisations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cxx </a>):
 *<CENTER>
 *<TABLE> 
 *<TR>
@@ -194,14 +194,14 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
   - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
   - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
-  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" , "Illustration", "Transparent", "Basic".
+  - class KhalimskyCell  ,  modes: "" / "Basic" (default), "Highlighted" ,  "Transparent", "Illustration".
+  - class SignedKhalimskyCell  ,  modes: "" / "Basic" (default), "Highlighted" ,  "Transparent", "Illustration".
 
 
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
-The file <a href="viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cxx </a> illustrates several  possible modes to display these objects:
+The file <a href="io_2viewers_2viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cxx </a> illustrates several  possible modes to display these objects:
 
 
 We can display the set of point and the domain 
@@ -293,7 +293,7 @@ The custom color can be applied by an instance of the CustomColors3D as follow:
 
 
 
-The example <a  href="viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </a> illustrates some possible customs :
+The example <a  href="io_2viewers_2viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </a> illustrates some possible customs :
 
 
 
@@ -309,7 +309,7 @@ The example <a  href="viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </
 It also possible through the stream mechanism to add clipping plane
 with the object \c ClippingPlane. We just have to add the real plane
 equation and adding as for displaying an element. The file <a
-href="viewer3D-6-clipping_8cpp-example.html"
+href="io_2viewers_2viewer3D-6-clipping_8cpp-example.html"
 >viewer3D-6-clipping.cpp</a> gives a simple example.
 
 From displaying a digital set defined from a Norm2 ball,
