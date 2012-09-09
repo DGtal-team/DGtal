@@ -820,7 +820,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = display.getMode( o.className() );
-  if ( mode == "" )
+  if ( mode == "Basic" || mode == "" )
     draw( display, o.pointSet() );
   else if ( mode == "PavingTransp" ){
     drawAsPavingTransparent( display, o.pointSet() );
