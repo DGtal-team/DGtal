@@ -287,11 +287,9 @@ public:
       {
         if ( it->first == l ) return it->second;
       }
-    if ( it == it_end ) 
-      {
-        list.emplace_front( std::make_pair( l, Value() ) );
-        return list.front().second;
-      }
+    ASSERT ( it == it_end ) ;
+    list.emplace_front( std::make_pair( l, Value() ) );
+    return list.front().second;
   }
   inline 
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )

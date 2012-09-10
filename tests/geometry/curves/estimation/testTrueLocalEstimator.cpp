@@ -261,7 +261,6 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       // tang2.init( h, r.begin(), r.end(), &aShape, true);
       
       typename TrueCurvature::ConstIterator it = r.begin();
-      typename TrueCurvature::ConstIterator itend = r.end();
       
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
