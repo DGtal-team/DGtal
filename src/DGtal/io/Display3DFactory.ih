@@ -732,7 +732,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -742,7 +742,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="")){
     basicMode=true;
   }
   double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
@@ -767,11 +767,15 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, false, false, basicMode); 
     break;
   case 3:
     display.setFillColor(DGtal::Color(255, 180, 250, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
+    if(mode=="Illustration"){
+      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
+    }else{
+      display.addKSVoxel((int)x, (int) y, (int) z);
+    }
     break; 
   }
   display.setFillColor(fillColorSave);
@@ -816,7 +820,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = display.getMode( o.className() );
-  if ( mode == "" )
+  if ( mode == "Basic" || mode == "" )
     draw( display, o.pointSet() );
   else if ( mode == "PavingTransp" ){
     drawAsPavingTransparent( display, o.pointSet() );
@@ -923,7 +927,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( sk.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -933,7 +937,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="") ){
     basicMode=true;
   }
   float x = (float) 
@@ -966,15 +970,19 @@ void DGtal::Display3DFactory::draw( Display3D & display,
           0.02, true, sk.myPositive);
     break;
   case 2:
-    
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,sk.myPositive,basicMode ); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
     break;
   case 3:
-    if( sk.myPositive)
-      display.setFillColor(DGtal::Color(20, 20, 250, 255));
-    else
-      display.setFillColor(DGtal::Color(20, 20, 150, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
+    if( sk.myPositive){
+      	display.setFillColor(DGtal::Color(20, 20, 200, 255));
+    }else{
+      display.setFillColor(DGtal::Color(20, 200, 20, 255));
+    }
+    if(mode=="Illustration"){
+      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
+    }else{
+      display.addKSVoxel((int)x, (int) y, (int) z);
+    }
     break; 
   } 
   display.setFillColor(fillColorSave);
@@ -1200,6 +1208,41 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   display.setNearFar(cz.ZNear, cz.ZFar);
 }
+
+inline
+void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel){
+
+  DGtal::Color fillColorSave = display.getFillColor();  
+  std::string mode = display.getMode( aTransformedKSSurfel.mySurfel.className() );
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ShiftedKSSurfel & aTransformedKSSurfel ): Unknown mode "+mode)=="");
+  // used to display surfels located at a same position.
+  double factorVolSurfel=1.0;
+  bool basicMode=false;
+  if(mode=="Highlighted"){
+    factorVolSurfel = 1.2;
+    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
+  }else if(mode=="Transparent"){
+    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
+  }else if(mode=="Basic"){
+    basicMode=true;
+  }
+  float x =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[0]  >> 1) ;
+  float y =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[1]  >> 1 );
+  float z =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[2]  >> 1 );
+  
+  bool xodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 1 ] & 1 );
+  bool zodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 2 ] & 1 );
+    
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  ASSERT(spaceDim==2);
+  
+  display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, aTransformedKSSurfel.myShift, aTransformedKSSurfel.mySizeFactor, 
+		      true, aTransformedKSSurfel.mySurfel.myPositive,  basicMode );   
+  display.setFillColor(fillColorSave);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
