@@ -418,6 +418,7 @@ namespace DGtal
      * @param xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
      *                                     the x-axis, y-axis or z-axis.
      * @param sizeShiftFactor set the distance between the display of the surfel and potential KSVoxel.
+     * @param translateShift translate the KSsurfel from the asso 
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
      *                             according this boolean  parameter 
@@ -427,9 +428,13 @@ namespace DGtal
      */
     
     virtual void addKSSurfel(double x, double y, double z, 
-			     bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+			     bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
+			     double positionShift=0.0, double sizeFactor=1.0,
 			     bool isSigned= false, bool aSign=true, bool basicMode=false);
     
+    
+
+
     /**
      * Add a KSVoxel from the Kahlimsky space.
      * 
@@ -437,7 +442,7 @@ namespace DGtal
      * 
      */
     
-    virtual void addKSVoxel(int x, int y, int z);
+    virtual void addKSVoxel(int x, int y, int z, double sizeFactor=0.94);
   
     
     /**
@@ -512,6 +517,7 @@ namespace DGtal
   
 
 
+    
   
     /**
      * Writes/Displays the object on an output stream.
