@@ -351,12 +351,12 @@ protected:
       {
 	double c1x, c1y, c1z=0.0;
 	double c2x, c2y, c2z=0.0;
-	for(int i=0; i< q1.vectPoints.size(); i++){
+	for(unsigned int i=0; i< q1.vectPoints.size(); i++){
 	  c1x+=q1.vectPoints.at(i).x;
 	  c1y+=q1.vectPoints.at(i).y;
 	  c1z+=q1.vectPoints.at(i).z;
 	}
-	for(int i=0; i< q2.vectPoints.size(); i++){
+	for(unsigned int i=0; i< q2.vectPoints.size(); i++){
 	  c2x+=q2.vectPoints.at(i).x;
 	  c2y+=q2.vectPoints.at(i).y;
 	  c2z+=q2.vectPoints.at(i).z;

@@ -74,7 +74,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
      }else if(aNum>4){
        vector<Display3D::pointD3D> vectPoly;
-       for(int j=0; j< aFace.size(); j++){
+       for(unsigned int j=0; j< aFace.size(); j++){
 	 Display3D::pointD3D pt;
 	 pt.x= aMesh.getVertex(aFace.at(j))[0];
 	 pt.y=aMesh.getVertex(aFace.at(j))[1];

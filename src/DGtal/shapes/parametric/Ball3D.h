@@ -209,16 +209,17 @@ namespace DGtal
     // ------------------------- data ----------------------------
   private:
 
+     /**
+     * Radius of the sphere.
+     */
+    double myRadius;
+
     /**
      * Center of the sphere.
      */
     RealPoint myCenter;
     
-    /**
-     * Radius of the sphere.
-     */
-    double myRadius;
-
+   
     // ----------------------- Interface --------------------------------------
   public:
 

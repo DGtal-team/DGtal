@@ -96,9 +96,8 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
   str_in >> nbEdges;
 
   // Reading mesh vertex 
-  for(unsigned int i=0; i<nbPoints; i++){
+  for(int i=0; i<nbPoints; i++){
     TPoint p;
-    double x,y,z;
     infile >> p[0];
     infile >> p[1];
     infile >> p[2];
@@ -108,7 +107,7 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
   }
   
   // Reading mesh faces
-  for(unsigned int i=0; i<nbFaces; i++){
+  for(int i=0; i<nbFaces; i++){
     // Reading the number of face vertex
     unsigned int aNbFaceVertex;
     infile >> aNbFaceVertex;
@@ -224,7 +223,7 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
   str_in >> nbPoints;
   
   // Reading mesh vertex 
-  for(unsigned int i=0; i<nbPoints; i++){
+  for(int i=0; i<nbPoints; i++){
     TPoint p;
     infile >> p[0];
     infile >> p[1];

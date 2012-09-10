@@ -217,13 +217,13 @@ namespace DGtal
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int nbFaces() const;
+    unsigned int nbFaces() const;
 
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int  nbVertex() const;
+    unsigned int  nbVertex() const;
     
     
     
