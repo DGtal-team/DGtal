@@ -915,7 +915,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
   typedef typename Image::Domain D;
   typedef typename Image::Value V;
   
-  ASSERT(D::dimension == 2);
+  ASSERT(D::Space::dimension == 2);
 
   Colormap colormap(minV, maxV);
   Color c;
