@@ -194,7 +194,7 @@ bool testRestrictedImage()
     aBoard.saveCairo("cars_after_filling.png", Board2D::CairoPNG);
 #endif
     
-    // 5) fill 0 (only for one pixel on two) for on 'floor_lamp' image
+    // 5) fill 0 (only for one pixel on two) for 'floor_lamp' image
     Z2i::Point p5( 56, 187-154/*108*/ );
     Z2i::Point p6( 68, 187-108/*154*/ );
     Z2i::Domain domain_floor_lamp( p5, p6 );
@@ -213,22 +213,21 @@ bool testRestrictedImage()
       // insertNew is very important for vector container.
       if (i%2)
         mySet.insertNew( *it );
-      i++;
     }
     
     DigitalSetDomain<SpecificSet> my_specific_domain_floor_lamp(mySet);
     // --- DigitalSetDomain
     
-    MyRestrictedImage floor_lamp( domain_floor_lamp, image);
-    //MyRestrictedImage floor_lamp( my_specific_domain_floor_lamp, image);
+    typedef RestrictedImage<DigitalSetDomain<SpecificSet>, VImage > MyRestrictedImage2;
+    MyRestrictedImage2 floor_lamp(my_specific_domain_floor_lamp, image);
 
     trace.info() << "RestrictedImage: " << floor_lamp << "  " << floor_lamp.domain() << std::endl;
 
     nbok += floor_lamp.isValid() ? 1 : 0;
     nb++;
     
-    typename MyRestrictedImage::Domain::ConstIterator f_it = floor_lamp.domain().begin();
-    typename MyRestrictedImage::Domain::ConstIterator f_itEnd = floor_lamp.domain().end();
+    typename MyRestrictedImage2::Domain::ConstIterator f_it = floor_lamp.domain().begin();
+    typename MyRestrictedImage2::Domain::ConstIterator f_itEnd = floor_lamp.domain().end();
     for (; f_it != f_itEnd; ++f_it)
     {
         floor_lamp.setValue(*f_it, 0);

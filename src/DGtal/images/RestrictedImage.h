@@ -22,7 +22,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
- * 
+ *
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -50,92 +50,87 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
+
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-  /////////////////////////////////////////////////////////////////////////////
-  // Template class RestrictedImage
-  /**
-   * Description of template class 'RestrictedImage' <p>
-   * \brief Aim: implements a restricted image with a given subdomain.
-   *
-   * This class is (like Image class) a lightweight proxy on ImageContainers (models of
-   * CImage). RestrictedImage class is also a model of CImage.
-   *
-   * @tparam TDomain a domain.
-   * @tparam TImageContainer an image container type (model of CImage).
-   *
-   *
-   */
-  template < typename TDomain, typename TImageContainer >
-  class RestrictedImage
-  {
+/////////////////////////////////////////////////////////////////////////////
+// Template class RestrictedImage
+/**
+ * Description of template class 'RestrictedImage' <p>
+ * \brief Aim: implements a restricted image with a given domain (i.e. a subdomain).
+ *
+ * This class is (like Image class) a lightweight proxy on ImageContainers (models of CImage).
+ * It uses a given Domain (i.e. a subdomain) but work directly (for read and write) thanks to an alias (i.e. a pointer) on the original ImageContainer in argument.
+ * RestrictedImage class is also a model of CImage.
+ * 
+ * Caution :
+ *  - RestrictedImage Domain Space dimension must be the same than the original ImageContainer Domain Space dimension,
+ *  - the type of value of Point for the RestrictedImage Domain must also be the same than the type of value of Point for the original ImageContainer.
+ *
+ * @tparam TDomain a domain.
+ * @tparam TImageContainer an image container type (model of CImage).
+ *
+ *
+ */
+template < typename TDomain, typename TImageContainer >
+class RestrictedImage
+{
 
     // ----------------------- Types ------------------------------
 
-  public:
+public:
+    typedef RestrictedImage<TDomain,TImageContainer> Self; 
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
+    BOOST_STATIC_ASSERT(TDomain::Space::dimension == TImageContainer::Domain::Space::dimension);
+    BOOST_STATIC_ASSERT((boost::is_same< typename TDomain::Point, typename TImageContainer::Point>::value));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    //typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
-    typedef typename TImageContainer::ConstRange ConstRange;
-    typedef typename TImageContainer::Range Range;
-    //typedef typename TImageContainer::OutputIterator OutputIterator;
 
     ///Pointer to the image container data.
     typedef TImageContainer* ImagePointer;
-    
-    ///SubDomain
-    BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
-    typedef TDomain Domain;
-    //typedef typename Domain::Dimension Dimension;
 
-    /// static constants
-    //static const typename Domain::Dimension dimension = Domain::dimension;
+    typedef TDomain Domain;
+
+    typedef DefaultConstImageRange<Self> ConstRange; 
+    typedef DefaultImageRange<Self> Range; 
 
     // ----------------------- Standard services ------------------------------
 
-  public:
+public:
 
-    /**
-     * Default constructor.
-     */
-    RestrictedImage() {
-#ifdef DEBUG_VERBOSE
-trace.warning() << "RestrictedImage Ctor default "<<std::endl;
-#endif
-
-    }
-    
     RestrictedImage(const Domain &aDomain, ImageContainer &anImage):
-      mySubDomain(aDomain), myImagePointer(&anImage)
+            mySubDomain(aDomain), myImagePointer(&anImage)
     {
 #ifdef DEBUG_VERBOSE
-    trace.warning() << "RestrictedImage Ctor fromRef "<<std::endl;
+        trace.warning() << "RestrictedImage Ctor fromRef "<<std::endl;
 #endif
     }
 
-      /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
+    /**
+    * Assignment.
+    * @param other the object to copy.
+    * @return a reference on 'this'.
+    */
     RestrictedImage & operator= ( const RestrictedImage & other )
     {
 #ifdef DEBUG_VERBOSE
- trace.warning() << "RestrictedImage assignment "<<std::endl;
+        trace.warning() << "RestrictedImage assignment "<<std::endl;
 #endif
-      if (&other != this)
-	{
-	  myImagePointer = other.myImagePointer;
-	}
-      return *this;
+        if (&other != this)
+        {
+            myImagePointer = other.myImagePointer;
+        }
+        return *this;
     }
 
 
@@ -146,7 +141,7 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
     ~RestrictedImage() {}
 
     // ----------------------- Interface --------------------------------------
-  public:
+public:
 
     /////////////////// Domains //////////////////
 
@@ -157,7 +152,7 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     const Domain & domain() const
     {
-      return mySubDomain;
+        return mySubDomain;
     }
 
     /**
@@ -168,7 +163,7 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     ConstRange constRange() const
     {
-      return myImagePointer->constRange(); // TODO: cf. DC
+        return ConstRange( *this );
     }
 
     /**
@@ -179,7 +174,7 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     Range range()
     {
-      return myImagePointer->range(); // TODO: cf. DC
+        return Range( *this );
     }
 
     /////////////////// Accessors //////////////////
@@ -196,8 +191,8 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     Value operator()(const Point & aPoint) const
     {
-      ASSERT(this->domain().isInside(aPoint));
-      return myImagePointer->operator()(aPoint);
+        ASSERT(this->domain().isInside(aPoint));
+        return myImagePointer->operator()(aPoint);
     }
 
 
@@ -213,8 +208,8 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     void setValue(const Point &aPoint, const Value &aValue)
     {
-      ASSERT(this->domain().isInside(aPoint));
-      myImagePointer->setValue(aPoint,aValue);
+        ASSERT(this->domain().isInside(aPoint));
+        myImagePointer->setValue(aPoint,aValue);
     }
 
 
@@ -236,7 +231,7 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     bool isValid() const
     {
-      return (myImagePointer->isValid() );
+        return (myImagePointer->isValid() );
     }
 
 
@@ -246,41 +241,50 @@ trace.warning() << "RestrictedImage Ctor default "<<std::endl;
      */
     const ImageContainer * getPointer() const
     {
-      return myImagePointer;
+        return myImagePointer;
     }
 
     // ------------------------- Protected Datas ------------------------------
-  private:
+private:
+    /**
+     * Default constructor.
+     */
+    RestrictedImage() {
+#ifdef DEBUG_VERBOSE
+        trace.warning() << "RestrictedImage Ctor default "<<std::endl;
+#endif
+    }
+    
     // ------------------------- Private Datas --------------------------------
-  protected:
+protected:
 
     /// Owning pointer on the image container
     ImagePointer myImagePointer;
-    
+
     /**
      * The image SubDomain
      */
     Domain mySubDomain;
 
 
-  private:
+private:
 
 
     // ------------------------- Internals ------------------------------------
-  private:
+private:
 
-  }; // end of class RestrictedImage
+}; // end of class RestrictedImage
 
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'RestrictedImage'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'RestrictedImage' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename TD, typename TIC>
-  std::ostream&
-  operator<< ( std::ostream & out, const RestrictedImage<TD, TIC> & object );
+/**
+ * Overloads 'operator<<' for displaying objects of class 'RestrictedImage'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'RestrictedImage' to write.
+ * @return the output stream after the writing.
+ */
+template <typename TD, typename TIC>
+std::ostream&
+operator<< ( std::ostream & out, const RestrictedImage<TD, TIC> & object );
 
 } // namespace DGtal
 
