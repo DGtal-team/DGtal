@@ -132,10 +132,10 @@ typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::gradient( const AngularCoordinates t) const
 {
   RealPoint p= x(t);
-  double x=2*(p[0]-myCenter[0]);
-  double y =2*(p[1]-myCenter[1]);
-  double z=2*(p[2]-myCenter[2]);
-  return RealPoint(x,y,z);
+  double xx=2*(p[0]-myCenter[0]);
+  double yy =2*(p[1]-myCenter[1]);
+  double zz=2*(p[2]-myCenter[2]);
+  return RealPoint(xx,yy,zz);
 }
 
 /**
