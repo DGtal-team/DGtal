@@ -777,10 +777,10 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
     p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
     p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
     p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
-    aMesh.addVertex(p1);
-    aMesh.addVertex(p2);
-    aMesh.addVertex(p3);
     aMesh.addVertex(p4);
+    aMesh.addVertex(p3);
+    aMesh.addVertex(p2);
+    aMesh.addVertex(p1);
     aMesh.addQuadFace(i*4,i*4+1, i*4+2,i*4+3, DGtal::Color(quad.R, quad.G, quad.B, quad.T));	
     vertexIndex+=4;
   }
