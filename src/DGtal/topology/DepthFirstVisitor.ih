@@ -163,7 +163,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::expand
       if ( mark_it == myMarkedVertices.end() )
         {
           myMarkedVertices.insert( *it );
-          myQueue.push( std::make_pair( *it, ++d ) );
+          myQueue.push( std::make_pair( *it, d ) );
         }
     }
 }
