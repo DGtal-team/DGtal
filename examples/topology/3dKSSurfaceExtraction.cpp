@@ -99,14 +99,14 @@ int main( int argc, char** argv )
   //sign:
 
   SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
-  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, true);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, false);
   
   
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show(); 
    
-  //viewer << SetMode3D( vectConnectedSCell.at(0).at(0).className(), "Basic" );
+  viewer << SetMode3D( vectConnectedSCell.at(0).at(0).className(), "Illustration" );
 
 
   // Each connected compoments are simply displayed with a specific color.

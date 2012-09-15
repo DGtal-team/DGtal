@@ -47,6 +47,18 @@ inline
 DGtal::MeshFromPoints<TPoint>::MeshFromPoints(bool saveFaceColor)
 {
   mySaveFaceColor=saveFaceColor;
+  myDefaultColor = DGtal::Color::White;
+}
+
+/**
+ * Constructor.
+ */
+template <typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(DGtal::Color aColor)
+{
+  mySaveFaceColor=false;
+  myDefaultColor = aColor;
 }
 
 /**
@@ -214,7 +226,7 @@ DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
   if(mySaveFaceColor){
     return myFaceColorList.at(i);
   }else{
-    return DGtal::Color::White;
+    return myDefaultColor;
   }
 }
 

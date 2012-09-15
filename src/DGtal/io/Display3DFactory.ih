@@ -742,6 +742,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
+    basicMode=true;
   }else if(mode=="Basic" || (mode=="")){
     basicMode=true;
   }
@@ -937,6 +938,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
+    basicMode=true;
   }else if(mode=="Basic" || (mode=="") ){
     basicMode=true;
   }
