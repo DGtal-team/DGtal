@@ -105,8 +105,6 @@ int main( int argc, char** argv )
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show(); 
-   
-  viewer << SetMode3D( vectConnectedSCell.at(0).at(0).className(), "Illustration" );
 
 
   // Each connected compoments are simply displayed with a specific color.
