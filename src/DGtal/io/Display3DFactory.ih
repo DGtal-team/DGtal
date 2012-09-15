@@ -732,7 +732,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
+  ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -742,8 +742,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-    basicMode=true;
-  }else if(mode=="Basic" || (mode=="")){
+  }else if(mode=="Basic"){
     basicMode=true;
   }
   double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
@@ -928,7 +927,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( sk.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
+  ASSERT((mode==""  || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -938,8 +937,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-    basicMode=true;
-  }else if(mode=="Basic" || (mode=="") ){
+  }else if(mode=="Basic"){
     basicMode=true;
   }
   float x = (float) 
