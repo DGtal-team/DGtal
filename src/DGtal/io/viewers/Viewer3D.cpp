@@ -106,6 +106,10 @@ DGtal::Viewer3D::draw()
 {
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
+  
+  glPushMatrix();
+  glScalef(myScaleX, myScaleY, myScaleZ);    
+
   for ( unsigned int i =0; i< myClippingPlaneList.size(); i++ )
     {
       clippingPlaneD3D cp = myClippingPlaneList.at ( i );
@@ -125,7 +129,7 @@ DGtal::Viewer3D::draw()
 			 ( posCam.y-centerS.y ) * ( posCam.y-centerS.y ) +
 			 ( posCam.z-centerS.z ) * ( posCam.z-centerS.z ) );
 
-
+ 
   for ( unsigned int i=0; i<myPointSetList.size(); i++ )
     {
       if ( myPointSetList.at ( i ).size() !=0 )
@@ -161,6 +165,7 @@ DGtal::Viewer3D::draw()
       glLineWidth ( myMeshDefaultLineWidth /distCam );
       glCallList ( GLuint ( myListToAff+nbListOfPrimitives+2 ) );
   }
+
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+3 ) );
     
@@ -169,6 +174,7 @@ DGtal::Viewer3D::draw()
     glCallList ( GLuint ( myListToAff+nbListOfPrimitives+4 ) );
   }
 
+
   glDisable(GL_CULL_FACE);
   glCallList ( GLuint ( myListToAff+nbListOfPrimitives+5 ) );
   if(myViewWire){
@@ -176,6 +182,9 @@ DGtal::Viewer3D::draw()
     glCallList ( GLuint ( myListToAff+nbListOfPrimitives+6 ) );
   }
   
+
+    
+
 
     
 
@@ -219,9 +228,10 @@ DGtal::Viewer3D::draw()
     {
       glDrawGLLinel ( myKSLinelList.at ( i ) );
     }
-    
 
   glPopMatrix();
+
+  glPopMatrix();  
 }
 
 #if defined( max )
@@ -269,6 +279,8 @@ DGtal::Viewer3D::init()
   setKeyDescription ( Qt::Key_L, "Load last visualisation settings." );
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
+  setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
+
 
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
   setManipulatedFrame ( new ManipulatedFrame() );
@@ -384,7 +396,6 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 {
   // Additionnaly to the primitive list (of myVoxelSetList myLineSetList.size() myPointSetList.size()) we add 
   // 6 new lists associated to the mesh Display.
-
   unsigned int nbList= ( unsigned int ) ( myVoxelSetList.size() + myLineSetList.size() + myPointSetList.size() +6 );
   glDeleteLists ( myListToAff, myNbListe );
   myListToAff = glGenLists ( nbList );
@@ -394,7 +405,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   glEnable ( GL_MULTISAMPLE_ARB );
   glEnable ( GL_SAMPLE_ALPHA_TO_COVERAGE_ARB );
   glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-    
+
     
   for ( unsigned int i=0; i<myVoxelSetList.size(); i++ )
     {
@@ -601,8 +612,9 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );  
-  glBegin ( GL_TRIANGLES );  
-  
+  //  glPushMatrix(),
+  //  glScalef(1.0f,1.0f,1.3f);    
+  glBegin ( GL_TRIANGLES );    
   for ( unsigned int i=0; i<myTriangleList.size(); i++ )
     {
       glColor4ub ( myTriangleList.at ( i ).R, myTriangleList.at ( i ).G, myTriangleList.at ( i ).B, myTriangleList.at ( i ).T );  
@@ -612,6 +624,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
       glVertex3f ( myTriangleList.at ( i ).x3, myTriangleList.at ( i ).y3, myTriangleList.at ( i ).z3 );
     }   
   glEnd();
+  // glPopMatrix();  
   glEndList();
 
 
@@ -680,7 +693,10 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 			    qglviewer::Vec ( myBoundingPtUp[0], myBoundingPtUp[1], myBoundingPtUp[2] ) );
       showEntireScene();
     }
+  glPopMatrix();
+
 }
+
 
 
 
@@ -780,6 +796,14 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
       updateGL();
     }
 
+  if ( ( e->key() ==Qt::Key_R ) )
+    {
+      myScaleX=1.0f;
+      myScaleY=1.0f;
+      myScaleZ=1.0f;
+      updateGL();
+    }
+
 
   if ( ( e->key() ==Qt::Key_T ) )
     {
@@ -872,6 +896,11 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
     QGLViewer::keyPressEvent ( e );
 
 }
+
+
+
+
+
 
 
 QString
