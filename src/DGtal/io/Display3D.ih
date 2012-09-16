@@ -745,6 +745,15 @@ DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 }
 
 
+inline
+void 
+DGtal::Display3D::setScale(float sx, float sy, float sz){
+  myScaleX = sx;
+  myScaleY = sy;
+  myScaleZ = sz;
+}
+
+
 
 inline
 void 
