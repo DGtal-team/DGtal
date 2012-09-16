@@ -765,10 +765,10 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
   for (unsigned int i=0; i< myKSSurfelList.size(); i++){
     quadD3D quad = myKSSurfelList.at(i);
     pointD3D p1, p2, p3, p4;
-    p1.x=quad.x1; p1.y=quad.y1 ;p1.z=quad.z1;
-    p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
-    p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
-    p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
+    p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
+    p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
+    p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
+    p4.x=quad.x4*myScaleX; p4.y=quad.y4*myScaleY ;p4.z=quad.z4*myScaleZ;
     aMesh.addVertex(p1);
     aMesh.addVertex(p2);
     aMesh.addVertex(p3);
@@ -783,10 +783,10 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
   for (unsigned int i=0; i<myQuadList.size(); i++){
     quadD3D quad = myQuadList.at(i);
     pointD3D p1, p2, p3, p4;
-    p1.x=quad.x1; p1.y=quad.y1 ;p1.z=quad.z1;
-    p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
-    p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
-    p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
+    p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
+    p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
+    p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
+    p4.x=quad.x4*myScaleX; p4.y=quad.y4*myScaleY ;p4.z=quad.z4*myScaleZ;
     aMesh.addVertex(p4);
     aMesh.addVertex(p3);
     aMesh.addVertex(p2);
@@ -801,9 +801,9 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
   for (unsigned int i=0; i < myTriangleList.size(); i++){
     triangleD3D aTriangle = myTriangleList.at(i);
     pointD3D p1, p2, p3;
-    p1.x = aTriangle.x1; p1.y = aTriangle.y1; p1.z = aTriangle.z1;
-    p2.x = aTriangle.x2; p2.y = aTriangle.y2; p2.z = aTriangle.z2;
-    p3.x = aTriangle.x3; p3.y = aTriangle.y3; p3.z = aTriangle.z3;
+    p1.x = aTriangle.x1*myScaleX; p1.y = aTriangle.y1*myScaleY; p1.z = aTriangle.z1*myScaleZ;
+    p2.x = aTriangle.x2*myScaleX; p2.y = aTriangle.y2*myScaleY; p2.z = aTriangle.z2*myScaleZ;
+    p3.x = aTriangle.x3*myScaleX; p3.y = aTriangle.y3*myScaleY; p3.z = aTriangle.z3*myScaleZ;
     aMesh.addVertex(p1);
     aMesh.addVertex(p2);
     aMesh.addVertex(p3);
@@ -823,15 +823,15 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
       pointD3D p1, p2, p3, p4, p5, p6, p7, p8;
       double width= voxel.width;
 
-      p1.x = voxel.x-width; p1.y = voxel.y+width; p1.z = voxel.z+width;
-      p2.x = voxel.x+width; p2.y = voxel.y+width; p2.z = voxel.z+width;      
-      p3.x = voxel.x+width; p3.y = voxel.y-width; p3.z = voxel.z+width;
-      p4.x = voxel.x-width; p4.y = voxel.y-width; p4.z = voxel.z+width;      
-      p5.x = voxel.x-width; p5.y = voxel.y+width; p5.z = voxel.z-width;
+      p1.x = (voxel.x-width)*myScaleX; p1.y = (voxel.y+width)*myScaleY; p1.z = (voxel.z+width)*myScaleZ;
+      p2.x = (voxel.x+width)*myScaleX; p2.y = (voxel.y+width)*myScaleY; p2.z = (voxel.z+width)*myScaleZ;      
+      p3.x = (voxel.x+width)*myScaleX; p3.y = (voxel.y-width)*myScaleY; p3.z = (voxel.z+width)*myScaleZ;
+      p4.x = (voxel.x-width)*myScaleX; p4.y = (voxel.y-width)*myScaleY; p4.z = (voxel.z+width)*myScaleZ;      
+      p5.x = (voxel.x-width)*myScaleX; p5.y = (voxel.y+width)*myScaleY; p5.z = (voxel.z-width)*myScaleZ;
       
-      p6.x = voxel.x+width; p6.y = voxel.y+width; p6.z = voxel.z-width;     
-      p7.x = voxel.x+width; p7.y = voxel.y-width; p7.z = voxel.z-width;
-      p8.x = voxel.x-width; p8.y = voxel.y-width; p8.z = voxel.z-width;
+      p6.x = (voxel.x+width)*myScaleX; p6.y = (voxel.y+width)*myScaleY; p6.z = (voxel.z-width)*myScaleZ;     
+      p7.x = (voxel.x+width)*myScaleX; p7.y = (voxel.y-width)*myScaleY; p7.z = (voxel.z-width)*myScaleZ;
+      p8.x = (voxel.x-width)*myScaleX; p8.y = (voxel.y-width)*myScaleY; p8.z = (voxel.z-width)*myScaleZ;
       
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
