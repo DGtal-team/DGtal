@@ -172,13 +172,6 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
 } 
 
 
-template <typename TIterator, typename TInteger, int connectivity>
-inline
-typename DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::Self
-DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>
-::getSelf() const {
-  return Self(); 
-}
 
 
 

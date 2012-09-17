@@ -545,15 +545,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
 
   Point lastPoint(*it);
   Vector lastMove = lastPoint-Point(*myL);
-<<<<<<< HEAD:src/DGtal/geometry/curves/representation/ArithmeticalDSS.ih
-  //if the two last points 
-  //are not connected
-  //return false
-  Integer deviation = Tools<TInteger,connectivity>
-                        ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1) ) 
-    return false;
-=======
 
   Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
@@ -562,7 +553,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
   //if the two last points are confounded return true
   else if (deviation==NumberTraits<Integer>::ZERO) return true; 
   //otherwise
->>>>>>> masterDGtal:src/DGtal/geometry/curves/ArithmeticalDSS.ih
+
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -650,16 +641,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 									     const Vector & lastMove )
 {
 
-<<<<<<< HEAD:src/DGtal/geometry/curves/representation/ArithmeticalDSS.ih
-  //if the two last points 
-  //are not connected
-  //return false
-  Integer deviation = Tools<TInteger,connectivity>
-                        ::norm(lastMove[0],lastMove[1]);
-  if ( (deviation>1) ) return false;
-  // if the last two points are confounded, return true.
-  else if (deviation==0) return true;
-=======
+
   Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
@@ -667,7 +649,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
   //if the two last points are confounded return true
   else if (deviation == NumberTraits<Integer>::ZERO) return true; 
   //otherwise
->>>>>>> masterDGtal:src/DGtal/geometry/curves/ArithmeticalDSS.ih
+
   else if (mySteps.size()<2) {
     
     //initialisation stage
@@ -713,11 +695,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
         return true;
       
     } else { 
-<<<<<<< HEAD:src/DGtal/geometry/curves/representation/ArithmeticalDSS.ih
       //if there is more than two steps
-=======
-      //if there is more than two steps 
->>>>>>> masterDGtal:src/DGtal/geometry/curves/ArithmeticalDSS.ih
       return false;
     }
 
