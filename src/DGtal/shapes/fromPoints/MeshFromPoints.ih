@@ -55,7 +55,7 @@ DGtal::MeshFromPoints<TPoint>::MeshFromPoints(bool saveFaceColor)
  */
 template <typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(DGtal::Color aColor)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const DGtal::Color &aColor)
 {
   mySaveFaceColor=false;
   myDefaultColor = aColor;

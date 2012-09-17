@@ -612,8 +612,6 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   myNbListe++;
   glPushName ( myNbListe );
   glEnable ( GL_LIGHTING );  
-  //  glPushMatrix(),
-  //  glScalef(1.0f,1.0f,1.3f);    
   glBegin ( GL_TRIANGLES );    
   for ( unsigned int i=0; i<myTriangleList.size(); i++ )
     {
@@ -624,7 +622,6 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
       glVertex3f ( myTriangleList.at ( i ).x3, myTriangleList.at ( i ).y3, myTriangleList.at ( i ).z3 );
     }   
   glEnd();
-  // glPopMatrix();  
   glEndList();
 
 
