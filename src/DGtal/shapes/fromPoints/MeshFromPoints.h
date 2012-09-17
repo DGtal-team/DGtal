@@ -117,7 +117,7 @@ namespace DGtal
      * 
      * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
-    MeshFromPoints(DGtal::Color aColor);    
+    MeshFromPoints(const DGtal::Color &aColor);    
     
     /**
      * Constructor by usung a vertex set as init.
