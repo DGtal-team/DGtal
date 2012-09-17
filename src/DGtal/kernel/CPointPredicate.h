@@ -56,18 +56,11 @@ namespace DGtal
 Description of \b concept '\b CPointPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a point. 
-     
-<<<<<<< HEAD
-
-     Associates a boolean to points.
-
-     <p> Refinement of CPredicate< T, T::Point >.
-
-=======
+   
      Associates booleans to points.
     
  ### Refinement of CUnaryFunctor
->>>>>>> masterDGtal
+
     
  ### Associated types :
 
@@ -84,27 +77,21 @@ Description of \b concept '\b CPointPredicate' <p>
     
  ### Notes###
    */
-  template <typename T>
-<<<<<<< HEAD
 
-    struct CPointPredicate : CPredicate< T, typename T::Point>
-  {
-
-=======
   struct CPointPredicate
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
-
+    
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
+    
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:
     
->>>>>>> masterDGtal
+    
   }; // end of concept CPointPredicate
   
 } // namespace DGtal
