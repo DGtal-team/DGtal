@@ -66,7 +66,7 @@ namespace DGtal
     typedef T element_type;
 
     explicit CountedPtr(T* p = 0) // allocate a new counter
-        : myCounter(0) {if (p) myCounter = new counter(p);}
+        : myCounter(0) { if (p) myCounter = new counter(p);}
     ~CountedPtr()
         {release();}
     CountedPtr(const CountedPtr& r) throw()
@@ -85,7 +85,7 @@ namespace DGtal
     T* get()        const throw()   {return myCounter ? myCounter->ptr : 0;}
     bool unique()   const throw()
     {return (myCounter ? myCounter->count == 1 : true);}
-    
+
     /**
      * For debug.
      */

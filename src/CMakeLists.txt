@@ -5,11 +5,11 @@ include_directories(${PROJECT_BINARY_DIR}/src)
 ## each subdir can contain a ModuleSRC.txt file 
 ## with a set command on the variable ${DGTAL_SRC}
 ## 
+include(DGtal/arithmetic/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
-include(DGtal/kernel/ModuleSRC.txt)
 
 ## Board dependency
 include(Board/ModuleSRC.txt)
@@ -45,10 +45,11 @@ ELSE(BUILD_SHARED_LIBS)
 ENDIF(BUILD_SHARED_LIBS)
 
 install(TARGETS DGtalIO
-  # IMPORTANT: Add the DGtalVisu library to the "export-set"
+  # IMPORTANT: Add the DGtalIO library to the "export-set"
   EXPORT DGtalLibraryDepends
   RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin
   LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}"
   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 

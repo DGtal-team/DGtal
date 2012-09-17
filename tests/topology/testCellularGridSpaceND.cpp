@@ -33,11 +33,13 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -440,6 +442,10 @@ int main( int argc, char** argv )
   typedef KhalimskySpaceND<2> K2;
   typedef KhalimskySpaceND<3> K3;
   typedef KhalimskySpaceND<4> K4;
+  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K2 > ));
+  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K3 > ));
+  BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< K4 > ));
+
   bool res = testCellularGridSpaceND<K2>()
     && testCellularGridSpaceND<K3>()
     && testCellularGridSpaceND<K4>()

@@ -53,61 +53,61 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CQuantity
   /**
-     Description of \b concept '\b CQuantity' <p>
+Description of \b concept '\b CQuantity' <p>
      @ingroup Concepts
      @brief Aim: defines the concept of quantity in DGtal.
-     
-     <p> Refinement of CLabel and boost::LessThanComparable
-    
-     <p> Associated types :
-    
-     <p> Notation
+
+###  Refinement of CLabel and boost::LessThanComparable
+
+###  Associated types :
+
+###  Notation
      - \t X : A type that is a model of CQuantity
      - \t x, \t y : object of type X
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
+
+###  Definitions
+
+###  Valid expressions and semantics
+     <table>
+      <tr>
+        <td class=CName> \b Name </td>
         <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CRequirements> \b Type requirements </td>
         <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CPrecondition> \b Precondition </td>
+        <td class=CSemantics> \b Semantics </td>
+        <td class=CPostCondition> \b Postcondition </td>
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      <tr> 
-        <td class=CName>            </td> 
+      <tr>
+        <td class=CName>            </td>
         <td class=CExpression>      </td>
-        <td class=CRequirements>    </td> 
+        <td class=CRequirements>    </td>
         <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics>       </td>
+        <td class=CPostCondition>   </td>
         <td class=CComplexity>      </td>
       </tr>
-    
+
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
+
+###  Invariants
+
+###  Models
 
 
-     <p> Notes <br>
+###  Notes
 
-     @tparam T the type that should be a model of CQuantity.
+@tparam T the type that should be a model of CQuantity.
    */
-  template <typename T> 
+  template <typename T>
   struct CQuantity : CLabel<T>, boost::LessThanComparable<T>
   {
-  
-    
+
+
   }; // end of concept CQuantity
-  
+
 } // namespace DGtal
 
 //                                                                           //

@@ -44,90 +44,91 @@
 #include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
+/////////////////////////////////////////////////////////////////////////////
+// class CConstBidirectionalRange
+/**
+DescriptionDescription of \b concept '\b CConstBidirectionalRange'
+@ingroup Concepts
+
+\brief Aim: Defines the concept describing a bidirectional const range.
+
+###  Refinement of
+ CConstSinglePassRange
+
+###  Provided types :
+
+ - ConstReverseIterator: the const reverse iterator type, a model of
+  const iterator concept.
+
+<table>
+<tr>
+<td class=CName> \b Name </td>
+<td class=CExpression> \b Expression </td>
+<td class=CRequirements> \b Type requirements </td>
+<td class=CReturnType> \b Return type </td>
+<td class=CPrecondition> \b Precondition </td>
+<td class=CSemantics> \b Semantics </td>
+<td class=CPostCondition> \b Postcondition </td>
+<td class=CComplexity> \b Complexity </td>
+</tr>
+<tr>
+<td class=CName>\t rbegin </td>
+<td class=CExpression>\t x.rbegin() const</td>
+<td class=CRequirements> </td>
+<td class=CReturnType>ConstReverseIterator</td>
+<td class=CPrecondition> </td>
+<td class=CSemantics> </td>
+<td class=CPostCondition></td>
+<td class=CComplexity></td>
+</tr>
+<tr>
+<td class=CName>\t rend </td>
+<td class=CExpression>\t x.rend() const</td>
+<td class=CRequirements> </td>
+<td class=CReturnType>ConstReverseIterator</td>
+<td class=CPrecondition> </td>
+<td class=CSemantics> </td>
+<td class=CPostCondition></td>
+<td class=CComplexity></td>
+</tr>
+</table>
+
+###  Invariants
+
+###  Models
+
+###  Notes
+
+@tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
+
+ */
 namespace DGtal
 {
+template <typename T>
+struct CConstBidirectionalRange: CConstSinglePassRange<T>
+{
+ // ----------------------- Concept checks ------------------------------
+public:
+ typedef typename T::ConstReverseIterator ConstReverseIterator;
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CConstBidirectionalRange
-  /**
-     Description of \b concept '\b CConstBidirectionalRange' <p>
-     @ingroup Concepts
-    
-     \brief Aim: Defines the concept describing a bidirectional const range.
-     
-     <p> Refinement of CConstSinglePassRange
-    
-     <p> Provided types :
+ BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
 
-   - ConstReverseIterator: the const reverse iterator type, a model of
-          const iterator concept.
+ BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
+ {
+  ConstReverseIterator it=i.rbegin();
+  it=i.rend();
+ };
 
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() const</td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() const</td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-    
-     <p> Notes <br>
+private:
+ T i;
+}; // end of concept CConstBidirectionalRange
 
-     @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
-
-   */
-  template <typename T>
-  struct CConstBidirectionalRange: CConstSinglePassRange<T>
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    typedef typename T::ConstReverseIterator ConstReverseIterator;
-
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstReverseIterator> ));
-
-    BOOST_CONCEPT_USAGE(CConstBidirectionalRange)
-    {
-      ConstReverseIterator it=i.rbegin();
-      it=i.rend();
-    };
-
-  private:
-    T i;
-  }; // end of concept CConstBidirectionalRange
-  
 } // namespace DGtal
 
 
 
-//                                                                           //
+////
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CConstBidirectionalRange_h

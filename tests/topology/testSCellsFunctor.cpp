@@ -73,18 +73,20 @@ bool testSCellsFunctors()
     nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0; 
     nb++;
   }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //1-scell 2 point
   {
     typedef KhalimskySpaceND<3> K3;
     K3 theKSpace; 
     SCellToPoint<K3> m(theKSpace); 
-    K3::SCell s; 
-    theKSpace.sSetKCoords( s, K3::Point(7,6,8) );
+    K3::SCell s(K3::Point(0,0,0), true); //default point and orientation 
+    theKSpace.sSetKCoords( s, K3::Point(5,6,8) );
     K3::Point aPoint = m( s );
     trace.info() << s << aPoint <<std::endl;  
-    nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0; 
+    nbok += ( aPoint == K3::Point(3,3,4) ) ? 1 : 0;
     nb++;
   }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //scell 2 midPoint
   {
     typedef KhalimskySpaceND<2> K2;
@@ -96,6 +98,7 @@ bool testSCellsFunctors()
     nbok += ( aPoint == K2::Space::RealPoint(0,0.5) ) ? 1 : 0; 
     nb++;
   }  
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
     //scell 2 arrow
   {
@@ -110,6 +113,7 @@ bool testSCellsFunctors()
     nbok += ( ((aArrow.first == p) && (aArrow.second == v)) ) ? 1 : 0; 
     nb++;
   }  
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   
       //scell 2 inner point
   {
@@ -122,6 +126,7 @@ bool testSCellsFunctors()
     nbok += ( aPoint == K2::Point(-1,0) ) ? 1 : 0; 
     nb++;
   }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   
     //scell 2 outer point
   {
@@ -134,6 +139,7 @@ bool testSCellsFunctors()
     nbok += ( aPoint == K2::Point(0,0) ) ? 1 : 0; 
     nb++;
   }
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   
     //scell 2 incident pixels
   {
@@ -148,6 +154,7 @@ bool testSCellsFunctors()
     nbok += ( ((aPair.first == p1) && (aPair.second == p2)) ) ? 1 : 0; 
     nb++;
   }  
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   
    //scell 2 code
   {

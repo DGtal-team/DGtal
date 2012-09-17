@@ -44,84 +44,84 @@
 
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
+#include "DGtal/base/CBidirectionalOutputRangeFromPoint.h"
+#include "DGtal/images/CTrivialImage.h"
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // struct CImage
-  /**
-   * Description of \b concept '\b CImage' <p>
-   *
-   * @ingroup Concepts
-   * Aim: Defines the concept describing a read/write image, 
-   * which is a refinement of a read-only image. 
-   *
-   * <p> Refinement of CConstImage
-   *
-   * <p> Associated types : the same as CConstImage
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CImage
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and semantics <br>
-      <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      
-    
-      <tr> 
-      <td class=CName> Set a value           </td> 
-      <td class=CExpression>  x.setValue(@c aPoint, @c aValue)    </td>
-      <td class=CRequirements> @c aPoint of type Point and @c aValue of
-      type Value   </td> 
-      <td class=CReturnType>  void    </td>
-      <td class=CPrecondition> @c aPoint must be valid (inside the image domain)  </td> 
-      <td class=CSemantics>  associate the value @c aValue with the
-      point  @aPoint     </td> 
-      <td class=CPostCondition>   </td> 
-      <td class=CComplexity>  Container dependent    </td>
-      </tr>
-        
+/////////////////////////////////////////////////////////////////////////////
+// struct CImage
+/**
+ * DescriptionDescription of \b concept '\b CImage' <p>
+ *
+ * @ingroup Concepts
+ * Aim: Defines the concept describing a read/write image,
+ * having an output iterator.
+ *
+### Refinement of
+ *
+ *  CTrivialImage and CConstImage
+ *
+### Associated types:
+ * - the same as CTrivialImage
+ * - the same as CConstImage
+ * - \a Range : type of the Range
+ *
+ *
+ ### Notation
+ * - \t X : A type that is a model of CImage
+ * - \t x : Object of type X
+ * - \t aPoint : Object of type Point
+ * - \t aValue : Object of type Value
+ *
+ *
+ ### Definitions
+ *
+ ### Valid expressions and
 
-    </table>   
 
-   *
-   * <p> Invariants <br>
-   *
-   * <p> Models <br>
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
-   * <p> Notes <br>
-   *
-   */
+| Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
+|-------------------------------------|------------------------------------|----------------------|-----------------------|------------------------------------|-------------------------------------------------------|----------------|------------|
+| get range                           | x.range()                          |                      | Range                 |                                    | Returns a range on the image values                   |                |            |
 
-  template <typename I>
-  struct CImage: CConstImage<I>
-  {
 
-  public:
-  
+ *
+### Invariants
+
+### Models
+ * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+ *
+
+### Notes
+ *
+ */
+
+template <typename I>
+struct CImage: CConstImage<I>, CTrivialImage<I>
+{
+
+public:
+
+    typedef typename I::Range Range;
+    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<Range>));
+    BOOST_CONCEPT_ASSERT((CBidirectionalOutputRangeFromPoint<Range, typename
+    I::Value>));
+
+public:
+
     BOOST_CONCEPT_USAGE(CImage)
     {
-      i.setValue(p, v);  //set a value v at p
+        ConceptUtils::sameType( myI.range(), myR);
     }
 
-  private:
-    I i;
-    typename I::Value v;
-    typename I::Point p;
-  };
+private:
+
+    I myI;
+    Range myR;
+
+};
 } // namespace DGtal
 
 //                                                                           //

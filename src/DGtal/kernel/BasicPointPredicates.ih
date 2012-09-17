@@ -160,6 +160,7 @@ DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
       myPred2 = other.myPred2; 
       myBoolFunctor = other.myBoolFunctor; 
     }
+    return *this; 
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2, typename TBinaryFunctor>
@@ -179,7 +180,53 @@ DGtal::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,TBinaryFunctor>
 				    myPred2->operator()( p ) );
 }
 
-
+//------------------------------------------------------------------------------
+template <typename TPointFunctor, typename TPredicate>
+inline
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::PointFunctorPredicate( const PointFunctor & aFun,
+      const Predicate & aPred)
+  : myFun( &aFun ), myPred( &aPred )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointFunctor, typename TPredicate>
+inline
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::PointFunctorPredicate( const PointFunctorPredicate& other )
+  : myFun( other.myFun), myPred( other.myPred )
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointFunctor, typename TPredicate>
+inline
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>&
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::operator=( const PointFunctorPredicate& other )
+{
+  if (this != &other)
+    {
+      myFun = other.myFun; 
+      myPred = other.myPred; 
+    }
+    return *this;
+}
+//------------------------------------------------------------------------------
+template <typename TPointFunctor, typename TPredicate>
+inline
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::~PointFunctorPredicate()
+{
+}
+//------------------------------------------------------------------------------
+template <typename TPointFunctor, typename TPredicate>
+inline
+bool 
+DGtal::PointFunctorPredicate<TPointFunctor, TPredicate>
+::operator()( const Point & p ) const
+{
+  return myPred->operator()( myFun->operator()( p ) );
+}
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

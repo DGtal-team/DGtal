@@ -49,54 +49,54 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUnaryFunctor
   /**
-     Description of \b concept '\b CUnaryFunctor' <p>
+Description of \b concept '\b CUnaryFunctor' <p>
      @ingroup Concepts
      \brief Aim: Defines a unary functor, which
      associates arguments to results
-    
-     <p> Refinement of Assignable
-    
-     <p> Associated types :
-        
-     <p> Notation
+
+### Refinement of Assignable
+
+### Associated types :
+
+### Notation
      - \t X : a type that is a model of CUnaryFunctor
      - \t x : Object of type \t X
      - \t A : argument type
      - \t a : Object of type \t A
      - \t R : result type
      - \t r : Object of type \t R
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-     <tr> 
-     <td class=CName> \b Name </td> 
+
+### Definitions
+
+### Valid expressions and semantics
+     <table>
+     <tr>
+     <td class=CName> \b Name </td>
      <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
+     <td class=CRequirements> \b Type requirements </td>
      <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
+     <td class=CPrecondition> \b Precondition </td>
+     <td class=CSemantics> \b Semantics </td>
+     <td class=CPostCondition> \b Postcondition </td>
      <td class=CComplexity> \b Complexity </td>
      </tr>
-     <tr> 
+     <tr>
      <td class=CName>            Apply function </td>
-     <td class=CExpression>      \t r = x( \t a ) </td> 
+     <td class=CExpression>      \t r = x( \t a ) </td>
      <td class=CRequirements>    </td>
      <td class=CReturnType>      \c R </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       return the value of the function \t x on argument \t a</td> 
-     <td class=CPostCondition>   </td> 
+     <td class=CPrecondition>    </td>
+     <td class=CSemantics>       return the value of the function \t x on argument \t a</td>
+     <td class=CPostCondition>   </td>
      <td class=CComplexity>      </td>
      </tr>
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-        
-     <p> Notes <br>
+
+### Invariants
+
+### Models
+
+### Notes
   */
   template <typename X, typename A, typename R>
   struct CUnaryFunctor : boost::Assignable<X>
@@ -111,14 +111,14 @@ namespace DGtal
     }
     // ------------------------- Private Datas --------------------------------
   private:
-    X x; 
-    A a; 
-    R r; 
+    X x;
+    A a;
+    R r;
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CUnaryFunctor
-  
+
 } // namespace DGtal
 
 //                                                                           //

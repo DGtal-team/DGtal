@@ -82,12 +82,12 @@ int main( int argc, char** argv )
 
   //fill
   const int maximalValue = size*size; 
-  Image::OutputIterator it = img.output(); 
+  Image::Range::OutputIterator it = img.range().outputIterator(); 
   for (int i = 0; i < maximalValue; ++i)
     *it++ = i;
 
   //display values 
-  Image::ConstRange r = img.range(); 
+  Image::ConstRange r = img.constRange(); 
   std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
   cout << endl; 
   trace.endBlock();
@@ -98,14 +98,13 @@ int main( int argc, char** argv )
 
   //! [ConstImageAdapterConstruction]
   Thresholder<Image::Value> t( thresholdValue ); 
-
   ConstImageAdapter<Image, Thresholder<Image::Value>, bool> a(img, t); 
   //! [ConstImageAdapterConstruction]
 
   //display values 
   //! [ConstImageAdapterRange]
   ConstImageAdapter<Image, Thresholder<Image::Value>, bool>::ConstRange 
-    ra = a.range(); 
+    ra = a.constRange(); 
   std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
   //! [ConstImageAdapterRange]
   cout << endl; 

@@ -1,5 +1,6 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
+   testBreadthFirstPropagation
    testCellularGridSpaceND
    testDigitalSurface
    testDigitalTopology
@@ -8,6 +9,7 @@ SET(DGTAL_TESTS_SRC
    testObjectBorder
    testSimpleExpander
    testSCellsFunctor
+   testSTLMapToVertexMapAdapter
    testUmbrellaComputer
    )
 

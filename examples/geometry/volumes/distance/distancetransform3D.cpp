@@ -49,7 +49,7 @@
 
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
-
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
 #include "ConfigExamples.h"
 
@@ -124,21 +124,20 @@ int main( int argc, char** argv )
  //Distance transformation computation
  typedef ImageSelector<TDomain, long int>::Type ImageLong;
 
- typedef  DistanceTransformation<Image, 2> DTL2;
- typedef  DistanceTransformation<Image, 0> DTLInf;
- typedef  DistanceTransformation<Image, 1> DTL1;
+ typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+ Predicate aPredicate(imageSeeds,0);
+
+ typedef  DistanceTransformation<Space4Type,Predicate, 2> DTL2;
+ typedef  DistanceTransformation<Space4Type,Predicate, 0> DTLInf;
+ typedef  DistanceTransformation<Space4Type,Predicate, 1> DTL1;
  
- DTL2 dtL2;
- DTLInf dtLinf;
- DTL1 dtL1;
+ DTL2 dtL2(domain, aPredicate);
+ DTLInf dtLinf(domain, aPredicate);
+ DTL1 dtL1(domain, aPredicate);
 
  
- dtL1.checkTypesValidity ( imageSeeds );
- DTL1::OutputImage resultL1 = dtL1.compute ( imageSeeds );
-  
+ DTL1::OutputImage resultL1 = dtL1.compute (  );
 
-
- 
  unsigned int min = 0;
  unsigned int max = 0;
  for(DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend=resultL1.end();

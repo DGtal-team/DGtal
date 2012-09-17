@@ -43,7 +43,7 @@
 #include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
 #include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
 
 
@@ -55,7 +55,7 @@
 #include "DGtal/topology/SurfelNeighborhood.h"
 
 #include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 #include "DGtal/geometry/curves/estimation/CompareLocalEstimators.h"
 
@@ -261,7 +261,6 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       // tang2.init( h, r.begin(), r.end(), &aShape, true);
       
       typename TrueCurvature::ConstIterator it = r.begin();
-      typename TrueCurvature::ConstIterator itend = r.end();
       
       typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;

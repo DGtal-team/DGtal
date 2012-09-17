@@ -44,6 +44,7 @@
 #include <boost/concept_archetype.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/topology/CVertexMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,29 +53,29 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CUndirectedSimpleLocalGraph
   /**
-     Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
+Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
      @ingroup Concepts
      @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
-     <p> Refinement of
+ ### Refinement of
     
-     <p> Associated types :
+ ### Associated types :
 
      - Size: an integral type to count the number of vertices.
      - Vertex: the type for the vertices of the graph.
      - VertexSet: the type for storing a set of vertices.
-     - VertexMap: a rebinding structure to associate Value to vertices.
+     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
-     <p> Notation
+ ### Notation
      - \c X : A type that is a model of CUndirectedSimpleLocalGraph
      - \c x : object of type X
      - \c v : object of type Vertex
      - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
      - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -129,15 +130,15 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
 
-     - DigitalSurface
+     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
 
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
+@tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
    */
   template <typename T> 
   struct CUndirectedSimpleLocalGraph 
@@ -154,6 +155,7 @@ namespace DGtal
     typedef typename T::VertexSet VertexSet;
     template <typename Value> struct VertexMap {
       typedef typename T::template VertexMap<Value>::Type Type;
+      BOOST_CONCEPT_ASSERT(( CVertexMap< VertexMap<Value> > ));
     };
  
     // possibly check these types so as to satisfy a concept with

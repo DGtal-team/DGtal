@@ -45,6 +45,9 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/kernel/CWithGradientMap.h"
+#include "DGtal/topology/CCellEmbedder.h"
+#include "DGtal/topology/CSCellEmbedder.h"
 #include "DGtal/topology/CDigitalSurfaceContainer.h"
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 #include "DGtal/topology/UmbrellaComputer.h"
@@ -56,47 +59,47 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSurface
   /**
-     Description of template class 'DigitalSurface' <p>
+  Description of template class 'DigitalSurface' <p>
 
-     \brief Aim: Represents a set of n-1-cells in a nD space, together
-     with adjacency relation between these cells. Therefore, a digital
-     surface is a pure cubical complex (model of CCubicalComplex),
-     made of k-cells, 0 <= k < n. This complex is generally not a
-     manifold (i.e. a kind of surface), except when it has the
-     property of being well-composed.
+  \brief Aim: Represents a set of n-1-cells in a nD space, together
+  with adjacency relation between these cells. Therefore, a digital
+  surface is a pure cubical complex (model of CCubicalComplex),
+  made of k-cells, 0 <= k < n. This complex is generally not a
+  manifold (i.e. a kind of surface), except when it has the
+  property of being well-composed.
 
-     For geometric analysis or visualization, it is often interesting
-     to look at the "dual" of the digital surface. n-1-cells form now
-     vertices, n-2-cells are edges, n-3-cells are faces, and so on.  A
-     digital surface is thus a model of CUndirectedSimpleGraph,
-     henceforth of CUndirectedSimpleLocalGraph. The n-1-cells are then
-     seen as the vertices of the graph, while their adjacencies
-     constitutes the edges of the graph.
+  For geometric analysis or visualization, it is often interesting
+  to look at the "dual" of the digital surface. n-1-cells form now
+  vertices, n-2-cells are edges, n-3-cells are faces, and so on.  A
+  digital surface is thus a model of CUndirectedSimpleGraph,
+  henceforth of CUndirectedSimpleLocalGraph. The n-1-cells are then
+  seen as the vertices of the graph, while their adjacencies
+  constitutes the edges of the graph.
 
-     Furthermore, starting from 3D, a digital surface is in some sense
-     a model of combinatorial surface (closed or open). You may obtain
-     arcs (which are oriented edges) and faces (which are sequences of
-     oriented arcs turning around some pivot cell). In 3D, this dual
-     digital surface is a combinatorial 2-manifold, open or not
-     depending whether the digital surface is open or closed. For
-     instance, arcs may have 0 or 1 incident face. 
+  Furthermore, starting from 3D, a digital surface is in some sense
+  a model of combinatorial surface (closed or open). You may obtain
+  arcs (which are oriented edges) and faces (which are sequences of
+  oriented arcs turning around some pivot cell). In 3D, this dual
+  digital surface is a combinatorial 2-manifold, open or not
+  depending whether the digital surface is open or closed. For
+  instance, arcs may have 0 or 1 incident face. 
 
-     We construct this dual digital surface with umbrellas, which are
-     sequences of adjacent n-1-cells turning around a n-3-cell, called
-     the pivot of the umbrella. Faces or umbrellas are computed with
-     UmbrellaComputer class.
+  We construct this dual digital surface with umbrellas, which are
+  sequences of adjacent n-1-cells turning around a n-3-cell, called
+  the pivot of the umbrella. Faces or umbrellas are computed with
+  UmbrellaComputer class.
 
-     Proxy class to a DigitalSurfaceContainer.
+  Proxy class to a DigitalSurfaceContainer.
 
-     DigitalSurface is a model of the concept CUndirectedSimpleGraph,
-     CUndirectedSimpleLocalGraph, CSinglePassConstRange,
-     boost::CopyConstructible, boost::Assignable.
+  DigitalSurface is a model of the concept CUndirectedSimpleGraph,
+  CUndirectedSimpleLocalGraph, CSinglePassConstRange,
+  boost::CopyConstructible, boost::Assignable.
 
-     @todo Should be a model of CCubicalComplex
+  @todo Should be a model of CCubicalComplex
 
-     @tparam TDigitalSurfaceContainer any model of
-     CDigitalSurfaceContainer: the concrete representation chosen for
-     the digital surface.
+  @tparam TDigitalSurfaceContainer any model of
+  CDigitalSurfaceContainer: the concrete representation chosen for
+  the digital surface.
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -122,8 +125,6 @@ namespace DGtal
       typedef typename KSpace::template SurfelMap<Value>::Type Type;
     };
 
-    BOOST_CONCEPT_ASSERT(( CDigitalSurfaceTracker<DigitalSurfaceTracker> ));
-    
     // ----------------------- UndirectedSimpleGraph --------------------------
   public:
     /// Defines the type for a vertex.
@@ -514,6 +515,8 @@ namespace DGtal
 
        @param out the output stream where the object is written.
        @param cembedder any embedder of cellular grid elements.
+
+       @tparam CellEmbedder any model of CCellEmbedder.
      */
     template <typename CellEmbedder>
     void exportEmbeddedSurfaceAs3DOFF ( std::ostream & out,
@@ -526,10 +529,39 @@ namespace DGtal
 
        @param out the output stream where the object is written.
        @param cembedder any embedder of cellular grid elements.
+
+       @tparam CellEmbedder any model of CCellEmbedder and CWithGradientMap.
      */
     template <typename CellEmbedder>
     void exportEmbeddedSurfaceAs3DNOFF ( std::ostream & out,
                                         const CellEmbedder & cembedder ) const;
+
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Cells are embedded by [scembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param scembedder any embedder of signed cellular grid elements.
+
+       @tparam SCellEmbedderWithGradientMap any model of
+       CSCellEmbedder and CWithGradientMap.
+     */
+    template <typename SCellEmbedderWithGradientMap>
+    void exportAs3DNOFF( std::ostream & out,
+                         const SCellEmbedderWithGradientMap & scembedder ) const;
+ 
+    /**
+       Writes/Displays the object on an output stream in NOFF file
+       format. Surface spels are embedded by [cembedder]. Normals are also
+       computed by the embedder.
+
+       @param out the output stream where the object is written.
+       @param cembedder any embedder of digital surface spels.
+     */
+    template <typename CellEmbedder>
+    void exportEmbeddedIteratedSurfaceAs3DNOFF ( std::ostream & out,
+                                                 const CellEmbedder & cembedder ) const;
 
     // ------------------------- Protected Datas ------------------------------
   private:

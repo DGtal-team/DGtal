@@ -42,7 +42,7 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/base/ConstRangeFromPointAdapter.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"
@@ -79,6 +79,12 @@ namespace DGtal
    *
    * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterConstruction 
    *
+   * NB: the underlying image as well as the functor
+   * are stored in the adapter as aliasing pointer
+   * in order to avoid copies.  
+   * The pointed objects must exist and must not be deleted 
+   * during the use of the adapter
+   *
    * @see exampleConstImageAdapter
    */
   template <typename TImage, typename TFunctor, typename TValue>
@@ -107,8 +113,8 @@ namespace DGtal
     // static constants
     static const Dimension dimension = Domain::dimension;
 
-    typedef ConstRangeAdapter<typename Image::ConstRange::ConstIterator, 
-		       TFunctor, TValue> ConstRange; 
+    typedef typename Image::ConstRange ImageRange; 
+    typedef ConstRangeFromPointAdapter<ImageRange, TFunctor, TValue> ConstRange; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -117,13 +123,15 @@ namespace DGtal
      * @param aImg any image 
      * @param aF any functor
      */
-    ConstImageAdapter(const Image &aImg, const TFunctor &aF): myImg(&aImg), myF(&aF) {}
+    ConstImageAdapter(const Image &aImg, const TFunctor &aF)
+      : myImg(&aImg), myF(&aF), myR( new ImageRange( aImg.constRange() ) ) {}
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ConstImageAdapter ( const ConstImageAdapter & other ): myImg(other.myImg), myF(other.myF) {}
+    ConstImageAdapter ( const ConstImageAdapter & other )
+      : myImg(other.myImg), myF(other.myF), myR( new ImageRange(*other.myR) ) {}
 
     /**
      * Assignment.
@@ -132,15 +140,21 @@ namespace DGtal
      */
     ConstImageAdapter & operator= ( const ConstImageAdapter & other )
     {
-      myImg = other.myImg; 
-      myF = other.myF; 
+      if (this != &other)
+	{
+	  myImg = other.myImg; 
+	  myF = other.myF;
+	  delete myR; 
+	  myR = new ImageRange( *other.myR ); 
+	}
+      return *this; 
     }
 
 
     /**
      * Destructor.
      */
-    ~ConstImageAdapter() {}
+    ~ConstImageAdapter() { delete myR; }
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -172,10 +186,9 @@ namespace DGtal
      * @return the range that can be used 
      * to iterate over the values of the image.
      */
-    ConstRange range() const
+    ConstRange constRange() const
     {
-      typename Image::ConstRange r = myImg->range(); 
-      return ConstRange(r.begin(), r.end(), *myF);
+      return ConstRange(*myR, *myF);
     }
 
     /**
@@ -218,6 +231,14 @@ namespace DGtal
      * Aliasing pointer on the underlying functor
      */
     const TFunctor* myF; 
+
+    /**
+     * Owning pointer on the range of the image values
+     * (stored to be able to use the range adapter, 
+     * which is light and requires that the range 
+     * to adapt exists during the life of the adapter)
+     */
+    const ImageRange* myR; 
 
   }; // end of class ConstImageAdapter
 

@@ -57,26 +57,26 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
   /**
-     Description of \b concept '\b CDigitalSet' <p>
+Description of \b concept '\b CDigitalSet' <p>
      @ingroup Concepts
 
      @brief Aim: Represents a set of points within the given
      domain. This set of points is modifiable by the user.
      
-     <p> Refinement of boost::CopyConstructible, boost::Assignable
+ ### Refinement of boost::CopyConstructible, boost::Assignable
 
      @todo add boost::Container ? Not for now, since coding style do
      not match with STL (e.g. Iterator instead of iterator).
     
-     <p> Associated types :
+ ### Associated types :
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CDigitalSet
      - \t x, \t y : object of type X
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
       <tr> 
         <td class=CName> \b Name </td> 
@@ -101,13 +101,13 @@ namespace DGtal
     
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
-     <p> Notes <br>
+ ### Notes###
 
-     @tparam T the type that should be a model of CDigitalSet.
+@tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
   struct CDigitalSet :
@@ -122,10 +122,17 @@ namespace DGtal
     typedef typename T::Size Size;
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
-    // curiously, does not work.
-    // BOOST_CONCEPT_ASSERT(( boost::Mutable_BidirectionalIterator< Iterator > ));
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Iterator > ));
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< ConstIterator > ));
+
+    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Iterator > ));
+    //    BOOST_CONCEPT_ASSERT(( boost_concepts::LvalueIteratorConcept<Iterator > ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<Iterator > ));
+//DigitalSetFromMap cannot be a model of CDigitalSet if lvalue is required because 
+//in STL maps, in pairs <const key, value>, key is const... 
+    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<Iterator > ));
+
+    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<ConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
 
     // To test if two types A and Y are equals, use
     // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
@@ -150,7 +157,7 @@ namespace DGtal
       ConceptUtils::sameType( myIterator, myX.begin() );
       ConceptUtils::sameType( myIterator, myX.end() );
       ConceptUtils::sameType( myX, myX.operator+=( myX ) );
-      ConceptUtils::sameType( myX, myX.computeComplement() );
+      myX.computeComplement( myOutputIt );
       myX.assignFromComplement( myX );
       myX.computeBoundingBox( myPoint, myPoint );
       checkConstConstraints();
@@ -186,6 +193,7 @@ namespace DGtal
     Point myPoint;
     Iterator myIterator;
     ConstIterator myConstIterator;
+    Point* myOutputIt; 
     // ------------------------- Internals ------------------------------------
   private:
     

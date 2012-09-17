@@ -43,11 +43,34 @@ template <typename TDomain, typename TValue>
 inline
 DGtal::ImageContainerBySTLMap<TDomain,TValue>
 ::ImageContainerBySTLMap(const Domain& aDomain, const Value& aValue)
-  : myDomain(&aDomain), myInputF( Pair2nd<Value>() ), 
-    myOutputF( Pair2ndMutator<Value>() ), myDefaultValue(aValue)
+  : myDomainPtr( new Domain(aDomain) ), myDefaultValue( aValue )
 {
 }
 
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+DGtal::ImageContainerBySTLMap<TDomain,TValue>
+::ImageContainerBySTLMap(const ImageContainerBySTLMap& other)
+  : Parent(other), 
+    myDomainPtr(other.myDomainPtr), myDefaultValue(other.myDefaultValue)
+{
+}
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+DGtal::ImageContainerBySTLMap<TDomain,TValue>&
+DGtal::ImageContainerBySTLMap<TDomain,TValue>
+::operator=(const ImageContainerBySTLMap& other)
+{
+  if (this != &other)
+    {
+      Parent::operator=(other); 
+      myDomainPtr = other.myDomainPtr; 
+      myDefaultValue = other.myDefaultValue; 
+    }
+  return *this; 
+}
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline
@@ -61,6 +84,7 @@ inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Value
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::operator()(const Point &aPoint) const 
 {
+  ASSERT( this->domain().isInside( aPoint ) ); 
   ConstIterator it = this->find( aPoint );
   if ( it == this->end() )
     return myDefaultValue;
@@ -74,9 +98,9 @@ inline
 void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::setValue(const Point &aPoint, const Value &aValue)
 {
-  ASSERT ( myDomain->isInside(aPoint) ); 
+  ASSERT( this->domain().isInside( aPoint ) ); 
   std::pair<typename std::map<Point,Value>::iterator, bool> 
-    res = insert( std::pair<Point,Value>(aPoint, aValue) ); 
+    res = this->insert( std::pair<Point,Value>(aPoint, aValue) ); 
   if (res.second == false)
     res.first->second = aValue; 
 }
@@ -87,26 +111,35 @@ inline
 const typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Domain&
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::domain() const
 {
-  return *myDomain;
+  return *myDomainPtr;
 }
 
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline
 typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::ConstRange
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::range() const
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::constRange() const
 {
-  return ConstRange( this->begin(), this->end(), myInputF );
+  return ConstRange( *this );
 }
 
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
 inline
-typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::OutputIterator
-DGtal::ImageContainerBySTLMap<TDomain,TValue>::output()
+typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::Range
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::range()
 {
-  return OutputIterator( this->begin(), myOutputF );
+  return Range( *this );
 }
+//------------------------------------------------------------------------------
+template <typename TDomain, typename TValue>
+inline
+typename DGtal::ImageContainerBySTLMap<TDomain,TValue>::OutputIterator
+DGtal::ImageContainerBySTLMap<TDomain,TValue>::outputIterator()
+{
+  return OutputIterator( *this );
+}
+
 
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TValue>
@@ -124,7 +157,7 @@ void
 DGtal::ImageContainerBySTLMap<TDomain,TValue>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Image - STLMap] size=" << this->size() << " valuetype=" 
-      << sizeof(TValue) << "bytes Domain=" << *myDomain;
+      << sizeof(TValue) << "bytes Domain=" << *myDomainPtr;
 }
 
 //------------------------------------------------------------------------------

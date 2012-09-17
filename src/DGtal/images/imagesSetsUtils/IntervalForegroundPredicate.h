@@ -60,7 +60,7 @@ namespace DGtal
   class IntervalForegroundPredicate
   {
   public:
-    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     
     typedef typename Image::Value Value;
     typedef typename Image::Point Point; 

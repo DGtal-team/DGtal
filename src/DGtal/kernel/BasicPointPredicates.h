@@ -23,7 +23,7 @@
  * @date 2010/07/10
  *
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en PointFunctor et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/02
  *
  * This files contains several basic classes representing predicates
@@ -47,6 +47,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicBoolFunctions.h"
+#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/kernel/CPointFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -310,6 +312,65 @@ namespace DGtal
     const PointPredicate2* myPred2;
     /// aliasing pointer to the binary functor.
     const TBinaryFunctor* myBoolFunctor;
+  };
+
+  /////////////////////////////////////////////////////////////////////////////
+  // template class PointFunctorPredicate
+  /**
+   * Description of template class 'PointFunctorPredicate' <p> \brief
+   * Aim: The predicate returns true when the predicate
+   * returns true for the value assigned to a given point
+   * in the point functor.
+   *
+   * @tparam TPointFunctor a model of CPointFunctor.
+   * @tparam TPredicate a type of predicate on values
+   */
+  template <typename TPointFunctor, typename TPredicate>
+  struct PointFunctorPredicate
+  {
+    BOOST_CONCEPT_ASSERT (( CPointFunctor< TPointFunctor > ));  
+    BOOST_CONCEPT_ASSERT (( CUnaryFunctor< TPredicate, typename TPointFunctor::Value, bool > ));  
+
+    typedef TPointFunctor PointFunctor;
+    typedef TPredicate Predicate;
+    typedef typename PointFunctor::Point Point; 
+
+    /**
+       Constructor from an PointFunctor and a predicate
+       @param aFun an point functor.
+       @param aPred a predicate.
+     */
+    PointFunctorPredicate( const PointFunctor & aFun,
+        const Predicate & aPred );
+
+    /**
+       Copy constructor.
+       @param other the object to copy
+      */
+    PointFunctorPredicate(  const PointFunctorPredicate& other );
+
+    /**
+       Assignement
+       @param other the object to copy
+       @return reference to the current object
+     */
+    PointFunctorPredicate& operator=( const PointFunctorPredicate& other );
+
+    /**
+       Destructor
+     */
+    ~PointFunctorPredicate();
+
+    /**
+     * @param p any point.
+     * @return the value of the predicate at this point.
+     */
+    bool operator()( const Point & p ) const;
+
+    /// aliasing pointer to the PointFunctor.
+    const PointFunctor* myFun;
+    /// aliasing pointer to the predicate.
+    const Predicate* myPred;
   };
 
 } // namespace DGtal

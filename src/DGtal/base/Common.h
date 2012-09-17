@@ -50,12 +50,42 @@
  
 #include <iostream>
 #include <exception>
+#include <algorithm>
 #include <boost/concept_check.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/concept/assert.hpp>
 #include <boost/concept/requires.hpp>
 #include <boost/iterator/iterator_concepts.hpp>
 #include <boost/concept_archetype.hpp>
+#include <boost/static_assert.hpp>
+
+#ifdef _MSC_VER
+#define NOMINMAX
+#include <windows.h>
+#ifdef M_PI
+#undef M_PI
+#endif
+//C++ exception specification ignored except 
+//to indicate a function is not __declspec(nothrow)
+#pragma warning(disable : 4290)
+//C++ Perf Warning int <- bool
+#pragma warning(disable : 4800)
+#endif
+
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
+
+#ifdef _MSC_VER
+#define random rand
+#endif
 
 #if defined( WIN32 )
 #define _USE_MATH_DEFINES
@@ -63,6 +93,7 @@
 #else 
 #include <cmath>
 #endif //win32
+
 
 #if defined( WIN32 )
 #define secured_sprintf sprintf_s

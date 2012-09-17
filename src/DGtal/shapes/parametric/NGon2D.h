@@ -57,8 +57,7 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any regular k-gon in the plane.
    *
-   * NB: A backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   template <typename TSpace>
   class NGon2D:  public StarShaped2D<TSpace>

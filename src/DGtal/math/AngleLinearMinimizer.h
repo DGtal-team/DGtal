@@ -48,7 +48,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleComputer.h" 
-#include "DGtal/math/arithmetic/ModuloComputer.h" 
+#include "DGtal/arithmetic/ModuloComputer.h" 
 //#include "DGtal/io/boards/Board2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -549,9 +549,7 @@ operator<< ( std::ostream & out, const AngleLinearMinimizer & object );
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#if defined(BUILD_INLINE)
 #include "DGtal/math/AngleLinearMinimizer.ih"
-#endif
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -41,8 +41,9 @@
 
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/base/CConstBidirectionalRange.h"
+#include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
 #include "DGtal/base/CLabel.h"
+#include "DGtal/images/CTrivialConstImage.h"
 
 namespace DGtal
 {
@@ -50,108 +51,97 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
-   * Description of \b concept '\b CConstImage' <p>
+   * DescriptionDescription of \b concept '\b CConstImage' <p>
    *
    * @ingroup Concepts
-   * Aim: Defines the concept describing a read-only image, 
-   * which is a refinement of CPointFunctor. 
+   * Aim: Defines the concept describing a read-only image,
+   * which is a refinement of CPointFunctor.
    *
-   * <p> Refinement of CPointFunctor
+### Refinement of CTrivialConstImage
    *
-   * <p> Associated types :
+###  Associated types :
    * - \t Domain: type of the image domain, model of concept CDomain
-   * - \t ConstRange: type of range of image values, model of concept CConstRange
+   * - \t ConstRange: type of range of image values,
+   * model of concept CConstBidirectionalRangeFromPoint
    *
-   * <p> Notation
+###  Notation
    * - \t X : A type that is a model of CConstImage
    * - \t x, \t y  : Object of type X
    *
-   * <p> Definitions
+###  Definitions
    *
-   * <p> Valid expressions and semantics <br>
-      <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
+###  Valid expressions and
+      <table>
+      <tr>
+        <td class=CName> \b Name </td>
         <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CRequirements> \b Type requirements </td>
         <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CPrecondition> \b Precondition </td>
+        <td class=CSemantics> \b Semantics </td>
+        <td class=CPostCondition> \b Postcondition </td>
         <td class=CComplexity> \b Complexity </td>
       </tr>
-      <tr> 
-        <td class=CName>  Constructor          </td> 
-        <td class=CExpression> X x(@c aDomain)     </td>
-        <td class=CRequirements> @c aDomain of type Domain    </td> 
-        <td class=CReturnType> an instance of X     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> Create an image bounded by the domain @c aDomain    </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>   Container dependent   </td>
-	</tr>
-	
 
-	<tr> 
-        <td class=CName> accessor to the domain            </td> 
+	<tr>
+        <td class=CName> accessor to the domain            </td>
         <td class=CExpression>  x.domain()   </td>
-        <td class=CRequirements>    </td> 
+        <td class=CRequirements>    </td>
         <td class=CReturnType>  const Domain &    </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>  returns a const reference to the image domain     </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics>  returns a const reference to the image domain     </td>
+        <td class=CPostCondition>   </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
-    
-	<tr> 
-        <td class=CName> accessor to the range of the image values            </td> 
-        <td class=CExpression>  x.range()   </td>
-        <td class=CRequirements>    </td> 
+
+	<tr>
+        <td class=CName> accessor to the range of the image values            </td>
+        <td class=CExpression>  x.constRange()   </td>
+        <td class=CRequirements>    </td>
         <td class=CReturnType>  ConstRange    </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>  returns a constant range     </td> 
-        <td class=CPostCondition>   </td> 
+        <td class=CPrecondition>    </td>
+        <td class=CSemantics>  returns a constant range     </td>
+        <td class=CPostCondition>   </td>
         <td class=CComplexity> O(1)     </td>
       </tr>
 
 
-    </table>   
+    </table>
 
    *
-   * <p> Invariants <br>
+###  Invariants
    *
-   * <p> Models <br>
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage
+###  Model
+   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
    *
-   * <p> Notes <br>
+###  Notes
    *
    */
 
   template <typename I>
-  struct CConstImage: CPointFunctor<I>
+  struct CConstImage: CTrivialConstImage<I>
   {
 
   public:
-    
-    BOOST_CONCEPT_ASSERT((CLabel<typename I::Value>));
+
     //Inner types
     typedef typename I::Domain Domain;
     BOOST_CONCEPT_ASSERT((CDomain<Domain>));
 
-    typedef typename I::ConstRange Range;
-    BOOST_CONCEPT_ASSERT((CConstBidirectionalRange<Range>));
+    typedef typename I::ConstRange ConstRange;
+    BOOST_CONCEPT_ASSERT((CConstBidirectionalRangeFromPoint<ConstRange>));
 
-    
     BOOST_CONCEPT_USAGE(CConstImage)
     {
-      ConceptUtils::sameType(i.domain(), d); 
-      ConceptUtils::sameType(i.range(), r); 
+      ConceptUtils::sameType(i.domain(), d);
+      ConceptUtils::sameType(i.constRange(), r);
     }
 
   private:
     I i;
     Domain d;
-    Range r; 
+    ConstRange r;
+
   };
 } // namespace DGtal
 

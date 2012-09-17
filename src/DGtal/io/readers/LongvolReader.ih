@@ -138,9 +138,9 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
     int rawsx, rawsy, rawsz;
     long int count = 0;
     // Size of the longvolume
-    count += fread( &rawsx, sizeof( int ), 1, fin );
-    count += fread( &rawsy, sizeof( int ), 1, fin );
-    count += fread( &rawsz, sizeof( int ), 1, fin );
+    count += (long)fread( &rawsx, sizeof( int ), 1, fin );
+    count += (long)fread( &rawsy, sizeof( int ), 1, fin );
+    count += (long)fread( &rawsz, sizeof( int ), 1, fin );
 
     if ( count != 3 )
     {
@@ -163,7 +163,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
 
     // We should have a useless \n in the file at this point
     char tmp;
-    count = fread( &tmp, sizeof( char ), 1, fin );
+    count = (long)fread( &tmp, sizeof( char ), 1, fin );
 
     if ( count != 1 || tmp != '\n' )
     {

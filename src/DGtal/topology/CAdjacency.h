@@ -45,6 +45,7 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -53,7 +54,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CAdjacency
   /**
-   * Description of \b concept '\b CAdjacency' <p>
+   * DescriptionDescription of \b concept '\b CAdjacency' <p>
    * @ingroup Concepts
    *
    * \brief Aim: The concept CAdjacency defines an elementary
@@ -65,7 +66,7 @@ namespace DGtal
    * sense of Herman. In other words, and adjacency relation define a
    * neighborhood graph on the points of a digital domain.
    *
-   * <p> Refinement of
+   * <p> Refinement of CUndirectedSimpleLocalGraph
    *
    * <p> Associated types (must be defined in the model):
    *
@@ -79,7 +80,7 @@ namespace DGtal
    * - \c p1, \c p2 : an object of type \ref Point.
    * <p> Definitions
    *
-   * <p> Valid expressions and semantics <br>
+   * <p> Valid expressions and 
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
    * <td> \b Precondition </td> <td> \b Semantics </td> 
@@ -123,16 +124,17 @@ namespace DGtal
    *
    * </table>
    *
-   * <p> Invariants <br>
+   * <p> Invariants###
    *
-   * <p> Models <br>
+   * <p> Models###
    *
    * - MetricAdjacency, DomainAdjacency
    *
-   * <p> Notes <br>
+   * <p> Notes###
    */
   template <typename Adj>
-  struct CAdjacency
+  struct CAdjacency : 
+    CUndirectedSimpleLocalGraph<Adj>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -148,10 +150,6 @@ namespace DGtal
       // check isProperlyAdjacentTo
       ConceptUtils::sameType( myBool, 
             myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
-      // Check writeNeighborhood
-      myAdj.writeNeighborhood( myP1, myInserter );
-      // Check writeProperNeighborhood
-      myAdj.writeProperNeighborhood( myP1, myInserter );
     }
 
     // ------------------------- Private Datas --------------------------------

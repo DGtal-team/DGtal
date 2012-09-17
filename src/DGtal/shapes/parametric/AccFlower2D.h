@@ -58,8 +58,7 @@ namespace DGtal
    * \brief Aim: Model of the concept StarShaped
    * represents any accelerated flower in the plane.
    *
-   * NB: A backport from <a
-   href="http://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+   * NB: A backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   template <typename TSpace>
   class AccFlower2D:  public StarShaped2D<TSpace>

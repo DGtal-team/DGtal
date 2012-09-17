@@ -34,6 +34,69 @@
 // Implementation of inline functions and external operators                 //
 
 
+
+// MeshFromPoints    
+template <typename TPoint>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+  std::string mode = display.getMode( aMesh.className() );
+  if ( mode == "Faces"  || mode=="")
+    drawAsFaces( display, aMesh );
+
+}
+
+template <typename TPoint>
+inline
+void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+
+  for(unsigned int i=0; i< aMesh.nbFaces(); i++){
+     typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
+     unsigned int aNum = aFace.size();
+     if(aNum==4){
+       TPoint  p1 = aMesh.getVertex(aFace.at(0));
+       TPoint  p2 = aMesh.getVertex(aFace.at(1));
+       TPoint  p3 = aMesh.getVertex(aFace.at(2));
+       TPoint  p4 = aMesh.getVertex(aFace.at(3));
+       
+       display.addQuad(p1[0], p1[1], p1[2], 
+		       p2[0], p2[1], p2[2], 
+		       p3[0], p3[1], p3[2], 
+		       p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
+     }else if(aNum==3){
+       TPoint  p1 = aMesh.getVertex(aFace.at(0));
+       TPoint  p2 = aMesh.getVertex(aFace.at(1));
+       TPoint  p3 = aMesh.getVertex(aFace.at(2));
+       display.addTriangle(p1[0], p1[1], p1[2], 
+			   p2[0], p2[1], p2[2], 
+			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
+     }else if(aNum>4){
+       vector<Display3D::pointD3D> vectPoly;
+       for(unsigned int j=0; j< aFace.size(); j++){
+	 Display3D::pointD3D pt;
+	 pt.x= aMesh.getVertex(aFace.at(j))[0];
+	 pt.y=aMesh.getVertex(aFace.at(j))[1];
+	 pt.z=aMesh.getVertex(aFace.at(j))[2];
+	 vectPoly.push_back(pt);	 
+       }
+       display.addPolygon(vectPoly, aMesh.getFaceColor(i));
+     }else{
+       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+     }
+     
+     
+
+     
+  } 
+}
+
+
+
+// MeshFromPoints
+
+
 // ArithmeticalDSS3d
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -41,27 +104,25 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
 					    const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
-
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   
   // Draw points
   display << CustomColors3D(Color(250,250,250,100),Color(250,250,250,100));
-  ConstIterator end = a.myL; ++end;
-  for (ConstIterator i = a.myF; i != end; ++i) {
-    Point3d p = *i;
-    display << p;
-  }
+  for (ConstIterator i = a.begin(); i != a.end(); ++i) 
+    {
+      display << *i;
+    }
   
   // Draw a linking polygonal line if the voxels are drawn as points. 
   if(display.getMode("PointVector")=="Grid")
     {
-      ConstIterator k = a.myF;
+      ConstIterator k = a.begin();
       Point3d prevp = *k;
       double xprevp =  NumberTraits<TInteger>::castToDouble(prevp[0]);
       double yprevp =  NumberTraits<TInteger>::castToDouble(prevp[1]);
       double zprevp =  NumberTraits<TInteger>::castToDouble(prevp[2]);
       ++k;
-      for ( ; k != end; ++k) {
+      for ( ; k != a.end(); ++k) {
         Point3d p = *k;
         double xp = NumberTraits<TInteger>::castToDouble(p[0]);
         double yp = NumberTraits<TInteger>::castToDouble(p[1]);
@@ -96,7 +157,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   Vector3d v; //direction vector
   PointD3d mu; //intercept
   PointD3d omega; //thickness
-  getParameters(v,mu,omega);
+  a.getParameters(v,mu,omega);
 
   //casting coordinates of v in double
   VectorD3d u = VectorD3d(NumberTraits<Integer>::castToDouble(v[0]), 
@@ -106,12 +167,14 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   double n = u[0]*u[0] + u[1]*u[1] + u[2]*u[2];
   
   //first and last points
-  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myF))[0]), 
-			NumberTraits<Integer>::castToDouble((*(a.myF))[1]), 
-			NumberTraits<Integer>::castToDouble((*(a.myF))[2]) ); 
-  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble((*(a.myL))[0]), 
-			NumberTraits<Integer>::castToDouble((*(a.myL))[1]), 
-			NumberTraits<Integer>::castToDouble((*(a.myL))[2]) ); 
+  Point3d first = *a.begin(); 
+  Point3d last = *(--a.end()); 
+  PointD3d f = PointD3d(NumberTraits<Integer>::castToDouble(first[0]), 
+			NumberTraits<Integer>::castToDouble(first[1]), 
+			NumberTraits<Integer>::castToDouble(first[2]) ); 
+  PointD3d l = PointD3d(NumberTraits<Integer>::castToDouble(last[0]), 
+			NumberTraits<Integer>::castToDouble(last[1]), 
+			NumberTraits<Integer>::castToDouble(last[2]) ); 
   
   if (n != 0) {
     
@@ -280,9 +343,9 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
   it != s.end();
         ++it )
     {
-      display.addPoint(NumberTraits<Component>::castToInt64_t((*it)[0]),
-                       NumberTraits<Component>::castToInt64_t((*it)[1]), 
-                       NumberTraits<Component>::castToInt64_t((*it)[2]), 
+      display.addPoint(NumberTraits<Component>::castToDouble((*it)[0]),
+                       NumberTraits<Component>::castToDouble((*it)[1]), 
+                       NumberTraits<Component>::castToDouble((*it)[2]), 
                        display.getFillColor());
     }
 }
@@ -415,7 +478,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
   typename TSpace::RealPoint lowerBound ( h.myLowerBound);
 
   DGtal::Color colDef(250,250,250,10);
-  float shiftSize=0.01;
+  double shiftSize=0.01;
   if (TSpace::dimension == 3)
     {
       //Z upper face
@@ -528,13 +591,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
       {
         for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
              x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-          display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5,z,
-                          x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5,z,display.getLineColor() );
+          display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                          (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor() );
         }
         for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
              y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-          display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-                          NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y,z,  display.getLineColor());
+          display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                          NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
         }
       }
     
@@ -543,13 +606,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
          y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
            x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-        display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-                        x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])+0.5,display.getLineColor());
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        display.addLine(NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0])-0.5,y ,z,
-                        NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0])+0.5,y, z, display.getLineColor());
+        display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                        NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
       }
     }
     
@@ -559,13 +622,13 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
       
       for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
            y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-        display.addLine(x, y ,NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2])-0.5,
-                        x, y ,NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2])+0.5, display.getLineColor());
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5, display.getLineColor());
       }
       for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
            z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-        display.addLine(x, NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1])-0.5 ,z,
-                        x, NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1])+0.5, z, display.getLineColor());
+        display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                        (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor());
       }
     }
   }
@@ -590,7 +653,7 @@ void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display,
       
   for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
        y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-    display.addPoint(x, y , z, DGtal::Color(255, 0 ,0));
+    display.addPoint((double)x, (double)y , (double)z, DGtal::Color(255, 0 ,0));
 
   }
       }
@@ -669,17 +732,17 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic")||
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.1;
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="")){
     basicMode=true;
   }
   double x = (double) (NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
@@ -704,11 +767,15 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, false, false, basicMode); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, false, false, basicMode); 
     break;
   case 3:
     display.setFillColor(DGtal::Color(255, 180, 250, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
+    if(mode=="Illustration"){
+      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
+    }else{
+      display.addKSVoxel((int)x, (int) y, (int) z);
+    }
     break; 
   }
   display.setFillColor(fillColorSave);
@@ -753,7 +820,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = display.getMode( o.className() );
-  if ( mode == "" )
+  if ( mode == "Basic" || mode == "" )
     draw( display, o.pointSet() );
   else if ( mode == "PavingTransp" ){
     drawAsPavingTransparent( display, o.pointSet() );
@@ -860,17 +927,17 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( sk.className() );
-  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic")||
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
-  float factorVolSurfel=1.0;
+  double factorVolSurfel=1.0;
   bool basicMode=false;
   if(mode=="Highlighted"){
     factorVolSurfel = 1.2;
     display.setFillColor(DGtal::Color(255, 50, 50, 255));  
   }else if(mode=="Transparent"){
     display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
+  }else if(mode=="Basic" || (mode=="") ){
     basicMode=true;
   }
   float x = (float) 
@@ -903,21 +970,185 @@ void DGtal::Display3DFactory::draw( Display3D & display,
           0.02, true, sk.myPositive);
     break;
   case 2:
-    
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, true,sk.myPositive,basicMode ); 
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
     break;
   case 3:
-    if( sk.myPositive)
-      display.setFillColor(DGtal::Color(20, 20, 250, 255));
-    else
-      display.setFillColor(DGtal::Color(20, 20, 150, 255));
-    display.addKSVoxel((int)x, (int) y, (int) z);
+    if( sk.myPositive){
+      	display.setFillColor(DGtal::Color(20, 20, 200, 255));
+    }else{
+      display.setFillColor(DGtal::Color(20, 200, 20, 255));
+    }
+    if(mode=="Illustration"){
+      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
+    }else{
+      display.addKSVoxel((int)x, (int) y, (int) z);
+    }
     break; 
   } 
   display.setFillColor(fillColorSave);
 }
 // SignedKhalimskyCell
 
+// GridCurve
+template< typename TKSpace >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::GridCurve<TKSpace> & gc)
+{
+  typedef typename DGtal::GridCurve<TKSpace>::SCellsRange Range; 
+  Range r = gc.getSCellsRange();
+  for ( typename Range::ConstIterator it = r.begin(), itEnd = r.end(); 
+        it != itEnd; ++it )
+    {
+       draw( display, *it ); 
+    } 
+}
+// GridCurve
+
+// SCellsRange
+template <typename TIterator, typename TSCell>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
+{
+    typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	      draw( display, *it);
+      }
+}
+// SCellsRange
+
+// PointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving"); 
+	display << *it;
+      }
+}
+// PointsRange
+
+// MidPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           typename TKSpace::Space::RealPoint> & object )
+{
+    typedef typename TKSpace::Space::RealPoint RPoint;
+    typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Grid"); 
+	display << *it;
+      }
+}
+// MidPointsRange
+
+// ArrowsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef typename TKSpace::Vector Vector; 
+    typedef std::pair<Point, Vector> Arrow;
+    typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      { //display the associated cell
+	      draw( display, *(it.base()) ); 
+      }
+}
+// ArrowsRange
+
+// InnerPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving");
+  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+	display << *it;
+      }
+}
+// InnerPointsRange
+
+// OuterPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	display << SetMode3D(it->className(),"Paving");
+  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+	display << *it;
+      }
+}
+// OuterPointsRange
+
+// IncidentPointsRange
+template <typename TIterator, typename TKSpace>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+           const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Point > > & object )
+{
+    typedef std::pair<typename TKSpace::Point, typename TKSpace::Point > Pair; 
+    typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+  Pair pair( *it ); 
+	display << SetMode3D(pair.first.className(),"Paving");
+  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+	display << pair.first;
+  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+	display << pair.second;
+      }
+}
+// IncidentPointsRange
 
 //
 
@@ -977,6 +1208,41 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   display.setNearFar(cz.ZNear, cz.ZFar);
 }
+
+inline
+void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel){
+
+  DGtal::Color fillColorSave = display.getFillColor();  
+  std::string mode = display.getMode( aTransformedKSSurfel.mySurfel.className() );
+  ASSERT((mode=="" || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ShiftedKSSurfel & aTransformedKSSurfel ): Unknown mode "+mode)=="");
+  // used to display surfels located at a same position.
+  double factorVolSurfel=1.0;
+  bool basicMode=false;
+  if(mode=="Highlighted"){
+    factorVolSurfel = 1.2;
+    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
+  }else if(mode=="Transparent"){
+    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
+  }else if(mode=="Basic"){
+    basicMode=true;
+  }
+  float x =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[0]  >> 1) ;
+  float y =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[1]  >> 1 );
+  float z =  NumberTraits<DGtal::int32_t>::castToDouble( aTransformedKSSurfel.mySurfel.myCoordinates[2]  >> 1 );
+  
+  bool xodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 1 ] & 1 );
+  bool zodd = ( aTransformedKSSurfel.mySurfel.myCoordinates[ 2 ] & 1 );
+    
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  ASSERT(spaceDim==2);
+  
+  display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, aTransformedKSSurfel.myShift, aTransformedKSSurfel.mySizeFactor, 
+		      true, aTransformedKSSurfel.mySurfel.myPositive,  basicMode );   
+  display.setFillColor(fillColorSave);
+}
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
