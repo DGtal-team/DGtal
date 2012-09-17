@@ -216,10 +216,7 @@ public:
      */
     bool isValid() const;
 
-
-
-
-
+  
 
 
     // ------------------------- Protected Datas ------------------------------
@@ -239,12 +236,12 @@ private:
   unsigned int myNbListe;
   qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
   QPoint myPosSelector;
-
+  
 public:
 
     // ------------------------- Hidden services ------------------------------
 protected:
-
+  
 
     /**
      *  Permit to update the OpenGL list to be displayed.
