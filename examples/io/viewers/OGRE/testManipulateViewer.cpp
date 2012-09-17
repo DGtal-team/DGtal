@@ -50,7 +50,7 @@ DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
       
       DGtal::Z3i::DigitalSet * shape_set1 = new DGtal::Z3i::DigitalSet( domain );
 
-      typedef typename std::set<DGtal::Z3i::Point>::const_iterator ConstIterator;
+      typedef  std::set<DGtal::Z3i::Point>::const_iterator ConstIterator;
 
       int nbOfPoints=0;
       
