@@ -42,7 +42,7 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
-        const Value & minV, const Value & maxV)
+			  const Value & minV, const Value & maxV, bool topbotomOrder)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -63,17 +63,35 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
   out << ext[0]<<" "<< ext[1]<<endl;
   out << "255" <<endl;
 
-  //We scan the domain instead of the image becaus we cannot
-  //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-
-      val = aImage( (*it) );
-      col = colormap( val );
-      out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
-    }
+ if(!topbotomOrder){
+   //We scan the domain instead of the image becaus we cannot
+   //trust the image container Iterator
+   for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+       it!=itend;
+       ++it)
+     {
+       val = aImage( (*it) );
+       col = colormap( val );
+       out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
+     }
+ }else{
+     typename I::Domain::Point ptUpper=  domain.upperBound();
+    
+    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
+      {    
+	typename I::Domain::Point ptUpperY=  *itY;
+	
+	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
+	    it!=itend;
+	    ++it)
+	  {
+	     val = aImage( (*it) );
+	     col = colormap( val );
+	     out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";	    
+	  }
+      }
+   
+ }
   
   out.close(); 
 
@@ -84,7 +102,7 @@ PNMWriter<I,C>::exportPPM(const std::string & filename, const I & aImage,
 template<typename I,typename C>
 bool
 PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
-        const Value & minV, const Value & maxV,  bool saveASCII)
+			  const Value & minV, const Value & maxV,  bool saveASCII, bool topbotomOrder)
 {
   ///@todo  the Value of I should match with the one in C
 
@@ -109,23 +127,46 @@ PNMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   out << "#DGtal PNM Writer"<<endl<<endl;
   out << ext[0]<<" "<< ext[1]<<endl;
   out << "255" <<endl;
+  
+  if(!topbotomOrder){
+    //We scan the domain instead of the image becaus we cannot
+    //trust the image container Iterator
+    for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+	it!=itend;
+	++it)
+      {
 
-  //We scan the domain instead of the image becaus we cannot
-  //trust the image container Iterator
-  for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-      it!=itend;
-      ++it)
-    {
-
-      val = aImage( (*it) );
-      col = colormap( val );
-      if(saveASCII){
-  out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
-
-      }else{
-  out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
+	val = aImage( (*it) );
+	col = colormap( val );
+	if(saveASCII){
+	  out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
+	}else{
+	  out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
+	}
       }
-    }
+  }else{
+    typename I::Domain::Point ptUpper=  domain.upperBound();
+    
+    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
+      {    
+	typename I::Domain::Point ptUpperY=  *itY;
+	
+	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
+	    it!=itend;
+	    ++it)
+	  {
+	    val = aImage( (*it) );
+	    col = colormap( val );
+	    if(saveASCII){
+	      out << ((int) (col.red()+(int)col.green()+(int)col.blue()) / 3)<<" ";
+	    }else{
+	      out << ((char)((int) (col.red()+(int)col.green()+(int)col.blue()) / 3));
+	    }
+	    
+	  }
+      }
+  }
+  
   out.close(); 
 
   ///@todo catch IOerror excpetion

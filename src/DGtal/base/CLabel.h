@@ -52,51 +52,51 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CLabel
   /**
-     Description of \b concept '\b CLabel' <p>
+Description of \b concept '\b CLabel' <p>
      @ingroup Concepts
-     @brief Aim: Define the concept of DGtal labels. 
+     @brief Aim: Define the concept of DGtal labels.
      Models of CLabel can be default-constructible, assignable and equality comparable.
-      
-     <p> Refinement of boost::DefaultConstructible boost::Assignable and boost::EqualityComparable 
-    
-     <p> Associated types :
-    
-     <p> Notation
+
+ ### Refinement of boost::DefaultConstructible boost::Assignable and boost::EqualityComparable
+
+ ### Associated types :
+
+ ### Notation
      - \t X : A type that is a model of CLabel
      - \t x, \t y : object of type X
-    
-     <p> Definitions
-    
-     <p> Valid expressions and semantics <br>
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
+
+ ### Definitions
+
+ ### Valid expressions and
+     <table>
+      <tr>
+        <td class=CName> \b Name </td>
         <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
+        <td class=CRequirements> \b Type requirements </td>
         <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
+        <td class=CPrecondition> \b Precondition </td>
+        <td class=CSemantics> \b Semantics </td>
+        <td class=CPostCondition> \b Postcondition </td>
         <td class=CComplexity> \b Complexity </td>
       </tr>
-    
+
      </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
 
-     <p> Notes <br>
+ ### Invariants###
 
-     @tparam T the type that should be a model of CLabel.
+ ### Models###
+
+ ### Notes###
+
+@tparam T the type that should be a model of CLabel.
    */
-  template <typename T> 
+  template <typename T>
   struct CLabel  : boost::DefaultConstructible<T>, boost::Assignable<T>,
     boost::EqualityComparable<T>
   {
-    
+
   }; // end of concept CLabel
-  
+
 } // namespace DGtal
 
 //                                                                           //

@@ -240,7 +240,7 @@ namespace DGtal
 	myUpperBound.partialCopyInv(myStartingPoint, myPermutation);
       }
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
       /**
        * ConstSubRange constructor from a given domain.
        * @param domain the domain.
@@ -456,7 +456,7 @@ namespace DGtal
 			   const Point & startingPoint) const
     { return ConstSubRange(*this, adim1, adim2, adim3, startingPoint); }
     
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     /**
      * get a subRange.
      * @param permutation an initializer_list containing the dimensions used for
@@ -482,17 +482,30 @@ namespace DGtal
     // ----------------------- Interface --------------------------------------
   public:
     /**
-     * @return  the size of the HyperRectDomain
+     * @return  the extent of the HyperRectDomain
      *
      **/
-    Point size() const
+    Vector extent() const
     {
-      Point p;
-      for(typename Point::Iterator it=p.begin(), itend=p.end();
-	  it != itend; ++it)
-        (*it) = 1;
-
+      Point p = Point::diagonal(1);
       return (myUpperBound - myLowerBound) + p;
+    }
+
+    /**
+     * @return  the size (number of points) of the HyperRectDomain
+     *
+     **/
+    Size size() const
+    {
+      Size res = 1;
+      Vector e = this->extent();
+      typename Vector::ConstIterator it, itEnd; 
+      for ( it = e.begin(), itEnd = e.end(); 
+	    it != itEnd; ++it)
+	{
+	  res *= *it; 
+	}
+      return res; 
     }
 
     /**

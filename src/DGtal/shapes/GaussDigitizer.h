@@ -46,6 +46,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/RegularPointEmbedder.h"
 #include "DGtal/shapes/CEuclideanOrientedShape.h"
 #include "DGtal/shapes/CEuclideanBoundedShape.h"
 
@@ -63,14 +64,14 @@ namespace DGtal
      \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
      
-     GaussDigitizer is a model of CDigitalEucldieanShape and
+     GaussDigitizer is a model of CDigitalEuclideanShape and
      CDigitalBoundedShape. It is thus a model of CPointPredicate.
+     A Gauss digitizer owns a RegularPointEmbedder, a model of CPointEmbedder.
 
      @tparam TSpace the type of digital Space where the digitized
      object lies.
 
      @tparam TEuclideanShape a model of CEuclideanOrientedShape and CEuclideanBoundedShape
-     @endcode.
    */
   template <typename TSpace, typename TEuclideanShape>
   class GaussDigitizer
@@ -85,6 +86,7 @@ namespace DGtal
     typedef typename Space::RealPoint RealVector;
     typedef TEuclideanShape EuclideanShape;
     typedef HyperRectDomain<Space> Domain;
+    typedef RegularPointEmbedder<Space> PointEmbedder;
 
     // JOL: GaussDigitizer do not need a bounded shape.
     // BOOST_CONCEPT_ASSERT(( CEuclideanBoundedShape<TEuclideanShape> ));
@@ -142,6 +144,11 @@ namespace DGtal
     */
     void init( const RealPoint & xLow, const RealPoint & xUp, 
          const RealVector & gridSteps );
+
+    /**
+       @return the associated point embedder.
+    */
+    const PointEmbedder & pointEmbedder() const;
 
     /**
        @return the domain chosen for the digitizer.
@@ -242,8 +249,8 @@ namespace DGtal
     /// The referenced shape or 0 if not initialized.
     const EuclideanShape* myEShape;
 
-    /// The grid steps.
-    RealVector myGridSteps;
+    /// The embedder
+    RegularPointEmbedder<Space> myPointEmbedder;
 
     /// Digital lowest point 
     Point myLowerPoint;
@@ -255,15 +262,6 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   private:
-
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    GaussDigitizer ( const GaussDigitizer & other );
-
 
     // ------------------------- Internals ------------------------------------
   private:

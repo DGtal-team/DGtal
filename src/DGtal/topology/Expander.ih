@@ -190,16 +190,16 @@ DGtal::Expander<TObject>
   // const ObjectDomainPredicate & objectPred = myObjectDomain.predicate();
   typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
   typedef BinaryPointPredicate< ObjectDomainPredicate, 
-    NotInCoreDomainPredicate > CombinedPredicate;
+    NotInCoreDomainPredicate > Predicate;
 
-  CombinedPredicate cPred( myObjectDomain.predicate(), 
+  Predicate cPred( myObjectDomain.predicate(), 
                            myNotInCorePred,
                            andBF2 );
   // Computes the 1-neighborhood of the core.
   for ( ; p != pEnd; ++p )
     {
-      myObjectAdjacency.writeProperNeighborhood
-        ( *p, inserter, cPred );
+      myObjectAdjacency.writeNeighbors
+        ( inserter, *p, cPred );
       // std::cerr << *p;
       // for ( unsigned int i = 0; i < v.size(); ++i )
       //   {

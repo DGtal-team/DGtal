@@ -50,28 +50,28 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPointFunctor
   /**
-     Description of \b concept '\b CPointFunctor' <p>
+Description of \b concept '\b CPointFunctor' <p>
      @ingroup Concepts
      \brief Aim: Defines a functor on points.
      
      Associates values to points.
     
-     <p> Refinement of CUnaryFunctor
+ ### Refinement of CUnaryFunctor
     
-     <p> Associated types :
+ ### Associated types :
     
      - Point : specifies the type for a point (inner type).
      - Value : specifies the type for a value (inner type).
     
-     <p> Notation
+ ### Notation
      - \t X : A type that is a model of CPointFunctor
      - \t x : Object of type \t X
      - \t p : Object of type Point
      - \t v : Object of type Value
     
-     <p> Definitions
+ ### Definitions
     
-     <p> Valid expressions and semantics <br>
+ ### Valid expressions and 
      <table> 
      <tr> 
      <td class=CName> \b Name </td> 
@@ -95,13 +95,13 @@ namespace DGtal
      </tr>
      </table>
     
-     <p> Invariants <br>
+ ### Invariants###
     
-     <p> Models <br>
+ ### Models###
     
      - Shapes and images are models of (refinements of) this concept  
     
-     <p> Notes <br>
+ ### Notes###
    */
   template <typename T>
   struct CPointFunctor

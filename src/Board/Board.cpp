@@ -29,7 +29,6 @@
 #include <map>
 #include <algorithm>
 #include <cstdio>
-#include <algorithm>
 
 #ifdef WITH_CAIRO
 // cairo
@@ -40,9 +39,36 @@
 // cairo
 #endif
 
-#if defined( max )
-#undef max
+
+#if defined( WIN32 )
+#define _USE_MATH_DEFINES
+#include <math.h>
+#else 
+#include <cmath>
+#endif //win32
+
+#ifdef _MSC_VER
+//#define NOMINMAX
+//#include <windows.h>
+//#ifdef M_PI
+//#undef M_PI
+//#endif
+//C++ exception specification ignored except 
+//to indicate a function is not __declspec(nothrow)
+#pragma warning(disable : 4290)
 #endif
+
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
+
 
 namespace {
   const float pageSizes[3][2] = { { 0.0f, 0.0f }, // BoundingBox
@@ -503,7 +529,14 @@ Board::fillPolyline( const std::vector<Point> & points,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Polyline( points, true, DGtal::Color::None, _state.penColor,
+  std::vector<Point> v = points;
+  std::vector<Point>::iterator it = v.begin();
+  std::vector<Point>::iterator end = v.end();
+  while ( it != end ) {
+    (*it) = _state.unit( *it );
+    ++it;
+  }
+  _shapes.push_back( new Polyline( v, true, DGtal::Color::None, _state.penColor,
            0.0f,
            _state.lineStyle,
            _state.lineCap,
@@ -1076,7 +1109,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
     case CairoPNG:
     default:
-      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, cairoWidth, cairoHeight);
+      surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, (int)cairoWidth, (int)cairoHeight);
   }
   
   cr = cairo_create (surface);

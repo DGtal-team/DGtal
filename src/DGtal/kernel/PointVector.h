@@ -47,7 +47,13 @@
 #include <string>
 #include <bitset>
 #include <algorithm>
+
+#ifdef CPP11_ARRAY
+#include <array>
+#else
 #include <boost/array.hpp>
+#endif 
+
 #include <vector>
 
 #include "DGtal/base/Common.h"
@@ -59,8 +65,16 @@
 #include "DGtal/io/Color.h"
 //#include "DGtal/io/Display3D.h"
 
-
-
+#ifdef _MSC_VER
+#if defined( max )
+#undef max 
+#define _HAS_MSVC_MAX_ true
+#endif
+#if defined( min )
+#undef min 
+#define _HAS_MSVC_MIN_ true
+#endif
+#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -165,11 +179,17 @@ namespace DGtal
      *  Copy of the Boost::array iterator type
      *
      **/
+#ifdef CPP11_ARRAY
+    typedef typename std::array<Component, dimension>::iterator Iterator;
+    typedef typename std::array<Component, dimension>::const_iterator ConstIterator;
+    typedef typename std::array<Component, dimension>::reverse_iterator ReverseIterator;
+    typedef typename std::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
+#else
     typedef typename boost::array<Component, dimension>::iterator Iterator;
     typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
     typedef typename boost::array<Component, dimension>::reverse_iterator ReverseIterator;
     typedef typename boost::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
-  
+#endif
     /**
      * Constructor.
      */
@@ -212,13 +232,13 @@ namespace DGtal
      */
     PointVector( const Component & x, const Component & y, const Component & z, const Component & t );
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     /**
      * Constructor from initializer list.
      * @param the initializer list.
      */
     PointVector( std::initializer_list<Component> init );
-#endif // CPP0X_INITIALIZER_LIST
+#endif // CPP11_INITIALIZER_LIST
 
     /** Constructor taking apoint and a functor as parameters.
      *  The new point is initialized by the result of functor f
@@ -258,7 +278,7 @@ namespace DGtal
     Self & operator= ( const Self & pv );
 
 
-#ifdef CPP0X_INITIALIZER_LIST
+#ifdef CPP11_INITIALIZER_LIST
     /**
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
@@ -757,8 +777,12 @@ namespace DGtal
   //protected:
     
     ///Internal data-structure: boost/array with constant size.
+#ifdef CPP11_ARRAY
+    std::array<Component, dimension> myArray;
+#else
     boost::array<Component, dimension> myArray;
-    
+#endif
+
   }; // end of class PointVector
 
   /// Operator <<

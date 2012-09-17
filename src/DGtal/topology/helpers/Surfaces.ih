@@ -79,10 +79,10 @@ findABel
   for ( unsigned int j = 0; j < nbtries; ++j )
     {
       for ( Dimension i = 0; i < K.dimension; ++i )
-        {
-          r = rand();
-          x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
-        }
+  {
+    r = rand();
+    x2[ i ] = ( r % sizes[ i ] ) + K.min( i );
+  }
       bool val_v2 = pp( x2 ); // dset.find( x2 ) != dset.end();
       if ( val_v2 != val_v1 )
         {
@@ -413,7 +413,7 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
 template <typename TKSpace>
 template <typename PointPredicate>
 void
-DGtal::Surfaces<TKSpace>::track2DBoundary
+DGtal::Surfaces<TKSpace>::track2DSliceBoundary
 ( std::vector<SCell> & aSCellContour2D,
   const KSpace & K,
   const Dimension & trackDir,
@@ -479,6 +479,135 @@ DGtal::Surfaces<TKSpace>::track2DBoundary
         }
     }
 }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SurfelPredicate >
+inline
+void
+DGtal::Surfaces<TKSpace>::
+track2DSurface( std::vector<SCell> & aSCellContour,
+		const KSpace & K,
+		const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+		const SurfelPredicate & sp,
+		const SCell & start_surfel )
+{
+  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  ASSERT( KSpace::dimension == 2 );
+
+  SCell b= start_surfel;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  aSCellContour.clear(); // boundary being extracted.
+  aSCellContour.push_back(start_surfel);
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  SN.setSurfel( b );
+  // search along indirect orientation.
+  bool hasPrevNeighbor =  true;
+  while ( hasPrevNeighbor )
+    {
+      hasPrevNeighbor=false;
+      Dimension track_dir = *(K.sDirs( b ));
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir,  
+					    ! K.sDirect( b, track_dir ) ) )
+        {
+          if ( bn != start_surfel )
+            {
+              hasPrevNeighbor=true;
+              aSCellContour.push_back( bn );
+            }
+        }
+      b = bn;
+    }
+  // since the contour is not necessary closed we search in the other direction.
+  reverse( aSCellContour.begin(), aSCellContour.end() );
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
+        {
+          hasNextNeighbor=false;
+          Dimension track_dir = *(K.sDirs( b ));
+          SN.setSurfel( b );
+          if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir, 
+						K.sDirect( b, track_dir ) ) )
+            {
+              aSCellContour.push_back( bn );
+              hasNextNeighbor=true;
+            }
+          b=bn;
+        }
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename SurfelPredicate >
+inline
+void
+DGtal::Surfaces<TKSpace>::
+track2DSliceSurface( std::vector<SCell> & aSCellContour,
+		     const KSpace & K, 
+		     const Dimension & trackDir,
+		     const SurfelAdjacency<KSpace::dimension> & surfel_adj,
+		     const SurfelPredicate & sp,
+		     const SCell & start_surfel )
+{
+  BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));
+  SCell b= start_surfel;  // current surfel
+  SCell bn; // neighboring surfel
+  ASSERT( K.sIsSurfel( start_surfel ) );
+  aSCellContour.clear(); // boundary being extracted.
+  aSCellContour.push_back(start_surfel);
+  SurfelNeighborhood<KSpace> SN;
+  SN.init( &K, &surfel_adj, start_surfel );
+  SN.setSurfel( b );
+  Dimension orthDir = K.sOrthDir( start_surfel );
+  bool hasPrevNeighbor =  true;
+  while ( hasPrevNeighbor )
+    {
+      hasPrevNeighbor=false;
+      // search a tracking direction compatible with track/orth direction
+      Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+      SN.setSurfel( b );
+      if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir,
+					    !K.sDirect( b, track_dir ) ) )
+        {
+          if ( bn != start_surfel )
+            {
+              hasPrevNeighbor=true;
+              aSCellContour.push_back( bn );
+            }
+        }
+      b = bn;
+    }
+  // since the contour is not necessary closed we search in the other direction.
+  reverse( aSCellContour.begin(), aSCellContour.end() );
+  if ( b != start_surfel )
+    { // the contour is necessarily open.
+      b = start_surfel; 
+      bool hasNextNeighbor =  true;
+      while ( hasNextNeighbor )
+        {
+          hasNextNeighbor=false;
+          // search a tracking direction compatible with constant direction
+          Dimension track_dir = K.sOrthDir( b ) == orthDir ? trackDir : orthDir;
+          SN.setSurfel( b );
+          if ( SN.getAdjacentOnSurfelPredicate( bn, sp, track_dir, 
+						K.sDirect( b, track_dir ) ) )
+            {
+              aSCellContour.push_back( bn );
+              hasNextNeighbor=true;
+            }
+          b=bn;
+        }
+    }
+}
+
+
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -632,8 +761,8 @@ extractAllPointContours4C( std::vector< std::vector< Point > > & aVectPointConto
       double x1 = !xodd ? x  - 0.5 : (aKSpace.sSign(sc)? x  - 0.5: x  + 0.5) ;
       double y1 = !yodd ? y  - 0.5 : (aKSpace.sSign(sc)? y  - 0.5: y  + 0.5);      
       
-      Point ptA(x0+0.5, y0-0.5);
-      Point ptB(x1+0.5, y1-0.5) ;
+      Point ptA((const int)(x0+0.5), (const int)(y0-0.5));
+      Point ptB((const int)(x1+0.5), (const int)(y1-0.5)) ;
       aContour.push_back(ptA);
       if(sc== vectContoursBdrySCell.at(i).at(vectContoursBdrySCell.at(i).size()-1)){
         aContour.push_back(ptB);

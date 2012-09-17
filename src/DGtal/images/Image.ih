@@ -38,14 +38,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-/**
- * Destructor.
- */
-template <typename T>
-inline
-DGtal::Image<T>::~Image()
-{
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -59,7 +51,7 @@ inline
 void
 DGtal::Image<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Image] " << myImagePointer ;
+  out << "[Image] "<< myImagePointer ;
 }
 
 
@@ -70,7 +62,7 @@ DGtal::Image<T>::selfDisplay ( std::ostream & out ) const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const Image<T> & object )
 {
   object.selfDisplay( out );

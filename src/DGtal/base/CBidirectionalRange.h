@@ -51,79 +51,79 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CBidirectionalRange
   /**
-     Description of \b concept '\b CBidirectionalRange' <p>
+Description of \b concept '\b CBidirectionalRange'
      @ingroup Concepts
-    
-     \brief Aim: Defines the concept describing a bidirectional range.
-     
-     <p> Refinement of CConstBidirectionalRange
-    
-     <p> Provided types :
 
-     - ReverseIterator: the reverse iterator type, a model of
-          iterator concept.
- 
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rbegin </td>
-     <td class=CExpression>      \t x.rbegin() const </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t rend </td>
-     <td class=CExpression>      \t x.rend() const </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstReverseIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
-     <p> Invariants <br>
-    
-     <p> Models <br>
-      PointVector, 
-    
-     <p> Notes <br>
+\brief Aim: Defines the concept describing a bidirectional range.
 
-     @tparam T the type that is checked. T should be a model of CBidirectionalRange.
+### Refinement of CConstBidirectionalRange
+
+### Provided types :
+
+- ReverseIterator: the reverse iterator type, a model of
+iterator concept.
+
+<table>
+<tr>
+<td class=CName> \b Name </td>
+<td class=CExpression> \b Expression </td>
+<td class=CRequirements> \b Type requirements </td>
+<td class=CReturnType> \b Return type </td>
+<td class=CPrecondition> \b Precondition </td>
+<td class=CSemantics> \b Semantics </td>
+<td class=CPostCondition> \b Postcondition </td>
+<td class=CComplexity> \b Complexity </td>
+</tr>
+<tr>
+<td class=CName>  \t rbegin </td>
+<td class=CExpression> \t x.rbegin() </td>
+<td class=CRequirements>    </td>
+<td class=CReturnType> ReverseIterator</td>
+<td class=CPrecondition>    </td>
+<td class=CSemantics>  </td>
+<td class=CPostCondition>   </td>
+<td class=CComplexity> </td>
+</tr>
+<tr>
+<td class=CName>  \t rend </td>
+<td class=CExpression> \t x.rend() </td>
+<td class=CRequirements>    </td>
+<td class=CReturnType> ReverseIterator</td>
+<td class=CPrecondition>    </td>
+<td class=CSemantics>  </td>
+<td class=CPostCondition>   </td>
+<td class=CComplexity> </td>
+</tr>
+<tr>
+<td class=CName>  \t rbegin </td>
+<td class=CExpression> \t x.rbegin() const </td>
+<td class=CRequirements>    </td>
+<td class=CReturnType> ConstReverseIterator</td>
+<td class=CPrecondition>    </td>
+<td class=CSemantics>  </td>
+<td class=CPostCondition>   </td>
+<td class=CComplexity> </td>
+</tr>
+<tr>
+<td class=CName>  \t rend </td>
+<td class=CExpression> \t x.rend() const </td>
+<td class=CRequirements>    </td>
+<td class=CReturnType> ConstReverseIterator</td>
+<td class=CPrecondition>    </td>
+<td class=CSemantics>  </td>
+<td class=CPostCondition>   </td>
+<td class=CComplexity> </td>
+</tr>
+</table>
+
+### Invariants
+
+### Models
+ PointVector,
+
+### Notes
+
+@tparam T the type that is checked. T should be a model of CBidirectionalRange.
 
    */
   template <typename T>
@@ -132,24 +132,24 @@ namespace DGtal
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::ReverseIterator ReverseIterator;
-    
+
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    
+
     BOOST_CONCEPT_USAGE(CBidirectionalRange)
     {
-      ReverseIterator it2=i.rbegin();
-      it2=i.rend();
+ ReverseIterator it2=i.rbegin();
+ it2=i.rend();
     };
 
   private:
     T i;
   }; // end of concept CBidirectionalRange
-  
+
 } // namespace DGtal
 
 
 
-//                                                                           //
+//                                                                      //
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined CBidirectionalRange_h

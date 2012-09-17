@@ -36,10 +36,15 @@
 //! [ImageSetDT-includes]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
+#include "DGtal/kernel/sets/DigitalSetInserter.h"
+
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"
@@ -72,13 +77,14 @@ int main()
   aBoard << image.domain();  
   aBoard.saveSVG("imageDomainTuto.svg");
   aBoard.clear();
-  drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
+  Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
   aBoard.saveEPS("imageDomainTuto2.eps");
   //! [ImageSetDT-board1]
 
 
   Z2i::DigitalSet mySet(image.domain());
-  SetFromImage<Z2i::DigitalSet>::append<Image>(mySet, image, 0,135);
+  DigitalSetInserter<Z2i::DigitalSet> inserter(mySet); 
+  setFromImage(image, inserter, 1, 135);
   aBoard.clear();
   aBoard << mySet.domain()
 	 << mySet;
@@ -86,12 +92,13 @@ int main()
 
 
   //! [ImageSetDT-DT]
-  typedef DGtal::DistanceTransformation<Image, 2> DTL2;
+  typedef IntervalForegroundPredicate<Image> Binarizer; 
+  Binarizer b(image,1, 135); 
+  typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, 2> DTL2;
   typedef DTL2::OutputImage OutputImage;
-  DTL2 dt;
+  DTL2 dt(image.domain(),b);
 
-  OutputImage result = dt.compute(image, 
-				  IntervalForegroundPredicate<Image>(image,0,135));
+  OutputImage result = dt.compute(); 
   //! [ImageSetDT-DT]
  
 
@@ -101,7 +108,7 @@ int main()
   typedef DGtal::HueShadeColorMap<OutputImage::Value,2> HueTwice;
 
   aBoard.clear();
-  drawImage<HueTwice>(aBoard, result, (OutputImage::Value)0, (OutputImage::Value)maxDT);
+  Display2DFactory::drawImage<HueTwice>(aBoard, result, (OutputImage::Value)0, (OutputImage::Value)maxDT);
   aBoard.saveEPS("imageDomainTuto3.eps");
   //! [ImageSetDT-DTvis]
 

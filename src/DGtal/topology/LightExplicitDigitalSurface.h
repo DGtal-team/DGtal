@@ -63,7 +63,7 @@ namespace DGtal
      shape boundary. The whole boundary is not precomputed nor stored. You may
      use an iterator to visit it.
 
-     It is also a model of CUndirectedSimplePreGraph, so as to be able
+     It is also a model of CUndirectedSimpleLocalGraph, so as to be able
      to visit itself with a BreadthFirstVisitor. The "Light" or
      lazyness is implemented this way.
      
@@ -231,6 +231,10 @@ namespace DGtal
     Adjacency & surfelAdjacency();
     /// accessor to surfel predicate.
     const SurfelPredicate & surfelPredicate() const;
+    /// accessor to starting surfel.
+    const Surfel & surfel() const;
+    /// mutator to starting surfel.
+    void setSurfel(const Surfel& aSurfel);
 
     // --------- CDigitalSurfaceContainer realization -------------------------
   public:

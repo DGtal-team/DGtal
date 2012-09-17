@@ -44,7 +44,7 @@
 #include <list>
 
 #include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
-#include "DGtal/geometry/curves/representation/MaximalSegments.h"
+#include "DGtal/geometry/curves/MaximalSegments.h"
 
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
