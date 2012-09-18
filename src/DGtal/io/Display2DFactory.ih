@@ -584,10 +584,12 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 }
 // GeometricalDCA
 
+ 
+
 // FrechetShortcut
 template <typename TIterator,typename TInteger>
 inline
-void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & f)
+  void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & f)
 {
   typedef TIterator Iterator;
   typedef PointVector<2,TInteger> Point; 
