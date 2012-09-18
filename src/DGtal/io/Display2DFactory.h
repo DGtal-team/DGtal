@@ -171,7 +171,7 @@ static void draw(DGtal::Board2D & aBoard, const DGtal::GeometricalDCA<TConstIter
 
 //FrechetShortcut
 template <typename TIterator, typename TInteger>
-  void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & );
+static  void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & );
 //FrechetShortcut
 
     

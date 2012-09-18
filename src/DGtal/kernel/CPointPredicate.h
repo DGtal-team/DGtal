@@ -77,7 +77,7 @@ Description of \b concept '\b CPointPredicate' <p>
     
  ### Notes###
    */
-
+template <typename T>
   struct CPointPredicate
   {
     // ----------------------- Concept checks ------------------------------
