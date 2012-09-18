@@ -55,6 +55,8 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 
 
@@ -71,16 +73,18 @@ namespace DGtal
   struct Display3DFactory
   {
 
-    // MeshFromPoints    
-    
+    // SphericalAccumulator
+    template <typename TVector, typename TColormap=HueShadeColorMap<DGtal::uint32_t> >
+    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> &  );
+    // SphericalAccumulator
+
+    // MeshFromPoints        
     template <typename TPoint>
     static void drawAsFaces( Display3D & display,  const DGtal::MeshFromPoints<TPoint> & );
 
     template <typename TPoint>
     static void draw( Display3D & display, const  DGtal::MeshFromPoints<TPoint> &  );
     // MeshFromPoints
-
-
 
 
     

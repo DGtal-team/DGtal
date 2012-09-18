@@ -1,6 +1,6 @@
 SET(DGTAL_TESTS_SRC
   testPreimage
-  )
+  testSphericalAccumulator)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
   add_executable(${FILE} ${FILE})
