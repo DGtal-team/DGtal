@@ -1,0 +1,316 @@
+
+
+//creation of a backPath
+template <typename TIterator>
+inline
+backpath<TIterator>::backpath(int q, double error)
+{
+  myError = error;
+  myQuad = q;
+  myFlag = false;
+  
+}
+
+template <typename TIterator>
+inline
+void backpath<TIterator>::reset()
+{
+  myFlag = false;
+  myOcculters.clear();
+  myForbiddenIntervals.clear();
+}
+
+
+//destruction of a backPath
+template <typename TIterator>
+inline
+backpath<TIterator>::~backpath()              
+{ }      
+
+template <typename TIterator>
+inline
+void backpath<TIterator>::updateBackPathFirstQuad(int d, const  ConstIterator& it)
+{  
+  
+  myIt = it;
+  
+  // trace.info() << "local frame direction " << d  << "point " << Point(*it)<< std::endl;
+  switch(d)
+    {    
+    case 0:
+    case 1:
+    case 2:
+    case 7:
+      {
+	this->addPositivePoint();
+	break;
+      }
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+      {
+	this->addNegativePoint();
+	break; 
+      }
+    }
+}
+
+// update the list of active occulters 
+template <typename TIterator>
+inline
+void backpath<TIterator>::updateOcculters()
+{
+  //   if(quad==0)
+  //     {
+  //       std::cerr << "Quad " << this->quad << std::endl;
+  //       std::cerr << "update Occulters: index " << ind << std::endl;
+  //     }
+  
+  // The potential new occulter is the last-but-one point
+  Point p = Point(*(myIt-1));
+  
+  Point pi,v;
+  Vector dir = Tools::chainCode2Vect(myQuad);
+  Vector dir_ortho = Tools::chainCode2Vect((myQuad+6)%8);
+  
+  Point u1,u2;
+  u1 = dir;
+  u2 = Tools::chainCode2Vect((myQuad+1)%8);;
+  
+  double angle_min=0;
+  double angle_max=M_PI_4;
+  bool ok = true;
+  bool occ = false;
+  //   if(quad==0)
+  //     {
+  //       std::cerr << p << " " << u1 << " " << u2 << std::endl;
+  //       //std::cerr << *this << std::endl;
+  //     }
+  if(myOcculters.size()==0)
+    {
+      occ =true;
+      angle_min=0;
+      angle_max=M_PI_4;
+    }
+  else
+    {
+      typename occulter_list::iterator iter;
+      
+      for(iter = myOcculters.begin();ok && iter!=myOcculters.end() ;++iter)	
+	{
+	  pi = Point(*(iter->first));
+	  //pi = dataPoints[iter->first];
+	  v = p-pi;
+	  //  if(quad==0)
+	  // 	std::cerr << pi << std::endl;
+	  
+	  // pi is after p for all directions -> p is not an occulter
+	  if(Tools::scalar_product(v,u1) < 0 && Tools::scalar_product(v,u2) < 0)
+	    {
+	      //  if(quad==0)
+	      // 	    std::cerr << "p occulted by pi" << std::endl;
+	      
+	      ok = false; 
+	      occ = false;
+	    }
+	  else
+	    // p is after pi for all directions -> pi is not an occulter
+	    // anymore, p is a new occulter.
+	    if(Tools::scalar_product(v,u1) > 0 && Tools::scalar_product(v,u2) > 0)
+	      {
+		//   if(quad==0)
+		// 	      std::cerr << "pi occulted by p" << std::endl;
+		myOcculters.erase(iter);
+		occ = true;
+		angle_min = 0;
+		angle_max = M_PI_4;
+	      }
+	    else
+	      // p is after pi on [0,alpha], before pi on [alpha,pi/4]
+	      if(Tools::scalar_product(v,u1) > 0 && Tools::scalar_product(v,u2) <= 0)
+		{
+		  double alpha = Tools::angleVectVect(v,dir_ortho);
+		  //    if(quad==0)
+		  // 		std::cerr << "p after pi on [0," << alpha << "]" << std::endl;
+		  if(alpha >= iter->second.angle_min && alpha <=
+		     iter->second.angle_max)
+		    {
+		      // p is a new occulter
+		      occ = true;
+		      angle_min = 0;
+		      angle_max = alpha;
+		      // pi's angle_min is updated
+		      iter->second.angle_min = alpha;
+		    }
+		  else
+		    if(alpha > iter->second.angle_max)
+		      {
+			//pi is not an occulter anymore 
+			myOcculters.erase(iter);
+			occ=true;
+			angle_min = 0;
+			angle_max = M_PI_4;
+		      }
+		  // if alpha < iter->second.angle_min, pi does not
+		  // change, p may be an occulter -> do nothing
+		} 
+	      else // scalar_product(v,u1) < 0 && scalar_product(v,u2) > 0
+		// p is after pi on [alpha,pi/4], before pi on [0,alpha]
+		{
+		  double alpha = Tools::angleVectVect(v,dir_ortho);
+		  alpha = M_PI - alpha;
+		  //    if(quad==0)
+		  // 		std::cerr << "p after pi on [" << alpha << ",pi/4]" << std::endl;
+		  
+		  if(alpha >= iter->second.angle_min && alpha <=
+		     iter->second.angle_max)
+		    {
+		      occ = true;
+		      angle_min = alpha;
+		      angle_max = M_PI_4;
+		      // pi's angle_max is updated
+		      iter->second.angle_max = alpha;
+		    }
+		  else
+		    if(alpha < iter->second.angle_min)
+		      {
+			//pi is not an occulter anymore 
+			myOcculters.erase(iter);
+			occ=true;
+			angle_min = 0;
+			angle_max = M_PI_4;
+		      }
+		  // if(alpha > iter->second.angle_max), pi does not
+		  // change, p may be an occulter -> do nothing
+		  
+		}
+	}
+    }
+  
+  if(occ)
+    {
+      occulter_attributes new_occ;
+      new_occ.angle_min = angle_min;
+      new_occ.angle_max = angle_max;
+      myOcculters.insert(myOcculters.end(),pair<const ConstIterator,occulter_attributes>(myIt-1,new_occ));
+      //myOcculters.insert(myOcculters.end(),pair<int,occulter_attributes>(ind,new_occ));
+      //    if(quad==0)
+      // 	{
+      // 	  std::cerr << "one occulter added " << std::endl;
+      // 	}
+    }
+  
+}
+
+
+
+// update the set of intervals
+template <typename TIterator>
+inline
+void backpath<TIterator>::updateIntervals()
+{
+  Point p = Point(*myIt);
+  //vector <int> p = dataPoints[ind];
+  Point pi,v;
+  Vector dir,dir1;
+  
+  for(typename occulter_list::iterator iter =
+	myOcculters.begin(); iter!=myOcculters.end() ;++iter)	
+    {
+      pi = Point(*(iter->first));
+      //pi = dataPoints[iter->first];
+      v = p-pi;
+      
+      dir = Tools::chainCode2Vect(myQuad);
+      dir1 = Tools::chainCode2Vect((myQuad+1)%8);
+      if(Tools::scalar_product(v,dir)<0 || Tools::scalar_product(v,dir1)<0)
+	{
+	  // if(quad==0)
+	  //   {
+	  // std::cerr << "p = " << p << std::endl;
+	  // std::cerr << "pi = " << pi << std::endl;
+	  // std::cerr << "v = " << v << std::endl;
+	  // std::cerr << "norm(v) = " << norm(v) << std::endl;
+	  //   }
+	  
+	  if(v.norm()>=myError/sqrt(2.0F))
+	    { 
+	      if(Tools::determinant(dir,v)<=0)
+		{
+		  v[0] = -v[0];
+		  v[1] = -v[1];
+		}
+	      double angle_v = Tools::angleVectVect(v,dir);
+	      // if(quad==0)  std::cerr << "angle_v " << angle_v <<
+	      //	     std::endl;
+
+	      double tmp = acos((double) myError/(sqrt(2.0F)*v.norm()));
+	      double angle1 = -tmp+angle_v;
+	      double angle2 = tmp+angle_v;
+	      //if(quad==0) std::cerr << angle1 << " " << angle2 << std::endl;
+	      if(angle1 < 0)
+		angle1 = 0;
+	      if(angle2 > M_PI_4)
+		angle2 = M_PI_4;
+	      
+	      // Define a new interval of forbidden angles and insert it in the list.
+	      boost::icl::interval<double>::type s = boost::icl::interval<double>::closed(angle1,angle2);
+	      myForbiddenIntervals.insert(s);
+	      	      
+	      
+	      //if(quad==0) cout << "intervals =" << forbiddenIntervals.as_string() << endl;
+	    }
+	}
+    }
+
+  // std::cerr << "nb intervals " << forbiddenIntervals.interval_count() << std::endl;
+  
+}
+
+
+// update the length of the longest backpath on a curve part
+template <typename TIterator>
+inline
+void backpath<TIterator>::addPositivePoint()
+{
+  // if we were on a monotone backpath, the point is an end of backpath
+  // otherwise, do nothing
+  if(myFlag)
+    {
+      //if(quad==0)
+      //std::cerr << "end of a backpath" << std::endl;
+      myFlag=false;
+    }
+}
+
+
+
+/************************************************************/
+
+ 
+template <typename TIterator>
+inline
+void backpath<TIterator>::addNegativePoint()
+{
+  
+  // if we were on a monotone backpath, do nothing, the backpath
+  // continues
+  // otherwise it is the beggining of a new monotone backpath,
+  // possibly a locally maximal occulting point
+  
+  if(!myFlag)
+    {
+      myFlag=true;
+      updateOcculters();
+      updateIntervals(); 
+    }
+  else
+    {
+      updateIntervals();
+    }
+  
+
+}
+
+ 

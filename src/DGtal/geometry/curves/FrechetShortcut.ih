@@ -1,0 +1,426 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file FrechetShortcut.ih
+ * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
+ * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
+ *
+ * @date 2012/02/24
+ *
+ * Implementation of inline methods defined in FrechetShortcut.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
+{
+  myError = 0;
+  myCone = cone();
+  
+  for(int i=0;i<8;i++)
+    {
+      backpath<TIterator> b(i,0);
+      myBackpath.push_back(b);
+    }
+
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
+{
+  myError = error;
+  myCone = cone();
+  
+  for(int i=0;i<8;i++)
+    {
+      backpath<TIterator> b(i,error);
+      myBackpath.push_back(b);
+    }
+  
+}
+
+
+
+
+template <typename TIterator, typename TInteger>
+inline
+void DGtal::FrechetShortcut<TIterator,TInteger>::init(const ConstIterator& it)
+{
+  myBegin = it;
+  myEnd = it;
+  resetCone();
+  resetBackpath();
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>  DGtal::FrechetShortcut<TIterator,TInteger>::getSelf()
+{
+  FrechetShortcut<TIterator,TInteger> other = FrechetShortcut(myError);
+  return other;
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myBackpath(other.myBackpath), myCone(other.myCone),  myError(other.myError), myBegin(other.myBegin), myEnd(other.myEnd){    
+  resetBackpath();
+  resetCone();
+  
+}
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TInteger>::operator=(const FrechetShortcut<TIterator,TInteger> & other)
+{
+  
+  if(this != &other)
+    {
+      myError = other.myError;
+      myBackpath = other.myBackpath;
+      myCone = other.myCone;
+      myBegin = other.myBegin;
+      myEnd = other.myEnd;
+    }
+  return *this;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<std::reverse_iterator<TIterator>,TInteger>
+DGtal::FrechetShortcut<TIterator,TInteger>
+::getReverse() const
+{
+  return Reverse(myError);
+}
+
+template <typename TIterator, typename TInteger>
+inline
+bool
+DGtal::FrechetShortcut<TIterator,TInteger>::operator==(
+ const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
+   return ((myBegin == other.myBegin) && (myEnd == other.myEnd) && (myError == other.myError));
+}
+
+
+
+template <typename TIterator, typename TInteger>
+inline
+bool
+DGtal::FrechetShortcut<TIterator,TInteger>::operator!=(
+						       const DGtal::FrechetShortcut<TIterator,TInteger>& other) const {
+  return (!(*this == other));
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+bool
+DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
+{
+  
+  //  trace.info() << Point(*(myEnd+1)) << std::endl;
+  bool flag = (updateWidth() && updateBackpath());
+  //trace.info() << myCone << endl;
+  
+  if(flag)
+    ++myEnd;
+  
+  return flag;
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+bool
+DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableForward()
+{
+  
+  return (testUpdateWidth() && testUpdateBackpath());
+  
+}
+
+template <typename TIterator, typename TInteger>
+inline
+cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
+{
+  double x0, y0,x1,y1;
+
+  Point firstP = Point(*myBegin);
+  Point newP = Point(*(myEnd+1));
+
+  
+  cone newCone=myCone;
+  
+  // compute the tangent points defined by the first point and the
+  // circle C(newP,error)
+  bool intersect = cone::Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
+				       &x1, &y1);
+  
+  if(intersect)
+    {
+      // define a cone according to the new tangent points
+      cone c;
+      // case where there is one single tangent point
+      if(fabs(x0-x1) < 0.00001 && fabs(y0-y1) < 0.00001)
+	{
+	  double angle = cone::Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
+	  double angle0 = angle - M_PI_2;
+	  if(angle0<0)
+	    angle0 = angle0+2*M_PI;
+	  double angle1 = angle + M_PI_2;
+	  if(angle1>2*M_PI)
+	    angle1 = angle1-2*M_PI;
+	  c = cone(angle0,angle1);
+	}
+      else
+	c = cone(firstP[0],firstP[1],x0,y0,x1,y1);
+      
+      newCone.intersectCones(c); 
+    }
+  
+  return newCone;
+
+}
+
+// Test if the new direction belongs to the new cone, but does not
+// modify myCone
+template <typename TIterator, typename TInteger>
+inline
+bool FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
+{
+  cone c = computeNewCone();
+  
+  Point firstP = Point(*myBegin);
+  Point newP = Point(*(myEnd+1));
+
+  if(!(c.isEmpty()))
+    if(c.myInf)
+      return true;
+    else
+      {
+	double angle = cone::Tools::computeAngle(firstP[0], firstP[1], newP[0],
+				    newP[1]);
+	return cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
+      }
+  else
+    return false;
+  
+}
+
+// Same as testUpdateWidth() but myCone is modified.
+template <typename TIterator, typename TInteger>
+inline
+bool FrechetShortcut<TIterator,TInteger>::updateWidth()
+{
+  cone c = computeNewCone();
+  
+  myCone = c;
+  
+  Point firstP = Point(*myBegin);
+  Point newP = Point(*(myEnd+1));
+  
+  bool flag = true;
+  
+  if(!(c.isEmpty()))
+    if(c.myInf)
+      flag = true;
+    else
+      {
+	double angle = cone::Tools::computeAngle(firstP[0], firstP[1], newP[0],
+						 newP[1]);
+	flag = cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
+      }
+  else
+    flag = false;
+  
+  //trace.info() << "width " << flag << std::endl;
+  return flag;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+bool FrechetShortcut<TIterator,TInteger>::updateBackpath()
+{
+  Point prevP = Point(*myEnd);
+  Point P = Point(*(myEnd+1));
+  
+  int d = Tools::computeChainCode(prevP,P);
+  
+  for(unsigned int j=0;j<8;j++)
+    {
+      //std::cerr << "#############" << std::endl;
+      //std::cerr << "Quadrant " << j <<  std::endl;
+      //std::cerr << "direction " << d_rot << std::endl;
+      myBackpath[j].updateBackPathFirstQuad(Tools::rot(d,j),myEnd+1);
+      //std::cerr << "************** Quad " << j << "************" << std::endl;
+      
+      
+    }
+  
+  //trace.info() << "backpath " << isBackpathOk() << std::endl;
+  return isBackpathOk();
+  
+}
+
+template <typename TIterator, typename TInteger>
+inline
+bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
+{
+  // compute the quadrant of the direction of P(i,j)
+  
+  Point firstP = Point(*myBegin);
+  Point P = Point(*(myEnd+1));
+  
+  int q = Tools::computeQuadrant(firstP,P);
+  
+  //std::cerr << "*** IndexBegin " << indexBegin << " ***Index " << i << " ***Quadrant " << q << std::endl;
+  //std::cerr << dataPoints[indexBegin] << " " << dataPoints[i] << std::endl;
+  
+  // to handle non simple curves (a point is visited twice)
+  if(firstP==P)
+    return true;
+  
+  // compute the direction vector pipj
+  Point v;
+  v[0] = P[0]-firstP[0];
+  v[1] = P[1]-firstP[1];
+  
+  // compute the angle between the direction vector and the elementary
+  // direction (defined by the quadrant)
+  Point dir_elem = Tools::chainCode2Vect(q);
+  
+  double angle = backpath<TIterator>::Tools::angleVectVect(v,dir_elem);
+  //std::cerr << "direction=" << v << " angle=" << angle << std::endl;
+
+  bool ok = true;
+  bool end = false;
+  
+  boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
+
+  //trace.info() << intervals << " angle " << angle << endl;
+  
+  if(contains(intervals,angle))
+    return false;
+  
+  return true;
+  
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+void FrechetShortcut<TIterator,TInteger>::resetBackpath()
+{
+  for(unsigned int i=0;i<8;i++)
+    {
+      myBackpath[i].reset();
+    }
+}
+
+template <typename TIterator, typename TInteger>
+inline
+void FrechetShortcut<TIterator,TInteger>::resetCone()
+{
+  myCone.myMin = 0;
+  myCone.myMax = 0;
+  myCone.myInf = true;  
+}
+
+
+template <typename TIterator, typename TInteger>
+inline
+TIterator
+DGtal::FrechetShortcut<TIterator,TInteger>::begin() const {
+  return myBegin;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+TIterator
+DGtal::FrechetShortcut<TIterator,TInteger>::end() const {
+  ConstIterator i(myEnd); ++i;
+  return i;
+}
+
+
+
+template <typename TIterator, typename TInteger>
+inline
+std::string
+DGtal::FrechetShortcut<TIterator,TInteger>::className() const
+{
+  return "FrechetShortcut";
+}
+
+
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+
+template <typename TIterator, typename TInteger>
+inline
+void
+FrechetShortcut<TIterator,TInteger>::selfDisplay ( std::ostream & out) const
+{
+  
+  out << "[FrechetShortcut]" <<  endl;
+  out << "(Begin, End)=";
+  out << "("<< Point(*myBegin) << ", " << Point(*myEnd) << ")\n";
+  out << "[End FrechetShortcut]" <<  endl;
+  
+}
+
+// Implementation of inline functions                                        //
+
+template <typename TIterator, typename TInteger>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const FrechetShortcut<TIterator,TInteger> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+
+
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
