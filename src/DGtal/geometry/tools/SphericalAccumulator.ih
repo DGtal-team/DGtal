@@ -1,0 +1,199 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SphericalAccumulator.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/09/17
+ *
+ * Implementation of inline methods defined in SphericalAccumulator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename T>
+inline
+DGtal::SphericalAccumulator<T>::SphericalAccumulator(const Size aP):
+  myNphi(aP)
+{
+  myTotal = 0;
+  myNtheta = 2*myNphi;
+  myAccumulator.reserve(myNphi*myNtheta);
+  myAccumulatorDir.reserve(myNphi*myNtheta);
+}
+
+
+/**
+ * Destructor.
+ */
+template <typename T>
+inline
+DGtal::SphericalAccumulator<T>::~SphericalAccumulator()
+{
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+void DGtal::SphericalAccumulator<T>::clear()
+{
+  myAccumulator.clear();
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir, 
+						    Size &posPhi, 
+						    Size &posTheta)
+{
+  double theta,phi;
+  
+  ASSERT(aDir.norm() != 0);
+
+  //Polar coordinates
+  phi = acos(NumberTraits<Vector::Coordinate>::castToDouble(aDir[z])
+	     /aDir.norm());
+  
+  double dphi = myNphi/M_PI;
+  posPhi = static_cast<Size>( floor( (phi+dphi/2.) *myNphi / M_PI));
+  
+  if(posPhi == 0 || posPhi== myNphi)
+    posTheta =0;
+  else
+    {
+      double theta = atan2(NumberTraits<Vector::Coordinate>::castToDouble(aDir[1]), 
+			   NumberTraits<Vector::Coordinate>::castToDouble(aDir[0]))
+	+ M_PI;
+      
+      float dtheta = M_PI/(myNphi*sin(posPhi*dphi));
+      post =  static_cast<Size>( floor((theta+dtheta/2.)/dtheta)) %(myNtheta);
+    }
+  
+  posTheta = std::max(0,std::min(myNtheta-1,posTheta));
+  posPhi   = std::max(0,std::min(myNphi,posPhi));
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+void DGtal::SphericalAccumulator<T>::addDirection(const Vector &aDir)
+{
+  Size posPhi,posTheta;
+  
+  getBinCoordinates(aDir,posPhi,posTheta);
+  myAccumulator[posTheta + posPhi*myNtheta] ++;
+  myAccumulatorDir[posTheta + posPhi*myNtheta] += aDir;
+  myTotal ++;
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+DGtal::SphericalAccumulator<T>::Quantity
+DGtal::SphericalAccumulator<T>::samples()
+{
+  return myTotal;
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+DGtal::SphericalAccumulator<T>::Quantity
+DGtal::SphericalAccumulator<T>::count(const Size &posPhi, 
+				      const Size &posTheta)
+{
+  return myAccumulator[posTheta + posPhi*myNtheta];
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+T
+DGtal::SphericalAccumulator<T>::representativeDirection(const Size &posPhi,
+							const Size &posTheta)
+{
+  return myAccumulatorDir[posTheta + posPhi*myNtheta];
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+void
+DGtal::SphericalAccumulator<T>::clear()
+{
+  myTotal = 0;
+  myAccumulator.clear();
+  myAccumulatorDir.clear();
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+template <typename T>
+inline
+void
+DGtal::SphericalAccumulator<T>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[SphericalAccumulator] Nphi="<<myNphi<<"  Ntheta="<<myNtheta<<"  myTotal="<<myTotal;
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+template <typename T>
+inline
+bool
+DGtal::SphericalAccumulator<T>::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+template <typename T>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		  const SphericalAccumulator<T> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
