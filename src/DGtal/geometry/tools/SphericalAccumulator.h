@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/NumberTraits.h"
+#include <algorithm>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -81,7 +83,7 @@ namespace DGtal
     ///Type to represent bin indexes
     typedef DGtal::uint32_t Size;
 
-
+    BOOST_STATIC_ASSERT( Vector::dimension == 3);
     /** 
      * Constructs a spherical accumulator with @a aNphi times @a
      * Ntheta bins.
@@ -113,9 +115,8 @@ namespace DGtal
      * @param posTheta position according to the second direction
      */
     void binCoordinates(const Vector &aDir, 
-			   Size &posPhi, 
-			   Size &posTheta);
-
+			Size &posPhi, 
+			Size &posTheta) const;
 
     /** 
      * Returns the current number of samples in the bin
@@ -126,8 +127,8 @@ namespace DGtal
      *
      * @return the number of accumulated samples
      */
-    Quantity count( Size &posPhi, 
-		    Size &posTheta);
+    Quantity count( const Size &posPhi, 
+		    const Size &posTheta) const;
    
     
     /** 
@@ -141,15 +142,15 @@ namespace DGtal
      *
      * @return the representative direction.
      */
-    Vector representativeDirection(Size &posPhi, 
-				   Size &posTheta);
+    Vector representativeDirection(const Size &posPhi, 
+				   const Size &posTheta) const;
     
     /** 
      * @return returns the number of directions in the current
      * accumulator.
      *
      */
-    Quantity samples();
+    Quantity samples() const;
         
 
     /** 
@@ -157,7 +158,6 @@ namespace DGtal
      * 
      */    
     void clear();
-
     
     
     /**
@@ -172,6 +172,74 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * 
+     * @return the class name.
+     */
+    std::string className() const
+    {
+      return "SphericalAccumulator";
+    }
+
+    // ------------------------- Iterators ------------------------------
+
+    ///Type to iterate on bin values.
+    typedef std::vector<Quantity>::const_iterator ConstIterator;
+    
+    /** 
+     * @return an iterator on the bin value container (begin).
+     */
+    ConstIterator begin() const
+    {
+      return myAccumulator.begin();
+    }
+    
+    /** 
+     * @return an iterator on the bin value container (end).
+     */
+    ConstIterator end() const
+    {
+      return myAccumulator.end();
+    }
+    
+    /** 
+     * Get the representative direction of a bin specified by a
+     * ConstIterator.
+     *
+     * @param it the iterator on the bin to get the direction 
+     * 
+     * @return the representative direction of bin @a it.
+     */
+    Vector representativeDirection(ConstIterator &it) const;
+
+
+    /** 
+     * Given an iterator on the bin container, this method computes the bin coordinates.
+     * 
+     * @param aIt an iterator to the bin container.
+     * @param posPhi position according to the first direction.
+     * @param posTheta position according to the second direction.
+     */
+    void binCoordinates(ConstIterator &aDir, 
+			Size &posPhi, 
+			Size &posTheta) const;
+
+
+    /** 
+     * From the bin index(posPhi,posTheta), we compute the associated
+     * spherical quad (a,b,c,d) counterclockwise on the unit sphere.
+     * 
+     * @param posPhi bin index along the first direction.
+     * @param posTheta bin index along the second direction.
+     * @param a vertex position.
+     * @param b vertex position.
+     * @param c vertex position.
+     * @param d vertex position.
+     */
+    void getBinGeometry(const Size &posPhi,
+			const Size &posTheta,
+			Vector &a,Vector &b, Vector &c, Vector &d) const;
+    
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
@@ -185,6 +253,9 @@ namespace DGtal
 
     ///Accumulator container
     std::vector<Quantity> myAccumulator; 
+
+    ///Accumulator reprensentative directions
+    std::vector<Vector> myAccumulatorDir; 
     
     ///Number of samples
     Quantity myTotal;
