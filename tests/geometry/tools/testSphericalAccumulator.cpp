@@ -52,17 +52,16 @@ bool testSphericalViewer(int argc, char **argv)
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing Spherical Accumulator ..." );
+  trace.beginBlock ( "Testing Spherical Accumulator Viewer..." );
   
   typedef Z3i::RealVector Vector;
   
-  SphericalAccumulator<Vector> accumulator(20);
+  SphericalAccumulator<Vector> accumulator(6);
   trace.info()<< accumulator << std::endl;
   
   Viewer3D viewer;
   viewer.show();
   Vector a,b,c,d;
-  accumulator.getBinGeometry(8,4, a,b,c,d);
   viewer << accumulator;
 
   viewer << Viewer3D::updateDisplay;
@@ -162,16 +161,25 @@ bool testSphericalMore()
   
   typedef Z3i::RealVector Vector;
 
-  SphericalAccumulator<Vector> accumulator(10);
+  SphericalAccumulator<Vector> accumulator(6);
   trace.info()<< accumulator << std::endl;
 
   //testing insert
   //accumulator.addDirection( Vector(1,1,1));
   //accumulator.addDirection( Vector(1.1,1.1,1.1));
-  accumulator.addDirection( Vector(1,0,0));
+  //  accumulator.addDirection( Vector(1,0,0));
   accumulator.addDirection( Vector(0,1,0));
-  //accumulator.addDirection( Vector(0,0,1));
-
+  accumulator.addDirection( Vector(0,0,1));
+  accumulator.addDirection( Vector(1,0,0));
+  accumulator.addDirection( Vector(1,0,0.01));
+  accumulator.addDirection( Vector(1,0,-0.01));
+  accumulator.addDirection( Vector(1,0.01,0));
+  accumulator.addDirection( Vector(1,-0.01,0));
+  accumulator.addDirection( Vector(1,0.01,-0.01));
+  accumulator.addDirection( Vector(1,-0.01,0.01));
+  accumulator.addDirection( Vector(1,0.01,0.01));
+  accumulator.addDirection( Vector(1,-.01,-0.01));
+  
   trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;
