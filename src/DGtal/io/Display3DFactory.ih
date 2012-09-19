@@ -43,21 +43,27 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   typedef typename DGtal::SphericalAccumulator<TV>::Size Size;
   TV a,b,c,d;
-  double theta,phi;
-  
   for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
 	itend= aAccumulator.end(); it != itend; ++it)
     {
       Size i,j;
       aAccumulator.binCoordinates(it, i,j);
-      aAccumulator.getBinGeometry(i,j,a,b,c,d);
-      trace.warning() << "Adding: "<<a<<" "<<b<<" "<<c<<" "<<d<<std::endl;
-
-      display.addQuad(a[0], a[1], a[2], 
-		      b[0], b[1], b[2], 
-		      c[0], c[1], c[2], 
-		      d[0], d[1], d[2],
-		      DGtal::Color(123,45,23));
+      if (aAccumulator.isValidBin(i,j))
+	{
+	  aAccumulator.getBinGeometry(i,j,a,b,c,d);
+	  if ((i==2) &&(j==0))
+	    display.addQuad(a[0], a[1], a[2], 
+			    b[0], b[1], b[2], 
+			    c[0], c[1], c[2], 
+			    d[0], d[1], d[2],
+			    DGtal::Color(123,255,23));
+	  else
+	    display.addQuad(a[0], a[1], a[2], 
+			    b[0], b[1], b[2], 
+			    c[0], c[1], c[2], 
+			    d[0], d[1], d[2],
+			    DGtal::Color(123,43,23));
+}
     }
 }
 // SphericalAccumulator
@@ -73,7 +79,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   std::string mode = display.getMode( aMesh.className() );
   if ( mode == "Faces"  || mode=="")
     drawAsFaces( display, aMesh );
-
 }
 
 template <typename TPoint>

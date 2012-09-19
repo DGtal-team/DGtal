@@ -41,9 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include <algorithm>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,7 +78,7 @@ namespace DGtal
     typedef TVector Vector;
 
     ///Type to store the bin counts
-    typedef DGtal::uint32_t Quantity;
+    typedef DGtal::int32_t Quantity;
 
     ///Type to represent bin indexes
     typedef DGtal::uint32_t Size;
@@ -181,10 +181,22 @@ namespace DGtal
       return "SphericalAccumulator";
     }
 
-    // ------------------------- Iterators ------------------------------
 
+    /** 
+     * Returns true if is bin (posPhi,posTheta) is valid.
+     * 
+     * @param posPhi 
+     * @param posTheta 
+     * 
+     * @return true if (posPhi,posTheta) is valid.
+     */
+    bool isValidBin(const Size &posPhi,
+		    const Size &posTheta) const;
+
+
+    // ------------------------- Iterators ------------------------------
     ///Type to iterate on bin values.
-    typedef std::vector<Quantity>::const_iterator ConstIterator;
+    typedef std::vector<Quantity>::const_iterator  ConstIterator;
     
     /** 
      * @return an iterator on the bin value container (begin).
