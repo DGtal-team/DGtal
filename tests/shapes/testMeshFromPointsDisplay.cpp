@@ -28,13 +28,13 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
-
+//! [MeshFromPointsUseInclude]
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include <QtGui/qapplication.h>
+//! [MeshFromPointsUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -56,12 +56,14 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
+  //! [MeshFromPointsUseInitDisplay]
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show();     
+  //! [MeshFromPointsUseInitDisplay]
 
-  MeshFromPoints<Point> aMesh;
-
+  //! [MeshFromPointsUseMeshCreation]
+  MeshFromPoints<Point> aMesh(true);
   aMesh.addVertex(Point(0,0,0));
   aMesh.addVertex(Point(1,0,0));
   aMesh.addVertex(Point(1,1,0));
@@ -71,33 +73,32 @@ int main( int argc, char** argv )
   aMesh.addVertex(Point(1,1,1));
   aMesh.addVertex(Point(0,1,1));
 
-
-  aMesh.addVertex(Point(0,0,0));
+  aMesh.addVertex(Point(0,1,0));
   aMesh.addVertex(Point(0,2,0));
-  aMesh.addVertex(Point(0,2,1));
-  aMesh.addVertex(Point(0,0.5,1));
-  aMesh.addVertex(Point(0,0.0,1));
-
-
-  aMesh.addTriangularFace(0, 1, 2);
-  aMesh.addQuadFace(3, 4, 5, 6);
+  aMesh.addVertex(Point(0,3,1));
+  aMesh.addVertex(Point(0,2,2));
+  aMesh.addVertex(Point(0,1,2));
+  aMesh.addVertex(Point(0,0,1));
+  
+  aMesh.addTriangularFace(0, 1, 2, Color(150,0,150,104));
+  aMesh.addQuadFace(6,5,4,3, Color::Blue);
+  
   vector<unsigned int> listIndex;
   listIndex.push_back(7);
   listIndex.push_back(8);
   listIndex.push_back(9);
   listIndex.push_back(10);
-  listIndex.push_back(11);
-  
+  listIndex.push_back(11);  
+  listIndex.push_back(12);  
 
-
-  aMesh.addFace(listIndex);
-  
-  viewer.setFillColor(DGtal::Color(240,240,240,150));
-  viewer.setLineColor(DGtal::Color(150,0,0,254));
+  aMesh.addFace(listIndex, Color(150,150,0,54));
+  //! [MeshFromPointsUseMeshCreation]
+  //! [MeshFromPointsUseDisplay]
+  viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
   viewer << Viewer3D::updateDisplay;
-
   bool res = application.exec();
+  //! [MeshFromPointsUseDisplay]
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

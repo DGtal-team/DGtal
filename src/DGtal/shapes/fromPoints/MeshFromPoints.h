@@ -41,8 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
-//#include "DGtal/io/readers/MeshReader.h"
+#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,43 +53,33 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class MeshFromPoints
   /**
-   * Description of template class 'MeshFromPoints' <p>
-   * \brief Aim:
+   * Description of template class 'MeshFromPoints' <p> \brief Aim:
    * This class is defined to represent a surface mesh through a set a
-   * vertex and a set of faces represented by its vertex index.
+   * vertex and a set of faces represented by its vertex index. By
+   * default it does not memorize the color Face and all faces will
+   * have the white color. 
    *
    *
    * This class was defined to import and display a mesh from different formats like OFF file format. 
    * Since it realized the concept of CDrawableWithDisplay3D we can display an MeshFromPoints with a Display3D object:
-   *  @code
-   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-   #include "DGtal/io/viewers/Viewer3D.h"
-   #include "DGtal/helpers/StdDefs.h"
-   #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
-   #include <QtGui/qapplication.h>
-   ...
+   *
+   * First we have to include the following header files:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInclude 
+   *
+   * Prepare display using QGLviewer: Viewer3D
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInitDisplay 
+   *
+   * Construct a MeshFromPoints with various faces:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseMeshCreation
    
-   QApplication application(argc,argv);
-   Viewer3D viewer;
-   viewer.show();     
-   // Mesh construction
-   MeshFromPoints<Point> aMesh;
-   aMesh.addVertex(Point(0,0,0));
-   aMesh.addVertex(Point(1,0,0));
-   aMesh.addVertex(Point(1,1,0));
-  
-   aMesh.addTriangularFace(0, 1, 2);
-   // Mesh display
-   
-   viewer.setFillColor(DGtal::Color(240,240,240,150));
-   viewer.setLineColor(DGtal::Color(150,0,0,254));
-   viewer << anImportedMesh;
-   viewer << Viewer3D::updateDisplay;
+   * Displaying the result:
+   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseDisplay
+
    @endcode 
    *
    * 
    *
-   * @see  OFFReader meshFromOFF.
+   * @see  MeshReader MeshWriter meshFromOFF.
    *
    */
   template <typename TPoint >
@@ -104,7 +95,7 @@ namespace DGtal
      * Structure for representing the faces from the vertex index.
      **/
 
-    typedef vector<unsigned int> MeshFace;
+    typedef std::vector<unsigned int> MeshFace;
     
 
 
@@ -113,15 +104,19 @@ namespace DGtal
   public:
     /**
      * Constructor.
+     * By default the constructed mesh does not contain nor store color information about the mesh.
+     * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
+     * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
-    MeshFromPoints();    
+    MeshFromPoints(bool saveFaceColor=false);    
     
     /**
-     * Constructor.
-     * 
+     * Constructor by usung a vertex set as init.
+     * The color are not stored in this case.
+     * @param vertexSet: the set of vertex. 
      */    
-    MeshFromPoints(const vector<TPoint> &vertexSet);
+    MeshFromPoints(const std::vector<TPoint> &vertexSet);
 
     /**
      * Destructor.
@@ -144,11 +139,8 @@ namespace DGtal
     
     // ----------------------- Interface --------------------------------------
   public:
-
-
-      
     
-  
+    
     /**
      * Adding new vertex.
      *
@@ -165,7 +157,8 @@ namespace DGtal
      * @param indexVertex2: the index of the second vertex face.
      * 
      **/    
-    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3);
+    void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
+			   const DGtal::Color &aColor=DGtal::Color::White);
 
 
     /**
@@ -177,7 +170,8 @@ namespace DGtal
      * 
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
-		     unsigned int indexVertex3, unsigned int indexVertex4);
+		     unsigned int indexVertex3, unsigned int indexVertex4,
+		     const DGtal::Color & aColor=DGtal::Color::White);
     
     
    /**
@@ -185,7 +179,7 @@ namespace DGtal
     * @param listIndex: the index of all the face vertex.
     * 
     **/    
-    void addFace(const MeshFace &aFace);
+    void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
     
    
     
@@ -204,7 +198,19 @@ namespace DGtal
      * @return the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
-   
+
+
+
+    /**
+     * Return a reference to a  face Color of index i.
+     * @param i: the index of the face.
+     * @return the color of the face of index i. 
+     **/
+    const Color & getFaceColor(unsigned int i) const;
+    
+
+
+    
     
     
     /**
@@ -250,10 +256,10 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    vector<MeshFace>  myFaceList;
-    vector<TPoint>  myVertexList;
-    
-
+    std::vector<MeshFace>  myFaceList;
+    std::vector<TPoint>  myVertexList;
+    std::vector<DGtal::Color> myFaceColorList;
+    bool mySaveFaceColor;
     
     // ------------------------- Hidden services ------------------------------
   protected:

@@ -46,6 +46,7 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/CowPtr.h"
+#include "DGtal/topology/CVertexMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -74,6 +75,7 @@ namespace DGtal
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CVertexMap<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

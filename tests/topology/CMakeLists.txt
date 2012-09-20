@@ -9,6 +9,7 @@ SET(DGTAL_TESTS_SRC
    testObjectBorder
    testSimpleExpander
    testSCellsFunctor
+   testSTLMapToVertexMapAdapter
    testUmbrellaComputer
    )
 
