@@ -64,26 +64,24 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
        display.addQuad(p1[0], p1[1], p1[2], 
 		       p2[0], p2[1], p2[2], 
 		       p3[0], p3[1], p3[2], 
-		       p4[0], p4[1], p4[2], display.getFillColor());
+		       p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
      }else if(aNum==3){
        TPoint  p1 = aMesh.getVertex(aFace.at(0));
        TPoint  p2 = aMesh.getVertex(aFace.at(1));
        TPoint  p3 = aMesh.getVertex(aFace.at(2));
        display.addTriangle(p1[0], p1[1], p1[2], 
 			   p2[0], p2[1], p2[2], 
-			   p3[0], p3[1], p3[2], display.getFillColor());
+			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
      }else if(aNum>4){
        vector<Display3D::pointD3D> vectPoly;
-       for(int i=0; i< aFace.size(); i++){
+       for(int j=0; j< aFace.size(); j++){
 	 Display3D::pointD3D pt;
-	 pt.x= aMesh.getVertex(aFace.at(i))[0];
-	 pt.y=aMesh.getVertex(aFace.at(i))[1];
-	 pt.z=aMesh.getVertex(aFace.at(i))[2];
-	 vectPoly.push_back(pt);
-	   
-
+	 pt.x= aMesh.getVertex(aFace.at(j))[0];
+	 pt.y=aMesh.getVertex(aFace.at(j))[1];
+	 pt.z=aMesh.getVertex(aFace.at(j))[2];
+	 vectPoly.push_back(pt);	 
        }
-       display.addPolygon(vectPoly, display.getFillColor());
+       display.addPolygon(vectPoly, aMesh.getFaceColor(i));
      }else{
        trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
      }

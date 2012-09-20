@@ -44,6 +44,7 @@
 #include <boost/concept_archetype.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
+#include "DGtal/topology/CVertexMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,7 +64,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
      - Size: an integral type to count the number of vertices.
      - Vertex: the type for the vertices of the graph.
      - VertexSet: the type for storing a set of vertices.
-     - VertexMap: a rebinding structure to associate Value to vertices.
+     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
  ### Notation
      - \c X : A type that is a model of CUndirectedSimpleLocalGraph
@@ -154,6 +155,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     typedef typename T::VertexSet VertexSet;
     template <typename Value> struct VertexMap {
       typedef typename T::template VertexMap<Value>::Type Type;
+      BOOST_CONCEPT_ASSERT(( CVertexMap< VertexMap<Value> > ));
     };
  
     // possibly check these types so as to satisfy a concept with
