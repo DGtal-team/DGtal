@@ -78,8 +78,11 @@ int main( int argc, char** argv )
   typedef FrechetShortcut<Curve::PointsRange::ConstIterator,int> Shortcut;
   
   typedef GreedySegmentation<Shortcut> Segmentation;
+  
+
   Segmentation theSegmentation( r.begin(), r.end(), Shortcut(error) );
   
+
   Segmentation::SegmentComputerIterator it = theSegmentation.begin();
   Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
 
