@@ -77,15 +77,15 @@ DGtal::FrechetShortcut<TIterator, TInteger>::backpath::~backpath()
 
 template <typename TIterator, typename TInteger>
 inline
-void DGtal::FrechetShortcut<TIterator, TInteger>::backpath::updateBackPathFirstQuad(int d)
+void DGtal::FrechetShortcut<TIterator, TInteger>::backpath::updateBackPathFirstQuad(int d, const ConstIterator& it)
 {  
   
-  //myIt = it;
-  myIt = (myS->myEnd) + 1;
+  myIt = it;
+  //myIt = (myS->myEnd) + 1;
 
-  std::cerr << Point(*(myS->myEnd + 1));
+  //std::cerr << Point(*((myS->myEnd) + 1));
   
-  trace.info() << "local frame direction " << d  << std::endl;
+  //trace.info() << "local frame direction " << d  << std::endl;
   switch(d)
     {    
     case 0:
@@ -116,7 +116,7 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::updateOcculters()
 {
   //   if(quad==0)
   //     {
-  std::cerr << "Quad " << myQuad << Point(*myIt) << std::endl;
+  //std::cerr << "Quad " << myQuad << Point(*myIt) << std::endl;
   
   //     }
   
@@ -124,13 +124,13 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::updateOcculters()
   Point p = Point(*(myIt-1));
   //Point p = Point(*(myS->myEnd));
   
-  std::cerr << p << std::endl;
+  //std::cerr << p << std::endl;
 
   Point pi,v;
   Vector dir = Tools::chainCode2Vect(myQuad);
   Vector dir_ortho = Tools::chainCode2Vect((myQuad+6)%8);
   
-  std::cerr << dir << std::endl;
+  //std::cerr << dir << std::endl;
 
   Point u1,u2;
   u1 = dir;
@@ -142,7 +142,7 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::updateOcculters()
   bool occ = false;
   //   if(quad==0)
   //     {
-  std::cerr << p << " " << u1 << " " << u2 << std::endl;
+  //std::cerr << p << " " << u1 << " " << u2 << std::endl;
   //       //std::cerr << *this << std::endl;
   //     }
   if(myOcculters.size()==0)
@@ -260,7 +260,7 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::updateOcculters()
       // 	}
     }
   
-  trace.info() << "end add occulters" << std::endl;
+  //trace.info() << "end add occulters" << std::endl;
 
 }
 
@@ -338,7 +338,7 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::backpath::addPositivePoint()
 {
   // if we were on a monotone backpath, the point is an end of backpath
   // otherwise, do nothing
-  trace.info() << "add positive point" << std::endl;
+  //trace.info() << "add positive point" << std::endl;
   if(myFlag)
     {
       //if(quad==0)
@@ -362,7 +362,7 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::addNegativePoint()
   // otherwise it is the beggining of a new monotone backpath,
   // possibly a locally maximal occulting point
   
-  trace.info() << "add negative point" << std::endl;
+  //trace.info() << "add negative point" << std::endl;
   
   if(!myFlag)
     {
@@ -409,13 +409,10 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
   
   for(int i=0;i<8;i++)
     {
-       trace.info() << "in init";
       //backpath  b(i,error);
        backpath b(this,i);
-       trace.info() << "after init backpath";
        myBackpath.push_back(b);
     }
-  trace.info() << "after init";
 }
 
 
@@ -498,10 +495,7 @@ inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::extendForward()
 {
-  
-  trace.info() << Point(*(myEnd+1)) << std::endl;
   bool flag = (updateWidth() && updateBackpath());
-  //trace.info() << myCone << endl;
   
   if(flag)
     ++myEnd;
@@ -599,7 +593,7 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
   
   Point firstP = Point(*myBegin);
   Point newP = Point(*(myEnd+1));
-  
+
   bool flag = true;
   
   if(!(c.isEmpty()))
@@ -614,7 +608,7 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
   else
     flag = false;
   
-  trace.info() << "width " << flag << std::endl;
+  //trace.info() << "width " << flag << std::endl;
   return flag;
 }
 
@@ -629,12 +623,12 @@ bool FrechetShortcut<TIterator,TInteger>::updateBackpath()
   
   for(unsigned int j=0;j<8;j++)
     {
-      std::cerr << "#############" << std::endl;
-      std::cerr << "Quadrant " << j <<  std::endl;
+      //std::cerr << "#############" << std::endl;
+      //std::cerr << "Quadrant " << j <<  std::endl;
       
       //myBackpath[j].updateBackPathFirstQuad(Tools::rot(d,j),myEnd+1);
-      myBackpath[j].updateBackPathFirstQuad(Tools::rot(d,j));
-      std::cerr << "************** Quad " << j << "************" << std::endl;
+      myBackpath[j].updateBackPathFirstQuad(Tools::rot(d,j),myEnd+1);
+      //std::cerr << "************** Quad " << j << "************" << std::endl;
       
       
     }
