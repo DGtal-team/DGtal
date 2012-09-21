@@ -134,8 +134,8 @@ namespace DGtal
       void reset();
       void addPositivePoint();
       void addNegativePoint();
-      //void updateBackPathFirstQuad(int d, const ConstIterator&);
-      void updateBackPathFirstQuad(int d);
+      void updateBackPathFirstQuad(int d, const ConstIterator&);
+      //void updateBackPathFirstQuad(int d);
       void updateOcculters();
       void updateIntervals();
       
