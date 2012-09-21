@@ -158,6 +158,11 @@ namespace DGtal
     Self & operator= ( const Base & other );
 
     /**
+       @return the object that performs integer calculation.
+    */
+    MyIntegerComputer & ic() const;
+
+    /**
        @return the bounding domain of this polygon, i.e. the smallest
        bounding box containing all the points of this polygon.
     */
@@ -214,7 +219,7 @@ namespace DGtal
        @see centroid() const
      */
     Point3I centroid( const Integer & twice_area ) const;
-
+ 
     // ----------------------- halfspace services -------------------------------
   public:
 

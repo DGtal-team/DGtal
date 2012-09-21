@@ -61,7 +61,9 @@ COBANaivePlane( const COBANaivePlane & other )
   : myAxis( other.myAxis ),
     myG( other.myG ),
     myWidth( other.myWidth ),
-    myState( other.myState )
+    myState( other.myState ),
+    myCst1( other.myCst1 ),
+    myCst2( other.myCst2 )
 {
 }
 //-----------------------------------------------------------------------------
@@ -77,9 +79,75 @@ operator=( const COBANaivePlane & other )
       myG = other.myG;
       myWidth = other.myWidth;
       myState = other.myState;
+      myCst1 = other.myCst1;
+      myCst2 = other.myCst2;
     }
   return *this;
 }
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+clear()
+{
+  myG = NumberTraits< InternalInteger >::ZERO;
+  myState.pointSet.clear();
+  myState.cip.clear();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+init( Dimension axis, InternalInteger diameter, 
+      const Point & firstPoint,
+      InternalInteger widthNumerator,
+      InternalInteger widthDenominator )
+{
+  clear();
+  myAxis = axis;
+  myWidth[ 0 ] = widthNumerator;
+  myWidth[ 1 ] = widthDenominator;
+  // initialize the grid step.
+  myG = 2*diameter;  myG *= diameter;  myG *= diameter;
+  // initialize the search space as a square.
+  myState.cip.pushBack( InternalPoint2( -myG, -myG ) ); 
+  myState.cip.pushBack( InternalPoint2(  myG, -myG ) ); 
+  myState.cip.pushBack( InternalPoint2(  myG,  myG ) ); 
+  myState.cip.pushBack( InternalPoint2( -myG,  myG ) ); 
+  computeCentroidAndNormal();
+  myState.pointSet.insert( firstPoint );
+  myState.cip.ic().getDotProduct( myState.max, myState.N, firstPoint );
+  myState.min = myState.max;
+  myState.indMax = myState.indMin = myState.pointSet.begin();
+  myState.grad = InternalPoint2( 0, 0 );
+  // Initializes some constants
+  // _cst1 = ( (int) ceil( get_si( myG ) * myWidth ) + 1 );
+  // _cst2 = ( (int) floor( get_si( myG ) * myWidth ) - 1 );
+  myCst1 = ( ( myG * myWidth[ 0 ] - 1 ) / myWidth[ 1 ] ) + 2;
+  myCst2 = ( ( myG * myWidth[ 0 ] )     / myWidth[ 1 ] ) - 1;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::Size
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+size() const
+{
+  return myState.pointSet.size();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+bool
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+extend( const Point & p, bool allowNewNormal )
+{
+  // todo
+  return false;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -93,7 +161,9 @@ inline
 void
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[COBANaivePlane]";
+  out << "[COBANaivePlane"
+      << " axis=" << myAxis << " w=" << myWidth[ 0 ] << "/" << myWidth[ 1 ]
+      << " size=" << size() << " N=" << myState.N << " ]";
 }
 
 /**
@@ -108,6 +178,58 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::isValid() const
   return myG != NumberTraits< InternalInteger >::ZERO;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals
+///////////////////////////////////////////////////////////////////////////////
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+computeCentroidAndNormal()
+{
+  if ( myState.cip.empty() ) return;
+  myState.centroid = myState.cip.centroid();
+  myState.cip.ic().reduce( myState.centroid );
+  switch( myAxis ){
+  case 0 : 
+    myState.N[ 0 ] = myState.centroid[ 2 ] * myG;
+    myState.N[ 1 ] = myState.centroid[ 0 ];
+    myState.N[ 2 ] = myState.centroid[ 1 ];
+    break;
+  case 1 : 
+    myState.N[ 0 ] = myState.centroid[ 0 ];
+    myState.N[ 1 ] = myState.centroid[ 2 ] * myG;
+    myState.N[ 2 ] = myState.centroid[ 1 ];
+    break;
+  case 2 : 
+    myState.N[ 0 ] = myState.centroid[ 0 ];
+    myState.N[ 1 ] = myState.centroid[ 1 ];
+    myState.N[ 2 ] = myState.centroid[ 2 ] * myG;
+    break;
+  }
+
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+doubleCut()
+{
+  // 2 cuts on the search space:
+  //  Gradient.p <= cst1 - _v
+  // -Gradient.p <= cst2 + _v
+  _v = myG * ( (*myState.indmin)[ myAxis ] 
+               - (*myState.indmax)[ myAxis ] );
+  myState.cip.cut( HalfSpace( myState.grad, myCst1 - _v ) );
+  myState.grad.negate();
+  myState.cip.cut( HalfSpace( myState.grad, myCst2 + _v ) );
+  myState.grad.negate();
+  computeCentroidAndNormal();
+
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////

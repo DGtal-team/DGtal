@@ -73,6 +73,16 @@ DGtal::ConvexIntegerPolygon<TSpace,TSequence>::operator=
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::MyIntegerComputer &
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+ic() const
+{
+  return _ic;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
 typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Domain
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 boundingBoxDomain() const
