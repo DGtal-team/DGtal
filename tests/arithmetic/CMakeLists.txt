@@ -17,6 +17,7 @@ SET(DGTAL_TESTS_GMP_SRC
     testSternBrocot 
     testLightSternBrocot
     testLighterSternBrocot
+    testCOBANaivePlane
  )
 
 IF(GMP_FOUND)

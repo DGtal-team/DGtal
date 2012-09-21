@@ -43,12 +43,13 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/arithmetec/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -75,6 +76,8 @@ namespace DGtal
    * @tparam TInternalInteger specifies the type of integer used in internal
    * computations. The type should be able to hold integers of order
    * D^3 if D is the diameter of the set of digital points.
+   *
+   * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
    */
   template < typename TSpace, 
              typename TInternalInteger = DGtal::BigInteger >
@@ -89,16 +92,18 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
+    typedef typename Space::Size Size;
     typedef std::set< Point > PointSet;
-    typedef PointSet::const_iterator ConstIterator;
+    typedef typename PointSet::const_iterator ConstIterator;
+    typedef TInternalInteger InternalInteger;
 
     // ----------------------- internal types ------------------------------
   private:
-    typedef TInternalInteger InternalInteger;
     typedef PointVector< 3, InternalInteger > InternalPoint3;
     typedef SpaceND< 2, InternalInteger > InternalSpace2;
-    typedef InternalSpace::Point InternalPoint2;
+    typedef typename InternalSpace2::Point InternalPoint2;
     typedef ConvexIntegerPolygon< InternalSpace2 > ConvexPolygonZ2;
+    typedef typename ConvexPolygonZ2::HalfSpace HalfSpace;
 
     /**
        Defines the state of the algorithm, the part of the data that
@@ -143,6 +148,59 @@ namespace DGtal
      */
     COBANaivePlane & operator= ( const COBANaivePlane & other );
 
+    /**
+     * Clear the object, free memory. It is no more valid.
+     */
+    void clear();
+
+    /**
+     * All these parameters cannot be changed during the process.
+     * After this call, the object is in a consistent state and can
+     * accept new points for recognition. Call clear before
+     * initializing everything.
+     *
+     * @param axis the main axis (0,1,2) for x, y or z.
+     *
+     * @param diameter the diameter for the set of points (maximum
+     * distance between the given points)
+     *
+     * @param firstPoint the first point for initializing the plane
+     * recognition algorithm.
+     *
+     * @param widthNumerator the maximal axis-width (x,y,or z) for the
+     * plane is defined as the rational number \a widthNumerator / \a
+     * widthDenominator (default is 1/1, i.e. naive plane).
+     *
+     * @param widthDenominator the maximal axis-width (x,y,or z) for
+     * the plane is defined as the rational number \a widthNumerator /
+     * \a widthDenominator (default is 1/1, i.e. naive plane).
+     */
+    void init( Dimension axis, InternalInteger diameter, 
+               const Point & firstPoint,
+               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
+               InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
+
+
+    /**
+     * @return the number of points in the current state.
+     */
+    Size size() const;
+
+    /**
+     * Adds the point [p] and checks if we have still a digital plane
+     * of specified width.
+     *
+     * @param p any 3D point (in the specified diameter).
+     *
+     * @param allowNewNormal if 'true' the normal may be updated,
+     * 'false' the normal is never updated.
+     *
+     * @return 'true' if it is still a plane, 'false' otherwise (the
+     * object is then in its original state).
+     */
+    bool extend( const Point & p, bool allowNewNormal = true );
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -161,16 +219,32 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     Dimension myAxis;          /**< the main axis used in all subsequent computations. */
-    Integer myG;               /**< the grid step used in all subsequent computations. */
+    InternalInteger myG;       /**< the grid step used in all subsequent computations. */
     InternalPoint2 myWidth;    /**< the plane width as a positive rational number myWidth[0]/myWidth[1] */
     State myState;             /**< the current state that defines the plane being recognized. */
-
+    InternalInteger myCst1;    /**<  ( (int) ceil( get_si( myG ) * myWidth ) + 1 ). */
+    InternalInteger myCst2;    /**<  ( (int) floor( get_si( myG ) * myWidth ) - 1 ). */
+    mutable InternalInteger _v;
     // ------------------------- Hidden services ------------------------------
   protected:
 
 
     // ------------------------- Internals ------------------------------------
   private:
+
+    /**
+     * Recompute centroid of polygon of solution and deduce the
+     * current normal vector.  It is called after any modification of
+     * the convex polygon representing the set of solution.
+     */
+    void computeCentroidAndNormal();
+
+    /**
+     * Performs the double cut in parameter space according to the
+     * current gradient and width. Calls computeCentroidAndNormal
+     * afterwards.
+     */
+    void doubleCut();
 
   }; // end of class COBANaivePlane
 
