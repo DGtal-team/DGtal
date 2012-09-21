@@ -74,8 +74,17 @@ namespace DGtal
   {
 
     // SphericalAccumulator
+    /** 
+     * Display an spherical accumulator in 3D. Bin values are mapped
+     * using a default constructed colormap @a TColormap
+     * 
+     * @param display current display
+     * @param accumulator the accumulator to display
+     * @tparam Vector a vector model
+     * @tparam TColormap any model of colormap (default: HueShadeColorMap<DGtal::uint32_t> )
+     */
     template <typename TVector, typename TColormap=HueShadeColorMap<DGtal::uint32_t> >
-    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> &  );
+    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator );
     // SphericalAccumulator
 
     // MeshFromPoints        

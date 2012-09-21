@@ -46,25 +46,29 @@ inline
 DGtal::SphericalAccumulator<T>::SphericalAccumulator(const Size aP)
 {
   myTotal = 0;
-  myNphi = aP + 1;
-  myNtheta = 2*aP;
+  myNphi = aP;
+  myNtheta = 2*myNphi;
   myAccumulator.resize(myNphi*myNtheta,0);
   myAccumulatorDir.resize(myNphi*myNtheta, Vector::zero);
+  myBinNumber = 0;
 
-  /*  for(Size i=0; i < myNphi; i++)
-    for(Size j=0; j < myNtheta; j++)
+  myMaxBinTheta = 0;
+  myMaxBinPhi= 0;
+
+
+  for(Size posPhi=0; posPhi < myNphi; posPhi++)
+    for(Size posTheta=0; posTheta < myNtheta; posTheta++)
       {
-	double dphi = M_PI/(double)(myNphi-1);
-	Size Ntheta_i = (Size)floor((myNphi-1)*sin(i*dphi));     
+	double dphi = M_PI/((double)myNphi-1);
+	double Ntheta_i = floor(2.0*((double)myNphi)*sin((double)posPhi*dphi)) ;  
 	
-	if (j <=Ntheta_i)
-	  myAccumulator[j + i*myNtheta]=0;
+	if (((posPhi == 0) || (posPhi == (myNphi-1))) && (posTheta==0))
+	  myBinNumber++;
 	else
-	  myAccumulator[j+ i*myNtheta]=-1;
+	  if ((posPhi < myNphi) && (posTheta<Ntheta_i) && (posTheta< myNtheta))
+	    myBinNumber ++;
       }
-  */
 }
-
 /**
  * Destructor.
  */
@@ -76,20 +80,18 @@ DGtal::SphericalAccumulator<T>::~SphericalAccumulator()
 // --------------------------------------------------------
 template <typename T>
 inline
-void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir, 
+void DGtal::SphericalAccumulator<T>::binCoordinates(const RealVector &aDir, 
 						    Size &posPhi, 
 						    Size &posTheta) const
 {
   double theta,phi;
 
-  ASSERT(aDir.norm() != 0);
-  Vector vec = aDir.getNormalized();
-
-  trace.warning() << "Adding : "<<aDir<<"    "<<vec<<std::endl;
-
-  phi = acos(NumberTraits<typename T::Coordinate>::castToDouble(vec[2]));
+  ASSERT(fabs(aDir.norm() -1 ) < 0.001);
+  
+  phi = acos(NumberTraits<typename T::Coordinate>::castToDouble(aDir[2]));
   
   double dphi = M_PI/(double)(myNphi-1);
+  double Nthetai;
   posPhi = static_cast<Size>(floor( (phi+dphi/2.) *(myNphi-1)/  M_PI));
   if(posPhi == 0 || posPhi== (myNphi-1))
     {
@@ -97,28 +99,18 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir,
     }
   else
     {
-      theta = acos(NumberTraits<typename T::Component>::castToDouble(vec[0])/
-			  sqrt((NumberTraits<typename T::Component>::castToDouble(vec[0])*
-				NumberTraits<typename T::Component>::castToDouble(vec[0])
-				+
-				NumberTraits<typename T::Component>::castToDouble(vec[1])*
-				NumberTraits<typename T::Component>::castToDouble(vec[1]))));
-      if(vec[1]<0)
-	{
-	  theta *= -1;
-	  theta += 2*M_PI;
-	}
-      double dtheta = M_PI/((double)(myNphi-1)*sin(posPhi*dphi));
-      posTheta = static_cast<Size>(floor( (theta+dtheta/2.0)/dtheta)) % myNtheta;
+      if(aDir[1]>=0)
+	theta=atan2(aDir[1],aDir[0]);
+      else 
+	theta=atan2(aDir[1],aDir[0])+2.0*M_PI;
+          
+      Nthetai = floor(2.0*(myNphi)*sin(posPhi*dphi));
+      double dtheta = 2.0*M_PI/(Nthetai);
+      posTheta = static_cast<Size>(floor( (theta+dtheta/2.0)/dtheta));
+      
+      if (posTheta >= Nthetai)
+	posTheta -= Nthetai;
     }
-  
-  posTheta = std::max<int>(0,std::min(2*(myNphi-1)-1,posTheta));
-  posPhi = std::max<int>(0,std::min((myNphi-1),posPhi));
-  
-  trace.warning()<<"phi="<<phi<<"  norm="<<aDir.norm()<<std::endl;
-  trace.warning()<<"posPhi="<<posPhi<<std::endl;
-  trace.warning()<<"theta="<<theta<<std::endl;
-  trace.warning()<<"posTheta="<<posTheta<<std::endl;
   
   ASSERT(posPhi>=0 );
   ASSERT(posPhi < myNphi);
@@ -130,11 +122,20 @@ inline
 void DGtal::SphericalAccumulator<T>::addDirection(const Vector &aDir)
 {
   Size posPhi,posTheta;
-  
-  binCoordinates(aDir,posPhi,posTheta);
+  RealVector normalized = aDir.getNormalized();
+
+  binCoordinates(normalized , posPhi, posTheta);
   myAccumulator[posTheta + posPhi*myNtheta] += 1;
-  myAccumulatorDir[posTheta + posPhi*myNtheta] += aDir.getNormalized();
+  myAccumulatorDir[posTheta + posPhi*myNtheta] += normalized;
   myTotal ++;
+  
+  //Max bin update
+  if (  myAccumulator[posTheta + posPhi*myNtheta] >
+	myAccumulator[ myMaxBinTheta  + myMaxBinPhi*myNtheta])
+    {
+      myMaxBinTheta = posTheta;
+      myMaxBinPhi = posPhi;
+    }
 }
 // --------------------------------------------------------
 template <typename T>
@@ -143,6 +144,15 @@ typename DGtal::SphericalAccumulator<T>::Quantity
 DGtal::SphericalAccumulator<T>::samples() const
 {
   return myTotal;
+}
+// --------------------------------------------------------
+template <typename T>
+inline
+void
+DGtal::SphericalAccumulator<T>::maxCountBin(Size &phi, Size &theta) const
+{
+  phi = myMaxBinPhi;
+  theta = myMaxBinTheta;
 }
 // --------------------------------------------------------
 template <typename T>
@@ -161,9 +171,9 @@ T
 DGtal::SphericalAccumulator<T>::representativeDirection(const Size &posPhi,
 							const Size &posTheta) const
 {
-  //  ASSERT( isValidBin(posPhi,posTheta) );
+  ASSERT( isValidBin(posPhi,posTheta) );
   Vector p=myAccumulatorDir[posTheta + posPhi*myNtheta] ;
-  return p / static_cast<typename T::Component>(myAccumulator[posTheta + posPhi*myNtheta]);
+  return p;
 }
 // --------------------------------------------------------
 template <typename T>
@@ -173,7 +183,7 @@ DGtal::SphericalAccumulator<T>::representativeDirection(ConstIterator &it) const
 {
   Size dist = it - myAccumulator.begin();
   Vector p = *(myAccumulatorDir.begin() + dist);
-  return p/static_cast<typename T::Component>( *it );
+  return p;
 }
 // --------------------------------------------------------
 // --------------------------------------------------------
@@ -195,16 +205,13 @@ bool
 DGtal::SphericalAccumulator<T>::isValidBin(const Size &posPhi, 
 					   const Size &posTheta) const
 {
-  double dphi = M_PI/(double)(myNphi-1);
-  double Ntheta_i = 2.0*(myNphi-1)*sin(posPhi*dphi);  
+  double dphi = M_PI/((double)myNphi-1.0);
+  double Ntheta_i = floor(2.0*((double)myNphi)*sin((double)posPhi*dphi));  
   
-  /*  trace.info()<<"posPhi="<<posPhi<<"  posTheta="<<posTheta<<"  myNphi="<<myNphi<<std::endl;  
-  trace.info()<<"DPHI="<<dphi<<"  Ntheta_i="<<Ntheta_i<<std::endl;
-  */
   if ((posPhi == 0) || (posPhi == (myNphi-1)))
     return (posTheta==0);
   else
-    return (posPhi < myNphi) &&  (posTheta<Ntheta_i);
+    return (posPhi < myNphi) && (posTheta<Ntheta_i) && (posTheta< myNtheta);
 }
 // --------------------------------------------------------
 template <typename T>
@@ -218,30 +225,21 @@ DGtal::SphericalAccumulator<T>::getBinGeometry(const Size &posPhi,
 					       Vector &d) const
 {
   ASSERT( isValidBin(posPhi,posTheta) );
-  double dphi = M_PI/(double)(myNphi-1);
+  double dphi = M_PI/(double)((double)myNphi-1);
   double phi= (double)posPhi*dphi;
   double dtheta;
+  double Nthetai = floor(2.0*(myNphi)*sin(phi) ); 
   
-  if (posPhi == 0)
-    dtheta =  M_PI/(double)((myNphi-1)*sin((posPhi+1)*dphi));     
-  else
-    dtheta = M_PI/(double)((myNphi-1)*sin(phi));     
+  dtheta = 2.0*M_PI/(Nthetai);
   
-  double theta=posTheta*dtheta;// - dtheta/2;
-  double Nthetai = 2.0*(myNphi-1)*sin(phi); 
-
-  trace.info() << "("<<posPhi<<";"<<posTheta<<")   phi="<<phi<<"   theta="<<theta
-	       <<"  phi-d/2="<<phi-dphi/2.0<<"   theta-dth="<<theta-dtheta/2.0 
-	       <<  "   NTHeta="<<2.0*(myNphi-1)*sin(posPhi*dphi) 
-	       << "    dtheta = "<<dtheta<<std::endl;
-  
+  double theta=posTheta*dtheta;
 
   a[0]=cos(theta-dtheta/2.0)*sin(phi -dphi/2.0);
   a[1]=sin(theta-dtheta/2.0)*sin(phi -dphi/2.0);
   a[2]=cos(phi -dphi/2.0);
   
   
-  if ((double)posTheta+1 >= Nthetai)
+  if ((double)posTheta -1 >= Nthetai)
     {
       b[0]=cos(-dtheta/2.0)*sin(phi -dphi/2.0);
       b[1]=sin(-dtheta/2.0)*sin(phi -dphi/2.0);
@@ -296,7 +294,9 @@ inline
 void
 DGtal::SphericalAccumulator<T>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[SphericalAccumulator] Nphi="<<myNphi<<"  Ntheta="<<myNtheta<<"  myTotal="<<myTotal;
+  out << "[SphericalAccumulator] Nphi="<<myNphi<<"  Ntheta=" <<myNtheta
+      <<"  Number of samples="<<myTotal
+      <<"  Number of bins="<<myBinNumber;
 }
 
 /**
