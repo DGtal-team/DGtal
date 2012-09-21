@@ -55,16 +55,45 @@ namespace DGtal
    * Description of template class 'SphericalAccumulator' <p> 
    *
    * \brief Aim: implements an accumulator (as histograms for 1D scalars)
-   * adapted to spherical points.
+   * adapted to spherical point samples.
    *
-   * Spherical accumulator can be used to count  the number of directions given
-   * by a set of vectors which fall into a given bin (i,j). 
+   * Spherical accumulator is decomposed into 2D bins (i,j) such that:
+   *  - each direction/point on the unit sphere falls in a single bin
+   *  - each bin almost cover the same area on the unit sphere
+   *  - each bin have a geometrical support which can be represented
+   * as a quad except for its two poles
    *
-   * The accumulator is parametrized by two angular resolutions and
-   * has got the property that each bin covers a region on the unit
-   * sphere with similar area. We obtain thus a fast approximation of
-   * an exact geodesic covering of the sphere with patches.
-   *   
+   * Compared to exact geodesic covering, such spherical accumulator
+   * bins do not have the exact same area. However, it allows fast
+   * conversion between directions and bin coordinates.
+   * 
+   * Such accumulator have been demonstrated in:
+   *      ﻿Borrmann, D., Elseberg, J., & Lingemann, K. (2011). The 3D Hough
+   *      ﻿Transform for plane detection in point clouds: A review and a new
+   *      ﻿accumulator design. 3D Research, 02003. Retrieved from
+   *      ﻿http://www.springerlink.com/index/N1W040850782VR85.pdf
+   *
+   * 
+   * Usage example:
+   * @snippet testSphericalAccumulator.cpp SphericalAccum-init
+   * @snippet testSphericalAccumulator.cpp SphericalAccum-add
+   * 
+   * Once the accumulator is filled up with directions, you can get
+   * the representative direction for each bin and the bin with
+   * maximal number of samples.
+   *
+   * Furthermore, you can send the accumulator to a Viewer3D to see
+   * the bin geometry and values:
+   * @code
+   * ...
+   * Viewer3D viewer;
+   * viewer << accumulator;
+   * ...
+   * @endcode
+   * 
+   *
+   * @see testSphericalAccumulator.cpp  
+   * 
    * @tparam TVector type used to represent directions.
    *
    */
@@ -83,12 +112,22 @@ namespace DGtal
     ///Type to represent bin indexes
     typedef DGtal::uint32_t Size;
 
+    ///Type to iterate on bin values.
+    typedef std::vector<Quantity>::const_iterator  ConstIterator;
+    
+    ///Type to represent normalized vector (internal use).
+    typedef PointVector<3,double>  RealVector;
+    
     BOOST_STATIC_ASSERT( Vector::dimension == 3);
+
     /** 
-     * Constructs a spherical accumulator with @a aNphi times @a
-     * Ntheta bins.
+     * Constructs a spherical accumulator with @a aNphi slices along
+     * latitudes (phi spherial coordinate).  The decomposition along
+     * the theta axis is also a function of @a aNphi.
+     *
      * 
-     * @param aNphi the number of slices in the longitude polar coordinates.  
+     * @param aNphi the number of slices in the longitude
+     * polar coordinates.  
      */
     SphericalAccumulator(const Size aNphi);
 
@@ -101,20 +140,23 @@ namespace DGtal
   public:
 
     /** 
-     * Add a new direction into the accumulator;
+     * Add a new direction into the accumulator. The accumulator
+     * updates the bin coordinates with maximum count.
      * 
      * @param aDir a direction
      */
     void addDirection(const Vector &aDir);
 
     /** 
-     * Given a direction, this method computes the bin coordinates.
+     * Given a normalized direction, this method computes the bin
+     * coordinates.
      * 
-     * @param aDir a direction
-     * @param posPhi position according to the first direction
-     * @param posTheta position according to the second direction
+     * @pre @a aDir must be unit vector (instance of RealVector type).
+     * @param aDir a direction represented as a unit norm vector.
+     * @param posPhi position according to the first direction.
+     * @param posTheta position according to the second direction.
      */
-    void binCoordinates(const Vector &aDir, 
+    void binCoordinates(const RealVector &aDir, 
 			Size &posPhi, 
 			Size &posTheta) const;
 
@@ -136,6 +178,10 @@ namespace DGtal
      * (posPhi,posTheta).
      * If the bin does not contain any sample, a null vector is
      * returned ( @a Vector::ZERO ).
+     *
+     * Otherwise, it returns the (unnormalized) sum of directions
+     * added to the bin.
+     *
      * 
      * @param posPhi position according to the first direction
      * @param posTheta position according to the second direction
@@ -144,6 +190,17 @@ namespace DGtal
      */
     Vector representativeDirection(const Size &posPhi, 
 				   const Size &posTheta) const;
+
+    /** 
+     * Get the representative direction of a bin specified by a
+     * ConstIterator.
+     *
+     * @param it the iterator on the bin to get the direction 
+     * 
+     * @return the representative direction of bin @a it.
+     */
+    Vector representativeDirection(ConstIterator &it) const;
+
     
     /** 
      * @return returns the number of directions in the current
@@ -152,6 +209,21 @@ namespace DGtal
      */
     Quantity samples() const;
         
+    /** 
+     * @return returns the number of bins in the accumulator.
+     *
+     */
+    Quantity binNumber() const { return myBinNumber;}
+
+
+    /** 
+     * Returns the coordinates of the bin containing the maximum
+     * number of samples.
+     * 
+     * @param posPhi coordinate along the phi axis.
+     * @param posTheta coordinate along the theta axis.
+     */
+    void maxCountBin(Size &posPhi, Size &posTheta) const;
 
     /** 
      * Clear the current accumulator.
@@ -195,10 +267,12 @@ namespace DGtal
 
 
     // ------------------------- Iterators ------------------------------
-    ///Type to iterate on bin values.
-    typedef std::vector<Quantity>::const_iterator  ConstIterator;
     
     /** 
+     * @warning Be careful, some of the iterators may be attached to
+     * un-valid bins. Once you have the iterator, convert it to bin
+     * coordinates using binCoordinates and then check if the bin is
+     * valid using isValidBin method.
      * @return an iterator on the bin value container (begin).
      */
     ConstIterator begin() const
@@ -214,16 +288,6 @@ namespace DGtal
       return myAccumulator.end();
     }
     
-    /** 
-     * Get the representative direction of a bin specified by a
-     * ConstIterator.
-     *
-     * @param it the iterator on the bin to get the direction 
-     * 
-     * @return the representative direction of bin @a it.
-     */
-    Vector representativeDirection(ConstIterator &it) const;
-
 
     /** 
      * Given an iterator on the bin container, this method computes the bin coordinates.
@@ -271,7 +335,17 @@ namespace DGtal
     
     ///Number of samples
     Quantity myTotal;
+
+    ///Number of bins
+    Quantity myBinNumber;
     
+    ///Phi coordinate of the max bin
+    Size myMaxBinPhi;
+    
+    ///Theta coordinate of the max bin
+    Size myMaxBinTheta;
+
+
     // ------------------------- Hidden services ------------------------------
   protected:
 

@@ -56,17 +56,28 @@ bool testSphericalViewer(int argc, char **argv)
   
   typedef Z3i::RealVector Vector;
   
-  SphericalAccumulator<Vector> accumulator(6);
+  SphericalAccumulator<Vector> accumulator(15);
   trace.info()<< accumulator << std::endl;
+  
+  for(unsigned int i=0; i< 10000; i++)
+    accumulator.addDirection( Vector (1+10.0*(rand()-RAND_MAX/2)/(double)RAND_MAX,
+				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
+				      (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
   
   Viewer3D viewer;
   viewer.show();
   Vector a,b,c,d;
   viewer << accumulator;
 
-  viewer << Viewer3D::updateDisplay;
+    trace.info() << "Bin values: ";
+  for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
+      it != itend;
+      ++it)
+    trace.info() << *it<<" ";
+  trace.info() << std::endl;
+  trace.info() << accumulator<<std::endl;
 
-  
+  viewer << Viewer3D::updateDisplay;
   bool res = application.exec();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
@@ -110,7 +121,7 @@ bool testSphericalAccumulator()
   typedef SphericalAccumulator<Vector>::Size Size;
   typedef SphericalAccumulator<Vector>::Quantity Quantity;
   Size i,j;
-  accumulator.binCoordinates( Vector(1,1,1), i,j);
+  accumulator.binCoordinates( Vector(1,1,1).getNormalized(), i,j);
   trace.info() << "Got coordinates ("<<i<<","<<j<<")"<<std::endl; 
   trace.info() << "Count(i,j) = "<< accumulator.count(i,j) <<std::endl;
   nbok += (accumulator.count(i,j) == 2) ? 1 : 0; 
@@ -159,24 +170,21 @@ bool testSphericalMore()
   
   trace.beginBlock ( "Testing Spherical Accumulator with more points ..." );
   
+  //! [SphericalAccum-init] 
   typedef Z3i::RealVector Vector;
-
   SphericalAccumulator<Vector> accumulator(6);
-  trace.info()<< accumulator << std::endl;
+  //! [SphericalAccum-init]
+  
 
-  //testing insert
-  //accumulator.addDirection( Vector(1,1,1));
-  //accumulator.addDirection( Vector(1.1,1.1,1.1));
-  //  accumulator.addDirection( Vector(1,0,0));
+  trace.info()<< accumulator << std::endl;
+  //! [SphericalAccum-add] 
+  //Insert some directions
   accumulator.addDirection( Vector(0,1,0));
-  accumulator.addDirection( Vector(0,0,1));
-  accumulator.addDirection( Vector(1,0,0));
-  accumulator.addDirection( Vector(1,0,0.01));
-  accumulator.addDirection( Vector(1,0,-0.01));
-  accumulator.addDirection( Vector(1,0.01,0));
   accumulator.addDirection( Vector(1,-0.01,0));
   accumulator.addDirection( Vector(1,0.01,-0.01));
   accumulator.addDirection( Vector(1,-0.01,0.01));
+  //! [SphericalAccum-add] 
+
   accumulator.addDirection( Vector(1,0.01,0.01));
   accumulator.addDirection( Vector(1,-.01,-0.01));
   
