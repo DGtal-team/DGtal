@@ -83,17 +83,66 @@ namespace DGtal
     
     //required types
     typedef TIterator ConstIterator;
-    typedef FrechetShortcut<ConstIterator,TInteger> Self; 
-    typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,TInteger> Reverse;
+    typedef FrechetShortcut<ConstIterator,Integer> Self; 
+    typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,Integer> Reverse;
     
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
     
-    class backpath;  //nested class, inherits from FrechetShortcut to
-		     //access myError and myBegin
-		     //defined outside of the outer class 
-    
+    class backpath
+    {
+    private:
+      /**
+       * Pointer to the FrechetShortcut
+       */
+      const FrechetShortcut<ConstIterator,Integer> *myS;
+      
+    protected: 
+      
+      typedef struct occulter_attributes{
+	double angle_min; // 
+	double angle_max; // 
+      } occulter_attributes;
+      
+      
+      typedef map <ConstIterator,occulter_attributes > occulter_list;
+
+    public:
+      friend class FrechetShortcut<ConstIterator,Integer>;
+      
+      
+    public:
+      
+      int myQuad; // quadrant
+      
+      bool myFlag; // current state myFlag=true if we are on a backpath, false otherwise 
+      
+      occulter_list myOcculters;
+      
+      boost::icl::interval_set<double> myForbiddenIntervals;
+      
+      ConstIterator myIt; // pointer to the next point to be scanned: set to myEnd + 1
+      
+    // Default constructor
+      backpath();
+      
+      backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
+      //backpath(int q, double error);
+      ~backpath();
+      
+      void reset();
+      void addPositivePoint();
+      void addNegativePoint();
+      //void updateBackPathFirstQuad(int d, const ConstIterator&);
+      void updateBackPathFirstQuad(int d);
+      void updateOcculters();
+      void updateIntervals();
+      
+   
+    }; // End of class backpath
+
+
   
   //typedef vector<Integer> Point;
   
@@ -402,6 +451,8 @@ public:
   
   // ------------------------- Private Datas --------------------------------
  private:
+
+    
   
   // ------------------------- Hidden services ------------------------------
  
@@ -440,53 +491,6 @@ public:
   
   }; // end of class FrechetShortcut
   
-  template <typename TIterator, typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-    class FrechetShortcut<TIterator, TInteger>::backpath : public  FrechetShortcut<TIterator, TInteger> 
-  {
-      
-    protected: 
-      
-      typedef struct occulter_attributes{
-	double angle_min; // 
-	double angle_max; // 
-      } occulter_attributes;
-      
-      
-      typedef TIterator ConstIterator;
-      typedef map <ConstIterator,occulter_attributes > occulter_list;
-      
-      
-    public:
-      
-      int myQuad; // quadrant
-      
-      bool myFlag; // current state myFlag=true if we are on a backpath, false otherwise 
-      
-      occulter_list myOcculters;
-      
-      boost::icl::interval_set<double> myForbiddenIntervals;
-      
-      //ConstIterator myIt;
-      
-    // Default constructor
-      backpath();
-      
-      backpath(int q);
-      //backpath(int q, double error);
-      ~backpath();
-      
-      void reset();
-      void addPositivePoint();
-      void addNegativePoint();
-      //void updateBackPathFirstQuad(int d, const ConstIterator&);
-      void updateBackPathFirstQuad(int d);
-      void updateOcculters();
-      void updateIntervals();
-      
-   
-  };
-
-
 
   // Utils
   
