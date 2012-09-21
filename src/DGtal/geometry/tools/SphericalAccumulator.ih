@@ -88,7 +88,7 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const RealVector &aDir,
 
   ASSERT(fabs(aDir.norm() -1 ) < 0.001);
   
-  phi = acos(NumberTraits<typename T::Coordinate>::castToDouble(aDir[2]));
+  phi = acos(aDir[2]);
   
   double dphi = M_PI/(double)(myNphi-1);
   double Nthetai;
