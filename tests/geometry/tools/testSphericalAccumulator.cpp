@@ -83,6 +83,43 @@ bool testSphericalViewer(int argc, char **argv)
   trace.endBlock();
   return res ? 0 : 1;
 }
+bool testSphericalViewerInteger(int argc, char **argv)
+{
+  QApplication application(argc,argv);
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing Spherical Accumulator Viewer  with Integer numbers..." );
+  
+  typedef Z3i::Vector Vector;
+  
+  SphericalAccumulator<Vector> accumulator(15);
+  trace.info()<< accumulator << std::endl;
+  
+  for(unsigned int i=0; i< 10000; i++)
+    accumulator.addDirection( Vector (1+(rand()-RAND_MAX/2),
+                                      (1+(rand()-RAND_MAX/2)),
+                                      (1+(rand()-RAND_MAX/2))));
+  
+  Viewer3D viewer;
+  viewer.show();
+  Vector a,b,c,d;
+  Display3DFactory::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
+
+    trace.info() << "Bin values: ";
+  for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
+      it != itend;
+      ++it)
+    trace.info() << *it<<" ";
+  trace.info() << std::endl;
+  trace.info() << accumulator<<std::endl;
+
+  viewer << Viewer3D::updateDisplay;
+  bool res = application.exec();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return res ? 0 : 1;
+}
 #endif
 
 bool testSphericalAccumulator()
@@ -196,6 +233,49 @@ bool testSphericalMore()
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
   
+
+  trace.endBlock();
+    
+  return nbok == nb;
+}
+
+bool testSphericalMoreIntegerDir()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing Spherical Accumulator with more Integer points ..." );
+  
+  typedef Z3i::Vector Vector;
+  SphericalAccumulator<Vector> accumulator(5);
+  
+
+  trace.info()<< accumulator << std::endl;
+  //Insert some directions
+  accumulator.addDirection( Vector(0,1,0));
+  accumulator.addDirection( Vector(100,-1,0));
+  accumulator.addDirection( Vector(100,1,-1));
+  accumulator.addDirection( Vector(100,-1,1));
+  accumulator.addDirection( Vector(1,1,1));
+  
+  trace.info() << "Bin values: ";
+  for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
+      it != itend;
+      ++it)
+      trace.info() << *it<<" ";
+  trace.info() << std::endl;
+  trace.info() << accumulator<<std::endl;
+
+  typedef SphericalAccumulator<Vector>::Size Size;
+  Size i,j;
+  accumulator.maxCountBin(i,j);
+  trace.info() << "Max bin= ("<<i<<","<<j<<")"<<std::endl;
+  trace.info() << "Max representative= "<<accumulator.representativeDirection(i,j)<<std::endl;
+  nbok += ( accumulator.representativeDirection(i,j) == Vector(300,-1,0 )) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "Representative ok" << std::endl;
+
   trace.endBlock();
     
   return nbok == nb;
@@ -215,8 +295,9 @@ int main( int argc, char** argv )
   bool res = testSphericalAccumulator() && testSphericalMore()
 #ifdef WITH_VISU3D_QGLVIEWER
     && testSphericalViewer(argc,argv)
+    && testSphericalViewerInteger(argc,argv)
 #endif 
-    ;
+    && testSphericalMoreIntegerDir();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

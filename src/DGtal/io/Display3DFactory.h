@@ -80,11 +80,17 @@ namespace DGtal
      * 
      * @param display current display
      * @param accumulator the accumulator to display
+     * @param shift translate vector for display purposes (default:
+     * zero vector)
+     * @param radius scale factor for the unit sphere radius (default:1)
      * @tparam Vector a vector model
      * @tparam TColormap any model of colormap (default: HueShadeColorMap<DGtal::uint32_t> )
      */
     template <typename TVector, typename TColormap=HueShadeColorMap<DGtal::uint32_t> >
-    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator );
+    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator,
+                      const typename DGtal::SphericalAccumulator<TVector>::RealVector &shift = 
+                      typename DGtal::SphericalAccumulator<TVector>::RealVector(0,0,0),
+                      const double radius=1.0);
     // SphericalAccumulator
 
     // MeshFromPoints        
