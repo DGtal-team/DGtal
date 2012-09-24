@@ -74,6 +74,16 @@ DGtal::ConvexIntegerPolygon<TSpace,TSequence>::operator=
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
 inline
+void 
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+swap( ConvexIntegerPolygon & other )
+{
+  Base::swap( other );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
 typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::MyIntegerComputer &
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 ic() const

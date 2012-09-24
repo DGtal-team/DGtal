@@ -125,7 +125,7 @@ init( Dimension axis, InternalInteger diameter,
   myState.cip.pushBack( InternalPoint2(  myG, -myG ) ); 
   myState.cip.pushBack( InternalPoint2(  myG,  myG ) ); 
   myState.cip.pushBack( InternalPoint2( -myG,  myG ) ); 
-  computeCentroidAndNormal();
+  computeCentroidAndNormal( myState );
   myPointSet.insert( firstPoint );
   ic().getDotProduct( myState.max, myState.N, firstPoint );
   myState.min = myState.max;
@@ -148,11 +148,20 @@ size() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
+typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::Size
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+complexity() const
+{
+  return myState.cip.size();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
 bool
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 operator()( const Point & p ) const
 {
-  myState.cip.dot_product( _v, myState.N, p );
+  ic().getDotProduct( _v, myState.N, p );
   return ( _v >= myState.min ) && ( _v <= myState.max );
 }
 //-----------------------------------------------------------------------------
@@ -174,20 +183,20 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 extend( const Point & p )
 {
   // Check first if p is already a point of the plane.
-  Iterator it = myPointSet.find( p );
-  if ( it != myPointSet.end() )
-    return true;
   // Insert point into set (so as that iterators indMin and indMax are
   // correct).
-  it = myPointSet.insert( p );
+  std::pair<Iterator,bool> itPair = myPointSet.insert( p );
+  if ( ! itPair.second ) // already in set
+    return true;
   // Check if p lies within the current bounds of the plane.
   _state.N = myState.N; 
   _state.min = myState.min; 
   _state.max = myState.max; 
   _state.indMin = myState.indMin; 
   _state.indMax = myState.indMax; 
-  Iterator it2 = it + 1;
-  bool changed = updateMinMax( _state, it, it2 );
+  Iterator it2 = itPair.first; 
+  ++it2; // go to next one.
+  bool changed = updateMinMax( _state, itPair.first, it2 );
   // Check if point is already within bounds.
   if ( ! changed ) 
     {
@@ -196,10 +205,10 @@ extend( const Point & p )
   // Check if width is still ok
   if ( checkPlaneWidth( _state ) )
     {
-      std::swap( myState.min, _state.min );
-      std::swap( myState.max, _state.max );
-      std::swap( myState.indMin, _state.indMin );
-      std::swap( myState.indMax, _state.indMax );
+      myState.min = _state.min;
+      myState.max = _state.max;
+      myState.indMin = _state.indMin;
+      myState.indMax = _state.indMax;
       return true;
     }
   // We have to find a new normal. First, update gradient.
@@ -210,13 +219,13 @@ extend( const Point & p )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
     {
       // Unable to update solution. Removes point from set.
-      myPointSet.erase( it );
+      myPointSet.erase( itPair.first );
       return false;
     }
 
   // There is a gradient, tries to optimize.
   _state.cip = myState.cip;
-  doubleCut( _state );
+  doubleCut( _grad, _state );
 
   // While at least 1 point left on the search space
   while ( ! _state.cip.empty() )
@@ -227,13 +236,13 @@ extend( const Point & p )
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       { // Found a plane.
-        std::swap( myState.min, _state.min );
-        std::swap( myState.max, _state.max );
-        std::swap( myState.indMin, _state.indMin );
-        std::swap( myState.indMax, _state.indMax );
-        std::swap( myState.cip, _state.cip );
-        std::swap( myState.centroid, _state.centroid );
-        std::swap( myState.N, _state.N );
+        myState.min = _state.min;
+        myState.max = _state.max;
+        myState.indMin = _state.indMin;
+        myState.indMax = _state.indMax;
+        myState.cip.swap( _state.cip );
+        myState.centroid = _state.centroid;
+        myState.N = _state.N;
         return true;
       }
 
@@ -249,10 +258,10 @@ extend( const Point & p )
       }
 
     // There is a gradient, tries to optimize.
-    doubleCut( _state );
+    doubleCut( _grad, _state );
   }
   // was unable to find a correct plane.
-  myPointSet.erase( it );
+  myPointSet.erase( itPair.first );
   return false;
 }
 
@@ -272,7 +281,7 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & ou
 {
   out << "[COBANaivePlane"
       << " axis=" << myAxis << " w=" << myWidth[ 0 ] << "/" << myWidth[ 1 ]
-      << " size=" << size() << " N=" << myState.N << " ]";
+      << " size=" << size() << " complexity=" << complexity() << " N=" << myState.N << " ]";
 }
 
 /**
@@ -300,7 +309,7 @@ computeCentroidAndNormal( State & state )
 {
   if ( state.cip.empty() ) return;
   state.centroid = state.cip.centroid();
-  state.cip.ic().reduce( state.centroid );
+  ic().reduce( state.centroid );
   switch( myAxis ){
   case 0 : 
     state.N[ 0 ] = state.centroid[ 2 ] * myG;
@@ -349,14 +358,14 @@ computeMinMax( State & state, TInputIterator itB, TInputIterator itE )
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<typename TInputIterator::value_type,Point>::value ));
 
   ASSERT( itB != itE );
-  cip().getDotProduct( state.min, state.N, *itB );
+  ic().getDotProduct( state.min, state.N, *itB );
   state.max = state.min;
   state.indMax = state.indMin = itB;
   ++itB;
   // look for the points defining the min dot product and the max dot product
   for ( ; itB != itE; ++itB )
     {
-      cip().getDotProduct( _v, state.N, *itE );
+      ic().getDotProduct( _v, state.N, *itB );
       if ( _v > state.max ) 
 	{ 
 	  state.max = _v;  
@@ -365,7 +374,7 @@ computeMinMax( State & state, TInputIterator itB, TInputIterator itE )
       else if ( _v < state.min )
 	{
 	  state.min = _v;
-	  state.indmin = itB;
+	  state.indMin = itB;
 	}
     }
 }
@@ -383,7 +392,7 @@ updateMinMax( State & state, TInputIterator itB, TInputIterator itE )
   // look for the points defining the min dot product and the max dot product
   for ( ; itB != itE; ++itB )
     {
-      cip().getDotProduct( _v, state.N, *itE );
+      ic().getDotProduct( _v, state.N, *itB );
       if ( _v > state.max ) 
 	{ 
 	  state.max = _v;  
@@ -393,7 +402,7 @@ updateMinMax( State & state, TInputIterator itB, TInputIterator itE )
       else if ( _v < state.min )
 	{
 	  state.min = _v;
-	  state.indmin = itB;
+	  state.indMin = itB;
           changed = true;
 	}
     }
@@ -407,13 +416,13 @@ checkPlaneWidth( const State & state ) const
 {
   _v = ic().abs( state.N[ myAxis ] );
   return ( ( state.max - state.min ) 
-           < ( _maxValue * myWidth[ 0 ] / myWidth[ 1 ] ) );
+           < ( _v * myWidth[ 0 ] / myWidth[ 1 ] ) );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 void
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::
-computeGradient( InternalPoint2 & grad, const State & state )
+computeGradient( InternalPoint2 & grad, const State & state ) const
 {
   // computation of the gradient
   switch( myAxis ){

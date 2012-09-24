@@ -68,8 +68,8 @@ namespace DGtal
    * As a (3D) geometric primitive, it obeys to a subset of the
    * concept CSegmentComputer. It is copy constructible,
    * assignable. It is iterable (inner type ConstIterator, begin(),
-   * end()). It has methods extend(Point), extend( Iterator, Iterator)
-   * and isExtendable(Point), isExtendable(Iterator, Iterator).
+   * end()). It has methods extend(Point), extend( InputIterator, InputIterator)
+   * and isExtendable(Point), isExtendable(InputIterator, InputIterator).
    * It is also a model of CPointPredicate.
    *
    * @tparam TSpace specifies the type of digital space in which lies
@@ -97,6 +97,7 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef std::set< Point > PointSet;
     typedef typename PointSet::const_iterator ConstIterator;
+    typedef typename PointSet::iterator Iterator;
     typedef TInternalInteger InternalInteger;
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
 
@@ -110,7 +111,8 @@ namespace DGtal
 
     /**
        Defines the state of the algorithm, the part of the data that
-       may change after initialization of the COBANaivePlane object.
+       may change after initialization of the COBANaivePlane
+       object. Only the set of points is not stored here.
     */
     struct State {
       InternalInteger max;     /**< current max dot product. */
@@ -188,9 +190,14 @@ namespace DGtal
 
 
     /**
-     * @return the number of points in the current state.
+     * @return the number of distinct points in the current naive plane.
      */
     Size size() const;
+
+    /**
+     * @return the number of vertices/edges of the convex integer polygon of solutions.
+     */
+    Size complexity() const;
 
     /**
      * Checks if the point \a p is in the current digital
@@ -277,11 +284,14 @@ namespace DGtal
      * more valid (computeCentroidAndNormal should be called
      * afterwards).
      *
-     * @param state (modified) the state where the fields state.grad,
-     * state.indMin, state.indMax, state.cip are used in computation and where
-     * field state.cip is updated.
+     * @param grad (altered, but not modified) the gradient used to
+     * update the polygon of solutions state.cip.
+     *
+     * @param state (modified) the state where the fields
+     * state.indMin, state.indMax, state.cip are used in computation
+     * and where field state.cip is updated.
      */
-    void doubleCut( State & state );
+    void doubleCut( InternalPoint2 & grad, State & state );
 
     /**
      * Computes the min and max values/arguments of the scalar product
@@ -298,7 +308,7 @@ namespace DGtal
      * @param itE an input iterator after the last point of the range.
      */
     template <typename TInputIterator>
-    void computeMinMax( State & state, IInputIterator itB, IInputIterator itE );
+    void computeMinMax( State & state, TInputIterator itB, TInputIterator itE );
 
     /**
      * Updates the min and max values/arguments of the scalar product
@@ -318,7 +328,7 @@ namespace DGtal
      * otherwise.
      */
     template <typename TInputIterator>
-    bool updateMinMax( State & state, IInputIterator itB, IInputIterator itE );
+    bool updateMinMax( State & state, TInputIterator itB, TInputIterator itE );
 
     /**
      * @param state the state where the normal state.N, the scalars state.min and state.max are used in
@@ -338,8 +348,7 @@ namespace DGtal
      * @param state the state where the iterators state.indMin and
      * state.indMax are used in computations.
      */
-    static 
-    void computeGradient( InternalPoint2 & grad, const State & state );
+    void computeGradient( InternalPoint2 & grad, const State & state ) const;
 
   }; // end of class COBANaivePlane
 
