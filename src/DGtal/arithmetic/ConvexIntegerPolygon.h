@@ -367,6 +367,12 @@ namespace DGtal
                                             const HalfSpace & hs2,
                                             const HalfSpace & hs3 ) const;
 
+    /**
+       Swaps the content of this object with other. O(1) complexity.
+       @param other any other ConvexIntegerPolygon.
+    */
+    void swap( ConvexIntegerPolygon & other );
+
     // ----------------------- Interface --------------------------------------
   public:
 
