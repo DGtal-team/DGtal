@@ -35,6 +35,59 @@
 
 
 
+// SphericalAccumulator
+template <typename TV >
+inline 
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::SphericalAccumulator<TV> & aAccumulator,
+                                    const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
+                                    const double radius)
+{
+  typedef typename DGtal::SphericalAccumulator<TV>::Size Size;
+  typename DGtal::SphericalAccumulator<TV>::RealVector a,b,c,d;
+  Size i,j;
+  DGtal::uint32_t m = 1, M=0;
+  for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
+	itend= aAccumulator.end(); it != itend; ++it)
+    {
+      aAccumulator.binCoordinates(it, i,j);
+      if (aAccumulator.isValidBin(i,j))
+	{
+	  if (aAccumulator.count(i,j) > M) M=aAccumulator.count(i,j);
+	  if (aAccumulator.count(i,j) < m) m=aAccumulator.count(i,j);
+	}
+    }
+  trace.error()<<" min= "<<m <<" Max="<<M<<std::endl;
+  HueShadeColorMap<typename DGtal::SphericalAccumulator<TV>::Quantity> cmap(m,M+1);
+  
+  for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
+	itend= aAccumulator.end(); it != itend; ++it)
+    {
+      aAccumulator.binCoordinates(it, i,j);
+      if (aAccumulator.isValidBin(i,j))
+	{
+	  aAccumulator.binCoordinates(it, i,j);
+  	  aAccumulator.getBinGeometry(i,j,a,b,c,d);
+          a+= shift;
+          b+= shift;
+          c+= shift;
+          d+= shift;
+          a = a*radius;
+          b = b*radius;
+          c = c*radius;
+          d = d*radius;
+	  display.addQuad(a[0], a[1], a[2], 
+			  b[0], b[1], b[2], 
+			  c[0], c[1], c[2], 
+			  d[0], d[1], d[2],
+			  cmap(aAccumulator.count(i,j)));
+	}
+    }
+}
+// SphericalAccumulator
+
+
+
 // MeshFromPoints    
 template <typename TPoint>
 inline
@@ -44,7 +97,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   std::string mode = display.getMode( aMesh.className() );
   if ( mode == "Faces"  || mode=="")
     drawAsFaces( display, aMesh );
-
 }
 
 template <typename TPoint>
