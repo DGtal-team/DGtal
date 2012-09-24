@@ -160,7 +160,9 @@ void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
  *  @param step is the evolution step.
  */
 template <typename TDrawableWithDisplay3D>
-void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, TDrawableWithDisplay3D & ( *ptrfonction ) ( TDrawableWithDisplay3D, int ), int minValue, int maxValue, int step )
+void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, 
+				TDrawableWithDisplay3D & ( *ptrfonction ) ( TDrawableWithDisplay3D, int ), 
+				int minValue, int maxValue, int step )
 {
   myManupilatingFlag = true;
   myMaxManupulating = maxValue;
@@ -211,7 +213,6 @@ ViewerOgre3D::~ViewerOgre3D()
   mySceneMgr->destroyAllLights();
   getRootSceneNode()->removeAndDestroyAllChildren();
 
-
   Ogre::ResourceGroupManager& lRgMgr = Ogre::ResourceGroupManager::getSingleton();
 
   lRgMgr.destroyResourceGroup("General");
@@ -260,7 +261,7 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
   myMode = new TextZone("Mode: View"); 
   myMode->setPosition(70,550);
-  myMode->setSize(36);
+  myMode->setSize(24);
 
   //Creation de l'input listener
   createFrameListener();
@@ -335,7 +336,7 @@ void ViewerOgre3D::initMaterials()
 {
   //Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
   Ogre::ConfigFile cf;
-  cf.load ( mySourceDirectory+"resources.cfg" );
+  cf.load ( mySourceDirectory+"ressources.cfg" );
   Ogre::ConfigFile::SectionIterator sectionIter = cf.getSectionIterator();
 
   Ogre::String sectionName, typeName, dataName;
@@ -411,7 +412,7 @@ void ViewerOgre3D::createScene()
 
   // Viewport
   myViewPort = myWindow->addViewport ( myCamera );
-  myViewPort->setBackgroundColour ( Ogre::ColourValue ( 0.2, 0.2, 0.2 ) );
+  myViewPort->setBackgroundColour ( Ogre::ColourValue ( 80.0/255., 80.0/255.,236.0/255. ) );
 
   // Parametrage du point de vue
   myCamera->setAspectRatio ( Ogre::Real ( myViewPort->getActualWidth() ) / Ogre::Real ( myViewPort->getActualHeight() ) );
@@ -1061,7 +1062,7 @@ void ViewerOgre3D::drawWrist()
     accuracy = 35;
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST  );
-  myWrist->colour ( 0.4, 0.4, 0.4);
+  myWrist->colour ( 0.2, 0.2, 0.2);
   unsigned point_index = 0;
 
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
@@ -1083,7 +1084,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.4, 0.4, 0.4);
+  myWrist->colour ( 1.0, 0.2, 0.2);
   myWrist->position ( radius + 8, 0, 0 );
   myWrist->position ( radius + 8 - 1.5, 0, -1.5 );
 
@@ -1099,7 +1100,7 @@ void ViewerOgre3D::drawWrist()
 
   myWrist->end();
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.4, 0.4, 0.4);
+  myWrist->colour ( 0.2, 0.2, 0.2);
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
       myWrist->position ( 0, radius * cos ( theta ),
@@ -1115,7 +1116,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.4, 0.4, 0.4);
+  myWrist->colour ( 0.2, 1.0, 0.2);
   myWrist->position ( 0, radius + 8, 0 );
   myWrist->position ( 0, radius + 8 - 1.5, -1.5 );
 
@@ -1133,8 +1134,7 @@ void ViewerOgre3D::drawWrist()
 
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.4, 0.4, 0.4);
-
+  myWrist->colour ( 0.2, 0.2, 0.2);
   for ( float theta = 0; theta <= 2 * Ogre::Math::PI; theta += Ogre:: Math::PI / accuracy )
     {
       myWrist->position ( radius * cos ( theta ),
@@ -1150,7 +1150,7 @@ void ViewerOgre3D::drawWrist()
   myWrist->end();
 
   myWrist->begin ( "BaseWhiteNoLighting",  Ogre::RenderOperation::OT_LINE_LIST );
-  myWrist->colour ( 0.4, 0.4, 0.4);
+  myWrist->colour ( 0.2, 0.2, 1.0);
   myWrist->position (   0,0,radius + 8 );
   myWrist->position (   -1.5,0,radius + 8 - 1.5 );
 
@@ -1744,7 +1744,7 @@ void ViewerOgre3D::flipBackgroundColor()
     }
   else
     {
-      myViewPort->setBackgroundColour(Ogre::ColourValue (0.2,0.2,0.2));
+      myViewPort->setBackgroundColour(Ogre::ColourValue ( 80.0/255., 80.0/255.,236.0/255.));
       myBackgroundBlackColor=true;
     }
   

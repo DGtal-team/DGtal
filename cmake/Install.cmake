@@ -16,23 +16,32 @@ INCLUDE(${CMAKE_MODULE_PATH}/DGtalConfigGenerator.cmake)
 
 
 if(WITH_VISU3D_OGRE)
+
   #--- Ogre viewer ressources installation
-  install(DIRECTORY "${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources" 
-    DESTINATION " ${DGTAL_CMAKE_DIR}/OGRE/"
-    FILES_MATCHING PATTERN "*.*")
+  FILE(GLOB_RECURSE Ressourcefiles "${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/media/*.*")
+  install(FILES ${Ressourcefiles}
+    DESTINATION "${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/media/")
   
+  install(FILES "${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/ressources.cfg"
+    DESTINATION "${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/")
+  install(FILES "${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/ogre.cfg"
+    DESTINATION "${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/")
+
   install(FILES
     "${PROJECT_SOURCE_DIR}/cmake/FindOgreDGtal.cmake"
     DESTINATION "${DGTAL_CMAKE_DIR}" COMPONENT dev)
   
-  install (CODE "set(INSTALL_INCLUDE_DIR ${INSTALL_INCLUDE_DIR})
+  install (CODE "set(INSTALL_DATA_DIR ${INSTALL_DATA_DIR})
   configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/RequirementsInstall.h.in
     ${INSTALL_INCLUDE_DIR}/DGtal/io/viewers/OGRE/Requirements.h )")
-  install(CODE  "configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/plugins.cfg.in
-    ${DGTAL_CMAKE_DIR}/OGRE/Ressources/plugins.cfg )")
+  
+  install(CODE  "set(OGRE_PLUGINS ${OGRE_PLUGINS})
+configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/plugins.cfg.in
+    ${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/plugins.cfg )")
+
   IF (APPLE)
     install(CODE  "configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/info.plist.in
-    ${DGTAL_CMAKE_DIR}/OGRE/Ressources/info.plist.in )")
+    ${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/info.plist.in )")
   ENDIF(APPLE)
 endif(WITH_VISU3D_OGRE)
 

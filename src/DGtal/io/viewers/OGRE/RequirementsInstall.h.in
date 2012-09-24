@@ -9,6 +9,5 @@
 #include <string>
 
 ///Path to the DGtal test suite.
-const std::string sourcePath= "@INSTALL_INCLUDE_DIR@/DGtal/io/viewers/OGRE/Ressources/";
-
-const std::string binaryPath= "@INSTALL_INCLUDE_DIR@/DGtal/io/viewers/OGRE/Ressources/";
+const std::string sourcePath= "@INSTALL_DATA_DIR@/DGtal/OGRE/Ressources/";
+const std::string binaryPath= "@INSTALL_DATA_DIR@/DGtal/OGRE/Ressources/";

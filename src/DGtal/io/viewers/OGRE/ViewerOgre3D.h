@@ -135,9 +135,9 @@ namespace DGtal
      *  @return a pointer to ogre's root
      */
     Ogre::Root * getOgreRoot()
-      {
-	return myRoot;
-      }
+    {
+      return myRoot;
+    }
       
       
     /**
@@ -152,9 +152,9 @@ namespace DGtal
      *  @return The Ogre root scenenode
      */
     Ogre::SceneNode * getRootSceneNode()
-      {
-	return mySceneMgr->getRootSceneNode();
-      }
+    {
+      return mySceneMgr->getRootSceneNode();
+    }
       
       
     /**
@@ -271,9 +271,9 @@ namespace DGtal
      *  @return pointer to sceneManager
      */
     Ogre::SceneManager * getSceneMgr()
-      {
-	return mySceneMgr;
-      }		
+    {
+      return mySceneMgr;
+    }		
       
       
     /**
@@ -330,64 +330,64 @@ namespace DGtal
      *  @return the new representation
      */
     Representation * addTriangle(double x1, double y1, double z1,
-			     double x2, double y2,double z2,
-			     double x3, double y3,double z3,
-			     Ogre::SceneNode * aNode,std::string materialName);    
+				 double x2, double y2,double z2,
+				 double x3, double y3,double z3,
+				 Ogre::SceneNode * aNode,std::string materialName);    
       
 
-/**
-*  Creates a quad  and returns it's representation
-*  @param x1 xCoordinate for the first point
-*  @param y1 yCoordinate for the first point
-*  @param z1 zCoordinate for the first point
-*  @param x2 xCoordinate for the second point
-*  @param y2 yCoordinate for the second point
-*  @param z2 zCoordinate for the second point
-*  @param x3 xCoordinate for the second point
-*  @param y3 yCoordinate for the second point
-*  @param z3 zCoordinate for the second point
-*  @param x4 xCoordinate for the second point
-*  @param y4 yCoordinate for the second point
-*  @param z4 zCoordinate for the second point
-*  @param aNode the future representation node
-*  @param materialNode the material name (should be precreated)
-* 
-*  @return the new representation
-*/
+    /**
+     *  Creates a quad  and returns it's representation
+     *  @param x1 xCoordinate for the first point
+     *  @param y1 yCoordinate for the first point
+     *  @param z1 zCoordinate for the first point
+     *  @param x2 xCoordinate for the second point
+     *  @param y2 yCoordinate for the second point
+     *  @param z2 zCoordinate for the second point
+     *  @param x3 xCoordinate for the second point
+     *  @param y3 yCoordinate for the second point
+     *  @param z3 zCoordinate for the second point
+     *  @param x4 xCoordinate for the second point
+     *  @param y4 yCoordinate for the second point
+     *  @param z4 zCoordinate for the second point
+     *  @param aNode the future representation node
+     *  @param materialNode the material name (should be precreated)
+     * 
+     *  @return the new representation
+     */
     Representation * addQuad(double x1, double y1, double z1,
-					   double x2, double y2,double z2,
-					   double x3, double y3,double z3,
-					   double x4, double y4,double z4,
-					   Ogre::SceneNode * aNode,std::string materialName);
+			     double x2, double y2,double z2,
+			     double x3, double y3,double z3,
+			     double x4, double y4,double z4,
+			     Ogre::SceneNode * aNode,std::string materialName);
 
-/**
-*  Creates a polygon  and returns it's representation
-*  @param vectPontsPolygon it's a list of the point that makes the polygon
-*  @param aNode the future representation node
-*  @param materialNode the material name (should be precreated)
-* 
-*  @return the new representation
-*/
- Representation *  addPolygon(std::vector<PointOgre3D> vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName);
-
-
+    /**
+     *  Creates a polygon  and returns it's representation
+     *  @param vectPontsPolygon it's a list of the point that makes the polygon
+     *  @param aNode the future representation node
+     *  @param materialNode the material name (should be precreated)
+     * 
+     *  @return the new representation
+     */
+    Representation *  addPolygon(std::vector<PointOgre3D> vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName);
 
 
-/**
- *  Creates a line and returns it's representation
- *  @param x1 xCoordinate for the first point
- *  @param y1 yCoordinate for the first point
- *  @param z1 zCoordinate for the first point
- *  @param x2 xCoordinate for the second point
- *  @param y2 yCoordinate for the second point
- *  @param z2 zCoordinate for the second point
- *  @param aNode the future representation node
- *  @param materialNode the material name (should be precreated)
- * 
- *  @return the new representation
- */
- Representation * addLine(double x1, double y1, double z1,
-			  double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
+
+
+    /**
+     *  Creates a line and returns it's representation
+     *  @param x1 xCoordinate for the first point
+     *  @param y1 yCoordinate for the first point
+     *  @param z1 zCoordinate for the first point
+     *  @param x2 xCoordinate for the second point
+     *  @param y2 yCoordinate for the second point
+     *  @param z2 zCoordinate for the second point
+     *  @param aNode the future representation node
+     *  @param materialNode the material name (should be precreated)
+     * 
+     *  @return the new representation
+     */
+    Representation * addLine(double x1, double y1, double z1,
+			     double x2, double y2,double z2,Ogre::SceneNode * aNode,std::string materialName);
       
     /**
      *  Creates a point and returns it's representation
@@ -492,9 +492,9 @@ namespace DGtal
      *   Returns the scene center
      */
     Ogre::Vector3 getSceneCenter()
-      {
-	return mySceneCenter;
-      }
+    {
+      return mySceneCenter;
+    }
       
       
     /**
@@ -716,13 +716,13 @@ namespace DGtal
      *  @param object can be a DGtalObject or a DrawableWithOgre3D
      */
     template <typename TDrawableWithDisplay3D>
-      ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
+    ViewerOgre3D & operator<< ( const  TDrawableWithDisplay3D & object );
       
     /**
      *  Returns a dgtal object from selection it's principaly a point
      */
     template <typename TDrawableWithDisplay3D>
-      void operator>> (   TDrawableWithDisplay3D & object );
+    void operator>> (   TDrawableWithDisplay3D & object );
       
     /**
      * Using manipulate on a DGtal Object
@@ -732,7 +732,7 @@ namespace DGtal
      *  @param step is the evolution step.
      */
     template <typename TDrawableWithDisplay3D>
-      void manipulate(TDrawableWithDisplay3D & anObject, TDrawableWithDisplay3D & (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue, int step);
+    void manipulate(TDrawableWithDisplay3D & anObject, TDrawableWithDisplay3D & (*ptrfonction)(TDrawableWithDisplay3D,int), int minValue, int maxValue, int step);
 
   protected:
 	  

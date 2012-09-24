@@ -14,8 +14,6 @@ set(DGTAL_VERSION "@DGTAL_VERSION@")
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
 
-
-
 #------------------------------------------------------------------------------
 # -- Environement variables
 #------------------------------------------------------------------------------
@@ -49,7 +47,6 @@ IF(MSVC)
   #------------------------------------------------------------------------------
   SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
 ENDIF(MSVC)
-
 
 #------------------------------------------------
 #---- We propagate definitions for #define marco 
