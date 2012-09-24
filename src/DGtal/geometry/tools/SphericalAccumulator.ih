@@ -80,15 +80,14 @@ DGtal::SphericalAccumulator<T>::~SphericalAccumulator()
 // --------------------------------------------------------
 template <typename T>
 inline
-void DGtal::SphericalAccumulator<T>::binCoordinates(const RealVector &aDir, 
+void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir, 
 						    Size &posPhi, 
 						    Size &posTheta) const
 {
   double theta,phi;
-
-  ASSERT(fabs(aDir.norm() -1 ) < 0.001);
+  double norm = aDir.norm();
   
-  phi = acos(aDir[2]);
+  phi = acos(NumberTraits<typename T::Component>::castToDouble(aDir[2])/norm);
   
   double dphi = M_PI/(double)(myNphi-1);
   double Nthetai;
@@ -99,11 +98,12 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const RealVector &aDir,
     }
   else
     {
-      if(aDir[1]>=0)
-	theta=atan2(aDir[1],aDir[0]);
-      else 
-	theta=atan2(aDir[1],aDir[0])+2.0*M_PI;
-          
+      theta=atan2(NumberTraits<typename T::Component>::castToDouble(aDir[1]),
+                  NumberTraits<typename T::Component>::castToDouble(aDir[0]));
+ 
+      if(aDir[1]<0)
+	theta += 2.0*M_PI;
+      
       Nthetai = floor(2.0*(myNphi)*sin(posPhi*dphi));
       double dtheta = 2.0*M_PI/(Nthetai);
       posTheta = static_cast<Size>(floor( (theta+dtheta/2.0)/dtheta));
@@ -122,11 +122,10 @@ inline
 void DGtal::SphericalAccumulator<T>::addDirection(const Vector &aDir)
 {
   Size posPhi,posTheta;
-  RealVector normalized = aDir.getNormalized();
-
-  binCoordinates(normalized , posPhi, posTheta);
+ 
+  binCoordinates(aDir , posPhi, posTheta);
   myAccumulator[posTheta + posPhi*myNtheta] += 1;
-  myAccumulatorDir[posTheta + posPhi*myNtheta] += normalized;
+  myAccumulatorDir[posTheta + posPhi*myNtheta] += aDir;
   myTotal ++;
   
   //Max bin update
@@ -219,10 +218,10 @@ inline
 void
 DGtal::SphericalAccumulator<T>::getBinGeometry(const Size &posPhi,
 					       const Size &posTheta,
-					       Vector &a,
-					       Vector &b,
-					       Vector &c,
-					       Vector &d) const
+					       RealVector &a,
+					       RealVector &b,
+					       RealVector &c,
+					       RealVector &d) const
 {
   ASSERT( isValidBin(posPhi,posTheta) );
   double dphi = M_PI/(double)((double)myNphi-1);

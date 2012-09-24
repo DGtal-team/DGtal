@@ -39,10 +39,12 @@
 template <typename TV, typename TColormap >
 inline 
 void DGtal::Display3DFactory::draw( Display3D & display, 
-				    const DGtal::SphericalAccumulator<TV> & aAccumulator )
+				    const DGtal::SphericalAccumulator<TV> & aAccumulator,
+                                    const typename DGtal::SphericalAccumulator<TV>::RealVector &shift,
+                                    const double radius)
 {
   typedef typename DGtal::SphericalAccumulator<TV>::Size Size;
-  TV a,b,c,d;
+  typename DGtal::SphericalAccumulator<TV>::RealVector a,b,c,d;
   Size i,j;
   DGtal::uint32_t m = 1, M=0;
   for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
@@ -66,6 +68,14 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 	{
 	  aAccumulator.binCoordinates(it, i,j);
   	  aAccumulator.getBinGeometry(i,j,a,b,c,d);
+          a+= shift;
+          b+= shift;
+          c+= shift;
+          d+= shift;
+          a = a*radius;
+          b = b*radius;
+          c = c*radius;
+          d = d*radius;
 	  display.addQuad(a[0], a[1], a[2], 
 			  b[0], b[1], b[2], 
 			  c[0], c[1], c[2], 

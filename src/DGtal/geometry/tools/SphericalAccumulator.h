@@ -151,12 +151,12 @@ namespace DGtal
      * Given a normalized direction, this method computes the bin
      * coordinates.
      * 
-     * @pre @a aDir must be unit vector (instance of RealVector type).
+     * @pre @a aDir a direction.
      * @param aDir a direction represented as a unit norm vector.
      * @param posPhi position according to the first direction.
      * @param posTheta position according to the second direction.
      */
-    void binCoordinates(const RealVector &aDir, 
+    void binCoordinates(const Vector &aDir, 
 			Size &posPhi, 
 			Size &posTheta) const;
 
@@ -266,6 +266,24 @@ namespace DGtal
 		    const Size &posTheta) const;
 
 
+    /** 
+     * From the bin index(posPhi,posTheta), we compute the associated
+     * spherical quad (a,b,c,d) counterclockwise on the unit sphere.
+     * 
+     * @param posPhi bin index along the first direction.
+     * @param posTheta bin index along the second direction.
+     * @param a vertex position.
+     * @param b vertex position.
+     * @param c vertex position.
+     * @param d vertex position.
+     */
+    void getBinGeometry(const Size &posPhi,
+			const Size &posTheta,
+			RealVector &a, 
+                        RealVector &b, 
+                        RealVector &c, 
+                        RealVector &d) const;
+    
     // ------------------------- Iterators ------------------------------
     
     /** 
@@ -300,22 +318,6 @@ namespace DGtal
 			Size &posPhi, 
 			Size &posTheta) const;
 
-
-    /** 
-     * From the bin index(posPhi,posTheta), we compute the associated
-     * spherical quad (a,b,c,d) counterclockwise on the unit sphere.
-     * 
-     * @param posPhi bin index along the first direction.
-     * @param posTheta bin index along the second direction.
-     * @param a vertex position.
-     * @param b vertex position.
-     * @param c vertex position.
-     * @param d vertex position.
-     */
-    void getBinGeometry(const Size &posPhi,
-			const Size &posTheta,
-			Vector &a,Vector &b, Vector &c, Vector &d) const;
-    
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
