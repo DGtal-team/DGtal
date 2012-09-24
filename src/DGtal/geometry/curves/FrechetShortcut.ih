@@ -34,11 +34,10 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+
 ///////////////////////////////////////////////////////////////
-// Subclass backpath
+// Class backpath
 ////////////////////////////////////////////////////////////////
-
-
 
 
 //creation of a backPath
@@ -81,10 +80,7 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::backpath::updateBackPathFirstQ
 {  
   
   myIt = it;
-  //myIt = (myS->myEnd) + 1;
 
-  //std::cerr << Point(*((myS->myEnd) + 1));
-  
   //trace.info() << "local frame direction " << d  << std::endl;
   switch(d)
     {    
@@ -377,8 +373,208 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::backpath::addNegativePoint()
   
 
 }
+///////////////////////////////////////////////////////////////////////////
+// End of class backpath
+////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// Class cone
+////////////////////////////////////////////////////////////////////////////
 
 
+//creation of a cone
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::cone::cone()
+{
+  myInf = true;
+  myMin = 0;
+  myMax = 0;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::cone::cone(double m, double mm, bool a)
+{
+  myMin = m;
+  myMax = mm;
+  myB = a;
+  myInf = false;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::cone::cone(double angle0, double angle1)
+{
+  myB = 0;
+  
+  // angle0 and angle1 are ordered in direct orientation such that the angle between made by the two directions is lower than PI.
+
+  
+  // case angle0-angle1 = PI -> infinite cone
+  if(fabs(fabs(angle0-angle1)-M_PI) < 0.00001)
+    {
+      // the orientation is supposed to be ok (depends on the points involved)
+      // std::cerr << "init by angles" << std::endl;
+      myMin = angle0;
+      myMax = angle1;
+    }
+  else
+    if(fabs(angle0-angle1)<M_PI)
+      {
+	if(angle0-angle1>0)
+	  {
+	    myMin = angle1;
+	    myMax = angle0;
+	  }
+	else
+	  {
+	    myMin = angle0;
+	    myMax = angle1;
+	  }
+      }
+    else
+      {
+	// the cone includes the direction of angle=0
+	myB = 1;
+	if(angle0>angle1)
+	  {
+	    myMin = angle0;
+	    myMax = angle1; 
+	  }
+	else
+	  {
+	    myMin = angle1;
+	    myMax = angle0; 
+	  }
+      }
+  myInf = false;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+DGtal::FrechetShortcut<TIterator,TInteger>::cone::cone(double x, double y, double x0, double y0, double x1, double y1)
+{
+  //std::cerr << x << " " << y << " " << x0 << " " << y0 << " " << x1 << " " << y1 << std::endl;
+  double angle0 = Tools::computeAngle(x, y, x0, y0);
+  double angle1 = Tools::computeAngle(x, y, x1, y1);
+  //std::cerr << angle0 << " " << angle1 << std::endl;
+  *this = cone(angle0,angle1);
+  myInf = false;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+bool DGtal::FrechetShortcut<TIterator,TInteger>::cone::isEmpty()
+{
+  if(myInf)
+    return false;
+  else
+    if(myMin==myMax)
+      return true;
+    else
+      return false;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+typename DGtal::FrechetShortcut<TIterator,TInteger>::cone& DGtal::FrechetShortcut<TIterator,TInteger>::cone::operator=(const cone& c)
+{
+  myMin =c.myMin;
+  myMax=c.myMax;
+  myB = c.myB;
+  myInf = c.myInf;
+  return *this;
+}
+
+// // Computes the symmetrical cone
+template <typename TIterator, typename TInteger>
+inline
+typename DGtal::FrechetShortcut<TIterator,TInteger>::cone DGtal::FrechetShortcut<TIterator,TInteger>::cone::symmetricalCone()
+{
+  cone cnew(myMin+M_PI,myMax+M_PI);
+  return cnew;
+}
+
+// Computes the intersection between the self cone and another one.
+template <typename TIterator, typename TInteger>
+inline
+void DGtal::FrechetShortcut<TIterator,TInteger>::cone::intersectCones(cone c)
+{
+  cone res;
+  
+  // computes the intersection between the self cone and one half of another cone
+  res = intersectConesSimple(c);
+  
+  // if they are disjoint, try the intersection with the other half
+  if(res.isEmpty())
+    {
+      //std::cout << "symmetrical" << std::endl;
+      cone sym = c.symmetricalCone();
+      res = intersectConesSimple(sym);
+    }
+  
+  *this = res;
+}
+
+
+//intersection of the self cone with another cone: considers only one half of the cone
+template <typename TIterator, typename TInteger>
+inline
+typename DGtal::FrechetShortcut<TIterator,TInteger>::cone DGtal::FrechetShortcut<TIterator,TInteger>::cone::intersectConesSimple(cone c)
+{
+  cone res;
+  
+  // if the cone is infinite, the new cone is c
+  if(myInf)
+    {
+      res = c;
+      res.myInf = false;
+    }
+  else    
+    // the directions of the new cone are not included in the old one
+    if(!Tools::isBetween(c.myMin, myMin, myMax, 2*M_PI) && !Tools::isBetween(c.myMax, myMin,
+							 myMax,
+							 2*M_PI)) 
+      {
+	// first possibility: the cones are disjoint
+	if(!Tools::isBetween(myMin, c.myMin, c.myMax, 2*M_PI) && !Tools::isBetween(myMax, c.myMin,
+							       c.myMax, 2*M_PI))
+	  res = cone(0,0);
+	else
+	  // or the new cone includes the old one, nothing changes, the cone remains the same.
+	  res = *this;
+      }
+    else
+      // the old cone is "cut" by the new one
+      if(Tools::isBetween(c.myMin, myMin, myMax, 2*M_PI))
+	if(Tools::isBetween(c.myMax, myMin, myMax, 2*M_PI))
+	  res = c;
+	else
+	  res = cone(c.myMin, myMax);
+      else
+	res = cone(myMin,c.myMax);
+  
+  return res;
+}
+
+template <typename TIterator, typename TInteger>
+inline
+void DGtal::FrechetShortcut<TIterator,TInteger>::cone::selfDisplay ( std::ostream & out)
+{
+  out << "[Cone]" <<  endl;
+  if(myInf)
+    out << "Infinite" << endl;
+  else
+    out << "[Cone min = " << myMin << " max = " << myMax << "]" << endl;
+  out << "[End Cone]" <<  endl; 
+}
+
+        
+/////////////////////////////////////////////////////////////////////////////
+/// FrechetShortcut class
+/////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -516,7 +712,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableForward()
 
 template <typename TIterator, typename TInteger>
 inline
-cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
+typename FrechetShortcut<TIterator,TInteger>::cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
 {
   double x0, y0,x1,y1;
 
@@ -528,7 +724,7 @@ cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
   
   // compute the tangent points defined by the first point and the
   // circle C(newP,error)
-  bool intersect = cone::Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
+  bool intersect = Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
 				       &x1, &y1);
   
   if(intersect)
@@ -538,7 +734,7 @@ cone FrechetShortcut<TIterator,TInteger>::computeNewCone()
       // case where there is one single tangent point
       if(fabs(x0-x1) < 0.00001 && fabs(y0-y1) < 0.00001)
 	{
-	  double angle = cone::Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
+	  double angle = Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
 	  double angle0 = angle - M_PI_2;
 	  if(angle0<0)
 	    angle0 = angle0+2*M_PI;
@@ -573,9 +769,8 @@ bool FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
       return true;
     else
       {
-	double angle = cone::Tools::computeAngle(firstP[0], firstP[1], newP[0],
-				    newP[1]);
-	return cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
+	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0], newP[1]);
+	return Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
       }
   else
     return false;
@@ -601,9 +796,9 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
       flag = true;
     else
       {
-	double angle = cone::Tools::computeAngle(firstP[0], firstP[1], newP[0],
+	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0],
 						 newP[1]);
-	flag = cone::Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
+	flag = Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
       }
   else
     flag = false;

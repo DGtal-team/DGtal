@@ -43,8 +43,6 @@
 // Inclusions
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
-//#include "DGtal/geometry/curves/backpath.h"
-#include "DGtal/geometry/curves/cone.h"
 #include "DGtal/kernel/PointVector.h"
 #include <boost/icl/interval_set.hpp>
 #include <map>
@@ -90,6 +88,8 @@ namespace DGtal
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
     
+
+    // Class backpath: data structures and methods to handle the backpath update
     class backpath
     {
     private:
@@ -107,7 +107,7 @@ namespace DGtal
       
       
       typedef map <ConstIterator,occulter_attributes > occulter_list;
-
+      
     public:
       friend class FrechetShortcut<ConstIterator,Integer>;
       
@@ -143,32 +143,208 @@ namespace DGtal
     }; // End of class backpath
 
 
-  
-  //typedef vector<Integer> Point;
-  
-  struct Tools
-  {
+    // Class cone: data structures and methods to handle the cone update
+    // used to test if the width of the shortcut is lower than the error 
+    class cone{
+      
+    public:
+      double myMin;
+      double myMax;
+      double myB;
+      bool myInf; // true if the cone is infinite (the whole plane)
+      
+      cone();
+      cone(double m, double mm, bool a);
+      cone(double a0, double a1);
+      cone(double x, double y, double x0, double y0, double x1, double y1);
+      bool isEmpty();
+      cone& operator=(const cone& c);
+      void intersectCones(cone c);
+      cone intersectConesSimple(cone c);
+      cone symmetricalCone();
+      
+      /**
+       * Writes/Displays the object on an output stream.
+       * @param out the output stream where the object is written.
+       */
+      void selfDisplay ( std::ostream & out) ;
+      
+      
+    };
+    
+    
 
-    static int scalar_product(Vector u, Vector v)
-    {
-      return u[0]*v[0]+u[1]*v[1];
-    }
     
-    static int determinant(Vector u, Vector v)
+    struct Tools
     {
-      return u[0]*v[1]-u[1]*v[0];
-    }
+      static  bool isBetween(double i, double a, double b, double n)
+      {
+	// if a<=b, a simple comparison enables to conclude
+	if(a<=b)
+	  if(i>=a && i<=b)
+	    return true;
+	  else
+	    return false;
+	else
+	  {
+	    //otherwise, translate the points such that a->0
+	    int tmp = a;
+	    a = fmod(a+n-tmp,n);
+	    b = fmod(b+n-tmp,n);
+	    i = fmod(i+n-tmp,n);
+	    return isBetween(i,a,b,n); 
+	  }
+      }
+      
+      
+      // Code by Tim Voght
+      // http://local.wasp.uwa.edu.au/~pbourke/geometry/2circle/tvoght.c
+      
+      /* circle_circle_intersection() *
+       * Determine the points where 2 circles in a common plane intersect.
+       *
+       * int circle_circle_intersection(
+       *                                // center and radius of 1st circle
+       *                                double x0, double y0, double r0,
+       *                                // center and radius of 2nd circle
+       *                                double x1, double y1, double r1,
+       *                                // 1st intersection point
+       *                                double *xi, double *yi,              
+       *                                // 2nd intersection point
+       *                                double *xi_prime, double *yi_prime)
+       *
+       * This is a public domain work. 3/26/2005 Tim Voght
+       *
+       */
+      static int  circle_circle_intersection(double x0, double y0, double r0,
+					     double x1, double y1, double r1,
+					     double *xi, double *yi,
+					     double *xi_prime, double *yi_prime)
+      {
+	double a, dx, dy, d, h, rx, ry;
+	double x2, y2;
+	
+	/* dx and dy are the vertical and horizontal distances between
+	 * the circle centers.
+	 */
+	dx = x1 - x0;
+	dy = y1 - y0;
+	
+	/* Determine the straight-line distance between the centers. */
+	//d = sqrt((dy*dy) + (dx*dx));
+	d = hypot(dx,dy); // Suggested by Keith Briggs
+	
+	/* Check for solvability. */
+	if (d > (r0 + r1))
+	{
+	  /* no solution. circles do not intersect. */
+	  std::cerr  << "Warning : the two circles do not intersect -> should never happen" << std::endl;
+	  return 0; //I. Sivignon 05/2010 should never happen for our specific use.
+	}
+	if (d < fabs(r0 - r1))
+	  {
+	    /* no solution. one circle is contained in the other */
+	    return 0;
+	  }
+	
+	/* 'point 2' is the point where the line through the circle
+	 * intersection points crosses the line between the circle
+	 * centers.  
+	 */
+	
+	/* Determine the distance from point 0 to point 2. */
+	a = ((r0*r0) - (r1*r1) + (d*d)) / (2.0 * d) ;
+	
+	/* Determine the coordinates of point 2. */
+	x2 = x0 + (dx * a/d);
+	y2 = y0 + (dy * a/d);
+	
+	/* Determine the distance from point 2 to either of the
+       * intersection points.
+       */
+	h = sqrt((r0*r0) - (a*a));
+	
+	/* Now determine the offsets of the intersection points from
+	 * point 2.
+	 */
+	rx = -dy * (h/d);
+	ry = dx * (h/d);
+	
+	/* Determine the absolute intersection points. */
+	*xi = x2 + rx;
+	*xi_prime = x2 - rx;
+	*yi = y2 + ry;
+	*yi_prime = y2 - ry;
+	
+	//   if(fabs(rx) < 0.00001 && fabs(ry) < 0.00001)
+	//     std::cerr << "un seul point" << std::endl;
+	
+	return 1;
+      }
+      
+
+
+      
+      static int circleTangentPoints(double x, double y, double x1, double y1, double r1, double *xi, double *yi, 
+			      double *xi_prime, double *yi_prime)
+      {
+	double x0 = (x+x1)/2;
+	double y0 = (y+y1)/2;
+	double r0 = sqrt((x-x1)*(x-x1) + (y-y1)*(y-y1))/2;
+	
+	int res =
+	  circle_circle_intersection(x0,y0,r0,x1,y1,r1,xi,yi,xi_prime,yi_prime);
+	
+	return res;
+	
+      }
     
-    /* static double norm(Point u) */
-    /* { */
-    /*   return sqrt((double)u[0]*u[0]+(double) u[1]*u[1]); */
-    /* } */
+
+      
+      // compute the angle of the line passing through two points. Angle in [0,2pi]
+      static double computeAngle(double x0, double y0, double x1, double y1)
+      {
+	double x = x1-x0;
+	double y = y1-y0;
 	
-	
-    static double angleVectVect(Vector u, Vector v)
-    {
-      return acos((double)scalar_product(u,v)/(u.norm()*v.norm()));
-    }
+	if(x!=0)
+	  {
+	    double alpha = y/x;
+	  
+	  if(x>0 && y>=0)
+	    return atan(alpha);
+	  else
+	    if(x>0 && y<0)
+	      return atan(alpha)+2*M_PI;
+	    else
+	      if(x<0)
+		return atan(alpha)+M_PI;
+	  }
+	else
+	  {
+	    if(y>0)
+	      return M_PI_2;
+	    else
+	      return 3*M_PI_2;
+	  }
+      }      
+      
+
+      static int scalar_product(Vector u, Vector v)
+      {
+	return u[0]*v[0]+u[1]*v[1];
+      }
+      
+      static int determinant(Vector u, Vector v)
+      {
+	return u[0]*v[1]-u[1]*v[0];
+      }
+      
+      
+      static double angleVectVect(Vector u, Vector v)
+      {
+	return acos((double)scalar_product(u,v)/(u.norm()*v.norm()));
+      }
 	
 
 
@@ -444,8 +620,8 @@ public:
     ConstIterator myBegin;
     /**
      * ConstIterator pointing to the front of the DSS
-   */
-  ConstIterator myEnd;
+     */
+    ConstIterator myEnd;
   
 
   
