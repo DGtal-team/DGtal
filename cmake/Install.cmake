@@ -30,7 +30,7 @@ if(WITH_VISU3D_OGRE)
   install(FILES
     "${PROJECT_SOURCE_DIR}/cmake/FindOgreDGtal.cmake"
     DESTINATION "${DGTAL_CMAKE_DIR}" COMPONENT dev)
-  
+
   install (CODE "set(INSTALL_DATA_DIR ${INSTALL_DATA_DIR})
   configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/RequirementsInstall.h.in
     ${INSTALL_INCLUDE_DIR}/DGtal/io/viewers/OGRE/Requirements.h )")
@@ -40,6 +40,10 @@ configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/plug
     ${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/plugins.cfg )")
 
   IF (APPLE)
+    install(CODE
+      "configure_file(${PROJECT_SOURCE_DIR}/cmake/CheckOBJCInstall.cmake 
+    ${DGTAL_CMAKE_DIR}/CheckOBJC.cmake)")
+    
     install(CODE  "configure_file(  ${PROJECT_SOURCE_DIR}/src/DGtal/io/viewers/OGRE/Ressources/info.plist.in
     ${INSTALL_DATA_DIR}/DGtal/OGRE/Ressources/info.plist.in )")
   ENDIF(APPLE)
