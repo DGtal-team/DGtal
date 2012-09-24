@@ -260,8 +260,8 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
 
   myMode = new TextZone("Mode: View"); 
-  myMode->setPosition(70,550);
-  myMode->setSize(24);
+  //myMode->setPosition(70,550);
+
 
   //Creation de l'input listener
   createFrameListener();
@@ -1264,9 +1264,9 @@ void ViewerOgre3D::loadFonts()
   // set as truetype
   font->setParameter("type","truetype");
   // set the .ttf file name
-  font->setParameter("source","bluecond.ttf");
+  font->setParameter("source","NanumGothic.ttf");
   // set the size
-  font->setParameter("size","26");
+  font->setParameter("size","18");
   // set the dpi
   font->setParameter("resolution","96");
   // load the ttf
@@ -1707,8 +1707,8 @@ void ViewerOgre3D::showHelp()
  */
 void ViewerOgre3D::resetPosition(int h, int w)
 {
-  myMode->setPosition(w/10,h-h/10);
-  myMode->setSize(36);
+  myMode->setPosition(w/30,h-h/20);
+  //myMode->setSize(36);
   // Parametrage du point de vue
   myCamera->setAspectRatio ( Ogre::Real ( myViewPort->getActualWidth() ) / Ogre::Real ( myViewPort->getActualHeight() ) );
 

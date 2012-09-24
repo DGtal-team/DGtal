@@ -52,13 +52,14 @@ DGtal::TextZone::TextZone(std::string aContent) : myPanel ( 0 ), myText ( 0 )
   myPanel = static_cast<OverlayContainer*>(
 					   overlayManager.createOverlayElement("Panel",aContent ));
   myPanel->setMetricsMode(Ogre::GMM_PIXELS);
-  myPanel->setPosition(10, 10);
-  myPanel->setDimensions(100, 100);
+  myPanel->setPosition(0, 0);
+  myPanel->setDimensions(100,100);
   
   
   // Create a text area
   myText = static_cast<TextAreaOverlayElement*>(
 						overlayManager.createOverlayElement("TextArea", aContent + (char)1));
+ 
   myText->setMetricsMode(Ogre::GMM_PIXELS);
   myText->setPosition(0, 0);
   myText->setDimensions(100, 100);
