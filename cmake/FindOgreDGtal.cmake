@@ -28,10 +28,7 @@ if(UNIX AND NOT APPLE)
 endif(UNIX AND NOT APPLE)
 
 if(APPLE)
-  INCLUDE("CheckOBJC.cmake")
-  IF( NOT OBJC_SUPPORT)
-    MESSAGE(ERROR "Your compiler does not support ObjectC++ language. ObjectiveC++ is mandatory for OGRE Viewer. Change yout compiler of disable WITH_OGRE.")
-  ENDIF()
+  
   FIND_LIBRARY(CARBON_LIBRARY Carbon)
   FIND_LIBRARY(COCOA_LIBRARY Cocoa)
   FIND_LIBRARY(IOKIT_LIBRARY IOKit )

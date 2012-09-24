@@ -331,7 +331,9 @@ ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 # -----------------------------------------------------------------------------
 set(OGRE_FOUND_DGTAL 0)
 IF(WITH_OGRE)
+  INCLUDE("${CMAKe_MODULE_PATH}/CheckOBJC.cmake")
+  IF( NOT OBJC_SUPPORT)
+    MESSAGE(ERROR "Your compiler does not support ObjectC++ language. ObjectiveC++ is mandatory for OGRE Viewer. Change yout compiler of disable WITH_OGRE.")
+  ENDIF()ENDIF(WITH_OGRE)
   find_package(OgreDGtal)
-ENDIF(WITH_OGRE)
-
 message(STATUS "-------------------------------------------------------------------------------")
