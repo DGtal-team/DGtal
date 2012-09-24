@@ -35,8 +35,8 @@
 
 
 
-// SphericalAccumulator 
-template <typename TV, typename TColormap >
+// SphericalAccumulator
+template <typename TV >
 inline 
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::SphericalAccumulator<TV> & aAccumulator,
@@ -58,7 +58,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 	}
     }
   trace.error()<<" min= "<<m <<" Max="<<M<<std::endl;
-  TColormap cmap(m,M+1);
+  HueShadeColorMap<typename DGtal::SphericalAccumulator<TV>::Quantity> cmap(m,M+1);
   
   for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
 	itend= aAccumulator.end(); it != itend; ++it)

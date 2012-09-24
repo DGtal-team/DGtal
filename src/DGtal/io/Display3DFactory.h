@@ -57,6 +57,7 @@
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/CColorMap.h"
 
 
 
@@ -76,7 +77,7 @@ namespace DGtal
     // SphericalAccumulator
     /** 
      * Display an spherical accumulator in 3D. Bin values are mapped
-     * using a default constructed colormap @a TColormap
+     * using a default HueShadeColorMap.
      * 
      * @param display current display
      * @param accumulator the accumulator to display
@@ -84,9 +85,8 @@ namespace DGtal
      * zero vector)
      * @param radius scale factor for the unit sphere radius (default:1)
      * @tparam Vector a vector model
-     * @tparam TColormap any model of colormap (default: HueShadeColorMap<DGtal::uint32_t> )
      */
-    template <typename TVector, typename TColormap=HueShadeColorMap<DGtal::uint32_t> >
+    template <typename TVector>
     static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator,
                       const typename DGtal::SphericalAccumulator<TVector>::RealVector &shift = 
                       typename DGtal::SphericalAccumulator<TVector>::RealVector(0,0,0),
