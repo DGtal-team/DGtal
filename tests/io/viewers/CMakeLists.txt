@@ -32,8 +32,7 @@ if ( WITH_VISU3D_IV )
 
   FOREACH(FILE ${DGTALIV_TESTS_SRC})
     add_executable(${FILE} ${FILE})
-    target_link_libraries ( ${FILE} DGtalIO DGtal
-      ${DGtalLibDependencies})
+    target_link_libraries ( ${FILE} DGtalIO DGtal ${DGtalOgre} )
     #add_test(${FILE} ${FILE})
     #not a test since IHM
   ENDFOREACH(FILE)
