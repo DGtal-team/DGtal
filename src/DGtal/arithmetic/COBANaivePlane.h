@@ -49,6 +49,7 @@
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/ConvexIntegerPolygon.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -69,6 +70,7 @@ namespace DGtal
    * assignable. It is iterable (inner type ConstIterator, begin(),
    * end()). It has methods extend(Point), extend( Iterator, Iterator)
    * and isExtendable(Point), isExtendable(Iterator, Iterator).
+   * It is also a model of CPointPredicate.
    *
    * @tparam TSpace specifies the type of digital space in which lies
    * input digital points. A model of CSpace.
@@ -96,6 +98,7 @@ namespace DGtal
     typedef std::set< Point > PointSet;
     typedef typename PointSet::const_iterator ConstIterator;
     typedef TInternalInteger InternalInteger;
+    typedef IntegerComputer< InternalInteger > MyIntegerComputer;
 
     // ----------------------- internal types ------------------------------
   private:
@@ -110,15 +113,13 @@ namespace DGtal
        may change after initialization of the COBANaivePlane object.
     */
     struct State {
-      PointSet pointSet;       /**< the set of points within the plane. */ 
+      InternalInteger max;     /**< current max dot product. */
+      InternalInteger min;     /**< current min dot product. */
       ConstIterator indMax;    /**< 3D point giving the max dot product. */
       ConstIterator indMin;    /**< 3D point giving the min dot product. */
       ConvexPolygonZ2 cip;     /**< current constraint integer polygon. */
       InternalPoint3 centroid; /**< current centroid of cip. */
       InternalPoint3 N;        /**< current normal vector. */
-      InternalInteger max;     /**< current max dot product. */
-      InternalInteger min;     /**< current min dot product. */
-      InternalPoint2 grad;     /**< the current gradient. */
     };
 
     // ----------------------- Standard services ------------------------------
@@ -147,6 +148,11 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     COBANaivePlane & operator= ( const COBANaivePlane & other );
+
+    /**
+       @return the object that performs integer calculation.
+    */
+    MyIntegerComputer & ic() const;
 
     /**
      * Clear the object, free memory. It is no more valid.
@@ -187,18 +193,38 @@ namespace DGtal
     Size size() const;
 
     /**
-     * Adds the point [p] and checks if we have still a digital plane
-     * of specified width.
+     * Checks if the point \a p is in the current digital
+     * plane. Therefore, a COBANaivePlane is a model of
+     * CPointPredicate.
+     *
+     * @param p any 3D point.
+     *
+     * @return 'true' if it is in the current plane, false otherwise.
+     */
+    bool operator()( const Point & p ) const;
+
+    /**
+     * Adds the point \a p to this plane if it is within the current
+     * bounds. The plane parameters are not updated.
      *
      * @param p any 3D point (in the specified diameter).
      *
-     * @param allowNewNormal if 'true' the normal may be updated,
-     * 'false' the normal is never updated.
+     * @return 'true' if \a p is in the plane, 'false' otherwise (the
+     * object is then in its original state).
+     */
+    bool extendAsIs( const Point & p );
+
+    /**
+     * Adds the point \a p and checks if we have still a digital plane
+     * of specified width. The plane parameters may be updated so as
+     * to include the new point.
+     *
+     * @param p any 3D point (in the specified diameter).
      *
      * @return 'true' if it is still a plane, 'false' otherwise (the
      * object is then in its original state).
      */
-    bool extend( const Point & p, bool allowNewNormal = true );
+    bool extend( const Point & p );
 
 
     // ----------------------- Interface --------------------------------------
@@ -221,10 +247,13 @@ namespace DGtal
     Dimension myAxis;          /**< the main axis used in all subsequent computations. */
     InternalInteger myG;       /**< the grid step used in all subsequent computations. */
     InternalPoint2 myWidth;    /**< the plane width as a positive rational number myWidth[0]/myWidth[1] */
+    PointSet myPointSet;       /**< the set of points within the plane. */ 
     State myState;             /**< the current state that defines the plane being recognized. */
     InternalInteger myCst1;    /**<  ( (int) ceil( get_si( myG ) * myWidth ) + 1 ). */
     InternalInteger myCst2;    /**<  ( (int) floor( get_si( myG ) * myWidth ) - 1 ). */
-    mutable InternalInteger _v;
+    mutable InternalInteger _v;/**< temporary variable used in computations. */
+    mutable State _state;      /**< Temporary state used in computations. */
+    mutable InternalPoint2 _grad; /**< temporary variable to store the current gradient. */
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -236,15 +265,81 @@ namespace DGtal
      * Recompute centroid of polygon of solution and deduce the
      * current normal vector.  It is called after any modification of
      * the convex polygon representing the set of solution.
+     *
+     * @param state (modified) the state where the fields state.cip are used in computation and where
+     * fields state.centroid and state.N are updated.
      */
-    void computeCentroidAndNormal();
+    void computeCentroidAndNormal( State & state );
 
     /**
      * Performs the double cut in parameter space according to the
-     * current gradient and width. Calls computeCentroidAndNormal
-     * afterwards.
+     * current gradient and width. The centroid and normals are no
+     * more valid (computeCentroidAndNormal should be called
+     * afterwards).
+     *
+     * @param state (modified) the state where the fields state.grad,
+     * state.indMin, state.indMax, state.cip are used in computation and where
+     * field state.cip is updated.
      */
-    void doubleCut();
+    void doubleCut( State & state );
+
+    /**
+     * Computes the min and max values/arguments of the scalar product
+     * between the normal state.N and the points in the range
+     * [itB,itE). Overwrites state.min, state.max at the start.
+     *
+     * @tparam TInputIterator a model of boost::InputIterator on Point.
+     *
+     * @param state (modified) the state where the normal N is used in
+     * computation and where fields state.min, state.max,
+     * state.indMin, state.indMax are updated.
+     *
+     * @param itB an input iterator on the first point of the range.
+     * @param itE an input iterator after the last point of the range.
+     */
+    template <typename TInputIterator>
+    void computeMinMax( State & state, IInputIterator itB, IInputIterator itE );
+
+    /**
+     * Updates the min and max values/arguments of the scalar product
+     * between the normal state.N and the points in the range
+     * [itB,itE). Do not overwrite state.min, state.max at the start.
+     *
+     * @tparam TInputIterator a model of boost::InputIterator on Point.
+     *
+     * @param state (modified) the state where the normal N is used in
+     * computation and where fields state.min, state.max,
+     * state.indMin, state.indMax are updated.
+     *
+     * @param itB an input iterator on the first point of the range.
+     * @param itE an input iterator after the last point of the range.
+     * @return 'true' if any of the fields state.min, state.max,
+     * state.indMin, state.indMax have been updated, 'false'
+     * otherwise.
+     */
+    template <typename TInputIterator>
+    bool updateMinMax( State & state, IInputIterator itB, IInputIterator itE );
+
+    /**
+     * @param state the state where the normal state.N, the scalars state.min and state.max are used in
+     * computations.
+     *
+     * @return 'true' if the current width along state.N (computed
+     * from the difference of state.max and state.min) is strictly
+     * inferior to the maximal specified width (in myWidth), 'false'
+     * otherwise.
+     */
+    bool checkPlaneWidth( const State & state ) const;
+
+    /**
+     * @param grad (updated) the value of a gradient used to cut the
+     * polygon of solutions.
+     *
+     * @param state the state where the iterators state.indMin and
+     * state.indMax are used in computations.
+     */
+    static 
+    void computeGradient( InternalPoint2 & grad, const State & state );
 
   }; // end of class COBANaivePlane
 
