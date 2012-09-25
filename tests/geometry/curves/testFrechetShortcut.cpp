@@ -45,7 +45,7 @@
 
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
-#include "Dgtal/helpers/StdDefs.h"
+#include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 

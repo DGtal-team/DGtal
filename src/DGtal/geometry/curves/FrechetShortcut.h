@@ -577,13 +577,13 @@ namespace DGtal
       
       if(x>=0)
 	if(y>=0)
-	  if(x>y)
-	    d=0; // 0 <= y < x  
-	  else
-	    {
+	  {
+	    if(x>y)
+	      d=0; // 0 <= y < x  
+	    else
 	      if(x!=0)
 		d=1; // 0 <= x <= y
-	    }
+	  }
 	else
 	  if(x>=abs(y)) 
 	    d=7; // 0 < abs(y) <= x 
@@ -591,17 +591,21 @@ namespace DGtal
 	    d=6; // 0 <= x < abs(y)
       
       if(x<=0)
-	if(y>0)
-	  if(abs(x)>=y)
-	    d=3; // 
+	{
+	  if(y>0)
+	    if(abs(x)>=y)
+	      d=3; // 
+	    else
+	      d=2;
 	  else
-	    d=2;
-	else
-	  if(abs(x)>abs(y))
-	    d=4;
-	  else
-	    if(x!=0)
-	      d=5;
+	    {
+	      if(abs(x)>abs(y))
+		d=4;
+	      else
+		if(x!=0)
+		  d=5;
+	    }
+	}
       return d;
       
     }

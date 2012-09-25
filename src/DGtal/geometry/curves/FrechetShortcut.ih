@@ -820,8 +820,7 @@ bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   double angle = Tools::angleVectVect(v,dir_elem);
   
   bool ok = true;
-  bool end = false;
-  
+    
   boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
   if(contains(intervals,angle))
