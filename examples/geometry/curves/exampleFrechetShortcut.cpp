@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file FrechetShortcut.cpp
+ * @file exampleFrechetShortcut.cpp
  * @ingroup Examples
  * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
  * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
  *
  * @date 2012/03/26
  *
- * An example file named FrechetShortcut.
+ * An example file named exampleFrechetShortcut.
  *
  * This file is part of the DGtal library.
  */
@@ -68,8 +68,9 @@ int main( int argc, char** argv )
   
   Board2D board;
   
+  // Display the pixels as arrows range to show the way the curve is scanned
   board << c.getArrowsRange();
-
+  
   trace.beginBlock("Simple example");
 
   //! [FrechetShortcutUsage]
@@ -78,32 +79,28 @@ int main( int argc, char** argv )
   typedef FrechetShortcut<Curve::PointsRange::ConstIterator,int> Shortcut;
   
   // Computation of one shortcut
-
-  //Shortcut s(error);
-
-  // s.init( r.begin() );
-  // while ( ( s.end() != r.end() )
-  // 	  &&( s.extendForward() ) ) { std::cerr << ( s.end() != r.end() );}
+  Shortcut s(error);
   
+  s.init( r.begin() );
+  while ( ( s.end() != r.end() )
+  	  &&( s.extendForward() ) ) {}
   
+
+
   // Computation of a greedy segmentation
   
   typedef GreedySegmentation<Shortcut> Segmentation;
   
-
   Segmentation theSegmentation( r.begin(), r.end(), Shortcut(error) );
   
-
+  // the segmentation is computed here
   Segmentation::SegmentComputerIterator it = theSegmentation.begin();
   Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
 
-  Shortcut s;
-  
   for ( ; it != itEnd; ++it) {
     s=Shortcut(*it);
     trace.info() << s << std::endl;
     board << s; 
-    //   //   for (Iterator i = it->begin(); i != it->end(); ++i)
   }
   
   board.saveEPS("FrechetShortcutExample.eps", Board2D::BoundingBox, 5000 ); 
