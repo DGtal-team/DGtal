@@ -194,8 +194,8 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
   - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
   - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class KhalimskyCell  ,  modes: "" / "Basic" (default), "Highlighted" ,  "Transparent", "Illustration".
-  - class SignedKhalimskyCell  ,  modes: "" / "Basic" (default), "Highlighted" ,  "Transparent", "Illustration".
+  - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration".
+  - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration".
 
 
 

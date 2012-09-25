@@ -588,6 +588,14 @@ namespace DGtal
      * Divides @a *this by the @a coeff scalar number.
      *
      * @param coeff is the factor @a *this get divided by.
+     * @return the component division of *this by coeff.
+     */
+    Self operator/ ( const Component coeff );
+    
+    /**
+     * Divides @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get divided by.
      * @return a reference on 'this'.
      */
     Self & operator/= ( const Component coeff );
