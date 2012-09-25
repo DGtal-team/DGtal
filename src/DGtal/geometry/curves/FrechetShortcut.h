@@ -24,7 +24,7 @@
  *
  * @date 2012/02/24
  *
- * Header file for module FrechetShortcut.cpp
+ * @brief Header file for module FrechetShortcut.cpp
  *
  * This file is part of the DGtal library.
  */
@@ -58,26 +58,56 @@ namespace DGtal
   // class FrechetShortcut
   /**
    * Description of class 'FrechetShortcut' <p>
-   * \brief Aim:
-   * Computation of the longest shortcut according to the Fréchet distance for a given error
+   * @brief Aim:
+   * On-line computation Computation of the longest shortcut according to the Fréchet
+   * distance for a given error. 
+   
+   The algorithm we propose uses an approximation of the Fréchet distance,
+   but a guarantee over the quality of the simplification is
+   proved. Moreover, even if the theoretical complexity of the algorithm is
+   in @f$ O(n log(n)) @f$, experiments show a linear behaviour in practice. 
+   
+   We denote by @f$ error(i,j) @f$ the Fréchet distance between the
+   segment @f$[p_ip_j]@f$ and the part of the curve between the points
+   @f$p_i@f$ and @f$p_j@f$. 
+   The approximation of the Fréchet distance is based on the fact that
+   @f$ error(i,j) @f$ can be upper and lower bounded by a function of
+   two values, namely @f$ w(i,j)$ @f$ and @f$ b(i,j) @f$, where @f$
+   w(i,j)$ @f$ is the width of the points between @f$p_i@f$ and
+   @f$p_j@f$ in the direction @f$ p_ip_j @f$ and @f$ b(i,j) @f$ is the
+   length of the longest backpath in this direction. 
+
+   Then, the algorithm consists in greedily reading the points of the
+   curves from a first point given by myBegin, while updating the values
+   @f$ w(i,j) @f$ and @f$ b(i,j) @f$ on the fly. 
+   
    * This class is a model of the concept CForwardSegmentComputer
-   */
+   *
+   * It should be used with the Curve object (defined in StdDefs.h) and
+   *its PointsRange as follows:
+   *
+   * @snippet geometry/curves/exampleFrechetShortcut.cpp FrechetShortcutUsage
+   *
+   *@tparam TIterator Iterator type on 2D digital points, TInteger type
+   *of integer  
+   *
+   *@see exampleFrechetShortcut.cpp testFrechetShortcut.cpp
+   *
+  */
+  
   
   template <typename TIterator,typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
     class FrechetShortcut
     {
       // ----------------------- Standard services ------------------------------
-    public:
+  public:
     
     //entier
     
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     
-    
-    
-    //typedef DGtal::PointVector<2,Integer> Point;
-    //typedef DGtal::PointVector<2,Integer> Vector;
+
     
     //required types
     typedef TIterator ConstIterator;
@@ -89,86 +119,202 @@ namespace DGtal
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
     
 
-    // Class backpath: data structures and methods to handle the backpath update
-    class backpath
-    {
-    private:
-      /**
-       * Pointer to the FrechetShortcut
-       */
-      const FrechetShortcut<ConstIterator,Integer> *myS;
-      
-    protected: 
-      
-      typedef struct occulter_attributes{
-	double angle_min; // 
-	double angle_max; // 
-      } occulter_attributes;
-      
-      
+  /**
+     Class backpath: data structures and methods to handle the backpath
+     update
+  */
+  class backpath
+  {
+  private:
+    /**
+     * Pointer to the FrechetShortcut
+     */
+    const FrechetShortcut<ConstIterator,Integer> *myS;
+    
+  protected: 
+    
+    /**  
+	 Attributes of occulter points: angles min and max for chich
+	the point is an occulter 
+    */
+    typedef struct occulter_attributes{
+      double angle_min; // 
+      double angle_max; // 
+    } occulter_attributes;
+    
+    /**
+       Map between the point and their attributes if they are
+       occulters 
+    */
       typedef map <ConstIterator,occulter_attributes > occulter_list;
       
-    public:
+  public:
       friend class FrechetShortcut<ConstIterator,Integer>;
       
       
-    public:
+  public:
       
-      int myQuad; // quadrant
+      /** 
+	  Octant of work 
+      */
+      int myQuad; 
       
-      bool myFlag; // current state myFlag=true if we are on a backpath, false otherwise 
+      /** 
+	  Current state myFlag=true if we are on a backpath, false
+	  otherwise
+      */
+      bool myFlag;   
       
       occulter_list myOcculters;
       
+      /**
+	 List of forbidden intervals: intervals of angle for which there
+	 exist a backpath of length greater than the error 
+      */ 
       boost::icl::interval_set<double> myForbiddenIntervals;
       
-      ConstIterator myIt; // pointer to the next point to be scanned: set to myEnd + 1
+      /** 
+	  pointer to the next point to be scanned: set to myEnd + 1 
+       */
+      ConstIterator myIt; 
       
-    // Default constructor
+      /** 
+	  Default constructor 
+      */
       backpath();
       
+      /**
+	 Constructor 
+	 @param pointer to a shortcut s
+	 @param quadrant q
+      */
       backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
-      //backpath(int q, double error);
+
+      /**
+	 Copy constructor
+	 @param other a backpath
+      */
+      backpath(const backpath & other);
+
+      
+      /**
+	 Destructor 
+      */
       ~backpath();
       
+      /**
+	 Resets the backpath (myFlag, myOcculters)
+       */
       void reset();
+      
+      /**
+	 Updates the backpath when a positive point is added
+       */
       void addPositivePoint();
+
+      /**
+	 Updates the backpath when a negative poitn is added
+       */
       void addNegativePoint();
+
+      /**
+	 General update procedure: call to addNegativePoint or
+	 addPositivePoint according to the point *myIt.
+	 Each octant is treated as if it was the first one, the chain
+	 code between *myIt-1 and *myIt is rotated accordingly.
+       */
       void updateBackPathFirstQuad(int d, const ConstIterator&);
-      //void updateBackPathFirstQuad(int d);
+      
+      /**
+	 Updates the list of occulters
+       */
       void updateOcculters();
+
+      /**
+	 Updates the list of intervals
+       */
       void updateIntervals();
       
    
     }; // End of class backpath
 
 
-    // Class cone: data structures and methods to handle the cone update
-    // used to test if the width of the shortcut is lower than the error 
-    class cone{
-      
-    public:
-      double myMin;
-      double myMax;
-      double myB;
-      bool myInf; // true if the cone is infinite (the whole plane)
-      
-      cone();
-      cone(double m, double mm, bool a);
-      cone(double a0, double a1);
-      cone(double x, double y, double x0, double y0, double x1, double y1);
-      bool isEmpty();
-      cone& operator=(const cone& c);
-      void intersectCones(cone c);
-      cone intersectConesSimple(cone c);
-      cone symmetricalCone();
-      
-      /**
-       * Writes/Displays the object on an output stream.
-       * @param out the output stream where the object is written.
-       */
-      void selfDisplay ( std::ostream & out) ;
-      
+  /**
+     Class cone: data structures and methods to handle the cone update
+     used to test if the width of the shortcut is lower than the error. 
+  */
+  class cone{
+    
+  public:
+    /**
+       Angle min of the cone
+    */
+    double myMin;
+    
+    /** 
+	Angle max of the cone
+    */
+    double myMax;
+    
+    /**
+       Boolean: true if the cone is infinite
+     */
+    bool myInf; // true if the cone is infinite (the whole plane)
+    
+    cone();
+    
+    /**
+       Constructor from two angles
+       @param two angles a0 and a1
+    */
+    cone(double a0, double a1);
+
+    /**
+       Constructor from three points x, x0, x1. The cone is defined by
+       the two lines (xx0) and (xx1)
+       @param six doubles
+    */
+    cone(double x, double y, double x0, double y0, double x1, double y1);
+    
+    /**
+       Test if the cone is empty
+       @return true if empty, false otherwise
+    */
+    bool isEmpty();
+
+    /**
+       Assignement
+       @param c another cone
+       @return a reference on 'this'
+     */
+    cone& operator=(const cone& c);
+    
+    /**
+       Intersect two cones: modifies 'this'
+       @param c a cone to intersect with 'this'
+    */
+    void intersectCones(cone c);
+    
+    /**
+       Intersect two half cones
+       @param c a cone to intersection with 'this'
+       @return a cone
+    */
+    cone intersectConesSimple(cone c);
+    
+    /** 
+	Computes the symmetrical half cone
+	@param c a cone
+	@return a cone
+    */
+    cone symmetricalCone();
+    
+    /**
+     * Writes/Displays the object on an output stream.
+     * @param out the output stream where the object is written.
+     */
+    void selfDisplay ( std::ostream & out) ;
+    
       
     };
     
@@ -177,6 +323,12 @@ namespace DGtal
     
     struct Tools
     {
+      /** 
+	  Determines if i is between a and b in the oriented toric space
+	  modulo n
+	  @param four integers
+	  @return true if i is between a anb d, false otherwise
+      */
       static  bool isBetween(double i, double a, double b, double n)
       {
 	// if a<=b, a simple comparison enables to conclude
@@ -216,6 +368,13 @@ namespace DGtal
        * This is a public domain work. 3/26/2005 Tim Voght
        *
        */
+      /**
+	 Determine the points where two circles in a common plane
+	 intersect
+	 @param three doubles per circle (center, radius), pointers to
+	 the two intersection points
+	 @return 0 if the circles do not intersect each other, 1 otherwise
+      */
       static int  circle_circle_intersection(double x0, double y0, double r0,
 					     double x1, double y1, double r1,
 					     double *xi, double *yi,
@@ -276,15 +435,18 @@ namespace DGtal
 	*yi = y2 + ry;
 	*yi_prime = y2 - ry;
 	
-	//   if(fabs(rx) < 0.00001 && fabs(ry) < 0.00001)
-	//     std::cerr << "un seul point" << std::endl;
-	
 	return 1;
       }
       
 
 
-      
+      /**
+	 Given a point X and a circle, compute the two points of the
+	 circle the tangent of which go through X
+	 @param a point (x,y), a circle of center (x1,y1) and a radius
+	 r1, pointers to the intersection points
+	 @return result of the call to circle_circle_intersection
+      */ 
       static int circleTangentPoints(double x, double y, double x1, double y1, double r1, double *xi, double *yi, 
 			      double *xi_prime, double *yi_prime)
       {
@@ -300,8 +462,12 @@ namespace DGtal
       }
     
 
-      
-      // compute the angle of the line passing through two points. Angle in [0,2pi]
+      /**
+	 Compute the angle of the line passing through two points. Angle in
+      [0,2pi]
+      @param two points (x0,y0) and (x1,y1)
+      @return an angle
+      */
       static double computeAngle(double x0, double y0, double x1, double y1)
       {
 	double x = x1-x0;
@@ -329,60 +495,80 @@ namespace DGtal
 	  }
       }      
       
-
+      /**
+	 Scalar product of two vectors
+	 @param two vectors
+	 @return an int
+      */
       static int scalar_product(Vector u, Vector v)
       {
 	return u[0]*v[0]+u[1]*v[1];
       }
       
+
+      /**
+	 Determinant of two vectors
+	 @param two vectors
+	 @param an int
+      */
       static int determinant(Vector u, Vector v)
       {
 	return u[0]*v[1]-u[1]*v[0];
       }
       
-      
+      /**
+	 Angle between two vectors
+	 @param two vectors
+	 @return an angle
+      */
       static double angleVectVect(Vector u, Vector v)
       {
-	return acos((double)scalar_product(u,v)/(u.norm()*v.norm()));
+ 	return acos((double)scalar_product(u,v)/(u.norm()*v.norm()));
       }
 	
-
-
-
-    static  int computeChainCode(Point p, Point q)
-    {
-      int d;
-      int x2 = q[0];
-      int y2 = q[1];
-      int x1 = p[0];
-      int y1 = p[1];
-      
-      if(x2-x1==0)
-	if(y2-y1==1)
-	  d=2;
-	else
-	  d=6;
-      else
-	if(x2-x1==1)
-	  if(y2-y1==0)
-	    d=0;
+      /**
+	 Computes the chain code between two 8-connected pixels
+	 @param two points
+	 @return an int
+      */
+      static  int computeChainCode(Point p, Point q)
+      {
+	int d;
+	int x2 = q[0];
+	int y2 = q[1];
+	int x1 = p[0];
+	int y1 = p[1];
+	
+	if(x2-x1==0)
+	  if(y2-y1==1)
+	    d=2;
 	  else
-	    if(y2-y1==1)
-	      d=1;
-	    else
-	      d=7;
+	    d=6;
 	else
-	  if(y2-y1==0)
-	    d=4;
-	  else
-	    if(y2-y1==1)
-	      d=3;
+	  if(x2-x1==1)
+	    if(y2-y1==0)
+	      d=0;
 	    else
-	      d=5;
-      return d;
-    }
+	      if(y2-y1==1)
+		d=1;
+	      else
+		d=7;
+	  else
+	    if(y2-y1==0)
+	      d=4;
+	    else
+	      if(y2-y1==1)
+		d=3;
+	      else
+		d=5;
+	return d;
+      }
     
-    // compute the quadrant of the direction pq
+      /**
+	 Computes the octant of the direction pq
+	 @param two point
+	 @return an int
+      */
     static int computeQuadrant(Point p, Point q)
     {
       int d;
@@ -420,21 +606,24 @@ namespace DGtal
       
     }
     
-    static vector <double> rot_vect(vector <double> v, int quad)
-    {
-      double angle = -quad*M_PI/4;
-      vector <double> res(2);
-      res[0] = v[0]*cos(angle)-v[1]*sin(angle);
-      res[1] = v[0]*sin(angle)+v[1]*cos(angle);
+      /**
+	 Rotate the chain code d to put it in the frame where the octant 'quad' is
+	 treated as the first octant.
+	 @param d a chain code
+	 @param quad the octant
+	 @return an int (the new chain code)
+      */
       
-      return res;
-    }
-    
-    static int rot(int d, int quad)
-    {
-      return (d-quad+8)%8;
-    }
-    
+      static int rot(int d, int quad)
+      {
+	return (d-quad+8)%8;
+      }
+      
+      /**
+	 Converts a chain code into a vector
+	 @param an int
+	 @return a vector
+      */
     static Vector chainCode2Vect(int d)
     {
       Vector v;
@@ -490,8 +679,6 @@ namespace DGtal
   };
   
     
-
-
   /**
    * Default constructor.
    * not valid
@@ -534,10 +721,7 @@ namespace DGtal
   /**
    * Equality operator.
    * @param other the object to compare with.
-   * @return 'true' either if the leaning points perfectly match
-   * or if the first leaning points match to the last ones
-   * (same DSS scanned in the reverse way) 
-   * and 'false' otherwise
+   * @return 'true' if the objects are equal, false otherwise
    */
   
   bool operator==( const Self & other ) const;
@@ -608,20 +792,30 @@ public:
   // ------------------------- Protected Datas ------------------------------
  protected:
   
+  /**
+     Error parameter used to compute the shortcut
+  */
     double myError;
     
+  /**
+     Vector of 8 backpaths, one per octant. Stores all the information
+     needed to update the length of the longest backpath. 
+  */
     vector <backpath> myBackpath;
-    
+  
+  /** 
+      Cone used to update the width 
+  */
     cone myCone;
-    
-    /**
-     * ConstIterator pointing to the back of the DSS
-     */
-    ConstIterator myBegin;
-    /**
-     * ConstIterator pointing to the front of the DSS
-     */
-    ConstIterator myEnd;
+  
+  /**
+   * ConstIterator pointing to the back of the shortcut
+   */
+  ConstIterator myBegin;
+  /**
+   * ConstIterator pointing to the front of the shortcut
+   */
+  ConstIterator myEnd;
   
 
   
@@ -634,24 +828,57 @@ public:
  
  public:
 
+  /**
+     Updates the backpaths (one per octant) according to the new point
+     @return 'true' if the length of the longest backpath is lower than
+     the threshold, false otherwise
+  */
+
   bool updateBackpath(); 
-  
+
+  /** 
+      Test if there exist a backpath of length greater than the threshold
+      after the addition of the point pointed by *myEnd+1, but does not
+      modify myBackpath.
+  */
   bool testUpdateBackpath();
   
+  /** 
+      Test if there exist a backpath of length greater than the
+      threshold
+  */
   bool isBackpathOk();
   
+  /** 
+      Reset the backpaths before the computation of a new shortcut
+  */
   void resetBackpath();
   
+  /**
+     Reset the cone before the computation of a new shortcut
+  */
   void resetCone();
   
+  /**
+     Test if the new direction belongs to the new cone, but does not
+     modify myCone
+  */
   bool testUpdateWidth();
   
+  /**
+     Computes the cone defined by the point *myBegin and the new point
+     *myEnd + 1 and intersect it with myCone (unchanged)
+     @return the new cone
+   */
   cone computeNewCone();
   
+  /** 
+      Updates the width according to the new point
+      @return  true if the width is lower than the error, false otherwise
+  */
   bool updateWidth();
   
-  bool isWidthOk();
-  
+    
 
     
   /**

@@ -121,7 +121,7 @@ void testFrechetShortcutConceptChecking()
   typedef PointVector<2,int> Point; 
   typedef std::vector<Point>::const_iterator ConstIterator; 
   typedef FrechetShortcut<ConstIterator,int> Shortcut; 
-  //BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Shortcut> ));
+  BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<Shortcut> ));
   BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<Shortcut> ));
 }
 
@@ -186,15 +186,15 @@ bool testSegmentation()
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
     
-  //   for ( ; it != itEnd; ++it) {
-  //     SegmentComputer s(*it);
-  //     trace.info() << s << std::endl;
-  //     board << (*it); 
-  //     nb++;
-  //   }
+    for ( ; it != itEnd; ++it) {
+      SegmentComputer s(*it);
+      trace.info() << s << std::endl;
+      board << (*it); 
+      nb++;
+    }
     
-  //   trace.info() << theSegmentation << std::endl;
-  //   board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+    trace.info() << theSegmentation << std::endl;
+    board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
   }
   
   /* Saturated segmentation does not work for FrechetShortcut
