@@ -63,12 +63,89 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Test 
+ * Test
+ *
+ */
+template<typename I>
+bool test(const I& itb, const I& ite)
+{
+  typedef I ConstIterator;//constIterator
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+  typedef ArithmeticalDSS<ConstIterator,typename Point::Coordinate,4> SegmentComputer;//segmentComputer
+  typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
+  typedef typename SCEstimator::Quantity Value; //value
+  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
+
+  SegmentComputer sc;
+  SCEstimator f; 
+
+  Estimator e(sc,f); 
+  e.init(1,itb,ite);
+
+  unsigned int nb = 0; 
+  unsigned int nbok = 0; 
+  std::vector<Value> v1, v2, v3; 
+
+  {
+    trace.info() << "Eval at one element" << endl;
+    if (isNotEmpty(itb, ite))
+      {
+	ConstIterator it = itb; 
+	do 
+	  {
+	    Value q = e.eval(it);  
+	    cout << q << " "; 
+	    v1.push_back( q ); 
+	    ++it; 
+	  } while (it != ite); 
+      }
+    cout << endl;
+  }
+
+  {
+    trace.info() << "Eval for each element between begin and end " << endl;
+    e.eval(itb, ite, std::back_inserter(v2));
+
+    for (typename std::vector<Value>::iterator i = v2.begin(); i != v2.end(); ++i) {
+      cout << *i << " "; 
+    }
+    cout << endl;
+  }
+
+  nbok += ( ( v1.size() == v2.size() ) &&
+	    ( std::equal(v1.begin(), v1.end(), v2.begin() ) ) )?1:0; 
+  nb++; 
+
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+
+  if ( (ite-itb) >= 10) 
+    {
+
+      trace.info() << "Eval for each element between begin+4 and begin+9 " << endl;
+
+      e.eval((itb+4),(itb+9),std::back_inserter(v3));
+
+      for (typename vector<Value>::iterator i = v3.begin(); i != v3.end(); ++i) {
+  	cout << *i << " "; 
+      }
+      cout << endl;
+
+      nbok += ( (v3.size() == 5) &&
+  		( std::equal( (v1.begin()+4), (v1.begin()+9), v3.begin()) ) )?1:0; 
+      nb++; 
+
+      trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+    }
+
+  return (nb == nbok); 
+}
+
+/**
+ * Applying test on a given data file 
  *
  */
 bool testEval(string filename)
 {
-
 
   trace.info() << endl;
   trace.info() << "Reading GridCurve from " << filename << endl;
@@ -84,56 +161,11 @@ bool testEval(string filename)
   trace.info() << "Building Estimator (process range as"; 
   trace.info() << ( (c.isClosed())?"closed":"open" ) << ")" << endl;
 
-  typedef Range::ConstIterator ConstIterator;//constIterator
-  typedef ArithmeticalDSS<ConstIterator,Kspace::Integer,4> SegmentComputer;//segmentComputer
-  typedef TangentFromDSSFunctor<SegmentComputer> Functor; //functor
-  typedef Functor::Value Value; //value
-  typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> Estimator;//estimator
+  if (c.isClosed())
+    return test(r.c(), r.c()); 
+  else 
+    return test(r.begin(), r.end()); 
 
-  SegmentComputer sc;
-  Functor f; 
-
-  Estimator e(sc,f); 
-  e.init(1,r.begin(),r.end(),c.isClosed());
-
-{
-  trace.info() << "Eval at one element" << endl;
-  for (ConstIterator i = r.begin(); i != r.end(); ++i) {
-    cout << e.eval(i) << " "; 
-  }
-  cout << endl;
-}
-
-{
-  trace.info() << "Eval for each element between begin and end " << endl;
-  vector<Value> v(r.size()); 
-  e.eval(r.begin(),r.end(),v.begin());
-
-  for (vector<Value>::iterator i = v.begin(); i != v.end(); ++i) {
-    cout << *i << " "; 
-  }
-  cout << endl;
-}
-
-{
-  if (r.size() >= 10) {
-    trace.info() << "Eval for each element between begin+4 and begin+9 " << endl;
-    ConstIterator it1 = r.begin();
-    for (  int compteur = 0; compteur < 4; ++compteur ) ++it1;
-    ConstIterator it2 = it1;
-    for (  int compteur = 0; compteur < 5; ++compteur ) ++it2;
-
-    vector<Value> v(5); 
-    e.eval(it1,it2,v.begin());
-
-    for (vector<Value>::iterator i = v.begin(); i != v.end(); ++i) {
-      cout << *i << " "; 
-    }
-    cout << endl;
-  }
-}
-
-  return true;
 }
 
 /////////////////////////////////////////////////////////////////////////
@@ -154,10 +186,10 @@ int main(int argc, char **argv)
   std::string dss = testPath + "samples/DSS.dat";
 
   bool res = testEval(sinus2D4)
-            && testEval(square)
-            && testEval(dss)
-//other tests
-;
+    && testEval(square)
+    && testEval(dss)
+    //other tests
+    ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
