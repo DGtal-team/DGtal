@@ -20,7 +20,7 @@
  * @file   Style2DFactory.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   lundi 24 octobre 2011
- * 
+ *
  * @brief
  *
  * Header file for module Style2DFactory
@@ -61,15 +61,20 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
+namespace DGtal {
 
-void draw( DGtal::Board2D & aBoard, DGtal::DrawableWithBoard2D *style )
-{
-    style->setStyle(aBoard);
+  struct Style2DFactory{
+
+  static void draw( DGtal::Board2D & aBoard, DGtal::DrawableWithBoard2D *style )
+  {
+      style->setStyle(aBoard);
+   }
+ };
+
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods 
+// Includes inline functions/methods
 #include "DGtal/io/Style2DFactory.ih"
 
 //                                                                           //

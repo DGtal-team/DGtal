@@ -333,7 +333,8 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    draw(board, *it);
+  
 }
 // DigitalSetBySTLSet
 
@@ -350,7 +351,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   if (Domain::dimension == 2)
   {
     for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+      draw(board, *it);
   }
   else
     ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
@@ -824,7 +825,6 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     drawAsGrid( board, h );
   else if ( mode == "Paving" )
     drawAsPaving( board, h );
-  // drawAsGrid( board, h );
 }
 // HyperRectDomain
 
@@ -833,12 +833,12 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
-    const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-      HashKey key,
-      const double p[2],
-      const double len,
-      LibBoard::Board & board,
-      const C& cmap )
+                                                  const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                                                  HashKey key,
+                                                  const double p[2],
+                                                  const double len,
+                                                  LibBoard::Board & board,
+                                                  const C& cmap )
 {
   
   ASSERT ( Domain::dimension == 2 );
@@ -908,13 +908,13 @@ void DGtal::Display2DFactory::drawImage( Board2D & board,
 template <typename Colormap, typename D, typename V>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-           const DGtal::ImageContainerBySTLVector<D, V> & i,
-             const V &minV,
-             const V &maxV )
+                                         const DGtal::ImageContainerBySTLVector<D, V> & i,
+                                         const V &minV,
+                                         const V &maxV )
 {
   ASSERT(D::dimension == 2);
 
-  Colormap colormap((const unsigned char)minV, (const unsigned char)maxV);
+  Colormap colormap(minV, maxV);
   Color c;
   V val;
   D ldomain(i.domain());
@@ -923,7 +923,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        it != ldomain.end(); ++it)
   {
     val = i.operator()( (*it) );
-    c = colormap( (const unsigned char)val );
+    c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename D::Integer>::
        castToInt64_t((*it)[0]) - 0.5, 
@@ -1018,8 +1018,8 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.drawRectangle( (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]) - 0.5f, 
-            (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]) + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p.myArray[0]) - 0.5f, 
+                       (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
 template<Dimension dim, typename TComponent>
@@ -1028,9 +1028,8 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.setPenColor(Color::Black);
-  board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
-       (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
+  board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p.myArray[0]), 
+                   (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
 template<Dimension dim, typename TComponent>

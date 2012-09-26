@@ -19,6 +19,8 @@
  * @file Bits.h
  * @brief A collection of functions to help with bitwise manipulations.
  * @author Nicolas Silva (\c nicolas.silva@insa-lyon.fr )
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2010/09/02
  * 
@@ -106,9 +108,9 @@ namespace DGtal
      * first (least important) set bit of val, is set.
      */ 
     template <typename T>
-    static  T firstSetBit(T val)
+    static inline  T firstSetBit(T val)
     {
-      return (val & -val | val & (~val + 1));
+      return ( (val & -val) | (val & (~val + 1)) );
     }
 
 
@@ -117,7 +119,7 @@ namespace DGtal
      * first (least important) unset bit of val, is set.
      */ 
     template <typename T>
-    static T firstUnsetBit(T val)
+    static inline T firstUnsetBit(T val)
     {
       return ~val & (val + 1);
     }
@@ -127,14 +129,237 @@ namespace DGtal
      * Returns the amount of set bits in val.
      */ 
     template <typename T>
-    static unsigned nbSetBits(T val)
+    static inline unsigned int nbSetBits(T val)
     {
-      unsigned i = 0;
+#ifdef TRACE_BITS
+      std::cerr << "unsigned int nbSetBits(T val)" << std::endl;
+#endif
+      unsigned int i = 0;
       for ( ; val; ++i) {val ^= val & -val; }
       return i;
     }
 
+    /**
+       Overloading for type uint8_t
+       Returns the amount of set bits in val.
+    */ 
+    static inline 
+    unsigned int nbSetBits( DGtal::uint8_t val )
+    {
+#ifdef TRACE_BITS
+      std::cerr << "unsigned int nbSetBits( DGtal::uint8_t val )" << std::endl;
+#endif
+      return myBitCount[ val ];
+    }
 
+    /**
+       Overloading for type uint16_t
+       Returns the amount of set bits in val.
+    */ 
+    static inline 
+    unsigned int nbSetBits( DGtal::uint16_t val )
+    {
+#ifdef TRACE_BITS
+      std::cerr << "unsigned int nbSetBits( DGtal::uint16_t val )" << std::endl;
+#endif
+      return nbSetBits( static_cast<DGtal::uint8_t>( val & 0xff ) ) 
+	+ nbSetBits( static_cast<DGtal::uint8_t>( val >> 8 ) );
+    }
+
+    /**
+       Overloading for type uint32_t
+       Returns the amount of set bits in val.
+    */ 
+    static inline 
+    unsigned int nbSetBits( DGtal::uint32_t val )
+    {
+#ifdef TRACE_BITS
+      std::cerr << "unsigned int nbSetBits( DGtal::uint32_t val )" << std::endl;
+#endif
+      return nbSetBits( static_cast<DGtal::uint16_t>( val & 0xffff ) ) 
+	+ nbSetBits( static_cast<DGtal::uint16_t>( val >> 16 ) );
+    }
+
+    /**
+       Overloading for type uint64_t
+       Returns the amount of set bits in val.
+    */ 
+    static inline 
+    unsigned int nbSetBits( DGtal::uint64_t val )
+    {
+#ifdef TRACE_BITS
+      std::cerr << "unsigned int nbSetBits( DGtal::uint64_t val )" << std::endl;
+#endif
+      return nbSetBits( static_cast<DGtal::uint32_t>( val & 0xffffffffLL ) ) 
+	+ nbSetBits( static_cast<DGtal::uint32_t>( val >> 32 ) );
+    }
+
+    /**
+       Specialization for uint8_t.
+
+       Set bits are numbered from 1 to x when reading the word from the
+       least significant to the most significant bit. This number is the
+       index of bit \a b in the number \a n.
+
+       @param b a bit index in 0..7
+       @param n a number in 0..255
+       @return this index or 0 if the bit is not set.
+    */
+    static inline 
+    unsigned int indexInSetBits( DGtal::uint8_t n, unsigned int b )
+    {
+      ASSERT( b < 8 );
+      return myIndexInSetBits[ b ][ n ];
+    }
+
+    /**
+       Specialization for uint16_t.
+
+       Set bits are numbered from 1 to x when reading the word from the
+       least significant to the most significant bit. This number is the
+       index of bit \a b in the number \a n.
+
+       @param b a bit index in 0..15
+       @param n a number in 0..65535
+       @return this index or 0 if the bit is not set.
+    */
+    static inline 
+    unsigned int indexInSetBits( DGtal::uint16_t n, unsigned int b )
+    {
+      ASSERT( b < 16 );
+      if ( b < 8 ) 
+	return indexInSetBits( static_cast<DGtal::uint8_t>( n & 0xff ), b );
+      else 
+	{
+	  unsigned int idx = indexInSetBits( static_cast<DGtal::uint8_t>( n >> 8 ), b - 8 );
+	  return ( idx == 0 )
+	    ? 0 // bit b is not set
+	    : idx + nbSetBits( static_cast<DGtal::uint8_t>( n & 0xff ) );
+	}
+    }
+
+    /**
+       Specialization for uint32_t.
+
+       Set bits are numbered from 1 to x when reading the word from the
+       least significant to the most significant bit. This number is the
+       index of bit \a b in the number \a n.
+
+       @param b a bit index in 0..31
+       @param n a number in 0..2^32-1
+       @return this index or 0 if the bit is not set.
+    */
+    static inline 
+    unsigned int indexInSetBits( DGtal::uint32_t n, unsigned int b )
+    {
+      ASSERT( b < 32 );
+      if ( b < 16 ) 
+	return indexInSetBits( static_cast<DGtal::uint16_t>( n & 0xffff ), b );
+      else 
+	{
+	  unsigned int idx = indexInSetBits( static_cast<DGtal::uint16_t>( n >> 16 ), b - 16 );
+	  return ( idx == 0 )
+	    ? 0 // bit b is not set
+	    : idx + nbSetBits( static_cast<DGtal::uint16_t>( n & 0xffff ) );
+	}
+    }
+
+   /**
+       Specialization for uint64_t.
+
+       Set bits are numbered from 1 to x when reading the word from the
+       least significant to the most significant bit. This number is the
+       index of bit \a b in the number \a n.
+
+       @param b a bit index in 0..63
+       @param n a number in 0..2^64-1
+       @return this index or 0 if the bit is not set.
+    */
+    static inline 
+    unsigned int indexInSetBits( DGtal::uint64_t n, unsigned int b )
+    {
+      ASSERT( b < 64 );
+      if ( b < 32 ) 
+	return indexInSetBits( static_cast<DGtal::uint32_t>( n & 0xffffffffLL ), b );
+      else 
+	{
+	  unsigned int idx = indexInSetBits( static_cast<DGtal::uint32_t>( n >> 32 ), b - 32 );
+	  return ( idx == 0 )
+	    ? 0 // bit b is not set
+	    : idx + nbSetBits( static_cast<DGtal::uint32_t>( n & 0xffffffffLL ) );
+	}
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint8_t n )
+    {
+      return myLSB[ n ];
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint16_t n )
+    {
+      return ( n & 0xff ) 
+        ? leastSignificantBit( (DGtal::uint8_t) n )
+        : 8 + leastSignificantBit( (DGtal::uint8_t) (n>>8) );
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint32_t n )
+    {
+      return ( n & 0xffff ) 
+        ? leastSignificantBit( (DGtal::uint16_t) n )
+        : 16 + leastSignificantBit( (DGtal::uint16_t) (n>>16) );
+    }
+
+    /**
+       @param n any number
+       @return the index (0..) of the least significant bit.
+    */
+    static inline 
+    unsigned int leastSignificantBit( DGtal::uint64_t n )
+    {
+      return ( n & 0xffffffffLL ) 
+        ? leastSignificantBit( (DGtal::uint32_t) n )
+        : 32 + leastSignificantBit( (DGtal::uint32_t) (n>>32) );
+    }
+ 
+	  
+    /**
+       Lookup table for counting the number of bits set to 1 in a byte.
+       ( Taken from STL <bitset> )
+    */
+    static const DGtal::uint8_t myBitCount[ 256 ];
+
+    /**
+       Lookup table for finding the least significant bit.
+    */
+    static const DGtal::uint8_t myLSB[ 256 ];
+
+    /**
+       Usage: myIndexInSetBits[ b ][ n ]
+       - \a b in 0..7
+       - \a n in 0..255
+       Set bits are numbered from 1 to x when reading the word from the
+       least significant to the most significant bit. This number is the
+       index of bit \a b in the number \a n.
+       return this index or 0 if the bit is not set.
+    */
+    static const DGtal::uint8_t myIndexInSetBits[ 8 ][ 256 ];
+
+    
   };//struct
 }
 #endif
