@@ -63,10 +63,10 @@ DGtal::Board2D::getMode( const std::string & objectName ) const
  */
 template <typename TDrawableWithBoard2D>
 inline
-DGtal::Board2D & 
+DGtal::Board2D &
 DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 {
- 
+
   BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
   CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) );
@@ -80,17 +80,17 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
-      draw(*this, style.get());
+      DGtal::Style2DFactory::draw(*this, style.get());
     }
   // Apply Customized style
   StyleMapping::const_iterator it = myStyles.find( object.className() );
-  if ( it != myStyles.end() ) 
+  if ( it != myStyles.end() )
     if ( it->second.get() != 0 )
       {
 #ifdef DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
-  draw(*this, it->second.get());
+   DGtal::Style2DFactory::draw(*this, it->second.get());
       }
   // Check for specific mode.
   ModeMapping::const_iterator itm = myModes.find( object.className() );
@@ -108,19 +108,19 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
 #ifdef DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
-    draw(*this, style_mode.get());
+     DGtal::Style2DFactory::draw(*this, style_mode.get());
   }
       // Apply customized style for specific mode.
       std::string specific_style = object.className() + "/" + itm->second;
       it = myStyles.find( specific_style );
-      if ( it != myStyles.end() ) 
+      if ( it != myStyles.end() )
   if ( it->second.get() != 0 )
     {
 #ifdef DEBUG_VERBOSE
-      trace.info() << " [specific style for mode: " 
+      trace.info() << " [specific style for mode: "
           << specific_style << "]";
 #endif
-      draw(*this, it->second.get());
+      DGtal::Style2DFactory::draw(*this, it->second.get());
     }
     }
 #ifdef DEBUG_VERBOSE

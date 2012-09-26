@@ -40,6 +40,7 @@
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 
 //DT
 #include "DGtal/images/ImageSelector.h"
@@ -618,10 +619,11 @@ bool testComparison(int size, int area, double dist)
   trace.endBlock();
 
   trace.beginBlock ( " DT computation " );
-
-  typedef DistanceTransformation<Image2, norm> DT; 
-  DT dt;
-  typename DT::OutputImage resultImage = dt.compute ( image );
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
+  typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, norm> DT; 
+  DT dt(d,aPredicate);
+  typename DT::OutputImage resultImage = dt.compute (  );
   trace.info() << resultImage << std::endl; 
 
   trace.endBlock();

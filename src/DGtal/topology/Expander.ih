@@ -198,8 +198,8 @@ DGtal::Expander<TObject>
   // Computes the 1-neighborhood of the core.
   for ( ; p != pEnd; ++p )
     {
-      myObjectAdjacency.writeProperNeighborhood
-        ( *p, inserter, cPred );
+      myObjectAdjacency.writeNeighbors
+        ( inserter, *p, cPred );
       // std::cerr << *p;
       // for ( unsigned int i = 0; i < v.size(); ++i )
       //   {
