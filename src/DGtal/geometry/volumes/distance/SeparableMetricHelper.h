@@ -229,11 +229,7 @@ namespace DGtal
                                 const InternalValue &nv,
                                 const Abscissa &lower,
                                 const Abscissa &upper) const
-    {
-      //trace.info()<< "DT(u)= "<<(nu + (InternalValue) std::pow( (double)abs( udim - lower), (double) p))<<std::endl;
-      // trace.info()<< "DT(v)= "<<(nv + (InternalValue) std::pow( (double)abs( vdim - lower), (double)p))<<std::endl;
-      
-
+    {   
       ASSERT(  (nu + (InternalValue) std::pow( (double)abs( udim - lower), (double) p)) <=
                (nv + (InternalValue) std::pow( (double)abs( vdim - lower), (double)p)));
       
@@ -254,9 +250,10 @@ namespace DGtal
     }
 
     /** 
-     * Given three sites (a,b,c) and a straight line (startingPoint,
-     * dim), we detect if the voronoi cells of a and c @e hide the
-     * voronoi cell of c on the straight line.
+     * Given three sites (a,b,c) and a straight segment
+     * [startingPoint,endPoint] along dimension dim, we detect if the
+     * voronoi cells of a and c @e hide the voronoi cell of c on the
+     * straight line.
      *
      * @pre both voronoi cells associated with @a a and @a b must
      * intersect the straight line. 
