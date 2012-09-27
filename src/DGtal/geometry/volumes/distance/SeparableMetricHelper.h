@@ -222,7 +222,22 @@ namespace DGtal
     }
 
 
-   
+    /** 
+     * Perform a binary search on the interval [lower,upper] to
+     * detect the mid-point between u and v according to the l_p
+     * distance.
+     * 
+     * @param udim coordinate of u along dimension dim
+     * @param vdim coordinate of v along dimension dim
+     * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
+     * the term along the dimension dim
+     * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
+     * the term along the dimension dim
+     * @param lower interval lower bound 
+     * @param upper interval upper bound
+     * 
+     * @return the Voronoi boundary point coordinates along dimension dim.
+     */
     Abscissa binarySearchHidden(const Abscissa &udim, 
                                 const Abscissa &vdim,
                                 const InternalValue &nu,
