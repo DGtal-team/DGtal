@@ -94,7 +94,7 @@ namespace DGtal
     typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
   
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  IntegerShort ,  Integer , p > SeparableMetric;
+    typedef SeparableMetricHelper<  Point ,  Integer , p > SeparableMetric;
   
 
     /**
