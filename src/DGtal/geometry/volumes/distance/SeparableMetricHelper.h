@@ -325,7 +325,6 @@ namespace DGtal
   
       //Binary search
       Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
-      //      trace.info()<<std::endl;
       Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
 #ifdef DEBUG_VERBOSE
       trace.info() << "Midpoint (u,v) ="<< uv<< " Midpoint (v,w) ="<<vw<<std::endl;
@@ -490,7 +489,6 @@ namespace DGtal
 			     const InternalValue hi ) const
     {
       return ( InternalValue ) ( ((long int) pos - ci)>=0 ? ((long int) pos - ci) : - ((long int) pos - ci) ) + hi;
-      //std::abs ( (long int) pos - ci ) + hi;
     }
 
     inline InternalValue reversedF ( const Abscissa pos, 
