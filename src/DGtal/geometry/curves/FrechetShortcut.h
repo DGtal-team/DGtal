@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/PointVector.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 #include <boost/icl/interval_set.hpp>
 #include <map>
 
@@ -60,7 +61,13 @@ namespace DGtal
    * Description of class 'FrechetShortcut' <p>
    * @brief Aim:
    * On-line computation Computation of the longest shortcut according to the Fréchet
-   * distance for a given error. 
+   * distance for a given error. See related article:
+   *       Sivignon, I., (2011). A Near-Linear Time Guaranteed Algorithm
+   *       for Digital Curve Simplification under the Fréchet
+   *       Distance. DGCI 2013. Retrieved from 
+   *       http://link.springer.com/chapter/10.1007/978-3-642-19867-0_28
+   *      
+   *
    
    The algorithm we propose uses an approximation of the Fréchet distance,
    but a guarantee over the quality of the simplification is
@@ -93,21 +100,21 @@ namespace DGtal
    *
    *@see exampleFrechetShortcut.cpp testFrechetShortcut.cpp
    *
-  */
+   */
   
   
   template <typename TIterator,typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
     class FrechetShortcut
     {
       // ----------------------- Standard services ------------------------------
-  public:
+    public:
     
     //entier
     
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
     typedef TInteger Integer;
     
-
+    
     
     //required types
     typedef TIterator ConstIterator;
@@ -117,13 +124,13 @@ namespace DGtal
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Vector; 
+    typedef typename Vector::Coordinate Coordinate;
     
-
-  /**
+    /**
      Class backpath: data structures and methods to handle the backpath
      update
   */
-  class backpath
+  class Backpath
   {
   private:
     /**
@@ -146,14 +153,14 @@ namespace DGtal
        Map between the point and their attributes if they are
        occulters 
     */
-      typedef map <ConstIterator,occulter_attributes > occulter_list;
-      
+    typedef map <ConstIterator,occulter_attributes > occulter_list;
+    
   public:
-      friend class FrechetShortcut<ConstIterator,Integer>;
-      
-      
+    friend class FrechetShortcut<ConstIterator,Integer>;
+    
+    
   public:
-      
+    
       /** 
 	  Octant of work 
       */
@@ -181,26 +188,26 @@ namespace DGtal
       /** 
 	  Default constructor 
       */
-      backpath();
+      Backpath();
       
       /**
 	 Constructor 
 	 @param pointer to a shortcut s
 	 @param quadrant q
       */
-      backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
+      Backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
 
       /**
 	 Copy constructor
 	 @param other a backpath
       */
-      backpath(const backpath & other);
+      Backpath(const Backpath & other);
 
       
       /**
 	 Destructor 
       */
-      ~backpath();
+      ~Backpath();
       
       /**
 	 Resets the backpath (myFlag, myOcculters)
@@ -236,14 +243,14 @@ namespace DGtal
       void updateIntervals();
       
    
-    }; // End of class backpath
+    }; // End of class Backpath
 
 
   /**
-     Class cone: data structures and methods to handle the cone update
+     Class Cone: data structures and methods to handle the cone update
      used to test if the width of the shortcut is lower than the error. 
   */
-  class cone{
+  class Cone{
     
   public:
     /**
@@ -261,20 +268,20 @@ namespace DGtal
      */
     bool myInf; // true if the cone is infinite (the whole plane)
     
-    cone();
+    Cone();
     
     /**
        Constructor from two angles
        @param two angles a0 and a1
     */
-    cone(double a0, double a1);
+    Cone(double a0, double a1);
 
     /**
        Constructor from three points x, x0, x1. The cone is defined by
        the two lines (xx0) and (xx1)
        @param six doubles
     */
-    cone(double x, double y, double x0, double y0, double x1, double y1);
+    Cone(double x, double y, double x0, double y0, double x1, double y1);
     
     /**
        Test if the cone is empty
@@ -287,27 +294,27 @@ namespace DGtal
        @param c another cone
        @return a reference on 'this'
      */
-    cone& operator=(const cone& c);
+    Cone& operator=(const Cone& c);
     
     /**
        Intersect two cones: modifies 'this'
        @param c a cone to intersect with 'this'
     */
-    void intersectCones(cone c);
+    void intersectCones(Cone c);
     
     /**
        Intersect two half cones
        @param c a cone to intersection with 'this'
        @return a cone
     */
-    cone intersectConesSimple(cone c);
+    Cone intersectConesSimple(Cone c);
     
     /** 
 	Computes the symmetrical half cone
 	@param c a cone
 	@return a cone
     */
-    cone symmetricalCone();
+    Cone symmetricalCone();
     
     /**
      * Writes/Displays the object on an output stream.
@@ -441,8 +448,12 @@ namespace DGtal
 
 
       /**
-	 Given a point X and a circle, compute the two points of the
-	 circle the tangent of which go through X
+	 Given a point X and a circle of center X1, compute the two
+	 points Xi and Xi' of the circle the tangent of which go through
+	 X. Since the triangle XXiX1 is a right triangle on Xi, the
+	 middle point M between X and X1 is equidistant to X, X1 and
+	 Xi. Thus, Xi belongs to the intersection of the circle (X1,r1)
+	 and the circle of center M and radius ||XX1||/2.   
 	 @param a point (x,y), a circle of center (x1,y1) and a radius
 	 r1, pointers to the intersection points
 	 @return result of the call to circle_circle_intersection
@@ -494,27 +505,8 @@ namespace DGtal
 	      return 3*M_PI_2;
 	  }
       }      
-      
-      /**
-	 Scalar product of two vectors
-	 @param two vectors
-	 @return an int
-      */
-      static int scalar_product(Vector u, Vector v)
-      {
-	return u[0]*v[0]+u[1]*v[1];
-      }
-      
+            
 
-      /**
-	 Determinant of two vectors
-	 @param two vectors
-	 @param an int
-      */
-      static int determinant(Vector u, Vector v)
-      {
-	return u[0]*v[1]-u[1]*v[0];
-      }
       
       /**
 	 Angle between two vectors
@@ -523,7 +515,8 @@ namespace DGtal
       */
       static double angleVectVect(Vector u, Vector v)
       {
- 	return acos((double)scalar_product(u,v)/(u.norm()*v.norm()));
+	IntegerComputer<Integer> ic;
+ 	return acos((double)ic.dotProduct(u,v)/(u.norm()*v.norm()));
       }
 	
       /**
@@ -534,10 +527,10 @@ namespace DGtal
       static  int computeChainCode(Point p, Point q)
       {
 	int d;
-	int x2 = q[0];
-	int y2 = q[1];
-	int x1 = p[0];
-	int y1 = p[1];
+	Coordinate x2 = q[0];
+	Coordinate y2 = q[1];
+	Coordinate x1 = p[0];
+	Coordinate y1 = p[1];
 	
 	if(x2-x1==0)
 	  if(y2-y1==1)
@@ -572,8 +565,8 @@ namespace DGtal
     static int computeQuadrant(Point p, Point q)
     {
       int d;
-      int x = q[0]-p[0];
-      int y = q[1]-p[1];
+      Coordinate x = q[0]-p[0];
+      Coordinate y = q[1]-p[1];
       
       if(x>=0)
 	if(y>=0)
@@ -805,12 +798,12 @@ public:
      Vector of 8 backpaths, one per octant. Stores all the information
      needed to update the length of the longest backpath. 
   */
-    vector <backpath> myBackpath;
+    std::vector <Backpath> myBackpath;
   
   /** 
       Cone used to update the width 
   */
-    cone myCone;
+    Cone myCone;
   
   /**
    * ConstIterator pointing to the back of the shortcut
@@ -874,7 +867,7 @@ public:
      *myEnd + 1 and intersect it with myCone (unchanged)
      @return the new cone
    */
-  cone computeNewCone();
+  Cone computeNewCone();
   
   /** 
       Updates the width according to the new point
