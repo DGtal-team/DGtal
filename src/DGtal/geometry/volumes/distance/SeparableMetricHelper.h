@@ -69,7 +69,7 @@ namespace DGtal
    * @tparam tp the order p of the L_p metric.
    *
    * @warning this  code is node GMP compliant
-   * @todo Fix the integer type problems.
+   *
    */
   template <typename TPoint, typename TInternalValue, DGtal::uint32_t tp>
   struct SeparableMetricHelper

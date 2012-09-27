@@ -126,7 +126,7 @@ namespace DGtal
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
    
-    ///@todo comment here
+    ///Large integer type for SeparableMetricHelper construction.
     typedef DGtal::int64_t IntegerLong;
 
     typedef typename Space::Vector Vector;
