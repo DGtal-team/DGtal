@@ -61,6 +61,7 @@ COBANaivePlane( const COBANaivePlane & other )
   : myAxis( other.myAxis ),
     myG( other.myG ),
     myWidth( other.myWidth ),
+    myPointSet( other.myPointSet ),
     myState( other.myState ),
     myCst1( other.myCst1 ),
     myCst2( other.myCst2 )
@@ -78,6 +79,7 @@ operator=( const COBANaivePlane & other )
       myAxis = other.myAxis;
       myG = other.myG;
       myWidth = other.myWidth;
+      myPointSet = other.myPointSet;
       myState = other.myState;
       myCst1 = other.myCst1;
       myCst2 = other.myCst2;

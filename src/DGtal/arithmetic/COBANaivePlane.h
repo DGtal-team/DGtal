@@ -68,8 +68,8 @@ namespace DGtal
    * As a (3D) geometric primitive, it obeys to a subset of the
    * concept CSegmentComputer. It is copy constructible,
    * assignable. It is iterable (inner type ConstIterator, begin(),
-   * end()). It has methods extend(Point), extend( InputIterator,
-   * InputIterator) and isExtendable(Point),
+   * end()). It has methods \ref extend(), extend( InputIterator,
+   * InputIterator) and \ref isExtendable(),
    * isExtendable(InputIterator, InputIterator).  The object stores
    * all the distinct points \c p such that 'extend( \c p )' was
    * successful. It is thus a model of boost::ForwardContainer (non
@@ -77,6 +77,23 @@ namespace DGtal
    *
    * It is also a model of CPointPredicate (returns 'true' iff a point
    * is within the current bounds).
+   *
+   * Note on complexity: The complexity is highly dependent on the way
+   * points are added to the object. Let \a D be the diameter and \a n
+   * be the number of points already added. Assume small
+   * integers. Complexity of adding a point that do not change the
+   * normal of the plane is \f$ O(\log(n)) \f$. When it changes the
+   * normal, the number of cuts is upper bounded by some \f$
+   * O(\log(D)) \f$, each cut costs \f$ O(n+m\log(D) ) \f$, where \a m
+   * is the number of sides of the convex polygon of
+   * constraints. However, when recognizing a piece of naive plane,
+   * the number of times \a K where the normal should be updated is
+   * rather limited to some \f$ O(\log(D)) \f$.
+   *
+   * Note on execution times: The user should favor int64_t instead of
+   * BigInteger whenever possible (diameter smaller than 500). The
+   * speed-up is between 10 and 20 for these diameters. For greater
+   * diameters, it is necessary to use BigInteger (see below).
    *
    * @tparam TSpace specifies the type of digital space in which lies
    * input digital points. A model of CSpace.
