@@ -32,6 +32,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/COBANaivePlane.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -72,19 +73,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   else
     axis = 2;
   Point p;
-  p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-  p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-  p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
-  x = (Integer) p[ 0 ];
-  y = (Integer) p[ 1 ];
-  z = (Integer) p[ 2 ];
-  switch ( axis ) {
-  case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
-  case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
-  case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-  } 
   NaivePlane plane;
-  plane.init( axis, diameter, p, 1, 1 );
+  plane.init( axis, diameter, 1, 1 );
   // Checks that points within the naive plane are correctly recognized.
   unsigned int nb = 0;
   unsigned int nbok = 0;
@@ -101,11 +91,18 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
       } 
+      bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
+      ++nb, nbok += ok_ext ? 1 : 0;
       ++nb, nbok += ok ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
+          break;
+        }
+      if ( ! ok_ext )
+        {
+          std::cerr << "[ERROR] p=" << p << " was NOT extendable IN plane=" << plane << std::endl;
           break;
         }
       // else
@@ -129,11 +126,18 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 ) 
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
       p[ axis ] += tmp;
+      bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
       bool ok = ! plane.extend( p ); // should *not* be ok
       ++nb, nbok += ok ? 1 : 0;
+      ++nb, nbok += ok_ext ? 1 : 0;
       if ( ! ok )
         {
           std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
+          break;
+        }
+      if ( ! ok_ext )
+        {
+          std::cerr << "[ERROR] p=" << p << " was extendable IN plane=" << plane << std::endl;
           break;
         }
       // else
@@ -180,11 +184,16 @@ bool testCOBANaivePlane()
   unsigned int nb = 0;
   using namespace Z3i;
   typedef BigInteger Integer;
-  trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
   typedef COBANaivePlane<Z3, BigInteger> NaivePlane;
+
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlane > ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlane > ));
+
+  trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
   NaivePlane plane;
   Point pt0( 0, 0, 0 );
-  plane.init( 2, 100, pt0, 3, 2 );
+  plane.init( 2, 100, 3, 2 );
+  bool pt0_inside = plane.extend( pt0 );
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;
   Point pt1( Point( 8, 1, 3 ) );
@@ -217,7 +226,8 @@ bool testCOBANaivePlane()
                << " Plane=" << plane << std::endl;
 
   NaivePlane plane2;
-  plane2.init( 2, 100, Point( 10, 0, 0 ), 1, 1 );
+  plane2.init( 2, 100, 1, 1 );
+  plane2.extend( Point( 10, 0, 0 ) );
   plane2.extend( Point( 0, 8, 0 ) );
   plane2.extend( Point( 0, 0, 6 ) );
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -274,10 +284,11 @@ int main( int /*argc*/, char** /*argv*/ )
   using namespace Z3i;
   // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
   trace.beginBlock ( "Testing class COBANaivePlane" );
-  bool res = testCOBANaivePlane()
-    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int32_t> >( 20, 100, 2000 )
-    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int64_t> >( 500, 100, 2000 )
-    && checkManyPlanes<COBANaivePlane<Z3, DGtal::BigInteger> >( 10000, 10, 2000 );
+  bool res = true 
+    && testCOBANaivePlane()
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int32_t> >( 20, 100, 200 )
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int64_t> >( 500, 100, 200 )
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::BigInteger> >( 10000, 10, 200 );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   // trace.beginBlock ( "Max diameter for COBANaivePlane<Z3, int32_t>" );
