@@ -109,7 +109,7 @@ bool testMPolynomialReader2()
   trace.info() << "- Read Q4=" << Q4 << " from string: " << s5 << std::endl;
   bool ok5 = Q1 == Q2;
   bool ok6 = Q1 == Q3;
-  return ok1 && ok2 && ok3 && ok4 && ok5 && ok6;
+  return ok1 && ok2 && ok3 && ok4 && ok5 && ok6 && ok4b;
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
