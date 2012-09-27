@@ -102,7 +102,7 @@ namespace DGtal
     double getApproxValue( const InternalValue & aInternalValue ) const
     {
       return std::pow( NumberTraits<InternalValue>::castToDouble(aInternalValue),
-          (double) 1.0 / p);
+		       (double) 1.0 / p);
     }
 
     /**
@@ -118,7 +118,7 @@ namespace DGtal
     InternalValue F ( const Abscissa pos, const Abscissa ci, const InternalValue hi ) const
     {
       return std::pow( abs(NumberTraits<Abscissa>::castToDouble(pos - ci)),
-           (double)p) + hi;
+		       (double)p) + hi;
     }
 
     /**
@@ -163,7 +163,7 @@ namespace DGtal
      * @return
      */
     Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
-         const Abscissa j, const InternalValue hj ) const
+			   const Abscissa j, const InternalValue hj ) const
     {
       ASSERT(false && "Not-Yet-Implemented");
     }
@@ -200,9 +200,9 @@ namespace DGtal
      * 
      * @return a Closest enum: FIRST, SECOND or BOTH.
      */
-    Closest closestPredicate(const Point &origin, 
-			     const Point &first,
-			     const Point &second) const
+    Closest closest(const Point &origin, 
+		    const Point &first,
+		    const Point &second) const
     {
       InternalValue a=NumberTraits<InternalValue>::ZERO,
 	b=NumberTraits<InternalValue>::ZERO;
@@ -253,7 +253,7 @@ namespace DGtal
       
     }
 
-      /** 
+    /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
@@ -265,7 +265,7 @@ namespace DGtal
      * @param v a site
      * @param w a site
      * @param startingPoint starting point of the segment
-     * @param endPoint starting point of the segment
+     * @param endPoint end point of the segment
      * @param dim direction of the straight line
      * 
      * @return true if (a,c) hides b.
@@ -283,8 +283,8 @@ namespace DGtal
       Abscissa upper = endPoint[dim];
       
       /*     trace.beginBlock("Hidden");
-      trace.info() << u<<"  "<<v<<"  "<<"   "<<w<<std::endl;
-      trace.info() << startingPoint<<"  "<<endPoint<<std::endl;
+	     trace.info() << u<<"  "<<v<<"  "<<"   "<<w<<std::endl;
+	     trace.info() << startingPoint<<"  "<<endPoint<<std::endl;
       */
 
       //Partial norm computation
@@ -357,22 +357,22 @@ namespace DGtal
     }
 
     inline InternalValue F ( const Abscissa pos, 
-           const Abscissa ci, 
-           const InternalValue hi ) const
+			     const Abscissa ci, 
+			     const InternalValue hi ) const
     {
       return ( pos - ci ) * ( pos - ci ) + hi;
     }
 
     inline InternalValue reversedF ( const Abscissa pos, 
-             const Abscissa ci, 
-             const InternalValue hi ) const
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
     {
       return hi - ( pos - ci ) * ( pos - ci ) ;
     }
 
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
-        const Abscissa j, const InternalValue hj ) const
+			  const Abscissa j, const InternalValue hj ) const
     {
       if (   ( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) )  >= 0)
 	return (Abscissa)( ( j*j - i*i ) + hj - hi )  / ( 2* ( j - i ) );
@@ -382,7 +382,7 @@ namespace DGtal
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
-          const Abscissa j, const InternalValue hj ) const
+				  const Abscissa j, const InternalValue hj ) const
     {
       return ( ( i*i -j*j ) + hj - hi )  / ( 2* ( i - j ) );
     }
@@ -394,9 +394,9 @@ namespace DGtal
     enum Closest { FIRST=0, SECOND=1, BOTH=2};
     
     
-    Closest closestPredicate(const Point &origin, 
-			     const Point &first,
-			     const Point &second) const
+    Closest closest(const Point &origin, 
+		    const Point &first,
+		    const Point &second) const
     {
       InternalValue a=NumberTraits<InternalValue>::ZERO,
 	b=NumberTraits<InternalValue>::ZERO;
@@ -415,7 +415,7 @@ namespace DGtal
 	  return BOTH;
     }
 
-      /** 
+    /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
@@ -424,6 +424,7 @@ namespace DGtal
      * @param b a site
      * @param c a site
      * @param startingPoint starting point of the straight line
+     * @param endPoint end point of the straight segment
      * @param dim direction of the straight line
      * 
      * @return true if (a,c) hides b.
@@ -432,7 +433,7 @@ namespace DGtal
                   const Point &v,
                   const Point &w, 
                   const Point &startingPoint,
-                  const Point &endPoint,
+                  const Point &/*endPoint*/,
                   const typename Point::UnsignedComponent dim) const
     {
       //decide if (a,c) hide b in the lines (startingPoint, dim)
@@ -478,23 +479,23 @@ namespace DGtal
     }
  
     inline InternalValue F ( const Abscissa pos, 
-           const Abscissa ci, 
-           const InternalValue hi ) const
+			     const Abscissa ci, 
+			     const InternalValue hi ) const
     {
       return ( InternalValue ) ( ((long int) pos - ci)>=0 ? ((long int) pos - ci) : - ((long int) pos - ci) ) + hi;
       //std::abs ( (long int) pos - ci ) + hi;
     }
 
     inline InternalValue reversedF ( const Abscissa pos, 
-             const Abscissa ci, 
-             const InternalValue hi ) const
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
     {
       return ( InternalValue ) hi - abs ( pos - ci );
     }
 
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
-        const Abscissa j, const InternalValue hj ) const
+			  const Abscissa j, const InternalValue hj ) const
     {
       if (hj >= hi + j - i)
         return NumberTraits<Abscissa>::max();
@@ -504,7 +505,7 @@ namespace DGtal
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
-          const Abscissa j, const InternalValue hj ) const
+				  const Abscissa j, const InternalValue hj ) const
     {
       if (hj <= hi - j + i)
 	return NumberTraits<Abscissa>::max();
@@ -522,9 +523,9 @@ namespace DGtal
     enum Closest { FIRST=0, SECOND=1, BOTH=2};
     
     
-    Closest closestPredicate(const Point &origin, 
-			     const Point &first,
-			     const Point &second) const
+    Closest closest(const Point &origin, 
+		    const Point &first,
+		    const Point &second) const
     {
       InternalValue a=(origin-first).norm(Point::L_1),
 	b=(origin-second).norm(Point::L_1);
@@ -538,7 +539,7 @@ namespace DGtal
 	  return BOTH;
     }
 
-      /** 
+    /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
@@ -547,6 +548,7 @@ namespace DGtal
      * @param b a site
      * @param c a site
      * @param startingPoint starting point of the straight line
+     * @param endPoint end point of the straight segment
      * @param dim direction of the straight line
      * 
      * @return true if (a,c) hides b.
@@ -585,35 +587,35 @@ namespace DGtal
     }
 
     inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
-           const InternalValue hi ) const
+			     const InternalValue hi ) const
     {
       return ( InternalValue ) 
-  max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
-       -((long int)pos - ci)), (Abscissa) hi);
+	max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
+			 -((long int)pos - ci)), (Abscissa) hi);
     }
     
     inline InternalValue reversedF ( const Abscissa pos, 
-             const Abscissa ci, 
-             const InternalValue hi ) const
+				     const Abscissa ci, 
+				     const InternalValue hi ) const
     {
       ASSERT(false && "Not-Implemented");
     }
 
 
     inline Abscissa Sep ( const Abscissa i, const InternalValue hi,
-        const Abscissa j, const InternalValue hj ) const
+			  const Abscissa j, const InternalValue hj ) const
     {
       if (hi <= hj)
         return max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
       else
-         return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
+	return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
-        const Abscissa j, const InternalValue hj ) const
+				  const Abscissa j, const InternalValue hj ) const
     {
       ASSERT(false && "Not-Implemented");
-     }
+    }
 
     
 
@@ -622,12 +624,12 @@ namespace DGtal
       return (InternalValue) abs(i);
     }
 
-     enum Closest { FIRST=0, SECOND=1, BOTH=2};
+    enum Closest { FIRST=0, SECOND=1, BOTH=2};
     
     
-    Closest closestPredicate(const Point &origin, 
-			     const Point &first,
-			     const Point &second) const
+    Closest closest(const Point &origin, 
+		    const Point &first,
+		    const Point &second) const
     {
       InternalValue a=(origin-first).norm(Point::L_infty),
 	b=(origin-second).norm(Point::L_infty);
@@ -641,7 +643,7 @@ namespace DGtal
 	  return BOTH;
     }
 
-      /** 
+    /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
@@ -650,6 +652,7 @@ namespace DGtal
      * @param b a site
      * @param c a site
      * @param startingPoint starting point of the straight line
+     * @param endPoint end point of the straight segment
      * @param dim direction of the straight line
      * 
      * @return true if (a,c) hides b.

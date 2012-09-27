@@ -194,7 +194,7 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
       while ( (k < nbSites) && 
-	      ( myMetric.closestPredicate(point, Sites[k], Sites[k+1])
+	      ( myMetric.closest(point, Sites[k], Sites[k+1])
 		!= SeparableMetric::FIRST ))
         k++;
       

@@ -180,7 +180,7 @@ void testDepthFirstPropagation()
   board.saveEPS("testDepthFirstPropagation-distance.eps");
 }
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   testDepthFirstPropagation();
   return 0;
