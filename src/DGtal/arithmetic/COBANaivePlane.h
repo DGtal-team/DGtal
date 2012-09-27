@@ -68,18 +68,43 @@ namespace DGtal
    * As a (3D) geometric primitive, it obeys to a subset of the
    * concept CSegmentComputer. It is copy constructible,
    * assignable. It is iterable (inner type ConstIterator, begin(),
-   * end()). It has methods extend(Point), extend( InputIterator, InputIterator)
-   * and isExtendable(Point), isExtendable(InputIterator, InputIterator).
-   * It is also a model of CPointPredicate.
+   * end()). It has methods extend(Point), extend( InputIterator,
+   * InputIterator) and isExtendable(Point),
+   * isExtendable(InputIterator, InputIterator).  The object stores
+   * all the distinct points \c p such that 'extend( \c p )' was
+   * successful. It is thus a model of boost::ForwardContainer (non
+   * mutable).
+   *
+   * It is also a model of CPointPredicate (returns 'true' iff a point
+   * is within the current bounds).
    *
    * @tparam TSpace specifies the type of digital space in which lies
    * input digital points. A model of CSpace.
    *
-   * @tparam TInternalInteger specifies the type of integer used in internal
-   * computations. The type should be able to hold integers of order
-   * D^3 if D is the diameter of the set of digital points.
+   * @tparam TInternalInteger specifies the type of integer used in
+   * internal computations. The type should be able to hold integers
+   * of order (2*D^3)^2 if D is the diameter of the set of digital
+   * points. In practice, diameter is limited to 20 for int32_t,
+   * diameter is approximately 500 for int64_t, and whatever with
+   * BigInteger/GMP integers. For huge diameters, the slow-down is
+   * polylogarithmic with the diameter.
    *
    * Essentially a backport from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene).
+   *
+   @code
+   typedef SpaceND<3,int> Z3;
+   typedef COBANaivePlane< Z3, int64_t > NaivePlane;
+   NaivePlane plane;
+   plane.init( 2, 100, 1, 1 ); // axis is z, diameter is 100, width is 1/1 => naive 
+   plane.extend( Point( 10, 0, 0 ) ); // return 'true'
+   plane.extend( Point( 0, 8, 0 ) );  // return 'true'
+   plane.extend( Point( 0, 0, 6 ) );  // return 'true'
+   plane.extend( Point( 5, 5, 5 ) );  // return 'false'
+   // There is no naive plane going through the 3 first points and the last one.
+   @endcode
+   *
+   * Model of boost::DefaultConstructible, boost::CopyConstructible,
+   * boost::Assignable, boost::ForwardContainer, CPointPredicate.
    */
   template < typename TSpace, 
              typename TInternalInteger = DGtal::BigInteger >
@@ -94,12 +119,21 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::Point Point;
-    typedef typename Space::Size Size;
     typedef std::set< Point > PointSet;
+    typedef typename PointSet::size_type Size;
     typedef typename PointSet::const_iterator ConstIterator;
     typedef typename PointSet::iterator Iterator;
     typedef TInternalInteger InternalInteger;
     typedef IntegerComputer< InternalInteger > MyIntegerComputer;
+
+    // ----------------------- std public types ------------------------------
+  public:
+    typedef typename PointSet::const_iterator const_iterator;
+    typedef typename PointSet::const_pointer const_pointer;
+    typedef typename PointSet::const_reference const_reference;
+    typedef typename PointSet::value_type value_type;
+    typedef typename PointSet::difference_type difference_type;
+    typedef typename PointSet::size_type size_type;
 
     // ----------------------- internal types ------------------------------
   private:
@@ -157,23 +191,21 @@ namespace DGtal
     MyIntegerComputer & ic() const;
 
     /**
-     * Clear the object, free memory. It is no more valid.
+     * Clear the object, free memory. The plane keeps its main axis,
+     * diameter and width, but contains no point.
      */
     void clear();
 
     /**
      * All these parameters cannot be changed during the process.
      * After this call, the object is in a consistent state and can
-     * accept new points for recognition. Call clear before
-     * initializing everything.
+     * accept new points for recognition. Calls clear so that the
+     * object is ready to be extended.
      *
      * @param axis the main axis (0,1,2) for x, y or z.
      *
      * @param diameter the diameter for the set of points (maximum
      * distance between the given points)
-     *
-     * @param firstPoint the first point for initializing the plane
-     * recognition algorithm.
      *
      * @param widthNumerator the maximal axis-width (x,y,or z) for the
      * plane is defined as the rational number \a widthNumerator / \a
@@ -184,10 +216,16 @@ namespace DGtal
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
     void init( Dimension axis, InternalInteger diameter, 
-               const Point & firstPoint,
                InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
                InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
 
+    /**
+     * @return the number of vertices/edges of the convex integer polygon of solutions.
+     */
+    Size complexity() const;
+
+    //-------------------- model of ForwardContainer -----------------------------
+  public:
 
     /**
      * @return the number of distinct points in the current naive plane.
@@ -195,9 +233,36 @@ namespace DGtal
     Size size() const;
 
     /**
-     * @return the number of vertices/edges of the convex integer polygon of solutions.
+     * @return 'true' if and only if this object contains no point.
      */
-    Size complexity() const;
+    bool empty() const;
+
+    /**
+     * @return a const iterator pointing on the first point stored in the current naive plane.
+     */
+    ConstIterator begin() const;
+
+    /**
+     * @return a const iterator pointing after the last point stored in the current naive plane.
+     */
+    ConstIterator end() const;
+
+    /**
+     * NB: std version.
+     * @return the maximal allowed number of points in the current naive plane.
+     * @see maxSize
+     */
+    Size max_size() const;
+
+    /**
+     * same as max_size
+     * @return the maximal allowed number of points in the current naive plane.
+     */
+    Size maxSize() const;
+
+
+    //-------------------- model of CPointPredicate -----------------------------
+  public:
 
     /**
      * Checks if the point \a p is in the current digital
@@ -209,6 +274,9 @@ namespace DGtal
      * @return 'true' if it is in the current plane, false otherwise.
      */
     bool operator()( const Point & p ) const;
+
+    //-------------------- model of CPrimitiveComputer -----------------------------
+  public:
 
     /**
      * Adds the point \a p to this plane if it is within the current
@@ -232,6 +300,21 @@ namespace DGtal
      * object is then in its original state).
      */
     bool extend( const Point & p );
+
+    /**
+     * Checks if we have still a digital plane of specified width when
+     * adding point \a p. The object is left unchanged whatever the
+     * returned value. The invariant is 'this->isExtendable( p ) ==
+     * true <=> this->extend( p ) == true'.
+     *
+     * @param p any 3D point (in the specified diameter).
+     *
+     * @return 'true' if this is still a plane, 'false' otherwise.
+     */
+    bool isExtendable( const Point & p ) const;
+
+    //-------------------- Parameters services -----------------------------
+  public:
 
     /**
      * @tparam Vector3D any type T such that T.operator[](int i)
@@ -302,7 +385,7 @@ namespace DGtal
      * @param state (modified) the state where the fields state.cip are used in computation and where
      * fields state.centroid and state.N are updated.
      */
-    void computeCentroidAndNormal( State & state );
+    void computeCentroidAndNormal( State & state ) const;
 
     /**
      * Performs the double cut in parameter space according to the
@@ -317,14 +400,12 @@ namespace DGtal
      * state.indMin, state.indMax, state.cip are used in computation
      * and where field state.cip is updated.
      */
-    void doubleCut( InternalPoint2 & grad, State & state );
+    void doubleCut( InternalPoint2 & grad, State & state ) const;
 
     /**
      * Computes the min and max values/arguments of the scalar product
      * between the normal state.N and the points in the range
      * [itB,itE). Overwrites state.min, state.max at the start.
-     *
-     * @tparam TInputIterator a model of boost::InputIterator on Point.
      *
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
@@ -333,15 +414,12 @@ namespace DGtal
      * @param itB an input iterator on the first point of the range.
      * @param itE an input iterator after the last point of the range.
      */
-    template <typename TInputIterator>
-    void computeMinMax( State & state, TInputIterator itB, TInputIterator itE );
+    void computeMinMax( State & state, ConstIterator itB, ConstIterator itE ) const;
 
     /**
      * Updates the min and max values/arguments of the scalar product
      * between the normal state.N and the points in the range
      * [itB,itE). Do not overwrite state.min, state.max at the start.
-     *
-     * @tparam TInputIterator a model of boost::InputIterator on Point.
      *
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
@@ -353,8 +431,7 @@ namespace DGtal
      * state.indMin, state.indMax have been updated, 'false'
      * otherwise.
      */
-    template <typename TInputIterator>
-    bool updateMinMax( State & state, TInputIterator itB, TInputIterator itE );
+    bool updateMinMax( State & state, ConstIterator itB, ConstIterator itE ) const;
 
     /**
      * @param state the state where the normal state.N, the scalars state.min and state.max are used in

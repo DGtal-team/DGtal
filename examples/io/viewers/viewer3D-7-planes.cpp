@@ -67,9 +67,9 @@ int main( int argc, char** argv )
   typedef BigInteger Integer;
   trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
   COBANaivePlane<Z3, BigInteger> plane;
+  plane.init( 2, 100, 1, 1 );
   Point pt0( 0, 0, 0 );
-  plane.init( 2, 100, pt0, 1, 1 );
-  bool pt0_inside = true;
+  bool pt0_inside = plane.extend( pt0 );
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
                << std::endl;
   Point pt1( 8, 1, 3 );
