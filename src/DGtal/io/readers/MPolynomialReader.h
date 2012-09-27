@@ -58,7 +58,7 @@ namespace DGtal
 
     /**
        Part of the polynomial tree structure. 
-       Terminal X_k^e
+       Terminal := X_k^e
     */
     struct power_node {
       int k;
@@ -67,62 +67,66 @@ namespace DGtal
 
     /**
        Part of the polynomial tree structure. 
-       Monomial coef ( X_k^e )*
+       Monomial := coef ( X_k^e )*
     */
     struct monomial_node {
       double coef;
       std::vector<power_node> powers;
     };
 
-    /**
-       Part of the polynomial tree structure. 
-       Sum of monomials
-    */
-    struct polynomial_node {
-      std::vector<monomial_node> monomials;
-    };
 
+    /// Forward declaration.
     struct top_node;
 
     /**
        Part of the polynomial tree structure. 
-       Either a top_node or a polynomial.
+       Either a top_node or a monomial.
     */
     typedef 
-    boost::variant< boost::recursive_wrapper<top_node>, polynomial_node  >
+    boost::variant< boost::recursive_wrapper<top_node>, monomial_node  >
     expr_node;
 
     /**
-       Part of the polynomial tree structure.  An operation
-       (+,-,*,^,()), subexpressions, and possibly the exponent value.
+       Part of the polynomial tree structure.  
+       Either some (expr) or ( expr )^k or a sequence of operations (+,-,*) between subexpressions.
     */
     struct top_node {
-      std::string op;
-      std::vector<expr_node> expressions;
-      int exp;
+      std::vector<char> ops; ///< the operation(s), or '^' to designate (expr) or ( expr )^k
+      std::vector<expr_node> expressions; ///< the sub-expressions (one more than ops).
+      int exp; ///< the exponent k
     };
 
   }
 
 }
 
+/**
+   This macro is necessary for using spirit/phoenix functions 'at'
+   during the construction of the semantic tree.
+  */
 BOOST_FUSION_ADAPT_STRUCT(
                           DGtal::detail::power_node,
                           (int, k)
                           (int, e)
 )
+
+/**
+   This macro is necessary for using spirit/phoenix functions 'at'
+   during the construction of the semantic tree.
+  */
 BOOST_FUSION_ADAPT_STRUCT(
                           DGtal::detail::monomial_node,
                           (double, coef)
                           (std::vector<DGtal::detail::power_node>, powers)
 )
-BOOST_FUSION_ADAPT_STRUCT(
-                          DGtal::detail::polynomial_node,
-                          (std::vector<DGtal::detail::monomial_node>, monomials)
-)
+
+/**
+   This macro is necessary for using spirit/phoenix functions 'at'
+   during the construction of the semantic tree.
+  */
 BOOST_FUSION_ADAPT_STRUCT(
     DGtal::detail::top_node,
-    (std::string, op)
+    (std::vector<char>, ops)
     (std::vector<DGtal::detail::expr_node>, expressions)
     (int, exp)
 )
@@ -156,39 +160,37 @@ namespace DGtal
       using phoenix::at_c;
       using phoenix::push_back;
 
-      top = // sum of polynomials
-        mulexpr [push_back(at_c<1>(_val), _1)] 
-        >> ( ( lit('+') [ at_c<0>(_val) = "+" ] 
-               >> top [push_back(at_c<1>(_val), _1)]  )
-             | ( ( lit('-') [ at_c<0>(_val) = "-" ] 
-                   >> top [push_back(at_c<1>(_val), _1)]  ) )
-             | eps [ at_c<0>(_val) = "T" ] );
+      top = // An expression is an additive or subtractive expression
+	mulexpr [push_back(at_c<1>(_val), _1)] 
+	>> *( ( lit('+') [ push_back(at_c<0>(_val), '+') ] 
+		>> mulexpr [push_back(at_c<1>(_val), _1)]  )
+	      | ( ( lit('-') [ push_back(at_c<0>(_val), '-') ] 
+		    >> mulexpr [push_back(at_c<1>(_val), _1)]  ) ) );
+      
+      mulexpr = // Each mul expression may be a product of sub-expressions
+	subexpr [push_back(at_c<1>(_val), _1)] 
+        >> *( ( lit('*') [ push_back(at_c<0>(_val), '*') ]
+		>> mulexpr [push_back(at_c<1>(_val), _1)] ) );
 
-      mulexpr = // product of polynomials
-        subexpr [push_back(at_c<1>(_val), _1)] 
-        >> ( ( lit('*') [ at_c<0>(_val) = "*" ] 
-               >> mulexpr [push_back(at_c<1>(_val), _1)] )
-             | eps [ at_c<0>(_val) = "T" ] );
-
-      subexpr =  // polynomial or parenthesis expr.
-        mpolynomial
+      subexpr =  // a sub-expression is a monomial or some ( ) or some ( )^k
+	monomial 
         | expexpr;
+
       expexpr = // ( expr ) or ( expr )^k
-        ( lit('(') [ at_c<0>(_val) = "()" ] 
-          >> top [ push_back(at_c<1>(_val), _1) ]
-          >> lit(')') >> ( ( lit('^') >> int_ [ at_c<2>(_val) = _1 ] )
-                           | eps [ at_c<2>(_val) = 1 ]  ) );
+        lit('(') [ push_back(at_c<0>(_val), '^') ] 
+	>> top [ push_back(at_c<1>(_val), _1) ]
+	>> lit(')') 
+	>> ( ( lit('^') >> int_ [ at_c<2>(_val) = _1 ] )
+	     | eps [ at_c<2>(_val) = 1 ]  ) ;
         
-      mpolynomial = // monomial or sum of monomials
-        monomial [push_back(at_c<0>(_val), _1)]
-        >> *( lit('+') >> monomial [push_back(at_c<0>(_val), _1)] );
-      monomial =   // coef * power(s)*, or power(s)+
+      monomial =   // coef.power(s)*, or power(s)+
         ( double_ [at_c<0>(_val) = _1] 
           >> *( genvariable [push_back(at_c<1>(_val), _1)] ) )
         | +( genvariable [push_back(at_c<1>(_val), _1)] 
              >> eps [at_c<0>(_val) = 1] );
 
-      genvariable = litvariable | variable;
+      genvariable = // may be some X_k^m or x^m, y^m ...
+	litvariable | variable;
       variable = // X_0 X_1 ... X_0^4 X_1^2 X_3^0 ...
         lit('X') >> lit('_') 
                  >> int_ [at_c<0>(_val) = _1]
@@ -203,12 +205,14 @@ namespace DGtal
         >> ( ( lit('^') >> int_ [at_c<1>(_val) = _1] ) // x^3 z^4
              | eps [at_c<1>(_val) = 1] // x y z
              );
+
     }
+
+
     qi::rule<Iterator, detail::top_node(), ascii::space_type> top;
     qi::rule<Iterator, detail::top_node(), ascii::space_type> mulexpr;
     qi::rule<Iterator, detail::expr_node(), ascii::space_type> subexpr;
     qi::rule<Iterator, detail::top_node(), ascii::space_type> expexpr;
-    qi::rule<Iterator, detail::polynomial_node(), ascii::space_type> mpolynomial;
     qi::rule<Iterator, detail::monomial_node(), ascii::space_type> monomial;
     qi::rule<Iterator, detail::power_node(), ascii::space_type> variable;
     qi::rule<Iterator, detail::power_node(), ascii::space_type> genvariable;
@@ -216,6 +220,7 @@ namespace DGtal
 
   };
 }
+
 
 namespace DGtal
 {
@@ -308,11 +313,17 @@ namespace DGtal
     // ------------------------------ internals ------------------------------
   private:
 
+    /**
+       Construct a simple term X_e^k as a polynomial.
+    */
     Polynomial make( const detail::power_node & pnode )
     {
       return Xe_k<n, Ring>( pnode.k, pnode.e );
     }
 
+    /**
+       Construct a monomial c * X_e1^k1 * X_e2^k2 * ... as a polynomial
+    */
     Polynomial make( const detail::monomial_node & mnode )
     {
       Polynomial m;
@@ -327,25 +338,20 @@ namespace DGtal
       return ( (Ring) mnode.coef ) * m;
     }
 
-    Polynomial make( const detail::polynomial_node & poly )
-    {
-      Polynomial p;
-      for ( unsigned int i = 0; i < poly.monomials.size(); ++i )
-        {
-          p += make( poly.monomials[ i ] );
-        }
-      return p;
-    }
-
+    /**
+       Intermediate structure to define a functor to choose between
+       two possible node types: either a monomial_node or a top_node. 
+       @see make( const detail::top_node & )
+    */
     struct ExprNodeMaker : boost::static_visitor<> {
       Polynomial myP;
       MPolynomialReader & myPR;
       ExprNodeMaker( MPolynomialReader & reader )
         : myPR( reader )
       {}
-      void operator()( const detail::polynomial_node & polynode)
+      void operator()( const detail::monomial_node & mnode)
       {
-        myP = myPR.make( polynode );
+	myP = myPR.make( mnode );
       }
       void operator()( const detail::top_node & topnode)
       {
@@ -353,54 +359,46 @@ namespace DGtal
       }
     };
 
+    /**
+       Construct a top_node ( ... ) or ( ... )^k or expr1 (*|+|-)
+       expr2 ... as a polynomial
+    */
     Polynomial make( const detail::top_node & topnode )
     {
+      ASSERT( ! topnode.expressions.empty() );
       Polynomial p;
-      if ( topnode.op ==  "T" )
-        {
-          // std::cerr << topnode.op << "-node";
-          ExprNodeMaker emaker( *this );
-          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
-          p = emaker.myP;
-        }
-      else if ( topnode.op ==  "()" )
-        {
-          // std::cerr << topnode.op << "^" << topnode.exp <<"-node";
-          ExprNodeMaker emaker( *this );
-          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
-          p = (Ring) 1; // emaker.myP;
+      ExprNodeMaker emaker( *this );
+      if ( topnode.ops.empty() )
+	{
+	  // Node is identity. Nothing special to do. 
+	  boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+	  p = emaker.myP;
+	}
+      else if ( topnode.ops[ 0 ] == '^' )
+	{
+	  // Node is some exponent ( ... )^k. ^0 is admissible.
+	  boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+          p = (Ring) 1; 
           for ( unsigned int i = 1; i <= (unsigned int)topnode.exp; ++i )
             p *= emaker.myP;
-        }
-      else if ( topnode.op == "*" )
-        {
-          // std::cerr << "*-node";
-          ExprNodeMaker emaker( *this );
-          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
-          p = emaker.myP;
-          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
-          p *= emaker.myP;
-        }
-      else if ( topnode.op == "+" )
-        {
-          // std::cerr << "+-node";
-          ExprNodeMaker emaker( *this );
-          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
-          p = emaker.myP;
-          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
-          p += emaker.myP;
-        }
-      else if ( topnode.op == "-" )
-        {
-          // std::cerr << "--node";
-          ExprNodeMaker emaker( *this );
-          boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
-          p = emaker.myP;
-          boost::apply_visitor( emaker, topnode.expressions[ 1 ] );
-          p -= emaker.myP;
-        }
+	}
       else
-        std::cerr << "[UNKNOWN-node]" << topnode.op << std::endl;
+	{
+	  // Node is expr1 (*|+|-) expr2 (*|+|-) expr3 ... 
+	  // NB: either ops are in {+,-} or in {*} only.
+	  boost::apply_visitor( emaker, topnode.expressions[ 0 ] );
+	  p = emaker.myP;
+	  for ( unsigned int i = 0; i < (unsigned int)topnode.ops.size(); ++i )
+	    {
+	      boost::apply_visitor( emaker, topnode.expressions[ i+1 ] );
+	      switch ( topnode.ops[ i ] ) {
+	      case '+': p += emaker.myP; break;
+	      case '-': p -= emaker.myP; break;
+	      case '*': p *= emaker.myP; break;
+	      default: std::cerr << "[UNKNOWN-node]" << topnode.ops[ i ] << std::endl;
+	      }
+	    }
+	}
       return p;
     }
                  
