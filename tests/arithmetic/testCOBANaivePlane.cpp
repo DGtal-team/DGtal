@@ -42,6 +42,134 @@ using namespace DGtal;
 // Functions for testing class COBANaivePlane.
 ///////////////////////////////////////////////////////////////////////////////
 
+template <typename Integer>
+Integer getRandomInteger( const Integer & first, const Integer & after_last )
+{
+  Integer r = (Integer) random();
+  return ( r % (after_last - first) ) + first;
+}
+
+/**
+ * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
+ */
+template <typename Integer, typename NaivePlane>
+bool
+checkPlane( Integer a, Integer b, Integer c, Integer d, 
+            int diameter, unsigned int nbtries )
+{
+  typedef typename NaivePlane::Point Point;
+  typedef typename Point::Component PointInteger;
+  IntegerComputer<Integer> ic;
+  Integer absA = ic.abs( a );
+  Integer absB = ic.abs( b );
+  Integer absC = ic.abs( c );
+  Integer x, y, z;
+  Dimension axis;
+  if ( ( absA >= absB ) && ( absA >= absC ) )
+    axis = 0;
+  else if ( ( absB >= absA ) && ( absB >= absC ) )
+    axis = 1;
+  else
+    axis = 2;
+  Point p;
+  p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+  p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+  p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+  x = (Integer) p[ 0 ];
+  y = (Integer) p[ 1 ];
+  z = (Integer) p[ 2 ];
+  switch ( axis ) {
+  case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+  case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+  case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+  } 
+  NaivePlane plane;
+  plane.init( axis, diameter, p, 1, 1 );
+  // Checks that points within the naive plane are correctly recognized.
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  while ( nb != nbtries )
+    {
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      x = (Integer) p[ 0 ];
+      y = (Integer) p[ 1 ];
+      z = (Integer) p[ 2 ];
+      switch ( axis ) {
+      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      } 
+      bool ok = plane.extend( p ); // should be ok
+      ++nb, nbok += ok ? 1 : 0;
+      if ( ! ok )
+        {
+          std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
+          break;
+        }
+      // else
+      //   std::cerr << "[OK] p=" << p << " IN plane=" << plane << std::endl;
+    }
+
+  // Checks that points outside the naive plane are correctly recognized as outliers.
+  while ( nb != (nbtries * 11 ) / 10 )
+    {
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      x = (Integer) p[ 0 ];
+      y = (Integer) p[ 1 ];
+      z = (Integer) p[ 2 ];
+      switch ( axis ) {
+      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      } 
+      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 ) 
+        * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
+      p[ axis ] += tmp;
+      bool ok = ! plane.extend( p ); // should *not* be ok
+      ++nb, nbok += ok ? 1 : 0;
+      if ( ! ok )
+        {
+          std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
+          break;
+        }
+      // else
+      //   std::cerr << "[OK] p=" << p << " IN plane=" << plane << std::endl;
+    }
+  return nb == nbok;
+}
+
+template <typename Integer, typename NaivePlane>
+bool
+checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
+{
+  //using namespace Z3i;
+  //typedef COBANaivePlane<Z3, Integer> NaivePlane;
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
+    {
+      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer c = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
+        {
+          ++nb, nbok += checkPlane<Integer, NaivePlane>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
+          if ( nb != nbok )
+            {
+              std::cerr << "[ERROR] for plane " << a << " * x + " 
+                        << b << " * y + " << c << " * z = " << d << std::endl;
+              break;
+            }
+        }
+    }
+  return nb == nbok;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -53,7 +181,8 @@ bool testCOBANaivePlane()
   using namespace Z3i;
   typedef BigInteger Integer;
   trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
-  COBANaivePlane<Z3, BigInteger> plane;
+  typedef COBANaivePlane<Z3, BigInteger> NaivePlane;
+  NaivePlane plane;
   Point pt0( 0, 0, 0 );
   plane.init( 2, 100, pt0, 3, 2 );
   trace.info() << "(" << nbok << "/" << nb << ") Plane=" << plane
@@ -87,20 +216,78 @@ bool testCOBANaivePlane()
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
 
+  NaivePlane plane2;
+  plane2.init( 2, 100, Point( 10, 0, 0 ), 1, 1 );
+  plane2.extend( Point( 0, 8, 0 ) );
+  plane2.extend( Point( 0, 0, 6 ) );
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << " Plane2=" << plane2 << std::endl;
+
+  ++nb, nbok += checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 )"
+               << std::endl;
   trace.endBlock();
-  
   return nbok == nb;
 }
 
+template <typename NaivePlane>
+bool 
+checkManyPlanes( unsigned int diameter,
+                 unsigned int nbplanes, 
+                 unsigned int nbpoints )
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  typedef typename NaivePlane::InternalInteger Integer;
+  stringstream ss (stringstream::out);
+  ss << "Testing block: Diameter is " << diameter << ". Check " << nbplanes << " planes with " << nbpoints << " points each.";
+  trace.beginBlock ( ss.str() );
+  ++nb, nbok += checkPlanes<Integer,NaivePlane>( nbplanes, diameter, nbpoints ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkPlanes<Integer,NaivePlane>()"
+               << std::endl;
+  trace.endBlock();
+  return nbok == nb;
+}
+
+/**
+   NB (JOL): Unreliable.
+*/
+template <typename NaivePlane>
+unsigned int maxDiameter( unsigned int min, unsigned int max )
+{
+  while ( min < max )
+    {
+      unsigned int middle = (min+max)/2;
+      bool ok =  checkManyPlanes<NaivePlane>( middle, 2, 2000 );
+      if ( ok ) min = middle+1;
+      else      max = middle;
+    }
+  return min-1;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int /*argc*/, char** /*argv*/ )
 {
+  using namespace Z3i;
+  // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
   trace.beginBlock ( "Testing class COBANaivePlane" );
-  bool res = testCOBANaivePlane(); // && ... other tests
+  bool res = testCOBANaivePlane()
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int32_t> >( 20, 100, 2000 )
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::int64_t> >( 500, 100, 2000 )
+    && checkManyPlanes<COBANaivePlane<Z3, DGtal::BigInteger> >( 10000, 10, 2000 );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
+  // trace.beginBlock ( "Max diameter for COBANaivePlane<Z3, int32_t>" );
+  // unsigned int maxd = maxDiameter<COBANaivePlane<Z3, DGtal::int32_t> >( 10, 1000 );
+  // trace.emphase() << maxd << endl;
+  // trace.endBlock();
+  // trace.beginBlock ( "Max diameter for COBANaivePlane<Z3, int64_t>" );
+  // unsigned int maxd2 = maxDiameter<COBANaivePlane<Z3, DGtal::int32_t> >( 100, 100000 );
+  // trace.emphase() << maxd2 << endl;
+  // trace.endBlock();
   return res ? 0 : 1;
 }
 //                                                                           //
