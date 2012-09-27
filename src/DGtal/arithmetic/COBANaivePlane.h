@@ -233,6 +233,32 @@ namespace DGtal
      */
     bool extend( const Point & p );
 
+    /**
+     * @tparam Vector3D any type T such that T.operator[](int i)
+     * returns a reference to a double. i ranges in 0,1,2.
+     *
+     * @param (updates) the current normal vector 
+     */
+    template <typename Vector3D>
+    void getNormal( Vector3D & normal ) const;
+
+    /**
+     * @tparam Vector3D any type T such that T.operator[](int i)
+     * returns a reference to a double. i ranges in 0,1,2.
+     *
+     * @param (updates) the current unit normal vector 
+     */
+    template <typename Vector3D>
+    void getUnitNormal( Vector3D & normal ) const;
+
+    /**
+     * If n is the unit normal to the current plane, then n.x >= min
+     * and n.x <= max are the two half-planes defining it.
+     *
+     * @param min the lower bound (corresponding to the unit vector).
+     * @param max the upper bound (corresponding to the unit vector).
+     */
+    void getBounds( double & min, double & max ) const;
 
     // ----------------------- Interface --------------------------------------
   public:

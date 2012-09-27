@@ -264,6 +264,63 @@ extend( const Point & p )
   myPointSet.erase( itPair.first );
   return false;
 }
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+template <typename Vector3D>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+getNormal( Vector3D & normal ) const
+{
+  switch( myAxis ) {
+    case 0 : 
+      normal[0] = 1.0;
+      normal[1] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
+      normal[2] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
+      break;
+    case 1 : 
+      normal[0] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
+      normal[1] = 1.0;
+      normal[2] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
+      break;
+    case 2 : 
+      normal[0] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
+      normal[1] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
+      normal[2] = 1.0;
+      break;
+  }
+}
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+template <typename Vector3D>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+getUnitNormal( Vector3D & normal ) const
+{
+  getNormal( normal );
+  double l = sqrt( normal[ 0 ] * normal[ 0 ]
+		   + normal[ 1 ] * normal[ 1 ]
+		   + normal[ 2 ] * normal[ 2 ] );
+  normal[ 0 ] /= l;
+  normal[ 1 ] /= l;
+  normal[ 2 ] /= l;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+void
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+getBounds( double & min, double & max ) const
+{
+  double nx = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
+  double ny = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
+  double nz = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
+  double l = sqrt( nx*nx + ny*ny + nz*nz );
+  min = NumberTraits<InternalInteger>::castToDouble( myState.min ) / l;
+  max = NumberTraits<InternalInteger>::castToDouble( myState.max ) / l;
+}
 
 
 
@@ -279,9 +336,18 @@ inline
 void
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
+  double min, max;
+  double N[ 3 ];
   out << "[COBANaivePlane"
       << " axis=" << myAxis << " w=" << myWidth[ 0 ] << "/" << myWidth[ 1 ]
-      << " size=" << size() << " complexity=" << complexity() << " N=" << myState.N << " ]";
+      << " size=" << size() << " complexity=" << complexity() << " N=" << myState.N << ": ";
+  this->getUnitNormal( N );
+  this->getBounds( min, max );
+  out << min << " <= " 
+      << N[ 0 ] << " * x + "
+      << N[ 1 ] << " * y + "
+      << N[ 2 ] << " * z "
+      << " <= " << max << " ]"; 
 }
 
 /**
