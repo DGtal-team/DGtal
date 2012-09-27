@@ -95,6 +95,7 @@ bool testReverseDT()
       image.setValue ( a, 128 );
     }
 
+  a = Z2i::Point(2,2);
  
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
@@ -103,8 +104,7 @@ bool testReverseDT()
   typedef DistanceTransformation<Z2i::Space, Predicate,2>::OutputImage ImageDT;
 
   ImageDT result = dt.compute (  );
-
-
+  trace.info() << result<< std::endl;
   //ReverseDT  
   trace.warning()<<"DT:"<<endl;
   ImageDT::ConstIterator it = result.begin();
@@ -178,7 +178,8 @@ bool testReverseDTL1()
       a[1] = ( k % 7 ) + 5;
       image.setValue ( a, 128 );
     }
-
+  a = Z2i::Point(2, 2 );
+ 
  
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
@@ -325,6 +326,7 @@ bool testReverseDTSet()
       a[1] = ( k % 7 ) + 5;
       image.setValue ( a, 128 );
     }
+  a = Z2i::Point(2, 2 );
 
  
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
