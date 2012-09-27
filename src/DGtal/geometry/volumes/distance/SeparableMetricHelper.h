@@ -282,11 +282,6 @@ namespace DGtal
       Abscissa lower = startingPoint[dim];
       Abscissa upper = endPoint[dim];
       
-      /*     trace.beginBlock("Hidden");
-	     trace.info() << u<<"  "<<v<<"  "<<"   "<<w<<std::endl;
-	     trace.info() << startingPoint<<"  "<<endPoint<<std::endl;
-      */
-
       //Partial norm computation
       // (sum_{i!=dim}  |u_i-v_i|^p
       InternalValue nu = NumberTraits<InternalValue>::ZERO;
