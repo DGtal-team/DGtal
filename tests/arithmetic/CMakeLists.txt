@@ -34,6 +34,7 @@ SET(DGTAL_BENCH_GMP_SRC
    testStandardDSLQ0-LrSB-reversedSmartDSS-benchmark
    testStandardDSLQ0-smartDSS-benchmark
    testArithmeticDSS-benchmark
+   testCOBANaivePlane-benchmark
 )
 
 

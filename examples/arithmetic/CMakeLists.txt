@@ -14,6 +14,7 @@ ENDFOREACH(FILE)
 if ( GMP_FOUND )
    SET( DGTAL_EXAMPLES_GMP_SRC
         convergents-biginteger     
+        extended-euclid
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_GMP_SRC}) 
    add_executable(${FILE} ${FILE})

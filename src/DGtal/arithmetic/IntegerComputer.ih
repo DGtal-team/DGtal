@@ -143,9 +143,27 @@ template <typename TInteger>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
+max( IntegerParamType a, IntegerParamType b, IntegerParamType c )
+{
+  return max( max(a,b), c );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
 min( IntegerParamType a, IntegerParamType b )
 {
   return ( a <= b ) ? a : b;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
+min( IntegerParamType a, IntegerParamType b, IntegerParamType c )
+{
+  return min( min(a,b), c );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
