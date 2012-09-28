@@ -193,9 +193,25 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
     /**
        @param a any integer.
        @param b any integer.
+       @param c any integer.
+       @return the maximum value of \a a, \a b and \a c.
+     */
+    static Integer max( IntegerParamType a, IntegerParamType b, IntegerParamType c );
+
+    /**
+       @param a any integer.
+       @param b any integer.
        @return the minimum value of \a a and \a b.
      */
     static Integer min( IntegerParamType a, IntegerParamType b );
+
+    /**
+       @param a any integer.
+       @param b any integer.
+       @param c any integer.
+       @return the minimum value of \a a, \a b and \a c.
+     */
+    static Integer min( IntegerParamType a, IntegerParamType b, IntegerParamType c );
 
     /**
        Computes the euclidean division of a/b, returning quotient and

@@ -63,6 +63,7 @@ with Mouhammad Said).
 
 @b Modules
 
+- \ref dgtal_integer_computations (Jacques-Olivier Lachaud)
 - \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Xavier Provençal)
 - \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Mouhammad Said)
 
@@ -74,6 +75,7 @@ with Mouhammad Said).
 @b Related @b documentation @b pages
 
 @b Related @b examples
+- extended-euclid.cpp
 - approximation.cpp, convergents.cpp, convergents-biginteger.cpp, fraction.cpp
 - pattern.cpp
 
