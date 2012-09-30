@@ -101,7 +101,9 @@ bool ok = a * X[ 0 ] + b * X[ 1 ] == c; // should be true.
 
 - specific methods for computing integer intersection of half-planes:
   IntegerComputer::getCoefficientIntersection and
-  IntegerComputer::getValidBezout
+  IntegerComputer::getValidBezout. These methods are notably used for
+  computing convex integer polygons by intersecting half-spaces (see
+  class ConvexIntegerPolygon).
 
 - methods for 3D integer vectors: IntegerComputer::reduce() for making
   the vector irreducible, dot product between two vectors
@@ -112,13 +114,17 @@ bool ok = a * X[ 0 ] + b * X[ 1 ] == c; // should be true.
 */
 
 /**
-   Computes a solution to the diophanine equation ax+by=c.
+   Computes a solution to the diophantine equation \f$ ax+by=c \f$, where the
+   integers \a a, \a b, \a c are given and \a x, \a y are the unknowns
+   (integers). Note that \a c must be a multiple of gcd( \a a, \a b ).
 
 @see \ref dgtal_integer_computations_sec2
 
 @verbatim
 $ ./examples/arithmetic/extended-euclid 5 7 1
 x=3 y=-2
+$ ./examples/arithmetic/extended-euclid 12 32 4
+x=3 y=-1
 @endverbatim
 
 \example arithmetic/extended-euclid.cpp

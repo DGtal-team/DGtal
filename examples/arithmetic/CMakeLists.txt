@@ -3,11 +3,13 @@ SET(DGTAL_EXAMPLES_SRC
         convergents
         fraction
         pattern
+        lower-integer-convex-hull
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_SRC})
   add_executable(${FILE} ${FILE})
-  target_link_libraries (${FILE} DGtal)
+  target_link_libraries ( ${FILE} DGtal DGtalIO 
+                          ${DGtalLibDependencies})
 
 ENDFOREACH(FILE)
 
@@ -18,7 +20,7 @@ if ( GMP_FOUND )
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_GMP_SRC}) 
    add_executable(${FILE} ${FILE})
-   target_link_libraries ( ${FILE} DGtal
+   target_link_libraries ( ${FILE} DGtal DGtalIO
                            ${DGtalLibDependencies})   
   ENDFOREACH(FILE)
 
