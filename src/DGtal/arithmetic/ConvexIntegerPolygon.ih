@@ -18,6 +18,7 @@
  * @file ConvexIntegerPolygon.ih
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @author Emilie Charrier
  *
  * @date 2012/04/19
  *
@@ -213,6 +214,42 @@ centroid( const Integer & twice_area ) const
 	}
     }
   return Point3I( _A[ 0 ], _A[ 1 ], _den );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Integer
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+numberBoundaryPoints() const
+{
+  _a = NumberTraits<Integer>::ZERO;
+  ConstIterator it = begin();
+  ConstIterator it_end = end();
+  ConstIterator it_next = it; ++it_next;
+  while ( it_next != it_end )
+    {
+      _N = *it_next - *it;
+      ic().getGcd( _g, _N[ 0 ], _N[ 1 ] );
+      _a += _g;
+      it = it_next; ++it_next;
+    }
+  _N = *it - *(begin());
+  ic().getGcd( _g, _N[ 0 ], _N[ 1 ] );
+  _a += _g;
+  return _a;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Integer
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+numberInteriorPoints() const
+{
+  _c1 = numberBoundaryPoints();
+  _c3 = twiceArea();
+  _c = _c3 - _c1 + 2;
+  ASSERT( ic().isZero( _c % 2 ) );
+  return _c / 2;
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>

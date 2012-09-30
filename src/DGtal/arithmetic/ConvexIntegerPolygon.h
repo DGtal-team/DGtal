@@ -20,6 +20,7 @@
  * @file ConvexIntegerPolygon.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @author Emilie Charrier
  *
  * @date 2012/04/19
  *
@@ -59,7 +60,7 @@ namespace DGtal
   /**
      Description of template class 'ConvexIntegerPolygon' <p> \brief
      Aim: Represents a convex polygon in the two-dimensional digital
-     plane.
+     plane. The list of points must follow the \b clockwise ordering.
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. It is also a
@@ -219,6 +220,23 @@ namespace DGtal
        @see centroid() const
      */
     Point3I centroid( const Integer & twice_area ) const;
+
+    /**
+       @return the exact number of digital points on the polygon
+       boundary (greater or equal to the number of vertices.  NB:
+       complexity in O(n log(D) ), where n is the number of vertices.
+    */
+    Integer numberBoundaryPoints() const;
+
+    /**
+       @return the exact number of digital points in the polygon
+       interior. 
+
+       Calls numberBoundaryPoints and twiceArea. Uses Pick's formula. 
+
+       NB: complexity in O(n log(D) ), where n is the number of vertices.
+    */
+    Integer numberInteriorPoints() const;
  
     // ----------------------- halfspace services -------------------------------
   public:
