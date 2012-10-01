@@ -28,7 +28,7 @@ digraph GARITHMETIC {
     subgraph cluster_ext {
 	rank = same;
         style=invis;
-        subgraph cluster_packages {
+        subgraph cluster_base {
                  style=filled;
                  color="#eeeeff";
                  node [style=filled,color=white];
@@ -36,6 +36,25 @@ digraph GARITHMETIC {
 
                  CBackInsertable;
                  CConstSinglePassRange;
+        }
+        subgraph cluster_kernel {
+                 style=filled;
+                 color="#ddddee";
+                 node [style=filled,color=white];
+                 label="kernel";
+
+                 CInteger;
+                 CSignedInteger;
+                 CUnsignedInteger;
+                 CSpace;
+        }
+        subgraph cluster_io {
+                 style=filled;
+                 color="#e4e4ff";
+                 node [style=filled,color=white];
+                 label="io";
+
+                 CDrawableWithBoard2D;
         }
         subgraph cluster_boost {
                  style=filled;
@@ -46,6 +65,7 @@ digraph GARITHMETIC {
                  boost_CopyConstructible;
                  boost_DefaultConstructible;
                  boost_Assignable;
+                 boost_Sequence;
         }
     }
   
@@ -75,6 +95,8 @@ digraph GARITHMETIC {
         LightSternBrocot_Fraction;
         LighterSternBrocot_Fraction;
         IntegerComputer
+        ConvexIntegerPolygon
+        ClosedIntegerHalfPlane
     }
 
     SternBrocot_Fraction -> CPositiveIrreducibleFraction;
@@ -85,6 +107,12 @@ digraph GARITHMETIC {
     IntegerComputer -> boost_Assignable;
     IntegerComputer -> CInteger [label="use",style=dashed];
     IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
+    ConvexIntegerPolygon -> CSpace [label="use",style=dashed];
+    ConvexIntegerPolygon -> CDrawableWithBoard2D
+    ConvexIntegerPolygon -> boost_DefaultConstructible;
+    ConvexIntegerPolygon -> boost_CopyConstructible;
+    ConvexIntegerPolygon -> boost_Assignable;
+    ClosedIntegerHalfPlane -> CSpace [label="use",style=dashed];
 }
 @enddot
 
