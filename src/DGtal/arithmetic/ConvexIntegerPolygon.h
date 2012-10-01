@@ -242,8 +242,8 @@ namespace DGtal
   public:
 
     /**
-       Given some half-plane \a hs, finds the vertices of this polygon
-       that borders this half-plane.
+       Given some half-plane \a hs, finds the edges/vertices of this polygon
+       that crosses/borders this half-plane.
 
        Complexity is O(n), where n is size().
 

@@ -137,7 +137,31 @@ interior of the polygon: \f$ A(P) = i + b/2 - 1 \f$.
 @snippet arithmetic/lower-integer-convex-hull.cpp lower-integer-convex-hull-stats
 
 
-\section dgtal_convex_integer_polygon_sec5 Cutting the polygon by half-planes
+\section dgtal_convex_integer_polygon_sec5 Polygon edges define half-planes
+
+A convex polygon may be defined by a list of vertices (with some
+properties) but also as the intersection of half-planes. For instance,
+if \f$ (v_i)_{i=0..n-1} \f$ are the vertices of the polygon, then the
+polygon is also the intersection of the half-planes which contains the
+polygon centroid and whose boundary contains edges
+\f$(v_i,v_{i+1})\f$.
+
+You may use the following methods:
+
+- to get the half-plane defined by an edge:
+  ConvexIntegerPolygon::halfSpace() with an iterator on the first
+  vertex.
+
+- to get an arbitrary half-plane defined by three points (two on the
+  boundary, one inside): \ref ConvexIntegerPolygon::halfSpace( const Point & A, const Point & B, const Point & inP ) const.
+
+- Given some half-plane, finds the edges/vertices of this polygon that
+  crosses/borders this half-plane:
+  ConvexIntegerPolygon::findCut(). Also returns the number of
+  vertices inside the half-plane.
+
+
+\section dgtal_convex_integer_polygon_sec6 Cutting the polygon by half-planes
 
 You may also update a ConvexIntegerPolygon by intersecting with
 half-planes, i.e. linear constraints of the form ax+by <= c. The
@@ -171,7 +195,7 @@ This shows the successive polygons obtained by cutting a square with constraints
    c, it cuts the polygon by the half-plane \f$ ax+by \le c \f$. It
    also outputs some statistics.
 
-@see \ref dgtal_convex_integer_polygon_sec5
+@see \ref dgtal_convex_integer_polygon_sec6
 
 @verbatim
 $ ./examples/arithmetic/lower-integer-convex-hull -5 8 41
