@@ -97,7 +97,7 @@ type \a TDigitalSet, which must be a model of CDigitalSet. It modifies
 the digital set given in parameter so as to holds these points. For
 now, the complexity is not optimal. If \a D is the size of the domain
 of \a TDigitalSet, \a N the number of vertices of the polygon, then
-the complexity is upper bounded by O(ND).
+the complexity is upper bounded by O(ND log(D)) (if \a TDigitalSet is DigitalSetBySTLSet).
 
 @code
 // cip is some convex integer polygon
