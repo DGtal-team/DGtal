@@ -57,11 +57,13 @@ subsegments. Furthermore, since 0.6, it provides classes for
 representing convex integer polygons as well as methods to perform
 linear integer programming in the plane.
 
-Parts of this package are backports from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene): 
-class IntegerComputer, class
-SternBrocot (written with Xavier Provençal), algorithms
-StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS (written
-with Mouhammad Said), class ConvexIntegerPolygon (written with Emilie Charrier).
+Parts of this package are backports from
+[ImaGene](https://gforge.liris.cnrs.fr/projects/imagene): class
+IntegerComputer, class SternBrocot (written with Xavier Provençal),
+algorithms StandardDSLQ0::smartDSS and StandardDSLQ0::reversedSmartDSS
+(written with Mouhammad Said), class ConvexIntegerPolygon (written
+with Emilie Charrier), class COBANaivePlane (written with Emilie
+Charrier and Lilian Buzer).
 
 @b Modules
 
@@ -69,6 +71,7 @@ with Mouhammad Said), class ConvexIntegerPolygon (written with Emilie Charrier).
 - \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Xavier Provençal)
 - \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Mouhammad Said)
 - \ref dgtal_convex_integer_polygon (Jacques-Olivier Lachaud, Emilie Charrier)
+- \ref dgtal_naive_plane_recognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
 
 @b Package @b Concepts @b Overview

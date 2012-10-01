@@ -1,0 +1,87 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/*!
+   
+@page dgtal_naive_plane_recognition  Naive plane recognition (and rational dilation of naive planes) with COBA algorithm
+
+@writers Jacques-Olivier Lachaud
+
+Part of the \ref pageArithmeticPackage.
+
+This module gathers classes and functions to recognize piece of naive
+planes, and more generally piece of planes with arbitrary rational
+axis-thickness. It is based on an implementation of the COBA Algorithm
+[Charrier, Buzer 1998 : \cite Charrier:2008-dgci]. For the user,
+everything is gathered in class COBANaivePlane, a forward primitive computer.
+
+[TOC]
+
+\section dgtal_naive_plane_recognition_sec1 What planes are recognized by the COBA algorithm ?
+
+The COBA algorithm recognizes planes defined with some equation \f$
+\mu \le \vec{N} \cdot \vec{x} < \mu + \epsilon \f$, where \f$ N_z \f$ (for
+instance) is 1. This is ok for instance for recognizing \b naive \b
+planes defined by \f$ d \le ax+by+cz < d + \omega \f$ where \f$ \omega
+= \max(a,b,c) \f$. Assign indeed \f$ \mu = d / \omega, \vec{N} =
+(a,b,c) / \omega, \epsilon = 1 \f$. Extension to integer multiples or
+rational multiples of such planes is straightforward, and is hence
+provided.
+
+The user thus specifies a main axis \a axis and a rational width
+(i.e. \f$ \epsilon \f$ as \a widthNumerator / \a widthDenominator ) at
+initialization (see COBANaivePlane::init()).
+
+The idea of the COBA algorithm is to transform the problem into a
+linear integer programming problem in the digital plane \f$ Z^2
+\f$. If the main axis is \a z, then the algorithm looks for unknown
+variables \f$ (N_x,N_y) \f$. Given a set of points \f$ (\vec{P}_i)
+\f$, it computes (or maintains in the incremental form) the 2D space
+of solutions induced by these points. More precisely, each point
+induces two linear constraints \f$ \mu \le \vec{N} \cdot \vec{P}_i \f$
+and \f$ \vec{N} \cdot \vec{P}_i < \mu + \epsilon \f$. 
+
+Instead of keeping this problem in \f$ R^2 \f$, the problem is cast in
+\f$ (hZ)^2 \f$, where the parameter \a h is the sampling step and is
+sufficiently small to capture a solution when there is one. When
+initializing the algorithm, the user must give the \a diameter of the
+set of points \f$ (\vec{P}_i) \f$ (here largest vector in \f$\infty\f$
+norm), see COBANaivePlane::init().
+
+It is proven that if \f$ 0 < h < 1/(2D^3) \f$, where \a D is the
+diameter, then if there is a solution, there is a rational solution
+with denominator less than \f$ 2D^3 \f$.
+
+The COBA algorithm uses therefore convex integer polygons, and class
+ConvexIntegerPolygon, to maintain the set of rational
+solutions. Experimentally, even for a great number of points
+(<=100000), this convex set has generally fewer than 12 vertices (see
+\ref dgtal_naive_plane_recognition_sec3).
+
+A drawback of the COBA algorithm is that it does \b not provide the \b
+minimal \b characteristics of the recognized plane. This is due to the
+sampling method. In practice, the extracted normal is close to the
+minimal (integer) one.
+
+\note Another problem is that parameter \f$ \mu \f$ is also
+unknown. To cope with that problem, a given solution (the centroid) is
+picked up and the maximal and minimal bounds are computed from it. If
+for a new point the bounds are too big, then a new direction is chosen
+by following the gradient of the induced constraints, and the
+algorithm optimizes iteratively the direction so as to get a direction
+with feasible bounds or no solutions. All this is hidden to the user,
+but explains the worst-case complexity.
+
+\section dgtal_naive_plane_recognition_sec2 How to recognize a plane ?
+
+
+
+\section dgtal_naive_plane_recognition_sec3 Speed and computational complexity of COBA algorithm
+
+
+*/
+
+}
