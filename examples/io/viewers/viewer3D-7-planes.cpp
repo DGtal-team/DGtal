@@ -15,8 +15,8 @@
  **/
 
 /**
- * @file testCOBANaivePlane.cpp
- * @ingroup Tests
+ * @file viewer3D-7-planes.cpp
+ * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -65,7 +65,7 @@ int main( int argc, char** argv )
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef BigInteger Integer;
-  trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
+
   COBANaivePlane<Z3, BigInteger> plane;
   plane.init( 2, 100, 1, 1 );
   Point pt0( 0, 0, 0 );
@@ -100,8 +100,6 @@ int main( int argc, char** argv )
   ++nb, nbok += pt5_inside == true ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") add " << pt5
                << " Plane=" << plane << std::endl;
-
-  trace.endBlock();
 
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
