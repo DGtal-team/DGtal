@@ -124,7 +124,7 @@ namespace DGtal
    * boost::Assignable, boost::ForwardContainer, CPointPredicate.
    */
   template < typename TSpace, 
-             typename TInternalInteger = DGtal::BigInteger >
+             typename TInternalInteger >
   class COBANaivePlane
   {
 
