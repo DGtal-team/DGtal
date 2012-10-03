@@ -29,6 +29,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <vector>
+#include <set>
+#include <map>
+#include <iostream>
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
@@ -46,7 +50,6 @@
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
-//#include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
@@ -56,13 +59,33 @@ using namespace std;
 using namespace DGtal;
 namespace po = boost::program_options;
 
+//! [greedy-plane-segmentation-typedefs]
+using namespace Z3i;
+typedef DGtal::int64_t InternalInteger;
+typedef COBANaivePlane<Z3,InternalInteger> NaivePlaneComputer;
+// We choose the DigitalSetBoundary surface container in order to
+// segment connected or unconnected surfaces.
+typedef DigitalSetBoundary<KSpace,DigitalSet> MyDigitalSurfaceContainer;
+typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
+typedef MyDigitalSurface::ConstIterator ConstIterator;
+typedef MyDigitalSurface::Vertex Vertex;
+typedef MyDigitalSurface::SurfelSet SurfelSet;
+typedef SurfelSet::iterator SurfelSetIterator;
+typedef BreadthFirstVisitor<MyDigitalSurface> Visitor;
+/**
+   Simple type to memorize a plane and associated information (a color
+   here).
+*/
+struct SegmentedPlane {
+  NaivePlaneComputer plane;
+  Color color;
+};
+//! [greedy-plane-segmentation-typedefs]
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
 {
-  using namespace Z3i;
-
   //! [greedy-plane-segmentation-parseCommandLine]
   // parse command line ----------------------------------------------
   po::options_description general_opt("Allowed options are: ");
@@ -112,30 +135,12 @@ int main( int argc, char** argv )
   bool ok = ks.init( set3d.domain().lowerBound(),
                      set3d.domain().upperBound(), true );
   if ( ! ok ) std::cerr << "[KSpace.init] Failed." << std::endl;
-  // We choose the DigitalSetBoundary surface container in order to
-  // segment connected or unconnected surfaces.
-  typedef DigitalSetBoundary<KSpace,DigitalSet> MyDigitalSurfaceContainer;
-  typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
   SurfelAdjacency<KSpace::dimension> surfAdj( true ); // interior in all directions.
   MyDigitalSurfaceContainer* ptrSurfContainer = 
     new MyDigitalSurfaceContainer( ks, set3d, surfAdj );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
   //! [greedy-plane-segmentation-makeSurface]
-
-  //! [greedy-plane-segmentation-typedefs]
-  typedef int64_t Integer;
-  typedef COBANaivePlane<Z3,Integer> NaivePlaneComputer;
-  typedef MyDigitalSurface::ConstIterator ConstIterator;
-  typedef MyDigitalSurface::Vertex Vertex;
-  typedef MyDigitalSurface::SurfelSet SurfelSet;
-  typedef SurfelSet::iterator SurfelSetIterator;
-  struct SegmentedPlane {
-    NaivePlaneComputer plane;
-    Color color;
-  };
-  typedef BreadthFirstVisitor<MyDigitalSurface> Visitor;
-  //! [greedy-plane-segmentation-typedefs]
 
   //! [greedy-plane-segmentation-segment]
   trace.beginBlock( "Segment into planes." );
