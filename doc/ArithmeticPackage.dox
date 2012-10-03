@@ -71,7 +71,6 @@ Charrier and Lilian Buzer).
 - \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Xavier Provençal)
 - \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Mouhammad Said)
 - \ref dgtal_convex_integer_polygon (Jacques-Olivier Lachaud, Emilie Charrier)
-- \ref dgtal_naive_plane_recognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
 
 @b Package @b Concepts @b Overview
@@ -79,6 +78,7 @@ Charrier and Lilian Buzer).
 - \ref pageArithmeticPackageConcepts
 
 @b Related @b documentation @b pages
+
 
 @b Related @b examples
 - extended-euclid.cpp

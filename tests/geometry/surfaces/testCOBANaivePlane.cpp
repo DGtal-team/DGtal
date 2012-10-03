@@ -33,7 +33,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/arithmetic/COBANaivePlane.h"
+#include "DGtal/geometry/surfaces/COBANaivePlane.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
