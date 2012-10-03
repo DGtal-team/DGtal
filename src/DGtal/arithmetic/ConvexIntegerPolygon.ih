@@ -285,8 +285,10 @@ findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside,
       it_prev = it;
     }
   if ( visibility_vtx != visibility_begin_vtx )
-    if ( visibility_vtx )  it_next_is_outside = it_prev;
-    else                   it_next_is_inside  = it_prev;
+    {
+      if ( visibility_vtx )  it_next_is_outside = it_prev;
+      else                   it_next_is_inside  = it_prev;
+    }
   ASSERT( ( nbWithin == 0 ) || ( nbWithin == size() )
           || ( ( it_next_is_outside != it_end ) && ( it_next_is_inside != it_end ) 
                && ( it_next_is_inside != it_next_is_outside ) ) );
