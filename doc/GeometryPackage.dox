@@ -46,6 +46,7 @@ namespace DGtal {
 This package contains geometry related concepts, models and algorithms.
 It provides a generic framework for the segmentation of one-dimensional
 discrete structures, like strings, contours of 2d digital objects or nd digital curves.
+It has also limited support for digital plane recognition in 3d.
 It also provides a generic framework for the estimation of geometrical quantities,
 either global, like length, or local, like normal or curvature.
 Several estimators are built from some well chosen segmentations.
@@ -63,6 +64,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
 
+- \ref dgtal_naive_plane_recognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
 @b Package @b Concepts @b Overview
 
@@ -75,6 +77,8 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - distancetransform3D.cpp
 - distancetransform2D.cpp
+- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp 
+
 */
 
 }

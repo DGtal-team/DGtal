@@ -504,7 +504,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/arithmetic/COBANaivePlane.ih"
+#include "DGtal/geometry/surfaces/COBANaivePlane.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

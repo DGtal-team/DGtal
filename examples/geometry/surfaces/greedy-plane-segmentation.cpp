@@ -46,10 +46,10 @@
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/arithmetic/COBANaivePlane.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DigitalSetBoundary.h"
 #include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/geometry/surfaces/COBANaivePlane.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
