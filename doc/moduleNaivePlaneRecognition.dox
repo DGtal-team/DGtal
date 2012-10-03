@@ -221,6 +221,57 @@ BigInteger.
 @image html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions."
 @image latex html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
 
+\section dgtal_naive_plane_recognition_sec5 Application to greedy segmentation into digital planes
+
+Example greedy-plane-segmentation.cpp illustrates the use of
+COBANaivePlane to segment a digital surface into connected pieces of
+digital planes.
+
+The surface will be define as some digital surface in a thresholded 3D image. The image is loaded here.
+
+@snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-loadVolume
+
+Then the digital surface is built within this volume.
+
+@snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-makeSurface
+
+We define a few types. Note the COBANaivePlane and the structure
+SegmentedPlane, which will store information for each plane.
+
+@snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-typedefs
+
+We proceed to the segmentation itself. Note that we iterate over each
+surface element (surfel or vertex). Only vertices not processed can
+define the starting point of a new plane. Then a breadth-first
+traversal is initiated from this vertex and vertices are added to the
+plane as long as it is possible.
+
+@snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-segment
+
+We display it using 3D viewers.
+
+@snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-visualization
+
+@image html greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes." width=6cm
+
+@note This approach to plane segmentation is very naive. Because there
+are favored axes when iterating (vertices are not randomly picked up),
+this technique has indeed the drawback of favoring "slice planes",
+which are not very useful.
+
+@note \b Exercice 1. Randomize the greedy plane recognition. The
+simplest approach is first to put all vertices into a vector, then
+suffle it with STL algorithms. And then iterate over this shuffled
+set.
+
+@note \b Exercice 2. Enhance the polyhedrization by selecting first
+the vertices that induces the biggest planes. This is much slower than
+above, but will give nicer results. For each vertex, computes its best
+plane by breadth-first traversal. Stores the obtained size (or better
+moments). Do that for each vertex independently. Put them in a
+priority queue, the first to be popped should be the ones with the
+biggest size. The remaining of the algorithm is unchanged.
 
 */
 

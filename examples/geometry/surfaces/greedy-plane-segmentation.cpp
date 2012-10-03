@@ -123,8 +123,7 @@ int main( int argc, char** argv )
   trace.endBlock();
   //! [greedy-plane-segmentation-makeSurface]
 
-  //! [greedy-plane-segmentation-segment]
-  trace.beginBlock( "Segment into planes." );
+  //! [greedy-plane-segmentation-typedefs]
   typedef int64_t Integer;
   typedef COBANaivePlane<Z3,Integer> NaivePlaneComputer;
   typedef MyDigitalSurface::ConstIterator ConstIterator;
@@ -136,7 +135,10 @@ int main( int argc, char** argv )
     Color color;
   };
   typedef BreadthFirstVisitor<MyDigitalSurface> Visitor;
+  //! [greedy-plane-segmentation-typedefs]
 
+  //! [greedy-plane-segmentation-segment]
+  trace.beginBlock( "Segment into planes." );
   std::set<Vertex> processedVertices;
   std::vector<SegmentedPlane> segmentedPlanes;
   std::map<Vertex,SegmentedPlane*> v2plane;
