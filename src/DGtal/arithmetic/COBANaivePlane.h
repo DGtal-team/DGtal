@@ -360,6 +360,22 @@ namespace DGtal
      */
     void getBounds( double & min, double & max ) const;
 
+    /**
+     * @pre ! empty()
+     * @return the current minimal point of the plane, i.e. the one
+     * with the smallest scalar product with the current normal
+     * vector. Note that other points may also have a minimum value.
+     */
+    const Point & minimalPoint() const;
+
+    /**
+     * @pre ! empty()
+     * @return the current maximal point of the plane, i.e. the one
+     * with the highest scalar product with the current normal
+     * vector. Note that other points may also have a maximum value.
+     */
+    const Point & maximalPoint() const;
+
     // ----------------------- Interface --------------------------------------
   public:
 

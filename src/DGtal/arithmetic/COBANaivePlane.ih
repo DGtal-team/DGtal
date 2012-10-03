@@ -425,6 +425,26 @@ getBounds( double & min, double & max ) const
   min = NumberTraits<InternalInteger>::castToDouble( myState.min ) / l;
   max = NumberTraits<InternalInteger>::castToDouble( myState.max ) / l;
 }
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+const typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::Point &
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+minimalPoint() const
+{
+  ASSERT( ! this->empty() );
+  return *(myState.indMin);
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+inline
+const typename DGtal::COBANaivePlane<TSpace, TInternalInteger>::Point &
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+maximalPoint() const
+{
+  ASSERT( ! this->empty() );
+  return *(myState.indMax);
+}
 
 
 
