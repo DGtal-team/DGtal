@@ -161,14 +161,15 @@ namespace DGtal
   private:
 
     /**
+     * Radius of the circle.
+     */
+    double myRadius;
+
+    /**
      * Center of the circle.
      */
     RealPoint2D myCenter;
     
-    /**
-     * Radius of the circle.
-     */
-    double myRadius;
 
     // ----------------------- Interface --------------------------------------
   public:

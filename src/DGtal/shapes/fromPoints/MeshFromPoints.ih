@@ -47,6 +47,18 @@ inline
 DGtal::MeshFromPoints<TPoint>::MeshFromPoints(bool saveFaceColor)
 {
   mySaveFaceColor=saveFaceColor;
+  myDefaultColor = DGtal::Color::White;
+}
+
+/**
+ * Constructor.
+ */
+template <typename TPoint>
+inline
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const DGtal::Color &aColor)
+{
+  mySaveFaceColor=false;
+  myDefaultColor = aColor;
 }
 
 /**
@@ -193,7 +205,7 @@ DGtal::MeshFromPoints<TPoint>::getFace(unsigned int i) const
 
 template<typename TPoint>
 inline
-const unsigned int 
+unsigned int 
 DGtal::MeshFromPoints<TPoint>::nbFaces() const
 {
   return myFaceList.size();
@@ -201,7 +213,7 @@ DGtal::MeshFromPoints<TPoint>::nbFaces() const
 
 template<typename TPoint>
 inline
-const unsigned int 
+unsigned int 
 DGtal::MeshFromPoints<TPoint>::nbVertex() const
 {
   return myVertexList.size();
@@ -214,7 +226,7 @@ DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
   if(mySaveFaceColor){
     return myFaceColorList.at(i);
   }else{
-    return DGtal::Color::White;
+    return myDefaultColor;
   }
 }
 
