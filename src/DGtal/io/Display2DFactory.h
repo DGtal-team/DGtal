@@ -57,6 +57,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/RestrictedImage.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
@@ -244,16 +245,19 @@ static void drawImageRecursive( DGtal::Board2D & aBoard,
                          const C& cmap );
 
 template <typename C, typename Domain, typename Value, typename HashKey>
-static void drawImage( Board2D & board,
+static void drawImageHashTree( Board2D & board,
                 const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> &, 
                 const Value &, const Value & );
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
-  static void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
-// ImageContainerBySTLVector
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+template <typename Colormap, typename Image>
+  static void drawImage( DGtal::Board2D & board,
+                          const Image & i,
+                          const typename Image::Value & minV,
+                          const typename Image::Value & maxV );
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
     
     
 // KhalimskyCell
