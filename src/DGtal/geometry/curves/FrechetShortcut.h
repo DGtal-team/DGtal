@@ -64,7 +64,7 @@ namespace DGtal
    * distance for a given error. See related article:
    *       Sivignon, I., (2011). A Near-Linear Time Guaranteed Algorithm
    *       for Digital Curve Simplification under the Fréchet
-   *       Distance. DGCI 2013. Retrieved from 
+   *       Distance. DGCI 2011. Retrieved from 
    *       http://link.springer.com/chapter/10.1007/978-3-642-19867-0_28
    *      
    *
