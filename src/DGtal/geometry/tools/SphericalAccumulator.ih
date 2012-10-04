@@ -114,7 +114,6 @@ void DGtal::SphericalAccumulator<T>::binCoordinates(const Vector &aDir,
 	posTheta -= Nthetai;
     }
   
-  ASSERT(posPhi>=0 );
   ASSERT(posPhi < myNphi);
   ASSERT( isValidBin(posPhi,posTheta) );
 }

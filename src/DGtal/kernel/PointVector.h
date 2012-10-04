@@ -697,6 +697,7 @@ namespace DGtal
      * norms. For exact norms (restricted to L_1 and L_infinity
      * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
      *
+
      * @param type specifies the type of norm to consider (see @ref NormType).
      * @return the norm of the point/vector as a double.
      */
