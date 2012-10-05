@@ -69,7 +69,7 @@ int main( int argc, char** argv )
   int c = atoi( argv[ 3 ] );
 
   //! [lower-integer-convex-hull-process]
-  typedef typename ConvexIntegerPolygon<Z2>::HalfSpace HalfSpace;
+  typedef ConvexIntegerPolygon<Z2>::HalfSpace HalfSpace;
   HalfSpace hs( Vector( a, b ), c );
   cip.cut( hs );
   DigitalSet aSet( domain );

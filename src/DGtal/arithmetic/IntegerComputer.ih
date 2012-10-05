@@ -51,13 +51,13 @@ DGtal::IntegerComputer<TInteger>::IntegerComputer()
 //-----------------------------------------------------------------------------
 template <typename TInteger>
 inline
-DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & other )
+DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & /*other*/ )
 {}
 //-----------------------------------------------------------------------------
 template <typename TInteger>
 inline
 DGtal::IntegerComputer<TInteger> &
-DGtal::IntegerComputer<TInteger>::operator=( const Self & other )
+DGtal::IntegerComputer<TInteger>::operator=( const Self & /*other*/ )
 {
   return *this;
 }
