@@ -77,7 +77,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - distancetransform3D.cpp
 - distancetransform2D.cpp
-- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp 
+- viewer3D-7-planes.cpp , greedy-plane-segmentation.cpp  , greedy-plane-segmentation-ex2.cpp 
 
 */
 
