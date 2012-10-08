@@ -186,7 +186,7 @@ namespace DGtal
     TraceWriter &myWriter;
 
     ///A stack to store the block clocks
-    std::stack<Clock*> myClockStack;
+    std::stack<Clock> myClockStack;
 
     // ------------------------- Hidden services ------------------------------
   protected:
