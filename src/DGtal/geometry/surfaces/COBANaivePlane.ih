@@ -369,15 +369,8 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 extend( TInputIterator it, TInputIterator itE )
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
-  typedef typename std::vector<Point>::const_iterator TmpIterator;
 
   ASSERT( isValid() );
-  _points.clear();
-
-  // Discard points that already belongs to the plane.
-  for ( ; it != itE; ++it )
-    if ( myPointSet.find( *it ) == myPointSet.end() )
-      _points.push_back( *it ); // put points in vector.
 
   // Check if points lies within the current bounds of the plane.
   bool changed;
@@ -385,7 +378,7 @@ extend( TInputIterator it, TInputIterator itE )
   if ( empty() )
     {
       changed = true;
-      computeMinMax( _state, _points.begin(), _points.end() );
+      computeMinMax( _state, it, itE );
     }
   else
     {
@@ -393,13 +386,12 @@ extend( TInputIterator it, TInputIterator itE )
       _state.max = myState.max; 
       _state.ptMin = myState.ptMin; 
       _state.ptMax = myState.ptMax; 
-      changed = updateMinMax( _state, _points.begin(), _points.end() );
+      changed = updateMinMax( _state, it, itE );
     }
   // Check if points are already within bounds.
   if ( ! changed ) 
     { // All points are within bounds. Put them in pointset.
-      for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
-            tmpIt != tmpItE; ++tmpIt )
+      for ( TInputIterator tmpIt = it; tmpIt != itE; ++tmpIt )
         myPointSet.insert( *tmpIt );
       return true;
     }
@@ -410,8 +402,7 @@ extend( TInputIterator it, TInputIterator itE )
       myState.max = _state.max;
       myState.ptMin = _state.ptMin;
       myState.ptMax = _state.ptMax;
-      for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
-            tmpIt != tmpItE; ++tmpIt )
+      for ( TInputIterator tmpIt = it; tmpIt != itE; ++tmpIt )
         myPointSet.insert( *tmpIt );
       return true;
     }
@@ -436,7 +427,7 @@ extend( TInputIterator it, TInputIterator itE )
     computeCentroidAndNormal( _state );
     // Calls oracle
     computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
-    updateMinMax( _state, _points.begin(), _points.end() );
+    updateMinMax( _state, it, itE );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       { // Found a plane.
@@ -447,8 +438,7 @@ extend( TInputIterator it, TInputIterator itE )
         myState.cip.swap( _state.cip );
         myState.centroid = _state.centroid;
         myState.N = _state.N;
-        for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
-              tmpIt != tmpItE; ++tmpIt )
+        for ( TInputIterator tmpIt = it; tmpIt != itE; ++tmpIt )
           myPointSet.insert( *tmpIt );
         return true;
       }
@@ -478,23 +468,15 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 isExtendable( TInputIterator it, TInputIterator itE ) const
 {
   BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
-  typedef typename std::vector<Point>::const_iterator TmpIterator;
 
   ASSERT( isValid() );
-  _points.clear();
-
-  // Discard points that already belongs to the plane.
-  for ( ; it != itE; ++it )
-    if ( myPointSet.find( *it ) == myPointSet.end() )
-      _points.push_back( *it ); // put points in vector.
-
   // Check if points lies within the current bounds of the plane.
   bool changed;
   _state.N = myState.N; 
   if ( empty() )
     {
       changed = true;
-      computeMinMax( _state, _points.begin(), _points.end() );
+      computeMinMax( _state, it, itE );
     }
   else
     {
@@ -503,7 +485,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
       _state.max = myState.max; 
       _state.ptMin = myState.ptMin; 
       _state.ptMax = myState.ptMax; 
-      changed = updateMinMax( _state, _points.begin(), _points.end() );
+      changed = updateMinMax( _state, it, itE );
     }
 
   // Check if point is already within bounds.
@@ -530,7 +512,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
     computeCentroidAndNormal( _state );
     // Calls oracle
     computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
-    updateMinMax( _state, _points.begin(), _points.end() );
+    updateMinMax( _state, it, itE );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       // Found a plane.
