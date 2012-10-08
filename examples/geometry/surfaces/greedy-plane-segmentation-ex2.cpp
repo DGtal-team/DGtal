@@ -195,7 +195,6 @@ int main( int argc, char** argv )
   std::set<Vertex> processedVertices;
   std::vector<SegmentedPlane*> segmentedPlanes;
   std::map<Vertex,SegmentedPlane*> v2plane;
-  unsigned int i = 0;
   j = 0;
   while ( ! Q.empty() )
     {
