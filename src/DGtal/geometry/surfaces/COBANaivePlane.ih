@@ -568,6 +568,8 @@ DGtal::COBANaivePlane<TSpace, TInternalInteger>::
 updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 
 {
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
+
   bool changed = false;
   // look for the points defining the min dot product and the max dot product
   for ( ; itB != itE; ++itB )
