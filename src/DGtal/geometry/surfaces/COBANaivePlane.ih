@@ -199,6 +199,7 @@ extendAsIs( const Point & p )
   if ( ok ) myPointSet.insert( p );
   return ok;
 }
+
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 bool
@@ -212,28 +213,24 @@ extend( const Point & p )
       myPointSet.insert( p );
       ic().getDotProduct( myState.max, myState.N, p );
       myState.min = myState.max;
-      myState.indMax = myState.indMin = myPointSet.begin();
+      myState.ptMax = myState.ptMin = p;
       return true;
     }
 
   // Check first if p is already a point of the plane.
-  // Insert point into set (so as that iterators indMin and indMax are
-  // correct).
-  std::pair<Iterator,bool> itPair = myPointSet.insert( p );
-  if ( ! itPair.second ) // already in set
+  if ( myPointSet.find( p ) != myPointSet.end() ) // already in set
     return true;
   // Check if p lies within the current bounds of the plane.
   _state.N = myState.N; 
   _state.min = myState.min; 
   _state.max = myState.max; 
-  _state.indMin = myState.indMin; 
-  _state.indMax = myState.indMax; 
-  Iterator it2 = itPair.first; 
-  ++it2; // go to next one.
-  bool changed = updateMinMax( _state, itPair.first, it2 );
+  _state.ptMin = myState.ptMin; 
+  _state.ptMax = myState.ptMax; 
+  bool changed = updateMinMax( _state, &p, (&p)+1 );
   // Check if point is already within bounds.
   if ( ! changed ) 
     {
+      myPointSet.insert( p );
       return true;
     }
   // Check if width is still ok
@@ -241,8 +238,9 @@ extend( const Point & p )
     {
       myState.min = _state.min;
       myState.max = _state.max;
-      myState.indMin = _state.indMin;
-      myState.indMax = _state.indMax;
+      myState.ptMin = _state.ptMin;
+      myState.ptMax = _state.ptMax;
+      myPointSet.insert( p );
       return true;
     }
   // We have to find a new normal. First, update gradient.
@@ -252,8 +250,7 @@ extend( const Point & p )
   if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
     {
-      // Unable to update solution. Removes point from set.
-      myPointSet.erase( itPair.first );
+      // Unable to update solution. 
       return false;
     }
 
@@ -267,16 +264,18 @@ extend( const Point & p )
     computeCentroidAndNormal( _state );
     // Calls oracle
     computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
+    updateMinMax( _state, &p, (&p)+1 );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       { // Found a plane.
         myState.min = _state.min;
         myState.max = _state.max;
-        myState.indMin = _state.indMin;
-        myState.indMax = _state.indMax;
+        myState.ptMin = _state.ptMin;
+        myState.ptMax = _state.ptMax;
         myState.cip.swap( _state.cip );
         myState.centroid = _state.centroid;
         myState.N = _state.N;
+        myPointSet.insert( p );
         return true;
       }
 
@@ -295,7 +294,6 @@ extend( const Point & p )
     doubleCut( _grad, _state );
   }
   // was unable to find a correct plane.
-  myPointSet.erase( itPair.first );
   return false;
 }
 //-----------------------------------------------------------------------------
@@ -309,20 +307,15 @@ isExtendable( const Point & p ) const
   if ( empty() ) return true;
 
   // Check first if p is already a point of the plane.
-  // Insert point into set (so as that iterators indMin and indMax are
-  // correct).
-  ConstIterator it = myPointSet.find( p );
-  if ( it != myPointSet.end() ) // already in set
+  if ( myPointSet.find( p ) != myPointSet.end() ) // already in set
     return true;
   // Check if p lies within the current bounds of the plane.
   _state.N = myState.N; 
   _state.min = myState.min; 
   _state.max = myState.max; 
-  _state.indMin = myState.indMin; 
-  _state.indMax = myState.indMax; 
-  PointSet dummySet;
-  dummySet.insert( p );
-  bool changed = updateMinMax( _state, dummySet.begin(), dummySet.end() );
+  _state.ptMin = myState.ptMin; 
+  _state.ptMax = myState.ptMax; 
+  bool changed = updateMinMax( _state, (&p), (&p)+1 );
   // Check if point is already within bounds.
   if ( ! changed ) return true;
   // Check if width is still ok
@@ -347,7 +340,7 @@ isExtendable( const Point & p ) const
     computeCentroidAndNormal( _state );
     // Calls oracle
     computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
-    updateMinMax( _state, dummySet.begin(), dummySet.end() );
+    updateMinMax( _state, (&p), (&p)+1 );
     // Check if width is now ok
     if ( checkPlaneWidth( _state ) )
       // Found a plane.
@@ -529,8 +522,8 @@ doubleCut( InternalPoint2 & grad, State & state ) const
   // 2 cuts on the search space:
   //  Gradient.p <= cst1 - _v
   // -Gradient.p <= cst2 + _v
-  _v = myG * ( (*state.indMin)[ myAxis ] 
-               - (*state.indMax)[ myAxis ] );
+  _v = myG * ( state.ptMin[ myAxis ] 
+               - state.ptMax[ myAxis ] );
   state.cip.cut( HalfSpace( grad, myCst1 - _v ) );
   grad.negate();
   state.cip.cut( HalfSpace( grad, myCst2 + _v ) );
@@ -539,14 +532,17 @@ doubleCut( InternalPoint2 & grad, State & state ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
+template <typename TInputIterator>
 void
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::
-computeMinMax( State & state, ConstIterator itB, ConstIterator itE ) const
+computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
 {
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
+
   ASSERT( itB != itE );
   ic().getDotProduct( state.min, state.N, *itB );
   state.max = state.min;
-  state.indMax = state.indMin = itB;
+  state.ptMax = state.ptMin = *itB;
   ++itB;
   // look for the points defining the min dot product and the max dot product
   for ( ; itB != itE; ++itB )
@@ -555,20 +551,22 @@ computeMinMax( State & state, ConstIterator itB, ConstIterator itE ) const
       if ( _v > state.max ) 
 	{ 
 	  state.max = _v;  
-	  state.indMax = itB;
+	  state.ptMax = *itB;
 	}
       else if ( _v < state.min )
 	{
 	  state.min = _v;
-	  state.indMin = itB;
+	  state.ptMin = *itB;
 	}
     }
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
+template <typename TInputIterator>
 bool
 DGtal::COBANaivePlane<TSpace, TInternalInteger>::
-updateMinMax( State & state, ConstIterator itB, ConstIterator itE ) const
+updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
+
 {
   bool changed = false;
   // look for the points defining the min dot product and the max dot product
@@ -578,13 +576,13 @@ updateMinMax( State & state, ConstIterator itB, ConstIterator itE ) const
       if ( _v > state.max ) 
 	{ 
 	  state.max = _v;  
-	  state.indMax = itB;
+	  state.ptMax = *itB;
           changed = true;
 	}
       else if ( _v < state.min )
 	{
 	  state.min = _v;
-	  state.indMin = itB;
+	  state.ptMin = *itB;
           changed = true;
 	}
     }
@@ -609,16 +607,16 @@ computeGradient( InternalPoint2 & grad, const State & state ) const
   // computation of the gradient
   switch( myAxis ){
   case 0 : 
-    grad[ 0 ] = (*state.indMin)[ 1 ] - (*state.indMax)[ 1 ];
-    grad[ 1 ] = (*state.indMin)[ 2 ] - (*state.indMax)[ 2 ];
+    grad[ 0 ] = state.ptMin[ 1 ] - state.ptMax[ 1 ];
+    grad[ 1 ] = state.ptMin[ 2 ] - state.ptMax[ 2 ];
     break;
   case 1:
-    grad[ 0 ] = (*state.indMin)[ 0 ] - (*state.indMax)[ 0 ];
-    grad[ 1 ] = (*state.indMin)[ 2 ] - (*state.indMax)[ 2 ];
+    grad[ 0 ] = state.ptMin[ 0 ] - state.ptMax[ 0 ];
+    grad[ 1 ] = state.ptMin[ 2 ] - state.ptMax[ 2 ];
     break;
   case 2:
-    grad[ 0 ] = (*state.indMin)[ 0 ] - (*state.indMax)[ 0 ];
-    grad[ 1 ] = (*state.indMin)[ 1 ] - (*state.indMax)[ 1 ];
+    grad[ 0 ] = state.ptMin[ 0 ] - state.ptMax[ 0 ];
+    grad[ 1 ] = state.ptMin[ 1 ] - state.ptMax[ 1 ];
     break;
   }
 }

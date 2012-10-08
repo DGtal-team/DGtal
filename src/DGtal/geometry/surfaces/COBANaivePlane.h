@@ -168,8 +168,8 @@ namespace DGtal
     struct State {
       InternalInteger max;     /**< current max dot product. */
       InternalInteger min;     /**< current min dot product. */
-      ConstIterator indMax;    /**< 3D point giving the max dot product. */
-      ConstIterator indMin;    /**< 3D point giving the min dot product. */
+      Point ptMax;             /**< 3D point giving the max dot product. */
+      Point ptMin;             /**< 3D point giving the min dot product. */
       ConvexPolygonZ2 cip;     /**< current constraint integer polygon. */
       InternalPoint3 centroid; /**< current centroid of cip. */
       InternalPoint3 N;        /**< current normal vector. */
@@ -292,7 +292,7 @@ namespace DGtal
      */
     bool operator()( const Point & p ) const;
 
-    //-------------------- model of CPrimitiveComputer -----------------------------
+    //-------------------- model of CIncrementalPrimitiveComputer -----------------------------
   public:
 
     /**
@@ -329,6 +329,42 @@ namespace DGtal
      * @return 'true' if this is still a plane, 'false' otherwise.
      */
     bool isExtendable( const Point & p ) const;
+
+    //-------------------- model of CAdditivePrimitiveComputer -----------------------------
+  public:
+
+    /**
+     * Adds the range of points [\a it, \a itE) and checks if we have
+     * still a digital plane of specified width. The plane parameters
+     * may be updated so as to include all the new points. All points
+     * pointed by iterators should be in the diameter of this object.
+     *
+     * @tparam TInputIterator any model of InputIterator on Point.
+     * @param it an iterator on the first element of the range of 3D points.
+     * @param itE an iterator after the last element of the range of 3D points.
+     *
+     * @return 'true' if it is still a plane, 'false' otherwise (the
+     * object is then in its original state).
+     */
+    template <typename TInputIterator>
+    bool extend( TInputIterator it, TInputIterator itE );
+
+    /**
+     * Checks if we have still a digital plane of specified width when
+     * adding the range of points [\a it, \a itE). The object is left
+     * unchanged whatever the returned value.  All points pointed by
+     * iterators should be in the diameter of this object. The
+     * invariant is 'this->isExtendable( it, itE ) == true <=>
+     * this->extend( it, itE ) == true'.
+     *
+     * @tparam TInputIterator any model of InputIterator on Point.
+     * @param it an iterator on the first element of the range of 3D points.
+     * @param itE an iterator after the last element of the range of 3D points.
+     *
+     * @return 'true' if this is still a plane, 'false' otherwise.
+     */
+    template <typename TInputIterator>
+    bool isExtendable( TInputIterator it, TInputIterator itE ) const;
 
     //-------------------- Parameters services -----------------------------
   public:
@@ -440,6 +476,7 @@ namespace DGtal
      * between the normal state.N and the points in the range
      * [itB,itE). Overwrites state.min, state.max at the start.
      *
+     * @tparam TInputIterator any model of InputIterator.
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
      * state.indMin, state.indMax are updated.
@@ -447,12 +484,15 @@ namespace DGtal
      * @param itB an input iterator on the first point of the range.
      * @param itE an input iterator after the last point of the range.
      */
-    void computeMinMax( State & state, ConstIterator itB, ConstIterator itE ) const;
+    template <typename TInputIterator>
+    void computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const;
 
     /**
      * Updates the min and max values/arguments of the scalar product
      * between the normal state.N and the points in the range
      * [itB,itE). Do not overwrite state.min, state.max at the start.
+     *
+     * @tparam TInputIterator any model of InputIterator.
      *
      * @param state (modified) the state where the normal N is used in
      * computation and where fields state.min, state.max,
@@ -464,7 +504,8 @@ namespace DGtal
      * state.indMin, state.indMax have been updated, 'false'
      * otherwise.
      */
-    bool updateMinMax( State & state, ConstIterator itB, ConstIterator itE ) const;
+    template <typename TInputIterator>
+    bool updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const;
 
     /**
      * @param state the state where the normal state.N, the scalars state.min and state.max are used in
