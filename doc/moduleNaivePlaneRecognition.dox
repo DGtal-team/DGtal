@@ -138,15 +138,28 @@ bool isZNaivePlane( const vector<Point> & v )
 
 Therefore, the main methods for recognizing a plane are:
 
-- COBANaivePlane::extend(const Point &): given a \a Point, it updates this plane such
-  that it includes also this new point. If this is possible, it
-  returns \c true, otherwise it returns \c false and the object is in
-  the same state as before the call.
+- COBANaivePlane::extend(const Point &): given a \a Point, it updates
+  this plane such that it includes also this new point. If this is
+  possible, it returns \c true, otherwise it returns \c false and the
+  object is in the same state as before the call.
 
-- COBANaivePlane::isExtendable(const Point &) const: given a \a Point, it checks whether or
-  not there is a plane that includes also this new point. It returns
-  \c true in this case, otherwise it returns \c false. The object is
-  left unchanged whatever the result. 
+- COBANaivePlane::isExtendable(const Point &)const: given a \a Point,
+  it checks whether or not there is a plane that includes also this
+  new point. It returns \c true in this case, otherwise it returns \c
+  false. The object is left unchanged whatever the result.
+
+- COBANaivePlane::extend(TInputIterator it, TInputIterator itE):
+  given a range [it,itE) of \a Point, it updates this plane such that
+  it includes also this range of points. If this is possible, it returns \c
+  true, otherwise it returns \c false and the object is in the same
+  state as before the call.
+
+- COBANaivePlane::isExtendable(TInputIterator it, TInputIterator itE)const:
+  given a range [it,itE) of \a Point, it checks whether
+  or not there is a plane that includes also this range of new
+  points. It returns \c true in this case, otherwise it returns \c
+  false. The object is left unchanged whatever the result.
+
 
 \note Calling COBANaivePlane::isExtendable before
 COBANaivePlane::extend does not induce a speed up on the second
