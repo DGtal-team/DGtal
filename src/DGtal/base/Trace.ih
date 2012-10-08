@@ -64,11 +64,6 @@ inline
 DGtal::Trace::~Trace()
 {
   myWriter.outputStream() << myWriter.postfixReset();
-  while ( ! myClockStack.empty() )
-    {
-      delete myClockStack.top();
-      myClockStack.pop();
-    }
 }
 
 
@@ -106,9 +101,9 @@ DGtal::Trace::reset()
   myCurrentLevel = 0;
   myCurrentPrefix = "";
   while( !myKeywordStack.empty() )
-    {
       myKeywordStack.pop();
-    }
+  while( !myClockStack.empty() )
+    myClockStack.pop();
 }
 
 /**
@@ -130,9 +125,8 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   myKeywordStack.push(keyword);
 
   //Block timer start
-  Clock *c = new(Clock);
-  myClockStack.push(c);
-  c->startClock();
+  myClockStack.push(Clock());
+  myClockStack.top().startClock();
 }
 
 /**
@@ -149,8 +143,7 @@ DGtal::Trace::endBlock()
   Clock *localClock;
 
   ASSERT (myCurrentLevel >0);
-  localClock =  myClockStack.top();
-  tick = localClock->stopClock();
+  tick =  myClockStack.top().stopClock();
  
   myCurrentLevel--;
   myCurrentPrefix = "";
@@ -164,7 +157,6 @@ DGtal::Trace::endBlock()
                           << myWriter.postfixReset()<< std::endl;
   myKeywordStack.pop();
   myClockStack.pop();
-  delete localClock;
   return tick;
 }
 
