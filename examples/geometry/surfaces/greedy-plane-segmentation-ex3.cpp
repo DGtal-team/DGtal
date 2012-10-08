@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file greedy-plane-segmentation-ex2.cpp
+ * @file greedy-plane-segmentation-ex3.cpp
  * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/10/01
  *
- * An example file named greedy-plane-segmentation-ex2.
+ * An example file named greedy-plane-segmentation-ex3.
  *
  * This file is part of the DGtal library.
  */
@@ -59,7 +59,7 @@ using namespace std;
 using namespace DGtal;
 namespace po = boost::program_options;
 
-//! [greedy-plane-segmentation-ex2-typedefs]
+//! [greedy-plane-segmentation-ex3-typedefs]
 using namespace Z3i;
 typedef DGtal::int64_t InternalInteger;
 typedef COBANaivePlane<Z3,InternalInteger> NaivePlaneComputer;
@@ -93,13 +93,13 @@ bool operator<( const VertexSize & vs1, const VertexSize & vs2 )
 {
   return vs1.size < vs2.size;
 } 
-//! [greedy-plane-segmentation-ex2-typedefs]
+//! [greedy-plane-segmentation-ex3-typedefs]
 
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
 {
-  //! [greedy-plane-segmentation-ex2-parseCommandLine]
+  //! [greedy-plane-segmentation-ex3-parseCommandLine]
   // parse command line ----------------------------------------------
   po::options_description general_opt("Allowed options are: ");
   general_opt.add_options()
@@ -130,17 +130,17 @@ int main( int argc, char** argv )
   unsigned int threshold = vm["threshold"].as<unsigned int>();
   unsigned int widthNum = vm["width-num"].as<unsigned int>();
   unsigned int widthDen = vm["width-den"].as<unsigned int>();
-  //! [greedy-plane-segmentation-ex2-parseCommandLine]
+  //! [greedy-plane-segmentation-ex3-parseCommandLine]
 
-  //! [greedy-plane-segmentation-ex2-loadVolume]
+  //! [greedy-plane-segmentation-ex3-loadVolume]
   QApplication application(argc,argv);
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
   SetFromImage<DigitalSet>::append<Image>(set3d, image, threshold,255);
-  //! [greedy-plane-segmentation-ex2-loadVolume]
+  //! [greedy-plane-segmentation-ex3-loadVolume]
 
-  //! [greedy-plane-segmentation-ex2-makeSurface]
+  //! [greedy-plane-segmentation-ex3-makeSurface]
   trace.beginBlock( "Set up digital surface." );
   // We initializes the cellular grid space used for defining the
   // digital surface.
@@ -153,9 +153,9 @@ int main( int argc, char** argv )
     new MyDigitalSurfaceContainer( ks, set3d, surfAdj );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
-  //! [greedy-plane-segmentation-ex2-makeSurface]
+  //! [greedy-plane-segmentation-ex3-makeSurface]
 
-  //! [greedy-plane-segmentation-ex2-segment]
+  //! [greedy-plane-segmentation-ex3-segment]
   Point p;
   Dimension axis;
   unsigned int j = 0;
@@ -166,6 +166,7 @@ int main( int argc, char** argv )
   std::map<Vertex,unsigned int> v2size;
   NaivePlaneComputer planeComputer;
   std::priority_queue<VertexSize> Q;
+  std::vector<Point> layer;
   for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
     {
       if ( ( (++j) % 50 == 0 ) || ( j == nb ) ) trace.progressBar( j, nb );
@@ -174,28 +175,35 @@ int main( int argc, char** argv )
       planeComputer.init( axis, 500, widthNum, widthDen );
       // The visitor takes care of all the breadth-first traversal.
       Visitor visitor( digSurf, v );
+      layer.clear();
+      Visitor::Size currentSize = visitor.current().second;
       while ( ! visitor.finished() )
         {
           Visitor::Node node = visitor.current();
           v = node.first;
           axis = ks.sOrthDir( v );
           p = ks.sCoords( ks.sDirectIncident( v, axis ) );
-          bool isExtended = planeComputer.extend( p );
-          if ( isExtended ) 
-            // surfel is in plane.
-            visitor.expand();
-          else // surfel is not in plane and should not be used in the visit.
-            visitor.ignore();
+          if ( node.second != currentSize )
+            {
+              // std::cerr << "Layer " << currentSize << ", size=" << layer.size() << std::endl;
+              bool isExtended = planeComputer.extend( layer.begin(), layer.end() );
+              if ( ! isExtended )
+                break;
+              layer.clear();
+              currentSize = node.second;
+            }
+          layer.push_back( p );
+          visitor.expand();
         }
+      // std::cerr << v << " -> " << planeComputer.size() << std::endl;
       Q.push( VertexSize( v, planeComputer.size() ) );
     }
   trace.endBlock();
 
   trace.beginBlock( "2) Segmentation second pass. Visits vertices from the one with biggest plane to the one with smallest plane." );
   std::set<Vertex> processedVertices;
-  std::vector<SegmentedPlane*> segmentedPlanes;
   std::map<Vertex,SegmentedPlane*> v2plane;
-  unsigned int i = 0;
+  std::vector<SegmentedPlane*> segmentedPlanes;
   j = 0;
   while ( ! Q.empty() )
     {
@@ -236,11 +244,12 @@ int main( int argc, char** argv )
       ptrSegment->color = Color( random() % 256, random() % 256, random() % 256, 255 );
     }
   trace.endBlock();
-  //! [greedy-plane-segmentation-ex2-segment]
+  //! [greedy-plane-segmentation-ex3-segment]
 
-  //! [greedy-plane-segmentation-ex2-visualization]
+  //! [greedy-plane-segmentation-ex3-visualization]
   Viewer3D viewer;
   viewer.show(); 
+  Color col( 255, 255, 120 );
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator 
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
@@ -249,16 +258,16 @@ int main( int argc, char** argv )
       viewer << ks.unsigns( it->first );
     }
   viewer << Display3D::updateDisplay;
-  //! [greedy-plane-segmentation-ex2-visualization]
+  //! [greedy-plane-segmentation-ex3-visualization]
 
-  //! [greedy-plane-segmentation-ex2-freeMemory]
+  //! [greedy-plane-segmentation-ex3-freeMemory]
   for ( std::vector<SegmentedPlane*>::iterator 
           it = segmentedPlanes.begin(), itE = segmentedPlanes.end(); 
         it != itE; ++it )
     delete *it;
   segmentedPlanes.clear();
   v2plane.clear();
-  //! [greedy-plane-segmentation-ex2-freeMemory]
+  //! [greedy-plane-segmentation-ex3-freeMemory]
 
   return application.exec();
 }

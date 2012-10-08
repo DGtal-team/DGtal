@@ -439,6 +439,7 @@ namespace DGtal
     mutable InternalInteger _v;/**< temporary variable used in computations. */
     mutable State _state;      /**< Temporary state used in computations. */
     mutable InternalPoint2 _grad; /**< temporary variable to store the current gradient. */
+    mutable std::vector<Point> _points; /**< temporary vector to store points being checked. */
     // ------------------------- Hidden services ------------------------------
   protected:
 
