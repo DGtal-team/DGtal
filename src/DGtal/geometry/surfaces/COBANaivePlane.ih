@@ -363,6 +363,198 @@ isExtendable( const Point & p ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
+template <typename TInputIterator>
+bool
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+extend( TInputIterator it, TInputIterator itE )
+{
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
+  typedef typename std::vector<Point>::const_iterator TmpIterator;
+
+  ASSERT( isValid() );
+  _points.clear();
+
+  // Discard points that already belongs to the plane.
+  for ( ; it != itE; ++it )
+    if ( myPointSet.find( *it ) == myPointSet.end() )
+      _points.push_back( *it ); // put points in vector.
+
+  // Check if points lies within the current bounds of the plane.
+  bool changed;
+  _state.N = myState.N; 
+  if ( empty() )
+    {
+      changed = true;
+      computeMinMax( _state, _points.begin(), _points.end() );
+    }
+  else
+    {
+      _state.min = myState.min; 
+      _state.max = myState.max; 
+      _state.ptMin = myState.ptMin; 
+      _state.ptMax = myState.ptMax; 
+      changed = updateMinMax( _state, _points.begin(), _points.end() );
+    }
+  // Check if points are already within bounds.
+  if ( ! changed ) 
+    { // All points are within bounds. Put them in pointset.
+      for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
+            tmpIt != tmpItE; ++tmpIt )
+        myPointSet.insert( *tmpIt );
+      return true;
+    }
+  // Check if width is still ok
+  if ( checkPlaneWidth( _state ) )
+    {
+      myState.min = _state.min;
+      myState.max = _state.max;
+      myState.ptMin = _state.ptMin;
+      myState.ptMax = _state.ptMax;
+      for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
+            tmpIt != tmpItE; ++tmpIt )
+        myPointSet.insert( *tmpIt );
+      return true;
+    }
+  // We have to find a new normal. First, update gradient.
+  computeGradient( _grad, _state );
+
+  // Checks if we can change the normal so as to find another digital plane.
+  if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
+	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
+    {
+      // Unable to update solution. 
+      return false;
+    }
+
+  // There is a gradient, tries to optimize.
+  _state.cip = myState.cip;
+  doubleCut( _grad, _state );
+
+  // While at least 1 point left on the search space
+  while ( ! _state.cip.empty() )
+  {
+    computeCentroidAndNormal( _state );
+    // Calls oracle
+    computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
+    updateMinMax( _state, _points.begin(), _points.end() );
+    // Check if width is now ok
+    if ( checkPlaneWidth( _state ) )
+      { // Found a plane.
+        myState.min = _state.min;
+        myState.max = _state.max;
+        myState.ptMin = _state.ptMin;
+        myState.ptMax = _state.ptMax;
+        myState.cip.swap( _state.cip );
+        myState.centroid = _state.centroid;
+        myState.N = _state.N;
+        for ( TmpIterator tmpIt = _points.begin(), tmpItE = _points.end();
+              tmpIt != tmpItE; ++tmpIt )
+          myPointSet.insert( *tmpIt );
+        return true;
+      }
+
+    // We have to find a new normal. First, update gradient.
+    computeGradient( _grad, _state );
+
+    // Checks if we can change the normal so as to find another digital plane.
+    if ( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
+           && ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
+      {
+        // Unable to update solution. Removes point from set.
+        break;
+      }
+
+    // There is a gradient, tries to optimize.
+    doubleCut( _grad, _state );
+  }
+  // was unable to find a correct plane.
+  return false;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
+template <typename TInputIterator>
+bool
+DGtal::COBANaivePlane<TSpace, TInternalInteger>::
+isExtendable( TInputIterator it, TInputIterator itE ) const
+{
+  BOOST_CONCEPT_ASSERT(( boost::InputIterator<TInputIterator> ));
+  typedef typename std::vector<Point>::const_iterator TmpIterator;
+
+  ASSERT( isValid() );
+  _points.clear();
+
+  // Discard points that already belongs to the plane.
+  for ( ; it != itE; ++it )
+    if ( myPointSet.find( *it ) == myPointSet.end() )
+      _points.push_back( *it ); // put points in vector.
+
+  // Check if points lies within the current bounds of the plane.
+  bool changed;
+  _state.N = myState.N; 
+  if ( empty() )
+    {
+      changed = true;
+      computeMinMax( _state, _points.begin(), _points.end() );
+    }
+  else
+    {
+      _state.N = myState.N; 
+      _state.min = myState.min; 
+      _state.max = myState.max; 
+      _state.ptMin = myState.ptMin; 
+      _state.ptMax = myState.ptMax; 
+      changed = updateMinMax( _state, _points.begin(), _points.end() );
+    }
+
+  // Check if point is already within bounds.
+  if ( ! changed ) return true;
+  // Check if width is still ok
+  if ( checkPlaneWidth( _state ) )
+    return true;
+  // We have to find a new normal. First, update gradient.
+  computeGradient( _grad, _state );
+
+  // Checks if we can change the normal so as to find another digital plane.
+  if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
+	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
+    // Unable to update solution. 
+    return false;
+
+  // There is a gradient, tries to optimize.
+  _state.cip = myState.cip;
+  doubleCut( _grad, _state );
+
+  // While at least 1 point left on the search space
+  while ( ! _state.cip.empty() )
+  {
+    computeCentroidAndNormal( _state );
+    // Calls oracle
+    computeMinMax( _state, myPointSet.begin(), myPointSet.end() );
+    updateMinMax( _state, _points.begin(), _points.end() );
+    // Check if width is now ok
+    if ( checkPlaneWidth( _state ) )
+      // Found a plane.
+      return true;
+
+    // We have to find a new normal. First, update gradient.
+    computeGradient( _grad, _state );
+
+    // Checks if we can change the normal so as to find another digital plane.
+    if ( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
+           && ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
+      // Unable to update solution. 
+      return false;
+    
+    // There is a gradient, tries to optimize.
+    doubleCut( _grad, _state );
+  }
+  // was unable to find a correct plane.
+  return false;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TInternalInteger>
 template <typename Vector3D>
 inline
 void

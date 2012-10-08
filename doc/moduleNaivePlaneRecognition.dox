@@ -263,8 +263,8 @@ We display it using 3D viewers.
 
 @snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-visualization
 
-@image html greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes." width=6cm
+@image html greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes." width=6cm
 
 @note This approach to plane segmentation is very naive. Because there
 are favored axes when iterating (vertices are not randomly picked up),
@@ -316,8 +316,8 @@ $ ./examples/geometry/surfaces/viewer3D-7-planes
 $ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
 @endverbatim
 
-@image html greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-al-150-w1-1.png "Greedy segmentation of Al capone into naive planes." width=6cm
+@image html greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes." width=6cm
 
 \example geometry/surfaces/greedy-plane-segmentation.cpp
 */
@@ -343,8 +343,8 @@ $ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/A
 $ ./examples/geometry/surfaces/greedy-plane-segmentation-ex2 -i ./examples/samples/Al.100.vol -t 0 -w 1 -d 1
 @endverbatim
 
-@image html greedy-plane-segmentation-ex2.png "Not-so-greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-ex2.png "Not-so-greedy segmentation of Al capone into naive planes." width=6cm
+@image html greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes."
+@image latex greedy-plane-segmentation-ex2-al-w1.png "Not-so-greedy segmentation of Al capone into naive planes." width=6cm
 
 \example geometry/surfaces/greedy-plane-segmentation-ex2.cpp
 */

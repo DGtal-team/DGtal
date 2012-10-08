@@ -17,10 +17,10 @@
 /**
  * @file greedy-plane-segmentation.cpp
  * @ingroup Examples
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2011/03/25
+ * @date 2012/10/01
  *
  * An example file named greedy-plane-segmentation.
  *
@@ -145,11 +145,10 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-segment]
   trace.beginBlock( "Segment into planes." );
   std::set<Vertex> processedVertices;
-  std::vector<SegmentedPlane> segmentedPlanes;
+  std::vector<SegmentedPlane*> segmentedPlanes;
   std::map<Vertex,SegmentedPlane*> v2plane;
   Point p;
   Dimension axis;
-  unsigned int i = 0;
   unsigned int j = 0;
   unsigned int nb = digSurf.size();
   for ( ConstIterator it = digSurf.begin(), itE= digSurf.end(); it != itE; ++it )
@@ -159,10 +158,10 @@ int main( int argc, char** argv )
       if ( processedVertices.find( v ) != processedVertices.end() ) // already in set
         continue; // process to next vertex
       
-      segmentedPlanes.resize( ++i );
-      SegmentedPlane & segment = segmentedPlanes.back();
+      SegmentedPlane* ptrSegment = new SegmentedPlane;
+      segmentedPlanes.push_back( ptrSegment ); // to delete them afterwards.
       axis = ks.sOrthDir( v );
-      segment.plane.init( axis, 500, widthNum, widthDen );
+      ptrSegment->plane.init( axis, 500, widthNum, widthDen );
       // The visitor takes care of all the breadth-first traversal.
       Visitor visitor( digSurf, v );
       while ( ! visitor.finished() )
@@ -173,11 +172,11 @@ int main( int argc, char** argv )
             { // Vertex is not in processedVertices
               axis = ks.sOrthDir( v );
               p = ks.sCoords( ks.sDirectIncident( v, axis ) );
-              bool isExtended = segment.plane.extend( p );
+              bool isExtended = ptrSegment->plane.extend( p );
               if ( isExtended ) 
                 { // surfel is in plane.
                   processedVertices.insert( v );
-                  v2plane[ v ] = &segment;
+                  v2plane[ v ] = ptrSegment;
                   visitor.expand();
                 }
               else // surfel is not in plane and should not be used in the visit.
@@ -187,7 +186,7 @@ int main( int argc, char** argv )
             visitor.ignore();
         }
       // Assign random color for each plane.
-      segment.color = Color( random() % 256, random() % 256, random() % 256, 255 );
+      ptrSegment->color = Color( random() % 256, random() % 256, random() % 256, 255 );
     }
   trace.endBlock();
   //! [greedy-plane-segmentation-segment]
@@ -199,11 +198,21 @@ int main( int argc, char** argv )
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
     {
-      viewer << CustomColors3D( it->second->color, it->second->color )
-             << it->first;
+      viewer << CustomColors3D( it->second->color, it->second->color );
+      viewer << ks.unsigns( it->first );
     }
   viewer << Display3D::updateDisplay;
   //! [greedy-plane-segmentation-visualization]
+
+  //! [greedy-plane-segmentation-freeMemory]
+  for ( std::vector<SegmentedPlane*>::iterator 
+          it = segmentedPlanes.begin(), itE = segmentedPlanes.end(); 
+        it != itE; ++it )
+    delete *it;
+  segmentedPlanes.clear();
+  v2plane.clear();
+  //! [greedy-plane-segmentation-freeMemory]
+
   return application.exec();
 }
 ///////////////////////////////////////////////////////////////////////////////
