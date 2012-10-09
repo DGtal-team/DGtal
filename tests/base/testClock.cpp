@@ -96,7 +96,7 @@ bool test_MultipleLoop()
   trace.info()<< "Loop tick1: "<< tick1
               <<" Loop tick2: "<< tick2 
               << " total: "<< tick3 <<endl;
-  return ((tick3 >= tick1+tick2) && (tick1 >= 0));
+  return ((tick3 >= tick1) && (tick1 >= 0));
 }
 
 
