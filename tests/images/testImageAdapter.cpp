@@ -70,11 +70,15 @@ bool testSimple()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor/*Thresholder<VImage::Value>*/, VImage::Value/*bool*/> MyImageAdapter;
-    //Thresholder<VImage::Value> t( domain.size()/2 );
-    DefaultFunctor id;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor/*ConstValueFunctor<VImage::Value>*//*Thresholder<VImage::Value>*/, DefaultFunctor> MyImageAdapter;
     
-    MyImageAdapter restimage(image, domain, id/*t*/);
+    DefaultFunctor idD;
+    DefaultFunctor idV;
+    //ConstValueFunctor<VImage::Value> idV(3);
+    //Thresholder<VImage::Value> t( domain.size()/2 );
+    DefaultFunctor idVm1;
+    
+    MyImageAdapter restimage(image, domain, idD, idV, idVm1);
     trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
 
     nbok += (restimage(Z2i::Point(3,3)) == 10) ? 1 : 0;
@@ -122,7 +126,7 @@ bool testImageAdapter()
     aBoard.saveCairo("church.png", Board2D::CairoPNG);
 #endif
 
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor/*Thresholder<VImage::Value>*/, VImage::Value/*bool*/ > MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
 
     nbok += true ? 1 : 0;
@@ -133,9 +137,10 @@ bool testImageAdapter()
     Z2i::Point p2( 73, 187-10/*80*/ );
     Z2i::Domain domain_bell_tower( p1, p2 );
 
-    //Thresholder<VImage::Value> tbt( domain_bell_tower.size()/2 );
-    DefaultFunctor idbt;
-    MyImageAdapter bell_tower(image, domain_bell_tower, idbt/*tbt*/);
+    DefaultFunctor idbtD;
+    DefaultFunctor idbtV;
+    DefaultFunctor idbtVm1;
+    MyImageAdapter bell_tower(image, domain_bell_tower, idbtD, idbtV, idbtVm1);
 
     trace.info() << "ImageAdapter: " << bell_tower << "  " << bell_tower.domain() << std::endl;
 
@@ -154,9 +159,10 @@ bool testImageAdapter()
     Z2i::Point p4( 58, 187-115/*138*/ );
     Z2i::Domain domain_cars( p3, p4 );
     
-    //Thresholder<VImage::Value> tc( domain_cars.size()/2 );
-    DefaultFunctor idc;
-    MyImageAdapter cars(image, domain_cars, idc/*tc*/);
+    DefaultFunctor idcD;
+    DefaultFunctor idcV;
+    DefaultFunctor idcVm1;
+    MyImageAdapter cars(image, domain_cars, idcD, idcV, idcVm1);
 
     trace.info() << "ImageAdapter: " << cars << "  " << cars.domain() << std::endl;
 
@@ -225,10 +231,12 @@ bool testImageAdapter()
     // --- DigitalSetDomain
     
 
-    typedef ImageAdapter<VImage, DigitalSetDomain<SpecificSet>, DefaultFunctor/*Thresholder<VImage::Value>*/, VImage::Value/*bool*/> MyImageAdapter2;
-    //Thresholder<VImage::Value> tfl( my_specific_domain_floor_lamp.size()/2 );
-    DefaultFunctor idfl;
-    MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idfl/*tfl*/);
+    typedef ImageAdapter<VImage, DigitalSetDomain<SpecificSet>, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
+
+    DefaultFunctor idflD;
+    DefaultFunctor idflV;
+    DefaultFunctor idflVm1;
+    MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idflD, idflV, idflVm1);
 
     trace.info() << "ImageAdapter: " << floor_lamp << "  " << floor_lamp.domain() << std::endl;
 
