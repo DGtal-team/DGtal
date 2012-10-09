@@ -76,14 +76,14 @@ namespace DGtal
  *
  *
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorV, typename TValue>
+template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV, typename TFunctorVm1>
 class ImageAdapter
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageAdapter<TImageContainer, TDomain, TFunctorV, TValue> Self; 
+    typedef ImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV, TFunctorVm1> Self; 
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -108,8 +108,8 @@ public:
 
 public:
 
-    ImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorV &aFV):
-            myImagePointer(&anImage), mySubDomain(aDomain), myFV(&aFV)
+    ImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV, const TFunctorVm1 &aFVm1):
+            myImagePointer(&anImage), mySubDomain(aDomain), myFD(&aFD), myFV(&aFV), myFVm1(&aFVm1)
     {
 #ifdef DEBUG_VERBOSE
         trace.warning() << "ImageAdapter Ctor fromRef "<<std::endl;
@@ -130,7 +130,9 @@ public:
         {
             myImagePointer = other.myImagePointer;
             mySubDomain = other.mySubDomain;
+            myFD = other.myFD;
             myFV = other.myFV;
+            myFVm1 = other.myFVm1;
         }
         return *this;
     }
@@ -194,8 +196,9 @@ public:
     Value operator()(const Point & aPoint) const
     {
         ASSERT(this->domain().isInside(aPoint));
+        
         //return myImagePointer->operator()(aPoint);
-        return myFV->operator()(myImagePointer->operator()(aPoint));
+        return myFV->operator()(myImagePointer->operator()(myFD->operator()(aPoint)));
     }
 
 
@@ -212,7 +215,9 @@ public:
     void setValue(const Point &aPoint, const Value &aValue)
     {
         ASSERT(this->domain().isInside(aPoint));
-        myImagePointer->setValue(aPoint,aValue);
+        
+        //myImagePointer->setValue(aPoint, aValue);
+        myImagePointer->setValue(myFD->operator()(aPoint), myFVm1->operator()(aValue));
     }
 
 
@@ -263,16 +268,26 @@ protected:
 
     /// Owning pointer on the image container
     ImagePointer myImagePointer;
-
+    
     /**
      * The image SubDomain
      */
     Domain mySubDomain;
     
     /**
-     * Aliasing pointer on the underlying functor
+     * Aliasing pointer on the underlying Domain functor
+     */
+    const TFunctorD* myFD;
+
+    /**
+     * Aliasing pointer on the underlying Value functor
      */
     const TFunctorV* myFV;
+    
+    /**
+     * Aliasing pointer on the underlying "m-1" Value functor
+     */
+    const TFunctorVm1* myFVm1;
 
 
 private:
@@ -290,9 +305,9 @@ private:
  * @param object the object of class 'ImageAdapter' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorV, typename TValue>
+template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV, typename TFunctorVm1>
 std::ostream&
-operator<< ( std::ostream & out, const ImageAdapter<TImageContainer, TDomain, TFunctorV, TValue> & object );
+operator<< ( std::ostream & out, const ImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV, TFunctorVm1> & object );
 
 } // namespace DGtal
 
