@@ -162,9 +162,9 @@ bool testNorms()
   typedef PointVector<3, int> PointType;
   PointType aPoint;
 
-  aPoint.at ( 2 ) =  2;
-  aPoint.at ( 1 ) = -1;
-  aPoint.at ( 0 ) =  3;
+  aPoint[ 2 ] =  2;
+  aPoint[ 1 ] = -1;
+  aPoint[ 0 ] =  3;
 
   trace.beginBlock ( "Test of Norms" );
   trace.info() << "aPoint l_2 norm="<<aPoint.norm() <<endl;
@@ -213,11 +213,11 @@ bool testIterator()
   trace.beginBlock("Point Iterator Test");
 
   for (unsigned int i=0;i<25;++i)
-    aPoint.at(i) = i;
+    aPoint[i] = i;
   trace.info() << "aPoint="<<aPoint<< std::endl;
 
   trace.info() << "With iterator: ";
-  for (PointVector<25,int>::Iterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
+  for (PointVector<25,int>::ConstIterator it = aPoint.begin() ;  it != aPoint.end(); ++it)
     trace.info() << (*it) <<" " ;
 
   trace.info() << std::endl;
