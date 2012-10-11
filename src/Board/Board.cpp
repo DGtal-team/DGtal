@@ -886,7 +886,7 @@ Board::saveFIG( const char * filename, PageSize size, double margin ) const
   saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 void
-Board::saveFIG( std::ostream &out, PageSize size, double margin ) const
+Board::saveFIG( std::ostream &out, PageSize size, double margin, bool includeFIGHeader ) const
 {
   saveFIG( out, pageSizes[size][0], pageSizes[size][1], margin );
 }
@@ -899,23 +899,27 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
 }
 
 void
-Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double margin ) const
+Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double margin, bool includeFIGHeader ) const
 {
-  TransformFIG transform;
-  Rect box = boundingBox();
-  transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
-  transform.setDepthRange( *this );
   
-  file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
-  file << "Portrait\n";
-  file << "Center\n";
-  file << "Metric\n";
-  file << "A4\n";
-  file << "100.00\n";
-  file << "Single\n";
-  file << "-2\n";
-  file << "1200 2\n";
-
+  if(includeFIGHeader){
+    TransformFIG transform;
+    Rect box = boundingBox();
+    transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
+    transform.setDepthRange( *this );
+    
+    file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
+    file << "Portrait\n";
+    file << "Center\n";
+    file << "Metric\n";
+    file << "A4\n";
+    file << "100.00\n";
+    file << "Single\n";
+    file << "-2\n";
+    file << "1200 2\n";
+  }else{
+    file << "\n";
+  }
   std::map<DGtal::Color,int> colormap;
   int maxColor = 32;
 
