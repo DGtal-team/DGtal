@@ -145,12 +145,12 @@ bool testSimple()
     
   };
   
-bool test_f_g_gm1()
+bool test_g_f_fm1()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
-    trace.beginBlock("Testing f, g and gm1 with ImageAdapter");
+    trace.beginBlock("Testing g, f and fm1 with ImageAdapter");
     
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
 
@@ -410,7 +410,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && test_f_g_gm1() && testImageAdapter(); // && ... other tests
+    bool res = testSimple() && test_g_f_fm1() && testImageAdapter(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
