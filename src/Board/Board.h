@@ -749,8 +749,10 @@ public:
    * @param filename The name of the FIG file.
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the exported file. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0,
+		bool includeFIGHeader=true) const;
 
   /** 
    * Saves the drawing in XFig format through an output stream. When a size is given (not BoundingBox), the drawing is
@@ -773,8 +775,10 @@ public:
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0) const ;
+  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true) const ;
 
  /** 
    * Saves the drawing in an XFig format through an output

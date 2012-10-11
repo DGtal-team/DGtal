@@ -881,20 +881,21 @@ Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double m
 
 
 void
-Board::saveFIG( const char * filename, PageSize size, double margin ) const
+Board::saveFIG( const char * filename, PageSize size, double margin, bool includeFIGHeader ) const
 {
-  saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin );
+  saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin, includeFIGHeader );
 }
 void
 Board::saveFIG( std::ostream &out, PageSize size, double margin, bool includeFIGHeader ) const
 {
-  saveFIG( out, pageSizes[size][0], pageSizes[size][1], margin );
+  saveFIG( out, pageSizes[size][0], pageSizes[size][1], margin, includeFIGHeader );
 }
 void
-Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin ) const
+Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin,  
+		bool includeFIGHeader  ) const
 {
   std::ofstream file( filename );
-  saveFIG( file, pageWidth, pageHeight, margin);
+  saveFIG( file, pageWidth, pageHeight, margin, includeFIGHeader);
   file.close();
 }
 
