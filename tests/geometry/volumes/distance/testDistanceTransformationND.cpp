@@ -100,7 +100,7 @@ bool testDistanceTransformND()
       //distance from the point to the seed
       d = (*itDom) - c;
       ImageLong::Value norm2=0;
-      for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
+      for(Point::ConstIterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
 	norm2+= (*itd)*(*itd);
 
        if ( result( (*itDom) ) != norm2)
