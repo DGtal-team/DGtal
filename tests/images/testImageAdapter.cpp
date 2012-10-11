@@ -70,12 +70,10 @@ bool testSimple()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor/*ConstValueFunctor<VImage::Value>*//*Thresholder<VImage::Value>*/, DefaultFunctor> MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter;
     
     DefaultFunctor idD;
     DefaultFunctor idV;
-    //ConstValueFunctor<VImage::Value> idV(3);
-    //Thresholder<VImage::Value> t( domain.size()/2 );
     DefaultFunctor idVm1;
     
     MyImageAdapter restimage(image, domain, idD, idV, idVm1);
@@ -84,7 +82,7 @@ bool testSimple()
     nbok += (restimage(Z2i::Point(3,3)) == 10) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
-    << " read access" << endl;
+    << " read access on restricted Image" << endl;
 
     restimage.setValue(Z2i::Point(3,3), 5);
     nbok += (restimage(Z2i::Point(3,3)) == 5) ? 1 : 0;
@@ -92,12 +90,134 @@ bool testSimple()
     trace.info() << "(" << nbok << "/" << nb << ") "
     << " write on restricted Image"  << endl;
 
-    nbok += ((image)(Z2i::Point(3,3)) == 5) ? 1 : 0;
+    nbok += (image(Z2i::Point(3,3)) == 5) ? 1 : 0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ") "
-    << " writed on original image" << endl;
+    << " written on original image" << endl;
 
-    trace.warning()<< "Original image at (3,3) = "<< (image)(Z2i::Point(3,3)) <<std::endl;
+    trace.warning()<< "Original image at (3,3) = "<< (image)(Z2i::Point(3,3)) << std::endl;
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
+  /**
+   * Description of template class 'MyTransValueFunctor' <p>
+   * \brief Aim: Define a simple functor that returns 
+   * a 'trans' value. 
+   *
+   * @tparam TValue type of the value
+   */
+  template <typename TValue>
+  class MyTransValueFunctor
+  {
+  public:
+    typedef TValue Value;
+
+    /** 
+     * Constructor.
+     * @param value the 'trans' value.
+     */
+    MyTransValueFunctor(const Value& aValue = 0)
+      :myValue(aValue) {};
+    
+    /** 
+     * Operator
+     *
+     * @tparam TInput type of the input object
+     * @param aInput input object
+     *
+     * @return the constant value.
+     */
+    template <typename TInput>
+    inline
+    Value operator()(const TInput& aInput) const
+    {
+      return aInput+myValue;
+    }
+
+  private:
+    /** 
+     * value
+     */
+    Value myValue;
+    
+  };
+  
+bool test_f_g_gm1()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing f, g and gm1 with ImageAdapter");
+    
+    typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+
+    VImage image(Z2i::Domain(Z2i::Point(0,0), Z2i::Point(10,10)));
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = 10;
+
+    trace.info() << "Original image: " << image << endl;
+
+    Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, ConstValueFunctor<VImage::Value>, DefaultFunctor > MyImageAdapter;
+    
+    DefaultFunctor idD;
+    ConstValueFunctor<VImage::Value> idV(3);
+    DefaultFunctor idVm1;
+    
+    MyImageAdapter restimage(image, domain, idD, idV, idVm1);
+    trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
+
+    nbok += (restimage(Z2i::Point(3,3)) == 3) ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+    << " read access on restricted Image" << endl;
+    
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
+    
+    DefaultFunctor idD_2;
+    DefaultFunctor idV_2;
+    Thresholder<VImage::Value> idVm1_2( domain.size()/2 );
+    
+    MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
+
+    restimage2.setValue(Z2i::Point(2,2), 3);
+    nbok += (restimage2(Z2i::Point(2,2)) == 1) ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+    << " write on restricted Image 2"  << endl;
+    
+    trace.warning()<< "Restricted image 2 at (2,2) = "<< (restimage2)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
+    
+    restimage2.setValue(Z2i::Point(2,2), 5);
+    nbok += (restimage2(Z2i::Point(2,2)) == 0) ? 1 : 0;
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+    << " write on restricted Image 2"  << endl;
+    
+    trace.warning()<< "Restricted image 2 at (2,2) = "<< (restimage2)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
+    
+    typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, DefaultFunctor, DefaultFunctor > MyImageAdapter3;
+    
+    MyTransValueFunctor<Z2i::Point> idD_3(Z2i::Point(2,2));
+    DefaultFunctor idV_3;
+    DefaultFunctor idVm1_3;
+    
+    MyImageAdapter3 restimage3(image, domain, idD_3, idV_3, idVm1_3);
+    
+    restimage3.setValue(Z2i::Point(2,2), 5);
+    nbok += (image(Z2i::Point(4,4)) == 5) ? 1 : 0; 
+    nb++;
+    trace.info() << "(" << nbok << "/" << nb << ") "
+    << " write on restricted Image 3"  << endl;
+    
+    trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
+    trace.warning()<< "Original image at (4,4) = "<< (image)(Z2i::Point(4,4)) << std::endl;
+    trace.warning()<< "Original image at (5,5) = "<< (image)(Z2i::Point(5,5)) << std::endl;
     
     trace.endBlock();
     
@@ -290,7 +410,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && testImageAdapter(); // && ... other tests
+    bool res = testSimple() && test_f_g_gm1() && testImageAdapter(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
