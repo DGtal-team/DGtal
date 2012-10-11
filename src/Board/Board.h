@@ -773,10 +773,8 @@ public:
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
-   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0,
-		bool includeFIGHeader=true) const ;
+  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0) const ;
 
  /** 
    * Saves the drawing in an XFig format through an output
@@ -789,8 +787,10 @@ public:
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+  void saveFIG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true ) const ;
 
   /** 
    * Save the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is

@@ -902,12 +902,12 @@ void
 Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double margin, bool includeFIGHeader ) const
 {
   
-  if(includeFIGHeader){
-    TransformFIG transform;
-    Rect box = boundingBox();
-    transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
-    transform.setDepthRange( *this );
-    
+
+  TransformFIG transform;
+  Rect box = boundingBox();
+  transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
+  transform.setDepthRange( *this );
+  if(includeFIGHeader){    
     file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
     file << "Portrait\n";
     file << "Center\n";
