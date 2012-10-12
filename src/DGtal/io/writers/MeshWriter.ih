@@ -56,12 +56,11 @@ MeshWriter<TPoint>::export2OFF(ostream & out,
       for(unsigned int i=0; i< aMesh.nbVertex(); i++){
 	out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << endl;	
       }
-      int position=0;
-      int indexFace=0;
-      for (int i=0; i< aMesh.nbFaces(); i++){
+
+      for (unsigned int i=0; i< aMesh.nbFaces(); i++){
 	vector<unsigned int>  aFace = aMesh.getFace(i);
 	out << aFace.size() << " " ;
-	for(int j=0; j<aFace.size(); j++){
+	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
 	  out << indexVertex << " " ;	    
 	}
@@ -108,10 +107,10 @@ MeshWriter<TPoint>::export2OBJ(ostream &out,
       }
       out << endl;
       // processing faces:
-      for (int i=0; i< aMesh.nbFaces(); i++){
+      for (unsigned int i=0; i< aMesh.nbFaces(); i++){
 	vector<unsigned int>  aFace = aMesh.getFace(i);
 	out << "f " ;
-	for(int j=0; j<aFace.size(); j++){
+	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
 	  out << (indexVertex+1) << " " ;	    
 	}

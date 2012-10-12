@@ -34,7 +34,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#ifdef CPP11_FORWARD_LIST
 #include <forward_list>
 #endif
 #include <boost/version.hpp>
@@ -244,7 +244,7 @@ public:
 };
 
 
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#ifdef CPP11_FORWARD_LIST
 
 /**
    Array[X][Y] of forward_list< pair<L,Value> > Another intermediate
@@ -287,11 +287,9 @@ public:
       {
         if ( it->first == l ) return it->second;
       }
-    if ( it == it_end ) 
-      {
-        list.emplace_front( std::make_pair( l, Value() ) );
-        return list.front().second;
-      }
+    ASSERT ( it == it_end ) ;
+    list.emplace_front( std::make_pair( l, Value() ) );
+    return list.front().second;
   }
   inline 
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )

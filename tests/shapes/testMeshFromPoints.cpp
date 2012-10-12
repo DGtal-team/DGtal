@@ -49,8 +49,6 @@ using namespace DGtal::Z2i;
  */
 bool testMeshFromPoints()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 1;
   
   trace.beginBlock ( "Testing MeshFromPoints ..." );
 
