@@ -17,15 +17,10 @@
 /**
  * @file testImageAdapter.cpp
  * @ingroup Tests
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
- * @date 2012/02/07
- *
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/09/04
+ * @date 2012/10/12
  *
  * Functions for testing class ImageAdapter.
  *
@@ -70,7 +65,7 @@ bool testSimple()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain> MyImageAdapter;
     
     DefaultFunctor idD;
     DefaultFunctor idV;
@@ -175,6 +170,7 @@ bool test_g_f_fm1()
     trace.info() << "(" << nbok << "/" << nb << ") "
     << " read access on restricted Image" << endl;
     
+    //! [ImageAdapterConstruction]
     typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
     
     DefaultFunctor idD_2;
@@ -182,6 +178,7 @@ bool test_g_f_fm1()
     Thresholder<VImage::Value> idVm1_2( domain.size()/2 );
     
     MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
+    //! [ImageAdapterConstruction]
 
     restimage2.setValue(Z2i::Point(2,2), 3);
     nbok += (restimage2(Z2i::Point(2,2)) == 1) ? 1 : 0;
@@ -218,6 +215,47 @@ bool test_g_f_fm1()
     trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
     trace.warning()<< "Original image at (4,4) = "<< (image)(Z2i::Point(4,4)) << std::endl;
     trace.warning()<< "Original image at (5,5) = "<< (image)(Z2i::Point(5,5)) << std::endl;
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
+bool test_range_constRange()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing range/constRange with ImageAdapter");
+    
+    typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+
+    VImage image(Z2i::Domain(Z2i::Point(0,0), Z2i::Point(10,10)));
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = 10;
+
+    trace.info() << "Original image: " << image << endl;
+
+    Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor > MyImageAdapter;
+    
+    DefaultFunctor idD;
+    DefaultFunctor idV;
+    DefaultFunctor idVm1;
+    
+    MyImageAdapter restimage(image, domain, idD, idV, idVm1);
+    trace.info() << "Restricted Image: " << restimage << "  " << restimage.domain() << std::endl;
+
+    // writing values
+    const int maximalValue = domain.size(); 
+    MyImageAdapter::Range::OutputIterator it = restimage.range().outputIterator(); 
+    for (int i = 0; i < maximalValue; ++i)
+      *it++ = i;
+
+    // reading values 
+    MyImageAdapter::ConstRange r = restimage.constRange(); 
+    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
+    cout << endl;
     
     trace.endBlock();
     
@@ -410,7 +448,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && test_g_f_fm1() && testImageAdapter(); // && ... other tests
+    bool res = testSimple() && test_g_f_fm1() && test_range_constRange() && testImageAdapter(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();

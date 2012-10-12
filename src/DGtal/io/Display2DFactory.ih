@@ -904,7 +904,7 @@ void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
 template <typename Colormap, typename Image>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
@@ -934,7 +934,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
-// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
 
 
 // KhalimskyCell
