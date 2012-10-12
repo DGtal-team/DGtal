@@ -26,7 +26,7 @@
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/09/04
+ * @date 2012/10/12
  *
  * Header file for module ImageAdapter.cpp
  *
@@ -61,22 +61,43 @@ namespace DGtal
 // Template class ImageAdapter
 /**
  * Description of template class 'ImageAdapter' <p>
- * \brief Aim: implements a restricted image with a given domain (i.e. a subdomain).
+ * \brief Aim: implements an image adapter with a given domain (i.e. a subdomain) and 3 functors : g for domain, f for reading value and f-1 for writing value.
  *
  * This class is (like Image class) a lightweight proxy on ImageContainers (models of CImage).
- * It uses a given Domain (i.e. a subdomain) but work directly (for read and write) thanks to an alias (i.e. a pointer) on the original ImageContainer in argument.
+ * It uses a given Domain (i.e. a subdomain) but work directly (for reading and writing processes) thanks to an alias (i.e. a pointer) on the original ImageContainer in argument.
  * ImageAdapter class is also a model of CImage.
  * 
  * Caution :
  *  - ImageAdapter Domain Space dimension must be the same than the original ImageContainer Domain Space dimension,
  *  - the type of value of Point for the ImageAdapter Domain must also be the same than the type of value of Point for the original ImageContainer.
  *
- * @tparam TDomain a domain.
  * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TDomain a domain.
+ * @tparam TFunctorD the functor g that transforms the domain into another one
+ * @tparam TFunctorV the functor f that transforms the value into another one during reading process
+ * @tparam TFunctorVm1 the functor f-1 that transforms the value into another one during writing process
  *
+ * The values associated to reading the points are adapted  
+ * with a functor g and a functor f given at construction so that 
+ * operator() calls f(img(g(aPoint))), instead of calling directly 
+ * operator() of the underlying image img
+ * 
+ * The values associated to writing the points are adapted  
+ * with a functor g and a functor f-1 given at construction so that 
+ * setValue() is img.setValue(g(aPoint), f-1(aValue))
+ * 
+ * Here is the construction of a simple image adapter that 
+ * is a thresholded view of the initial scalar image: 
  *
+ * @snippet ../tests/images/testImageAdapter.cpp ImageAdapterConstruction 
+ *
+ * NB: the underlying image as well as the 3 functors
+ * are stored in the adapter as aliasing pointer
+ * in order to avoid copies.  
+ * The pointed objects must exist and must not be deleted 
+ * during the use of the adapter
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV, typename TFunctorVm1>
+template <typename TImageContainer, typename TDomain, typename TFunctorD=DefaultFunctor, typename TFunctorV=DefaultFunctor, typename TFunctorVm1=DefaultFunctor>
 class ImageAdapter
 {
 
@@ -112,7 +133,7 @@ public:
             myImagePointer(&anImage), mySubDomain(aDomain), myFD(&aFD), myFV(&aFV), myFVm1(&aFVm1)
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageAdapter Ctor fromRef "<<std::endl;
+        trace.warning() << "ImageAdapter Ctor fromRef " << std::endl;
 #endif
     }
 
@@ -124,7 +145,7 @@ public:
     ImageAdapter & operator= ( const ImageAdapter & other )
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageAdapter assignment "<<std::endl;
+        trace.warning() << "ImageAdapter assignment " << std::endl;
 #endif
         if (&other != this)
         {
@@ -197,7 +218,6 @@ public:
     {
         ASSERT(this->domain().isInside(aPoint));
         
-        //return myImagePointer->operator()(aPoint);
         return myFV->operator()(myImagePointer->operator()(myFD->operator()(aPoint)));
     }
 
@@ -216,7 +236,6 @@ public:
     {
         ASSERT(this->domain().isInside(aPoint));
         
-        //myImagePointer->setValue(aPoint, aValue);
         myImagePointer->setValue(myFD->operator()(aPoint), myFVm1->operator()(aValue));
     }
 
@@ -259,7 +278,7 @@ private:
      */
     ImageAdapter() {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageAdapter Ctor default "<<std::endl;
+        trace.warning() << "ImageAdapter Ctor default " << std::endl;
 #endif
     }
     

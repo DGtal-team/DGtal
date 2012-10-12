@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file RestrictedImage.ih
+ * @file ConstImageAdapter.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -24,9 +24,9 @@
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/09/04
+ * @date 2012/10/12
  *
- * Implementation of inline methods defined in RestrictedImage.h
+ * Implementation of inline methods defined in ConstImageAdapter.h
  *
  * This file is part of the DGtal library.
  */
@@ -51,12 +51,12 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TD, typename TIC>
+template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV>
 inline
 void
-DGtal::RestrictedImage<TD, TIC>::selfDisplay ( std::ostream & out ) const
+DGtal::ConstImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[RestrictedImage] "<< myImagePointer ;
+    out << "[ConstImageAdapter] " << myImagePointer ;
 }
 
 
@@ -64,11 +64,11 @@ DGtal::RestrictedImage<TD, TIC>::selfDisplay ( std::ostream & out ) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TD, typename TIC>
+template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const RestrictedImage<TD, TIC> & object )
+                    const ConstImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV> & object )
 {
     object.selfDisplay( out );
     return out;

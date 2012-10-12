@@ -1,7 +1,6 @@
 SET(DGTAL_TESTS_SRC
   testImageSimple
   testImageAdapter
-  testRestrictedImage
   testImage
   testImageSpanIterators
   testCheckImageConcept

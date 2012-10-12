@@ -57,7 +57,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGtal/images/RestrictedImage.h"
+#include "DGtal/images/ImageAdapter.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/kernel/PointVector.h"
@@ -251,13 +251,14 @@ static void drawImageHashTree( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
+// minV and maxV are bounds values of colormap
 template <typename Colormap, typename Image>
   static void drawImage( DGtal::Board2D & board,
                           const Image & i,
                           const typename Image::Value & minV,
                           const typename Image::Value & maxV );
-// ImageContainerBySTLVector, ImageContainerByHashTree, Image and RestrictedImage...
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
     
     
 // KhalimskyCell

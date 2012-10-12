@@ -21,6 +21,11 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/13
+ * 
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/10/12
  *
  * @brief An example file for ConstImageAdapter.
  *
@@ -39,6 +44,7 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ConstImageAdapter.h"
+//#include <../../doxygen-1.8.0/src/scanner.l>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -97,19 +103,20 @@ int main( int argc, char** argv )
   trace.beginBlock("Implicit thresholding");
 
   //! [ConstImageAdapterConstruction]
-  Thresholder<Image::Value> t( thresholdValue ); 
-  ConstImageAdapter<Image, Thresholder<Image::Value>, bool> a(img, t); 
+  DefaultFunctor g;
+  Thresholder<Image::Value> t( thresholdValue );
+  ConstImageAdapter<Image, Domain, DefaultFunctor, Thresholder<Image::Value> > a(img, d, g, t); 
   //! [ConstImageAdapterConstruction]
 
   //display values 
   //! [ConstImageAdapterRange]
-  ConstImageAdapter<Image, Thresholder<Image::Value>, bool>::ConstRange 
+  ConstImageAdapter<Image, Domain, DefaultFunctor, Thresholder<Image::Value> >::ConstRange 
     ra = a.constRange(); 
   std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
   //! [ConstImageAdapterRange]
   cout << endl; 
-  trace.endBlock();
 
+  trace.endBlock();
 
   return 0;
 }
