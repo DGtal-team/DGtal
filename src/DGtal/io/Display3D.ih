@@ -743,6 +743,7 @@ DGtal::Display3D::updateBoundingBox(double x, double y, double z)
       myBoundingPtUp[0]= x;
       myBoundingPtUp[1]= y;
       myBoundingPtUp[2]= z;
+      myBoundingPtEmptyTag = false;
     }
   else
     {
