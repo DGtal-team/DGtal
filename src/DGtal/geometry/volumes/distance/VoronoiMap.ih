@@ -1,0 +1,210 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VoronoiMap.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/08/14
+ *
+ * Implementation of inline methods defined in VoronoiMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/lexical_cast.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+/**
+ * Constructor.
+ */
+template <typename S,typename P,DGtal::uint32_t p>
+inline
+DGtal::VoronoiMap<S,P, p>::VoronoiMap(const Domain &aDomain,
+                                      const PointPredicate & aPredicate):
+  myDomain(aDomain), myPointPredicate(aPredicate)
+{
+}
+
+
+/**
+ * Destructor.
+ */
+template <typename S, typename P,DGtal::uint32_t p>
+inline
+DGtal::VoronoiMap<S, P,p>::~VoronoiMap()
+{
+} 
+
+template <typename S, typename P, DGtal::uint32_t p>
+inline
+typename DGtal::VoronoiMap<S,P, p>::OutputImage
+DGtal::VoronoiMap<S,P, p>::compute( )
+{
+
+  //We copy the image extent and translate the image domains to (0,..0)x(Upper-Lower)
+  myLowerBoundCopy = myDomain.lowerBound();
+  myUpperBoundCopy = myDomain.upperBound();
+  
+  Domain workingDomain(myLowerBoundCopy, myUpperBoundCopy);
+  OutputImage output ( myDomain );
+  OutputImage swap ( myDomain );
+ 
+  //Point outside the domain 
+  myInfinity = myDomain.upperBound() + Point::diagonal(1);
+
+  //Init 
+  for(typename Domain::ConstIterator it = myDomain.begin(), itend = myDomain.end();
+      it != itend;
+      ++it)
+    if ( myPointPredicate( *it))
+      output.setValue ( *it, myInfinity );
+    else
+      output.setValue ( *it, *it );
+  
+  //We process the remaining dimensions
+  for ( Dimension dim = 0; dim < S::dimension ; dim++ )
+    computeOtherSteps ( output, dim );
+  
+  return output;
+}
+
+template <typename S, typename P,DGtal::uint32_t p>
+inline
+void
+DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
+                                               const Dimension dim ) const
+{
+  std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
+  trace.beginBlock ( title );
+
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
+  
+  //We setup the subdomain iterator
+  //the iterator will scan dimension using the order:
+  // {n-1, n-2, ... 1} (we skip the '0' dimension).
+
+  std::vector<Size> subdomain;
+  subdomain.reserve(S::dimension - 1);
+  for (unsigned int k = 0; k < S::dimension ; k++)
+    if ( (S::dimension - 1 - k) != dim)
+      subdomain.push_back( S::dimension - 1 - k );
+
+  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
+
+  //We pre-init the stack site
+  std::vector<Point> Sites(myUpperBoundCopy[dim] - myLowerBoundCopy[dim], myInfinity);
+
+  //We process the dimensions to construct a Point
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    {
+      computeOtherStep1D ( output, (*it), dim, Sites);
+    }
+  
+  trace.endBlock();
+
+}
+
+// //////////////////////////////////////////////////////////////////////:
+// ////////////////////////// Other Phases
+template <typename S,typename P, DGtal::uint32_t p>
+void
+DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( OutputImage & output,
+                                               const Point &startingPoint,
+                                               const Size dim,
+					       std::vector<Point> &Sites) const
+{
+  Point point = startingPoint;
+  Point endpoint = startingPoint;
+  Point psite;
+  int nbSites = -1;
+  
+  //endpoint of the 1D row
+  endpoint[dim] = myUpperBoundCopy[dim];
+
+  //Pruning the list of sites (dim=0 implies no hibben sites)
+  if (dim==0)
+    {
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = output(point);
+	  if ( psite != myInfinity )
+	    {
+	      nbSites++;
+	      Sites[nbSites] = psite;
+	    }
+	  point[dim] ++;
+	}
+    }
+  else
+    {
+      //Pruning the list of sites
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = output(point);
+	  if ( psite != myInfinity )
+	    {
+	      while ((nbSites >= 1) && 
+		     ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
+					 psite, startingPoint, endpoint, dim) ))
+		{
+		  nbSites --; 
+		}
+	      nbSites++;
+	      Sites[nbSites] = psite;
+	    }
+	  point[dim] ++;
+	}
+    }
+  
+  //No sites found
+  if (nbSites == -1)
+    return;
+
+  int k = 0;
+
+  //Rewriting
+  point[dim] = myLowerBoundCopy[dim];
+  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+    {
+      while ( (k < nbSites) && 
+	      ( myMetric.closest(point, Sites[k], Sites[k+1])
+		!= SeparableMetric::FIRST ))
+        k++;
+      
+      output.setValue(point, Sites[k]);
+      point[dim]++;
+    }
+}
+
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+
+

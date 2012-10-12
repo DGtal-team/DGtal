@@ -71,7 +71,7 @@ namespace DGtal
   initial core. The expander move layer by layer but the user is
   free to navigate on each layer.
  
-  @tparam TObject the type of the digital object.
+  @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
  
   @code
      Graph g( ... );
@@ -102,7 +102,7 @@ namespace DGtal
     typedef typename Graph::Vertex Vertex;
 
     // Cannot check this since some types using it are incomplete.
-    // BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
+    //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
     // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------
