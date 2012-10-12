@@ -338,12 +338,7 @@ DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGta
   polygonD3D aPolygon;
   for(unsigned int i=0; i< vectPointsPolygon.size();i++){
     aPolygon.vectPoints.push_back(vectPointsPolygon.at(i));
-    aPolygon.R=aColor.red();
-    aPolygon.G=aColor.green();
-    aPolygon.B=aColor.blue();
-    aPolygon.T=aColor.alpha();
-    
-    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(0).y);
+    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(i).z);
   } 
 
 
