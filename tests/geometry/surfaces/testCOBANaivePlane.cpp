@@ -34,6 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/surfaces/COBANaivePlane.h"
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlane.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -146,6 +147,105 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   return nb == nbok;
 }
 
+
+/**
+ * Checks the naive plane d <= ax+by+cz <= d + max(|a|,|b|,|c|)-1
+ */
+template <typename Integer, typename GenericNaivePlane>
+bool
+checkGenericPlane( Integer a, Integer b, Integer c, Integer d, 
+                   int diameter, unsigned int nbtries )
+{
+  typedef typename GenericNaivePlane::Point Point;
+  typedef typename Point::Component PointInteger;
+  IntegerComputer<Integer> ic;
+  Integer absA = ic.abs( a );
+  Integer absB = ic.abs( b );
+  Integer absC = ic.abs( c );
+  Integer x, y, z;
+  Dimension axis;
+  if ( ( absA >= absB ) && ( absA >= absC ) )
+    axis = 0;
+  else if ( ( absB >= absA ) && ( absB >= absC ) )
+    axis = 1;
+  else
+    axis = 2;
+  Point p;
+  GenericNaivePlane plane;
+  plane.init( diameter, 1, 1 );
+  // Checks that points within the naive plane are correctly recognized.
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  while ( nb != nbtries )
+    {
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      x = (Integer) p[ 0 ];
+      y = (Integer) p[ 1 ];
+      z = (Integer) p[ 2 ];
+      switch ( axis ) {
+      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      } 
+      bool ok_ext = plane.isExtendable( p ); // should be ok
+      bool ok = plane.extend( p ); // should be ok
+      ++nb, nbok += ok_ext ? 1 : 0;
+      ++nb, nbok += ok ? 1 : 0;
+      if ( ! ok )
+        {
+          std::cerr << "[ERROR] p=" << p << " NOT IN plane=" << plane << std::endl;
+          break;
+        }
+      if ( ! ok_ext )
+        {
+          std::cerr << "[ERROR] p=" << p << " was NOT extendable IN plane=" << plane << std::endl;
+          break;
+        }
+      // else
+      //   std::cerr << "[OK] p=" << p << " IN plane=" << plane << std::endl;
+    }
+
+  // Checks that points outside the naive plane are correctly recognized as outliers.
+  while ( nb != (nbtries * 11 ) / 10 )
+    {
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      x = (Integer) p[ 0 ];
+      y = (Integer) p[ 1 ];
+      z = (Integer) p[ 2 ];
+      switch ( axis ) {
+      case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
+      case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
+      case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
+      } 
+      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 ) 
+        * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
+      p[ axis ] += tmp;
+      bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
+      bool ok = ! plane.extend( p ); // should *not* be ok
+      ++nb, nbok += ok ? 1 : 0;
+      ++nb, nbok += ok_ext ? 1 : 0;
+      if ( ! ok )
+        {
+          std::cerr << "[ERROR] p=" << p << " IN plane=" << plane << std::endl;
+          break;
+        }
+      if ( ! ok_ext )
+        {
+          std::cerr << "[ERROR] p=" << p << " was extendable IN plane=" << plane << std::endl;
+          break;
+        }
+      // else
+      //   std::cerr << "[OK] p=" << p << " IN plane=" << plane << std::endl;
+    }
+  std::cerr << "plane = " << plane << std::endl;
+  return nb == nbok;
+}
+
+
 template <typename Integer, typename NaivePlane>
 bool
 checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
@@ -185,9 +285,12 @@ bool testCOBANaivePlane()
   using namespace Z3i;
   typedef BigInteger Integer;
   typedef COBANaivePlane<Z3, BigInteger> NaivePlane;
+  typedef COBAGenericNaivePlane<Z3, BigInteger> GenericNaivePlane;
 
   BOOST_CONCEPT_ASSERT(( CPointPredicate< NaivePlane > ));
   BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< NaivePlane > ));
+  BOOST_CONCEPT_ASSERT(( CPointPredicate< GenericNaivePlane > ));
+  BOOST_CONCEPT_ASSERT(( boost::ForwardContainer< GenericNaivePlane > ));
 
   trace.beginBlock ( "Testing block: COBANaivePlane instantiation." );
   NaivePlane plane;
@@ -236,6 +339,23 @@ bool testCOBANaivePlane()
   ++nb, nbok += checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb 
                << ") checkPlane<Integer,NaivePlane>( 11, 5, 19, 20, 100, 100 )"
+               << std::endl;
+
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkGenericPlane<Integer,GenericNaivePlane>( 11, 5, 19, 20, 100, 100 )"
+               << std::endl;
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkGenericPlane<Integer,GenericNaivePlane>( 17, 33, 7, 10, 100, 100 )"
+               << std::endl;
+  ++nb, nbok += checkPlane<Integer,NaivePlane>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkPlane<Integer,NaivePlane>( 15, 8, 13, 15, 100, 100 )"
+               << std::endl;
+  ++nb, nbok += checkGenericPlane<Integer,GenericNaivePlane>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") checkGenericPlane<Integer,GenericNaivePlane>( 15, 8, 13, 15, 100, 100 )"
                << std::endl;
   trace.endBlock();
   return nbok == nb;
