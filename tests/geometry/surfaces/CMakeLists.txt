@@ -41,6 +41,7 @@ ENDIF(GMP_FOUND)
 
 SET(DGTAL_BENCH_GMP_SRC
    testCOBANaivePlane-benchmark
+   testCOBAGenericNaivePlane-benchmark
 )
 
 
