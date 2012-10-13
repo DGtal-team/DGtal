@@ -49,7 +49,8 @@
  * @param outputStream  the output stream that will receive the traces.
  */
 inline
-DGtal::Trace::Trace(DGtal::TraceWriter &writer):  myCurrentLevel(0), myCurrentPrefix (""),  myWriter(writer)
+DGtal::Trace::Trace(DGtal::TraceWriter &writer):  
+  myCurrentLevel(0), myCurrentPrefix (""),  myWriter(writer)
 {
 }
 
@@ -63,11 +64,6 @@ inline
 DGtal::Trace::~Trace()
 {
   myWriter.outputStream() << myWriter.postfixReset();
-  while ( ! myClockStack.empty() )
-    {
-      delete myClockStack.top();
-      myClockStack.pop();
-    }
 }
 
 
@@ -105,9 +101,10 @@ DGtal::Trace::reset()
   myCurrentLevel = 0;
   myCurrentPrefix = "";
   while( !myKeywordStack.empty() )
-    {
       myKeywordStack.pop();
-    }
+  while( !myClockStack.empty() )
+    myClockStack.pop();
+  
 }
 
 /**
@@ -120,10 +117,10 @@ void
 DGtal::Trace::beginBlock(const std::string &keyword)
 {
   myWriter.outputStream()<< myCurrentPrefix 
-       << myWriter.prefixEmphase()
-       << "New Block ["<<keyword << "]"
-       << myWriter.postfixReset()
-       <<std::endl;
+                         << myWriter.prefixEmphase()
+                         << "New Block ["<<keyword << "]"
+                         << myWriter.postfixReset()
+                         <<std::endl;
   myCurrentLevel++;
   myCurrentPrefix += TRACE_PATTERN;
   myKeywordStack.push(keyword);
@@ -134,13 +131,13 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   myClockStack.push(c);
 }
 
- /**
-  * Leave a current block, decrease the indentation level and display
-  * the associate keyword with ellapsed time in ms.
-  *
-  * @return  the ellapsed time in the block in milliseconds (Class Clock).
-  *
-  */
+/**
+ * Leave a current block, decrease the indentation level and display
+ * the associate keyword with ellapsed time in ms.
+ *
+ * @return  the ellapsed time in the block in milliseconds (Class Clock).
+ *
+ */
 inline long
 DGtal::Trace::endBlock()
 {
@@ -149,18 +146,19 @@ DGtal::Trace::endBlock()
 
   ASSERT (myCurrentLevel >0);
   
+  localClock =  myClockStack.top();
+  tick = localClock->stopClock();
+  
   myCurrentLevel--;
   myCurrentPrefix = "";
   for(unsigned int i = 0; i < myCurrentLevel; i++)
     myCurrentPrefix += TRACE_PATTERN;
-  localClock =  myClockStack.top();
-  tick = localClock->stopClock();
-
+ 
   myWriter.outputStream() << myCurrentPrefix 
-        << myWriter.prefixEmphase() 
-        << "EndBlock [" << myKeywordStack.top()
-        << "] (" << tick<<" ms)"
-        << myWriter.postfixReset()<< std::endl;
+                          << myWriter.prefixEmphase() 
+                          << "EndBlock [" << myKeywordStack.top()
+                          << "] (" << tick<<" ms)"
+                          << myWriter.postfixReset()<< std::endl;
   myKeywordStack.pop();
   myClockStack.pop();
   delete localClock;
@@ -212,36 +210,36 @@ DGtal::Trace::emphase() const
 inline std::ostream &
 DGtal::Trace::info() const
 {
-   myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixInfo();
+  myWriter.outputStream() <<  myCurrentPrefix << myWriter.prefixInfo();
   return  myWriter.outputStream();
 }
 
 inline void
 DGtal::Trace::progressBar(const double currentValue, const double maximumValue) const
 {
-   // how wide you want the progress meter to be
-    int totaldotz=60;
-    double fraction = currentValue /maximumValue;
+  // how wide you want the progress meter to be
+  int totaldotz=60;
+  double fraction = currentValue /maximumValue;
 
-    // part of the progressmeter that's already "full"
-    int dotz = (int)floor(fraction * totaldotz);
+  // part of the progressmeter that's already "full"
+  int dotz = (int)floor(fraction * totaldotz);
 
-    // create the "meter"
-    int ii=0;
-    myWriter.outputStream() << myCurrentPrefix<<"[";
-    // part  that's full already
-    for ( ; ii < dotz;ii++) 
-      {
-        myWriter.outputStream()<< "#";
-      }
-    // remaining part (spaces)
-    for ( ; ii < totaldotz;ii++) 
-      {
-        myWriter.outputStream()<< " ";
-      }
-    // and back to line begin - do not forget the fflush to avoid output buffering problems!
-    myWriter.outputStream()<< "]  "<< (int)(fraction*100)<<"/100\r";
-    myWriter.outputStream().flush();
+  // create the "meter"
+  int ii=0;
+  myWriter.outputStream() << myCurrentPrefix<<"[";
+  // part  that's full already
+  for ( ; ii < dotz;ii++) 
+    {
+      myWriter.outputStream()<< "#";
+    }
+  // remaining part (spaces)
+  for ( ; ii < totaldotz;ii++) 
+    {
+      myWriter.outputStream()<< " ";
+    }
+  // and back to line begin - do not forget the fflush to avoid output buffering problems!
+  myWriter.outputStream()<< "]  "<< (int)(fraction*100)<<"/100\r";
+  myWriter.outputStream().flush();
 }
 
 
@@ -258,7 +256,7 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue) 
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & out, 
-     const Trace & object )
+                   const Trace & object )
 {
   object.selfDisplay( out );
   return out;
