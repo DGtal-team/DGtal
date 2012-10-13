@@ -126,7 +126,6 @@ DGtal::Trace::beginBlock(const std::string &keyword)
   myKeywordStack.push(keyword);
 
   //Block timer start
-  //Block timer start
   Clock *c = new(Clock);
   c->startClock();
   myClockStack.push(c);
