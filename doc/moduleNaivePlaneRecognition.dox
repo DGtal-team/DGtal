@@ -16,10 +16,11 @@ This module gathers classes and functions to recognize piece of naive
 planes, and more generally piece of planes with arbitrary rational
 axis-thickness. It is based on an implementation of the COBA Algorithm
 [Charrier, Buzer 1998 : \cite Charrier:2008-dgci]. For the user,
-everything is gathered in class COBANaivePlane, a forward primitive
-computer.  File viewer3D-7-planes.cpp gives a very simple example of
-use-case. File greedy-plane-segmentation.cpp is a non trivial example
-that uses this plane recognition algorithm.
+everything is gathered in classes COBANaivePlane and
+COBAGenericNaivePlane, which are additive primitive computers.  File
+viewer3D-7-planes.cpp gives a very simple example of use-case. File
+greedy-plane-segmentation.cpp is a non trivial example that uses this
+plane recognition algorithm.
 
 [TOC]
 
@@ -296,6 +297,38 @@ plane by breadth-first traversal. Stores the obtained size (or better
 moments). Do that for each vertex independently. Put them in a
 priority queue, the first to be popped should be the ones with the
 biggest size. The remaining of the algorithm is unchanged.
+
+\section dgtal_naive_plane_recognition_sec6 What if you do not know the main axis beforehands ?
+
+In this case, you should use the class COBAGenericNaivePlane. You use
+it similarly to COBANaivePlane, but you do not need to specify a main
+axis when calling COBAGenericNaivePlane::init().
+
+@code 
+#include "DGtal/arithmetic/COBAGenericNaivePlane.h" 
+...
+using namespace Z3i;            // digital space is Z3
+...
+COBAGenericNaivePlane<Z3, int64_t> plane; // int64_t is enough for diameter 100
+plane.init( 100, 1, 1 );        // diameter is 100, epsilon=1/1
+@endcode
+
+Then, you may use methods COBAGenericNaivePlane::clear(),
+COBAGenericNaivePlane::extend(),
+COBAGenericNaivePlane::isExtendable(), etc, similarly as for class
+COBANaivePlane. The advantage is that the object detects progressively
+what is the correct main axis. You may know what is a correct main
+axis by calling COBAGenericNaivePlane::active().
+
+\note The principle of COBAGenericNaivePlane is to have three
+instances of COBANaivePlane at the beginning, one per possible
+axis. When extending the object by adding points, all active instances
+are extended. If any one of the active instance fails, it is removed
+from the active instances. It is guaranteed that if there is a naive
+plane (of specified width) that contains the given set of points, then
+the object COBAGenericNaivePlane will have at least one active
+COBANaivePlane instance. COBAGenericNaivePlane is thus a correct
+recognizer of arbitrary pieces of naive planes.
 
 */
 
