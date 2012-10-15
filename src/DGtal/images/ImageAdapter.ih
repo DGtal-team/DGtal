@@ -51,10 +51,10 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV, typename TFunctorVm1>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV, typename TFunctorVm1>
 inline
 void
-DGtal::ImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV, TFunctorVm1>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>::selfDisplay ( std::ostream & out ) const
 {
     out << "[ImageAdapter] " << myImagePointer ;
 }
@@ -64,11 +64,11 @@ DGtal::ImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV, TFunctorVm1>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV, typename TFunctorVm1>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV, typename TFunctorVm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV, TFunctorVm1> & object )
+                    const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> & object )
 {
     object.selfDisplay( out );
     return out;

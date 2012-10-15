@@ -37,14 +37,11 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "ConfigExamples.h"
-
-
+#include "ConfigTest.h"
 
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ConstImageAdapter.h"
-//#include <../../doxygen-1.8.0/src/scanner.l>
 
 ///////////////////////////////////////////////////////////////////////////////
 
