@@ -38,7 +38,8 @@
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
 
-#include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/writers/PGMWriter.h"
+#include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -81,16 +82,16 @@ bool testPNMWriter()
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 
-  PNMWriter<Image,Hue>::exportPPM("export-hue.ppm",image,0,255);
-  PNMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,0,255);
-  PNMWriter<Image,HueTwice>::exportPGM("export-hue-twice.pgm",image,0,255);
-  PNMWriter<Image,Gray>::exportPPM("export-gray.ppm",image,0,255);
-  PNMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,0,255);
-  PNMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,0,255);
-  PNMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,0,255);
+  PPMWriter<Image,Hue>::exportPPM("export-hue.ppm",image, Hue(0,255) );
+  PPMWriter<Image,HueTwice>::exportPPM("export-hue-twice.ppm",image,HueTwice(0,255));
+  PGMWriter<Image>::exportPGM("export-hue-twice.pgm",image);
+  PPMWriter<Image,Gray>::exportPPM("export-gray.ppm",image, Gray(0,255));
+  PPMWriter<Image,Jet>::exportPPM("export-jet.ppm",image,Jet(0,255));
+  PPMWriter<Image,RedShade1>::exportPPM("export-red1.ppm",image,RedShade1(0,255));
+  PPMWriter<Image,RedShade2>::exportPPM("export-red2.ppm",image,RedShade2(0,255));
 
   //test Raw export
-  RawWriter<Image,HueTwice>::exportRaw8("export-hue-twice.raw",image,0,255);
+  RawWriter<Image>::exportRaw8("export-hue-twice.raw",image);
 
   //test Image export with libboard
   Board2D  board;
@@ -121,11 +122,11 @@ bool testRWIssue254()
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 
-  PNMWriter<Image,Gray>::exportPGM("export-gray-first.pgm",image,0,255);
+  PGMWriter<Image>::exportPGM("export-gray-first.pgm",image);
   
   Image imageRead = PNMReader<Image>::importPGM("export-gray-first.pgm");
 
-  PNMWriter<Image,Gray>::exportPGM("export-gray-second.pgm",imageRead,0,255);
+  PGMWriter<Image>::exportPGM("export-gray-second.pgm",imageRead);
 
   trace.info() << image<<std::endl;
   trace.info() << imageRead<<std::endl;
