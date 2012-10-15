@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testTrueLocalEstimator.cpp
+ * @file testEstimatorComparator.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -37,7 +37,6 @@
 #include "DGtal/shapes/ShapeFactory.h"
 
 #include "DGtal/geometry/curves/estimation/TrueLocalEstimatorOnPoints.h"
-#include "DGtal/geometry/curves/estimation/TrueGlobalEstimatorOnPoints.h"
 
 #include "DGtal/geometry/curves/estimation/ParametricShapeCurvatureFunctor.h"
 #include "DGtal/geometry/curves/estimation/ParametricShapeTangentFunctor.h"
@@ -65,68 +64,13 @@
 using namespace std;
 using namespace DGtal;
 
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class TrueLocalEstimator.
-///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testTrueLocalEstimator(const std::string &filename)
-{
-  trace.info() << "Reading GridCurve " << endl;
-  ifstream instream; // input stream
-  instream.open (filename.c_str(), ifstream::in);
-  typedef KhalimskySpaceND<2> Kspace; //space
-  GridCurve<Kspace> c; 
-  c.initFromVectorStream(instream); //building grid curve
-  typedef GridCurve<Kspace >::PointsRange Range;//range
-  Range r = c.getPointsRange();//building range
-
-  
-  typedef Ball2D<Z2i::Space> Shape;
-  typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
-  typedef Range::ConstIterator ConstIteratorOnPoints;
-  typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
-  typedef ParametricShapeTangentFunctor< Shape > Tangent;
-  typedef ParametricShapeArcLengthFunctor< Shape > Length;
-
-  Shape ball(Z2i::Point(0,0), 30);
-
-   
-  TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
-  TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  tangentEstimator;
-  TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  lengthEstimator;
-
-  curvatureEstimator.init( 1, r.begin(), r.end() );
-  curvatureEstimator.attach( &ball );
-  tangentEstimator.init( 1, r.begin(), r.end() );
-  tangentEstimator.attach( &ball );
- 
-
-  ConstIteratorOnPoints it = r.begin();
-  ConstIteratorOnPoints it2 = it+15;
-  lengthEstimator.init( 1, it, it2, &ball, true);
-  
-  
-  trace.info() << "Current point = "<<*it<<std::endl;
-  trace.info() << "Current point+15 = "<<*it2<<std::endl;
-  trace.info() << "Eval curvature (begin, h=1) = "<< curvatureEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval tangent (begin, h=1) = "<< tangentEstimator.eval(it2)<<std::endl;
-  trace.info() << "Eval length ( h=1) = "<< lengthEstimator.eval(it,it2)<<std::endl;
-  
-  return true;
-
-}
 
 template <typename Shape>
-bool 
-testTrueLocalEstimatorOnShapeDigitization( const string & name,
-             Shape & aShape, double h )
+bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
 {
   using namespace Z2i;
 
-  trace.beginBlock ( ( "Testing TrueLocalEstimator on digitization of "
+  trace.beginBlock ( ( "Testing CompareEstimator on digitization of "
            + name ). c_str() );
   
   // Creates a digitizer on the window (xLow, xUp).
@@ -146,7 +90,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
   if ( ! ok )
     {
-      std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+      std::cerr << "[testCompareEstimators]"
     << " error in creating KSpace." << std::endl;
     }
   else
@@ -162,31 +106,88 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       gridcurve.initFromVector( points );
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;
-      typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
-      TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
+
+      unsigned int nb = 0; 
+      unsigned int nbok = 0; 
+      //curvature
+      typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
+      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
+      TrueCurvature curvatureEstimator;
+      TrueCurvature curvatureEstimatorBis;
       curvatureEstimator.init( h, r.begin(), r.end() );
       curvatureEstimator.attach( &aShape ); 
-      std::cout << "# idx x y kappa" << endl;
-      unsigned int i = 0;
-      for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
-      it != ite; ++it, ++i )
-  {
-    RealPoint x = *it;
-    double kappa = curvatureEstimator.eval( it );
-    std::cout << i << " " << x.at( 0 ) << " " << x.at( 1 ) 
-        << " " << kappa << std::endl;
-  }
-    }    
+      curvatureEstimatorBis.init( h, r.begin(), r.end() );
+      curvatureEstimatorBis.attach( &aShape ); 
+
+      typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
+
+      trace.info()<< "True curvature comparison at "<< *r.begin() << " = "
+		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
+		  << std::endl;
+      
+      typename Comparator::OutputStatistic error
+	=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
+			     r.begin(),
+			     r.end());
+      
+      trace.info() << "Nb samples= "<< error.samples()<<std::endl;
+      trace.info() << "Error mean= "<< error.mean()<<std::endl;
+      trace.info() << "Error max= "<< error.max()<<std::endl;
+      nbok += ( (error.samples() == r.size())&&(error.max() == 0) )?1:0; 
+      nb++;
+      trace.info() << nbok << "/" << nb << std::endl; 
+
+      //tangents
+      typedef ParametricShapeTangentFunctor< Shape > Tangent;
+      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
+
+      typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
+  SegmentComputer;
+      typedef TangentFromDSSEstimator<SegmentComputer> Functor;
+      typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
+  MSTangentEstimator;
+
+      SegmentComputer sc;
+      Functor f; 
+      
+      TrueTangent tang1;
+      MSTangentEstimator tang2(sc, f); 
+    
+      tang1.init( h, r.begin(), r.end() );
+      tang1.attach( &aShape ); 
+      tang2.init( h, r.begin(), r.end() );
+      
+      typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
+
+      trace.info()<< "Tangent comparison at "<< *r.begin() << " = " 
+		  << ComparatorTan::compareVectors( tang1, tang2, r.begin())
+		  << std::endl; 
+      
+      typename ComparatorTan::OutputVectorStatistic error2
+	=ComparatorTan::compareVectors(tang1, tang2, 
+				       r.begin(),
+				       r.end());
+      
+      trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
+      trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
+      trace.info()<< "Error max= "<< error2.max()<<std::endl;
+      nbok += (error.samples() == r.size())?1:0; 
+      nb++;
+      trace.info() << nbok << "/" << nb << std::endl; 
+      ok += (nb == nbok); 
+
+     }    
     catch ( InputException e )
       {
-  std::cerr << "[testTrueLocalEstimatorOnShapeDigitization]"
+  std::cerr << "[testCompareEstimator]"
       << " error in finding a bel." << std::endl;
   ok = false;
       }
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;
+  
 }
 
 
@@ -195,38 +196,15 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class TrueLocalEstimator" );
+  trace.beginBlock ( "Testing class CompareLocalEstimator" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-
-
-  std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
-
-  bool res = testTrueLocalEstimator(sinus2D4); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  
-  typedef Ellipse2D< Z2i::Space > MyEllipse;
-  MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
-  res = res && 
-    testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
-    ( "Ellipse-4-3-0.3-s1", ellipse, 1 );
-  res = res && 
-    testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
-    ( "Ellipse-4-3-0.3-s0.5", ellipse, 0.5 );
-
   typedef Flower2D< Z2i::Space > MyFlower;
   MyFlower flower( 0.5, -2.3, 5.0, 0.7, 6, 0.3 );
-  res = res && 
-    testTrueLocalEstimatorOnShapeDigitization<MyFlower>
-    ( "Flower-5-0.3-6-0.3-s1", flower, 1 );
-  res = res && 
-    testTrueLocalEstimatorOnShapeDigitization<MyFlower>
-    ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
-
+  bool res = testCompareEstimator<MyFlower>("Flower", flower, 0.25);
   return res ? 0 : 1;
 
 }
