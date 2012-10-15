@@ -8,15 +8,14 @@ namespace DGtal {
 @page image_io Image and digital object import/export
 @authors David Coeurjolly and Bertrand Kerautret
 
-This part of the manual describes how to import and export images
-in various formats. This document is dedicated both to DGtal users and
-developers.
+This part of the manual describes how to import and export images and main DGtal objects from/to various formats. 
 
 [TOC]
 
 \section usage Overall usage
 
-TODO
+
+
 \subsection colormaps Colormaps
 Image::ValueType to RGB color conversion.
 
