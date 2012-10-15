@@ -53,6 +53,7 @@
 
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/images/DefaultImageRange.h"
+#include <tr1/tuple>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -72,8 +73,9 @@ namespace DGtal
  *  - the type of value of Point for the ConstImageAdapter Domain must also be the same than the type of value of Point for the original ImageContainer.
  *
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TDomain a domain.
+ * @tparam TNewDomain a domain.
  * @tparam TFunctorD the functor g that transforms the domain into another one
+ * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
  *
  * The values associated to reading the points are adapted  
@@ -92,30 +94,32 @@ namespace DGtal
  * The pointed objects must exist and must not be deleted 
  * during the use of the adapter
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorD=DefaultFunctor, typename TFunctorV=DefaultFunctor>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD/*=DefaultFunctor*/, typename TNewValue, typename TFunctorV/*=DefaultFunctor*/>
 class ConstImageAdapter
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ConstImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV> Self; 
+    typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self; 
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( CDomain<TDomain> ));
-    BOOST_STATIC_ASSERT(TDomain::Space::dimension == TImageContainer::Domain::Space::dimension);
-    BOOST_STATIC_ASSERT((boost::is_same< typename TDomain::Point, typename TImageContainer::Point>::value));
+    BOOST_CONCEPT_ASSERT(( CDomain<TNewDomain> ));
+   
+    typedef TNewDomain Domain;
+    typedef typename TNewDomain::Point Point;
+    typedef TNewValue Value;
+
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> )); 
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Point Point;
-    typedef typename TImageContainer::Value Value;
+  
 
     ///Pointer to the image container data.
     typedef TImageContainer* ImagePointer;
-
-    typedef TDomain Domain;
 
     typedef DefaultConstImageRange<Self> ConstRange; 
     typedef DefaultImageRange<Self> Range; 
@@ -293,9 +297,9 @@ private:
  * @param object the object of class 'ConstImageAdapter' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TDomain, typename TFunctorD, typename TFunctorV>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
 std::ostream&
-operator<< ( std::ostream & out, const ConstImageAdapter<TImageContainer, TDomain, TFunctorD, TFunctorV> & object );
+operator<< ( std::ostream & out, const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> & object );
 
 } // namespace DGtal
 

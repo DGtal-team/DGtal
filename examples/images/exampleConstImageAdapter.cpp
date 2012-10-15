@@ -105,12 +105,12 @@ int main( int argc, char** argv )
   //! [ConstImageAdapterConstruction]
   DefaultFunctor g;
   Thresholder<Image::Value> t( thresholdValue );
-  ConstImageAdapter<Image, Domain, DefaultFunctor, Thresholder<Image::Value> > a(img, d, g, t); 
+  ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > a(img, d, g, t); 
   //! [ConstImageAdapterConstruction]
 
   //display values 
   //! [ConstImageAdapterRange]
-  ConstImageAdapter<Image, Domain, DefaultFunctor, Thresholder<Image::Value> >::ConstRange 
+  ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> >::ConstRange 
     ra = a.constRange(); 
   std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
   //! [ConstImageAdapterRange]
