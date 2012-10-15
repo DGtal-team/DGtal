@@ -43,7 +43,7 @@ using namespace Z3i;
 // Standard services - public :
 
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 
      

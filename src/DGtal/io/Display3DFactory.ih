@@ -46,7 +46,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   typedef typename DGtal::SphericalAccumulator<TV>::Size Size;
   typename DGtal::SphericalAccumulator<TV>::RealVector a,b,c,d;
   Size i,j;
-  DGtal::uint32_t m = 1, M=0;
+  DGtal::int32_t m = 1, M=0;
   for(typename DGtal::SphericalAccumulator<TV>::ConstIterator it = aAccumulator.begin(),
 	itend= aAccumulator.end(); it != itend; ++it)
     {

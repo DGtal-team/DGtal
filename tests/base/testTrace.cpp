@@ -112,12 +112,58 @@ void testFileStream()
     trace.endBlock();
 }
 
+void testTimings()
+{
+  size_t duration,duration2;
+ 
+  trace.beginBlock("Level0");
+  double tmp=1.0;
+  
+  trace.beginBlock("Level1");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  duration = trace.endBlock();
+  
+  trace.beginBlock("Level1B");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  
+  trace.beginBlock("Level2");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  duration = trace.endBlock();
+  
+  trace.beginBlock("Level2B");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  duration += trace.endBlock();
+  
+  trace.beginBlock("Level2C");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  duration += trace.endBlock();
+  
+  duration += trace.endBlock();
+  
+  trace.beginBlock("Level1C");
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = (long)cos((double)tmp+i);
+  duration += trace.endBlock();
+  
+  duration2 = trace.endBlock();
+
+  trace.info() <<"Total duration="<<duration<<std::endl;
+  trace.info() <<"Got="<<duration2<<std::endl;
+}
+
+
 
 int main()
 {
     testSimple();
     testIndent();
     testFileStream();
+    testTimings();
     return 0;
 }
-/** @ingroup Tests **/
+
