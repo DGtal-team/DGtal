@@ -65,7 +65,7 @@ bool testSimple()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain> MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter;
     
     DefaultFunctor idD;
     DefaultFunctor idV;
@@ -156,7 +156,7 @@ bool test_g_f_fm1()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, ConstValueFunctor<VImage::Value>, DefaultFunctor > MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, ConstValueFunctor<VImage::Value>, DefaultFunctor > MyImageAdapter;
     
     DefaultFunctor idD;
     ConstValueFunctor<VImage::Value> idV(3);
@@ -171,7 +171,7 @@ bool test_g_f_fm1()
     << " read access on restricted Image" << endl;
     
     //! [ImageAdapterConstruction]
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, bool, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
     
     DefaultFunctor idD_2;
     DefaultFunctor idV_2;
@@ -198,7 +198,7 @@ bool test_g_f_fm1()
     trace.warning()<< "Restricted image 2 at (2,2) = "<< (restimage2)(Z2i::Point(2,2)) << std::endl;
     trace.warning()<< "Original image at (2,2) = "<< (image)(Z2i::Point(2,2)) << std::endl;
     
-    typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, DefaultFunctor, DefaultFunctor > MyImageAdapter3;
+    typedef ImageAdapter<VImage, Z2i::Domain, MyTransValueFunctor<Z2i::Point>, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter3;
     
     MyTransValueFunctor<Z2i::Point> idD_3(Z2i::Point(2,2));
     DefaultFunctor idV_3;
@@ -237,7 +237,7 @@ bool test_range_constRange()
     trace.info() << "Original image: " << image << endl;
 
     Z2i::Domain domain(Z2i::Point(2,2), Z2i::Point(4,4));
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor > MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor > MyImageAdapter;
     
     DefaultFunctor idD;
     DefaultFunctor idV;
@@ -284,7 +284,7 @@ bool testImageAdapter()
     aBoard.saveCairo("church.png", Board2D::CairoPNG);
 #endif
 
-    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter;
+    typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter;
     BOOST_CONCEPT_ASSERT(( CImage< MyImageAdapter > ));
 
     nbok += true ? 1 : 0;
@@ -389,7 +389,7 @@ bool testImageAdapter()
     // --- DigitalSetDomain
     
 
-    typedef ImageAdapter<VImage, DigitalSetDomain<SpecificSet>, DefaultFunctor, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
+    typedef ImageAdapter<VImage, DigitalSetDomain<SpecificSet>, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
 
     DefaultFunctor idflD;
     DefaultFunctor idflV;
