@@ -134,7 +134,7 @@ void testBreadthFirstPropagation()
   board.saveEPS("testBreadthFirstPropagation.eps");
 }
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   testBreadthFirstPropagation();
   return 0;

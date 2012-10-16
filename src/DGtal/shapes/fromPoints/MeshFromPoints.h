@@ -110,6 +110,14 @@ namespace DGtal
      * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
     MeshFromPoints(bool saveFaceColor=false);    
+
+    /**
+     * Constructor.
+     * The constructed mesh will store an unique default color information about the mesh.
+     * 
+     * @param saveFaceColor: used to memorize the color of a face (default= false) 
+     */
+    MeshFromPoints(const DGtal::Color &aColor);    
     
     /**
      * Constructor by usung a vertex set as init.
@@ -217,13 +225,13 @@ namespace DGtal
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int nbFaces() const;
+    unsigned int nbFaces() const;
 
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int  nbVertex() const;
+    unsigned int  nbVertex() const;
     
     
     
@@ -260,6 +268,9 @@ namespace DGtal
     std::vector<TPoint>  myVertexList;
     std::vector<DGtal::Color> myFaceColorList;
     bool mySaveFaceColor;
+    DGtal::Color myDefaultColor;
+    
+
     
     // ------------------------- Hidden services ------------------------------
   protected:

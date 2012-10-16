@@ -14,7 +14,7 @@ using namespace std;
 using namespace DGtal;
 
 
-int main( int argc, char** argv )
+int main( int /*argc*/, char** /*argv*/ )
 {
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   //! [ExampleDisplay3DToOFF]
