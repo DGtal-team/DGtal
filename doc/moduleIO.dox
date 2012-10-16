@@ -12,38 +12,98 @@ This part of the manual describes how to import and export images and main DGtal
 
 [TOC]
 
-\section usage Overall usage
+\section intro Introductrion
+
+In DGtal, file readers and writers are located in the "io/readers/"
+and "io/writers/" folders respectively. Most of them are dedicated to
+image format import/export but some other DGtal data structures can
+have such tools (e.g. point set/mesh readers).
+
+Before going into details, let us first present an interesting tool
+for image visualisation or image export: predefined colormaps to convert scalars or to (red,green,blue) triplets.
+
+\section colormaps Colormaps
+
+Colormap models satisfy the CColomap concept. For short, a colormap is
+parametrized by a scalar value template type (@a Value). When constructed
+from two @a min and @a max values (of type @a Value), the colormap
+offers an operator returning a DGtal::Color for each value @v in the
+interval [@a min,@a max].
+
+For example, RandomColorMap returns a random color for each value
+@v. More complex colormaps (GradientColorMap, HueShadeColorMap, ...)
+offer better colormap for scientific visualisation purposes. 
+
+
+\image html colormaps.png "Example of predefined colormaps" 
+\image latex colormaps.png "Example of predefined colormaps" width=5cm
+
+In some situations, we may have to convert colors into a  scalar
+values (see below). In this case, basic conversion functors are
+available in the DGtal::BasicColorToScalarFunctors namespacd. For
+example, you would find in this namespace a DGtal::BasicColorToScalarFunctors::RedChannel converter or a
+DGtal::BasicColorToScalarFunctors::MeanChannels converter. 
+
+Hence, to implement a functor taking values and returning the red
+channel of a colormap, you just have to compose the two functors with
+the help of the Composer:
+@code
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
+
+typedef GradientColorMap<unsigned char, CMAP_JET > JetMap;
+typedef BasicColorToScalarFunctors::RedChannel RedChan;
+typedef Composer< JetMap, RedChan, unsigned char> RedFunctor;
+RedFunctor redFunctor( JetMap(0,255), RedChan() );
+
+///We use the colormap functor for PGM export
+PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm",image, redFunctor);
+@endcode
+
+
+\section imagefileformat Image file formats
+
+We first detail import/export format for DGtal images. Please refor to
+@ref moduleImage for details on images in DGtal and their associated
+concepts. First of all:
+
+ - Image @b readers are  classes templated by an image container type.
+
+ -  Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
+
+Hence, for image writers,  some  functors may return a DGtal::Color or a scalar value depending on the writer. 
 
 
 
-\subsection colormaps Colormaps
-Image::ValueType to RGB color conversion.
 
-TODO
+\subsection imagewriters Image Writers
+
+| Dimenssion | Name    | Description                     | Functor requirements                        | Class name    | Comment                                                  |
+|------------|---------|---------------------------------|---------------------------------------------|---------------|----------------------------------------------------------|
+|         2D | PGM     | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     | http://netpbm.sourceforge.net/                           |
+|            | PPM     | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     | http://netpbm.sourceforge.net/                           |
+|         3D | PGM3D   | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     |                                                          |
+|            | PPM3D   | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     |                                                          |
+|            | Vol     | Volumetric file format          | the functor should return an unsigned char  | VolWriter     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
+|            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
+|         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
 
 
-\section fileformat File formats
+\subsection imagewriters Image Writers
 
-\subsection io2D Image formats in 2-D
+| Dimenssion | Name              | Description                                   | Class name    | Comment                                                        |
+|------------|-------------------|-----------------------------------------------|---------------|----------------------------------------------------------------|
+|         2D | PGM               | Grayscale  netpbm image format                | PNMReader     | http://netpbm.sourceforge.net/                                 |
+|            | any Magick format | Any file format in the GraphicsMagick library | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
+|         3D | PGM3D             | Grayscale  netpbm image format                | PNMReader     |                                                                |
+|            | Vol               | Volumetric file format                        | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|            | Longvol           | Volumetric file format (long)                 | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
+|         nD | Raw8              | raw binary file format on 8bits               | RawReader     |                                                                |
 
- - PNM/NetPBM formats: PNMReader and PNMWriter
-   - PPM: RGB values (ASCII mode)
-   - PGM: grayscale values (ASCII mode)
- - All image formats handled by ImageMagick: MagickReader and MagickWriter
 
-\subsection io3D Image formats in 3-D
 
- - Variants of PNM/NetPBM formats in 3D: PNMReader and PNMWriter
-   - PPM3D: RGB values (ASCII mode)
-   - PGM3D: grayscale values (ASCII mode)
- - Vol format (Simplevol project, http://liris.cnrs.fr/david.coeurjolly): VolReader
-and VolWriter
-
-\subsection nDio Image formats in n-D
-
-- Raw formats (binary file with raw values using the
-  HyperRectDomain::Iterator order): RawReader and RawWriter
-    - Raw8: import/export on raw 8bits
+\section fileformat Other geometrical formats
 
 
 \subsection pointListnD Point list format in n-D
@@ -68,9 +128,8 @@ You can also export a MeshFromPoints object by using the operator
 MeshFromPoints which can be exported (see. \ref exportMesh3D).
 
 
-	
 
-\section io_examples Example
+\section io_examples Examples
 
 \subsection importDigitalSet Importing a 3D digital set from volume file:
 
@@ -228,7 +287,8 @@ instance generate some exports in pdf like this example:
 }
 
 /**
-* \example io/digitalSetFromVol.cpp
+
+* TODO \example io/digitalSetFromVol.cpp
 **/
 
 /**
