@@ -102,6 +102,7 @@ bool testDistanceTransformation()
       a[1] = ( k % 7 ) + 5;
       image.setValue ( a, 128 );
     }
+  a= Point(2,2);
 
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
@@ -127,17 +128,12 @@ bool testDistanceTransformation()
   trace.warning() << result << endl;
   //We just iterate on the Domain points and print out the point coordinates.
   ImageLong::ConstIterator it = result.begin();
-  for (unsigned int y = 2; y < 16; y++)
+  ImageLong::ConstIterator itend = result.end();
+  for (; it != itend; ++it)
     {
-      for (unsigned int x = 2; x < 16; x++)
-	{
-	  std::cout << (*it) << " ";
-	  ++it;
-	}
-      std::cout << std::endl;
+      std::cout << (*it) << " ";
     }
-
-
+  std::cout << std::endl;
 
   board.clear();
   Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
@@ -159,7 +155,7 @@ bool testDistanceTransformationNeg()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing the whole DT computation" );
+  trace.beginBlock ( "Testing the Neg DT computation" );
 
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;

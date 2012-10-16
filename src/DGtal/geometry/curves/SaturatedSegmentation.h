@@ -119,21 +119,32 @@ namespace DGtal
    * element of the range, one maximal segment must be chosen
    * as the first (resp. last) retrieved maximal segments. 
    * Several processing modes are therefore available: 
-   * - "First", 
-   * - "MostCentered" (default), 
-   * - "Last"
+   * - "First" and "First++" 
+   * - "MostCentered" (default) and "MostCentered++" 
+   * - "Last" and "Last++"
    *
    * The mode i indicates that the segmentation begins with 
    * the i maximal segment passing through the first element
-   * and ends with the i maximal segment passing through the 
-   * last element. 
+   * and ends with the i maximal segment passing through 
+   * the last element. The last retrieved segment of the segmentation
+   * is not included in the simple "XXX" modes, but is included
+   * in the "XXX++" modes.
+   *
+   * For instance, in the default mode "MostCentered", the 
+   * segmentation begins with the most centered maximal segment
+   * passing through the first element and ends (without including it)
+   * with the most centered maximal segment passing through the last 
+   * element. This mode is basically used to process a whole circular 
+   * structure so that the first maximal segment is not retrieved twice.
+   * However, in order to include the most centered maximal segment 
+   * passing through the last element in a subpart, you should use the 
+   * "MostCentered++" mode. 
    * 
    * In order to set a mode (before getting a SegmentComputerIterator),
    * use the setMode() method as follow: 
    * @code 
   theSegmentation.setMode("First");
    * @endcode  
-   * Note that the default mode will be used for any unknown modes.  
    * 
    * @see testSegmentation.cpp
    */
@@ -479,7 +490,7 @@ namespace DGtal
     ConstIterator myStop;
   
     /**
-     * Mode: either "Frist", "MostCentered" (default), "Last"
+     * Mode: either "First", "MostCentered" (default), "Last"
      */
     std::string myMode; 
 
