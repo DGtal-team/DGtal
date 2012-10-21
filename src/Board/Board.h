@@ -739,8 +739,7 @@ public:
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0, 
-		string filename = "output.eps") const ;
+  void saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0) const ;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is

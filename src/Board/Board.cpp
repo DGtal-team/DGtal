@@ -789,12 +789,12 @@ void
 Board::saveEPS( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );  
-  saveEPS(file, pageWidth, pageHeight, margin, std::string(filename));
+  saveEPS(file, pageWidth, pageHeight, margin);
   file.close();
 }
 
 void
-Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin, string filename ) const
+Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin ) const
 {
   Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
@@ -805,7 +805,7 @@ Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double m
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
   
   out << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
-  out << "%%Title:  "<< filename << std::endl;
+  out << "%%Title:  output.eps " << std::endl;
   out << "%%Creator: Board library (Copyleft)2007 Sebastien Fourey" << std::endl;
   {
     time_t t = time(0);
