@@ -39,7 +39,7 @@
 #include "DGtal/topology/SurfelNeighborhood.h"
 
 
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/2d/L1LengthEstimator.h"
 #include "DGtal/geometry/2d/TwoStepLocalLengthEstimator.h"
 #include "DGtal/geometry/2d/MLPLengthEstimator.h"

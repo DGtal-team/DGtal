@@ -1,3 +1,14 @@
+=== DGtal 0.5.1 ===
+Posted on June, 6th, 2012 by David Coeurjolly
+
+    - New way to cite package/module authors in the documentation
+    - Improvement of DGtal::GridCurve ranges
+    - Improvement of package concepts  in the  documentation	
+    - new documentation for DGTal build on MSWindows
+    - arithmetic is now a main package (previously in math)
+    - Specialized classes for classical metric adjacencies
+	
+
 === DGtal 0.5 ===
 Posted on May, 9th, 2012 by David Coeurjolly
 

@@ -40,7 +40,7 @@
 
 //! [freemanChainFromImage-trackingFCIncludes]
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
 //! [freemanChainFromImage-trackingFCIncludes]
 
 //! [freemanChainFromImage-displayIncludes]

@@ -42,7 +42,10 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/Display3D.h"
+#include "DGtal/base/CountedPtr.h"
+#include "DGtal/helpers/StdDefs.h"
+
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -309,6 +312,59 @@ namespace DGtal
     }*/
     
       double ZNear, ZFar;
+  };
+
+ 
+
+ /**
+   * @brief class to modify the position and scale to construct better illustration mode.
+   * @todo add a constructor to automatically define the shift and the scale according a given associated SCell.
+   */
+  struct TransformedKSSurfel : public DrawWithDisplay3DModifier
+  {
+    /**
+     * Constructor.
+     *
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aShift the shift distance (positive or negative).
+     * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
+     */
+    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, double aShift, double aSizeFactor=1.0 )
+    {
+      mySurfel= aSurfel;
+      myShift = aShift;
+      mySizeFactor=aSizeFactor;
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param aSurfel a DGtal::Z3i::SCell ( KhalimskySpaceND< 2, Integer > SCell ) .
+     * @param aVoxel a  DGtal::Z3i::SCell represent the voxel for which the surfel is associated. It permits to determine automatically the shift parameter (the surfel is automatically shifted towards this voxel).
+     * @param aShift the shift distance (positive or negative (default 0.05)).
+     * @param aSizeFactor use to change the KSSurfel size (default 0.75).
+     */
+    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, const DGtal::Z3i::SCell  & aVoxel, 
+			 double aShift=0.05, double aSizeFactor=0.75  )
+    {      
+      mySurfel= aSurfel;
+      myShift = aShift;
+      mySizeFactor = aSizeFactor;
+      bool xodd = (mySurfel.myCoordinates[ 0 ] & 1 );
+      bool yodd = (mySurfel.myCoordinates[ 1 ] & 1 );
+      bool zodd = (mySurfel.myCoordinates[ 2 ] & 1 );
+      if(!xodd ){
+	myShift*= ((aVoxel.myCoordinates[ 0 ]-mySurfel.myCoordinates[ 0 ] <0)? -1.0: 1.0);
+      }else if(!yodd ){
+	myShift*=((aVoxel.myCoordinates[ 1 ]-mySurfel.myCoordinates[ 1 ] <0)? -1.0: 1.0);
+      }else if(!zodd ){
+	myShift*=((aVoxel.myCoordinates[ 2 ]-mySurfel.myCoordinates[ 2 ] <0)? -1.0: 1.0);
+      }
+    }
+    
+    DGtal::Z3i::SCell mySurfel;
+    double myShift;
+    double mySizeFactor;
   };
 
  
