@@ -114,6 +114,7 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -129,6 +130,8 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineWidth(1);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -308,6 +311,9 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      // line width decreased to avoid too large arrows to display adjacency.
+      aBoard.setLineWidth(0.75);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160, 160, 160);
       aBoard.setPenColorRGBi(80, 80, 80);
     }

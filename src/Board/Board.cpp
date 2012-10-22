@@ -773,15 +773,29 @@ Board::addDuplicates( const Shape & shape,
 }
 
 void
+Board::saveEPS( std::ostream &out, PageSize size, double margin ) const
+{
+  saveEPS( out, pageSizes[size][0], pageSizes[size][1], margin );
+}
+
+void
 Board::saveEPS( const char * filename, PageSize size, double margin ) const
 {
   saveEPS( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
+
   
 void
 Board::saveEPS( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
-  std::ofstream file( filename );
+  std::ofstream file( filename );  
+  saveEPS(file, pageWidth, pageHeight, margin);
+  file.close();
+}
+
+void
+Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin ) const
+{
   Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
   if ( clipping )
@@ -790,62 +804,62 @@ Board::saveEPS( const char * filename, double pageWidth, double pageHeight, doub
   TransformEPS transform;
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
   
-  file << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
-  file << "%%Title: " << filename << std::endl;
-  file << "%%Creator: Board library (Copyleft)2007 Sebastien Fourey" << std::endl;
+  out << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
+  out << "%%Title:  output.eps " << std::endl;
+  out << "%%Creator: Board library (Copyleft)2007 Sebastien Fourey" << std::endl;
   {
     time_t t = time(0);
     char str_time[255];
     secured_ctime( str_time, &t, 255 );
-    file << "%%CreationDate: " << str_time;
+    out << "%%CreationDate: " << str_time;
   }
-  file << "%%BoundingBox: " << std::setprecision( 8 )
+  out << "%%BoundingBox: " << std::setprecision( 8 )
        << transform.mapX( box.left ) << " "
        << transform.mapY( box.top - box.height ) << " "
        << transform.mapX( box.left + box.width ) << " "
        << transform.mapY( box.top ) << std::endl;
 
-  file << "%Magnification: 1.0000" << std::endl;
-  file << "%%EndComments" << std::endl;
+  out << "%Magnification: 1.0000" << std::endl;
+  out << "%%EndComments" << std::endl;
 
-  file << std::endl;
-  file << "/cp {closepath} bind def" << std::endl;
-  file << "/ef {eofill} bind def" << std::endl;
-  file << "/gr {grestore} bind def" << std::endl;
-  file << "/gs {gsave} bind def" << std::endl;
-  file << "/sa {save} bind def" << std::endl;
-  file << "/rs {restore} bind def" << std::endl;
-  file << "/l {lineto} bind def" << std::endl;
-  file << "/m {moveto} bind def" << std::endl;
-  file << "/rm {rmoveto} bind def" << std::endl;
-  file << "/n {newpath} bind def" << std::endl;
-  file << "/s {stroke} bind def" << std::endl;
-  file << "/sh {show} bind def" << std::endl;
-  file << "/slc {setlinecap} bind def" << std::endl;
-  file << "/slj {setlinejoin} bind def" << std::endl;
-  file << "/slw {setlinewidth} bind def" << std::endl;
-  file << "/srgb {setrgbcolor} bind def" << std::endl;
-  file << "/rot {rotate} bind def" << std::endl;
-  file << "/sc {scale} bind def" << std::endl;
-  file << "/sd {setdash} bind def" << std::endl;
-  file << "/ff {findfont} bind def" << std::endl;
-  file << "/sf {setfont} bind def" << std::endl;
-  file << "/scf {scalefont} bind def" << std::endl;
-  file << "/sw {stringwidth} bind def" << std::endl;
-  file << "/sd {setdash} bind def" << std::endl;
-  file << "/tr {translate} bind def" << std::endl;
-  file << " 0.5 setlinewidth" << std::endl;
+  out << std::endl;
+  out << "/cp {closepath} bind def" << std::endl;
+  out << "/ef {eofill} bind def" << std::endl;
+  out << "/gr {grestore} bind def" << std::endl;
+  out << "/gs {gsave} bind def" << std::endl;
+  out << "/sa {save} bind def" << std::endl;
+  out << "/rs {restore} bind def" << std::endl;
+  out << "/l {lineto} bind def" << std::endl;
+  out << "/m {moveto} bind def" << std::endl;
+  out << "/rm {rmoveto} bind def" << std::endl;
+  out << "/n {newpath} bind def" << std::endl;
+  out << "/s {stroke} bind def" << std::endl;
+  out << "/sh {show} bind def" << std::endl;
+  out << "/slc {setlinecap} bind def" << std::endl;
+  out << "/slj {setlinejoin} bind def" << std::endl;
+  out << "/slw {setlinewidth} bind def" << std::endl;
+  out << "/srgb {setrgbcolor} bind def" << std::endl;
+  out << "/rot {rotate} bind def" << std::endl;
+  out << "/sc {scale} bind def" << std::endl;
+  out << "/sd {setdash} bind def" << std::endl;
+  out << "/ff {findfont} bind def" << std::endl;
+  out << "/sf {setfont} bind def" << std::endl;
+  out << "/scf {scalefont} bind def" << std::endl;
+  out << "/sw {stringwidth} bind def" << std::endl;
+  out << "/sd {setdash} bind def" << std::endl;
+  out << "/tr {translate} bind def" << std::endl;
+  out << " 0.5 setlinewidth" << std::endl;
 
   if ( clipping ) {
-    file << " newpath ";
-    _clippingPath.flushPostscript( file, transform );
-    file << " 0 slw clip " << std::endl;
+    out << " newpath ";
+    _clippingPath.flushPostscript( out, transform );
+    out << " 0 slw clip " << std::endl;
   }
   
   // Draw the background color if needed.
   if ( _backgroundColor != DGtal::Color::None ) { 
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0f );
-    r.flushPostscript( file, transform );
+    r.flushPostscript( out, transform );
   }
 
   // Draw the shapes
@@ -856,40 +870,57 @@ Board::saveEPS( const char * filename, double pageWidth, double pageHeight, doub
   std::vector< Shape* >::const_iterator end = shapes.end();
 
   while ( i != end ) {
-    (*i)->flushPostscript( file, transform );
+    (*i)->flushPostscript( out, transform );
     ++i;
   }
-  file << "showpage" << std::endl;
-  file << "%%Trailer" << std::endl;
-  file << "%EOF" << std::endl;
+  out << "showpage" << std::endl;
+  out << "%%Trailer" << std::endl;
+  out << "%EOF" << std::endl;
+}
+
+
+
+void
+Board::saveFIG( const char * filename, PageSize size, double margin, bool includeFIGHeader ) const
+{
+  saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin, includeFIGHeader );
+}
+void
+Board::saveFIG( std::ostream &out, PageSize size, double margin, bool includeFIGHeader ) const
+{
+  saveFIG( out, pageSizes[size][0], pageSizes[size][1], margin, includeFIGHeader );
+}
+void
+Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin,  
+		bool includeFIGHeader  ) const
+{
+  std::ofstream file( filename );
+  saveFIG( file, pageWidth, pageHeight, margin, includeFIGHeader);
   file.close();
 }
 
 void
-Board::saveFIG( const char * filename, PageSize size, double margin ) const
+Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double margin, bool includeFIGHeader ) const
 {
-  saveFIG( filename, pageSizes[size][0], pageSizes[size][1], margin );
-}
+  
 
-void
-Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin ) const
-{
-  std::ofstream file( filename );
   TransformFIG transform;
   Rect box = boundingBox();
   transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
   transform.setDepthRange( *this );
-  
-  file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
-  file << "Portrait\n";
-  file << "Center\n";
-  file << "Metric\n";
-  file << "A4\n";
-  file << "100.00\n";
-  file << "Single\n";
-  file << "-2\n";
-  file << "1200 2\n";
-
+  if(includeFIGHeader){    
+    file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
+    file << "Portrait\n";
+    file << "Center\n";
+    file << "Metric\n";
+    file << "A4\n";
+    file << "100.00\n";
+    file << "Single\n";
+    file << "-2\n";
+    file << "1200 2\n";
+  }else{
+    file << "\n";
+  }
   std::map<DGtal::Color,int> colormap;
   int maxColor = 32;
 
@@ -951,8 +982,8 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
     (*i)->flushFIG( file, transform, colormap );
     ++i;
   }  
-  file.close();
 }
+
 
 void
 Board::saveSVG( const char * filename, PageSize size, double margin ) const
@@ -961,9 +992,26 @@ Board::saveSVG( const char * filename, PageSize size, double margin ) const
 }
 
 void
+Board::saveSVG( std::ostream &out, PageSize size, double margin ) const
+{
+  saveSVG( out, pageSizes[size][0], pageSizes[size][1], margin );
+}
+
+
+void
 Board::saveSVG( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
+  saveSVG(file, pageWidth, pageHeight, margin);
+  file.close();
+}
+
+
+
+void
+Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double margin, string filename ) const
+{
+  
   TransformSVG transform;
   Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
@@ -1029,8 +1077,9 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
   if ( clipping )
     file << "</g>\n</g>";
   file << "</svg>" << std::endl;
-  file.close();
+ 
 }
+
 
 void
 Board::save( const char * filename, double pageWidth, double pageHeight, double margin ) const 
@@ -1068,7 +1117,6 @@ Board::saveCairo( const char * filename, CairoType type, PageSize size, double m
 {
   saveCairo( filename, type, pageSizes[size][0], pageSizes[size][1], margin );
 }
-
 void
 Board::saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin ) const
 {
@@ -1151,9 +1199,22 @@ Board::saveTikZ( const char * filename, PageSize size, double margin ) const
 }
 
 void
+Board::saveTikZ( std::ostream & out, PageSize size, double margin ) const
+{
+  saveTikZ( out, pageSizes[size][0], pageSizes[size][1], margin );
+}
+
+void
 Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   std::ofstream file( filename );
+  saveTikZ(file, pageHeight, pageHeight, margin);
+  file.close();
+}
+
+void
+Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double margin ) const
+{
   TransformTikZ transform;
   Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
@@ -1161,44 +1222,44 @@ Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, dou
     box = box && _clippingPath.boundingBox();
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
 
-  file << "\\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]" << std::endl;
+  out << "\\begin{tikzpicture}[anchor=south west,text depth=0,x={(1pt,0pt)},y={(0pt,-1pt)}]" << std::endl;
 
 /*
   if ( pageWidth > 0 && pageHeight > 0 ) {
-    file << "<svg width=\""
+    out << "<svg width=\""
 	 << pageWidth << "mm\" height=\""
 	 << pageHeight << "mm\" " << std::endl;
-    file << "     viewBox=\"0 0 "
+    out << "     viewBox=\"0 0 "
  	 << pageWidth * ppmm  << " "
  	 << pageHeight * ppmm  << "\" " << std::endl;
-    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
+    out << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" >" << std::endl;
   } else {
-    file << "<svg width=\""
+    out << "<svg width=\""
 	 << ( box.width / ppmm )  << "mm"
 	 << "\" height=\""
 	 << ( box.height / ppmm ) << "mm"
 	 << "\" " << std::endl;
-    file << "     viewBox=\"0 0 "
+    out << "     viewBox=\"0 0 "
 	 << box.width  << " "
 	 << box.height << "\" " << std::endl;
-    file << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" >" << std::endl;
+    out << "     xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" >" << std::endl;
 
   }
 
-  file << "<desc>" << filename 
+  out << "<desc>" << filename 
        << ", created with the Board library (Copyleft) 2007 Sebastien Fourey" 
        << "</desc>" << std::endl;*/
 
   if ( clipping  ) {
-    file << "\\clip ";
-    _clippingPath.flushSVGCommands( file, transform );
-    file << "\n";
+    out << "\\clip ";
+    _clippingPath.flushSVGCommands( out, transform );
+    out << "\n";
   }
   
   // Draw the background color if needed.
   if ( _backgroundColor != Color::None ) { 
     Rectangle r( box, Color::None, _backgroundColor, 0.0 );
-    r.flushTikZ( file, transform );
+    r.flushTikZ( out, transform );
   }
 
   // Draw the shapes.
@@ -1207,15 +1268,15 @@ Board::saveTikZ( const char * filename, double pageWidth, double pageHeight, dou
   std::vector< Shape* >::const_iterator i = shapes.begin();
   std::vector< Shape* >::const_iterator end = shapes.end();
   while ( i != end ) {
-    (*i)->flushTikZ( file, transform );
+    (*i)->flushTikZ( out, transform );
     ++i;
   }  
 
   //if ( clipping )
-  //  file << "</g>\n</g>";
-  file << "\\end{tikzpicture}" << std::endl;
-  file.close();
+  //  out << "</g>\n</g>";
+  out << "\\end{tikzpicture}" << std::endl;
 }
+
 
 } // namespace LibBoard;
 

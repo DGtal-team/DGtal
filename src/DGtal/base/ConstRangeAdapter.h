@@ -43,6 +43,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include "DGtal/base/BasicFunctors.h"
+//#include "boost/iterator/reverse_iterator.hpp"
+#include "DGtal/base/ReverseIterator.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "boost/concept_check.hpp"
@@ -84,17 +86,19 @@ namespace DGtal
   class ConstRangeAdapter
   {
 
-    BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<TIterator> )); 
+  BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<TIterator> ));
+  BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<TIterator> ));
 
     // ------------------------- inner types --------------------------------
   public: 
   
     typedef ConstIteratorAdapter<TIterator,TFunctor,TReturnType> ConstIterator; 
-    typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+    typedef ReverseIterator<ConstIterator> ConstReverseIterator;
 
     typedef Circulator<ConstIterator> ConstCirculator;
-    typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+    typedef ReverseIterator<ConstCirculator> ConstReverseCirculator;
 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Difference Difference; 
     // ------------------------- standard services --------------------------------
 
     /**
@@ -147,6 +151,15 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const { return true; }
+
+    /**
+     * @return the size of the range.
+     */
+    Difference size() const
+      {
+	typedef typename IteratorCirculatorTraits<TIterator>::Category Category; 
+	return size( myBegin, myEnd, Category() );
+      }
   
     // ------------------------- display --------------------------------
     /**
@@ -249,6 +262,36 @@ namespace DGtal
     ConstReverseCirculator rc() const {
       return ConstReverseCirculator( this->c() );
     }
+
+  private: 
+
+    /**
+     * Get the size of [@a itb, @a ite)
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @return the size of the range.
+     * NB: in O(1)
+     */
+    Difference size(const TIterator& itb, const TIterator& ite,  RandomAccessCategory) const
+      {
+	return (ite-itb); 
+      }
+
+    /**
+     * Get the size of [@a itb, @a ite)
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @return the size of the range.
+     * NB: in O(ite-itb)
+     */
+    Difference size(const TIterator& itb, const TIterator& ite,  BidirectionalCategory) const
+      {
+	TIterator it = itb; 
+	unsigned int d = 0;
+	for ( ; it != ite; ++it, ++d)
+	  {}
+	return d; 
+      }
 
   }; //end class ConstRangeAdapter
 

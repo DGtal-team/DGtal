@@ -62,7 +62,7 @@ namespace DGtal
    *
    * @tparam TSpace the Digital space definition.
    */
-  
+
   template < typename TSpace >
   class ImplicitPolynomial3Shape
   {
@@ -76,32 +76,32 @@ namespace DGtal
     typedef typename Space::Integer Integer;
     typedef MPolynomial< 3, Ring > Polynomial3;
     typedef Ring Value;
-    
+
     BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
-    
-    /** 
+
+    /**
         Constructor from an arbitrary polynomial.
-        
+
         @param poly any multivariate polynomial (the number of
         variables is the dimension of the space)
     */
     ImplicitPolynomial3Shape( const Polynomial3 & poly );
-    
+
     /**
        Assignment.
        @param other the object to copy.
        @return a reference on 'this'.
      */
     ImplicitPolynomial3Shape & operator= ( const ImplicitPolynomial3Shape & other );
-    
-    /** 
+
+    /**
         Destructor.
-    */    
+    */
     ~ImplicitPolynomial3Shape();
 
-    /** 
+    /**
         Initialize from an arbitrary polynomial.
-        
+
         @param poly any multivariate polynomial (the number of
         variables is the dimension of the space)
     */
@@ -109,13 +109,13 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
        @param aPoint any point in the Euclidean space.
        @return the value of the polynomial at \a aPoint.
     */
     double operator()(const RealPoint &aPoint) const;
-    
+
     /**
        @param aPoint any point in the Euclidean space.
        @return 'true' if the polynomial value is > 0.
@@ -137,9 +137,56 @@ namespace DGtal
     inline
     RealVector gradient( const RealPoint &aPoint ) const;
 
+// ------------------------------------------------------------ Added by Anis Benyoub
+
+    /**
+       Mean curvature estimation.
+       This computation is based on the hessian formula of the mean curvature
+       k=(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
+        
+       @pre @a a Point must be close to the surface.
+
+       @param aPoint any point in the Euclidean space.
+       @return the mean curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double meanCurvature( const RealPoint &aPoint ) const;
+
+
+    /**
+       Gaussian curvature estimation at @a aPoint 
+       @pre @a aPoint must be close to the surface. 
+
+       @param aPoint any point in the Euclidean space.
+       @return the gaussian curvature value of the polynomial at \a aPoint.
+    */
+    inline
+    double gaussianCurvature( const RealPoint &aPoint ) const;
+
+    /**
+       Perform a gradient descent in order to move a point @a aPoint
+       closer to the implicit surface. More precisely, we use a
+       sequence: x_n = x_(n-1) - gamma.gradient(x_(n-1).
+       The descent is stopped if @a maxIter is reached or if |x_n -
+       x_(n-1)| < accuracy. 
+       
+       @param aPoint any point in the Euclidean space.
+       @param accuracy distance criterion to stop the descent.
+       @param maxIter fixes the maximum number of steps.
+       @param gamma coefficient associated with the gradient.
+       @return the nearest point on the surface to the one given in parameter.
+    */
+    inline
+    RealPoint  nearestPoint(  const RealPoint &aPoint, 
+                              const double accuracy, 
+                              const int maxIter  , 
+                              const double gamma ) const;
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -158,9 +205,30 @@ namespace DGtal
   private:
     /// The 3-polynomial defining the implicit shape.
     Polynomial3 myPolynomial;
-    /// The gradient 3-polynomials (computed).
-    Polynomial3 myDerivatives[ 3 ];
-   
+
+    // Partial deriatives
+    Polynomial3 myFx;
+    Polynomial3 myFy;
+    Polynomial3 myFz;
+
+    Polynomial3 myFxx;
+    Polynomial3 myFxy;
+    Polynomial3 myFxz;
+
+    Polynomial3 myFyx;
+    Polynomial3 myFyy;
+    Polynomial3 myFyz;
+
+    Polynomial3 myFzx;
+    Polynomial3 myFzy;
+    Polynomial3 myFzz;
+
+
+    // Precomputed Polynoms useful for curvature computations
+    Polynomial3 myUpPolynome;
+    Polynomial3 myLowPolynome;
+
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -172,7 +240,7 @@ namespace DGtal
 
   private:
 
-    
+
   }; // end of class ImplicitPolynomial3Shape
 
 
@@ -183,7 +251,7 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename T>
-  std::ostream&
+  std::ostream &
   operator<< ( std::ostream & out, const ImplicitPolynomial3Shape<T> & object );
 
 } // namespace DGtal

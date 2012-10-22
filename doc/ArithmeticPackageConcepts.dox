@@ -62,6 +62,8 @@ digraph GARITHMETIC {
     CPositiveIrreducibleFraction -> boost_DefaultConstructible;
     CPositiveIrreducibleFraction -> boost_CopyConstructible;
     CPositiveIrreducibleFraction -> boost_Assignable;
+    CPositiveIrreducibleFraction -> CInteger [label="use",style=dashed];
+    CPositiveIrreducibleFraction -> CSignedInteger [label="use",style=dashed];
   
     subgraph cluster_models {
         style=filled;
@@ -81,6 +83,8 @@ digraph GARITHMETIC {
     IntegerComputer -> boost_DefaultConstructible;
     IntegerComputer -> boost_CopyConstructible;
     IntegerComputer -> boost_Assignable;
+    IntegerComputer -> CInteger [label="use",style=dashed];
+    IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
 }
 @enddot
 

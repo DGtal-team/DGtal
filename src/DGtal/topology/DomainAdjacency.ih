@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
-
+#include "DGtal/topology/MetricAdjacency.h"
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -102,60 +102,6 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 }
 //------------------------------------------------------------------------------
 template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator, typename PointPredicate >
-inline
-void
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeNeighborhood( const Point & p, 
-         OutputIterator & out_it,
-         const PointPredicate & pred ) const
-{
-  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-  //   Predicate;
-  // Predicate combinedPred( pred, myPred, andBF2 );
-  // myAdjacency.writeNeighborhood( p, out_it, combinedPred );
-  myAdjacency.writeNeighborhood( p, out_it, pred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator>
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeNeighborhood( const Point & p, 
-         OutputIterator & out_it ) const
-{
-  myAdjacency.writeNeighborhood( p, out_it, myPred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator, typename PointPredicate >
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeProperNeighborhood( const Point & p, 
-         OutputIterator & out_it,
-         const PointPredicate & pred ) const
-{
-  // typedef BinaryPointPredicate< PointPredicate, DomainPredicateType > 
-  //   Predicate;
-  // Predicate combinedPred( pred, myPred, andBF2 );
-  // myAdjacency.writeProperNeighborhood( p, out_it, combinedPred );
-  myAdjacency.writeProperNeighborhood( p, out_it, pred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
-template <typename OutputIterator>
-inline
-void 
-DGtal::DomainAdjacency<TDomain,TAdjacency>
-::writeProperNeighborhood( const Point & p, 
-         OutputIterator & out_it ) const
-{
-  myAdjacency.writeProperNeighborhood( p, out_it, myPred );
-}
-//------------------------------------------------------------------------------
-template <typename TDomain, typename TAdjacency>
 inline
 void
 DGtal::DomainAdjacency<TDomain,TAdjacency>
@@ -181,6 +127,92 @@ DGtal::operator<< ( std::ostream & out,
 {
   object.selfDisplay( out );
   return out;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Local graph services -----------------------------
+
+/**
+ * @return maximum number of neighbors for this adjacency
+ */
+template <typename TDomain, typename TAdjacency>
+inline
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
+{
+  return myAdjacency.bestCapacity();
+}
+
+/**
+ * @param v any vertex
+ * 
+ * @return the number of neighbors of this vertex
+ */
+template <typename TDomain, typename TAdjacency>
+inline
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
+( const Vertex & v ) const
+{
+  return myAdjacency.degree( v );
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
+ */
+template <typename TDomain, typename TAdjacency>
+template <typename OutputIterator>
+inline
+void  
+DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
+( OutputIterator &it, const Vertex & v ) const
+{
+  //myAdjacency.writeProperNeighborhood( v, it, myPred );//writeNeighbors<OutputIterator>( v, it );
+  myAdjacency.writeNeighbors( it, v );
+}
+
+/**
+  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * output iterator
+  * 
+  * 
+  * @tparam OutputObjectIterator the type of an output iterator writing
+  * in a container of vertices.
+  * 
+  * @tparam VertexPredicate the type of the predicate
+  * 
+  * @param it the output iterator
+  * 
+  * @param v the vertex whose neighbors will be written
+  * 
+  * @param pred the predicate that must be satisfied
+  */
+template <typename TDomain, typename TAdjacency>
+template <typename OutputIterator, typename VertexPredicate>
+void
+DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
+( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
+{
+  vector<Vertex> vect;
+  back_insert_iterator< vector<Vertex> > out_it(vect);
+  //myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
+  myAdjacency.writeNeighbors( out_it, v, myPred );
+  for( typename vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
+  {
+    if( pred(*cit) )
+    {
+      *it++ = *cit;
+    }
+  }
+  //myAdjacency.writeNeighbors<OutputIterator, VertexPredicate>( v, it, pred );
 }
 
 //                                                                           //

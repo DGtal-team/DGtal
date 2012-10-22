@@ -16,7 +16,7 @@ namespace DGtal {
 
 
 @page moduleImage Images
-@writers Tristan Roussillon
+@authors Tristan Roussillon, David Coeurjolly
 @date 2012/03/28
 
 [TOC]

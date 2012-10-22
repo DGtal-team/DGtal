@@ -92,14 +92,14 @@ int main( int argc, char** argv )
           ks,SAdj, set3dPredicate, aCell );
     
   // Extract the bondary contour associated to the initial surfel in its first direction
-  Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
-             ks, *(ks.sDirs( aCell )), SAdj, 
-            set3dPredicate, aCell );
+  Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell,
+					       ks, *(ks.sDirs( aCell )), SAdj, 
+					       set3dPredicate, aCell );
   
   // Extract the bondary contour associated to the initial surfel in its second direction
-  Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell2,
-             ks, *(++(ks.sDirs( aCell ))), SAdj, 
-            set3dPredicate, aCell );  
+  Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell2,
+					       ks, *(++(ks.sDirs( aCell ))), SAdj, 
+					       set3dPredicate, aCell );  
   
   
   // Displaying all the surfels in transparent mode

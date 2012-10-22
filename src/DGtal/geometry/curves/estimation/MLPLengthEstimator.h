@@ -48,7 +48,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/representation/FP.h"
+#include "DGtal/geometry/curves/FP.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
