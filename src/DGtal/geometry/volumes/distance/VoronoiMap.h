@@ -46,6 +46,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
@@ -78,11 +79,13 @@ namespace DGtal
    *      Université Lumière Lyon 2.
    *
    *
-   * Given a domain and a point predicate, the compute() method
-   * returns, for each point in the domain, the closest point for
+   * Given a domain and a point predicate, an instance returns,
+   * for each point in the domain, the closest point for
    * which the predicate if false. Following Computational Geometry
    * terminoliogy, points for which the predicate is false are "sites"
    * for the Voronoi map construction.
+   *
+   * This class is a model of CConstImage.
    *
    * The metric is specified by the @a p template parameter which
    * defines a l_p separable metric.
@@ -125,6 +128,7 @@ namespace DGtal
 
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
+
    
     ///Large integer type for SeparableMetricHelper construction.
     typedef DGtal::int64_t IntegerLong;
@@ -140,10 +144,29 @@ namespace DGtal
   
     ///Type of resulting image
     typedef ImageContainerBySTLVector<  Domain,
-                                        Point > OutputImage;
+                                        Vector > OutputImage;
+    
+    ///Definition of the image value type.
+    typedef Vector Value;
+    
+    ///Definition of the image value type.
+    typedef typename OutputImage::ConstRange  ConstRange;
+
+    ///Self type
+    typedef VoronoiMap<TSpace, TPointPredicate, p> Self;
+    
 
     /**
-     *  Constructor
+     * Constructor.
+     * 
+     * This constructor computes the Voronoi Map of a set of point
+     * sites using a SeparableMetric metric.  The method associates to
+     * each point satisfying the foreground predicate, the closest
+     * site for which the predicate is false. This algorithm is
+     * O(d.|domain size|).
+     *
+     * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
+     * @param predicate point predicate to define the Voronoi sites (false points). 
      */
     VoronoiMap(const Domain & aDomain,
                const PointPredicate & predicate);
@@ -154,29 +177,64 @@ namespace DGtal
     ~VoronoiMap();
 
   public:
+    // ------------------- ConstImage model ------------------------
 
-     /**
+    /**
+     * Assignment operator from another Voronoi map.
+     *
+     *  @param aOtherVoronoiMap another instance of Self
+     *  @return a reference to Self
+     */
+    Self &  operator=(const Self &aOtherVoronoiMap );
+    
+    /**
+     * Returns a reference (const) to the Voronoi map domain.
+     *  @return a domain
+     */
+    const Domain &  domain() const
+    {
+      return *myDomainPtr;
+    }
+
+    
+    /**
+     * Returns a const range on the Voronoi map values.
+     *  @return a const range
+     */
+    ConstRange constRange() const
+    {
+      return myImagePtr->constRange();
+    }
+        
+    /**
+     * Access to a Voronoi value (a.k.a. vector to the closest site) at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Value operator()(const Point &aPoint) const
+    {
+      return myImagePtr->operator()(aPoint);
+    }    
+     
+    // ------------------- Private functions ------------------------
+  private:    
+    
+    /**
      * Compute the Voronoi Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
      * satisfying the foreground predicate, the closest site for which
      * the predicate is false. This algorithm is O(d.|domain size|).
-     *
-     * @return the Voronoi map image.
      */
-    OutputImage compute ( ) ;
+    void compute ( ) ;
 
-    
-    // ------------------- Private functions ------------------------
-  private:    
-    
+
     /** 
      *  Compute the other steps of the separable Voronoi map.
      * 
      * @param output the output map
      * @param dim the dimension to process
      */    
-    void computeOtherSteps(OutputImage & output,
-                           const Dimension dim) const;
+    void computeOtherSteps(const Dimension dim) const;
     /** 
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
@@ -189,8 +247,7 @@ namespace DGtal
      * @param Sites stack of sites (pass as an argument for
      * performance purposes).
      */
-    void computeOtherStep1D (OutputImage & output, 
-			     const Point &row, 
+    void computeOtherStep1D (const Point &row, 
 			     const Size dim,
 			     std::vector<Point> &Sites) const;
     
@@ -210,11 +267,11 @@ namespace DGtal
     ///The separable metric instance
     SeparableMetric myMetric;
 
-    ///Copy of the computation domain
-    const Domain & myDomain;
+    ///Pointer to the computation domain
+    const Domain * myDomainPtr;
     
-    ///Copy of the computation domain
-    const PointPredicate  & myPointPredicate;
+    ///Pointer to the point predicate
+    const PointPredicate * myPointPredicatePtr;
     
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
@@ -225,6 +282,8 @@ namespace DGtal
     ///Value to act as a +infinity value
     Point myInfinity;
 
+    ///Voronoi map image
+    CountedPtr<OutputImage> myImagePtr;
 
   }; // end of class VoronoiMap
 
