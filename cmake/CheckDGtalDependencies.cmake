@@ -22,6 +22,6 @@ endif( Boost_FOUND )
 # -----------------------------------------------------------------------------
 # Setting librt dependency on Linux
 # -----------------------------------------------------------------------------
-if (UNIX)
+if (UNIX AND NOT(APPLE))
   SET(DGtalLibDependencies ${DGtalLibDependencies} -lrt)
-endif(UNIX)
+endif()
