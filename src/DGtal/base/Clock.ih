@@ -97,8 +97,8 @@ DGtal::Clock::stopClock()
     {
       cerr << "[Clock::stopClock] Erreur sur 'clock()'." << endl;
     }
-  return (long) ((float) 1000.0 * (float)(last_tick - myFirstTick)
-		 / (float) CLOCKS_PER_SEC);
+  return (double) ((double) 1000.0 * (double)(last_tick - myFirstTick)
+		 / (double) CLOCKS_PER_SEC);
 #else
   struct timespec current;
 
