@@ -113,27 +113,6 @@ namespace DGtal
      *
      */
     Clock();
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Clock( const Clock & other )
-    {
-    }
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Clock & operator=( const Clock & other )
-    {
-      return *this;
-    }
-  
     
     /**
      * Destructor. 
