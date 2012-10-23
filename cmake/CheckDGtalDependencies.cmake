@@ -19,3 +19,9 @@ if ( Boost_FOUND )
    SET(DGtalLibInc ${Boost_INCLUDE_DIRS})
 endif( Boost_FOUND )
 
+# -----------------------------------------------------------------------------
+# Setting librt dependency on Linux
+# -----------------------------------------------------------------------------
+if (UNIX)
+  SET(DGtalLibDependencies ${DGtalLibDependencies} -lrt)
+endif(UNIX)

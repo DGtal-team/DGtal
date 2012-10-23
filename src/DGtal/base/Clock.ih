@@ -113,19 +113,10 @@ DGtal::Clock::stopClock()
 #else
   clock_gettime(CLOCK_REALTIME, &current); //Linux gettime
 #endif
-  /*
-  std::cout << "current "<< current.tv_sec<<std::endl;
-  std::cout << "start "<< myTimerStart.tv_sec<<std::endl;
-  std::cout << "nano current "<< current.tv_nsec<<std::endl;
-  std::cout << "nano start "<< myTimerStart.tv_nsec<<std::endl;
 
-  std::cout <<std::endl;
-  std::cout << "diff start "<< (myTimerStart.tv_sec*1000 + myTimerStart.tv_nsec/1000000.0)<<std::endl;
-  std::cout << "diff curre "<< (current.tv_sec*1000 + current.tv_nsec/1000000.0)<<std::endl;
-  */
 
-  return ( current.tv_sec*1000+ current.tv_nsec/1000000.0  - 
-	   (myTimerStart.tv_sec*1000 + myTimerStart.tv_nsec/1000000.0));  
+  return (( current.tv_sec - myTimerStart.tv_sec) *1000 +
+	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
 #endif
 
 }
