@@ -89,8 +89,10 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
 
+For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not scpecify any functor. 
 
-\subsection imagewriters Image Writers
+
+\subsection imagereaders Image Readers
 
 | Dimenssion | Name              | Description                                   | Class name    | Comment                                                        |
 |------------|-------------------|-----------------------------------------------|---------------|----------------------------------------------------------------|
