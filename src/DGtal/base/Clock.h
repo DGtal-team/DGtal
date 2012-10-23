@@ -44,12 +44,19 @@
 // Inclusions
 #include <iostream>
 #include <cstdlib>
+
 #if ( (defined(UNIX)||defined(unix)||defined(linux)) )
 #include <sys/time.h>
-#elif ( (defined(WIN32)) )
 #include <time.h>
-#else
-#include <sys/time.h>
+#endif
+
+#ifdef __MACH__
+#include <mach/clock.h>
+#include <mach/mach.h>
+#endif
+
+#if ( (defined(WIN32)) )
+#include <time.h>
 #endif
 
 
@@ -99,7 +106,7 @@ namespace DGtal
      * Stops the clock.
      * @return the time (in ms) since the last 'startClock()'.
      */
-    long stopClock();
+    double stopClock();
     
     /**
      * Constructor.
@@ -152,24 +159,14 @@ namespace DGtal
   private:
 
     ///internal timer object;
-#if ( (defined(UNIX)||defined(unix)||defined(linux)) )
-    struct itimerval myTimerInit;
-#elif ( (defined(WIN32)) )
-    clock_t myFirstTick;
-#else
-    struct itimerval myTimerInit;
+#if ( (defined(UNIX)||defined(unix)||defined(linux) || defined(__MACH__) ) )
+    struct timespec myTimerStart;
 #endif
 
-    // ------------------------- Hidden services ------------------------------
-  protected:
-
-  private:
-
-  
-    // ------------------------- Internals ------------------------------------
-  private:
-
-  
+#if ( (defined(WIN32)) )
+    clock_t myFirstTick;
+#endif
+    
   }; // end of class Clock
 
 
