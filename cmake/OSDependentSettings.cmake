@@ -3,6 +3,7 @@
 #------------------------------------------------------------------------------
 if (UNIX)
   add_definitions(-DUNIX)
+  SET(DGtalLibDependencies ${DGtalLibDependencies} -lrt)
 endif (UNIX)
 if (WIN32)
   add_definitions(-DWIN32)
