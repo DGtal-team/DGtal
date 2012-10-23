@@ -111,7 +111,9 @@ namespace DGtal
     typedef typename Domain::Dimension Dimension;
     typedef Point Vertex;
 
-    typedef CountedPtr<const Domain> DomainPtr;    
+    // Pointer to the (const) Domain given at construction.
+    typedef const Domain * DomainPtr;
+
 
     /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
