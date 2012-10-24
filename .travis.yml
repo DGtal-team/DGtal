@@ -4,15 +4,17 @@ compiler:
   - gcc
   - clang
 
-# Change this to your needs
-after_script: 
-  - "make test"
+env:
+  - BTYPE=Debug
+  - BTYPE=Release
 
 before_script:
   - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev libqglviewer-qt4-dev
 
-script: cmake . -DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true && make
-
+script: 
+  - cmake . -DCMAKE_BUILD_TYPE=$BTYPE -DWITH_QGLVIEWER=true 
+  - make
 
 after_script: 
+  - tests/geometry/volumes/distance/testVoronoiMap
   - "make test"
