@@ -16,5 +16,4 @@ script:
   - make
 
 after_script: 
-  - tests/geometry/volumes/distance/testVoronoiMap
   - "make test"
