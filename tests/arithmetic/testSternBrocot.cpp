@@ -818,7 +818,6 @@ int main( int , char** )
     && testContinuedFractions<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-
   return res ? 0 : 1;
 }
 //                                                                           //
