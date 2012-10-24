@@ -16,4 +16,7 @@ script:
   - make
 
 after_script: 
+  - cd tests/geometry/volumes/distance/
+  - testVoronoiMap
+  - cd ../../../..
   - "make test"
