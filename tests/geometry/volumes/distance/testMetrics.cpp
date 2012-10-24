@@ -82,6 +82,39 @@ bool testMetrics()
   return nbok == nb;
 }
 
+bool testWeightedMetrics()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing separable weighted metrics ..." );
+
+  Z2i::Point a( 0,0), b(4, 2),c(10,0);
+  Z2i::Point starting( 0, 5), endpoint(10,5);
+  
+  SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2> metric;
+
+  trace.info()<< "a= "<<a<<std::endl;
+  trace.info()<< "b= "<<b<<std::endl;
+  trace.info()<< "c= "<<c<<std::endl;
+ 
+  bool closer = (metric.closestWithWeight(b,a,0,c,0) == SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2>::FIRST);  
+  nbok += (closer) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "a is closer" << std::endl;
+
+  closer = (metric.closestWithWeight(b,a,10,c,35) == SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2>::FIRST);  
+  nbok += (!closer) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "c is closer with w_a=10 w_c=35" << std::endl;
+  
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -93,7 +126,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMetrics(); // && ... other tests
+  bool res = testMetrics() 
+    && testWeightedMetrics(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

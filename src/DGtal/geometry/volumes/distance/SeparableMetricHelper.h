@@ -221,6 +221,32 @@ namespace DGtal
 	  return BOTH;
     }
 
+    Closest closestWithWeight(const Point &origin,
+			      const Point &first,
+			      const InternalValue &wFirst,
+			      const Point &second,
+			      const InternalValue &wSecond) const
+    {
+      InternalValue a=NumberTraits<InternalValue>::ZERO,
+	b=NumberTraits<InternalValue>::ZERO;
+      
+      for(typename Point::Dimension i=0; i <  Point::dimension; i++)
+	{
+	  a += power(abs (origin[i] - first[i]));
+	  b += power(abs (origin[i] - second[i]));
+	}
+
+      a -= wFirst;
+      b -= wSecond;
+
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
 
     /** 
      * Perform a binary search on the interval [lower,upper] to
@@ -421,7 +447,64 @@ namespace DGtal
 	  return BOTH;
     }
 
+    Closest closestWithWeight(const Point &origin,
+			      const Point &first,
+			      const InternalValue &wFirst,
+			      const Point &second,
+			      const InternalValue &wSecond) const
+    {
+      InternalValue a=NumberTraits<InternalValue>::ZERO,
+	b=NumberTraits<InternalValue>::ZERO;
+      
+      for(typename Point::Dimension i=0; i <  Point::dimension; i++)
+	{
+	  a += (origin[i] - first[i])*(origin[i] - first[i]);
+	  b += (origin[i] - second[i])*(origin[i] - second[i]);
+	}
+
+      a -= wFirst;
+      b -= wSecond;
+
+      if (a<b)
+	return FIRST;
+      else
+	if (a>b)
+	  return SECOND;
+	else
+	  return BOTH;
+    }
+
     /** 
+     * Given three sites (a,b,c) and a straight line (startingPoint,
+     * dim), we detect if the voronoi cells of a and c @e hide the
+     * voronoi cell of c on the straight line.
+     * 
+     * @param a a site
+     * @param b a site
+     * @param c a site
+     * @param startingPoint starting point of the straight line
+     * @param endPoint end point of the straight segment
+     * @param dim direction of the straight line
+     * 
+     * @return true if (a,c) hides b.
+     */
+    bool hiddenByWithWeight(const Point &u, 
+			    const InternalValue &wU,
+			    const Point &v,
+			    const InternalValue &wV,
+			    const Point &w, 
+			    const InternalValue &wW,
+			    const Point &startingPoint,
+			    const Point &/*endPoint*/,
+			    const typename Point::UnsignedComponent dim) const
+    {
+      //decide if (a,c) hide b in the lines (startingPoint, dim)
+      
+      return true;
+    }
+  
+
+ /** 
      * Given three sites (a,b,c) and a straight line (startingPoint,
      * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
@@ -464,214 +547,6 @@ namespace DGtal
     }
   
   };
-
-  /**
-   * L_1 specialization
-   *
-   */
-  template <typename TPoint, typename TInternalValue>
-  struct SeparableMetricHelper<TPoint, TInternalValue, 1>
-  {
-    
-    typedef TInternalValue InternalValue;
-    static const DGtal::uint32_t p = 1;
-    typedef typename TPoint::Coordinate Abscissa;
-    typedef TPoint Point;
-    
-
-    inline double getApproxValue ( const InternalValue & aInternalValue ) const
-    {
-      return ( double ) aInternalValue;
-    }
- 
-    inline InternalValue F ( const Abscissa pos, 
-			     const Abscissa ci, 
-			     const InternalValue hi ) const
-    {
-      return ( InternalValue ) ( ((long int) pos - ci)>=0 ? ((long int) pos - ci) : - ((long int) pos - ci) ) + hi;
-    }
-
-    inline InternalValue reversedF ( const Abscissa pos, 
-				     const Abscissa ci, 
-				     const InternalValue hi ) const
-    {
-      return ( InternalValue ) hi - abs ( pos - ci );
-    }
-
-
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi, 
-			  const Abscissa j, const InternalValue hj ) const
-    {
-      if (hj >= hi + j - i)
-        return NumberTraits<Abscissa>::max();
-      if (hi > hj + j - i)
-        return NumberTraits<Abscissa>::min();
-      return (int)((hj - hi + j + i) / 2);
-    }
-
-    inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi, 
-				  const Abscissa j, const InternalValue hj ) const
-    {
-      if (hj <= hi - j + i)
-	return NumberTraits<Abscissa>::max();
-      if (hi < hj - j + i)
-        return NumberTraits<Abscissa>::min();
-      return (hi + i - hj + j ) / 2;
-    }
-    
-
-    inline InternalValue power ( const Abscissa i ) const
-    {
-      return (InternalValue) abs(i);
-    }
-
-    enum Closest { FIRST=0, SECOND=1, BOTH=2};
-    
-    
-    Closest closest(const Point &origin, 
-		    const Point &first,
-		    const Point &second) const
-    {
-      InternalValue a=(origin-first).norm(Point::L_1),
-	b=(origin-second).norm(Point::L_1);
-      
-      if (a<b)
-	return FIRST;
-      else
-	if (a>b)
-	  return SECOND;
-	else
-	  return BOTH;
-    }
-
-    /** 
-     * Given three sites (a,b,c) and a straight line (startingPoint,
-     * dim), we detect if the voronoi cells of a and c @e hide the
-     * voronoi cell of c on the straight line.
-     * 
-     * @param a a site
-     * @param b a site
-     * @param c a site
-     * @param startingPoint starting point of the straight line
-     * @param endPoint end point of the straight segment
-     * @param dim direction of the straight line
-     * 
-     * @return true if (a,c) hides b.
-     */
-    bool hiddenBy(const Point &u, 
-                  const Point &v,
-                  const Point &w, 
-                  const Point &startingPoint,
-                  const Point &endPoint,
-                  const typename Point::UnsignedComponent dim) const
-    {
-      ASSERT(false && "Not-Yet-Implemented");
-      Abscissa uv, vw;
-      
-      
-    }
-
-  }; // end of class SeparableMetricHelper
-
-  /**
-   * L_infinity specialization
-   *
-   */
-  template <typename TPoint, typename TInternalValue>
-  struct SeparableMetricHelper<TPoint, TInternalValue, 0>
-  {
-    typedef TInternalValue InternalValue;
-    static const DGtal::uint32_t p = 0;
-    typedef typename TPoint::Coordinate Abscissa;
-    typedef TPoint Point;
- 
-
-    inline double getApproxValue ( const InternalValue & aInternalValue ) const
-    {
-      return ( double ) aInternalValue;
-    }
-
-    inline InternalValue F ( const Abscissa pos, const Abscissa ci, 
-			     const InternalValue hi ) const
-    {
-      return ( InternalValue ) 
-	max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
-			 -((long int)pos - ci)), (Abscissa) hi);
-    }
-    
-    inline InternalValue reversedF ( const Abscissa pos, 
-				     const Abscissa ci, 
-				     const InternalValue hi ) const
-    {
-      ASSERT(false && "Not-Implemented");
-    }
-
-
-    inline Abscissa Sep ( const Abscissa i, const InternalValue hi,
-			  const Abscissa j, const InternalValue hj ) const
-    {
-      if (hi <= hj)
-        return max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
-      else
-	return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
-    }
-
-    inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
-				  const Abscissa j, const InternalValue hj ) const
-    {
-      ASSERT(false && "Not-Implemented");
-    }
-
-    
-
-    inline InternalValue power ( const Abscissa i ) const
-    {
-      return (InternalValue) abs(i);
-    }
-
-    enum Closest { FIRST=0, SECOND=1, BOTH=2};
-    
-    
-    Closest closest(const Point &origin, 
-		    const Point &first,
-		    const Point &second) const
-    {
-      InternalValue a=(origin-first).norm(Point::L_infty),
-	b=(origin-second).norm(Point::L_infty);
-      
-      if (a<b)
-	return FIRST;
-      else
-	if (a>b)
-	  return SECOND;
-	else
-	  return BOTH;
-    }
-
-    /** 
-     * Given three sites (a,b,c) and a straight line (startingPoint,
-     * dim), we detect if the voronoi cells of a and c @e hide the
-     * voronoi cell of c on the straight line.
-     * 
-     * @param a a site
-     * @param b a site
-     * @param c a site
-     * @param startingPoint starting point of the straight line
-     * @param endPoint end point of the straight segment
-     * @param dim direction of the straight line
-     * 
-     * @return true if (a,c) hides b.
-     */
-    bool hiddenBy(const Point &a, 
-                  const Point &b,
-                  const Point &c, 
-                  const Point &startingPoint,
-                  const Point &endPoint,
-                  const typename Point::UnsignedComponent dim) const
-    {
-      ASSERT(false && "Not-Yet-Implemented");
-    }
-  }; // end of class SeparableMetricHelper
 
 
 } // namespace DGtal
