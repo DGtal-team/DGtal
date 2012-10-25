@@ -50,7 +50,7 @@ bool testMetrics()
   Z2i::Point a( 0,0), b(5, 0), bb(5,-10), bbb(5,5),c(10,0);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 3> metric;
+  SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 3> metric;
 
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
@@ -89,26 +89,72 @@ bool testWeightedMetrics()
   
   trace.beginBlock ( "Testing separable weighted metrics ..." );
 
-  Z2i::Point a( 0,0), b(4, 2),c(10,0);
+  Z2i::Point a( 0,0), bbis(4, 1), b(5,0), bb(5,-10), bbb(5,5),c(10,0);
+  Z2i::Point d(5,-2);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2> metric;
+  SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2> metric;
 
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
+  trace.info()<< "bb= "<<bb<<std::endl;
+  trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
- 
-  bool closer = (metric.closestWithWeight(b,a,0,c,0) == SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2>::FIRST);  
+  
+  bool closer = (metric.closestWithWeight(bbis,a,0,c,0) == SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2>::FIRST);  
   nbok += (closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "a is closer" << std::endl;
 
-  closer = (metric.closestWithWeight(b,a,10,c,35) == SeparableMetricHelper<Z2i::Point, DGtal::uint64_t, 2>::FIRST);  
+  closer = (metric.closestWithWeight(bbis,a,10,c,35) == SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2>::FIRST);  
   nbok += (!closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "c is closer with w_a=10 w_c=35" << std::endl;
+  trace.endBlock();
+
+
+  trace.beginBlock("Testing Hidden with w=0");
+  bool hidden  =metric.hiddenByWithWeight(a,0,b,0,c,0,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,b,c) returns false" << std::endl;
+      
+  hidden  =metric.hiddenByWithWeight(a,0,bb,0,c,0,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bb,c) returns true" << std::endl;
+  
+  hidden  =metric.hiddenByWithWeight(a,0,bbb,0,c,0,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bbb,c) returns false" << std::endl;
+
+  hidden  =metric.hiddenByWithWeight(a,0,d,0,c,0,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,d,c) returns false" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock("Testing Hidden with w!=0");
+
+  hidden  =metric.hiddenByWithWeight(a,10,d,0,c,10,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,10,d,0,c,10) returns true" << std::endl;
+
+  hidden  =metric.hiddenByWithWeight(a,0,d,10,c,0,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,0,d,10,c,0) returns false" << std::endl;
+  
   
   trace.endBlock();
   
