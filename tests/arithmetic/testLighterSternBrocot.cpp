@@ -811,10 +811,34 @@ testTrivial( const string & lsb )
   typedef Pattern<Fraction> Pattern;
 
   std::cerr << "SB  = " << lsb << std::endl;
-  Pattern pat( 1, 1 );
-  std::cerr << "pat = " << pat.rE() << std::endl;
-  Pattern spat = pat.previousPattern();
-  std::cerr << "spat= " << spat.rE() << std::endl;
+  {
+    Pattern pat( 2, 3 );
+    std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
+              << std::endl;
+    Pattern spat = pat.previousPattern();
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+              << std::endl;
+    Pattern sspat = spat.previousPattern();
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+              << std::endl;
+    // Pattern s3pat = sspat.previousPattern();
+    // std::cerr << "s3pat= " << s3pat.rE() << " depth=" << s3pat.slope().k() 
+    //           << std::endl;
+  }
+  {
+    Pattern pat( 3, 2 );
+    std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
+              << std::endl;
+    Pattern spat = pat.previousPattern();
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+              << std::endl;
+    Pattern sspat = spat.previousPattern();
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+              << std::endl;
+    // Pattern s3pat = sspat.previousPattern();
+    // std::cerr << "s3pat= " << s3pat.rE() << " depth=" << s3pat.slope().k() 
+    //           << std::endl;
+  }
   return true;
 }
 
@@ -864,14 +888,14 @@ int main( int , char** )
   testTrivial<SB3>( "SB" );
 
   bool res = true;
-  // trace.beginBlock ( "Testing class LighterSternBrocot" );
-  // res = testLighterSternBrocot()
-  //   && testPattern<SB>()
-  //   && testSubStandardDSLQ0<Fraction>()
-  //   && testContinuedFractions<SB>();
-  // trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  // trace.endBlock();
-  //  testSivignon();
+  trace.beginBlock ( "Testing class LighterSternBrocot" );
+  res = testLighterSternBrocot()
+    && testPattern<SB>()
+    && testSubStandardDSLQ0<Fraction>()
+    && testContinuedFractions<SB>();
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  testSivignon();
 
   return res ? 0 : 1;
 }
