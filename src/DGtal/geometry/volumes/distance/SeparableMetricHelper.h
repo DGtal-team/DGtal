@@ -499,14 +499,39 @@ namespace DGtal
 			    const typename Point::UnsignedComponent dim) const
     {
       //decide if (a,c) hide b in the lines (startingPoint, dim)
+      InternalValue partU=NumberTraits<InternalValue>::ZERO,
+	partV=NumberTraits<InternalValue>::ZERO,partW=NumberTraits<InternalValue>::ZERO;
       
-      return true;
-    }
+      for(Dimension i  = 0 ; i < Point::dimension ; i++)
+	if (i != dim)
+	  {
+	    partU += (u[i] - startingPoint[i] )*(u[i] - startingPoint[i] );
+	    partV += (v[i] - startingPoint[i] )*(v[i] - startingPoint[i] );
+	    partW += (w[i] - startingPoint[i] )*(w[i] - startingPoint[i] ); 
+	  }
+      
+      //Abscissa of power cell intersected by the segment
+      InternalValue x_uv,x_vw;
+      x_uv = (u[dim]*u[dim] - v[dim]*v[dim] - wU + wV + partU - partV );// / (2*( u[dim] - v[dim]));
+      x_vw = (v[dim]*v[dim] - w[dim]*w[dim] - wV + wW + partV - partW ); // / (2*( v[dim] - w[dim]));
+
+      /*trace.info() <<"partU= "<<partU<<std::endl;
+	trace.info() <<"partV= "<<partV<<std::endl;
+	trace.info() <<"x_uv= "<<x_uv/ (2*( u[dim] - v[dim]))<<std::endl;
+	trace.info() <<"   "<< u[dim]*u[dim] - v[dim]*v[dim] - wU + wV + partU - partV <<"   "<<(2*( u[dim] - v[dim]))<<std::endl;
+      
+	trace.info() <<"x_vw= "<<x_vw/ (2*( v[dim] - w[dim]))<<std::endl;
+      */
+      if ( (u[dim] - v[dim])*(v[dim] - w[dim]) >0 )
+	return (v[dim] - w[dim])*x_uv > (u[dim] - v[dim])*x_vw;
+    else
+      return (v[dim] - w[dim])*x_uv < (u[dim] - v[dim])*x_vw;
+  }
   
 
- /** 
-     * Given three sites (a,b,c) and a straight line (startingPoint,
-     * dim), we detect if the voronoi cells of a and c @e hide the
+  /** 
+   * Given three sites (a,b,c) and a straight line (startingPoint,
+   * dim), we detect if the voronoi cells of a and c @e hide the
      * voronoi cell of c on the straight line.
      * 
      * @param a a site
