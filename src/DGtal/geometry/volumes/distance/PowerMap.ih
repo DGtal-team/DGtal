@@ -117,8 +117,6 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
   
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   
-  //We pre-init the stack site
-  Point Sites[myUpperBoundCopy[dim] - myLowerBoundCopy[dim]];
   
 #ifdef WITH_OPENMP
   //Parallel loop 
@@ -131,15 +129,14 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
   //We run the 1D problems in //
 #pragma omp parallel for private(Sites)  schedule(dynamic)
   for (size_t i = 0; i < subRangePoints.size(); ++i)
-    computeOtherStep1D ( subRangePoints[i], dim, Sites);
+    computeOtherStep1D ( subRangePoints[i], dim);
 
 #else  
-
   //We solve the 1D problems sequentially
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end();
        it != itend; ++it)
-    computeOtherStep1D ( *it, dim, Sites);
+    computeOtherStep1D ( *it, dim);
 #endif
 
   trace.endBlock();
@@ -151,14 +148,14 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
 template <typename P, DGtal::uint32_t p>
 void
 DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
-					   const Size dim,
-					   Point *Sites) const
+					   const Size dim) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
   Point psite;
   Weight wsite;
   int nbSites = -1;
+  std::vector<Point> Sites;
   
   //endpoint of the 1D row
   endpoint[dim] = myUpperBoundCopy[dim];
@@ -172,7 +169,7 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 	  if ( psite != myInfinity )
 	    {
 	      nbSites++;
-	      Sites[nbSites] = psite;
+	      Sites.push_back( psite );
 	    }
 	  point[dim] ++;
 	}
@@ -194,7 +191,7 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 		  nbSites --; 
 		}
 	      nbSites++;
-	      Sites[nbSites] = psite;
+	      Sites.push_back( psite );
 	    }
 	  point[dim] ++;
 	}

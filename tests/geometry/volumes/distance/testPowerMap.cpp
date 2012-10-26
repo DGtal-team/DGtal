@@ -62,7 +62,7 @@ bool testPowerMap()
   //set.insertNew(Z2i::Point(3,7)); 
   set.insertNew(Z2i::Point(7,7));
   DigitalSetDomain<Z2i::DigitalSet> setDomain(set); 
-
+  
   typedef ImageContainerBySTLMap<DigitalSetDomain<Z2i::DigitalSet> , DGtal::int32_t> Image;
   Image image(setDomain);
   
