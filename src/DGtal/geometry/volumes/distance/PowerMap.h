@@ -238,7 +238,7 @@ namespace DGtal
      */
     void computeOtherStep1D (const Point &row, 
 			     const Size dim,
-			     std::vector<Point> &Sites) const;
+			     Point *Sites) const;
     
     // ------------------- protected methods ------------------------
   protected:

@@ -118,17 +118,30 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   
   //We pre-init the stack site
-  std::vector<Point> Sites(myUpperBoundCopy[dim] - myLowerBoundCopy[dim], 
-			   myInfinity);
+  Point Sites[myUpperBoundCopy[dim] - myLowerBoundCopy[dim]];
   
-  //We process the dimensions to construct a Point
+#ifdef WITH_OPENMP
+  //Parallel loop 
+  std::vector<Point> subRangePoints;
+  //Starting point precomputation
   for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
 	 itend = localDomain.subRange( subdomain ).end();
        it != itend; ++it)
-    {
-      computeOtherStep1D ( *it, dim, Sites);
-    }
-  
+    subRangePoints.push_back( *it );
+  //We run the 1D problems in //
+#pragma omp parallel for private(Sites)  schedule(dynamic)
+  for (size_t i = 0; i < subRangePoints.size(); ++i)
+    computeOtherStep1D ( subRangePoints[i], dim, Sites);
+
+#else  
+
+  //We solve the 1D problems sequentially
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    computeOtherStep1D ( *it, dim, Sites);
+#endif
+
   trace.endBlock();
   
 }
@@ -139,7 +152,7 @@ template <typename P, DGtal::uint32_t p>
 void
 DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 					   const Size dim,
-					   std::vector<Point> &Sites) const
+					   Point *Sites) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
