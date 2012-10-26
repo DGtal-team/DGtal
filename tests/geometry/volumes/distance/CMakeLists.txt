@@ -5,6 +5,7 @@ SET(DGTAL_TESTS_SRC
   testFMM
   testVoronoiMap
   testMetrics
+  testPowerMap
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
@@ -12,3 +13,4 @@ FOREACH(FILE ${DGTAL_TESTS_SRC})
   target_link_libraries (${FILE} DGtal DGtalIO)
   add_test(${FILE} ${FILE})
 ENDFOREACH(FILE)
+ 

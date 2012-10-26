@@ -18,14 +18,16 @@
 
 /**
  * @file ReverseDistanceTransformation.h
+ * @brief Linear in time power map computation
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/03/21
+ * @date 2012/10/24
  *
- * Header file for module ReverseDistanceTransformation.cpp
  *
  * This file is part of the DGtal library.
+ *
+ * @see testReverseDistanceTransformation.cpp
  */
 
 #if defined(ReverseDistanceTransformation_RECURSES)
@@ -41,14 +43,16 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <utility>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/base/CountedPtr.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/CConstImage.h"
+#include "DGtal/kernel/CPointPredicate.h"
+
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
-#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,164 +62,191 @@ namespace DGtal
   // template class ReverseDistanceTransformation
   /**
    * Description of template class 'ReverseDistanceTransformation' <p>
-   * \brief Aim: Implementation of the linear in time reverse distance
-   * transformation.
+   * \brief Aim: Implementation of the linear in time Power map
+   * construction.
+
+ 
    *
-   * More precisely, given an input image where value V at a point P
-   * corresponds to a disc with center P and radius V. The aim of the
-   * reverse distance transformation is thus to reconstruct the binary
-   * shape as the union of all balls defined in the input map.
-   *
-   * @tparam Image an input image type containng distance values.
+   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TPointPredicate point predicate returning true for points
+   * from which we compute the distance (model of CPointPredicate)
    * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerShort (optional) type used to represent the output
-   * object values (default: DGtal::int8_t).xs
+   * @tparam IntegerLong (optional) type used to represent exact
+   * distance value according to p (default: DGtal::uint64_t)
+   *
    */
-  template <typename Image, DGtal::uint32_t p, typename IntegerShort = DGtal::int8_t >
+  template < typename TWeightImage,
+             typename TValue,
+	     DGtal::uint32_t p>
   class ReverseDistanceTransformation
   {
 
   public:
-    
-    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-    BOOST_CONCEPT_ASSERT(( CBoundedInteger<IntegerShort> ));
-    
 
-    ///Type of resulting image
-    typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerShort > OutputImage;
-  
-    typedef typename Image::Value Value;
-    typedef typename Image::Point Point;
-    typedef typename Image::Vector Vector;
-    typedef typename Image::Dimension Dimension;
-    typedef typename Image::Size Size;
-    typedef typename Image::Integer Integer;
-    typedef typename Image::Domain Domain;
-    typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
-  
-    ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Point ,  Integer , p > SeparableMetric;
-  
+    BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
+
+    ///Copy of the distance image types
+    typedef TWeightImage WeightImage;
+    typedef typename TWeightImage::Value Weight;
+    typedef typename WeightImage::Domain::Space Space;
+    typedef typename Space::Vector Vector;
+    typedef typename Space::Point Point;
+    typedef typename Space::Dimension Dimension;
+    typedef typename Space::Size Size;
+    typedef typename Space::Point::Coordinate Abscissa;
+
+    ///Definition of the underlying domain type.
+    typedef HyperRectDomain<Space> Domain;
+   
+    ///Definition of the image model value type.
+    typedef TValue Value;
+
+    ///Self type
+    typedef ReverseDistanceTransformation<TWeightImage, TValue, p> Self;
+
+
+    ///Definition of the image value type.
+    typedef typename DefaultConstImageRange< Self >  ConstRange;
+
+    
+    ///Type of underlying power map
+    typedef PowerMap<TWeightImage, p> PowerMap;
 
     /**
      * Constructor.
+     * 
+     * This constructor computes the Power Map of a set of point
+     * sites using a SeparableMetric metric.  The method associates to
+     * each point satisfying the foreground predicate, the closest
+     * site for which the predicate is false. This algorithm is
+     * O(d.|domain size|).
      *
-     * @param defaultForgroundValue (optional) default used to represent object
-     * grid points 
-     * @param defaultBackgroundValue (optional) default used to represent background
-     * grid points
+     * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
+     * @param @todo 
      */
-    ReverseDistanceTransformation(const IntegerShort defaultForeground = NumberTraits< IntegerShort >::ONE, 
-          const IntegerShort defaultBackground = NumberTraits< IntegerShort >::ZERO);
-
+    ReverseDistanceTransformation(const Domain & aDomain,
+				  const WeightImage & aWeightImage
+				  const Value & aDefaultValue);
+    
     /**
      * Default destructor
      */
     ~ReverseDistanceTransformation();
 
   public:
+    // ------------------- ConstImage model ------------------------
 
     /**
-     * Compute the Reverse Distance Transformation of an image with
-     * the SeparableMetric metric.
+     * Assignment operator from another Power map.
      *
-     * @param inputImage the input image with distance values
-     * @return the distance transformation image with the Internal format.
+     *  @param aOtherReverseDistanceTransformation another instance of Self
+     *  @return a reference to Self
      */
-    OutputImage reconstruction(const Image & inputImage);
-
-    /** 
-     * Computes the reverse distance transformation and appends the
-     * result to the given digital set.
-     * 
-     * @param inputImage the input image with distance values.
-     * @param aSet the set to append the result points to.
-     * @tparam DigitalSet the type of set to use.
+    Self &  operator=(const Self &aOtherReverseDistanceTransformation );
+    
+    /**
+     * Returns a reference (const) to the Power map domain.
+     *  @return a domain
      */
-    template<typename DigitalSet>
-    void reconstructionAsSet(DigitalSet &aSet, const Image &inputImage);
-    
-    
-    
+    const Domain &  domain() const
+    {
+      return *myDomainPtr;
+    }
 
+    /**
+     * Returns a const range on the Power map values.
+     *  @return a const range
+     */
+    ConstRange constRange() const
+    {
+      return ConstRange(*this);
+    }
+        
+    /**
+     * Access to a Power value (a.k.a. vector to the closest site) at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Value operator()(const Point &aPoint) const
+    {
+      PowerMap::Weight dist;
+      dist = myPowerMapPtr->metric()->distance(aPoint, 0,  
+					       myPowerMapPtr->operator()(aPoint) ,
+					       myWeightImagePtr->operator()(myPowerMapPtr->operator()(aPoint)));
+      if (dist >= NumberTraits<Weight>::ZERO)
+	return NumberTraits<Value>::ZERO;
+      else
+	return myDefaultValue;
+    }    
+     
     // ------------------- Private functions ------------------------
-  private:
-
+  private:    
     
-    /** 
-     * Internal method for the reconstruction (with double buffering)
-     * 
-     * @param aImage input image with distances
-     * @param output buffer with partial reconstruction.
-     * @param swap buffer with partial reconstruction
-     * 
-     * @return a boolean to indicate which buffer contains the result (true->output).
+    /**
+     * Compute the Power Map of a set of point sites using a
+     * SeparableMetric metric.  The method associates to each point
+     * satisfying the foreground predicate, the closest site for which
+     * the predicate is false. This algorithm is O(d.|domain size|).
      */
-    bool reconstructionInternal(const Image &aImage, Image &output, Image &swap);
+    void compute ( ) ;
+
 
     /** 
-     * Cast values in order to output an image of type
-     * ImageOutput. Basically, in internal computations, 0 values are
-     * associated to background points and '>0' to object point. This
-     * method casts the value to match with myForegroundValue ad
-     * myBackgroundValue specified in the constructor.
+     *  Compute the other steps of the separable Power map.
      * 
-     * @param inputImage input internal image.
-     * 
-     * @return the filtered image.
-     */
-    OutputImage castValues(const Image &input) const;
-  
-    /** 
-     *  Compute the other steps of the separable reverse distance
-     *  transformation.
-     * 
-     * @param inputImage the image resulting of the first (or
-     * intermediate) step 
-     * @param output the output image 
+     * @param output the output map
      * @param dim the dimension to process
      */    
-    void computeSteps(const Image & inputImage, 
-          Image & output, 
-          const Dimension dim)const;
+    void computeOtherSteps(const Dimension dim) const;
+    /** 
+     * Given  a voronoi map valid at dimension @a dim-1, this method
+     * updates the map to make it consistent at dimension @a dim along
+     * the 1D span starting at @a row along the dimension @a
+     * dim.
+     * 
+     * @param output the Power map to update.
+     * @param row starting point of the 1D process.
+     * @param dim dimension of the update.
+     * @param Sites stack of sites (pass as an argument for
+     * performance purposes).
+     */
+    void computeOtherStep1D (const Point &row, 
+			     const Size dim,
+			     std::vector<Point> &Sites) const;
+    
+    // ------------------- protected methods ------------------------
+  protected:
 
     /** 
-     * Compute the 1D DT associated to the steps except the first one.
+     * Default Constructor.
      * 
-     * @param aImage the input image
-     * @param output the output image  with the  DT values
-     * @param startingPoint a point to specify the starting point of the 1D row
-     * @param dim the dimension to process
      */
-    void computeSteps1D (const Image & input, 
-       Image & output, 
-       const Point &startingPoint, 
-       const Size dim, 
-       Integer s[], Integer t[]) const;
-
-
+    ReverseDistanceTransformation();
+   
+    
     // ------------------- Private members ------------------------
   private:
+
     ///The separable metric instance
     SeparableMetric myMetric;
-  
+
+    ///Pointer to the computation domain
+    const Domain * myDomainPtr;
+    
+    ///Pointer to the point predicate
+    const WeightImage * myWeightImagePtr;
+
+    ///Pointer to the point predicate
+    const PowerMap * myPowerMapPtr;
+    
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
     
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
-
-    ///Copy of the image extent
-    Point myExtent;
-
-    ///Displacement vector to translate temporary images.
-    Vector myDisplacementVector;
-
-    ///Value for foreground grid points.
-    IntegerShort myForegroundValue;
-  
-    ///Value for background grid points.
-    IntegerShort myBackgroundValue;
+    
+    ///Value to act as a +infinity value
+    Point myInfinity;
 
   }; // end of class ReverseDistanceTransformation
 

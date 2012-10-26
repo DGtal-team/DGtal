@@ -60,7 +60,7 @@ DGtal::PowerMap<P, p>::operator=(const Self &aOtherPowerMap )
     { 
       myMetric = aOtherPowerMap.myMetric;
       myImagePtr = aOtherPowerMap.myImagePtr;
-      myDistancePointFunctor = aOtherPowerMap.myDistancePointFunctor;
+      myWeightImagePtr = aOtherPowerMap.myWeightImagePtr;
       myDomainPtr = aOtherPowerMap.myDomainPtr;
       myInfinity = aOtherPowerMap.myInfinity;
       myLowerBoundCopy = aOtherPowerMap.myLowerBoundCopy;
@@ -92,7 +92,7 @@ DGtal::PowerMap<P, p>::compute( )
       myImagePtr->setValue ( *it, myInfinity );
   
   //We process the dimensions one by one
-  for ( Dimension dim = 0; dim < P::Domain::dimension ; dim++ )
+  for ( Dimension dim = 0; dim < P::Domain::Space::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 
@@ -101,7 +101,7 @@ inline
 void
 DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
 {
-  std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
+  std::string title = "Powermap dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
   
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
@@ -110,10 +110,10 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension).
   std::vector<Size> subdomain;
-  subdomain.reserve(S::dimension - 1);
-  for (unsigned int k = 0; k < S::dimension ; k++)
-    if ( (S::dimension - 1 - k) != dim)
-      subdomain.push_back( S::dimension - 1 - k );
+  subdomain.reserve(P::Domain::Space::dimension - 1);
+  for (unsigned int k = 0; k < P::Domain::Space::dimension ; k++)
+    if ( (P::Domain::Space::dimension - 1 - k) != dim)
+      subdomain.push_back( P::Domain::Space::dimension - 1 - k );
   
   Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
   
@@ -173,10 +173,10 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 	  if ( psite != myInfinity )
 	    {
 	      while ((nbSites >= 1) && 
-		     ( myMetric.hiddenBy(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
-					 Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
-					 psite,  myWeightImagePtr->operator()(psite),
-					 startingPoint, endpoint, dim) ))
+		     ( myMetric.hiddenByWithWeight(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
+						   Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
+						   psite,  myWeightImagePtr->operator()(psite),
+						   startingPoint, endpoint, dim) ))
 		{
 		  nbSites --; 
 		}
@@ -200,7 +200,7 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
       while ( (k < nbSites) && 
 	      ( myMetric.closestWithWeight(point, 
 				 Sites[k], myWeightImagePtr->operator()(Sites[k]),
-				 Sites[k+1],myWeightImagePtr->operator()(Sites[k-1]))
+				 Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
 		!= SeparableMetric::FIRST ))
         k++;
       
@@ -216,14 +216,12 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 template <typename P,DGtal::uint32_t p>
 inline
 DGtal::PowerMap<P, p>::PowerMap( const Domain &aDomain,
-                                       const PointPredicate & aPredicate):
-  myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate)
+				 const WeightImage & aWeightImage):
+  myDomainPtr(&aDomain), myWeightImagePtr(&aWeightImage)
 {
   myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
   compute();
 }
-
-
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
 

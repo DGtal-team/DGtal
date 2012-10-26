@@ -512,7 +512,7 @@ namespace DGtal
       
       //Abscissa of power cell intersected by the segment
       InternalValue x_uv,x_vw;
-      x_uv = (u[dim]*u[dim] - v[dim]*v[dim] - wU + wV + partU - partV );// / (2*( u[dim] - v[dim]));
+      x_uv = (u[dim]*u[dim] - v[dim]*v[dim] - wU + wV + partU - partV ); // / (2*( u[dim] - v[dim]));
       x_vw = (v[dim]*v[dim] - w[dim]*w[dim] - wV + wW + partV - partW ); // / (2*( v[dim] - w[dim]));
 
       /*trace.info() <<"partU= "<<partU<<std::endl;
