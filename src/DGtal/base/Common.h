@@ -111,7 +111,6 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/BasicArchetypes.h"
-#include "DGtal/base/GlobalFunctions.h"
 #include "DGtal/base/Exceptions.h"
 
 

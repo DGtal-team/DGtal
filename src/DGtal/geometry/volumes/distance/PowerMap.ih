@@ -127,7 +127,7 @@ DGtal::PowerMap<P, p>::computeOtherSteps ( const Dimension dim ) const
        it != itend; ++it)
     subRangePoints.push_back( *it );
   //We run the 1D problems in //
-#pragma omp parallel for private(Sites)  schedule(dynamic)
+#pragma omp parallel for schedule(dynamic)
   for (size_t i = 0; i < subRangePoints.size(); ++i)
     computeOtherStep1D ( subRangePoints[i], dim);
 
