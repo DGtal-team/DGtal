@@ -19,6 +19,8 @@ OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
+OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
+
 
 IF(WITH_C11)
 SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
@@ -68,6 +70,13 @@ message(STATUS "      WITH_MAGICK       true")
 ELSE(WITH_MAGICK)
 message(STATUS "      WITH_MAGICK       false")
 ENDIF(WITH_MAGICK)
+
+IF(WITH_OPENMP)
+SET (LIST_OPTION ${LIST_OPTION} [OpenMP]\ )
+message(STATUS "      WITH_OPENMP       true")
+ELSE(WITH_OPENMP)
+message(STATUS "      WITH_OPENMP       false")
+ENDIF(WITH_OPENMP)
 
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
@@ -192,9 +201,9 @@ IF(WITH_ITK)
        message( "         Disabling option -ftemplate-depth-xx in CMAKE_CXX_FLAGS." )
        set( CMAKE_CXX_FLAGS_TMP ${CMAKE_CXX_FLAGS} )
        STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" "" 
-       CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
+	 CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
        message ("         CMAKE_CXX_FLAGS=" ${CMAKE_CXX_FLAGS} )
-    endif (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
+     endif (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
 
   ELSE(ITK_FOUND)
     MESSAGE(FATAL_ERROR "ITK not found. Check the cmake variables associated to this package or disable it.")
@@ -316,5 +325,23 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
     message(FATAL_ERROR  "Qt4 not found.  Check the cmake variables associated to this package or disable it." )
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
+
+# -----------------------------------------------------------------------------
+# Look for OpenMP
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(OPENMP_FOUND_DGTAL 0)
+IF(WITH_OPENMP)
+  FIND_PACKAGE(OpenMP REQUIRED)
+  IF(OPENMP_FOUND)
+    SET(OPENMP_FOUND_DGTAL 1)
+    SET(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS})
+    SET(CMAKE_C_FLAGS ${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS})
+    message(STATUS "OpenMP found")
+    ADD_DEFINITIONS("-DWITH_OPENMP ")
+  ELSE(OPENMP_FOUND)
+    message(FATAL_ERROR "OpenMP support not available.")
+  ENDIF(OPENMP_FOUND)
+ENDIF(WITH_OPENMP)
 
 message(STATUS "-------------------------------------------------------------------------------")
