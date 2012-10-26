@@ -842,19 +842,17 @@ testTrivial( const string & lsb )
   return true;
 }
 
+/**
+   Bug report of I. Sivignon.
+*/
+template <typename SB>
 bool 
-testSivignon()
+testAncestors()
 {
-  // Def des trois types d'arbre
-  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> LrSB;
-  //typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> LSB;
-  //typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
-  
-  // Def des types Fraction, Integer, etc
-  typedef LrSB::Fraction Fraction; 
-  typedef Fraction::Integer Integer; 
+  typedef typename SB::Fraction Fraction; 
+  typedef typename Fraction::Integer Integer; 
   typedef StandardDSLQ0<Fraction> DSL;
-  typedef DSL::Point Point;
+  typedef typename DSL::Point Point;
 
   // Instanciation d'un DSL
   DSL D(1077,1495,6081);
@@ -864,8 +862,9 @@ testSivignon()
   Point B(4,-2);
   ASSERT( D( A ) && "Point A belongs to D." );
   ASSERT( D( B ) && "Point A belongs to D." );
-  D.reversedSmartDSS(A,B);
-  return true;
+  DSL D1 = D.reversedSmartDSS(A,B); // may raise an assert.
+  std::cerr << D1 << std::endl;
+  return D1.slope() == Fraction( 1, 1 );
 }
   
 ///////////////////////////////////////////////////////////////////////////////
@@ -887,15 +886,14 @@ int main( int , char** )
   testTrivial<SB2>( "LSB" );
   testTrivial<SB3>( "SB" );
 
-  bool res = true;
   trace.beginBlock ( "Testing class LighterSternBrocot" );
-  res = testLighterSternBrocot()
+  bool res = testLighterSternBrocot()
     && testPattern<SB>()
     && testSubStandardDSLQ0<Fraction>()
-    && testContinuedFractions<SB>();
+    && testContinuedFractions<SB>()
+    && testAncestors<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  testSivignon();
 
   return res ? 0 : 1;
 }
