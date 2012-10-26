@@ -67,20 +67,20 @@ namespace DGtal
     
  ### Provided types :
 
-     - Space: the type itself.
-     - Integer: the type for the components or coordinates of the
-       space. Must be a model of CInteger.
-     - Point: the type for a point in this space.
-     - Vector: the type for a vector in this space.
-     - Dimension: the type for the dimension in this space. Must be a
-       model of CUnsignedInteger
-     - Size: the type for measuring distances or counting elements in
-       this space. Must be a model of CUnsignedInteger
-     - RealPoint: the type for a point in the real vector space of same dimension.
-     - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
+  - Space: the type itself.
+  - Integer: the type for the components or coordinates of the
+ space. Must be a model of CInteger.
+  - Point: the type for a point in this space.
+  - Vector: the type for a vector in this space.
+  - Dimension: the type for the dimension in this space. Must be a
+ model of CUnsignedInteger
+  - Size: the type for measuring distances or counting elements in
+ this space. Must be a model of CUnsignedInteger
+  - RealPoint: the type for a point in the real vector space of same dimension.
+  - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
 
  ### Notation
-     - \t X : A type that is a model of CSpace
+  - \t X : A type that is a model of CSpace
     
  ### Definitions
     

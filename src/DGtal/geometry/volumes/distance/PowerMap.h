@@ -48,6 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
@@ -113,21 +114,17 @@ namespace DGtal
 
   public:
 
-    BOOST_CONCEPT_ASSERT(( CConstImage< TDistanceImage > ));
+    BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
 
-    ///Both Space points and PointPredicate points must be the same.
-    BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
-					  typename TPointPredicate::Point >::value )); 
-    
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
     typedef typename TWeightImage::Value Weight;
     typedef typename WeightImage::Domain::Space Space;
-    typedef Space::Vector Vector;
-    typedef Space::Point Point;
-    typedef Space::Dimension Dimension;
-    typedef Space::Size Size;
-    typedef Space::Point::Coordinate Abscissa;
+    typedef typename Space::Vector Vector;
+    typedef typename Space::Point Point;
+    typedef typename Space::Dimension Dimension;
+    typedef typename Space::Size Size;
+    typedef typename Space::Point::Coordinate Abscissa;
 
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
@@ -145,7 +142,7 @@ namespace DGtal
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
     ///Self type
-    typedef PowerMap<TWeightImage, TDistancePointFunctor, p> Self;
+    typedef PowerMap<TWeightImage, p> Self;
     
 
     /**
