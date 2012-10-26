@@ -233,12 +233,9 @@ namespace DGtal
      * @param output the Power map to update.
      * @param row starting point of the 1D process.
      * @param dim dimension of the update.
-     * @param Sites stack of sites (pass as an argument for
-     * performance purposes).
      */
     void computeOtherStep1D (const Point &row, 
-			     const Size dim,
-			     Point *Sites) const;
+			     const Size dim) const;
     
     // ------------------- protected methods ------------------------
   protected:
