@@ -50,11 +50,11 @@ bool testOpenMP()
   trace.beginBlock ( "Testing basic OpenMP ..." );
 
 #ifdef WITH_OPENMP
-  trace.info() << "Parallel test"<<std::endl;
+  trace.info() << "Parallel helloworld"<<std::endl;
 #pragma omp parallel
   trace.info()<<"Hello, world.\n";
 #else
-  trace.info() << "no parallel test"<<std::endl;
+  trace.info() << "no parallel helloworld"<<std::endl;
 #endif
 
   nbok += true ? 1 : 0; 
