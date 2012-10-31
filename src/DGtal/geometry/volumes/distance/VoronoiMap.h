@@ -108,13 +108,14 @@ namespace DGtal
    */
   template < typename TSpace,
              typename TPointPredicate,
-             DGtal::uint32_t p>
+             typename TSeparableMetric>
   class VoronoiMap
   {
 
   public:
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( CSeparableDistance<TSeparableDistance> ));
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
