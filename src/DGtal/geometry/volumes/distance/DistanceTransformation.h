@@ -89,129 +89,62 @@ namespace DGtal
    */
   template < typename TSpace,
              typename TPointPredicate,
-             DGtal::uint32_t p, 
-             typename IntegerLong = DGtal::int64_t>
-  class DistanceTransformation
+             typename TSeparableMetric>
+  class DistanceTransformation: public VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>
   {
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
+    BOOST_CONCEPT_ASSERT(( CUnsignedSignedInteger<IntegerLong> ));
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  
-    
-    ///Copy of the space type.
-    typedef TSpace Space;
-
-    ///Copy of the point predicate type.
-    typedef TPointPredicate PointPredicate;
-
-    ///Definition of the underlying domain type.
-    typedef HyperRectDomain<Space> Domain;
-
-    ///Type of resulting image
-    typedef ImageContainerBySTLVector<  Domain,
-                                        IntegerLong > OutputImage;
-
-    typedef typename Space::Vector Vector;
-    typedef typename Space::Point Point;
-    typedef typename Space::Dimension Dimension;
-    typedef typename Space::Size Size;
-    typedef typename Space::Point::Coordinate Abscissa;
  
-    ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
+    typedef TSeparableMetric SeparableMetric;
   
+    ///Definition of the image value type.
+    typedef  typename SeparableMetric::PowerValue Value;
+    
+    ///Definition of the image value type.
+    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetic>::ConstRange  ConstRange;
+    
+    ///Definition of the image value type.
+    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetic>::Domain  Domain;
+    
+
 
     /**
      *  Constructor
      */
     DistanceTransformation(const Domain & aDomain,
-                           const PointPredicate & predicate);
-
+                           const PointPredicate & predicate): ;
     /**
      * Default destructor
      */
     ~DistanceTransformation();
-
-  public:
-
-    /**
-     * Compute the Distance Transformation of a set of point using a 
-     * SeparableMetric metric.  The method associates to each point
-     * with value satisfying the foreground predicate, its distance to
-     * the closest background point.  This algorithm is
-     * O(d.|domain size|).
-     *
-     * @pre the foreground point predicate @a predicate must be defined on the
-     * domain @a aDomain
-     *
-     * @return the distance transformation image.
-     */
-    OutputImage compute( ) ;
-
-
-    /**
-     * Check the validity of the transformation. For instance, we
-     * check that the output image pixel range is ok with respect to
-     * the domain extent and the SeparableMetric.
-     *
-     * Warning and advices are printed in the trace system.
-     *
-     * @return true if a warning has been raised. 
-     */
-    bool checkTypesValidity () const;
-    
-    
+        
     // ------------------- Private functions ------------------------
-  private:
+  public:
     
-    
-    /** 
-     * Compute the first step of the separable distance transformation.
-     * 
-     * @param output the output image with the first step DT values
+     /**
+     * Returns a const range on the DistanceMap values.
+     *  @return a const range
      */
-    void computeFirstStep(OutputImage & output) const;
-
-    /** 
-     * Compute the 1D DT associated to the first step.
-     * 
-     * @param output the output image  with the first step DT values
-     * @param startingPoint a point to specify the starting point of the 1D row
+    ConstRange constRange() const
+    {
+      return myImagePtr->constRange();
+    }
+        
+    /**
+     * Access to a DistanceMap value (a.k.a. the norm of the
+     * associated Voronoi vector) at a point.
+     *
+     * @param aPoint the point to probe.
      */
-    void computeFirstStep1D (OutputImage & output, 
-			     const Point &startingPoint) const;
-    
-    /** 
-     *  Compute the other steps of the separable distance transformation.
-     * 
-     * @param inputImage the image resulting of the first (or
-     * intermediate) step 
-     * @param output the output image 
-     * @param dim the dimension to process
-     */    
-    void computeOtherSteps(const OutputImage & inputImage,
-                           OutputImage & output,
-                           const Dimension dim) const;
-
-    /** 
-     * Compute the 1D DT associated to the steps except the first one.
-     * 
-     * @param aImage the input image
-     * @param output the output image  with the  DT values
-     * @param row a point to specify the starting point of the 1D row
-     * @param dim the dimension to process
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
-     */
-    void computeOtherStep1D (const OutputImage & input, 
-                             OutputImage & output, 
-                             const Point &row, 
-                             const Size dim, 
-                             Abscissa s[], Abscissa t[]) const;
-    
+    Value operator()(const Point &aPoint) const
+    {
+      return this->myMetric.norm(myImagePtr->operator()(aPoint));
+    }    
+     
 
     // ------------------- protected methods ------------------------
   protected:
@@ -225,31 +158,6 @@ namespace DGtal
     
     // ------------------- Private members ------------------------
   private:
-
-    ///The separable metric instance
-    SeparableMetric myMetric;
-
-    ///Copy of the computation domain
-    const Domain & myDomain;
-    
-    ///Copy of the computation domain
-    const PointPredicate  & myPointPredicate;
-    
-    ///Copy of the image lower bound
-    Point myLowerBoundCopy;
-    
-    ///Copy of the image lower bound
-    Point myUpperBoundCopy;
-    
-    ///Displacement vector to translate temporary images.
-    Vector myDisplacementVector;
-
-    ///Copy of the domain extent
-    Point myExtent;
-
-    ///Value to act as a +infinity value
-    IntegerLong myInfinity;
-
 
   }; // end of class DistanceTransformation
 
