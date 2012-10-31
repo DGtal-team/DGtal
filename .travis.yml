@@ -17,7 +17,7 @@ before_script:
 matrix:
   exclude:
     - compiler: gcc
-      env: "-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
  
 
 script: 
