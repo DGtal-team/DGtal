@@ -5,14 +5,14 @@ compiler:
   - clang
 
 env:
-  - BTYPE=Debug
-  - BTYPE=Release
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true -DWITH_GMP=true" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Release" 
 
 before_script:
-  - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev libqglviewer-qt4-dev
+  - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev
 
 script: 
-  - cmake . -DCMAKE_BUILD_TYPE=$BTYPE -DWITH_QGLVIEWER=true 
+  - cmake . $BTYPE
   - make
 
 after_script: 
