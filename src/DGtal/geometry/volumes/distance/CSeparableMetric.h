@@ -18,11 +18,10 @@
 
 /**
  * @file CSeparableMetric.h
- * @brief Specifies what are the classes that implement a model of separable metrics.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/11/24
+ * @date 2012/11/01
  *
  * Header file for concept CSeparableMetric.cpp
  *
@@ -42,81 +41,93 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/volumes/distance/CMetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class CSeparableMetric
-  /**
-   * DescriptionDescription of \b concept '\b CSeparableMetric' <p>
-   * @ingroup Concepts
-   * Aim: The concept CSeparableMetric specifies what are the classes
-   * that implement a model of separable metrics.
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CSeparableMetric
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   *    l_0, l_1 and l_2 metrics defined in the SeparableMetricHelper.H
-   * <p> Notes###
-   */
-  template <typename T>
-  struct CSeparableMetric
-  {
+/////////////////////////////////////////////////////////////////////////////
+// class CSeparableMetric
+/**
+Description of \b concept '\b CSeparableMetric' <p>
+@ingroup Concepts
+@brief Aim: defines the concept of separable metrics. 
 
-    typedef typename T::InternalValue InternalValue;
-    typedef typename T::Value Value;
-    typedef typename T::Abscissa Abscissa;
-    
+Separable metrics are metrics satsifying the monotonicity property. 
+
+### Refinement of CMetric.
+
+### Associated types :
+
+### Notation
+ - \e X : A type that is a model of CSeparableMetric
+ - \e x, \e y : object of type X
+
+### Definitions
+
+### Valid expressions and semantics
+
+| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+|       |            |                   |               |              |           |                |            |
+
+### Invariants
+
+### Models
+
+   A dummy model (for concept checking) is CCSeparableMetricArchetype.
+
+### Notes
+
+@tparam T the type that should be a model of CSeparableMetric.
+ */
+template <typename T>
+struct CSeparableMetric
+            // Use derivation for coarser concepts, like
+            // : CoarserConcept<T>
+            // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
+            // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
+{
     // ----------------------- Concept checks ------------------------------
-  public:
+public:
+    // 1. define first provided types (i.e. inner types), like
+    typedef typename T::InnerType InnerType;
+    // possibly check these types so as to satisfy a concept with
+    BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
+    // To test if two types A and Y are equals, use
+    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<A,X>::value ));
+    // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CSeparableMetric )
     {
-      //SeparableMetric  model should have a F(Abscissa, Abscissa, InternalValue) returing an InternalValue
-      ConceptUtils::sameType( h, myT.F(a,a,h) );
-      //SeparableMetric  model should have a Sep(Abscissa,InternalValue, Abscissa,InternalValue) returing an Value  
-      ConceptUtils::sameType( a, myT.Sep(a,h,a,h) );
+        // Static members of type A can be tested with
+        ConceptUtils::sameType( myA, T::staticMember );
+        // non-const method dummy should take parameter myA of type A and return
+        // something of type B
+        ConceptUtils::sameType( myB, myX.dummy( myA ) );
+        // look at CInteger.h for testing tags.
+        // check const methods.
+        checkConstConstraints();
     }
-    
+    void checkConstConstraints() const
+    {
+        // const method dummyConst should take parameter myA of type A and return
+        // something of type B
+        ConceptUtils::sameType( myB, myX.dummyConst( myA ) );
+    }
     // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    T myT;
-    Abscissa a;
-    InternalValue h;
-    
-      
-  }; // end of concept CSeparableMetric
-  
-} // namespace DGtal
+private:
+    T myX; // do not require T to be default constructible.
+    A myA;
+    B myB;
 
+    // ------------------------- Internals ------------------------------------
+private:
+
+}; // end of concept CSeparableMetric
+
+} // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
