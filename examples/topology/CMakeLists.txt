@@ -26,6 +26,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      volScanBoundary
      volTrackBoundary
      volBreadthFirstTraversal
+     volDistanceTraversal
      frontierAndBoundary
      digitalSurfaceSlice
    )
