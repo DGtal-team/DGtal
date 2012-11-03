@@ -138,7 +138,7 @@ namespace DGtal
 
     /**
        The type storing the vertex and its distance. It is also a
-       model of boost::LessComparable.
+       model of boost::LessComparable, boost::EqualityComparable.
     */
     struct Node : public std::pair< Vertex, Scalar > 
     {
@@ -206,6 +206,18 @@ namespace DGtal
       { return node.first; }
     };
 
+    /**
+       This is the base class for constructing an iterator that has
+       the same behaviour as the traversal made by a
+       DistanceVisitor. More precisely, the iterator visits in the
+       same order as a DistanceTraversal object expands without
+       restriction (no ignore()).
+
+       @tparam TAccessor the type that specifies how to access the
+       visited nodes. Choose VertexAccessor if you only need the
+       vertex, choose NodeAccessor if you need the pair <Vertex,
+       Distance>.
+    */
     template <typename TAccessor>
     struct ConstIterator 
     {
@@ -310,14 +322,6 @@ namespace DGtal
     ~DistanceVisitor();
 
     /**
-     * Constructor from the graph only. The visitor is in the state
-     * 'finished()'. Useful to create an equivalent of 'end()' iterator.
-     *
-     * @param graph the graph in which the distance ordering traversal takes place.
-     */
-    DistanceVisitor( const Graph & graph );
-
-    /**
      * Constructor from a point and a vertex functor object. This
      * point provides the initial core of the visitor.
      *
@@ -365,6 +369,21 @@ namespace DGtal
     const Node & current() const; 
 
     /**
+       @return a const reference on the current visited vertex. The
+       node is a pair <Vertex,Scalar> where the second term is the
+       distance to the initial vertex or set.
+
+       @tparam TBackInsertable a container of Node that is any model
+       of boost::BackInsertable which has also a clear() method.
+
+       NB: Complexity is in O(k log n ), where k is the size of the
+       layer and n the number of elements currently in the priority
+       queue (some O(k)).
+     */
+    template <typename TBackInsertable>
+    void getCurrentLayer( TBackInsertable & layer );
+
+    /**
        Goes to the next vertex but ignores the current vertex for
        determining the future visited vertices. Otherwise said, no
        future visited vertex will have this vertex as a father.
@@ -374,11 +393,28 @@ namespace DGtal
     void ignore();
 
     /**
+       Goes to the next layer but ignores the current layer for
+       determining the future visited vertices. Otherwise said, no
+       future visited vertex will have any vertex of this layer as a
+       father.
+
+       NB: valid only if not 'finished()'.
+     */
+    void ignoreLayer();
+
+    /**
        Goes to the next vertex and take into account the current
        vertex for determining the future vsited vertices.
        NB: valid only if not 'finished()'.
      */
     void expand();
+
+    /**
+       Goes to the next layer and take into account the current
+       layer for determining the future vsited vertices.
+       NB: valid only if not 'finished()'.
+     */
+    void expandLayer();
 
     /**
        Goes to the next vertex and take into account the current
@@ -393,6 +429,20 @@ namespace DGtal
      */
     template <typename VertexPredicate>
     void expand( const VertexPredicate & authorized_vtx );
+
+    /**
+       Goes to the next layer and take into account the current
+       layer for determining the future vsited vertices.
+
+       @tparam VertexPredicate a type that satisfies CPredicate on Vertex.
+
+       @param authorized_vtx the predicate that should satisfy the
+       visited vertices.
+
+       NB: valid only if not 'finished()'.
+     */
+    template <typename VertexPredicate>
+    void expandLayer( const VertexPredicate & authorized_vtx );
     
     /**
        @return 'true' if all possible elements have been visited.

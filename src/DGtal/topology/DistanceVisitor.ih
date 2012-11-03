@@ -19,7 +19,7 @@
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
- * @date 2011/11/15
+ * @date 2012/11/02
  *
  * Implementation of inline methods defined in DistanceVisitor.h
  *
@@ -41,24 +41,17 @@
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::~DistanceVisitor()
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+~DistanceVisitor()
 {
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>
-::DistanceVisitor( const Graph & g )
-  : myGraph( g ), myDistance()
-{
-}
-//-----------------------------------------------------------------------------
-template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
-inline
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>
-::DistanceVisitor( const Graph & g,
-                   const VertexFunctor & distance,
-                   const Vertex & p )
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+DistanceVisitor( const Graph & g,
+                 const VertexFunctor & distance,
+                 const Vertex & p )
   : myGraph( g ), myDistance( distance )
 {
   myMarkedVertices.insert( p );
@@ -68,10 +61,10 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 template <typename VertexIterator>
 inline
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>
-::DistanceVisitor( const Graph & g,
-                   const VertexFunctor & distance,
-                   VertexIterator b, VertexIterator e )
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+DistanceVisitor( const Graph & g,
+                 const VertexFunctor & distance,
+                 VertexIterator b, VertexIterator e )
   : myGraph( g ), myDistance( distance )
 {
   for ( ; b != e; ++b )
@@ -84,7 +77,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 const typename DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::Graph & 
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::graph() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+graph() const
 {
   return myGraph;
 }
@@ -92,7 +86,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::graph() const
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 bool
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::finished() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+finished() const
 {
   return myQueue.empty();
 }
@@ -100,16 +95,39 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::finished() const
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 const typename DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::Node & 
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::current() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+current() const
 {
   ASSERT( ! finished() );
   return myQueue.top();
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+template < typename TBackInsertable >
 inline
 void
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ignore()
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+getCurrentLayer( TBackInsertable & layer )
+{
+  ASSERT( ! finished() );
+  layer.clear();
+  Node node = current();
+  do
+    {
+      layer.push_back( current() );
+      myQueue.pop();
+    } 
+  while ( ! finished() && ( node.second == current().second ) );
+  for ( typename TBackInsertable::const_iterator it = layer.begin(), itE = layer.end();
+        it != itE; ++it )
+    myQueue.push( *it );
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+ignore()
 {
   ASSERT( ! finished() );
   myQueue.pop();
@@ -118,7 +136,23 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ignore()
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 void
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::expand()
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+ignoreLayer()
+{
+  ASSERT( ! finished() );
+  Node node = current();
+  do
+    {
+      ignore();
+    } 
+  while ( ! finished() && ( node.second == current().second ) );
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+expand()
 {
   ASSERT( ! finished() );
   Node node = myQueue.top();
@@ -142,11 +176,26 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::expand()
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+expandLayer()
+{
+  ASSERT( ! finished() );
+  Node node = current();
+  do
+    {
+      expand();
+    } 
+  while ( ! finished() && ( node.second == current().second ) );
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 template <typename VertexPredicate>
 inline
 void
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::expand
-( const VertexPredicate & authorized_vtx )
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+expand( const VertexPredicate & authorized_vtx )
 {
   ASSERT( ! finished() );
   Node node = myQueue.top();
@@ -170,9 +219,26 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::expand
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+template <typename VertexPredicate>
 inline
 void
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::terminate()
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+expandLayer( const VertexPredicate & authorized_vtx )
+{
+  ASSERT( ! finished() );
+  Node node = current();
+  do
+    {
+      expand( authorized_vtx );
+    } 
+  while ( ! finished() && ( node.second == current().second ) );
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+terminate()
 {
   while ( ! finished() )
     {
@@ -187,7 +253,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::terminate()
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 const typename DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::MarkSet & 
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::markedVertices() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+markedVertices() const
 {
   return myMarkedVertices;
 }
@@ -195,7 +262,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::markedVertices() const
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 typename DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::MarkSet
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::visitedVertices() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+visitedVertices() const
 {
   if ( finished() ) return myMarkedVertices;
   MarkSet visitedVtx = myMarkedVertices;
@@ -218,7 +286,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::visitedVertices() const
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 void
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::selfDisplay ( std::ostream & out ) const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+selfDisplay ( std::ostream & out ) const
 {
   out << "[DistanceVisitor"
       << " #queue=" << myQueue.size()
@@ -232,7 +301,8 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::selfDisplay ( std::ostre
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 bool
-DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::isValid() const
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+isValid() const
 {
   return true;
 }

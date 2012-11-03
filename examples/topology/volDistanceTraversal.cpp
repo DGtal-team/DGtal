@@ -20,6 +20,7 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/Lambda2To1.h"
 #include "DGtal/kernel/EuclideanDistance.h"
+#include "DGtal/kernel/SquaredEuclideanDistance.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CanonicSCellEmbedder.h"
 #include "DGtal/io/readers/VolReader.h"
@@ -109,7 +110,7 @@ int main( int argc, char** argv )
   typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
   typedef SCellEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
-  typedef EuclideanDistance<RealPoint> Distance;
+  typedef SquaredEuclideanDistance<RealPoint> Distance;
   typedef Lambda2To1<Distance, RealPoint, RealPoint, Scalar> DistanceToPoint;
   typedef Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> > 
@@ -145,13 +146,18 @@ int main( int argc, char** argv )
   viewer << CustomColors3D( Color::Black, Color::White )
          << ks.unsigns( bel );
   visitor2.expand();
+  std::vector< MyDistanceVisitor::Node > layer;
   while ( ! visitor2.finished() )
     {
-      node = visitor2.current();
-      Color c = hueShade( node.second );
-      viewer << CustomColors3D( Color::Red, c )
-             << ks.unsigns( node.first );
-      visitor2.expand();
+      visitor2.getCurrentLayer( layer );
+      ASSERT( ! layer.empty() );
+      Color c = hueShade( layer[ 0 ].second );
+      viewer << CustomColors3D( Color::Red, c );
+      for ( std::vector< MyDistanceVisitor::Node >::const_iterator 
+              it = layer.begin(), itE = layer.end();
+            it != itE; ++it )
+        viewer << ks.unsigns( (*it).first );
+      visitor2.expandLayer();
     }
   viewer << Viewer3D::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
