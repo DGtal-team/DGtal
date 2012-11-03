@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testBreadthFirstPropagation.cpp
+ * @file testDistancePropagation.cpp
  * @ingroup Tests
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  *
@@ -28,7 +28,10 @@
  
  ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <set>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Lambda2To1.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -36,9 +39,10 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/CUndirectedSimpleGraph.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
-#include <set>
-#include <iterator>
+#include "DGtal/topology/DistanceVisitor.h"
+#include "DGtal/kernel/SquaredEuclideanDistance.h"
+#include "DGtal/kernel/EuclideanDistance.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -50,8 +54,9 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef ImageSelector < Z2i::Domain, int>::Type Image;
-void testBreadthFirstPropagation()
+void testDistancePropagation()
 {
+  typedef Z2i::Space Space;
   typedef Z2i::Point Point;
   typedef Z2i::Domain Domain;
   typedef Z2i::DigitalSet DigitalSet;
@@ -78,66 +83,67 @@ void testBreadthFirstPropagation()
   Object obj(Z2i::dt4_8, shape_set);
   
   
-  GradientColorMap<int> cmap_grad( 0, 52);
+  GradientColorMap<int> cmap_grad( 0, 25);
   cmap_grad.addColor( Color( 0, 0, 255 ) );
   cmap_grad.addColor( Color( 0, 255, 0 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
-  << domain
-  << SetMode( p1.className(), "Paving" );
+        << domain
+        << SetMode( p1.className(), "Paving" );
   
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
+  // Type definitions
+  typedef CanonicEmbedder<Space> VertexEmbedder;
+  typedef VertexEmbedder::Value RealPoint;
+  typedef RealPoint::Coordinate Scalar;
+  typedef EuclideanDistance<RealPoint> Distance;
+  typedef Lambda2To1<Distance, RealPoint, RealPoint, Scalar> DistanceToPoint;
+  typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
+  typedef DistanceVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
+
+  VertexEmbedder embedder;
+  Distance distance;
+  DistanceToPoint distanceToPoint( distance, embedder( c1 ) );
+  VertexFunctor vfunctor( embedder, distanceToPoint );
+  Visitor visitor( obj, vfunctor, c1 );
   
-  BreadthFirstVisitor<Object, set<Point> > bfv (obj, c1);
-  
-  
-  while( !bfv.finished() )
-  {
-    image.setValue(bfv.current().first, bfv.current().second);
-    bfv.expand();
-  }
+  while( ! visitor.finished() )
+    {
+      Scalar v = visitor.current().second;
+      image.setValue( visitor.current().first, v ); 
+      visitor.expand();
+    }
   
   string specificStyle = p1.className() + "/Paving";
   
   for ( DigitalSet::ConstIterator it = shape_set.begin();
-  it != shape_set.end();
-  ++it )
-  {
-    if( image(*it) == 0)
+        it != shape_set.end();
+        ++it )
     {
-      board << CustomStyle( specificStyle,
-        new CustomColors( Color::Black,
-        Color::Red ) )
-      << *it;
-    }
-    else
-    {
-      if( image(*it) > 0 )
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( image(*it) ) ) )
-	<< *it;
-      }
+      if( image(*it) == 0)
+        board << CustomStyle( specificStyle,
+                              new CustomColors( Color::Black,
+                                                Color::Red ) );
+      else if( image(*it) > 0 )
+        board << CustomStyle( specificStyle,
+                              new CustomColors( Color::Black,
+                                                cmap_grad( image(*it) ) ) );
       else
-      {
-	board << CustomStyle( specificStyle,
-	  new CustomColors( Color::Black,
-	  cmap_grad( 0 ) ) )
-	<< *it;
-      }
+        board << CustomStyle( specificStyle,
+                              new CustomColors( Color::Black,
+                                                cmap_grad( 0 ) ) );
+      board << *it;
     }
-  }
   
-  board.saveEPS("testBreadthFirstPropagation.eps");
+  board.saveEPS("testDistancePropagation.eps");
 }
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  testBreadthFirstPropagation();
+  testDistancePropagation();
   return 0;
 }
 

@@ -1,0 +1,78 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file Lambda2To1.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/11/02
+ *
+ * Implementation of inline methods defined in Lambda2To1.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+//-----------------------------------------------------------------------------
+template <typename TFunctor2, typename TArgument1, 
+          typename TArgument2, typename TReturnType>
+inline
+DGtal::Lambda2To1<TFunctor2,TArgument1, TArgument2, TReturnType>::
+~Lambda2To1()
+{}
+//-----------------------------------------------------------------------------
+template <typename TFunctor2, typename TArgument1, 
+          typename TArgument2, typename TReturnType>
+inline
+DGtal::Lambda2To1<TFunctor2,TArgument1, TArgument2, TReturnType>::
+Lambda2To1( const Functor2 & f2, const FormerArgument1 & arg1 )
+  : myF2( f2 ), myArg1( arg1 )
+{}
+//-----------------------------------------------------------------------------
+template <typename TFunctor2, typename TArgument1, 
+          typename TArgument2, typename TReturnType>
+inline
+DGtal::Lambda2To1<TFunctor2,TArgument1, TArgument2, TReturnType>::
+Lambda2To1( const Self & other )
+  : myF2( other.myF2 ), myArg1( other.myArg1 )
+{}
+//-----------------------------------------------------------------------------
+template <typename TFunctor2, typename TArgument1, 
+          typename TArgument2, typename TReturnType>
+inline
+typename DGtal::Lambda2To1<TFunctor2,TArgument1, TArgument2, TReturnType>::Value
+DGtal::Lambda2To1<TFunctor2,TArgument1, TArgument2, TReturnType>::
+operator()( const Argument & arg ) const
+{
+  return myF2( myArg1, arg );
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
