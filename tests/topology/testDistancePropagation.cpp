@@ -17,7 +17,8 @@
 /**
  * @file testDistancePropagation.cpp
  * @ingroup Tests
- * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2012/06/18
  *
