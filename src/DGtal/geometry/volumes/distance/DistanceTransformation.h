@@ -47,12 +47,11 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
+#include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -94,21 +93,35 @@ namespace DGtal
   {
 
   public:
-    
-    BOOST_CONCEPT_ASSERT(( CUnsignedSignedInteger<IntegerLong> ));
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
  
+    ///Separable Metric type
     typedef TSeparableMetric SeparableMetric;
+
+    ///Separable Metric type
+    typedef TSpace  Space;
+  
+    ///Separable Metric type
+    typedef typename TSpace::Vector  Vector;
+  
+    ///Point Predicate  type
+    typedef TPointPredicate PointPredicate;
   
     ///Definition of the image value type.
-    typedef  typename SeparableMetric::PowerValue Value;
+    typedef  typename SeparableMetric::Value Value;
     
     ///Definition of the image value type.
-    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetic>::ConstRange  ConstRange;
+    typedef  typename SeparableMetric::Point Point;
+    BOOST_STATIC_ASSERT((boost::is_same< typename Space::Point, 
+                         typename SeparableMetric::Point>::value));
     
     ///Definition of the image value type.
-    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetic>::Domain  Domain;
+    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>::ConstRange  ConstRange;
+    
+    ///Definition of the image value type.
+    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>::Domain  Domain;
     
 
 
@@ -116,11 +129,15 @@ namespace DGtal
      *  Constructor
      */
     DistanceTransformation(const Domain & aDomain,
-                           const PointPredicate & predicate): ;
+                           const PointPredicate & predicate,
+                           const SeparableMetric & aMetric):
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>(aDomain,predicate,aMetric)
+    {}
+    
     /**
      * Default destructor
      */
-    ~DistanceTransformation();
+    ~DistanceTransformation() {};
         
     // ------------------- Private functions ------------------------
   public:
@@ -129,9 +146,20 @@ namespace DGtal
      * Returns a const range on the DistanceMap values.
      *  @return a const range
      */
+    Domain domain() const
+    {
+      ///@todo FIX HERE (range on values)
+      return this->domain();
+    }
+        
+     /**
+     * Returns a const range on the DistanceMap values.
+     *  @return a const range
+     */
     ConstRange constRange() const
     {
-      return myImagePtr->constRange();
+      ///@todo FIX HERE (range on values)
+      return this->constRange();
     }
         
     /**
@@ -142,10 +170,38 @@ namespace DGtal
      */
     Value operator()(const Point &aPoint) const
     {
-      return this->myMetric.norm(myImagePtr->operator()(aPoint));
+      return this->myMetricPtr->distance(aPoint, 
+                                         this->myImagePtr->operator()(aPoint));
+    }    
+          
+    /**
+     * Access to a DistanceMap value (a.k.a. the norm of the
+     * associated Voronoi vector) at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Vector getVoronoiVector(const Point &aPoint) const
+    {
+      return this->operator()(aPoint);
     }    
      
+    /** 
+     * @return  Returns the underlying metric.
+     */
+    const SeparableMetric* metric()
+    {
+      return this->myMetricPtr;
+    }
 
+    /** 
+     * Self Display method.
+     * 
+     * @param out 
+     */void selfDisplay ( std::ostream & out ) const
+    {
+      out << "[DistanceTransformation] underlying VoronoiMap=" << *this;
+    }
+    
     // ------------------- protected methods ------------------------
   protected:
 
@@ -161,12 +217,23 @@ namespace DGtal
 
   }; // end of class DistanceTransformation
 
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+  
+  template <typename S,typename P,typename TSep>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, 
+               const DistanceTransformation<S,P,TSep> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
+
+  
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/geometry/volumes/distance/DistanceTransformation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

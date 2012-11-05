@@ -51,6 +51,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -130,7 +131,9 @@ namespace DGtal
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
 
-   
+    ///Definition of the separable metric type
+    typedef TSeparableMetric SeparableMetric;
+
     ///Large integer type for SeparableMetricHelper construction.
     typedef DGtal::int64_t IntegerLong;
 
@@ -140,9 +143,6 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Space::Point::Coordinate Abscissa;
  
-    ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
-  
     ///Type of resulting image
     typedef ImageContainerBySTLVector<  Domain,
                                         Vector > OutputImage;
@@ -154,7 +154,7 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap<TSpace, TPointPredicate, p> Self;
+    typedef VoronoiMap<TSpace, TPointPredicate, TSeparableMetric> Self;
     
 
     /**
@@ -170,7 +170,8 @@ namespace DGtal
      * @param predicate point predicate to define the Voronoi sites (false points). 
      */
     VoronoiMap(const Domain & aDomain,
-               const PointPredicate & predicate);
+               const PointPredicate & predicate,
+               const SeparableMetric &amMetric);
 
     /**
      * Default destructor
@@ -217,6 +218,21 @@ namespace DGtal
       return myImagePtr->operator()(aPoint);
     }    
      
+    /** 
+     * @return  Returns the underlying metric.
+     */
+    const SeparableMetric* metric()
+    {
+      return myMetricPtr;
+    }
+
+    /**
+     * Self Display method.
+     * 
+     * @param out output stream
+     */
+    void selfDisplay ( std::ostream & out ) const;    
+   
     // ------------------- Private functions ------------------------
   private:    
     
@@ -265,8 +281,8 @@ namespace DGtal
     // ------------------- Private members ------------------------
   private:
 
-    ///The separable metric instance
-    SeparableMetric myMetric;
+    ///Pointer to the separable metric instance
+    const SeparableMetric * myMetricPtr;
 
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
@@ -287,6 +303,18 @@ namespace DGtal
     CountedPtr<OutputImage> myImagePtr;
 
   }; // end of class VoronoiMap
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpSeparableMetric'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ExactPredicateLpSeparableMetric' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename S, typename P,
+            typename Sep>
+  std::ostream&
+  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep> & object );
+
 
 } // namespace DGtal
 

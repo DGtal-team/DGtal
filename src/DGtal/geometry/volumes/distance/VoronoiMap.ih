@@ -44,21 +44,21 @@
 /**
  * Destructor.
  */
-template <typename S, typename P,DGtal::uint32_t p>
+template <typename S, typename P,typename TSep>
 inline
-DGtal::VoronoiMap<S, P,p>::~VoronoiMap()
+DGtal::VoronoiMap<S, P,TSep>::~VoronoiMap()
 {
 } 
 
 
-template <typename S, typename P, DGtal::uint32_t p>
+template <typename S, typename P, typename TSep>
 inline
-typename DGtal::VoronoiMap<S,P, p>::Self &  
-DGtal::VoronoiMap<S,P, p>::operator=(const Self &aOtherVoronoiMap ) 
+typename DGtal::VoronoiMap<S,P, TSep>::Self &  
+DGtal::VoronoiMap<S,P, TSep>::operator=(const Self &aOtherVoronoiMap ) 
 {
   if (this != &aOtherVoronoiMap)
     { 
-      myMetric = aOtherVoronoiMap.myMetric;
+      myMetricPtr = aOtherVoronoiMap.myMetricPtr;
       myImagePtr = aOtherVoronoiMap.myImagePtr;
       myPointPredicatePtr = aOtherVoronoiMap.myPointPredicatePtr;
       myDomainPtr = aOtherVoronoiMap.myDomainPtr;
@@ -69,10 +69,10 @@ DGtal::VoronoiMap<S,P, p>::operator=(const Self &aOtherVoronoiMap )
   return *this;
 }
 
-template <typename S, typename P, DGtal::uint32_t p>
+template <typename S, typename P, typename TSep>
 inline
 void
-DGtal::VoronoiMap<S,P, p>::compute( )
+DGtal::VoronoiMap<S,P, TSep>::compute( )
 {
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
@@ -95,10 +95,10 @@ DGtal::VoronoiMap<S,P, p>::compute( )
     computeOtherSteps ( dim );
 }
 
-template <typename S, typename P,DGtal::uint32_t p>
+template <typename S, typename P,typename TSep>
 inline
 void
-DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( const Dimension dim ) const
+DGtal::VoronoiMap<S,P, TSep>::computeOtherSteps ( const Dimension dim ) const
 {
   std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
@@ -133,11 +133,11 @@ DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( const Dimension dim ) const
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
-template <typename S,typename P, DGtal::uint32_t p>
+template <typename S,typename P, typename TSep>
 void
-DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( const Point &startingPoint,
-                                               const Size dim,
-					       std::vector<Point> &Sites) const
+DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
+                                                  const Size dim,
+                                                  std::vector<Point> &Sites) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
@@ -170,7 +170,7 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( const Point &startingPoint,
 	  if ( psite != myInfinity )
 	    {
 	      while ((nbSites >= 1) && 
-		     ( myMetric.hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
+		     ( myMetricPtr->hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
 					 psite, startingPoint, endpoint, dim) ))
 		{
 		  nbSites --; 
@@ -193,8 +193,8 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( const Point &startingPoint,
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
       while ( (k < nbSites) && 
-	      ( myMetric.closest(point, Sites[k], Sites[k+1])
-		!= SeparableMetric::FIRST ))
+	      ( myMetricPtr->closest(point, Sites[k], Sites[k+1])
+		!= DGtal::ClosestFIRST ))
         k++;
       
       myImagePtr->setValue(point, Sites[k]);
@@ -206,18 +206,38 @@ DGtal::VoronoiMap<S,P,p>::computeOtherStep1D ( const Point &startingPoint,
 /**
  * Constructor.
  */
-template <typename S,typename P,DGtal::uint32_t p>
+template <typename S,typename P,typename TSep>
 inline
-DGtal::VoronoiMap<S,P, p>::VoronoiMap( const Domain &aDomain,
-                                       const PointPredicate & aPredicate):
-  myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate)
+DGtal::VoronoiMap<S,P, TSep>::VoronoiMap( const Domain &aDomain,
+                                       const PointPredicate & aPredicate,
+                                       const SeparableMetric &aMetric):
+  myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate),
+  myMetricPtr(&aMetric)
 {
   myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
   compute();
 }
 
+template <typename S,typename P,typename TSep>
+inline
+void
+DGtal::VoronoiMap<S,P, TSep>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[VoronoiMap] separable metric=" << *myMetricPtr ; 
+}
+
 
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
+
+template <typename S,typename P,typename TSep>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const VoronoiMap<S,P,TSep> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
 
 

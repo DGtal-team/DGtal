@@ -32,6 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,12 +47,94 @@ bool testMetrics()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing separable metrics ..." );
+  trace.beginBlock ( "Testing separable metrics l_2 ..." );
+
+  Z2i::Point a( 0,0), b(5, 0), bb(5,-10), bbb(5,5),c(10,0), d(3,3);
+  Z2i::Point starting( 0, 5), endpoint(10,5);
+  
+  ExactPredicateLpSeparableMetric<Z2i::Space, 2> metric;
+
+  trace.info()<< "a= "<<a<<std::endl;
+  trace.info()<< "b= "<<b<<std::endl;
+  trace.info()<< "bb= "<<bb<<std::endl;
+  trace.info()<< "bbb= "<<bbb<<std::endl;
+  trace.info()<< "c= "<<c<<std::endl;
+
+  trace.info() << "distance between a and bb = "<< metric.distance(a,bb)<< std::endl;
+
+
+  DGtal::Closest closest  =metric.closest(a,d,c);
+  nbok += (closest == ClosestFIRST) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "closest(a,d,c) returns d" << std::endl;
+      
+  bool hidden  =metric.hiddenBy(a,b,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,b,c) returns false" << std::endl;
+      
+  hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bb,c) returns true" << std::endl;
+  
+  hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bbb,c) returns false" << std::endl;
+  
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing separable metrics l_3 ..." );
+
+   
+  ExactPredicateLpSeparableMetric<Z2i::Space, 3> metric3;
+
+  trace.info()<< "a= "<<a<<std::endl;
+  trace.info()<< "b= "<<b<<std::endl;
+  trace.info()<< "bb= "<<bb<<std::endl;
+  trace.info()<< "bbb= "<<bbb<<std::endl;
+  trace.info()<< "c= "<<c<<std::endl;
+
+
+  hidden  =metric3.hiddenBy(a,b,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,b,c) returns false" << std::endl;
+      
+  hidden  =metric3.hiddenBy(a,bb,c,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bb,c) returns true" << std::endl;
+  
+  hidden  =metric3.hiddenBy(a,bbb,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bbb,c) returns false" << std::endl;
+  
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+bool testInexactMetrics()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing inexact predicate separable metrics l_2.1 ..." );
 
   Z2i::Point a( 0,0), b(5, 0), bb(5,-10), bbb(5,5),c(10,0);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 3> metric;
+  InexactPredicateLpSeparableMetric<Z2i::Space> metric (2.1);
 
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
@@ -78,10 +162,41 @@ bool testMetrics()
 	       << "(a,bbb,c) returns false" << std::endl;
   
   trace.endBlock();
+
+  trace.beginBlock ( "Testing inexact predicate separable metrics l_3.1 ..." );
+
+   
+  InexactPredicateLpSeparableMetric<Z2i::Space> metric3(3.1);
+ 
+  trace.info()<< "a= "<<a<<std::endl;
+  trace.info()<< "b= "<<b<<std::endl;
+  trace.info()<< "bb= "<<bb<<std::endl;
+  trace.info()<< "bbb= "<<bbb<<std::endl;
+  trace.info()<< "c= "<<c<<std::endl;
+
+
+  hidden  =metric3.hiddenBy(a,b,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,b,c) returns false" << std::endl;
+      
+  hidden  =metric3.hiddenBy(a,bb,c,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bb,c) returns true" << std::endl;
+  
+  hidden  =metric3.hiddenBy(a,bbb,c,starting,endpoint,0); 
+  nbok += (!hidden) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "(a,bbb,c) returns false" << std::endl;
+  
+  trace.endBlock();
   
   return nbok == nb;
 }
-
 bool testWeightedMetrics()
 {
   unsigned int nbok = 0;
@@ -172,7 +287,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMetrics() 
+  bool res = testMetrics()
+    && testInexactMetrics()
     && testWeightedMetrics(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -903,34 +903,59 @@ void DGtal::Display2DFactory::drawImage( Board2D & board,
 }
 // ImageContainerByHashTree
 
-
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
+// Draw image generic
+template <typename Colormap,typename Image>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-                                         const DGtal::ImageContainerBySTLVector<D, V> & i,
-                                         const V &minV,
-                                         const V &maxV )
+                                         const Image & i,
+                                         const typename Image::Value &minV,
+                                         const typename Image::Value &maxV )
 {
   ASSERT(D::dimension == 2);
 
   Colormap colormap(minV, maxV);
   Color c;
-  V val;
-  D ldomain(i.domain());
+  typename Image::Value val;
 
-  for (typename D::ConstIterator it =  ldomain.begin();
-       it != ldomain.end(); ++it)
+  for (typename Image::Domain::ConstIterator it =  i.domain().begin();
+       it != i.domain().end(); ++it)
   {
     val = i.operator()( (*it) );
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[0]) - 0.5, 
-       NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[1]) + 0.5, 1, 1);
+    board.drawRectangle( NumberTraits<typename Image::Domain::Space::Integer>::
+                         castToInt64_t((*it)[0]) - 0.5, 
+                         NumberTraits<typename Image::Domain::Space::Integer>::
+                         castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
+// // ImageContainerBySTLVector
+// template <typename Colormap, typename D, typename V>
+// inline
+// void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
+//                                          const DGtal::ImageContainerBySTLVector<D, V> & i,
+//                                          const V &minV,
+//                                          const V &maxV )
+// {
+//   ASSERT(D::dimension == 2);
+
+//   Colormap colormap(minV, maxV);
+//   Color c;
+//   V val;
+//   D ldomain(i.domain());
+
+//   for (typename D::ConstIterator it =  ldomain.begin();
+//        it != ldomain.end(); ++it)
+//   {
+//     val = i.operator()( (*it) );
+//     c = colormap( val );
+//     board.setFillColorRGBi( c.red(), c.green(), c.blue());
+//     board.drawRectangle( NumberTraits<typename D::Integer>::
+//        castToInt64_t((*it)[0]) - 0.5, 
+//        NumberTraits<typename D::Integer>::
+//        castToInt64_t((*it)[1]) + 0.5, 1, 1);
+//   }
+// }xs
 // ImageContainerBySTLVector
 
 

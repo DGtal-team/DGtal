@@ -130,7 +130,11 @@ namespace DGtal
    */
   enum Orientation { INSIDE = 0, ON = 1, OUTSIDE = 2};
   
-
+  /** 
+   * Global enum definition for closest point test (geometry/volumes/distance/..).
+   */
+  enum Closest { ClosestFIRST = 0, ClosestSECOND = 1, ClosestBOTH = 2};
+ 
 
   /** DGtal Global variables
    *
