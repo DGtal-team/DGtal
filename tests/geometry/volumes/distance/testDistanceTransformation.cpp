@@ -36,6 +36,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/shapes/Shapes.h"
@@ -107,11 +108,9 @@ bool testDistanceTransformation()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
-  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b),aPredicate);
-  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
-  
-  dt.checkTypesValidity ( );
-  
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(Domain(a,b),aPredicate, L2Metric());
+    
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
@@ -122,25 +121,23 @@ bool testDistanceTransformation()
 	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
   
   
-  
-  ImageLong result = dt.compute (  );
-  
-  trace.warning() << result << endl;
+    
+  trace.warning() << dt << endl;
   //We just iterate on the Domain points and print out the point coordinates.
-  ImageLong::ConstIterator it = result.begin();
-  ImageLong::ConstIterator itend = result.end();
+  DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
+  DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator itend = dt.constRange().end();
   for (; it != itend; ++it)
     {
       std::cout << (*it) << " ";
     }
   std::cout << std::endl;
-
+  
   board.clear();
-  Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
+  Display2DFactory::drawImage<Gray>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)16);
   board.saveSVG ( "image-postDT.svg" );
 
 
-  trace.info() << result << endl;
+  trace.info() << dt << endl;
 
   trace.endBlock();
 
@@ -179,11 +176,8 @@ bool testDistanceTransformationNeg()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
- 
-  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b), aPredicate);
-  typedef DistanceTransformation<TSpace,Predicate, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity (  );
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(Domain(a,b), aPredicate, L2Metric());
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
@@ -199,12 +193,9 @@ bool testDistanceTransformationNeg()
 	}
       std::cout<<std::endl;
     }
-  
-
-  ImageLong result = dt.compute (  );
-  
+    
   DGtal::int64_t maxv=0;
-  for(ImageLong::Iterator it = result.begin(), itend = result.end();
+  for(ImageLong::Iterator it = dt.constRange().begin(), itend = dt.constRange().end();
       it != itend ; ++it)
     if ((*it) > maxv)
       maxv = (*it);

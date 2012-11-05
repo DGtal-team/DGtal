@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -59,6 +60,9 @@ implement a distance function on points satisfying the metric
 conditions:
  - d(x,y) == d(y,x) (symmetry)
  - d(x,y) <= d(x,z) + d(z,y) (triangle inequality)
+
+For performance purposes, we ask the model to implement a closest() method to decide given two points which one is closer to a third one. This method can simply be implemented as a test "d(aOrigin,aP)<d(aOrigin,aQ)" (see below) but fast implementation can be expected without computing the distances.  
+
 
 ### Refinement of CLocalPremetric
 
@@ -80,7 +84,9 @@ Inherited from CLocalPremetric:
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| distance computation | v =x.distance(aPoint,anotherPoint) | @a aPoint and @a anotherPoint of type @a Point  |  a value of type @a Value   |              |  compute the distance between two points  |                |    -        |
+| distance computation | x.distance(aPoint,anotherPoint) | @a aPoint and @a anotherPoint of type @a Point  |  a value of type @a Value   |              |  compute the distance between two points  |                |    -        |
+| closest point test | closest(aOrigin, aP, aQ) | @a aOrigin, @a aP,@a aQ of type @a aPoint |   a value of type Closest | | decide between @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
+  
 
 ### Invariants
 
@@ -99,7 +105,7 @@ public:
   typedef typename T::Vector Vector;
   typedef typename T::Value Value;
   
-  BOOST_CONCEPT_USAGE( CLocalPremetric )
+  BOOST_CONCEPT_USAGE( CMetric )
   {
     checkConstConstraints();
   }

@@ -250,10 +250,11 @@ static void drawImage( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
-  static void drawImage( DGtal::Board2D & board, const DGtal::ImageContainerBySTLVector<D, V> &, const V &, const V & );
-// ImageContainerBySTLVector
+// Generic Image
+   template <typename Colormap,typename Image>
+   static void drawImage( DGtal::Board2D & board, const Image &, 
+                       const typename Image::Value &, const typename Image::Value & );
+// Generic Image
     
     
 // KhalimskyCell

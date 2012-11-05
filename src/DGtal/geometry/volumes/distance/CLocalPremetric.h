@@ -64,11 +64,12 @@ a null vector.
 
 
 ### Refinement of 
+  - boost::CopyConstructible
+  - boost::Assignable
 
 ### Associated types :
  
- - @e Point: type of points associated with the underlying metric space.
- - @e Vector: type of vectors associated with the underlying metric space.
+ - @e Space: type of space on which the premetric is defined
  - @e Value: the value type of the metric (model of CUnsignedInteger) 
 
 ### Notation
@@ -81,7 +82,7 @@ a null vector.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|-------------------------------------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| local distance computation      | v = x.distance( aPoint, aDirection)  | aPoint of type @a Point and aDirection of type aDirection |  v of type @a Value  |     | returns the distance at point @a aPoint in the direction @a aDirection. @a aDirection == null vector if and only if v==0      |                |    -         |
+| local distance computation      | v = x.localDistance( aPoint, aDirection)  | aPoint of type @a Point and aDirection of type aDirection |  v of type @a Value  |     | returns the distance at point @a aPoint in the direction @a aDirection. @a aDirection == null vector if and only if v==0      |                |    -         |
 
 ### Invariants
 
@@ -93,17 +94,15 @@ a null vector.
 @tparam T the type that should be a model of CLocalPremetric.
  */
 template <typename T>
-struct CLocalPremetric
+struct CLocalPremetric: boost::CopyConstructible<T>, boost::Assignable<T>
 {
   // ----------------------- Concept checks ------------------------------
 public:
-  typedef typename T::Point Point;
-  typedef typename T::Vector Vector;
+  typedef typename T::Space Space;
+  typedef typename T::Space::Point Point;
+  typedef typename T::Space::Vector Vector;
   typedef typename T::Value Value;
-  
-  BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Value > ));
-
-  
+    
   BOOST_CONCEPT_USAGE( CLocalPremetric )
   {
     checkConstConstraints();
@@ -113,7 +112,7 @@ public:
   {
     // const method dummyConst should take parameter myA of type A and return
     // something of type B
-    ConceptUtils::sameType( myValue, myX.distance( myPoint , myDirection ) );
+    ConceptUtils::sameType( myValue, myX.localDistance( myPoint , myDirection ) );
   }
   // ------------------------- Private Datas --------------------------------
 private:

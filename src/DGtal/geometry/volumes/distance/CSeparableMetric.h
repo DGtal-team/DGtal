@@ -71,57 +71,40 @@ Separable metrics are metrics satsifying the monotonicity property.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| hiddenBy predicate |  hiddenBy(u,v,w,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
 
 ### Invariants
 
 ### Models
 
-   A dummy model (for concept checking) is CCSeparableMetricArchetype.
 
 ### Notes
 
 @tparam T the type that should be a model of CSeparableMetric.
  */
 template <typename T>
-struct CSeparableMetric
-            // Use derivation for coarser concepts, like
-            // : CoarserConcept<T>
-            // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-            // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
+struct CSeparableMetric: CMetric<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::InnerType InnerType;
-    // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-    // To test if two types A and Y are equals, use
-    BOOST_STATIC_ASSERT(( ConceptUtils::SameType<A,X>::value ));
-    // 2. then check the presence of data members, operators and methods with
+    typedef typename T::Point Point;
     BOOST_CONCEPT_USAGE( CSeparableMetric )
     {
-        // Static members of type A can be tested with
-        ConceptUtils::sameType( myA, T::staticMember );
-        // non-const method dummy should take parameter myA of type A and return
-        // something of type B
-        ConceptUtils::sameType( myB, myX.dummy( myA ) );
-        // look at CInteger.h for testing tags.
-        // check const methods.
-        checkConstConstraints();
+      checkConstConstraints();
     }
     void checkConstConstraints() const
     {
         // const method dummyConst should take parameter myA of type A and return
         // something of type B
-        ConceptUtils::sameType( myB, myX.dummyConst( myA ) );
+      ConceptUtils::sameType( myBool, myX.hiddenBy(u,v,w,start,end,dim) );
     }
     // ------------------------- Private Datas --------------------------------
 private:
-    T myX; // do not require T to be default constructible.
-    A myA;
-    B myB;
-
+  T myX; // do not require T to be default constructible.
+  Point u,v,w,start,end;
+  bool myBool;
+  DGtal::Dimension dim;
+  
     // ------------------------- Internals ------------------------------------
 private:
 
