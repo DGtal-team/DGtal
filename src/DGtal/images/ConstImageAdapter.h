@@ -52,7 +52,6 @@
 #include "DGtal/kernel/domains/CDomain.h"
 
 #include "DGtal/images/DefaultConstImageRange.h"
-#include "DGtal/images/DefaultImageRange.h"
 #include <tr1/tuple>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -86,7 +85,7 @@ namespace DGtal
  * Here is the construction of a simple image adapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterConstruction
+ * @snippet images/testConstImageAdapter.cpp ConstImageAdapterConstruction
  *
  * NB: the underlying image as well as the 2 functors
  * are stored in the adapter as aliasing pointer
@@ -121,8 +120,7 @@ public:
     ///Pointer to the image container data.
     typedef TImageContainer* ImagePointer;
 
-    typedef DefaultConstImageRange<Self> ConstRange; 
-    typedef DefaultImageRange<Self> Range; 
+    typedef DefaultConstImageRange<Self> ConstRange;
 
     // ----------------------- Standard services ------------------------------
 
@@ -189,17 +187,6 @@ public:
         return ConstRange( *this );
     }
 
-    /**
-     * Returns the range of the underlying image
-     * to iterate over its values
-     *
-     * @return a range.
-     */
-    Range range()
-    {
-        return Range( *this );
-    }
-
     /////////////////// Accessors //////////////////
 
 
@@ -264,8 +251,8 @@ private:
     // ------------------------- Private Datas --------------------------------
 protected:
 
-    /// Owning pointer on the image container
-    ImagePointer myImagePointer;
+    /// Alias on the image container
+    ImagePointer myImagePointer; // not const because of operator=
     
     /**
      * The image SubDomain
