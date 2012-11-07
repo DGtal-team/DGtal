@@ -15,8 +15,8 @@
  **/
 
 /**
- * @file exampleConstImageAdapter.cpp
- * @ingroup Examples
+ * @file testConstImageAdapter.cpp
+ * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -27,7 +27,7 @@
  *
  * @date 2012/10/12
  *
- * @brief An example file for ConstImageAdapter.
+ * @brief A test file for ConstImageAdapter.
  *
  * This file is part of the DGtal library.
  */
@@ -63,7 +63,10 @@ void displayRange(const R& r)
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example for ConstImageAdapter" );
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+    
+  trace.beginBlock ( "Test for ConstImageAdapter" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -109,13 +112,51 @@ int main( int argc, char** argv )
   //! [ConstImageAdapterRange]
   ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> >::ConstRange 
     ra = a.constRange(); 
-  std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
+  std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") );
+  cout << endl;
+    
+  std::vector<int> to_vector(25);
+  std::copy(ra.begin(), ra.end(), to_vector.begin());
+  for (int i = 0; i < 25; i++)
+  {
+    if (i<=12)
+    {
+     if (to_vector[i]==1)
+     {
+      cout << "ok, ";
+      nbok += true ? 1 : 0; nb++;
+     }
+     else
+     {
+      cout << "!ok, ";
+      nbok += false ? 1 : 0; nb++;
+     }
+    }
+    else
+    {
+     if (to_vector[i]==0)
+     {
+      cout << "ok, ";
+      nbok += true ? 1 : 0; nb++;
+     }
+     else
+     {
+      cout << "!ok, ";
+      nbok += false ? 1 : 0; nb++;
+     }
+    }
+  }
   //! [ConstImageAdapterRange]
+  
   cout << endl; 
 
   trace.endBlock();
 
-  return 0;
+  bool res = (nbok == nb);
+  
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

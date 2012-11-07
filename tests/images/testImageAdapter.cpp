@@ -257,6 +257,24 @@ bool test_range_constRange()
     std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
     cout << endl;
     
+    std::vector<int> to_vector(9);
+    std::copy(r.begin(), r.end(), to_vector.begin());
+    for (int i = 0; i < 9; i++)
+    {
+      if (to_vector[i]==i)
+      {
+        cout << "ok, ";
+        nbok += true ? 1 : 0; nb++;
+      }
+      else
+      {
+        cout << "!ok, ";
+        nbok += false ? 1 : 0; nb++;
+      }
+    }
+    
+    cout << endl; 
+    
     trace.endBlock();
     
     return nbok == nb;

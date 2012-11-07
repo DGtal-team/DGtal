@@ -288,7 +288,7 @@ private:
     // ------------------------- Private Datas --------------------------------
 protected:
 
-    /// Owning pointer on the image container
+    /// Alias on the image container
     ImagePointer myImagePointer;
     
     /**
