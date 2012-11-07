@@ -195,7 +195,7 @@ namespace DGtal
      */
     const Domain &  domain() const
     {
-      return *myDomainPtr;
+      return (*myDomainPtr);
     }
 
     
@@ -261,12 +261,9 @@ namespace DGtal
      * @param output the Voronoi map to update.
      * @param row starting point of the 1D process.
      * @param dim dimension of the update.
-     * @param Sites stack of sites (pass as an argument for
-     * performance purposes).
      */
     void computeOtherStep1D (const Point &row, 
-			     const Size dim,
-			     std::vector<Point> &Sites) const;
+			     const Size dim) const;
     
     // ------------------- protected methods ------------------------
   protected:
@@ -280,9 +277,6 @@ namespace DGtal
     
     // ------------------- Private members ------------------------
   private:
-
-    ///Pointer to the separable metric instance
-    const SeparableMetric * myMetricPtr;
 
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
@@ -298,6 +292,11 @@ namespace DGtal
     
     ///Value to act as a +infinity value
     Point myInfinity;
+
+  protected:
+
+    ///Pointer to the separable metric instance
+    const SeparableMetric * myMetricPtr;
 
     ///Voronoi map image
     CountedPtr<OutputImage> myImagePtr;
