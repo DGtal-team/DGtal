@@ -89,7 +89,7 @@ namespace DGtal
     typedef typename Image::Vector Vector;
     typedef typename Image::Dimension Dimension;
     typedef typename Image::Size Size;
-    typedef typename Image::Integer Integer;
+    typedef typename Image::Domain::Space::Integer Integer;
     typedef typename Image::Domain Domain;
     typedef typename Image::Domain::Space::Point::Coordinate Coordinate;
   

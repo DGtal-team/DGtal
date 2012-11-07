@@ -49,9 +49,8 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
-
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
-
+#include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -117,9 +116,15 @@ namespace DGtal
     BOOST_STATIC_ASSERT((boost::is_same< typename Space::Point, 
                          typename SeparableMetric::Point>::value));
     
-    ///Definition of the image value type.
-    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>::ConstRange  ConstRange;
+    ///Definition of the image.
+    typedef  DistanceTransformation<TSpace,TPointPredicate,TSeparableMetric> Self;
     
+    typedef VoronoiMap<TSpace,TPointPredicate,TSeparableMetric> Parent;
+   
+    ///Definition of the image constRange
+    typedef  DefaultConstImageRange<Self> ConstRange;
+
+
     ///Definition of the image value type.
     typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>::Domain  Domain;
     
@@ -148,18 +153,16 @@ namespace DGtal
      */
     Domain domain() const
     {
-      ///@todo FIX HERE (range on values)
-      return this->domain();
+      return Parent::domain();
     }
-        
+    
      /**
      * Returns a const range on the DistanceMap values.
      *  @return a const range
      */
     ConstRange constRange() const
     {
-      ///@todo FIX HERE (range on values)
-      return this->constRange();
+      return ConstRange(*this);
     }
         
     /**
@@ -171,7 +174,7 @@ namespace DGtal
     Value operator()(const Point &aPoint) const
     {
       return this->myMetricPtr->distance(aPoint, 
-                                         this->myImagePtr->operator()(aPoint));
+                                      this->myImagePtr->operator()(aPoint));
     }    
           
     /**
@@ -182,7 +185,7 @@ namespace DGtal
      */
     Vector getVoronoiVector(const Point &aPoint) const
     {
-      return this->operator()(aPoint);
+      return this->myImagePtr->operator()(aPoint);
     }    
      
     /** 
@@ -190,16 +193,19 @@ namespace DGtal
      */
     const SeparableMetric* metric()
     {
-      return this->myMetricPtr;
+      return Parent::metric();
     }
 
     /** 
      * Self Display method.
      * 
      * @param out 
-     */void selfDisplay ( std::ostream & out ) const
+     */
+    void selfDisplay ( std::ostream & out ) const
     {
-      out << "[DistanceTransformation] underlying VoronoiMap=" << *this;
+      out << "[DistanceTransformation] underlying VoronoiMap={";
+      Parent::selfDisplay(out);
+      out << "}";
     }
     
     // ------------------- protected methods ------------------------

@@ -45,6 +45,7 @@
 //DT
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 
 //FMM
 #include "DGtal/geometry/volumes/distance/FMM.h"
@@ -621,10 +622,10 @@ bool testComparison(int size, int area, double dist)
   trace.beginBlock ( " DT computation " );
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
-  typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, norm> DT; 
-  DT dt(d,aPredicate);
-  typename DT::OutputImage resultImage = dt.compute (  );
-  trace.info() << resultImage << std::endl; 
+  typedef ExactPredicateLpSeparableMetric<SpaceND<dimension,int>, norm> LNorm;
+  typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, LNorm> DT; 
+  DT dt(d,aPredicate, LNorm());
+  trace.info() << dt << std::endl; 
 
   trace.endBlock();
 
@@ -640,7 +641,7 @@ bool testComparison(int size, int area, double dist)
 	flagIsOk = false; 
       else 
 	{
-	  if (resultImage(*it) != map(*it))
+	  if (dt(*it) != map(*it))
 	    flagIsOk = false;
 	}
     }

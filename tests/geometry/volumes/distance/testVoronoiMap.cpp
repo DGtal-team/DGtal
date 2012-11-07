@@ -179,8 +179,7 @@ bool testVoronoiMap()
   typedef VoronoiMap<Z2i::Space, Predicate, L2Metric> Voro2;
   
   Voro2 voro(domain, myPredicate, L2Metric());
-
-  
+ 
   for(int j=-10; j <= 10; j++)
     {    
       for(int i=-10; i<=10; i++)
@@ -188,7 +187,8 @@ bool testVoronoiMap()
       trace.info()<<std::endl;
     }
 
-
+  trace.info()<<"Exporting o SVG"<<std::endl;
+ 
   Board2D board;
   for(Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), 
         itend = voro.domain().end();
