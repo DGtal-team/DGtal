@@ -167,11 +167,13 @@ namespace DGtal
      * O(d.|domain size|).
      *
      * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
-     * @param predicate point predicate to define the Voronoi sites (false points). 
+     * @param predicate point predicate to define the Voronoi sites
+     * (false points). 
+     * @param aMetric a seprable metric instance.
      */
     VoronoiMap(const Domain & aDomain,
                const PointPredicate & predicate,
-               const SeparableMetric &amMetric);
+               const SeparableMetric &aMetric);
 
     /**
      * Default destructor

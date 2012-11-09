@@ -53,6 +53,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -110,7 +111,9 @@ namespace DGtal
 
     typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
-
+    typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
+ 
 
   } // namespace Z2i
 
@@ -181,7 +184,8 @@ namespace DGtal
 
     typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
-
+    typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
   } // namespace Z3i
 
   
