@@ -32,6 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -63,7 +64,7 @@ bool testPowerMap()
   set.insertNew(Z2i::Point(7,7));
   DigitalSetDomain<Z2i::DigitalSet> setDomain(set); 
   
-  typedef ImageContainerBySTLMap<DigitalSetDomain<Z2i::DigitalSet> , DGtal::int32_t> Image;
+  typedef ImageContainerBySTLMap<DigitalSetDomain<Z2i::DigitalSet> , DGtal::int64_t> Image;
   Image image(setDomain);
   
   //Setting some values
@@ -71,7 +72,7 @@ bool testPowerMap()
   //  image.setValue(Z2i::Point(3,7), 0); 
   image.setValue(Z2i::Point(7,7), 16);
   
-  PowerMap<Image, 2> power(domainLarge, image);
+  PowerMap<Image, Z2i::L2PowerMetric> power(domainLarge, image, Z2i::L2PowerMetric());
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)

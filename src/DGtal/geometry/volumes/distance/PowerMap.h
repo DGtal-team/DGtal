@@ -51,7 +51,7 @@
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -108,14 +108,19 @@ namespace DGtal
    *
    */
   template < typename TWeightImage,
-             DGtal::uint32_t p>
+             typename TPSeparableMetric>
   class PowerMap
   {
 
   public:
 
     BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
-
+    BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<TPSeparableMetric> ));
+    
+    ///Both WeightImage value and PowerSeparableMetric weight should match
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TPSeparableMetric::Weight,
+                          typename TWeightImage::Value >::value )); 
+    
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
     typedef typename TWeightImage::Value Weight;
@@ -129,10 +134,9 @@ namespace DGtal
     ///Definition of the underlying domain type.
     typedef HyperRectDomain<Space> Domain;
    
- 
     ///We construct the type associated to the separable metric @todo
-    typedef SeparableMetricHelper<  Point ,  Weight , p > SeparableMetric;
-  
+    typedef TPSeparableMetric PowerSeparableMetric;
+    
     ///Type of resulting image
     typedef ImageContainerBySTLVector<  Domain,
                                         Vector > OutputImage;
@@ -141,8 +145,9 @@ namespace DGtal
     typedef Vector Value;
     ///Definition of the image value type.
     typedef typename OutputImage::ConstRange  ConstRange;
+  
     ///Self type
-    typedef PowerMap<TWeightImage, p> Self;
+    typedef PowerMap<TWeightImage, TPSeparableMetric> Self;
     
 
     /**
@@ -155,10 +160,12 @@ namespace DGtal
      * O(d.|domain size|).
      *
      * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
-     * @param @todo 
+     * @param WeightImage an image returning the weight for some points
+     * @param aMetric a power seprable metric instance.
      */
     PowerMap(const Domain & aDomain,
-	     const WeightImage & aWeightImage);
+	     const WeightImage & aWeightImage,
+             const PowerSeparableMetric &aMetric);
 
     /**
      * Default destructor
@@ -204,7 +211,22 @@ namespace DGtal
     {
       return myImagePtr->operator()(aPoint);
     }    
-     
+ 
+    /** 
+     * @return  Returns the underlying metric.
+     */
+    const PowerSeparableMetric* metricPtr() const
+    {
+      return myMetricPtr;
+    }
+
+    /**
+     * Self Display method.
+     * 
+     * @param out output stream
+     */
+    void selfDisplay ( std::ostream & out ) const;    
+       
     // ------------------- Private functions ------------------------
   private:    
     
@@ -250,9 +272,6 @@ namespace DGtal
     // ------------------- Private members ------------------------
   private:
 
-    ///The separable metric instance
-    SeparableMetric myMetric;
-
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
     
@@ -268,10 +287,25 @@ namespace DGtal
     ///Value to act as a +infinity value
     Point myInfinity;
 
+  protected:
+    ///Pointer to the separable metric instance
+    const PowerSeparableMetric * myMetricPtr;
+    
     ///Power map image
     CountedPtr<OutputImage> myImagePtr;
 
   }; // end of class PowerMap
+
+ /**
+   * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpSeparableMetric'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ExactPredicateLpSeparableMetric' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename W,
+            typename Sep>
+  std::ostream&
+  operator<< ( std::ostream & out, const PowerMap<W,Sep> & object );
 
 } // namespace DGtal
 
