@@ -31,11 +31,14 @@
 #include "DGtal/base/Common.h"
 ///////////////////////////////////////////////////////////////////////////////
 
-#include "DSLSubsegment.h"
+#include <map>
+#include "DGtal/geometry/curves/DSLSubsegment.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/SternBrocot.h"
+#include "DGtal/arithmetic/LighterSternBrocot.h"
+#include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 
 
@@ -53,8 +56,8 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename Fraction::Integer Integer;
   typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
-  typedef typename DSLSubseg::Point Point;
-
+  //typedef typename DSLSubseg::Point Point;
+  typedef typename DSL::Point Point;
 
   typedef typename Fraction::Quotient Quotient;
   typedef typename DSL::ConstIterator ConstIterator;
@@ -72,6 +75,7 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
     {
       Integer b( random() % modb + 1 );
       Integer a( random() % b +1);
+   
       if ( ic.gcd( a, b ) == 1 )
         {
           for ( unsigned int j = 0; j < 5; ++j )
@@ -79,15 +83,22 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 	      Integer mu = random() % (moda+modb);
               DSL D( a, b, mu );
 	      
+	      mu = -mu;
 	      for (Integer x = 0; x < 10; ++x )
                 {
                   Integer x1 = random() % modx;
                   Integer x2 = x1 + 1 + ( random() % modx );
 		
+		  //std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;
+		  
 		  if(algo == 1 || algo ==2)
 		    {
 		      Point A = D.lowestY( x1 );
 		      Point B = D.lowestY( x2 );
+		      // std::cout << A[0] << " " << A[1] << std::endl;
+		      // std::cout << ic.floorDiv(a*x1+mu,b) << std::endl;
+		      // std::cout << B[0] << " " << B[1] << std::endl;
+		      // std::cout << ic.floorDiv(a*x2+mu,b) << std::endl;
 		      if(algo == 1)
 			D.smartDSS(A,B);
 		      else
@@ -102,6 +113,7 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		      DSLSubseg DD(a,b,mu,A,B);
 		    }
 		  
+		 
 		}
             }
         }
@@ -126,26 +138,39 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 int main( int argc, char** argv )
 {
   
-  
+  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> LrSB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> LSB;
   typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
+  
   typedef SB::Fraction Fraction;
   typedef Fraction::Integer Integer;
   
-  Integer modb = 10000;
-  Integer moda = modb;
+  // Integer modb = 1000000000;
+  // Integer moda = modb;
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 100;
+  // unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 100;
 
-  for(Integer modx = 10; modx < modb;modx*=2)
-  	{
-  	  moda = modb;
-	  std::cout << modb << " " << modx << " ";
-	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,0);
-  	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,1 );
-  	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,2 );
-  	  std::cout << std::endl;
-  	}
-     
+  // for(Integer modx = 10; modx < modb;modx*=2)
+  //   //Integer  modx = 1000;
+  // {
+  // 	  moda = modb;
+  // 	  std::cout << modb << " " << modx << " ";
+  // 	  //testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,0);
+  // 	  //testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,1 );
+  // 	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,2 );
+  // 	  std::cout << std::endl;
+  // 	}
+  
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef DSL::Point Point;
+
+  DSL D(1077,1495,6081);
+  Point A(3,-3);
+  Point B(4,-2);
+
+  D.reversedSmartDSS(A,B);
+ 
+
   return 1;
 }
 //                                                                           //
