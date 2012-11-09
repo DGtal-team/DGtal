@@ -115,12 +115,14 @@ public:
     // const method dummyConst should take parameter myA of type A and return
     // something of type B
     ConceptUtils::sameType( myValue, myX.distance( myPoint , myPoint2 ) );
-  }
+    ConceptUtils::sameType( myClosest, myX.closest( myPoint , myPoint2,myPoint3 ) );
+ }
   // ------------------------- Private Datas --------------------------------
 private:
   T myX; // do not require T to be default constructible.
-  Point myPoint, myPoint2;
+  Point myPoint, myPoint2, myPoint3;
   Value myValue;
+  DGtal::Closest myClosest;
     // ------------------------- Internals ------------------------------------
 private:
 

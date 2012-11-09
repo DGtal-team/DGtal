@@ -76,18 +76,15 @@ int main(int argc, char **argv)
   typedef DGtal::SetPredicate<DGtal::Z3i::DigitalSet> Predicate;
   Predicate aPredicate(mySet);
   
-  typedef DGtal::DistanceTransformation<Z3i::Space, Predicate, 2> DTL2;
-  typedef DTL2::OutputImage OutputImage;
-  DTL2 dt(domain,aPredicate);
-  
-  OutputImage result = dt.compute();
+  typedef DGtal::DistanceTransformation<Z3i::Space, Predicate, Z3i::L2Metric> DTL2;
+  DTL2 dt(domain,aPredicate,Z3i::L2Metric() );
   //! [ImageSetDT-DT]
 
-  OutputImage::Value maxDT = (*std::max_element(result.begin(), 
-						result.end()));
+  DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(), 
+                                         dt.constRange().end()));
   
   
-  GradientColorMap<OutputImage::Value> gradient( 0, maxDT);
+  GradientColorMap<DTL2::Value> gradient( 0, maxDT);
   gradient.addColor(DGtal::Color::Blue);
   gradient.addColor(DGtal::Color::Green);
   gradient.addColor(DGtal::Color::Yellow);
@@ -97,9 +94,9 @@ int main(int argc, char **argv)
   for(Z3i::Domain::ConstIterator it = domain.begin(),
 	itend = domain.end(); it != itend;
       ++it)
-    if (result(*it) != 0)
+    if (dt(*it) != 0)
       {
-	OutputImage::Value  val= result( *it );     
+	DTL2::Value  val= dt( *it );     
 	DGtal::Color c= gradient(val);
 	
 	viewer <<  DGtal::CustomColors3D(c,c) << *it    ; 
