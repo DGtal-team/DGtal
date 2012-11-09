@@ -174,7 +174,7 @@ namespace DGtal
     Value operator()(const Point &aPoint) const
     {
       return this->myMetricPtr->distance(aPoint, 
-                                      this->myImagePtr->operator()(aPoint));
+                                         this->myImagePtr->operator()(aPoint));
     }    
           
     /**
@@ -191,9 +191,9 @@ namespace DGtal
     /** 
      * @return  Returns the underlying metric.
      */
-    const SeparableMetric* metric()
+    const SeparableMetric* metricPtr() const
     {
-      return Parent::metric();
+      return Parent::metricPtr();
     }
 
     /** 

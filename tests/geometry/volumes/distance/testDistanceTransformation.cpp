@@ -36,7 +36,9 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/shapes/Shapes.h"
@@ -84,7 +86,8 @@ bool testDistanceTransformation()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-
+  bool allfine;
+  
   trace.beginBlock ( "Testing the whole DT computation" );
 
   typedef SpaceND<2> TSpace;
@@ -110,7 +113,8 @@ bool testDistanceTransformation()
 
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
   DistanceTransformation<TSpace, Predicate , L2Metric> dt(Domain(a,b),aPredicate, L2Metric());
-    
+  VoronoiMap<Z2i::Space, Predicate, L2Metric> voro(Domain(a,b),aPredicate, L2Metric());
+
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
@@ -120,6 +124,13 @@ bool testDistanceTransformation()
 	      image.end(),
 	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
   
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        trace.info()<< image(Point(i,j))<<" ";
+      trace.info()<<std::endl;
+    }
   
     
   trace.warning() << dt << endl;
@@ -127,22 +138,62 @@ bool testDistanceTransformation()
 
   DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
   DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator itend = dt.constRange().end();
+  
   for (; it != itend; ++it)
     {
       std::cout << (*it) << " ";
     }
   std::cout << std::endl;
   
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        trace.info()<< dt(Point(i,j))<<" ";
+      trace.info()<<std::endl;
+    }
+  
+
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        {
+          Point p= dt.getVoronoiVector(Point(i,j));
+          if (p==Point(i,j))
+            trace.info()<<"-,- ";
+          else
+            trace.info()<< p[0]<<","<<p[1]<<" ";
+        }
+      trace.info()<<std::endl;
+    }
+
+
+  allfine = true;
+  
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        {
+          Point p= voro(Point(i,j));
+          if (p != dt.getVoronoiVector(Point(i,j)))
+            allfine = false;
+          if (p==Point(i,j))
+            trace.info()<<"-,- ";
+          else
+            trace.info()<< p[0]<<","<<p[1]<<" ";
+        }
+      trace.info()<<std::endl;
+    }
+
   board.clear();
   Display2DFactory::drawImage<Gray>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)16);
   board.saveSVG ( "image-postDT.svg" );
-
-
   trace.info() << dt << endl;
-
   trace.endBlock();
 
-  return nbok == nb;
+  return allfine;
 }
 /**
  * Example of a test. To be completed.
@@ -448,7 +499,6 @@ bool testChessboard()
   randomSeeds(image, 19, 0);
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
   
@@ -516,6 +566,55 @@ bool testChessboard()
   return nbok == nb;
 }
 
+template <typename Space, int norm>
+bool testCompareExactInexact(unsigned int size, unsigned int nb)
+{
+  trace.beginBlock("Checking Exact/Inexct predicate metrics");
+  typedef ExactPredicateLpSeparableMetric<Space, norm> MetricEx;
+  typedef InexactPredicateLpSeparableMetric<Space> MetricInex;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename Space::Point Point;
+  typedef DigitalSetBySTLSet<Domain> Set;
+  typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+
+  Point low=Point::diagonal(0),
+    up=Point::diagonal(size);
+  
+  Domain domain(low,up);
+  Set set(domain);
+
+  for(unsigned int i = 0; i<nb; ++i)
+    {
+      Point p;
+      for(unsigned int dim=0;  dim<Space::dimension;++dim)
+        p[dim]  = rand() % size;
+      set.insert(p);
+    }  
+
+  trace.info()<< "Testing metrics "<<MetricEx()<<" "<<MetricInex(norm)<<std::endl;
+  trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
+  trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
+
+  SetPredicate<Set> setPred(set);
+  NegPredicate negPred(setPred);
+  
+  typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
+  typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
+  
+  DTEx dtex(domain, negPred, MetricEx());
+  DTIn dtinex(domain, negPred, MetricInex(norm));
+  
+  double MSE=0.0;
+  typename DTEx::ConstRange::ConstIterator it=dtex.constRange().begin(), itend=dtex.constRange().end();
+  typename DTIn::ConstRange::ConstIterator it2 = dtinex.constRange().begin();
+  for( ; it != itend; ++it, ++it2)
+    MSE += ((*it) - (*it2))*((*it) - (*it2));
+  
+  trace.warning()<<"Resulting MSE= "<<MSE;
+  trace.endBlock();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -532,7 +631,12 @@ int main ( int argc, char** argv ){
     && testDistanceTransformationBorder() 
     && testDistanceTransformation3D()
     && testChessboard()
-    && testDTFromSet();
+    && testDTFromSet()
+    && testCompareExactInexact<Z2i::Space, 2>(500, 1000)
+    && testCompareExactInexact<Z3i::Space, 2>(100, 100)
+    && testCompareExactInexact<Z2i::Space, 4>(500, 1000)
+    && testCompareExactInexact<Z3i::Space, 4>(100, 100)
+    ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

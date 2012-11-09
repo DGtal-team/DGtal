@@ -91,7 +91,7 @@ DGtal::VoronoiMap<S,P, TSep>::compute( )
       myImagePtr->setValue ( *it, *it );
   
   //We process the remaining dimensions
-  for ( Dimension dim = 0; dim < S::dimension ; dim++ )
+  for ( Dimension dim = 0;  dim< S::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 
@@ -102,11 +102,9 @@ DGtal::VoronoiMap<S,P, TSep>::computeOtherSteps ( const Dimension dim ) const
 {
   std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
-  trace.warning()<<"pre"<<std::endl;
-  
+    
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
-  trace.warning()<<"pre"<<std::endl;
-  
+    
   //We setup the subdomain iterator
   //the iterator will scan dimension using the order:
   // {n-1, n-2, ... 1} (we skip the '0' dimension).
@@ -157,7 +155,10 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
   std::vector<Point> Sites;
 
   ASSERT(dim < S::dimension);
-  //trace.info()<<"dim="<<dim<<"  "<<S::dimension<<"   "<<myLowerBoundCopy<<std::endl;
+  
+  //Reserve 
+  Sites.reserve( myUpperBoundCopy[dim] - myLowerBoundCopy[dim] +1);
+
   //endpoint of the 1D row
   endpoint[dim] = myUpperBoundCopy[dim];
 
@@ -185,9 +186,10 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
 	    {
 	      while ((nbSites >= 1) && 
 		     ( myMetricPtr->hiddenBy(Sites[nbSites-1], Sites[nbSites] , 
-					 psite, startingPoint, endpoint, dim) ))
+                                             psite, startingPoint, endpoint, dim) ))
 		{
-		  nbSites --; 
+                  nbSites --; 
+                  Sites.pop_back();
 		}
 	      nbSites++;
               Sites.push_back( psite );
@@ -202,7 +204,6 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
 
   int k = 0;
 
-  //trace.info()<< "Step2   "<<dim<<std::endl;
   //Rewriting
   point[dim] = myLowerBoundCopy[dim];
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
@@ -215,8 +216,6 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
       myImagePtr->setValue(point, Sites[k]);
       point[dim]++;
     }
-  //trace.info()<< "okkkk   "<<dim<<std::endl;
-
 }
 
 
@@ -226,8 +225,8 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
 template <typename S,typename P,typename TSep>
 inline
 DGtal::VoronoiMap<S,P, TSep>::VoronoiMap( const Domain &aDomain,
-                                       const PointPredicate & aPredicate,
-                                       const SeparableMetric &aMetric):
+                                          const PointPredicate & aPredicate,
+                                          const SeparableMetric &aMetric):
   myDomainPtr(&aDomain), myPointPredicatePtr(&aPredicate),
   myMetricPtr(&aMetric)
 {

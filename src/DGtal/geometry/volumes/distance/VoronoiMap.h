@@ -221,7 +221,7 @@ namespace DGtal
     /** 
      * @return  Returns the underlying metric.
      */
-    const SeparableMetric* metric()
+    const SeparableMetric* metricPtr() const
     {
       return myMetricPtr;
     }
