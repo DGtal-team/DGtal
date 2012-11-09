@@ -681,18 +681,16 @@ int main ( int argc, char** argv )
   res = res && testDisplayDT3d( size, area, std::sqrt(size*size*size) )
     ; 
 
-  //3d L1 and Linf comparison
+  //3d L1 and  comparison
   size = 20; 
   area = int( std::pow(double(2*size+1),3) )+1; 
   res = res  
     && testComparison<3,1>( size, area, 3*size+1 )
-    && testComparison<3,0>( size, area, size+1 )
     ;
   size = 5; 
   area = int( std::pow(double(2*size+1),4) ) + 1;
   res = res
     && testComparison<4,1>( size, area, 4*size+1 )
-    && testComparison<4,0>( size, area, size+1 )
     ;
 
   //&& ... other tests

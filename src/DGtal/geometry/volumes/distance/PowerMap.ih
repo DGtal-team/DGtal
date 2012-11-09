@@ -157,6 +157,9 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
   int nbSites = -1;
   std::vector<Point> Sites;
   
+  //Reserve 
+  Sites.reserve( myUpperBoundCopy[dim] - myLowerBoundCopy[dim] +1);
+
   //endpoint of the 1D row
   endpoint[dim] = myUpperBoundCopy[dim];
   
@@ -189,6 +192,7 @@ DGtal::PowerMap<P,p>::computeOtherStep1D ( const Point &startingPoint,
 						   startingPoint, endpoint, dim) ))
 		{
 		  nbSites --; 
+                  Sites.pop_back();
 		}
 	      nbSites++;
 	      Sites.push_back( psite );

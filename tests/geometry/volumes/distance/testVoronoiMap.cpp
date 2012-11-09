@@ -257,9 +257,9 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   // trace.endBlock();
 
   trace.beginBlock(" Voronoi computation l_3");
-  typedef ExactPredicateLpSeparableMetric<typename Set::Space,3> L3Metric;
-  typedef VoronoiMap<typename Set::Space, Predicate, L3Metric> Voro6;
-  Voro6 voro6(aSet.domain(), myPredicate, L3Metric() );
+  typedef ExactPredicateLpSeparableMetric<typename Set::Space,6> L6Metric;
+  typedef VoronoiMap<typename Set::Space, Predicate, L6Metric> Voro6;
+  Voro6 voro6(aSet.domain(), myPredicate, L6Metric() );
   trace.endBlock();
 
 
@@ -560,10 +560,13 @@ int main( int argc, char** argv )
   bool res = testCheckConcept() 
     && testVoronoiMap() 
     && testSimple2D()
-    &&  testSimpleRandom2D()
-    && testSimple3D() 
-    && testSimpleRandom3D()
-    && testSimple4D(); // && ... other tests
+    /* 
+       &&  testSimpleRandom2D()
+       && testSimple3D() 
+       && testSimpleRandom3D()
+       && testSimple4D()
+    */
+    ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
