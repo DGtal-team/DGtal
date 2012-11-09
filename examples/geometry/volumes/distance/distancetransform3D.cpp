@@ -53,6 +53,7 @@
 
 #include "ConfigExamples.h"
 
+#include "DGtal/helpers/StdDefs.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -93,11 +94,7 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
   
  //------------
-
- typedef SpaceND<3> Space4Type;
- typedef HyperRectDomain<Space4Type> TDomain;
-
- typedef TDomain::Point Point;
+ typedef Z3i::Point Point;
 
   
  QApplication application(argc,argv);
@@ -108,9 +105,9 @@ int main( int argc, char** argv )
 
  
  //Default image selector = STLVector
- typedef ImageSelector<TDomain, unsigned char>::Type Image;
+ typedef ImageSelector<Z3i::Domain, unsigned char>::Type Image;
  Image image = VolReader<Image>::importVol( inputFilename );
- TDomain domain = image.domain();
+ Z3i::Domain domain = image.domain();
 
 
  Image imageSeeds ( domain);
@@ -122,25 +119,16 @@ int main( int argc, char** argv )
 
 
  //Distance transformation computation
- typedef ImageSelector<TDomain, long int>::Type ImageLong;
-
  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
  Predicate aPredicate(imageSeeds,0);
 
- typedef  DistanceTransformation<Space4Type,Predicate, 2> DTL2;
- typedef  DistanceTransformation<Space4Type,Predicate, 0> DTLInf;
- typedef  DistanceTransformation<Space4Type,Predicate, 1> DTL1;
- 
- DTL2 dtL2(domain, aPredicate);
- DTLInf dtLinf(domain, aPredicate);
- DTL1 dtL1(domain, aPredicate);
-
- 
- DTL1::OutputImage resultL1 = dtL1.compute (  );
+ typedef  DistanceTransformation<Z3i::Space,Predicate, Z3i::L2Metric> DTL2;
+  DTL2 dtL2(domain, aPredicate, Z3i::L2Metric() );
 
  unsigned int min = 0;
  unsigned int max = 0;
- for(DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend=resultL1.end();
+ for(DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(), 
+       itend=dtL2.constRange().end();
      it!=itend;
      ++it)
    {
@@ -163,14 +151,14 @@ int main( int argc, char** argv )
 
   viewer << SetMode3D( (*(domain.begin())).className(), "Paving" );
   
-  for(TDomain::ConstIterator it = domain.begin(), itend=domain.end();
+  for(Z3i::Domain::ConstIterator it = domain.begin(), itend=domain.end();
      it!=itend;
      ++it){
    
-   unsigned int valDist= resultL1( (*it) );     
+   double valDist= dtL2( (*it) );     
    Color c= gradient(valDist);
    
-   if(resultL1(*it)<=30 ){
+   if(dtL2(*it)<=30 ){
      viewer << CustomColors3D(Color((float)(c.red()), 
             (float)(c.green()),
             (float)(c.blue(),205)), 
