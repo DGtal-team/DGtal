@@ -206,7 +206,7 @@ bool testWeightedMetrics()
   trace.beginBlock ( "Testing separable weighted metrics ..." );
 
   Z2i::Point a( 0,0), bbis(4, 1), b(5,0), bb(5,-10), bbb(5,5),c(10,0);
-  Z2i::Point d(5,-2);
+  Z2i::Point d(5,-6);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
   typedef ExactPredicateLpWeightedSeparableMetric<Z2i::Space, 2> Metric;
@@ -217,6 +217,7 @@ bool testWeightedMetrics()
   trace.info()<< "bb= "<<bb<<std::endl;
   trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
+  trace.info()<< "d= "<<d<<std::endl;
   
   bool closer = (metric.closestWeighted(bbis,a,0,c,0) == DGtal::ClosestFIRST);  
   nbok += (closer) ? 1 : 0; 
@@ -252,25 +253,25 @@ bool testWeightedMetrics()
 	       << "(a,bbb,c) returns false" << std::endl;
 
   hidden  =metric.hiddenByWeighted(a,0,d,0,c,0,starting,endpoint,0); 
-  nbok += (!hidden) ? 1 : 0; 
+  nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "(a,d,c) returns false" << std::endl;
+	       << "(a,d,c) returns true" << std::endl;
   trace.endBlock();
 
   trace.beginBlock("Testing Hidden with w!=0");
 
-  hidden  =metric.hiddenByWeighted(a,10,d,0,c,10,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,0,d,30,c,0,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "(a,10,d,0,c,10) returns true" << std::endl;
+	       << "(a,0,d,30,c,0) returns true" << std::endl;
 
-  hidden  =metric.hiddenByWeighted(a,0,d,10,c,0,starting,endpoint,0); 
-  nbok += (!hidden) ? 1 : 0; 
+  hidden  =metric.hiddenByWeighted(a,10,d,10,c,10,starting,endpoint,0); 
+  nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "(a,0,d,10,c,0) returns false" << std::endl;
+	       << "(a,10,d,10,c,10) returns true" << std::endl;
   
   
   trace.endBlock();
