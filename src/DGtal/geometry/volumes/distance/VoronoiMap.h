@@ -49,8 +49,6 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/CPointPredicate.h"
-
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////

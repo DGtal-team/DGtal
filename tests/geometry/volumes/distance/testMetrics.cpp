@@ -31,8 +31,9 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -208,7 +209,8 @@ bool testWeightedMetrics()
   Z2i::Point d(5,-2);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2> metric;
+  typedef ExactPredicateLpWeightedSeparableMetric<Z2i::Space, 2> Metric;
+  Metric metric;
 
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
@@ -216,13 +218,13 @@ bool testWeightedMetrics()
   trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
   
-  bool closer = (metric.closestWithWeight(bbis,a,0,c,0) == SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2>::FIRST);  
+  bool closer = (metric.closestWeighted(bbis,a,0,c,0) == DGtal::ClosestFIRST);  
   nbok += (closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "a is closer" << std::endl;
 
-  closer = (metric.closestWithWeight(bbis,a,10,c,35) == SeparableMetricHelper<Z2i::Point, DGtal::int64_t, 2>::FIRST);  
+  closer = (metric.closestWeighted(bbis,a,10,c,35) == DGtal::ClosestFIRST);
   nbok += (!closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -231,25 +233,25 @@ bool testWeightedMetrics()
 
 
   trace.beginBlock("Testing Hidden with w=0");
-  bool hidden  =metric.hiddenByWithWeight(a,0,b,0,c,0,starting,endpoint,0); 
+  bool hidden  =metric.hiddenByWeighted(a,0,b,0,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,b,c) returns false" << std::endl;
       
-  hidden  =metric.hiddenByWithWeight(a,0,bb,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,0,bb,0,c,0,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,bb,c) returns true" << std::endl;
   
-  hidden  =metric.hiddenByWithWeight(a,0,bbb,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,0,bbb,0,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,bbb,c) returns false" << std::endl;
 
-  hidden  =metric.hiddenByWithWeight(a,0,d,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,0,d,0,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -258,13 +260,13 @@ bool testWeightedMetrics()
 
   trace.beginBlock("Testing Hidden with w!=0");
 
-  hidden  =metric.hiddenByWithWeight(a,10,d,0,c,10,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,10,d,0,c,10,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,10,d,0,c,10) returns true" << std::endl;
 
-  hidden  =metric.hiddenByWithWeight(a,0,d,10,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByWeighted(a,0,d,10,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
