@@ -118,8 +118,8 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<TPSeparableMetric> ));
     
     ///Both WeightImage value and PowerSeparableMetric weight should match
-    BOOST_STATIC_ASSERT ((boost::is_same< typename TPSeparableMetric::Weight,
-                          typename TWeightImage::Value >::value )); 
+    //BOOST_STATIC_ASSERT ((boost::is_same< typename TPSeparableMetric::Weight,
+    //                      typename TWeightImage::Value >::value )); 
     
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
@@ -275,9 +275,6 @@ namespace DGtal
     ///Pointer to the computation domain
     const Domain * myDomainPtr;
     
-    ///Pointer to the point predicate
-    const WeightImage * myWeightImagePtr;
-    
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
     
@@ -293,7 +290,11 @@ namespace DGtal
     
     ///Power map image
     CountedPtr<OutputImage> myImagePtr;
-
+ 
+    ///Pointer to the point predicate
+    const WeightImage * myWeightImagePtr;
+    
+ 
   }; // end of class PowerMap
 
  /**

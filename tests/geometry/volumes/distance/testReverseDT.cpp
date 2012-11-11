@@ -118,23 +118,20 @@ bool testReverseDT()
     std::cout << std::endl;
   }
 
-
-  ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric > , 2 > reverseDT;
-  typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric >, 2 >::OutputImage ImageRDT;
-
-  ImageRDT reconstruction = reverseDT.reconstruction( dt );
+  typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric > , Z2i::L2PowerMetric > RDT;
+  RDT reverseDT(Z2i::Domain(a,b),dt,Z2i::L2PowerMetric());
   
   // board.clear();
   //drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)10);
   // board.saveSVG ( "image-REDTtest.svg" );
 
   trace.warning()<<"REDT:"<<endl;
-  ImageRDT::ConstIterator it2 = reconstruction.begin();
+  RDT::ConstRange::ConstIterator it2 = reverseDT.constRange().begin();
   for (unsigned int y = 2; y < 16; y++)
     {
     for (unsigned int x = 2; x < 16; x++)
     {
-      std::cout << (int)(*it2) << " ";
+      std::cout << (*it2) << " ";
       ++it2;
     }
     std::cout << std::endl;
@@ -142,10 +139,10 @@ bool testReverseDT()
 
   //Checking
   bool ok=true;
-  ImageRDT::ConstIterator itrec = reconstruction.begin(), itend = reconstruction.end();
+  RDT::ConstRange::ConstIterator itrec = reverseDT.constRange().begin(), itend = reverseDT.constRange().end();
   Image::ConstIterator  itinit = image.begin();
   for( ; itrec != itend; ++itrec,++itinit)
-    if ((*itrec) == 0)
+    if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
 
   nbok += ok ? 1 : 0; 
@@ -200,15 +197,12 @@ bool testReverseDTL1()
     }
     std::cout << std::endl;
   }
-
-
-  ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, 1 > reverseDT;
-  typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, 1 >::OutputImage ImageRDT;
-
-  ImageRDT reconstruction = reverseDT.reconstruction( dt );
- 
+  
+  typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, Z2i::L1PowerMetric > RDT;
+  RDT reverseDT(Z2i::Domain(a,b), dt, Z2i::L1PowerMetric());
+  
   trace.warning()<<"REDT:"<<endl;
-  ImageRDT::ConstIterator it2 = reconstruction.begin();
+  RDT::ConstRange::ConstIterator it2 = reverseDT.constRange().begin();
   for (unsigned int y = 2; y < 16; y++)
     {
     for (unsigned int x = 2; x < 16; x++)
@@ -221,10 +215,10 @@ bool testReverseDTL1()
 
   //Checking
   bool ok=true;
-  ImageRDT::ConstIterator itrec = reconstruction.begin(), itend = reconstruction.end();
+  RDT::ConstRange::ConstIterator itrec = reverseDT.constRange().begin(), itend = reverseDT.constRange().end();
   Image::ConstIterator  itinit = image.begin();
   for( ; itrec != itend; ++itrec,++itinit)
-    if ((*itrec) == 0)
+    if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
 
   nbok += ok ? 1 : 0; 
@@ -237,88 +231,7 @@ bool testReverseDTL1()
 }
 
 
-/**
- * Example of a test. To be completed.
- *
- */
-bool testReverseDTSet()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
 
-  typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
-
-  trace.beginBlock ( "Testing Reverse DT in 2D ..." );
-  
-  Z2i::Point a (2, 2 );
-  Z2i::Point b ( 15, 15 );
-
-  typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
-  Image image (Z2i::Domain( a, b ));
-  
-  for ( unsigned k = 0; k < 49; k++ )
-    {
-      a[0] = ( k / 7 ) + 5;
-      a[1] = ( k % 7 ) + 5;
-      image.setValue ( a, 128 );
-    }
-  a = Z2i::Point(2, 2 );
-
- 
-  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
-  Predicate aPredicate(image,0);
-  
-  typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
-  DistanceTransformation<Z2i::Space, Predicate, L2Metric> dt(Z2i::Domain(a,b), aPredicate, L2Metric());
-
-
-
-  //ReverseDT  
-  trace.warning()<<"DT:"<<endl;
-  DistanceTransformation<Z2i::Space, Predicate, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
-  for (unsigned int y = 2; y < 16; y++)
-    {
-      for (unsigned int x = 2; x < 16; x++)
-    {
-      std::cout << (*it) << " ";
-      ++it;
-    }
-      std::cout << std::endl;
-    }
-
-  
-  ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric>, 2 > reverseDT;
-
-  typedef DigitalSetBySTLSet<Z2i::Domain> Set;
-
-  
-  Set reconstruction(dt.domain());
-  reverseDT.reconstructionAsSet<Set>( reconstruction, dt );
-  
-  Board2D board;
-  board << reconstruction;
-  board.saveSVG ( "image-REDTtestSet.svg" );
-
-  trace.warning()<<"REDT:"<<endl;
-  for(Set::ConstIterator it2 = reconstruction.begin(), 
-  itend2 = reconstruction.end();
-      it2!=itend2;
-      ++it2)
-    trace.info() << (*it2) << " ";
-  
-  //Checking
-  bool ok=true;
-
-  nbok += ok ? 1 : 0; 
-  nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
-  trace.endBlock();
-  
-  
-  return nbok == nb;
-
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -331,7 +244,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testReverseDT() && testReverseDTSet() 
+  bool res = testReverseDT()
     && testReverseDTL1(); // && ... other tests
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
