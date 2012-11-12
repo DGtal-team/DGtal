@@ -70,7 +70,7 @@ DGtal::Ball3D<T>::Ball3D(const RealPoint &aPoint, const double radius):
 /**
  * @param p any point in the plane.
  *
- * @return the couple of angle parameters (Teta,Phi) respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
+ * @return the couple of angle parameters (Teta,Phi) respectivly between [0,2PI] and [0,Pi] corresponding to
  * this point for the shape.
  */
 template <typename T>
@@ -94,11 +94,11 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
     }
   else
     {
-      angle.first=atan(l[1]/l[0]);
-      if(l[1]>=0)
-        angle.second=asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
-      if(l[1]<0)
-        angle.second=-asin(sqrt(l[1]*l[1]+l[0]*l[0])/sqrt(l[1]*l[1]+l[0]*l[0]+l[2]*l[2]));
+      if(l[1]>0)
+        angle.first=atan2(l[1],l[0]);
+      else 
+	angle.first=atan2(l[1],l[0])+M_PI*2.0;
+      angle.second=acos(sqrt(l[2]*l[2])/sqrt(l[0]*l[0]+l[1]*l[1]+l[2]*l[2]));
     }
   return angle;
 }
@@ -114,7 +114,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::x( AngularCoordinates t ) const
 {
-  RealPoint c( myRadius*cos(t.first)*cos(t.second), myRadius*sin(t.first)*cos(t.second) , myRadius*sin(t.second));
+  RealPoint c( myRadius*cos(t.first)*sin(t.second), myRadius*sin(t.first)*sin(t.second) , myRadius*cos(t.second));
   c += myCenter;
   return c;
 }
@@ -122,7 +122,7 @@ DGtal::Ball3D<T>::x( AngularCoordinates t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
  *
  * @return the vector (gradf(M)).
  */
@@ -132,14 +132,14 @@ typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::gradient( const AngularCoordinates t) const
 {
   RealPoint p= x(t);
-  double x=2*(p[0]-myCenter[0]);
-  double y =2*(p[1]-myCenter[1]);
-  double z=2*(p[2]-myCenter[2]);
-  return RealPoint(x,y,z);
+  double xx=2*(p[0]-myCenter[0]);
+  double yy =2*(p[1]-myCenter[1]);
+  double zz=2*(p[2]-myCenter[2]);
+  return RealPoint(xx,yy,zz);
 }
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
  *
  * @return the vector (rt(M)) wich is the first partial derivative with respect to Teta.
  */
@@ -148,7 +148,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rt( const AngularCoordinates t) const
 {
-  return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
+  return RealPoint(-myRadius*sin(t.first)*sin(t.second),myRadius*cos(t.first)*sin(t.second),0);
 }
 
 
@@ -163,12 +163,12 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rp( const AngularCoordinates t) const
 {
-  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),myRadius*cos(t.second));
+  return RealPoint(myRadius*cos(t.first)*cos(t.second),myRadius*sin(t.first)*cos(t.second),-myRadius*sin(t.second));
 }
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
  *
  * @return the vector (rtt(M)) wich is second the second partial derivative with respect to Teta(twice).
  */
@@ -177,13 +177,13 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rtt( const AngularCoordinates t) const
 {
-  return RealPoint(-myRadius*cos(t.first)*cos(t.second),-myRadius*sin(t.first)*cos(t.second),0);
+  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),0);
 }
 
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
  *
  * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi(twice).
  */
@@ -192,11 +192,11 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rpp( const AngularCoordinates t) const
 {
-  return RealPoint(-myRadius*cos(t.first)*cos(t.second),-myRadius*sin(t.first)*cos(t.second),-myRadius*sin(t.second));
+  return RealPoint(-myRadius*cos(t.first)*sin(t.second),-myRadius*sin(t.first)*sin(t.second),-myRadius*cos(t.second));
 }
     
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi]
+ * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi]
  *
  * @return the vector (rtp(M)) wich is second the partial derivatif with respect to Teta then Phi.
  */
@@ -205,7 +205,7 @@ inline
 typename DGtal::Ball3D<T>::RealPoint
 DGtal::Ball3D<T>::rtp( const AngularCoordinates t) const
 {
-  return RealPoint(myRadius*sin(t.first)*sin(t.second),-myRadius*cos(t.first)*sin(t.second),0);
+  return RealPoint(-myRadius*sin(t.first)*cos(t.second),myRadius*cos(t.first)*cos(t.second),0);
 }
     
 

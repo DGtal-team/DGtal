@@ -44,8 +44,6 @@
 #include "DGtal/geometry/curves/estimation/ParametricShapeArcLengthFunctor.h"
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
-
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -100,14 +98,14 @@ bool testTrueLocalEstimator(const std::string &filename)
   TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  tangentEstimator;
   TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  lengthEstimator;
 
-  curvatureEstimator.init( 1, r.begin(), r.end(), &ball, true);
-  tangentEstimator.init( 1, r.begin(), r.end(), &ball, true);
+  curvatureEstimator.init( 1, r.begin(), r.end() );
+  curvatureEstimator.attach( &ball );
+  tangentEstimator.init( 1, r.begin(), r.end() );
+  tangentEstimator.attach( &ball );
  
 
   ConstIteratorOnPoints it = r.begin();
-  //  ConstIteratorOnPoints it2 = r.begin()+15;
-  ConstIteratorOnPoints it2 = it;
-  for (  int compteur = 0; compteur < 15; ++compteur ) ++it2;
+  ConstIteratorOnPoints it2 = it+15;
   lengthEstimator.init( 1, it, it2, &ball, true);
   
   
@@ -167,7 +165,8 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
       TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
-      curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
+      curvatureEstimator.init( h, r.begin(), r.end() );
+      curvatureEstimator.attach( &aShape ); 
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
@@ -188,122 +187,6 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;
-}
-
-template <typename Shape>
-bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
-{
-  using namespace Z2i;
-
-  trace.beginBlock ( ( "Testing CompareEstimator on digitization of "
-           + name ). c_str() );
-  
-  // Creates a digitizer on the window (xLow, xUp).
-  typedef Space::RealPoint RealPoint;
-  RealPoint xLow( -10.0, -10.0 );
-  RealPoint xUp( 10.0, 10.0 );
-  GaussDigitizer<Space,Shape> dig;  
-  dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
-  
-  // The domain size is given by the digitizer according to the window
-  // and the step.
-  Domain domain = dig.getDomain();
-
-  // Create cellular space
-  KSpace K;
-  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
-  if ( ! ok )
-    {
-      std::cerr << "[testCompareEstimators]"
-    << " error in creating KSpace." << std::endl;
-    }
-  else
-    try {
-      // Extracts shape boundary
-      SurfelAdjacency<KSpace::dimension> SAdj( true );
-      SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-      // Getting the consecutive surfels of the 2D boundary
-      std::vector<Point> points;
-      Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
-      // Create GridCurve
-      GridCurve<KSpace> gridcurve;
-      gridcurve.initFromVector( points );
-      typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
-      typedef Range::ConstIterator ConstIteratorOnPoints;
-      typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
-      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
-      typedef ParametricShapeTangentFunctor< Shape > Tangent;
-      typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
-      TrueCurvature curvatureEstimator;
-      TrueCurvature curvatureEstimatorBis;
-
-      typedef ArithmeticalDSS<ConstIteratorOnPoints,KSpace::Integer,4> 
-  SegmentComputer;
-      typedef TangentFromDSSFunctor<SegmentComputer> Functor;
-      typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
-  MSTangentEstimator;
-
-      SegmentComputer sc;
-      Functor f; 
-      
-      MSTangentEstimator tang2(sc, f); 
-     
-      TrueTangent tang1;
-      // TrueTangent tang2;
-
-      Range r = gridcurve.getPointsRange();//building range
-      curvatureEstimator.init( h, r.begin(), r.end(), &aShape, true);
-      curvatureEstimatorBis.init( h, r.begin(), r.end(), &aShape, true);
-    
-      tang1.init( h, r.begin(), r.end(), &aShape, true);
-      tang2.init( h, r.begin(), r.end(), true );
-      // tang2.init( h, r.begin(), r.end(), &aShape, true);
-      
-      typename TrueCurvature::ConstIterator it = r.begin();
-      typename TrueCurvature::ConstIterator itend = r.end();
-      
-      typedef CompareLocalEstimators< TrueCurvature, TrueCurvature> Comparator;
-      typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
-
-     
-      trace.info()<< "Comparison at "<< *it <<" = "
-      << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin())
-      << " : tan "
-      << ComparatorTan::compareVectors( tang1, tang2, r.begin())
-      <<std::endl;
-      
-      typename Comparator::OutputStatistic error=Comparator::compare(curvatureEstimator, curvatureEstimatorBis, 
-                       r.begin(),
-                       r.end());
-      
-      trace.info()<< "Nb samples= "<< error.samples()<<std::endl;
-      trace.info()<< "Error mean= "<< error.mean()<<std::endl;
-      trace.info()<< "Error max= "<< error.max()<<std::endl;
-      
-      typename ComparatorTan::OutputVectorStatistic error2=ComparatorTan::compareVectors(tang1, tang2, 
-                       r.begin(),
-                       r.end());
-      
-      trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
-      trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
-      trace.info()<< "Error max= "<< error2.max()<<std::endl;
-
-
-     }    
-    catch ( InputException e )
-      {
-  std::cerr << "[testCompareEstimator]"
-      << " error in finding a bel." << std::endl;
-  ok = false;
-      }
-  trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
-  trace.endBlock();
-  return ok;
-  
-
-  trace.endBlock();
-  return true;
 }
 
 
@@ -344,8 +227,6 @@ int main( int argc, char** argv )
     testTrueLocalEstimatorOnShapeDigitization<MyFlower>
     ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
 
-  res = res &&
-    testCompareEstimator<MyFlower>("Flower-5-0.3-6-0.3-s0.25", flower, 0.25);
   return res ? 0 : 1;
 
 }

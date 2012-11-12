@@ -816,7 +816,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
-  Container local_points;
+  //Container local_points;
+  local_points.clear();
   std::back_insert_iterator< Container > back_ins_it( local_points );
   NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
   //alpha.writeNeighborhood( p, back_ins_it, not_pred_is_in_X );

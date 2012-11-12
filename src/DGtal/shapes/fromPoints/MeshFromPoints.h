@@ -41,6 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ namespace DGtal
      * Structure for representing the faces from the vertex index.
      **/
 
-    typedef vector<unsigned int> MeshFace;
+    typedef std::vector<unsigned int> MeshFace;
     
 
 
@@ -109,13 +110,21 @@ namespace DGtal
      * @param saveFaceColor: used to memorize the color of a face (default= false) 
      */
     MeshFromPoints(bool saveFaceColor=false);    
+
+    /**
+     * Constructor.
+     * The constructed mesh will store an unique default color information about the mesh.
+     * 
+     * @param saveFaceColor: used to memorize the color of a face (default= false) 
+     */
+    MeshFromPoints(const DGtal::Color &aColor);    
     
     /**
      * Constructor by usung a vertex set as init.
      * The color are not stored in this case.
      * @param vertexSet: the set of vertex. 
      */    
-    MeshFromPoints(const vector<TPoint> &vertexSet);
+    MeshFromPoints(const std::vector<TPoint> &vertexSet);
 
     /**
      * Destructor.
@@ -216,13 +225,13 @@ namespace DGtal
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int nbFaces() const;
+    unsigned int nbFaces() const;
 
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
      **/
-    const unsigned int  nbVertex() const;
+    unsigned int  nbVertex() const;
     
     
     
@@ -255,10 +264,13 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    vector<MeshFace>  myFaceList;
-    vector<TPoint>  myVertexList;
-    vector<DGtal::Color> myFaceColorList;
+    std::vector<MeshFace>  myFaceList;
+    std::vector<TPoint>  myVertexList;
+    std::vector<DGtal::Color> myFaceColorList;
     bool mySaveFaceColor;
+    DGtal::Color myDefaultColor;
+    
+
     
     // ------------------------- Hidden services ------------------------------
   protected:

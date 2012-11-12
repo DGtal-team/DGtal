@@ -77,8 +77,14 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
  
   Point res; 
 
+#ifdef CPP11_ARRAY
+  typename std::array<Dimension,dimension>::const_iterator it = myDims.begin(); 
+  typename std::array<Dimension,dimension>::const_iterator itEnd = myDims.end();
+#else
   typename boost::array<Dimension,dimension>::const_iterator it = myDims.begin(); 
   typename boost::array<Dimension,dimension>::const_iterator itEnd = myDims.end();
+#endif  
+
   Dimension k = 0; 
   for ( ; it != itEnd; ++it, ++k)
   {

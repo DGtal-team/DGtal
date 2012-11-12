@@ -42,6 +42,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/kernel/sets/SetPredicate.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -100,14 +102,16 @@ bool testDistanceTransformation()
       a[1] = ( k % 7 ) + 5;
       image.setValue ( a, 128 );
     }
+  a= Point(2,2);
 
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
 
-
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity ( image );
-
+  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b),aPredicate);
+  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
+  
+  dt.checkTypesValidity ( );
+  
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
@@ -119,22 +123,17 @@ bool testDistanceTransformation()
   
   
   
-  ImageLong result = dt.compute ( image );
+  ImageLong result = dt.compute (  );
   
   trace.warning() << result << endl;
   //We just iterate on the Domain points and print out the point coordinates.
   ImageLong::ConstIterator it = result.begin();
-  for (unsigned int y = 2; y < 16; y++)
+  ImageLong::ConstIterator itend = result.end();
+  for (; it != itend; ++it)
     {
-      for (unsigned int x = 2; x < 16; x++)
-	{
-	  std::cout << (*it) << " ";
-	  ++it;
-	}
-      std::cout << std::endl;
+      std::cout << (*it) << " ";
     }
-
-
+  std::cout << std::endl;
 
   board.clear();
   Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
@@ -156,7 +155,7 @@ bool testDistanceTransformationNeg()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing the whole DT computation" );
+  trace.beginBlock ( "Testing the Neg DT computation" );
 
   typedef SpaceND<2> TSpace;
   typedef TSpace::Point Point;
@@ -177,10 +176,14 @@ bool testDistanceTransformationNeg()
 	  image.setValue(Point(x,y),0);
       }
   
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
 
-  dt.checkTypesValidity ( image );
+ 
+  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b), aPredicate);
+  typedef DistanceTransformation<TSpace,Predicate, 2>::OutputImage ImageLong;
+
+  dt.checkTypesValidity (  );
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
@@ -198,7 +201,7 @@ bool testDistanceTransformationNeg()
     }
   
 
-  ImageLong result = dt.compute ( image );
+  ImageLong result = dt.compute (  );
   
   DGtal::int64_t maxv=0;
   for(ImageLong::Iterator it = result.begin(), itend = result.end();
@@ -245,24 +248,29 @@ bool testDTFromSet()
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   typedef HueShadeColorMap<DGtal::uint64_t, 2> Hue;
 
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
-  DistanceTransformation<Image, 0> dt0;
-  typedef DistanceTransformation<Image, 0>::OutputImage ImageLong0;
-  DistanceTransformation<Image, 1> dt1;
-  typedef DistanceTransformation<Image, 1>::OutputImage ImageLong1;
-  
+ 
   Board2D board;
-
+  
   AccFlower2D<Z2i::Space> flower(Z2i::Point(0,0), 30, 5,2,0);
   Z2i::Domain domain(flower.getLowerBound(), flower.getUpperBound());
   Z2i::DigitalSet aSet(domain);
   
   Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
-  ImageLong result = dt.compute ( aSet );
-  ImageLong0 result0 = dt0.compute ( aSet );
-  ImageLong1 result1 = dt1.compute ( aSet );
+  SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
+
+
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 2> dt(domain,aPredicate);
+  typedef DistanceTransformation<TSpace,SetPredicate<Z2i::DigitalSet>, 2>::OutputImage ImageLong;
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0> dt0(domain,aPredicate);
+  typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0>::OutputImage ImageLong0;
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 1> dt1(domain,aPredicate);
+  typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>,1>::OutputImage ImageLong1;
+  
+
+  ImageLong result = dt.compute (  );
+  ImageLong0 result0 = dt0.compute (  );
+  ImageLong1 result1 = dt1.compute (  );
   
   trace.warning() << result << endl;
  
@@ -328,11 +336,13 @@ bool testDistanceTransformationBorder()
 
   randomSeeds(image, 19, 0);
 
- 
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
 
-  dt.checkTypesValidity ( image );
+  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
+  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
+
+  dt.checkTypesValidity (  );
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
@@ -340,7 +350,7 @@ bool testDistanceTransformationBorder()
   board.saveSVG ( "image-preDT-border.svg" );
 
 
-  ImageLong result = dt.compute ( image );
+  ImageLong result = dt.compute (  );
 
   DGtal::int64_t maxv = 0;
   for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
@@ -404,12 +414,16 @@ bool testDistanceTransformation3D()
 	image.setValue ( *it, 128 );
     }
   
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
+  
 
-  dt.checkTypesValidity ( image );
+  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
+  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
 
-  ImageLong result = dt.compute ( image );
+  dt.checkTypesValidity (  );
+
+  ImageLong result = dt.compute (  );
 
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
@@ -449,17 +463,21 @@ bool testTypeValidity()
   Point b ( 15, 15 );
   typedef ImageSelector<Domain, unsigned int>::Type Image;
   Image image ( Domain(a, b ));
- 
-  DistanceTransformation<Image, 2> dt;
-  typedef DistanceTransformation<Image, 2>::OutputImage ImageLong;
 
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
+  
+  
+  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
+  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
+  
   //No problem should be reported on the std:cerr.
-  dt.checkTypesValidity ( image );
+  dt.checkTypesValidity (  );
 
-  DistanceTransformation<Image, 34> dt34;
+  DistanceTransformation<TSpace, Predicate, 34> dt34(Domain(a,b), aPredicate);
 
   //Type problem should be reported.
-  dt34.checkTypesValidity ( image );
+  dt34.checkTypesValidity (  );
 
   trace.endBlock();
   return nbok == nb;
@@ -493,23 +511,25 @@ bool testChessboard()
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
 
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
+  
+  
   //L_euc metric
-  typedef DistanceTransformation<Image, 2> DT2;
-  DT2 dt2;
+  typedef DistanceTransformation<TSpace,Predicate, 2> DT2;
+  DT2 dt2(Domain(a,b), aPredicate);
   
   //L_infinity metric
-  typedef DistanceTransformation<Image, 0> DT;
-  DT dt;
+  typedef DistanceTransformation<TSpace,Predicate, 0> DT;
+  DT dt(Domain(a,b), aPredicate);;
   
   //L_1 metric
-  typedef DistanceTransformation<Image, 1> DT1;
-  DT1 dt1;
+  typedef DistanceTransformation<TSpace,Predicate, 1> DT1;
+  DT1 dt1(Domain(a,b), aPredicate);;
   
-  dt.checkTypesValidity ( image );
-
-  DT::OutputImage result = dt.compute ( image );
-  DT1::OutputImage result1 = dt1.compute ( image );
-  DT2::OutputImage result2 = dt2.compute (image);
+  DT::OutputImage result = dt.compute (  );
+  DT1::OutputImage result1 = dt1.compute (  );
+  DT2::OutputImage result2 = dt2.compute ();
 
   DGtal::int64_t maxv = 0;
   for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
