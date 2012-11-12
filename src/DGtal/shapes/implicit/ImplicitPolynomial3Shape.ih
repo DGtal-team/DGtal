@@ -208,16 +208,16 @@ gaussianCurvature( const RealPoint &aPoint ) const
   double vFxy= myFxy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFxz= myFxz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-  double vFyx= myFyx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  //double vFyx= myFyx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFyy= myFyy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFyz= myFyz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
 
-
-  double vFzx = myFzx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  
+  /*double vFzx = myFzx( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
   double vFzy = myFzy( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
+  */
   double vFzz = myFzz( aPoint[ 0 ] )( aPoint[ 1 ] )( aPoint[ 2 ] );
-
-
+ 
 
   double A = vFz*(vFxx*vFz-2.0*vFx*vFxz)+vFx*vFx*vFzz;
 
@@ -249,13 +249,13 @@ typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint
 DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, const double accuracy, 
                                                        const int maxIter, const double gamma ) const
 {
-   RealPoint gradient= (*this).gradient(aPoint);
+   RealPoint agradient= (*this).gradient(aPoint);
    RealPoint X=aPoint;
    int numberIter=0;
    while((fabs((*this)(X))>=accuracy) && (numberIter<maxIter))
    {
-        double norm=gradient.norm();
-	RealPoint normalizedGradient= RealPoint(gradient[0]/norm,gradient[1]/norm,gradient[2]/norm);
+        double norm=agradient.norm();
+	RealPoint normalizedGradient= RealPoint(agradient[0]/norm,agradient[1]/norm,agradient[2]/norm);
         double alpha =gamma;
 	if((*this)(X)>0)
 	{
@@ -267,7 +267,7 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint( const RealPoint &aPoint, 
 	}
 	
 	X=X+normalizedGradient*alpha;
-	gradient=  (*this).gradient(X);
+	agradient=  (*this).gradient(X);
 	numberIter++;
    }
 	return X;

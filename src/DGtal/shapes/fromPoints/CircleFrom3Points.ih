@@ -183,7 +183,7 @@ DGtal::CircleFrom3Points<TPoint>::getCurvature() const
      +std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]-myP[1]),2.0 );
 
   //curvature
-  return ( areaD/std::sqrt(a)*std::sqrt(b)*std::sqrt(c) );
+  return -( areaD/ (std::sqrt(a)*std::sqrt(b)*std::sqrt(c)) );
 }
 
 

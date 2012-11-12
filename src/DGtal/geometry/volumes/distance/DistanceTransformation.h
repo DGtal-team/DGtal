@@ -46,11 +46,10 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/BasicFunctors.h"
-#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
 
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
@@ -65,60 +64,71 @@ namespace DGtal
   /**
    * Description of template class 'DistanceTransformation' <p>
    * \brief Aim: Implementation of the linear in time distance
-   * transformation.
+   * transformation for separable metrics.
    *  
-   * @tparam Image an input image type.
+   * Given a point predicate and a domain, the compute() method
+   * returns for each point of the domain, the closest distance to a
+   * point in the domain for which the predicate is false. The result
+   * is given as a map point<->values implemented as an image
+   * model OutputImage.
+   *
+   * The point predicate could be:
+   *  - the result of the thresholding of an image (for example using SimpleThresholdForegroundPredicate)
+   *  - a predicate constructed from a digital set (for example using SetPredicate)
+   *  - ...
+   *
+   * @tparam TSpace type of Digital Space (model of CSpace).
+   * @tparam TPointPredicate point predicate returning true for points
+   * from which we compute the distance (model of CPointPredicate)
    * @tparam p the static integer value to define the l_p metric.
    * @tparam IntegerLong (optional) type used to represent exact
    * distance value according to p (default: DGtal::uint64_t)
    *
-   * Example:
-   * @code
-   * //Types definition
-   * typedef ImageSelector<Domain, unsigned int>::Type Image; //image with "unsigned in value type
-   *
-   * //Distance transformation for the l_2 metric
-   * typedef DistanceTransformation<Image, 2> DTl2; 
-   * DTl2 dt; 
-   *
-   * // ...
-   * //Construction of an instance "image" of Image (with an io reader for instance)
-   * // ...
-   *
-   * //EDT computation
-   * DTl2::OutputImage result = dt.compute(image);
-   *
-   * @endcode  
+   * @see distancetransform2D.cpp
+   * @see distancetransform3D.cpp
    */
-  template <typename Image, DGtal::uint32_t p, typename IntegerLong = DGtal::int64_t >
+  template < typename TSpace,
+             typename TPointPredicate,
+             DGtal::uint32_t p, 
+             typename IntegerLong = DGtal::int64_t>
   class DistanceTransformation
   {
 
   public:
     
-    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
+    BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+  
     
+    ///Copy of the space type.
+    typedef TSpace Space;
+
+    ///Copy of the point predicate type.
+    typedef TPointPredicate PointPredicate;
+
+    ///Definition of the underlying domain type.
+    typedef HyperRectDomain<Space> Domain;
 
     ///Type of resulting image
-    typedef ImageContainerBySTLVector<  HyperRectDomain<typename Image::Domain::Space> , IntegerLong > OutputImage;
-  
-    typedef typename Image::Value Value;
-    typedef typename Image::Vector Vector;
-    typedef typename Image::Point Point;
-    typedef typename Image::Dimension Dimension;
-    typedef typename Image::Size Size;
-    typedef typename Image::Domain Domain;
-    typedef typename Image::Domain::Space::Point::Coordinate Abscissa;
+    typedef ImageContainerBySTLVector<  Domain,
+                                        IntegerLong > OutputImage;
+
+    typedef typename Space::Vector Vector;
+    typedef typename Space::Point Point;
+    typedef typename Space::Dimension Dimension;
+    typedef typename Space::Size Size;
+    typedef typename Space::Point::Coordinate Abscissa;
  
     ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Abscissa ,  IntegerLong , p > SeparableMetric;
+    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
   
 
     /**
-     * Default Constructor
+     *  Constructor
      */
-    DistanceTransformation();
+    DistanceTransformation(const Domain & aDomain,
+                           const PointPredicate & predicate);
 
     /**
      * Default destructor
@@ -128,103 +138,52 @@ namespace DGtal
   public:
 
     /**
+     * Compute the Distance Transformation of a set of point using a 
+     * SeparableMetric metric.  The method associates to each point
+     * with value satisfying the foreground predicate, its distance to
+     * the closest background point.  This algorithm is
+     * O(d.|domain size|).
+     *
+     * @pre the foreground point predicate @a predicate must be defined on the
+     * domain @a aDomain
+     *
+     * @return the distance transformation image.
+     */
+    OutputImage compute( ) ;
+
+
+    /**
      * Check the validity of the transformation. For instance, we
      * check that the output image pixel range is ok with respect to
-     * the input image range and the SeparableMetric.
+     * the domain extent and the SeparableMetric.
      *
      * Warning and advices are printed in the trace system.
      *
-     * @param aImage the image used to check the type consistency.
      * @return true if a warning has been raised. 
      */
-    bool checkTypesValidity(const Image & aImage);
-
-    /**
-     * Compute the Distance Transformation of an image with the SeparableMetric metric.
-     * The method associates to each point with value satisfying the
-     * foreground predicate, its distance to the closest background point.
-     * This algorithm is  O(d.|inputImage|).
-     *
-     * @pre the @a foregroundPredicate must have been constructed from
-     * a reference to @a inputImage.
-     *
-     * @param inputImage the input image
-     * @param foregroundPredicate a predicate to detect foreground
-     * point from the image valuetype
-     * @return the distance transformation image with the Internal format.
-     */
-    template <typename ForegroundPredicate>
-    OutputImage compute(const Image & inputImage, 
-			const ForegroundPredicate & predicate   );
+    bool checkTypesValidity () const;
     
-    /**
-     * Compute the Distance Transformation of an image with the SeparableMetric metric.
-     * The method associates to each point with value satisfying the
-     * foreground predicate (by default, values greater than 0), its
-     * distance to the closest background point.
-     * This algorithm is  O(d.|inputImage|).
-     *
-     * @param inputImage the input image
-     * @return the distance transformation image with the Internal format.
-     */
-    OutputImage compute(const Image & inputImage )
-    {
-      typedef Thresholder<typename Image::Value,false,false> Binarizer; 
-      Binarizer b(0); 
-      PointFunctorPredicate<Image,Binarizer> predicate(inputImage, b);
- 
-      return compute(inputImage, predicate);
-    };
-
-    /**
-     * Compute the Distance Transformation of a Set with the SeparableMetric metric.
-     * This method first converts the digital set of an image and
-     * compute the DT in O(d.N) where N is the number of grid points
-     * of the bounding box of the set (and d the dimension). The
-     * bounding box is enlarged by 1 point in each direction if the
-     * addBoundary parameter is true (default value). 
-     *
-     * @param inputSet  the input set of grid points.
-     * @param addBoundary if true (default value), we add a boundary
-     * of thickness one to the bounding box (to make sure that all
-     * grid points of aSet belonging to the boundary  have a DT of
-     * value 1 (for the L2 and L1 case).
-     *
-     * @return the distance transformation image with the Internal format.
-     */
-    template<typename DigitalSet>
-    OutputImage compute(const DigitalSet & inputSet, 
-			const bool addBoundary=true );
-
-   
-
+    
     // ------------------- Private functions ------------------------
   private:
-
+    
+    
     /** 
      * Compute the first step of the separable distance transformation.
      * 
      * @param output the output image with the first step DT values
-     * @param predicate the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    template <typename ForegroundPredicate>
-    void computeFirstStep(OutputImage & output, 
-			  const ForegroundPredicate &predicate) const;
+    void computeFirstStep(OutputImage & output) const;
 
     /** 
      * Compute the 1D DT associated to the first step.
      * 
      * @param output the output image  with the first step DT values
      * @param startingPoint a point to specify the starting point of the 1D row
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    template <typename ForegroundPredicate>
     void computeFirstStep1D (OutputImage & output, 
-			     const Point &startingPoint, 
-			     const ForegroundPredicate &predicate) const;
-
+			     const Point &startingPoint) const;
+    
     /** 
      *  Compute the other steps of the separable distance transformation.
      * 
@@ -233,7 +192,9 @@ namespace DGtal
      * @param output the output image 
      * @param dim the dimension to process
      */    
-    void computeOtherSteps(const OutputImage & inputImage, OutputImage & output, const Dimension dim)const;
+    void computeOtherSteps(const OutputImage & inputImage,
+                           OutputImage & output,
+                           const Dimension dim) const;
 
     /** 
      * Compute the 1D DT associated to the steps except the first one.
@@ -245,27 +206,45 @@ namespace DGtal
      * @param predicate  the predicate to characterize the foreground
      * (e.g. !=0, see DefaultForegroundPredicate)
      */
-    void computeOtherStep1D (const OutputImage & input, OutputImage & output, 
-           const Point &row, const Size dim, 
-           Abscissa s[], Abscissa t[]) const;
+    void computeOtherStep1D (const OutputImage & input, 
+                             OutputImage & output, 
+                             const Point &row, 
+                             const Size dim, 
+                             Abscissa s[], Abscissa t[]) const;
+    
 
+    // ------------------- protected methods ------------------------
+  protected:
 
+    /** 
+     * Default Constructor.
+     * 
+     */
+    DistanceTransformation();
+   
+    
     // ------------------- Private members ------------------------
   private:
 
     ///The separable metric instance
     SeparableMetric myMetric;
 
+    ///Copy of the computation domain
+    const Domain & myDomain;
+    
+    ///Copy of the computation domain
+    const PointPredicate  & myPointPredicate;
+    
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
-
+    
     ///Copy of the image lower bound
     Point myUpperBoundCopy;
-
+    
     ///Displacement vector to translate temporary images.
     Vector myDisplacementVector;
 
-    ///Copy of the image extent
+    ///Copy of the domain extent
     Point myExtent;
 
     ///Value to act as a +infinity value

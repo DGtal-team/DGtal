@@ -127,7 +127,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Theta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
@@ -136,7 +136,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (gradf(M).
      */
@@ -144,7 +144,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
      */
@@ -154,7 +154,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
      */
@@ -163,7 +163,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (rtt(M)) wich is second the partial
      * derivative with respect to Teta(twice).
@@ -174,7 +174,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Phi.
@@ -183,7 +183,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (rpp(M)) wich is second the partial
      * derivative with respect to Teta then Phi.
@@ -218,7 +218,7 @@ namespace DGtal
     
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector (x'(t),y'(t),z'(t)) made unitary which is
      * the unit tangent to the shape boundary.
@@ -232,7 +232,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the vector normal made unitary which is the unit
      * normal to the shape boundary looking inside the shape.
@@ -241,7 +241,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      *
      * @return the gaussian curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -252,7 +252,7 @@ namespace DGtal
 
     /**
      * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]
+     * respectivly between [0,2PI] and [0,Pi]
      *
      * @return the mean curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -263,9 +263,9 @@ namespace DGtal
 
     /**
      * @param t1 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      * @param t2 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]. further from
+     * respectivly between [0,2PI] and [0,Pi]. further from
      * [t1].
      * @param nb the number of points used to estimate the arclength
      * between x(Teta1,Phi1) and x(Teta2,Phi2).
@@ -278,9 +278,9 @@ namespace DGtal
 
     /**
      * @param t1 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * respectivly between [0,2PI] and [0,Pi].
      * @param t2 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi]. further from
+     * respectivly between [0,2PI] and [0,Pi]. further from
      * [t1].
      * @param nb the number of points used to estimate the surface
      * between x(Teta1,Phi1) and x(Teta2,Phi2).

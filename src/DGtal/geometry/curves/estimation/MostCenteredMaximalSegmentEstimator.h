@@ -43,11 +43,14 @@
 #include <iostream>
 #include <list>
 
-#include "DGtal/geometry/curves/estimation/SegmentComputerFunctor.h"
-#include "DGtal/geometry/curves/MaximalSegments.h"
-
-#include "DGtal/base/Exceptions.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
+#include "DGtal/base/Circulator.h"
+
+#include "DGtal/geometry/curves/estimation/CSegmentComputerEstimator.h"
+#include "DGtal/geometry/curves/CForwardSegmentComputer.h"
+#include "DGtal/geometry/curves/SaturatedSegmentation.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,20 +60,42 @@ namespace DGtal
   // template class MostCenteredMaximalSegmentEstimator
   /**
    * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim:Computes a quantity to each element of a range associated to 
-   * the most centered maximal segment  
+   * \brief Aim: A model of CLocalCurveGeometricEstimator that assigns to each 
+   * element of a (sub)range a quantity estimated from the most centered 
+   * maximal segment passing through this element. 
+   *
+   Here is a basic example of curvature estimation: 
+   - 1. Construct an instance from a segment computer and a segment computer estimator
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredConstruction
+   - 2. Initialize it with a range @e r and a grid step @e h
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredInit
+   - 3. Get the estimations
+   @snippet geometry/curves/estimation exampleCurvature.cpp MostCenteredEvaluation
+
+   * @tparam SegmentComputer at least a model of CForwardSegmentComputer
+   * @tparam SCEstimator a model of CSegmentComputerEstimator
+   *
+   * @see testMostCenteredMSEstimator.cpp
+   * @see exampleCurvature.cpp
+   * @see SaturatedSegmentation.h 
    */
-  template <typename SegmentComputer, typename Functor>
+  template <typename SegmentComputer, typename SCEstimator>
   class MostCenteredMaximalSegmentEstimator
   {
+
+    BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<SegmentComputer> )); 
+    BOOST_CONCEPT_ASSERT(( CSegmentComputerEstimator<SCEstimator> )); 
+    BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
+			  typename SCEstimator::SegmentComputer >::value ));
 
     // ----------------------- Types ------------------------------
   public:
 
     typedef typename SegmentComputer::ConstIterator ConstIterator;
-    typedef typename Functor::Value Quantity;
+    typedef typename SCEstimator::Quantity Quantity;
 
-    typedef typename deprecated::MaximalSegments<SegmentComputer>::SegmentIterator SegmentIterator; 
+    typedef SaturatedSegmentation<SegmentComputer> Segmentation; 
+    typedef typename Segmentation::SegmentComputerIterator SegmentIterator; 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -83,10 +108,10 @@ namespace DGtal
     /**
      * Constructor.
      * @param aSegmentComputer
-     * @param aFunctor
+     * @param aSCEstimator
      */
     MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
-                                        const Functor& aFunctor);
+                                        const SCEstimator& aSCEstimator);
 
     /**
      * Destructor.
@@ -101,24 +126,31 @@ namespace DGtal
      * @param h grid size (must be >0).
      * @param itb, begin iterator
      * @param ite, end iterator
-     * @param aSegmentComputer
-     * @param isClosed true if the input range is viewed as closed.
      */
-    void init(
-      const double h, 
-      const ConstIterator& itb, const ConstIterator& ite,
-      const bool& isClosed);
+    void init(const double h, const ConstIterator& itb, const ConstIterator& ite);
 
     /**
+     * Unique estimation 
+     * @param it any valid iterator
      * @return the estimated quantity at *it
-     * NB: O(n)
+     *
+     * NB: the whole range [@e myBegin , @e myEnd)| 
+     * is scanned in the worst case
      */
     Quantity eval(const ConstIterator& it);
 
     /**
+     * Estimation for a subrange [@e itb , @e ite )
+     *
+     * @param itb subrange begin iterator
+     * @param ite subrange end iterator     
+     * @param result output iterator on the estimated quantity
+     *
      * @return the estimated quantity
-     * from itb till ite (exculded)
-     * NB: O(n)
+     * from itb till ite (excluded)
+     *
+     * NB: the whole range [@e myBegin , @e myEnd)| 
+     * is scanned in the worst case
      */
     template <typename OutputIterator>
     OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
@@ -139,35 +171,48 @@ namespace DGtal
 
     /** grid step */
     double myH; 
-    /** 'true' is the initialization has been done, 'false' otherwise */
-    bool myFlagIsInit;
-    /** 'true' if the range is viewed as closed, 'false' otherwise */ 
-    bool myFlagIsClosed;
-    /** segmentComputer used to decompose the range */ 
-    SegmentComputer mySC; 
-    /** functor estimating the quantity from a point and a segmentComputer */ 
-    Functor myFunctor;
+
     /** begin and end iterators */ 
     ConstIterator myBegin,myEnd;
-    /** range of maximal segments */ 
-    deprecated::MaximalSegments<SegmentComputer> myMSRange; 
+
+    /** segmentComputer used to segment */ 
+    SegmentComputer mySC; 
+
+    /** object estimating the quantity from segmentComputer */ 
+    SCEstimator mySCEstimator;
 
     // ------------------------- Internal services ------------------------------
 
   private:
 
     /**
-     * @return the ConstIterator that is between 
-     * the back ConstIterator of [it2] b and 
-     * the front ConstIterator of [it1] f
-     * if b < f and b otherwise
+     * Specialization of the end of the algorithm
+     *
+     * @param itb subrange begin iterator
+     * @param ite subrange end iterator     
+     * @param itCurrent current iterator
+     * @param first iterator on the first maximal segment
+     * @param last iterator on the last maximal segment
+     * @param result output iterator on the estimated quantity
+     *
+     * @return the estimated quantity
+     * from itCurrent till ite (excluded)
+     * NB: O(n)
      */
-    ConstIterator nextStepEnd(const SegmentIterator& it1, const SegmentIterator& it2);
-    /**
-     * Same as nextStepEnd but if the range is processed as closed
-     */
-    ConstIterator nextStepEndInLoop(const SegmentIterator& it1, const SegmentIterator& it2);
+    template <typename OutputIterator>
+    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent, 
+			   SegmentIterator& first, SegmentIterator& last, 
+			   OutputIterator result); 
 
+    template <typename OutputIterator>
+    OutputIterator endEval(const ConstIterator& /*itb*/, const ConstIterator& ite, ConstIterator& itCurrent, 
+			   SegmentIterator& /*first*/, SegmentIterator& last, 
+			   OutputIterator result, IteratorType); 
+
+    template <typename OutputIterator>
+    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent, 
+			   SegmentIterator& first, SegmentIterator& last, 
+			   OutputIterator result, CirculatorType); 
 
     // ------------------------- Hidden services ------------------------------
 
@@ -197,6 +242,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
 #include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.ih"
+#include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
