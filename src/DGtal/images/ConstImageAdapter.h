@@ -61,15 +61,20 @@ namespace DGtal
 // Template class ConstImageAdapter
 /**
  * Description of template class 'ConstImageAdapter' <p>
- * \brief Aim: implements a const image adapter with a given domain (i.e. a subdomain) and 2 functors : g for domain, f for reading value.
+ * \brief Aim: implements a const image adapter with a given domain
+ * (i.e. a subdomain) and 2 functors : g for domain, f for accessing point values.
  *
- * This class is (like Image class) a lightweight proxy on ImageContainers (models of CImage).
- * It uses a given Domain (i.e. a subdomain) but work directly (for reading process) thanks to an alias (i.e. a pointer) on the original ImageContainer in argument.
+ * This class is (like Image class) a lightweight proxy on any models of CImage.
+ * It uses a given Domain (i.e. a subdomain) but work directly (for
+ * accessing process) thanks to an alias (i.e. a pointer) on the
+ * original Image given in argument.
+ *
  * ConstImageAdapter class is also a model of CImage.
  * 
  * Caution :
- *  - ConstImageAdapter Domain Space dimension must be the same than the original ImageContainer Domain Space dimension,
- *  - the type of value of Point for the ConstImageAdapter Domain must also be the same than the type of value of Point for the original ImageContainer.
+ *  - the type of value of Point for the ConstImageAdapter Domain must
+ * also be the same than the type of value of Point for the original
+ * ImageContainer.
  *
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TNewDomain a domain.
@@ -77,10 +82,10 @@ namespace DGtal
  * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
  *
- * The values associated to reading the points are adapted  
+ * The values associated to accessing the point values  are adapted  
  * with a functor g and a functor f given at construction so that 
  * operator() calls f(img(g(aPoint))), instead of calling directly 
- * operator() of the underlying image img
+ * operator() of the underlying image img.
  * 
  * Here is the construction of a simple image adapter that 
  * is a thresholded view of the initial scalar image: 
@@ -93,7 +98,10 @@ namespace DGtal
  * The pointed objects must exist and must not be deleted 
  * during the use of the adapter
  */
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD/*=DefaultFunctor*/, typename TNewValue, typename TFunctorV/*=DefaultFunctor*/>
+template <typename TImageContainer, 
+	  typename TNewDomain,
+	  typename TFunctorD,
+	  typename TNewValue, typename TFunctorV>
 class ConstImageAdapter
 {
 
@@ -116,10 +124,6 @@ public:
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
   
-
-    ///Pointer to the image container data.
-    typedef TImageContainer* ImagePointer;
-
     typedef DefaultConstImageRange<Self> ConstRange;
 
     // ----------------------- Standard services ------------------------------
@@ -127,7 +131,7 @@ public:
 public:
 
     ConstImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
-            myImagePointer(&anImage), mySubDomain(aDomain), myFD(&aFD), myFV(&aFV)
+            myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
     {
 #ifdef DEBUG_VERBOSE
         trace.warning() << "ConstImageAdapter Ctor fromRef " << std::endl;
@@ -146,8 +150,8 @@ public:
 #endif
         if (&other != this)
         {
-            myImagePointer = other.myImagePointer;
-            mySubDomain = other.mySubDomain;
+            myImagePtr = other.myImagePtr;
+            mySubDomainPtr = other.mySubDomainPtr;
             myFD = other.myFD;
             myFV = other.myFV;
         }
@@ -173,7 +177,7 @@ public:
      */
     const Domain & domain() const
     {
-        return mySubDomain;
+      return (*mySubDomainPtr);
     }
 
     /**
@@ -203,7 +207,7 @@ public:
     {
         ASSERT(this->domain().isInside(aPoint));
         
-        return myFV->operator()(myImagePointer->operator()(myFD->operator()(aPoint)));
+        return myFV->operator()(myImagePtr->operator()(myFD->operator()(aPoint)));
     }
     
     
@@ -224,17 +228,17 @@ public:
      */
     bool isValid() const
     {
-        return (myImagePointer->isValid() );
+        return (myImagePtr->isValid() );
     }
 
 
     /**
      * Returns the pointer on the Image container data.
-     * @return a const ImagePointer.
+     * @return a const ImagePtr.
      */
     const ImageContainer * getPointer() const
     {
-        return myImagePointer;
+        return myImagePtr;
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -252,12 +256,12 @@ private:
 protected:
 
     /// Alias on the image container
-    ImagePointer myImagePointer; // not const because of operator=
+  const ImageContainer * myImagePtr; // not const because of operator=
     
     /**
      * The image SubDomain
      */
-    Domain mySubDomain;
+  const Domain *mySubDomainPtr;
     
     /**
      * Aliasing pointer on the underlying Domain functor
