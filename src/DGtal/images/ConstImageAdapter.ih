@@ -56,7 +56,7 @@ inline
 void
 DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[ConstImageAdapter] " << myImagePointer ;
+  out << "[ConstImageAdapter] " << (*myImagePtr) ;
 }
 
 
