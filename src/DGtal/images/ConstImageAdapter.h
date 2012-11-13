@@ -82,7 +82,7 @@ namespace DGtal
  * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
  *
- * The values associated to accessing the point values  are adapted  
+ * The values associated to accessing the point values are adapted  
  * with a functor g and a functor f given at construction so that 
  * operator() calls f(img(g(aPoint))), instead of calling directly 
  * operator() of the underlying image img.
@@ -256,12 +256,12 @@ private:
 protected:
 
     /// Alias on the image container
-  const ImageContainer * myImagePtr; // not const because of operator=
+    const ImageContainer * myImagePtr;
     
     /**
      * The image SubDomain
      */
-  const Domain *mySubDomainPtr;
+    const Domain *mySubDomainPtr;
     
     /**
      * Aliasing pointer on the underlying Domain functor
