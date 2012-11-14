@@ -916,7 +916,6 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
   Colormap colormap(minV, maxV);
   Color c;
   typename Image::Value val;
-
   for (typename Image::Domain::ConstIterator it =  i.domain().begin();
        it != i.domain().end(); ++it)
   {
@@ -924,9 +923,9 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename Image::Domain::Space::Integer>::
-                         castToInt64_t((*it)[0]) - 0.5, 
+                         castToDouble((*it)[0]) - 0.5, 
                          NumberTraits<typename Image::Domain::Space::Integer>::
-                         castToInt64_t((*it)[1]) + 0.5, 1, 1);
+                         castToDouble((*it)[1]) + 0.5, 1, 1);
   }
 }
 // // ImageContainerBySTLVector

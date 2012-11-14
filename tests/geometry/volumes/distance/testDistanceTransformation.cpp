@@ -245,9 +245,11 @@ bool testDistanceTransformationNeg()
     }
  
   trace.info()<<"Domain "<<Domain(a,b)<<std::endl;
-  DistanceTransformation<TSpace, Predicate , L2Metric> dt(Domain(a,b), aPredicate, L2Metric());
+  Domain dom(a,b);
+  L2Metric l2();
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(dom, aPredicate, l2);
    
-  DGtal::int64_t maxv=0;
+  DistanceTransformation<TSpace, Predicate , L2Metric>::Value maxv=0.0;
   for(DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), 
         itend = dt.constRange().end();
       it != itend ; ++it)
@@ -266,12 +268,16 @@ bool testDistanceTransformationNeg()
 
 
   trace.warning() << dt << endl;
+  trace.warning() << dt.domain() << endl;
 
+
+  trace.info() << "Exporting..." << endl;
   board.clear();
-  Display2DFactory::drawImage<Gray>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)maxv);
+  Display2DFactory::drawImage<Gray>(board, dt, 0, maxv);
   board.saveSVG ( "image-postDT-neg.svg" );
 
-
+  trace.info() << "Done..." << endl;
+ 
   trace.info() << dt << endl;
 
   trace.endBlock();
@@ -303,21 +309,22 @@ bool testDTFromSet()
   Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
   SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
-
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,2> L2Metric;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric> dt(domain,aPredicate, L2Metric());
+  L2Metric l2();
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric> dt(domain,aPredicate, l2);
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,1> L1Metric;
+  L1Metric l1();
   //  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0> dt0(domain,aPredicate);
   //typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0>::OutputImage ImageLong0;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric> dt1(domain,aPredicate, L1Metric());
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric> dt1(domain,aPredicate, l1);
  
-  DGtal::int64_t maxv = 0;
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::Value maxv = 0;
   for ( DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, dt, 0, maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
   
   /* board.clear();
@@ -338,7 +345,7 @@ bool testDTFromSet()
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, dt1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, dt1, 0, maxv+1);
   board.saveSVG ( "image-DTSet-l1.svg" );
   trace.endBlock();
 
@@ -378,14 +385,15 @@ bool testDistanceTransformationBorder()
   Predicate aPredicate(image,0);
 
   typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
-  DistanceTransformation<TSpace, Predicate, L2Metric> dt(Domain(a,b), aPredicate, L2Metric());
+  L2Metric l2();
+  DistanceTransformation<TSpace, Predicate, L2Metric> dt(Domain(a,b), aPredicate, l2);
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue>(board, image, (unsigned int)0, (unsigned int)150);
   board.saveSVG ( "image-preDT-border.svg" );
 
-  DGtal::int64_t maxv = 0;
+  DistanceTransformation<TSpace, Predicate, L2Metric>::Value maxv = 0;
   for ( DistanceTransformation<TSpace, Predicate, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -451,6 +459,7 @@ bool testDistanceTransformation3D()
   Predicate aPredicate(image,0);
   
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
   DistanceTransformation<TSpace, Predicate, L2Metric> dt(Domain(a,b), aPredicate, L2Metric());
 
   //We display the values on a 2D slice
