@@ -67,7 +67,8 @@ namespace DGtal
  * This class is (like Image class) a lightweight proxy on ImageContainers (models of CImage).
  * It uses a given Domain (i.e. a subdomain) but work directly (for
  * reading and writing processes) thanks to an alias (i.e. a pointer) on the
- * original ImageContainer in argument.
+ * original Image given in argument.
+ * 
  * ImageAdapter class is also a model of CImage.
  * 
  * Caution :
