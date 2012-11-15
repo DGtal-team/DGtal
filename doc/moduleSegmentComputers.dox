@@ -1,0 +1,210 @@
+/**
+ * @file moduleSegmentComputers.dox
+ * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
+ * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
+ *
+ * @date 2012/10/02
+ *
+ * Documentation file for feature moduleSegmentComputers
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleSegmentComputers Documentation for moduleSegmentComputers
+@writers Isabelle Sivignon
+
+
+
+This part of the manual describes the algorithms implemented in DGtal to
+compute segments on one-dimensional digital curves, as defined in the
+section \ref modulegeometry2d.  
+
+
+Table of contents:
+ -# \ref sectmoduleDSS
+   -# \ref subsectmoduleArithDSS
+   -# \ref subsectmoduleGeomDSS
+   -# \ref subsectmoduleCombinatorialDSS
+ -# \ref sectmoduleOther 
+   -# \ref subsectmoduleGeomDCA
+   -# \ref subsectmoduleFrechetShortcut
+ -# \ref sectmodule3D
+   -# \ref subsectmoduleArithDSS3D
+
+\section sectmoduleDSS Digital Straight Segments
+
+\subsection subsectmoduleArithDSS Arithmetical DSS
+
+\subsection subsectmoduleGeomDSS Geometrical DSS
+
+\subsection subsectmoduleCombinatorialDSS Combinatorial DSS
+
+\section sectmoduleOther Other primitives
+
+\subsection subsectmoduleGeomDCA Geometrical Digital Circular Arc
+
+\subsection subsectmoduleFrechetShortcut Frechet shortcut
+
+\par Overview
+
+
+The algorithm implemented is the one presented in the article [1].
+
+Given a polygonal curve, the curve simplification problem consists in
+computing another polygonal curve that (i) approximates the original
+curve, (ii) satisfies a given error criterion, (iii) with as few
+vertices as possible. This problem arises in a wide range of
+applications, such as geographic information systems (GIS), computer
+graphics or computer vision, where the management of the level of
+details is of crucial importance to save memory space or to speed-up
+analysis algorithms. 
+
+Given a 4- or 8-connected digital curve and a maximum error, we propose an algorithm that
+computes a simplification of the curve (a polygonal curve) such that the Fréchet distance
+between the original and the simplified curve is less than the
+error. The Fréchet distance is known to nicely measure the similarity
+between two curves. It can be intuitively defined considering a man
+walking his dog. Each protagonist walks along a path, and controls its
+speed independently, but cannot go backwards. The Fréchet distance
+between the two pathes is the minimal length of the leash required. 
+ 
+The algorithm implemented uses an approximation of the Fréchet distance,
+but a guarantee over the quality of the simplification is
+proved. Moreover, even if the theoretical complexity of the algorithm is
+in O(n log(n)), experiments show a linear behaviour in practice. 
+
+
+\par Fréchet distance
+
+Given two curves @f$ f @f$ and @f$ g @f$ specified by functions @f$ f:[0,1] \rightarrow
+\mathbb{R}^2  @f$ and  @f$g:[0,1] \rightarrow \mathbb{R}^2 @f$, and two       
+non-decreasing continuous functions @f$ \alpha:[0,1] \rightarrow [0,1] @f$ and 
+@f$ \beta:[0,1] \rightarrow [0,1] @f$ with
+@f$ \alpha(0)=0,\alpha(1)=1,\beta(0)=0,\beta(1)=1 @f$, the **Fréchet distance**
+@f$ \delta_F(f,g) @f$ between two curves f and g is defined as 
+
+@f$ \delta_F(f,g)=\inf_{\alpha,\beta} \max_{0\leq t \leq 1}
+d(f(\alpha(t)),g(\beta(t))) @f$
+
+As illustrated in the figure below, contrary to the Hausdorff distance
+denoted by @f$ \delta_H(f,g) @f$,
+the Fréchet distance takes into account the course of the curves. 
+
+
+@image html hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance"
+@image latex hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance" width=5cm
+
+
+\par Curve simplification problem 
+
+Given a polygonal curve @f$ P=\langle p_1,\dots p_n\rangle @f$, A curve
+@f$ P'=\langle p_{i_1},\dots p_{i_k}\rangle @f$  with @f$ 1=i_1 < \dots < i_k=n @f$
+is said to @b simplify the curve @f$ P @f$. @f$ P(i,j) @f$ denotes the subpath
+from @f$ p_i @f$ to @f$ p_j @f$. 
+
+Given a pair of indices @f$ 1 \leq i \leq j
+\leq n @f$, @f$ \delta_F(p_ip_j,P) @f$ denotes the Fréchet
+distance between the segment
+@f$ p_ip_j @f$ and the
+part @f$ P(i,j) @f$ of the curve. For the sake of clarity, the simplified notation
+@f$ error(i,j) =  \delta_F(p_ip_j,P) @f$ will sometimes be used. We also
+say that @f$ p_ip_j @f$ is a @b shortcut.  
+
+In other words, the vertices of @f$ P' @f$ form a subset
+of the vertices of @f$ P @f$, and the computation of @f$ P' @f$ comes down to the
+selection of "shortcuts" @f$ p_ip_j @f$. 
+
+@image html curve_simplification.png "The red curve P' is a simplification of the blue curve P"
+@image latex curve_simplification.png "The red curve P' is a simplification of the blue curve P" width=5cm
+
+
+All in all, to <b>find @f$ P' @f$ an @f$ \varepsilon @f$-simplification of</b> @f$ P @f$ we
+have to:
+
+-# <b>Find shortcuts @f$ p_ip_j @f$ such that @f$ error(i,j) = \delta_F(p_ip_j,P) \leq \varepsilon @f$</b>
+-# <b>Minimize the number of vertices of @f$ P' @f$</b>.
+
+The following nice local property of the Fréchet distance proved in [3] will be very useful to
+prove a guarantee on the quality of the result produced by our
+algorithm (see illustration below): 
+
+Let @f$ P=\{p_1, p_2, \dots , p_n\} @f$ be a polygonal curve. \\ For all @f$ i, j, l, r, 1 \leq i\leq l \leq r \leq j \leq
+n @f$, @f$ error(l,r) \leq 2 error(i,j) @f$. 
+
+In other words, the shortcuts of any @f$ \frac{\varepsilon}{2} @f$-simplification cannot strictly enclose the
+shortcuts of a @f$ \varepsilon @f$-simplification.  
+
+@image html local.png "Illustration of the local property."
+@image latex local.png "Illustration of the local property."
+
+
+\par Guaranteed algorithm using an approximated distance 
+
+### Definitions and overall algorithm
+
+Using the exact Fréchet distance appears to be too expensive to design an
+efficient algorithm. Instead, we use an approximation of the
+Fréchet distance proposed in [2]. More precisely, they show that
+<span class="mi">[[!teximg code="error(i,j)" height="8"]]</span> can be upper and lower bounded by functions of two values
+namely <span class="mi">[[!teximg code="\omega(i,j)" height="8"]]</span> and <span class="mi">[[!teximg code="b(i,j)" height="8"]]</span>. <span class="mi">[[!teximg code="\omega(i,j)" height="8"]]</span> is the width of the points of
+<span class="mi">[[!teximg code="P(i,j)" height="8"]]</span> in the direction <span class="mi">[[!teximg code="\overrightarrow{p_ip_j}" height="8"]]</span>. <span class="mi">[[!teximg code="b(i,j)" height="8"]]</span> is the length of the
+longest backpath in the direction <span class="mi">[[!teximg code="\overrightarrow{p_ip_j}" height="8"]]</span>. 
+
+[[!img def_width_backpath.png size=300x caption="Illustration of the
+definition of the width and the backpath length."]][[!img
+def_width_backpath_2.png size=250x caption="When a new point is
+considered, the width and backpath lengths may totally change."]] 
+
+We have the following property [2], which leads to Algorithm 1 below. 
+
+The Fréchet error of a shortcut <span class="mi">[[!teximg code="p_ip_j"
+height="8"]]</span> satisfies:
+
+[[!img approx_distance.png size=500x]]
+
+[[!img algo1.png size=700x]]
+
+
+
+
+
+\par References
+
+
+1. Sivignon, I.: A near-linear time guaranteed algorithm for digital
+curve simplification under the Fréchet distance. In: Discrete Geometry
+for Computer Imagery 2011, Nancy, France. LNCS 6607,
+pp. 33-345. Springer (2011)  http://link.springer.com/chapter/10.1007/978-3-642-19867-0_28
+
+2. Abam, M.A., de Berg, M., Hachenberger, P., Zarei, A.: Streaming
+algorithms for line simplification. In: SCG ’07: Symp. on
+Comput. geometry. pp. 175–183. ACM (2007) 
+
+3. Agarwal, P.K., Har-Peled, S., Mustafa, N.H., Wang, Y.: Near-linear
+time approximation algorithms for curve simplification. Algorithmica
+42(3-4), 203–219 (2005) 
+
+4. Chan, W.S., Chin, F.: Approximation of polygonal curves with minimum
+number of line segments. In: ISAAC ’92: Symp. on Algorithms and
+Computation. pp. 378– 387. Springer-Verlag (1992) 
+
+5. Imai, H., Iri, M.: Polygonal approximations of a curve: formulations
+and algorithms. In: Computational Morphology. pp. 71–86. Elsevier
+Science (1988) 
+
+
+
+\section sectmodule3D 3D
+
+\subsection subsectmoduleArithDSS3D Arithmetical DSS 3D
+
+*/
+
+}
