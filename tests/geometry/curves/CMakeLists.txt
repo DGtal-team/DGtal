@@ -17,6 +17,8 @@ SET(DGTAL_TESTS_SRC
   # testGeometricalDCA
   # testBinomialConvolver
   testDSLSubsegment
+  testLrSBreversedSmartDSS
+  testSBreversedSmartDSS	
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
