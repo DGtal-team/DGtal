@@ -82,7 +82,7 @@ bool testOwningOrAliasingPtr()
 
   ////////////////////////////////////////////
 
-  trace.beginBlock ( "Owning pointer ..." );
+  trace.beginBlock ( "Owning pointer (1/2)..." );
 
   OwningOrAliasingPtr<int> owningPtr(i);
   trace.info() << owningPtr << std::endl; 
@@ -95,6 +95,27 @@ bool testOwningOrAliasingPtr()
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( testCopyAndAssignement(owningPtr) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.endBlock();
+
+  ////////////////////////////////////////////
+
+  trace.beginBlock ( "Owning pointer (2/2)..." );
+
+  OwningOrAliasingPtr<int> owningPtr2(new int(10), true);
+  trace.info() << owningPtr2 << std::endl; 
+  if ( (owningPtr2.isOwning()) && (owningPtr2.get() != &i) && (owningPtr2.isValid()) )
+    nbok++; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testAccessOperators(owningPtr2, *owningPtr2) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testCopyAndAssignement(owningPtr2) )
     nbok++; 
   nb++; 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -127,15 +148,30 @@ bool testOwningOrAliasingPtr()
   return nbok == nb;
 }
 
+class DummyBigObject
+{
+};
+
 template<typename T>
-class Dummy
+class Dummy1
 {
 public: 
   OwningOrAliasingPtr<T> myPtr; 
 public: 
-  Dummy():myPtr(T()) {}         //default-construction
-  Dummy(T* aPtr):myPtr(aPtr) {} //construction from an existing object
+  Dummy1():myPtr(new T(), true) {} //default-construction (owning)
+  Dummy1(T* aPtr):myPtr(aPtr) {}   //construction from an existing object (aliasing)
 }; 
+
+template<typename T>
+class Dummy2
+{
+public: 
+  OwningOrAliasingPtr<T> myPtr; 
+public: 
+  Dummy2(T* aPtr):myPtr(aPtr) {}   //construction from an existing object (aliasing)
+  Dummy2(T data):myPtr(data) {}    //construction with copy (owning)
+}; 
+
 
 /**
  * Basic usage
@@ -145,9 +181,16 @@ bool basicUsage()
 {
   trace.beginBlock ( "Basic usage ..." );
 
+  //1) existing or default-constructed object
   int obj = 5; 
-  Dummy<int> d1;       //default-constructed
-  Dummy<int> d2(&obj); //construction from an existing object
+  Dummy1<int> d1;       //default-constructed
+  Dummy1<int> d2(&obj); //construction from an existing object
+
+  //2) choice with/without copy
+  int smallObj = 5; 
+  Dummy2<int> d3(smallObj);           //small object copied
+  DummyBigObject bigObj; 
+  Dummy2<DummyBigObject> d4(&bigObj); //big object not copied
 
   trace.endBlock();
 
