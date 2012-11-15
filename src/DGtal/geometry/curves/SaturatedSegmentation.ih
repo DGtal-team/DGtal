@@ -140,7 +140,6 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
     DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
 
   } else { //processing of a whole linear range
-
     --i; //set i to the last point (not past-to-last)
     if ((myS->myMode == "First")||(myS->myMode == "First++")) {
 
