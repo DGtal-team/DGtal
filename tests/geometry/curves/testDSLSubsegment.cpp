@@ -50,19 +50,11 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-template <typename Fraction>
-bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, typename Fraction::Integer modb, typename Fraction::Integer modx, int algo )
+template <typename Integer>
+bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Integer modx)
 {
-  typedef StandardDSLQ0<Fraction> DSL;
-  typedef typename Fraction::Integer Integer;
-  typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
-  //typedef typename DSLSubseg::Point Point;
-  typedef typename DSL::Point Point;
-
-  typedef typename Fraction::Quotient Quotient;
-  typedef typename DSL::ConstIterator ConstIterator;
-  typedef typename DSL::Point2I Point2I;
-  typedef typename DSL::Vector2I Vector2I;
+  Typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
+  typedef typename DSLSubseg::Point Point;
   
   
   DGtal::IntegerComputer<Integer> ic;
@@ -81,7 +73,7 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
           for ( unsigned int j = 0; j < 5; ++j )
             {
 	      Integer mu = random() % (moda+modb);
-              DSL D( a, b, mu );
+              //DSL D( a, b, mu );
 	      
 	      mu = -mu;
 	      for (Integer x = 0; x < 10; ++x )
@@ -91,29 +83,12 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		
 		  //std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;
 		  
-		  if(algo == 1 || algo ==2)
-		    {
-		      Point A = D.lowestY( x1 );
-		      Point B = D.lowestY( x2 );
-		      // std::cout << A[0] << " " << A[1] << std::endl;
-		      // std::cout << ic.floorDiv(a*x1+mu,b) << std::endl;
-		      // std::cout << B[0] << " " << B[1] << std::endl;
-		      // std::cout << ic.floorDiv(a*x2+mu,b) << std::endl;
-		      if(algo == 1)
-			D.smartDSS(A,B);
-		      else
-			D.reversedSmartDSS(A,B);
-		    }
-		  else
-		    {
-		      Integer y1 = ic.floorDiv(a*x1+mu,b);
-		      Integer y2 = ic.floorDiv(a*x2+mu,b);
-		      Point A = Point(x1,y1);
-		      Point B = Point(x2,y2);
-		      DSLSubseg DD(a,b,mu,A,B);
-		    }
+		  Integer y1 = ic.floorDiv(a*x1+mu,b);
+		  Integer y2 = ic.floorDiv(a*x2+mu,b);
+		  Point A = Point(x1,y1);
+		  Point B = Point(x2,y2);
+		  DSLSubseg DD(a,b,mu,A,B);
 		  
-		 
 		}
             }
         }
@@ -131,47 +106,36 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 
 
 
+template <typename Integer>
+bool checkDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Integer modx)
+{
+
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
 {
+  typedef DGtal::int64_t Integer;
   
-  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int32_t, StdMapRebinder> LrSB;
-  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> LSB;
-  typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   
-  typedef SB::Fraction Fraction;
-  typedef Fraction::Integer Integer;
+  Integer modb = 1000000000;
+  Integer moda = modb;
   
-  // Integer modb = 1000000000;
-  // Integer moda = modb;
-  
-  // unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 100;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) : 100;
 
-  // for(Integer modx = 10; modx < modb;modx*=2)
-  //   //Integer  modx = 1000;
-  // {
-  // 	  moda = modb;
-  // 	  std::cout << modb << " " << modx << " ";
-  // 	  //testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,0);
-  // 	  //testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,1 );
-  // 	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx,2 );
-  // 	  std::cout << std::endl;
-  // 	}
-  
-  typedef StandardDSLQ0<Fraction> DSL;
-  typedef DSL::Point Point;
-
-  DSL D(1077,1495,6081);
-  Point A(3,-3);
-  Point B(4,-2);
-
-  D.reversedSmartDSS(A,B);
- 
-
-  return 1;
+  for(Integer modx = 10; modx < modb;modx*=2)
+    //Integer  modx = 1000;
+  {
+  	  moda = modb;
+  	  std::cout << modb << " " << modx << " ";
+    	  testDSLSubsegment<Integer>( nbtries, moda, modb, modx);
+  	  std::cout << std::endl;
+  	}
+    return 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
