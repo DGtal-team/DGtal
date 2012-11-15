@@ -3,7 +3,7 @@
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/03/28
+ * @date 2012/11/15
  * 
  * @brief Documentation file about the images in DGtal
  *
@@ -16,8 +16,8 @@ namespace DGtal {
 
 
 @page moduleImage Images
-@authors Tristan Roussillon, David Coeurjolly
-@date 2012/03/28
+@authors Tristan Roussillon, David Coeurjolly, Martial Tola
+@date 2012/11/15
 
 [TOC]
 
@@ -242,16 +242,63 @@ and use the `setValue` method of the class.
 
 @TODO
 
- \section dgtalImagesFunctions Useful classes and functions
-
-In addition to the image containers described in the previous section, 
-there are image adapters: 
+ \section dgtalImagesAdapters Image Adapter classes
 
 i. ConstImageAdapter is a small class that adapts any (constant or not) 
-image into a constant one, which provides a virtual view of the true values
+image into a constant one, which provides a virtual view (so reading only) of the true values
  contained in the adapted image.
+It uses a given Domain (i.e. a subdomain) but work directly (for
+ accessing process) thanks to an alias (i.e. a pointer) on the
+ original Image given in argument.
 
-ii. Image is a light proxy on image containers based on a COW pointer.
+The values associated to accessing the point values are adapted  
+ with a functor g and a functor f given at construction so that 
+ operator() calls f(img(g(aPoint))), instead of calling directly 
+ operator() of the underlying image img.
+
+Here is the construction of a simple image adapter that 
+ is a thresholded view of the initial scalar image: 
+
+@snippet images/testConstImageAdapter.cpp ConstImageAdapterConstruction
+
+
+ii. ImageAdapter is a small class that adapts an
+image, which provides a virtual access (reading and writing) of the true values
+ contained in the adapted image.
+It uses a given Domain (i.e. a subdomain) but work directly (for
+ reading and writing processes) thanks to an alias (i.e. a pointer) on the
+ original Image given in argument.
+
+The values associated to accessing the point values are adapted  
+ with a functor g and a functor f given at construction so that 
+ operator() calls f(img(g(aPoint))), instead of calling directly 
+ operator() of the underlying image img.
+
+The values associated to writing the points are adapted  
+ with a functor g and a functor f-1 given at construction so that 
+ setValue() is img.setValue(g(aPoint), f-1(aValue))
+ 
+Here is the construction of a simple image adapter that 
+ is a thresholded view of the initial scalar image: 
+
+@snippet ../tests/images/testImageAdapter.cpp ImageAdapterConstruction 
+
+Here is the construction of a simple image adapter that 
+ use a subdomain of the initial image domain: 
+
+@snippet ../tests/images/testImageAdapter.cpp ImageAdapterWithSubdomain 
+
+Here is the construction of a image adapter that 
+ use a specific domain (only one pixel on two) of the initial image domain: 
+
+@snippet ../tests/images/testImageAdapter.cpp ImageAdapterWithSpecificDomain 
+
+ \section dgtalImagesFunctions Useful classes and functions
+
+In addition to the image containers and the image adapters described in the previous sections, 
+there are also image proxys: 
+
+Image is a light proxy on image containers based on a COW pointer.
 It can be constructed, copied, assigned, deleted without any special care. 
  
 Moreover, in ImageHelper.h, many useful functions are provided. 

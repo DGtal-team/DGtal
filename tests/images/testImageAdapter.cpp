@@ -309,6 +309,7 @@ bool testImageAdapter()
     nb++;
 
     // 1) bell_tower
+    //! [ImageAdapterWithSubdomain]
     Z2i::Point p1( 43, 187-80/*10*/ );
     Z2i::Point p2( 73, 187-10/*80*/ );
     Z2i::Domain domain_bell_tower( p1, p2 );
@@ -317,6 +318,7 @@ bool testImageAdapter()
     DefaultFunctor idbtV;
     DefaultFunctor idbtVm1;
     MyImageAdapter bell_tower(image, domain_bell_tower, idbtD, idbtV, idbtVm1);
+    //! [ImageAdapterWithSubdomain]
 
     trace.info() << "ImageAdapter: " << bell_tower << "  " << bell_tower.domain() << std::endl;
 
@@ -383,6 +385,7 @@ bool testImageAdapter()
 #endif
     
     // 5) fill 0 (only for one pixel on two) for 'floor_lamp' image
+    //! [ImageAdapterWithSpecificDomain]
     Z2i::Point p5( 56, 187-154/*108*/ );
     Z2i::Point p6( 68, 187-108/*154*/ );
     Z2i::Domain domain_floor_lamp( p5, p6 );
@@ -413,6 +416,7 @@ bool testImageAdapter()
     DefaultFunctor idflV;
     DefaultFunctor idflVm1;
     MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idflD, idflV, idflVm1);
+    //! [ImageAdapterWithSpecificDomain]
 
     trace.info() << "ImageAdapter: " << floor_lamp << "  " << floor_lamp.domain() << std::endl;
 
