@@ -91,9 +91,11 @@ namespace DGtal
 
     /**
      * Constructor without copy. 
-     * @param aPtr pointer whose @a myPtr is an alias.
+     * @param aPtr any pointer assigned to @a myPtr
+     * @param isOwning 'true' if @a myPtr must be an owning pointer
+     * 'false' if @a myPtr must be only an alias (default).
      */
-    OwningOrAliasingPtr( Pointer aPtr ); 
+    OwningOrAliasingPtr( Pointer aPtr, bool isOwning = false ); 
 
     /**
      * Copy constructor.

@@ -48,8 +48,8 @@ DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(const T& aValue)
 
 template <typename T>
 inline
-DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(T* aPtr)
-  :myPtr( aPtr ), myFlagIsOwning( false ) 
+DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(T* aPtr, bool aFlagIsOwning)
+  :myPtr( aPtr ), myFlagIsOwning( aFlagIsOwning ) 
 {
 }
 
