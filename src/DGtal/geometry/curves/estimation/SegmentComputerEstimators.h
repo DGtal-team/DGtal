@@ -705,9 +705,9 @@ namespace DGtal
       Value operator() (const DSS& aDSS) const 
       {
 	Value a = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToInt64_t(aDSS.getA());      
+	  ::castToDouble(aDSS.getA());      
 	Value b = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToInt64_t(aDSS.getB());      
+	  ::castToDouble(aDSS.getB());      
 
 	return std::atan2(a,b);
       }
