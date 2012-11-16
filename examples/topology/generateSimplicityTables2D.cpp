@@ -33,8 +33,6 @@
 #include <iostream>
 #include <vector>
 #include <bitset>
-#include <QImageReader>
-#include <QtGui/qapplication.h>
 #include "DGtal/topology/Object.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
