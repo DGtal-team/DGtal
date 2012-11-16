@@ -26,9 +26,9 @@
  */
 
 /**
-  * Description of test_clock' <p>
-  * Aim: simple test of \ref Clock
-  */
+ * Description of test_clock' <p>
+ * Aim: simple test of \ref Clock
+ */
 
 
 #include <cstdio>
@@ -43,64 +43,69 @@ using namespace std;
 /// Minimal tick must be >=0
 bool test_minimalTick()
 {
-    double tick;
-    Clock c;
+  double tick;
+  Clock c;
 
-    trace.info() << c <<std::endl;
+  trace.info() << c <<std::endl;
 
-    c.startClock();
-    tick = c.stopClock();
-    trace.info() << "Minimal tick: "<< tick <<endl;
-    return (tick >= 0);
+  c.startClock();
+  tick = c.stopClock();
+  trace.info() << "Minimal tick: "<< tick <<endl;
+  return (tick >= 0);
 }
 
 /// Loop ticks must be >=0
 bool test_loopTick()
 {
-    double tick,tmp=0;
+  double tick,tmp=0;
 
-    Clock c;
-    c.startClock();
-    for (unsigned int i=0 ; i< 4334450; i++)
-        tmp = cos(tmp+i);
+  Clock c;
+  c.startClock();
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
 
-    tick = c.stopClock();
-    trace.info()<< "Loop tick: "<< tick <<endl;
-    return (tick >= 0);
+  tick = c.stopClock();
+  trace.info()<< "Loop tick: "<< tick <<endl;
+  return (tick >= 0);
 }
 
 /// Test several loops
 bool test_MultipleLoop()
 {
-    double tick1,tick2,tmp=0;
+  double tick1,tick2,tick3,tmp=0;
 
-    Clock c;
-    c.startClock();
-    for (unsigned int i=0 ; i< 4334450; i++)
-        tmp = cos(tmp+i);
+  Clock c,c2,c3;
 
-    Clock c2;
-    c2.startClock();
-    for (unsigned int i=0 ; i< 4334450; i++)
-        tmp = cos(tmp+i);
+  c3.startClock();
+  c.startClock();
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
 
-    tick2 = c2.stopClock();
+  c2.startClock();
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
 
-    for (unsigned int i=0 ; i< 4334450; i++)
-        tmp = cos(tmp+i);
+  tick2 = c2.stopClock();
 
-    tick1 = c.stopClock();
-    trace.info()<< "Loop tick1: "<< tick1 <<" Loop tick2: "<< tick2 <<endl;
-    return (tick1 >= 0);
+  for (unsigned int i=0 ; i< 4334450; i++)
+    tmp = cos(tmp+i);
+
+  tick1 = c.stopClock();
+  tick3=c3.stopClock();
+   
+  trace.info()<< "Loop tick1: "<< tick1
+              <<" Loop tick2: "<< tick2 
+              << " total: "<< tick3 <<endl;
+  return ((tick3 >= tick1) && (tick1 >= 0));
 }
 
 
 int main()
 {
-    if (test_minimalTick() && test_loopTick() && test_MultipleLoop())
-        return 0;
-    else
-        return 1;
+  if (test_minimalTick() && test_loopTick() && test_MultipleLoop())
+    return 0;
+  else
+    return 1;
 
 }
 /** @ingroup Tests **/

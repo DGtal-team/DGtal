@@ -226,6 +226,8 @@ namespace DGtal
       myScaleX=1.0;
       myScaleY=1.0;
       myScaleZ=1.0;
+      myBoundingPtEmptyTag = true;
+      
     };
 
     // ----------------------- Interface --------------------------------------
@@ -592,7 +594,9 @@ namespace DGtal
     StyleMapping myStyles;
   
   
-  
+    
+    /// True if the bounding box is empty (no objects added)
+    bool myBoundingPtEmptyTag;
     double  myBoundingPtUp [3];
     double  myBoundingPtLow [3];
 
