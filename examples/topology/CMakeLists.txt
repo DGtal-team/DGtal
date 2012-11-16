@@ -5,6 +5,7 @@ SET(DGTAL_EXAMPLES_TOPO_SRC
   volMarchingCubes
   volToOFF  
   trackImplicitPolynomialSurfaceToOFF
+  generateSimplicityTables2D
 )
 
 FOREACH(FILE ${DGTAL_EXAMPLES_TOPO_SRC}) 
