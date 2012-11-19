@@ -112,9 +112,9 @@ namespace DGtal
     /**
      *  Constructor
      */
-    ReverseDistanceTransformation(const Domain & aDomain,
-                                  const WeightImage & aWeightImage,
-                                  const PowerSeparableMetric & aMetric):
+    ReverseDistanceTransformation(const Domain * aDomain,
+                                  const WeightImage * aWeightImage,
+                                  const PowerSeparableMetric * aMetric):
       PowerMap<TWeightImage,TPSeparableMetric>(aDomain,aWeightImage,aMetric)
     {}
     
@@ -130,7 +130,7 @@ namespace DGtal
      * Returns a const range on the ReverseDistanceMap values.
      *  @return a const range
      */
-    Domain domain() const
+    const Domain & domain() const
     {
       return Parent::domain();
     }

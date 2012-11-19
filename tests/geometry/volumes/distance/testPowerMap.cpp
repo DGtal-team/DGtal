@@ -72,7 +72,8 @@ bool testPowerMap()
   //  image.setValue(Z2i::Point(3,7), 0); 
   image.setValue(Z2i::Point(7,7), 16);
   
-  PowerMap<Image, Z2i::L2PowerMetric> power(domainLarge, image, Z2i::L2PowerMetric());
+  Z2i::L2PowerMetric l2power;
+  PowerMap<Image, Z2i::L2PowerMetric> power(&domainLarge, &image, &l2power);
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)

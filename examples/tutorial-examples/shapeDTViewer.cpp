@@ -77,7 +77,7 @@ int main(int argc, char **argv)
   Predicate aPredicate(mySet);
   
   typedef DGtal::DistanceTransformation<Z3i::Space, Predicate, Z3i::L2Metric> DTL2;
-  DTL2 dt(domain,aPredicate,Z3i::L2Metric() );
+  DTL2 dt(&domain,&aPredicate,&Z3i::l2Metric );
   //! [ImageSetDT-DT]
 
   DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(), 

@@ -116,11 +116,8 @@ int main()
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
  
  
-  DTL2 dtL2( image.domain(), predicate, Z2i::L2Metric() );
-  //DTLInf dtLinf(image.domain(), predicate );
-  DTL1 dtL1(image.domain(),  predicate, Z2i::L1Metric() );
-  
-  // DTLInf::OutputImage resultLinf = dtLinf.compute (  );
+  DTL2 dtL2( &image.domain(), &predicate, &Z2i::l2Metric);
+  DTL1 dtL1(&image.domain(),  &predicate, &Z2i::l1Metric);
   //! [DTCompute]
 
 
@@ -144,12 +141,6 @@ int main()
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, dtL1, 0.0, maxv1 + 1);
   board.saveSVG ( "example-DT-L1.svg" );
-
-  // trace.warning() << resultLinf << " maxValue= "<<maxv<< endl;
-  // board.clear();
-  // Display2DFactory::drawImage<HueTwice>(board, resultLinf, (DGtal::int64_t)0, maxv + 1);
-  // board.saveSVG ( "example-DT-Linf.svg" );
-
 
   //We compute the maximum DT value on the L2 map
   for ( unsigned int j=0;j<33;j++)

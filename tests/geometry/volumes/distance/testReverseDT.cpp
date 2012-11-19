@@ -102,7 +102,9 @@ bool testReverseDT()
   Predicate aPredicate(image,0);
  
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
-  DistanceTransformation<Z2i::Space, Predicate, L2Metric > dt(Z2i::Domain(a,b), aPredicate, L2Metric());
+  Z2i::Domain dom(a,b);
+  L2Metric l2;
+  DistanceTransformation<Z2i::Space, Predicate, L2Metric > dt(&dom, &aPredicate, &l2);
 
   trace.info() << dt<< std::endl;
   //ReverseDT  
@@ -119,7 +121,8 @@ bool testReverseDT()
   }
 
   typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric > , Z2i::L2PowerMetric > RDT;
-  RDT reverseDT(Z2i::Domain(a,b),dt,Z2i::L2PowerMetric());
+  Z2i::L2PowerMetric l2power;
+  RDT reverseDT(&dom,&dt,&l2power);
   
   // board.clear();
   //drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)10);
@@ -180,9 +183,10 @@ bool testReverseDTL1()
  
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
- 
+  Z2i::Domain dom= image.domain();
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 1> L1Metric;
-  DistanceTransformation<Z2i::Space, Predicate, L1Metric> dt(Z2i::Domain(a,b), aPredicate, L1Metric());
+  L1Metric l1;
+  DistanceTransformation<Z2i::Space, Predicate, L1Metric> dt(&dom, &aPredicate, &l1);
 
 
   //ReverseDT  
@@ -199,7 +203,8 @@ bool testReverseDTL1()
   }
   
   typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, Z2i::L1PowerMetric > RDT;
-  RDT reverseDT(Z2i::Domain(a,b), dt, Z2i::L1PowerMetric());
+  Z2i::L1PowerMetric l1power;
+  RDT reverseDT(&dom, &dt, &l1power);
   
   trace.warning()<<"REDT:"<<endl;
   RDT::ConstRange::ConstIterator it2 = reverseDT.constRange().begin();
