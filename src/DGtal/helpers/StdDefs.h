@@ -113,6 +113,10 @@ namespace DGtal
     typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
     typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
  
+    static const L2Metric l2Metric;
+    static const L1Metric l1Metric;
+    static const L2PowerMetric l2PowerMetric;
+    static const L1PowerMetric l1PowerMetric;
 
   } // namespace Z2i
 
@@ -185,6 +189,12 @@ namespace DGtal
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
     typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
     typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
+
+    static const L2Metric l2Metric;
+    static const L1Metric l1Metric;
+    static const L2PowerMetric l2PowerMetric;
+    static const L1PowerMetric l1PowerMetric;
+
   } // namespace Z3i
 
   

@@ -95,7 +95,7 @@ int main()
   typedef IntervalForegroundPredicate<Image> Binarizer; 
   Binarizer b(image,1, 135); 
   typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, Z2i::L2Metric> DTL2;
-  DTL2 dt(image.domain(),b, Z2i::L2Metric() );
+  DTL2 dt(&image.domain(),&b, &Z2i::l2Metric );
   //! [ImageSetDT-DT]
  
 

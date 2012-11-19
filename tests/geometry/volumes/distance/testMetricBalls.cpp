@@ -63,7 +63,8 @@ bool testExactMetricBalls()
   NegPred predicate( setpred );
   
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
-  DT dt( domain, predicate, Metric());
+  Metric metric;
+  DT dt( &domain, &predicate, &metric);
   
   
   Board2D board;
@@ -95,7 +96,8 @@ bool testInexactMetricBalls(double norm)
   NegPred predicate( setpred );
   
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
-  DT dt( domain, predicate, Metric( norm ));
+  Metric metric(norm);
+  DT dt( &domain, &predicate, &metric);
   
   
   Board2D board;

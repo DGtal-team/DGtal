@@ -112,8 +112,10 @@ bool testDistanceTransformation()
   Predicate aPredicate(image,0);
 
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
-  DistanceTransformation<TSpace, Predicate , L2Metric> dt(Domain(a,b),aPredicate, L2Metric());
-  VoronoiMap<Z2i::Space, Predicate, L2Metric> voro(Domain(a,b),aPredicate, L2Metric());
+  L2Metric l2;
+  Domain dom(a,b);
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(&dom,&aPredicate,&l2);
+  VoronoiMap<Z2i::Space, Predicate, L2Metric> voro(&dom,&aPredicate,&l2);
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
@@ -229,6 +231,7 @@ bool testDistanceTransformationNeg()
   Predicate aPredicate(image,0);
 
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)1);
@@ -246,8 +249,7 @@ bool testDistanceTransformationNeg()
  
   trace.info()<<"Domain "<<Domain(a,b)<<std::endl;
   Domain dom(a,b);
-  L2Metric l2();
-  DistanceTransformation<TSpace, Predicate , L2Metric> dt(dom, aPredicate, l2);
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(&dom, &aPredicate, &l2);
    
   DistanceTransformation<TSpace, Predicate , L2Metric>::Value maxv=0.0;
   for(DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), 
@@ -310,13 +312,11 @@ bool testDTFromSet()
 
   SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,2> L2Metric;
-  L2Metric l2();
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric> dt(domain,aPredicate, l2);
+  L2Metric l2;
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric> dt(&domain,&aPredicate, &l2);
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,1> L1Metric;
-  L1Metric l1();
-  //  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0> dt0(domain,aPredicate);
-  //typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0>::OutputImage ImageLong0;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric> dt1(domain,aPredicate, l1);
+  L1Metric l1;
+  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric> dt1(&domain,&aPredicate, &l1);
  
   DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::Value maxv = 0;
   for ( DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
@@ -327,17 +327,6 @@ bool testDTFromSet()
   Display2DFactory::drawImage<Hue>(board, dt, 0, maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
   
-  /* board.clear();
-    maxv = 0;
-  for ( ImageLong::Iterator it = result0.begin(), itend = result0.end();
-	it != itend; ++it)
-    if ( (*it) > maxv)
-      maxv = (*it);
-  trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, result0, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
-  board.saveSVG ( "image-DTSet-linfty.svg" );
-  */
-
   board.clear();
   maxv = 0;
   for ( DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric>::ConstRange::ConstIterator it = dt1.constRange().begin(), itend = dt1.constRange().end();
@@ -385,8 +374,9 @@ bool testDistanceTransformationBorder()
   Predicate aPredicate(image,0);
 
   typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
-  L2Metric l2();
-  DistanceTransformation<TSpace, Predicate, L2Metric> dt(Domain(a,b), aPredicate, l2);
+  L2Metric l2;
+  Domain dom(a,b);
+  DistanceTransformation<TSpace, Predicate, L2Metric> dt(&dom, &aPredicate, &l2);
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
@@ -460,7 +450,7 @@ bool testDistanceTransformation3D()
   
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
   L2Metric l2;
-  DistanceTransformation<TSpace, Predicate, L2Metric> dt(Domain(a,b), aPredicate, L2Metric());
+  DistanceTransformation<TSpace, Predicate, L2Metric> dt(&dom, &aPredicate,&l2);
 
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
@@ -497,9 +487,10 @@ bool testChessboard()
 
   Point a (0, 0 );
   Point b ( 128, 128 );
+  Domain dom(a,b);
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( Domain( a, b ));
+  Image image (  dom );
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     (*it) = 128;
@@ -514,8 +505,9 @@ bool testChessboard()
   
   //L_euc metric
   typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
   typedef DistanceTransformation<TSpace,Predicate, L2Metric> DT2;
-  DT2 dt2(Domain(a,b), aPredicate, L2Metric());
+  DT2 dt2(&dom, &aPredicate, &l2);
   
   //L_infinity metric
   //typedef DistanceTransformation<TSpace,Predicate, 0> DT;
@@ -523,8 +515,9 @@ bool testChessboard()
   
   //L_1 metric
   typedef ExactPredicateLpSeparableMetric<TSpace,1> L1Metric;
+  L1Metric l1;
   typedef DistanceTransformation<TSpace,Predicate, L1Metric> DT1;
-  DT1 dt1(Domain(a,b), aPredicate, L1Metric());;
+  DT1 dt1(&dom,&aPredicate,&l1);
 
   DGtal::int64_t maxv = 0;
   for ( DistanceTransformation<TSpace,Predicate, L2Metric>::ConstRange::ConstIterator it = dt2.constRange().begin(), itend = dt2.constRange().end();it != itend; ++it)
@@ -609,9 +602,10 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
   
   typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
   typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
-  
-  DTEx dtex(domain, negPred, MetricEx());
-  DTIn dtinex(domain, negPred, MetricInex(norm));
+  MetricEx metricEx;
+  MetricInex metricInex(norm);
+  DTEx dtex(&domain, &negPred, &metricEx);
+  DTIn dtinex(&domain, &negPred, &metricInex);
   
   double MSE=0.0;
   typename DTEx::ConstRange::ConstIterator it=dtex.constRange().begin(), itend=dtex.constRange().end();

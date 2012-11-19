@@ -163,9 +163,9 @@ namespace DGtal
      * @param WeightImage an image returning the weight for some points
      * @param aMetric a power seprable metric instance.
      */
-    PowerMap(const Domain & aDomain,
-	     const WeightImage & aWeightImage,
-             const PowerSeparableMetric &aMetric);
+    PowerMap(const Domain * aDomain,
+	     const WeightImage * aWeightImage,
+             const PowerSeparableMetric *aMetric);
 
     /**
      * Default destructor

@@ -169,9 +169,9 @@ namespace DGtal
      * (false points). 
      * @param aMetric a seprable metric instance.
      */
-    VoronoiMap(const Domain & aDomain,
-               const PointPredicate & predicate,
-               const SeparableMetric &aMetric);
+    VoronoiMap(const Domain * aDomain,
+               const PointPredicate * predicate,
+               const SeparableMetric * aMetric);
 
     /**
      * Default destructor
@@ -195,7 +195,7 @@ namespace DGtal
      */
     const Domain &  domain() const
     {
-      return (*myDomainPtr);
+      return *myDomainPtr;
     }
 
     
@@ -221,7 +221,7 @@ namespace DGtal
     /** 
      * @return  Returns the underlying metric.
      */
-    const SeparableMetric* metricPtr() const
+    const SeparableMetric* metric() const
     {
       return myMetricPtr;
     }

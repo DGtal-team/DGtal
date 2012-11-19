@@ -624,7 +624,8 @@ bool testComparison(int size, int area, double dist)
   Predicate aPredicate(image,0);
   typedef ExactPredicateLpSeparableMetric<SpaceND<dimension,int>, norm> LNorm;
   typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, LNorm> DT; 
-  DT dt(d,aPredicate, LNorm());
+  LNorm lnorm;
+  DT dt(&d,&aPredicate, &lnorm);
   trace.info() << dt << std::endl; 
 
   trace.endBlock();

@@ -229,13 +229,13 @@ DGtal::PowerMap<W,Sep>::computeOtherStep1D ( const Point &startingPoint,
  */
 template <typename W,typename TSep>
 inline
-DGtal::PowerMap<W,TSep>::PowerMap( const Domain &aDomain,
-                                   const WeightImage & aWeightImage,
-                                   const PowerSeparableMetric &aMetric):
-  myDomainPtr(&aDomain), myWeightImagePtr(&aWeightImage),
-  myMetricPtr(&aMetric)
+DGtal::PowerMap<W,TSep>::PowerMap( const Domain *aDomain,
+                                   const WeightImage *aWeightImage,
+                                   const PowerSeparableMetric *aMetric):
+  myDomainPtr(aDomain), myWeightImagePtr(aWeightImage),
+  myMetricPtr(aMetric)
 {
-  myImagePtr = CountedPtr<OutputImage>(new OutputImage(aDomain));
+  myImagePtr = CountedPtr<OutputImage>(new OutputImage(*aDomain));
   compute();
 }
 

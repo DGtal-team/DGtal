@@ -177,8 +177,8 @@ bool testVoronoiMap()
  
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
   typedef VoronoiMap<Z2i::Space, Predicate, L2Metric> Voro2;
-  
-  Voro2 voro(domain, myPredicate, L2Metric());
+  L2Metric l2;
+  Voro2 voro(&domain, &myPredicate,&l2);
  
   for(int j=-10; j <= 10; j++)
     {    
@@ -245,28 +245,23 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   trace.beginBlock(" Voro computation");
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L2Metric> Voro2;  
-  Voro2 voro(aSet.domain(), myPredicate, L2Metric() );
+  L2Metric l2;
+  Voro2 voro(&aSet.domain(), &myPredicate, &l2 );
 
   trace.endBlock();
 
-
-  // trace.beginBlock(" Voro computation (l_1)");
-  // typedef VoronoiMap<typename Set::Space, Predicate, 1> Voro1;  
-  // Voro1 voro1(aSet.domain(), myPredicate);
-  // typename Voro1::OutputImage output1 = voro1.compute();
-  // trace.endBlock();
-
-  trace.beginBlock(" Voronoi computation l_3");
+  trace.beginBlock(" Voronoi computation l_6");
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,6> L6Metric;
+  L6Metric l6;
   typedef VoronoiMap<typename Set::Space, Predicate, L6Metric> Voro6;
-  Voro6 voro6(aSet.domain(), myPredicate, L6Metric() );
+  Voro6 voro6(&aSet.domain(), &myPredicate, &l6 );
   trace.endBlock();
 
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, L2Metric> DT;
-  DT dt(aSet.domain(), myPredicate, L2Metric() );
+  DT dt(&aSet.domain(), &myPredicate, &l2);
   trace.endBlock();
 
 
@@ -390,20 +385,23 @@ bool testVoronoiMapFromSites(const Set &aSet)
   trace.beginBlock(" Voronoi computation");
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L2Metric> Voro2;
-  Voro2 voro(aSet.domain(), myPredicate, L2Metric());
+  L2Metric l2;
+  Voro2 voro(&aSet.domain(), &myPredicate, &l2);
   trace.endBlock();
 
 
   trace.beginBlock(" Voronoi computation l_3");
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,3> L3Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L3Metric> Voro3;
-  Voro3 voro3(aSet.domain(), myPredicate, L3Metric());
+  L3Metric l3;
+  Voro3 voro3(&aSet.domain(), &myPredicate, &l3);
   trace.endBlock();
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, L2Metric> DT;
-  DT dt(aSet.domain(), myPredicate, L2Metric());
+  DT dt(&aSet.domain(), &myPredicate, &l2);
+
   trace.endBlock();
 
 
@@ -420,11 +418,11 @@ bool testVoronoiMapFromSites(const Set &aSet)
 
 bool testSimple2D()
 {
-
- Z2i::Point a(-10,-10);
+  
+  Z2i::Point a(-10,-10);
   Z2i::Point b(10,10);
   Z2i::Domain domain(a,b);
-
+  
   Z2i::DigitalSet sites(domain);
   bool ok;
 

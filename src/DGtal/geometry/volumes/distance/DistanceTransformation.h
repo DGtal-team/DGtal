@@ -133,9 +133,9 @@ namespace DGtal
     /**
      *  Constructor
      */
-    DistanceTransformation(const Domain & aDomain,
-                           const PointPredicate & predicate,
-                           const SeparableMetric & aMetric):
+    DistanceTransformation(const Domain * aDomain,
+                           const PointPredicate * predicate,
+                           const SeparableMetric * aMetric):
       VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>(aDomain,predicate,aMetric)
     {}
     
@@ -151,7 +151,7 @@ namespace DGtal
      * Returns a const range on the DistanceMap values.
      *  @return a const range
      */
-    Domain domain() const
+    const Domain & domain() const
     {
       return Parent::domain();
     }
@@ -191,9 +191,9 @@ namespace DGtal
     /** 
      * @return  Returns the underlying metric.
      */
-    const SeparableMetric* metricPtr() const
+    const SeparableMetric* metric() const
     {
-      return Parent::metricPtr();
+      return Parent::metric();
     }
 
     /** 

@@ -85,7 +85,8 @@ bool testDistanceTransformND()
   Predicate aPredicate(image,0);
 
   typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
-  DistanceTransformation<TSpace,Predicate,L2Metric> dt(domain,aPredicate, L2Metric() );
+  L2Metric l2;
+  DistanceTransformation<TSpace,Predicate,L2Metric> dt(&domain,&aPredicate, &l2 );
   
   //We check the result
   bool res=true;
@@ -98,11 +99,11 @@ bool testDistanceTransformND()
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
 	norm2+= (*itd)*(*itd);
 
-      if ( dt.metricPtr()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
+      if ( dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
   {
     trace.error()<<"Error at "<<(*itDom)
                  << ": expected="<<norm2<<" and computed="
-                 <<dt.metricPtr()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) )
+                 <<dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) )
                  <<endl;
   res=false;
   }
