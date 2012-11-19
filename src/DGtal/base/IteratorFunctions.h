@@ -50,7 +50,8 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template functions isNotEmpty
 
-  namespace detail {
+  namespace detail 
+  {
 
     /**
      * Checks if the range of classical iterators [ @a itb , @a ite ) is not empty, 
@@ -61,7 +62,8 @@ namespace DGtal
      */
     template< typename IC > 
     inline
-    bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
+    bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) 
+    {
       return (itb != ite);
     }
 
@@ -74,7 +76,8 @@ namespace DGtal
      */
     template< typename IC > 
     inline
-    bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
+    bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) 
+    {
       // using isValid method does not work with reverse circulator 
       //(generally speaking adapters of circulators that does not have any isValid method)
       //    return ( ( c1.isValid() ) && ( c2.isValid() ) );  
@@ -82,7 +85,7 @@ namespace DGtal
       return ( (c1 != c) && (c2 != c) ); 
     }
 
-  } 
+  } //end namespace detail
 
   /**
    * Checks if the range [ @a itb , @a ite ) is empty
@@ -92,7 +95,8 @@ namespace DGtal
    */
   template< typename IC> 
   inline
-  bool isEmpty( const IC& itb, const IC& ite ){
+  bool isEmpty( const IC& itb, const IC& ite )
+  {
     return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
   }
 
@@ -104,7 +108,8 @@ namespace DGtal
    */
   template< typename IC> 
   inline
-  bool isNotEmpty( const IC& itb, const IC& ite ){
+  bool isNotEmpty( const IC& itb, const IC& ite )
+  {
     return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
   }
   
@@ -121,7 +126,8 @@ namespace DGtal
   template<typename IC>
   void advanceIterator(IC& ic, unsigned int n);  
 
-  namespace detail{
+  namespace detail
+  {
     /**
      * Moves @a ic at position @ it + @a n 
      * @param ic any (circular)iterator
@@ -137,17 +143,6 @@ namespace DGtal
      * Moves @a ic at position @ it + @a n 
      * @param ic any (circular)iterator
      * @param n any positive distance
-     * @param c any instance of BidirectionalCategory
-     * @return (circular)iterator @a it incremented @a n times
-     * @tparam any iterator or circulator
-     */
-    template<typename IC>
-    void advanceIterator(IC& ic, unsigned int n, BidirectionalCategory /*c*/);
-
-    /**
-     * Moves @a ic at position @ it + @a n 
-     * @param ic any (circular)iterator
-     * @param n any positive distance
      * @param c any instance of RandomAccessCategory
      * @return  @a it += @a n
      * @tparam any iterator or circulator
@@ -155,6 +150,74 @@ namespace DGtal
     template<typename IC>
     void advanceIterator(IC& ic, unsigned int n, RandomAccessCategory /*c*/);
   } //end namespace detail
+
+  /**
+   * Computes the size of a given range [ @a itb , @a ite ) 
+   * @param itb begin iterator of the range
+   * @param ite end iterator of the range
+   * @return the size 
+   * @tparam any iterator or circulator
+   */
+  template<typename IC>
+  unsigned int rangeSize(const IC& itb, const IC& ite);  
+
+  namespace detail
+  {
+    /**
+     * Computes the size of a given range [ @a itb , @a ite ) 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @param t any object of IteratorType 
+     * @param c any object of ForwardCategory 
+     * @return the size 
+     * NB: in O(ite-itb)
+     * @tparam any iterator
+     */
+    template<typename I>
+    unsigned int rangeSize(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
+
+    /**
+     * Computes the size of a given range [ @a cb, @a ce ). 
+     * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
+     * @param cb begin iterator of the range
+     * @param ce end iterator of the range
+     * @param t any object of CirculatorType 
+     * @param c any object of ForwardCategory 
+     * @return the size 
+     * NB: linear in the range size
+     * @tparam any circulator
+     */
+    template<typename C>
+    unsigned int rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/);
+
+    /**
+     * Computes the size of a given range [ @a itb , @a ite ) 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @param t any object of IteratorType 
+     * @param c any object of ForwardCategory 
+     * @return the size 
+     * NB: in O(1)
+     * @tparam any iterator
+     */
+    template<typename I>
+    unsigned int rangeSize(const I& itb, const I& ite, IteratorType /*t*/, RandomAccessCategory /*c*/); 
+
+    /**
+     * Computes the size of a given range [ @a cb, @a ce ). 
+     * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
+     * @param cb begin iterator of the range
+     * @param ce end iterator of the range
+     * @param t any object of CirculatorType 
+     * @param c any object of ForwardCategory 
+     * @return the size 
+     * NB: in O(1)
+     * @tparam any circulator
+     */
+    template<typename C>
+    unsigned int rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, RandomAccessCategory /*c*/);
+ 
+  } //namespace detail
 
   /**
    * Computes the middle iterator of a given range [ @a itb , @a ite ) 

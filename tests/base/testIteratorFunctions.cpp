@@ -117,6 +117,76 @@ bool testAdvance(Container c)
   return (nbok == nb);
 }
 
+/**
+ * Test of the rangeSize function
+ * @param c any container
+ * @tparam Container model of iterable and pushable container
+ */
+template<typename Container>
+bool testSize(Container c)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Size..." );
+
+  ///////////////
+  typedef typename Container::iterator I;
+  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  trace.info() << typeid(Category()).name() << std::endl;
+
+  trace.info() << "empty underlying range" << std::endl; 
+  if ( rangeSize(c.begin(), c.end()) == 0 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  ///////////////
+  Tool<Container,int>::add(c,5);  
+
+  trace.info() << "underlying range of one element" << std::endl; 
+  if ( rangeSize(c.begin(), c.end()) == 1 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  ///////////////
+  Tool<Container,int>::add(c,1);  
+  Tool<Container,int>::add(c,2);  
+  Tool<Container,int>::add(c,3);  
+  Tool<Container,int>::add(c,4);  
+  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,6);  
+
+  trace.info() << "two equal iterators" << std::endl; 
+  if ( rangeSize(c.begin(), c.begin()) == 0 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.info() << "whole range (of 7 elements)" << std::endl; 
+  if ( rangeSize(c.begin(), c.end()) == 7 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  /////////////////
+  I itb = c.begin(); ++itb; 
+  I ite = itb; 
+  ite++; ite++; ite++;  ite++; 
+
+  trace.info() << "subrange (of 4 elements)" << std::endl; 
+  if ( rangeSize(itb, ite) == 4 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+
+  trace.endBlock();
+  
+  return (nbok == nb);
+}
+
 
 /**
  * Test of the rangeMiddle function
@@ -160,7 +230,6 @@ bool testMiddle(Container c)
   Tool<Container,int>::add(c,6);  
   Tool<Container,int>::add(c,5);  
 
-  //two equal iterators
   trace.info() << "two equal iterators" << std::endl; 
   if ( testMiddleComparison(c.begin(), c.begin(), c.begin()) )
     nbok++;  
@@ -243,7 +312,12 @@ int main( int argc, char** argv )
     testMiddle(fl) && 
 #endif
     testMiddle(bl) && 
-    testMiddle(v);
+    testMiddle(v) &&
+#ifdef CPP11_FORWARD_LIST 
+    testSize(fl) && 
+#endif
+    testSize(bl) && 
+    testSize(v);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
