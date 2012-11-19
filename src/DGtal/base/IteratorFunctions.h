@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include<iterator>
-
+#include "DGtal/base/IteratorTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,38 +50,207 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template functions isNotEmpty
 
-namespace detail {
+  namespace detail {
 
-  template< typename IC > 
+    /**
+     * Checks if the range of classical iterators [ @a itb , @a ite ) is not empty, 
+     * ie. checks if itb != ite
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @tparam any iterator or circulator
+     */
+    template< typename IC > 
+    inline
+    bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
+      return (itb != ite);
+    }
+
+    /**
+     * Checks if a circular range is not empty, 
+     * ie. checks if the circulators are valid. 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @tparam any iterator or circulator
+     */
+    template< typename IC > 
+    inline
+    bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
+      // using isValid method does not work with reverse circulator 
+      //(generally speaking adapters of circulators that does not have any isValid method)
+      //    return ( ( c1.isValid() ) && ( c2.isValid() ) );  
+      IC c; //c is not valid
+      return ( (c1 != c) && (c2 != c) ); 
+    }
+
+  } 
+
+  /**
+   * Checks if the range [ @a itb , @a ite ) is empty
+   * @param itb begin iterator of the range
+   * @param ite end iterator of the range
+   * @tparam any iterator or circulator
+   */
+  template< typename IC> 
   inline
-  bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) {
-    return (itb != ite);
+  bool isEmpty( const IC& itb, const IC& ite ){
+    return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
   }
 
-  template< typename IC > 
+  /**
+   * Checks if the range [ @a itb , @a ite ) is not empty
+   * @param itb begin iterator of the range
+   * @param ite end iterator of the range
+   * @tparam any iterator or circulator
+   */
+  template< typename IC> 
   inline
-  bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) {
-// using isValid method does not work with reverse circulator 
-//(generally speaking adapters of circulators that does not have any isValid method)
-//    return ( ( c1.isValid() ) && ( c2.isValid() ) );  
-    IC c; //c is not valid
-    return ( (c1 != c) && (c2 != c) ); 
+  bool isNotEmpty( const IC& itb, const IC& ite ){
+    return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
   }
-
-} 
-
-template< typename IC> 
-inline
-bool isEmpty( const IC& itb, const IC& ite ){
-  return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-}
-
-template< typename IC> 
-inline
-bool isNotEmpty( const IC& itb, const IC& ite ){
-  return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-}
   
+  /////////////////////////////////////////////////////////
+  // template functions for the size and middle of a (sub)range
+
+  /**
+   * Moves @a ic at position @ it + @a n 
+   * @param ic any (circular)iterator
+   * @param n any positive distance
+   * @return moved (circular)iterator
+   * @tparam any iterator or circulator
+   */
+  template<typename IC>
+  void advanceIterator(IC& ic, unsigned int n);  
+
+  namespace detail{
+    /**
+     * Moves @a ic at position @ it + @a n 
+     * @param ic any (circular)iterator
+     * @param n any positive distance
+     * @param c any instance of ForwardCategory
+     * @return (circular)iterator @a it incremented @a n times
+     * @tparam any iterator or circulator
+     */
+    template<typename IC>
+    void advanceIterator(IC& ic, unsigned int n, ForwardCategory /*c*/);
+
+    /**
+     * Moves @a ic at position @ it + @a n 
+     * @param ic any (circular)iterator
+     * @param n any positive distance
+     * @param c any instance of BidirectionalCategory
+     * @return (circular)iterator @a it incremented @a n times
+     * @tparam any iterator or circulator
+     */
+    template<typename IC>
+    void advanceIterator(IC& ic, unsigned int n, BidirectionalCategory /*c*/);
+
+    /**
+     * Moves @a ic at position @ it + @a n 
+     * @param ic any (circular)iterator
+     * @param n any positive distance
+     * @param c any instance of RandomAccessCategory
+     * @return  @a it += @a n
+     * @tparam any iterator or circulator
+     */
+    template<typename IC>
+    void advanceIterator(IC& ic, unsigned int n, RandomAccessCategory /*c*/);
+  } //end namespace detail
+
+  /**
+   * Computes the middle iterator of a given range [ @a itb , @a ite ) 
+   * @param itb begin iterator of the range
+   * @param ite end iterator of the range
+   * @return the middle iterator of the range [ @a itb , @a ite ) 
+   * @tparam any iterator or circulator
+   */
+  template<typename IC>
+  IC rangeMiddle(const IC& itb, const IC& ite);  
+
+  namespace detail
+  {
+    /**
+     * Computes the middle of a given range [ @a itb , @a ite ) 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @param t any object of IteratorType 
+     * @param c any object of ForwardCategory 
+     * @return the middle iterator of the range [ @a itb , @a ite ) 
+     * NB: in O(ite-itb)
+     * @tparam any iterator
+     */
+    template<typename I>
+    I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
+
+    /**
+     * Computes the middle of a given range [ @a cb, @a ce ). 
+     * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
+     * @param cb begin iterator of the range
+     * @param ce end iterator of the range
+     * @param t any object of CirculatorType 
+     * @param c any object of ForwardCategory 
+     * @return the middle circulator of the range [ @a cb , @a ce ) 
+     * NB: linear in the range size
+     * @tparam any circulator
+     */
+    template<typename C>
+    C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/); 
+
+    /**
+     * Computes the middle of a given range [ @a itb , @a ite ) 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @param t any object of IteratorType 
+     * @param c any object of BidirectionalCategory 
+     * @return the middle iterator of the range [ @a itb , @a ite ) 
+     * NB: in O(ite-itb)
+     * @tparam any iterator
+     */
+    template<typename I>
+    I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, BidirectionalCategory /*c*/); 
+
+    /**
+     * Computes the middle of a given range [ @a cb, @a ce ). 
+     * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
+     * @param cb begin iterator of the range
+     * @param ce end iterator of the range
+     * @param t any object of CirculatorType 
+     * @param c any object of BidirectionalCategory 
+     * @return the middle circulator of the range [ @a cb , @a ce ) 
+     * NB: linear in the range size
+     * @tparam any circulator
+     */
+    template<typename C>
+    C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, BidirectionalCategory /*c*/); 
+
+    /**
+     * Computes the middle of a given range [ @a itb , @a ite ) 
+     * @param itb begin iterator of the range
+     * @param ite end iterator of the range
+     * @param t any object of IteratorType 
+     * @param c any object of RandomAccessCategory 
+     * @return the middle iterator of the range [ @a itb , @a ite ) 
+     * NB: in O(1)
+     * @tparam any iterator
+     */
+    template<typename I>
+    I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, RandomAccessCategory /*c*/); 
+
+    /**
+     * Computes the middle of a given range [ @a cb, @a ce ). 
+     * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
+     * @param cb begin iterator of the range
+     * @param ce end iterator of the range
+     * @param t any object of CirculatorType 
+     * @param c any object of RandomAccessCategory 
+     * @return the middle circulator of the range [ @a cb , @a ce ) 
+     * NB: in O(1)
+     * @tparam any circulator
+     */
+    template<typename C>
+    C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, RandomAccessCategory /*c*/); 
+  } // namespace namespace
+
+
 } // namespace DGtal
 
 
@@ -89,7 +258,7 @@ bool isNotEmpty( const IC& itb, const IC& ite ){
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/base/IteratorFunctions.ih"
+#include "DGtal/base/IteratorFunctions.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
