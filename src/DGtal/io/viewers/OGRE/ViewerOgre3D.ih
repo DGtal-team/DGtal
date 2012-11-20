@@ -273,7 +273,6 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
   myUpperFatherNonRoot = NULL;
   
-  
   myCurrentSelfIlluminationColor= DGtal::Color(100,100,100,255);
   myCurrentAmbientIlluminationColor= DGtal::Color(100,100,100,255);
   myCurrentDiphuseIlluminationColor= DGtal::Color(100,100,100,255);
@@ -412,7 +411,7 @@ void ViewerOgre3D::createScene()
 
   // Viewport
   myViewPort = myWindow->addViewport ( myCamera );
-  myViewPort->setBackgroundColour ( Ogre::ColourValue ( 80.0/255., 80.0/255.,236.0/255. ) );
+  myViewPort->setBackgroundColour ( Ogre::ColourValue ( 129.0/255., 192.0/255.,1 ) );
 
   // Parametrage du point de vue
   myCamera->setAspectRatio ( Ogre::Real ( myViewPort->getActualWidth() ) / Ogre::Real ( myViewPort->getActualHeight() ) );
@@ -1744,7 +1743,7 @@ void ViewerOgre3D::flipBackgroundColor()
     }
   else
     {
-      myViewPort->setBackgroundColour(Ogre::ColourValue ( 80.0/255., 80.0/255.,236.0/255.));
+      myViewPort->setBackgroundColour(Ogre::ColourValue ( 129.0/255., 192.0/255.,255.0/255.));
       myBackgroundBlackColor=true;
     }
   

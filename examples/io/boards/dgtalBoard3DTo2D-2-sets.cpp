@@ -48,18 +48,18 @@ int main()
 {
   Board3DTo2D board;
 
-  Point p1( 0, 0, 0 );
-  Point p2( 10, 10 , 10 );
+  Z3i::Point p1( 0, 0, 0 );
+  Z3i::Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
 
   board << domain;
 
   DigitalSet shape_set( domain );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Z3i::Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Z3i::Point( 3, 3, 3 ), 2 );
 
-  shape_set.erase(Point(3,3,3));
-  shape_set.erase(Point(6,6,6));
+  shape_set.erase(Z3i::Point(3,3,3));
+  shape_set.erase(Z3i::Point(6,6,6));
   board << shape_set;
   
   board << CameraPosition(5.000000, 5.000000, 29.893368)

@@ -55,14 +55,14 @@ int main( int argc, char** argv )
  Viewer3D viewer;
  viewer.show();
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
+ Z3i::Point p1( 0, 0, 0 );
+ Z3i::Point p2( 10, 10 , 10 );
  Domain domain( p1, p2 );
  
  
  DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+ Shapes<Domain>::addNorm1Ball( shape_set, Z3i::Point( 5, 5, 5 ), 2 );
+ Shapes<Domain>::addNorm2Ball( shape_set, Z3i::Point( 3, 3, 3 ), 2 );
  viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
  viewer << shape_set;  
 
