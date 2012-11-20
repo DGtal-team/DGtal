@@ -62,20 +62,6 @@ struct Tool<std::forward_list<int>, T>
 #endif
 
 /**
- * Comparison between the result of the rangeMiddle function
- * and the ground truth
- * @param a begin iterator
- * @param b end iterator
- * @param res middle iterator (ground truth)
- * @tparam IC iterator or circulator type
- */
-template<typename IC>
-bool testMiddleComparison(const IC& a, const IC& b, const IC& res)
-{
-  return ( (rangeMiddle(a, b)) == res);  
-}
-
-/**
  * Test of the advance function
  * @param c any container
  * @tparam Container model of iterable and pushable container
@@ -155,12 +141,22 @@ bool testSize(Container c)
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
+		  Circulator<I>(c.begin(), c.begin(), c.end()) ) == 0 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
   Tool<Container,int>::add(c,5);  
 
   trace.info() << "underlying range of one element" << std::endl; 
   if ( rangeSize(c.begin(), c.end()) == 1 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
+		  Circulator<I>(c.begin(), c.begin(), c.end()) ) == 1 )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -184,6 +180,11 @@ bool testSize(Container c)
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
+		  Circulator<I>(c.begin(), c.begin(), c.end()) ) == 7 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   /////////////////
   I itb = c.begin(); ++itb; 
@@ -192,6 +193,11 @@ bool testSize(Container c)
 
   trace.info() << "subrange (of 4 elements)" << std::endl; 
   if ( rangeSize(itb, ite) == 4 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeSize( Circulator<I>(itb, c.begin(), c.end()),
+		  Circulator<I>(ite, c.begin(), c.end()) ) == 4 )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -222,7 +228,13 @@ bool testMiddle(Container c)
   trace.info() << typeid(Category()).name() << std::endl;
 
   trace.info() << "empty underlying range" << std::endl; 
-  if ( testMiddleComparison(c.begin(), c.end(), c.begin()) )
+  if ( rangeMiddle(c.begin(), c.end()) == c.begin() )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
+		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+       == Circulator<I>(c.begin(), c.begin(), c.end()) ) 
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -231,7 +243,13 @@ bool testMiddle(Container c)
   Tool<Container,int>::add(c,5);  
 
   trace.info() << "underlying range of one element" << std::endl; 
-  if ( testMiddleComparison(c.begin(), c.end(), c.begin()) )
+  if ( rangeMiddle(c.begin(), c.end()) == c.begin() )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
+		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+       == Circulator<I>(c.begin(), c.begin(), c.end()) )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -246,7 +264,7 @@ bool testMiddle(Container c)
   Tool<Container,int>::add(c,5);  
 
   trace.info() << "two equal iterators" << std::endl; 
-  if ( testMiddleComparison(c.begin(), c.begin(), c.begin()) )
+  if ( rangeMiddle(c.begin(), c.begin()) == c.begin() )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -262,13 +280,25 @@ bool testMiddle(Container c)
   res1++;  
 
   trace.info() << "whole range with odd number of elements" << std::endl; 
-  if ( testMiddleComparison(c.begin(), ite, res2) )
+  if ( rangeMiddle(c.begin(), ite) == res2 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), ite),
+		    Circulator<I>(c.begin(), c.begin(), ite) ) 
+       == Circulator<I>(res2, c.begin(), ite) )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.info() << "whole range with even number of elements" << std::endl; 
-  if ( testMiddleComparison(c.begin(), c.end(), res1) )
+  if ( rangeMiddle(c.begin(), c.end()) == res1 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
+		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+       == Circulator<I>(res1, c.begin(), c.end()) )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -280,7 +310,13 @@ bool testMiddle(Container c)
   ite++; ite++; ite++;  
  
   trace.info() << "subrange with odd number of elements" << std::endl; 
-  if ( testMiddleComparison(itb, ite, res2) )
+  if ( rangeMiddle(itb, ite) == res2 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
+		    Circulator<I>(ite, c.begin(), c.end()) ) 
+       == Circulator<I>(res2, c.begin(), c.end()) )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -289,7 +325,13 @@ bool testMiddle(Container c)
   ite++; 
 
   trace.info() << "subrange with even number of elements" << std::endl; 
-  if ( testMiddleComparison(itb, ite, res1) )
+  if ( rangeMiddle(itb, ite) == res1 )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( rangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
+		    Circulator<I>(ite, c.begin(), c.end()) ) 
+       == Circulator<I>(res1, c.begin(), c.end()) )
     nbok++;  
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
@@ -301,7 +343,6 @@ bool testMiddle(Container c)
 
 /**
  * validity of the range
- *
  */
 template<typename IC>
 bool testIsNotEmpty(const IC& itb, const IC& ite, const bool& aFlagIsNotEmpty)
