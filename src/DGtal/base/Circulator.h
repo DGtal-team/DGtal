@@ -53,30 +53,42 @@ namespace DGtal
   /**
    * Description of template class 'Circulator' <p>
    * \brief Aim: 
-   *  Provides an adapter for STL iterators that can 
+   *  Provides an adapter for classical iterators that can 
    *  iterate through the underlying data structure as in a loop. 
-   *  The increment (resp. decrement if at least bidirectionnal) 
+   *  The increment (resp. decrement) 
    *  operator encapsulates the validity test and the assignement
-   *  to the first (resp. last) iterator of a given range. 
+   *  to the begin (resp. end) iterator of a given range, 
+   *  when the end (resp. beginning) has been reached. 
    *  For instance, the pre-increment operator does:  
    *  @code
         ++myCurrentIt;
         if (myCurrentIt == myEndIt) myCurrentIt = myBeginIt;
         return *this;
    *  @endcode
-   * whereas the pre-decrement operator does (if at least bidirectionnal): 
+   * whereas the pre-decrement operator does (if at least bidirectional): 
    *  @code
         if (myCurrentIt == myBeginIt) myCurrentIt = myEndIt;
         --myCurrentIt;
    *  @endcode
    *
-   * @tparam TIterator any forward, bidirectionnal or random access iterator 
+   * Be aware that random access operators are quite different for
+   * circular iterators and classical iterators. Firstly, the difference between 
+   * two circular iterators c and d is always positive and such that
+   * (c-d) + (d-c) is equal to the size of the underlying range. Secondly, 
+   * comparison operators 'less than' and 'less than or equal to' always return 'true', 
+   * whereas 'greater than' and 'greater than or equal to' always return 'false'. 
+   *
+   * @tparam TIterator any forward, bidirectional or random access iterator 
   */
 
   template <typename TIterator>
   class Circulator
   {
 
+    BOOST_STATIC_ASSERT(( boost::is_same< 
+			    typename IteratorCirculatorTraits<TIterator>::Type, 
+			    IteratorType >::value ));
+ 
     // ----------------------- Types ------------------------------
   public:
 
@@ -114,7 +126,6 @@ namespace DGtal
      * @param itb begin iterator
      * @param ite end iterator
      */
-    explicit
     Circulator(const Iterator& i,
                const Iterator& itb, 
                const Iterator& ite) 
@@ -312,31 +323,57 @@ namespace DGtal
 
     Self& operator+=( difference_type d ) {
         ASSERT( isValid() ); 
-        typename Iterator::difference_type j = myCurrentIt - myBeginIt;
+	//size range
         typename Iterator::difference_type n = myEndIt - myBeginIt;
         ASSERT( n > 0 );
+	//difference modulo n
+	if ( (d >= n)||(-d >= n) )
+	  d = d%n; 
+	ASSERT( (d < n)&&(-d < n) );
+	//position of the current iterator
+        typename Iterator::difference_type j = myCurrentIt - myBeginIt;
         ASSERT( (j >= 0) && (j < n) );
-        typename Iterator::difference_type e = n - j;        
-        if (d < e) j += d;
-        else j = d - e; 
+	//deviation between the position of the past-the-end value 
+	//and the current iterator
+        typename Iterator::difference_type e = n - j;
+	if (d >= 0)
+	  { //in case of positive distance
+	    if (d < e) j += d;
+	    else j = d - e; 
+	  }
+	else 
+	  { //in case of negative distance
+	    if (-d <= j) j += d; 
+	    else j = j + d + n; 
+	  }
         ASSERT( (j >= 0) && (j < n) );
         myCurrentIt = myBeginIt + j;
         return *this;
     }
+
+    Self& operator-=( difference_type d) { return operator+=( -d); }
+
     Self operator+( difference_type d) const {
         Self tmp = *this;
         return tmp += d;
     }
+
     Self operator-( difference_type d) const {
         Self tmp = *this;
         return tmp += -d;
     }
-    Self& operator-=( difference_type d) { return operator+=( -d); }
 
     difference_type operator-( const Self& c) const {
         ASSERT( isValid() );
         ASSERT( c.isValid() );
-        return myCurrentIt - c.myCurrentIt;
+	typename Iterator::difference_type d = (myCurrentIt - c.myCurrentIt);
+	if (d >= 0)
+	  return d; 
+	else 
+	  {
+	    typename Iterator::difference_type n = myEndIt - myBeginIt;
+	    return (n + d); 
+	  }
     }
     reference operator[]( difference_type d) const {
         Self tmp = *this;
@@ -345,7 +382,22 @@ namespace DGtal
     }
 
     // ----------------------- Comparisons operators --------------------------------------
-    // Contrary to iterators, random access circulators have no comparison operators. 
+    bool operator<( const Self& c) const 
+    {
+      return true; 
+    }
+    bool operator<=( const Self& c) const 
+    {
+      return true; 
+    }
+    bool operator>( const Self& c) const 
+    {
+      return !operator<=(c); 
+    }
+    bool operator>=( const Self& c) const 
+    {
+      return !operator>(c); 
+    }
 
 
     // ------------------------- Protected Datas --------------------------------
@@ -370,6 +422,16 @@ namespace DGtal
 
 
   }; // end of class Circulator
+
+
+  template <typename TIterator>
+  Circulator<TIterator> 
+  operator+(typename IteratorCirculatorTraits<TIterator>::Difference d, 
+	    Circulator<TIterator> & object )
+  {
+    Circulator<TIterator> tmp = object;
+    return tmp += d;
+  }
 
 
 } // namespace DGtal

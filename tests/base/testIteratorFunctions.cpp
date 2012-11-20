@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IteratorFunctions.h"
+#include "DGtal/base/Circulator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -98,18 +99,32 @@ bool testAdvance(Container c)
   Tool<Container,int>::add(c,3);  
   Tool<Container,int>::add(c,4);  
   Tool<Container,int>::add(c,5);  
-  Tool<Container,int>::add(c,6);  
 
+  //classical iterator
   I res = c.begin(); 
-  while (nb < 6)
+  while ((nb+1) < 5)
     {
+      ++res; 
       I i = c.begin(); 
-      DGtal::advanceIterator(i, nb); 
-      if ( i == res )
+      DGtal::advanceIterator(i, (nb+1)); 
+      if ( (i != c.begin()) && ( i == res ) )
 	nbok++;  
       nb++; 
       trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-      ++res; 
+    }
+
+  //circulator
+  Circulator<I> cres = Circulator<I>(c.begin(), c.begin(), c.end()); 
+  while ((nb+1) < 5)
+    {
+      ++cres; 
+      Circulator<I> ci = Circulator<I>(c.begin(), c.begin(), c.end()); 
+      DGtal::advanceIterator(ci, (nb+1)); 
+      if ( (ci != Circulator<I>(c.begin(), c.begin(), c.end())) 
+	   && ( ci == cres ) )
+	nbok++;  
+      nb++; 
+      trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
     }
 
   trace.endBlock();
@@ -284,6 +299,111 @@ bool testMiddle(Container c)
   return (nbok == nb);
 }
 
+/**
+ * validity of the range
+ *
+ */
+template<typename IC>
+bool testIsNotEmpty(const IC& itb, const IC& ite, const bool& aFlagIsNotEmpty)
+{
+  return (isNotEmpty(itb,ite) == aFlagIsNotEmpty ); 
+}
+
+/**
+ * Test of the isNotEmpty function
+ * @param c any container
+ * @tparam Container model of iterable and pushable container
+ */
+template<typename Container>
+bool testRange(Container c)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "empty / not empty..." );
+
+  ///////////////
+  typedef typename Container::iterator I;
+  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  trace.info() << typeid(Category()).name() << std::endl;
+
+  trace.info() << "empty underlying range" << std::endl; 
+  if ( testIsNotEmpty(c.begin(), c.end(), false) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+		      Circulator<I>(c.begin(), c.begin(), c.end()), false) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  ///////////////
+  Tool<Container,int>::add(c,5);  
+
+  trace.info() << "underlying range of one element" << std::endl; 
+  if ( testIsNotEmpty(c.begin(), c.end(), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+		      Circulator<I>(c.begin(), c.begin(), c.end()), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  ///////////////
+  Tool<Container,int>::add(c,1);  
+  Tool<Container,int>::add(c,2);  
+  Tool<Container,int>::add(c,3);  
+  Tool<Container,int>::add(c,4);  
+  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,6);  
+  Tool<Container,int>::add(c,5);  
+
+  trace.info() << "two equal iterators" << std::endl; 
+  if ( testIsNotEmpty(c.begin(), c.begin(), false) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+		      Circulator<I>(c.begin(), c.begin(), c.end()), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  ///////////////
+  I itb = c.begin(); itb++; 
+  I ite = itb; 
+  ite++; ite++;  
+  ite++; ite++;
+
+  trace.info() << "whole range" << std::endl; 
+  if ( testIsNotEmpty(c.begin(), c.end(), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()), 
+		      Circulator<I>(itb, c.begin(), c.end()), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+ 
+  trace.info() << "subrange" << std::endl; 
+  if ( testIsNotEmpty(itb, ite, true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()), 
+		      Circulator<I>(ite, c.begin(), c.end()), true) )
+    nbok++;  
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.endBlock();
+  
+  return (nbok == nb);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -317,7 +437,13 @@ int main( int argc, char** argv )
     testSize(fl) && 
 #endif
     testSize(bl) && 
-    testSize(v);
+    testSize(v) &&
+#ifdef CPP11_FORWARD_LIST 
+    testRange(fl) && 
+#endif
+    testRange(bl) && 
+    testRange(v);
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
