@@ -77,16 +77,19 @@ template <typename T, DGtal::uint32_t p,  typename P>
 inline
 DGtal::Closest
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::closestWeighted (const Point &origin, 
-                                                                          const Point &first,  
-                                                                          const Weight &wf,
-                                                                          const Point &second,
-                                                                          const Weight &ws) const
+                                                                        const Point &first,  
+                                                                        const Weight &wf,
+                                                                        const Point &second,
+                                                                        const Weight &ws) const
 {
-  Promoted a=NumberTraits<Promoted>::ZERO,
-    b=NumberTraits<Promoted>::ZERO;
+  Promoted a,b;
       
   a = exactDistanceRepresentation(origin, first) - wf;
   b = exactDistanceRepresentation(origin, second) - ws;
+  
+  std::cout<<"Closest "<<origin<<"  "<<first<<"  "<<second<<(int)(a<b)<<std::endl;
+
+
   
   if (a<b)
     return ClosestFIRST;
@@ -143,6 +146,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
       
+ 
   //Partial norm computation
   // (sum_{i!=dim}  |u_i-v_i|^p
   Promoted nu = NumberTraits<Promoted>::ZERO;
@@ -158,17 +162,20 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
  
   //Intersection of voronoi boundary
      
-
   //Optimization if vw lies before starting
-                                          if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
-       (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
+  if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
+      (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
     {
+      if(startingPoint[1]==7)
+        trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)true<<std::endl;
       return true;
     }
   //Optimization if vw lies before starting   
-       if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
-       (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
+  if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
+      (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
     {
+      if(startingPoint[1]==7)
+        trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)false<<std::endl;
       return false;
     }
   
@@ -176,6 +183,9 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
   Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
 
+  if(startingPoint[1]==7)
+    trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)(uv> vw)<<std::endl;
+ 
   if ( uv > vw )
     return true;
   else
