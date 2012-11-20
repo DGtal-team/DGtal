@@ -124,9 +124,13 @@ bool testReverseDT()
   Z2i::L2PowerMetric l2power;
   RDT reverseDT(&dom,&dt,&l2power);
   
-  // board.clear();
-  //drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)10);
-  // board.saveSVG ( "image-REDTtest.svg" );
+
+  for(unsigned int j=2; j<16; j++)
+    {
+      for(unsigned int i=2; i<16; i++)
+	trace.info()<< reverseDT.getPowerVector(Z2i::Point(i,j))[0]<<","<<reverseDT.getPowerVector(Z2i::Point(i,j))[1]<<" ";
+      trace.info()<<std::endl;
+    }
 
   trace.warning()<<"REDT:"<<endl;
   RDT::ConstRange::ConstIterator it2 = reverseDT.constRange().begin();

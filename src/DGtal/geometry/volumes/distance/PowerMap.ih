@@ -92,7 +92,7 @@ DGtal::PowerMap<W, Sep>::compute( )
       myImagePtr->setValue ( *it, myInfinity );
   
   //We process the dimensions one by one
-  for ( Dimension dim = 0; dim < W::Domain::Space::dimension ; dim++ )
+  for ( Dimension dim = 0; dim < 1; dim++) //W::Domain::Space::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 
@@ -205,6 +205,12 @@ DGtal::PowerMap<W,Sep>::computeOtherStep1D ( const Point &startingPoint,
   if (nbSites == -1)
     return;
 
+  if (startingPoint[1]==7)
+    {
+      for(unsigned int i=0; i<Sites.size();i++)
+        std::cout << Sites[i]<<"  ";
+      std::cout << std::endl;
+    }
   int k = 0;
 
   //Rewriting
