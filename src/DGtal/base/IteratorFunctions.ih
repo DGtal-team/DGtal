@@ -138,7 +138,7 @@ unsigned int DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, 
 template<typename C>
 unsigned int DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, RandomAccessCategory)
 {
-  std::cerr << "RandomAccess category" << std::endl; 
+  std::cerr << "RandomAccess category (circ)" << std::endl; 
   BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<C> )); 
 
   if (isNotEmpty(cb, ce))

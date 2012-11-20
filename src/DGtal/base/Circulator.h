@@ -231,7 +231,8 @@ namespace DGtal
     /**
      *  @return  *myCurrentIt.
     */
-    reference operator*() const { 
+    reference operator*() const 
+    { 
      //ASSERT( myCurrentIt != myEndIt ); //myCurrentIt == myEndIt when using reverse iterators on circulators
      ASSERT( isValid() ); 
      return *myCurrentIt; 
@@ -240,7 +241,8 @@ namespace DGtal
     /**
      *  @return  pointer to myCurrentIt
     */
-    pointer operator->() const { 
+    pointer operator->() const 
+    { 
      //ASSERT( myCurrentIt != myEndIt ); //myCurrentIt == myEndIt when using reverse iterators on circulators
      ASSERT( isValid() ); 
      return myCurrentIt.operator->(); 
@@ -299,7 +301,8 @@ namespace DGtal
     //'true' if their three underlying iterators are equal
     //or if their underlying ranges are both empty,
     //'false' otherwise
-    bool operator==( const Self& other) const { 
+    bool operator==( const Self& other) const 
+    { 
         return ( ( (myBeginIt == other.begin())
                  &&(myEndIt == other.end())
                  &&(myCurrentIt == other.base()) ) 
@@ -308,7 +311,8 @@ namespace DGtal
     bool operator!=( const Self& other) const { return !(*this == other); }
 
     template<typename OtherIterator>
-    bool operator==( const OtherIterator& other) const { 
+    bool operator==( const OtherIterator& other) const 
+    { 
         return ( ( (myBeginIt == other.begin())
                  &&(myEndIt == other.end())
                  &&(myCurrentIt == other.base()) ) 
@@ -321,49 +325,57 @@ namespace DGtal
     // ----------------------- Random access operators --------------------------------------
   public:
 
-    Self& operator+=( difference_type d ) {
-        ASSERT( isValid() ); 
-	//size range
-        typename Iterator::difference_type n = myEndIt - myBeginIt;
-        ASSERT( n > 0 );
-	//difference modulo n
-	if ( (d >= n)||(-d >= n) )
-	  d = d%n; 
-	ASSERT( (d < n)&&(-d < n) );
-	//position of the current iterator
-        typename Iterator::difference_type j = myCurrentIt - myBeginIt;
-        ASSERT( (j >= 0) && (j < n) );
-	//deviation between the position of the past-the-end value 
-	//and the current iterator
-        typename Iterator::difference_type e = n - j;
-	if (d >= 0)
-	  { //in case of positive distance
-	    if (d < e) j += d;
-	    else j = d - e; 
-	  }
-	else 
-	  { //in case of negative distance
-	    if (-d <= j) j += d; 
-	    else j = j + d + n; 
-	  }
-        ASSERT( (j >= 0) && (j < n) );
-        myCurrentIt = myBeginIt + j;
-        return *this;
+    Self& operator+=( difference_type d ) 
+    {
+      if ( isValid() )
+	{
+	  //size range
+	  typename Iterator::difference_type n = myEndIt - myBeginIt;
+	  ASSERT( n > 0 );
+	  //difference modulo n
+	  if ( (d >= n)||(-d >= n) )
+	    d = d%n; 
+	  ASSERT( (d < n)&&(-d < n) );
+	  //position of the current iterator
+	  typename Iterator::difference_type j = myCurrentIt - myBeginIt;
+	  ASSERT( (j >= 0) && (j < n) );
+	  //deviation between the position of the past-the-end value 
+	  //and the current iterator
+	  typename Iterator::difference_type e = n - j;
+	  if (d >= 0)
+	    { //in case of positive distance
+	      if (d < e) j += d;
+	      else j = d - e; 
+	    }
+	  else 
+	    { //in case of negative distance
+	      if (-d <= j) j += d; 
+	      else j = j + d + n; 
+	    }
+	  ASSERT( (j >= 0) && (j < n) );
+	  myCurrentIt = myBeginIt + j;
+	  return *this;
+	}
+      else
+	return *this; 
     }
 
     Self& operator-=( difference_type d) { return operator+=( -d); }
 
-    Self operator+( difference_type d) const {
+    Self operator+( difference_type d) const 
+    {
         Self tmp = *this;
         return tmp += d;
     }
 
-    Self operator-( difference_type d) const {
+    Self operator-( difference_type d) const 
+    {
         Self tmp = *this;
         return tmp += -d;
     }
 
-    difference_type operator-( const Self& c) const {
+    difference_type operator-( const Self& c) const 
+    {
         ASSERT( isValid() );
         ASSERT( c.isValid() );
 	typename Iterator::difference_type d = (myCurrentIt - c.myCurrentIt);
@@ -375,7 +387,8 @@ namespace DGtal
 	    return (n + d); 
 	  }
     }
-    reference operator[]( difference_type d) const {
+    reference operator[]( difference_type d) const 
+    {
         Self tmp = *this;
         tmp += d;
         return *tmp;
