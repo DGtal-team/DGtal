@@ -250,42 +250,6 @@ bool basicRandomAccessTest(const Container& cont)
   return (nbok == nb);
 }
 
-
-// template< typename IC> 
-// inline
-// bool getGeneralTag( const IC& /*ic*/){
-//   cout << typeid( typename IteratorCirculatorTraits<IC>::Category() ).name() << endl; 
-//   return true; 
-// }
-
-// template< typename IC> 
-// inline
-// bool getSpecificTag( const IC& /*ic*/){
-//   cout << typeid( typename IC::iterator_category() ).name() << endl; 
-//   return true; 
-// }
-
-
-// template< typename IC > 
-// inline
-// bool getType( const IC& , IteratorType ) {
-//   cout << "IteratorType" << endl;
-//   return true;
-// }
-
-// template< typename IC > 
-// inline
-// bool getType( const IC& , CirculatorType ) {
-//   cout << "CirculatorType" << endl;
-//   return true;
-// }
-
-// template< typename IC> 
-// inline
-// bool getType( const IC& ic){
-//   return getType<IC>( ic, typename IteratorCirculatorTraits<IC>::Type() );
-// }
-
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -366,32 +330,6 @@ int main( int argc, char** argv )
     basicBidirectionalTest(bl) && 
     basicBidirectionalTest(v) &&
     basicRandomAccessTest(v);
-
-  /*
-//tags
-  trace.info() << endl;
-  trace.info() << "Tags for classic iterators" << endl;
-  getGeneralTag< vector<int>::iterator > ( v.begin() ); 
-  getSpecificTag< vector<int>::iterator > ( v.begin() ); 
-  getGeneralTag< Circulator<vector<int>::iterator> > ( c2 ); 
-  getSpecificTag< Circulator<vector<int>::iterator> > ( c2 ); 
-  getType< vector<int>::iterator > ( v.begin() ); 
-  getType< Circulator<vector<int>::iterator> > ( c2 ); 
-
-
-
-  trace.info() << "Tags for pointers" << endl;
-  int t[5] = {1, 2, 3, 4, 5};
-  getGeneralTag< int* > ( t ); 
-  getType< int* > ( t ); 
-
-  Circulator<int*> tc(t, t, t+5); 
-  trace.info() << *tc++  << *tc++ << *tc++ <<  *tc++ <<  *tc++ <<  *tc++ <<  *tc++ << *tc++ << endl;
-
-  getSpecificTag< Circulator<int*> > ( tc ); 
-  getGeneralTag< Circulator<int*> > ( tc ); 
-  getType< Circulator<int*> > ( tc ); 
-  */
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
