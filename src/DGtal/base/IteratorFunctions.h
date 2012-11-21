@@ -124,7 +124,9 @@ namespace DGtal
    * @tparam any iterator or circulator
    */
   template<typename IC>
-  void advanceIterator(IC& ic, unsigned int n);  
+  inline
+  void advanceIterator(IC& ic, 
+		       typename IteratorCirculatorTraits<IC>::Difference n);  
 
   namespace detail
   {
@@ -137,7 +139,10 @@ namespace DGtal
      * @tparam any iterator or circulator
      */
     template<typename IC>
-    void advanceIterator(IC& ic, unsigned int n, ForwardCategory /*c*/);
+    inline
+    void advanceIterator(IC& ic, 
+			 typename IteratorCirculatorTraits<IC>::Difference n, 
+			 ForwardCategory /*c*/);
 
     /**
      * Moves @a ic at position @ it + @a n 
@@ -148,7 +153,10 @@ namespace DGtal
      * @tparam any iterator or circulator
      */
     template<typename IC>
-    void advanceIterator(IC& ic, unsigned int n, RandomAccessCategory /*c*/);
+    inline
+    void advanceIterator(IC& ic, 
+			 typename IteratorCirculatorTraits<IC>::Difference n, 
+			 RandomAccessCategory /*c*/);
   } //end namespace detail
 
   /**
@@ -159,7 +167,9 @@ namespace DGtal
    * @tparam any iterator or circulator
    */
   template<typename IC>
-  unsigned int rangeSize(const IC& itb, const IC& ite);  
+  inline
+  typename IteratorCirculatorTraits<IC>::Difference 
+  rangeSize(const IC& itb, const IC& ite);  
 
   namespace detail
   {
@@ -174,7 +184,9 @@ namespace DGtal
      * @tparam any iterator
      */
     template<typename I>
-    unsigned int rangeSize(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
+    inline
+    typename IteratorCirculatorTraits<I>::Difference 
+    rangeSize(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
 
     /**
      * Computes the size of a given range [ @a cb, @a ce ). 
@@ -188,7 +200,9 @@ namespace DGtal
      * @tparam any circulator
      */
     template<typename C>
-    unsigned int rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/);
+    inline
+    typename IteratorCirculatorTraits<C>::Difference 
+    rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/);
 
     /**
      * Computes the size of a given range [ @a itb , @a ite ) 
@@ -201,7 +215,9 @@ namespace DGtal
      * @tparam any iterator
      */
     template<typename I>
-    unsigned int rangeSize(const I& itb, const I& ite, IteratorType /*t*/, RandomAccessCategory /*c*/); 
+    inline
+    typename IteratorCirculatorTraits<I>::Difference 
+    rangeSize(const I& itb, const I& ite, IteratorType /*t*/, RandomAccessCategory /*c*/); 
 
     /**
      * Computes the size of a given range [ @a cb, @a ce ). 
@@ -215,7 +231,9 @@ namespace DGtal
      * @tparam any circulator
      */
     template<typename C>
-    unsigned int rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, RandomAccessCategory /*c*/);
+    inline
+    typename IteratorCirculatorTraits<C>::Difference 
+    rangeSize(const C& cb, const C& ce, CirculatorType /*t*/, RandomAccessCategory /*c*/);
  
   } //namespace detail
 
@@ -227,6 +245,7 @@ namespace DGtal
    * @tparam any iterator or circulator
    */
   template<typename IC>
+  inline
   IC rangeMiddle(const IC& itb, const IC& ite);  
 
   namespace detail
@@ -242,6 +261,7 @@ namespace DGtal
      * @tparam any iterator
      */
     template<typename I>
+    inline
     I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, ForwardCategory /*c*/); 
 
     /**
@@ -256,6 +276,7 @@ namespace DGtal
      * @tparam any circulator
      */
     template<typename C>
+    inline
     C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, ForwardCategory /*c*/); 
 
     /**
@@ -269,6 +290,7 @@ namespace DGtal
      * @tparam any iterator
      */
     template<typename I>
+    inline
     I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, BidirectionalCategory /*c*/); 
 
     /**
@@ -283,6 +305,7 @@ namespace DGtal
      * @tparam any circulator
      */
     template<typename C>
+    inline
     C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, BidirectionalCategory /*c*/); 
 
     /**
@@ -296,6 +319,7 @@ namespace DGtal
      * @tparam any iterator
      */
     template<typename I>
+    inline
     I rangeMiddle(const I& itb, const I& ite, IteratorType /*t*/, RandomAccessCategory /*c*/); 
 
     /**
@@ -310,6 +334,7 @@ namespace DGtal
      * @tparam any circulator
      */
     template<typename C>
+    inline
     C rangeMiddle(const C& cb, const C& ce, CirculatorType /*t*/, RandomAccessCategory /*c*/); 
   } // namespace namespace
 
