@@ -206,7 +206,8 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::visitedVertices() const
       visitedVtx.erase( mark_it );
     }
   return visitedVtx;
-  // JOL: Cannot do this since method is const.
+  // JOL: 2012/11/21: Cannot do this since method is const.  
+  //
   // Roll completely the queue so as to remove these vertices from the
   // set of visited vertices.
   // Node start = myQueue.front();
