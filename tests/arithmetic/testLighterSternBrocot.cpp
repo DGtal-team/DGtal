@@ -821,9 +821,6 @@ testTrivial( const string & lsb )
     Pattern sspat = spat.previousPattern();
     std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
               << std::endl;
-    // Pattern s3pat = sspat.previousPattern();
-    // std::cerr << "s3pat= " << s3pat.rE() << " depth=" << s3pat.slope().k() 
-    //           << std::endl;
   }
   {
     Pattern pat( 3, 2 );
@@ -835,9 +832,6 @@ testTrivial( const string & lsb )
     Pattern sspat = spat.previousPattern();
     std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
               << std::endl;
-    // Pattern s3pat = sspat.previousPattern();
-    // std::cerr << "s3pat= " << s3pat.rE() << " depth=" << s3pat.slope().k() 
-    //           << std::endl;
   }
   return true;
 }
