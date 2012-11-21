@@ -85,9 +85,7 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
     {
       if ( ( cfg % 1000 ) == 0 )
 	{
-	  // trace.info() << "Cfg: "<< cfg << std::endl;
 	  trace.progressBar( (double) cfg, (double) nbCfg );
-	  // trace.info() << std::endl;
 	}
       shape.pointSet().clear();
       shape.pointSet().insert( c );
@@ -101,7 +99,6 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
 	    }
 	}
       bool simple = shape.isSimple( c );
-      // std::cerr << "Simple[ " << cfg << " ] = " << simple << std::endl;
       map[ cfg ] = simple;
     }
 }

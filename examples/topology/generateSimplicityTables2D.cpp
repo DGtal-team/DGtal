@@ -85,7 +85,6 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
 	  && "[generateSimplicityTable] number of configurations is too high." );
   unsigned int nbCfg = 1 << k;
   for ( unsigned int cfg = 0; cfg < nbCfg; ++cfg )
-    //  unsigned int cfg = 3;
     {
       shape.pointSet().clear();
       shape.pointSet().insert( c );
@@ -99,7 +98,6 @@ generateSimplicityTable( const typename Object::DigitalTopology & dt,
 	    }
 	}
       bool simple = shape.isSimple( c );
-      // std::cerr << "Simple[ " << cfg << " ] = " << simple << std::endl;
       map[ cfg ] = simple;
     }
 }
@@ -138,13 +136,9 @@ displaySimplicityTable( Board2D & board,
   Point q2 = Point::diagonal( 4*16-1 );
   Domain fullDomain( q1, q2 );
   board << SetMode( fullDomain.className(), "Paving" );
-  // << fullDomain;
   unsigned int cfg = 0;
   for ( unsigned int y = 0; y < 16; ++y )
     for ( unsigned int x = 0; x < 16; ++x, ++cfg )
-  // unsigned int cfg = 3; 
-  // unsigned int x = 0;
-  // unsigned int y = 0;
       {
 	bool simple = map[ cfg ];
 	Point base( x*4, y*4 );
