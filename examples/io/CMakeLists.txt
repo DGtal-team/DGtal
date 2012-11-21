@@ -13,7 +13,6 @@ if (  WITH_VISU3D_QGLVIEWER )
     digitalSetFromVol
     digitalSetFromPointList
     meshFromOFF
-    viewDualSurface
     )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
     add_executable(${FILE} ${FILE})
