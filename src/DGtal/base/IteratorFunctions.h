@@ -62,10 +62,7 @@ namespace DGtal
      */
     template< typename IC > 
     inline
-    bool isNotEmpty( const IC& itb, const IC& ite, IteratorType ) 
-    {
-      return (itb != ite);
-    }
+    bool isNotEmpty( const IC& itb, const IC& ite, IteratorType );  
 
     /**
      * Checks if a circular range is not empty, 
@@ -76,14 +73,7 @@ namespace DGtal
      */
     template< typename IC > 
     inline
-    bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType) 
-    {
-      // using isValid method does not work with reverse circulator 
-      //(generally speaking adapters of circulators that does not have any isValid method)
-      //    return ( ( c1.isValid() ) && ( c2.isValid() ) );  
-      IC c; //c is not valid
-      return ( (c1 != c) && (c2 != c) ); 
-    }
+    bool isNotEmpty( const IC& c1, const IC& c2, CirculatorType); 
 
   } //end namespace detail
 
@@ -91,27 +81,21 @@ namespace DGtal
    * Checks if the range [ @a itb , @a ite ) is empty
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
-   * @tparam any iterator or circulator
+   * @tparam any model of iterator or circulator
    */
   template< typename IC> 
   inline
-  bool isEmpty( const IC& itb, const IC& ite )
-  {
-    return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-  }
+  bool isEmpty( const IC& itb, const IC& ite );
 
   /**
    * Checks if the range [ @a itb , @a ite ) is not empty
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
-   * @tparam any iterator or circulator
+   * @tparam any model of iterator or circulator
    */
   template< typename IC> 
   inline
-  bool isNotEmpty( const IC& itb, const IC& ite )
-  {
-    return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
-  }
+  bool isNotEmpty( const IC& itb, const IC& ite );
   
   /////////////////////////////////////////////////////////
   // template functions for the size and middle of a (sub)range
@@ -121,7 +105,7 @@ namespace DGtal
    * @param ic any (circular)iterator
    * @param n any positive distance
    * @return moved (circular)iterator
-   * @tparam any iterator or circulator
+   * @tparam IC any model o fiterator or circulator
    */
   template<typename IC>
   inline
@@ -136,7 +120,7 @@ namespace DGtal
      * @param n any positive distance
      * @param c any instance of ForwardCategory
      * @return (circular)iterator @a it incremented @a n times
-     * @tparam any iterator or circulator
+     * @tparam IC any iterator or circulator
      */
     template<typename IC>
     inline
@@ -150,7 +134,7 @@ namespace DGtal
      * @param n any positive distance
      * @param c any instance of RandomAccessCategory
      * @return  @a it += @a n
-     * @tparam any iterator or circulator
+     * @tparam IC any iterator or circulator
      */
     template<typename IC>
     inline
@@ -164,12 +148,26 @@ namespace DGtal
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
    * @return the size 
-   * @tparam any iterator or circulator
+   * @tparam IC any model of iterator or circulator
    */
   template<typename IC>
   inline
   typename IteratorCirculatorTraits<IC>::Difference 
   rangeSize(const IC& itb, const IC& ite);  
+
+  /**
+   * Computes the size of a given subrange [ @a itb , @a ite ), 
+   * (calls rangeSize functions with IteratorType, whatever 
+   * the true type of @a IC)
+   * @param itb begin iterator of the subrange
+   * @param ite end iterator of the subrange
+   * @return the size 
+   * @tparam IC any model of iterator or circulator
+   */
+  template<typename IC>
+  inline
+  typename IteratorCirculatorTraits<IC>::Difference 
+  subRangeSize(const IC& itb, const IC& ite);  
 
   namespace detail
   {
@@ -181,7 +179,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(ite-itb)
-     * @tparam any iterator
+     * @tparam I any iterator
      */
     template<typename I>
     inline
@@ -197,7 +195,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the size 
      * NB: linear in the range size
-     * @tparam any circulator
+     * @tparam C any circulator
      */
     template<typename C>
     inline
@@ -212,7 +210,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(1)
-     * @tparam any iterator
+     * @tparam I any iterator
      */
     template<typename I>
     inline
@@ -228,7 +226,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(1)
-     * @tparam any circulator
+     * @tparam C any circulator
      */
     template<typename C>
     inline
@@ -242,11 +240,23 @@ namespace DGtal
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
    * @return the middle iterator of the range [ @a itb , @a ite ) 
-   * @tparam any iterator or circulator
+   * @tparam IC any model iterator or circulator
    */
   template<typename IC>
   inline
   IC rangeMiddle(const IC& itb, const IC& ite);  
+
+  /**
+   * Computes the middle iterator of a given subrange [ @a itb , @a ite ) 
+   * (calls rangeMiddle with IteratorType whatever the true type of @a IC)
+   * @param itb begin iterator of the subrange
+   * @param ite end iterator of the subrange
+   * @return the middle iterator of the subrange [ @a itb , @a ite ) 
+   * @tparam IC any model of iterator or circulator
+   */
+  template<typename IC>
+  inline
+  IC subRangeMiddle(const IC& itb, const IC& ite);  
 
   namespace detail
   {
@@ -258,7 +268,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(ite-itb)
-     * @tparam any iterator
+     * @tparam I any iterator
      */
     template<typename I>
     inline
@@ -273,7 +283,7 @@ namespace DGtal
      * @param c any object of ForwardCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: linear in the range size
-     * @tparam any circulator
+     * @tparam C any circulator
      */
     template<typename C>
     inline
@@ -287,7 +297,7 @@ namespace DGtal
      * @param c any object of BidirectionalCategory 
      * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(ite-itb)
-     * @tparam any iterator
+     * @tparam I any iterator
      */
     template<typename I>
     inline
@@ -302,7 +312,7 @@ namespace DGtal
      * @param c any object of BidirectionalCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: linear in the range size
-     * @tparam any circulator
+     * @tparam C any circulator
      */
     template<typename C>
     inline
@@ -316,7 +326,7 @@ namespace DGtal
      * @param c any object of RandomAccessCategory 
      * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(1)
-     * @tparam any iterator
+     * @tparam I any iterator
      */
     template<typename I>
     inline
@@ -331,7 +341,7 @@ namespace DGtal
      * @param c any object of RandomAccessCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: in O(1)
-     * @tparam any circulator
+     * @tparam C any circulator
      */
     template<typename C>
     inline

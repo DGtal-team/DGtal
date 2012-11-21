@@ -376,14 +376,13 @@ namespace DGtal
 
     difference_type operator-( const Self& c) const 
     {
-        ASSERT( isValid() );
-        ASSERT( c.isValid() );
 	typename Iterator::difference_type d = (myCurrentIt - c.myCurrentIt);
 	if (d >= 0)
 	  return d; 
 	else 
 	  {
 	    typename Iterator::difference_type n = myEndIt - myBeginIt;
+	    ASSERT( n > 0 );
 	    return (n + d); 
 	  }
     }
