@@ -37,7 +37,6 @@
 
 //-----------------------------------------------------------------------------
 template< typename IC> 
-inline
 bool DGtal::isEmpty( const IC& itb, const IC& ite )
 {
   return !detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
@@ -45,7 +44,6 @@ bool DGtal::isEmpty( const IC& itb, const IC& ite )
 
 //-----------------------------------------------------------------------------
 template< typename IC> 
-inline
 bool DGtal::isNotEmpty( const IC& itb, const IC& ite )
 {
   return detail::isNotEmpty<IC>( itb, ite, typename IteratorCirculatorTraits<IC>::Type() );
@@ -53,7 +51,6 @@ bool DGtal::isNotEmpty( const IC& itb, const IC& ite )
 
 //-----------------------------------------------------------------------------
 template< typename IC > 
-inline
 bool DGtal::detail::isNotEmpty( const IC& itb, const IC& ite, IteratorType ) 
 {
   return (itb != ite);
@@ -61,7 +58,6 @@ bool DGtal::detail::isNotEmpty( const IC& itb, const IC& ite, IteratorType )
 
 //-----------------------------------------------------------------------------
 template< typename IC > 
-inline
 bool DGtal::detail::isNotEmpty( const IC& c1, const IC& c2, CirculatorType ) 
 {
   // Using isValid method does not work adapters of circulators 
@@ -75,7 +71,6 @@ bool DGtal::detail::isNotEmpty( const IC& c1, const IC& c2, CirculatorType )
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 void DGtal::advanceIterator(IC& ic, 
 			    typename IteratorCirculatorTraits<IC>::Difference n)
 {
@@ -87,7 +82,6 @@ void DGtal::advanceIterator(IC& ic,
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 void DGtal::detail::advanceIterator(IC& ic, 
 				    typename IteratorCirculatorTraits<IC>::Difference n,
 				    ForwardCategory)
@@ -105,7 +99,6 @@ void DGtal::detail::advanceIterator(IC& ic,
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 void DGtal::detail::advanceIterator(IC& ic, 
 				    typename IteratorCirculatorTraits<IC>::Difference n, 
 				    RandomAccessCategory)
@@ -117,7 +110,6 @@ void DGtal::detail::advanceIterator(IC& ic,
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 typename DGtal::IteratorCirculatorTraits<IC>::Difference 
 DGtal::rangeSize(const IC& itb, const IC& ite) 
 {
@@ -130,7 +122,6 @@ DGtal::rangeSize(const IC& itb, const IC& ite)
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 typename DGtal::IteratorCirculatorTraits<IC>::Difference 
 DGtal::subRangeSize(const IC& itb, const IC& ite) 
 {
@@ -142,7 +133,6 @@ DGtal::subRangeSize(const IC& itb, const IC& ite)
 
 //-----------------------------------------------------------------------------
 template<typename I>
-inline
 typename DGtal::IteratorCirculatorTraits<I>::Difference 
 DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, ForwardCategory)
 {
@@ -161,7 +151,6 @@ DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, ForwardCatego
 
 //-----------------------------------------------------------------------------
 template<typename C>
-inline
 typename DGtal::IteratorCirculatorTraits<C>::Difference 
 DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, ForwardCategory)
 {
@@ -187,7 +176,6 @@ DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, ForwardCatego
 
 //-----------------------------------------------------------------------------
 template<typename I>
-inline
 typename DGtal::IteratorCirculatorTraits<I>::Difference 
 DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, RandomAccessCategory)
 {
@@ -199,7 +187,6 @@ DGtal::detail::rangeSize(const I& itb, const I& ite, IteratorType, RandomAccessC
 
 //-----------------------------------------------------------------------------
 template<typename C>
-inline
 typename DGtal::IteratorCirculatorTraits<C>::Difference 
 DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, RandomAccessCategory)
 {
@@ -226,7 +213,6 @@ DGtal::detail::rangeSize(const C& cb, const C& ce, CirculatorType, RandomAccessC
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 IC DGtal::rangeMiddle(const IC& itb, const IC& ite) 
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
@@ -238,7 +224,6 @@ IC DGtal::rangeMiddle(const IC& itb, const IC& ite)
 
 //-----------------------------------------------------------------------------
 template<typename IC>
-inline
 IC DGtal::subRangeMiddle(const IC& itb, const IC& ite) 
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
@@ -249,7 +234,6 @@ IC DGtal::subRangeMiddle(const IC& itb, const IC& ite)
 
 //-----------------------------------------------------------------------------
 template<typename I>
-inline
 I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, ForwardCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<I> )); 
@@ -268,7 +252,6 @@ I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, ForwardCa
 
 //-----------------------------------------------------------------------------
 template<typename C>
-inline
 C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, ForwardCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<C> )); 
@@ -287,7 +270,6 @@ C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, ForwardCa
 
 //-----------------------------------------------------------------------------
 template<typename I>
-inline
 I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, BidirectionalCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<I> )); 
@@ -310,7 +292,6 @@ I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, Bidirecti
 
 //-----------------------------------------------------------------------------
 template<typename C>
-inline
 C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, BidirectionalCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<C> )); 
@@ -339,7 +320,6 @@ C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, Bidirecti
 
 //-----------------------------------------------------------------------------
 template<typename I>
-inline
 I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, RandomAccessCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<I> ));
@@ -350,7 +330,6 @@ I DGtal::detail::rangeMiddle(const I& itb, const I& ite, IteratorType, RandomAcc
 
 //-----------------------------------------------------------------------------
 template<typename C>
-inline
 C DGtal::detail::rangeMiddle(const C& cb, const C& ce, CirculatorType, RandomAccessCategory)
 {
   BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<C> )); 
