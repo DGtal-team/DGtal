@@ -154,7 +154,7 @@ namespace DGtal
     {
       return this->myMetricPtr->powerDistance(aPoint, 
                                               this->myImagePtr->operator()(aPoint),
-                                              this->myWeightImagePtr->operator()(aPoint));
+                                              this->myWeightImagePtr->operator()( this->myImagePtr->operator()(aPoint)));
     }    
           
     /**
