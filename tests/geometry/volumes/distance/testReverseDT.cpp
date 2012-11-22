@@ -152,6 +152,28 @@ bool testReverseDT()
     if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
 
+  
+  trace.info() << "vector (4,7)= "<< reverseDT.getPowerVector(Z2i::Point(4,7))<<std::endl;
+  nbok += (reverseDT.getPowerVector(Z2i::Point(4,7))==Z2i::Point(5,7)) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "ok" << std::endl;
+  
+  trace.info() << "dist (4,7)= "<< reverseDT.metricPtr()->exactDistanceRepresentation(Z2i::Point(4,7), Z2i::Point(5,7))<<std::endl;
+  nbok += (reverseDT.metricPtr()->exactDistanceRepresentation(Z2i::Point(4,7), Z2i::Point(5,7))==1) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+ 
+  trace.info() << "power (4,7)= "<< reverseDT(Z2i::Point(4,7))<<std::endl;
+  nbok += (reverseDT(Z2i::Point(4,7))==0) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+ 
+
+
+
   nbok += ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "

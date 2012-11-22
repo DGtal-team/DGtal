@@ -87,10 +87,6 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::closestWeighted (const Po
   a = exactDistanceRepresentation(origin, first) - wf;
   b = exactDistanceRepresentation(origin, second) - ws;
   
-  std::cout<<"Closest "<<origin<<"  "<<first<<"  "<<second<<(int)(a<b)<<std::endl;
-
-
-  
   if (a<b)
     return ClosestFIRST;
   else
@@ -275,7 +271,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::closestWeighted (const Po
       
   a = exactDistanceRepresentation(origin,first) - wF;
   b = exactDistanceRepresentation(origin,second) - wS;
-  
+
   if (a<b)
     return ClosestFIRST;
   else

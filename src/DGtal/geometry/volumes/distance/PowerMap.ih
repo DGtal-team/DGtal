@@ -205,12 +205,6 @@ DGtal::PowerMap<W,Sep>::computeOtherStep1D ( const Point &startingPoint,
   if (nbSites == -1)
     return;
 
-  if (startingPoint[1]==7)
-    {
-      for(unsigned int i=0; i<Sites.size();i++)
-        std::cout << Sites[i]<<"  ";
-      std::cout << std::endl;
-    }
   int k = 0;
 
   //Rewriting
