@@ -165,6 +165,24 @@ namespace DGtal
     ~Alias();
 
     /**
+     * Constructor.
+     */
+    Alias();
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    Alias ( Alias & other );
+
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    Alias & operator= ( Alias & other );
+
+    /**
        Constructor from an instance of T. The object is pointed in
        'this'.
        @param t any object of type T.
@@ -199,28 +217,6 @@ namespace DGtal
     // ------------------------- Hidden services ------------------------------
   protected:
 
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
-    Alias();
-
-  private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    Alias ( const Alias & other );
-
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    Alias & operator= ( const Alias & other );
 
     // ------------------------- Internals ------------------------------------
   private:
