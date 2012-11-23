@@ -154,6 +154,22 @@ namespace DGtal
     ~Clone();
 
     /**
+      Copy constructor.
+      @param other the object to clone.
+     
+      Necessary to declare it, but not used ! It has no code so the
+      user cannot instantiate it. (otherwise the user might be
+      tempted to use it as a member).
+     
+     @note clang indication when putting it private: error: calling a
+     private constructor of class 'Clone<A>'.  warning: C++98 requires
+     an accessible copy constructor for class 'Clone<A>' when binding
+     a reference to a temporary; was private
+     [-Wbind-to-temporary-copy]
+     */
+    Clone ( const Clone & other );
+
+    /**
        Constructor from an instance of T. The object is referenced in
        'this' and is generally immediately duplicated by the user to
        instantiate a data member.
@@ -194,12 +210,6 @@ namespace DGtal
      */
     Clone();
 
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden (otherwise the user might be tempted to use it as a member).
-     */
-    Clone ( const Clone & other );
 
     /**
      * Assignment.

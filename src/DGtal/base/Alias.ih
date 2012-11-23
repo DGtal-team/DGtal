@@ -46,6 +46,27 @@ DGtal::Alias<T>::~Alias()
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
+DGtal::Alias<T>::Alias()
+  : myPtrT( 0 )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::Alias<T>::Alias( Alias & other )
+  : myPtrT( other.myPtrT )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::Alias<T> &
+DGtal::Alias<T>::operator=( Alias & other )
+{ 
+  myPtrT = other.myPtrT;
+  return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
 DGtal::Alias<T>::Alias( T & t ) : myPtrT( &t )
 {}
 //-----------------------------------------------------------------------------
