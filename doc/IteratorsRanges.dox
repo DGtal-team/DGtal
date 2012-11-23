@@ -194,7 +194,6 @@ the decrement operator instead of the increment operator and conversely.
 Bidirectional ranges provide reverse iterators that can be used 
 as follows: 
 
-    ...
     template<typename R>
     void anyProcedure(const R& aRange)
       {
@@ -339,7 +338,7 @@ The generic way of iterating over a range of elements whatever the type of itera
 
 <!-- TODO range adapter, range factory (in geometry package) --!> 
 
-\section secIteratorRangesUtils Utilities
+\section secIteratorRangesUtils Iterator Utilities
 
 To ease the use of iterators and circulators, several tools are available. 
 
@@ -395,9 +394,9 @@ For instance, redefining the value type is done as follows:
 If you want to specialize some classes or functions according to iterators tags
 (basically type and category), you may use function overloading. This technique 
 is called [tag dispatching](http://www.generic-programming.org/languages/cpp/techniques.php#tag_dispatching). 
-You may find example of tag dispatching in IteratorFunctions.h and IteratorFunctions.ih
+You may find examples of tag dispatching in IteratorFunctions.h and IteratorFunctions.ih
 
-\subsection subsecIteratorRangesUtilsTagsDispatching For developers: How to create new iterators ? 
+\subsection subsecIteratorRangesUtilsTagsNew For developers: How to create new iterators ? 
 
 When you create a new iterator, you have to be sure that it contains all STL required nested types 
 so that IteratorCirculatorTraits works fine: 
@@ -413,7 +412,8 @@ a nested type called *Type* as CirculatorType.
 The class Circulator is a good example of what a circulator should look like. 
 
 
-Moreover, you have to be sure that it contains all operations required by its category. 
+Moreover, you have to be sure that it implements all operators required by its category
+(dereference, indirection, pre- and post- incrementation, etc.). 
 If your iterator should be readable and forward, you have to be sure that it is both a 
 model of readable and forward iterator by concept checking. 
 
@@ -421,7 +421,8 @@ model of readable and forward iterator by concept checking.
 
 The basic way of checking whether a given type is a model of a given concept or not
 is to use the BOOST_CONCEPT_ASSERT mechanism. In the following snippet, 
-*I* is expected to be a model of readable iterator and forward iterator. 
+type *I* is expected to be a model of readable iterator and forward iterator. 
+If it turns out that it is not a model of these concepts, a compilation error is raised. 
 
     template<typename I>
     void anyProcedure(const I& i)
@@ -438,11 +439,37 @@ We detail below their use in two packages: Geometry and Image.
 
 \subsection secIteratorRangesAppsGeometry Iterators and ranges in the Geometry package
  
-TODO
+One module of the geometry package is the analysis of one-dimensional 
+discrete structures. This is a (not exhaustive) list of such structures
+ used in digital geometry: 
+
+- digital curves
+    - 2d, 3d, nd
+    - 4-connected, 8-connected, disconnected
+    - interpixels, pixels
+    - open, closed
+
+- chaincodes
+
+Since these structures are one-dimensional, discrete and finite, 
+they can be viewed as linear or circular range of elements. 
+Segmentation algorithms extract from the whole range of elements,
+ possibly overlapping subranges called *segments*. 
+
+See @ref modulegeometry2d for further details. 
 
 \subsection secIteratorRangesAppsImage Iterators and ranges in the Image package
 
-TODO
+The concept of image is a refinement of the concept of *point functor*, 
+which describes a mapping between the points of a digital space and a set of values. 
+In addition, an image is bounded by a domain, ie. a finite and constant set 
+of digital points. 
+
+All images provide an access to its domain (`domain()` method), 
+which is a range of digital points, 
+as well as an access to a range of values (`constRange() or range()` methods).   
+
+See @ref moduleSpacePointVectorDomain and @ref moduleImage for further details. 
 
 */
 
