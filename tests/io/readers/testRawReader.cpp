@@ -34,12 +34,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
-#include "DGtal/io/colormaps/GrayscaleColorMap.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/colormaps/ColorBrightnessColorMap.h"
-
-#include "DGtal/io/writers/PNMWriter.h"
+#include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/readers/RawReader.h"
 
 #include "ConfigTest.h"
@@ -81,8 +76,7 @@ bool testRawReader2D()
   trace.info() << image <<endl;
 
   //export
-  typedef GrayscaleColorMap<unsigned char> Gray;  
-  PNMWriter<Image,Gray>::exportPGM("export-raw-reader.pgm",image,0,255);
+  PGMWriter<Image>::exportPGM("export-raw-reader.pgm",image);
 
   /// @todo re-import the PGM and compare with raw2D-64x64
   

@@ -42,27 +42,22 @@ namespace DGtal {
 template<typename I,typename C>
 bool
 RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
-        const Value & minV, const Value & maxV)
+			   const Functor & aFunctor)
 {
-  ///@todo  the Value of I should match with the one in C
-
   ofstream out;
   typename I::Domain::Vector ext = aImage.extent();
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
-  C colormap(minV,maxV);
-  Color col;
   
   out.open(filename.c_str(), ios_base::binary);
-
+  
   //We scan the domain 
   for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it)
     {
       val = aImage( (*it) );
-      col = colormap( val );
-      out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
+      out.put( static_cast<unsigned char>(aFunctor (val) ) );
     }
   
   out.close(); 
