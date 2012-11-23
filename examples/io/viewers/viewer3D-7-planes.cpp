@@ -35,7 +35,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/surfaces/COBANaivePlane.h"
-#include "DGtal/arithmetic/COBANaivePlane.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
