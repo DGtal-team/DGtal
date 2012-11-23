@@ -114,6 +114,23 @@ namespace DGtal
      B2 bb( &a1 ); // also duplicate a1 !
      @endcode
 
+     A last question could be why are we not just passing the instance
+     of A by value. This, for sure, would tell the developper that the
+     instance is duplicated somehow. The problem is that it induces
+     generally two duplications, and not only one ! It may be possible
+     that the compiler optimizes things nicely but it is unclear if
+     the compiler will always do it.
+
+     @code
+     struct B3 {
+       B3( A a ) // not ambiguous, but cost is O(2N) here. 
+       : myA( a ) {}
+     ...
+       A myA;
+     };
+     A a1;
+     B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
+     @endcode
    */
   template <typename T>
   class Clone
