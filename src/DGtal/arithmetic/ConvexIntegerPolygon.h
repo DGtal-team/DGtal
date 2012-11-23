@@ -198,7 +198,7 @@ namespace DGtal
      * computes the middle of the straight line segment.
      *
      * The centroid is a 2D rational point but it is represented as a
-     * 3D integer point (a/d,c/d) corresponds to (a,b,d).
+     * 3D integer point (a/d,b/d) corresponds to (a,b,d).
      *
      * @return the centroid. The centroid is \b not in reduced form.
      *
@@ -213,7 +213,7 @@ namespace DGtal
        of the straight line segment.
      
        The centroid is a 2D rational point but it is represented as a
-       3D integer point (a/d,c/d) corresponds to (a,b,d).
+       3D integer point (a/d,b/d) corresponds to (a,b,d).
 
        @param twice_area the area*2 of this polygon.
 
