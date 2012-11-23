@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Clone.h
+ * @file Alias.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Header file for module Clone.cpp
+ * Header file for module Alias.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Clone_RECURSES)
-#error Recursive header files inclusion detected in Clone.h
-#else // defined(Clone_RECURSES)
+#if defined(Alias_RECURSES)
+#error Recursive header files inclusion detected in Alias.h
+#else // defined(Alias_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Clone_RECURSES
+#define Alias_RECURSES
 
-#if !defined Clone_h
+#if !defined Alias_h
 /** Prevents repeated inclusion of headers. */
-#define Clone_h
+#define Alias_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,22 +48,32 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Clone
+  // template class Alias
   /**
-     Description of template class 'Clone' <p> \brief Aim: This class
+     Description of template class 'Alias' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
-     that the object will be duplicated (or cloned). Therefore the
-     user is reminded to take care of the possible cost of duplicating
-     the argument parameter, while he is aware that he does not have to take care
-     of the lifetime of the parameter.  Note that an instance of
-     Clone<T> is itself a light object (it holds only a const
-     reference), the duplication takes place when the user
-     instantiates its member of type T.
+     that the object/pointer will be only aliased. Therefore the user
+     is reminded that the argument parameter is given to the function
+     without any additional cost and may be modified, while he is
+     aware that the lifetime of the argument parameter must be at
+     least as long as the object itself. Note that an instance of
+     Alias<T> is itself a light object (it holds only a pointer).
+
+     It is used in methods or functions to encapsulate the parameter
+     types.
+
+     @code
+     double square( Alias<double> x )
+     {
+       return x * x;
+     }
+     std::cout << "3.5^2 = " << square( 3.5 ) << std::endl;
+     @encode
 
      @tparam T is any type.
 
-     @see Alias
      @see ConstAlias
+     @see Clone
 
      It can be used as follows. Consider this simple example where
      class A is a big object. Then we define two classes B1 and B2
@@ -76,15 +86,15 @@ namespace DGtal
      };
 
      // Both B1 and B2 uses A, but we do not know if A will be copied
-     // or just const-referenced by only looking at the declaration of
+     // or just referenced by only looking at the declaration of
      // the method. Generally the ambiguity is removed by adding
      // comments or, for the experienced developper, by looking at
      // other parts of the code.
      struct B1 {
-       B1( const A & a ) // ambiguous, cost is O(1) here
+       B1( A & a ) // ambiguous, cost is O(1) here
        : myA( a ) {}
      ...
-       const A & myA;
+       A & myA;
      };
      struct B2 {
        B2( const A & a ) // ambiguous, cost is O(N) here
@@ -103,10 +113,10 @@ namespace DGtal
      
      @code
      struct B1 {
-       B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+       B1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       const A & myA;
+       A & myA;
      };
      struct B2 {
        B2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
@@ -139,11 +149,12 @@ namespace DGtal
      B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note The user should not used Clone<T> for data members (in
-     fact, he cannot), only as a type for parameters.
+     @note The user can use either Alias<T> or T* for data
+     members. Normally (depending on the compiler), there is no
+     overhead.
    */
   template <typename T>
-  class Clone
+  class Alias
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -151,80 +162,93 @@ namespace DGtal
     /**
        Destructor. Does nothing.
      */
-    ~Clone();
+    ~Alias();
 
     /**
-       Constructor from an instance of T. The object is referenced in
-       'this' and is generally immediately duplicated by the user to
-       instantiate a data member.
+       Constructor from an instance of T. The object is pointed in
+       'this'.
        @param t any object of type T.
     */
-    Clone( const T & t );
+    Alias( T & t );
 
     /**
-       Constructor from a pointer to a valid instance of T. The object is referenced in
-       'this' and is generally immediately duplicated by the user to
-       instantiate a data member.
-       @param ptrT any valid pointer to a object of type T.
-       @pre ptrT != 0
+       Constructor from a pointer of T. The pointer is copied in
+       'this'.
+       @param ptrT any pointer to a object of type T or 0.
     */
-    Clone( const T* ptrT );
+    Alias( T* ptrT );
 
     /**
-       Cast operator to a T instance. This is only at this moment that
-       the object is duplicated.  This allows things like: A a2 = a1;
-       where a1 is of type Clone<A>.
+       Cast operator to a reference to T instance. Gives access to the
+       instance of T.  This allows things like: A a2 = a1; where a1 is
+       of type Alias<A>.
     */
-    operator T() const;
+    operator T&() const;
+    /**
+       Cast operator to a pointer to a T instance. Gives access to the
+       instance of T.  This allows things like: A* a2 = a1; where a1 is
+       of type Alias<A>.
+    */
+    operator T*() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
     // ------------------------- Private Datas --------------------------------
   private:
-    /// The reference to the T instance that is to be duplicated.
-    const T & myRefT;
-
+    /// The pointer to the instance of T.
+    T* myPtrT;
 
     // ------------------------- Hidden services ------------------------------
-  private:
+  protected:
 
     /**
      * Constructor.
-     * Forbidden.
+     * Forbidden by default (protected to avoid g++ warnings).
      */
-    Clone();
+    Alias();
+
+  private:
 
     /**
      * Copy constructor.
      * @param other the object to clone.
-     * Forbidden (otherwise the user might be tempted to use it as a member).
+     * Forbidden by default.
      */
-    Clone ( const Clone & other );
+    Alias ( const Alias & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
-     * Forbidden (otherwise the user might be tempted to use it as a member).
+     * Forbidden by default.
      */
-    Clone & operator= ( const Clone & other );
+    Alias & operator= ( const Alias & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Clone
+  }; // end of class Alias
+
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Alias'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Alias' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename T>
+  std::ostream&
+  operator<< ( std::ostream & out, const Alias<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/Clone.ih"
+#include "DGtal/base/Alias.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Clone_h
+#endif // !defined Alias_h
 
-#undef Clone_RECURSES
-#endif // else defined(Clone_RECURSES)
+#undef Alias_RECURSES
+#endif // else defined(Alias_RECURSES)
