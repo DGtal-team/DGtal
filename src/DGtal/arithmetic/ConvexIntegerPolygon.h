@@ -171,6 +171,7 @@ namespace DGtal
 
     /**
      * Removes (duplicate) consecutive vertices.
+     * NB: complexity is O(N), where N is the number of vertices.
      */
     void purge();
 
@@ -179,13 +180,19 @@ namespace DGtal
      * @param pos any iterator
      * @param K the point to add
      * @return an iterator on the newly created element.
+     *
+     * @pre if C_1, ..., C_N is the convex polygon, then C_1, C_pos-1,
+     * K ..., C_N should be the vertices of the output convex polygon.
      */
     Iterator insertBefore( const Iterator & pos, const Point & K );
 
     /**
        adds the point K to the end of the polygon.
        @param K the point to add
-     */
+
+       @pre if C_1, ..., C_N is the convex polygon, then C_1, ...,
+       C_N, K should be the vertices of the output convex polygon.
+    */
     void pushBack( const Point & K );
 
     /**
@@ -195,12 +202,14 @@ namespace DGtal
 
     /**
      * if the area of this polygon is not 0, computes centroid, else,
-     * computes the middle of the straight line segment.
+     * if the polygon is reduced to 2 points, computes the middle of
+     * the straight line segment, else returns the point itself.
      *
      * The centroid is a 2D rational point but it is represented as a
-     * 3D integer point (a/d,c/d) corresponds to (a,b,d).
+     * 3D integer point (a/d,b/d) corresponds to (a,b,d).
      *
      * @return the centroid. The centroid is \b not in reduced form.
+     * @pre The polygon should not be empty.
      *
      * @see centroid( const Integer & ) const
      */
@@ -209,13 +218,16 @@ namespace DGtal
     /**
        This form is faster than centroid if you have already computed the area.
 
-       if \e area is not 0, computes centroid, else, computes the middle
-       of the straight line segment.
+       if the area of this polygon is not 0, computes centroid, else,
+       if the polygon is reduced to 2 points, computes the middle of
+       the straight line segment, else returns the point itself.
      
        The centroid is a 2D rational point but it is represented as a
-       3D integer point (a/d,c/d) corresponds to (a,b,d).
+       3D integer point (a/d,b/d) corresponds to (a,b,d).
 
        @param twice_area the area*2 of this polygon.
+       @return the centroid. The centroid is \b not in reduced form.
+       @pre The polygon should not be empty.
 
        @see centroid() const
      */
@@ -265,16 +277,21 @@ namespace DGtal
        
        @param hs any half-space constraint.
        @return 'true' if the polygon was modified, 'false' otherwise.
+
+       NB: complexity is O(N) for finding the involved edges, then
+       log(D) for applying the cut.
      */
     bool cut( const HalfSpace & hs );
 
     /**
        Computes the constraint of the form N.P<=c whose supporting
        line passes through point *it and *(it+1), such that the other
-       points of the polygon are inside.
+       points of the polygon are inside. Parameters of the hafl-space
+       are minimal. Complexity is O(log(D)).
 
        @param it an iterator on a point of this polygon.
        @return the corresponding half-space.
+       @pre the polygon should have at least two vertices.
      */
     HalfSpace halfSpace( ConstIterator it ) const;
 
@@ -287,17 +304,22 @@ namespace DGtal
        @param B any point different from A.
        @param inP any point not on the straight line (AB).
        @return  the corresponding half-space.
+
+       NB: It is not a static method because this method uses the
+       internal IntegerComputer object member.
      */
     HalfSpace halfSpace( const Point & A, const Point & B, const Point & inP ) const;
 
 
     /**
-       Computes the set \a aSet all the digital points that belongs to this polygon.
+       Computes the set \a aSet all the digital points that belongs to
+       this polygon (interior plus boundary).
 
        @param aSet (returns) the set that contains as output all the
        digital points of this polygon.
 
-       @todo this method is for now not efficient.
+       @todo this method is for now not efficient and is just for
+       visualization purposes.
     */
     template <typename DigitalSet>
     void getIncludedDigitalPoints( DigitalSet & aSet ) const;
