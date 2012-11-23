@@ -24,23 +24,23 @@ for image visualisation or image export: predefined colormaps to convert scalars
 
 \section colormaps Colormaps
 
-Colormap models satisfy the CColomap concept. For short, a colormap is
+Colormap models satisfy the CColormap concept. For short, a colormap is
 parametrized by a scalar value template type (@a Value). When constructed
 from two @a min and @a max values (of type @a Value), the colormap
-offers an operator returning a DGtal::Color for each value @v in the
+offers an operator returning a DGtal::Color for each value @a v in the
 interval [@a min,@a max].
 
 For example, RandomColorMap returns a random color for each value
-@v. More complex colormaps (GradientColorMap, HueShadeColorMap, ...)
+@a v. More complex colormaps (GradientColorMap, HueShadeColorMap, ...)
 offer better colormap for scientific visualisation purposes. 
 
 
 \image html colormaps.png "Example of predefined colormaps" 
 \image latex colormaps.png "Example of predefined colormaps" width=5cm
 
-In some situations, we may have to convert colors into a  scalar
+In some situations, we may have to convert colors into   scalar
 values (see below). In this case, basic conversion functors are
-available in the DGtal::BasicColorToScalarFunctors namespacd. For
+available in the DGtal::BasicColorToScalarFunctors namespace. For
 example, you would find in this namespace a DGtal::BasicColorToScalarFunctors::RedChannel converter or a
 DGtal::BasicColorToScalarFunctors::MeanChannels converter. 
 
@@ -64,7 +64,7 @@ PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm",image, redFunctor);
 
 \section imagefileformat Image file formats
 
-We first detail import/export format for DGtal images. Please refor to
+We first detail import/export format for DGtal images. Please refer to
 @ref moduleImage for details on images in DGtal and their associated
 concepts. First of all:
 
@@ -79,7 +79,7 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 
 \subsection imagewriters Image Writers
 
-| Dimenssion | Name    | Description                     | Functor requirements                        | Class name    | Comment                                                  |
+| Dimension | Name    | Description                     | Functor requirements                        | Class name    | Comment                                                  |
 |------------|---------|---------------------------------|---------------------------------------------|---------------|----------------------------------------------------------|
 |         2D | PGM     | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     | http://netpbm.sourceforge.net/                           |
 |            | PPM     | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     | http://netpbm.sourceforge.net/                           |
@@ -94,7 +94,7 @@ For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template c
 
 \subsection imagereaders Image Readers
 
-| Dimenssion | Name              | Description                                   | Class name    | Comment                                                        |
+| Dimension | Name              | Description                                   | Class name    | Comment                                                        |
 |------------|-------------------|-----------------------------------------------|---------------|----------------------------------------------------------------|
 |         2D | PGM               | Grayscale  netpbm image format                | PNMReader     | http://netpbm.sourceforge.net/                                 |
 |            | any Magick format | Any file format in the GraphicsMagick library | MagickReader  | with @a WITH_MAGICK build flag, http://www.graphicsmagick.org/ |
