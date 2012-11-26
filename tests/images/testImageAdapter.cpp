@@ -173,9 +173,8 @@ bool test_g_f_fm1()
     //! [ImageAdapterConstruction]
     typedef ImageAdapter<VImage, Z2i::Domain, DefaultFunctor, bool, DefaultFunctor, Thresholder<VImage::Value> > MyImageAdapter2;
     
-    DefaultFunctor idD_2;
-    DefaultFunctor idV_2;
-    Thresholder<VImage::Value> idVm1_2( domain.size()/2 );
+    DefaultFunctor idD_2, idV_2;
+    Thresholder<VImage::Value> idVm1_2( 4 );
     
     MyImageAdapter2 restimage2(image, domain, idD_2, idV_2, idVm1_2);
     //! [ImageAdapterConstruction]
@@ -310,13 +309,11 @@ bool testImageAdapter()
 
     // 1) bell_tower
     //! [ImageAdapterWithSubdomain]
-    Z2i::Point p1( 43, 187-80/*10*/ );
-    Z2i::Point p2( 73, 187-10/*80*/ );
+    Z2i::Point p1( 43, 107 );
+    Z2i::Point p2( 73, 177 );
     Z2i::Domain domain_bell_tower( p1, p2 );
 
-    DefaultFunctor idbtD;
-    DefaultFunctor idbtV;
-    DefaultFunctor idbtVm1;
+    DefaultFunctor idbtD, idbtV, idbtVm1;
     MyImageAdapter bell_tower(image, domain_bell_tower, idbtD, idbtV, idbtVm1);
     //! [ImageAdapterWithSubdomain]
 
@@ -333,8 +330,8 @@ bool testImageAdapter()
 #endif
 
     // 2) cars
-    Z2i::Point p3( 0, 187-138/*115*/ );
-    Z2i::Point p4( 58, 187-115/*138*/ );
+    Z2i::Point p3( 0, 49 );
+    Z2i::Point p4( 58, 72 );
     Z2i::Domain domain_cars( p3, p4 );
     
     DefaultFunctor idcD;
@@ -386,35 +383,29 @@ bool testImageAdapter()
     
     // 5) fill 0 (only for one pixel on two) for 'floor_lamp' image
     //! [ImageAdapterWithSpecificDomain]
-    Z2i::Point p5( 56, 187-154/*108*/ );
-    Z2i::Point p6( 68, 187-108/*154*/ );
+    Z2i::Point p5( 56, 33 );
+    Z2i::Point p6( 68, 79 );
     Z2i::Domain domain_floor_lamp( p5, p6 );
 
     // --- DigitalSetDomain
-    typedef DigitalSetSelector < Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
-    BOOST_CONCEPT_ASSERT(( CDigitalSet< SpecificSet > ));
-
-    SpecificSet mySet( domain_floor_lamp );
+    Z2i::DigitalSet mySet( domain_floor_lamp );
 
     unsigned int i = 0;
     for ( Z2i::Domain::ConstIterator it = domain_floor_lamp.begin() ; 
       it != domain_floor_lamp.end();
       ++it, ++i )
     {
-      // insertNew is very important for vector container.
       if (i%2)
         mySet.insertNew( *it );
     }
     
-    DigitalSetDomain<SpecificSet> my_specific_domain_floor_lamp(mySet);
+    DigitalSetDomain<Z2i::DigitalSet> my_specific_domain_floor_lamp(mySet);
     // --- DigitalSetDomain
     
 
-    typedef ImageAdapter<VImage, DigitalSetDomain<SpecificSet>, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
+    typedef ImageAdapter<VImage, DigitalSetDomain<Z2i::DigitalSet>, DefaultFunctor, VImage::Value, DefaultFunctor, DefaultFunctor> MyImageAdapter2;
 
-    DefaultFunctor idflD;
-    DefaultFunctor idflV;
-    DefaultFunctor idflVm1;
+    DefaultFunctor idflD, idflV, idflVm1;
     MyImageAdapter2 floor_lamp(image, my_specific_domain_floor_lamp, idflD, idflV, idflVm1);
     //! [ImageAdapterWithSpecificDomain]
 
