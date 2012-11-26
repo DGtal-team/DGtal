@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <list>
+#include <vector>
 #ifdef CPP11_FORWARD_LIST 
 #include <forward_list>
 #endif
