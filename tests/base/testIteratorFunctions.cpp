@@ -29,6 +29,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <list>
+#include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/IteratorFunctions.h"
 #include "DGtal/base/Circulator.h"

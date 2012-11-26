@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
+#include <list>
 #ifdef CPP11_FORWARD_LIST 
 #include <forward_list>
 #endif
