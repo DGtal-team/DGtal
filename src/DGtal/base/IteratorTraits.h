@@ -68,7 +68,7 @@ namespace detail
 /**
 * Description of template class 'HasNestedTypeType' <p>
 * \brief Aim: 
-*  Checks whether type @IC has a nested type called 'Type' or not.
+*  Checks whether type @a IC has a nested type called 'Type' or not.
 *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
 *  @tparam IC any iterator or circulator
 */
@@ -91,7 +91,7 @@ namespace detail
 /**
 * Description of template class 'IsCirculator' <p>
 * \brief Aim: 
-*  Checks whether type @IC is a circular or a classical iterator.
+*  Checks whether type @a IC is a circular or a classical iterator.
 *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
 *  Static value set to 'true' for a circulator.  
 *  @tparam IC any iterator or circulator
@@ -161,7 +161,7 @@ namespace detail
 /**
 * Description of template class 'IteratorCirculatorType' <p>
 * \brief Aim: 
-*  Provides the type of @IC as a nested type: 
+*  Provides the type of @a IC as a nested type: 
 *  either IteratorType or CirculatorType
 *
 *  @tparam IC any iterator or circulator

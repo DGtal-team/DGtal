@@ -53,6 +53,7 @@ tools.
 
 @b Modules      
 - \ref moduleNumber (David Coeurjolly, Jacques-Olivier Lachaud)
+- \ref IteratorsRanges (Tristan Roussillon)
 - \ref moduleSpacePointVectorDomain (David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand)
 - \ref moduleDigitalSets  (Jacques-Olivier Lachaud, Sebastien Fourey)
 

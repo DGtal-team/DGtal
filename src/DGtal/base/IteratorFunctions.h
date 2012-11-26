@@ -67,8 +67,8 @@ namespace DGtal
     /**
      * Checks if a circular range is not empty, 
      * ie. checks if the circulators are valid. 
-     * @param itb begin iterator of the range
-     * @param ite end iterator of the range
+     * @param c1 begin iterator of the range
+     * @param c2 end iterator of the range
      * @tparam any iterator or circulator
      */
     template< typename IC > 
@@ -236,7 +236,12 @@ namespace DGtal
   } //namespace detail
 
   /**
-   * Computes the middle iterator of a given range [ @a itb , @a ite ) 
+   * Computes the middle iterator of a given range [ @a itb , @a ite ). 
+   * If the size of a given range is n, its middle would be equal
+   * to the iterator @a itb after n/2 incrementations. 
+   * In the two following examples, m locates the middle of the range :    
+   * - odd case:  b---|---m---|---|---e
+   * - even case: b---|---|---m---|---|---e
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
    * @return the middle iterator of the range [ @a itb , @a ite ) 
@@ -261,7 +266,7 @@ namespace DGtal
   namespace detail
   {
     /**
-     * Computes the middle of a given range [ @a itb , @a ite ) 
+     * Computes the middle of a given range [ @a itb , @a ite ). 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
      * @param t any object of IteratorType 
