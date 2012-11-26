@@ -17,10 +17,16 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page IteratorRanges Documentation for iterators and ranges
+@page IteratorsRanges Iterators and ranges
 @writers Tristan Roussillon
 
 [TOC]
+
+This part of the manual describes basic concepts of iterators and ranges. 
+It also presents several tools available in DGtal to ease their use: 
+traits class, useful functions, adapters, etc.
+ 
+DGtal users usually have to play with ranges to iterate over finite sets of elements.   
 
 \section secIteratorRangesIterators Introduction to iterators
 
@@ -247,7 +253,7 @@ data to which points the underlying iterator:
       {
         ...
         DGtal::ConstAdapterIterator<I, F, ReturnType> a(i, f);
-        ASSERT( *a == f(*i) ); //ie. *a and f(*i) return the same instance of ReturnType  
+        ASSERT( *a == f(*i) ); //ie. *a and f(*i) return equivalent instances of ReturnType  
         ...
       } 
 
