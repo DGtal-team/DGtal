@@ -109,13 +109,13 @@ bool testCircleFrom3Points()
     trace.info() << "arc drawing" << endl;
     
     board << SetMode( c.className(), "Arc" );
-    draw(board, c, Point(5,10), Point(8,4));
+    Display2DFactory::draw(board, c, Point(5,10), Point(8,4));
     
     board << SetMode( c.className(), "Sector" );
-    draw(board, c, Point(9,3), Point(10,0) );
+    Display2DFactory::draw(board, c, Point(9,3), Point(10,0) );
     
     board << SetMode( c.className(), "Annulus" );
-    draw(board, c, Point(5,-10), Point(2,-4) );
+    Display2DFactory::draw(board, c, Point(5,-10), Point(2,-4) );
     
     board.saveEPS("arcDisplay.eps");
   }

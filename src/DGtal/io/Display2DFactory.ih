@@ -36,7 +36,7 @@
 
 // AngleLinearMinimizer
 inline
-void draw( DGtal::Board2D & board,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::AngleLinearMinimizer & a )
 {
   double distance=5.0;
@@ -65,7 +65,7 @@ void draw( DGtal::Board2D & board,
 // ArithmeticalDSS
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void drawAsBoundingBox( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard, 
            const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
 {
   typedef DGtal::PointVector<2,double> PointD;
@@ -93,7 +93,7 @@ void drawAsBoundingBox( DGtal::Board2D & aBoard,
   
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void drawAsDigitalPoints( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard, 
            const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
 {
   typedef TIterator ConstIterator;
@@ -123,7 +123,7 @@ void drawAsDigitalPoints( DGtal::Board2D & aBoard,
   
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
 	   const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a )
 {
   std::string mode = board.getMode( a.className() );
@@ -146,7 +146,7 @@ void draw( DGtal::Board2D & board,
 // CircleFrom2Points
 template <typename TPoint>
 inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
+void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
 {
     // now with accessor
     CircleFrom3Points<TPoint> c(cf2p.pole(),cf2p.p(),cf2p.q()); 
@@ -158,7 +158,7 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom2Points<TPoint> & cf2p)
 // CircleFrom3Points
 template <typename Point>
 inline
-void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
+void DGtal::Display2DFactory::drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -193,7 +193,7 @@ void drawArc(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, con
 
 template <typename Point>
 inline
-void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
+void DGtal::Display2DFactory::drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -236,7 +236,7 @@ void drawSector(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, 
 
 template <typename Point>
 inline
-void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w, bool anOrientation)
+void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, const double& w, bool anOrientation)
 {
   typedef typename Point::Coordinate Coordinate;
   typedef Point Vector;
@@ -285,7 +285,7 @@ void drawAnnulus(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p,
 
 template <typename Point>
 inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
+void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   std::string mode = aBoard.getMode( cf3p.className() );
   ASSERT( (mode=="Arc" || mode=="" || mode=="Sector"|| mode=="Annulus") ||
@@ -301,7 +301,7 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const 
 
 template <typename TPoint>
 inline
-void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
+void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
 {
   typedef typename TPoint::Coordinate Coordinate;
   
@@ -325,7 +325,7 @@ void draw(Board2D & aBoard, const DGtal::CircleFrom3Points<TPoint> & cf3p)
 // DigitalSetBySTLSet
 template<typename Domain>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
@@ -333,7 +333,8 @@ void draw( DGtal::Board2D & board,
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+    draw(board, *it);
+  
 }
 // DigitalSetBySTLSet
 
@@ -341,7 +342,7 @@ void draw( DGtal::Board2D & board,
 // DigitalSetBySTLVector
 template<typename Domain>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::DigitalSetBySTLVector<Domain> & v )
 {
   typedef typename Domain::Point Point;
@@ -350,7 +351,7 @@ void draw( DGtal::Board2D & board,
   if (Domain::dimension == 2)
   {
     for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+      draw(board, *it);
   }
   else
     ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
@@ -361,7 +362,7 @@ void draw( DGtal::Board2D & board,
 // FP
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void drawAsPolygon( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard, 
            const DGtal::FP<TIterator,TInteger,connectivity> & fp )
 {
   typedef DGtal::PointVector<2,TInteger> Point;
@@ -393,7 +394,7 @@ void drawAsPolygon( DGtal::Board2D & aBoard,
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::FP<TIterator,TInteger,connectivity> & fp )
 {
   std::string mode = board.getMode( fp.className() );
@@ -415,7 +416,7 @@ void draw( DGtal::Board2D & board,
 // FreemanChain
 template <typename TInteger>
 inline
-void drawAsGrid( DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & aBoard,
            const DGtal::FreemanChain<TInteger> & f )
 {
   typedef TInteger Integer;
@@ -436,7 +437,7 @@ void drawAsGrid( DGtal::Board2D & aBoard,
 
 template <typename TInteger>
 inline
-void drawAsInterGrid( DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::drawAsInterGrid( DGtal::Board2D & aBoard,
            const DGtal::FreemanChain<TInteger> & f )
 {
   typedef TInteger Integer;
@@ -457,7 +458,7 @@ void drawAsInterGrid( DGtal::Board2D & aBoard,
 
 template <typename TInteger>
 inline
-void draw( DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 	   const DGtal::FreemanChain<TInteger> & f )
 {
   std::string mode = aBoard.getMode( f.className() );
@@ -475,7 +476,7 @@ void draw( DGtal::Board2D & aBoard,
 // GeometricalDSS
 template <typename TConstIterator>
 inline
-void draw(DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
           const DGtal::GeometricalDSS<TConstIterator> & g)
 {
   typedef TConstIterator ConstIterator;
@@ -516,7 +517,7 @@ void draw(DGtal::Board2D & aBoard,
 // GeometricalDCA
 template <typename TConstIterator>
 inline
-void draw(DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
           const DGtal::GeometricalDCA<TConstIterator> & g)
 {
 
@@ -584,14 +585,180 @@ void draw(DGtal::Board2D & aBoard,
 // GeometricalDCA
 
 // GridCurve
-// we use setStyle because of inner classes
+template <typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const GridCurve<TKSpace> & object )
+{
+    typedef typename GridCurve<TKSpace>::ConstIterator ConstIterator; 
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	      aBoard << *it;
+      }
+}
 // GridCurve
 
+// SCellsRange
+template <typename TIterator, typename TSCell>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & object )
+{
+    typedef ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	aBoard << *it;
+      }
+}
+// SCellsRange
+
+// PointsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+{
+    typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	aBoard << SetMode(it->className(),"Grid"); 
+	aBoard << *it;
+      }
+}
+// PointsRange
+
+// MidPointsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+           typename TKSpace::Space::RealPoint> & object )
+{
+    typedef typename TKSpace::Space::RealPoint RPoint;
+    typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	RPoint p(*it); 
+	double s = 0.1; 
+	aBoard.drawLine( p[0]-s, p[1]-s, p[0]+s, p[1]+s ); 
+	aBoard.drawLine( p[0]-s, p[1]+s, p[0]+s, p[1]-s ); 
+      }
+}
+// MidPointsRange
+
+// ArrowsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef typename TKSpace::Vector Vector; 
+    typedef std::pair<Point, Vector> Arrow;
+    typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	Arrow a(*it); 
+	Vector shift( a.second );
+	aBoard << CustomStyle( shift.className(), 
+			       new CustomPen( Color::Black, Color::Black, 1.0, 
+					      Board2D::Shape::SolidStyle,
+					      Board2D::Shape::RoundCap,
+					      Board2D::Shape::RoundJoin ) );       
+	draw(aBoard, shift, a.first);
+      }
+}
+// ArrowsRange
+
+// InnerPointsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, 
+           typename TKSpace::Point > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, Point > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	aBoard << SetMode( it->className(), "Both" )
+	       << CustomStyle( it->className(), 
+			       new CustomFillColor( Color::Blue ) )
+	       << *it;
+      }
+}
+// InnerPointsRange
+
+// OuterPointsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, 
+           typename TKSpace::Point > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, Point > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	aBoard << SetMode( it->className(), "Both" )
+	       << CustomStyle( it->className(), 
+			       new CustomFillColor( Color::Green ) )
+	       << *it;
+      }
+}
+// OuterPointsRange
+
+// IncidentPointsRange
+template <typename TIterator, typename TKSpace>
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
+           const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+           std::pair<typename TKSpace::Point, typename TKSpace::Point> > & object )
+{
+    typedef typename TKSpace::Point Point; 
+    typedef std::pair<Point, Point> Pair; 
+    typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair > Range; 
+    typedef typename Range::ConstIterator ConstIterator; 
+
+    ConstIterator it ( object.begin() ); 
+    ConstIterator itEnd ( object.end() ); 
+    for( ; it != itEnd; ++it)
+      {
+	Pair pair(*it); 
+	aBoard << SetMode( pair.first.className(), "Both" )
+	       << CustomStyle( pair.first.className(), 
+			       new CustomFillColor( Color::Blue ) )
+	       << pair.first 
+	       << CustomStyle( pair.second.className(), 
+			       new CustomFillColor( Color::Green ) )
+	       << pair.second; 
+      }
+}
+// IncidentPointsRange
 
 // HyperRectDomain
 template<typename TSpace>
 inline
-void drawAsGrid( DGtal::Board2D & aboard, 
+void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & aboard, 
            const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
@@ -628,7 +795,7 @@ void drawAsGrid( DGtal::Board2D & aboard,
 
 template<typename TSpace>
 inline
-void drawAsPaving( DGtal::Board2D & aboard, 
+void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & aboard, 
            const DGtal::HyperRectDomain<TSpace> & h )
 {
   typedef typename TSpace::Integer Integer;
@@ -647,7 +814,7 @@ void drawAsPaving( DGtal::Board2D & aboard,
 
 template<typename TSpace>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = board.getMode( h.className() );
@@ -658,7 +825,6 @@ void draw( DGtal::Board2D & board,
     drawAsGrid( board, h );
   else if ( mode == "Paving" )
     drawAsPaving( board, h );
-  // drawAsGrid( board, h );
 }
 // HyperRectDomain
 
@@ -666,13 +832,13 @@ void draw( DGtal::Board2D & board,
 // ImageContainerByHashTree
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void drawImageRecursive( DGtal::Board2D & aBoard,
-    const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-      HashKey key,
-      const double p[2],
-      const double len,
-      LibBoard::Board & board,
-      const C& cmap )
+void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
+                                                  const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                                                  HashKey key,
+                                                  const double p[2],
+                                                  const double len,
+                                                  LibBoard::Board & board,
+                                                  const C& cmap )
 {
   
   ASSERT ( Domain::dimension == 2 );
@@ -715,7 +881,7 @@ void drawImageRecursive( DGtal::Board2D & aBoard,
   
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void drawImage( Board2D & board,
+void DGtal::Display2DFactory::drawImage( Board2D & board,
                 const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
@@ -741,14 +907,14 @@ void drawImage( Board2D & board,
 // ImageContainerBySTLVector
 template <typename Colormap, typename D, typename V>
 inline
-void drawImage( DGtal::Board2D & board,
-           const DGtal::ImageContainerBySTLVector<D, V> & i,
-             const V &minV,
-             const V &maxV )
+void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
+                                         const DGtal::ImageContainerBySTLVector<D, V> & i,
+                                         const V &minV,
+                                         const V &maxV )
 {
   ASSERT(D::dimension == 2);
 
-  Colormap colormap((const unsigned char)minV, (const unsigned char)maxV);
+  Colormap colormap(minV, maxV);
   Color c;
   V val;
   D ldomain(i.domain());
@@ -757,7 +923,7 @@ void drawImage( DGtal::Board2D & board,
        it != ldomain.end(); ++it)
   {
     val = i.operator()( (*it) );
-    c = colormap( (const unsigned char)val );
+    c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename D::Integer>::
        castToInt64_t((*it)[0]) - 0.5, 
@@ -771,7 +937,7 @@ void drawImage( DGtal::Board2D & board,
 // KhalimskyCell
 template < Dimension dim, typename TInteger >
 inline
-void draw( DGtal::Board2D & board,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
   ASSERT( dim == 2 );
@@ -794,7 +960,7 @@ void draw( DGtal::Board2D & board,
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void drawWithAdjacencies( DGtal::Board2D & aBoard, 
+void DGtal::Display2DFactory::drawWithAdjacencies( DGtal::Board2D & aBoard, 
            const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   typedef TDigitalSet DigitalSet;
@@ -827,7 +993,7 @@ void drawWithAdjacencies( DGtal::Board2D & aBoard,
 
 template <typename TDigitalTopology, typename TDigitalSet>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::Object<TDigitalTopology, TDigitalSet> & o )
 {
   std::string mode = board.getMode( o.className() );
@@ -848,27 +1014,27 @@ void draw( DGtal::Board2D & board,
 // PointVector
 template<Dimension dim, typename TComponent>
 inline
-void drawAsPaving( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.drawRectangle( (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]) - 0.5f, 
-            (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]) + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p.myArray[0]) - 0.5f, 
+                       (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
 template<Dimension dim, typename TComponent>
 inline
-void drawAsGrid( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
-       (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
+  board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p.myArray[0]), 
+                   (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
 template<Dimension dim, typename TComponent>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
   std::string mode = board.getMode( p.className() );
@@ -888,7 +1054,7 @@ void draw( DGtal::Board2D & board,
 
 template<Dimension dim, typename TComponent>
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
           const DGtal::PointVector<dim,TComponent> & p, 
           const DGtal::PointVector<dim,TComponent> & apoint )
 {
@@ -904,7 +1070,7 @@ void draw( DGtal::Board2D & board,
 // Preimage2D
 template <typename Shape>
 inline
-void draw( DGtal::Board2D & aBoard,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 	   const DGtal::Preimage2D<Shape> & p )
 {
   typedef typename Shape::Point Point;
@@ -948,7 +1114,7 @@ void draw( DGtal::Board2D & aBoard,
 // SignedKhalimskyCell
 template < Dimension dim, typename TInteger >
 inline
-void draw( DGtal::Board2D & board,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
   ASSERT( dim == 2 );
@@ -971,7 +1137,7 @@ void draw( DGtal::Board2D & board,
 // StraightLineFrom2Points
 template <typename TPoint>
 inline
-void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p)
+void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p)
 {
   // now with accessor
   aBoard.drawLine(slf2p.p()[0],slf2p.p()[1],slf2p.q()[0],slf2p.q()[1]);
@@ -983,14 +1149,14 @@ void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> & slf2p
 
 
 inline
-void draw( DGtal::Board2D & board,
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::CustomStyle & cs )
 {
   board.myStyles[ cs.myClassname ] = cs.myStyle;
 }
 
 inline
-void draw( DGtal::Board2D & board, 
+void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
 	   const DGtal::SetMode & sm )
 {
   board.myModes[ sm.myClassname ] = sm.myMode;

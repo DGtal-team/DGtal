@@ -114,6 +114,7 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -129,6 +130,8 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineWidth(1);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -308,6 +311,9 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      // line width decreased to avoid too large arrows to display adjacency.
+      aBoard.setLineWidth(0.75);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160, 160, 160);
       aBoard.setPenColorRGBi(80, 80, 80);
     }
@@ -492,9 +498,95 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstItera
 // GeometricalDCA
 
 // GridCurve
-// we use friend because of inner classes
+template <typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const GridCurve<TKSpace> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
 // GridCurve
 
+// SCellsRange
+template <typename TIterator, typename TSCell>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, DefaultFunctor, TSCell> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// SCellsRange
+
+// PointsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// PointsRange
+
+// MidPointsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+             typename TKSpace::Space::RealPoint> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// MidPointsRange
+
+// ArrowsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+             std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// ArrowsRange
+
+// InnerPointsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// InnerPointsRange
+
+// OuterPointsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// OuterPointsRange
+
+// IncidentPointsRange
+template <typename TIterator, typename TKSpace>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+             std::pair<typename TKSpace::Point, typename TKSpace::Point> > & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DrawableWithBoard2D; 
+}
+// IncidentPointsRange
 
 // HyperRectDomain
 template<typename TSpace>

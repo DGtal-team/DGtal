@@ -93,21 +93,30 @@ namespace DGtal
       Container, 
       std::reverse_iterator<typename Container::iterator> > 
     {
-      typedef std::reverse_iterator<typename Container::iterator> reverseIterator;
-      static reverseIterator erase(
+      typedef typename Container::iterator Iterator;
+      typedef std::reverse_iterator<typename Container::iterator> ReverseIterator;
+
+      static ReverseIterator erase(
                   Container& aContainer,
-                  reverseIterator& anIterator) 
+                  ReverseIterator& anIterator) 
       {
-        aContainer.erase((++anIterator).base());
-        return anIterator;
+        //base iterator pointing to the same element 
+        Iterator base = (++anIterator).base();
+        //base iterator pointing to the element that
+        //followed the erased element 
+	base = aContainer.erase(base);
+        //reverse iterator pointing to the element that
+        //preceded the erased element  
+        return ReverseIterator(base);
       }
 
-      static reverseIterator insert(
+      static ReverseIterator insert(
                   Container& aContainer,
-                  reverseIterator& anIterator) 
+                  ReverseIterator& anIterator, 
+                  const typename Container::value_type& aValue) 
       {
-        aContainer.insert(anIterator.base());
-        return --anIterator;
+        Iterator base = aContainer.insert(anIterator.base(), aValue);
+        return ReverseIterator(base);
       }
     };
 

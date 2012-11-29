@@ -46,7 +46,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/topology/helpers/Surfaces.h"
