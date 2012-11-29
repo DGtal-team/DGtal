@@ -51,7 +51,7 @@
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
-#include "DGtal/geometry/curves/representation/GridCurve.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -86,6 +86,8 @@ namespace DGtal
     typedef DigitalTopology< Adj8, Adj4 > DT8_4;
     typedef Space::Point Point;
     typedef Space::Vector Vector;
+    typedef Space::RealPoint RealPoint;
+    typedef Space::RealVector RealVector;
     typedef HyperRectDomain< Space > Domain; 
     typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
     typedef Object<DT4_8, DigitalSet> Object4_8;
@@ -140,6 +142,8 @@ namespace DGtal
     typedef DigitalTopology< Adj26, Adj6 > DT26_6;
     typedef Space::Point Point;
     typedef Space::Vector Vector;
+    typedef Space::RealPoint RealPoint;
+    typedef Space::RealVector RealVector;
     typedef HyperRectDomain< Space > Domain; 
     typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
     typedef Object<DT6_18, DigitalSet> Object6_18;

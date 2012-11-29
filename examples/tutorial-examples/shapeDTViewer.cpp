@@ -47,6 +47,7 @@
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 //!  [shapeDTViewer-basicIncludes]
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,12 +73,14 @@ int main(int argc, char **argv)
   
 
   //! [ImageSetDT-DT]
-  typedef DGtal::ImageContainerBySTLVector< Z3i::Domain, unsigned char> Image;
-  typedef DGtal::DistanceTransformation<Image, 2> DTL2;
-  typedef DTL2::OutputImage OutputImage;
-  DTL2 dt;
+  typedef DGtal::SetPredicate<DGtal::Z3i::DigitalSet> Predicate;
+  Predicate aPredicate(mySet);
   
-  OutputImage result = dt.compute(mySet);
+  typedef DGtal::DistanceTransformation<Z3i::Space, Predicate, 2> DTL2;
+  typedef DTL2::OutputImage OutputImage;
+  DTL2 dt(domain,aPredicate);
+  
+  OutputImage result = dt.compute();
   //! [ImageSetDT-DT]
 
   OutputImage::Value maxDT = (*std::max_element(result.begin(), 

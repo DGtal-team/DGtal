@@ -64,18 +64,18 @@ dgtal_irreducible_fraction). You may define patterns as follows:
 
 @see pattern.cpp
 
-@snippet math/arithmetic/pattern.cpp pattern-types
-@snippet math/arithmetic/pattern.cpp pattern-instantiation
+@snippet arithmetic/pattern.cpp pattern-types
+@snippet arithmetic/pattern.cpp pattern-instantiation
 
 To get the freeman chaincode of the pattern, you may use the methods
 Pattern::rE and Pattern::rEs.
 
-@snippet math/arithmetic/pattern.cpp pattern-process
+@snippet arithmetic/pattern.cpp pattern-process
 
 @verbatim
-$ ./examples/math/arithmetic/pattern 11 17 
+$ ./examples/arithmetic/pattern 11 17 
 0010010100101001010010100101
-$ ./examples/math/arithmetic/pattern 11 17 SUB
+$ ./examples/arithmetic/pattern 11 17 SUB
 ((00|1)|(0|0101)(0|0101)(0|0101)(0|0101)(0|0101))
 @endverbatim
 
@@ -93,7 +93,7 @@ E(z_{2k-1}), E(z_{2k})=E(z_{2k-2}) E(z_{2k-1})^{u_{2k}}. \f$
 Let us look again at the pattern of 11/17. First, the convergents are:
 
 @verbatim
-$ ./examples/math/arithmetic/convergents 11 17 
+$ ./examples/arithmetic/convergents 11 17 
 z = [0,1,1,1,5]
 z_0 = 0 / 1
 z_1 = 1 / 1
@@ -126,7 +126,7 @@ characteristics of the line, then \f$ a \ge 0, b \ge 0 \f$.
 
 @code
 ...
-#include "DGtal/math/arithmetic/StandardDSLQ0.h"
+#include "DGtal/arithmetic/StandardDSLQ0.h"
 ...
 typedef ... Fraction;
 typedef StandardDSLQ0<Fraction> DSL;
@@ -207,15 +207,15 @@ and the fraction type):
 
 @verbatim
 # Pattern 5 / 12
-$ ./examples/math/arithmetic/pattern 5 12
+$ ./examples/arithmetic/pattern 5 12
 00010010001001001
 
 # Pattern 5 / 12 with its recursive subdivision
-$ ./examples/math/arithmetic/pattern 5 12 SUB
+$ ./examples/arithmetic/pattern 5 12 SUB
 ((0|(00|1)(00|1))(0|(00|1)(00|1))|(00|1))
 @endverbatim
 
-\example math/arithmetic/pattern.cpp
+\example arithmetic/pattern.cpp
 */
 
 }

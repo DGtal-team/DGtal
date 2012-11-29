@@ -24,14 +24,20 @@ ENDIF(MSVC)
 # Remove some MS Visual c++ flags
 #------------------------------------------------------------------------------
 IF(MSVC)
-
   ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
-  
-#------------------------------------------------------------------------------
-# for GMP / MPIR (MT)
-#------------------------------------------------------------------------------
-SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
-
+  #------------------------------------------------------------------------------
+  # for GMP / MPIR (MT)
+  #------------------------------------------------------------------------------
+  SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
 ENDIF(MSVC)
 
+
+#------------------------------------------------------------------------------
+# Specific compiler options
+#------------------------------------------------------------------------------
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+  SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments")
+  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
+  message(STATUS "Clang compiler detected")
+endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 

@@ -31,6 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
@@ -52,7 +53,7 @@ bool testPNMReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;  
-  trace.beginBlock ( "Testing block ..." );
+  trace.beginBlock ( "Testing pgm reader ..." );
   nbok += true ? 1 : 0; 
   nb++;
   std::string filename = testPath + "samples/circleR10.pgm";
@@ -74,6 +75,31 @@ bool testPNMReader()
   trace.endBlock();  
   return nbok == nb;
 }
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testPNM3DReader()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;  
+  trace.beginBlock ( "Testing pgm3D reader ..." );
+  nbok += true ? 1 : 0; 
+  nb++;
+  std::string filename = testPath + "samples/simple.pgm3d";
+
+  trace.info() << "Loading filename: "<< filename<<std::endl;
+
+  typedef ImageSelector < Z3i::Domain, unsigned int>::Type Image;
+  Image image = PNMReader<Image>::importPGM3D( filename ); 
+  
+  trace.info() << "Image 3D = "<<image<<std::endl;
+  
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.endBlock();  
+  return nbok == nb;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -86,7 +112,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testPNMReader(); // && ... other tests
+  bool res = testPNMReader() && testPNM3DReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
