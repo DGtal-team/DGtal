@@ -322,10 +322,10 @@ namespace DGtal {
     {
       Vector v( p2 - p1 );
       if ( v.normInfinity() <= 1 )
-  {
-    typename Vector::UnsignedComponent n1 = v.norm1();
-    return ( n1 <= 2 ) && ( n1 != 0 );
-  }
+        {
+          typename Vector::UnsignedComponent n1 = v.norm1();
+          return ( n1 <= 2 ) && ( n1 != 0 );
+        }
       return false;
     }
     
