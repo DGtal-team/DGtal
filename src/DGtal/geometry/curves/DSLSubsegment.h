@@ -98,6 +98,10 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Point;
       typedef DGtal::PointVector<2,Integer> Vector;
       
+      // Minimal characteristics of the subsegment AB of the DSL(a,b,mu)
+      Integer aa;
+      Integer bb;
+      Integer Nu;
 
       
     /**

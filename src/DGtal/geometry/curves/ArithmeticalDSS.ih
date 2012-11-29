@@ -43,6 +43,7 @@
 // Implementation of inline methods                                          //
 
 
+
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::ArithmeticalDSS()

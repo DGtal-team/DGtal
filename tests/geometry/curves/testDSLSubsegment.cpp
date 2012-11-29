@@ -49,13 +49,19 @@ using namespace DGtal;
 // Functions for testing class DSLSubsegment.
 ///////////////////////////////////////////////////////////////////////////////
 
+#define CHECK_RES
+
 
 template <typename Integer>
 bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Integer modx)
 {
-  Typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
+  typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
   typedef typename DSLSubseg::Point Point;
   
+  
+  typedef ArithDSSIterator<Integer,8> DSSIterator;
+  typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+
   
   DGtal::IntegerComputer<Integer> ic;
   
@@ -89,6 +95,17 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
 		  Point B = Point(x2,y2);
 		  DSLSubseg DD(a,b,mu,A,B);
 		  
+		  #ifdef CHECK_RES
+		  DSSIterator  it(a,b,-mu,A);
+		  ArithDSS myDSS(it);
+		  
+		  while ( (*(myDSS.end()))[0] <=absMax && myDSS.extendForward())
+		    {}
+		  
+		  
+		  #endif CHECK_RES
+
+		  
 		}
             }
         }
@@ -109,7 +126,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
 template <typename Integer>
 bool checkDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Integer modx)
 {
-
+  
 }
 
 
