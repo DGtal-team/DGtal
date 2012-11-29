@@ -19,6 +19,7 @@ SET(DGTAL_TESTS_SRC
   testDSLSubsegment
   testLrSBreversedSmartDSS
   testSBreversedSmartDSS	
+  testArithDSSIterator
 	)
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
