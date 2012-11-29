@@ -559,7 +559,7 @@ namespace DGtal
     
       /**
 	 Computes the octant of the direction pq
-	 @param two point
+	 @param two points
 	 @return an int
       */
     static int computeQuadrant(Point p, Point q)
@@ -578,11 +578,12 @@ namespace DGtal
 		d=1; // 0 <= x <= y
 	  }
 	else
-	  if(x>=abs(y)) 
-	    d=7; // 0 < abs(y) <= x 
-	  else
-	    d=6; // 0 <= x < abs(y)
-      
+	  {
+	    if(x>=abs(y)) 
+	      d=7; // 0 < abs(y) <= x 
+	    else
+	      d=6; // 0 <= x < abs(y)
+	  }
       if(x<=0)
 	{
 	  if(y>0)
