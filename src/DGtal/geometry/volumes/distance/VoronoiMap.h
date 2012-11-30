@@ -64,46 +64,49 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a sperable process to construct
-   * partial Voronoi maps which has been described in:
+   * Voronoi maps which has been described in:
    *
-   *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). A Linear Time Algorithm
-   *      for Computing Exact Euclidean Distance Transforms of Binary Images in
-   *      Arbitrary Dimensions. IEEE Trans. Pattern Analysis and Machine
-   *      Intelligence, 25pp265-270.
+   *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). "A Linear Time Algorithm
+   *     for Computing Exact Euclidean Distance Transforms of Binary Images in
+   *     Arbitrary Dimensions". IEEE Trans. Pattern Analysis and Machine
+   *     Intelligence, 25pp265-270.
    *
    * and 
    *   
-   *      Coeurjolly, D. (2002). Algorithmique et géométrie discrète pour
-   *      la caractérisation des courbes et des surfaces. PhD Thesis,
-   *      Université Lumière Lyon 2.
+   *     Coeurjolly, D. (2002). "Algorithmique et géométrie discrète pour
+   *     la caractérisation des courbes et des surfaces". PhD Thesis,
+   *     Université Lumière Lyon 2.
    *
    *
-   * Given a domain and a point predicate, an instance returns,
-   * for each point in the domain, the closest point for
-   * which the predicate if false. Following Computational Geometry
+   * Given a domain and a point predicate, an instance returns, for
+   * each point in the domain, the closest point for which the
+   * predicate if false. Following Computational Geometry
    * terminoliogy, points for which the predicate is false are "sites"
-   * for the Voronoi map construction.
+   * for the Voronoi map construction. If a point is equi-distant to
+   * two sites (e.g. if the digital point belong to a Voronoi cell
+   * boundary in the Euclidean space), this Voronoi map construction
+   * will only keep one of them.
+   *
+   * The metric is specified by a model of CSeparableMetric (for
+   * instance, any instance of ExactPredicateLpSeparableMetric or
+   * InexactPredicateLpSeparableMetric).  If the separable metric has
+   * a complexity of O(h) for its "hiddenBy" predicate, the overall
+   * Voronoi construction algorithm is in @f$ O(h.d.n^d)@f$ for @f$
+   * n^d@f$ domains (see class constructor). For Euclidean the @f$
+   * l_2@f$ metric, the overall computation is in @f$ O(d.n^d)@f$,
+   * which is optimal.
+   *
+   * If DGtal has been built with OpenMP support (WITH_OPENMP flag set
+   * to "true"), the computation is done in parallel (multithreaded)
+   * in an optimal way: on @a p processors, expected runtime is in
+   * @f$ O(h.d.n^d / p)@f$.
    *
    * This class is a model of CConstImage.
-   *
-   * The metric is specified by the @a p template parameter which
-   * defines a l_p separable metric.
-   *
-   * If a point is equi-distant to two sites (e.g. if the digital
-   * point belong to a Voronoi cell boundary in the Euclidean space),
-   * this Voronoi map construction will only keep one of them.
-   *
-   * Hence, the result is given as a map (point from the domain,
-   * closest site) implemented using an ImageContainerBySTLVector
-   * whose value type is the type of Point of the predicate.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of CPointPredicate)
-   * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
-   *
+   * @tparam TSeparableMetric a model of CSeparableMetric
    */
   template < typename TSpace,
              typename TPointPredicate,
@@ -162,12 +165,16 @@ namespace DGtal
      * sites using a SeparableMetric metric.  The method associates to
      * each point satisfying the foreground predicate, the closest
      * site for which the predicate is false. This algorithm is
-     * O(d.|domain size|).
+     * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
+     * predicate is in @f$ O(h)$@f$.
      *
-     * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
-     * @param predicate point predicate to define the Voronoi sites
-     * (false points). 
-     * @param aMetric a seprable metric instance.
+     * @param aDomain a pointer to the (hyper-rectangular) domain on
+     * which the computation is performed.
+     *
+     * @param predicate a pointer to the point predicate to define the
+     * Voronoi sites (false points).
+     * 
+     *@param aMetric a pointer to the separable metric instance.
      */
     VoronoiMap(const Domain * aDomain,
                const PointPredicate * predicate,
@@ -191,7 +198,7 @@ namespace DGtal
     
     /**
      * Returns a reference (const) to the Voronoi map domain.
-     *  @return a domain
+     * @return a domain
      */
     const Domain &  domain() const
     {
@@ -209,7 +216,8 @@ namespace DGtal
     }
         
     /**
-     * Access to a Voronoi value (a.k.a. vector to the closest site) at a point.
+     * Access to a Voronoi value (a.k.a. vector to the closest site)
+     * at a point.
      *
      * @param aPoint the point to probe.
      */
@@ -219,7 +227,7 @@ namespace DGtal
     }    
      
     /** 
-     * @return  Returns the underlying metric.
+     * @return Returns an alias to the underlying metric.
      */
     const SeparableMetric* metric() const
     {
@@ -240,7 +248,7 @@ namespace DGtal
      * Compute the Voronoi Map of a set of point sites using a
      * SeparableMetric metric.  The method associates to each point
      * satisfying the foreground predicate, the closest site for which
-     * the predicate is false. This algorithm is O(d.|domain size|).
+     * the predicate is false. This algorithm is O(h.d.|domain size|).
      */
     void compute ( ) ;
 
