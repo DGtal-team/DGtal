@@ -138,9 +138,9 @@ bool testConvexIntegerPolygon()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
-  cip.push_back( Point( 0, 0 ) );
-  cip.push_back( Point( 5, 0 ) );
-  cip.push_back( Point( 0, 3 ) );
+  cip.pushBack( Point( 0, 0 ) );
+  cip.pushBack( Point( 5, 0 ) );
+  cip.pushBack( Point( 0, 3 ) );
   Integer area2 = cip.twiceArea();
   trace.info() << "- 2*area   = " << area2 << std::endl;
   ++nb, nbok += ( area2 == 15 ) ? 1 : 0; 
@@ -156,9 +156,9 @@ bool testConvexIntegerPolygon()
   trace.endBlock();
 
   trace.beginBlock ( "Output ConvexIntegerPolygon in <cip.eps>" );
-  cip.push_back( Point( -4, 4 ) );
-  cip.push_back( Point( -7, 2 ) );
-  cip.push_back( Point( -5, 1 ) );
+  cip.pushBack( Point( -4, 4 ) );
+  cip.pushBack( Point( -7, 2 ) );
+  cip.pushBack( Point( -5, 1 ) );
   Board2D board;
   d = cip.boundingBoxDomain();
   board << SetMode( d.className(), "Grid" ) << d;
@@ -228,18 +228,18 @@ bool exhaustiveTestConvexIntegerPolygon()
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
-  typedef typename CIP::Iterator Iterator;
+  typedef typename CIP::ConstIterator ConstIterator;
   typedef typename CIP::SizeCouple SizeCouple;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
-  cip.push_back( Point( 0, 0 ) );
-  cip.push_back( Point( 8, -3 ) );
-  cip.push_back( Point( 17, 2 ) );
-  cip.push_back( Point( 21, 13 ) );
-  cip.push_back( Point( 13, 19 ) );
-  cip.push_back( Point( 6, 17 ) );
-  cip.push_back( Point( -3, 6 ) );
+  cip.pushBack( Point( 0, 0 ) );
+  cip.pushBack( Point( 8, -3 ) );
+  cip.pushBack( Point( 17, 2 ) );
+  cip.pushBack( Point( 21, 13 ) );
+  cip.pushBack( Point( 13, 19 ) );
+  cip.pushBack( Point( 6, 17 ) );
+  cip.pushBack( Point( -3, 6 ) );
   Integer area2 = cip.twiceArea();
   trace.info() << "- 2*area   = " << area2 << std::endl;
   Point3I c = cip.centroid( area2 );
@@ -302,13 +302,13 @@ bool specificTestConvexIntegerPolygon()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
 
   CIP cip;
-  cip.push_back( Point( 0, 0 ) );
-  cip.push_back( Point( 8, -3 ) );
-  cip.push_back( Point( 17, 2 ) );
-  cip.push_back( Point( 21, 13 ) );
-  cip.push_back( Point( 13, 19 ) );
-  cip.push_back( Point( 6, 17 ) );
-  cip.push_back( Point( -3, 6 ) );
+  cip.pushBack( Point( 0, 0 ) );
+  cip.pushBack( Point( 8, -3 ) );
+  cip.pushBack( Point( 17, 2 ) );
+  cip.pushBack( Point( 21, 13 ) );
+  cip.pushBack( Point( 13, 19 ) );
+  cip.pushBack( Point( 6, 17 ) );
+  cip.pushBack( Point( -3, 6 ) );
   HalfSpace hs1( Vector( -5, 11 ), 8 ); //12
   HalfSpace hs2( Vector( -3, -11 ), 8 ); //-37
   ++nb, nbok += checkCut( cip, hs1 ) ? 1 : 0;
@@ -359,9 +359,9 @@ checkOutputConvexHullBorder()
   HalfSpace hs2( A, B, In, ic );
   HalfSpace hs3( c3, c3 + Vector( 0, 1 ), In, ic );
   CIP cip;
-  cip.push_back( c1 );
+  cip.pushBack( c1 );
   cip.computeConvexHullBorder( std::back_inserter( cip ), c1, c3, hs1, hs2, hs3 );
-  cip.push_back( c3 );
+  cip.pushBack( c3 );
 
   Domain d = cip.boundingBoxDomain();
   Board2D board;
