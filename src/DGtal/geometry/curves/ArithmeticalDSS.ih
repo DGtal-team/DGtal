@@ -192,7 +192,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
   Point lastPoint(*it);
 
-  
   Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
@@ -554,6 +553,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
   //if the two last points are confounded return true
   else if (deviation==NumberTraits<Integer>::ZERO) return true; 
   //otherwise
+
   else if (mySteps.size()<2) {
 
     //initialisation stage
@@ -577,7 +577,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
           return true;
 
         } else {  //the two steps are not compatible
-          return false;
+	  return false;
         }
       }
 
@@ -594,7 +594,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(con
       Integer r = getRemainder(lastPoint);
           
       if ( (r < myMu-1)||(r > myMu+myOmega) )
-        return false; //strongly exterior
+	return false; //strongly exterior
+      
       else { 
         return true;
       }
@@ -640,6 +641,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
 									     const Vector & lastMove )
 {
 
+
   Integer deviation = Tools<Integer,connectivity>
     ::norm(lastMove[0],lastMove[1]);
   //if the two last points are not connected return false
@@ -647,8 +649,9 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
   //if the two last points are confounded return true
   else if (deviation == NumberTraits<Integer>::ZERO) return true; 
   //otherwise
-  else if (mySteps.size()<2) {
 
+  else if (mySteps.size()<2) {
+    
     //initialisation stage
 
     if (mySteps.size()==0) {
@@ -670,16 +673,16 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
           return true;
 
         } else {  //the two steps are not compatible
-          return false;
-        }
+	  return false;
+	}
       }
-
+      
     }
-
+    
   } else {  //mySteps.size() == 2
 
     //main stage
-
+    
     //if there only two steps at most
     if (hasLessThanTwoSteps(lastMove)) {
     
@@ -687,13 +690,12 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isExtendableForward(
       Integer r = getRemainder(lastPoint);
           
       if ( (r < myMu-1)||(r > myMu+myOmega) )
-        return false; //strongly exterior
-      else { 
+	return false; //strongly exterior
+      else 
         return true;
-      }
-
+      
     } else { 
-      //if there is more than two steps 
+      //if there is more than two steps
       return false;
     }
 
