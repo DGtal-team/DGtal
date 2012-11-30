@@ -50,7 +50,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include "DGtal/arithmetic/COBANaivePlane.h"
+#include "DGtal/geometry/surfaces/COBANaivePlane.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
