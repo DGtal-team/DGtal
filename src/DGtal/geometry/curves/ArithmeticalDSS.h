@@ -314,7 +314,7 @@ Steps:
      * @return 'true' if yes, 'false' otherwise.
      */
     bool isExtendableBackward();
-
+    
     /**
      * @deprecated
      * @see extendForward()
@@ -731,7 +731,6 @@ Steps:
      */
     double projectedSegmentLength() const;
     
-
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
