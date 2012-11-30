@@ -95,7 +95,7 @@ digraph GARITHMETIC {
         LightSternBrocot_Fraction [ label="LightSternBrocot::Fraction" URL="\ref LightSternBrocot::Fraction" ] ;
         LighterSternBrocot_Fraction [ label="LighterSternBrocot::Fraction" URL="\ref LighterSternBrocot::Fraction" ] ;
         IntegerComputer [ label="IntegerComputer" URL="\ref IntegerComputer" ] ;
-        ConvexIntegerPolygon [ label="ConvexIntegerPolygon" URL="\ref ConvexIntegerPolygon" ] ;
+        LatticePolytope2D [ label="LatticePolytope2D" URL="\ref LatticePolytope2D" ] ;
         ClosedIntegerHalfPlane [ label="ClosedIntegerHalfPlane" URL="\ref ClosedIntegerHalfPlane" ] ;
     }
 
@@ -107,11 +107,12 @@ digraph GARITHMETIC {
     IntegerComputer -> boost_Assignable;
     IntegerComputer -> CInteger [label="use",style=dashed];
     IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
-    ConvexIntegerPolygon -> CSpace [label="use",style=dashed];
-    ConvexIntegerPolygon -> CDrawableWithBoard2D
-    ConvexIntegerPolygon -> boost_DefaultConstructible;
-    ConvexIntegerPolygon -> boost_CopyConstructible;
-    ConvexIntegerPolygon -> boost_Assignable;
+    LatticePolytope2D -> CSpace [label="use",style=dashed];
+    LatticePolytope2D -> CDrawableWithBoard2D
+    LatticePolytope2D -> boost_DefaultConstructible;
+    LatticePolytope2D -> boost_CopyConstructible;
+    LatticePolytope2D -> boost_Assignable;
+    LatticePolytope2D -> boost_Sequence;
     ClosedIntegerHalfPlane -> CSpace [label="use",style=dashed];
 }
 @enddot
