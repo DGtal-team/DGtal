@@ -370,8 +370,8 @@ namespace DGtal
   };
   // SignedKhalimskyCell
 
-  // ConvexIntegerPolygon
-  struct DefaultDrawStyleFilled_ConvexIntegerPolygon : public DrawableWithBoard2D
+  // LatticePolytope2D
+  struct DefaultDrawStyleFilled_LatticePolytope2D : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
     {
@@ -381,7 +381,7 @@ namespace DGtal
       aBoard.setLineWidth( 2 );
     }
   };
-  struct DefaultDrawStyleTransparent_ConvexIntegerPolygon : public DrawableWithBoard2D
+  struct DefaultDrawStyleTransparent_LatticePolytope2D : public DrawableWithBoard2D
   {
     virtual void setStyle( Board2D & aBoard ) const
     {
@@ -391,7 +391,7 @@ namespace DGtal
       aBoard.setLineWidth( 2 );
     }
   };
-  // ConvexIntegerPolygon
+  // LatticePolytope2D
 
   
   // StraightLineFrom2Points
@@ -713,17 +713,19 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TP
 }
 // StraightLineFrom2Points
 
-// ConvexIntegerPolygon
-template < typename Space>
+// LatticePolytope2D
+template < typename TSpace, typename TSequence>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ConvexIntegerPolygon<Space> & /*cip*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* 
+defaultStyle( const DGtal::LatticePolytope2D<TSpace,TSequence> & /*cip*/, 
+              std::string mode = "" )
 {
   if ( ( mode == "" ) || ( mode == "Transparent" ) ) 
-    return new DefaultDrawStyleTransparent_ConvexIntegerPolygon;
+    return new DefaultDrawStyleTransparent_LatticePolytope2D;
   else // "Filled"
-    return new DefaultDrawStyleFilled_ConvexIntegerPolygon;
+    return new DefaultDrawStyleFilled_LatticePolytope2D;
 }
-// ConvexIntegerPolygon
+// LatticePolytope2D
 
 //
 

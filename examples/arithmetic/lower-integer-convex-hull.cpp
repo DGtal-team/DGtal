@@ -14,7 +14,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 //! [lower-integer-convex-hull-basicIncludes]
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/shapes/Shapes.h"
 //! [lower-integer-convex-hull-basicIncludes]
@@ -45,7 +45,7 @@ int main( int argc, char** argv )
 
   //! [lower-integer-convex-hull-types]
   using namespace Z2i;
-  typedef ConvexIntegerPolygon<Z2> CIP;
+  typedef LatticePolytope2D<Z2> CIP;
   //! [lower-integer-convex-hull-types]
 
   //! [lower-integer-convex-hull-instantiation]
@@ -69,7 +69,7 @@ int main( int argc, char** argv )
   int c = atoi( argv[ 3 ] );
 
   //! [lower-integer-convex-hull-process]
-  typedef ConvexIntegerPolygon<Z2>::HalfSpace HalfSpace;
+  typedef LatticePolytope2D<Z2>::HalfSpace HalfSpace;
   HalfSpace hs( Vector( a, b ), c );
   cip.cut( hs );
   DigitalSet aSet( domain );
