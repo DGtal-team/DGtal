@@ -92,7 +92,7 @@ void saveVoroMap(const std::string &filename,const VoroMap &output,const double 
 /* Is Validate the VoronoiMap
  */
 template < typename Set, typename Image>
-bool checkVoronoi(const Set &aSet, const Image & voro)
+bool checkVoronoiL2(const Set &aSet, const Image & voro)
 {
   typedef typename Image::Point Point;
   
@@ -101,16 +101,24 @@ bool checkVoronoi(const Set &aSet, const Image & voro)
     {
       Point psite  = voro(*it);
       Point p = (*it);
-      double d= (p-psite).norm();
+      DGtal::int64_t d=0;
+      for(DGtal::Dimension i=0; i<Point::dimension;++i)
+	d+= (p[i]-psite[i])*(p[i]-psite[i]);
+      
       for(typename Set::ConstIterator itset = aSet.begin(), itendSet = aSet.end(); 
           itset != itendSet;
           ++itset)
-        if ((p-(*itset)).norm() < d)
-          {
-            trace.error() << "DT Error at "<<p<<"  Voro:"<<psite<<" ("<<(p-psite).norm()<<")  from set:"
-                          << (*itset) << "("<<(p-(*itset)).norm()<<")"<<std::endl;
-            return false;
-          }
+	{
+	  DGtal::int64_t dbis=0;
+	  for(DGtal::Dimension i=0; i<Point::dimension;++i)
+	    dbis+= (p[i]-(*itset)[i])*(p[i]-(*itset)[i]);
+	  if ( dbis < d)
+	    {
+	      trace.error() << "DT Error at "<<p<<"  Voro:"<<psite<<" ("<<d<<")  from set:"
+			    << (*itset) << "("<<dbis<<")"<<std::endl;
+	      return false;
+	    }
+	}
     }
   return true;
 }
@@ -182,7 +190,7 @@ bool testVoronoiMap()
 
   board.saveSVG("Voromap.svg");
 
-  nbok += checkVoronoi(sites,output) ? 1 : 0; 
+  nbok += checkVoronoiL2(sites,output) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Voronoi diagram is valid !" << std::endl;
@@ -347,7 +355,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
 
 
  
-  nbok += checkVoronoi(aSet,output) ? 1 : 0; 
+  nbok += checkVoronoiL2(aSet,output) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Voronoi diagram is valid !" << std::endl;
@@ -407,7 +415,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
 
 
   trace.beginBlock("Validating the Voronoi Map");
-  nbok += (checkVoronoi(aSet,output)   )? 1 : 0; 
+  nbok += (checkVoronoiL2(aSet,output)   )? 1 : 0; 
   trace.endBlock();
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
