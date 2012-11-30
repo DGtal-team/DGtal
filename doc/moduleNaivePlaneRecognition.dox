@@ -62,8 +62,9 @@ It is proven that if \f$ 0 < h < 1/(2D^3) \f$, where \a D is the
 diameter, then if there is a solution, there is a rational solution
 with denominator less than \f$ 2D^3 \f$.
 
-The COBA algorithm uses therefore convex integer polygons, and class
-ConvexIntegerPolygon, to maintain the set of rational
+The COBA algorithm uses therefore a 2D lattice polytope (a convex
+polygon with vertices at integer coordinates), and class
+LatticePolytope2D, to maintain the set of rational
 solutions. Experimentally, even for a great number of points
 (<=100000), this convex set has generally fewer than 12 vertices (see
 \ref dgtal_naive_plane_recognition_sec3).
@@ -83,8 +84,8 @@ with feasible bounds or no solutions. All this is hidden to the user,
 but explains the worst-case complexity.
 
 \note You may have a look at \ref pageArithmeticPackage, more
-precisely at module \ref dgtal_convex_integer_polygon to see how
-convex integer polygons are represented.
+precisely at module \ref dgtal_lattice_polytope_2d to see how
+lattice polytopes are represented.
 
 \section dgtal_naive_plane_recognition_sec2 How to recognize a plane ?
 
@@ -212,9 +213,9 @@ solutions.
   \f$, but experiments suggest a much lower bound.
 
 - The parameter \a v seems mostly bounded in experiments. It is of
-  course bounded by \f$ O(D^\frac{2}{3}) \f$, which is the convex
-  integer polygon with the maximum number of sides in a D x D
-  box. However, experiments suggest a more likely \f$ \log \log D \f$.
+  course bounded by \f$ O(D^\frac{2}{3}) \f$, which is the 2D lattice
+  polytope with the maximum number of sides in a D x D box. However,
+  experiments suggest a more likely \f$ \log \log D \f$.
 
 - Note also that each time a new point is inserted, we check if it has
   already been added. With std::set, this implies a \f$O(\log N)\f$
