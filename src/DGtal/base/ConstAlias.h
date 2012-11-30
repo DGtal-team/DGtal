@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file Alias.h
+ * @file ConstAlias.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/11/23
  *
- * Header file for module Alias.cpp
+ * Header file for module ConstAlias.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Alias_RECURSES)
-#error Recursive header files inclusion detected in Alias.h
-#else // defined(Alias_RECURSES)
+#if defined(ConstAlias_RECURSES)
+#error Recursive header files inclusion detected in ConstAlias.h
+#else // defined(ConstAlias_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define Alias_RECURSES
+#define ConstAlias_RECURSES
 
-#if !defined Alias_h
+#if !defined ConstAlias_h
 /** Prevents repeated inclusion of headers. */
-#define Alias_h
+#define ConstAlias_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -48,22 +48,22 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class Alias
+  // template class ConstAlias
   /**
-     Description of template class 'Alias' <p> \brief Aim: This class
+     Description of template class 'ConstAlias' <p> \brief Aim: This class
      encapsulates its parameter class so that to indicate to the user
      that the object/pointer will be only aliased. Therefore the user
      is reminded that the argument parameter is given to the function
      without any additional cost and may be modified, while he is
      aware that the lifetime of the argument parameter must be at
      least as long as the object itself. Note that an instance of
-     Alias<T> is itself a light object (it holds only a pointer).
+     ConstAlias<T> is itself a light object (it holds only a pointer).
 
      It is used in methods or functions to encapsulate the parameter
      types.
 
      @code
-     double square( Alias<double> x )
+     double square( ConstAlias<double> x )
      {
        return x * x;
      }
@@ -72,7 +72,7 @@ namespace DGtal
 
      @tparam T is any type.
 
-     @see ConstAlias
+     @see ConstConstAlias
      @see Clone
 
      It can be used as follows. Consider this simple example where
@@ -113,10 +113,11 @@ namespace DGtal
      
      @code
      struct B1 {
-       B1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+       B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       A & myA;
+       const A & myA; 
+       // or Const A* myA;
      };
      struct B2 {
        B2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
@@ -149,16 +150,16 @@ namespace DGtal
      B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note The user can use either Alias<T> or T* for data
+     @note The user can use either ConstAlias<T> or const T* for data
      members. Normally (depending on the compiler), there is no
      overhead.
 
-     @note Alias have no copy constructor. Indeed, if they had one,
+     @note ConstAlias have no copy constructor. Indeed, if they had one,
      there is an ambiguity when duplicating an alias between the copy
      constructor or the T* cast followed by the T* constructor.
    */
   template <typename T>
-  class Alias
+  class ConstAlias
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -166,57 +167,57 @@ namespace DGtal
     /**
        Destructor. Does nothing.
      */
-    ~Alias();
+    ~ConstAlias();
 
     /**
      * Constructor.
      */
-    Alias();
+    ConstAlias();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    // Alias ( Alias & other );
+    // ConstAlias ( ConstAlias & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    Alias & operator= ( Alias & other );
+    ConstAlias & operator= ( ConstAlias & other );
 
     /**
        Constructor from an instance of T. The object is pointed in
        'this'.
        @param t any object of type T.
     */
-    Alias( T & t );
+    ConstAlias( const T & t );
 
     /**
        Constructor from a pointer of T. The pointer is copied in
        'this'.
        @param ptrT any pointer to a object of type T or 0.
     */
-    Alias( T* ptrT );
+    ConstAlias( const T* ptrT );
 
     /**
        Cast operator to a reference to T instance. Gives access to the
        instance of T.  This allows things like: A a2 = a1; where a1 is
-       of type Alias<A>.
+       of type ConstAlias<A>.
     */
-    operator T&() const;
+    operator const T&() const;
     /**
        Cast operator to a pointer to a T instance. Gives access to the
        instance of T.  This allows things like: A* a2 = a1; where a1 is
-       of type Alias<A>.
+       of type ConstAlias<A>.
     */
-    operator T*() const;
+    operator const T*() const;
 
     // ------------------------- Private Datas --------------------------------
   private:
     /// The pointer to the instance of T.
-    T* myPtrT;
+    const T* myPtrT;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -225,30 +226,30 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class Alias
+  }; // end of class ConstAlias
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'Alias'.
+   * Overloads 'operator<<' for displaying objects of class 'ConstAlias'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Alias' to write.
+   * @param object the object of class 'ConstAlias' to write.
    * @return the output stream after the writing.
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, const Alias<T> & object );
+  operator<< ( std::ostream & out, const ConstAlias<T> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/base/Alias.ih"
+#include "DGtal/base/ConstAlias.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined Alias_h
+#endif // !defined ConstAlias_h
 
-#undef Alias_RECURSES
-#endif // else defined(Alias_RECURSES)
+#undef ConstAlias_RECURSES
+#endif // else defined(ConstAlias_RECURSES)
