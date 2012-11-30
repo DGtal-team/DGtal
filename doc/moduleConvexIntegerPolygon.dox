@@ -30,10 +30,9 @@ parameterized by a digital space \a TSpace (a model of CSpace with
 dimension 2) and by the container class \a TSequence for storing
 vertices (a model of [boost::Sequence
 http://www.sgi.com/tech/stl/Sequence.html] over TSpace::Point, default
-is std::list<TSpace::Point>). The class ConvexIntegerPolygon then
-derives from the given \a TSequence and you may use all the standard
-methods of sequences. All the data of a ConvexIntegerPolygon are in
-its base class \a TSequence.
+is std::list<TSpace::Point>). The class ConvexIntegerPolygon contains as a data member some \a TSequence instance and you may use all the standard
+methods of sequences. All the useful data of a ConvexIntegerPolygon are in
+the \a TSequence data member.
 
 The class ConvexIntegerPolygon is a model of <a
 href="http://www.sgi.com/tech/stl/Sequence.html">boost::Sequence</a>,
@@ -126,10 +125,10 @@ the following information:
   where the centroid rational coordinates are (x/g,y/g):
   ConvexIntegerPolygon::centroid().
 
-A ConvexIntegerPolygon \a P may have zero area but up to two vertices
-!  Thanks to Pick formula, you can also get the exact number \a b of
-points on the boundary and the exact number \a i of points in the
-interior of the polygon: \f$ A(P) = i + b/2 - 1 \f$.
+A ConvexIntegerPolygon \a P may have zero area (in this case it has at
+most two vertices).  Thanks to Pick formula, you can also get the
+exact number \a b of points on the boundary and the exact number \a i
+of points in the interior of the polygon: \f$ A(P) = i + b/2 - 1 \f$.
 
 - number of interior points: ConvexIntegerPolygon::numberInteriorPoints
 - number of boundary points: ConvexIntegerPolygon::numberBoundaryPoints
@@ -153,7 +152,7 @@ You may use the following methods:
   vertex.
 
 - to get an arbitrary half-plane defined by three points (two on the
-  boundary, one inside): \ref ConvexIntegerPolygon::halfSpace( const Point & A, const Point & B, const Point & inP ) const.
+  boundary, one inside): ConvexIntegerPolygon::halfSpace( const Point & A, const Point & B, const Point & inP ) const.
 
 - Given some half-plane, finds the edges/vertices of this polygon that
   crosses/borders this half-plane:
@@ -167,9 +166,10 @@ You may also update a ConvexIntegerPolygon by intersecting with
 half-planes, i.e. linear constraints of the form ax+by <= c. The
 polygon is updated so that all its vertices have integer coordinates
 and the constraints are fulfilled. This means for instance that a set
-of linear constraints may have a non-empty interior, but the resulting
-polygon may be empty or have an empty interior. However, it is
-guaranteed that all integer solution are kept.
+of linear constraints may have a non-empty interior (in the Euclidean
+space sense), but the resulting polygon may be empty or have an empty
+interior. However, it is guaranteed that all integer solutions are
+kept.
 
 This snippet is taken from example lower-integer-convex-hull.cpp. It
 cuts the polygon by calling ConvexIntegerPolygon::cut. An Half-plane

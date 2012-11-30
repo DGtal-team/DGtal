@@ -350,6 +350,8 @@ checkOutputConvexHullBorder()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   IntegerComputer<Integer> ic;
 
+  BOOST_CONCEPT_ASSERT(( boost::Container< CIP > ));
+
   Point c1( 0, 0 );
   Point c3( 30, 0 );
   Point A( -10, -2 );

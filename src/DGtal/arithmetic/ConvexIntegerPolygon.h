@@ -64,11 +64,11 @@ namespace DGtal
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. It is also a
-     model of boost::Container since it is a std::list of points. It
+     model of boost::Container (it contains the sequence of points). It
      is also a model of CDrawableWithBoard2D, and is displayable on a
      Board2D object.
 
-     It contains no more data than a list of points except mutable
+     It contains no more data than the sequence of points, except mutable
      data for intermediate computations.
 
      It is a backport of <a
@@ -102,6 +102,9 @@ namespace DGtal
     typedef typename ClockwiseVertexSequence::const_reference const_reference;
     typedef typename ClockwiseVertexSequence::iterator iterator;
     typedef typename ClockwiseVertexSequence::const_iterator const_iterator;
+    typedef typename ClockwiseVertexSequence::const_pointer const_pointer;
+    typedef typename ClockwiseVertexSequence::size_type size_type;
+    typedef typename ClockwiseVertexSequence::difference_type difference_type;
 
     typedef typename ClockwiseVertexSequence::value_type Value;
     typedef typename ClockwiseVertexSequence::iterator Iterator;
@@ -121,22 +124,6 @@ namespace DGtal
     BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point2I, Point >::value ));
     BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector2I, Vector >::value ));
 
-  public:
-    // using Base::size;
-    // using Base::empty;
-    // using Base::clear;
-    // using Base::insert;
-    // using Base::erase;
-    // using Base::front;
-    // using Base::back;
-    // using Base::push_front;
-    // using Base::push_back;
-    // using Base::begin;
-    // using Base::end;
-    // using Base::rbegin;
-    // using Base::rend;
-
-  public:
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -201,6 +188,12 @@ namespace DGtal
        @return the number of vertices (or edges) of the convex polygon.
     */
     Size size() const;
+
+    /**
+       @return the maximal possible number of vertices (or edges) that
+       can be stored (here, greatest possible Size integer).
+    */
+    Size max_size() const;
 
     /**
        Clears the convex polygon. Afterwards, it is composed of 0 vertices.

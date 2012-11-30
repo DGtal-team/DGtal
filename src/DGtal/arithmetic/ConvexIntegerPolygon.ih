@@ -130,6 +130,15 @@ size() const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
 inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Size
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+max_size() const
+{
+  return myVertices.max_size();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
 void
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 clear()
