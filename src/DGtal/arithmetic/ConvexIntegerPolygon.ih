@@ -58,8 +58,8 @@ DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConvexIntegerPolygon()
 template <typename TSpace, typename TSequence>
 inline
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConvexIntegerPolygon
-( const Base & other )
-  : Base( other )
+( const Self & other )
+  : myVertices( other.myVertices )
 { // Nothing to do.
 }
 //-----------------------------------------------------------------------------
@@ -67,10 +67,83 @@ template <typename TSpace, typename TSequence>
 inline
 typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Self &
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::operator=
-( const Base & other )
+( const Self & other )
 { // Nothing to do.
-  Base::operator=( other );
+  if ( this != &other )
+    myVertices = other.myVertices;
   return *this;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConstIterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+begin() const
+{
+  return myVertices.begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::ConstIterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+end() const
+{
+  return myVertices.end();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Iterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+begin()
+{
+  return myVertices.begin();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Iterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+end()
+{
+  return myVertices.end();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+bool
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+empty() const
+{
+  return myVertices.empty();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Size
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+size() const
+{
+  return myVertices.size();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+clear()
+{
+  myVertices.clear();
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Iterator
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+erase( Iterator it )
+{
+  return myVertices.erase( it );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
@@ -79,7 +152,7 @@ void
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 swap( ConvexIntegerPolygon & other )
 {
-  Base::swap( other );
+  myVertices.swap( other.myVertices );
 }
 
 //-----------------------------------------------------------------------------
@@ -117,15 +190,17 @@ purge()
 {
   Iterator it = begin();
   Iterator it_end = end();
+  Iterator it_prev;
   while ( it != it_end )
     {
       _A = *it;
+      it_prev = it;
       ++it;
       while ( ( it != it_end ) && ( _A == *it ) )
 	it = erase( it );
     }
-  while ( ( size() > 1 )
-	  && ( * begin() == * rbegin() ) )
+  // Checks case where first vertex is also last vertex.
+  if ( ( size() > 1 ) && ( * begin() == *it_prev ) )
     erase( begin() );
 }
 //-----------------------------------------------------------------------------
@@ -135,7 +210,7 @@ typename DGtal::ConvexIntegerPolygon<TSpace,TSequence>::Iterator
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 insertBefore( const Iterator & pos, const Point & K )
 {
-  return Base::insert( pos, K );
+  return myVertices.insert( pos, K );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
@@ -144,7 +219,34 @@ void
 DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
 pushBack( const Point & K )
 {
-  Base::push_back( K );
+  myVertices.push_back( K );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+pushFront( const Point & K )
+{
+  myVertices.push_front( K );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+push_back( const Point & K )
+{
+  myVertices.push_back( K );
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace, typename TSequence>
+inline
+void
+DGtal::ConvexIntegerPolygon<TSpace,TSequence>::
+push_front( const Point & K )
+{
+  myVertices.push_front( K );
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TSequence>
@@ -333,8 +435,8 @@ cut( const HalfSpace & hs )
   // Both iterators point on the right place.
   if ( _a > NumberTraits<Integer>::ZERO ) 
     { //convex not reduced to a straight line segment
-      std::insert_iterator<Base> itOut 
-        = std::inserter<Base,Iterator>( *this, it_next_is_outside );
+      std::insert_iterator<ClockwiseVertexSequence> itOut 
+        = std::inserter<ClockwiseVertexSequence,Iterator>( myVertices, it_next_is_outside );
       computeConvexHullBorder( itOut, _A1, _A2, hs1, hs, hs3 );
     }
   else //convex reduced to a straight line segment

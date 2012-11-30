@@ -80,7 +80,6 @@ namespace DGtal
   template < typename TSpace, 
              typename TSequence = std::list< typename TSpace::Point > >
   class ConvexIntegerPolygon 
-    : public TSequence
   {
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
@@ -88,7 +87,7 @@ namespace DGtal
 
   public:
     typedef ConvexIntegerPolygon<TSpace,TSequence> Self;
-    typedef TSequence Base;
+    typedef TSequence ClockwiseVertexSequence;
 
     typedef TSpace Space;
     typedef typename Space::Integer Integer;
@@ -98,9 +97,15 @@ namespace DGtal
     typedef HyperRectDomain< Space > Domain; 
     typedef ClosedIntegerHalfPlane< Space > HalfSpace;
 
-    typedef typename Base::value_type Value;
-    typedef typename Base::iterator Iterator;
-    typedef typename Base::const_iterator ConstIterator;
+    typedef typename ClockwiseVertexSequence::value_type value_type;
+    typedef typename ClockwiseVertexSequence::reference reference;
+    typedef typename ClockwiseVertexSequence::const_reference const_reference;
+    typedef typename ClockwiseVertexSequence::iterator iterator;
+    typedef typename ClockwiseVertexSequence::const_iterator const_iterator;
+
+    typedef typename ClockwiseVertexSequence::value_type Value;
+    typedef typename ClockwiseVertexSequence::iterator Iterator;
+    typedef typename ClockwiseVertexSequence::const_iterator ConstIterator;
     typedef typename std::size_t Size;
     typedef std::pair<Size,Size> SizeCouple;
 
@@ -117,19 +122,19 @@ namespace DGtal
     BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector2I, Vector >::value ));
 
   public:
-    using Base::size;
-    using Base::empty;
-    using Base::clear;
-    using Base::insert;
-    using Base::erase;
-    using Base::front;
-    using Base::back;
-    using Base::push_front;
-    using Base::push_back;
-    using Base::begin;
-    using Base::end;
-    using Base::rbegin;
-    using Base::rend;
+    // using Base::size;
+    // using Base::empty;
+    // using Base::clear;
+    // using Base::insert;
+    // using Base::erase;
+    // using Base::front;
+    // using Base::back;
+    // using Base::push_front;
+    // using Base::push_back;
+    // using Base::begin;
+    // using Base::end;
+    // using Base::rbegin;
+    // using Base::rend;
 
   public:
     // ----------------------- Standard services ------------------------------
@@ -149,19 +154,65 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ConvexIntegerPolygon ( const Base & other );
+    ConvexIntegerPolygon ( const Self & other );
 
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    Self & operator= ( const Base & other );
+    Self & operator= ( const Self & other );
 
     /**
        @return the object that performs integer calculation.
     */
     MyIntegerComputer & ic() const;
+
+    /**
+       Useful to visit the list of vertices in order.
+       @return a const iterator (a forward iterator) pointing on the first vertex.
+    */
+    ConstIterator begin() const;
+
+    /**
+       Useful to visit the list of vertices in order.
+       @return a const iterator (a forward iterator) pointing after the last vertex.
+    */
+    ConstIterator end() const;
+
+    /**
+       Useful to visit the list of vertices in order.
+       @return an iterator (a forward iterator) pointing on the first vertex.
+    */
+    Iterator begin();
+
+    /**
+       Useful to visit the list of vertices in order.
+       @return an iterator (a forward iterator) pointing after the last vertex.
+    */
+    Iterator end();
+
+    /**
+       @return 'true' if the convex polygon has no vertex, false otherwise.
+    */
+    bool empty() const;
+
+    /**
+       @return the number of vertices (or edges) of the convex polygon.
+    */
+    Size size() const;
+
+    /**
+       Clears the convex polygon. Afterwards, it is composed of 0 vertices.
+    */
+    void clear();
+
+    /**
+       Erases the vertex pointed by \a it.
+       @param it an iterator pointing on the vertex to erase.
+       @return an iterator pointing on the next vertex (the one that follows \a it).
+    */
+    Iterator erase( Iterator it );
 
     /**
        @return the bounding domain of this polygon, i.e. the smallest
@@ -194,6 +245,36 @@ namespace DGtal
        C_N, K should be the vertices of the output convex polygon.
     */
     void pushBack( const Point & K );
+
+    /**
+       Adds the point K to the beginning of the polygon (stl version)
+       @param K the point to add
+
+       @pre if C_1, ..., C_N is the convex polygon, then K, C_1, ...,
+       C_N should be the vertices of the output convex polygon.
+       @see push_front
+    */
+    void pushFront( const Point & K );
+
+    /**
+       Adds the point K to the end of the polygon (stl version for BackInsertable).
+       @param K the point to add
+
+       @pre if C_1, ..., C_N is the convex polygon, then C_1, ...,
+       C_N, K should be the vertices of the output convex polygon.
+       @see pushBack
+    */
+    void push_back( const Point & K );
+
+    /**
+       Adds the point K to the beginning of the polygon (stl version)
+       @param K the point to add
+
+       @pre if C_1, ..., C_N is the convex polygon, then K, C_1, ...,
+       C_N should be the vertices of the output convex polygon.
+       @see pushFront
+    */
+    void push_front( const Point & K );
 
     /**
      * @return 2*area of polygon.
@@ -433,8 +514,13 @@ namespace DGtal
      */
     std::string className() const;
 
+
     // ------------------------- Protected Datas ------------------------------
-  private:
+  protected:
+    // The (circular) sequence of vertices along the convex polygon.
+    // The vertices are ordered \b clockwise.
+    ClockwiseVertexSequence myVertices;
+
     // ------------------------- Private Datas --------------------------------
   private:
     /// A utility object to perform computation on integers. Need not
