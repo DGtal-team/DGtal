@@ -50,7 +50,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
-#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/LatticePolytope2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -157,7 +157,7 @@ namespace DGtal
     typedef PointVector< 3, InternalInteger > InternalPoint3;
     typedef SpaceND< 2, InternalInteger > InternalSpace2;
     typedef typename InternalSpace2::Point InternalPoint2;
-    typedef ConvexIntegerPolygon< InternalSpace2 > ConvexPolygonZ2;
+    typedef LatticePolytope2D< InternalSpace2 > ConvexPolygonZ2;
     typedef typename ConvexPolygonZ2::HalfSpace HalfSpace;
 
     /**

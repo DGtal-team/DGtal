@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testConvexIntegerPolygon.cpp
+ * @file testLatticePolytope2D.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/19
  *
- * Functions for testing class ConvexIntegerPolygon.
+ * Functions for testing class LatticePolytope2D.
  *
  * This file is part of the DGtal library.
  */
@@ -30,10 +30,10 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 
-//#define DEBUG_ConvexIntegerPolygon
+//#define DEBUG_LatticePolytope2D
 
 #include "DGtal/base/Common.h"
-#include "DGtal/arithmetic/ConvexIntegerPolygon.h"
+#include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/boards/Board2D.h"
 
@@ -43,22 +43,22 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ConvexIntegerPolygon.
+// Functions for testing class LatticePolytope2D.
 ///////////////////////////////////////////////////////////////////////////////
 
-template <typename ConvexIntegerPolygon>
+template <typename LatticePolytope2D>
 bool
-checkCut( ConvexIntegerPolygon & cip, 
-          typename ConvexIntegerPolygon::HalfSpace hs )
+checkCut( LatticePolytope2D & cip, 
+          typename LatticePolytope2D::HalfSpace hs )
 {
   trace.beginBlock ( "Check cut, see <cip.eps> and <cip2.eps>" );
-  typedef typename ConvexIntegerPolygon::Space Space;
-  typedef typename ConvexIntegerPolygon::Domain Domain;
+  typedef typename LatticePolytope2D::Space Space;
+  typedef typename LatticePolytope2D::Domain Domain;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef typename DigitalSet::ConstIterator ConstIterator;
 
   Domain d = cip.boundingBoxDomain();
-#ifdef DEBUG_ConvexIntegerPolygon
+#ifdef DEBUG_LatticePolytope2D
   Board2D board;
   board << SetMode( d.className(), "Grid" ) << d;
   DigitalSet aSet( d );
@@ -77,7 +77,7 @@ checkCut( ConvexIntegerPolygon & cip,
   cip.getIncludedDigitalPoints( cipSet );
   cip.cut( hs );
   cip.getIncludedDigitalPoints( cipSet2 );
-#ifdef DEBUG_ConvexIntegerPolygon
+#ifdef DEBUG_LatticePolytope2D
   board << SetMode( d.className(), "Grid" ) << d;
   board << CustomStyle( aSet.className(), new CustomColors( col1, col2 ) )
         << cipSet;
@@ -120,16 +120,16 @@ checkCut( ConvexIntegerPolygon & cip,
  *
  */
 template <typename Space>
-bool testConvexIntegerPolygon()
+bool testLatticePolytope2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ConvexIntegerPolygon area and centroid" );
+  trace.beginBlock ( "Testing block LatticePolytope2D area and centroid" );
   typedef typename Space::Point Point;
   typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
-  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef LatticePolytope2D<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
@@ -155,7 +155,7 @@ bool testConvexIntegerPolygon()
   trace.info() << "- domain = " << d << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "Output ConvexIntegerPolygon in <cip.eps>" );
+  trace.beginBlock ( "Output LatticePolytope2D in <cip.eps>" );
   cip.pushBack( Point( -4, 4 ) );
   cip.pushBack( Point( -7, 2 ) );
   cip.pushBack( Point( -5, 1 ) );
@@ -190,7 +190,7 @@ bool testConvexIntegerPolygon()
   board.saveSVG( "cip.svg" );
   trace.endBlock();
 
-  trace.beginBlock ( "Output cut ConvexIntegerPolygon in <cip2.eps>" );
+  trace.beginBlock ( "Output cut LatticePolytope2D in <cip2.eps>" );
   board.clear();
   board << SetMode( d.className(), "Grid" ) << d;
   board << SetMode( cip.className(), "Transparent" ) << cip;
@@ -215,16 +215,16 @@ int myRandom( int nb )
  *
  */
 template <typename Space>
-bool exhaustiveTestConvexIntegerPolygon()
+bool exhaustiveTestLatticePolytope2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  trace.beginBlock ( "Testing block ConvexIntegerPolygon area and centroid" );
+  trace.beginBlock ( "Testing block LatticePolytope2D area and centroid" );
   typedef typename Space::Point Point;
   typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
-  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef LatticePolytope2D<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
@@ -284,7 +284,7 @@ bool exhaustiveTestConvexIntegerPolygon()
  *
  */
 template <typename Space>
-bool specificTestConvexIntegerPolygon()
+bool specificTestLatticePolytope2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -292,7 +292,7 @@ bool specificTestConvexIntegerPolygon()
   typedef typename Space::Point Point;
   typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
-  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef LatticePolytope2D<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
@@ -343,7 +343,7 @@ checkOutputConvexHullBorder()
   typedef typename Space::Point Point;
   typedef typename Space::Vector Vector;
   typedef typename Space::Integer Integer;
-  typedef ConvexIntegerPolygon<Space> CIP;
+  typedef LatticePolytope2D<Space> CIP;
   typedef typename CIP::Point3I Point3I;
   typedef typename CIP::Domain Domain;
   typedef typename CIP::HalfSpace HalfSpace;
@@ -388,16 +388,16 @@ checkOutputConvexHullBorder()
 
 int main( int, char** )
 {
-  trace.beginBlock ( "Testing class ConvexIntegerPolygon" );
+  trace.beginBlock ( "Testing class LatticePolytope2D" );
 
   typedef SpaceND<2, DGtal::int64_t> Z2;
   typedef SpaceND<2, DGtal::BigInteger> Z2I;
-  bool res = testConvexIntegerPolygon<Z2>()
-    && testConvexIntegerPolygon<Z2I>()
-    && exhaustiveTestConvexIntegerPolygon<Z2>()
+  bool res = testLatticePolytope2D<Z2>()
+    && testLatticePolytope2D<Z2I>()
+    && exhaustiveTestLatticePolytope2D<Z2>()
     && checkOutputConvexHullBorder<Z2>();
-  //&& specificTestConvexIntegerPolygon<Z2>();
-  //&& exhaustiveTestConvexIntegerPolygon<Z2I>();
+  //&& specificTestLatticePolytope2D<Z2>();
+  //&& exhaustiveTestLatticePolytope2D<Z2I>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

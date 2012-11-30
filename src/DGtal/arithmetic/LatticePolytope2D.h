@@ -17,27 +17,27 @@
 #pragma once
 
 /**
- * @file ConvexIntegerPolygon.h
+ * @file LatticePolytope2D.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  * @author Emilie Charrier
  *
  * @date 2012/04/19
  *
- * Header file for module ConvexIntegerPolygon.cpp
+ * Header file for module LatticePolytope2D.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ConvexIntegerPolygon_RECURSES)
-#error Recursive header files inclusion detected in ConvexIntegerPolygon.h
-#else // defined(ConvexIntegerPolygon_RECURSES)
+#if defined(LatticePolytope2D_RECURSES)
+#error Recursive header files inclusion detected in LatticePolytope2D.h
+#else // defined(LatticePolytope2D_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ConvexIntegerPolygon_RECURSES
+#define LatticePolytope2D_RECURSES
 
-#if !defined ConvexIntegerPolygon_h
+#if !defined LatticePolytope2D_h
 /** Prevents repeated inclusion of headers. */
-#define ConvexIntegerPolygon_h
+#define LatticePolytope2D_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,11 +56,12 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class ConvexIntegerPolygon
+  // template class LatticePolytope2D
   /**
-     Description of template class 'ConvexIntegerPolygon' <p> \brief
-     Aim: Represents a convex polygon in the two-dimensional digital
-     plane. The list of points must follow the \b clockwise ordering.
+     Description of template class 'LatticePolytope2D' <p> \brief Aim:
+     Represents a 2D polytope, i.e. a convex polygon, in the
+     two-dimensional digital plane. The list of points must follow the
+     \b clockwise ordering.
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. It is also a
@@ -79,14 +80,14 @@ namespace DGtal
    */
   template < typename TSpace, 
              typename TSequence = std::list< typename TSpace::Point > >
-  class ConvexIntegerPolygon 
+  class LatticePolytope2D 
   {
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
     BOOST_CONCEPT_ASSERT(( boost::Sequence< TSequence > ));
 
   public:
-    typedef ConvexIntegerPolygon<TSpace,TSequence> Self;
+    typedef LatticePolytope2D<TSpace,TSequence> Self;
     typedef TSequence ClockwiseVertexSequence;
 
     typedef TSpace Space;
@@ -130,18 +131,18 @@ namespace DGtal
     /**
        Destructor.
      */
-    ~ConvexIntegerPolygon();
+    ~LatticePolytope2D();
 
     /**
      * Constructor.
      */
-    ConvexIntegerPolygon();
+    LatticePolytope2D();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ConvexIntegerPolygon ( const Self & other );
+    LatticePolytope2D ( const Self & other );
 
     /**
      * Assignment.
@@ -180,12 +181,12 @@ namespace DGtal
     Iterator end();
 
     /**
-       @return 'true' if the convex polygon has no vertex, false otherwise.
+       @return 'true' if the lattice polytope has no vertex, false otherwise.
     */
     bool empty() const;
 
     /**
-       @return the number of vertices (or edges) of the convex polygon.
+       @return the number of vertices (or edges) of the lattice polytope.
     */
     Size size() const;
 
@@ -196,7 +197,7 @@ namespace DGtal
     Size max_size() const;
 
     /**
-       Clears the convex polygon. Afterwards, it is composed of 0 vertices.
+       Clears the lattice polytope. Afterwards, it is composed of 0 vertices.
     */
     void clear();
 
@@ -220,13 +221,13 @@ namespace DGtal
     void purge();
 
     /**
-     * Inserts the point K to the convex polygon before position "pos".
+     * Inserts the point K to the lattice polytope before position "pos".
      * @param pos any iterator
      * @param K the point to add
      * @return an iterator on the newly created element.
      *
-     * @pre if C_1, ..., C_N is the convex polygon, then C_1, C_pos-1,
-     * K ..., C_N should be the vertices of the output convex polygon.
+     * @pre if C_1, ..., C_N is the lattice polytope, then C_1, C_pos-1,
+     * K ..., C_N should be the vertices of the output lattice polytope.
      */
     Iterator insertBefore( const Iterator & pos, const Point & K );
 
@@ -234,8 +235,8 @@ namespace DGtal
        adds the point K to the end of the polygon.
        @param K the point to add
 
-       @pre if C_1, ..., C_N is the convex polygon, then C_1, ...,
-       C_N, K should be the vertices of the output convex polygon.
+       @pre if C_1, ..., C_N is the lattice polytope, then C_1, ...,
+       C_N, K should be the vertices of the output lattice polytope.
     */
     void pushBack( const Point & K );
 
@@ -243,8 +244,8 @@ namespace DGtal
        Adds the point K to the beginning of the polygon (stl version)
        @param K the point to add
 
-       @pre if C_1, ..., C_N is the convex polygon, then K, C_1, ...,
-       C_N should be the vertices of the output convex polygon.
+       @pre if C_1, ..., C_N is the lattice polytope, then K, C_1, ...,
+       C_N should be the vertices of the output lattice polytope.
        @see push_front
     */
     void pushFront( const Point & K );
@@ -253,8 +254,8 @@ namespace DGtal
        Adds the point K to the end of the polygon (stl version for BackInsertable).
        @param K the point to add
 
-       @pre if C_1, ..., C_N is the convex polygon, then C_1, ...,
-       C_N, K should be the vertices of the output convex polygon.
+       @pre if C_1, ..., C_N is the lattice polytope, then C_1, ...,
+       C_N, K should be the vertices of the output lattice polytope.
        @see pushBack
     */
     void push_back( const Point & K );
@@ -263,8 +264,8 @@ namespace DGtal
        Adds the point K to the beginning of the polygon (stl version)
        @param K the point to add
 
-       @pre if C_1, ..., C_N is the convex polygon, then K, C_1, ...,
-       C_N should be the vertices of the output convex polygon.
+       @pre if C_1, ..., C_N is the lattice polytope, then K, C_1, ...,
+       C_N should be the vertices of the output lattice polytope.
        @see pushFront
     */
     void push_front( const Point & K );
@@ -347,7 +348,7 @@ namespace DGtal
                         const HalfSpace & hs );
 
     /**
-       Cuts the convex polygon with the given half-space constraint.
+       Cuts the lattice polytope with the given half-space constraint.
        
        @param hs any half-space constraint.
        @return 'true' if the polygon was modified, 'false' otherwise.
@@ -467,7 +468,7 @@ namespace DGtal
        the supporting lines of C1 and of C3 resp.
        
        @param pos corresponds to an iterator in the list of vertices
-       of the convex, to add the next new vertices
+       of the polytope, to add the next new vertices
        
        NB: the method also computes grid point satisfying N1.P<=c1 and
        N3.P>=c3 but not satisfying N2.P<=c2. The algorithm uses
@@ -483,9 +484,9 @@ namespace DGtal
 
     /**
        Swaps the content of this object with other. O(1) complexity.
-       @param other any other ConvexIntegerPolygon.
+       @param other any other LatticePolytope2D.
     */
-    void swap( ConvexIntegerPolygon & other );
+    void swap( LatticePolytope2D & other );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -510,7 +511,7 @@ namespace DGtal
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    // The (circular) sequence of vertices along the convex polygon.
+    // The (circular) sequence of vertices along the lattice polytope.
     // The vertices are ordered \b clockwise.
     ClockwiseVertexSequence myVertices;
 
@@ -531,31 +532,31 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class ConvexIntegerPolygon
+  }; // end of class LatticePolytope2D
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ConvexIntegerPolygon'.
+   * Overloads 'operator<<' for displaying objects of class 'LatticePolytope2D'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ConvexIntegerPolygon' to write.
+   * @param object the object of class 'LatticePolytope2D' to write.
    * @return the output stream after the writing.
    */
   template <typename TSpace, typename TSequence>
   std::ostream&
   operator<< ( std::ostream & out, 
-               const ConvexIntegerPolygon<TSpace,TSequence> & object );
+               const LatticePolytope2D<TSpace,TSequence> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/arithmetic/ConvexIntegerPolygon.ih"
+#include "DGtal/arithmetic/LatticePolytope2D.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ConvexIntegerPolygon_h
+#endif // !defined LatticePolytope2D_h
 
-#undef ConvexIntegerPolygon_RECURSES
-#endif // else defined(ConvexIntegerPolygon_RECURSES)
+#undef LatticePolytope2D_RECURSES
+#endif // else defined(LatticePolytope2D_RECURSES)
