@@ -60,6 +60,14 @@ namespace DGtal
      reference), the duplication takes place when the user
      instantiates its member of type T.
 
+     @note The usage of \c Clone<T> instead of \c const \c T \c & or
+     \c const \c T \c * in parameters is \b always \b recommended when
+     the user duplicates the parameter and stores a clone of it as a
+     data member for later ise. The usage \c Clone<T> instead of \c T
+     is \b recommended whenever \c T is big (the object is sometimes
+     duplicated twice). When the object is small, writing either \c
+     Clone<T> or \c T is acceptable.
+
      @tparam T is any type.
 
      @see Alias

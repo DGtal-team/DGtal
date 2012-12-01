@@ -35,6 +35,7 @@
 #include "DGtal/base/Clone.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/helpers/StdDefs.h"
 
 using namespace DGtal;
 using namespace std;
@@ -129,8 +130,6 @@ struct EByAlias {
   }
   
   A1* myA1;
-  // ou
-  // A1lias<A1> myA1;
 };
 
 // This class uses the provided explicit by-reference parameter passing (with Alias).
@@ -148,28 +147,93 @@ struct EByConstAlias {
   }
   
   const A1* myA1;
-  // ou
-  // A1lias<A1> myA1;
 };
 
-// This class uses the provided explicit by-reference parameter passing (with Alias).
-// The data member is an Alias of the given instance (should be same behaviour).
-struct F {
-  F( Alias<A1> a )
-    : myA1( a )
+class MyPoint {
+public:
+  ~MyPoint() 
+  { nbDeleted++; }
+  MyPoint( const MyPoint & other ) 
+    : _x( other._x ), _y( other._y )
+  { nbCreated++; }
+  MyPoint( int x, int y ) : _x( x ), _y( y )
+  { nbCreated++; }
+  MyPoint operator-( const MyPoint & other ) const
   {
-    std::cout << "  F( A1lias<A1> a ) " << myA1 << std::endl;
+    return MyPoint( _x - other._x, _y - other._y );
   }
+  double norm() const
+  {
+    double dx = (double) _x;
+    double dy = (double) _y;
+    return sqrt( dx * dx + dy * dy );
+  }
+  static void reset()
+  {
+    nbCreated = nbDeleted = 0;
+  }
+  int _x, _y;
 
-  int value() const
-  {
-    A1 & a = myA1; // in fact, necessary
-    return a.data; 
-  }
-  
-  Alias<A1> myA1;
+  static int nbCreated;
+  static int nbDeleted;
 };
 
+int MyPoint::nbCreated = 0;
+int MyPoint::nbDeleted = 0;
+
+//typedef Z2i::Point Point;
+typedef MyPoint Point;
+
+struct TriangleByConstReference {
+  TriangleByConstReference( const Point & a, const Point & b, const Point & c )
+    : _a( a ), _b( b ), _c( c ) {}
+  double perimeter() const
+  {
+    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
+  }
+  Point _a, _b, _c;
+};
+
+struct TriangleByValue {
+  TriangleByValue( Point a, Point b, Point c )
+    : _a( a ), _b( b ), _c( c ) {}
+  double perimeter() const
+  {
+    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
+  }
+  Point _a, _b, _c;
+};
+
+struct TriangleByClone {
+  TriangleByClone( Clone<Point> a, Clone<Point> b, Clone<Point> c )
+    : _a( a ), _b( b ), _c( c ) {}
+  double perimeter() const
+  {
+    return (_a - _b).norm() + (_b - _c).norm() + (_c - _a).norm();
+  }
+  Point _a, _b, _c;
+};
+
+template <typename Triangle>
+double
+computeTriangles( int size )
+{
+  double total = 0.0;
+  Point A( 0, 0 );
+  for ( int yb = 0; yb < size; ++yb ) 
+    for ( int xb = 0; xb < size; ++xb ) 
+      {
+        Point B( xb, yb );
+        for ( int yc = 0; yc < size; ++yc ) 
+          for ( int xc = 0; xc < size; ++xc )
+            {
+              Point C( xc, yc );
+              Triangle T( A, B, C );
+              total += T.perimeter();
+            }
+      }
+  return total;
+}
 
 int main()
 {
@@ -210,6 +274,37 @@ int main()
                << " nbDeleted=" << A1::nbDeleted << std::endl; 
   trace.endBlock();
 
+  int size = 40;
+  trace.beginBlock ( "Total perimeter of triangles with by-value parameter passing." );
+  double t1 = computeTriangles<TriangleByValue>( size );
+  trace.info() << "Perimeter is " << t1 << std::endl;
+  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " Point nbCreated=" << Point::nbCreated 
+               << " nbDeleted=" << Point::nbDeleted << std::endl; 
+  int nbC = Point::nbCreated;
+  Point::reset();
+  trace.endBlock();
+  trace.beginBlock ( "Total perimeter of triangles with by-const reference parameter passing." );
+  double t2 = computeTriangles<TriangleByConstReference>( size );
+  trace.info() << "Perimeter is " << t2 << std::endl;
+  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " Point nbCreated=" << Point::nbCreated 
+               << " nbDeleted=" << Point::nbDeleted << std::endl; 
+  Point::reset();
+  trace.endBlock();
+  trace.beginBlock ( "Total perimeter of triangles with by Clone parameter passing." );
+  double t3 = computeTriangles<TriangleByClone>( size );
+  trace.info() << "Perimeter is " << t3 << std::endl;
+  ++nb, nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
+  ++nb, nbok += Point::nbCreated < nbC ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " Point nbCreated=" << Point::nbCreated 
+               << " nbDeleted=" << Point::nbDeleted << std::endl; 
+  Point::reset();
+  trace.endBlock();
 
   // These two lines should not compile.
   // Clone<A1> clone1( a1 );
