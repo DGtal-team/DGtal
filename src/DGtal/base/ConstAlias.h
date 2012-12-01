@@ -62,17 +62,20 @@ namespace DGtal
      It is used in methods or functions to encapsulate the parameter
      types.
 
-     @code
-     double square( ConstAlias<double> x )
-     {
-       return x * x;
-     }
-     std::cout << "3.5^2 = " << square( 3.5 ) << std::endl;
-     @encode
+     @note The usage of \c ConstAlias<T> instead of \c const \c T \c &
+     or of \c const \c T \c * in parameters is \b recommended when the
+     lifetime of the parameter must exceed the lifetime of the called
+     method/function/constructor (often the case in constructor or
+     init methods). The usage of \c const \c T \c & or \c const \c T
+     \c * instead of \c ConstAlias<T> is \b recommended when the
+     lifetime of the parameter is not required to exceed the lifetime
+     of the called method/function/constructor (often the case in
+     standard methods, where the parameter is only used at some point,
+     but not referenced after in some data member).
 
      @tparam T is any type.
 
-     @see ConstConstAlias
+     @see ConstAlias
      @see Clone
 
      It can be used as follows. Consider this simple example where

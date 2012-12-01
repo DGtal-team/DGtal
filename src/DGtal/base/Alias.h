@@ -62,6 +62,17 @@ namespace DGtal
      It is used in methods or functions to encapsulate the parameter
      types.
 
+     @note The usage of \c Alias<T> instead of \c T \c & or \c T \c *
+     in parameters is \b recommended when the lifetime of the
+     parameter must exceed the lifetime of the called
+     method/function/constructor (often the case in constructor or
+     init methods). The usage of \c T \c & or \c T \c * instead of \c
+     Alias<T> is \b recommended when the lifetime of the parameter is
+     not required to exceed the lifetime of the called
+     method/function/constructor (often the case in standard methods,
+     where the parameter is only used at some point, but not
+     referenced after in some data member).
+
      @code
      double square( Alias<double> x )
      {
