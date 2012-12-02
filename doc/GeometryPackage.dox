@@ -57,6 +57,8 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - \ref modulegeometry2d  (Tristan Roussillon)
 
+- \ref moduleSegmentComputers (Tristan Roussillon, Isabelle Sivignon)
+
 - \ref moduleEsimators  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
 
 - \ref moduleVolumetric (David Coeurjolly)

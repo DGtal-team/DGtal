@@ -1,7 +1,12 @@
 === DGtal 0.6 ===
  
-    - Update on image writers (no mandatory colormap for scalar only writers). Documentation updated.    
+ *Image Package* 
+    - Update on image writers (no mandatory colormap for scalar only writers). Documentation updated.
 
+ *Geometry Package*
+    - Fréchet segment computer added to compute bounded simplifications of digital curves for instance.
+
+	
 === DGtal 0.5.1 ===
 Posted on June, 6th, 2012 by David Coeurjolly
 

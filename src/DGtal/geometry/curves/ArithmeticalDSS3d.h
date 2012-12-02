@@ -158,6 +158,8 @@ namespace DGtal
      */
     Reverse getReverse() const;
 
+    
+
     /**
      * Equality operator.
      * @param other the object to compare with.
