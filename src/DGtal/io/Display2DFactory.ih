@@ -584,6 +584,35 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 }
 // GeometricalDCA
 
+ 
+
+// FrechetShortcut
+template <typename TIterator,typename TInteger>
+inline
+  void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & f)
+{
+  typedef TIterator Iterator;
+  typedef PointVector<2,TInteger> Point; 
+  typedef typename Point::Coordinate Coordinate; 
+
+  // get first point of the shortcut
+  Point p1 = *(f.begin());
+  double px1 = NumberTraits<Coordinate>::castToDouble(p1[0]);
+  double py1 = NumberTraits<Coordinate>::castToDouble(p1[1]);
+  
+  // get last point of the shortcut
+  Iterator it (f.end());
+  --it;
+  Point p2(*it);
+  double px2 = NumberTraits<Coordinate>::castToDouble(p2[0]);
+  double py2 = NumberTraits<Coordinate>::castToDouble(p2[1]);
+  
+  aBoard.drawLine(px1,py1,px2,py2);
+}
+// FrechetShortcut
+
+
+
 // GridCurve
 template <typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 

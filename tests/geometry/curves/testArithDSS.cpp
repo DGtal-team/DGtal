@@ -1,3 +1,4 @@
+
 /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
@@ -51,7 +52,6 @@
 #include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
-
 using namespace DGtal;
 using namespace std;
 using namespace LibBoard;
@@ -74,6 +74,7 @@ bool testDSS4drawing()
   contour.push_back(Point(0,0));
   contour.push_back(Point(1,0));
   contour.push_back(Point(1,1));
+  contour.push_back(Point(2,1));
   contour.push_back(Point(2,1));
   contour.push_back(Point(3,1));
   contour.push_back(Point(3,2));
