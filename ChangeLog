@@ -1,7 +1,7 @@
 === DGtal 0.6 ===
  
  *Image Package* 
-    - Update on image writers (no mandatory colormap for scalar only writers).
+    - Update on image writers (no colormap required for scalar only writers).
       Documentation updated.
 
  *Geometry Package*
