@@ -33,22 +33,10 @@
 #include "DGtal/helpers/StdDefs.h"
 
 /////// UnaryOperators
-#include "DGtal/shapes/DigitalShapesAdapter.h"
 #include "DGtal/shapes/EuclideanShapesAdapter.h"
 
 /////// Shapes 2D
 #include "DGtal/shapes/parametric/Ball2D.h"
-#include "DGtal/shapes/Shapes.h"
-
-/////// Render 2D
-#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
-
-/////// Digitalization
-#include "DGtal/shapes/GaussDigitizer.h"
-#include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/topology/SurfelAdjacency.h"
-#include "DGtal/topology/DigitalSurface.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -58,8 +46,13 @@ using namespace DGtal;
 // Functions for testing class UnaryOperationShapes.
 ///////////////////////////////////////////////////////////////////////////////
 
-int minimalistEuclideanShapesTests2D()
+int testUnaryOperationShapes ( int argc, char**argv )
 {
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  trace.beginBlock ( "Testing Unary operation on Shapes ..." );
+
   typedef Ball2D< Z2i::Space > ShapeA;
   typedef typename ShapeA::Space::Point Point;
   typedef typename ShapeA::Space::RealPoint RealPoint;
@@ -78,129 +71,48 @@ int minimalistEuclideanShapesTests2D()
   typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
   Minus s_minus ( shapeA, shapeC );
 
-  std::cout << "==== Union tests ====" << std::endl;
-  std::cout << "NO " << s_union.isInside( RealPoint(-5.5, 0.0) ) << std::endl;
-  std::cout << "YES (M) " << s_union.isInside( RealPoint(0.0, 0.0) ) << std::endl;
-  std::cout << "NO " << s_union.isInside( RealPoint(5.5, 0.0) ) << std::endl;
-  std::cout << "YES " << s_union.isInside( RealPoint(-5.0, 0.0) ) << std::endl;
-
-  std::cout << "==== Intersection tests ====" << std::endl;
-  std::cout << "NO " << s_intersec.isInside( RealPoint(-5.0, 0.0) ) << std::endl;
-  std::cout << "YES (M) " << s_intersec.isInside( RealPoint(2.5, 0.0) ) << std::endl;
-  std::cout << "NO " << s_intersec.isInside( RealPoint(0.0, 2.0) ) << std::endl;
-  std::cout << "YES " << s_intersec.isInside( RealPoint(-1.0, 0.0) ) << std::endl;
-
-  std::cout << "==== Minus tests ====" << std::endl;
-  std::cout << "YES (M) " << s_minus.isInside( RealPoint(-5.0, 0.0) ) << std::endl;
-  std::cout << "NO (M) " << s_minus.isInside( RealPoint(2.5, 0.0) ) << std::endl;
-  std::cout << "NO " << s_minus.isInside( RealPoint(0.0, 2.0) ) << std::endl;
-  std::cout << "YES " << s_minus.isInside( RealPoint(-4.0, 0.0) ) << std::endl;
-
-  std::cout << "==== Digitalization ====" << std::endl;
-  typedef ShapeA CurrentShape;
-  typedef typename CurrentShape::Space Space;
-  typedef typename Space::Integer Integer;
-  typedef typename Space::Vector Vector;
-  typedef KhalimskySpaceND< Space::dimension, Integer > KSpace;
-  typedef typename KSpace::SCell SCell;
-  typedef HyperRectDomain<Space> Domain;
-  typedef GaussDigitizer< Space, CurrentShape > Digitizer;
-  typedef LightImplicitDigitalSurface< KSpace, Digitizer > LightImplicitDigSurface;
-  typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
-  typedef typename LightImplicitDigSurface::SurfelConstIterator ConstIterator;
-
-  Digitizer dig;
-  dig.attach( shapeA );
-  dig.init( shapeA.getLowerBound(), shapeA.getUpperBound(), 0.1 );
-  Domain domain = dig.getDomain();
-  KSpace K;
-  bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
-  if ( ! ok )
-  {
-    std::cerr << "[testUnaryOperationShapes]"
-              << " error in creating KSpace." << std::endl;
-    return false;
-  }
-
-  SurfelAdjacency<KSpace::dimension> SAdj( true );
-
-  SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-  LightImplicitDigSurface LightImplDigSurf( K, dig, SAdj, bel );
-  MyDigitalSurface digSurf( LightImplDigSurf );
-
-  Z2i::DigitalSet aSet(domain);
-  Shapes<Domain>::digitalShaper( aSet, dig );
-  Board2D board2;
-    board2 << aSet;
-    board2.saveSVG ("glop.svg");
-
-  std::cout << "==== Render ====" << std::endl;
-  Board2D board;
-  board << SetMode( domain.className(), "Paving" ) << domain;
-
-  for ( ConstIterator itbegin = digSurf.begin(), itend = digSurf.end(), it = itbegin; it != itend; ++it )
-  {
-    ////////////////////
-    board << CustomStyle( (*it).className(),
-                          new CustomColors( Color( 0, 200, 0 ),
-                                            Color( 100, 255, 100 ) ) )
-          << *it;
-  }
-
-  Digitizer dig2;
-  dig2.attach( shapeC );
-  dig2.init( shapeC.getLowerBound(), shapeC.getUpperBound(), 0.1 );
-  Domain domain2 = dig.getDomain();
-  KSpace K2;
-  bool ok2 = K2.init( dig2.getLowerBound(), dig2.getUpperBound(), true );
-  if ( ! ok2 )
-  {
-    std::cerr << "[testUnaryOperationShapes]"
-              << " error in creating KSpace." << std::endl;
-    return false;
-  }
-
-  SurfelAdjacency<KSpace::dimension> SAdj2( true );
-
-  SCell bel2 = Surfaces<KSpace>::findABel( K2, dig2, 10000 );
-  LightImplicitDigSurface LightImplDigSurf2( K2, dig2, SAdj2, bel2 );
-  MyDigitalSurface digSurf2( LightImplDigSurf2 );
-
-  for ( ConstIterator itbegin = digSurf2.begin(), itend = digSurf2.end(), it = itbegin; it != itend; ++it )
-  {
-    ////////////////////
-    board << CustomStyle( (*it).className(),
-                          new CustomColors( Color( 0, 200, 0 ),
-                                            Color( 100, 255, 100 ) ) )
-          << *it;
-  }
-
-  board.saveSVG("testUnaryOparationShapes-two_ball.svg");
-
-  return 42;
-}
+  nbok += s_union.isInside( RealPoint( -5.5, 0.0 )) ? 0 : 1;
+  nbok += s_union.isInside( RealPoint( 0.0, 0.0 )) ? 1 : 0;
+  nbok += s_union.isInside( RealPoint( 5.5, 0.0 )) ? 0 : 1;
+  nbok += s_union.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
 
 
 
+  nbok += s_intersec.isInside( RealPoint( -5.0, 0.0 )) ? 0 : 1;
+  nbok += s_intersec.isInside( RealPoint( 2.5, 0.0 )) ? 1 : 0;
+  nbok += s_intersec.isInside( RealPoint( 0.0, 2.0 )) ? 0 : 1;
+  nbok += s_intersec.isInside( RealPoint( -1.0, 0.0 )) ? 1 : 0;
 
 
-int minimalistDigitalShapesTests2D()
-{
-  //DigitalShapesUnion s_union ();
+  nbok += s_minus.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
+  nbok += s_minus.isInside( RealPoint( 2.5, 0.0 )) ? 0 : 1;
+  nbok += s_minus.isInside( RealPoint( 0.0, 2.0 )) ? 0 : 1;
+  nbok += s_minus.isInside( RealPoint( -4.0, 0.0 )) ? 1 : 0;
 
-  return 42;
+  nb = 12;
+
+
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "true == true" << std::endl;
+  trace.endBlock();
+  return  nbok == nb;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( )//int argc, char** argv )
+int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing class UnaryOperationShapes" );
+  trace.info() << "Args:";
+  for ( int i = 0; i < argc; ++i )
+      trace.info() << " " << argv[ i ];
+  trace.info() << endl;
 
-  minimalistEuclideanShapesTests2D();
-
-  minimalistDigitalShapesTests2D();
+  bool res = testUnaryOperationShapes ( argc,argv ); // && ... other tests
+  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  return true;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
