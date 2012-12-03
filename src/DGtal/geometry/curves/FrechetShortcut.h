@@ -569,21 +569,23 @@ namespace DGtal
       Coordinate y = q[1]-p[1];
       
       if(x>=0)
-	if(y>=0)
-	  {
-	    if(x>y)
-	      d=0; // 0 <= y < x  
-	    else
-	      if(x!=0)
-		d=1; // 0 <= x <= y
-	  }
-	else
-	  {
-	    if(x>=abs(y)) 
-	      d=7; // 0 < abs(y) <= x 
-	    else
-	      d=6; // 0 <= x < abs(y)
-	  }
+	{
+	  if(y>=0)
+	    {
+	      if(x>y)
+		d=0; // 0 <= y < x  
+	      else
+		if(x!=0)
+		  d=1; // 0 <= x <= y
+	    }
+	  else
+	    {
+	      if(x>=abs(y)) 
+		d=7; // 0 < abs(y) <= x 
+	      else
+		d=6; // 0 <= x < abs(y)
+	    }
+	}
       if(x<=0)
 	{
 	  if(y>0)
