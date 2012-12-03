@@ -488,14 +488,14 @@ namespace DGtal
 	  {
 	    double alpha = y/x;
 	  
-	  if(x>0 && y>=0)
-	    return atan(alpha);
-	  else
-	    if(x>0 && y<0)
-	      return atan(alpha)+2*M_PI;
+	    if(x>0 && y>=0)
+	      return atan(alpha);
 	    else
-	      if(x<0)
-		return atan(alpha)+M_PI;
+	      if(x>0 && y<0)
+		return atan(alpha)+2*M_PI;
+	      else
+		if(x<0)
+		  return atan(alpha)+M_PI;
 	  }
 	else
 	  {
@@ -504,9 +504,10 @@ namespace DGtal
 	    else
 	      return 3*M_PI_2;
 	  }
+	return -1;
       }      
-            
-
+      
+      
       
       /**
 	 Angle between two vectors
