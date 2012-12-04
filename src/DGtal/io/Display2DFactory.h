@@ -63,6 +63,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/arithmetic/LatticePolytope2D.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -318,6 +319,18 @@ static void draw(Board2D & aBoard, const DGtal::StraightLineFrom2Points<TPoint> 
     
 static void draw( DGtal::Board2D & board, const DGtal::CustomStyle & );
 static void draw( DGtal::Board2D & board, const DGtal::SetMode & );
+
+
+   /**
+      Draw method on Board for LatticePolytope2D.
+      
+      @param aBoard an instance of Board2D.
+      @param cip an instance of convex integer polygon.
+   */
+   template <typename TSpace, typename TSequence>
+   static
+   void draw( DGtal::Board2D & aBoard, 
+              const DGtal::LatticePolytope2D<TSpace, TSequence> & cip );
 
     
   }; // end of struct Display2DFactory

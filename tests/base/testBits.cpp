@@ -80,7 +80,7 @@ int main()
   std::cerr << "(" << nbok << "/" << nb << ")" << " tests." << std::endl;
 
   trace.beginBlock ( "Testing speed of loop version of indexInSetBits" );
-  srand( 0 );
+  srandom( 0 );
   unsigned int val = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
@@ -92,7 +92,7 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "Testing speed of look-up table version of indexInSetBits" );
-  srand( 0 );
+  srandom( 0 );
   unsigned int val2 = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
