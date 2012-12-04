@@ -37,23 +37,23 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::ExactPredicateLpSeparableMetric()
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::ExactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::~ExactPredicateLpSeparableMetric()
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::~ExactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::Promoted
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::exactDistanceRepresentation (const Point &aP,
-                                                             const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Promoted
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::exactDistanceRepresentation (const Point &aP,
+                                                                            const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -63,11 +63,11 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::exactDistanceRepresentation (co
   return res;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::localDistance (const Point &aP, 
-                                                                const Vector &aDir) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::localDistance (const Point &aP, 
+                                                              const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -77,21 +77,21 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::localDistance (const Point &aP,
   return std::pow( NumberTraits<Promoted>::castToDouble(res), 1.0/(double)p);
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::distance (const Point &aP,
-                                                           const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::distance (const Point &aP,
+                                                         const Point &aQ) const
 {
   return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)), 1.0/(double)p);
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::closest (const Point &origin, 
-                                                          const Point &first, 
-                                                          const Point &second) const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::closest (const Point &origin, 
+                                                        const Point &first, 
+                                                        const Point &second) const
 {
   Promoted a=NumberTraits<Promoted>::ZERO,
     b=NumberTraits<Promoted>::ZERO;
@@ -108,15 +108,15 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::closest (const Point &origin,
       return ClosestBOTH;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::Abscissa 
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::binarySearchHidden(const Abscissa &udim, 
-                                                                    const Abscissa &vdim,
-                                                                    const Promoted &nu,
-                                                                    const Promoted &nv,
-                                                                    const Abscissa &lower,
-                                                                    const Abscissa &upper) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Abscissa 
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
+                                                                  const Abscissa &vdim,
+                                                                  const Promoted &nu,
+                                                                  const Promoted &nv,
+                                                                  const Abscissa &lower,
+                                                                  const Abscissa &upper) const
 {   
   ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <=
            (nv +  BasicMathFunctions::power( static_cast<Promoted>( abs( vdim - lower)), p)));
@@ -137,15 +137,15 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::binarySearchHidden(const Abscis
       
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p , typename D, typename P>
+template <typename T, DGtal::uint32_t p ,  typename P>
 inline
 bool 
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::hiddenBy(const Point &u, 
-                                                          const Point &v,
-                                                          const Point &w, 
-                                                          const Point &startingPoint,
-                                                          const Point &endPoint,
-                                                          const typename Point::UnsignedComponent dim) const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u, 
+                                                        const Point &v,
+                                                        const Point &w, 
+                                                        const Point &startingPoint,
+                                                        const Point &endPoint,
+                                                        const typename Point::UnsignedComponent dim) const
 {
   //Interval bound for the binary search
   Abscissa lower = startingPoint[dim];
@@ -168,14 +168,14 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::hiddenBy(const Point &u,
      
 
   //Optimization if vw lies before starting
-                                          if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
-       (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
+  if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
+      (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
     {
       return true;
     }
   //Optimization if vw lies before starting   
-       if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
-       (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
+  if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
+      (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
     {
       return false;
     }
@@ -191,27 +191,27 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::hiddenBy(const Point &u,
       
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
 void
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::selfDisplay ( std::ostream & out ) const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ExactPredicateLpSeparableMetric] p="<<p;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
 bool
-DGtal::ExactPredicateLpSeparableMetric<T,p,D,P>::isValid() const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::isValid() const
 {
-    return true;
+  return true;
 }
 //------------------------------------------------------------------------------
-template <typename T, DGtal::uint32_t p, typename D, typename P>
+template <typename T, DGtal::uint32_t p,  typename P>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-                    const ExactPredicateLpSeparableMetric<T,p,D,P> & object )
+                    const ExactPredicateLpSeparableMetric<T,p,P> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -223,23 +223,23 @@ DGtal::operator<< ( std::ostream & out,
 
 
 // ----------------------- Standard services ------------------------------
-template <typename T, typename D, typename P>
+template <typename T,  typename P>
 inline
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::ExactPredicateLpSeparableMetric()
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::ExactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T, typename D, typename P>
+template <typename T,  typename P>
 inline
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::~ExactPredicateLpSeparableMetric()
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::~ExactPredicateLpSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
-template <typename T,typename D, typename P>
+template <typename T, typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::Promoted
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::exactDistanceRepresentation (const Point &aP,
-                                                             const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Promoted
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::exactDistanceRepresentation (const Point &aP,
+                                                                            const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -249,11 +249,11 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::exactDistanceRepresentation (co
   return res;
 }
 //------------------------------------------------------------------------------
-template <typename T,  typename D, typename P>
+template <typename T,   typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::localDistance (const Point &aP, 
-                                                                const Vector &aDir) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::localDistance (const Point &aP, 
+                                                              const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -263,22 +263,22 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::localDistance (const Point &aP,
   return std::pow( NumberTraits<Promoted>::castToDouble(res), 1.0/2.0);
 }
 //------------------------------------------------------------------------------
-template <typename T,  typename D, typename P>
+template <typename T,   typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::distance (const Point &aP,
-                                                           const Point &aQ) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::distance (const Point &aP,
+                                                         const Point &aQ) const
 {
   return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)),
                    1.0/2.0);
 }
 //------------------------------------------------------------------------------
-template <typename T, typename D, typename P>
+template <typename T,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::closest (const Point &origin, 
-                                                          const Point &first, 
-                                                          const Point &second) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::closest (const Point &origin, 
+                                                        const Point &first, 
+                                                        const Point &second) const
 {
   Promoted a=NumberTraits<Promoted>::ZERO,
     b=NumberTraits<Promoted>::ZERO;
@@ -295,29 +295,29 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::closest (const Point &origin,
       return ClosestBOTH;
 }
 //------------------------------------------------------------------------------
-template <typename T, typename D, typename P>
+template <typename T,  typename P>
 inline
-typename DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::Abscissa 
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::binarySearchHidden(const Abscissa &udim, 
-                                                                    const Abscissa &vdim,
-                                                                    const Promoted &nu,
-                                                                    const Promoted &nv,
-                                                                    const Abscissa &lower,
-                                                                    const Abscissa &upper) const
+typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Abscissa 
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
+                                                                  const Abscissa &vdim,
+                                                                  const Promoted &nu,
+                                                                  const Promoted &nv,
+                                                                  const Abscissa &lower,
+                                                                  const Abscissa &upper) const
 {   
   ASSERT(false && "Not Necessary for l_2");
   
 }
 //------------------------------------------------------------------------------
-template <typename T,  typename D, typename P>
+template <typename T,   typename P>
 inline
 bool 
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::hiddenBy(const Point &u, 
-                                                          const Point &v,
-                                                          const Point &w, 
-                                                          const Point &startingPoint,
-                                                          const Point &endPoint,
-                                                          const typename Point::UnsignedComponent dim) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::hiddenBy(const Point &u, 
+                                                        const Point &v,
+                                                        const Point &w, 
+                                                        const Point &startingPoint,
+                                                        const Point &endPoint,
+                                                        const typename Point::UnsignedComponent dim) const
 {
   Promoted a,b, c;
 
@@ -338,18 +338,18 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::hiddenBy(const Point &u,
   return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ;       
 }
 //------------------------------------------------------------------------------
-template <typename T,  typename D, typename P>
+template <typename T,   typename P>
 inline
 void
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::selfDisplay ( std::ostream & out ) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::selfDisplay ( std::ostream & out ) const
 {
   out << "[ExactPredicateLpSeparableMetric] p=2";
 }
 //------------------------------------------------------------------------------
-template <typename T, typename D, typename P>
+template <typename T,  typename P>
 inline
 bool
-DGtal::ExactPredicateLpSeparableMetric<T,2,D,P>::isValid() const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::isValid() const
 {
-    return true;
+  return true;
 }

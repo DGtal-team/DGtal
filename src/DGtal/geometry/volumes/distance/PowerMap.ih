@@ -44,17 +44,17 @@
 /**
  * Destructor.
  */
-template < typename W, typename Sep>
+template < typename W, typename Sep, typename Im>
 inline
-DGtal::PowerMap< W,Sep>::~PowerMap()
+DGtal::PowerMap< W,Sep,Im>::~PowerMap()
 {
 } 
 
 
-template < typename W, typename Sep>
+template < typename W, typename Sep, typename Im>
 inline
-typename DGtal::PowerMap<W, Sep>::Self &  
-DGtal::PowerMap<W, Sep>::operator=(const Self &aOtherPowerMap ) 
+typename DGtal::PowerMap<W, Sep,Im>::Self &  
+DGtal::PowerMap<W, Sep,Im>::operator=(const Self &aOtherPowerMap ) 
 {
   if (this != &aOtherPowerMap)
     { 
@@ -69,10 +69,10 @@ DGtal::PowerMap<W, Sep>::operator=(const Self &aOtherPowerMap )
   return *this;
 }
 
-template < typename W, typename Sep>
+template < typename W, typename Sep, typename Im>
 inline
 void
-DGtal::PowerMap<W, Sep>::compute( )
+DGtal::PowerMap<W, Sep,Im>::compute( )
 {
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
@@ -96,10 +96,10 @@ DGtal::PowerMap<W, Sep>::compute( )
     computeOtherSteps ( dim );
 }
 
-template < typename W, typename Sep>
+template < typename W, typename Sep, typename Im>
 inline
 void
-DGtal::PowerMap<W, Sep>::computeOtherSteps ( const Dimension dim ) const
+DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 {
   std::string title = "Powermap dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
@@ -145,10 +145,10 @@ DGtal::PowerMap<W, Sep>::computeOtherSteps ( const Dimension dim ) const
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
-template <typename W, typename Sep>
+template <typename W, typename Sep, typename Im>
 void
-DGtal::PowerMap<W,Sep>::computeOtherStep1D ( const Point &startingPoint,
-                                             const Size dim) const
+DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
+                                                const Size dim) const
 {
   Point point = startingPoint;
   Point endpoint = startingPoint;
@@ -227,11 +227,11 @@ DGtal::PowerMap<W,Sep>::computeOtherStep1D ( const Point &startingPoint,
 /**
  * Constructor.
  */
-template <typename W,typename TSep>
+template <typename W,typename TSep,typename Im>
 inline
-DGtal::PowerMap<W,TSep>::PowerMap( const Domain *aDomain,
-                                   const WeightImage *aWeightImage,
-                                   const PowerSeparableMetric *aMetric):
+DGtal::PowerMap<W,TSep,Im>::PowerMap( const Domain *aDomain,
+                                      const WeightImage *aWeightImage,
+                                      const PowerSeparableMetric *aMetric):
   myDomainPtr(aDomain), myWeightImagePtr(aWeightImage),
   myMetricPtr(aMetric)
 {
@@ -239,10 +239,10 @@ DGtal::PowerMap<W,TSep>::PowerMap( const Domain *aDomain,
   compute();
 }
 
-template <typename W,typename TSep>
+template <typename W,typename TSep,typename Im>
 inline
 void
-DGtal::PowerMap<W,TSep>::selfDisplay ( std::ostream & out ) const
+DGtal::PowerMap<W,TSep,Im>::selfDisplay ( std::ostream & out ) const
 {
   out << "[PowerMap] power separable metric=" << *myMetricPtr ; 
 }
@@ -251,11 +251,11 @@ DGtal::PowerMap<W,TSep>::selfDisplay ( std::ostream & out ) const
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
 
-template <typename W,typename TSep>
+template <typename W,typename TSep,typename Im>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const PowerMap<W,TSep> & object )
+		    const PowerMap<W,TSep,Im> & object )
 {
   object.selfDisplay( out );
   return out;

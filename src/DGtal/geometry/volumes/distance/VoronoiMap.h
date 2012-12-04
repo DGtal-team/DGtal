@@ -107,10 +107,18 @@ namespace DGtal
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of CPointPredicate)
    * @tparam TSeparableMetric a model of CSeparableMetric
+   * @tparam TImageContainer any model of CImage to store the
+   * VoronoiMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector.
    */
   template < typename TSpace,
              typename TPointPredicate,
-             typename TSeparableMetric>
+             typename TSeparableMetric,
+             typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<TSpace>,
+                                       typename TSpace::Vector>
+             >
   class VoronoiMap
   {
 
@@ -121,7 +129,15 @@ namespace DGtal
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
-					  typename TPointPredicate::Point >::value )); 
+                          typename TPointPredicate::Point >::value )); 
+ 
+    //ImageContainer::Domain::Space must match with TSpace
+    BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
+                          typename TImageContainer::Domain::Space >::value )); 
+   
+    //ImageContainer value type must be  TSpace::Vector
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Vector,
+                          typename TImageContainer::Value >::value )); 
     
     ///Copy of the space type.
     typedef TSpace Space;
@@ -130,7 +146,7 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
 
     ///Definition of the underlying domain type.
-    typedef HyperRectDomain<Space> Domain;
+    typedef typename TImageContainer::Domain Domain;
 
     ///Definition of the separable metric type
     typedef TSeparableMetric SeparableMetric;
@@ -145,8 +161,9 @@ namespace DGtal
     typedef typename Space::Point::Coordinate Abscissa;
  
     ///Type of resulting image
-    typedef ImageContainerBySTLVector<  Domain,
-                                        Vector > OutputImage;
+    //typedef ImageContainerBySTLVector<  Domain,
+    //                                    Vector > OutputImage;
+    typedef TImageContainer OutputImage;
     
     ///Definition of the image value type.
     typedef Vector Value;
@@ -318,9 +335,9 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename S, typename P,
-            typename Sep>
+            typename Sep, typename TI>
   std::ostream&
-  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep> & object );
+  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep,TI> & object );
 
 
 } // namespace DGtal
