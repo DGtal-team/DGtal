@@ -44,17 +44,17 @@
 /**
  * Destructor.
  */
-template <typename S, typename P,typename TSep>
+template <typename S, typename P,typename TSep, typename TImage>
 inline
-DGtal::VoronoiMap<S, P,TSep>::~VoronoiMap()
+DGtal::VoronoiMap<S, P,TSep, TImage>::~VoronoiMap()
 {
 } 
 
 
-template <typename S, typename P, typename TSep>
+template <typename S, typename P, typename TSep, typename TImage>
 inline
-typename DGtal::VoronoiMap<S,P, TSep>::Self &  
-DGtal::VoronoiMap<S,P, TSep>::operator=(const Self &aOtherVoronoiMap ) 
+typename DGtal::VoronoiMap<S,P, TSep, TImage>::Self &  
+DGtal::VoronoiMap<S,P, TSep, TImage>::operator=(const Self &aOtherVoronoiMap ) 
 {
   if (this != &aOtherVoronoiMap)
     { 
@@ -69,10 +69,10 @@ DGtal::VoronoiMap<S,P, TSep>::operator=(const Self &aOtherVoronoiMap )
   return *this;
 }
 
-template <typename S, typename P, typename TSep>
+template <typename S, typename P, typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep>::compute( )
+DGtal::VoronoiMap<S,P, TSep, TImage>::compute( )
 {
   //We copy the image extent
   myLowerBoundCopy = myDomainPtr->lowerBound();
@@ -95,10 +95,10 @@ DGtal::VoronoiMap<S,P, TSep>::compute( )
     computeOtherSteps ( dim );
 }
 
-template <typename S, typename P,typename TSep>
+template <typename S, typename P,typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep>::computeOtherSteps ( const Dimension dim ) const
+DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
   std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
   trace.beginBlock ( title );
@@ -143,9 +143,9 @@ DGtal::VoronoiMap<S,P, TSep>::computeOtherSteps ( const Dimension dim ) const
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
-template <typename S,typename P, typename TSep>
+template <typename S,typename P, typename TSep, typename TImage>
 void
-DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
+DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingPoint,
                                                   const Size dim) const
 {
   Point point = startingPoint;
@@ -222,9 +222,9 @@ DGtal::VoronoiMap<S,P,TSep>::computeOtherStep1D ( const Point &startingPoint,
 /**
  * Constructor.
  */
-template <typename S,typename P,typename TSep>
+template <typename S,typename P,typename TSep, typename TImage>
 inline
-DGtal::VoronoiMap<S,P, TSep>::VoronoiMap( const Domain *aDomain,
+DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( const Domain *aDomain,
                                           const PointPredicate * aPredicate,
                                           const SeparableMetric * aMetric):
   myDomainPtr(aDomain), myPointPredicatePtr(aPredicate),
@@ -234,10 +234,10 @@ DGtal::VoronoiMap<S,P, TSep>::VoronoiMap( const Domain *aDomain,
   compute();
 }
 
-template <typename S,typename P,typename TSep>
+template <typename S,typename P,typename TSep, typename TImage>
 inline
 void
-DGtal::VoronoiMap<S,P, TSep>::selfDisplay ( std::ostream & out ) const
+DGtal::VoronoiMap<S,P, TSep, TImage>::selfDisplay ( std::ostream & out ) const
 {
   out << "[VoronoiMap] separable metric=" << *myMetricPtr ; 
 }
@@ -246,11 +246,11 @@ DGtal::VoronoiMap<S,P, TSep>::selfDisplay ( std::ostream & out ) const
 // //                                                                           //
 // ///////////////////////////////////////////////////////////////////////////////
 
-template <typename S,typename P,typename TSep>
+template <typename S,typename P,typename TSep, typename TImage>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const VoronoiMap<S,P,TSep> & object )
+		    const VoronoiMap<S,P,TSep, TImage> & object )
 {
   object.selfDisplay( out );
   return out;

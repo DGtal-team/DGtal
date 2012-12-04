@@ -105,7 +105,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSignedInteger<Promoted> ));
     
     ///Type for distance values
-    typedef Value double;
+    typedef double Value;
 
     /**
      * Constructor.
@@ -270,8 +270,8 @@ namespace DGtal
 
 
  template <typename TSpace,  
-           typename TValue, typename TPromoted>
- class ExactPredicateLpSeparableMetric<TSpace, 2, TValue, TPromoted>
+           typename TPromoted>
+ class ExactPredicateLpSeparableMetric<TSpace, 2, TPromoted>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -289,9 +289,7 @@ namespace DGtal
     typedef TPromoted Promoted;
     
     ///Type for distance values
-    typedef TValue Value;
-    BOOST_CONCEPT_ASSERT(( CQuantity<TValue> ));
-    
+    typedef double Value;    
     
     /**
      * Constructor.
@@ -455,9 +453,9 @@ namespace DGtal
    * @param object the object of class 'ExactPredicateLpSeparableMetric' to write.
    * @return the output stream after the writing.
    */
-  template <typename T, DGtal::uint32_t p, typename D, typename P>
+  template <typename T, DGtal::uint32_t p, typename P>
   std::ostream&
-  operator<< ( std::ostream & out, const ExactPredicateLpSeparableMetric<T,p,D,P> & object );
+  operator<< ( std::ostream & out, const ExactPredicateLpSeparableMetric<T,p,P> & object );
 
 } // namespace DGtal
 

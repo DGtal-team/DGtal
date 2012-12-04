@@ -90,9 +90,16 @@ namespace DGtal
    *
    * @tparam TWeightImage model of CConstImage
    * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
-   */
+   * @tparam TImageContainer any model of CImage to store the
+   * PowerMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector.
+    */
   template < typename TWeightImage,
-             typename TPowerSeparableMetric>
+             typename TPowerSeparableMetric,
+             typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
+                                       typename TWeightImage::Domain::Space::Vector> >
   class PowerMap
   {
 
@@ -100,10 +107,6 @@ namespace DGtal
 
     BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
     BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<TPowerSeparableMetric> ));
-    
-    ///Both WeightImage value and PowerSeparableMetric weight should match
-    //BOOST_STATIC_ASSERT ((boost::is_same< typename TPSeparableMetric::Weight,
-    //                      typename TWeightImage::Value >::value )); 
     
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
@@ -115,15 +118,23 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Space::Point::Coordinate Abscissa;
 
+    //ImageContainer::Domain::Space must match with TSpace
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TWeightImage::Domain::Space,
+                          typename TImageContainer::Domain::Space >::value )); 
+    
+    //ImageContainer value type must be  TSpace::Vector
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TWeightImage::Domain::Space::Vector,
+                          typename TImageContainer::Value >::value )); 
+    
+   
     ///Definition of the underlying domain type.
-    typedef HyperRectDomain<Space> Domain;
+    typedef typename TImageContainer::Domain Domain;
    
     ///We construct the type associated to the separable metric @todo
-    typedef TPSeparableMetric PowerSeparableMetric;
+    typedef TPowerSeparableMetric PowerSeparableMetric;
     
     ///Type of resulting image
-    typedef ImageContainerBySTLVector<  Domain,
-                                        Vector > OutputImage;
+    typedef TImageContainer OutputImage;
     
     ///Definition of the image model value type.
     typedef Vector Value;
@@ -131,7 +142,7 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
   
     ///Self type
-    typedef PowerMap<TWeightImage, TPSeparableMetric> Self;
+    typedef PowerMap<TWeightImage, TPowerSeparableMetric> Self;
     
 
     /**
@@ -291,9 +302,10 @@ namespace DGtal
    * @return the output stream after the writing.
    */
   template <typename W,
-            typename Sep>
+            typename Sep,
+            typename Image>
   std::ostream&
-  operator<< ( std::ostream & out, const PowerMap<W,Sep> & object );
+  operator<< ( std::ostream & out, const PowerMap<W,Sep,Image> & object );
 
 } // namespace DGtal
 
