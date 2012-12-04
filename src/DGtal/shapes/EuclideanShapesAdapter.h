@@ -398,8 +398,12 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeA> ));
+
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeA> ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeA> ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeB> ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeB> ));
+
     typedef typename ShapeA::Space Space;
     typedef typename Space::Point Point;
     typedef typename Space::RealPoint RealPoint;
