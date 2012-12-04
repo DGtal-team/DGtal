@@ -18,6 +18,7 @@ SET(DGTAL_TESTS_SRC
    testLabelledMap
    testLabelledMap-benchmark
    testMultiMap-benchmark
+   testOwningOrAliasingPtr
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
