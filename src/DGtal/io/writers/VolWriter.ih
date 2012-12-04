@@ -39,56 +39,52 @@
 
 
 namespace DGtal {
-template<typename I,typename C>
-bool
-VolWriter<I,C>::exportVol(const std::string & filename, const I & aImage,
-        const Value & minV, const Value & maxV) throw(DGtal::IOException)
-{
- DGtal::IOException dgtalio;
-  
- 
-  ofstream out;
-  typename I::Domain::Vector ext = aImage.extent();
-  typename I::Domain domain = aImage.domain();
-  typename I::Value val;
-  C colormap(minV,maxV);
-  Color col;
-  
-  try
-    {
-      out.open(filename.c_str());
-
-      //Vol format
-      out << "X: "<< ext[0]<<endl;
-      out << "Y: "<< ext[1]<<endl;
-      out << "Z: "<< ext[2]<<endl;
-      out << "Voxel-Size: 1"<<endl;
-      out << "Alpha-Color: 0"<<endl;
-      out << "Voxel-Endian: 0"<<endl;
-      out << "Int-Endian: 0123"<<endl;
-      out << "Version: 2"<<endl;
-      out << "."<<endl;
-
-      //We scan the domain instead of the image because we cannot
-      //trust the image container Iterator
-      for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
-    it!=itend;
-    ++it)
+  template<typename I,typename F>
+  bool
+  VolWriter<I,F>::exportVol(const std::string & filename, const I & aImage,
+			    const Functor & aFunctor) throw(DGtal::IOException)
   {
-    val = aImage( (*it) );
-    col = colormap( val );
-    out.put((unsigned char) (((int)col.red()+(int)col.green() + (int)col.blue())/3));
-  }
+    DGtal::IOException dgtalio;
   
-      out.close(); 
+    ofstream out;
+    typename I::Domain::Vector ext = aImage.extent();
+    typename I::Domain domain = aImage.domain();
+    typename I::Value val;
+    
+    try
+      {
+	out.open(filename.c_str());
 
-    }
-  catch( ... )
-    {
-      std::cout << "Vol writer IO error on export " << filename << endl;
-      throw dgtalio;
-    }
-  return true;
-}
+	//Vol format
+	out << "X: "<< ext[0]<<endl;
+	out << "Y: "<< ext[1]<<endl;
+	out << "Z: "<< ext[2]<<endl;
+	out << "Voxel-Size: 1"<<endl;
+	out << "Alpha-Color: 0"<<endl;
+	out << "Voxel-Endian: 0"<<endl;
+	out << "Int-Endian: 0123"<<endl;
+	out << "Version: 2"<<endl;
+	out << "."<<endl;
+	
+	//We scan the domain instead of the image because we cannot
+	//trust the image container Iterator
+	for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
+	    it!=itend;
+	    ++it)
+	  {
+	    val = aImage( (*it) );
+	    out.put(aFunctor(val));
+	  }
+	
+	out.close(); 
+      
+      }
+    catch( ... )
+      {
+	std::cout << "Vol writer IO error on export " << filename << endl;
+	throw dgtalio;
+      }
+    return true;
+  }
 
 }//namespace

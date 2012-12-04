@@ -172,6 +172,9 @@ DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::getReverse() const {
 } 
 
 
+
+
+
 /**
  * Equality operator.
  * @param other the object to compare with.

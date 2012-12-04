@@ -36,6 +36,8 @@
 #define UNUSED_ARGUMENT(x) (void)x
 #endif
 
+
+
 namespace DGtal
 {
 
@@ -220,8 +222,29 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
+  // GeometricalDCA
+  
 
-  //GeometricalDCA
+  //FrechetShortcut
+  /**
+   * Default drawing style for FrechetShortcut.
+   */
+  struct DefaultDrawStyle_FrechetShortcut : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the FrechetShortcut on a board
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(1.5);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  
+  //FrechetShortcut
 
   // GridCurve
   // we use friend because of inner classes
@@ -519,6 +542,18 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstItera
   return new DefaultDrawStyle_GeometricalDCA; 
 }
 // GeometricalDCA
+
+// // FrechetShortcut
+template <typename TIterator, typename TInteger>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FrechetShortcut<TIterator,TInteger> & /*f*/, std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DefaultDrawStyle_FrechetShortcut; 
+}
+// // FrechetShortcut
+
+
 
 // GridCurve
 template <typename TKSpace>

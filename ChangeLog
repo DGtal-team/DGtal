@@ -1,19 +1,22 @@
-=== DGtal 0.6.devel ===
+=== DGtal 0.6 ===
+ 
+ *Arithmetic Package*
+    - new class for representing lattice polytopes in 2D (with cut
+      operations)
+    - bugfix in LighterSternBrocot::Fraction
 
-* package Arithmetic
+ *Image Package* 
+    - Update on image writers (no colormap required for scalar only writers).
+      Documentation updated.
 
-	- new class for representing lattice polytopes in 2D (with cut
-	operations)
-	- bugfix in LighterSternBrocot::Fraction
-	- documentation update.
+ *Geometry Package*
+    - new primitives for digital plane recognition. Naive planes, and
+      more generally planes with arbitrary axis-width can be detected
+      and recognized incrementally. Based on a COBA algorithm
+      implementation, which uses 2D lattice polytopes.
+    - Fréchet segment computer added to compute bounded simplifications of
+      digital curves for instance.
 
-* package Geometry
-
-	- new primitives for digital plane recognition. Naive planes, and
-	more generally planes with arbitrary axis-width can be detected
-	and recognized incrementally. Based on a COBA algorithm
-	implementation, which uses 2D lattice polytopes.
-	- documentation update.
 
 === DGtal 0.5.1 ===
 Posted on June, 6th, 2012 by David Coeurjolly
