@@ -38,6 +38,7 @@
 #include "DGtal/arithmetic/CPositiveIrreducibleFraction.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/LighterSternBrocot.h"
+#include "DGtal/arithmetic/LightSternBrocot.h"
 #include "DGtal/arithmetic/Pattern.h"
 #include "DGtal/arithmetic/StandardDSLQ0.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
@@ -802,6 +803,64 @@ bool testContinuedFractions()
   return nbok == nb;
 }
 
+template <typename LSB>
+bool 
+testTrivial( const string & lsb )
+{
+  typedef typename LSB::Fraction Fraction;
+  typedef Pattern<Fraction> Pattern;
+
+  std::cerr << "SB  = " << lsb << std::endl;
+  {
+    Pattern pat( 2, 3 );
+    std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
+              << std::endl;
+    Pattern spat = pat.previousPattern();
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+              << std::endl;
+    Pattern sspat = spat.previousPattern();
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+              << std::endl;
+  }
+  {
+    Pattern pat( 3, 2 );
+    std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
+              << std::endl;
+    Pattern spat = pat.previousPattern();
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+              << std::endl;
+    Pattern sspat = spat.previousPattern();
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+              << std::endl;
+  }
+  return true;
+}
+
+/**
+   Bug report of I. Sivignon.
+*/
+template <typename SB>
+bool 
+testAncestors()
+{
+  typedef typename SB::Fraction Fraction; 
+  typedef typename Fraction::Integer Integer; 
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef typename DSL::Point Point;
+
+  // Instanciation d'un DSL
+  DSL D(1077,1495,6081);
+  
+  // Definition du sous-segment [AB] et calcul des caractéristiques
+  Point A(3,-3);
+  Point B(4,-2);
+  ASSERT( D( A ) && "Point A belongs to D." );
+  ASSERT( D( B ) && "Point A belongs to D." );
+  DSL D1 = D.reversedSmartDSS(A,B); // may raise an assert.
+  std::cerr << D1 << std::endl;
+  return D1.slope() == Fraction( 1, 1 );
+}
+  
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -809,17 +868,24 @@ int main( int , char** )
 {
   typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
                               DGtal::StdMapRebinder > SB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> SB2;
+  typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB3;
   typedef SB::Fraction Fraction;
   typedef Fraction::ConstIterator ConstIterator;
 
   BOOST_CONCEPT_ASSERT(( CPositiveIrreducibleFraction< Fraction > ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
+  
+  testTrivial<SB>( "LrSB" );
+  testTrivial<SB2>( "LSB" );
+  testTrivial<SB3>( "SB" );
 
   trace.beginBlock ( "Testing class LighterSternBrocot" );
   bool res = testLighterSternBrocot()
     && testPattern<SB>()
     && testSubStandardDSLQ0<Fraction>()
-    && testContinuedFractions<SB>();
+    && testContinuedFractions<SB>()
+    && testAncestors<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
