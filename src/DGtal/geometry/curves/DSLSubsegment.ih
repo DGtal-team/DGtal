@@ -33,7 +33,7 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
-
+//#define DEBUG
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -281,43 +281,68 @@ typename DGtal::DSLSubsegment<TInteger>::Integer DGtal::DSLSubsegment<TInteger>:
   
   *flagRayFound = false;
   
+#ifdef DEBUG
+  trace.info() << fp << " " << fq << " " << gp << " " << gq << std::endl;
+#endif  
+
+
   while(((double) lup/2>=1 || (double) ldown/2 >=1) && !*flagRayFound)
     {
       myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
       myPosition = positionWrtRay(myRay,a,b,mu);
        
+#ifdef DEBUG 
+      trace.info() << r << " " << myRay.x << " " << myRay.y << std::endl;
+#endif
+
       if(myPosition == ONTO)
 	 *flagRayFound = true;
-       else
-	 if(myPosition == ABOVE)
-	   {
-	     r = r + (int) floor((double) lup/2);
-	     ldown = (int) floor((double) lup/2);
-	     lup = (int) ceil((double) lup/2);
-	   }
-	 else
-	   {
-	     r = r - (int) ceil((double) ldown/2);
-	     lup = (int) ceil((double) ldown/2);
-	     ldown = (int) floor((double) ldown/2);
-	   }       
-     }
-   
+      else
+	if(myPosition == ABOVE)
+	  {
+	    r = r + (int) floor((double) lup/2);
+	    ldown = (int) floor((double) lup/2);
+	    lup = (int) ceil((double) lup/2);
+	  }
+	else
+	  {
+	    r = r - (int) ceil((double) ldown/2);
+	    lup = (int) ceil((double) ldown/2);
+	    ldown = (int) floor((double) ldown/2);
+	  }       
+      
+      
+#ifdef DEBUG 
+      trace.info() << r << " " << lup << " " << ldown << std::endl;
+#endif    
+    }
+  
+  
    if(!*flagRayFound)
      {
        myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
        myPosition = positionWrtRay(myRay,a,b,mu);
        
-       if(myPosition == ABOVE)
-	 r++;
-       
-       if(slope(fp, fq,r,a,b,mu)>rayOfHighestSlope(fp, fq,r,(smartRayOfSmallestSlope(fp,fq,gp,gq,r)).x,n).x)
+       if(myPosition != ONTO)
 	 {
-	   r--;
-	   *flagRayFound = true;
+	   if(myPosition == ABOVE)
+	     r++;
+	   
+	   if(slope(fp, fq,r,a,b,mu)>rayOfHighestSlope(fp, fq,r,(smartRayOfSmallestSlope(fp,fq,gp,gq,r)).x,n).x)
+	     {
+	       r--;
+	       *flagRayFound = true;
+	     }
 	 }
+       else
+	 *flagRayFound = true;
        
      }
+   
+#ifdef DEBUG
+   trace.info() << r << std::endl;
+#endif
+   
    return r;
  }
 
@@ -561,18 +586,40 @@ inline
 DGtal::DSLSubsegment<TInteger>::DSLSubsegment(Integer a, Integer b, Integer mu, Point A, Point B)
 {
   Integer n = B[0] - A[0];
-  // A becomes the origin
-  mu += a*A[0] - A[1]*b;
   
-  if(n >= b)
+ 
+  
+  if(n >= 2*b)
     {
+      aa = a;
+      bb = b;
+      Nu = mu;
       //std::cout << "DSS parameters are DSL parameters." << std::endl;
       //std::cout << " " << a << " " << b << " " << mu;
     }
   else
     {
+      // A becomes the origin
+      mu += a*A[0] - A[1]*b;
       Point inf, sup;
-      convexHullApprox(Vector(b,a),n,&inf,&sup);
+      Integer fp,fq,gp,gq;
+      
+      if(b>n)
+	{
+	  convexHullApprox(Vector(b,a),n,&inf,&sup);
+	  fp = inf[1];
+	  fq = inf[0];
+	  gp = sup[1];
+	  gq = sup[0];    
+	} 
+      else
+	{
+	  Point next = nextTermInFareySeriesEuclid(a,b,n);
+	  fp = a;
+	  fq = b;
+	  gp = next[1];
+	  gq = next[0];
+	}	
       
       
       bool found;
@@ -586,11 +633,19 @@ DGtal::DSLSubsegment<TInteger>::DSLSubsegment(Integer a, Integer b, Integer mu, 
       // (inf = p/q, h/q) but below all the rays passing through (p/q,
       // h+1/q)  ==> found is set to true
       
-      Integer fp = inf[1];
-      Integer fq = inf[0];
-      Integer gp = sup[1];
-      Integer gq = sup[0];
+      // Integer fp = inf[1];
+      // Integer fq = inf[0];
+      // Integer gp = sup[1];
+      // Integer gq = sup[0];
       
+      // if(fp == gp && fq == gq)
+      // 	{
+      // 	  Point next = nextTermInFareySeriesEuclid(fp,fq,n);
+      // 	  gp = next[1];
+      // 	  gq = next[0];
+      // 	}	
+
+
       Integer h = smartFirstDichotomy(fp,fq,gp,gq,a,b,mu,n,&found);
       
       RayC r;
@@ -603,7 +658,12 @@ DGtal::DSLSubsegment<TInteger>::DSLSubsegment(Integer a, Integer b, Integer mu, 
       
       Integer resAlphaP, resAlphaQ, resBetaP;
       findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-      //std::cout << "Result before translation: (" << resAlphaP << "/" << resAlphaQ << "," << resBetaP << ")" << std::endl;
+      
+      aa = resAlphaP;
+      bb = resAlphaQ;
+      Nu = resBetaP - aa*A[0] + bb*A[1];
+      
+  //std::cout << "Result before translation: (" << resAlphaP << "/" << resAlphaQ << "," << resBetaP << ")" << std::endl;
       //shortFindSolution(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
       //std::cout << "Result before translation: (" << resAlphaP << "/" << resAlphaQ << "," << resBetaP << ")" << std::endl;
       //std::cout << "Result before translation: (" << resAlpha.p() << "/" << resAlpha.q() << "," << resBetaP << ")" << std::endl;
