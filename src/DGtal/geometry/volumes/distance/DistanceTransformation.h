@@ -64,23 +64,21 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time distance
    * transformation for separable metrics.
    *  
-   * Given a point predicate and a domain, the compute() method
-   * returns for each point of the domain, the closest distance to a
-   * point in the domain for which the predicate is false. The result
-   * is given as a map point<->values implemented as an image
-   * model OutputImage.
+   * This class is a wrapper around a Voronoi map construction (see
+   * VoronoiMap). More precisely, at a point p, since the VoronoiMap
+   * at p returns a vector to the closest site, this class adapts the
+   * operator() in order to returns the distance to the closest site
+   * for the considered metric.
    *
-   * The point predicate could be:
-   *  - the result of the thresholding of an image (for example using SimpleThresholdForegroundPredicate)
-   *  - a predicate constructed from a digital set (for example using SetPredicate)
-   *  - ...
+   * Please refer to VoronoiMap documentation for details on the
+   * computational cost and parameter description.
+   *
+   * This class is a model of CConstImage.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of CPointPredicate)
-   * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
+   * @tparam TSeparableMetric a model of CSeparableMetric
    *
    * @see distancetransform2D.cpp
    * @see distancetransform3D.cpp

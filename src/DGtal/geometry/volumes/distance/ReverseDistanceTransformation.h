@@ -63,10 +63,20 @@ namespace DGtal
    * Description of template class 'ReverseDistanceTransformation' <p>
    * \brief Aim: Implementation of the linear in time reverse distance
    * transformation for separable metrics.
-   *  
+   * 
+   * This class is a wrapper around a power map construction (see
+   * PowerMap). More precisely, at a point p, since the PowerMap at p
+   * returns a vector to the closest weighted site, this class adapts
+   * the operator() in order to returns the power distance to the
+   * closest weighted site for the considered metric.
    *
-   * @todo documentation
+   * Please refer to PowerMap documentation for details on the
+   * computational cost and parameter description.
    *
+   * This class is a model of CConstImage.
+   *
+   * @tparam TWeightImage model of CConstImage
+   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
    */
   template < typename TWeightImage,
              typename TPSeparableMetric>
