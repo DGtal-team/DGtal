@@ -55,7 +55,31 @@ namespace DGtal
 // template class ExactPredicateLpWeightedSeparableMetric
 /**
  * Description of template class 'ExactPredicateLpWeightedSeparableMetric' <p>
-   * \brief Aim:
+  * \brief Aim: implements weighted separable l_p metrics with  exact
+   * predicates.
+   *
+   * Given a template parameter p, the class implement classical l_p
+   * metric as a model of CPowerSeparableMetric. Hence, given two points
+   * @f$ x=(x_0...x_{n-1})@f$, @f$ y=(y_0...y_{n-1})@f$ in the given
+   * digital space (see below) and a weight @f$ w_y@f$  we define a
+   * power metric such that:
+   *
+   * @f$ powerDistance(x,y,w_y)= \sum_{i=0}^{n-1} |x_i-y_i|^p - w_y @f$
+   *
+   * This class is said to be exact in the sense that the power @a p
+   * is computed without approximation (exponentiation by squaring in
+   * @f$ O(log(p))@f$ per computation, see
+   * BasicMathFunctions::power). As a consequence, @a hiddenByWeighted
+   * and @a closestWeighted methods are error free if the capacity of the
+   * template type @a TPromoted allows to store sums of @f$
+   * |x_i-y_i|^p@f$ quantities.
+   *
+   * @tparam TSpace the model of CSpace on which the metric is
+   * defined.
+   * @tparam p the exponent of the metric (static DGtal::uint32_t)
+   * @taparm TPromoted model of CSignedInteger used to store power @a
+   * p sums (default: DGtal::int64_t)
+   *
    */
   template <typename TSpace, DGtal::uint32_t p,  
             typename TPromoted=DGtal::int64_t>
@@ -158,6 +182,10 @@ namespace DGtal
      * voronoi cells of a and c @e hide the voronoi cell of c on the
      * straight line.
      *
+     * This method is in @f$ O(log(n))@f$ if @a n is the size of the
+     * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
+     * @f$ O(1)@f$. 
+     
      * @pre both voronoi cells associated with @a a and @a b must
      * intersect the straight line. 
      * 

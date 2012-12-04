@@ -55,10 +55,34 @@ namespace DGtal
 // template class ExactPredicateLpSeparableMetric
 /**
  * Description of template class 'ExactPredicateLpSeparableMetric' <p>
-   * \brief Aim:
+   * \brief Aim: implements separable l_p metrics with  exact
+   * predicates.
+   *
+   * Given a template parameter p, the class implement classical l_p
+   * metric as a model of CSeparableMetric. Hence, given two points
+   * @f$ x=(x_0...x_{n-1})@f$, @f$ y=(y_0...y_{n-1})@f$ in the given
+   * digital space (see below), we define a metric such that:
+   *
+   * @f$ distance(x,y)= \left(
+   * \sum_{i=0}^{n-1} |x_i-y_i|^p\right)^{1/p}@f$
+   *
+   * This class is said to be exact in the sense that the power @a p
+   * is computed without approximation (exponentiation by squaring in
+   * @f$ O(log(p))@f$ per computation, see
+   * BasicMathFunctions::power). As a consequence, @a hiddenBy and 
+   * @a closest methods are error free if the capacity of the template
+   * type @a TPromoted allows to store sums of @f$ |x_i-y_i|^p@f$
+   * quantities.
+   *
+   * @tparam TSpace the model of CSpace on which the metric is
+   * defined.
+   * @tparam p the exponent of the metric (static DGtal::uint32_t)
+   * @taparm TPromoted model of CSignedInteger used to store power @a
+   * p sums (default: DGtal::int64_t)
+   *
    */
   template <typename TSpace, DGtal::uint32_t p,  
-            typename TValue=double, typename TPromoted=DGtal::int64_t>
+            typename TPromoted=DGtal::int64_t>
   class ExactPredicateLpSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
@@ -81,8 +105,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( CSignedInteger<Promoted> ));
     
     ///Type for distance values
-    typedef TValue Value;
-    BOOST_CONCEPT_ASSERT(( CQuantity<TValue> ));
+    typedef Value double;
 
     /**
      * Constructor.
@@ -156,6 +179,10 @@ namespace DGtal
      * [startingPoint,endPoint] along dimension dim, we detect if the
      * voronoi cells of a and c @e hide the voronoi cell of c on the
      * straight line.
+     *
+     * This method is in @f$ O(log(n))@f$ if @a n is the size of the
+     * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
+     * @f$ O(1)@f$. 
      *
      * @pre both voronoi cells associated with @a a and @a b must
      * intersect the straight line. 
