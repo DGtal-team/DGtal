@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file VolWriter.h
+ * @file PPMWriter.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/07/22
  *
- * Header file for module VolWriter.cpp
+ * Header file for module PPMWriter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(VolWriter_RECURSES)
-#error Recursive header files inclusion detected in VolWriter.h
-#else // defined(VolWriter_RECURSES)
+#if defined(PPMWriter_RECURSES)
+#error Recursive header files inclusion detected in PPMWriter.h
+#else // defined(PPMWriter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define VolWriter_RECURSES
+#define PPMWriter_RECURSES
 
-#if !defined VolWriter_h
+#if !defined PPMWriter_h
 /** Prevents repeated inclusion of headers. */
-#define VolWriter_h
+#define PPMWriter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -45,6 +45,7 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -53,49 +54,70 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class VolWriter
+  // template class PPMWriter
   /**
-   * Description of template struct 'VolWriter' <p>
-   * \brief Aim: Export a 3D Image using the Vol formats.
+   * Description of template struct 'PPMWriter' <p>
+   * \brief Aim: Export a 2D and a 3D Image using the Netpbm PPM formats (ASCII mode).
+   *  - PPM: grayscale
+   *  - PPM3D: 3D variant of PPM
    *
-   * A functor can be specified to convert image values to Vol values
-   * (unsigned char).
+   * A functor can be specified to convert image values to DGtal::Color values.
    *
    * @tparam TImage the Image type.
    * @tparam TFunctor the type of functor used in the export.
+   *
+   * @see testPNMRawWriter.cpp
    */
-  template <typename TImage, typename TFunctor = DefaultFunctor>
-  struct VolWriter
+  template <typename TImage, typename TFunctor>
+  struct PPMWriter
   {
     // ----------------------- Standard services ------------------------------
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
     
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
-    BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, DGtal::Color> )) ;    
+    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
+       (TImage::Domain::dimension == 3));
 
     /** 
-     * Export an Image with the Vol format.
+     * Export an Image with PPM format. 
      * 
      * @param filename name of the output file
      * @param aImage the image to export
-     * @param aFunctor functor used to cast image values
+     * @param aFunctor  functor used to cast image values
+     * @param saveASCII used to save image with ASCII pixel value and with white space. 
+     *        (default= false since ASCII mode is not efficient).     
+     * 
      * @return true if no errors occur.
      */
-    static bool exportVol(const std::string & filename, const Image &aImage, 
-			  const Functor & aFunctor = Functor()) throw(DGtal::IOException);
+    static bool exportPPM(const std::string & filename, const Image &aImage, 
+			  const Functor & aFunctor = Functor(), bool topbotomOrder=true);
+  
+
+    /** 
+     * Export an Image with PPM3D format.
+     * 
+     * @param filename name of the output file
+     * @param aImage the image to export
+     * @param aFunctor  functor used to cast image values
+     * 
+     * @return true if no errors occur.
+     */
+    static bool exportPPM3D(const std::string & filename, const Image &aImage, 
+			    const Functor & aFunctor = Functor());
+    
   };
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/writers/VolWriter.ih"
+#include "DGtal/io/writers/PPMWriter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined VolWriter_h
+#endif // !defined PPMWriter_h
 
-#undef VolWriter_RECURSES
-#endif // else defined(VolWriter_RECURSES)
+#undef PPMWriter_RECURSES
+#endif // else defined(PPMWriter_RECURSES)

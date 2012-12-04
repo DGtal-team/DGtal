@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/io/writers/LongvolWriter.h"
 #include "DGtal/io/readers/LongvolReader.h"
@@ -61,12 +60,11 @@ bool testLongvol()
   Z3i::Point c(7,7,7);
   
   typedef ImageContainerBySTLVector<Z3i::Domain,DGtal::uint64_t> Image;
-  typedef GrayscaleColorMap<DGtal::uint64_t> Gray;
   Image image(Z3i::Domain(a,b));
   
   image.setValue(c,45693);
   
-  LongvolWriter<Image,Gray>::exportLongvol("export-longvol.longvol",image,0,50000);
+  LongvolWriter<Image>::exportLongvol("export-longvol.longvol",image);
  
   Image image2 =  LongvolReader<Image>::importLongvol("export-longvol.longvol");
   

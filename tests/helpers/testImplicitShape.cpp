@@ -139,10 +139,7 @@ bool testImplicitShape3D()
       image.setValue((*it), 128);
     }
 
-  typedef GrayscaleColorMap<unsigned char> Gray;
-  VolWriter<Image,Gray>::exportVol("implicitrounded.vol",image,0,255);
-
- 
+  VolWriter<Image>::exportVol("implicitrounded.vol",image);
 
   nbok += true ? 1 : 0; 
   nb++;
