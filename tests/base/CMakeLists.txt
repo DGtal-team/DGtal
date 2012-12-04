@@ -20,6 +20,7 @@ SET(DGTAL_TESTS_SRC
    testMultiMap-benchmark
    testIteratorFunctions
    testIteratorTraits
+   testOwningOrAliasingPtr
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

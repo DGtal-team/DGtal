@@ -53,7 +53,7 @@ using namespace std;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ArithmeticalDSS.
+// Functions for testing class ArithmeticalDSS3d.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * simple test
@@ -97,6 +97,7 @@ bool testDSSreco()
       trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
     
+
     trace.info() << algo << " " << algo.isValid() << std::endl;
 
     trace.endBlock();
@@ -138,7 +139,7 @@ bool testSegmentation()
   
   //Segmentation
   trace.beginBlock("Segmentation test");
-
+    
     SegmentComputer algo;
     Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
            
@@ -154,10 +155,29 @@ bool testSegmentation()
   return (c==2);
 }
 
+
+void testArithmeticalDSS3dConceptChecking()
+{
+  typedef PointVector<3,int> Point;
+  typedef std::vector<Point>::const_iterator ConstIterator; 
+  typedef ArithmeticalDSS3d<ConstIterator,int,4> ArithDSS3d; 
+
+  trace.beginBlock("Concept checking");
+
+  BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<ArithDSS3d> ));
+  
+  trace.endBlock();
+
+}
+
+
+
 int main(int argc, char **argv)
 {
-
   trace.beginBlock ( "Testing class ArithmeticalDSS" );
+ 
+  testArithmeticalDSS3dConceptChecking();  
+    
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -165,6 +185,7 @@ int main(int argc, char **argv)
 
   bool res = testDSSreco() 
         && testSegmentation()
+
   ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
