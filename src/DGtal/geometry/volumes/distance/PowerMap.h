@@ -66,48 +66,39 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a sperable process to construct
-   * Power maps
- Coeurjolly, D. (2002). Algorithmique et géométrie discrète pour
-   *      la caractérisation des courbes et des surfaces. PhD Thesis,
-   *      Université Lumière Lyon 2.
+   * Power maps as discussed in 
    *
+   * Optimal Separable Algorithms to Compute the Reverse Euclidean Distance
+   * Transformation and Discrete Medial Axis in Arbitrary Dimension,
+   * D. Coeurjolly and A. Montanvert, IEEE Transactions on Pattern
+   * Analysis and Machine Intelligence, 29(3):437-448, 2007.
    *
-   * Given a domain and a point predicate, an instance returns,
-   * for each point in the domain, the closest point for
-   * which the predicate if false. Following Computational Geometry
-   * terminoliogy, points for which the predicate is false are "sites"
-   * for the Power map construction.
+   * Given an image mapping points to values and a power separable
+   * metric, the class computes the power map of the weighted points
+   * specified in the image. Similarly to the VoronoiMap class, if two
+   * points are equi-disatant according to the power distance, this
+   * power map will only consider one of them.
+   *
+   * If the separable metric has a complexity of O(h) for its
+   * "hiddenByWeighted" predicate, the overall Power map construction
+   * algorithm is in @f$ O(h.d.n^d)@f$ for @f$ n^d@f$ domains (see
+   * class constructor). For Euclidean the @f$ l_2@f$ metric, the
+   * overall computation is in @f$ O(d.n^d)@f$, which is optimal.
    *
    * This class is a model of CConstImage.
    *
-   * The metric is specified by the @a p template parameter which
-   * defines a l_p separable metric.
-   *
-   * If a point is equi-distant to two sites (e.g. if the digital
-   * point belong to a Power cell boundary in the Euclidean space),
-   * this Power map construction will only keep one of them.
-   *
-   * Hence, the result is given as a map (point from the domain,
-   * closest site) implemented using an ImageContainerBySTLVector
-   * whose value type is the type of Point of the predicate.
-   *
-   * @tparam TSpace type of Digital Space (model of CSpace).
-   * @tparam TPointPredicate point predicate returning true for points
-   * from which we compute the distance (model of CPointPredicate)
-   * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
-   *
+   * @tparam TWeightImage model of CConstImage
+   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
    */
   template < typename TWeightImage,
-             typename TPSeparableMetric>
+             typename TPowerSeparableMetric>
   class PowerMap
   {
 
   public:
 
     BOOST_CONCEPT_ASSERT(( CConstImage< TWeightImage > ));
-    BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<TPSeparableMetric> ));
+    BOOST_CONCEPT_ASSERT(( CPowerSeparableMetric<TPowerSeparableMetric> ));
     
     ///Both WeightImage value and PowerSeparableMetric weight should match
     //BOOST_STATIC_ASSERT ((boost::is_same< typename TPSeparableMetric::Weight,
@@ -151,9 +142,12 @@ namespace DGtal
      * site for which the predicate is false. This algorithm is
      * O(d.|domain size|).
      *
-     * @param aDomain defines the (hyperrectangular) domain on which the computation is performed. 
-     * @param WeightImage an image returning the weight for some points
-     * @param aMetric a power seprable metric instance.
+     * @param aDomain defines the (hyperrectangular) domain on which
+     * the computation is performed.  
+     * @param WeightImage an image
+     * returning the weight for some points
+     * @param aMetric a power
+     * seprable metric instance.
      */
     PowerMap(const Domain * aDomain,
 	     const WeightImage * aWeightImage,

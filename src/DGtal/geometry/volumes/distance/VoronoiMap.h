@@ -63,8 +63,8 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a sperable process to construct
-   * Voronoi maps which has been described in:
+   * The algorithm uses a sperable process to construct Voronoi maps
+   * which has been described in:
    *
    *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). "A Linear Time Algorithm
    *     for Computing Exact Euclidean Distance Transforms of Binary Images in
