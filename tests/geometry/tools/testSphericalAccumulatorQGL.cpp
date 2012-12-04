@@ -48,8 +48,6 @@ using namespace DGtal;
 bool testSphericalViewer(int argc, char **argv)
 {
   QApplication application(argc,argv);
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Spherical Accumulator Viewer..." );
   
@@ -85,8 +83,6 @@ bool testSphericalViewer(int argc, char **argv)
 bool testSphericalViewerInteger(int argc, char **argv)
 {
   QApplication application(argc,argv);
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
   
   trace.beginBlock ( "Testing Spherical Accumulator Viewer  with Integer numbers..." );
   

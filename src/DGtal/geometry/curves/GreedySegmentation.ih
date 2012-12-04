@@ -59,14 +59,14 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesInters
     ConstIterator previousIt(it); 
     if ( (it != itb)&&(it != ite) ) 
       {
-  --previousIt;
-  SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
-  tmpSegmentComputer.init(previousIt);
-  return tmpSegmentComputer.extendForward();
+	--previousIt;
+	SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
+	tmpSegmentComputer.init(previousIt);
+	return tmpSegmentComputer.extendForward();
       } 
     else 
       {
-  return false; 
+	return false; 
       }
 }
 
@@ -126,7 +126,6 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
   //otherwise
     myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
   }
-
 }
 
 

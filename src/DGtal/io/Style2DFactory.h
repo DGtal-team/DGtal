@@ -50,6 +50,7 @@
 #include "DGtal/geometry/curves/FP.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GeometricalDSS.h"
+#include "DGtal/geometry/curves/FrechetShortcut.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"

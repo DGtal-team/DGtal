@@ -58,6 +58,7 @@ DGtal::SetPredicate<TDigitalSet>
 template <typename TDigitalSet>
 inline
 DGtal::SetPredicate<TDigitalSet>&
+
 DGtal::SetPredicate<TDigitalSet>::operator=( const SetPredicate & other )
 {
   if (this != &other)
