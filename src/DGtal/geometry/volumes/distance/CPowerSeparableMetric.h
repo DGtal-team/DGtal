@@ -51,37 +51,36 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPowerSeparableMetric
   /**
-     Description of \b concept '\b CPowerSeparableMetric' <p>
-     @ingroup Concepts
-     @brief Aim: defines the concept of separable metrics. 
+ Description of \b concept '\b CPowerSeparableMetric' <p>
+ @ingroup Concepts
+ @brief Aim: defines the concept of separable metrics. 
 
-     Separable metrics are metrics satsifying the monotonicity property. 
+ Separable metrics are metrics satsifying the monotonicity property. 
 
-     ### Refinement of CPowerMetric
+ ### Refinement of CPowerMetric
 
-     ### Associated types :
+ ### Associated types :
 
-     ### Notation
-     - \e X : A type that is a model of CPowerSeparableMetric
-     - \e x, \e y : object of type X
+ ### Notation
+ - \e X : A type that is a model of CPowerSeparableMetric
+ - \e x, \e y : object of type X
 
-     ### Definitions
+ ### Definitions
 
-     ### Valid expressions and semantics
+ ### Valid expressions and semantics
 
-     | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-     |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-     | hiddenBy predicate |
-     hiddenByWeighted(u,Wu,v,Wv,w,Wv,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, Wu,Wv,Ww of type @a Weight, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
+| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+| hiddenBy predicate |  hiddenByWeighted(u,Wu,v,Wv,w,Wv,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, Wu,Wv,Ww of type @a Weight, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
 
-     ### Invariants
+ ### Invariants
 
-     ### Models
+ ### Models
 
 
-     ### Notes
+ ### Notes
 
-     @tparam T the type that should be a model of CPowerSeparableMetric.
+ @tparam T the type that should be a model of CPowerSeparableMetric.
   */
   template <typename T>
   struct CPowerSeparableMetric: CPowerMetric<T>
