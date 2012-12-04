@@ -329,12 +329,20 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
+// <<<<<<< HEAD
+//     board.drawRectangle( NumberTraits<Coordinate>::castToDouble( (*it)[0] ) - 0.5,
+//                          NumberTraits<Coordinate>::castToDouble( (*it)[1] ) + 0.5,
+//                          1,
+//                          1 );      
+// =======
     draw(board, *it);
   
+  //>>>>>>> master
 }
 // DigitalSetBySTLSet
 
@@ -1189,6 +1197,40 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SetMode & sm )
 {
   board.myModes[ sm.myClassname ] = sm.myMode;
+}
+
+template <typename TSpace, typename TSequence>
+inline
+void 
+DGtal::Display2DFactory::draw
+( DGtal::Board2D & aBoard, 
+  const DGtal::LatticePolytope2D<TSpace, TSequence> & cip )
+{
+  typedef typename LibBoard::Point BoardPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Point CIPPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::ConstIterator ConstIterator;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Integer Integer;
+  std::string mode = aBoard.getMode( cip.className() );
+  ASSERT( mode=="Filled" || mode=="" || mode=="Transparent" ||
+          ("draw(Board2D & aBoard, const DGtal::LatticePolytope2D<Space,Sequence> & cip): Unknown mode "+mode)==""  );
+  
+  std::vector<BoardPoint> pts;
+
+  for ( ConstIterator it = cip.begin(), it_end = cip.end(); it != it_end; ++it )
+    {
+      CIPPoint p = *it;
+      pts.push_back( BoardPoint( NumberTraits<Integer>::castToDouble( p[ 0 ] ),
+                                 NumberTraits<Integer>::castToDouble( p[ 1 ] ) ) );
+    }
+  aBoard.drawClosedPolyline( pts );
+  // if ( mode == "Transparent"  || ( mode == "" )  )
+  //   {
+  //     aBoard.drawClosedPolyline( pts );
+  //   }
+  // else
+  //   {
+  //     aBoard.fillPolyline( pts );
+  //   }
 }
 
 
