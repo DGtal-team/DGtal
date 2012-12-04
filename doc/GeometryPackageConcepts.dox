@@ -10,36 +10,75 @@
  * This file is part of the DGtal library.
  */
 
-
+namespace DGtal {
 //----------------------------------------
 /*!
 @page geomPackageConcepts Geometry Concepts
-@writers David Coeurjolly
+@writers David Coeurjolly, Jacques-Olivier Lachaud
 
 @dot
 digraph GGeom   {
   rankdir=BT;
   
-  subgraph cluster_1 {
-     style=filled;
+  subgraph cluster_ext {
+      rank = same;
+      style=invis;
+
+      subgraph cluster_boost {
+                 style=filled;
+                 color=white;
+                 node [style=filled,color=orange];
+                 label="boost";
+
+                 boost_CopyConstructible;
+                 boost_DefaultConstructible;
+                 boost_Assignable;
+                 boost_EqualityComparable;
+      }
+
+  }
+  subgraph cluster_concepts_1 {
+    style=filled;
     color=lightgrey;
     node [style=filled,color=white];
                
-    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment; 
-    CDynamicSegmentComputer-> "CForwardSegmentComputer" ;
+    CSegment [ URL="\ref CSegment" ];
+    CBidirectionalSegmentComputer  [ URL="\ref CBidirectionalSegmentComputer" ];
+    CIncrementalSegmentComputer [ URL="\ref CIncrementalSegmentComputer" ];
+    CForwardSegmentComputer [ URL="\ref CForwardSegmentComputer" ];
+    CSegmentFactory [ URL="\ref CSegmentFactory" ];
+    CDynamicBidirectionalSegmentComputer [ URL="\ref CDynamicBidirectionalSegmentComputer" ];
+    CDynamicSegmentComputer [ URL="\ref CDynamicSegmentComputer" ];
+
+    CBidirectionalSegmentComputer -> CForwardSegmentComputer -> CIncrementalSegmentComputer -> CSegmentFactory -> CSegment; 
+    CDynamicSegmentComputer-> CForwardSegmentComputer ;
     CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer  ;
 
     CDynamicBidirectionalSegmentComputer->          CBidirectionalSegmentComputer;
-    CSeparableMetric;
-    label="Geometry";
+
+    label="geometry/curves (main concepts)";
   }
  
-  CSegment ->  boost_CopyConstructible ;
-  CSegment ->boost_DefaultConstructible;
+  CSegment -> boost_CopyConstructible ;
+  CSegment -> boost_DefaultConstructible;
   CSegment -> boost_Assignable;
- 
+  CSegment -> boost_EqualityComparable;
+
+  subgraph cluster_models {
+     style=filled;
+     color="#ccffcc";
+     node [style=filled,color=white];
+     label="geometry/surfaces (main models)";
+
+     COBANaivePlane [ URL="\ref COBANaivePlane" ];
+  }
+
+  COBANaivePlane -> boost_CopyConstructible ;
+  COBANaivePlane -> boost_DefaultConstructible;
+  COBANaivePlane -> boost_Assignable;
  }
 @enddot
 
  
 */
+}

@@ -45,7 +45,8 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/colormaps/CColorMap.h"
+#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,38 +58,33 @@ namespace DGtal
    * Description of template struct 'VolWriter' <p>
    * \brief Aim: Export a 3D Image using the Vol formats.
    *
+   * A functor can be specified to convert image values to Vol values
+   * (unsigned char).
+   *
    * @tparam TImage the Image type.
-   * @tparam TColormap the type of the colormap to use in the export.
+   * @tparam TFunctor the type of functor used in the export.
    */
-  template <typename TImage, typename TColormap>
+  template <typename TImage, typename TFunctor = DefaultFunctor>
   struct VolWriter
   {
     // ----------------------- Standard services ------------------------------
-
-    BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
-    
-    BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
-
-    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
-       typename TImage::Value>::value));
-    
     typedef TImage Image;
     typedef typename TImage::Value Value;
-    typedef TColormap Colormap;
+    typedef TFunctor Functor;
+    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+    BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
     /** 
      * Export an Image with the Vol format.
      * 
      * @param filename name of the output file
      * @param aImage the image to export
-     * @param minV the minimum value of aImage (for colormap)
-     * @param maxV the maximum value of aImage (for colormap) 
-     * 
+     * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
     static bool exportVol(const std::string & filename, const Image &aImage, 
-        const Value & minV, const Value & maxV) throw(DGtal::IOException);
-    
+			  const Functor & aFunctor = Functor()) throw(DGtal::IOException);
   };
 }//namespace
 

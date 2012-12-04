@@ -51,13 +51,13 @@ DGtal::IntegerComputer<TInteger>::IntegerComputer()
 //-----------------------------------------------------------------------------
 template <typename TInteger>
 inline
-DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & other )
+DGtal::IntegerComputer<TInteger>::IntegerComputer( const Self & /*other*/ )
 {}
 //-----------------------------------------------------------------------------
 template <typename TInteger>
 inline
 DGtal::IntegerComputer<TInteger> &
-DGtal::IntegerComputer<TInteger>::operator=( const Self & other )
+DGtal::IntegerComputer<TInteger>::operator=( const Self & /*other*/ )
 {
   return *this;
 }
@@ -143,9 +143,27 @@ template <typename TInteger>
 inline
 typename DGtal::IntegerComputer<TInteger>::Integer
 DGtal::IntegerComputer<TInteger>::
+max( IntegerParamType a, IntegerParamType b, IntegerParamType c )
+{
+  return max( max(a,b), c );
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
 min( IntegerParamType a, IntegerParamType b )
 {
   return ( a <= b ) ? a : b;
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
+min( IntegerParamType a, IntegerParamType b, IntegerParamType c )
+{
+  return min( min(a,b), c );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -237,6 +255,26 @@ getFloorCeilDiv( Integer & fl, Integer & ce,
       if ( isNegativeOrZero( _m_a ) ) --fl;
       if ( isPositiveOrZero( _m_a ) ) ++ce;
     }
+}
+//-----------------------------------------------------------------------------
+template <typename TInteger>
+inline
+typename DGtal::IntegerComputer<TInteger>::Integer
+DGtal::IntegerComputer<TInteger>::
+staticGcd( IntegerParamType a, IntegerParamType b )
+{
+  Integer _m_a = abs( a );
+  Integer _m_b = abs( b );
+  Integer _m_a0 = max( _m_a, _m_b );
+  Integer _m_a1 = min( _m_a, _m_b );
+  Integer _m_r;
+  while ( isNotZero( _m_a1 ) )
+  {
+    _m_r = _m_a0 % _m_a1;
+    _m_a0 = _m_a1;
+    _m_a1 = _m_r;
+  }
+  return _m_a0;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -445,7 +483,7 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   
   if ( isNegative( a ) ) _m_v[ 0 ] = -_m_v[ 0 ];
   if ( isNegative( b ) ) _m_v[ 1 ] = -_m_v[ 1 ];
-  _m_v *= c;
+  //_m_v *= c;
   return _m_v;
 }
 //-----------------------------------------------------------------------------
@@ -462,7 +500,9 @@ getCoefficientIntersection( Integer & fl, Integer & ce,
   getDotProduct( _m_c0, p, N );
   getDotProduct( _m_c1, u, N );
   _m_c2 = c - _m_c0;
-  getFloorCeilDiv( fl, ce, _m_c2, _m_c1 );
+  fl = floorDiv( _m_c2, _m_c1 );
+  ce = ceilDiv( _m_c2, _m_c1 );
+  // getFloorCeilDiv( fl, ce, _m_c2, _m_c1 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>
@@ -492,6 +532,8 @@ getValidBezout ( Vector2I & v,
                               _m_v0, u, N2, c2 );
   _m_v1 = u * _m_a0; // floor value
   v += _m_v1;
+  ASSERT( N2.dot( A + v ) <= c2 );
+  ASSERT( N2.dot( A + v + u ) > c2 );
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger>

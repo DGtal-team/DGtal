@@ -15,7 +15,7 @@ Part of the \ref pageArithmeticPackage.
 This part of the manual describes digital straightness from a
 combinatoric and arithmetic point of view.  It tells you how to create
 patterns, digital straight lines in the first quadrant, and how to
-compute subsegments in sublinear time.
+compute subsegments in sublinear time (algorithms SmartDSS [Said, Lachaud, Feschet 2009 : \cite Said:2009-dgci ] and ReversedSmartDSS [Said, Lachaud 2011 : \cite Said:2011-dgci]).
 
 [TOC]
 
@@ -28,7 +28,7 @@ subset of \f$ Z^2 \f$:
 \f$ \{(x,y) \in Z^2, \mu \le a x - by < \mu + |a| +|b|-1 \} \f$
 
 where the integers \f$ (a,b,\mu) \f$, \f$ gcd(a,b)=1 \f$, are called
-the \b characteristics of the straight line. \cite Reveilles91, \cite Kovelevsky89.
+the \b characteristics of the straight line [ Reveilles \cite Reveilles:1991-thesis , Debled and Reveilles \cite Debled:1995-ijprai ].
 
 It is well known that this set of digital points is a simple
 4-connected curve. Here is a representation of the straight line
@@ -176,7 +176,7 @@ belonging to a DSL:
 
 Given two points \e A and \e B on the DSL, you can determine the exact
 characteristics of the subsegment [A,B] in sublinear time with two
-algorithms: SmartDSS [\cite Said09] and ReversedSmartDSS [\cite Said11].
+algorithms: SmartDSS [Said, Lachaud, Feschet 2009 : \cite Said:2009-dgci ] and ReversedSmartDSS [Said, Lachaud 2011 : \cite Said:2011-dgci].
 In fact, these algorithms return the DSL which covers [A,B] and whose
 characteristics are minimal.
 

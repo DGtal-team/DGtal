@@ -184,8 +184,6 @@ DGtal::Expander<TObject>
   typedef std::back_insert_iterator< VectorContainer > VectorInserter;
   SetContainer newLayer;
   Inserter inserter( newLayer, newLayer.begin() );
-  VectorContainer v;
-  VectorInserter vinserter( v );
   
   // const ObjectDomainPredicate & objectPred = myObjectDomain.predicate();
   typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
