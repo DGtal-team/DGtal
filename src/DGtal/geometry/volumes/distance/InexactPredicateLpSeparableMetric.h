@@ -53,8 +53,27 @@ namespace DGtal
 // template class InexactPredicateLpSeparableMetric
 /**
  * Description of template class 'InexactPredicateLpSeparableMetric' <p>
-   * \brief Aim:
-   */
+ * \brief Aim: implements separable l_p metrics with  approximated
+ * predicates.
+ *
+ * Given a parameter p, the class implement classical l_p
+ * metric as a model of CSeparableMetric. Hence, given two points
+ * @f$ x=(x_0...x_{n-1})@f$, @f$ y=(y_0...y_{n-1})@f$ in the given digital space (see
+ * below), we define a metric such that: 
+ *
+ * @f$ distance(x,y)= \left(
+ * \sum_{i=0}^{n-1} |x_i-y_i|^p\right)^{1/p}@f$
+ *
+ * This class is said to be inexact in the sense that the power @a p a
+ * floating number (@a double) and the power is given by std::pow on
+ * double numbers. As a consequence, @a hiddenBy and @a closest
+ * methods may be inexact (numerical issues).
+ *
+ * The exponent @a p is specifed at the constructor.
+ *
+ * @tparam TSpace the model of CSpace on which the metric is
+ * defined.
+ */
   template <typename TSpace>
   class InexactPredicateLpSeparableMetric
   {
@@ -154,6 +173,10 @@ BOOST_CONCEPT_ASSERT(( CSpace<TSpace> ));
      * [startingPoint,endPoint] along dimension dim, we detect if the
      * voronoi cells of a and c @e hide the voronoi cell of c on the
      * straight line.
+     *
+     * This method is in @f$ O(log(n))@f$ if @a n is the size of the
+     * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
+     * @f$ O(1)@f$. 
      *
      * @pre both voronoi cells associated with @a a and @a b must
      * intersect the straight line. 
