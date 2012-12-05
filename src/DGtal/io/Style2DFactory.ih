@@ -393,6 +393,29 @@ namespace DGtal
   };
   // SignedKhalimskyCell
 
+  // LatticePolytope2D
+  struct DefaultDrawStyleFilled_LatticePolytope2D : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColorRGBi( 200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  struct DefaultDrawStyleTransparent_LatticePolytope2D : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColor( DGtal::Color::None ); //200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  // LatticePolytope2D
+
   
   // StraightLineFrom2Points
   // StraightLineFrom2Points
@@ -725,6 +748,19 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TP
 }
 // StraightLineFrom2Points
 
+// LatticePolytope2D
+template < typename TSpace, typename TSequence>
+inline
+DGtal::DrawableWithBoard2D* 
+defaultStyle( const DGtal::LatticePolytope2D<TSpace,TSequence> & /*cip*/, 
+              std::string mode = "" )
+{
+  if ( ( mode == "" ) || ( mode == "Transparent" ) ) 
+    return new DefaultDrawStyleTransparent_LatticePolytope2D;
+  else // "Filled"
+    return new DefaultDrawStyleFilled_LatticePolytope2D;
+}
+// LatticePolytope2D
 
 //
 

@@ -683,6 +683,10 @@ namespace DGtal
      */ 
     Iterator minElement();
 
+    /**
+       Negates this vector.
+    */
+    void negate();
 
     /**
      * Specify the set of norm types
