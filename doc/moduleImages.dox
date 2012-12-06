@@ -244,6 +244,9 @@ and use the `setValue` method of the class.
 
  \section dgtalImagesAdapters Image Adapter classes
 
+
+
+
 i. ConstImageAdapter is a small class that adapts any (constant or not) 
 image into a constant one, which provides a virtual view (so reading only) of the true values
  contained in the adapted image.
@@ -277,14 +280,9 @@ filled with 0 to 255 values like that:
 @snippet ../examples/images/exampleConstImageAdapter.cpp image_filling 
 
 which looks like that with a simple HueShadeColorMap varying from 0 to 255 and with (1,1) the first bottom-left point:
-<CENTER>
-<TABLE> 
-<TR>
-<TD align=CENTER> \image html image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." 
-                    \image latex image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm </TD>
-</TR>
-</TABLE>
-</CENTER>
+
+\image html image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." 
+\image latex image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm 
 
 Here is now the construction of a simple image adapter that 
  use a subdomain of the initial image domain to
@@ -293,14 +291,9 @@ Here is now the construction of a simple image adapter that
 @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSubImage_creation 
 
 and here is the result:
-<CENTER>
-<TABLE> 
-<TR>
-<TD align=CENTER> \image html subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." 
-                    \image latex subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm </TD>
-</TR>
-</TABLE>
-</CENTER>
+\image html subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." 
+\image latex subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm 
+
 
 Here is then the construction of an image adapter that 
  use a specific domain: here, only one pixel on two in x and y coordinates, created like that:
@@ -312,14 +305,9 @@ from the initial image domain.
 @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSpecificImage_creation
 
 Here is the result:
-<CENTER>
-<TABLE> 
-<TR>
-<TD align=CENTER> \image html specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." 
-                    \image latex specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." width=5cm </TD>
-</TR>
-</TABLE>
-</CENTER>
+
+\image html specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." 
+\image latex specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." width=5cm </TD>
 
 Here is now the construction of an image adapter that 
  is a thresholded view of the initial scalar image: 
@@ -327,14 +315,9 @@ Here is now the construction of an image adapter that
 @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
 
 and here is the result with a simple GrayscaleColorMap varying from 0 to 1:
-<CENTER>
-<TABLE> 
-<TR>
-<TD align=CENTER> \image html thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." 
-                    \image latex thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." width=5cm </TD>
-</TR>
-</TABLE>
-</CENTER>
+
+\image html thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." 
+\image latex thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." width=5cm 
 
 Here is finally the construction of an image adapter that 
  use a functor to change 'unsigned char' values to 'double'
@@ -347,14 +330,10 @@ defined from the initial image:
 @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForLogScale_creation
 
 and here is the result with a simple HueShadeColorMap varying from 0. to logScale(255):
-<CENTER>
-<TABLE> 
-<TR>
-<TD align=CENTER> \image html logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." 
-                    \image latex logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." width=5cm </TD>
-</TR>
-</TABLE>
-</CENTER>
+
+\image html logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." 
+\image latex logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." width=5cm 
+
 
 ii. ImageAdapter is a small class that adapts an
 image (like ConstImageAdapter) but provides a virtual access (reading and writing) of the true values
