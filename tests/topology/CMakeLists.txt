@@ -2,6 +2,7 @@ SET(DGTAL_TESTS_SRC
    testAdjacency
    testBreadthFirstPropagation
    testDepthFirstPropagation
+   testDistancePropagation
    testCellularGridSpaceND
    testDigitalSurface
    testDigitalTopology
