@@ -49,6 +49,15 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+DistanceVisitor( const DistanceVisitor & other )
+  : myGraph( other.myGraph ), myDistance( other.myDistance ),
+    myMarkedVertices( other.myMarkedVertices ), myQueue( other.myQueue )
+{
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
 DistanceVisitor( const Graph & g,
                  const VertexFunctor & distance,
                  const Vertex & p )

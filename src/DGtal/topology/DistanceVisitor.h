@@ -322,6 +322,13 @@ namespace DGtal
     ~DistanceVisitor();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    DistanceVisitor ( const DistanceVisitor & other );
+
+
+    /**
      * Constructor from a point and a vertex functor object. This
      * point provides the initial core of the visitor.
      *
@@ -350,6 +357,7 @@ namespace DGtal
     DistanceVisitor( const Graph & graph, 
                      const VertexFunctor & distance,
                      VertexIterator b, VertexIterator e );
+
 
     /**
        @return a const reference on the graph that is traversed.
@@ -533,13 +541,6 @@ namespace DGtal
     DistanceVisitor();
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    DistanceVisitor ( const DistanceVisitor & other );
 
     /**
      * Assignment.
