@@ -203,6 +203,9 @@ namespace DGtal
   class Composer
   {
   public:
+    /// Necessary for DistanceVisitor.
+    typedef ReturnType Value;
+
     /** 
      * Default constructor
      */
