@@ -774,7 +774,8 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
       flag = true;
     else
       {
-	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0],
+	double angle = Tools::computeAngle
+(firstP[0], firstP[1], newP[0],
 						 newP[1]);
 	assert(angle != -1);
 	flag = Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
@@ -829,9 +830,7 @@ bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   
   double angle = Tools::angleVectVect(v,dir_elem);
   
-  bool ok = true;
-    
-  boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
+   boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
   if(contains(intervals,angle))
     return false;
