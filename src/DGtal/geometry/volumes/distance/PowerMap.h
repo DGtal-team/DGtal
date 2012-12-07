@@ -48,6 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
@@ -93,7 +94,8 @@ namespace DGtal
    * @tparam TImageContainer any model of CImage to store the
    * PowerMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
-   * container value type must be TSpace::Vector.
+   * container value type must be TSpace::Vector. Lastly, the domain
+   * of the container must be HyperRectDomain.
     */
   template < typename TWeightImage,
              typename TPowerSeparableMetric,
@@ -126,7 +128,10 @@ namespace DGtal
     BOOST_STATIC_ASSERT ((boost::is_same< typename TWeightImage::Domain::Space::Vector,
                           typename TImageContainer::Value >::value )); 
     
-   
+    //ImageContainer domain type must be  HyperRectangular
+    BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<typename TWeightImage::Domain::Space>,
+					  typename TImageContainer::Domain >::value )); 
+ 
     ///Definition of the underlying domain type.
     typedef typename TImageContainer::Domain Domain;
    
@@ -142,7 +147,7 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
   
     ///Self type
-    typedef PowerMap<TWeightImage, TPowerSeparableMetric> Self;
+  typedef PowerMap<TWeightImage, TPowerSeparableMetric, TImageContainer> Self;
     
 
     /**
