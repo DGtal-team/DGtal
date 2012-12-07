@@ -49,6 +49,7 @@
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -110,7 +111,8 @@ namespace DGtal
    * @tparam TImageContainer any model of CImage to store the
    * VoronoiMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
-   * container value type must be TSpace::Vector.
+   * container value type must be TSpace::Vector. Lastly, the domain
+   * of the container must be HyperRectDomain.
    */
   template < typename TSpace,
              typename TPointPredicate,
@@ -138,6 +140,10 @@ namespace DGtal
     //ImageContainer value type must be  TSpace::Vector
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Vector,
                           typename TImageContainer::Value >::value )); 
+ 
+    //ImageContainer domain type must be  HyperRectangular
+    BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<TSpace>,
+					  typename TImageContainer::Domain >::value )); 
     
     ///Copy of the space type.
     typedef TSpace Space;
@@ -161,8 +167,6 @@ namespace DGtal
     typedef typename Space::Point::Coordinate Abscissa;
  
     ///Type of resulting image
-    //typedef ImageContainerBySTLVector<  Domain,
-    //                                    Vector > OutputImage;
     typedef TImageContainer OutputImage;
     
     ///Definition of the image value type.
@@ -172,7 +176,8 @@ namespace DGtal
     typedef typename OutputImage::ConstRange  ConstRange;
 
     ///Self type
-    typedef VoronoiMap<TSpace, TPointPredicate, TSeparableMetric> Self;
+    typedef VoronoiMap<TSpace, TPointPredicate, 
+		       TSeparableMetric,TImageContainer> Self;
     
 
     /**

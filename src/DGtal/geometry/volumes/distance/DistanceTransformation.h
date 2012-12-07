@@ -79,16 +79,25 @@ namespace DGtal
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of CPointPredicate)
    * @tparam TSeparableMetric a model of CSeparableMetric
-   *
+   * @tparam TImageContainer any model of CImage to store the
+   * VoronoiMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector.
+    *
    * @see distancetransform2D.cpp
    * @see distancetransform3D.cpp
    */
   template < typename TSpace,
              typename TPointPredicate,
-             typename TSeparableMetric>
-  class DistanceTransformation: public VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>
+             typename TSeparableMetric,
+	     typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<TSpace>,
+                                       typename TSpace::Vector>
+           >
+  class DistanceTransformation: public VoronoiMap<TSpace,TPointPredicate,
+						  TSeparableMetric, TImageContainer>
   {
-
+    
   public:
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
@@ -124,7 +133,8 @@ namespace DGtal
 
 
     ///Definition of the image value type.
-    typedef typename VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>::Domain  Domain;
+    typedef typename VoronoiMap<TSpace,TPointPredicate,
+				TSeparableMetric,TImageContainer>::Domain  Domain;
     
 
 
@@ -134,7 +144,7 @@ namespace DGtal
     DistanceTransformation(const Domain * aDomain,
                            const PointPredicate * predicate,
                            const SeparableMetric * aMetric):
-      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric>(aDomain,predicate,aMetric)
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,predicate,aMetric)
     {}
     
     /**

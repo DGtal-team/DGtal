@@ -77,10 +77,19 @@ namespace DGtal
    *
    * @tparam TWeightImage model of CConstImage
    * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
+   * @tparam TImageContainer any model of CImage to store the
+   * PowerMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector.
    */
   template < typename TWeightImage,
-             typename TPSeparableMetric>
-  class ReverseDistanceTransformation: public PowerMap<TWeightImage,TPSeparableMetric>
+             typename TPSeparableMetric,
+	     typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
+                                       typename TWeightImage::Domain::Space::Vector> >
+  class ReverseDistanceTransformation: public PowerMap<TWeightImage,
+						       TPSeparableMetric, 
+						       TImageContainer>
   {
 
   public:
@@ -107,7 +116,7 @@ namespace DGtal
     //                    typename PowerSeparableMetric::Point>::value));
     
     ///Definition of the image.
-    typedef  ReverseDistanceTransformation<TWeightImage,TPSeparableMetric> Self;
+    typedef  ReverseDistanceTransformation<TWeightImage,TPSeparableMetric,TImageContainer> Self;
     
     typedef PowerMap<TWeightImage,TPSeparableMetric> Parent;
    
@@ -116,7 +125,8 @@ namespace DGtal
 
 
     ///Definition of the image value type.
-    typedef typename PowerMap<TWeightImage,TPSeparableMetric>::Domain  Domain;
+    typedef typename PowerMap<TWeightImage,TPSeparableMetric,
+			      TImageContainer>::Domain  Domain;
     
 
     /**
@@ -125,7 +135,7 @@ namespace DGtal
     ReverseDistanceTransformation(const Domain * aDomain,
                                   const WeightImage * aWeightImage,
                                   const PowerSeparableMetric * aMetric):
-      PowerMap<TWeightImage,TPSeparableMetric>(aDomain,aWeightImage,aMetric)
+      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(aDomain,aWeightImage,aMetric)
     {}
     
     /**
