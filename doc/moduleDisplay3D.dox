@@ -166,16 +166,11 @@ This example should provides a comparable visualization.
 @endcode
 
 * You should obtain the two following visualisations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
-      		    \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." width=5cm </TD>
-*<TD  align=CENTER >\image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
-      		    \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm </TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
+ \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm 
+ \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."      
+ \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm
 
 
 * Note that digital set was displayed with transparency by setting a custom colors.   
@@ -243,26 +238,12 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 *
 * we obtain the following visualisations:
 * 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
 \image html visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain "
 \image latex visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain " width=5cm
-</TD>
-<TD  align=CENTER>
  \image html  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain."  
  \image latex  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain." width=5cm 
-</TD>
-<TD  align=CENTER>
  \image html  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels."
  \image latex  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels." width=5cm 
-</TD>
-
-
-* </TR>
-*</TABLE>
-*</CENTER>
 
 
 
@@ -362,27 +343,14 @@ we can add for instance two differents clipping planes:
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
 \image html visuClippingAll.png "(a) Visualisation of the initial set." width=5cm 
 \image latex visuClippingAll.png "(a) Visualisation of the initial set." 
-</TD>
-<TD  align=CENTER>
  \image html  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)." 
  \image latex  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
-</TD>
-<TD  align=CENTER>
  \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
 \image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
-</TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
 */
-
-
 It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
 
 @code
