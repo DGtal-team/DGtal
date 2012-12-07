@@ -73,7 +73,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
-    typedef typename ShapeA::Point Point;
     typedef typename ShapeA::RealPoint RealPoint;
 
     /**
@@ -104,17 +103,6 @@ namespace DGtal
      * is strictly outside.
      */
     bool isInside( const RealPoint & p ) const
-    {
-      return myShapeA.isInside( p ) || myShapeB.isInside( p );
-    }
-
-    /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const Point & p ) const
     {
       return myShapeA.isInside( p ) || myShapeB.isInside( p );
     }
@@ -247,7 +235,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
-    typedef typename ShapeA::Point Point;
     typedef typename ShapeA::RealPoint RealPoint;
 
     /**
@@ -278,17 +265,6 @@ namespace DGtal
      * is strictly outside.
      */
     bool isInside( const RealPoint & p ) const
-    {
-      return myShapeA.isInside( p ) && myShapeB.isInside( p );
-    }
-
-    /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const Point & p ) const
     {
       return myShapeA.isInside( p ) && myShapeB.isInside( p );
     }
@@ -418,7 +394,6 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
-    typedef typename ShapeA::Point Point;
     typedef typename ShapeA::RealPoint RealPoint;
 
     /**
@@ -449,17 +424,6 @@ namespace DGtal
      * is strictly outside.
      */
     bool isInside( const RealPoint & p ) const
-    {
-      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
-    }
-
-    /**
-     * @param p any point in the digital plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const Point & p ) const
     {
       return myShapeA.isInside( p ) && !myShapeB.isInside( p );
     }
