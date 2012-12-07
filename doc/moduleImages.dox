@@ -3,7 +3,7 @@
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/03/28
+ * @date 2012/11/15
  * 
  * @brief Documentation file about the images in DGtal
  *
@@ -16,8 +16,8 @@ namespace DGtal {
 
 
 @page moduleImage Images
-@authors Tristan Roussillon, David Coeurjolly
-@date 2012/03/28
+@authors Tristan Roussillon, David Coeurjolly, Martial Tola
+@date 2012/12/05
 
 [TOC]
 
@@ -240,18 +240,155 @@ and use the `setValue` method of the class.
 
   \subsection dgtalImagesModelsHashTree ImageContainerByHashTree
 
-@TODO
+@note Todo 
+
+ \section dgtalImagesAdapters Image Adapter classes
+
+ImageAdapter, ConstImageAdapter are perfect swiss-nifes to transform
+and adapt images (change their domain definition, change their value
+types, ...). These classses are parametrized by several types and
+functor in order to adapt the behavior of image getters/setters (@a operator() and @a
+setValue methods). These adapted behaviors are computed on-the-fly
+when calling these methods.
+
+
+* ConstImageAdapter requires several types and functors to create a
+"read-only" adapted image (operator(), constRange(), ...)
+
+* ImageAdapter requires a supplementary functor and allows write
+ access to the image (@a setValue methods, range(), ... )
+
+@note Functors used to convert domains or values may be complex. Keep
+in mind that each time operator() or setValue() methods are called,
+such functors are evaluated (with potential side-effects depending on
+the functors).
+
+
+\subsection constimage  ConstImageAdapter 
+
+ConstImageAdapter is a small class that adapts any (constant or not)
+image into a constant one, which provides a virtual view (so
+read-only) of the true values contained in the adapted image.  The
+class is parametrized by several template arguments:
+* @a TImageContainer: the type of image to adapt.
+* @a TNewDomain: the type of the new domain.
+* @a TFunctorD: type of functor used to convert image domain points to
+new domain points
+* @a TNewValue: type of the new image value type.
+* @a TFucntorV: functor to convert values.
+
+
+The values associated to access the point values are adapted  
+ with a functor @a g and a functor @a f given at construction so that 
+ operator() calls @a f(img(g(aPoint))), instead of calling directly 
+ operator() of the underlying image @a  img.
+
+Functor g (and/or functor f) can be a default functor, i.e. a
+ simple functor that just returns its argument.
+
+In order to illustrate the next ConstImageAdapter usage samples,
+ we are going a) to use these includes:
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp include 
+
+b) then define these types and variables:
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp def 
+
+c) then define a simple 16x16 (1,1) to (16,16) image (of 'unsigned char' type):
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp image_creation 
+
+filled with 0 to 255 values like that:
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp image_filling 
+
+which looks like that with a simple HueShadeColorMap varying from 0 to 255 and with (1,1) the first bottom-left point:
+
+\image html image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." 
+\image latex image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm 
+
+Here is now the construction of a simple image adapter that 
+ use a subdomain of the initial image domain to
+ access the first bottom-left 8x8 image: 
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSubImage_creation 
+
+and here is the result:
+\image html subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." 
+\image latex subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm 
+
+
+Here is then the construction of an image adapter that 
+ use a specific domain: here, only one pixel on two in x and y coordinates, created like that:
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp specificDomain_creation
+
+from the initial image domain. 
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForSpecificImage_creation
+
+Here is the result:
+
+\image html specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." 
+\image latex specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." width=5cm </TD>
+
+Here is now the construction of an image adapter that 
+ is a thresholded view of the initial scalar image: 
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
+
+and here is the result with a simple GrayscaleColorMap varying from 0 to 1:
+
+\image html thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." 
+\image latex thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." width=5cm 
+
+Here is finally the construction of an image adapter that 
+ use a functor to change 'unsigned char' values to 'double'
+ values using a log scale functor defined like that:
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp LogScaleFunctor
+
+defined from the initial image: 
+
+@snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForLogScale_creation
+
+and here is the result with a simple HueShadeColorMap varying from 0. to logScale(255):
+
+\image html logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." 
+\image latex logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." width=5cm 
+
+
+\subsection imageadat  ImageAdapter 
+
+ImageAdapter is a small class that adapts an image (like
+ConstImageAdapter) but provides a virtual access (reading and writing)
+of the true values contained in the adapted image.  It uses a given
+Domain (i.e. a subdomain) but work directly (for reading and writing
+processes) thanks to an alias (i.e. a pointer) on the original Image
+given in argument.
+
+This class requires an additional templare paremter:
+* @a TFunctoVm1: functor to convert adapted image values to the original
+ image values. 
+
+The values associated to accessing the point values are adapted  
+ with a functor g and a functor f given at construction so that 
+ operator() calls f(img(g(aPoint))), instead of calling directly 
+ operator() of the underlying image img.
+
+The values associated to writing the points are adapted  
+ with a functor @a g and a functor @f$ f^{-1}@f$ given at construction so that 
+ setValue() is @a img.setValue(g(aPoint), f-1(aValue)).
+
+The use is the same that for ConstImageAdapter.
 
  \section dgtalImagesFunctions Useful classes and functions
 
-In addition to the image containers described in the previous section, 
-there are image adapters: 
+In addition to the image containers and the image adapters described in the previous sections, 
+there are also image proxys: 
 
-i. ConstImageAdapter is a small class that adapts any (constant or not) 
-image into a constant one, which provides a virtual view of the true values
- contained in the adapted image.
-
-ii. Image is a light proxy on image containers based on a COW pointer.
+Image is a light proxy on image containers based on a COW pointer.
 It can be constructed, copied, assigned, deleted without any special care. 
  
 Moreover, in ImageHelper.h, many useful functions are provided. 

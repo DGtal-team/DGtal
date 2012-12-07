@@ -641,7 +641,7 @@ int main()
 
   typedef ArrayLXY<Value, L, X, Y> MyArrayLXY;
   typedef ArrayXYOfMap<Value, L, X, Y> MyArrayXYOfMap;
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#if CPP11_FORWARD_LIST
   typedef ArrayXYOfList<Value, L, X, Y> MyArrayXYOfList;
 #endif
   typedef ArrayXYOfLabelledMap<Value, L, X, Y, Word, N, M > MyArrayXYOfLabelledMap;
@@ -718,7 +718,7 @@ int main()
   trace.endBlock();
   trace.endBlock();
 
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#if CPP11_FORWARD_LIST
   //----------------------------------------------------------------------
   trace.beginBlock ( "---------- ArrayXYOfList ---------------" );
   trace.beginBlock ( "Generating ArrayXYOfList" );
