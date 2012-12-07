@@ -126,10 +126,13 @@ getCurrentLayer( TBackInsertable & layer )
       layer.push_back( current() );
       myQueue.pop();
     } 
-  while ( ! finished() && ( node.second == current().second ) );
-  for ( typename TBackInsertable::const_iterator it = layer.begin(), itE = layer.end();
+  while ( ( ! finished() ) && ( node.second == current().second ) );
+  for ( typename TBackInsertable::const_iterator it = layer.begin(),
+          itE = layer.end();
         it != itE; ++it )
-    myQueue.push( *it );
+    {
+      myQueue.push( *it );
+    }
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
@@ -140,6 +143,16 @@ ignore()
 {
   ASSERT( ! finished() );
   myQueue.pop();
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+pushAgain( const Node & node )
+{
+  ASSERT( myMarkedVertices.find( node.first ) != myMarkedVertices.end() );
+  myQueue.push( node );
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
