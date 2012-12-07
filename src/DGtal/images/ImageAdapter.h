@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file ConstImageAdapter.h
+ * @file ImageAdapter.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -28,20 +28,20 @@
  *
  * @date 2012/10/12
  *
- * Header file for module ConstImageAdapter.cpp
+ * Header file for module ImageAdapter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ConstImageAdapter_RECURSES)
-#error Recursive header files inclusion detected in ConstImageAdapter.h
-#else // defined(ConstImageAdapter_RECURSES)
+#if defined(ImageAdapter_RECURSES)
+#error Recursive header files inclusion detected in ImageAdapter.h
+#else // defined(ImageAdapter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ConstImageAdapter_RECURSES
+#define ImageAdapter_RECURSES
 
-#if !defined ConstImageAdapter_h
+#if !defined ImageAdapter_h
 /** Prevents repeated inclusion of headers. */
-#define ConstImageAdapter_h
+#define ImageAdapter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,63 +52,70 @@
 #include "DGtal/kernel/domains/CDomain.h"
 
 #include "DGtal/images/DefaultConstImageRange.h"
-#include <tr1/tuple>
+#include "DGtal/images/DefaultImageRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 /////////////////////////////////////////////////////////////////////////////
-// Template class ConstImageAdapter
+// Template class ImageAdapter
 /**
- * Description of template class 'ConstImageAdapter' <p>
- * \brief Aim: implements a const image adapter with a given domain
- * (i.e. a subdomain) and 2 functors : g for domain, f for accessing point values.
+ * Description of template class 'ImageAdapter' <p>
+ * \brief Aim: implements an image adapter with a given domain
+ * (i.e. a subdomain) and 3 functors : g for domain, f for accessing point values and f-1 for writing point values.
  *
- * This class is (like Image class) a lightweight proxy on any models of CImage.
+ * This class is (like Image class) a lightweight proxy on ImageContainers (models of CImage).
  * It uses a given Domain (i.e. a subdomain) but work directly (for
- * accessing process) thanks to an alias (i.e. a pointer) on the
+ * reading and writing processes) thanks to an alias (i.e. a pointer) on the
  * original Image given in argument.
- *
- * ConstImageAdapter class is also a model of CImage.
+ * 
+ * ImageAdapter class is also a model of CImage.
  * 
  * Caution :
- *  - the type of value of Point for the ConstImageAdapter Domain must
- * also be the same than the type of value of Point for the original
+ *  - the type of value of Point for the ImageAdapter Domain must also
+ * be the same than the type of value of Point for the original
  * ImageContainer.
  *
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TNewDomain a domain.
+ * @tparam TDomain a domain.
  * @tparam TFunctorD the functor g that transforms the domain into another one
  * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
+ * @tparam TFunctorVm1 the functor f-1 that transforms the value into another one during writing process
  *
  * The values associated to accessing the point values are adapted  
  * with a functor g and a functor f given at construction so that 
  * operator() calls f(img(g(aPoint))), instead of calling directly 
  * operator() of the underlying image img.
  * 
+ * The values associated to writing the points are adapted  
+ * with a functor g and a functor f-1 given at construction so that 
+ * setValue() is img.setValue(g(aPoint), f-1(aValue))
+ * 
  * Here is the construction of a simple image adapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet images/testConstImageAdapter.cpp ConstImageAdapterConstruction
+ * @snippet ../tests/images/testImageAdapter.cpp ImageAdapterConstruction 
  *
- * NB: the underlying image as well as the 2 functors
+ * NB: the underlying image as well as the 3 functors
  * are stored in the adapter as aliasing pointer
  * in order to avoid copies.  
  * The pointed objects must exist and must not be deleted 
  * during the use of the adapter
  */
-template <typename TImageContainer, 
-	  typename TNewDomain,
-	  typename TFunctorD,
-	  typename TNewValue, typename TFunctorV>
-class ConstImageAdapter
+template <typename TImageContainer,
+          typename TNewDomain,
+          typename TFunctorD,
+          typename TNewValue,
+          typename TFunctorV,
+          typename TFunctorVm1>
+class ImageAdapter
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> Self; 
+    typedef ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> Self; 
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -118,23 +125,24 @@ public:
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> )); 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorVm1, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-  
-    typedef DefaultConstImageRange<Self> ConstRange;
+
+    typedef DefaultConstImageRange<Self> ConstRange; 
+    typedef DefaultImageRange<Self> Range; 
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
-    ConstImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV):
-            myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
+    ImageAdapter(ImageContainer &anImage, const Domain &aDomain, const TFunctorD &aFD, const TFunctorV &aFV, const TFunctorVm1 &aFVm1):
+            myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV), myFVm1(&aFVm1)
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ConstImageAdapter Ctor fromRef " << std::endl;
+        trace.warning() << "ImageAdapter Ctor fromRef " << std::endl;
 #endif
     }
 
@@ -143,10 +151,10 @@ public:
     * @param other the object to copy.
     * @return a reference on 'this'.
     */
-    ConstImageAdapter & operator= ( const ConstImageAdapter & other )
+    ImageAdapter & operator= ( const ImageAdapter & other )
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ConstImageAdapter assignment " << std::endl;
+        trace.warning() << "ImageAdapter assignment " << std::endl;
 #endif
         if (&other != this)
         {
@@ -154,6 +162,7 @@ public:
             mySubDomainPtr = other.mySubDomainPtr;
             myFD = other.myFD;
             myFV = other.myFV;
+            myFVm1 = other.myFVm1;
         }
         return *this;
     }
@@ -163,7 +172,7 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ConstImageAdapter() {}
+    ~ImageAdapter() {}
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -177,7 +186,7 @@ public:
      */
     const Domain & domain() const
     {
-      return (*mySubDomainPtr);
+        return (*mySubDomainPtr);
     }
 
     /**
@@ -189,6 +198,17 @@ public:
     ConstRange constRange() const
     {
         return ConstRange( *this );
+    }
+
+    /**
+     * Returns the range of the underlying image
+     * to iterate over its values
+     *
+     * @return a range.
+     */
+    Range range()
+    {
+        return Range( *this );
     }
 
     /////////////////// Accessors //////////////////
@@ -209,8 +229,27 @@ public:
         
         return myFV->operator()(myImagePtr->operator()(myFD->operator()(aPoint)));
     }
-    
-    
+
+
+    /////////////////// Set values //////////////////
+
+    /**
+     * Set a value on an Image at a position specified by a Point.
+     *
+     * @pre @c it must be a point in the image domain.
+     *
+     * @param aPoint the point.
+     * @param aValue the value.
+     */
+    void setValue(const Point &aPoint, const typename TImageContainer::Value &aValue)
+    {
+        ASSERT(this->domain().isInside(aPoint));
+        
+        myImagePtr->setValue(myFD->operator()(aPoint), myFVm1->operator()(aValue));
+    }
+
+
+
     /////////////////// API //////////////////
 
     /**
@@ -246,9 +285,9 @@ private:
     /**
      * Default constructor.
      */
-    ConstImageAdapter() {
+    ImageAdapter() {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ConstImageAdapter Ctor default " << std::endl;
+        trace.warning() << "ImageAdapter Ctor default " << std::endl;
 #endif
     }
     
@@ -256,7 +295,7 @@ private:
 protected:
 
     /// Alias on the image container
-    const ImageContainer * myImagePtr;
+    ImageContainer * myImagePtr;
     
     /**
      * The image SubDomain
@@ -272,6 +311,12 @@ protected:
      * Aliasing pointer on the underlying Value functor
      */
     const TFunctorV* myFV;
+    
+    /**
+     * Aliasing pointer on the underlying "m-1" Value functor
+     */
+    const TFunctorVm1* myFVm1;
+
 
 private:
 
@@ -279,30 +324,30 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class ConstImageAdapter
+}; // end of class ImageAdapter
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'ConstImageAdapter'.
+ * Overloads 'operator<<' for displaying objects of class 'ImageAdapter'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'ConstImageAdapter' to write.
+ * @param object the object of class 'ImageAdapter' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV, typename TFunctorVm1>
 std::ostream&
-operator<< ( std::ostream & out, const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> & object );
+operator<< ( std::ostream & out, const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/ConstImageAdapter.ih"
+#include "DGtal/images/ImageAdapter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ConstImageAdapter_h
+#endif // !defined ImageAdapter_h
 
-#undef ConstImageAdapter_RECURSES
-#endif // else defined(ConstImageAdapter_RECURSES)
+#undef ImageAdapter_RECURSES
+#endif // else defined(ImageAdapter_RECURSES)
