@@ -88,10 +88,7 @@ bool testVolReader()
   nbok += ( nbval == 8043)  ? 1 : 0; 
   nb++;
 
-  typedef HueShadeColorMap<unsigned char> Hue;
-  typedef GrayscaleColorMap<unsigned char> Gray;
-
-  VolWriter<Image,Gray>::exportVol("catenoid-export.vol",image,0,255);
+  VolWriter<Image>::exportVol("catenoid-export.vol",image);
 
   nbok += ( true )  ? 1 : 0; 
   nb++;
