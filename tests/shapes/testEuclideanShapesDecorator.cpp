@@ -15,14 +15,15 @@
  **/
 
 /**
- * @file testUnaryOperationShapes.cpp
+ * @file testEuclideanShapesDecorator.cpp
  * @ingroup Tests
- * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @author Jérémy Levallois (\c jeremy.levallois@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
- * @date 2012/08/28
+ * @date 2012/12/07
  *
- * Functions for testing class UnaryOperationShapes.
+ * Functions for testing class EuclideanShapesDecorator.
  *
  * This file is part of the DGtal library.
  */
@@ -33,7 +34,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 /////// UnaryOperators
-#include "DGtal/shapes/EuclideanShapesAdapter.h"
+#include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 /////// Shapes 2D
 #include "DGtal/shapes/parametric/Ball2D.h"
@@ -43,19 +44,18 @@
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class UnaryOperationShapes.
+// Functions for testing class EuclideanShapesDecorator.
 ///////////////////////////////////////////////////////////////////////////////
 
-int testUnaryOperationShapes ( int argc, char**argv )
+bool testEuclideanShapesDecorator()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Testing Unary operation on Shapes ..." );
+  trace.beginBlock ( "Testing Unary operation on euclidean shapes ..." );
 
   typedef Ball2D< Z2i::Space > ShapeA;
-  typedef typename ShapeA::Space::Point Point;
-  typedef typename ShapeA::Space::RealPoint RealPoint;
+  typedef typename ShapeA::RealPoint RealPoint;
 
   ShapeA shapeA(-2.501, 0.0, 2.5013);
   ShapeA shapeB(2, 0.0, 2.5013);
@@ -71,25 +71,27 @@ int testUnaryOperationShapes ( int argc, char**argv )
   typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
   Minus s_minus ( shapeA, shapeC );
 
-  nbok += s_union.isInside( RealPoint( -5.5, 0.0 )) ? 0 : 1;
+  nbok += s_union.isInside( RealPoint( -5.1, 0.0 )) ? 0 : 1;
   nbok += s_union.isInside( RealPoint( 0.0, 0.0 )) ? 1 : 0;
-  nbok += s_union.isInside( RealPoint( 5.5, 0.0 )) ? 0 : 1;
+  nbok += s_union.isInside( RealPoint( 4.6, 0.0 )) ? 0 : 1;
+  nbok += s_union.isInside( RealPoint( 4.5, 0.0 )) ? 1 : 0;
   nbok += s_union.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
 
 
 
-  nbok += s_intersec.isInside( RealPoint( -5.0, 0.0 )) ? 0 : 1;
+  nbok += s_intersec.isInside( RealPoint( -2.6, 0.0 )) ? 0 : 1;
   nbok += s_intersec.isInside( RealPoint( 2.5, 0.0 )) ? 1 : 0;
-  nbok += s_intersec.isInside( RealPoint( 0.0, 2.0 )) ? 0 : 1;
-  nbok += s_intersec.isInside( RealPoint( -1.0, 0.0 )) ? 1 : 0;
+  nbok += s_intersec.isInside( RealPoint( 2.6, 0.0 )) ? 0 : 1;
+  nbok += s_intersec.isInside( RealPoint( 0.0, 2.5 )) ? 0 : 1;
+
 
 
   nbok += s_minus.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
-  nbok += s_minus.isInside( RealPoint( 2.5, 0.0 )) ? 0 : 1;
+  nbok += s_minus.isInside( RealPoint( -1.0, 0.0 )) ? 0 : 1;
   nbok += s_minus.isInside( RealPoint( 0.0, 2.0 )) ? 0 : 1;
-  nbok += s_minus.isInside( RealPoint( -4.0, 0.0 )) ? 1 : 0;
+  nbok += s_minus.isInside( RealPoint( -2.6, 0.0 )) ? 1 : 0;
 
-  nb = 12;
+  nb = 13;
 
 
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -103,16 +105,16 @@ int testUnaryOperationShapes ( int argc, char**argv )
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class UnaryOperationShapes" );
+  trace.beginBlock ( "Testing class EuclideanShapesDecorator" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
-      trace.info() << " " << argv[ i ];
+    trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testUnaryOperationShapes ( argc,argv ); // && ... other tests
+  bool res = testEuclideanShapesDecorator(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  return true;
+  return res ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

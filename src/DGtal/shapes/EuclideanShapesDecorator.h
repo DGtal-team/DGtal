@@ -17,26 +17,25 @@
 #pragma once
 
 /**
- * @file EuclideanShapesAdapter.h
+ * @file EuclideanShapesDecorator.h
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
  * @date 2012/08/28
- *
- * Header file for module EuclideanShapesAdapter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(EuclideanShapesAdapter_RECURSES)
-#error Recursive header files inclusion detected in EuclideanShapesAdapter.h
-#else // defined(EuclideanShapesAdapter_RECURSES)
+#if defined(EuclideanShapesDecorator_RECURSES)
+#error Recursive header files inclusion detected in EuclideanShapesDecorator.h
+#else // defined(EuclideanShapesDecorator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define EuclideanShapesAdapter_RECURSES
+#define EuclideanShapesDecorator_RECURSES
 
-#if !defined EuclideanShapesAdapter_h
+#if !defined EuclideanShapesDecorator_h
 /** Prevents repeated inclusion of headers. */
-#define EuclideanShapesAdapter_h
+#define EuclideanShapesDecorator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,10 +50,10 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// template class EuclideanShapesAdapter
+// template class EuclideanShapesDecorator
 /**
- * Description of template class 'EuclideanShapesAdapter' <p>
- * \brief Aim:
+ * Description of template class 'EuclideanShapesDecorator' <p>
+ * \brief Aim: Union between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
  */
 
   /////////////////////////////////////////////////////////////////////////////
@@ -68,12 +67,21 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeA> ));
-    typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
+    typedef typename ShapeA::Space Space;
+    typedef typename ShapeA::Point Point;
+    typedef typename ShapeA::RealPoint RealPoint;
+
+    /**
+      * Constructor.
+      *
+      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      */
     EuclideanShapesUnion( const ShapeA & a, const ShapeB & b )
       : myShapeA(a),
         myShapeB(b)
@@ -87,7 +95,6 @@ namespace DGtal
         myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
         myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
       }
-      //myCenter = myShapeA.center()
     }
 
     /**
@@ -131,7 +138,7 @@ namespace DGtal
     }
 
     /**
-     * Return the orienatation of a point with respect to a shape.
+     * Return the orientation of a point with respect to a shape.
      *
      * @param p input point
      *
@@ -143,7 +150,7 @@ namespace DGtal
       {
         if ( myShapeB.orientation( p ) == ON )
         {
-          return ON; // discutable
+          return ON;
         }
         else if ( myShapeB.orientation( p ) == INSIDE )
         {
@@ -220,7 +227,6 @@ namespace DGtal
 
     RealPoint myLowerBound;
     RealPoint myUpperBound;
-    //RealPoint myCenter;
 
   }; // end of class EuclideanShapesUnion
 
@@ -228,19 +234,28 @@ namespace DGtal
   // template class EuclideanShapesIntersection
   /**
    * Description of template class 'EuclideanShapesIntersection' <p>
-   * \brief Aim:
+   * \brief Aim: Intersection between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesIntersection
   {
     // ----------------------- Standard services ------------------------------
   public:
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeA> ));
-    ///@todo BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeA> ));
-    typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
+    typedef typename ShapeA::Space Space;
+    typedef typename ShapeA::Point Point;
+    typedef typename ShapeA::RealPoint RealPoint;
+
+    /**
+      * Constructor.
+      *
+      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      */
     EuclideanShapesIntersection( const ShapeA & a, const ShapeB & b )
       : myShapeA(a),
         myShapeB(b)
@@ -297,7 +312,7 @@ namespace DGtal
     }
 
     /**
-     * Return the orienatation of a point with respect to a shape.
+     * Return the orientation of a point with respect to a shape.
      *
      * @param p input point
      *
@@ -383,7 +398,6 @@ namespace DGtal
 
     RealPoint myLowerBound;
     RealPoint myUpperBound;
-    RealPoint myCenter;
 
   }; // end of class EuclideanShapesIntersection
 
@@ -391,23 +405,28 @@ namespace DGtal
   // template class EuclideanShapesMinus
   /**
    * Description of template class 'EuclideanShapesMinus' <p>
-   * \brief Aim:
+   * \brief Aim: Minus between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesMinus
   {
     // ----------------------- Standard services ------------------------------
   public:
-
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeA> ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeA> ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape<ShapeB> ));
-    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape<ShapeB> ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeA > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanBoundedShape< ShapeB > ));
+    BOOST_CONCEPT_ASSERT (( CEuclideanOrientedShape< ShapeB > ));
 
     typedef typename ShapeA::Space Space;
-    typedef typename Space::Point Point;
-    typedef typename Space::RealPoint RealPoint;
+    typedef typename ShapeA::Point Point;
+    typedef typename ShapeA::RealPoint RealPoint;
 
+    /**
+      * Constructor.
+      *
+      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      */
     EuclideanShapesMinus( const ShapeA & a, const ShapeB & b )
       : myShapeA(a),
         myShapeB(b)
@@ -554,7 +573,6 @@ namespace DGtal
 
     RealPoint myLowerBound;
     RealPoint myUpperBound;
-    //RealPoint myCenter;
 
   }; // end of class EuclideanShapesMinus
 
@@ -563,9 +581,9 @@ namespace DGtal
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'EuclideanShapesAdapter'.
+   * Overloads 'operator<<' for displaying objects of class 'EuclideanShapesDecorator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'EuclideanShapesAdapter' to write.
+   * @param object the object of class 'EuclideanShapesDecorator' to write.
    * @return the output stream after the writing.
    */
   template <typename ShapeA, typename ShapeB>
@@ -586,7 +604,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined EuclideanShapesAdapter_h
+#endif // !defined EuclideanShapesDecorator_h
 
-#undef EuclideanShapesAdapter_RECURSES
-#endif // else defined(EuclideanShapesAdapter_RECURSES)
+#undef EuclideanShapesDecorator_RECURSES
+#endif // else defined(EuclideanShapesDecorator_RECURSES)
