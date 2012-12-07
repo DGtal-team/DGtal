@@ -174,7 +174,7 @@ bool testGetSetVal()
   trace.info() << myImage;
   trace.info() << myImageV;
 
-  Display2DFactory::drawImage<HueTwice>(board, myImage, 0, 255);
+  Display2DFactory::drawImageHashTree<HueTwice>(board, myImage, 0, 255);
   board.saveSVG( "hashtree.svg" );
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, myImageV, 0, 255);
