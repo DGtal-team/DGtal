@@ -17,26 +17,25 @@
 #pragma once
 
 /**
- * @file DigitalShapesAdapter.h
+ * @file DigitalShapesDecorator.h
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
  * @date 2012/08/28
- *
- * Header file for module DigitalShapesAdapter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DigitalShapesAdapter_RECURSES)
-#error Recursive header files inclusion detected in DigitalShapesAdapter.h
-#else // defined(DigitalShapesAdapter_RECURSES)
+#if defined(DigitalShapesDecorator_RECURSES)
+#error Recursive header files inclusion detected in DigitalShapesDecorator.h
+#else // defined(DigitalShapesDecorator_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DigitalShapesAdapter_RECURSES
+#define DigitalShapesDecorator_RECURSES
 
-#if !defined DigitalShapesAdapter_h
+#if !defined DigitalShapesDecorator_h
 /** Prevents repeated inclusion of headers. */
-#define DigitalShapesAdapter_h
+#define DigitalShapesDecorator_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -54,45 +53,42 @@ namespace DGtal
 // template class DigitalShapesUnion
 /**
  * Description of template class 'DigitalShapesUnion' <p>
- * \brief Aim:
+ * \brief Aim: Union between two models of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesUnion
 {
   // ----------------------- Standard services ------------------------------
 public:
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-  typedef typename ShapeA::Space Space;
-  typedef typename Space::Point Point;
-  typedef typename Space::RealPoint RealPoint;
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
 
+  typedef typename ShapeA::Space Space;
+  typedef typename ShapeA::Point Point;
+
+  /**
+    * Constructor.
+    *
+    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    */
   DigitalShapesUnion( const ShapeA & a, const ShapeB & b )
     : myShapeA(a),
       myShapeB(b)
   {
-    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
-    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
-    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
-    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    Point shapeALowerBoundary = myShapeA.getLowerBound();
+    Point shapeBLowerBoundary = myShapeB.getLowerBound();
+    Point shapeAUpperBoundary = myShapeA.getUpperBound();
+    Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
       myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
       myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
     }
-    //myCenter = myShapeA.center()
   }
 
-  /**
-   * @param p any point in the plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool isInside( const RealPoint & p ) const
-  {
-    return myShapeA.isInside( p ) || myShapeB.isInside( p );
-  }
 
   /**
    * @param p any point in the digital plane.
@@ -100,16 +96,16 @@ public:
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
    */
-  bool isInside( const Point & p ) const
+  bool operator()( const Point & p ) const
   {
-    return myShapeA.isInside( p ) || myShapeB.isInside( p );
+    return myShapeA( p ) || myShapeB( p );
   }
 
   /**
    * @return the lower bound of the shape bounding box.
    *
    */
-  RealPoint getLowerBound() const
+  Point getLowerBound() const
   {
     return myLowerBound;
   }
@@ -118,19 +114,19 @@ public:
    * @return the upper bound of the shape bounding box.
    *
    */
-  RealPoint getUpperBound() const
+  Point getUpperBound() const
   {
     return myUpperBound;
   }
 
   /**
-   * Return the orienatation of a point with respect to a shape.
+   * Return the orientation of a point with respect to a shape.
    *
    * @param p input point
    *
    * @return the orientation of the point (<0 means inside, ...)
    */
-  Orientation orientation( const RealPoint & p) const
+  Orientation orientation( const Point & p) const
   {
     if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
         || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
@@ -141,11 +137,11 @@ public:
     {
       return INSIDE;
     }
-    else if ( myShapeA.isInside( p ))
+    else if ( myShapeA( p ))
     {
       return myShapeA.orientation( p );
     }
-    else if ( myShapeB.isInside( p ))
+    else if ( myShapeB( p ))
     {
       return myShapeB.orientation( p );
     }
@@ -206,9 +202,8 @@ private:
   const ShapeA & myShapeA;
   const ShapeB & myShapeB;
 
-  RealPoint myLowerBound;
-  RealPoint myUpperBound;
-  //RealPoint myCenter;
+  Point myLowerBound;
+  Point myUpperBound;
 
 }; // end of class DigitalShapesUnion
 
@@ -216,27 +211,35 @@ private:
 // template class DigitalShapesIntersection
 /**
  * Description of template class 'DigitalShapesIntersection' <p>
- * \brief Aim:
+ * \brief Aim: Intersection between two models of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesIntersection
 {
   // ----------------------- Standard services ------------------------------
 public:
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-  typedef typename ShapeA::Space Space;
-  typedef typename Space::Point Point;
-  typedef typename Space::RealPoint RealPoint;
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
 
+  typedef typename ShapeA::Space Space;
+  typedef typename ShapeA::Point Point;
+
+  /**
+    * Constructor.
+    *
+    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    */
   DigitalShapesIntersection( const ShapeA & a, const ShapeB & b )
     : myShapeA(a),
       myShapeB(b)
   {
-    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
-    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
-    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
-    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    Point shapeALowerBoundary = myShapeA.getLowerBound();
+    Point shapeBLowerBoundary = myShapeB.getLowerBound();
+    Point shapeAUpperBoundary = myShapeA.getUpperBound();
+    Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
       myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
@@ -245,32 +248,21 @@ public:
   }
 
   /**
-   * @param p any point in the plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool isInside( const RealPoint & p ) const
-  {
-    return myShapeA.isInside( p ) && myShapeB.isInside( p );
-  }
-
-  /**
    * @param p any point in the digital plane.
    *
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
    */
-  bool isInside( const Point & p ) const
+  bool operator()( const Point & p ) const
   {
-    return myShapeA.isInside( p ) && myShapeB.isInside( p );
+    return myShapeA( p ) && myShapeB( p );
   }
 
   /**
    * @return the lower bound of the shape bounding box.
    *
    */
-  RealPoint getLowerBound() const
+  Point getLowerBound() const
   {
     return myLowerBound;
   }
@@ -279,19 +271,19 @@ public:
    * @return the upper bound of the shape bounding box.
    *
    */
-  RealPoint getUpperBound() const
+  Point getUpperBound() const
   {
     return myUpperBound;
   }
 
   /**
-   * Return the orienatation of a point with respect to a shape.
+   * Return the orientation of a point with respect to a shape.
    *
    * @param p input point
    *
    * @return the orientation of the point (<0 means inside, ...)
    */
-  Orientation orientation( const RealPoint & p) const
+  Orientation orientation( const Point & p) const
   {
     if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
         || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
@@ -364,9 +356,8 @@ private:
   const ShapeA & myShapeA;
   const ShapeB & myShapeB;
 
-  RealPoint myLowerBound;
-  RealPoint myUpperBound;
-  RealPoint myCenter;
+  Point myLowerBound;
+  Point myUpperBound;
 
 }; // end of class DigitalShapesIntersection
 
@@ -374,27 +365,35 @@ private:
 // template class DigitalShapesMinus
 /**
  * Description of template class 'DigitalShapesMinus' <p>
- * \brief Aim:
+ * \brief Aim: Minus between two models of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesMinus
 {
   // ----------------------- Standard services ------------------------------
 public:
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape<ShapeA> ));
-  ///@todo BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape<ShapeA> ));
-  typedef typename ShapeA::Space Space;
-  typedef typename Space::Point Point;
-  typedef typename Space::RealPoint RealPoint;
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeA > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalBoundedShape< ShapeB > ));
+  BOOST_CONCEPT_ASSERT (( CDigitalOrientedShape< ShapeB > ));
 
+  typedef typename ShapeA::Space Space;
+  typedef typename ShapeA::Point Point;
+
+  /**
+    * Constructor.
+    *
+    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    */
   DigitalShapesMinus( const ShapeA & a, const ShapeB & b )
     : myShapeA(a),
       myShapeB(b)
   {
-    RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
-    RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
-    RealPoint shapeAUpperBoundary = myShapeA.getUpperBound();
-    RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
+    Point shapeALowerBoundary = myShapeA.getLowerBound();
+    Point shapeBLowerBoundary = myShapeB.getLowerBound();
+    Point shapeAUpperBoundary = myShapeA.getUpperBound();
+    Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
       myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
@@ -402,16 +401,6 @@ public:
     }
   }
 
-  /**
-   * @param p any point in the plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool isInside( const RealPoint & p ) const
-  {
-    return myShapeA.isInside( p ) && !myShapeB.isInside( p );
-  }
 
   /**
    * @param p any point in the digital plane.
@@ -419,16 +408,16 @@ public:
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
    */
-  bool isInside( const Point & p ) const
+  bool operator()( const Point & p ) const
   {
-    return myShapeA.isInside( p ) && !myShapeB.isInside( p );
+    return myShapeA( p ) && !myShapeB( p );
   }
 
   /**
    * @return the lower bound of the shape bounding box.
    *
    */
-  RealPoint getLowerBound() const
+  Point getLowerBound() const
   {
     return myLowerBound;
   }
@@ -437,19 +426,19 @@ public:
    * @return the upper bound of the shape bounding box.
    *
    */
-  RealPoint getUpperBound() const
+  Point getUpperBound() const
   {
     return myUpperBound;
   }
 
   /**
-   * Return the orienatation of a point with respect to a shape.
+   * Return the orientation of a point with respect to a shape.
    *
    * @param p input point
    *
    * @return the orientation of the point (<0 means inside, ...)
    */
-  Orientation orientation( const RealPoint & p) const
+  Orientation orientation( const Point & p) const
   {
     if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON )
     {
@@ -521,16 +510,15 @@ private:
   const ShapeA & myShapeA;
   const ShapeB & myShapeB;
 
-  RealPoint myLowerBound;
-  RealPoint myUpperBound;
-  //RealPoint myCenter;
+  Point myLowerBound;
+  Point myUpperBound;
 
 }; // end of class DigitalShapesMinus
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DigitalShapesAdapter'.
+   * Overloads 'operator<<' for displaying objects of class 'DigitalShapesDecorator'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'DigitalShapesAdapter' to write.
+   * @param object the object of class 'DigitalShapesDecorator' to write.
    * @return the output stream after the writing.
    */
   template <typename ShapeA, typename ShapeB>
@@ -549,7 +537,7 @@ private:
 
 
 
-#endif // !defined DigitalShapesAdapter_h
+#endif // !defined DigitalShapesDecorator_h
 
-#undef DigitalShapesAdapter_RECURSES
-#endif // else defined(DigitalShapesAdapter_RECURSES)
+#undef DigitalShapesDecorator_RECURSES
+#endif // else defined(DigitalShapesDecorator_RECURSES)
