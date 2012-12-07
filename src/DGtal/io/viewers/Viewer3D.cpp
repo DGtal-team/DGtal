@@ -651,6 +651,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   glNewList ( GLuint  (myListToAff + nbListOfPrimitives +5 ), GL_COMPILE );
   myNbListe++;
   glPushName ( myNbListe );
+  glEnable ( GL_LIGHTING );  
   for ( unsigned int i=0; i<myPolygonList.size(); i++ )
     {
       glBegin ( GL_POLYGON );

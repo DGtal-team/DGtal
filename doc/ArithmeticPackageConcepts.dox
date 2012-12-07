@@ -28,14 +28,33 @@ digraph GARITHMETIC {
     subgraph cluster_ext {
 	rank = same;
         style=invis;
-        subgraph cluster_packages {
+        subgraph cluster_base {
                  style=filled;
                  color="#eeeeff";
                  node [style=filled,color=white];
                  label="base";
 
-                 CBackInsertable;
-                 CConstSinglePassRange;
+                 CBackInsertable [ label="CBackInsertable" URL="\ref CBackInsertable" ];
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ];
+        }
+        subgraph cluster_kernel {
+                 style=filled;
+                 color="#ddddee";
+                 node [style=filled,color=white];
+                 label="kernel";
+
+                 CInteger [ label="CInteger" URL="\ref CInteger" ];
+                 CSignedInteger [ label="CSignedInteger" URL="\ref CSignedInteger" ];
+                 CUnsignedInteger [ label="CUnsignedInteger" URL="\ref CUnsignedInteger" ];
+                 CSpace [ label="CSpace" URL="\ref CSpace" ];
+        }
+        subgraph cluster_io {
+                 style=filled;
+                 color="#e4e4ff";
+                 node [style=filled,color=white];
+                 label="io";
+
+                 CDrawableWithBoard2D [ label="CDrawableWithBoard2D" URL="\ref CDrawableWithBoard2D" ];
         }
         subgraph cluster_boost {
                  style=filled;
@@ -46,6 +65,7 @@ digraph GARITHMETIC {
                  boost_CopyConstructible;
                  boost_DefaultConstructible;
                  boost_Assignable;
+                 boost_Sequence;
         }
     }
   
@@ -55,7 +75,7 @@ digraph GARITHMETIC {
         node [style=filled,color=white];
         label="arithmetic (main concepts)";
 
-        CPositiveIrreducibleFraction;
+        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref CPositiveIrreducibleFraction" ] ;
     }
     CPositiveIrreducibleFraction -> CBackInsertable;
     CPositiveIrreducibleFraction -> CConstSinglePassRange;
@@ -71,10 +91,12 @@ digraph GARITHMETIC {
         node [style=filled,color=white];
         label="arithmetic (main models)";
 
-        SternBrocot_Fraction;
-        LightSternBrocot_Fraction;
-        LighterSternBrocot_Fraction;
-        IntegerComputer
+        SternBrocot_Fraction [ label="SternBrocot::Fraction" URL="\ref SternBrocot::Fraction" ] ;
+        LightSternBrocot_Fraction [ label="LightSternBrocot::Fraction" URL="\ref LightSternBrocot::Fraction" ] ;
+        LighterSternBrocot_Fraction [ label="LighterSternBrocot::Fraction" URL="\ref LighterSternBrocot::Fraction" ] ;
+        IntegerComputer [ label="IntegerComputer" URL="\ref IntegerComputer" ] ;
+        LatticePolytope2D [ label="LatticePolytope2D" URL="\ref LatticePolytope2D" ] ;
+        ClosedIntegerHalfPlane [ label="ClosedIntegerHalfPlane" URL="\ref ClosedIntegerHalfPlane" ] ;
     }
 
     SternBrocot_Fraction -> CPositiveIrreducibleFraction;
@@ -85,6 +107,13 @@ digraph GARITHMETIC {
     IntegerComputer -> boost_Assignable;
     IntegerComputer -> CInteger [label="use",style=dashed];
     IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
+    LatticePolytope2D -> CSpace [label="use",style=dashed];
+    LatticePolytope2D -> CDrawableWithBoard2D
+    LatticePolytope2D -> boost_DefaultConstructible;
+    LatticePolytope2D -> boost_CopyConstructible;
+    LatticePolytope2D -> boost_Assignable;
+    LatticePolytope2D -> boost_Sequence;
+    ClosedIntegerHalfPlane -> CSpace [label="use",style=dashed];
 }
 @enddot
 

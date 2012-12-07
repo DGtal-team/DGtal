@@ -620,6 +620,16 @@ DGtal::PointVector<dim, TComponent>::minElement( )
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
+void
+DGtal::PointVector<dim, TComponent>::
+negate()
+{
+  for ( Dimension i = 0; i < dimension; ++i )
+    this->myArray[ i ] = - this->myArray[ i ];
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
 double
 DGtal::PointVector<dim, TComponent>::norm (const
             typename Self::NormType aType ) const

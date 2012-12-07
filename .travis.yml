@@ -5,14 +5,23 @@ compiler:
   - clang
 
 env:
-  - BTYPE=Debug
-  - BTYPE=Release
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Release" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug" 
 
 before_script:
-  - sudo apt-get -qq install libboost-program-options-dev libboost-system-dev libqglviewer-qt4-dev
+  - sudo apt-get -qq install libboost-program-options-dev libcairo2-dev libgraphicsmagick++1-dev libboost-system-dev libgmp-dev libqglviewer-qt4-dev
+
+
+
+matrix:
+  exclude:
+    - compiler: gcc
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
+ 
 
 script: 
-  - cmake . -DCMAKE_BUILD_TYPE=$BTYPE -DWITH_QGLVIEWER=true 
+  - cmake . $BTYPE
   - make
 
 after_script: 
