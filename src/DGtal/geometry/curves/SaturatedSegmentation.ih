@@ -140,9 +140,9 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
     DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
 
   } else { //processing of a whole linear range
-
     --i; //set i to the last point (not past-to-last)
     if ((myS->myMode == "First")||(myS->myMode == "First++")) {
+
       DGtal::firstMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
     } 
     else
@@ -228,26 +228,26 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
        myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
        if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
-      &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) 
-       {         //if only one segment
-
-         myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
-         myFlagIsLast = true; 
-        
-       } else  //otherwise
-       {
-          myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
-       }
- 
-     } 
+	    &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) 
+	 {         //if only one segment
+	   
+	   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+	   myFlagIsLast = true; 
+	   
+	 } else  //otherwise
+	 {
+	   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+	 }
+       
+      } 
      else 
-      {
-        myFlagIsValid = false;
-      }
+       {
+	 myFlagIsValid = false;
+       }
    }
  }
 
-  template <typename TSegmentComputer>
+template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
