@@ -22,7 +22,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/11/09
+ * @date 2012/12/08
  *
  * Header file for module ReducedMedialAxis.cpp
  *
@@ -52,6 +52,9 @@
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/CImage.h"
+#include "DGtal/images/Image.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,182 +64,67 @@ namespace DGtal
   // template class ReducedMedialAxis
   /**
    * Description of template class 'ReducedMedialAxis' <p>
-   * \brief Aim: Implementation of the linear in time reverse distance
-   * transformation for separable metrics.
-   * 
-   * This class is a wrapper around a power map construction (see
-   * PowerMap). More precisely, at a point p, since the PowerMap at p
-   * returns a vector to the closest weighted site, this class adapts
-   * the operator() in order to returns the power distance to the
-   * closest weighted site for the considered metric.
+   * \brief Aim: Implementation of the separable medial axis
+   * extraction.
    *
-   * Please refer to PowerMap documentation for details on the
-   * computational cost and parameter description.
+   * This utility struct extract medial axis balls from a
+   * PowerMap. Basically, each (weighted) site of the PowerMap defines
+   * a digital maximal ball if its digital power cell restricted to
+   * the input shape is not empty.
    *
-   * This class is a model of CConstImage.
+   * The output is an image associating ball radii (weight of the
+   * power map site) to maximal ball centers. Most methods output a
+   * lightweight proxy to an image container (of type ImageContainer,
+   * see below).
    *
-   * @tparam TWeightImage model of CConstImage
-   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
-   * @tparam TImageContainer any model of CImage to store the
-   * PowerMap (default: ImageContainerBySTLVector). The space of the
-   * image container and the TSpace should match. Furthermore the
-   * container value type must be TSpace::Vector.
+   * @note Following ReverseDistanceTransformation, the input shape is
+   * defined as points with negative power distance.
+   *
+   * @tparam TPowerMap any specialized PowerMap type @tparam
+   * TImageContainer any model of CImage to store the medial axis
+   * points (default: ImageContainerBySTLVector). 
+   *
+   * @see testReducedMedialAxis.cpp
    */
-  template < typename TWeightImage,
-             typename TPSeparableMetric,
-	     typename TImageContainer = 
-             ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
-                                       typename TWeightImage::Domain::Space::Vector> >
-  class ReducedMedialAxis: public PowerMap<TWeightImage,
-						       TPSeparableMetric, 
-						       TImageContainer>
+  template <typename TPowerMap, 
+            typename TImageContainer =  ImageContainerBySTLMap<typename TPowerMap::Domain,
+                                                               typename TPowerMap::PowerSeparableMetric::Value> > 
+  struct ReducedMedialAxis
   {
+    //MA Container
+    typedef Image<TImageContainer> Type;
 
-  public:
-
-    ///Separable Metric type
-    typedef TWeightImage WeightImage;
-
-    ///Separable Metric type
-    typedef TPSeparableMetric PowerSeparableMetric;
-
-    ///Separable Metric type value type
-    typedef typename PowerSeparableMetric::Value Value;
-
-    ///Point type
-    typedef typename TWeightImage::Domain::Space::Point Point;
-
-    ///Vector type
-    typedef typename TWeightImage::Domain::Space::Vector Vector;
-
-    ///Separable Metric type weight type
-    typedef typename PowerSeparableMetric::Weight Weight;
- 
-    //BOOST_STATIC_ASSERT((boost::is_same< typename TWeightImage::Value, 
-    //                    typename PowerSeparableMetric::Point>::value));
-    
-    ///Definition of the image.
-    typedef  ReducedMedialAxis<TWeightImage,TPSeparableMetric,TImageContainer> Self;
-    
-    typedef PowerMap<TWeightImage,TPSeparableMetric> Parent;
-   
-    ///Definition of the image constRange
-    typedef  DefaultConstImageRange<Self> ConstRange;
-
-
-    ///Definition of the image value type.
-    typedef typename PowerMap<TWeightImage,TPSeparableMetric,
-			      TImageContainer>::Domain  Domain;
-    
-
-    /**
-     *  Constructor
-     */
-    ReducedMedialAxis(const Domain * aDomain,
-                                  const WeightImage * aWeightImage,
-                                  const PowerSeparableMetric * aMetric):
-      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(aDomain,aWeightImage,aMetric)
-    {}
-    
-    /**
-     * Default destructor
-     */
-    ~ReducedMedialAxis() {};
-        
-    // ------------------- Private functions ------------------------
-  public:
-    
-     /**
-     * Returns a const range on the ReverseDistanceMap values.
-     *  @return a const range
-     */
-    const Domain & domain() const
-    {
-      return Parent::domain();
-    }
-    
-     /**
-     * Returns a const range on the ReverseDistanceMap values.
-     *  @return a const range
-     */
-    ConstRange constRange() const
-    {
-      return ConstRange(*this);
-    }
-        
-    /**
-     * Access to a ReverseDistanceMap value (a.k.a. the norm of the
-     * associated Voronoi vector) at a point.
+    /** 
+     * Extract reduced medial axis from a power map.
+     * This methods is in @f$ O(|powerMap|)@f$. 
      *
-     * @param aPoint the point to probe.
-     */
-    Value operator()(const Point &aPoint) const
-    {
-      return this->myMetricPtr->powerDistance(aPoint, 
-                                              this->myImagePtr->operator()(aPoint),
-                                              this->myWeightImagePtr->operator()( this->myImagePtr->operator()(aPoint)));
-    }    
-          
-    /**
-     * Access to a ReverseDistanceMap value (a.k.a. the norm of the
-     * associated Voronoi vector) at a point.
-     *
-     * @param aPoint the point to probe.
-     */
-    Vector getPowerVector(const Point &aPoint) const
-    {
-      return this->myImagePtr->operator()(aPoint);
-    }    
-     
-    /** 
-     * @return  Returns the underlying metric.
-     */
-    const PowerSeparableMetric* metricPtr() const
-    {
-      return Parent::metricPtr();
-    }
-
-    /** 
-     * Self Display method.
+     * @param aPowerMap the input powerMap
      * 
-     * @param out 
+     * @return a lightweight proxy to the ImageContainer specified in
+     * template arguments.
      */
-    void selfDisplay ( std::ostream & out ) const
+    static 
+    Type getReducedMedialAxisFromPowerMap(const TPowerMap &aPowerMap) 
     {
-      out << "[ReducedMedialAxis] underlying PowerMap={";
-      Parent::selfDisplay(out);
-      out << "}";
+      typename TPowerMap::Value v;
+      TImageContainer *computedMA = new TImageContainer( aPowerMap.domain() );
+      for (typename TPowerMap::Domain::ConstIterator it = aPowerMap.domain().begin(), 
+             itend = aPowerMap.domain().end(); it != itend; ++it)
+        {
+          v =  aPowerMap(*it);
+          if  (aPowerMap.metricPtr()->powerDistance(*it, 
+                                                    v,
+                                                    aPowerMap.weightImagePtr()->operator()( v )) 
+               < NumberTraits<typename TPowerMap::PowerSeparableMetric::Value>::ZERO )
+            
+            computedMA->setValue( v,
+                                  aPowerMap.weightImagePtr()->operator()( v ));
+
+        }
+      return Type( computedMA );
     }
-    
-    // ------------------- protected methods ------------------------
-  protected:
-
-    /** 
-     * Default Constructor.
-     * 
-     */
-    ReducedMedialAxis();
-   
-    
-    // ------------------- Private members ------------------------
-  private:
-
   }; // end of class ReducedMedialAxis
 
-
-// //                                                                           //
-// ///////////////////////////////////////////////////////////////////////////////
-  
-  template <typename W,typename TSep>
-  inline
-  std::ostream&
-  operator<< ( std::ostream & out, 
-               const ReducedMedialAxis<W,TSep> & object )
-  {
-    object.selfDisplay( out );
-    return out;
-  }
-  
 
   
 } // namespace DGtal
