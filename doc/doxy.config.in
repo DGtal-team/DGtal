@@ -666,7 +666,6 @@ WARN_LOGFILE           =
 INPUT                  = @top_srcdir@/doc \
                          @top_srcdir@/src \
                          @top_srcdir@/tests \
-                         @top_srcdir@/tools \
                          @top_srcdir@/examples \
                          @top_bindir@/src/DGtal/base
 

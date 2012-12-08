@@ -70,7 +70,13 @@ namespace DGtal
    * This utility struct extract medial axis balls from a
    * PowerMap. Basically, each (weighted) site of the PowerMap defines
    * a digital maximal ball if its digital power cell restricted to
-   * the input shape is not empty.
+   * the input shape is not empty @cite dcoeurjo_pami_RDMA .
+   *
+   *        Optimal Separable Algorithms to Compute the Reverse
+   *        Euclidean Distance Transformation and Discrete Medial Axis in
+   *        Arbitrary Dimension, D. Coeurjolly and A. Montanvert, IEEE
+   *        Transactions on Pattern Analysis and Machine Intelligence,
+   *        29(3):437-448, 2007.
    *
    * The output is an image associating ball radii (weight of the
    * power map site) to maximal ball centers. Most methods output a

@@ -303,7 +303,7 @@ instance generate some exports in pdf like this example:
 
    @see \ref importMesh3D
 
-   @image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
+   \image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
 
 * \example io/meshFromOFF.cpp
 **/
@@ -315,7 +315,7 @@ instance generate some exports in pdf like this example:
 
    @see \ref exportMesh3D
 
-   @image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (\ref http://meshlab.sourceforge.net). "
+   \image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (\ref http://meshlab.sourceforge.net). "
 
 * \example io/display3DToOFF.cpp
 **/
