@@ -64,7 +64,7 @@ namespace DGtal
    display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
    ...). The class Viewer3D and Board3DTo2D implement two different
    ways to display 3D objects. The first one (Viewer3D), permits an
-   interactive visualisation (based on @i OpenGL ) and the second one
+   interactive visualisation (based on @a  OpenGL ) and the second one
    (Board3DTo2D) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
  
