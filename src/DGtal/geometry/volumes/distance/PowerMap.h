@@ -156,8 +156,7 @@ namespace DGtal
      * This constructor computes the Power Map of a set of point
      * sites using a SeparableMetric metric.  The method associates to
      * each point satisfying the foreground predicate, the closest
-     * site for which the predicate is false. This algorithm is
-     * O(d.|domain size|).
+     * site for which the predicate is false. 
      *
      * @param aDomain defines the (hyperrectangular) domain on which
      * the computation is performed.  
@@ -221,6 +220,14 @@ namespace DGtal
     const PowerSeparableMetric* metricPtr() const
     {
       return myMetricPtr;
+    }
+
+    /** 
+     * @return  Returns the underlying weight image.
+     */
+    const WeightImage* weightImagePtr() const
+    {
+      return myWeightImagePtr;
     }
 
     /**

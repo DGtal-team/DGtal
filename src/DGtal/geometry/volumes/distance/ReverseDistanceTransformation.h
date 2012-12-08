@@ -52,6 +52,8 @@
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -99,6 +101,10 @@ namespace DGtal
 
     ///Separable Metric type
     typedef TPSeparableMetric PowerSeparableMetric;
+
+    ///Image Container type
+    typedef TImageContainer ImageContainer;
+    BOOST_CONCEPT_ASSERT(( CImage<ImageContainer> ));
 
     ///Separable Metric type value type
     typedef typename PowerSeparableMetric::Value Value;
@@ -166,7 +172,7 @@ namespace DGtal
         
     /**
      * Access to a ReverseDistanceMap value (a.k.a. the norm of the
-     * associated Voronoi vector) at a point.
+     * associated Power vector) at a point.
      *
      * @param aPoint the point to probe.
      */

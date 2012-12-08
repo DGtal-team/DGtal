@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testPowerMap.cpp
+ * @file testReducedMedialAxis.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/10/25
+ * @date 2012/12/08
  *
- * Functions for testing class PowerMap.
+ * Functions for testing class ReducedMedialAxis.
  *
  * This file is part of the DGtal library.
  */
@@ -32,10 +32,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
+#include "DGtal/geometry/volumes/distance/ReducedMedialAxis.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
-#include "DGtal/images/ImageContainerBySTLMap.h"
-#include "DGtal/images/ImageContainerBySTLVector.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -48,7 +47,7 @@ using namespace DGtal;
  * Example of a test. To be completed.
  *
  */
-bool testPowerMap()
+bool testReducedMedialAxis()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -92,7 +91,7 @@ bool testPowerMap()
 	trace.info()<< power(Z2i::Point(i,j))[0]<<","<<power(Z2i::Point(i,j))[1]<<" ";
       trace.info()<<std::endl;
     }
-  trace.info() << "REDT"<<std::endl;
+
   trace.info()<<std::endl;
   //Reconstruction
   for(unsigned int i=0; i<11; i++)
@@ -108,21 +107,25 @@ bool testPowerMap()
     }
   trace.info()<<std::endl;
  
+  //Medial Axis extraction
+  ReducedMedialAxis<PowerMap<Image, Z2i::L2PowerMetric> >::Type  rdma = ReducedMedialAxis< PowerMap<Image, Z2i::L2PowerMetric> >::getReducedMedialAxisFromPowerMap(power);
+  
   //Reconstruction
   for(unsigned int i=0; i<11; i++)
     {
       for(unsigned int j=0; j<11; j++)
 	{
 	  Z2i::Point p(i,j);
-	  DGtal::int32_t dist = (i-power(p)[0])*(i-power(p)[0]) +
-	    ( j-power(p)[1])*(j-power(p)[1])  - image(power(p));
-	  if (dist>=0)
-	    std::cerr<< "0 ";
-	   else
-	     std::cerr<< "X ";
+          if (rdma.domain().isInside(p) )
+            trace.info()<< rdma(p);
+          else
+            trace.info()<< " - ";
+            
 	}
       std::cerr<<std::endl;
     }
+  trace.info()<<std::endl;
+ 
   
   nbok += true ? 1 : 0; 
   nb++;
@@ -138,13 +141,13 @@ bool testPowerMap()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class PowerMap" );
+  trace.beginBlock ( "Testing class ReducedMedialAxis" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testPowerMap(); // && ... other tests
+  bool res = testReducedMedialAxis(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
