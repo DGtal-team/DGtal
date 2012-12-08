@@ -149,15 +149,11 @@ int main( int argc, char** argv )
   std::vector< MyDistanceVisitor::Node > layer;
   while ( ! visitor2.finished() )
     {
-      visitor2.getCurrentLayer( layer );
-      ASSERT( ! layer.empty() );
-      Color c = hueShade( layer[ 0 ].second );
-      viewer << CustomColors3D( Color::Red, c );
-      for ( std::vector< MyDistanceVisitor::Node >::const_iterator 
-              it = layer.begin(), itE = layer.end();
-            it != itE; ++it )
-        viewer << ks.unsigns( (*it).first );
-      visitor2.expandLayer();
+      MyNode n = visitor2.current(); 
+      Color c = hueShade( n.second );
+      viewer << CustomColors3D( Color::Red, c )
+             << ks.unsigns( n.first );
+      visitor2.expand();
     }
   viewer << Viewer3D::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;

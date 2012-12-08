@@ -61,7 +61,7 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
 DistanceVisitor( const Graph & g,
                  const VertexFunctor & distance,
                  const Vertex & p )
-  : myGraph( g ), myDistance( distance )
+  : myGraph( &g ), myDistance( distance )
 {
   myMarkedVertices.insert( p );
   myQueue.push( Node( p, myDistance( p ) ) );
@@ -74,7 +74,7 @@ DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
 DistanceVisitor( const Graph & g,
                  const VertexFunctor & distance,
                  VertexIterator b, VertexIterator e )
-  : myGraph( g ), myDistance( distance )
+  : myGraph( &g ), myDistance( distance )
 {
   for ( ; b != e; ++b )
     {
@@ -89,7 +89,7 @@ const typename DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::Graph &
 DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
 graph() const
 {
-  return myGraph;
+  return *myGraph;
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
@@ -181,9 +181,9 @@ expand()
   myQueue.pop();
   Vertex vtx;
   VertexList tmp;
-  tmp.reserve( myGraph.bestCapacity() );
+  tmp.reserve( myGraph->bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
-  myGraph.writeNeighbors( write_it, node.first );
+  myGraph->writeNeighbors( write_it, node.first );
   for ( typename VertexList::const_iterator it = tmp.begin(), 
           it_end = tmp.end(); it != it_end; ++it )
     {
@@ -224,9 +224,9 @@ expand( const VertexPredicate & authorized_vtx )
   myQueue.pop();
   Vertex vtx;
   VertexList tmp;
-  tmp.reserve( myGraph.bestCapacity() );
+  tmp.reserve( myGraph->bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
-  myGraph.writeNeighbors( write_it, node.first, authorized_vtx );
+  myGraph->writeNeighbors( write_it, node.first, authorized_vtx );
   for ( typename VertexList::const_iterator it = tmp.begin(), 
           it_end = tmp.end(); it != it_end; ++it )
     {
@@ -297,7 +297,18 @@ visitedVertices() const
     }
   return visitedVtx;
 }
-
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
+inline
+void
+DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::
+swap( DistanceVisitor & other )
+{
+  std::swap( myGraph, other.myGraph );
+  std::swap( myDistance, other.myDistance );
+  myMarkedVertices.swap( other.myMarkedVertices );
+  myQueue.swap( other.myQueue );
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 

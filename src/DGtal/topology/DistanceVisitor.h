@@ -332,8 +332,8 @@ namespace DGtal
      * Constructor from a point and a vertex functor object. This
      * point provides the initial core of the visitor.
      *
-     * @param graph the graph in which the distance ordering traversal takes place.
-     * @param distance the distance object, a functor Vertex -> Scalar.
+     * @param graph the graph in which the distance ordering traversal takes place (aliased).
+     * @param distance the distance object, a functor Vertex -> Scalar (cloned).
      * @param p any vertex of the graph.
      */
     DistanceVisitor( const Graph & graph, 
@@ -348,8 +348,8 @@ namespace DGtal
        traversal. 
        
        @tparam VertexIterator any type of single pass iterator on vertices.
-       @param graph the graph in which the distance ordering traversal takes place.
-       @param distance the distance object, a functor Vertex -> Scalar.
+       @param graph the graph in which the distance ordering traversal takes place (aliased).
+       @param distance the distance object, a functor Vertex -> Scalar (cloned).
        @param b the begin iterator in a container of vertices. 
        @param e the end iterator in a container of vertices. 
     */
@@ -496,6 +496,13 @@ namespace DGtal
     void pushAgain( const Node & node );
 
 
+    /**
+       Exchange 'this' object with 'other'. O(1) operations since
+       containers are swapped (if the VertexFunctor is assignable in O(1)).
+       @param other the other instance.
+    */
+    void swap( DistanceVisitor & other );
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -519,7 +526,7 @@ namespace DGtal
     /**
      * The graph where the traversal takes place.
      */
-    const Graph & myGraph;
+    const Graph* myGraph;
 
     /**
        The distance object, a functor Vertex -> Scalar.
