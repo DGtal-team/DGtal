@@ -71,8 +71,10 @@ namespace DGtal
   layer at a time. Each layer is at a different distance from the
   initial core, layers having increasing distances.
 
-  The object guarantees that vertices are visited in a an
-  non-decreasing ordering with respect to the distance object. 
+  The object guarantees that vertices are visited in an non-decreasing
+  ordering with respect to the distance object, as long as the
+  breadth-first traversal order can be consistent with the given
+  distance ordering.
 
   @tparam TGraph the type of the graph, a model of
   CUndirectedSimpleLocalGraph. It must have an inner type Vertex.
@@ -109,8 +111,69 @@ namespace DGtal
                    << " at distance " << node.second << std::endl;
          visitor.expand();
        }
-     @endcode
-    
+   @endcode
+
+   You may also visit vertices layer by layer, meaning that you wish
+   to consider all the vertices at the same distance at the same
+   time. You should use then DistanceVisitor::getCurrentLayer,
+   DistanceVisitor::expandLayer, and DistanceVisitor::ignoreLayer.
+
+   If the bread-first queueing system is not compatible with the
+   distance function, then it has two consequences:
+
+   - in the common distance traversal one at a time, then it may
+     happen than a new vertex has a distance less than the preceding
+     one.
+
+   - this affects more the layer-by-layer mechanism, which may miss
+     vertices in the traversal. In order to visit all the vertices
+     layer by layer, you should use the visitor as follows:
+
+     @code
+  std::list<Node> layer;
+  std::vector<Node> lateLayer;
+  while ( ! visitor.finished() )
+    {
+      // Get all vertices at same distance from starting vertex.
+      visitor.getCurrentLayer( layer );
+      // Do something with the layer ...
+      for ( typename std::vector<Node>::const_iterator it = layer.begin(), 
+              itE = layer.end(); it != itE; ++it )
+	{ //... 
+        }
+      // Visit the nodes one at a time to expand or ignore depending
+      // on your application. Be careful, the nodes may not be in the
+      // same order and some other nodes could pop out in-between.
+      while ( ! layer.empty() )
+        {
+          Node n = visitor.current();
+          std::list<Node>::iterator it = layer.begin();
+          std::list<Node>::iterator itE = layer.end();
+          while ( ( it != ittE ) && ( (it).first != n.first ) ) ++it;
+          if ( it == itE )
+            { // Node that is not in the expected order.
+              lateLayer.push_back( n );
+              myVisitor.ignore();
+            }
+          else
+            { // Process node n, decide to expand or ignore it.
+              if ( aBool ) visitor.expand();
+              else visitor.ignore();
+              // Erase it.
+              layer.erase( it );
+            }
+        }
+      // Push back "late" vertices in the visitor.
+      for ( typename std::vector<Node>::const_iterator 
+              it = lateLayer.begin(), 
+              itE = lateLayer.end(); it != itE; ++it )
+        {
+          visitor.pushAgain( *it );
+        }
+      lateLayer.clear();
+    }
+   @endcode
+
    @see testDistanceVisitor.cpp
    @see testObject.cpp
    */
