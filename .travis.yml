@@ -30,6 +30,13 @@ matrix:
 
 script: 
   - cmake . $BTYPE
+  - make DGtal
+  - make DGtalIO
+  - cd examples
+  - make
+  - cd ../tests
+  - make
+  - cd ..
   - make
 
 after_script: 
