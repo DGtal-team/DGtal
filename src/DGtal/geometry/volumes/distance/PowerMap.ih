@@ -92,7 +92,7 @@ DGtal::PowerMap<W, Sep,Im>::compute( )
       myImagePtr->setValue ( *it, myInfinity );
   
   //We process the dimensions one by one
-  for ( Dimension dim = 0; dim < W::Domain::Space::dimension ; dim++ )
+  for ( Dimension dim = 0; dim <  W::Domain::Space::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 
@@ -200,7 +200,14 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 	  point[dim] ++;
 	}
     }
+
   
+  if (startingPoint[0] == 4)
+    {
+      for(typename std::vector<Point>::const_iterator it = Sites.begin(), itend=Sites.end(); it!=itend; ++it)
+        trace.info() << *it;
+      trace.info()<<std::endl;
+    }
   //No sites found
   if (nbSites == -1)
     return;

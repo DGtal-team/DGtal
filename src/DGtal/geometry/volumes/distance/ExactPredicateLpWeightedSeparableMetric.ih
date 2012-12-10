@@ -143,6 +143,12 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   Abscissa upper = endPoint[dim];
       
  
+
+  if (startingPoint[0] == 4)
+    {
+      trace.info() << "Comparing: "<< u <<" ["<<wu<<"] -  "<< v <<" ["<<wv<<"]  - "<<w<<" ["<<ww<<"]"<<std::endl;
+    }
+
   //Partial norm computation
   // (sum_{i!=dim}  |u_i-v_i|^p
   Promoted nu = NumberTraits<Promoted>::ZERO;
@@ -162,7 +168,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
       (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
     {
-      if(startingPoint[1]==7)
+      if(startingPoint[0]==4)
         trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)true<<std::endl;
       return true;
     }
@@ -170,7 +176,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
       (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
     {
-      if(startingPoint[1]==7)
+      if(startingPoint[0]==4)
         trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)false<<std::endl;
       return false;
     }
@@ -178,10 +184,9 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
   //Binary search
   Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
   Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
-
-  if(startingPoint[1]==7)
-    trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)(uv> vw)<<std::endl;
- 
+  if(startingPoint[0]==4)
+    trace.info() <<"      res= "<<(int)(uv>vw)<<std::endl;
+  
   if ( uv > vw )
     return true;
   else
