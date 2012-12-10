@@ -145,10 +145,8 @@ public:
     {
       return myShapeB.orientation( p );
     }
-    else
-    {
-      return OUTSIDE;
-    }
+
+    return OUTSIDE;
   }
 
   /**
@@ -298,10 +296,8 @@ public:
     {
       return INSIDE;
     }
-    else
-    {
-      return OUTSIDE;
-    }
+
+    return OUTSIDE;
   }
 
 
@@ -452,10 +448,8 @@ public:
     {
       return INSIDE;
     }
-    else
-    {
-      return OUTSIDE;
-    }
+
+    return OUTSIDE;
   }
 
 

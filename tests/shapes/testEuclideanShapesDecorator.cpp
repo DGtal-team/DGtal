@@ -55,7 +55,7 @@ bool testEuclideanShapesDecorator()
   trace.beginBlock ( "Testing Unary operation on euclidean shapes ..." );
 
   typedef Ball2D< Z2i::Space > ShapeA;
-  typedef typename ShapeA::RealPoint RealPoint;
+  typedef ShapeA::RealPoint RealPoint;
 
   ShapeA shapeA(-2.501, 0.0, 2.5013);
   ShapeA shapeB(2, 0.0, 2.5013);
