@@ -70,7 +70,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Integ
 template <typename TKSpace, typename TShapeFunctor, int dimension>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double k, const double alpha = 1.0/3.0 )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double k, const double alpha )
 {
   trace.error() << "Not available yet.";
 }
@@ -78,7 +78,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double k, const double alpha = 1.0/3.0 )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double k, const double alpha )
 {
   h = _h;
   radius = suggestedSize( h, k, alpha );
@@ -169,7 +169,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double k, const double alpha = 1.0/3.0 )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double k, const double alpha )
 {
   h = _h;
   radius =  suggestedSize( h, k, alpha );

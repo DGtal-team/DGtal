@@ -65,10 +65,10 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
   typedef FunctorOnCells< MyGaussDigitizer, Z3i::KSpace > MyFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-  typedef typename Visitor::VertexConstIterator SurfelConstIterator;
+  typedef Visitor::VertexConstIterator SurfelConstIterator;
   typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIGaussianEstimator;
-  typedef typename MyIIGaussianEstimator::Quantity Quantity;
-  typedef typename MyShape::RealPoint RealPoint;
+  typedef MyIIGaussianEstimator::Quantity Quantity;
+  typedef MyShape::RealPoint RealPoint;
 
   string poly_str = "x^2 + y^2 + z^2 - 25";
   double border_min[3] = { -10, -10, -10 };

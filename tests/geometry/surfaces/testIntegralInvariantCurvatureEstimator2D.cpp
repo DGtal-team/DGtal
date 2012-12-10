@@ -64,8 +64,8 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   typedef FunctorOnCells< MyGaussDigitizer, Z2i::KSpace > MyFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyIIMeanEstimator;
-  typedef typename Visitor::VertexConstIterator SurfelConstIterator;
-  typedef typename MyIIMeanEstimator::Quantity Quantity;
+  typedef Visitor::VertexConstIterator SurfelConstIterator;
+  typedef MyIIMeanEstimator::Quantity Quantity;
 
   double max_radius_shape = 20.00217;
   double min_radius_shape = 5.00217;
@@ -128,9 +128,9 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   trace.endBlock();
 
   typedef ParametricShapeCurvatureFunctor< MyShape > CurvatureFunctor;
-  typedef typename GridCurve< Z2i::KSpace >::PointsRange PointsRange;
-  typedef typename PointsRange::ConstIterator ConstIteratorOnPoints;
-  typedef typename Z2i::Space::Point Point;
+  typedef GridCurve< Z2i::KSpace >::PointsRange PointsRange;
+  typedef PointsRange::ConstIterator ConstIteratorOnPoints;
+  typedef Z2i::Space::Point Point;
   typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, MyShape, CurvatureFunctor > MyTrueLocalEstimator;
 
   std::vector< Point > points;
@@ -141,8 +141,8 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   MyTrueLocalEstimator trueCurvatureEstimator;
   trueCurvatureEstimator.attach ( &shape );
   trueCurvatureEstimator.init( h, r.begin(), r.end() );
-  std::vector< typename MyTrueLocalEstimator::Quantity > resultsTrueCurvature;
-  back_insert_iterator< std::vector< typename MyTrueLocalEstimator::Quantity > > resultsTrueCurvatureIterator( resultsTrueCurvature );
+  std::vector< MyTrueLocalEstimator::Quantity > resultsTrueCurvature;
+  back_insert_iterator< std::vector< MyTrueLocalEstimator::Quantity > > resultsTrueCurvatureIterator( resultsTrueCurvature );
   trueCurvatureEstimator.eval( r.begin(), r.end(), resultsTrueCurvatureIterator );
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature and true local 2D curvature ..." );
