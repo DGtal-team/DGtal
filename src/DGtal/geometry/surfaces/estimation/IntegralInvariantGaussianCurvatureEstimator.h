@@ -116,7 +116,7 @@ public:
       * @param k radius of the kernel support
       * @param useSuggestedSize determine if you want to compute the best radius for the kernel support using your r and h. Default value to true.
       */
-  void init ( const double _h, const double k, const double alpha );
+  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -153,7 +153,7 @@ public:
       *
       * @return suggested size for the kernel support radius
       */
-  static double suggestedSize( const double _h, const double k, const double alpha );
+  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -270,7 +270,7 @@ public:
       * @param k constant of the kernel support
       * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
       */
-  void init ( const double _h, const double k, const double alpha );
+  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -308,7 +308,7 @@ public:
       *
       * @return suggested size for the kernel support radius
       */
-  static double suggestedSize( const double _h, const double k, const double alpha );
+  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -431,7 +431,7 @@ public:
       * @param k constant of the kernel support
       * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
       */
-  void init ( const double _h, const double k, const double alpha );
+  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -468,7 +468,7 @@ public:
       *
       * @return suggested size for the kernel support radius
       */
-  static double suggestedSize( const double _h, const double k, const double alpha );
+  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
