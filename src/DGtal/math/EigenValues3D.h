@@ -55,7 +55,7 @@ namespace DGtal
 struct EigenValues3D
 {
   typedef SimpleMatrix< double, 3, 3 > Matrix33;
-  typedef typename Matrix33::RowVector Vector3;
+  typedef Matrix33::RowVector Vector3;
 
   /**
       * This is derived from the Algol procedures tred2 and tql2 by Bowdler, Martin, Reinsch
