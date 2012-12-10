@@ -24,6 +24,8 @@ matrix:
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
+    - compiler: clang
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug"
  
 
 script: 
