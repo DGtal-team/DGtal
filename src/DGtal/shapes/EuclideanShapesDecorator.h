@@ -156,10 +156,7 @@ namespace DGtal
           return INSIDE;
         }
       }
-      else
-      {
-        return OUTSIDE;
-      }
+      return OUTSIDE;
     }
 
     /**
@@ -314,10 +311,8 @@ namespace DGtal
       {
         return INSIDE;
       }
-      else
-      {
-        return OUTSIDE;
-      }
+
+      return OUTSIDE;
     }
 
 
@@ -477,10 +472,8 @@ namespace DGtal
 
         return ON;
       }
-      else
-      {
-        return OUTSIDE;
-      }
+
+      return OUTSIDE;
     }
 
 

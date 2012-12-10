@@ -62,7 +62,7 @@ bool testDigitalShapesDecorator()
   typedef Ball2D< Z2i::Space > ShapeA;
   typedef GaussDigitizer< Z2i::Space, ShapeA > MyGaussDigitizerA;
 
-  typedef typename ShapeA::Point Point;
+  typedef ShapeA::Point Point;
 
   double h = 0.5;
 
