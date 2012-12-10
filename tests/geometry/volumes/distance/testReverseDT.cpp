@@ -227,11 +227,20 @@ bool testReverseDTL1()
     }
     std::cout << std::endl;
   }
-  
+ 
   typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, Z2i::L1PowerMetric > RDT;
   Z2i::L1PowerMetric l1power;
   RDT reverseDT(&dom, &dt, &l1power);
   
+  
+  trace.warning()<<"Power"<<std::endl;
+  for(unsigned int j=2; j<16; j++)
+    {
+      for(unsigned int i=2; i<16; i++)
+	trace.info()<< reverseDT.getPowerVector(Z2i::Point(i,j))[0]<<","<<reverseDT.getPowerVector(Z2i::Point(i,j))[1]<<" ";
+      trace.info()<<std::endl;
+    }
+
   trace.warning()<<"REDT:"<<endl;
   RDT::ConstRange::ConstIterator it2 = reverseDT.constRange().begin();
   for (unsigned int y = 2; y < 16; y++)
