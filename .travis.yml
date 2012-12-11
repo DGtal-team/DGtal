@@ -24,10 +24,19 @@ matrix:
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
     - compiler: gcc
       env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
+    - compiler: clang
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug"
  
 
 script: 
   - cmake . $BTYPE
+  - make DGtal
+  - make DGtalIO
+  - cd examples
+  - make
+  - cd ../tests
+  - make
+  - cd ..
   - make
 
 after_script: 
