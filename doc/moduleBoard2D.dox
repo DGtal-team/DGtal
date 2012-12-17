@@ -303,7 +303,7 @@ An interesting point of the exemple below is how we specify a custom style for a
   unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
   // specific color depending on the distance to point c1.
   board << CustomStyle( specificStyle,
-			  new CustomColors( Board2D::Color::Black,
+			  new CustomColors( Color::Black,
 					  cmap_grad( d ) ) )
 	  << *it;
   }
