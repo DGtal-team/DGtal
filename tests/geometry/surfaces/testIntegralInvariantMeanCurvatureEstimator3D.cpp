@@ -18,7 +18,8 @@
  * @file testIntegralInvariantMeanCurvatureEstimator3D.cpp
  * @ingroup Tests
  * @author Jérémy Levallois (\c jeremy.levallois@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), Université de Lyon, France
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
  * @date 2012/11/28
  *

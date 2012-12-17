@@ -1,5 +1,6 @@
 
 SET(DGTAL_EXAMPLES_SRC
+	exampleIntegralInvariantCurvature2D
 )
 
 
@@ -15,6 +16,7 @@ if (  WITH_VISU3D_QGLVIEWER )
 	greedy-plane-segmentation
 	greedy-plane-segmentation-ex2
 	greedy-plane-segmentation-ex3
+	exampleIntegralInvariantCurvature3D
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})

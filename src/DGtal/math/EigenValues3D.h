@@ -52,11 +52,16 @@
 namespace DGtal
 {
 
-struct EigenValues3D
+/**
+ * Description of struct 'EigenValues3D' <p>
+ * \brief Aim: Computes EigenValues and EigenVectors from 3D Matrix.
+ */
+class EigenValues3D
 {
   typedef SimpleMatrix< double, 3, 3 > Matrix33;
   typedef Matrix33::RowVector Vector3;
 
+private:
   /**
       * This is derived from the Algol procedures tred2 and tql2 by Bowdler, Martin, Reinsch
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
@@ -365,6 +370,8 @@ struct EigenValues3D
       * @param eigenVectors output matrix of eigenvectors (size = 3x3).
       * @param eigenValues output vector of eigenvalues (size = 3).
       */
+
+public:
   static void getEigenDecomposition ( Matrix33 & matrix, Matrix33 & eigenVectors, Vector3 & eigenValues)
   {
     Vector3 e;

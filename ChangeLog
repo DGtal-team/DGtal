@@ -12,12 +12,18 @@
       and ConstImageAdapter).
 
  *Geometry Package*
-    - new primitives for digital plane recognition. Naive planes, and
+    - New primitives for digital plane recognition. Naive planes, and
       more generally planes with arbitrary axis-width can be detected
       and recognized incrementally. Based on a COBA algorithm
       implementation, which uses 2D lattice polytopes.
     - Fréchet segment computer added to compute bounded simplifications of
       digital curves for instance.
+    - New curvature estimator in 2D/3D based on integral invariant, which uses
+      to iterate a convolver around the shape surface.
+
+ *Shape Package*
+    - New operator available on digital and euclidean shapes (Union,
+      Intersection, Minus)
 
 
 === DGtal 0.5.1 ===

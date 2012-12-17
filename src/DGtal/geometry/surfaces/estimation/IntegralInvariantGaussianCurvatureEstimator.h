@@ -62,10 +62,33 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantGaussianCurvatureEstimator
 /**
-   Description of template class 'IntegralInvariantGaussianCurvatureEstimator' <p>
-   \brief Aim: This class implement an Integral Invariant curvature estimation
-
-   It use a kernel support to convolve around the border of the shape
+   * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
+   * \brief Aim: This class implement a Integral Invariant Gaussian curvature estimation.
+   *
+   * See related article:
+   *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
+   *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
+   *       https://liris.cnrs.fr/publis/?id=5866
+   *
+   * The algorithm we propose uses covariance matrix to approximate Gaussian curvature.
+   * To compute the covariance matrix on each cell of the surface, we convolve a kernel (2D: Ball2D, 3D: Ball3D) around
+   * the surface.
+   * The result covariance matrix give us principal curvatures and principal directions by computing
+   * respectively eigenvectors and eigenvalues on it.
+   * Experimental results showed a multigrid convergence.
+   *
+   * Because this algorithm compute value on adjacent cell, we can optimize this step by uses previous
+   * results and adding/removing subsets kernel corresponding to the deplacement of the kernel.
+   * For example, if __(...)__ is the kernel, and the deplacement is to the right, we want ___[...]_
+   * but some same cell from kernel are used. We have to keep same values (in ..) remove not used values (in -)
+   * and add new values (in +) :  __(-[..)+]_
+   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface.
+   *
+   * @tparam TKSpace space in which the shape is defined.
+   * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
+   * @tparam dimension dimension of the shape. Let default value to use the correct specialization.
+   *
+   * @see exampleIntegralInvariantGaussianCurvature3D.cpp testIntegralInvariantGaussianCurvature3D.cpp
    */
 template <typename TKSpace, typename TShapeFunctor, int dimension = TKSpace::dimension>
 class IntegralInvariantGaussianCurvatureEstimator
