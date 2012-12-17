@@ -61,10 +61,31 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantMeanCurvatureEstimator
 /**
-   Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
-   \brief Aim: This class implement an Integral Invariant curvature estimation.
-
-   It use a kernel support to convolve around the border of the shape
+   * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
+   * \brief Aim: This class implement a Integral Invariant mean curvature estimation.
+   *
+   * See related article:
+   *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
+   *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
+   *       https://liris.cnrs.fr/publis/?id=5866
+   *
+   * The algorithm we propose uses volume of a kernel (2D: Ball2D, 3D: Ball3D) to approximate mean curvature.
+   * To compute the volume, we convolve a kernel around the surface and counting the number of cells belonging the shape.
+   * Theorical multigrid convergence is proved, with a convergence speed of O(h^1/3).
+   * Experimental results showed a multigrid convergence.
+   *
+   * Because this algorithm compute value on adjacent cell, we can optimize this step by uses previous
+   * results and adding/removing subsets kernel corresponding to the deplacement of the kernel.
+   * For example, if __(...)__ is the kernel, and the deplacement is to the right, we want ___[...]_
+   * but some same cell from kernel are used. We have to keep same values (in ..) remove not used values (in -)
+   * and add new values (in +) :  __(-[..)+]_
+   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface.
+   *
+   * @tparam TKSpace space in which the shape is defined.
+   * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
+   * @tparam dimension dimension of the shape. Let default value to use the correct specialization.
+   *
+   * @see exampleIntegralInvariantCurvature2D.cpp testIntegralInvariantMeanCurvature3D.cpp testIntegralInvariantCurvature2D.cpp
    */
 template <typename TKSpace, typename TShapeFunctor, int dimension = TKSpace::dimension>
 class IntegralInvariantMeanCurvatureEstimator
