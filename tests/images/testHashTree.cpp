@@ -42,6 +42,8 @@
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
+#include "DGtal/helpers/StdDefs.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -75,13 +77,16 @@ bool testHashTree()
   Point a ( t );
   Point b ( t2 );
 
-  ///Domain characterized by points a and b
+  ///Image created from depth
   Image myImage ( 3, 3,0 );
 
   ///Domain characterized by points a and b
-  Image myImage2 ( TDomain(a,b) );
+  TDomain domain(a,b);
+  Image myImage2 ( domain );
 
   trace.info() << myImage;
+  trace.info() << myImage2;
+
   nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -91,6 +96,22 @@ bool testHashTree()
   return nbok == nb;
 }
 
+
+/**
+ * Hashtree2D
+ */
+bool testHashTree2D()
+{
+  trace.beginBlock("Testing 2D");
+  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(255,255));
+  typedef ImageContainerByHashTree<Z2i::Domain, int > Image;
+
+  Image myImage(domain);
+  trace.info()<< myImage<<std::endl;
+  trace.endBlock();
+
+  return true;
+}
 
 /**
  * Example of a test. To be completed.
@@ -272,7 +293,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testHashTree() && testGetSetVal() && testBadKeySizes();  // && ... other tests
+  bool res = testHashTree() && testHashTree2D() && testGetSetVal() && testBadKeySizes();  // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

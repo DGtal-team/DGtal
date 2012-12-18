@@ -45,11 +45,13 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
+
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Bits.h"
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/io/Color.h"
@@ -158,7 +160,9 @@ namespace DGtal
     /// values range
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
+    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
+    typedef DefaultConstImageRange<Self> ConstRange;
+    typedef DefaultImageRange<Self> Range;
 
     /// output iterator
     typedef SetValueIterator<Self> OutputIterator; 
@@ -261,12 +265,13 @@ namespace DGtal
      * @return an instance of ConstRange 
      * used to iterate over the values.
      */      
-    ConstRange range() const;
+    ConstRange constRange() const;
 
-    /** 
-     * @return an output iterator used to write values.
-     */      
-    OutputIterator outputIterator();
+    /**
+     * @return an instance of ConstRange
+     * used to iterate over the values.
+     */
+    Range range() ;
 
 
     /**
