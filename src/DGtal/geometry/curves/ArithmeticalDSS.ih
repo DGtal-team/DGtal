@@ -766,10 +766,18 @@ inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & aPoint) const
 {
-  Integer s = getPosition(aPoint);
-  Integer smin = getPosition(myF);
-  Integer smax = getPosition(myL);
-  return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
+  if (isInDSL(aPoint))
+    {
+      Integer s = getPosition(aPoint);
+      Integer s1 = getPosition(myF);
+      Integer s2 = getPosition(myL);
+      if (s1 < s2)
+	return ( (s >= s1)&&(s <= s2) );
+      else 
+	return ( (s >= s2)&&(s <= s1) );
+    }
+  else 
+    return false; 
 }
 
 
