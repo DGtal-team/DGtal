@@ -50,7 +50,6 @@
 namespace DGtal
 {
   /**
-
     Description of class 'Statistic' <p> \brief Aim: This class processes a
     set of sample values for one variable and can then compute
     different statistics, like sample mean, sample variance, sample
@@ -61,13 +60,16 @@ namespace DGtal
     Backported from [ImaGene](https://gforge.liris.cnrs.fr/projects/imagene). \cite Lachaud03b
     
     @see testStatistics.cpp
+
+    @tparam TRealNumber
    */
-  template <typename RealNumberType>
+  template <typename TRealNumber>
   class Statistic
   {
 
     // ----------------------- Standard services ------------------------------
   public:
+    typedef TRealNumber RealNumber;
 
     /**
      * Destructor. 
@@ -122,27 +124,27 @@ namespace DGtal
     /** 
      * @return the sample mean.
      */
-    RealNumberType mean() const;
+    RealNumber mean() const;
 
     /** 
      * @return the sample variance.
      */
-    RealNumberType variance() const;
+    RealNumber variance() const;
 
     /** 
      * @return the unbiased sample variance.
      */
-    RealNumberType unbiasedVariance() const;
+    RealNumber unbiasedVariance() const;
 
     /** 
      * @return the maximal value.
      */
-    RealNumberType max() const;
+    RealNumber max() const;
 
     /** 
      * @return the minimal value.
      */
-    RealNumberType min() const;
+    RealNumber min() const;
     
 
     /**
@@ -154,7 +156,7 @@ namespace DGtal
      * @see terminate, Statistic 
      */
     
-    RealNumberType median() ;
+    RealNumber median() ;
 
     
     /** 
@@ -162,7 +164,7 @@ namespace DGtal
      * 
      * @param v the new sample value.
      */
-    void addValue( RealNumberType v );
+    void addValue( RealNumber v );
   
     /**
      * Adds a sequence of sample values, scanning a container from
@@ -170,7 +172,7 @@ namespace DGtal
      * 
      * Exemple: 
      @code
-     vector<RealNumberType> x;
+     vector<RealNumber> x;
      Statistic stats;
      stats.addValue( x + 4, x + 10 );
      @endcode
@@ -229,36 +231,36 @@ namespace DGtal
     /**
      * stores the sum of sample values for computing sample mean.
      */
-    RealNumberType myExp;
+    RealNumber myExp;
 
     /**
      * stores the sum of squared sample values for
      * computing sample variance.
      */
-    RealNumberType myExp2;
+    RealNumber myExp2;
 
     /**
      * stores the maximal sample value.
      */
-    RealNumberType myMax;
+    RealNumber myMax;
 
     /**
      * stores the minimal sample value.
      */
-    RealNumberType myMin;
+    RealNumber myMin;
 
 
     /**
      * stores the median sample value.
      */
-    RealNumberType myMedian;
+    RealNumber myMedian;
     
     
     /**
      * stores the sample to determine the median value 
      * 
      **/
-    std::vector < RealNumberType > myValues;
+    std::vector < RealNumber > myValues;
 
 
     /**
@@ -283,10 +285,10 @@ namespace DGtal
    * @param that_object_to_display the object of class 'Statistic' to write.
    * @return the output stream after the writing.
    */
-  template <typename RealNumberType>
+  template <typename TRealNumber>
   std::ostream&
   operator<<( std::ostream & thatStream, 
-        const Statistic<RealNumberType> & that_object_to_display );
+        const Statistic<TRealNumber> & that_object_to_display );
   
   
 } // namespace DGtal
