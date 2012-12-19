@@ -62,10 +62,10 @@ digraph GARITHMETIC {
                  node [style=filled,color=orange];
                  label="boost";
 
-                 boost_CopyConstructible;
-                 boost_DefaultConstructible;
-                 boost_Assignable;
-                 boost_Sequence;
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref CopyConstructible" ];
+                 boost_DefaultConstructible [ label="boost::DefaultConstructible" URL="\ref DefaultConstructible" ];
+                 boost_Assignable [ label="boost::Assignable" URL="\ref Assignable" ];
+                 boost_Sequence [ label="boost::Sequence" URL="\ref Sequence" ];
         }
     }
   
