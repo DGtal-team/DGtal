@@ -200,13 +200,13 @@ the decrement operator instead of the increment operator and conversely.
 Bidirectional ranges provide reverse iterators that can be used 
 as follows: 
 
-    template<typename R>
-    void anyProcedure(const R& aRange)
+    template<typename Range>
+    void anyProcedure(const Range& aRange)
       {
-        BOOST_CONCEPT_ASSERT(( CBidirectionalRange<R> )); 
+        BOOST_CONCEPT_ASSERT(( CBidirectionalRange<Range> )); 
         ...
-        for (typename R::ReverseIterator ri = r.rbegin(), 
-             typename R::ReverseIterator riEnd = r.rend(); 
+        for (typename Range::ReverseIterator ri = r.rbegin(), 
+             typename Range::ReverseIterator riEnd = r.rend(); 
              ri != riEnd; ++ri)
           {
              ...
@@ -220,11 +220,11 @@ even boost::reverse_iterator.
 
     #include "DGtal/base/ReverseIterator.h"
     ...
-    template<typename I>
-    void anyProcedure(const I& anIterator)
+    template<typename Iterator>
+    void anyProcedure(const Iterator& anIterator)
       {
         ...
-        DGtal::ReverseIterator<I> ri(anIterator); 
+        DGtal::ReverseIterator<Iterator> ri(anIterator); 
         ASSERT( ri.base() == anIterator ); //ie. anIterator is the underlying iterator of ri
         ...
       }
@@ -248,11 +248,11 @@ data to which points the underlying iterator:
 
     #include "DGtal/base/ConstIteratorAdapter.h"
     ...
-    template<typename I, typename F, typename ReturnType>
-    void anyProcedure(const I& anIterator, const F& aFunctor)
+    template<typename Iterator, typename Functor, typename ReturnType>
+    void anyProcedure(const Iterator& anIterator, const Functor& aFunctor)
       {
         ...
-        DGtal::ConstAdapterIterator<I, F, ReturnType> a(i, f);
+        DGtal::ConstAdapterIterator<Iterator, Functor, ReturnType> a(i, f);
         ASSERT( *a == f(*i) ); //ie. *a and f(*i) return equivalent instances of ReturnType  
         ...
       } 
@@ -267,7 +267,7 @@ incremental iterator.
 
 \subsection subsecIteratorRangesAdaptersCirculators  Circulators
 
-Like Cgal, DGtal extends the concept of iterator to circular data structures
+Like `Cgal <http://www.cgal.org/>`_, DGtal extends the concept of iterator to circular data structures
  by defining the concept of circular iterator or *circulator* for short.
 
 The class Circulator is an adatper that creates a circulator from a classic iterator. 
