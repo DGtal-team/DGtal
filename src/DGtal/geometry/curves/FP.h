@@ -58,12 +58,12 @@ namespace DGtal
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
-     * \brief Aim: Abstract adapter for ArithmeticalDSS.
+     * \brief Aim: Abstract AdapterDSS for ArithmeticalDSS.
      * Has 2 virtual methods returning the first and last leaning point: 
      * - firstLeaningPoint()
      * - lastLeaningPoint()
      *
-     * @see Adapter4ConvexPart Adapter4ConcavePart
+     * @see AdapterDSS4ConvexPart AdapterDSS4ConcavePart
      * 
      * @tparam TDSS type devoted to DSS recognition
      * Must have a nested type 'Point' and four accessors: 
@@ -71,7 +71,7 @@ namespace DGtal
      *
      */
     template <typename TDSS>
-    class Adapter 
+    class AdapterDSS 
     {
     public: 
       /**
@@ -88,7 +88,7 @@ namespace DGtal
        * Destructor 
        * ( virtual to disable warnings [-Wdelete-non-virtual-dtor] )
        */
-      virtual ~Adapter() {}
+      virtual ~AdapterDSS() {}
       /**
        * First leaning point accessor 
        * @return the first upper or lower leaning point
@@ -119,17 +119,17 @@ namespace DGtal
      * Must have a nested type 'Point' and four accessors: 
      *  getUf(), getUl(), getLf(), getLl()
      *
-     * @see Adapter FP
+     * @see AdapterDSS FP
      */
     template <typename TDSS>
-    class Adapter4ConvexPart : public Adapter<TDSS> 
+    class AdapterDSS4ConvexPart : public AdapterDSS<TDSS> 
     {
     public:
       /**
        * Constructor
        * @param aDSS
        */
-      Adapter4ConvexPart(TDSS& aDSS)
+      AdapterDSS4ConvexPart(TDSS& aDSS)
       {
 	this->myDSS = &aDSS;
       }
@@ -170,17 +170,17 @@ namespace DGtal
      * Must have a nested type 'Point' and four accessors: 
      *  getUf(), getUl(), getLf(), getLl()
      *
-     * @see Adapter FP
+     * @see AdapterDSS FP
      */
     template <typename TDSS>
-    class Adapter4ConcavePart : public Adapter<TDSS> 
+    class AdapterDSS4ConcavePart : public AdapterDSS<TDSS> 
     {
     public:
       /**
        * Constructor
        * @param aDSS
        */
-      Adapter4ConcavePart(TDSS& aDSS)
+      AdapterDSS4ConcavePart(TDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
@@ -230,7 +230,7 @@ namespace DGtal
    * leaning points of segments that are maximal at the front or at the back are also
    * vertices of the FP.
    * 
-   * @see ArithmeticalDSS Adapter Adapter4ConvexPart Adapter4ConcavePart
+   * @see ArithmeticalDSS AdapterDSS AdapterDSS4ConvexPart AdapterDSS4ConcavePart
    *
    * @note T. ROUSSILLON and I. SIVIGNON, 
    * Faithful polygonal representation of the convex and concave parts of a digital curve, 
@@ -357,7 +357,7 @@ namespace DGtal
      * @return an adapter to @a aDSS for convex or concave part
      *
      * @tparam Adapter type that adapts a DSS computer 
-     * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
+     * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
     Adapter* initConvexityConcavity( typename Adapter::DSS &aDSS );
@@ -370,7 +370,7 @@ namespace DGtal
      * is detected as disconnected and 'true' otherwise
      *
      * @tparam Adapter type that adapts a DSS computer 
-     * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
+     * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
     bool removingStep( typename Adapter::DSS &currentDSS, 
@@ -386,7 +386,7 @@ namespace DGtal
      * and 'true' otherwise
      *
      * @tparam Adapter type that adapts a DSS computer 
-     * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
+     * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
     bool addingStep( typename Adapter::DSS &currentDSS, 
@@ -399,25 +399,12 @@ namespace DGtal
      * @param adapter an Adapter to @a currentDSS
      *
      * @tparam Adapter type that adapts a DSS computer 
-     * @see details::Adapter details::Adapter4ConvexParts details::Adapter4ConcaveParts
+     * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
     void addingStep( typename Adapter::DSS &currentDSS, 
 		     Adapter* adapter);
 
-    // /**
-    //  * Main routine
-    //  * @param currentDSS a DSS lying on the range to process
-    //  * @param adapter an Adapter to @a currentDSS
-    //  * @param isConvex, 'true' if @a currentDSS is in a convex part, 'false' otherwise
-    //  * @param itEnd end iterator used to stop the algorithm 
-    //  * (when @a currentDSS.end() == @a itEnd )
-    //  */
-    // template<typename DSS, typename Adapter>
-    // void mainRoutine( DSS &currentDSS, 
-    // 		      Adapter* adapter, 
-    // 		      bool isConvex, 
-    // 		      const typename DSS::ConstIterator& itEnd )  throw( InputException );
 
     /**
      * Main algorithm
@@ -442,18 +429,6 @@ namespace DGtal
      */
     void algorithm(const TIterator& itb, const TIterator& ite, CirculatorType )  throw( InputException );
 
-    // //obsolete
-    // /**
-    //  * Main algorithm
-    //  * @param currentDSS a DSS lying on the range to process
-    //  * @param adapter an Adapter to @a currentDSS
-    //  * @param isConvex, 'true' if @a currentDSS is in a convex part, 'false' otherwise
-    //  * @param end iterator used to stop the algorithm (when @a i == @a end )
-    //  */
-    // template<typename DSS, typename Adapter>
-    // void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
-    //                     bool isConvex, 
-    //                     const typename DSS::ConstIterator& end )  throw( InputException );
 
 
     // ------------------------- Hidden helpers ------------------------------
