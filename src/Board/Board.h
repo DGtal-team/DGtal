@@ -705,6 +705,17 @@ public:
   void saveEPS( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const ;
 
   /** 
+   * Saves the drawing in EPS format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveEPS(std::ostream &out , PageSize size = Board::BoundingBox, double margin = 10.0 ) const ;
+
+
+  /** 
    * Saves the drawing in an EPS file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
@@ -716,6 +727,20 @@ public:
    */
   void saveEPS( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
+
+
+  /** 
+   * Saves the drawing in an EPS format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out  The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0) const ;
+
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
@@ -723,8 +748,22 @@ public:
    * @param filename The name of the FIG file.
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the exported file. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0,
+		bool includeFIGHeader=true) const;
+
+  /** 
+   * Saves the drawing in XFig format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
+   */
+  void saveFIG( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0,
+		bool includeFIGHeader=true) const;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
@@ -735,8 +774,26 @@ public:
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true) const ;
+
+ /** 
+   * Saves the drawing in an XFig format through an output
+   * stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while
+   * keeping its aspect ratio.
+   * 
+   * @param out  out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
+   */
+  void saveFIG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true ) const ;
 
   /** 
    * Save the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
@@ -747,6 +804,18 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveSVG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+
+  /** 
+   * Save the drawing in an SVG format through an output stream. When
+   * a size is given (not BoundingBox), the drawing is scaled (up or
+   * down) so that it fits within the dimension while keeping its
+   * aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveSVG( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Saves the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
@@ -760,6 +829,20 @@ public:
    */
   void saveSVG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
+ /** 
+   * Saves the drawing in an SVG format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveSVG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
+		string filename="output.svg") const ;
+  
+
 #ifdef WITH_CAIRO
   // cairo
   /** 
@@ -772,7 +855,7 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveCairo( const char * filename, CairoType type = CairoPNG, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
-  
+
   /** 
    * Save the drawing with cairo. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
@@ -784,6 +867,8 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+ 
 #endif
 
   /** 
@@ -795,6 +880,17 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveTikZ( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  /** 
+   * Save the drawing in an TikZ file format through an output
+   * stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while
+   * keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Save the drawing in an TikZ file. When a size is given (not BoundingBox), the drawing is
@@ -807,6 +903,20 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+  /** 
+   * Save the drawing in an TikZ format through an output stream. When
+   * a size is given (not BoundingBox), the drawing is scaled (up or
+   * down) so that it fits within the dimension while keeping its
+   * aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
  protected:
 

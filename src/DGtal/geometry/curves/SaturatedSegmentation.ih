@@ -103,14 +103,14 @@ inline
 void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initFirstMaximalSegment()
 {
-  if (myS->myMode == "First") {
+  if ( (myS->myMode == "First") || (myS->myMode == "First++") ) {
     DGtal::firstMaximalSegment(mySegmentComputer, myS->myStart, myS->myBegin, myS->myEnd);
   } 
   else
-  if (myS->myMode == "Last") {
+    if ( (myS->myMode == "Last") || (myS->myMode == "Last++") ) {
     DGtal::lastMaximalSegment(mySegmentComputer, myS->myStart, myS->myBegin, myS->myEnd);
   } 
-  else { // (myS->myMode == "MostCentered") 
+  else { // (myS->myMode == "MostCentered") or (myS->myMode == "MostCentered++")
     DGtal::mostCenteredMaximalSegment(mySegmentComputer, myS->myStart, myS->myBegin, myS->myEnd);
   }
 }
@@ -126,34 +126,39 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
 
   if (isNotEmpty(myS->myStop,myS->myEnd)) {
 
-    if (myS->myMode == "First") {
+    if ((myS->myMode == "First")||(myS->myMode == "First++")) {
       DGtal::firstMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
     } 
     else
-    if (myS->myMode == "Last") {
-      DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
-    } 
-    else { // (myS->myMode == "MostCentered") 
-      DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
-    }
+      if ((myS->myMode == "Last")||(myS->myMode == "Last++")) {
+	DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+      } 
+      else { // (myS->myMode == "MostCentered") or (myS->myMode == "MostCentered++")
+	DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+      }
 
     DGtal::previousMaximalSegment(mySegmentComputer, myS->myBegin ); 
 
   } else { //processing of a whole linear range
+    --i; //set i to the last point (not past-to-last)
+    if ((myS->myMode == "First")||(myS->myMode == "First++")) {
 
-    --i;
-    if (myS->myMode == "First") {
       DGtal::firstMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
     } 
     else
-    if (myS->myMode == "Last") {
-      DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
-    } 
-    else { // (myS->myMode == "MostCentered") 
-      DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
-    }
+      if ((myS->myMode == "Last")||(myS->myMode == "Last++")) {
+	DGtal::lastMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+      } 
+      else { // (myS->myMode == "MostCentered") or (myS->myMode == "MostCentered++")
+	DGtal::mostCenteredMaximalSegment(mySegmentComputer, i, myS->myBegin, myS->myEnd);
+      }
 
   }
+
+  if ((myS->myMode == "MostCentered++") || (myS->myMode == "First++") || (myS->myMode == "Last++"))
+    { //take the next maximal segment in the "++" modes
+      DGtal::nextMaximalSegment(mySegmentComputer, myS->myEnd);
+    }
 
   myLastMaximalSegmentBegin = mySegmentComputer.begin(); 
   myLastMaximalSegmentEnd = mySegmentComputer.end();  
@@ -223,26 +228,26 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::Segment
        myFlagIntersectPrevious = doesIntersectNext( mySegmentComputer.begin(), myS->myBegin, myS->myEnd );
 
        if ( (mySegmentComputer.begin() == myLastMaximalSegmentBegin) 
-      &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) 
-       {         //if only one segment
-
-         myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
-         myFlagIsLast = true; 
-        
-       } else  //otherwise
-       {
-          myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
-       }
- 
-     } 
+	    &&(mySegmentComputer.end() == myLastMaximalSegmentEnd) ) 
+	 {         //if only one segment
+	   
+	   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
+	   myFlagIsLast = true; 
+	   
+	 } else  //otherwise
+	 {
+	   myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end() );
+	 }
+       
+      } 
      else 
-      {
-        myFlagIsValid = false;
-      }
+       {
+	 myFlagIsValid = false;
+       }
    }
  }
 
-  template <typename TSegmentComputer>
+template <typename TSegmentComputer>
 inline
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
@@ -269,8 +274,8 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::operato
       myS = other.myS;
       mySegmentComputer = other.mySegmentComputer;
       myFlagIsValid = other.myFlagIsValid;
-      myLastMaximalSegmentBegin( other.myLastMaximalSegmentBegin ); 
-      myLastMaximalSegmentEnd( other.myLastMaximalSegmentEnd );
+      myLastMaximalSegmentBegin = other.myLastMaximalSegmentBegin; 
+      myLastMaximalSegmentEnd = other.myLastMaximalSegmentEnd;
       myFlagIntersectNext = other.myFlagIntersectNext;
       myFlagIntersectPrevious = other.myFlagIntersectPrevious;
       myFlagIsLast = other.myFlagIsLast;
@@ -429,7 +434,15 @@ void
 DGtal::SaturatedSegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
-  myMode = aMode; 
+  if ( (aMode == "First") || (aMode == "Last") || (aMode == "MostCentered")
+      || (aMode == "First++") || (aMode == "Last++") || (aMode == "MostCentered++") )
+    myMode = aMode;
+  else 
+    {
+      std::cerr << "[DGtal::SaturatedSegmentation<TSegmentComputer>::setMode(const std::string& aMode)]"
+		<< " ERROR. Unknown mode." << std::endl; 
+      throw InputException();
+    }
 }
 
 

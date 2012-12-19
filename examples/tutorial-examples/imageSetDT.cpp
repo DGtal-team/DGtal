@@ -44,6 +44,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/PNMReader.h"
@@ -91,14 +92,13 @@ int main()
 
 
   //! [ImageSetDT-DT]
-  typedef DGtal::DistanceTransformation<Image, 2> DTL2;
+  typedef IntervalForegroundPredicate<Image> Binarizer; 
+  Binarizer b(image,1, 135); 
+  typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, 2> DTL2;
   typedef DTL2::OutputImage OutputImage;
-  DTL2 dt;
+  DTL2 dt(image.domain(),b);
 
-  typedef IntervalThresholder<Image::Value> Binarizer; 
-  Binarizer b(1, 135); 
-  OutputImage result = dt.compute(image, 
-            PointFunctorPredicate<Image,Binarizer>(image, b)); 
+  OutputImage result = dt.compute(); 
   //! [ImageSetDT-DT]
  
 

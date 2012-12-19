@@ -252,9 +252,16 @@ DGtal::LighterSternBrocot<TInteger, TQuotient, TMap>::Fraction::
 k() const
 {
   ASSERT( myNode != 0 );
-  return ( mySup1 || ( myNode == instance().myOneOverOne ) )
+  // The default of this approach is that node 1/1 has two possible depths !
+  return mySup1
     ? myNode->k
     : myNode->k + NumberTraits<Quotient>::ONE;
+  // JOL: 2012/11/21: I left these lines in comments because I am not
+  // sure yet if my correction above has no other side effects.
+  //
+  // return ( mySup1 || ( myNode == instance().myOneOverOne ) )
+  //   ? myNode->k
+  //   : myNode->k + NumberTraits<Quotient>::ONE;
 }
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient, typename TMap>

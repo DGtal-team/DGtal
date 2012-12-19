@@ -47,7 +47,13 @@
 #include <string>
 #include <bitset>
 #include <algorithm>
+
+#ifdef CPP11_ARRAY
+#include <array>
+#else
 #include <boost/array.hpp>
+#endif 
+
 #include <vector>
 
 #include "DGtal/base/Common.h"
@@ -173,11 +179,17 @@ namespace DGtal
      *  Copy of the Boost::array iterator type
      *
      **/
+#ifdef CPP11_ARRAY
+    typedef typename std::array<Component, dimension>::iterator Iterator;
+    typedef typename std::array<Component, dimension>::const_iterator ConstIterator;
+    typedef typename std::array<Component, dimension>::reverse_iterator ReverseIterator;
+    typedef typename std::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
+#else
     typedef typename boost::array<Component, dimension>::iterator Iterator;
     typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
     typedef typename boost::array<Component, dimension>::reverse_iterator ReverseIterator;
     typedef typename boost::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
-  
+#endif
     /**
      * Constructor.
      */
@@ -576,6 +588,14 @@ namespace DGtal
      * Divides @a *this by the @a coeff scalar number.
      *
      * @param coeff is the factor @a *this get divided by.
+     * @return the component division of *this by coeff.
+     */
+    Self operator/ ( const Component coeff );
+    
+    /**
+     * Divides @a *this by the @a coeff scalar number.
+     *
+     * @param coeff is the factor @a *this get divided by.
      * @return a reference on 'this'.
      */
     Self & operator/= ( const Component coeff );
@@ -663,6 +683,10 @@ namespace DGtal
      */ 
     Iterator minElement();
 
+    /**
+       Negates this vector.
+    */
+    void negate();
 
     /**
      * Specify the set of norm types
@@ -677,6 +701,7 @@ namespace DGtal
      * norms. For exact norms (restricted to L_1 and L_infinity
      * norms), please refer to PointVector::norm1 and PointVector::normInfinity. 
      *
+
      * @param type specifies the type of norm to consider (see @ref NormType).
      * @return the norm of the point/vector as a double.
      */
@@ -765,8 +790,12 @@ namespace DGtal
   //protected:
     
     ///Internal data-structure: boost/array with constant size.
+#ifdef CPP11_ARRAY
+    std::array<Component, dimension> myArray;
+#else
     boost::array<Component, dimension> myArray;
-    
+#endif
+
   }; // end of class PointVector
 
   /// Operator <<

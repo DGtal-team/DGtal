@@ -36,6 +36,8 @@
 #define UNUSED_ARGUMENT(x) (void)x
 #endif
 
+
+
 namespace DGtal
 {
 
@@ -114,6 +116,7 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -129,6 +132,8 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      aBoard.setLineWidth(1);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160,160,160);
       aBoard.setPenColorRGBi(80,80,80);
     }
@@ -217,8 +222,29 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
+  // GeometricalDCA
+  
 
-  //GeometricalDCA
+  //FrechetShortcut
+  /**
+   * Default drawing style for FrechetShortcut.
+   */
+  struct DefaultDrawStyle_FrechetShortcut : public DrawableWithBoard2D
+  {
+    /**
+     * Draw the FrechetShortcut on a board
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(Board2D & aBoard) const
+    {
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
+      aBoard.setPenColor(Color::Red);
+      aBoard.setLineWidth(1.5);
+      aBoard.setFillColor(Color::None);
+    }
+  };
+  
+  //FrechetShortcut
 
   // GridCurve
   // we use friend because of inner classes
@@ -308,6 +334,9 @@ namespace DGtal
   {
     virtual void setStyle(Board2D & aBoard) const
     {
+      // line width decreased to avoid too large arrows to display adjacency.
+      aBoard.setLineWidth(0.75);
+      aBoard.setLineStyle(Board2D::Shape::SolidStyle);
       aBoard.setFillColorRGBi(160, 160, 160);
       aBoard.setPenColorRGBi(80, 80, 80);
     }
@@ -363,6 +392,29 @@ namespace DGtal
     }
   };
   // SignedKhalimskyCell
+
+  // LatticePolytope2D
+  struct DefaultDrawStyleFilled_LatticePolytope2D : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColorRGBi( 200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  struct DefaultDrawStyleTransparent_LatticePolytope2D : public DrawableWithBoard2D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+      aBoard.setPenColorRGBi( 30, 30, 30 );
+      aBoard.setLineStyle( Board2D::Shape::SolidStyle );
+      aBoard.setFillColor( DGtal::Color::None ); //200, 200, 200 );
+      aBoard.setLineWidth( 2 );
+    }
+  };
+  // LatticePolytope2D
 
   
   // StraightLineFrom2Points
@@ -490,6 +542,18 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::GeometricalDCA<TConstItera
   return new DefaultDrawStyle_GeometricalDCA; 
 }
 // GeometricalDCA
+
+// // FrechetShortcut
+template <typename TIterator, typename TInteger>
+inline
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FrechetShortcut<TIterator,TInteger> & /*f*/, std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DefaultDrawStyle_FrechetShortcut; 
+}
+// // FrechetShortcut
+
+
 
 // GridCurve
 template <typename TKSpace>
@@ -684,6 +748,19 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StraightLineFrom2Points<TP
 }
 // StraightLineFrom2Points
 
+// LatticePolytope2D
+template < typename TSpace, typename TSequence>
+inline
+DGtal::DrawableWithBoard2D* 
+defaultStyle( const DGtal::LatticePolytope2D<TSpace,TSequence> & /*cip*/, 
+              std::string mode = "" )
+{
+  if ( ( mode == "" ) || ( mode == "Transparent" ) ) 
+    return new DefaultDrawStyleTransparent_LatticePolytope2D;
+  else // "Filled"
+    return new DefaultDrawStyleFilled_LatticePolytope2D;
+}
+// LatticePolytope2D
 
 //
 

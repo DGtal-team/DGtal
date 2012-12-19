@@ -253,22 +253,34 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::computeSurfels
 ( const Surfel & p, bool closed )
 {
   mySurfels.clear();
-  typename KSpace::SCellSet surface;
-  if ( closed )
-    Surfaces<KSpace>::trackClosedSurface( surface,
-                                          myKSpace,
-                                          mySurfelAdjacency,
-                                          mySurfelPredicate,
-                                          p );
+  if ( KSpace::dimension > 2 )
+    {
+      typename KSpace::SCellSet surface;
+      if ( closed )
+	Surfaces<KSpace>::trackClosedSurface( surface,
+					      myKSpace,
+					      mySurfelAdjacency,
+					      mySurfelPredicate,
+					      p );
+      else
+	Surfaces<KSpace>::trackSurface( surface,
+					myKSpace,
+					mySurfelAdjacency,
+					mySurfelPredicate,
+					p );
+      for ( typename KSpace::SCellSet::const_iterator it = surface.begin(),
+	      it_end = surface.end(); it != it_end; ++it )
+	mySurfels.push_back( *it );
+    }
   else
-    Surfaces<KSpace>::trackSurface( surface,
-                                    myKSpace,
-                                    mySurfelAdjacency,
-                                    mySurfelPredicate,
-                                    p );
-  for ( typename KSpace::SCellSet::const_iterator it = surface.begin(),
-          it_end = surface.end(); it != it_end; ++it )
-    mySurfels.push_back( *it );
+    {
+      ASSERT( KSpace::dimension == 2 );
+      Surfaces<KSpace>::track2DSurface( mySurfels,
+					myKSpace,
+					mySurfelAdjacency,
+					mySurfelPredicate,
+					p );
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
