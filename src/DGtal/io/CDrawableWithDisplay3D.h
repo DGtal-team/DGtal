@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file CDrawableWithDisplay3D.h
@@ -43,7 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -51,11 +51,8 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithDisplay3D
- 
-/////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithBoard3DTo2D
   /**
-   * DescriptionDescription of \b concept '\b CDrawableWithDisplay3D' <p>
+   * Description of \b concept '\b CDrawableWithDisplay3D' <p>
    * @ingroup Concepts
    * Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
    * that admit an export with Display3D.
@@ -106,7 +103,11 @@ namespace DGtal
    * <p> Notes###
    * @todo ImageContainerByHashTree does not implement setStyle(display &).
    * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
-   */  template <typename T>
+   */  
+
+  class Display3D;
+  
+  template <typename T>
   struct CDrawableWithDisplay3D
   {
 

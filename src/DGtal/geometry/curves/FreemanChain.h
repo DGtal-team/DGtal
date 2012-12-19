@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file FreemanChain.h
@@ -454,7 +454,7 @@ public:
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
     out << "[FreemanChainCodes]" << std::endl;
     out << "\t"; 
-    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, "") );
+    std::copy( this->begin(), this->end(), std::ostream_iterator<Value>(out, "") );
     out << std::endl;
   }
   
@@ -464,7 +464,7 @@ public:
    * @param object the object of class 'CodesRange' to write.
    * @return the output stream after the writing.
    */
-    friend ostream& operator <<(ostream & out, const CodesRange & object)
+  friend std::ostream& operator <<(std::ostream & out, const CodesRange & object)
     {
       object.selfDisplay( out );
       return out;
@@ -845,7 +845,7 @@ public:
      */
     static void write( std::ostream & out, const FreemanChain & c )
     {
-      out << c.x0 << " " << c.y0 << " " << c.chain << endl;
+      out << c.x0 << " " << c.y0 << " " << c.chain << std::endl;
     }
 
 

@@ -111,7 +111,7 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const vector<TPoint> &vertexSet)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const std::vector<TPoint> &vertexSet)
 {
   mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++){
@@ -238,7 +238,7 @@ inline
 void 
 DGtal::MeshFromPoints<TPoint>::invertVertexFaceOrder(){
   for(unsigned int i=0; i<myFaceList.size(); i++){
-    vector<unsigned int> & aFace =  myFaceList.at(i);
+    std::vector<unsigned int> & aFace =  myFaceList.at(i);
     for(unsigned int j=0; j < aFace.size()/2; j++){
       unsigned int tmp=aFace.at(j);
       aFace.at(j)=aFace.at(aFace.size()-1-j);

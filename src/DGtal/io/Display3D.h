@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file Display3D.h
@@ -206,7 +206,7 @@ namespace DGtal
      **/ 
     
     struct  polygonD3D{
-      vector<pointD3D> vectPoints;
+      std::vector<pointD3D> vectPoints;
       double nx, ny, nz;
       unsigned int R,G,B,T;
     };
@@ -764,7 +764,7 @@ namespace DGtal
    **/
   
   void
-  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
   
   
 

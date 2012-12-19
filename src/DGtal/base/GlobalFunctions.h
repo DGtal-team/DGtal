@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file GlobalFunctions.h
@@ -44,7 +44,6 @@
 // Inclusions
 #include <algorithm>
 #include <functional>
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 

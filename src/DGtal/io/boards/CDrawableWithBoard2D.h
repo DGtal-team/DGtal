@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file CDrawableWithBoard2D.h
@@ -45,13 +45,14 @@
 
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Display2DFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
+  ///Forward declaration
+  class Board2D;
+ 
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithBoard2D
   /**

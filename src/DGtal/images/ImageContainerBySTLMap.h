@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file ImageContainerBySTLMap.h
@@ -233,10 +233,10 @@ namespace DGtal
 
 
     /// built-in iterators
-    typedef typename map<Point,Value>::iterator Iterator;
-    typedef typename map<Point,Value>::const_iterator ConstIterator;
-    typedef typename map<Point,Value>::reverse_iterator ReverseIterator;
-    typedef typename map<Point,Value>::const_reverse_iterator ConstReverseIterator;
+    typedef typename std::map<Point,Value>::iterator Iterator;
+    typedef typename std::map<Point,Value>::const_iterator ConstIterator;
+    typedef typename std::map<Point,Value>::reverse_iterator ReverseIterator;
+    typedef typename std::map<Point,Value>::const_reverse_iterator ConstReverseIterator;
     
     /** 
      * Construct a Iterator on the image at a position specified
@@ -260,7 +260,8 @@ namespace DGtal
   template <typename TDomain, typename TValue>
   inline
   std::ostream&
-  operator<< ( std::ostream & out, const ImageContainerBySTLMap<TDomain,TValue> & object )
+  operator<< ( std::ostream & out, 
+               const ImageContainerBySTLMap<TDomain,TValue> & object )
   {
     object.selfDisplay ( out );
     return out;

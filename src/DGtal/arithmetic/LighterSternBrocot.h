@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file LighterSternBrocot.h
@@ -48,7 +48,6 @@
 #include "DGtal/base/StdRebinders.h"
 #include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -114,7 +113,6 @@ namespace DGtal
     typedef LighterSternBrocot<TInteger,TQuotient,TMap> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
 
     struct Node;
     typedef typename TMap:: template Rebinder<Quotient, Node*>::Type MapQuotientToNode;
