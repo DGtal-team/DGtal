@@ -784,7 +784,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
-  ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
+  ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration"||mode=="IllustrationCustomColor")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -811,28 +811,28 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    
   switch (spaceDim) {
   case 0:  
-    if(mode!=""){
+    if(mode!=""&& mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(200, 20, 20, 255));
     }
     display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
     break;
   case 1:
-    if(mode!=""){
+    if(mode!=""&& mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 20, 200, 255));
     }
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
-    if(mode!=""){
+    if(mode!="" && mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 20, 200, 255));
     }
     display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, false, false, basicMode); 
     break;
   case 3:
-    if(mode!=""){
+    if(mode!="" && mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(255, 180, 250, 255));
     }
-    if(mode=="Illustration"){
+    if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
       display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
     }else{
       display.addKSVoxel((int)x, (int) y, (int) z);
@@ -854,7 +854,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( sk.className() );
-  ASSERT((mode==""  || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
+  ASSERT((mode==""  || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration" || mode=="IllustrationCustomColor")||
     ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -884,7 +884,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   switch (spaceDim) {
     
   case 0:
-    if(mode!=""){
+    if(mode!="" && mode!="IllustrationCustomColor"){
       if( sk.myPositive)
 	display.setFillColor(DGtal::Color(20, 20, 250, 255));
       else
@@ -893,7 +893,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, sk.myPositive);
       break;
   case 1:
-    if(mode!=""){
+    if(mode!="" && mode!="IllustrationCustomColor"){
       display.setFillColor(DGtal::Color(20, 200, 200, 255));
     }    
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
@@ -903,14 +903,14 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
     break;
   case 3:
-    if(mode!=""){
+    if(mode!="" && mode!="IllustrationCustomColor"){
       if( sk.myPositive){
       	display.setFillColor(DGtal::Color(20, 20, 200, 255));
       }else{
 	display.setFillColor(DGtal::Color(20, 200, 20, 255));
       }
     }
-    if(mode=="Illustration"){
+    if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
       display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
     }else{
       display.addKSVoxel((int)x, (int) y, (int) z);
