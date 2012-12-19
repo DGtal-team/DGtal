@@ -67,7 +67,7 @@ bool testCheckImageConcept()
 #endif
 
   //HashTree is not (yet) a model of CImage
-  typedef ImageContainerByHashTree<Domain, int>  ImageHash;
+  typedef experimental::ImageContainerByHashTree<Domain, int>  ImageHash;
 
   BOOST_CONCEPT_ASSERT(( CImage< ImageVector >));
   BOOST_CONCEPT_ASSERT(( CImage< ImageMap >));
