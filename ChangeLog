@@ -8,6 +8,8 @@
  *Image Package* 
     - Update on image writers (no colormap required for scalar only writers).
       Documentation updated.
+    - New image adapters to adapt both domains and values of an image (ImageAdapter 
+      and ConstImageAdapter).
 
  *Geometry Package*
     - new primitives for digital plane recognition. Naive planes, and

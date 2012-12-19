@@ -410,6 +410,8 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double x, double y, doubl
   double angle0 = Tools::computeAngle(x, y, x0, y0);
   double angle1 = Tools::computeAngle(x, y, x1, y1);
   
+  assert(angle0 != -1 && angle1 != -1);
+
   *this = Cone(angle0,angle1);
   myInf = false;
 }
@@ -683,6 +685,7 @@ typename FrechetShortcut<TIterator,TInteger>::Cone FrechetShortcut<TIterator,TIn
       if(fabs(x0-x1) < 0.00001 && fabs(y0-y1) < 0.00001)
 	{
 	  double angle = Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
+	  assert(angle != -1);
 	  double angle0 = angle - M_PI_2;
 	  if(angle0<0)
 	    angle0 = angle0+2*M_PI;
@@ -718,6 +721,7 @@ bool FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
     else
       {
 	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0], newP[1]);
+	assert(angle != -1);
 	return Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
       }
   else
@@ -770,8 +774,10 @@ bool FrechetShortcut<TIterator,TInteger>::updateWidth()
       flag = true;
     else
       {
-	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0],
+	double angle = Tools::computeAngle
+(firstP[0], firstP[1], newP[0],
 						 newP[1]);
+	assert(angle != -1);
 	flag = Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
       }
   else
@@ -824,9 +830,7 @@ bool FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   
   double angle = Tools::angleVectVect(v,dir_elem);
   
-  bool ok = true;
-    
-  boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
+   boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
   if(contains(intervals,angle))
     return false;
