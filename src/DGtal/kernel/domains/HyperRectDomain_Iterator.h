@@ -50,11 +50,11 @@
 // Class allowing to build a reverse iterator of a given iterator.
 template<typename _Iterator>
 class myreverse_iterator
-  : public iterator<typename iterator_traits<_Iterator>::iterator_category,
-  typename iterator_traits<_Iterator>::value_type,
-  typename iterator_traits<_Iterator>::difference_type,
-  typename iterator_traits<_Iterator>::pointer,
-  typename iterator_traits<_Iterator>::reference>
+  : public std::iterator<typename std::iterator_traits<_Iterator>::iterator_category,
+                         typename std::iterator_traits<_Iterator>::value_type,
+                         typename std::iterator_traits<_Iterator>::difference_type,
+                         typename std::iterator_traits<_Iterator>::pointer,
+                         typename std::iterator_traits<_Iterator>::reference>
 {
 protected:
   _Iterator current;
@@ -62,10 +62,10 @@ protected:
 
 public:
   typedef _Iterator                 iterator_type;
-  typedef typename iterator_traits<_Iterator>::difference_type
+  typedef typename std::iterator_traits<_Iterator>::difference_type
       difference_type;
-  typedef typename iterator_traits<_Iterator>::reference   reference;
-  typedef typename iterator_traits<_Iterator>::pointer     pointer;
+  typedef typename std::iterator_traits<_Iterator>::reference   reference;
+  typedef typename std::iterator_traits<_Iterator>::pointer     pointer;
 
 public:
   explicit

@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file SimpleRandomAccessConstRangeFromPoint.h
@@ -150,7 +150,7 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value;
         out << "[SimpleRandomAccessConstRangeFromPoint]" << std::endl;
         out << "\t";
-        std::copy ( myBegin, myEnd, ostream_iterator<Value> ( out, ", " ) );
+        std::copy ( myBegin, myEnd, std::ostream_iterator<Value> ( out, ", " ) );
         out << std::endl;
       }
 

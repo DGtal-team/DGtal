@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 /**
  * @file Bits.h
  * @brief A collection of functions to help with bitwise manipulations.

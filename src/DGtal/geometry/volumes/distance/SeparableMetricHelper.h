@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file SeparableMetricHelper.h
@@ -47,7 +47,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CBoundedInteger.h"
+#include "DGtal/kernel/CBoundedNumber.h"
 #include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -61,11 +61,11 @@ namespace DGtal
    * \brief Aim: Implements basic functions associated to metrics used
    * by separable volumetric algorithms.
    *
-   * @tparam TAbscissa Type used to store the coordinaites of the Domain (model of CBoundedInteger).
+   * @tparam TAbscissa Type used to store the coordinaites of the Domain (model of CBoundedNumber).
    * @tparam TInternalValue the type used to store the internal
    * numbers for exact computations. More precisely,
    * TInternalValueType must be able to represent numbers of type
-   * TAbscissa to the power tp (model of CBoundedInteger).
+   * TAbscissa to the power tp (model of CBoundedNumber).
    * @tparam tp the order p of the L_p metric.
    *
    * @warning this  code is node GMP compliant
@@ -81,8 +81,8 @@ namespace DGtal
     typedef TPoint Point;
     
     
-    BOOST_CONCEPT_ASSERT(( CBoundedInteger<Abscissa> ));
-    BOOST_CONCEPT_ASSERT(( CBoundedInteger<TInternalValue> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedNumber<Abscissa> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedNumber<TInternalValue> ));
 
     /**
      * Static constants containing the power p of the Lp-metric.

@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file VolReader.h
@@ -44,9 +44,6 @@
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
-#include <boost/static_assert.hpp>
-#include "DGtal/helpers/StdDefs.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

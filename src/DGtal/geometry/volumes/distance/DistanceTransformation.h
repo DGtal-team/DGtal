@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file DistanceTransformation.h
@@ -47,7 +47,7 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CInteger.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
@@ -96,7 +96,7 @@ namespace DGtal
 
   public:
     
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
+    BOOST_CONCEPT_ASSERT(( CInteger<IntegerLong> ));
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
   

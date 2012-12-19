@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file Morton.h
@@ -44,7 +44,8 @@
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 #include "DGtal/kernel/CInteger.h"
 
 #include "DGtal/base/Bits.h"
@@ -81,7 +82,8 @@ namespace DGtal
     typedef typename Point::Coordinate Coordinate;
     static const Dimension dimension = Point::dimension;    
 
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( CUnsignedNumber<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
 
     /**

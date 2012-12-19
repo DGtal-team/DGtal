@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file CCommutativeRing.h
@@ -44,9 +44,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/NumberTraits.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,8 +60,7 @@ Description of \b concept '\b CCommutativeRing' <p>
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring.
 
- ### Refinement of boost::Assignable<T>,
-     boost::EqualityComparable<T>, boost::LessThanComparable<T>
+ ### Refinement of CSignedNumber<T>, boost::Assignable<T>, boost::EqualityComparable<T>, boost::LessThanComparable<T>, boost::DefaultConstructible<T>
 
  ### Associated types :
 
@@ -168,8 +166,8 @@ Description of \b concept '\b CCommutativeRing' <p>
 @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : boost::Assignable<T>,
-    boost::EqualityComparable<T>, boost::LessThanComparable<T>
+  struct CCommutativeRing : CSignedNumber<T>, boost::Assignable<T>,
+    boost::EqualityComparable<T>, boost::LessThanComparable<T>, boost::DefaultConstructible<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

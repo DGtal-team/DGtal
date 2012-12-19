@@ -975,7 +975,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
 
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -1052,7 +1052,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1062,7 +1062,7 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
                        (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1072,7 +1072,7 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
                    (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1092,7 +1092,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     }
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
           const DGtal::PointVector<dim,TComponent> & p, 
@@ -1152,7 +1152,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 
 
 // SignedKhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )

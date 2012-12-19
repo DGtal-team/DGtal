@@ -14,7 +14,7 @@
  *
  **/
 
-#pragma once
+//#pragma once
 
 /**
  * @file StdDefs.h
@@ -43,8 +43,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/topology/DigitalTopology.h"
