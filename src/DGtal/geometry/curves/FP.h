@@ -85,6 +85,41 @@ namespace DGtal
       TDSS* myDSS;
     public:
       /**
+       * Tells whether the underlying segment can be extended or not
+       * @return 'true' if extendable, 'false' otherwise
+       */
+      bool isExtendableForward() const
+      {
+        return myDSS->isExtendableForward(); 
+      }
+      /**
+       * Extends the underlying segment (if possible)
+       * @return 'true' if the segment has been extended,
+       * 'false' otherwise
+       */
+      bool extendForward()
+      {
+        return myDSS->extendForward(); 
+      }
+      /**
+       * Retracts the underlying segment (if possible)
+       * @return 'true' if the segment has been retracted,
+       * 'false' otherwise
+       */
+      bool retractForward()
+      {
+        return myDSS->retractForward(); 
+      }
+      /**
+       * End of the underlying segment
+       * @return end iterator of the underlying segment
+       */
+      typename DSS::ConstIterator end()
+      {
+        return myDSS->end(); 
+      }
+
+      /**
        * Destructor 
        * ( virtual to disable warnings [-Wdelete-non-virtual-dtor] )
        */
@@ -364,8 +399,7 @@ namespace DGtal
 
     /**
      * Removing step
-     * @param currentDSS a DSS lying on the range to process
-     * @param adapter an Adapter to @a currentDSS
+     * @param adapter an Adapter to the current DSS
      * @return 'false' if the underlying digital curve 
      * is detected as disconnected and 'true' otherwise
      *
@@ -373,13 +407,11 @@ namespace DGtal
      * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
-    bool removingStep( typename Adapter::DSS &currentDSS, 
-		      Adapter* adapter );
+    bool removingStep( Adapter* adapter );
 
     /**
      * Adding step in the open case
-     * @param currentDSS a DSS lying on the range to process
-     * @param adapter an Adapter to @a currentDSS
+     * @param adapter an Adapter to the current DSS
      * @param itEnd end iterator used to stop the algorithm 
      * (when @a currentDSS.end() == @a itEnd )
      * @return 'false' if the algorithm has to stop
@@ -389,21 +421,18 @@ namespace DGtal
      * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
-    bool addingStep( typename Adapter::DSS &currentDSS, 
-		     Adapter* adapter, 
+    bool addingStep( Adapter* adapter, 
 		     const typename Adapter::DSS::ConstIterator& itEnd );
 
     /**
      * Adding step in the closed case
-     * @param currentDSS a DSS lying on the range to process
-     * @param adapter an Adapter to @a currentDSS
+     * @param adapter an Adapter to the current DSS
      *
      * @tparam Adapter type that adapts a DSS computer 
      * @see details::AdapterDSS details::AdapterDSS4ConvexParts details::AdapterDSS4ConcaveParts
      */
     template<typename Adapter>
-    void addingStep( typename Adapter::DSS &currentDSS, 
-		     Adapter* adapter);
+    void addingStep( Adapter* adapter );
 
 
     /**
