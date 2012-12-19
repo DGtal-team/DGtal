@@ -333,7 +333,7 @@ Therefore, if you change the drawing \b mode of a drawable element and if you wi
  \endcode
   
 Another example involving ArithmeticDSS is <a
-href="dgtalBoard2D-5-greedy-dss_8cpp-example.html">dgtalBoard2D-5-greedy-dss.cpp</a>. It outputs the following graphics:
+href="geometry_2curves_2greedy-dss-decomposition_8cpp-example.html">greedy-dss-decomposition.cpp</a>. It outputs the following graphics:
   
 \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
 \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
@@ -548,7 +548,7 @@ the drawable element.
  */
 
   /**
-\example io/boards/dgtalBoard2D-5-greedy-dss.cpp
+\example geometry/curves/greedy-dss-decomposition.cpp
   
 Another example where the specific mode style of the drawable
 element ArithmeticDSS is redefined.
