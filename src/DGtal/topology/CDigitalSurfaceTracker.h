@@ -54,7 +54,7 @@ Description of \b concept '\b CDigitalSurfaceTracker' <p>
      @ingroup Concepts
      @brief Aim:
      
- ### Refinement of boost_concepts::CopyConstructible
+ ### Refinement of boost::CopyConstructible
     
  ### Associated types :
     
