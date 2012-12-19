@@ -43,7 +43,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=orange];
                  label="boost";
 
-                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref CopyConstructible" ];
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
         }
     }
   
