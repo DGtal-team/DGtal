@@ -41,7 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CSinglePassRange.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,7 +52,7 @@ namespace DGtal
   /**
      Description of \b concept '\b CSinglePassOutputRange' <p>
      @ingroup Concepts
-     @brief Aim: refined concept of single pass range which require that an output iterator exists.
+     @brief Aim: refined concept of const single pass range which require that an output iterator exists.
 
      ###  Refinement of CSinglePassRange
 
@@ -81,7 +81,7 @@ namespace DGtal
      @tparam Value the type of object t in (*it) = t.
    */
   template <typename T, typename Value>
-  struct CSinglePassOutputRange : CSinglePassRange<T>
+  struct CSinglePassOutputRange : CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
