@@ -44,6 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include <utility>
+#include <vector>
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

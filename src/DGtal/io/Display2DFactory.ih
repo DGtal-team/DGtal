@@ -329,11 +329,20 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-    board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+// <<<<<<< HEAD
+//     board.drawRectangle( NumberTraits<Coordinate>::castToDouble( (*it)[0] ) - 0.5,
+//                          NumberTraits<Coordinate>::castToDouble( (*it)[1] ) + 0.5,
+//                          1,
+//                          1 );      
+// =======
+    draw(board, *it);
+  
+  //>>>>>>> master
 }
 // DigitalSetBySTLSet
 
@@ -350,7 +359,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   if (Domain::dimension == 2)
   {
     for(ConstIterator it =  v.begin(); it != v.end(); ++it)       
-      board.drawRectangle( (*it)[0]-0.5,(*it)[1]+0.5,1,1);      
+      draw(board, *it);
   }
   else
     ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
@@ -582,6 +591,35 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 
 }
 // GeometricalDCA
+
+ 
+
+// FrechetShortcut
+template <typename TIterator,typename TInteger>
+inline
+  void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & f)
+{
+  typedef TIterator Iterator;
+  typedef PointVector<2,TInteger> Point; 
+  typedef typename Point::Coordinate Coordinate; 
+
+  // get first point of the shortcut
+  Point p1 = *(f.begin());
+  double px1 = NumberTraits<Coordinate>::castToDouble(p1[0]);
+  double py1 = NumberTraits<Coordinate>::castToDouble(p1[1]);
+  
+  // get last point of the shortcut
+  Iterator it (f.end());
+  --it;
+  Point p2(*it);
+  double px2 = NumberTraits<Coordinate>::castToDouble(p2[0]);
+  double py2 = NumberTraits<Coordinate>::castToDouble(p2[1]);
+  
+  aBoard.drawLine(px1,py1,px2,py2);
+}
+// FrechetShortcut
+
+
 
 // GridCurve
 template <typename TKSpace>
@@ -824,7 +862,6 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     drawAsGrid( board, h );
   else if ( mode == "Paving" )
     drawAsPaving( board, h );
-  // drawAsGrid( board, h );
 }
 // HyperRectDomain
 
@@ -833,12 +870,12 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
-    const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
-      HashKey key,
-      const double p[2],
-      const double len,
-      LibBoard::Board & board,
-      const C& cmap )
+                                                  const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                                                  HashKey key,
+                                                  const double p[2],
+                                                  const double len,
+                                                  LibBoard::Board & board,
+                                                  const C& cmap )
 {
   
   ASSERT ( Domain::dimension == 2 );
@@ -881,7 +918,7 @@ void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
   
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void DGtal::Display2DFactory::drawImage( Board2D & board,
+void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
                 const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
@@ -904,17 +941,20 @@ void DGtal::Display2DFactory::drawImage( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
+template <typename Colormap, typename Image>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-           const DGtal::ImageContainerBySTLVector<D, V> & i,
-             const V &minV,
-             const V &maxV )
+                                         const Image & i,
+                                         const typename Image::Value & minV,
+                                         const typename Image::Value & maxV )
 {
-  ASSERT(D::dimension == 2);
+  typedef typename Image::Domain D;
+  typedef typename Image::Value V;
+  
+  ASSERT(D::Space::dimension == 2);
 
-  Colormap colormap((const unsigned char)minV, (const unsigned char)maxV);
+  Colormap colormap(minV, maxV);
   Color c;
   V val;
   D ldomain(i.domain());
@@ -923,7 +963,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        it != ldomain.end(); ++it)
   {
     val = i.operator()( (*it) );
-    c = colormap( (const unsigned char)val );
+    c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
     board.drawRectangle( NumberTraits<typename D::Integer>::
        castToInt64_t((*it)[0]) - 0.5, 
@@ -931,7 +971,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
-// ImageContainerBySTLVector
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
 
 
 // KhalimskyCell
@@ -1018,8 +1058,8 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.drawRectangle( (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]) - 0.5f, 
-            (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]) + 0.5f, 1, 1 );     
+  board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p.myArray[0]) - 0.5f, 
+                       (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
 template<Dimension dim, typename TComponent>
@@ -1028,9 +1068,8 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   ASSERT(dim == 2);
-  board.setPenColor(Color::Black);
-  board.fillCircle((float) NumberTraits<TComponent>::castToInt64_t(p.myArray[0]), 
-       (float) NumberTraits<TComponent>::castToInt64_t(p.myArray[1]),0.1);
+  board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p.myArray[0]), 
+                   (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
 template<Dimension dim, typename TComponent>
@@ -1161,6 +1200,40 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SetMode & sm )
 {
   board.myModes[ sm.myClassname ] = sm.myMode;
+}
+
+template <typename TSpace, typename TSequence>
+inline
+void 
+DGtal::Display2DFactory::draw
+( DGtal::Board2D & aBoard, 
+  const DGtal::LatticePolytope2D<TSpace, TSequence> & cip )
+{
+  typedef typename LibBoard::Point BoardPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Point CIPPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::ConstIterator ConstIterator;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Integer Integer;
+  std::string mode = aBoard.getMode( cip.className() );
+  ASSERT( mode=="Filled" || mode=="" || mode=="Transparent" ||
+          ("draw(Board2D & aBoard, const DGtal::LatticePolytope2D<Space,Sequence> & cip): Unknown mode "+mode)==""  );
+  
+  std::vector<BoardPoint> pts;
+
+  for ( ConstIterator it = cip.begin(), it_end = cip.end(); it != it_end; ++it )
+    {
+      CIPPoint p = *it;
+      pts.push_back( BoardPoint( NumberTraits<Integer>::castToDouble( p[ 0 ] ),
+                                 NumberTraits<Integer>::castToDouble( p[ 1 ] ) ) );
+    }
+  aBoard.drawClosedPolyline( pts );
+  // if ( mode == "Transparent"  || ( mode == "" )  )
+  //   {
+  //     aBoard.drawClosedPolyline( pts );
+  //   }
+  // else
+  //   {
+  //     aBoard.fillPolyline( pts );
+  //   }
 }
 
 

@@ -37,7 +37,7 @@ namespace DGtal {
    The surfaces classes offers the possibility to extract an open or
    closed contour as a sequence of surfels obtained from a DigitalSet
    and a starting surfel. The full code of this example is available
-   in file <a href="ctopo-2_8cpp-example.html">ctopo-2.cpp </a>.
+   in file <a href="topology_2ctopo-2_8cpp-example.html">ctopo-2.cpp </a>.
    
 
    The first step to extract the surfel boudary of a 2D digital set is
@@ -98,7 +98,7 @@ namespace DGtal {
 
    With only few modifications we can apply the same extraction on 3D
    surfel set. The file <a
-   href="ctopo-2-3d_8cpp-example.html">ctopo-2-3d.cpp </a> shows the
+   href="topology_2ctopo-2-3d_8cpp-example.html">ctopo-2-3d.cpp </a> shows the
    same previous example adapted in 3D.
   
    with the same code we can get a surfel boundary:
@@ -155,10 +155,12 @@ namespace DGtal {
 
    The class \ref Surfaces provides other useful function to extract
    connected boundary surfels from a digital set and given a surfel
-   adjacency definition. The example 3dKSSurfaceExtraction.cpp shows an example of such an extraction.
+   adjacency definition. The example  <a
+   href="topology_23dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> shows an example of such an extraction.
 
    From a domain we construct a DigitalSet inserting points under given conditions (see.  <a
-   href="3dKSSurfaceExtraction_8cpp-example.html" >
+   href="topology_23dKSSurfaceExtraction_8cpp-example.html" >
    3dKSSurfaceExtraction.cpp </a> for more details)
 
 @code
