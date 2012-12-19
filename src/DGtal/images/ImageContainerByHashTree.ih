@@ -114,9 +114,9 @@ namespace DGtal
     
     typename Point::Component maxSize = (p2-p1).normInfinity();
     unsigned int depth = (unsigned int)(ceil ( log2 ( (double) maxSize ))) ;
-//    trace.error()<<" MAXSIZE = "<< maxSize<<" DEPTH="<< depth <<std::endl;
 
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
+    trace.error()<<" MAXSIZE = "<< maxSize<<" DEPTH="<< depth <<" accepted="<< acceptedDepth<< std::endl;
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
