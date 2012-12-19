@@ -44,8 +44,7 @@ graphics in SVG, XFIG, EPS or TikZ format.
 The following code snippet defines three points and a rectangular
 domain in Z2. It then displays them in a Board2D object. The
 two last commands export the graphics in SVG and EPS format. The
-full code is in <a
-href="dgtalBoard2D-1-points_8cpp-example.html">dgtalBoard2D-1-points.cpp</a>.
+full code is in dgtalBoard2D-1-points.cpp.
   
  \code
  using namespace DGtal;
@@ -135,8 +134,7 @@ shape_set defined above.
  \endcode
   
 Note the different adjacency relations depending on the topology
-chosen for the object. The full code is in <a
-href="dgtalBoard2D-2-sets_8cpp-example.html">dgtalBoard2D-2-sets.cpp</a>.
+chosen for the object. The full code is in dgtalBoard2D-2-sets.cpp.
   
 <table>
 <tr><td> \image html dgtalboard-2-sets-2.png "(4,8)-object"
@@ -217,8 +215,7 @@ classes.
   board.saveTikZ("dgtalboard-3-custom-classes.svg");
  \endcode
   
-This program (see full source at <a
-href="dgtalBoard2D-3-custom-classes_8cpp-example.html">dgtalBoard2D-3-custom-classes.cpp</a>)
+This program (see full source at dgtalBoard2D-3-custom-classes.cpp)
 outputs the following graphics.
   
 \image html dgtalboard-3-custom-classes.png "Custom drawing."
@@ -270,8 +267,7 @@ The custom style is then attached to drawable element by creating an instance of
   board.saveTikZ("dgtalboard-3-custom-points.tikz");
  \endcode
   
-This program (see full source at <a
-href="dgtalBoard2D-3-custom-points_8cpp-example.html">dgtalBoard2D-3-custom-points.cpp</a>) outputs the following graphics.
+This program (see full source at dgtalBoard2D-3-custom-points.cpp) outputs the following graphics.
   
 \image html dgtalboard-3-custom-points.png "Custom drawing of point." 
 \image latex dgtalboard-3-custom-points.png "Custom drawing of point." width=6cm
@@ -311,8 +307,7 @@ An interesting point of the exemple below is how we specify a custom style for a
   board.saveTikZ( "dgtalboard-4-colormaps.tikz");
  \endcode
   
-This program (see full source at <a
-href="dgtalBoard2D-4-colormaps_8cpp-example.html">dgtalBoard2D-4-colormaps.cpp</a>) outputs the following graphics.
+This program (see full source at dgtalBoard2D-4-colormaps.cpp) outputs the following graphics.
   
 \image html dgtalboard-4-colormaps.png "Colormap example." 
 \image latex dgtalboard-4-colormaps.png "Colormap example." width=5cm
@@ -332,8 +327,7 @@ Therefore, if you change the drawing \b mode of a drawable element and if you wi
  board << CustomStyle( p.className() +"/Special", new ... );
  \endcode
   
-Another example involving ArithmeticDSS is <a
-href="geometry_2curves_2greedy-dss-decomposition_8cpp-example.html">greedy-dss-decomposition.cpp</a>. It outputs the following graphics:
+Another example involving ArithmeticDSS is greedy-dss-decomposition.cpp. It outputs the following graphics:
   
 \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
 \image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
@@ -559,4 +553,8 @@ element ArithmeticDSS is redefined.
   
 Simple example to generate DGtal logo in DGtal.
  */
+
+
+
+
 }
