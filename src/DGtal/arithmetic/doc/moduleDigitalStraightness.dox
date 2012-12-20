@@ -6,11 +6,11 @@ namespace DGtal {
 
 /*!
    
-@page dgtal_digital_straightness  Patterns, digital straight lines and subsegments
+@page moduleDigitalStraightness  Patterns, digital straight lines and subsegments
 
 @writers Jacques-Olivier Lachaud
 
-Part of the \ref pageArithmeticPackage.
+Part of the \ref packageArithmetic.
   
 This part of the manual describes digital straightness from a
 combinatoric and arithmetic point of view.  It tells you how to create
@@ -60,7 +60,7 @@ Package Arithmetic provides the class Pattern to represent a
 pattern. Patterns are instantiated either by a fraction or two
 integers \e p and \e q. They are therefore parameterized by the type
 of irreducible fraction you wish to use (see \ref
-dgtal_irreducible_fraction). You may define patterns as follows:
+moduleIrreducibleFraction). You may define patterns as follows:
 
 @see pattern.cpp
 

@@ -6,11 +6,11 @@ namespace DGtal {
 
 /*!
    
-@page dgtal_irreducible_fraction  Irreducible fraction, continued fractions
+@page moduleIrreducibleFraction  Irreducible fraction, continued fractions
 
 @writers Jacques-Olivier Lachaud
 
-  Part of the \ref pageArithmeticPackage.
+  Part of the \ref packageArithmetic.
   
 This part of the manual describes how to create and use irreducible
 fractions. More precisely, several representations of irreducible
