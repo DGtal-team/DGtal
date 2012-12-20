@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include <boost/function.hpp>
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

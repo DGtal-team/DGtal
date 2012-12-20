@@ -71,7 +71,7 @@ int main( int argc, char** argv )
         ( (long double) NumberTraits<Integer>::castToDouble( f.p() ) )
         / ( (long double) NumberTraits<Integer>::castToDouble( f.q() ) );
       std::cout << "z = " << f.p() << " / " << f.q()
-                << " =~ " << setprecision( 16 ) << approx << std::endl;
+                << " =~ " << std::setprecision( 16 ) << approx << std::endl;
       number -= int_part;
       if ( ( (number0 - epsilon ) < approx )
            && ( approx < (number0 + epsilon ) ) ) break;

@@ -862,7 +862,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
-                                                  const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                                                  const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                                                   HashKey key,
                                                   const double p[2],
                                                   const double len,
@@ -911,7 +911,7 @@ void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
-                const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
    static const HashKey ROOT_KEY = static_cast<HashKey>(1);
@@ -963,7 +963,7 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
 }
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -1040,7 +1040,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1050,7 +1050,7 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
                        (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1060,7 +1060,7 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
                    (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1080,7 +1080,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     }
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
           const DGtal::PointVector<dim,TComponent> & p, 
@@ -1140,7 +1140,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 
 
 // SignedKhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
