@@ -14,7 +14,7 @@
  *
  **/
 
-//#pragma once
+#pragma once
 
 /**
  * @file   Style2DFactory.h

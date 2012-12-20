@@ -15,7 +15,7 @@
  *
  **/
 
-//#pragma once
+#pragma once
 
 /**
  * @file FrechetShortcut.h
