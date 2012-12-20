@@ -1,7 +1,7 @@
 # -----------------------------------------------------------------------------
 # Check Optional Dependencies
 # -----------------------------------------------------------------------------
-
+INCLUDE(${CMAKE_MODULE_PATH}/Macro.cmake)
 # -----------------------------------------------------------------------------
 # Global options
 # -----------------------------------------------------------------------------
@@ -12,9 +12,8 @@ message(STATUS "   cmake frontend, or define cmake commandline variables")
 message(STATUS "   -e.g. '-DWITH_GMP:string=true'-, cf documentation)")
 message(STATUS "")
 
-OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." ON)
-OPTION(WITH_OBJC "With obj-c support (For Ogre3D viewer on mac." OFF)
 OPTION(WITH_OGRE "With the render engine Ogre for 3D visualisation." OFF)
+OPTION(WITH_C11 "With C++ compiler C11 (ex. cpp0x) features." OFF)
 OPTION(WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OFF)
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
@@ -23,67 +22,60 @@ OPTION(WITH_CAIRO "With CairoGraphics." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
 
 IF(WITH_C11)
-SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
-message(STATUS "      WITH_C11          true")
+  SET (LIST_OPTION ${LIST_OPTION} [c++11]\ )
+  message(STATUS "      WITH_C11          true")
 ELSE(WITH_C11)
-message(STATUS "      WITH_C11          false")
+  message(STATUS "      WITH_C11          false")
 ENDIF(WITH_C11)
 
 
-IF(WITH_OBJC)
-SET (LIST_OPTION ${LIST_OPTION} [objc]\ )
-message(STATUS "      WITH_BJC          true")
-ELSE(WITH_BJC)
-message(STATUS "      WITH_BJC          false")
-ENDIF(WITH_BJC)
-
 IF(WITH_OGRE)
-SET (LIST_OPTION ${LIST_OPTION} [OGRE]\ )
-message(STATUS "      WITH_OGRE         true")
+  SET (LIST_OPTION ${LIST_OPTION} [OGRE]\ )
+  message(STATUS "      WITH_OGRE         true")
 ELSE(WITH_OGRE)
-message(STATUS "      WITH_OGRE         false")
+  message(STATUS "      WITH_OGRE         false")
 ENDIF(WITH_OGRE)
 
 IF(WITH_GMP)
-SET (LIST_OPTION ${LIST_OPTION} [GMP]\ )
-message(STATUS "      WITH_GMP          true")
+  SET (LIST_OPTION ${LIST_OPTION} [GMP]\ )
+  message(STATUS "      WITH_GMP          true")
 ELSE(WITH_GMP)
-message(STATUS "      WITH_GMP          false")
+  message(STATUS "      WITH_GMP          false")
 ENDIF(WITH_GMP)
 
 IF(WITH_ITK)
-SET (LIST_OPTION ${LIST_OPTION} [ITK]\ )
-message(STATUS "      WITH_ITK          true")
+  SET (LIST_OPTION ${LIST_OPTION} [ITK]\ )
+  message(STATUS "      WITH_ITK          true")
 ELSE(WITH_ITK)
-message(STATUS "      WITH_ITK          false")
+  message(STATUS "      WITH_ITK          false")
 ENDIF(WITH_ITK)
 
 IF(WITH_CAIRO)
-SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ )
-message(STATUS "      WITH_CAIRO        true")
+  SET (LIST_OPTION ${LIST_OPTION} [CAIRO]\ )
+  message(STATUS "      WITH_CAIRO        true")
 ELSE(WITH_CAIRO)
-message(STATUS "      WITH_CAIRO        false")
+  message(STATUS "      WITH_CAIRO        false")
 ENDIF(WITH_CAIRO)
 
 IF(WITH_COIN3D-SOQT)
-SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ )
-message(STATUS "      WITH_COIN3D-SOQT  true")
+  SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ )
+  message(STATUS "      WITH_COIN3D-SOQT  true")
 ELSE(WITH_COIN3D-SOQT)
-message(STATUS "      WITH_COIN3D-SOQT  false")
+  message(STATUS "      WITH_COIN3D-SOQT  false")
 ENDIF(WITH_COIN3D-SOQT)
 
 IF(WITH_QGLVIEWER)
-SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
-message(STATUS "      WITH_QGLVIEWER    true")
+  SET (LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
+  message(STATUS "      WITH_QGLVIEWER    true")
 ELSE(WITH_QGLVIEWER)
-message(STATUS "      WITH_QGLVIEWER    false")
+  message(STATUS "      WITH_QGLVIEWER    false")
 ENDIF(WITH_QGLVIEWER)
 
 IF(WITH_MAGICK)
-SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ )
-message(STATUS "      WITH_MAGICK       true")
+  SET (LIST_OPTION ${LIST_OPTION} [MAGICK]\ )
+  message(STATUS "      WITH_MAGICK       true")
 ELSE(WITH_MAGICK)
-message(STATUS "      WITH_MAGICK       false")
+  message(STATUS "      WITH_MAGICK       false")
 ENDIF(WITH_MAGICK)
 
 message(STATUS "")
@@ -93,10 +85,38 @@ message(STATUS "Checking the dependencies: ")
 # Check CPP11
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
+SET(C11_FOUND_DGTAL 0)
+SET(C11_AUTO_DGTAL 0)
+SET(C11_FORWARD_DGTAL 0)
+SET(C11_INITIALIZER_DGTAL 0)
+SET(C11_ARRAY 0)
 IF(WITH_C11)
   INCLUDE(${CMAKE_MODULE_PATH}/CheckCPP11.cmake)
+  IF (CPP11_INITIALIZER_LIST OR CPP11_AUTO OR CP11_FORWARD_LIST)
+    SET(C11_FOUND_DGTAL 1)
+    IF (CPP11_AUTO)
+      SET(C11_AUTO_DGTAL 1)
+      SET(C11_FEATURES "${C11_FEATURES} auto")
+    ENDIF()
+    IF (CPP11_INITIALIZER_LIST)
+      SET(C11_INITIALIZER_DGTAL 1)
+      SET(C11_FEATURES "${C11_FEATURES} initializer-list")
+    ENDIF()
+    IF (CPP11_FORWARD_LIST)
+      SET(C11_FORWARD_DGTAL 1)
+      SET(C11_FEATURES "${C11_FEATURES} std::forward-list")
+    ENDIF()
+    IF (CPP11_ARRAY)
+      SET(C11_ARRAY 1)
+      SET(C11_FEATURES "${C11_FEATURES} std::array")
+    ENDIF()
+    MESSAGE(STATUS "Supported c++11 features: [${C11_FEATURES} ]")
+  ELSE()
+    MESSAGE(FATAL_ERROR "Your compiler does not support any c++11 feature. Please specify another C++ compiler of disable this WITH_C11 option.")
+  ENDIF()
 ENDIF(WITH_C11)
 
+  
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
 # (They are not compulsory).
@@ -124,8 +144,8 @@ SET(MAGICK++_FOUND_DGTAL 0)
 IF(WITH_MAGICK)
   FIND_PACKAGE(Magick REQUIRED)
   IF(MAGICK++_FOUND)
-     SET(MAGICK++_FOUND_DGTAL 1)
-     INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
+    SET(MAGICK++_FOUND_DGTAL 1)
+    INCLUDE_DIRECTORIES(${MAGICK++_INCLUDE_DIR})
     message(STATUS "GraphicsMagick++ found." )
     ADD_DEFINITIONS("-DWITH_MAGICK ")
     SET(DGtalLibInc ${DGtalLibInc} ${MAGICK++_INCLUDE_DIR})
@@ -149,8 +169,8 @@ IF(WITH_ITK)
     SET(ITK_FOUND_DGTAL 1)
     INCLUDE(${ITK_USE_FILE})
     MESSAGE(STATUS "ITK found ${ITK_USE_FILE}.")
- 
-   SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
+
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     ADD_DEFINITIONS(" -DWITH_ITK ")
     SET(DGtalLibInc ${DGtalLibInc} ${ITK_INCLUDE_DIRS})
 
@@ -158,18 +178,18 @@ IF(WITH_ITK)
     ## We test if ITK build accepts cpp11 compilers
     IF(WITH_C11)
       try_compile( CPP11_ITK
-            ${CMAKE_BINARY_DIR}/CMakeTmp
-            ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
-            ITKCPP11BUG
-            OUTPUT_VARIABLE OUTPUT )
+        ${CMAKE_BINARY_DIR}/CMakeTmp
+        ${CMAKE_SOURCE_DIR}/cmake/src/ITKcpp11Bug/
+        ITKCPP11BUG
+        OUTPUT_VARIABLE OUTPUT )
       if ( CPP11_ITK )
         message(STATUS "ITK accepts [c++11]" )
       else ( CPP11_ITK )
         message(STATUS "ITK does not accept [c++11]" )
-      if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-        MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).")
-      endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
-     endif ( CPP11_ITK )
+        if (CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+          MESSAGE(FATAL_ERROR "ITK was found but it appears that the package was not built with std-cpp11 extension and DGtal will notcompile. You can either disable the ITK extension (WITH_ITK)  or the C11 support (WITH_C11 option).")
+        endif(CPP11_AUTO OR CPP11_INITIALIZER_LIST)
+      endif ( CPP11_ITK )
     ENDIF(WITH_C11)
 
     # -------------------------------------------------------------------------
@@ -177,12 +197,12 @@ IF(WITH_ITK)
     # template depth. We remove this option.
     # --------------------------------------------------------------------------
     if (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
-       message( "Warning: some package has enabled a limited template depth for the C++ compiler." )
-       message( "         Disabling option -ftemplate-depth-xx in CMAKE_CXX_FLAGS." )
-       set( CMAKE_CXX_FLAGS_TMP ${CMAKE_CXX_FLAGS} )
-       STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" "" 
-       CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
-       message ("         CMAKE_CXX_FLAGS=" ${CMAKE_CXX_FLAGS} )
+      message( "Warning: some package has enabled a limited template depth for the C++ compiler." )
+      message( "         Disabling option -ftemplate-depth-xx in CMAKE_CXX_FLAGS." )
+      set( CMAKE_CXX_FLAGS_TMP ${CMAKE_CXX_FLAGS} )
+      STRING( REGEX REPLACE "-ftemplate-depth-[0-9]*" "" 
+        CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS_TMP}" )
+      message ("         CMAKE_CXX_FLAGS=" ${CMAKE_CXX_FLAGS} )
     endif (CMAKE_CXX_FLAGS MATCHES "-ftemplate-depth-[0-9]*")
 
   ELSE(ITK_FOUND)
@@ -219,7 +239,7 @@ ENDIF(WITH_CAIRO)
 # -----------------------------------------------------------------------------
 SET(COIN3D_FOUND_DGTAL 0)
 SET(SOQT_FOUND_DGTAL 0)
- IF(WITH_COIN3D-SOQT)
+IF(WITH_COIN3D-SOQT)
   find_package(COIN3D REQUIRED)
   if ( COIN3D_FOUND )
     set(COIN3D_FOUND_DGTAL 1)
@@ -260,7 +280,7 @@ IF(WITH_QGLVIEWER)
   if(QGLVIEWER_FOUND)
 
     find_package(OpenGL REQUIRED)
-      message(STATUS  "libQGLViewer found.")
+    message(STATUS  "libQGLViewer found.")
     if (OPENGL_GLU_FOUND)
       message(STATUS  "  (OpenGL-GLU ok) "${OPENGL_INCLUDE_DIR})
     else(OPENGL_GLU_FOUND)
@@ -307,56 +327,33 @@ IF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
   endif ( QT4_FOUND )
 ENDIF( WITH_COIN3D-SOQT OR WITH_QGLVIEWER)
 
-# -----------------------------------------------------------------------------
-# Check OBJC
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-IF(WITH_OBJC)
-  INCLUDE(${CMAKE_MODULE_PATH}/CheckOBJC.cmake)
-ENDIF(WITH_OBJC)
+
+
+
 # -----------------------------------------------------------------------------
 # Look for Ogre for 3D display.
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 set(OGRE_FOUND_DGTAL 0)
 IF(WITH_OGRE)
-	if(UNIX AND NOT APPLE)
+  INCLUDE("${CMAKE_MODULE_PATH}/CheckOBJC.cmake")
+  IF( NOT OBJC_SUPPORT)
+    MESSAGE(ERROR "Your compiler does not support ObjectC++ language. ObjectiveC++ is mandatory for OGRE Viewer. Change yout compiler of disable WITH_OGRE.")
+  ENDIF()
+  find_package(OgreDGtal)
+  IF(OGRE_FOUND)
+    set(DGtalLibInc  ${DGtalLibInc} ${OGRE_INCLUDE_DIR} ${OIS_INCLUDE_DIR})	
+    set ( WITH_VISU3D_OGRE 1 )
+    set(WITH_VISU3D 1)
+    set(OGRE_FOUND_DGTAL 1)
+    ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
+    if(NOT APPLE)
+      SET(DGtalOgre ${DGtalOgre} ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  )
+    else()
+      SET(DGtalOgre ${DGtalOgre} ${OGRE_LIBRARY_REL} ${OIS_LIBRARIES} ${EXTRA_LIBS})
+    endif()
+  ENDIF()
 
-		if(NOT DEFINED OGRE_PLUGINS)
-			if(EXISTS "/usr/local/lib/OGRE/")
-				set(OGRE_PLUGINS "/usr/local/lib/OGRE/")
-			elseif(EXISTS "/usr/lib/OGRE/")
-				set(OGRE_PLUGINS "/usr/lib/OGRE/")
-			elseif (EXISTS "/usr/lib/i386-linux-gnu/OGRE/")
-				set(OGRE_PLUGINS "/usr/lib/i386-linux-gnu/OGRE/")
-			else()
-			     message(SEND_ERROR "Unable to find Ogre plugins, please set OGRE_PLUGINS variable")
-			endif(EXISTS "/usr/local/lib/OGRE/")
-		endif()
-
-		  if(EXISTS "/usr/local/lib/OGRE/cmake")
-		  	set(CMAKE_MODULE_PATH "/usr/local/lib/OGRE/cmake/;${CMAKE_MODULE_PATH}")
-		 	elseif(EXISTS "/usr/share/OGRE/cmake")
-		     	set(CMAKE_MODULE_PATH "/usr/share/OGRE/cmake/modules;${CMAKE_MODULE_PATH}")
-		  else ()
-		     message(SEND_ERROR "Failed to find module path, please set OGRE_DIR variable to the folder containing FindOgre.cmake")
-		     find_package(OGRE_FIND REQUIRED)
-		  endif(EXISTS "/usr/local/lib/OGRE/cmake")
-
-	endif(UNIX AND NOT APPLE)
-
-	    find_package(OGRE REQUIRED)
-	    if(OGRE_FOUND)
-	    find_package(OIS REQUIRED)
-	    message(STATUS  "libOgre found.")
-	    include_directories( ${OGRE_INCLUDE_DIR} ${OIS_INCLUDE_DIR})	
-	    set ( WITH_VISU3D_OGRE 1 )
-	    set(OGRE_FOUND_DGTAL 1)
-	    ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
-	    SET(DGtalLibDependencies ${DGtalLibDependencies} ${OGRE_LIBRARIES} ${OIS_LIBRARIES}  )
-	  else ( OGRE_FOUND )
-	    message(FATAL_ERROR  "Ogre not found.  Check the cmake variables associated to this package or disable it." )
-	  endif ( OGRE_FOUND )
 ENDIF(WITH_OGRE)
 
 message(STATUS "-------------------------------------------------------------------------------")
