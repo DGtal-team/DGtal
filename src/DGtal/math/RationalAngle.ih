@@ -1,0 +1,192 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file RationalAngle.ih
+ * @author Isabelle Sivignon (\c isabelle.sivignon@gipsa-lab.grenoble-inp.fr )
+ * gipsa-lab Grenoble Images Parole Signal Automatique (CNRS, UMR 5216), CNRS, France
+ *
+ * @date 2012/12/20
+ *
+ * Implementation of inline methods defined in RationalAngle.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+template <typename TInteger>
+inline 
+DGtal::RationalAngle<TInteger>::RationalAngle(Integer a, Integer b)
+{
+  myP = a;
+  myQ = b;
+}
+
+template <typename TInteger>
+inline
+typename DGtal::RationalAngle<TInteger>::Self & DGtal::RationalAngle<TInteger>::operator=(const RationalAngle & other)
+{
+  if(this != &other)
+    {
+      myP = other.myP;
+      myQ = other.myQ;
+    }
+  return *this;
+} 
+
+template <typename TInteger>
+inline
+DGtal::RationalAngle<TInteger>::RationalAngle(const RationalAngle & other) : myP(other.myP), myQ(other.myQ)
+{
+ 
+}
+
+template <typename TInteger>
+inline
+bool DGtal::RationalAngle<TInteger>::operator==(const RationalAngle & other) 
+{
+  // returns true if and only if the vectors (myP,myQ) and
+  // (other.myP,other.myQ) are colinear and of same orientation.  
+  return(myP*other.myQ - myQ*other.myP==0 && myP*other.myP+myQ*other.myQ >=0);
+}
+
+
+template <typename TInteger>
+inline
+bool DGtal::RationalAngle<TInteger>::operator!=(const RationalAngle & other) 
+{
+  return(!(this==other));
+}
+
+
+template <typename TInteger>
+inline 
+bool DGtal::RationalAngle<TInteger>::operator<(const RationalAngle & other)
+{
+  return(myP*other.myQ - myQ*other.myP>0);
+}
+
+template <typename TInteger>
+inline 
+bool DGtal::RationalAngle<TInteger>::operator>=(const RationalAngle & other)
+{
+  return(!(this < other));
+}
+
+template <typename TInteger>
+inline 
+bool DGtal::RationalAngle<TInteger>::operator>(const RationalAngle & other)
+{
+  return(myP*other.myQ - myQ*other.myP<0);
+}
+
+
+template <typename TInteger>
+inline 
+bool DGtal::RationalAngle<TInteger>::operator<=(const RationalAngle & other)
+{
+  return(!(this > other));
+}
+
+template <typename TInteger>
+inline 
+typename DGtal::RationalAngle<TInteger>::Self DGtal::RationalAngle<TInteger>::plusPI_2()  
+{
+  typename RationalAngle<TInteger>::Self angle(-myQ,myP); 
+  return angle;
+}
+
+template <typename TInteger>
+inline 
+typename DGtal::RationalAngle<TInteger>::Self DGtal::RationalAngle<TInteger>::minusPI_2()
+{
+  typename RationalAngle<TInteger>::Self  angle(myQ,-myP);
+  return angle;
+}
+
+
+template <typename TInteger>
+inline 
+typename DGtal::RationalAngle<TInteger>::Self DGtal::RationalAngle<TInteger>::plusPI()  
+{
+  typename RationalAngle<TInteger>::Self angle(-myP,-myQ); 
+  return angle;
+}
+
+template <typename TInteger>
+inline 
+typename DGtal::RationalAngle<TInteger>::Self DGtal::RationalAngle<TInteger>::minusPI()
+{
+  typename RationalAngle<TInteger>::Self  angle(-myP,-myQ);
+  return angle;
+}
+
+
+
+
+// template <typename TInteger>
+// inline 
+// DGtal::RationalAngle<TInteger>::Self & minusPI()
+// {
+//   RationalAngle<TInteger>::Self angle(-myP,-myQ);
+//   return *angle;
+// }
+
+
+// template <typename TInteger>
+// inline 
+// DGtal::RationalAngle<TInteger>::Self & plusPI()
+// {
+//   typename RationalAngle<TInteger> angle(-myP,-myQ);
+//   return angle;
+// }
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+/**
+ * Overloads 'operator<<' for displaying objects of class 'RationalAngle'.
+ * @param out the output stream where the object is written.
+ * @param object the object of class 'RationalAngle' to write.
+ * @return the output stream after the writing.
+ */
+// inline
+// std::ostream&
+// DGtal::operator<< ( std::ostream & out,
+//                   const RationalAngle & object )
+// {
+//     object.selfDisplay ( out );
+//     return out;
+// }
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+
