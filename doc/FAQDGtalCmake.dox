@@ -35,7 +35,7 @@ To build DGtal in is minimal configuration, you need at least these dependencies
 
 - \e cmake (optionally cmake-gui),
 - \e c++ compiler (g++, clang++, ...)
-- \e boost >= 1.42.0 and boost-program-options.
+- \e boost >= 1.42.0 and boost-program-options, boost-system
 
 To build DGtal in is full configuration, you need these dependencies too:
 
@@ -56,7 +56,7 @@ If you want to generate the documentation, you would need:
 From a clean Ubuntu installation, you can download and install all
 dependencies using:
 @code
-sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
+sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev libboost-system-dev
 sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev libogre-dev libois-dev
 libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev doxygen graphviz
 @endcode
