@@ -109,7 +109,7 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
   MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
   MyDigitalSurface digSurfShape( lightImplDigSurf );
 
-  MyFunctor functorShape ( gaussDigShape, kSpace, true );
+  MyFunctor functorShape ( gaussDigShape, kSpace, domain, true );
   MyIIGaussianEstimator estimator ( kSpace, functorShape );
 
   try

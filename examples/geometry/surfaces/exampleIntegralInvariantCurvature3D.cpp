@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file exampleIntegralInvariantCurvature2D.cpp
+ * @file exampleIntegralInvariantCurvature3D.cpp
  * @ingroup Examples
  * @author Jérémy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
@@ -23,7 +23,7 @@
  *
  * @date 2012/12/17
  *
- * An example file named exampleIntegralInvariantCurvature2D.
+ * An example file named exampleIntegralInvariantCurvature3D.
  *
  * This file is part of the DGtal library.
  */
@@ -32,20 +32,24 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-// Shape construction
-#include "DGtal/shapes/parametric/Flower2D.h"
-#include "DGtal/shapes/GaussDigitizer.h"
+// Shape constructors
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/topology/SurfelAdjacency.h"
+#include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/DepthFirstVisitor.h"
 
 // Integral Invariant includes
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/IntegralInvariantGaussianCurvatureEstimator.h"
 
 // Drawing
-#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include <QtGui/QApplication>
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,36 +60,46 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    trace.beginBlock ( "Example IntegralInvariantCurvature2D" );
+    if ( argc != 4 )
+    {
+        trace.error() << "Usage: " << argv[0]
+                               << " <fileName.vol> <h> <k>" << std::endl;
+        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0.1 4" << std::endl;
+        return 0;
+    }
+
+    trace.beginBlock ( "Example IntegralInvariantCurvature3D" );
     trace.info() << "Args:";
     for ( int i = 0; i < argc; ++i )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    // Construction of the shape + digitalization
-    double h = 1;
+    double h = atof(argv[2]);
+    double k = atof(argv[3]);
 
-    typedef Flower2D< Z2i::Space > MyShape;
-    typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
-    typedef Z2i::KSpace::Surfel Surfel;
-    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
-    typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
+    // Construction of the shape from vol file
+    typedef ImageSelector< Z3i::Domain, bool>::Type Image;
+    typedef Z3i::KSpace::Surfel Surfel;
+    typedef LightImplicitDigitalSurface< Z3i::KSpace, Image > MyLightImplicitDigitalSurface;
+    typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
 
-    MyShape shape( 0, 0, 20.00000124, 19.0000123, 4, 3.0 );
-    MyGaussDigitizer digShape;
-    digShape.attach( shape );
-    digShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
-    Z2i::Domain domainShape = digShape.getDomain();
-    Z2i::KSpace KSpaceShape;
-    bool space_ok = KSpaceShape.init( domainShape.lowerBound(), domainShape.upperBound(), true );
-    if ( !space_ok )
+    std::string filename = argv[1];
+    Image image = VolReader<Image>::importVol( filename );
+
+    Z3i::Domain domain = image.domain();
+
+    Z3i::KSpace KSpaceShape;
+
+    bool space_ok = KSpaceShape.init( domain.lowerBound(), domain.upperBound(), true );
+    if (!space_ok)
     {
-        trace.error() << "Error in the Khamisky space construction." << std::endl;
-        return 2;
+      trace.error() << "Error in the Khalimsky space construction."<<std::endl;
+      return 2;
     }
-    SurfelAdjacency<Z2i::KSpace::dimension> SAdj( true );
-    Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
-    LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
+
+    SurfelAdjacency< Z3i::KSpace::dimension > SAdj( true );
+    Surfel bel = Surfaces< Z3i::KSpace >::findABel( KSpaceShape, image, 100000 );
+    MyLightImplicitDigitalSurface LightImplDigSurf( KSpaceShape, image, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
     typedef DepthFirstVisitor<MyDigitalSurface> Visitor;
@@ -96,13 +110,11 @@ int main( int argc, char** argv )
 
 
     // Integral Invariant stuff
-    double k = 5.0;
+    typedef FunctorOnCells< Image, Z3i::KSpace > MyFunctor;
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIGaussianEstimator;
 
-    typedef FunctorOnCells< MyGaussDigitizer, Z2i::KSpace > MyFunctor;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyIIMeanEstimator;
-
-    MyFunctor functor ( digShape, KSpaceShape, domainShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
-    MyIIMeanEstimator estimator ( KSpaceShape, functor );
+    MyFunctor functor ( image, KSpaceShape, domain ); // Creation of a functor on Cells, returning true if the cell is inside the shape
+    MyIIGaussianEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, k ); // Initialisation for a given k (radius_e kernel = k*h^(4/3) <=> radius_d kernel = k*h^(1/3))
     std::vector< double > results;
     back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
@@ -110,7 +122,7 @@ int main( int argc, char** argv )
 
 
     // Drawing results
-    typedef MyIIMeanEstimator::Quantity Quantity;
+    typedef MyIIGaussianEstimator::Quantity Quantity;
     Quantity min = numeric_limits < Quantity >::max();
     Quantity max = numeric_limits < Quantity >::min();
     for ( unsigned int i = 0; i < results.size(); ++i )
@@ -124,11 +136,11 @@ int main( int argc, char** argv )
             max = results[ i ];
         }
     }
-    Board2D board;
-    board << SetMode( domainShape.className(), "Paving" )
-          << domainShape;
-    Visitor *depth2 = new Visitor (digSurf, *digSurf.begin());
-    abegin = SurfelConstIterator(depth2);
+
+    QApplication application( argc, argv );
+    Viewer3D viewer;
+    viewer.show();
+    viewer << SetMode3D(image.domain().className(), "BoundingBox") << image.domain();
 
     typedef GradientColorMap< Quantity > Gradient;
     Gradient cmap_grad( min, max );
@@ -136,17 +148,20 @@ int main( int argc, char** argv )
     cmap_grad.addColor( Color( 255, 255, 10 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
 
-    board << SetMode( (*abegin).className(), "Paving" );
-    string specificStyle = (*abegin).className() + "/Paving";
+    Visitor *depth2 = new Visitor (digSurf, *digSurf.begin());
+    abegin = SurfelConstIterator(depth2);
+
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
-        board << CustomStyle( specificStyle, new CustomColors( Color::Black, cmap_grad( results[ i ] )))
-              << *abegin;
+        viewer << CustomColors3D( Color::Black, cmap_grad( results[ i ] ))
+               << *abegin;
         ++abegin;
     }
-    board.saveSVG ( "example-integralinvariant2D.svg" );
+
+    viewer << Viewer3D::updateDisplay;
+
     trace.endBlock();
-    return 0;
+    return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

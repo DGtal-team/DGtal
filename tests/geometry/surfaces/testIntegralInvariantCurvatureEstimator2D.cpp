@@ -92,7 +92,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
   MyDigitalSurface digSurfShape( lightImplDigSurf );
 
-  MyFunctor functorShape( gaussDigShape, kSpace );
+  MyFunctor functorShape( gaussDigShape, kSpace, domainShape );
   MyIIMeanEstimator estimator( kSpace, functorShape );
 
   try
