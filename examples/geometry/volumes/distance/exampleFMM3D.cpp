@@ -105,7 +105,7 @@ int main( int argc, char** argv )
   // image binarization and surface extraction
   //types
   typedef ImageContainerBySTLVector<Domain,short int> LabelImage; 
-  typedef ConstImageAdapter<LabelImage, Thresholder<LabelImage::Value>, bool > BinaryImage;
+  typedef ConstImageAdapter<LabelImage, Domain, DefaultFunctor, bool, Thresholder<LabelImage::Value> > BinaryImage;
   typedef FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator SurfelIterator;
@@ -125,8 +125,9 @@ int main( int argc, char** argv )
 
   DGtal::trace.beginBlock("binarization..."); 
 
+  DefaultFunctor g;
   Thresholder<LabelImage::Value> thresholder( t ); 
-  BinaryImage binaryImage(labelImage, thresholder);
+  BinaryImage binaryImage(labelImage, labelImage.domain(), g, thresholder);
   trace.info() << "threshold: "
 	       << t
 	       << std::endl;
@@ -139,7 +140,7 @@ int main( int argc, char** argv )
 
   try { 
     //getting a bel
-    bel = Surfaces<KSpace>::findABel( ks, binaryImage,  d.size() );
+    bel = Surfaces<KSpace>::findABel( ks, binaryImage, d.size() );
 
     trace.info() << "starting bel: "
 		 << bel

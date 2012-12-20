@@ -60,7 +60,7 @@ namespace DGtal
   class IntervalForegroundPredicate
   {
   public:
-    //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
     
     typedef typename Image::Value Value;
     typedef typename Image::Point Point; 
@@ -88,27 +88,19 @@ namespace DGtal
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const typename Image::Iterator &it) const
+    bool operator()(const typename Image::ConstRange::ConstIterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
-    
-    /** 
+
+    /**
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const typename Image::ConstIterator &it) const
+    bool operator()(const typename Image::Range::Iterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
-    
-    /** 
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::SpanIterator &it) const
-    {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
-    }
-    
+
   private:
     CountedPtr<Image> myImage;
     Value myMaxVal;

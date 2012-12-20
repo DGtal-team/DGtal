@@ -45,7 +45,7 @@ First to use the Viewer3D stream, you need to include the following hearders:
  *	
 The following code snippet defines three points and a rectangular
 domain in Z3. It then displays them in a Viewer3D object. The	
-full code is in <a  href="viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
+full code is in <a  href="io_2viewers_2viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *	
 
@@ -87,7 +87,7 @@ Then we can display some 3D primitives:
 
 
  The same visualization can be obtain with the Board2Dto3D class. You
-just need to adapt the camera settings (see example: <a href="dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
+just need to adapt the camera settings (see example: <a href="io_2boards_2dgtalBoard3DTo2D-1-points_8cpp-example.html"> dgtalBoard3DTo2D-1-points.cpp</a> ).
 
 
 @code
@@ -139,7 +139,7 @@ This example should provides a comparable visualization.
  
  @endcode
 *
-* You should obtain the following visualisation (see example: <a href="viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
+* You should obtain the following visualisation (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
 * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D." 
 * \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
@@ -165,17 +165,12 @@ This example should provides a comparable visualization.
  viewer << shape2;
 @endcode
 
-* You should obtain the two following visualisations (see example: <a href="viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cxx </a>):
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER> \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
-      		    \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." width=5cm </TD>
-*<TD  align=CENTER >\image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
-      		    \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm </TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+* You should obtain the two following visualisations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
+
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D." 
+ \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm 
+ \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."      
+ \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm
 
 
 * Note that digital set was displayed with transparency by setting a custom colors.   
@@ -192,16 +187,16 @@ As for \c Board2D the object can be displayed with different possible mode:
 
   - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
-  - class Object, modes: "", "DrawAdjacencies", "PavingTransp".
+  - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
   - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class KhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
-  - class SignedKhalimskyCell  ,  modes: "" / "Highlighted" ,"Transparent", "Basic".
+  - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration".
+  - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration".
 
 
 
-\subsection DGtalGLV_ModeExamplesDomain Examples with \ref Objet modes
+\subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
-The file <a href="viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cxx </a> illustrates several  possible modes to display these objects:
+The file <a href="io_2viewers_2viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cpp </a> illustrates several  possible modes to display these objects:
 
 
 We can display the set of point and the domain 
@@ -243,34 +238,48 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 *
 * we obtain the following visualisations:
 * 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
 \image html visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain "
 \image latex visuModeDefault.png "(a) Default visualisation of a digital point sets with the associated domain " width=5cm
-</TD>
-<TD  align=CENTER>
  \image html  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain."  
  \image latex  visuModePavingGridsDomain.png "(b) Visualisation using Paving mode for the domain." width=5cm 
-</TD>
-<TD  align=CENTER>
  \image html  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels."
  \image latex  visuModeGridVoxel.png "(c) Visualisation using Paving mode for the voxels." width=5cm 
-</TD>
-
-
-* </TR>
-*</TABLE>
-*</CENTER>
 
 
 
 
-\subsection DGtalGLV_ModeOtherExamples Others Examples
+\subsection DGtalGLV_ModeOtherExamples Illustrating  KhalimskyCell  with the "Illustration" mode 
 
 
-Others mode examples are illustrated for class KhalimskyCell and class SignedKhalimskyCell in respectively the subsection \ref dgtal_ctopo_sec2_3 and subsection \ref dgtal_ctopo_sec1_6 of the section related to cellular topology ( \ref dgtal_cellular_topology). 
+The "Illustration" mode is defined to construct illustrations composed
+of KhalimskyCell. In particular it permits to increase the space
+between cells and improve the display visibility. It can be used typically as
+follows:
+First you need to add the following header:
+
+@snippet io/viewers/viewer3D-4bis-illustrationMode.cpp SetKSIllustrationMode3DHeader
+
+
+From a SignedKhalimskyCell  (SCell in DGtal::Z3i) you have to select the "Illustration" mode :
+
+ @snippet io/viewers/viewer3D-4bis-illustrationMode.cpp SetKSIllustrationMode3D
+
+Then, to display a surfel with its associated voxel, you need to
+transform the surfel by constructing a shifted and resized version (DGtal::TransformedKSSurfel) according to its associated voxel:
+
+
+@snippet io/viewers/viewer3D-4bis-illustrationMode.cpp KSIllustrationModeTransformed
+
+
+You will obtain such type of illustration (obtained from the example <a href="io_2viewers_2viewer3D-4bis-illustrationMode_8cpp-example.html">  viewer3D-4bis-illustrationMode.cpp </a>).
+
+
+
+
+ \image html view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
+ \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode."
+
+
 
 
 
@@ -287,13 +296,13 @@ As for Board2D, it is possible to custom the way to display 3D elements by using
 The custom color can be applied by an instance of the CustomColors3D as follow:
 
 @code 
-  viewer << CustomColors3D(QColor(250, 0,0),QColor(250, 0,0));
+  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
   viewer << p4 << p5 ;
 @endcode
 
 
 
-The example <a  href="viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </a> illustrates some possible customs :
+The example <a  href="io_2viewers_2viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom.cpp </a> illustrates some possible customs :
 
 
 
@@ -309,7 +318,7 @@ The example <a  href="viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom </
 It also possible through the stream mechanism to add clipping plane
 with the object \c ClippingPlane. We just have to add the real plane
 equation and adding as for displaying an element. The file <a
-href="viewer3D-6-clipping_8cpp-example.html"
+href="io_2viewers_2viewer3D-6-clipping_8cpp-example.html"
 >viewer3D-6-clipping.cpp</a> gives a simple example.
 
 From displaying a digital set defined from a Norm2 ball,
@@ -334,27 +343,14 @@ we can add for instance two differents clipping planes:
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-*<CENTER>
-*<TABLE> 
-*<TR>
-*<TD  align=CENTER>
 \image html visuClippingAll.png "(a) Visualisation of the initial set." width=5cm 
 \image latex visuClippingAll.png "(a) Visualisation of the initial set." 
-</TD>
-<TD  align=CENTER>
  \image html  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)." 
  \image latex  visuClipping1.png "(b) Visualisation after adding the first clipping plane (0,1,0.3,-10)."  width=5cm 
-</TD>
-<TD  align=CENTER>
  \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
 \image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
-</TD>
-* </TR>
-*</TABLE>
-*</CENTER>
+
 */
-
-
 It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
 
 @code
@@ -439,6 +435,12 @@ It also possible to remove the visualisation of the transparent clipping plane b
 
 
 
+/**
+   \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
+\example io/viewers/viewer3D-4bis-illustrationMode.cpp
+
+*
+*/
 
 
 

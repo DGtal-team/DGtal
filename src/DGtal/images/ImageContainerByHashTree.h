@@ -45,11 +45,13 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
+
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Bits.h"
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/io/Color.h"
@@ -58,6 +60,8 @@
 
 namespace DGtal
 {
+  namespace experimental
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class ImageContainerByHashTree
   /**
@@ -70,7 +74,7 @@ namespace DGtal
    *
    * The ImageContainerByHashTree relies on a tree model implemented
    * using a hash table based on Morton Codes.  A Morton hash key is
-   * obatained from coordinates by interleaving the binary
+   * obtained from coordinates by interleaving the binary
    * representations of the coordinate values.  This means the
    * coordinates have to be of integer type for the morton code to be
    * valid.
@@ -106,7 +110,7 @@ namespace DGtal
    *
    * Warning ! For performances this container's access method never
    * check for a key's validity.  Trying to access an invalid key may
-   * destroy the validity off the tree's structure and/or get the
+   * destroy the validity of the tree's structure and/or get the
    * program stuck into an infinite loop.
    *
    * The method isKeyValid(..) is provided to verify the validity of a
@@ -142,6 +146,7 @@ namespace DGtal
     typedef typename Domain::Integer Integer;
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
+    typedef Point Vertex;
 
     /// static constants
     static const typename Domain::Dimension dimension = Domain::dimension;
@@ -157,7 +162,9 @@ namespace DGtal
     /// values range
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
+    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
+    typedef DefaultConstImageRange<Self> ConstRange;
+    typedef DefaultImageRange<Self> Range;
 
     /// output iterator
     typedef SetValueIterator<Self> OutputIterator; 
@@ -260,12 +267,13 @@ namespace DGtal
      * @return an instance of ConstRange 
      * used to iterate over the values.
      */      
-    ConstRange range() const;
+    ConstRange constRange() const;
 
-    /** 
-     * @return an output iterator used to write values.
-     */      
-    OutputIterator outputIterator();
+    /**
+     * @return an instance of ConstRange
+     * used to iterate over the values.
+     */
+    Range range() ;
 
 
     /**
@@ -802,7 +810,7 @@ namespace DGtal
   }
 
  
-
+}
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

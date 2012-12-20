@@ -31,13 +31,14 @@
 #include <cstdlib>
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DigitalTopology.h"
-#include "DGtal/topology/Expander.h"
 #include "DGtal/topology/MetricAdjacency.h"
+#include "DGtal/topology/BreadthFirstVisitor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
+#include "DGtal/topology/Object.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
@@ -315,21 +316,22 @@ typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
 ( const Point & p ) const
 {
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeNeighborhood( p, back_ins_it );
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, p );
+  tmp_local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = tmp_local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -353,20 +355,21 @@ typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::neighborhoodSize( const Point & p ) const
 {
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeNeighborhood( p, back_ins_it );
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, p );
+  tmp_local_points.push_back( p );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   Size nb = 0;
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = tmp_local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -391,21 +394,21 @@ typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
 ( const Point & p ) const
 {
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( p, back_ins_it );
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
   SmallObject neighA( myTopo, pointSet().domain() );
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   SmallSet & neighASet = neighA.pointSet();
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = tmp_local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -430,20 +433,21 @@ typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
 ::properNeighborhoodSize( const Point & p ) const
 {
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
 
   // Intermediate container that is fast writable.
-  Container neigh;
-  std::back_insert_iterator< Container > back_ins_it( neigh );
-  adjacency().writeProperNeighborhood( p, back_ins_it );
+  Container tmp_local_points;
+
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, p );
 
   // A neighborhood is small, so is defined the digital object.
-  const ContainerConstIterator it_end( neigh.end() );
+  const ContainerConstIterator it_end( tmp_local_points.end() );
   const DigitalSetConstIterator not_found( pointSet().end() );
   Size nb = 0;
-  for ( ContainerConstIterator it = neigh.begin();
+  for ( ContainerConstIterator it = tmp_local_points.begin();
       it != it_end;
       ++it )
     if ( pointSet().find( *it ) != not_found )
@@ -462,33 +466,32 @@ inline
 DGtal::Object<TDigitalTopology, TDigitalSet>
 DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
 {
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef typename Container::const_iterator ContainerConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   //typedef typename Domain::Predicate Predicate;
 
   // Intermediate container that is fast writable.
-  Container neigh;
   const DigitalSet & mySet = pointSet();
   Object<DigitalTopology, DigitalSet> output( topology(),
       domain() );
-  // mySet.domain() );
   DigitalSet & outputSet = output.pointSet();
 
   // Loop on all points of the set.
+  Container tmp_local_points;
   const DigitalSetConstIterator it_end = mySet.end();
   for ( DigitalSetConstIterator it = mySet.begin();
       it != it_end;
       ++it )
   {
-    std::back_insert_iterator< Container > back_ins_it( neigh );
+    std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
     // Computing neighborhood within domain.
-    topology().lambda().writeProperNeighborhood
-    ( *it, back_ins_it, domain().predicate() );
+    topology().lambda().writeNeighbors
+    ( back_ins_it, *it, domain().predicate() );
     // Checks if any point is not in the object.
-    const ContainerConstIterator itc_end( neigh.end() );
-    for ( ContainerConstIterator itc = neigh.begin();
+    const ContainerConstIterator itc_end( tmp_local_points.end() );
+    for ( ContainerConstIterator itc = tmp_local_points.begin();
         itc != itc_end;
         ++itc )
       if ( pointSet().find( *itc ) == it_end )
@@ -496,7 +499,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
         outputSet.insertNew( *it );
         break;
       }
-    neigh.clear();
+    tmp_local_points.clear();
   }
   return output;
 }
@@ -532,27 +535,51 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
   DigitalSetConstIterator it_object = pointSet().begin();
   Point p( *it_object++ );
-  Expander<Object> expander( *this, p );
-  while ( expander.nextLayer() )
-    ;
-  Object component( myTopo, expander.core(), CONNECTED );
-  *it++ = component;
+
+  // first component.
+  BreadthFirstVisitor< Object, std::set<Vertex> > visitor( *this, p );
+  while ( ! visitor.finished() ) visitor.expand();
+  DigitalSet visited( domain() );
+  visited.insertNew( visitor.markedVertices().begin(),
+                     visitor.markedVertices().end() );
+  *it++ = Object( myTopo, visited, CONNECTED );
   ++nb_components;
-  DigitalSet visited( expander.core() );
   while ( it_object != pointSet().end() )
   {
     p = *it_object++;
     if ( visited.find( p ) == visited.end() )
     {
-      Expander<Object> expander2( *this, p );
-      while ( expander2.nextLayer() )
-        ;
-      Object component2( myTopo, expander2.core(), CONNECTED );
-      *it++ = component2;
+      BreadthFirstVisitor< Object, std::set<Vertex> > visitor2( *this, p );
+      while ( ! visitor2.finished() ) visitor2.expand();
+      DigitalSet visited2( domain() );
+      visited2.insertNew( visitor2.markedVertices().begin(),
+                          visitor2.markedVertices().end() );
+      *it++ = Object( myTopo, visited2, CONNECTED );
       ++nb_components;
-      visited += expander2.core();
+      visited += visited2;
     }
   }
+  // Expander<Object> expander( *this, p );
+  // while ( expander.nextLayer() )
+  //   ;
+  // Object component( myTopo, expander.core(), CONNECTED );
+  // *it++ = component;
+  // ++nb_components;
+  // DigitalSet visited( expander.core() );
+  // while ( it_object != pointSet().end() )
+  // {
+  //   p = *it_object++;
+  //   if ( visited.find( p ) == visited.end() )
+  //   {
+  //     Expander<Object> expander2( *this, p );
+  //     while ( expander2.nextLayer() )
+  //       ;
+  //     Object component2( myTopo, expander2.core(), CONNECTED );
+  //     *it++ = component2;
+  //     ++nb_components;
+  //     visited += expander2.core();
+  //   }
+  // }
   myConnectedness = nb_components == 1 ? CONNECTED : DISCONNECTED;
   return nb_components;
 }
@@ -591,19 +618,154 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
     else
     {
       // Take first point
-      Expander<Object> expander( *this, *( pointSet().begin() ) );
-      // and expand.
-      while ( expander.nextLayer() )
-        ;
-      myConnectedness = ( expander.core().size() == pointSet().size() )
-          ? CONNECTED : DISCONNECTED;
+      Vertex p = *( pointSet().begin() );
+      BreadthFirstVisitor< Object, std::set<Vertex> > visitor( *this, p );
+      while ( ! visitor.finished() )
+       {
+         visitor.expand();
+       }
+      myConnectedness = ( visitor.visitedVertices().size() == pointSet().size() )
+        ? CONNECTED : DISCONNECTED;
+      // JOL: 2012/11/16 There is apparently now a bug in expander !
+      // Very weird considering this was working in 2012/05. Perhaps
+      // this is related to some manipulations in predicates.
+      //
+      // Expander<Object> expander( *this, p );
+      // // and expand.
+      // while ( expander.nextLayer() )
+      //   ;
+      // myConnectedness = ( expander.core().size() == pointSet().size() )
+      //     ? CONNECTED : DISCONNECTED;
     }
   }
   return myConnectedness;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Graph services ------------------------------
 
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
+{
+  return myPointSet->begin();
+}
 
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator 
+DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
+{
+  return myPointSet->end();
+}
+
+/** 
+ * @param v any vertex of the object
+ * 
+ * @return the number of neighbors of this vertex
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::degree
+( const Vertex & v ) const
+{
+  return neighborhoodSize( v );
+}
+
+/**
+ * @return the maximum number of neighbors for a vertex of this object
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
+DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
+{
+  return myTopo->kappa().bestCapacity();
+}
+
+/**
+ * Writes the neighbors of a vertex using an output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be writeNeighbors
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename OutputIterator>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v ) const
+{
+  typedef std::vector<Vertex> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, v );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( tmp_local_points.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  for ( ContainerConstIterator cit = tmp_local_points.begin();
+      cit != it_end;
+      ++cit )
+    if ( pointSet().find( *cit ) != not_found )
+      *it++ = *cit;
+}
+
+/**
+ * Writes the neighbors of a vertex which satisfy a predicate using an 
+ * output iterator
+ * 
+ * 
+ * @tparam OutputObjectIterator the type of an output iterator writing
+ * in a container of vertices.
+ * 
+ * @tparam VertexPredicate the type of the predicate
+ * 
+ * @param it the output iterator
+ * 
+ * @param v the vertex whose neighbors will be written
+ * 
+ * @param pred the predicate that must be satisfied
+ */
+template <typename TDigitalTopology, typename TDigitalSet>
+template <typename OutputIterator, typename VertexPredicate>
+inline
+void
+DGtal::Object<TDigitalTopology, TDigitalSet>::
+writeNeighbors( OutputIterator & it,
+                const Vertex & v,
+                const VertexPredicate & pred ) const
+{
+  typedef std::vector<Vertex> Container;
+  typedef typename Container::const_iterator ContainerConstIterator;
+  typedef typename DigitalSet::ConstIterator DigitalSetConstIterator;
+
+  // Intermediate container that is fast writable.
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  adjacency().writeNeighbors( back_ins_it, v );
+
+  // A neighborhood is small, so is defined the digital object.
+  const ContainerConstIterator it_end( tmp_local_points.end() );
+  const DigitalSetConstIterator not_found( pointSet().end() );
+  for ( ContainerConstIterator cit = tmp_local_points.begin();
+      cit != it_end;
+      ++cit )
+    if ( ( pointSet().find( *cit ) != not_found ) && pred(*cit) )
+      *it++ = *cit;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Simple points -------------------------------
 
@@ -620,7 +782,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
 ( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
@@ -633,9 +795,9 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
-  Container local_points;
-  std::back_insert_iterator< Container > back_ins_it( local_points );
-  alpha.writeProperNeighborhood( p, back_ins_it, limitedX.predicate() );
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
+  alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
 
   // Construct local domain.
   Point p1( p );
@@ -649,17 +811,29 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local X.
   LocalTopology aTopology( adj, omega );
   LocalObject X( aTopology, aDomain );
-  X.pointSet().insertNew( local_points.begin(), local_points.end() );
+  X.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
   typename LocalObject::SmallObject neighAdj = X.properNeighborhood( p );
-  Expander<LocalObject> expander( X,
-      neighAdj.pointSet().begin(),
-      neighAdj.pointSet().end() );
-  for ( unsigned int i = 1; ( i < k ) && ( ! expander.finished() ); ++i )
-    expander.nextLayer();
 
-  SmallObject geodesicN( this->topology(), expander.core() );
+  BreadthFirstVisitor<LocalObject, std::set<Vertex> > visitor
+    ( X, neighAdj.pointSet().begin(),
+      neighAdj.pointSet().end() );
+  while ( ! visitor.finished() )
+    visitor.expand();
+  SmallObject geodesicN( this->topology(), aDomain );
+  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
+                                  visitor.markedVertices().end()  );
+
+  // JOL: 2012/11/16 There is apparently now a bug in expander !
+  // Very weird considering this was working in 2012/05. Perhaps
+  // this is related to some manipulations in predicates.
+  // Expander<LocalObject> expander( X,
+  //     neighAdj.pointSet().begin(),
+  //     neighAdj.pointSet().end() );
+  // for ( unsigned int i = 1; ( i < k ) && ( ! expander.finished() ); ++i )
+  //   expander.nextLayer();
+  // SmallObject geodesicN( this->topology(), expander.core() );
   return geodesicN;
 
 }
@@ -677,7 +851,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
 ( const TAdjacency & adj, const Point & p, unsigned int k ) const
 {
   // Local types.
-  typedef std::vector<Point> Container;
+  typedef std::vector<Vertex> Container;
   typedef MetricAdjacency<Space, Space::dimension> AlphaAdjacency;
   typedef MetricAdjacency<Space, 1> OmegaAdjacency;
   typedef DGtal::DigitalTopology<TAdjacency, OmegaAdjacency> LocalTopology;
@@ -690,10 +864,10 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   AlphaAdjacency alpha;
   OmegaAdjacency omega;
   // Intermediate container that is fast writable.
-  Container local_points;
-  std::back_insert_iterator< Container > back_ins_it( local_points );
+  Container tmp_local_points;
+  std::back_insert_iterator< Container > back_ins_it( tmp_local_points );
   NotPointPredicate<PredicateIsInX> not_pred_is_in_X( limitedX.predicate() );
-  alpha.writeNeighborhood( p, back_ins_it, not_pred_is_in_X );
+  alpha.writeNeighbors( back_ins_it, p, not_pred_is_in_X );
 
   // Construct local domain.
   Point p1( p );
@@ -707,18 +881,31 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   // Construct local Xcomp.
   LocalTopology aTopology( adj, omega );
   LocalObject Xcomp( aTopology, aDomain );
-  Xcomp.pointSet().insertNew( local_points.begin(), local_points.end() );
+  Xcomp.pointSet().insertNew( tmp_local_points.begin(), tmp_local_points.end() );
 
   // A neighborhood is small, so is defined the digital object.
   typename LocalObject::SmallObject neighAdj = Xcomp.properNeighborhood( p );
-  Expander<LocalObject> expander( Xcomp,
-      neighAdj.pointSet().begin(),
-      neighAdj.pointSet().end() );
-  for ( unsigned int i = 0; ( i < k ) && ( ! expander.finished() ); ++i )
-    expander.nextLayer();
 
+  BreadthFirstVisitor<LocalObject, std::set<Vertex> > visitor
+    ( Xcomp, neighAdj.pointSet().begin(),
+      neighAdj.pointSet().end() );
+  while ( ! visitor.finished() )
+    visitor.expand();
   SmallComplementObject geodesicN( this->topology().reverseTopology(),
-      expander.core() );
+                                   aDomain ); 
+  geodesicN.pointSet().insertNew( visitor.markedVertices().begin(), 
+                                  visitor.markedVertices().end()  );
+
+  // JOL: 2012/11/16 There is apparently now a bug in expander !
+  // Very weird considering this was working in 2012/05. Perhaps
+  // this is related to some manipulations in predicates.
+  // Expander<LocalObject> expander( Xcomp,
+  //     neighAdj.pointSet().begin(),
+  //     neighAdj.pointSet().end() );
+  // for ( unsigned int i = 1; ( i < k ) && ( ! expander.finished() ); ++i )
+  //   expander.nextLayer();
+  // SmallComplementObject geodesicN( this->topology().reverseTopology(),
+  //     expander.core() );
   return geodesicN;
 }
 
@@ -742,7 +929,6 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   SmallObject Gkappa_X
   = geodesicNeighborhood( topology().kappa(),
       v, Space::dimension );
-
   if ( Gkappa_X.computeConnectedness() == CONNECTED )
   {
     if ( Gkappa_X.pointSet().empty() )

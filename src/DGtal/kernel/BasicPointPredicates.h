@@ -49,6 +49,7 @@
 #include "DGtal/base/BasicBoolFunctions.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/kernel/CPointFunctor.h"
+#include "DGtal/kernel/CPointPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -203,6 +204,8 @@ namespace DGtal
   struct NotPointPredicate
   {
     typedef TPointPredicate PointPredicate;
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate> )); 
+   
     typedef typename PointPredicate::Point Point;
 
     /**
@@ -269,6 +272,9 @@ namespace DGtal
     typedef typename PointPredicate1::Point Point;
     // should be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< Point, typename PointPredicate2::Point >::value)); 
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate1> )); 
+    //BOOST_CONCEPT_ASSERT (( CPointPredicate<PointPredicate2> )); 
+    
     typedef typename PointPredicate2::Point Point2;
 
     /**

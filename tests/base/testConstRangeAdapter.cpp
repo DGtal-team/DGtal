@@ -149,6 +149,7 @@ int main( int argc, char** argv )
   DefaultFunctor df; 
   SimpleRange r1(v.begin(), v.end(), df); 
 
+
   //2) thresholded range of integers
   typedef ConstRangeAdapter<std::vector<int>::iterator, Thresholder<int>, bool > BoolRange; 
   Thresholder<int> t(n/2);  

@@ -508,7 +508,17 @@ DGtal::PointVector<dim,TComponent>::operator/= ( const Component coeff )
     this->myArray[ i ] /= coeff;
   return *this;
 }
-
+//------------------------------------------------------------------------------
+template<Dimension dim,typename TComponent>
+inline
+DGtal::PointVector<dim,TComponent> 
+DGtal::PointVector<dim,TComponent>::operator/ ( const Component coeff )
+{
+  Self p;
+  for ( Dimension i = 0; i < dimension; ++i )
+    p[i] = this->myArray[ i ] / coeff;
+  return p;
+}
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
 inline
@@ -606,6 +616,16 @@ typename DGtal::PointVector<dim, TComponent>::Iterator
 DGtal::PointVector<dim, TComponent>::minElement( )
 {
   return  std::min_element(this->begin(), this->end());
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent>
+inline
+void
+DGtal::PointVector<dim, TComponent>::
+negate()
+{
+  for ( Dimension i = 0; i < dimension; ++i )
+    this->myArray[ i ] = - this->myArray[ i ];
 }
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent>
