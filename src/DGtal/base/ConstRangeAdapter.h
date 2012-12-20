@@ -170,7 +170,7 @@ namespace DGtal
     {
       out << "[ConstRangeAdapter]" << std::endl; 
       out << "\t"; 
-      std::copy( this->begin(), this->end(), ostream_iterator<TReturnType>(out, ", ") ); 
+      std::copy( this->begin(), this->end(), std::ostream_iterator<TReturnType>(out, ", ") ); 
       out << std::endl; 
     }
 

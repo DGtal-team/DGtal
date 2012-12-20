@@ -53,29 +53,29 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
 					 DGtal::MeshFromPoints<TPoint> & aMesh, 
 					 bool invertVertexOrder) throw(DGtal::IOException)
 {
-  ifstream infile;
+  std::ifstream infile;
   DGtal::IOException dgtalio;
   try 
     {
-      infile.open (aFilename.c_str(), ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in);
     }
   catch( ... )
     {
-      trace.error() << "MeshReader : can't open " << aFilename << endl;
+      trace.error() << "MeshReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
-  string str;
+  std::string str;
   getline( infile, str );
   
   if ( ! infile.good() )
     {
-      trace.error() << "MeshReader : can't read " << aFilename << endl;
+      trace.error() << "MeshReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
   if ( str.substr(0,3) != "OFF")
     {
-      cerr <<"*" <<str<<"*"<< endl;
-      trace.error() << "MeshReader : No OFF format in " << aFilename << endl;
+      std::cerr <<"*" <<str<<"*"<< std::endl;
+      trace.error() << "MeshReader : No OFF format in " << aFilename << std::endl;
       throw dgtalio;
     }
   
@@ -84,12 +84,12 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	trace.error() << "MeshReader : Invalid format in " << aFilename << endl;
+	trace.error() << "MeshReader : Invalid format in " << aFilename << std::endl;
 	throw dgtalio;
       } 
     }
   while ( str[ 0 ] == '#' || str=="");
-  istringstream str_in( str );
+  std::istringstream str_in( str );
   int nbPoints, nbFaces, nbEdges;
   str_in >> nbPoints;
   str_in >> nbFaces;
@@ -111,7 +111,7 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     // Reading the number of face vertex
     unsigned int aNbFaceVertex;
     infile >> aNbFaceVertex;
-    vector<unsigned int> aFace;
+    std::vector<unsigned int> aFace;
     for (unsigned int j=0; j< aNbFaceVertex; j++){
       unsigned int anIndex;
       infile >> anIndex;
@@ -130,7 +130,7 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
     // Contains colors:
     bool findValidColor=true;
     if(str!=""){
-      istringstream inColor(str);
+      std::istringstream inColor(str);
       double colorR, colorG, colorB, colorT;
       findValidColor=inColor.good();
       if(findValidColor && inColor.good()){
@@ -183,28 +183,28 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
 					 DGtal::MeshFromPoints<TPoint> & aMesh, 
 					 bool invertVertexOrder, double scale) throw(DGtal::IOException)
 {
-  ifstream infile;
+  std::ifstream infile;
   DGtal::IOException dgtalio;
   try 
     {
-      infile.open (aFilename.c_str(), ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in);
     }
   catch( ... )
     {
-      trace.error() << "MeshReader : can't open " << aFilename << endl;
+      trace.error() << "MeshReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
-  string str;
+  std::string str;
   getline( infile, str );
   
   if ( ! infile.good() )
     {
-      trace.error() << "MeshReader : can't read " << aFilename << endl;
+      trace.error() << "MeshReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
   if ( str.substr(0,3) != "OFS")
     {
-      trace.error() << "MeshReader : No OFS format in " << aFilename << endl;
+      trace.error() << "MeshReader : No OFS format in " << aFilename << std::endl;
       throw dgtalio;
     }
   
@@ -213,12 +213,12 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	trace.error() << "MeshReader : Invalid format in " << aFilename << endl;
+	trace.error() << "MeshReader : Invalid format in " << aFilename << std::endl;
 	throw dgtalio;
       } 
     }
   while ( str[ 0 ] == '#' || str=="");
-  istringstream str_in( str );
+  std::istringstream str_in( str );
   int nbPoints;
   str_in >> nbPoints;
   
@@ -239,18 +239,18 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	trace.error() << "MeshReader : Invalid format in " << aFilename << endl;
+	trace.error() << "MeshReader : Invalid format in " << aFilename << std::endl;
 	throw dgtalio;
       } 
     }
   while ( str[ 0 ] == '#' || str=="");
-  istringstream str_in2( str );
+  std::istringstream str_in2( str );
   unsigned int nbFaces;
   str_in2 >> nbFaces;
   // Reading mesh faces
   for(unsigned int i=0; i<nbFaces; i++){
     // Reading the number of face vertex
-    vector<unsigned int> aFace;
+    std::vector<unsigned int> aFace;
     for (unsigned int j=0; j< 3; j++){
       unsigned int anIndex;
       infile >> anIndex;
@@ -274,7 +274,7 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
   template <typename TPoint>
   bool
   DGtal::operator<< (   MeshFromPoints<TPoint> & mesh, const std::string &filename ){
-    string extension = filename.substr(filename.find_last_of(".") + 1);
+    std::string extension = filename.substr(filename.find_last_of(".") + 1);
     if(extension== "off") {
       DGtal::MeshReader<TPoint>::importOFFFile(filename, mesh);
       return true;

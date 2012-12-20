@@ -45,7 +45,6 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/Display3D.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"

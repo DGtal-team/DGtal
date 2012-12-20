@@ -153,7 +153,7 @@ namespace DGtal
        Map between the point and their attributes if they are
        occulters 
     */
-    typedef map <ConstIterator,occulter_attributes > occulter_list;
+    typedef std::map <ConstIterator,occulter_attributes > occulter_list;
     
   public:
     friend class FrechetShortcut<ConstIterator,Integer>;

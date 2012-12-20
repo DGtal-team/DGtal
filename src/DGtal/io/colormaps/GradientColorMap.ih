@@ -129,9 +129,9 @@ template <typename PValue,
     int PDefaultPreset,
     int PDefaultFirstColor,
     int PDefaultLastColor >
-GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> &
-GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator=
-( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
+DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> &
+DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator=
+( const DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
 {
   if ( &other != this ) {
     myMin = other.myMin;
@@ -195,7 +195,7 @@ template<typename PValue,
     int PDefaultFirstColor,
     int PDefaultLastColor >
 inline
-Color
+DGtal::Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::operator()
   ( const Value & value ) const
 {
@@ -252,7 +252,7 @@ template <typename PValue,
     int PDefaultFirstColor,
     int PDefaultLastColor >
 inline
-Color
+DGtal::Color
 DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor>::getColor
 ( const std::vector<Color> & colors,
   const Value & min,
@@ -260,7 +260,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Value & value )
 {
   if ( colors.size() < 2 )
-    return Color::None;
+    return DGtal::Color::None;
   double scale = static_cast<double>( value - min ) / (max - min);
   const int intervals = (const int)colors.size() - 1;
   int upper_index = static_cast<int>( ceil( intervals * scale ) );
@@ -279,7 +279,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const unsigned char blue = static_cast<unsigned char>( firstColor.blue() +
                scale * ( lastColor.blue() - 
                    firstColor.blue() ));
-  return Color( red, green, blue );
+  return DGtal::Color( red, green, blue );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
