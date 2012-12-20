@@ -100,6 +100,8 @@ namespace DGtal
   @tparam TDigitalSurfaceContainer any model of
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
+
+  @see \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
