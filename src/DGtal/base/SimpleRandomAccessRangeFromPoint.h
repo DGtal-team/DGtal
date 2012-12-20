@@ -159,7 +159,7 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<Iterator>::Value Value;
         out << "[SimpleRandomAccessRangeFromPoint]" << std::endl;
         out << "\t";
-        std::copy ( myBegin, myEnd, ostream_iterator<Value> ( out, ", " ) );
+        std::copy ( myBegin, myEnd, std::ostream_iterator<Value> ( out, ", " ) );
         out << std::endl;
       }
 
