@@ -201,11 +201,11 @@ void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
-  vector<Vertex> vect;
-  back_insert_iterator< vector<Vertex> > out_it(vect);
+  std::vector<Vertex> vect;
+  std::back_insert_iterator< std::vector<Vertex> > out_it(vect);
   //myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
   myAdjacency.writeNeighbors( out_it, v, myPred );
-  for( typename vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
+  for( typename std::vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
   {
     if( pred(*cit) )
     {

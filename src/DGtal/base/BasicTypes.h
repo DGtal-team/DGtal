@@ -45,7 +45,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <boost/cstdint.hpp>
-#include "DGtal/base/Common.h"
 
 #ifdef WITH_GMP
 #include <gmpxx.h>
