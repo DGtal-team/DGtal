@@ -60,7 +60,7 @@ DGtal::operator<< ( std::ostream & out,
 
 
 
-inline Color &
+inline DGtal::Color &
 DGtal::Color::setRGBi( const unsigned char aRedValue,
            const unsigned char aGreenValue,
            const unsigned char aBlueValue,
