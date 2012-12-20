@@ -3,7 +3,8 @@ SET(DGTAL_TESTS_SRC_IO_READERS
        testVolReader
        testRawReader     
        testPointListReader 
-       testMeshReader )
+       testMeshReader
+       testMPolynomialReader )
 
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS})

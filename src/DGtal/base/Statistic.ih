@@ -39,31 +39,31 @@
 /**
  * Destructor. 
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType>::~Statistic()
+DGtal::Statistic<TRealNumber>::~Statistic()
 {}
 
 /**
  * Constructor.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType>::Statistic(bool storeSample)
+DGtal::Statistic<TRealNumber>::Statistic(bool storeSample)
   : mySamples( 0 ), myExp( 0 ), myExp2( 0 ),  myMax( 0 ),myMin( 0 ), myMedian(0),  myStoreSamples (storeSample),
     myIsTerminated(false)
 {
-  myValues=  std::vector<RealNumberType> ();
+  myValues=  std::vector<RealNumber> ();
 }
 
 /**
  * Copy constructor.
  * @param other the object to clone.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType>::Statistic
-( const Statistic<RealNumberType> & other )
+DGtal::Statistic<TRealNumber>::Statistic
+( const Statistic<TRealNumber> & other )
   : mySamples( other.mySamples ), 
     myExp( other.myExp ), 
     myExp2( other.myExp2 ), 
@@ -74,7 +74,7 @@ DGtal::Statistic<RealNumberType>::Statistic
     myIsTerminated(other.myIsTerminated)
 {
   if(myStoreSamples){
-    myValues=  std::vector<RealNumberType> ();
+    myValues=  std::vector<TRealNumber> ();
     for(unsigned int i=0; i<other.myValues.size(); i++){
       myValues.push_back(other.myValues.at(i));
     }
@@ -87,11 +87,11 @@ DGtal::Statistic<RealNumberType>::Statistic
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType> & 
-DGtal::Statistic<RealNumberType>::operator=
-( const Statistic<RealNumberType> & other )
+DGtal::Statistic<TRealNumber> & 
+DGtal::Statistic<TRealNumber>::operator=
+( const Statistic<TRealNumber> & other )
 {
   if ( this != &other )
     {
@@ -104,12 +104,11 @@ DGtal::Statistic<RealNumberType>::operator=
       myStoreSamples = other.myStoreSamples;
       myIsTerminated=other.myIsTerminated;
       if(myStoreSamples){
-  myValues=  std::vector<RealNumberType> ();
-  for(unsigned int i=0; i<other.myValues.size(); i++){
-    myValues.push_back(other.myValues.at(i));
-  }
+        myValues=  std::vector<RealNumber> ();
+        for(unsigned int i=0; i<other.myValues.size(); i++){
+          myValues.push_back(other.myValues.at(i));
+        }
       }
-      
     }
   return *this;
 }
@@ -122,11 +121,11 @@ DGtal::Statistic<RealNumberType>::operator=
  * @param other the object to add.
  * @return a reference on 'this'.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType> & 
-DGtal::Statistic<RealNumberType>::operator+=
-( const Statistic<RealNumberType> & other )
+DGtal::Statistic<TRealNumber> & 
+DGtal::Statistic<TRealNumber>::operator+=
+( const Statistic<TRealNumber> & other )
 {
   if ( other.mySamples != 0 )
     {
@@ -160,13 +159,13 @@ DGtal::Statistic<RealNumberType>::operator+=
  * @param other the object to add.
  * @return a new object that is the union of these statistics.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-DGtal::Statistic<RealNumberType> 
-DGtal::Statistic<RealNumberType>::operator+
-( const Statistic<RealNumberType> & other ) const
+DGtal::Statistic<TRealNumber> 
+DGtal::Statistic<TRealNumber>::operator+
+( const Statistic<TRealNumber> & other ) const
 {
-  Statistic<RealNumberType> stat( *this );
+  Statistic<TRealNumber> stat( *this );
   stat += other;
   return stat;
 }
@@ -182,10 +181,10 @@ DGtal::Statistic<RealNumberType>::operator+
 /** 
  * @return the number of samples.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 unsigned int 
-DGtal::Statistic<RealNumberType>::samples() const
+DGtal::Statistic<TRealNumber>::samples() const
 {
   return mySamples;
 }
@@ -193,45 +192,45 @@ DGtal::Statistic<RealNumberType>::samples() const
 /** 
  * @return the sample mean.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::mean() const
+TRealNumber
+DGtal::Statistic<TRealNumber>::mean() const
 {
-  return myExp / (RealNumberType) mySamples;
+  return myExp / (TRealNumber) mySamples;
 }
 
 /** 
  * @return the sample variance.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::variance() const
+TRealNumber
+DGtal::Statistic<TRealNumber>::variance() const
 {
-  return ( myExp2 / (RealNumberType) mySamples ) - mean() * mean();
+  return ( myExp2 / (TRealNumber) mySamples ) - mean() * mean();
 }
 
 /** 
  * @return the unbiased sample variance.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::unbiasedVariance() const
+TRealNumber
+DGtal::Statistic<TRealNumber>::unbiasedVariance() const
 {
   ASSERT( mySamples != 0 );
-  return ( (RealNumberType) mySamples ) * variance() 
-    / ( (RealNumberType) mySamples );
+  return ( (TRealNumber) mySamples ) * variance() 
+    / ( (TRealNumber) mySamples );
 }
 
 /** 
  * @return the maximal value.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::max() const
+TRealNumber
+DGtal::Statistic<TRealNumber>::max() const
 {
   return myMax;
 }
@@ -239,10 +238,10 @@ DGtal::Statistic<RealNumberType>::max() const
 /** 
  * @return the minimal value.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::min() const
+TRealNumber
+DGtal::Statistic<TRealNumber>::min() const
 {
   return myMin;
 }
@@ -257,10 +256,10 @@ DGtal::Statistic<RealNumberType>::min() const
  * 
  * @see terminate,  Statistic 
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
-RealNumberType
-DGtal::Statistic<RealNumberType>::median() 
+TRealNumber
+DGtal::Statistic<TRealNumber>::median() 
 {
   ASSERT( myStoreSamples || myIsTerminated );
   if(myIsTerminated){
@@ -280,10 +279,10 @@ DGtal::Statistic<RealNumberType>::median()
  * @param v the new sample value.
  */
 
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 void 
-DGtal::Statistic<RealNumberType>::addValue( RealNumberType v )
+DGtal::Statistic<TRealNumber>::addValue( TRealNumber v )
 {
   if ( mySamples == 0 )
     {
@@ -306,7 +305,7 @@ DGtal::Statistic<RealNumberType>::addValue( RealNumberType v )
  * 
  * Exemple: 
  <code>
- vector<RealNumberType> x;
+ vector<TRealNumber> x;
  Statistic stats;
  stats.addValue( x + 4, x + 10 );
  <endcode>
@@ -314,11 +313,11 @@ DGtal::Statistic<RealNumberType>::addValue( RealNumberType v )
  * @param b an iterator on the starting point.
  * @param e an iterator after the last point.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 template <class Iter>
 inline
 void 
-DGtal::Statistic<RealNumberType>::addValues( Iter b, Iter e )
+DGtal::Statistic<TRealNumber>::addValues( Iter b, Iter e )
 {
   for ( ; b != e; ++b )
     addValue( *b );
@@ -327,10 +326,10 @@ DGtal::Statistic<RealNumberType>::addValues( Iter b, Iter e )
 /** 
  * Clears the object. As if it has just been created.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 void
-DGtal::Statistic<RealNumberType>::clear()
+DGtal::Statistic<TRealNumber>::clear()
 {
   mySamples = 0;
   myExp = 0;
@@ -356,10 +355,10 @@ DGtal::Statistic<RealNumberType>::clear()
  * @see median, Statistic, myStoreSamples
  */
 
-template< typename RealNumberType> 
+template< typename TRealNumber> 
 inline
 void 
-DGtal::Statistic<RealNumberType>::terminate()
+DGtal::Statistic<TRealNumber>::terminate()
 {
   if(myStoreSamples){
     myMedian=median();
@@ -377,10 +376,10 @@ DGtal::Statistic<RealNumberType>::terminate()
  * Writes/Displays the object on an output stream.
  * @param thatStream the output stream where the object is written.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 void 
-DGtal::Statistic<RealNumberType>::selfDisplay
+DGtal::Statistic<TRealNumber>::selfDisplay
 ( std::ostream& thatStream ) const
 {
   thatStream << "[Statistic "
@@ -397,10 +396,10 @@ DGtal::Statistic<RealNumberType>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 bool 
-DGtal::Statistic<RealNumberType>::OK() const
+DGtal::Statistic<TRealNumber>::OK() const
 {
   return true;
 }
@@ -415,11 +414,11 @@ DGtal::Statistic<RealNumberType>::OK() const
  * @param that_object_to_display the object of class 'Statistic' to write.
  * @return the output stream after the writing.
  */
-template <typename RealNumberType>
+template <typename TRealNumber>
 inline
 std::ostream&
 DGtal::operator<<( std::ostream & thatStream, 
-       const Statistic<RealNumberType> & that_object_to_display )
+       const Statistic<TRealNumber> & that_object_to_display )
 {
   that_object_to_display.selfDisplay( thatStream );
   return thatStream;

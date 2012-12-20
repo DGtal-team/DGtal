@@ -151,7 +151,8 @@ namespace DGtal
      * @param currentValue current step of the progress bar
      * @param maximalValue expected maximal value
      */
-    void progressBar(const double currentValue, const double maximalValue) const;
+    void progressBar(const double currentValue, 
+                     const double maximalValue) const;
     
 
    // ----------------------- Interface --------------------------------------
@@ -179,13 +180,13 @@ namespace DGtal
     std::string myCurrentPrefix;
 
     ///A stack to store the block keywords
-   std::stack<std::string> myKeywordStack;
+    std::stack<std::string> myKeywordStack;
 
     ///A reference to the output writer
     TraceWriter &myWriter;
 
     ///A stack to store the block clocks
-std::stack<Clock*> myClockStack;
+    std::stack<Clock*> myClockStack;
 
     // ------------------------- Hidden services ------------------------------
   protected:

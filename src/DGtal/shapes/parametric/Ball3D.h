@@ -64,7 +64,7 @@ namespace DGtal
 
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
-    typedef pair<double,double> AngularCoordinates;
+    typedef std::pair<double,double> AngularCoordinates;
    
     /**
      * Destructor.
@@ -209,16 +209,17 @@ namespace DGtal
     // ------------------------- data ----------------------------
   private:
 
+     /**
+     * Radius of the sphere.
+     */
+    double myRadius;
+
     /**
      * Center of the sphere.
      */
     RealPoint myCenter;
     
-    /**
-     * Radius of the sphere.
-     */
-    double myRadius;
-
+   
     // ----------------------- Interface --------------------------------------
   public:
 

@@ -1,5 +1,4 @@
-add_subdirectory(tools)
-
+add_subdirectory(estimation)
 
 SET(DGTAL_EXAMPLES_SRC
   greedy-dss-decomposition
@@ -8,6 +7,7 @@ SET(DGTAL_EXAMPLES_SRC
   exampleGridCurve2d
   exampleGeometricalDSS
   exampleGeometricalDCA
+  exampleFrechetShortcut 
 )
 
 

@@ -34,7 +34,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#ifdef CPP11_FORWARD_LIST
 #include <forward_list>
 #endif
 #include <boost/version.hpp>
@@ -244,7 +244,7 @@ public:
 };
 
 
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#ifdef CPP11_FORWARD_LIST
 
 /**
    Array[X][Y] of forward_list< pair<L,Value> > Another intermediate
@@ -287,11 +287,9 @@ public:
       {
         if ( it->first == l ) return it->second;
       }
-    if ( it == it_end ) 
-      {
-        list.emplace_front( std::make_pair( l, Value() ) );
-        return list.front().second;
-      }
+    ASSERT ( it == it_end ) ;
+    list.emplace_front( std::make_pair( l, Value() ) );
+    return list.front().second;
   }
   inline 
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
@@ -643,7 +641,7 @@ int main()
 
   typedef ArrayLXY<Value, L, X, Y> MyArrayLXY;
   typedef ArrayXYOfMap<Value, L, X, Y> MyArrayXYOfMap;
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#if CPP11_FORWARD_LIST
   typedef ArrayXYOfList<Value, L, X, Y> MyArrayXYOfList;
 #endif
   typedef ArrayXYOfLabelledMap<Value, L, X, Y, Word, N, M > MyArrayXYOfLabelledMap;
@@ -720,7 +718,7 @@ int main()
   trace.endBlock();
   trace.endBlock();
 
-#if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
+#if CPP11_FORWARD_LIST
   //----------------------------------------------------------------------
   trace.beginBlock ( "---------- ArrayXYOfList ---------------" );
   trace.beginBlock ( "Generating ArrayXYOfList" );

@@ -45,7 +45,6 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/Display3D.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -55,6 +54,9 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/CColorMap.h"
 
 
 
@@ -71,16 +73,32 @@ namespace DGtal
   struct Display3DFactory
   {
 
-    // MeshFromPoints    
-    
+    // SphericalAccumulator
+    /** 
+     * Display an spherical accumulator in 3D. Bin values are mapped
+     * using a default HueShadeColorMap.
+     * 
+     * @param display current display
+     * @param accumulator the accumulator to display
+     * @param shift translate vector for display purposes (default:
+     * zero vector)
+     * @param radius scale factor for the unit sphere radius (default:1)
+     * @tparam Vector a vector model
+     */
+    template <typename TVector>
+    static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator,
+                      const typename DGtal::SphericalAccumulator<TVector>::RealVector &shift = 
+                      typename DGtal::SphericalAccumulator<TVector>::RealVector(0,0,0),
+                      const double radius=1.0);
+    // SphericalAccumulator
+
+    // MeshFromPoints        
     template <typename TPoint>
     static void drawAsFaces( Display3D & display,  const DGtal::MeshFromPoints<TPoint> & );
 
     template <typename TPoint>
     static void draw( Display3D & display, const  DGtal::MeshFromPoints<TPoint> &  );
     // MeshFromPoints
-
-
 
 
     
@@ -297,6 +315,8 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::CameraDirection & );
     static void draw( Display3D & display, const DGtal::CameraUpVector & );
     static void draw( Display3D & display, const DGtal::CameraZNearFar & );
+
+    static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);
 
   }; // end of struct Display3DFactory
 

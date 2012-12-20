@@ -17,10 +17,10 @@
 /**
  * @file exampleConstImageAdapter.cpp
  * @ingroup Examples
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/02/13
+ * @date 2012/12/4
  *
  * @brief An example file for ConstImageAdapter.
  *
@@ -34,83 +34,136 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
 
+#include "DGtal/io/boards/Board2D.h"
 
+//! [include]
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 
-#include "DGtal/base/BasicFunctors.h"
-#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ConstImageAdapter.h"
+//! [include]
 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-
-template <typename R>
-void displayRange(const R& r)
-{
-  typedef typename R::ConstIterator I; 
-  for (I it = r.begin(), itEnd = r.end();
-       it != itEnd; ++it)
-    {
-      trace.info() << *it << " "; 
-    } 
-  trace.info() << std::endl; 
-}
-
 ///////////////////////////////////////////////////////////////////////////////
+
+
+//! [LogScaleFunctor]
+template <typename Scalar>
+struct LogScaleFunctor {
+
+  LogScaleFunctor() {};
+  double operator()(const Scalar &a) const
+  {
+    return std::log( 1 + NumberTraits<Scalar>::castToDouble(a) );
+  }
+  
+};
+//! [LogScaleFunctor]
+
+
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Example for ConstImageAdapter" );
-  trace.info() << "Args:";
-  for ( int i = 0; i < argc; ++i )
-    trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  using namespace Z2i;
+  
+  Board2D aBoard;
+  
+//! [def]
+  typedef HueShadeColorMap<unsigned char> HueShade;     // a simple HueShadeColorMap varying on 'unsigned char' values
+  typedef HueShadeColorMap<double> HueShadeDouble;      // a simple HueShadeColorMap varying on 'double' values
+  typedef GrayscaleColorMap<unsigned char> Gray;        // a simple GrayscaleColorMap varying on 'unsigned char' values
+  
+  DefaultFunctor df;                                    // a simple functor that just returns its argument
+//! [def]
 
-  using namespace Z2i; 
+  trace.beginBlock("image");
 
-  trace.beginBlock("Image creation");
+//! [image_creation]
+  typedef ImageContainerBySTLVector<Domain, unsigned char> Image;
+  Domain domain(Point(1,1), Point(16,16));
+  Image image(domain);
+//! [image_creation]
 
-  //domain
-  const Integer size = 5; 
-  Point p = Point::diagonal(0); 
-  Point q = Point::diagonal(size-1); 
-  Domain d(p,q); 
-
-  //image
-  typedef ImageSelector<Domain, int >::Type Image; 
-  Image img(d); 
-
-  //fill
-  const int maximalValue = size*size; 
-  Image::Range::OutputIterator it = img.range().outputIterator(); 
-  for (int i = 0; i < maximalValue; ++i)
-    *it++ = i;
-
-  //display values 
-  Image::ConstRange r = img.constRange(); 
-  std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
-  cout << endl; 
+//! [image_filling]
+  unsigned char i = 0;
+  for (Image::Iterator it = image.begin(); it != image.end(); ++it)
+      *it = i++;
+//! [image_filling]
+  
+  aBoard.clear();
+  Display2DFactory::drawImage<HueShade>(aBoard, image, (unsigned char)0, (unsigned char)255);
+  aBoard.saveSVG("image.svg");
+  
   trace.endBlock();
   
-
-  const int thresholdValue = maximalValue/2; 
-  trace.beginBlock("Implicit thresholding");
-
-  //! [ConstImageAdapterConstruction]
-  Thresholder<Image::Value> t( thresholdValue ); 
-  ConstImageAdapter<Image, Thresholder<Image::Value>, bool> a(img, t); 
-  //! [ConstImageAdapterConstruction]
-
-  //display values 
-  //! [ConstImageAdapterRange]
-  ConstImageAdapter<Image, Thresholder<Image::Value>, bool>::ConstRange 
-    ra = a.constRange(); 
-  std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") ); 
-  //! [ConstImageAdapterRange]
-  cout << endl; 
+  trace.beginBlock("subImage");
+  
+//! [ConstImageAdapterForSubImage_creation]
+  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, Image::Value, DefaultFunctor > ConstImageAdapterForSubImage;
+  Domain subDomain(Point(1,1), Point(8,8));
+  ConstImageAdapterForSubImage subImage(image, subDomain, df, df);
+//! [ConstImageAdapterForSubImage_creation]
+  
+  aBoard.clear();
+  Display2DFactory::drawImage<HueShade>(aBoard, subImage, (unsigned char)0, (unsigned char)255);
+  aBoard.saveSVG("subImage.svg");
+    
   trace.endBlock();
+  
+  trace.beginBlock("specificImage");
+  
+//! [specificDomain_creation]
+  DigitalSet set(domain);
+  for( unsigned int y=0; y < 17; y++)
+    for( unsigned int x=0; x < 17; x++)
+        if ((x%2) && (y%2))
+          set.insertNew(Point(x,y));
+        
+  DigitalSetDomain<DigitalSet> specificDomain(set);
+//! [specificDomain_creation]
 
-
+//! [ConstImageAdapterForSpecificImage_creation]
+  typedef ConstImageAdapter<Image, DigitalSetDomain<DigitalSet>, DefaultFunctor, Image::Value, DefaultFunctor > ConstImageAdapterForSpecificImage;
+  ConstImageAdapterForSpecificImage specificImage(image, specificDomain, df, df);
+//! [ConstImageAdapterForSpecificImage_creation]
+  
+  aBoard.clear();
+  Display2DFactory::drawImage<HueShade>(aBoard, specificImage, (unsigned char)0, (unsigned char)255);
+  aBoard.saveSVG("specificImage.svg");
+    
+  trace.endBlock();
+  
+  trace.beginBlock("thresholderImage");
+  
+//! [ConstImageAdapterForThresholderImage_creation]
+  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, bool, Thresholder<Image::Value> > ConstImageAdapterForThresholderImage;
+  Thresholder<Image::Value> t(127);
+  ConstImageAdapterForThresholderImage thresholderImage(image, domain, df, t);
+//! [ConstImageAdapterForThresholderImage_creation]
+  
+  aBoard.clear();
+  Display2DFactory::drawImage<Gray>(aBoard, thresholderImage, (unsigned char)0, (unsigned char)1);
+  aBoard.saveSVG("thresholderImage.svg");
+    
+  trace.endBlock();
+  
+  trace.beginBlock("logImage");
+  
+//! [ConstImageAdapterForLogScale_creation]
+  typedef ConstImageAdapter<Image, Domain, DefaultFunctor, double, LogScaleFunctor<Image::Value> > ConstImageAdapterForLogScale;
+  LogScaleFunctor<Image::Value> logScale;
+  ConstImageAdapterForLogScale logImage(image, domain, df, logScale);
+//! [ConstImageAdapterForLogScale_creation]
+  
+  aBoard.clear();
+  Display2DFactory::drawImage<HueShadeDouble>(aBoard, logImage, 0.0, logScale(255));
+  aBoard.saveSVG("logImage.svg");
+    
+  trace.endBlock();
+  
   return 0;
 }
 //                                                                           //

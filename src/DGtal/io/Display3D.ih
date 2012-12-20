@@ -33,6 +33,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/CDrawableWithDisplay3D.h"
+
 #include "DGtal/io/Display3DFactory.h"
 #include "DGtal/io/writers/MeshWriter.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -263,7 +264,7 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
   normalize(n);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning quad not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning quad not added due to identical vertex... "<<std::endl;
     return;
   }
 
@@ -306,7 +307,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
   normalize(n);
   
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning triangle not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning triangle not added due to identical vertex... "<<std::endl;
     return;
   }
   
@@ -332,17 +333,13 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
 inline
 void 
-DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGtal::Color aColor)
+DGtal::Display3D::addPolygon(std::vector<Display3D::pointD3D> vectPointsPolygon, 
+                             DGtal::Color aColor)
 {
   polygonD3D aPolygon;
-  for(int i=0; i< vectPointsPolygon.size();i++){
+  for(unsigned int i=0; i< vectPointsPolygon.size();i++){
     aPolygon.vectPoints.push_back(vectPointsPolygon.at(i));
-    aPolygon.R=aColor.red();
-    aPolygon.G=aColor.green();
-    aPolygon.B=aColor.blue();
-    aPolygon.T=aColor.alpha();
-    
-    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(0).y);
+    updateBoundingBox(vectPointsPolygon.at(i).x, vectPointsPolygon.at(i).y, vectPointsPolygon.at(i).z);
   } 
 
 
@@ -366,7 +363,7 @@ DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGta
   normalize(n);  
   
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning polygin not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning polygin not added due to identical vertex... "<<std::endl;
     return;
   }
 
@@ -389,6 +386,7 @@ inline
 void
 DGtal::Display3D::addKSSurfel(double x, double y, double z, 
 			      bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor, 
+			      double positionShift, double sizeFactor,
 			      bool isSigned, bool aSign, bool basicMode )
 {
   updateBoundingBox(x, y, z);
@@ -409,30 +407,30 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
   
   if(zSurfel)
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x+0.5;  y2= y-0.5;  z2= z-0.5;
-      x3= x+0.5;  y3= y+0.5;  z3= z-0.5;
-      x4= x-0.5;  y4= y+0.5;  z4= z-0.5;
+      x1= x-(0.5*sizeFactor);  y1= y-(0.5*sizeFactor);  z1= z-0.5+positionShift;
+      x2= x+(0.5*sizeFactor);  y2= y-(0.5*sizeFactor);  z2= z-0.5+positionShift;
+      x3= x+(0.5*sizeFactor);  y3= y+(0.5*sizeFactor);  z3= z-0.5+positionShift;
+      x4= x-(0.5*sizeFactor);  y4= y+(0.5*sizeFactor);  z4= z-0.5+positionShift;
       y1+=retract; y2+=retract; y3-=retract; y4-=retract;
       x1+=retract; x2-=retract; x3-=retract; x4+=retract;
       dx=0.0; dy=0.0; dz=width;
     }
   else if(ySurfel)
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x-0.5;  y2= y-0.5;  z2= z+0.5;
-      x3= x+0.5;  y3= y-0.5;  z3= z+0.5;
-      x4= x+0.5;  y4= y-0.5;  z4= z-0.5;    
+      x1= x-(0.5*sizeFactor);  y1= y-0.5+positionShift;  z1= z-(0.5*sizeFactor);
+      x2= x-(0.5*sizeFactor);  y2= y-0.5+positionShift;  z2= z+(0.5*sizeFactor);
+      x3= x+(0.5*sizeFactor);  y3= y-0.5+positionShift;  z3= z+(0.5*sizeFactor);
+      x4= x+(0.5*sizeFactor);  y4= y-0.5+positionShift;  z4= z-(0.5*sizeFactor);    
       x1+=retract; x2+=retract; x3-=retract; x4-=retract;
       z1+=retract; z2-=retract; z3-=retract; z4+=retract;
       dx=0.0; dy=width; dz=0.0;
     }
   else
     {
-      x1= x-0.5;  y1= y-0.5;  z1= z-0.5;
-      x2= x-0.5;  y2= y+0.5;  z2= z-0.5;
-      x3= x-0.5;  y3= y+0.5;  z3= z+0.5;
-      x4= x-0.5;  y4= y-0.5;  z4= z+0.5;
+      x1= x-0.5+positionShift;  y1= y-(0.5*sizeFactor);  z1= z-(0.5*sizeFactor);
+      x2= x-0.5+positionShift;  y2= y+(0.5*sizeFactor);  z2= z-(0.5*sizeFactor);
+      x3= x-0.5+positionShift;  y3= y+(0.5*sizeFactor);  z3= z+(0.5*sizeFactor);
+      x4= x-0.5+positionShift;  y4= y-(0.5*sizeFactor);  z4= z+(0.5*sizeFactor);
       y1+=retract; y2-=retract; y3-=retract; y4+=retract;
       z1+=retract; z2+=retract; z3-=retract; z4-=retract;
       dx=width; dy=0.0; dz=0.0;
@@ -604,7 +602,7 @@ DGtal::Display3D::addKSPointel(double x, double y, double z,
 
 inline
 void 
-DGtal::Display3D::addKSVoxel(int x, int y, int z)
+DGtal::Display3D::addKSVoxel(int x, int y, int z,  double sizeFactor)
 {
   updateBoundingBox(x, y, z);
   voxelD3D v;
@@ -615,7 +613,7 @@ DGtal::Display3D::addKSVoxel(int x, int y, int z)
   v.G=myCurrentFillColor.green();
   v.B=myCurrentFillColor.blue();
   v.T=myCurrentFillColor.alpha();
-  v.width=0.47;  
+  v.width=0.5*sizeFactor;  
   (myVoxelSetList.at(0)).push_back(v);  
 }
 
@@ -725,7 +723,7 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
   
     }else
     {
-      std::cerr <<"Warning maximal clipping plane added" << endl;
+      std::cerr <<"Warning maximal clipping plane added" << std::endl;
     }
 }
 
@@ -733,14 +731,35 @@ inline
 void
 DGtal::Display3D::updateBoundingBox(double x, double y, double z)
 {
-  if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
-  if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
-  if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
+  if (myBoundingPtEmptyTag)
+    {  
+      myBoundingPtLow[0]= x;
+      myBoundingPtLow[1]= y;
+      myBoundingPtLow[2]= z;
+      myBoundingPtUp[0]= x;
+      myBoundingPtUp[1]= y;
+      myBoundingPtUp[2]= z;
+      myBoundingPtEmptyTag = false;
+    }
+  else
+    {
+      if(x <myBoundingPtLow[0])   myBoundingPtLow[0]= x;
+      if(y <myBoundingPtLow[1])   myBoundingPtLow[1]= y;
+      if(z <myBoundingPtLow[2])   myBoundingPtLow[2]= z;
   
-  if(x >myBoundingPtUp[0])   myBoundingPtUp[0]= x;
-  if(y >myBoundingPtUp[1])   myBoundingPtUp[1]= y;
-  if(z >myBoundingPtUp[2])   myBoundingPtUp[2]= z;
+      if(x >myBoundingPtUp[0])   myBoundingPtUp[0]= x;
+      if(y >myBoundingPtUp[1])   myBoundingPtUp[1]= y;
+      if(z >myBoundingPtUp[2])   myBoundingPtUp[2]= z;
+    }
+}
 
+
+inline
+void 
+DGtal::Display3D::setScale(float sx, float sy, float sz){
+  myScaleX = sx;
+  myScaleY = sy;
+  myScaleZ = sz;
 }
 
 
@@ -751,39 +770,77 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
 
   unsigned int vertexIndex=0;
   
+  // Export of KSSurfel lists (generated from KhalimskyCell or SignedKhalimskyCell (through addKSSurfel))
   for (unsigned int i=0; i< myKSSurfelList.size(); i++){
     quadD3D quad = myKSSurfelList.at(i);
     pointD3D p1, p2, p3, p4;
-    p1.x=quad.x1; p1.y=quad.y1 ;p1.z=quad.z1;
-    p2.x=quad.x2; p2.y=quad.y2 ;p2.z=quad.z2;
-    p3.x=quad.x3; p3.y=quad.y3 ;p3.z=quad.z3;
-    p4.x=quad.x4; p4.y=quad.y4 ;p4.z=quad.z4;
+    p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
+    p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
+    p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
+    p4.x=quad.x4*myScaleX; p4.y=quad.y4*myScaleY ;p4.z=quad.z4*myScaleZ;
     aMesh.addVertex(p1);
     aMesh.addVertex(p2);
     aMesh.addVertex(p3);
     aMesh.addVertex(p4);
-    aMesh.addQuadFace(i*4,i*4+1, i*4+2,i*4+3, DGtal::Color(quad.R, quad.G, quad.B, quad.T));
-	
+    aMesh.addQuadFace(vertexIndex, vertexIndex+1, vertexIndex+2,vertexIndex+3,
+		      DGtal::Color(quad.R, quad.G, quad.B, quad.T));	
     vertexIndex+=4;
-    
   }
   
+
+  // Export QuadList
+  for (unsigned int i=0; i<myQuadList.size(); i++){
+    quadD3D quad = myQuadList.at(i);
+    pointD3D p1, p2, p3, p4;
+    p1.x=quad.x1*myScaleX; p1.y=quad.y1*myScaleY ;p1.z=quad.z1*myScaleZ;
+    p2.x=quad.x2*myScaleX; p2.y=quad.y2*myScaleY ;p2.z=quad.z2*myScaleZ;
+    p3.x=quad.x3*myScaleX; p3.y=quad.y3*myScaleY ;p3.z=quad.z3*myScaleZ;
+    p4.x=quad.x4*myScaleX; p4.y=quad.y4*myScaleY ;p4.z=quad.z4*myScaleZ;
+    aMesh.addVertex(p4);
+    aMesh.addVertex(p3);
+    aMesh.addVertex(p2);
+    aMesh.addVertex(p1);
+    aMesh.addQuadFace(vertexIndex,vertexIndex+1, vertexIndex+2, vertexIndex+3, 
+		      DGtal::Color(quad.R, quad.G, quad.B, quad.T));	
+    vertexIndex+=4;
+  }
+
+
+  // Export the mesh from TriangleList
+  for (unsigned int i=0; i < myTriangleList.size(); i++){
+    triangleD3D aTriangle = myTriangleList.at(i);
+    pointD3D p1, p2, p3;
+    p1.x = aTriangle.x1*myScaleX; p1.y = aTriangle.y1*myScaleY; p1.z = aTriangle.z1*myScaleZ;
+    p2.x = aTriangle.x2*myScaleX; p2.y = aTriangle.y2*myScaleY; p2.z = aTriangle.z2*myScaleZ;
+    p3.x = aTriangle.x3*myScaleX; p3.y = aTriangle.y3*myScaleY; p3.z = aTriangle.z3*myScaleZ;
+    aMesh.addVertex(p1);
+    aMesh.addVertex(p2);
+    aMesh.addVertex(p3);
+    aMesh.addTriangularFace(vertexIndex, vertexIndex+1, vertexIndex+2,
+			    DGtal::Color(aTriangle.R, aTriangle.G, 
+					 aTriangle.B, aTriangle.T));
+    vertexIndex+=3;
+  }
+
   
-  for(int j=0; j<myVoxelSetList.size(); j++){
+  
+  
+  // Export of voxelSet (generated from addVoxel) 
+  for(unsigned int j=0; j<myVoxelSetList.size(); j++){
     for (unsigned int i=0; i< myVoxelSetList.at(j).size(); i++){
       voxelD3D voxel = myVoxelSetList.at(j).at(i);
       pointD3D p1, p2, p3, p4, p5, p6, p7, p8;
       double width= voxel.width;
 
-      p1.x = voxel.x-width; p1.y = voxel.y+width; p1.z = voxel.z+width;
-      p2.x = voxel.x+width; p2.y = voxel.y+width; p2.z = voxel.z+width;      
-      p3.x = voxel.x+width; p3.y = voxel.y-width; p3.z = voxel.z+width;
-      p4.x = voxel.x-width; p4.y = voxel.y-width; p4.z = voxel.z+width;      
-      p5.x = voxel.x-width; p5.y = voxel.y+width; p5.z = voxel.z-width;
+      p1.x = (voxel.x-width)*myScaleX; p1.y = (voxel.y+width)*myScaleY; p1.z = (voxel.z+width)*myScaleZ;
+      p2.x = (voxel.x+width)*myScaleX; p2.y = (voxel.y+width)*myScaleY; p2.z = (voxel.z+width)*myScaleZ;      
+      p3.x = (voxel.x+width)*myScaleX; p3.y = (voxel.y-width)*myScaleY; p3.z = (voxel.z+width)*myScaleZ;
+      p4.x = (voxel.x-width)*myScaleX; p4.y = (voxel.y-width)*myScaleY; p4.z = (voxel.z+width)*myScaleZ;      
+      p5.x = (voxel.x-width)*myScaleX; p5.y = (voxel.y+width)*myScaleY; p5.z = (voxel.z-width)*myScaleZ;
       
-      p6.x = voxel.x+width; p6.y = voxel.y+width; p6.z = voxel.z-width;     
-      p7.x = voxel.x+width; p7.y = voxel.y-width; p7.z = voxel.z-width;
-      p8.x = voxel.x-width; p8.y = voxel.y-width; p8.z = voxel.z-width;
+      p6.x = (voxel.x+width)*myScaleX; p6.y = (voxel.y+width)*myScaleY; p6.z = (voxel.z-width)*myScaleZ;     
+      p7.x = (voxel.x+width)*myScaleX; p7.y = (voxel.y-width)*myScaleY; p7.z = (voxel.z-width)*myScaleZ;
+      p8.x = (voxel.x-width)*myScaleX; p8.y = (voxel.y-width)*myScaleY; p8.z = (voxel.z-width)*myScaleZ;
       
       aMesh.addVertex(p1);
       aMesh.addVertex(p2);
@@ -841,7 +898,6 @@ DGtal::Display3D::operator<<( const TDrawableWithDisplay3D & object )
   return *this;
 }
 
-
 /**
  * Overloads 'operator<<' for displaying objects of class 'Display3D'.
  * @param out the output stream where the object is written.
@@ -869,14 +925,14 @@ DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D
 
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D,  string aFilename)
+DGtal::operator>> ( const Display3D &aDisplay3D,  std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
   DGtal::MeshFromPoints<Display3D::pointD3D> mesh(true);
   aDisplay3D >> mesh;
-  trace.info() << "generating faces done." << endl;
+  trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
-  trace.info() << "file exported in file: " << aFilename << endl;
+  trace.info() << "file exported in file: " << aFilename << std::endl;
 }
 
 

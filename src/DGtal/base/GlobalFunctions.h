@@ -44,7 +44,6 @@
 // Inclusions
 #include <algorithm>
 #include <functional>
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
