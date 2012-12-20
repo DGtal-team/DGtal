@@ -40,7 +40,6 @@
 #include <sstream>
 #include <iostream>
 
-
 using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,6 +52,8 @@ using namespace std;
 namespace DGtal
 {
 
+  namespace experimental
+  {
   // ---------------------------------------------------------------------
   // constructor
   // ---------------------------------------------------------------------
@@ -63,7 +64,7 @@ namespace DGtal
   ::ImageContainerByHashTree ( const unsigned int hashKeySize,
 			       const unsigned int depth,
 			       const Value defaultValue )
-    : myDomain( Domain() ), myKeySize ( hashKeySize )
+    :  myKeySize ( hashKeySize )
   {
 
     //Consistency check of the hashKeysize
@@ -84,6 +85,7 @@ namespace DGtal
     else
       setDepth ( depth );
 
+    myDomain = Domain(Point::zero, Point::diagonal(static_cast<typename Point::Component>( pow(2.0, (int)depth) )));
 
     //init the array
     myArraySize = 1 << myKeySize;
@@ -112,13 +114,11 @@ namespace DGtal
 
     myPreComputedIntermediateMask = ~ ( static_cast<HashKey> ( ~0 ) << myKeySize );
     
-    int maxSize = 0;
-    for ( unsigned int i = 0; i < dim; ++i )
-      if ( maxSize < p1[i] - p2[i] )
-        maxSize = p1[i] - p2[i];
-    unsigned int depth = (unsigned int)(ceil ( log ( (double) maxSize ) / log((double) 2.0) ));
-    
+    typename Point::Component maxSize = (p2-p1).normInfinity();
+    unsigned int depth = (unsigned int)(ceil ( log2 ( (double) maxSize ))) ;
+
     unsigned int  acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
+    trace.error()<<" MAXSIZE = "<< maxSize<<" DEPTH="<< depth <<" accepted="<< acceptedDepth<< std::endl;
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
@@ -200,19 +200,27 @@ namespace DGtal
   template < typename Domain, typename Value, typename HashKey>
   inline
   typename ImageContainerByHashTree<Domain, Value, HashKey >::ConstRange
-  ImageContainerByHashTree<Domain, Value, HashKey >::range() const
+  ImageContainerByHashTree<Domain, Value, HashKey >::constRange() const
   {
-    return ConstRange( myDomain.begin(), myDomain.end(), *this );
+    return ConstRange(  *this );
+  }
+  //------------------------------------------------------------------------------
+  template < typename Domain, typename Value, typename HashKey>
+  inline
+  typename ImageContainerByHashTree<Domain, Value, HashKey >::Range
+  ImageContainerByHashTree<Domain, Value, HashKey >::range()
+  {
+    return Range(  *this );
   }
 
   //------------------------------------------------------------------------------
-  template < typename Domain, typename Value, typename HashKey>
+  /*template < typename Domain, typename Value, typename HashKey>
   inline
   typename ImageContainerByHashTree<Domain, Value, HashKey >::OutputIterator
   ImageContainerByHashTree<Domain, Value, HashKey >::outputIterator()
   {
     return OutputIterator( *this );
-  }
+  }*/
 
 
   template < typename Domain, typename Value, typename HashKey>
@@ -893,7 +901,7 @@ namespace DGtal
   {
     printInfo ( out );
   }
-
+}
 } // namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
