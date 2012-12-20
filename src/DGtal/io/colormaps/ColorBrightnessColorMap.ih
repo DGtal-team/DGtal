@@ -62,8 +62,8 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::~ColorBrightnessColorMap()
 }
 
 template <typename PValue, int PDefaultColor>
-ColorBrightnessColorMap<PValue,PDefaultColor> &
-ColorBrightnessColorMap<PValue,PDefaultColor>::operator=
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor> &
+DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::operator=
 ( const ColorBrightnessColorMap<PValue,PDefaultColor> & other )
 {
   if ( &other != this ) {
@@ -95,7 +95,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::max() const
 
 template<typename PValue, int PDefaultColor>
 inline
-Color
+DGtal::Color
 DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::operator()( const PValue & value ) const
 {
   return ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( myColor, myMin, myMax, value );
@@ -134,7 +134,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::isValid() const
 
 template <typename PValue, int PDefaultColor>
 inline
-Color
+DGtal::Color
 DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color color,
                  const PValue & min,
                  const PValue & max,
@@ -149,7 +149,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color colo
   const double scale = static_cast<double>( value - min ) / range;
   double red, green, blue;
   ColorBrightnessColorMap<PValue,PDefaultColor>::HSVtoRGB( red, green, blue, h, s, v * scale );
-  return Color( static_cast<int>( red * 255), 
+  return DGtal::Color( static_cast<int>( red * 255), 
         static_cast<int>( green * 255),
         static_cast<int>( blue * 255) );
 }

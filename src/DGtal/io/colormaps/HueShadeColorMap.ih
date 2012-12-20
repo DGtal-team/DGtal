@@ -64,8 +64,8 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::~HueShadeColorMap()
 }
 
 template <typename Value, int DefaultCycles>
-HueShadeColorMap<Value,DefaultCycles> &
-HueShadeColorMap<Value,DefaultCycles>::operator=
+DGtal::HueShadeColorMap<Value,DefaultCycles> &
+DGtal::HueShadeColorMap<Value,DefaultCycles>::operator=
 ( const HueShadeColorMap<Value,DefaultCycles> & other )
 {
   if ( &other != this ) {
@@ -106,7 +106,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::setCycles( int cycles )
 
 template<typename Value, int DefaultCycles>
 inline
-Color
+DGtal::Color
 DGtal::HueShadeColorMap<Value,DefaultCycles>::operator()
   ( const Value & value ) const
 {
@@ -143,7 +143,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::isValid() const
 
 template <typename Value, int DefaultCycles>
 inline
-Color
+DGtal::Color
 DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
 ( const unsigned int cycles,
   const Value & min,
