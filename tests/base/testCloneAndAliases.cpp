@@ -249,8 +249,41 @@ struct FByCloneHeap {
     return myA1->data;
   }
   
-
   A1* myA1;
+};
+
+struct FByCloneCountedPtr {
+  FByCloneCountedPtr( Clone<A1> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+    : myA1( a )
+  {
+    std::cout << "  FByCloneCountedPtr( Clone<A1> a ) " << myA1 << std::endl;
+  }
+
+  ~FByCloneCountedPtr() {}
+
+  int value() const
+  {
+    return myA1->data;
+  }
+
+  CountedPtr<A1> myA1;
+};
+
+struct FByCloneCowPtr {
+  FByCloneCowPtr( Clone<A1> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+    : myA1( a )
+  {
+    std::cout << "  FByCloneCowPtr( Clone<A1> a ) " << myA1 << std::endl;
+  }
+
+  ~FByCloneCowPtr() {}
+
+  int value() const
+  {
+    return myA1->data;
+  }
+  
+  CowPtr<A1> myA1;
 };
  
 int main()
@@ -294,6 +327,22 @@ int main()
   trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into heap (Clone)." );
   FByCloneHeap fe1( a1 ); // +1/0
   ++nb, nbok += A1::nbCreated==5 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+  trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into CountedPtr (Clone)." );
+  FByCloneCountedPtr fe2( a1 ); // +1/0
+  ++nb, nbok += A1::nbCreated==6 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+  trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into CowPtr (Clone)." );
+  FByCloneCowPtr fe3( a1 ); // +1/0
+  ++nb, nbok += A1::nbCreated==7 ? 1 : 0;
   ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 

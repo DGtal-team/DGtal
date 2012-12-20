@@ -79,8 +79,8 @@ namespace DGtal
      @see Clone
 
      It can be used as follows. Consider this simple example where
-     class \e A is a big object. Then we define two classes \e B1 and \e B2
-     that uses some instance of \e A. 
+     class \e A is a big object. Then we define three classes \e B1,
+     \e B2 and \e B3, that uses some instance of \e A.
      
      @code
      const int N = 10000;
@@ -88,22 +88,34 @@ namespace DGtal
        int table[N];
      };
 
-     // Both B1 and B2 uses A, but we do not know if A will be copied
+     // Each B1, B2 or B3 uses A, but we do not know if A will be copied
      // or just referenced by only looking at the declaration of
      // the method. Generally the ambiguity is removed by adding
      // comments or, for the experienced developper, by looking at
      // other parts of the code.
+
+     // Only aliasing, but for a long lifetime.
      struct B1 {
-       B1( A & a ) // ambiguous, cost is O(1) here
+       B1( const A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
        : myA( a ) {}
      ...
-       A & myA;
+       const A & myA;
      };
+     // Copying as data member (stack or heap depending on B2 instance)
      struct B2 {
        B2( const A & a ) // ambiguous, cost is O(N) here
        : myA( a ) {}
      ...
        A myA;
+     };
+     // Copying on heap and data member pointing on it.
+     struct B3 {
+       B3( const A & a ) // ambiguous, cost is O(N) here
+       { myA = new A( a ); }
+       ~B3() 
+       { if ( myA != 0 ) delete myA; }
+     ...
+       A* myA;
      };
      @endcode
 
@@ -115,23 +127,53 @@ namespace DGtal
      reasons. The classes above may be rewritten as follows.
      
      @code
+     // Aliasing for a long lifetime is visible.
      struct B1 {
-       B1( Alias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
+       B1( ConstAlias<A> a ) // not ambiguous, cost is O(1) here and lifetime of a should be long enough
        : myA( a ) {}
      ...
-       A & myA;
+       const A & myA; 
+       // or Const A* myA;
      };
+     // Cloning as data member is visible.
      struct B2 {
        B2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
        : myA( a ) {}
      ...
        A myA;
      };
+     // Cloning on the heap requires call to allocate(), so that the user remembers calling \c delete.
+     struct B3_v1 {
+       B3_v1( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       : myA( a.allocate() ) {}
+       ~B3_v1() { if ( myA != 0 ) delete myA; }
+     ...
+       A* myA;
+     };
+     // Cloning on the heap with CountedPtr mechanism is straightforward.
+     struct B3_v2 {
+       B3_v2( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       : myA( a ) {}
+       ~B3_v2() {} // CountedPtr takes care of delete.
+     ...
+       CountedPtr<A> myA;
+     };
+     // Cloning on the heap with CowPtr mechanism is straightforward.
+     struct B3_v3 {
+       B3_v3( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       : myA( a ) {}
+       ~B3_v3() {} // CountedPtr takes care of delete.
+     ...
+       CowPtr<A> myA;
+     };
      ...
      A a1;
      B1 b( a1 );    // do not duplicate a1
      B2 bb( a1 );   // duplicate a1
      B2 bbb( &a1 ); // also duplicate a1 !
+     B3_v1 c1( a1 ); // duplicate a1 on the heap
+     B3_v2 c1( a1 ); // duplicate a1 on the heap
+     B3_v3 c1( a1 ); // duplicate a1 on the heap
      @endcode
 
      A last question could be why are we not just passing the instance
@@ -142,14 +184,14 @@ namespace DGtal
      the compiler will always do it.
 
      @code
-     struct B3 {
-       B3( A a ) // not ambiguous, but cost is 2*O(N) here. 
+     struct B4 {
+       B4( A a ) // not ambiguous, but cost is O(2N) here. 
        : myA( a ) {}
      ...
        A myA;
      };
      A a1;
-     B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
+     B4 b4( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
      @note The user should not use Alias<T> instead of T* for data

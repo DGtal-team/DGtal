@@ -72,6 +72,13 @@ DGtal::Clone<T>::allocate() const
 { 
   return new T( myRefT ); 
 }
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::Clone<T>::operator CountedPtr<T>() const
+{ 
+  return CountedPtr<T>( allocate() ); // duplicated once 
+}
 
 
 
