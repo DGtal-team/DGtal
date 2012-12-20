@@ -159,7 +159,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     };
  
     // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CUndirectedSimpleLocalGraph )

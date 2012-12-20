@@ -45,27 +45,8 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CCommutativeRing.h"
-#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-//#include "DGtal/io/boards/Board2D.h"
-
-
-//#include "DGtal/io/Display3D.h"
-
-#ifdef _MSC_VER
-#if defined( max )
-#undef max 
-#define _HAS_MSVC_MAX_ true
-#endif
-#if defined( min )
-#undef min 
-#define _HAS_MSVC_MIN_ true
-#endif
-#endif
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -82,8 +63,6 @@ namespace DGtal
 
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
     
   public:
     typedef TInteger Integer;
@@ -169,9 +148,7 @@ namespace DGtal
   {
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
- 
+  
   public:
     typedef TInteger Integer;
     typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
@@ -358,7 +335,7 @@ namespace DGtal
   class KhalimskySpaceND
   {
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
