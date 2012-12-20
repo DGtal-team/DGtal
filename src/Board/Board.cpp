@@ -1009,7 +1009,7 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
 
 
 void
-Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double margin, string filename ) const
+Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double margin, std::string filename ) const
 {
   
   TransformSVG transform;
@@ -1257,8 +1257,8 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
   }
   
   // Draw the background color if needed.
-  if ( _backgroundColor != Color::None ) { 
-    Rectangle r( box, Color::None, _backgroundColor, 0.0 );
+  if ( _backgroundColor != DGtal::Color::None ) { 
+    Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushTikZ( out, transform );
   }
 

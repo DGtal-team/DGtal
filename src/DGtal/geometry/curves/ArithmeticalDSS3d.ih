@@ -423,14 +423,14 @@ void
 DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
 {
   
-  out << "[ArithmeticalDSS3d]" <<  endl;
-  out << "[XYprojection]" <<  endl;
-  out << myXYalgo <<  endl;
-  out << "[XZprojection]" <<  endl;
-  out << myXZalgo <<  endl;
-  out << "[YZprojection]" <<  endl;
-  out << myYZalgo <<  endl;
-  out << "[End ArithmeticalDSS3d]" <<  endl;
+  out << "[ArithmeticalDSS3d]" <<  std::endl;
+  out << "[XYprojection]" <<  std::endl;
+  out << myXYalgo <<  std::endl;
+  out << "[XZprojection]" <<  std::endl;
+  out << myXZalgo <<  std::endl;
+  out << "[YZprojection]" <<  std::endl;
+  out << myYZalgo <<  std::endl;
+  out << "[End ArithmeticalDSS3d]" <<  std::endl;
   
 }
 

@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleNumber Integer Models
+@page moduleNumber Number and Integer Concepts
 @authors David Coeurjolly, Jacques-Olivier Lachaud
 [TOC]
 
@@ -44,9 +44,31 @@ choice is specified as template parameter of templated classes
 commutative ring with identity for the classical addition, and
 multiplication operators.
 
-@note In DGtal, such type must be a model of CCommutativeRing
-concept. We use the boost concept checking system to check the
-consistency of a concept model during the compilation.
+@section numberconcepts Number and Integer Concepts
+
+In many DGtal classes, we control user specified template type thanks
+to concept checking mechanisms. In many situations, when using a
+template type associating with numbers, following basic concepts are
+involved:
+
+Concept name   | Short description | Model examples
+---------------|-------------------|--------------
+ CSignedNumber | Signed numbers                  | DGtal::int32_t, double, ....
+ CUnsignedNumber|Unsigned numbers  | DGtal::uint32_t,...
+ CBoundedNumber | Numbers with bounded capacity | DGtal::int64_t, ... (but not BigInteger)
+ CIntegralNumber | Integral numbers | DGtal::int64_t, BigInteger,...
+ 
+When we want to perform some computations on these numbers, we may use
+the following concepts:
+
+
+Concept name   | Short description | Model examples
+---------------|-------------------|--------------
+ CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
+ CEuclideanRing | Refinement of CCommutativeRing with a "/" operator | DGtal:i:nt32_t, double, .....
+ CInteger | Refinement of both CEuclideanRing and CIntegralNumber | DGtal::int32_t, .....
+ 
+
 
 @section basicinteger Basic integer types and NumberTraits
 

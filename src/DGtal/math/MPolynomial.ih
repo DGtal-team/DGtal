@@ -45,7 +45,7 @@
 
 // Declare the zero coefficient.
 template <int n, typename Ring, class Alloc>
-MPolynomial<n - 1, Ring, Alloc> MPolynomial<n, Ring, Alloc>::myZeroPolynomial;
+DGtal::MPolynomial<n - 1, Ring, Alloc> DGtal::MPolynomial<n, Ring, Alloc>::myZeroPolynomial;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
