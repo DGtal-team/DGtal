@@ -71,29 +71,12 @@ Description of \b concept '\b CBoundedNumber' <p>
  ### Definitions
 
  ### Valid expressions and
-     <table>
-     <tr>
-     <td class=CName> \b Name </td>
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td>
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td>
-     <td class=CSemantics> \b Semantics </td>
-     <td class=CPostCondition> \b Postcondition </td>
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr>
-     <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsBounded. </td>
-     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td>
-     <td class=CRequirements>    TagTrue </td>
-     <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
 
+
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+-----|------------|--------------------|------------|--------------|-----------|---------------|-----------
+\a X should be tagged \b true in \a NumberTraits for \a IsBounded | typename NumberTraits<X>::IsBounded | TagTrue | | | | | |
+  
  ### Invariants###
 
  ### Models###
