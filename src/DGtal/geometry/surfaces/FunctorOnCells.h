@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -81,7 +82,7 @@ namespace DGtal
       * @param domain Domain of the shape (used for isInside() )
       * @param reverseIsInside in some case, the value return by the functor in inverse depending is dimension (we have this case in 2D and 3D).
       */
-    FunctorOnCells (const FunctorOnPoints & functor, const KSpace & space, const Domain & domain, bool reverseIsInside = false)
+    FunctorOnCells ( ConstAlias< FunctorOnPoints > functor, ConstAlias< KSpace > space, ConstAlias< Domain > domain, bool reverseIsInside = false)
       : f(functor),
         kSpace(space),
         reverse(reverseIsInside),

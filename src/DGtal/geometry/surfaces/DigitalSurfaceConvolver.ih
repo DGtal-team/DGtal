@@ -50,9 +50,9 @@
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
 inline
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>
-::DigitalSurfaceConvolver( const Functor & f,
-                           const KernelFunctor & g,
-                           const KSpace & space)
+::DigitalSurfaceConvolver( ConstAlias< Functor > f,
+                           ConstAlias< KernelFunctor > g,
+                           ConstAlias< KSpace > space)
   : myFFunctor(f),
     myGFunctor(g),
     myKSpace(space),
@@ -64,9 +64,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>
-::DigitalSurfaceConvolver( const Functor & f,
-                           const KernelFunctor & g,
-                           const KSpace & space)
+::DigitalSurfaceConvolver( ConstAlias< Functor > f,
+                           ConstAlias< KernelFunctor > g,
+                           ConstAlias< KSpace > space)
   : myFFunctor(f),
     myGFunctor(g),
     myKSpace(space),
@@ -78,9 +78,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>
-::DigitalSurfaceConvolver( const Functor & f,
-                           const KernelFunctor & g,
-                           const KSpace & space)
+::DigitalSurfaceConvolver( ConstAlias< Functor > f,
+                           ConstAlias< KernelFunctor > g,
+                           ConstAlias< KSpace > space)
   : myFFunctor(f),
     myGFunctor(g),
     myKSpace(space),
@@ -97,9 +97,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( KernelConstIterator itgbegin,
-                                                                                                      KernelConstIterator itgend,
-                                                                                                      Cell kOrigin
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                      Clone< KernelConstIterator > itgend,
+                                                                                                      Clone< Cell > kOrigin
                                                                                                       )
 {
   myItKernelBegin = itgbegin;
@@ -113,9 +113,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( KernelConstIterator itgbegin,
-                                                                                              KernelConstIterator itgend,
-                                                                                              Cell kOrigin
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                              Clone< KernelConstIterator > itgend,
+                                                                                              Clone< Cell > kOrigin
                                                                                               )
 {
   myItKernelBegin = itgbegin;
@@ -129,9 +129,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( KernelConstIterator itgbegin,
-                                                                                              KernelConstIterator itgend,
-                                                                                              Cell kOrigin
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                              Clone< KernelConstIterator > itgend,
+                                                                                              Clone< Cell > kOrigin
                                                                                               )
 {
   myItKernelBegin = itgbegin;
@@ -148,10 +148,10 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( KernelConstIterator itgbegin,
-                                                                                                      KernelConstIterator itgend,
-                                                                                                      Cell kOrigin,
-                                                                                                      std::vector< KernelIterators< KernelConstIterator > > & mask )
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                                      Clone< KernelConstIterator > itgend,
+                                                                                                      Clone< Cell > kOrigin,
+                                                                                                      Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
 {
   myItKernelBegin = itgbegin;
   myItKernelEnd = itgend;
@@ -165,10 +165,10 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( KernelConstIterator itgbegin,
-                                                                                              KernelConstIterator itgend,
-                                                                                              Cell kOrigin,
-                                                                                              std::vector< KernelIterators< KernelConstIterator > > & mask )
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                              Clone< KernelConstIterator > itgend,
+                                                                                              Clone< Cell > kOrigin,
+                                                                                              Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
 {
   ASSERT ( mask.size () == 9 );
 
@@ -185,10 +185,10 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator>
 inline
 void
-DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( KernelConstIterator itgbegin,
-                                                                                              KernelConstIterator itgend,
-                                                                                              Cell kOrigin,
-                                                                                              std::vector< KernelIterators< KernelConstIterator > > & mask )
+DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( Clone< KernelConstIterator > itgbegin,
+                                                                                              Clone< KernelConstIterator > itgend,
+                                                                                              Clone< Cell > kOrigin,
+                                                                                              Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
 {
   ASSERT ( mask.size () == 27 );
 
