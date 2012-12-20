@@ -15,47 +15,46 @@
  **/
 
 /**
- * @file IO.dox
+ * @file packageImage.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/05/10
+ * @date 2011/09/23
  *
- * Documentation file for feature IO
+ * Documentation file for feature Image
  *
  * This file is part of the DGtal library.
  */
 
-/*
+/* 
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page IOPackage  IO package
+@page packageImage Image package
+   
+@managers David Coeurjolly
 
-@managers David Coeurjolly, Bertrand Kerautret
+@since 0.4
 
-@b LICENSE: LGPL.  GPL if you use QGLViewer (Viewer3D)
+@b LICENSE: LGPL
 
 
 @b Package @b Overview
 
-In this package, we present DGtal tools and utilities to import/export images and visualize digital data using interactive (viewers) and non-interactive (boards) mechanisms.
+This package aims to implement Image models and data-structures.
 
 @b Modules
+ - \ref moduleImage (Tristan Roussillon, David Coeurjolly)
 
-- \ref dgtal_dgtalboard (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
-- \ref threeD_visu (Bertrand Kerautret, Martial Tola)
-- \ref image_io (David Coeurjolly, Bertrand Kerautret)
+ @b Package @b Concepts @b Overview
+ - \ref imgPackageConcepts
 
-@b Package @b Concepts @b Overview
 
-- IOPackageConcepts
-
-@b Package @b Concepts @b Overview
- - \ref xxxPackageConcepts
+ @b Related @b documentation @b pages
+ - \ref moduleITKImage
 
 
 
