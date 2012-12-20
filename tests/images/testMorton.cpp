@@ -53,7 +53,7 @@ bool testMorton()
   
   trace.beginBlock ( "Testing Morton codes ..." );
   
-  typedef PointVector<2,DGtal::uint32_t> Point;
+  typedef PointVector<2,DGtal::int32_t> Point;
   typedef DGtal::uint64_t HashKey;
   
   Point p(0,0), pbis;

@@ -57,7 +57,7 @@ Description of \b concept '\b CDigitalSurfaceContainer' <p>
      @ingroup Concepts
      @brief Aim:
      
- ### Refinement of boost_concepts::CopyConstructible
+ ### Refinement of boost::CopyConstructible
     
  ### Associated types :
      

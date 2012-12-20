@@ -34,8 +34,8 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="base";
 
-                 CConstSinglePassRange ; 
-                 CPredicate; 
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ]; 
+                 CPredicate [ label="CPredicate" URL="\ref CPredicate" ]; 
         }
         subgraph cluster_2 {
                  style=filled;
@@ -43,7 +43,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=orange];
                  label="boost";
 
-                 boost_CopyConstructible;
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
         }
     }
   
@@ -53,17 +53,17 @@ digraph GTOPOLOGY {
         node [style=filled,color=white];
         label="topology (main concepts)";
 
-        CDigitalSurfaceContainer;
-        CDigitalSurfaceTracker;
-	CUndirectedSimpleGraph;
-        CDomainAdjacency; 
-	CAdjacency;
-        CUndirectedSimpleLocalGraph;
+        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref CDigitalSurfaceContainer" ]; 
+        CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref CDigitalSurfaceTracker" ];
+	CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ];
+        CDomainAdjacency [ label="CDomainAdjacency" URL="\ref CDomainAdjacency" ];
+	CAdjacency [ label="CAdjacency" URL="\ref CAdjacency" ];
+        CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref CUndirectedSimpleLocalGraph" ];
         CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
         CDomainAdjacency -> CAdjacency ; 
-        CVertexPredicate;
-        CSurfelPredicate;
-        CCellularGridSpaceND;
+        CVertexPredicate [ label="CVertexPredicate" URL="\ref CVertexPredicate" ];
+        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref CSurfelPredicate" ];
+        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref CCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
@@ -80,16 +80,16 @@ digraph GTOPOLOGY {
         node [style=filled,color=white];
         label="topology (main models)";
 
-        MetricAdjacency;
-        DigitalSurface;
+        MetricAdjacency [ label="MetricAdjacency" URL="\ref MetricAdjacency" ];
+        DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ];
 
-        DigitalSetBoundary;
-        ImplicitDigitalSurface;
-        LightImplicitDigitalSurface;
-        SetOfSurfels;
-        ExplicitDigitalSurface;
-        LightExplicitDigitalSurface;
-
+        DigitalSetBoundary [ label="DigitalSetBoundary" URL="\ref DigitalSetBoundary" ];
+        ImplicitDigitalSurface [ label="ImplicitDigitalSurface" URL="\ref ImplicitDigitalSurface" ];
+        LightImplicitDigitalSurface [ label="LightImplicitDigitalSurface" URL="\ref LightImplicitDigitalSurface" ];
+        SetOfSurfels [ label="SetOfSurfels" URL="\ref SetOfSurfels" ];
+        ExplicitDigitalSurface [ label="ExplicitDigitalSurface" URL="\ref ExplicitDigitalSurface" ];
+        LightExplicitDigitalSurface [ label="LightExplicitDigitalSurface" URL="\ref LightExplicitDigitalSurface" ];
+        KhalimskySpaceND [ label="KhalimskySpaceND" URL="\ref KhalimskySpaceND" ];
 
     }
 
@@ -104,7 +104,7 @@ digraph GTOPOLOGY {
     LightExplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
     DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
-
+    KhalimskySpaceND -> CCellularGridSpaceND;
 }
 @enddot
 
