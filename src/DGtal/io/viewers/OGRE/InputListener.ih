@@ -49,7 +49,7 @@ namespace DGtal
 /**
  * Constructor.
  */
-InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aViewer, Ogre::Camera * aCamera, Ogre::SceneManager * aSceneManager ) :
+DGtal::InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aViewer, Ogre::Camera * aCamera, Ogre::SceneManager * aSceneManager ) :
   myWindow ( aWindow ), myViewer ( aViewer )
 
 {
@@ -140,7 +140,7 @@ InputListener::InputListener ( Ogre::RenderWindow * aWindow, ViewerOgre3D * aVie
 /**
  * Destructor.
  */
-InputListener::~InputListener()
+DGtal::InputListener::~InputListener()
 {
   myInputManager->destroyInputObject ( myKeyboard );
   myInputManager->destroyInputObject ( myMouse );
@@ -153,7 +153,7 @@ InputListener::~InputListener()
 /**
  * the rendering method
  */
-bool InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
+bool DGtal::InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
 {
   if ( myMouse )
     myMouse->capture();
@@ -174,7 +174,7 @@ bool InputListener::frameRenderingQueued ( const Ogre::FrameEvent & evt )
  *  Updates some attributes of the viewer
  * 
  */
-void InputListener::updateViewer(double timeSinceLastFrame)
+void DGtal::InputListener::updateViewer(double timeSinceLastFrame)
 {
   myCameraMan->render ( timeSinceLastFrame );
   myMouseX= myMouse->getMouseState().X.abs;
@@ -194,7 +194,7 @@ void InputListener::updateViewer(double timeSinceLastFrame)
 /**
  * Method that initiate the inputManager (First frame)
  */
-bool InputListener::frameStarted ( const Ogre::FrameEvent & evt )
+bool DGtal::InputListener::frameStarted ( const Ogre::FrameEvent & evt )
 {
   return true;
 }
@@ -203,7 +203,7 @@ bool InputListener::frameStarted ( const Ogre::FrameEvent & evt )
 /**
  * The last frame
  */
-bool InputListener::frameEnded ( const Ogre::FrameEvent &evt )
+bool DGtal::InputListener::frameEnded ( const Ogre::FrameEvent &evt )
 {
   return true;
 }
@@ -212,7 +212,7 @@ bool InputListener::frameEnded ( const Ogre::FrameEvent &evt )
 /**
  * Handles a key press
  */
-bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
+bool DGtal::InputListener::keyPressed ( const OIS::KeyEvent & evt )
 {
   switch ( evt.key )
     {
@@ -345,7 +345,7 @@ bool InputListener::keyPressed ( const OIS::KeyEvent & evt )
 /**
  * Handles a mouse press
  */
-bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
+bool DGtal::InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonID id )
 {
   if ( id == OIS::MB_Right )
     {
@@ -378,7 +378,7 @@ bool InputListener::mousePressed ( const OIS::MouseEvent &arg, OIS::MouseButtonI
 /**
  * Handles a mouse release
  */
-bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
+bool DGtal::InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID id )
 {
 
   if(mySelectionMode && ( id == OIS::MB_Left))
@@ -412,7 +412,7 @@ bool InputListener::mouseReleased ( const OIS::MouseEvent &e, OIS::MouseButtonID
 /**
  * Handles a key release
  */
-bool InputListener::keyReleased ( const OIS::KeyEvent &e )
+bool DGtal::InputListener::keyReleased ( const OIS::KeyEvent &e )
 {
 
   switch ( e.key )
@@ -445,7 +445,7 @@ bool InputListener::keyReleased ( const OIS::KeyEvent &e )
 /**
  * Handles a mouse move
  */
-bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
+bool DGtal::InputListener::mouseMoved ( const OIS::MouseEvent &e )
 {
   if(mySelectionMode)
     {
@@ -489,7 +489,7 @@ bool InputListener::mouseMoved ( const OIS::MouseEvent &e )
 /**
  * Handles a window resize
  */
-void InputListener::windowResized ( Ogre::RenderWindow* rw )
+void DGtal::InputListener::windowResized ( Ogre::RenderWindow* rw )
 {
   myViewer->resetPosition(rw->getHeight(),rw->getWidth());
 #if (OGRE_PLATFORM == OGRE_PLATFORM_APPLE) && __LP64__
@@ -502,13 +502,13 @@ void InputListener::windowResized ( Ogre::RenderWindow* rw )
 /**
  * 
  */
-void InputListener::windowMoved(Ogre::RenderWindow * rw)
+void DGtal::InputListener::windowMoved(Ogre::RenderWindow * rw)
 {
 }
 /**
  * makes the render loop stop
  */
-void InputListener::stopRendering ( )
+void DGtal::InputListener::stopRendering ( )
 {
   myShutdown = true;
 }
@@ -519,7 +519,7 @@ void InputListener::stopRendering ( )
 /**
  * makes the render loop starts
  */
-void InputListener::startRendering ( )
+void DGtal::InputListener::startRendering ( )
 {
   myShutdown = false;
 }
@@ -528,7 +528,7 @@ void InputListener::startRendering ( )
 /**
  * Resets the position of the scene center
  */
-void InputListener::resetSCPosition()
+void DGtal::InputListener::resetSCPosition()
 {
   Ogre::Vector3 OldPosition=myViewer->getSceneCenter();
   myViewer->computeSceneCenter();
@@ -544,7 +544,7 @@ void InputListener::resetSCPosition()
 /**
  * Handles a window close
  */
-void InputListener::windowClosed(Ogre::RenderWindow* rw)
+void DGtal::InputListener::windowClosed(Ogre::RenderWindow* rw)
 {
   myShutdown=true;
 

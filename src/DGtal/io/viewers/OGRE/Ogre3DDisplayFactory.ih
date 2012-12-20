@@ -632,7 +632,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
 
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 					 const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -708,7 +708,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
 
 
 //------------------------------------------------------------------------------------------PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 					 const PointVector<dim, TComponent> & p )
@@ -736,7 +736,7 @@ void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 }
 
 // Grid/Point drawing
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & p )
 {
@@ -768,7 +768,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal
 
 
 // Paving/Voxel drawing
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & p )
 {
@@ -808,7 +808,7 @@ void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGt
       
       
 // ----------------------------------------------------------------------------------------SignedKhalimskyCell
-template< Dimension dim, typename TInteger >
+template< DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
 					 const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )

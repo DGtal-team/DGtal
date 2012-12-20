@@ -34,7 +34,7 @@
 #include <iostream>
 ///////////////////////////////////////////////////////////////////////////////
 
-
+using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ViewerOgre3D.
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ bool testDomain()
     DGtal::Z3i::Point p4 ( 3, 3 , 3 );
     DGtal::Z3i::Point p5 ( -3, -3 , -3 );
     DGtal::Z3i::Domain domain ( p4, p5 );
-    new ViewerOgre3D();
+    new DGtal::ViewerOgre3D();
     DGtal::ViewerOgre3D & View = DGtal::ViewerOgre3D::getSingleton();
     View << domain;
     View.start();	

@@ -69,7 +69,7 @@ int MyApplicationMain(int argc, const char **argv)
 		
       [applicationObject sendEvent:event];
       [applicationObject updateWindows];
-    } while (InputListener::getSingletonPtr()->viewerIsRunning());
+    } while (DGtal::InputListener::getSingletonPtr()->viewerIsRunning());
 	
   return 0;
 }

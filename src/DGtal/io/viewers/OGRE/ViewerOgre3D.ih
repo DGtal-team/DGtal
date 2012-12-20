@@ -62,8 +62,8 @@ namespace DGtal
  */
 template <typename TDrawableWithDisplay3D>
 inline
-ViewerOgre3D &
-ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
+DGtal::ViewerOgre3D &
+DGtal::ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
 {
   //  BOOST_CONCEPT_ASSERT((CDrawableWithDisplay3D< TDrawableWithDisplay3D >));
 
@@ -128,7 +128,7 @@ ViewerOgre3D::operator<< ( const TDrawableWithDisplay3D & object )
  *  Returns a dgtal object from selection
  */
 template <typename TDrawableWithDisplay3D>
-void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
+void DGtal::ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
 {
   
   mySelectionMode = true;
@@ -160,7 +160,7 @@ void ViewerOgre3D::operator>> ( TDrawableWithDisplay3D & object )
  *  @param step is the evolution step.
  */
 template <typename TDrawableWithDisplay3D>
-void ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, 
+void DGtal::ViewerOgre3D::manipulate ( TDrawableWithDisplay3D & anObject, 
 				TDrawableWithDisplay3D & ( *ptrfonction ) ( TDrawableWithDisplay3D, int ), 
 				int minValue, int maxValue, int step )
 {
@@ -200,7 +200,7 @@ DGtal::ViewerOgre3D::getMode ( const std::string & objectName ) const
 /**
  *  Destructor.
  */
-ViewerOgre3D::~ViewerOgre3D()
+DGtal::ViewerOgre3D::~ViewerOgre3D()
 {  
   delete myInputManager;
   delete myMode;
@@ -229,7 +229,7 @@ ViewerOgre3D::~ViewerOgre3D()
 /**
  *  Constructor.
  */
-ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
+DGtal::ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 {
   mySourceDirectory = sourcePath;
   myBinaryDirectory = binaryPath;
@@ -289,12 +289,11 @@ ViewerOgre3D::ViewerOgre3D( ) : myCurrentObject ( 0 ), mySelectionMode ( false )
 
 
 #include <iostream>
-using namespace std;
 
 /**
  *  Rendering launch method.
  */
-void ViewerOgre3D::start()
+void DGtal::ViewerOgre3D::start()
 {
 
   // myRoot->startRendering();
@@ -331,7 +330,7 @@ void ViewerOgre3D::start()
 /**
  * Initiate ressources
  */
-void ViewerOgre3D::initMaterials()
+void DGtal::ViewerOgre3D::initMaterials()
 {
   //Chargement des matériaux , des meshs et de tout ce qu'on a comme ressource
   Ogre::ConfigFile cf;
@@ -367,7 +366,7 @@ void ViewerOgre3D::initMaterials()
 /**
  *  Config initiate
  */
-bool ViewerOgre3D::initConfigs()
+bool DGtal::ViewerOgre3D::initConfigs()
 {
   if ( !myRoot->restoreConfig() )
     {
@@ -383,7 +382,7 @@ bool ViewerOgre3D::initConfigs()
 /**
  *  Scene create
  */
-void ViewerOgre3D::createScene()
+void DGtal::ViewerOgre3D::createScene()
 {
   Ogre::TextureManager::getSingleton().setDefaultNumMipmaps ( 5 );
   Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
@@ -451,7 +450,7 @@ void ViewerOgre3D::createScene()
 /**
  *  Frame listenner creartion
  */
-void ViewerOgre3D::createFrameListener()
+void DGtal::ViewerOgre3D::createFrameListener()
 {
 
   new DGtal::InputListener ( myWindow, this, myCamera, mySceneMgr );
@@ -463,7 +462,7 @@ void ViewerOgre3D::createFrameListener()
 /**
  *  Get a son node ( of the root one)
  */
-Ogre::SceneNode * ViewerOgre3D::getANode()
+Ogre::SceneNode * DGtal::ViewerOgre3D::getANode()
 {
   return myRootNode->getNode()->createChildSceneNode();
 }
@@ -474,7 +473,7 @@ Ogre::SceneNode * ViewerOgre3D::getANode()
  *  the mouse coordinates and (h,w) the window dimension
  */
 
-void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, unsigned int w )
+void DGtal::ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, unsigned int w )
 {
 
   Representation * temp = NULL;
@@ -569,7 +568,7 @@ void ViewerOgre3D::lookForIt ( unsigned int x, unsigned int y, unsigned int h, u
  * 
  *  @return the new representation
  */
-Representation * ViewerOgre3D::addTriangle(double x1, double y1, double z1,
+DGtal::Representation * DGtal::ViewerOgre3D::addTriangle(double x1, double y1, double z1,
 					   double x2, double y2,double z2,
 					   double x3, double y3,double z3,
 					   Ogre::SceneNode * aNode,std::string materialName)
@@ -620,7 +619,7 @@ Representation * ViewerOgre3D::addTriangle(double x1, double y1, double z1,
  * 
  *  @return the new representation
  */
-Representation * ViewerOgre3D::addQuad(double x1, double y1, double z1,
+DGtal::Representation * DGtal::ViewerOgre3D::addQuad(double x1, double y1, double z1,
 				       double x2, double y2,double z2,
 				       double x3, double y3,double z3,
 				       double x4, double y4,double z4,
@@ -664,7 +663,7 @@ Representation * ViewerOgre3D::addQuad(double x1, double y1, double z1,
  * 
  *  @return the new representation
  */
-Representation * ViewerOgre3D::addPolygon(std::vector<PointOgre3D>  vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName)
+DGtal::Representation * DGtal::ViewerOgre3D::addPolygon(std::vector<PointOgre3D>  vectPointsPolygon,Ogre::SceneNode * aNode,std::string materialName)
 {
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
   Ogre::ManualObject  * m_ent  = mySceneMgr->createManualObject ( );
@@ -710,7 +709,7 @@ Representation * ViewerOgre3D::addPolygon(std::vector<PointOgre3D>  vectPointsPo
 /**
  *  adds a line
  */
-Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode,std::string materialName )
+DGtal::Representation * DGtal::ViewerOgre3D::addLine ( double x1, double y1, double z1, double x2, double y2, double z2, Ogre::SceneNode * aNode,std::string materialName )
 {
 
   Ogre::SceneNode * m_bodySceneNode = aNode->createChildSceneNode();
@@ -733,7 +732,7 @@ Representation * ViewerOgre3D::addLine ( double x1, double y1, double z1, double
 /**
  *  adds a point
  */
-Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
+DGtal::Representation * DGtal::ViewerOgre3D::addPoint ( double x, double y, double z,
 					  Ogre::SceneNode * aNode,std::string materialName, double factor )
 {
   Ogre::Entity  * m_ent = mySceneMgr->createEntity ( Ogre::SceneManager::PT_SPHERE );
@@ -762,7 +761,7 @@ Representation * ViewerOgre3D::addPoint ( double x, double y, double z,
 /**
  *  adds a voxel
  */
-Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z, 
+DGtal::Representation  * DGtal::ViewerOgre3D::addVoxel ( double x, double y, double z, 
 					   Ogre::SceneNode * aNode,
 					   std::string materialName )
 {
@@ -795,7 +794,7 @@ Representation  * ViewerOgre3D::addVoxel ( double x, double y, double z,
 /**
  *  adds a kalimsky voxel
  */
-Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z, 
+DGtal::Representation * DGtal::ViewerOgre3D::addKSVoxel ( int x, int y, int z, 
 					    Ogre::SceneNode * aNode,
 					    std::string materialName )
 {
@@ -823,7 +822,7 @@ Representation * ViewerOgre3D::addKSVoxel ( int x, int y, int z,
 /**
  *  adds a kalimsky surfel
  */
-Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
+DGtal::Representation * DGtal::ViewerOgre3D::addKSSurfel ( double x, double y, double z,
 					     bool xSurfel, bool ySurfel, bool zSurfel,
 					     Ogre::SceneNode * aNode ,std::string materialName)
 {
@@ -871,7 +870,7 @@ Representation * ViewerOgre3D::addKSSurfel ( double x, double y, double z,
 /**
  * adds a kalimsky pointel
  */
-Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z,
+DGtal::Representation * DGtal::ViewerOgre3D::addKSPointel ( double x, double y, double z,
 					      Ogre::SceneNode * aNode ,
 					      std::string materialName)
 {
@@ -892,7 +891,7 @@ Representation * ViewerOgre3D::addKSPointel ( double x, double y, double z,
 /**
  * adds a kalimsky pointel
  */
-Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, 
+DGtal::Representation * DGtal::ViewerOgre3D::addKSLinel ( double x1, double y1, double z1, 
 					    double x2, double y2, double z2,
 					    Ogre::SceneNode * aNode,
 					    std::string materialName)
@@ -937,7 +936,7 @@ Representation * ViewerOgre3D::addKSLinel ( double x1, double y1, double z1,
 /**
  *  Add a DgtalNode to the list
  */
-void ViewerOgre3D::addToList ( DGtalNode * aNode )
+void DGtal::ViewerOgre3D::addToList ( DGtalNode * aNode )
 {
 
   myNodes[aNode->getName() ] = aNode;
@@ -947,7 +946,7 @@ void ViewerOgre3D::addToList ( DGtalNode * aNode )
 /**
  *  Find the representation coressponding to a point
  */
-Representation * ViewerOgre3D::findRepresentation ( std::string aName )
+DGtal::Representation * DGtal::ViewerOgre3D::findRepresentation ( std::string aName )
 {
 
 
@@ -980,7 +979,7 @@ Representation * ViewerOgre3D::findRepresentation ( std::string aName )
 /**
  *  clears the scene
  */
-void ViewerOgre3D::clearScene()
+void DGtal::ViewerOgre3D::clearScene()
 {
   myRootNode->clear();
   mySelectedDGtalNode = NULL;
@@ -992,7 +991,7 @@ void ViewerOgre3D::clearScene()
 /**
  *   Displays the scene on the standard output
  */
-void ViewerOgre3D::sceneDisplay()
+void DGtal::ViewerOgre3D::sceneDisplay()
 {
   myRootNode->display ( 0 );
 }
@@ -1001,7 +1000,7 @@ void ViewerOgre3D::sceneDisplay()
 /**
  * draws the axes
  */
-void ViewerOgre3D::drawAxes()
+void DGtal::ViewerOgre3D::drawAxes()
 {
 
   // Coordinate system Drawing
@@ -1050,7 +1049,7 @@ void ViewerOgre3D::drawAxes()
 /**
  * draws the wrist
  */
-void ViewerOgre3D::drawWrist()
+void DGtal::ViewerOgre3D::drawWrist()
 {
 
   myWrist = mySceneMgr->createManualObject ( "Wrist" );
@@ -1176,7 +1175,7 @@ void ViewerOgre3D::drawWrist()
 /**
  *  Flips the axis visibility .
  */
-void ViewerOgre3D::changeAxisVisibility()
+void DGtal::ViewerOgre3D::changeAxisVisibility()
 {
   myAxisNode->flipVisibility();
 }
@@ -1185,7 +1184,7 @@ void ViewerOgre3D::changeAxisVisibility()
 /**
  *   Returns the lower point of the scene
  */
-Ogre::Vector3 ViewerOgre3D::getLowerPosition()
+Ogre::Vector3 DGtal::ViewerOgre3D::getLowerPosition()
 {
 
   std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
@@ -1208,7 +1207,7 @@ Ogre::Vector3 ViewerOgre3D::getLowerPosition()
 /**
  *   Returns the upper point of the scene
  */
-Ogre::Vector3 ViewerOgre3D::getUpperPosition()
+Ogre::Vector3 DGtal::ViewerOgre3D::getUpperPosition()
 {
   Ogre::Vector3 up = Ogre::Vector3 ( 0, 0, 0 );
   std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
@@ -1230,7 +1229,7 @@ Ogre::Vector3 ViewerOgre3D::getUpperPosition()
 /**
  *  Returns the leftest point
  */
-Ogre::Vector3 ViewerOgre3D::getLeftestPosition()
+Ogre::Vector3 DGtal::ViewerOgre3D::getLeftestPosition()
 {
   Ogre::Vector3 up = Ogre::Vector3 ( 0, 0, 0 );
   std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
@@ -1252,7 +1251,7 @@ Ogre::Vector3 ViewerOgre3D::getLeftestPosition()
 /**
  *  Loads the fonts
  */
-void ViewerOgre3D::loadFonts()
+void DGtal::ViewerOgre3D::loadFonts()
 {
   // get the resource manager
   Ogre::ResourceGroupManager &resGroupMgr = Ogre::ResourceGroupManager::getSingleton();
@@ -1275,7 +1274,7 @@ void ViewerOgre3D::loadFonts()
 /**
  *  Returns the Fowardest point
  */
-Ogre::Vector3 ViewerOgre3D::getFowardestPosition()
+Ogre::Vector3 DGtal::ViewerOgre3D::getFowardestPosition()
 {
   Ogre::Vector3 up = Ogre::Vector3 ( 0, 0, 0 );
   std::map<std::string, DGtalNode *>::iterator them = myNodes.begin();
@@ -1297,7 +1296,7 @@ Ogre::Vector3 ViewerOgre3D::getFowardestPosition()
 /**
  *  updates the manipulating value
  */
-void ViewerOgre3D::newManipulatingValue ( int change )
+void DGtal::ViewerOgre3D::newManipulatingValue ( int change )
 {
   if ( change > 0 )
     {
@@ -1324,7 +1323,7 @@ void ViewerOgre3D::newManipulatingValue ( int change )
 /**
  *  Updates the manipulate label value
  */
-void ViewerOgre3D::updateManipulateDisplay()
+void DGtal::ViewerOgre3D::updateManipulateDisplay()
 {
 
   string current;  
@@ -1356,7 +1355,7 @@ void ViewerOgre3D::updateManipulateDisplay()
 /**
  *  Stops the manipulating mode
  */
-void ViewerOgre3D::abortManupulating()
+void DGtal::ViewerOgre3D::abortManupulating()
 {
   myInputManager->stopRendering();
   myManupilatingFlag = false;
@@ -1366,14 +1365,14 @@ void ViewerOgre3D::abortManupulating()
 /**
  *  Set the near and far clip distance of the camera
  */
-void ViewerOgre3D::setNearFar ( double near, double far )
+void DGtal::ViewerOgre3D::setNearFar ( double near, double far )
 {
   myCamera->setNearClipDistance ( scaleFactor*near );
   myCamera->setFarClipDistance ( scaleFactor*far );
 }
 
 
-void ViewerOgre3D::setCameraUpVector ( Ogre::Vector3   anUp )
+void DGtal::ViewerOgre3D::setCameraUpVector ( Ogre::Vector3   anUp )
 {
   myCamera->setFixedYawAxis ( true, anUp );
 }
@@ -1384,7 +1383,7 @@ void ViewerOgre3D::setCameraUpVector ( Ogre::Vector3   anUp )
 /**
  *  set's the camera upvector
  */
-void ViewerOgre3D::setCameraDirection ( Ogre::Vector3  aPoint )
+void DGtal::ViewerOgre3D::setCameraDirection ( Ogre::Vector3  aPoint )
 {
   myCamera->lookAt ( aPoint );
 }
@@ -1393,7 +1392,7 @@ void ViewerOgre3D::setCameraDirection ( Ogre::Vector3  aPoint )
 /**
  *  Set's the camera position
  */
-void ViewerOgre3D::setCameraPosition ( Ogre::Vector3  aPosition )
+void DGtal::ViewerOgre3D::setCameraPosition ( Ogre::Vector3  aPosition )
 {
   myCamera->setPosition ( aPosition );
 }
@@ -1401,7 +1400,7 @@ void ViewerOgre3D::setCameraPosition ( Ogre::Vector3  aPosition )
 /**
  *  adds a clipping plane
  */
-void ViewerOgre3D::addClippingPlane ( double a, double b, double c, double d )
+void DGtal::ViewerOgre3D::addClippingPlane ( double a, double b, double c, double d )
 {
   myRoot->getRenderSystem()->addClipPlane ( Ogre::Plane ( a, b, c, d ) );
 }
@@ -1410,7 +1409,7 @@ void ViewerOgre3D::addClippingPlane ( double a, double b, double c, double d )
 /**
  *  Computes the scene center
  */
-void  ViewerOgre3D::computeSceneCenter ( )
+void  DGtal::ViewerOgre3D::computeSceneCenter ( )
 {
   Ogre::Vector3 upper = getUpperPosition();
   Ogre::Vector3 lower = getLowerPosition();
@@ -1423,7 +1422,7 @@ void  ViewerOgre3D::computeSceneCenter ( )
 /**
  * Updates the wrist position
  */
-void  ViewerOgre3D::updateWrist ( )
+void  DGtal::ViewerOgre3D::updateWrist ( )
 {
   myWristNode->setPosition ( mySceneCenter );
 
@@ -1432,7 +1431,7 @@ void  ViewerOgre3D::updateWrist ( )
 /**
  * Sets the new initial position of the cameraman
  */
-void ViewerOgre3D::updateInitialCameraPosition( )
+void DGtal::ViewerOgre3D::updateInitialCameraPosition( )
 {
   Ogre::Vector3 initialPos = getFowardestPosition() + getLeftestPosition() + getUpperPosition();
   myInputManager->getCameraMan()->setInitialPosition ( initialPos );
@@ -1442,7 +1441,7 @@ void ViewerOgre3D::updateInitialCameraPosition( )
 /**
  *  Creates a texture starting from a DGtal color
  */
-void ViewerOgre3D::createMaterial(std::string  aName )
+void DGtal::ViewerOgre3D::createMaterial(std::string  aName )
 {
   Ogre::MaterialManager& lMaterialManager = Ogre::MaterialManager::getSingleton();
   Ogre::MaterialPtr lMaterial = lMaterialManager.create ( aName, "General" );
@@ -1500,7 +1499,7 @@ void ViewerOgre3D::createMaterial(std::string  aName )
  *  Sets the self illumination color of the following object
  */
 inline
-void ViewerOgre3D::setSelfIlluminationColor(DGtal::Color aColor)
+void DGtal::ViewerOgre3D::setSelfIlluminationColor(DGtal::Color aColor)
 {
   myCurrentSelfIlluminationColor=aColor;
 }
@@ -1510,7 +1509,7 @@ void ViewerOgre3D::setSelfIlluminationColor(DGtal::Color aColor)
  *  Sets the Ambient illumination color of the following object
  */
 inline
-void ViewerOgre3D::setAmbientIlluminationColor(DGtal::Color aColor)
+void DGtal::ViewerOgre3D::setAmbientIlluminationColor(DGtal::Color aColor)
 {
   myCurrentAmbientIlluminationColor=aColor;
 }
@@ -1519,7 +1518,7 @@ void ViewerOgre3D::setAmbientIlluminationColor(DGtal::Color aColor)
  *  Sets the Specular illumination color of the following object
  */
 inline
-void ViewerOgre3D::setSpecularIlluminationColor(DGtal::Color aColor)
+void DGtal::ViewerOgre3D::setSpecularIlluminationColor(DGtal::Color aColor)
 {
   myCurrentSpecularIlluminationColor=aColor;
 }
@@ -1528,7 +1527,7 @@ void ViewerOgre3D::setSpecularIlluminationColor(DGtal::Color aColor)
  *  Sets the diphuse illumination color of the following object
  */
 inline
-void ViewerOgre3D::setDiphuseIlluminationColor(DGtal::Color aColor)
+void DGtal::ViewerOgre3D::setDiphuseIlluminationColor(DGtal::Color aColor)
 {
   myCurrentDiphuseIlluminationColor=aColor;
 }
@@ -1538,7 +1537,7 @@ void ViewerOgre3D::setDiphuseIlluminationColor(DGtal::Color aColor)
  *  Sets the texture of the following object
  */
 inline
-void ViewerOgre3D::setTexture(std::string aTexture)
+void DGtal::ViewerOgre3D::setTexture(std::string aTexture)
 {
   myTexture=aTexture;
 }
@@ -1549,7 +1548,7 @@ void ViewerOgre3D::setTexture(std::string aTexture)
 /**
  *  Returns the self illumination color of the following object
  */
-DGtal::Color ViewerOgre3D::getSelfIlluminationColor( )
+DGtal::Color DGtal::ViewerOgre3D::getSelfIlluminationColor( )
 {
   return DGtal::Color(255,255,255,255);
 }
@@ -1558,7 +1557,7 @@ DGtal::Color ViewerOgre3D::getSelfIlluminationColor( )
 /**
  *  Returns the Ambient illumination color of the following object
  */
-DGtal::Color  ViewerOgre3D::getAmbientIlluminationColor( )
+DGtal::Color  DGtal::ViewerOgre3D::getAmbientIlluminationColor( )
 {
   return DGtal::Color(255,255,255,255);
 }
@@ -1566,7 +1565,7 @@ DGtal::Color  ViewerOgre3D::getAmbientIlluminationColor( )
 /**
  *  Returns the Specular illumination color of the following object
  */
-DGtal::Color ViewerOgre3D::getSpecularIlluminationColor( )
+DGtal::Color DGtal::ViewerOgre3D::getSpecularIlluminationColor( )
 {
   return DGtal::Color(255,255,255,255);
 }
@@ -1574,7 +1573,7 @@ DGtal::Color ViewerOgre3D::getSpecularIlluminationColor( )
 /**
  *  Returns the diphuse illumination color of the following object
  */
-DGtal::Color ViewerOgre3D::getDiphuseIlluminationColor( )
+DGtal::Color DGtal::ViewerOgre3D::getDiphuseIlluminationColor( )
 { 
   return DGtal::Color(255,255,255,255);
 }
@@ -1582,7 +1581,7 @@ DGtal::Color ViewerOgre3D::getDiphuseIlluminationColor( )
 /**
  *   Returns  the texture of the following object
  */
-std::string ViewerOgre3D::getTexture()
+std::string DGtal::ViewerOgre3D::getTexture()
 {
   return "";
 }
@@ -1591,7 +1590,7 @@ std::string ViewerOgre3D::getTexture()
 /**
  *  
  */
-void ViewerOgre3D::more( )
+void DGtal::ViewerOgre3D::more( )
 {
   if (myUpperFatherNonRoot!=NULL)
     {
@@ -1603,7 +1602,7 @@ void ViewerOgre3D::more( )
 /**
  *  
  */
-void ViewerOgre3D::less( )
+void DGtal::ViewerOgre3D::less( )
 {
   if (myUpperFatherNonRoot!=NULL)
     {
@@ -1615,7 +1614,7 @@ void ViewerOgre3D::less( )
 /**
  *  Increases the transparency of the current UNFR
  */
-void ViewerOgre3D::moreTransparency( )
+void DGtal::ViewerOgre3D::moreTransparency( )
 {
   if (myUpperFatherNonRoot!=NULL)
     {
@@ -1627,7 +1626,7 @@ void ViewerOgre3D::moreTransparency( )
 /**
  *  Decreases the transparency of the current UNFR
  */
-void ViewerOgre3D::lessTransparency( )
+void DGtal::ViewerOgre3D::lessTransparency( )
 {
   if (myUpperFatherNonRoot!=NULL)
     {
@@ -1638,7 +1637,7 @@ void ViewerOgre3D::lessTransparency( )
 /**
  * Destroys the scene
  */
-void ViewerOgre3D::destroyScene()
+void DGtal::ViewerOgre3D::destroyScene()
 {
   delete myRootNode;
 }
@@ -1646,7 +1645,7 @@ void ViewerOgre3D::destroyScene()
 /**
  *  Shows the commands on the standard output
  */
-void ViewerOgre3D::showHelp()
+void DGtal::ViewerOgre3D::showHelp()
 {
   cout <<"-------------------------------------------------------------------------------------------"<<endl;
   cout <<"Ogre DGtal viewer commands: \n"<<endl;
@@ -1704,7 +1703,7 @@ void ViewerOgre3D::showHelp()
 /**
  *  Changes the text position on   a window resize
  */
-void ViewerOgre3D::resetPosition(int h, int w)
+void DGtal::ViewerOgre3D::resetPosition(int h, int w)
 {
   myMode->setPosition(w/30,h-h/20);
   //myMode->setSize(36);
@@ -1716,7 +1715,7 @@ void ViewerOgre3D::resetPosition(int h, int w)
 /**
  *  Changes the text position on   a window resize
  */
-void ViewerOgre3D::printScene(std::string name)
+void DGtal::ViewerOgre3D::printScene(std::string name)
 {
   myWindow->writeContentsToFile(name);
   char path[500];
@@ -1726,7 +1725,7 @@ void ViewerOgre3D::printScene(std::string name)
 /**
  *  Flips the wrist visibility .
  */
-void ViewerOgre3D::changeWristVisibility()
+void DGtal::ViewerOgre3D::changeWristVisibility()
 {
   myWrist->setVisible(!myWrist->isVisible());
 }
@@ -1734,7 +1733,7 @@ void ViewerOgre3D::changeWristVisibility()
 /**
  *  Flips the background color.
  */ 
-void ViewerOgre3D::flipBackgroundColor()
+void DGtal::ViewerOgre3D::flipBackgroundColor()
 {
   if(myBackgroundBlackColor)
     {
@@ -1753,7 +1752,7 @@ void ViewerOgre3D::flipBackgroundColor()
 /**
  * Changes the visibility of the shadow cast plane 
  */
-void ViewerOgre3D::flipPlaneVisibility()
+void DGtal::ViewerOgre3D::flipPlaneVisibility()
 {
   myPlane->flipVisibility();
 }
@@ -1761,7 +1760,7 @@ void ViewerOgre3D::flipPlaneVisibility()
 /**
  *  Updates the shadow plane position
  */
-void ViewerOgre3D::updatePlane (  )
+void DGtal::ViewerOgre3D::updatePlane (  )
 {
   myPlane->setPosition ( getLowerPosition()-Ogre::Vector3(0.0,0.0,scaleFactor) );
 }
@@ -1773,7 +1772,7 @@ void ViewerOgre3D::updatePlane (  )
  *  @param aPosition the light's Color
  *  @param aCast defines if the light cast's shadows or not
  */
-void  ViewerOgre3D::addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,bool aCast  )
+void  DGtal::ViewerOgre3D::addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,bool aCast  )
 {
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
   light->setType ( Ogre::Light::LT_POINT);
@@ -1795,7 +1794,7 @@ void  ViewerOgre3D::addPointLight (DGtal::Color aColor, DGtal::Z3i::Point aPosit
  *  @param aPosition the light's Color
  *  @param aCast defines if the light cast's shadows or not
  */
-void  ViewerOgre3D::addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+void  DGtal::ViewerOgre3D::addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPosition,
 				  DGtal::Z3i::Point aDirection,bool aCast    )
 {
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
@@ -1815,7 +1814,7 @@ void  ViewerOgre3D::addSpotLight (DGtal::Color aColor, DGtal::Z3i::Point aPositi
  *  @param aPosition the light's Color
  *  @param aCast defines if the light cast's shadows or not
  */
-void  ViewerOgre3D::addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point aPosition,
+void  DGtal::ViewerOgre3D::addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point aPosition,
 					  DGtal::Z3i::Point aDirection,bool aCast   )
 {
   Ogre::Light * light = mySceneMgr->createLight ( "Light" );
@@ -1839,7 +1838,7 @@ void  ViewerOgre3D::addDirectionalLight ( DGtal::Color aColor, DGtal::Z3i::Point
  *  @param aFileName name of the file that will contain 
  *  the xml version of the scene (do not give the extention)
  */
-void ViewerOgre3D::exportToXml(std::string aFileName )
+void DGtal::ViewerOgre3D::exportToXml(std::string aFileName )
 {
   DGtal::XMLExporter anExporter;
   anExporter.exportToFile(mySceneMgr, aFileName);
@@ -1852,7 +1851,7 @@ void ViewerOgre3D::exportToXml(std::string aFileName )
  *  @param aFileName name of the file that will contain 
  *  the vrml version of the scene (do not give the extention)
  */
-void ViewerOgre3D::exportToVrml(std::string aFileName )
+void DGtal::ViewerOgre3D::exportToVrml(std::string aFileName )
 {
   DGtal::VRMLExporter anExporter;
   anExporter.exportToFile(mySceneMgr, aFileName);
@@ -1862,7 +1861,7 @@ void ViewerOgre3D::exportToVrml(std::string aFileName )
 /**
  * Returns a good position for the camera 
  */
-Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
+Ogre::Vector3 DGtal::ViewerOgre3D::goodCameraPosition()
 {
   return (getLeftestPosition()+ getUpperPosition() +Ogre::Vector3(30.0,30.0,30.0));
 }
@@ -1871,7 +1870,7 @@ Ogre::Vector3 ViewerOgre3D::goodCameraPosition()
 /**
  * Changes the visibility of the text
  */
-void ViewerOgre3D::flipTextVisibility()
+void DGtal::ViewerOgre3D::flipTextVisibility()
 {
   myMode->flipVisibility();
 }
@@ -1879,7 +1878,7 @@ void ViewerOgre3D::flipTextVisibility()
 /**
  * This method validates the user seletion 
  */
-void ViewerOgre3D::confirmSelection()
+void DGtal::ViewerOgre3D::confirmSelection()
 {
   if ( mySelectedDGtalNode!=NULL )
     {
@@ -1891,7 +1890,7 @@ void ViewerOgre3D::confirmSelection()
 /**
  *  Tells if the viewer is in selection mode
  */
-bool ViewerOgre3D::isInSelectionMode()
+bool DGtal::ViewerOgre3D::isInSelectionMode()
 { 
   return mySelectionMode;
 }

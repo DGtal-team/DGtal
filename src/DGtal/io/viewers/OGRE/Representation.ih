@@ -131,7 +131,7 @@ std::string DGtal::Representation::getEntityName()
  * Returns a pointer on the Node
  *
  */
-Ogre::SceneNode * Representation::getNode()
+Ogre::SceneNode * DGtal::Representation::getNode()
 {
   return mySceneNode;
 }
@@ -142,7 +142,7 @@ Ogre::SceneNode * Representation::getNode()
  * Changes the father of this entity
  *
  */
-void  Representation::setAttachedParent(DGtalNode * aParent)
+void  DGtal::Representation::setAttachedParent(DGtalNode * aParent)
 {
   myParent =aParent;
 }
@@ -153,7 +153,7 @@ void  Representation::setAttachedParent(DGtalNode * aParent)
  * Returns a pointer on the associated DGtal Object
  *
  */
-DGtalNode * Representation::getAttachedParent()
+DGtal::DGtalNode * DGtal::Representation::getAttachedParent()
 {
   return myParent;
 }
@@ -164,7 +164,7 @@ DGtalNode * Representation::getAttachedParent()
  *  Operator =
  *
  */
-Representation& Representation::operator=(const Representation& other)
+DGtal::Representation& DGtal::Representation::operator=(const DGtal::Representation& other)
 {
   return *this;
 }
@@ -176,7 +176,7 @@ Representation& Representation::operator=(const Representation& other)
  * Set this entity as a selected one
  *
  */
-void Representation::select()
+void DGtal::Representation::select()
 {
   if(myMovableObjectType=="Entity")
     { 
@@ -198,7 +198,7 @@ void Representation::select()
  * Set this entity as in a selected group
  *
  */
-void Representation::groupSelect()
+void DGtal::Representation::groupSelect()
 {
   if(myMovableObjectType=="Entity")
     { 
@@ -220,7 +220,7 @@ void Representation::groupSelect()
  * Set this entity as a unselected
  *
  */
-void Representation::unselect()
+void DGtal::Representation::unselect()
 {
 
       ((Ogre::Entity*) myMovableObject)->setMaterialName(myMaterialName);
@@ -234,7 +234,7 @@ void Representation::unselect()
  * Tells if the representation is virtual, is means that is has or not an associated entity 
  *
  */
-bool Representation::isVirtual()
+bool DGtal::Representation::isVirtual()
 {
   return mVirtual;
 }
@@ -246,7 +246,7 @@ bool Representation::isVirtual()
  * Tells if the representation is virtual, is means that is has or not an associated entity 
  *
  */
-void  Representation::clear()
+void DGtal::Representation::clear()
 {
 
   if(!mVirtual)
@@ -261,7 +261,7 @@ void  Representation::clear()
 /**
  *  Adds a new material to apply
  */
-void Representation::setMaterialName(std::string aMaterial)
+void  DGtal::Representation::setMaterialName(std::string aMaterial)
 {
   myMaterialName=aMaterial;
 }
@@ -269,7 +269,7 @@ void Representation::setMaterialName(std::string aMaterial)
 /**
  *  Sets the  material to apply
  */
-void Representation::setMaterial(Ogre::MaterialPtr  aMaterial)
+void  DGtal::Representation::setMaterial(Ogre::MaterialPtr  aMaterial)
 {
   myMaterial = aMaterial;
 }
@@ -278,7 +278,7 @@ void Representation::setMaterial(Ogre::MaterialPtr  aMaterial)
 /**
  *  Returns the material name
  */
-std::string Representation::getMaterialName()
+std::string  DGtal::Representation::getMaterialName()
 {
   return myMaterialName;
 }
@@ -287,7 +287,7 @@ std::string Representation::getMaterialName()
 /**
  *  Returns the material 
  */
-Ogre::MaterialPtr Representation::getMaterial()
+Ogre::MaterialPtr  DGtal::Representation::getMaterial()
 {
   return myMaterial;
 }
@@ -297,7 +297,7 @@ Ogre::MaterialPtr Representation::getMaterial()
 /**
  *  
  */
-void Representation::more( )
+void  DGtal::Representation::more( )
 {
   if(myScale<5)
     {
@@ -310,7 +310,7 @@ void Representation::more( )
 /**
  *  
  */
-void Representation::less( )
+void  DGtal::Representation::less( )
 {
   if(myScale>1)
     {
@@ -322,7 +322,7 @@ void Representation::less( )
 /**
  *  
  */
-void Representation::moreTransparency( )
+void  DGtal::Representation::moreTransparency( )
 {
 
 }
@@ -331,7 +331,7 @@ void Representation::moreTransparency( )
 /**
  * 
  */
-void Representation::lessTransparency( )
+void  DGtal::Representation::lessTransparency( )
 {
 
 }

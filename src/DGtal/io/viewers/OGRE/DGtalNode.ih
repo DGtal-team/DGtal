@@ -47,7 +47,7 @@ using namespace std;
  * @param aName the Node's name
  * @param aSceneMgr the ogre scene manager
  */
-DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myName ( aName ), mySceneMgr ( aSceneMgr )
+DGtal::DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myName ( aName ), mySceneMgr ( aSceneMgr )
 {
   myDGtalObject=NULL;
   myIsRoot = false;
@@ -58,7 +58,7 @@ DGtalNode::DGtalNode ( std::string aName, Ogre::SceneManager * aSceneMgr ) : myN
  * Constructor without a name
  * @param aSceneMgr the ogre scene manager
  */
-DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr )
+DGtal::DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr )
 {
   myDGtalObject=NULL;
   myIsRoot = false;
@@ -67,7 +67,7 @@ DGtalNode::DGtalNode ( Ogre::SceneManager * aSceneMgr ) : mySceneMgr ( aSceneMgr
 /**
  * Copy constructor
  */
-DGtalNode::DGtalNode ( const DGtalNode& other )
+DGtal::DGtalNode::DGtalNode ( const DGtalNode& other )
 {
   myDGtalObject=NULL;
   myIsRoot = false;
@@ -77,7 +77,7 @@ DGtalNode::DGtalNode ( const DGtalNode& other )
 /**
  * Destructor
  */
-DGtalNode::~DGtalNode()
+DGtal::DGtalNode::~DGtalNode()
 { 
 
   std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
@@ -105,7 +105,7 @@ DGtalNode::~DGtalNode()
  * @param out the output stream where the object is written.
  */
 void
-DGtalNode::selfDisplay ( std::ostream & out ) const
+DGtal::DGtalNode::selfDisplay ( std::ostream & out ) const
 {
   out << "[DGtalNode]";
 }
@@ -115,7 +115,7 @@ DGtalNode::selfDisplay ( std::ostream & out ) const
  * Adds a representation to the attributes of this object.
  */
 void
-DGtalNode::setRepresentation ( Representation * newRepresentation )
+DGtal::DGtalNode::setRepresentation ( Representation * newRepresentation )
 {
   myRepresentation = newRepresentation;
 }
@@ -128,7 +128,7 @@ DGtalNode::setRepresentation ( Representation * newRepresentation )
  * @return a reference on 'this'.
  * Forbidden by default.
  */
-DGtalNode& DGtalNode::operator= ( const DGtalNode & other )
+DGtal::DGtalNode& DGtal::DGtalNode::operator= ( const DGtal::DGtalNode & other )
 {
   return *this;
 }
@@ -140,7 +140,7 @@ DGtalNode& DGtalNode::operator= ( const DGtalNode & other )
  * @param other the object to compare.
  * @return a bool wich defines if this two object are the same.
  */
-bool DGtalNode::operator== ( const DGtalNode& other ) const
+bool DGtal::DGtalNode::operator== ( const DGtal::DGtalNode& other ) const
 {
   return ( myName == other.myName );
 }
@@ -150,7 +150,7 @@ bool DGtalNode::operator== ( const DGtalNode& other ) const
 /**
  *  Sets this node as the root one
  */
-void DGtalNode::setRoot()
+void DGtal::DGtalNode::setRoot()
 {
   myIsRoot = true;
 }
@@ -163,7 +163,7 @@ void DGtalNode::setRoot()
  *  @param aName the name to test
  *  @return myRepresentation if the name matches
  */
-Representation * DGtalNode::ifRepresentation ( std::string aName )
+DGtal::Representation * DGtal::DGtalNode::ifRepresentation ( std::string aName )
 {
   if ( !myRepresentation->isVirtual() )
     {
@@ -181,7 +181,7 @@ Representation * DGtalNode::ifRepresentation ( std::string aName )
  *  Returns back the representation
  *  @return myRepresentation
  */
-Representation * DGtalNode::getRepresentation ( )
+DGtal::Representation * DGtal::DGtalNode::getRepresentation ( )
 {
   return myRepresentation;
 }
@@ -192,7 +192,7 @@ Representation * DGtalNode::getRepresentation ( )
  * Set this object as a selected one
  *
  */
-void DGtalNode::select()
+void DGtal::DGtalNode::select()
 {
   if ( !myRepresentation->isVirtual() )
     {
@@ -200,7 +200,7 @@ void DGtalNode::select()
     }
   else
     {
-      std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+      std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
       while ( it != mySons.end() )
         {
@@ -214,7 +214,7 @@ void DGtalNode::select()
 /**
  *  Displays on the stanard input the node's content
  */
-void DGtalNode::display ( int level )
+void DGtal::DGtalNode::display ( int level )
 {
   if ( myType == "PointVector" )
     {
@@ -226,7 +226,7 @@ void DGtalNode::display ( int level )
         cout << "DigitalSetBySTLSet" << endl;
       }
 
-  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
   while ( it != mySons.end() )
     {
@@ -242,7 +242,7 @@ void DGtalNode::display ( int level )
  * Set this object as a unselected
  *
  */
-void DGtalNode::unselect()
+void DGtal::DGtalNode::unselect()
 {
   if ( !myRepresentation->isVirtual() )
     {
@@ -250,7 +250,7 @@ void DGtalNode::unselect()
     }
   else
     {
-      std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+      std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
       while ( it != mySons.end() )
         {
@@ -270,14 +270,14 @@ void DGtalNode::unselect()
  * Set this virtual object as a selected one
  *
  */
-void DGtalNode::groupSelect()
+void DGtal::DGtalNode::groupSelect()
 {
   if ( !myRepresentation->isVirtual() )
     {
       myRepresentation->groupSelect();
     }
 
-  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
   while ( it != mySons.end() )
     {
@@ -290,7 +290,7 @@ void DGtalNode::groupSelect()
 /**
  *  Sets the name of the Object
  */
-void DGtalNode::setName ( std::string aName )
+void DGtal::DGtalNode::setName ( std::string aName )
 {
   myName = aName;
 }
@@ -300,7 +300,7 @@ void DGtalNode::setName ( std::string aName )
 /**
  *  Returns back the scene node matching this object
  */
-Ogre::SceneNode * DGtalNode::getNode()
+Ogre::SceneNode * DGtal::DGtalNode::getNode()
 {
   return myRepresentation->getNode();
 }
@@ -312,7 +312,7 @@ Ogre::SceneNode * DGtalNode::getNode()
 /**
  *  Sets the DGtal associated object
  */
-void DGtalNode::setDGtalObject ( DGtal::DrawableWithOgre  * obj )
+void DGtal::DGtalNode::setDGtalObject ( DGtal::DrawableWithOgre  * obj )
 {
   myDGtalObject = obj;
   myType = myDGtalObject->className();
@@ -322,7 +322,7 @@ void DGtalNode::setDGtalObject ( DGtal::DrawableWithOgre  * obj )
 /**
  *  Returns back the DGtal associated object
  */
-DGtal::DrawableWithOgre * DGtalNode::getDGtalObject()
+DGtal::DrawableWithOgre * DGtal::DGtalNode::getDGtalObject()
 {
   return myDGtalObject;
 }
@@ -333,7 +333,7 @@ DGtal::DrawableWithOgre * DGtalNode::getDGtalObject()
 /**
  *  Adds a son the the sons list
  */
-void DGtalNode::addSon ( DGtal::DGtalNode  * newNode )
+void DGtal::DGtalNode::addSon ( DGtal::DGtalNode  * newNode )
 {
   if ( !newNode->getRepresentation()->isVirtual() )
     {
@@ -349,7 +349,7 @@ void DGtalNode::addSon ( DGtal::DGtalNode  * newNode )
 /**
  *  Sets the father's Node
  */
-void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
+void DGtal::DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 {
   myFather = newNode;
 }
@@ -358,7 +358,7 @@ void DGtalNode::setFather ( DGtal::DGtalNode  * newNode )
 /**
  *  Returns the father's Node
  */
-DGtal::DGtalNode  * DGtalNode::getFather( )
+DGtal::DGtalNode  * DGtal::DGtalNode::getFather( )
 {
   return myFather;
 }
@@ -368,7 +368,7 @@ DGtal::DGtalNode  * DGtalNode::getFather( )
 /**
  *  Says if this node is the root node of the DGtal tree or not.
  */
-bool  DGtalNode::isRoot( )
+bool  DGtal::DGtalNode::isRoot( )
 {
   return myIsRoot;
 }
@@ -379,9 +379,9 @@ bool  DGtalNode::isRoot( )
  * Delete the Node's sons and it's self
  *
  */
-void DGtalNode::clear()
+void DGtal::DGtalNode::clear()
 {
-  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
   while ( it != mySons.end() )
     {
@@ -401,9 +401,9 @@ void DGtalNode::clear()
 /**
  *  Returns the UNRN
  */
-DGtalNode  * DGtalNode::getUpperNonRootNode()
+DGtal::DGtalNode  * DGtal::DGtalNode::getUpperNonRootNode()
 {
-  DGtalNode * UNRN = this;
+  DGtal::DGtalNode * UNRN = this;
     
   if(UNRN!=NULL)
     {
@@ -421,7 +421,7 @@ DGtalNode  * DGtalNode::getUpperNonRootNode()
 /**
  *  Returns the DGtalObject type
  */
-std::string   DGtalNode::getType()
+std::string   DGtal::DGtalNode::getType()
 {
   return myType;
 }
@@ -429,14 +429,14 @@ std::string   DGtalNode::getType()
 /**
  *  
  */
-void DGtalNode::more( )
+void DGtal::DGtalNode::more( )
 {
   if ( !myRepresentation->isVirtual() )
     {
       myRepresentation->more();
     }
 
-  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
   while ( it != mySons.end() )
     {
@@ -449,14 +449,14 @@ void DGtalNode::more( )
 /**
  *  
  */
-void DGtalNode::less( )
+void DGtal::DGtalNode::less( )
 {
   if ( !myRepresentation->isVirtual() )
     {
       myRepresentation->less();
     }
 
-  std::map<std::string , DGtalNode * >::iterator it = mySons.begin();
+  std::map<std::string , DGtal::DGtalNode * >::iterator it = mySons.begin();
 
   while ( it != mySons.end() )
     {
@@ -468,7 +468,7 @@ void DGtalNode::less( )
 /**
  *  
  */
-void DGtalNode::moreTransparency( )
+void DGtal::DGtalNode::moreTransparency( )
 {
   if ( myRepresentation->isVirtual() )
     {
@@ -481,7 +481,7 @@ void DGtalNode::moreTransparency( )
 /**
  *  
  */
-void DGtalNode::lessTransparency( )
+void DGtal::DGtalNode::lessTransparency( )
 {
   if ( myRepresentation->isVirtual() )
     {
@@ -494,7 +494,7 @@ void DGtalNode::lessTransparency( )
 /**
  * 
  */
-void DGtalNode::IncreaseTransparency(Ogre::MaterialPtr  aMaterial)
+void DGtal::DGtalNode::IncreaseTransparency(Ogre::MaterialPtr  aMaterial)
 {
   
   Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
@@ -542,7 +542,7 @@ void DGtalNode::IncreaseTransparency(Ogre::MaterialPtr  aMaterial)
 /**
  * 
  */
-void DGtalNode::DecreaseTransparency(Ogre::MaterialPtr  aMaterial)
+void DGtal::DGtalNode::DecreaseTransparency(Ogre::MaterialPtr  aMaterial)
 {
   
   Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );

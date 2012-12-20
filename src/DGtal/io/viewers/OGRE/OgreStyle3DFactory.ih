@@ -359,8 +359,8 @@ DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const D
 
 
 //------------------------------------------------------------------------------------   KhalimskyCell
-template < Dimension dim, typename TInteger >
-inline
+template < DGtal::Dimension dim, typename TInteger >
+ inline
 DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::KhalimskyCell<dim, TInteger> & k, std::string mode)
 {
   return new Ogre_DefaultDrawStyle_KhalimskyCell;
@@ -386,7 +386,7 @@ DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const D
 
 
 //------------------------------------------------------------------------------------  PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode )
 {
@@ -399,7 +399,7 @@ DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const D
 
 
 //------------------------------------------------------------------------------------  SignedKhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::SignedKhalimskyCell<dim, TInteger> & sk, std::string mode )
 {
@@ -429,32 +429,32 @@ DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const D
 }
 
 inline
-DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerClippingPlane & sm, std::string mode  )
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerClippingPlane & sm, std::string mode  )
 {
   return 0;
 }
 
 inline
-DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraPosition & sm, std::string mode  )
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraPosition & sm, std::string mode  )
 {
   return 0;
 }
 
 inline
-DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraUpVector & sm, std::string mode)
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraUpVector & sm, std::string mode)
 {
   return 0;
 }
 
 inline
-DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraZNearFar & sm, std::string mode )
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraZNearFar & sm, std::string mode )
 {
   return 0;
 }
 
 
 inline
-DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraDirection & sm, std::string mode  )
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraDirection & sm, std::string mode  )
 {
   return 0;
 }

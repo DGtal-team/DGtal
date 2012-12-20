@@ -134,18 +134,18 @@ static id myOgreEventCatcher;
 
 	    - (void)renderOneFrame:(id)sender
 	    {
-	      if(InputListener::getSingletonPtr()->viewerIsRunning() &&
+	      if(DGtal::InputListener::getSingletonPtr()->viewerIsRunning() &&
 		 Ogre::Root::getSingletonPtr() && Ogre::Root::getSingleton().isInitialised())
 		{
-		  mStartTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
+		  mStartTime = DGtal::InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU();
             
-		  InputListener::getSingletonPtr()->getKeyBoard()->capture();
-		  InputListener::getSingletonPtr()->getMouse()->capture();
+		  DGtal::InputListener::getSingletonPtr()->getKeyBoard()->capture();
+		  DGtal::InputListener::getSingletonPtr()->getMouse()->capture();
             
-		  InputListener::getSingletonPtr()->updateViewer(10);
-		  ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
+		  DGtal::InputListener::getSingletonPtr()->updateViewer(10);
+		  DGtal::ViewerOgre3D::getSingleton().getOgreRoot()->renderOneFrame();
             
-		  mLastFrameTime = InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
+		  mLastFrameTime = DGtal::InputListener::getSingletonPtr()->getTimer()->getMillisecondsCPU() - mStartTime;
 		}
 	      else
 		{

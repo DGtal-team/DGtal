@@ -42,6 +42,9 @@
 * Example of a test. To be completed.
 *
 */
+
+using namespace DGtal;
+
 bool testKalimskySpace()
 {
     new ViewerOgre3D();

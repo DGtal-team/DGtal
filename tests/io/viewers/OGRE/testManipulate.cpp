@@ -34,6 +34,8 @@
 #include <iostream>
 ///////////////////////////////////////////////////////////////////////////////
 
+using namespace DGtal;
+
 
 DGtal::Z3i::DigitalSet & setModify(DGtal::Z3i::DigitalSet  aSet, int  aValue)
 {
