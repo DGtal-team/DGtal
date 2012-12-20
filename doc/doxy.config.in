@@ -663,7 +663,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = @top_srcdir@/base/doc/ \
+INPUT                  = @top_srcdir@/doc/ \
+                         @top_srcdir@/base/doc/ \
                          @top_srcdir@/kernel/doc/ \ 
                          @top_srcdir@/io/doc/ \ 
                          @top_srcdir@/arithmetic/doc/ \ 
@@ -767,7 +768,8 @@ EXAMPLE_RECURSIVE      = YES
 # directories that contain image that are included in the documentation (see
 # the \image command).
 
-IMAGE_PATH             = @top_srcdir@/base/doc/images \
+IMAGE_PATH             = @top_srcdir@/doc/images \
+                         @top_srcdir@/base/doc/images \
                          @top_srcdir@/kernel/doc/images \ 
                          @top_srcdir@/io/doc/images \ 
                          @top_srcdir@/arithmetic/doc/images \ 
