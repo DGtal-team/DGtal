@@ -46,6 +46,7 @@
 #include "DGtal/math/BasicMathFunctions.h"
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -105,7 +106,7 @@ namespace DGtal
    
     ///Type for internal distance values
     typedef TPromoted Weight;
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<Promoted> ));
+    BOOST_CONCEPT_ASSERT(( CInteger<Promoted> ));
    
     ///Type for Value (alias)
     typedef TPromoted Value;
