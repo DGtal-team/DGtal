@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleNumber Integer Models
+@page moduleNumber Number and Integer Concepts
 @authors David Coeurjolly, Jacques-Olivier Lachaud
 [TOC]
 
