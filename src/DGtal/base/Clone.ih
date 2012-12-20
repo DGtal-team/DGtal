@@ -64,6 +64,14 @@ DGtal::Clone<T>::operator T() const
 { 
   return T( myRefT ); 
 }
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+T*
+DGtal::Clone<T>::allocate() const
+{ 
+  return new T( myRefT ); 
+}
 
 
 

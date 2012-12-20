@@ -121,7 +121,7 @@ struct EByAlias {
   EByAlias( Alias<A1> a )
     : myA1( a )
   {
-    std::cout << "  EByAlias( A1lias<A1> a ) " << myA1 << std::endl;
+    std::cout << "  EByAlias( Alias<A1> a ) " << myA1 << std::endl;
   }
 
   int value() const
@@ -138,7 +138,7 @@ struct EByConstAlias {
   EByConstAlias( ConstAlias<A1> a )
     : myA1( a )
   {
-    std::cout << "  EByConstAlias( A1lias<A1> a ) " << myA1 << std::endl;
+    std::cout << "  EByConstAlias( Alias<A1> a ) " << myA1 << std::endl;
   }
 
   int value() const
@@ -235,6 +235,24 @@ computeTriangles( int size )
   return total;
 }
 
+struct FByCloneHeap {
+  FByCloneHeap( Clone<A1> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+    : myA1( a.allocate() )
+  {
+    std::cout << "  FByCloneHeap( Clone<A1> a ) " << myA1 << std::endl;
+  }
+
+  ~FByCloneHeap() { if ( myA1 != 0 ) delete myA1; }
+
+  int value() const
+  {
+    return myA1->data;
+  }
+  
+
+  A1* myA1;
+};
+ 
 int main()
 {
   unsigned int nb = 0;
@@ -268,6 +286,14 @@ int main()
   trace.beginBlock ( "Number of A1 instances with explicit by-const reference parameter passing (Alias)." );
   EByConstAlias ee1( a1 ); // +0/0
   ++nb, nbok += A1::nbCreated==4 ? 1 : 0;
+  ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
+  trace.info() << "(" << nbok << "/" << nb << ")"
+               << " nbCreated=" << A1::nbCreated 
+               << " nbDeleted=" << A1::nbDeleted << std::endl; 
+  trace.endBlock();
+  trace.beginBlock ( "Number of A1 instances with explicit by-value parameter passing into heap (Clone)." );
+  FByCloneHeap fe1( a1 ); // +1/0
+  ++nb, nbok += A1::nbCreated==5 ? 1 : 0;
   ++nb, nbok += A1::nbDeleted==1 ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " nbCreated=" << A1::nbCreated 
