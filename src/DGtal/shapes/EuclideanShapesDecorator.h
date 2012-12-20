@@ -134,29 +134,15 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p) const
     {
-      if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == ON )
+        if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
         {
-          return ON;
+            return INSIDE;
         }
-        else if ( myShapeB.orientation( p ) == INSIDE )
+        else if ( myShapeA.orientation( p ) == ON ||  myShapeB.orientation( p ) == ON )
         {
-          return INSIDE;
+            return ON;
         }
-      }
-      else if ( myShapeA.orientation( p ) == INSIDE )
-      {
-        if ( myShapeB.orientation( p ) == ON )
-        {
-          return INSIDE;
-        }
-        else if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return INSIDE;
-        }
-      }
-      return OUTSIDE;
+        return OUTSIDE;
     }
 
     /**
