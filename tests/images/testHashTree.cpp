@@ -42,6 +42,8 @@
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
+#include "DGtal/helpers/StdDefs.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -68,20 +70,23 @@ bool testHashTree()
   typedef Space4Type::Integer Integer;
 
   //Default image selector = STLVector
-  typedef ImageContainerByHashTree<TDomain, int > Image;
+  typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
 
   const Integer t[ ] = { 1, 2, 3 ,4};
   const Integer t2[ ] = { 5, 5, 3 ,4};
   Point a ( t );
   Point b ( t2 );
 
-  ///Domain characterized by points a and b
+  ///Image created from depth
   Image myImage ( 3, 3,0 );
 
   ///Domain characterized by points a and b
-  Image myImage2 ( TDomain(a,b) );
+  TDomain domain(a,b);
+  Image myImage2 ( domain );
 
   trace.info() << myImage;
+  trace.info() << myImage2;
+
   nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -91,6 +96,22 @@ bool testHashTree()
   return nbok == nb;
 }
 
+
+/**
+ * Hashtree2D
+ */
+bool testHashTree2D()
+{
+  trace.beginBlock("Testing 2D");
+  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(255,255));
+  typedef experimental::ImageContainerByHashTree<Z2i::Domain, int > Image;
+
+  Image myImage(domain);
+  trace.info()<< myImage<<std::endl;
+  trace.endBlock();
+
+  return true;
+}
 
 /**
  * Example of a test. To be completed.
@@ -110,7 +131,7 @@ bool testGetSetVal()
 
 
   //Default image selector = STLVector
-  typedef ImageContainerByHashTree<TDomain, int > Image;
+  typedef experimental::ImageContainerByHashTree<TDomain, int > Image;
   typedef ImageContainerBySTLVector<TDomain, int> ImageVector;
 
   Point a( 1,1 );
@@ -236,7 +257,7 @@ bool testBadKeySizes()
 
 
   //Default image selector = STLVector
-  typedef ImageContainerByHashTree<TDomain, char> Image;
+  typedef experimental::ImageContainerByHashTree<TDomain, char> Image;
   Point d(128,128);
 
   trace.beginBlock ( "Test maximal depth >  number of bits of the HashKey type" );
@@ -251,7 +272,7 @@ bool testBadKeySizes()
   trace.endBlock();
   
   //Default image selector = STLVector
-  typedef ImageContainerByHashTree<TDomain, unsigned int, DGtal::uint32_t> Image2;
+  typedef experimental::ImageContainerByHashTree<TDomain, unsigned int, DGtal::uint32_t> Image2;
   trace.beginBlock ( "Changing the HashKey type" );
   Image2 myImage3( 3, 80, 0 );
   trace.info() << myImage3;
@@ -272,7 +293,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testHashTree() && testGetSetVal() && testBadKeySizes();  // && ... other tests
+  bool res = testHashTree() && testHashTree2D() && testGetSetVal() && testBadKeySizes();  // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
