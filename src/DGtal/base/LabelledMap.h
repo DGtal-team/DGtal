@@ -67,27 +67,27 @@ namespace DGtal
      boost::ForwardContainer and boost::Container.  It is also a model
      of boost::Assignable, boost::CopyConstructible.
 
-@verbatim
-V[ 0 ] is the data of the first set label.
-V[ 1 ] is the data of the second set label.
-...
+     @verbatim
+     V[ 0 ] is the data of the first set label.
+     V[ 1 ] is the data of the second set label.
+     ...
 
-if less than 3 datas and N = 2
-+------+------+------+------+------+
-|labels| V[0] | V[1] | ...  |  0   |
-+------+------+------+------+------+
+     if less than 3 datas and N = 2
+     +------+------+------+------+------+
+     |labels| V[0] | V[1] | ...  |  0   |
+     +------+------+------+------+------+
 
-if only 3 datas and N = 2
-+------+------+------+------+------+
-|labels| V[0] | V[1] | V[2] | V[3] |
-+------+------+------+------+------+
+     if only 3 datas and N = 2
+     +------+------+------+------+------+
+     |labels| V[0] | V[1] | V[2] | V[3] |
+     +------+------+------+------+------+
 
-if more than 3 datas and N = 2, M = 4
-+------+------+------+------+------+        +------+------+------+------+------+
-|labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
-+------+------+------+------+------+        +------+------+------+------+------+
+     if more than 3 datas and N = 2, M = 4
+     +------+------+------+------+------+        +------+------+------+------+------+
+     |labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
+     +------+------+------+------+------+        +------+------+------+------+------+
 
-@endverbatim
+     @endverbatim
 
      This structure is related to the IndexedListWithBlocks, except
      that it stores the mapping label -> index. The (maximum) number
@@ -113,7 +113,7 @@ if more than 3 datas and N = 2, M = 4
      NB: In the following, we use the notations
      - n is the size of the container
      - b is the number of blocks ( b = 1 + (size()-N) / M ).
-   */
+  */
   template <typename TData, unsigned int L, typename TWord,
             unsigned int N, unsigned int M>
   class LabelledMap
