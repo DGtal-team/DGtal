@@ -68,6 +68,7 @@ namespace DGtal
 
     typedef TFunctorOnPoints FunctorOnPoints;
     typedef TKSpace KSpace;
+    typedef typename FunctorOnPoints::Domain Domain;
     typedef typename KSpace::Space::Integer Quantity;
     typedef typename FunctorOnPoints::Point Point;
     typedef typename KSpace::SCell Cell;
@@ -77,12 +78,14 @@ namespace DGtal
       *
       * @param functor a functor on digital points.
       * @param space Khalimsky space in which the shape is defined.
+      * @param domain Domain of the shape (used for isInside() )
       * @param reverseIsInside in some case, the value return by the functor in inverse depending is dimension (we have this case in 2D and 3D).
       */
-    FunctorOnCells (const FunctorOnPoints & functor, const KSpace & space, bool reverseIsInside = false)
+    FunctorOnCells (const FunctorOnPoints & functor, const KSpace & space, const Domain & domain, bool reverseIsInside = false)
       : f(functor),
         kSpace(space),
-        reverse(reverseIsInside)
+        reverse(reverseIsInside),
+        domain(domain)
     {}
 
     /**
@@ -112,6 +115,11 @@ namespace DGtal
       }
     }
 
+    bool isInside( const Cell & aCell ) const
+    {
+        return domain.isInside(kSpace.sCoords(aCell));
+    }
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -136,6 +144,9 @@ namespace DGtal
 
     /// If true, reverse all value of operator()
     const bool reverse;
+
+    /// Const ref of the domain of the shape.
+    const Domain & domain;
 
     // ------------------------- Hidden services ------------------------------
   protected:
