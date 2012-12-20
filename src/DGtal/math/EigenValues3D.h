@@ -58,6 +58,7 @@ namespace DGtal
  */
 class EigenValues3D
 {
+public:
   typedef SimpleMatrix< double, 3, 3 > Matrix33;
   typedef Matrix33::RowVector Vector3;
 
