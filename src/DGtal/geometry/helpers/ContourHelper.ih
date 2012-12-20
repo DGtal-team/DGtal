@@ -41,10 +41,10 @@
 
 
 
-Z2i::Point 
+DGtal::Z2i::Point 
 inline
-ContourHelper::getMeanPoint(vector<Z2i::Point> contour){
-  Z2i::Point ptMean;
+DGtal::ContourHelper::getMeanPoint(std::vector<DGtal::Z2i::Point> contour){
+  DGtal::Z2i::Point ptMean;
   for(unsigned int i =0; i<contour.size(); i++){
     ptMean[0]+=contour.at(i)[0];
     ptMean[1]+=contour.at(i)[1];

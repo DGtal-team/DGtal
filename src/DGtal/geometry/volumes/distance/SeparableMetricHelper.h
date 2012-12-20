@@ -595,7 +595,7 @@ namespace DGtal
 			     const InternalValue hi ) const
     {
       return ( InternalValue ) 
-	max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
+	std::max( (Abscissa) (((long int)pos - ci) >= 0 ? ((long int)pos - ci) :
 			 -((long int)pos - ci)), (Abscissa) hi);
     }
     
@@ -611,9 +611,9 @@ namespace DGtal
 			  const Abscissa j, const InternalValue hj ) const
     {
       if (hi <= hj)
-        return max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
+        return std::max ((Abscissa)(i + hj), (Abscissa)(i + j) / 2);
       else
-	return min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
+	return std::min ((Abscissa)(j - hi), (Abscissa)(i + j) / 2);
     }
 
     inline Abscissa reversedSep ( const Abscissa i, const InternalValue hi,
