@@ -45,9 +45,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/kernel/CCommutativeRing.h"
 #include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -100,9 +97,6 @@ Point4Int a= {2, 3 , -5 , 6};
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
  
-    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
-
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;

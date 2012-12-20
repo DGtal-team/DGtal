@@ -43,8 +43,8 @@ In addition, they must have a range, returned by the `range` method,
 providing output iterators.  
 
 Different models of images are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, and --- coming soon --- ImageContainerByHashTree, 
- ImageContainerByITKImage, a wrapper for ITK images. 
+ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHashTree, 
+ experimental::ImageContainerByITKImage, a wrapper for ITK images. 
 
  \section dgtalImagesDetails Let us go into details 
 
@@ -186,8 +186,8 @@ For instance, you can fill an image from the values of another one
  \section dgtalImagesModels Main models
 
 Different models of images are available: ImageContainerBySTLVector, 
-ImageContainerBySTLMap, and --- coming soon --- ImageContainerByHashTree, 
- ImageContainerByITKImage, a wrapper for ITK images. 
+ImageContainerBySTLMap, and --- coming soon --- experimental::ImageContainerByHashTree, 
+ experimental::ImageContainerByITKImage, a wrapper for ITK images. 
 
   \subsection dgtalImagesModelsVector ImageContainerBySTLVector
 
@@ -238,9 +238,20 @@ of the iterators provided by the range calls the `operator()`
 and use the `setValue` method of the class. 
 
 
-  \subsection dgtalImagesModelsHashTree ImageContainerByHashTree
 
-@note Todo 
+\subsection dgtalImagesModelsHashTree ImageContainerByHashTree
+
+experimental::ImageContainerByHashTree is an experimental image
+container implementing a pointerless nD-tree structure. In dimension 2
+and 3, this structure is similar to quadtree and octree repsectively
+in which hierarchical links between a node and its children is given
+by prefix of a binary representation of the node coordinates using
+Morton keys. Finally, data values are stored in the structure in a
+hash table whose hash function is a suffix on the Morton key code. 
+
+Such container is well adapted for high resolution sparse images.
+
+For more details, please refer to @cite Lewiner2009a
 
  \section dgtalImagesAdapters Image Adapter classes
 
