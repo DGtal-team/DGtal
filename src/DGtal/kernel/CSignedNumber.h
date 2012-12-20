@@ -114,7 +114,7 @@ Description of \b concept '\b CSignedNumber' <p>
     BOOST_CONCEPT_USAGE(CSignedNumber)
     {
       // Will compile iff Signed.
-      ConceptUtils::checkTrue( myIsSigned );
+      ConceptUtils::checkTrue(myIsSigned );
     }
     
     // ------------------------- Private Datas --------------------------------
