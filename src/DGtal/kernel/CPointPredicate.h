@@ -42,7 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+
 #include "DGtal/base/CUnaryFunctor.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,10 +56,11 @@ namespace DGtal
 Description of \b concept '\b CPointPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a point. 
-     
+   
      Associates booleans to points.
     
  ### Refinement of CUnaryFunctor
+
     
  ### Associated types :
 
@@ -74,19 +77,20 @@ Description of \b concept '\b CPointPredicate' <p>
     
  ### Notes###
    */
-  template <typename T>
+template <typename T>
   struct CPointPredicate
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
-
+    
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
+    
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:
+    
     
   }; // end of concept CPointPredicate
   

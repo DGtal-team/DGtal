@@ -196,18 +196,30 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::visitedVertices() const
 {
   if ( finished() ) return myMarkedVertices;
   MarkSet visitedVtx = myMarkedVertices;
+  NodeQueue copyQ( myQueue );
+  while ( ! copyQ.empty() )
+    {
+      Node node = copyQ.front();
+      copyQ.pop();
+      typename MarkSet::iterator mark_it = visitedVtx.find( node.first );
+      ASSERT( mark_it != visitedVtx.end() );
+      visitedVtx.erase( mark_it );
+    }
+  return visitedVtx;
+  // JOL: 2012/11/21: Cannot do this since method is const.  
+  //
   // Roll completely the queue so as to remove these vertices from the
   // set of visited vertices.
-  Node start = myQueue.front();
-  do {
-    Node node = myQueue.front();
-    myQueue.pop();
-    typename MarkSet::iterator mark_it = visitedVtx.find( node.first );
-    ASSERT( mark_it != visitedVtx.end() );
-    visitedVtx.erase( mark_it );
-    myQueue.push( node );
-  } while ( myQueue.front().first != start.first );
-  return visitedVtx;
+  // Node start = myQueue.front();
+  // do {
+  //   Node node = myQueue.front();
+  //   myQueue.pop();
+  //   typename MarkSet::iterator mark_it = visitedVtx.find( node.first );
+  //   ASSERT( mark_it != visitedVtx.end() );
+  //   visitedVtx.erase( mark_it );
+  //   myQueue.push( node );
+  // } while ( myQueue.front().first != start.first );
+  // return visitedVtx;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -88,7 +88,7 @@ int main( int argc, char** argv )
      // Drawing the scan arrows
      boardScan1.setPenColor( Color( 30, 30, 200 ));
      shift =   K.uCoords(p)-K.uCoords(prec);  
-      draw(boardScan1, shift, K.uCoords(prec));
+      Display2DFactory::draw(boardScan1, shift, K.uCoords(prec));
      prec=p;     
    }
  while ( K.uNext( p, K.uFirst(p), K.uLast(p) ) ); 
@@ -112,7 +112,7 @@ int main( int argc, char** argv )
     // Drawing the scan arrows
     shiftq =   K.uCoords(q)-K.uCoords(precq);  
     boardScan2.setPenColor( Color( 30, 30, 200 ));
-    draw(boardScan2, shiftq, K.uCoords(precq));
+    Display2DFactory::draw(boardScan2, shiftq, K.uCoords(precq));
     precq=q;       
   }
   

@@ -20,7 +20,7 @@
  * @file   Style2DFactory.h
  * @author Martial Tola <http://liris.cnrs.fr/martial.tola/>
  * @date   lundi 24 octobre 2011
- * 
+ *
  * @brief
  *
  * Header file for module Style2DFactory
@@ -42,14 +42,15 @@
 // Inclusions
 
 #include "DGtal/math/AngleLinearMinimizer.h"
-#include "DGtal/geometry/curves/representation/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
-#include "DGtal/geometry/curves/representation/FP.h"
-#include "DGtal/geometry/curves/representation/FreemanChain.h"
-#include "DGtal/geometry/curves/representation/GeometricalDSS.h"
+#include "DGtal/geometry/curves/FP.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/GeometricalDSS.h"
+#include "DGtal/geometry/curves/FrechetShortcut.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerByHashTree.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -58,18 +59,24 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/arithmetic/LatticePolytope2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
+namespace DGtal {
 
-void draw( DGtal::Board2D & aBoard, DGtal::DrawableWithBoard2D *style )
-{
-    style->setStyle(aBoard);
+  struct Style2DFactory{
+
+  static void draw( DGtal::Board2D & aBoard, DGtal::DrawableWithBoard2D *style )
+  {
+      style->setStyle(aBoard);
+   }
+ };
+
 }
 
-
 ///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods 
+// Includes inline functions/methods
 #include "DGtal/io/Style2DFactory.ih"
 
 //                                                                           //

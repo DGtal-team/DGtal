@@ -124,7 +124,7 @@ int main()
        ++it, ++itPrec)
     {
       shift =   (*it) -(*itPrec);
-      draw(board, shift, (*itPrec));
+      Display2DFactory::draw(board, shift, (*itPrec));
     }
   board.saveSVG("kernel-domain-it-arrow.svg");
 

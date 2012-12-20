@@ -39,6 +39,7 @@
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/io/boards/Board2D.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -80,14 +81,16 @@ bool testDistanceTransformND()
     *it = 128;
   image.setValue( c , 0 );
 
+  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
+  Predicate aPredicate(image,0);
 
-  DistanceTransformation<Image, 2> dt;
-  typedef  DistanceTransformation<Image, 2>::OutputImage ImageLong;
+  DistanceTransformation<TSpace,Predicate,2> dt(domain,aPredicate);
+  typedef  DistanceTransformation<TSpace,Predicate, 2>::OutputImage ImageLong;
 
-  dt.checkTypesValidity ( image );
+  dt.checkTypesValidity (  );
 
   //Distance transformation computation
-  ImageLong result = dt.compute ( image );
+  ImageLong result = dt.compute (  );
   
   //We check the result
   bool res=true;
