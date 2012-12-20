@@ -79,6 +79,7 @@ namespace DGtal
      then the following code will not work:
 
      @code
+     // This snippet does NOT work.
      const SurfelConstIterator itb = mySurface.begin(); 
      const SurfelConstIterator ite = mySurface.end();
      for ( SurfelConstIterator itX = itb; itX != ite; ++itX ) 
@@ -95,8 +96,7 @@ namespace DGtal
      not compulsory here, but advised).
 
      @code
-     const SurfelConstIterator itb = mySurface.begin(); 
-     const SurfelConstIterator ite = mySurface.end();
+     // This snippet does ALWAYS work.
      for ( SurfelConstIterator itX = mySurface.begin(), 
                                itXEnd = mySurface.end();
            itX != itXEnd; ++itX ) 
