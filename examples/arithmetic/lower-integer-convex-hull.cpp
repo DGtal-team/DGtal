@@ -13,10 +13,11 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [lower-integer-convex-hull-basicIncludes]
-#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/helpers/StdDefs.h"
 //! [lower-integer-convex-hull-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ int main( int argc, char** argv )
 
   //! [lower-integer-convex-hull-types]
   using namespace Z2i;
-  typedef LatticePolytope2D<Z2> CIP;
+  typedef LatticePolytope2D<Space> CIP;
   //! [lower-integer-convex-hull-types]
 
   //! [lower-integer-convex-hull-instantiation]
