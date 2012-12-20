@@ -50,13 +50,13 @@ int main()
 {
   Board3DTo2D board;
 
-  Point p1( 0, 0, 0 );
-  Point p2( 20, 20, 20 );
+  Z3i::Point p1( 0, 0, 0 );
+  Z3i::Point p2( 20, 20, 20 );
   Domain domain(p1, p2);
 
   DigitalSet shape_set( domain );
 
-  Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Z3i::Point( 10, 10, 10 ), 7 );
   board << SetMode3D( shape_set.className(), "Both" );
   board << shape_set;
   board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));

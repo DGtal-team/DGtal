@@ -60,9 +60,9 @@ int main()
 {
   trace.beginBlock ( "Example dgtalBoard2D-3-custom-points" );
 
-  Point p1( -3, -2 );
-  Point p2( 7, 3 );
-  Point p3( 0, 0 );
+  Z2i::Point p1( -3, -2 );
+  Z2i::Point p2( 7, 3 );
+  Z2i::Point p3( 0, 0 );
   Domain domain( p1, p2 );
 
   Color red( 255, 0, 0 );

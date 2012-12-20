@@ -49,9 +49,9 @@ int main( int argc, char** argv )
 
  QApplication application(argc,argv);
 
- Point p1( 0, 0, 0 );
- Point p2( 5, 5 ,5 );
- Point p3( 2, 3, 4 );
+ Z3i::Point p1( 0, 0, 0 );
+ Z3i::Point p2( 5, 5 ,5 );
+ Z3i::Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
  Viewer3D viewer;

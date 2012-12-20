@@ -48,15 +48,15 @@ int main()
 {
   Board3DTo2D board;
 
-  Point p1( -1, -1, -2 );
-  Point p2( 2, 2, 3 );
+  Z3i::Point p1( -1, -1, -2 );
+  Z3i::Point p2( 2, 2, 3 );
   Domain domain( p1, p2 );
 
-  Point p3( 1, 1, 1 );
-  Point p4( 2, -1, 3 );
-  Point p5( -1, 2, 3 );
-  Point p6( 0, 0, 0 );
-  Point p0( 0, 2, 1 );
+  Z3i::Point p3( 1, 1, 1 );
+  Z3i::Point p4( 2, -1, 3 );
+  Z3i::Point p5( -1, 2, 3 );
+  Z3i::Point p6( 0, 0, 0 );
+  Z3i::Point p0( 0, 2, 1 );
 
   board << SetMode3D( p1.className(), "PavingWired" );
   board << p1 << p2 << p3;

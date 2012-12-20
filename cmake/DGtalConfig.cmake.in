@@ -1,6 +1,6 @@
 # - Config file for the DGtal package
 # It defines the following variables
-#  DGTAL_INCLUDE_DIRS - include directories for DGtal
+#  Dgtal_INCLUDE_DIRS - include directories for DGtal
 #  DGTAL_LIBRARY_DIRS - library directories for DGtal (normally not used!)
 #  DGTAL_LIBRARIES    - libraries to link against
 #  DGTAL_VERSION      - version of the DGtal library
@@ -13,8 +13,6 @@ set(DGTAL_VERSION "@DGTAL_VERSION@")
  
 # Our library dependencies (contains definitions for IMPORTED targets)
 include("@DGTAL_CMAKE_DIR@/DGtalLibraryDepends.cmake")
-
-
 
 #------------------------------------------------------------------------------
 # -- Environement variables
@@ -49,7 +47,6 @@ IF(MSVC)
   #------------------------------------------------------------------------------
   SET(CMAKE_EXE_LINKER_FLAGS /NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\")
 ENDIF(MSVC)
-
 
 #------------------------------------------------
 #---- We propagate definitions for #define marco 
@@ -134,6 +131,49 @@ IF(@SOQT_FOUND_DGTAL@ OR @QGLVIEWER_FOUND_DGTAL@)
 ENDIF(@SOQT_FOUND_DGTAL@ OR @QGLVIEWER_FOUND_DGTAL@)
 
  
+IF(@OGRE_FOUND_DGTAL@ )
+  ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
+  SET(WITH_VISU3D_OGRE 1)
+ENDIF(@OGRE_FOUND_DGTAL@)
+
+#-- We force the OGRE rediscovering
+IF(@OGRE_FOUND_DGTAL@   )
+  set(CMAKE_MODULE_PATH "@OGRE_HOME@/cmake/;${CMAKE_MODULE_PATH}")
+  set(CMAKE_MODULE_PATH "@DGTAL_CMAKE_DIR@/;${CMAKE_MODULE_PATH}")
+  find_package(OgreDGtal REQUIRED )
+  ADD_DEFINITIONS("-DWITH_VISU3D_OGRE ")
+  IF(APPLE)
+    ADD_DEFINITIONS("-x objective-c++")
+  ENDIF(APPLE)
+  SET(WITH_OGRE 1)
+  SET(DGTAL_INCLUDE_DIRS ${DGTAL_INCLUDE_DIRS} ${OGRE_INCLUDE_DIR}/../ )
+  set ( WITH_VISU3D_OGRE 1 )
+  set(WITH_VISU3D 1)
+  set(OGRE_FOUND_DGTAL 1)
+  ADD_DEFINITIONS("-DWITH_VISU3D_OGRE")
+  if(NOT APPLE)
+    SET(DGtalOgre ${DGtalOgre} @OGRE_LIBRARIES@ @OIS_LIBRARIES@  )
+  else()
+    SET(DGtalOgre ${DGtalOgre} @OGRE_LIBRARY_REL@ @OIS_LIBRARIES@ @EXTRA_LIBS@)
+  endif()
+ENDIF(@OGRE_FOUND_DGTAL@ )
+
 # These are IMPORTED targets created by DGtalLibraryDepends.cmake
 set(DGTAL_LIBRARIES DGtal DGtalIO)
 
+
+#-- App bundle on macos
+macro(prepare_dgtal_executable FILE_NAME)
+  if(APPLE AND WITH_OGRE )
+    set(PATH ${CMAKE_BINARY_DIR})
+    set( FILE ${FILE_NAME})
+    file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app)
+    file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents)
+    file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/MacOS)
+    file(MAKE_DIRECTORY ${PATH}/${FILE_NAME}.app/Contents/Frameworks)
+    execute_process( COMMAND ${CMAKE_COMMAND}  -E create_symlink @OGRE_HOME@/lib/release/Ogre.framework/ ${PATH}/${FILE_NAME}.app/Contents/Frameworks/Ogre.framework )
+    configure_file(@INSTALL_DATA_DIR@/DGtal/OGRE/Ressources/info.plist.in
+      ${PATH}/${FILE_NAME}.app/Contents/info.plist)
+    set(EXECUTABLE_OUTPUT_PATH  ${PATH}/${FILE_NAME}.app/Contents/MacOS )
+  endif(APPLE AND WITH_OGRE)
+endmacro(prepare_dgtal_executable)

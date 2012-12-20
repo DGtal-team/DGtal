@@ -48,11 +48,11 @@ int main()
 {
   trace.beginBlock ( "Example dgtalBoard2D-4-colormaps" );
 
-  Point p1( -10, -7 );
-  Point p2( 10, 7 );
+  Z2i::Point p1( -10, -7 );
+  Z2i::Point p2( 10, 7 );
   Domain domain( p1, p2 );
-  Point c1( -5, -1 );
-  Point c2( 5, 1 );
+  Z2i::Point c1( -5, -1 );
+  Z2i::Point c2( 5, 1 );
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, c1, 5 );
   Shapes<Domain>::addNorm1Ball( shape_set, c2, 5 );

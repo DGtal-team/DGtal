@@ -1,0 +1,944 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   Ogre3DDisplayFactory.ih
+ * @author Anis Benyoub
+ * @date   mercredi 14 juin 2012
+ *
+ * @brief
+ *
+ * Implementation of inline methods defined in Ogre3DDisplayFactory.h
+ *
+ * This file is part of the DGtal library.
+ */
+#include <iostream>
+#include "DGtal/io/viewers/OGRE/ViewerOgre3D.h"
+#include "DGtal/io/viewers/OGRE/Ogre3DDisplayFactory.h"
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+
+
+
+// MeshFromPoints    
+template <typename TPoint>
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, 
+					const DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+  std::string mode = display.getMode( aMesh.className() );
+  if ( mode == "Faces"  || mode=="")
+    drawAsFaces( display, aMesh );
+
+}
+
+template <typename TPoint>
+inline
+void  DGtal::Ogre3DDisplayFactory::drawAsFaces( ViewerOgre3D & viewer, const  DGtal::MeshFromPoints<TPoint> & aMesh )
+{
+
+  DGtalNode * theMeshNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+
+  for(unsigned int i=0; i< aMesh.nbFaces(); i++)
+    {
+      typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
+      unsigned int aNum = aFace.size();
+      if(aNum==4)
+	{
+	  TPoint  p1 = aMesh.getVertex(aFace.at(0));
+	  TPoint  p2 = aMesh.getVertex(aFace.at(1));
+	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
+	  TPoint  p4 = aMesh.getVertex(aFace.at(3));
+       
+	  Representation * newQuad= viewer.addQuad(p1[0], p1[1], p1[2], 
+						 p2[0], p2[1], p2[2], 
+						 p3[0], p3[1], p3[2], 
+						 p4[0], p4[1], p4[2], theNode->createChildSceneNode() ,theNode->getName());
+
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newQuad );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newQuad->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newQuad->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(p1[0], p1[1], p1[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
+			 
+	}
+      else if(aNum==3)
+	{
+	  TPoint  p1 = aMesh.getVertex(aFace.at(0));
+	  TPoint  p2 = aMesh.getVertex(aFace.at(1));
+	  TPoint  p3 = aMesh.getVertex(aFace.at(2));
+	  Representation * newTriangle=viewer.addTriangle(p1[0], p1[1], p1[2], 
+			     p2[0], p2[1], p2[2], 
+			     p3[0], p3[1], p3[2], theNode->createChildSceneNode() ,theNode->getName());
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newTriangle );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newTriangle->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newTriangle->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(p1[0], p1[1], p1[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
+	}
+      else if(aNum>4)
+	{
+	  vector<PointOgre3D> vectPoly;
+	  for(int j=0; j< aFace.size(); j++)
+	    {
+	      PointOgre3D pt;
+	      pt.x=aMesh.getVertex(aFace.at(j))[0];
+	      pt.y =aMesh.getVertex(aFace.at(j))[1];
+	      pt.z =aMesh.getVertex(aFace.at(j))[2];
+	      vectPoly.push_back(pt);	 
+	    }
+	  Representation * newPoly=viewer.addPolygon(vectPoly,theNode->createChildSceneNode() ,theNode->getName());
+          DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+          newDGtalNode->setRepresentation ( newPoly );
+
+          typedef typename DGtal::Z3i::Point Point;
+          newPoly->setAttachedParent ( newDGtalNode );
+          theMeshNode->addSon ( newDGtalNode );
+          newDGtalNode->setFather ( theMeshNode );
+          newDGtalNode->setName ( newPoly->getEntityName() );
+          viewer.addToList ( newDGtalNode );
+          Point aPoint(aMesh.getVertex(aFace.at(0))[0], aMesh.getVertex(aFace.at(0))[1], aMesh.getVertex(aFace.at(0))[2]);
+          DrawableWithOgreWrapper<Point > * thePoint = new DrawableWithOgreWrapper<Point > ( ( aPoint) ) ;
+          DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) thePoint;
+          newDGtalNode->setDGtalObject ( aDrawableObject );
+	}
+      else
+	{
+	  trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+	}
+   	theMeshNode->setName ( theVirtualRepresentation->getName() );
+
+  	theMeshNode->setRepresentation ( theVirtualRepresentation );
+  	theMeshNode->setFather ( viewer.getRootDGtalNode() );
+  	viewer.getRootDGtalNode()->addSon ( theMeshNode );
+  	viewer.addToList ( theMeshNode );
+
+  	DrawableWithOgreWrapper<MeshFromPoints<TPoint> >  * m = new DrawableWithOgreWrapper<MeshFromPoints<TPoint> > ( aMesh );
+  	DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) m;
+  	theMeshNode->setDGtalObject ( theDrawableObject );    
+     
+
+     
+    } 
+}
+
+
+
+
+// ArithmeticalDSS
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const DGtal::ArithmeticalDSS3d<TIterator, TInteger, connectivity> & a )
+{
+
+  typedef TIterator ConstIterator;
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
+
+
+  for (ConstIterator i = a.begin(); i != a.end(); ++i)
+    {
+      viewer << *i;
+    }
+
+}
+
+
+//-------------------------------------------------------------------------------------------------DigitalSetBySTLSet
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+  ASSERT(Domain::Space::dimension == 3);
+  
+  std::string mode = viewer.getMode( s.className() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( viewer, s );
+  else if ( mode == "PavingTransp" )
+    {
+      drawAsPavingTransparent( viewer, s );
+    }
+  else if ( mode == "Grid" )
+    drawAsGrid( viewer, s );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( viewer, s );
+      drawAsGrid( viewer, s );
+    }
+}
+
+
+
+// Paving/Voxel drawing
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, 
+						const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName());
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+
+// Grid/Point drawing
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+  
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName(), 2);
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+      
+
+//Transparent Paving/Voxel drawing
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLSet<Domain> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+
+//------------------------------------------------------------------------------------------DigitalSetBySTLVector
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const DGtal::DigitalSetBySTLVector<Domain> & v )
+{
+  ASSERT(Domain::Space::dimension == 3);
+  
+  std::string mode = viewer.getMode( v.className() );
+  ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( viewer, v );
+  else if ( mode == "PavingTransp" )
+    {
+      drawAsPavingTransparent( viewer, v );
+    }
+  else if ( mode == "Grid" )
+    drawAsGrid( viewer, v );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( viewer, v);
+      drawAsGrid( viewer, v );
+    }  
+}
+
+
+
+
+
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s)
+{
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::vector<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+
+
+
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addVoxel ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s)
+{
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::vector<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+
+
+
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode(),theNode->getName() );
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+
+
+template<typename Domain>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPavingTransparent( ViewerOgre3D & viewer, const DGtal::DigitalSetBySTLVector<Domain> & s )
+{
+  typedef typename Domain::Point Point;
+  typedef typename Domain::Point::Component Component;
+  typedef typename std::vector<Point>::const_iterator ConstIterator;
+
+  ASSERT ( Domain::Space::dimension == 3 );
+
+  DGtalNode * theDGtalSetNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theVirtualRepresentation = new Representation ( viewer.getSceneMgr(), theNode, theNode->getName() );
+
+
+
+
+
+  for ( ConstIterator it = s.begin(); it != s.end(); ++it )
+    {
+      Representation * newPoint = viewer.addPoint ( NumberTraits<Component>::castToInt64_t ( ( *it ) [0] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [1] ),
+						    NumberTraits<Component>::castToInt64_t ( ( *it ) [2] ),
+						    theNode->createChildSceneNode() ,theNode->getName());
+
+
+      DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+      newDGtalNode->setRepresentation ( newPoint );
+
+      typedef typename Domain::Point Point;
+      newPoint->setAttachedParent ( newDGtalNode );
+      theDGtalSetNode->addSon ( newDGtalNode );
+      newDGtalNode->setFather ( theDGtalSetNode );
+      newDGtalNode->setName ( newPoint->getEntityName() );
+      viewer.addToList ( newDGtalNode );
+      DrawableWithOgreWrapper<Point > * aPoint = new DrawableWithOgreWrapper<Point > ( ( *it ) ) ;
+      DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+      newDGtalNode->setDGtalObject ( aDrawableObject );
+
+    }
+
+  theDGtalSetNode->setName ( theVirtualRepresentation->getName() );
+
+  theDGtalSetNode->setRepresentation ( theVirtualRepresentation );
+  theDGtalSetNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.getRootDGtalNode()->addSon ( theDGtalSetNode );
+  viewer.addToList ( theDGtalSetNode );
+
+  DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> >  * aSet = new DrawableWithOgreWrapper<DigitalSetBySTLSet<Domain> > ( s );
+  DrawableWithOgre * theDrawableObject = ( DrawableWithOgre * ) aSet;
+  theDGtalSetNode->setDGtalObject ( theDrawableObject );
+}
+
+//-----------------------------------------------------------------------------------------HyperRectDomain      
+
+template<typename TSpace>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
+					 const DGtal::HyperRectDomain<TSpace> & h )
+{
+  typedef typename TSpace::Integer Integer;
+
+  Ogre::SceneNode * theNode = viewer.getANode();
+
+  viewer.createMaterial(theNode->getName());
+  ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
+
+  if (TSpace::dimension == 3)
+    {
+      // Face XY
+      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
+	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+	{
+	  for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	       x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	    viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+			   (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
+	  }
+	  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+	       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	    viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+			   NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
+	  }
+	}
+    
+      // Faces XZ
+      for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
+	   y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+	  viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+			 (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5,theNode,theNode->getName());
+	}
+	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	  viewer.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+			 NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z,theNode,theNode->getName());
+	}
+      }
+    
+      // Faces YZ
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	   x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+      
+	for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
+	     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	  viewer.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+			 (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5,theNode,theNode->getName());
+	}
+	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	  viewer.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+			 (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z,theNode,theNode->getName());
+	}
+      }
+    }
+}
+
+
+
+
+// KhalimskyCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const DGtal::KhalimskyCell<dim, TInteger> & k )
+{
+  
+  DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theRepresentation;
+  
+  ASSERT ( dim == 3 );
+
+  // used to display surfels located at a same position.
+  double factorVolSurfel = 1.0;
+  bool basicMode = false;
+  double x = ( double ) ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[0] ) >> 1 );
+  double y = ( double ) ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[1] ) >> 1 ) ;
+  double z = ( double ) ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[2] ) >> 1 );
+
+  bool xodd = ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[ 0 ] ) & 1 );
+  bool yodd = ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[ 1 ] ) & 1 );
+  bool zodd = ( NumberTraits<TInteger>::castToInt64_t ( k.myCoordinates[ 2 ] ) & 1 );
+
+
+  unsigned int spaceDim = ( xodd ? 1 : 0 ) + ( yodd ? 1 : 0 ) + ( zodd ? 1 : 0 );
+
+  switch ( spaceDim )
+    {
+
+    case 0:
+      theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
+      break;
+
+    case 1:
+      theRepresentation=viewer.addKSLinel ( x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
+      break;
+
+    case 2:
+      theRepresentation=viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd, theNode,theNode->getName() );
+      break;
+
+    case 3:
+      theRepresentation=viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
+      break;
+    }
+    
+  theKalimskyCellNode->setName ( theRepresentation->getName() );
+  theKalimskyCellNode->setRepresentation ( theRepresentation );
+  theRepresentation->setAttachedParent(theKalimskyCellNode);
+  theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
+      
+      
+  viewer.addToList ( theKalimskyCellNode );
+  DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::KhalimskyCell<dim, TInteger> > ( k );
+
+  ASSERT ( aScell );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
+  theKalimskyCellNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
+}
+
+
+
+//Object
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D &viewer,
+					 const DGtal::Object< TDigitalTopology, TDigitalSet > & set )
+{
+
+
+}
+
+
+//------------------------------------------------------------------------------------------PointVector
+template<DGtal::Dimension dim, typename TComponent>
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const PointVector<dim, TComponent> & p )
+{
+
+  ASSERT(dim == 3);
+ 
+  std::string mode = viewer.getMode( p.className() );
+  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="PavingWired"|| mode=="") );
+
+  if ( mode == "Paving" || ( mode == "" ) )
+    drawAsPaving( viewer, p );
+  else if ( mode == "Grid" )
+    drawAsGrid( viewer, p );
+  else if ( ( mode == "Both" ) )
+    {
+      drawAsPaving( viewer, p );
+      drawAsGrid( viewer, p );
+    }
+  else if( mode=="PavingWired")
+    {
+      //   drawAsPavingWired( viewer, p );
+    }
+
+}
+
+// Grid/Point drawing
+template<DGtal::Dimension dim, typename TComponent>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsGrid( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & p )
+{
+   
+  ASSERT ( dim == 3 );
+  DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * newPoint = viewer.addPoint ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode,theNode->getName(), 2 );
+
+  ASSERT ( newPoint );
+  ASSERT ( theNode );
+
+  newDGtalNode->setName ( newPoint->getName() );
+  newDGtalNode->setRepresentation ( newPoint );
+  newPoint->setAttachedParent ( newDGtalNode );
+  newDGtalNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.addToList ( newDGtalNode );
+  DrawableWithOgreWrapper<PointVector<dim, TComponent> > *  aPoint = new DrawableWithOgreWrapper<PointVector<dim, TComponent> > ( p );
+
+  ASSERT ( aPoint );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+  newDGtalNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( newDGtalNode );
+}
+
+
+// Paving/Voxel drawing
+template<DGtal::Dimension dim, typename TComponent>
+inline
+void DGtal::Ogre3DDisplayFactory::drawAsPaving( ViewerOgre3D & viewer, const DGtal::PointVector<dim,TComponent> & p )
+{
+   
+  ASSERT ( dim == 3 );
+  
+  DGtalNode * newDGtalNode = new DGtalNode ( viewer.getSceneMgr() );
+
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  
+  
+  Representation * newPoint = viewer.addVoxel ( NumberTraits<TComponent>::castToDouble ( p.myArray[0] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[1] ),
+						NumberTraits<TComponent>::castToDouble ( p.myArray[2] ), theNode ,theNode->getName());
+
+  ASSERT ( newPoint );
+  ASSERT ( theNode );
+
+  newDGtalNode->setName ( newPoint->getName() );
+  newDGtalNode->setRepresentation ( newPoint );
+  newPoint->setAttachedParent ( newDGtalNode );
+  newDGtalNode->setFather ( viewer.getRootDGtalNode() );
+  viewer.addToList ( newDGtalNode );
+  DrawableWithOgreWrapper<PointVector<dim, TComponent> > *  aPoint = new DrawableWithOgreWrapper<PointVector<dim, TComponent> > ( p );
+
+  ASSERT ( aPoint );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aPoint;
+  newDGtalNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( newDGtalNode );
+}
+
+      
+      
+      
+      
+      
+      
+// ----------------------------------------------------------------------------------------SignedKhalimskyCell
+template< DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & viewer,
+					 const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+
+  DGtalNode * theKalimskyCellNode = new DGtalNode ( viewer.getSceneMgr() );
+  Ogre::SceneNode * theNode = viewer.getANode();
+  viewer.createMaterial(theNode->getName());
+  Representation * theRepresentation;
+  
+  ASSERT ( dim == 3 );
+
+  float x = ( float )
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[0] ) >> 1 );
+  float y = ( float )
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[1] ) >> 1 );
+  float z = ( float )
+    ( NumberTraits<TInteger>::castToInt64_t ( sk.myCoordinates[2] ) >> 1 );
+
+  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+  bool zodd = ( sk.myCoordinates[ 2 ] & 1 );
+
+
+  unsigned int spaceDim = ( xodd ? 1 : 0 ) + ( yodd ? 1 : 0 ) + ( zodd ? 1 : 0 );
+  // pointel
+  
+  switch ( spaceDim )
+    {
+
+    case 0:
+      theRepresentation=viewer.addKSPointel ( x - 0.5, y - 0.5, z - 0.5, theNode ,theNode->getName());
+      break;
+
+    case 1:
+      theRepresentation=viewer.addKSLinel (x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), theNode,theNode->getName() );
+      break;
+
+    case 2:
+
+      theRepresentation= viewer.addKSSurfel ( x, y, z,xodd,yodd,zodd,theNode,theNode->getName() );
+      break;
+
+    case 3:
+      theRepresentation= viewer.addKSVoxel ( ( int ) x, ( int ) y, ( int ) z, theNode,theNode->getName() );
+      break;
+    }
+	
+  theKalimskyCellNode->setName ( theRepresentation->getName() );
+  theKalimskyCellNode->setRepresentation ( theRepresentation );
+  theRepresentation->setAttachedParent(theKalimskyCellNode);
+  theKalimskyCellNode->setFather ( viewer.getRootDGtalNode() );
+      
+      
+  viewer.addToList ( theKalimskyCellNode );
+  DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > *  aScell = new DrawableWithOgreWrapper<DGtal::SignedKhalimskyCell<dim, TInteger> > ( sk );
+
+  ASSERT ( aScell );
+  DrawableWithOgre * aDrawableObject = ( DrawableWithOgre * ) aScell;
+  theKalimskyCellNode->setDGtalObject ( aDrawableObject );
+  viewer.getRootDGtalNode()->addSon ( theKalimskyCellNode );
+
+      
+}
+
+// SignedKhalimskyCell
+
+
+
+
+
+
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
+					const DGtal::SetViewerMode3D & sm3d )
+{
+  viewer.myModes[ sm3d.myClassname ] = sm3d.myMode;
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & viewer,
+					const DGtal::CustomViewerStyle3D & cs3d )
+{
+  viewer.myStyles[ cs3d.myClassname ] = cs3d.myStyle;
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw( ViewerOgre3D & display, const DGtal::CustomViewerColors3D & cc3d )
+{
+  display.setSelfIlluminationColor(cc3d.myCurrentSelfIlluminationColor);
+  display.setAmbientIlluminationColor(cc3d.myCurrentAmbientIlluminationColor);
+  display.setDiphuseIlluminationColor(cc3d.myCurrentDiphuseIlluminationColor);
+  display.setSpecularIlluminationColor(cc3d.myCurrentSpecularIlluminationColor);
+  display.setTexture(cc3d.myTexture);
+}
+
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::ViewerClippingPlane & cp )
+{
+  display.addClippingPlane ( cp.myA, cp.myB, cp.myC, cp.myD );
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
+					 const DGtal::ViewerCameraPosition & cp )
+{
+  display.setCameraPosition ( Ogre::Vector3 ( cp.eyex, cp.eyey, cp.eyez ) );
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
+					 const DGtal::ViewerCameraDirection & cd )
+{
+  display.setCameraDirection ( Ogre::Vector3 ( cd.dirx, cd.diry, cd.dirz ) );
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display, const DGtal::ViewerCameraUpVector & cuv )
+{
+
+  display.setCameraUpVector ( Ogre::Vector3 ( cuv.upx, cuv.upy, cuv.upz ) );
+}
+
+inline
+void DGtal::Ogre3DDisplayFactory::draw ( ViewerOgre3D & display,
+					 const DGtal::ViewerCameraZNearFar & cz )
+{
+  display.setNearFar ( cz.ZNear, cz.ZFar );
+}
+
+

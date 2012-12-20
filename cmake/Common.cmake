@@ -36,6 +36,13 @@ set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
 
+
+#------------------------------------------------------------------------------
+# Macro inclusion
+#------------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/Macro.cmake)
+
+
 # -----------------------------------------------------------------------------
 # uninstall target
 # -----------------------------------------------------------------------------
@@ -61,10 +68,10 @@ endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 
 # Functions are INLINE only in Release mode
 if ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
-    ADD_DEFINITIONS(-DINLINE=inline)
-    ADD_DEFINITIONS(-DBUILD_INLINE=)
+  ADD_DEFINITIONS(-DINLINE=inline)
+  ADD_DEFINITIONS(-DBUILD_INLINE=)
 else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
-    ADD_DEFINITIONS(-DINLINE=)
+  ADD_DEFINITIONS(-DINLINE=)
 endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
 
 # -----------------------------------------------------------------------------

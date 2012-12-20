@@ -42,6 +42,8 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 # -----------------------------------------------------------------------------
 # Cpack and Ctest settings
 # -----------------------------------------------------------------------------
+
+SET(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 
 #------------------------------------------------------------------------------
@@ -53,7 +55,6 @@ OPTION(BUILD_EXAMPLES "Build examples." ON)
 IF (BUILD_EXAMPLES)
   add_subdirectory (examples)
 ENDIF(BUILD_EXAMPLES)
-
 # -----------------------------------------------------------------------------
 # Install settings
 # -----------------------------------------------------------------------------

@@ -45,14 +45,14 @@ int main( )
 {
   trace.beginBlock ( "Example dgtalBoard2D-2-sets" );
 
-  Point p1( -10, -7 );
-  Point p2( 10, 7 );
+  Z2i::Point p1( -10, -7 );
+  Z2i::Point p2( 10, 7 );
   Domain domain( p1, p2 );
   DigitalSet shape_set( domain );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( -5, -1 ), 5 );
-  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 1 ), 5 );
-  shape_set.erase( Point( -5, -1 ) );
-  shape_set.erase( Point( 5, 1 ) );
+  Shapes<Domain>::addNorm1Ball( shape_set, Z2i::Point( -5, -1 ), 5 );
+  Shapes<Domain>::addNorm1Ball( shape_set, Z2i::Point( 5, 1 ), 5 );
+  shape_set.erase( Z2i::Point( -5, -1 ) );
+  shape_set.erase( Z2i::Point( 5, 1 ) );
 
   Board2D board;
   board << domain << shape_set; // display domain and set

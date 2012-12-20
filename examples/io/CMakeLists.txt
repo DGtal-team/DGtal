@@ -26,3 +26,7 @@ endif ( WITH_VISU3D_QGLVIEWER   )
 
 add_subdirectory(boards)
 
+
+if(WITH_VISU3D_OGRE)
+add_subdirectory(viewers/OGRE)
+endif(WITH_VISU3D_OGRE)

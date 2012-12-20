@@ -1,0 +1,462 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file   OgreStyle3DFactory.ih
+ * @author Anis Benyoub
+ * @date   mercredi 11/07/2012
+ * 
+ * @brief
+ *
+ * Implementation of inline methods defined in OgreStyle3DFactory.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+#include "DGtal/io/viewers/OGRE/OgreStyle3DFactory.h"
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+namespace DGtal
+{
+
+  template<class TDomain >
+  class DigitalSetBySTLSet;
+  
+  // ------------------------------------------------------------------------------------- MeshFromPoints	
+  /**
+   * Default style mode.
+   */
+  struct Ogre_DefaultDrawStyle_MeshFromPoints : public DrawableWithViewerOgre3D
+  {
+    /**
+     * Draw the Mesh on a viewer
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+      Viewer.setAmbientIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(0,150,150,255));
+      Viewer.setTexture("unselectedMesh.jpg");
+    }
+  };
+
+  
+  // ------------------------------------------------------------------------------------- ArithmeticalDSS3d
+  /**
+   * Default style for the paving  mode.
+   */
+  struct Ogre_DefaultDrawStyle_ArithmeticalDSS3d : public DrawableWithViewerOgre3D
+  {
+    /**
+     * Draw the DSS3d on a viewer
+     * @param board the output board where the object is drawn.
+     */
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+      Viewer.setAmbientIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(150,255,150,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(150,150,150,255));
+      Viewer.setTexture("unselected.jpg");
+    }
+  };
+  // ------------------------------------------------------------------------------------- ArithmeticalDSS3d
+  
+  
+  
+  
+  //---------------------------------------------------------------------------------------DigitalSetBySTLSet
+  /** 
+   * Default style with paving.
+   */
+  struct Ogre_DefaultDrawStylePaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+      Viewer.setAmbientIlluminationColor(DGtal::Color(0,255,0,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(0,255,0,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(0,255,0,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(0,255,0,255));
+      Viewer.setTexture("unselected.jpg");
+    }
+  };
+
+  
+  /** 
+   * Default style wtih grid.
+   */
+  struct Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+      
+      Viewer.setAmbientIlluminationColor(DGtal::Color(0,0,255,255));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(0,0,255,255));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(0,0,255,255));
+      Viewer.setSelfIlluminationColor(DGtal::Color(0,0,255,255));
+      Viewer.setTexture("unselected.jpg");
+	    
+    }
+  };
+  
+  
+  /** 
+   * Default style wtih transparent paving .
+   */
+  struct Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+      Viewer.setAmbientIlluminationColor(DGtal::Color(255,0,0,100));
+      Viewer.setSpecularIlluminationColor(DGtal::Color(255,0,0,100));
+      Viewer.setDiphuseIlluminationColor(DGtal::Color(255,0,0,100));
+      Viewer.setSelfIlluminationColor(DGtal::Color(255,0,0,100));
+      Viewer.setTexture("unselected.jpg");
+    }
+  };
+  
+  // ------------------------------------------------------------------------------------   DigitalSetBySTLSet
+  
+  
+ 
+
+
+  // ------------------------------------------------------------------------------------  DigitalSetBySTLVector
+  /** 
+   * Default style with paving.
+   */
+  struct Ogre_DefaultDrawStylePaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+    }
+  };
+  
+  
+  /** 
+   * Default style with transparent paving.
+   */
+  struct Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+    }
+  };
+  
+  
+  
+  /** 
+   * Default style with grid.
+   */
+  struct Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+    }
+  };
+  //------------------------------------------------------------------------------------  DigitalSetBySTLVector
+  
+
+  
+  
+
+  //------------------------------------------------------------------------------------  HyperRectDomain
+
+  /**
+   * Default style.
+   */
+  struct Ogre_DefaultDrawStyle_HyperRectDomain : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+
+    }
+  };
+  //------------------------------------------------------------------------------------  HyperRectDomain
+  
+  
+  
+  //------------------------------------------------------------------------------------  KhalimskyCell
+  /**
+   * Default style.
+   */
+  struct Ogre_DefaultDrawStyle_KhalimskyCell : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+
+    }
+  };
+  //------------------------------------------------------------------------------------  KhalimskyCell
+  
+  
+  //------------------------------------------------------------------------------------  Object
+  /**
+   * Default style.
+   */
+  struct Ogre_DefaultDrawStyle_Object : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+
+    }
+  };
+  //------------------------------------------------------------------------------------  Object
+  
+  
+  
+  
+  //------------------------------------------------------------------------------------  PointVector
+  /**
+   * Default styles.
+   */
+  struct Ogre_DefaultDrawStylePaving_PointVector : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+
+    }
+  };
+
+  /**
+   *  Style based in grid representation.
+   */
+  struct Ogre_DefaultDrawStyleGrid_PointVector : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle(DGtal::ViewerOgre3D & Viewer) const
+    {
+
+    }
+  };
+  //------------------------------------------------------------------------------------  PointVector
+
+
+  
+  //------------------------------------------------------------------------------------  SignedKhalimskyCell
+  /**
+   * Default style.
+   */
+  struct Ogre_DefaultDrawStyle_SignedKhalimskyCell : public DrawableWithViewerOgre3D
+  {
+    virtual void setStyle( Board2D & aBoard ) const
+    {
+
+    }
+  };
+  //------------------------------------------------------------------------------------  SignedKhalimskyCell
+
+  
+  
+}
+
+
+
+
+//------------------------------------------------------------------------------------  ArithmeticalDSS3d
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & a,
+								     std::string mode  )
+{
+  return new Ogre_DefaultDrawStyle_ArithmeticalDSS3d;
+}
+//------------------------------------------------------------------------------------  ArithmeticalDSS3d
+
+
+
+
+
+//------------------------------------------------------------------------------------  MeshFromPoints
+template <typename TPoint>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::MeshFromPoints<TPoint> & m,
+								     std::string mode  )
+{
+  return new Ogre_DefaultDrawStyle_MeshFromPoints;
+}
+
+//------------------------------------------------------------------------------------  DigitalSetBySTLSet
+template<typename Domain>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::DigitalSetBySTLSet<Domain> & s, std::string mode )
+{
+  if ( mode == "Paving" || ( mode == "" ) )
+    return new Ogre_DefaultDrawStylePaving_DigitalSetBySTLSet;
+  else if ( mode == "PavingTransp" )
+    {
+      return new Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLSet;
+    }
+  else if ( mode == "Grid" )
+    return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet;
+  else if ( ( mode == "Both" ) )
+    {
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLSet;
+    }
+    
+  return 0;
+}
+//------------------------------------------------------------------------------------  DigitalSetBySTLSet
+
+
+
+
+
+
+//------------------------------------------------------------------------------------  DigitalSetBySTLVector
+template<typename Domain>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::DigitalSetBySTLVector<Domain> & v, std::string mode  )
+{
+  if ( mode == "Paving" || ( mode == "" ) )
+    return new Ogre_DefaultDrawStylePaving_DigitalSetBySTLVector;
+  else if ( mode == "PavingTransp" )
+    {
+      return new Ogre_DefaultDrawStyleTransparentPaving_DigitalSetBySTLVector;
+    }
+  else if ( mode == "Grid" )
+    return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector;
+  else if ( ( mode == "Both" ) )
+    {
+      return new Ogre_DefaultDrawStyleGrid_DigitalSetBySTLVector;
+    }
+}
+//------------------------------------------------------------------------------------  DigitalSetBySTLVector
+
+
+
+
+
+
+
+//------------------------------------------------------------------------------------  HyperRectDomain
+template<typename TSpace>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::HyperRectDomain<TSpace> & h, std::string mode )
+{
+  return new Ogre_DefaultDrawStyle_HyperRectDomain;
+
+}
+//------------------------------------------------------------------------------------  HyperRectDomain
+
+
+
+//------------------------------------------------------------------------------------   KhalimskyCell
+template < DGtal::Dimension dim, typename TInteger >
+ inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::KhalimskyCell<dim, TInteger> & k, std::string mode)
+{
+  return new Ogre_DefaultDrawStyle_KhalimskyCell;
+}
+//------------------------------------------------------------------------------------  KhalimskyCell
+
+
+
+
+
+
+//------------------------------------------------------------------------------------  Object
+template <typename TDigitalTopology, typename TDigitalSet>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::Object<TDigitalTopology, TDigitalSet> & o, std::string mode  )
+{
+  return new Ogre_DefaultDrawStyle_Object;
+}
+//------------------------------------------------------------------------------------  Object
+
+
+
+
+
+//------------------------------------------------------------------------------------  PointVector
+template<DGtal::Dimension dim, typename TComponent>
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::PointVector<dim,TComponent> & p, std::string mode )
+{
+  if ( ( mode == "" ) || ( mode == "Paving" ) ) 
+    return new Ogre_DefaultDrawStylePaving_PointVector;
+  else // mode == "Grid"
+    return new Ogre_DefaultDrawStyleGrid_PointVector;  
+}
+//------------------------------------------------------------------------------------  PointVector
+
+
+//------------------------------------------------------------------------------------  SignedKhalimskyCell
+template < DGtal::Dimension dim, typename TInteger >
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::SignedKhalimskyCell<dim, TInteger> & sk, std::string mode )
+{
+  return new Ogre_DefaultDrawStyle_SignedKhalimskyCell;
+}
+//------------------------------------------------------------------------------------   SignedKhalimskyCell
+
+
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::CustomViewerStyle3D & cs, std::string mode )
+{
+
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::SetViewerMode3D & sm, std::string mode )
+{
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const DGtal::CustomViewerColors3D & sm, std::string mode )
+{
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerClippingPlane & sm, std::string mode  )
+{
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraPosition & sm, std::string mode  )
+{
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraUpVector & sm, std::string mode)
+{
+  return 0;
+}
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraZNearFar & sm, std::string mode )
+{
+  return 0;
+}
+
+
+inline
+DGtal::DrawableWithViewerOgre3D* DGtal::OgreStyle3DFactory::defaultStyle(const ViewerCameraDirection & sm, std::string mode  )
+{
+  return 0;
+}
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

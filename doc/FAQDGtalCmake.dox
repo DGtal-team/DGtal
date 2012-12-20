@@ -35,7 +35,7 @@ To build DGtal in is minimal configuration, you need at least these dependencies
 
 - \e cmake (optionally cmake-gui),
 - \e c++ compiler (g++, clang++, ...)
-- \e boost >= 1.42.0 and boost-program-options.
+- \e boost >= 1.42.0 and boost-program-options, boost-system
 
 To build DGtal in is full configuration, you need these dependencies too:
 
@@ -44,19 +44,20 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e qglviewer,
 - \e graphicsmagick,
 - \e insighttoolkit (ITK).
+- \e ogre, ois.
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
 - \e graphviz.
 
 
-\subsection linux Build on Linux-based distributions
+\section linux Build on Linux-based distributions
 
 From a clean Ubuntu installation, you can download and install all
 dependencies using:
 @code
-sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
-sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
+sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev libboost-system-dev
+sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev libogre-dev libois-dev
 libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev doxygen graphviz
 @endcode
 
@@ -77,8 +78,20 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true
+cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true -DWITH_OGRE=true
 @endcode
+
+If you have an error message that tells you that the cmake Variable OGRE_PLUGINS is unset, you can set it by calling 
+@code
+cmake .. -DOGRE_PLUGINS=<PATH>
+@endcode
+If you don't know the location of Ogre's plugins path you can use the following commands.
+
+@code
+updatedb
+locate RenderSystem_GL.so
+@endcode
+
 
 If no error occurs, you can build the DGtal lib and install it:
 @code
@@ -87,7 +100,7 @@ sudo make install
 @endcode
 
 
-\subsection macos Build on Mac OS X
+\section macos Build on Mac OS X
 
 First of all,
 
@@ -112,6 +125,19 @@ brew install cmake doxygen graphviz boost
 brew install gmp cairo libqglviewer graphicsmagick
 @endcode
 
+For the OGRE dependencie, you should first of all download the OgreSDK available on http://www.ogre3d.org/download/sdk , take the macos one and extract it somewhere on your computer. You should then define the envoronment variable OGRE_HOME, it's absolutely necessary to make the dependencie work. 
+Then when you will use the cmake command use is like this:
+@code
+OGRE_HOME=/Applications/OgreSDK/ cmake .. -DWITH_OGRE=true
+@endcode
+Or like this :
+@code
+export OGRE_HOME=/Applications/OgreSDK/ 
+cmake .. -DWITH_OGRE=true
+@endcode
+
+Note that the slash after the sdk folder is necessary, if your compiler doesn't support Obj-c you can't activate this dependency.
+
 Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
 @code
 tar zxvf InsightToolkit-4.1.0.tar.gz
@@ -128,7 +154,7 @@ Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based instructions.
 
 
-\subsection win Build on Windows / Visual Studio
+\section win Build on Windows / Visual Studio
 
 First of all,
 
@@ -137,7 +163,7 @@ First of all,
 - download and install Doxygen : http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc
 - download and install Graphviz : http://www.graphviz.org/Download..php
 
-\subsubsection vs2008-32 Procedure with Visual Studio Express 2008 and 32 bit libraries
+\subsection vs2008-32 Procedure with Visual Studio Express 2008 and 32 bit libraries
 
 - download and install Visual Studio Express 2008 SP1 : http://www.microsoft.com/downloads/fr-fr/details.aspx?FamilyID=3254C868-BCB9-412C-95C6-D100C872EC60
 
@@ -172,7 +198,7 @@ qmake -t vclib QGLViewer.pro -spec win32-msvc2008
 - open the \b QGLViewer.vcproj (in QGLViewer folder) with Visual Studio and compile in \b Win32 \b Release mode and then in \b Win32 \b Debug mode 
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
-\subsubsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
+\subsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
 
 - 1) download and install Visual Studio Express 2010 : http://go.microsoft.com/?linkid=9709972
 - 2) download and install Windows SDK 7.1 (ie MSDK for Windows 7 and .NET Framework 4) : http://download.microsoft.com/download/F/1/0/F10113F5-B750-4969-A255-274341AC6BCE/GRMSDKX_EN_DVD.iso
@@ -217,7 +243,7 @@ qmake -t vclib QGLViewer.pro -spec win32-msvc2010
 - library files are then in "QGLViewer\release" and in "QGLViewer\debug"
 
 
-\subsubsection cairo Cairo dependency
+\subsection cairo Cairo dependency
 
 Because on Windows, Cairo dependencies are \b MSYS, \b curl, \b zlib, \b libpng, \b pixman and a bit long & not so easy to compile,
 we provide for you the Cairo library and headers files for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2008%20x86.rar">vs2008-32</a> and for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2010%20x64.rar">vs2010-64</a>.

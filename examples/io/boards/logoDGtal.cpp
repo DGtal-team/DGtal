@@ -42,8 +42,8 @@ int main()
   trace.beginBlock ( "Generate DGtal logo (without drop shadow)" );
 
   //! [logoDGtal-main]
-  Point p1( 0,0 );
-  Point p2( 26, 8 );
+  Z2i::Point p1( 0,0 );
+  Z2i::Point p2( 26, 8 );
   Domain domain( p1, p2 );
  
   Board2D board;
@@ -53,32 +53,32 @@ int main()
                                        Board2D::Shape::SolidStyle,
                                        Board2D::Shape::RoundCap,
                                        Board2D::Shape::RoundJoin ))
-        << Point(1,1) << Point(1,2) << Point(1,3)
-        << Point(1,4) << Point(1,5) << Point(1,6)
-        << Point(1,7) << Point(2,1) << Point(3,1) << Point(4,1)
-        << Point(4,2) << Point(5,2) << Point(5,3)
-        << Point(5,4) << Point(5,5) << Point(5,6)
-        << Point(4,6) << Point(4,7) << Point(3,7) 
-        << Point(2,7) << Point(9,1) << Point(9,2)
-        << Point(8,2) << Point(8,3)
-        << Point(8,4) << Point(8,5) << Point(8,6) 
-        << Point(9,6) << Point(9,7) << Point(10,7) 
-        << Point(11,7) << Point(10,1) << Point(11,1) << Point(12,1)
-        << Point(12,2) << Point(12,3) << Point(12,4) << Point(11,4);      
+        << Z2i::Point(1,1) << Z2i::Point(1,2) << Z2i::Point(1,3)
+        << Z2i::Point(1,4) << Z2i::Point(1,5) << Z2i::Point(1,6)
+        << Z2i::Point(1,7) << Z2i::Point(2,1) << Z2i::Point(3,1) << Z2i::Point(4,1)
+        << Z2i::Point(4,2) << Z2i::Point(5,2) << Z2i::Point(5,3)
+        << Z2i::Point(5,4) << Z2i::Point(5,5) << Z2i::Point(5,6)
+        << Z2i::Point(4,6) << Z2i::Point(4,7) << Z2i::Point(3,7) 
+        << Z2i::Point(2,7) << Z2i::Point(9,1) << Z2i::Point(9,2)
+        << Z2i::Point(8,2) << Z2i::Point(8,3)
+        << Z2i::Point(8,4) << Z2i::Point(8,5) << Z2i::Point(8,6) 
+        << Z2i::Point(9,6) << Z2i::Point(9,7) << Z2i::Point(10,7) 
+        << Z2i::Point(11,7) << Z2i::Point(10,1) << Z2i::Point(11,1) << Z2i::Point(12,1)
+        << Z2i::Point(12,2) << Z2i::Point(12,3) << Z2i::Point(12,4) << Z2i::Point(11,4);      
   
   board << CustomStyle( p1.className(), 
                         new CustomPen( Color(0,0,0), Color(0,0,0), 1.0, 
                                        Board2D::Shape::SolidStyle,
                                        Board2D::Shape::RoundCap,
                                        Board2D::Shape::RoundJoin ))
-        << Point(15,1) << Point(16,1) << Point(17,1)
-        << Point(15,2) << Point(15,3) << Point(15,4)
-        << Point(15,5) << Point(16,4)
-        << Point(19,1) << Point(21,1) << Point(20,1) << Point(22,1)
-        << Point(19,2) << Point(21,2)
-        << Point(19,3) << Point(20,3) << Point(21,3)
-        << Point(24,1) << Point(25,1)
-        << Point(24,2) << Point(24,3) << Point(24,4) << Point(24,5);
+        << Z2i::Point(15,1) << Z2i::Point(16,1) << Z2i::Point(17,1)
+        << Z2i::Point(15,2) << Z2i::Point(15,3) << Z2i::Point(15,4)
+        << Z2i::Point(15,5) << Z2i::Point(16,4)
+        << Z2i::Point(19,1) << Z2i::Point(21,1) << Z2i::Point(20,1) << Z2i::Point(22,1)
+        << Z2i::Point(19,2) << Z2i::Point(21,2)
+        << Z2i::Point(19,3) << Z2i::Point(20,3) << Z2i::Point(21,3)
+        << Z2i::Point(24,1) << Z2i::Point(25,1)
+        << Z2i::Point(24,2) << Z2i::Point(24,3) << Z2i::Point(24,4) << Z2i::Point(24,5);
   
   board.saveSVG("logoDGtal.svg");
   //! [logoDGtal-main]

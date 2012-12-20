@@ -1,0 +1,375 @@
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file VRMLExporter.cpp
+ * @author Anis Benyoub (\c anis.benyoub@insa-lyon.fr )
+ * Liris CNRS
+ *
+ * @date 2012/08/30
+ *
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+
+#include "DGtal/io/viewers/OGRE/VRMLExporter.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
+///////////////////////////////////////////////////////////////////////////////
+// class VRMLExporter
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+ 	    
+
+	
+/**     
+ *  Constructor 	   
+ */	      
+DGtal::VRMLExporter::VRMLExporter()
+{
+
+}	      
+	      
+/**	       
+ *  Destructor.	       
+ */
+	      
+DGtal::VRMLExporter::~VRMLExporter()
+{
+
+}	      
+	      
+/**
+ *  Manages the export of a scene node
+ *  @param afile a reference to file were to write
+ *  @param aNode a pointer to the node
+ */  
+void DGtal::VRMLExporter::exportNode(std::ofstream  & aFile, Ogre::SceneNode * aNode, int id,int rank)
+{
+
+ 
+  int j=0;
+  while(j<aNode->numAttachedObjects())
+    {
+      Ogre::MovableObject * aMovable =aNode->getAttachedObject(j);
+      if(aMovable->getMovableType()=="Entity")
+	{
+ 	 
+          Ogre::Entity * anEntity =(Ogre::Entity *)aMovable;
+      	  if(anEntity->getMesh()->getName()=="Prefab_Sphere")
+ 	    {	
+
+	      Ogre::Material * aMaterial =anEntity->getSubEntity(0)->getMaterial().get();  	
+	      Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
+  	      Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
+  
+ 
+              for(int i=0;i<rank;i++)
+        	aFile <<"\t";
+      	      aFile << "Transform {"<<endl;
+
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+      	      aFile << "translation "<<aNode->getPosition().x
+		    <<" "<<aNode->getPosition().y<<" "
+		    <<aNode->getPosition().z<<endl;
+
+      	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "scale "<<aNode->getScale().x*100
+		    <<" "<<aNode->getScale().y*100<<" "
+		    <<aNode->getScale().z*100<<endl;
+
+    	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "children [ "<<endl;
+
+
+              for(int i=0;i<rank+1;i++)
+                aFile <<"\t";
+	      aFile << "Shape {"<<endl;
+
+
+              Ogre::Entity * anEntity =(Ogre::Entity *)aMovable;
+	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "appearance Appearance {"<<endl;
+
+ 	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "material Material {"<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r
+					<<" "<<lFirstPass->getDiffuse().g
+					<<" "<<lFirstPass->getDiffuse().b<<endl;
+
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "specularColor "<<lFirstPass->getSpecular().r
+					<<" "<<lFirstPass->getSpecular().g<<" "
+					<<lFirstPass->getSpecular().b<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "transparency "<<1-lFirstPass->getAmbient().a<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "}"<<endl;
+	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "}"<<endl;
+                    
+  	      for(int i=0;i<rank+2;i++)
+                aFile <<"\t";
+	      aFile << "geometry Sphere {"<<endl;
+
+
+  	      for(int i=0;i<rank+2;i++)
+                aFile <<"\t";
+ 	      aFile << "radius 1"<<endl;
+
+  	      for(int i=0;i<rank+2;i++)
+                aFile <<"\t";
+     	      aFile <<"}"<<endl;
+
+  	      for(int i=0;i<rank+1;i++)
+                aFile <<"\t";
+     	      aFile <<"}"<<endl;
+
+
+	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "]"<<endl;
+
+              for(int i=0;i<rank;i++)
+         	aFile <<"\t";
+      	      aFile << "}"<<endl;
+
+	    }
+	  else if(anEntity->getMesh()->getName()=="Prefab_Cube")
+	    {
+	      Ogre::Material * aMaterial =anEntity->getSubEntity(0)->getMaterial().get();  	
+	      Ogre::Technique* lFirstTechnique = aMaterial->getTechnique ( 0 );
+  	      Ogre::Pass* lFirstPass = lFirstTechnique->getPass ( 0 );
+  
+ 
+              for(int i=0;i<rank;i++)
+        	aFile <<"\t";
+      	      aFile << "Transform {"<<endl;
+
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+      	      aFile << "translation "<<aNode->getPosition().x
+		    <<" "<<aNode->getPosition().y
+		    <<" "<<aNode->getPosition().z<<endl;
+
+      	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "scale "<<aNode->getScale().x*50
+		    <<" "<<aNode->getScale().y*50
+		    <<" "<<aNode->getScale().z*50<<endl;
+
+
+     	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "children [ "<<endl;
+
+
+              for(int i=0;i<rank+2;i++)
+                aFile <<"\t";
+	      aFile << "Shape {"<<endl;
+
+
+              Ogre::Entity * anEntity =(Ogre::Entity *)aMovable;
+	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "appearance Appearance {"<<endl;
+
+ 	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "material Material {"<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "diffuseColor "<<lFirstPass->getDiffuse().r
+		    <<" "<<lFirstPass->getDiffuse().g<<" "
+		    <<lFirstPass->getDiffuse().b<<endl;
+
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "specularColor "<<lFirstPass->getSpecular().r
+		    <<" "<<lFirstPass->getSpecular().g
+		    <<" "<<lFirstPass->getSpecular().b<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "transparency "<<1-lFirstPass->getAmbient().a<<endl;
+
+	      for(int i=0;i<rank+3;i++)
+	        aFile <<"\t";
+	      aFile << "}"<<endl;
+
+	      for(int i=0;i<rank+2;i++)
+	        aFile <<"\t";
+	      aFile << "}"<<endl;
+
+  	      for(int i=0;i<rank+3;i++)
+                aFile <<"\t";
+	      aFile << "geometry Box {"<<endl;
+
+
+  	      for(int i=0;i<rank+3;i++)
+                aFile <<"\t";
+     	      aFile <<"}"<<endl; 
+
+  	      for(int i=0;i<rank+2;i++)
+                aFile <<"\t";
+     	      aFile <<"}"<<endl;
+   	      
+	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+              aFile << "]"<<endl;
+
+
+ 	      for(int i=0;i<rank+1;i++)
+                aFile <<"\t";
+	      aFile << "}"<<endl;
+     
+	    }
+
+	}
+    
+      else if(aMovable->getMovableType()=="ManualObject")
+	{
+          Ogre::ManualObject * aManual =(Ogre::ManualObject *)aMovable;
+	  
+	}
+      else if(aMovable->getMovableType()=="Light")
+	{
+
+          Ogre::Light * aLight =(Ogre::Light *)aMovable;
+          if(aLight->getType()==Ogre::Light::LT_DIRECTIONAL)
+	    {
+ 	      for(int i=0;i<rank+1;i++)
+                aFile <<"\t";
+	      aFile <<"DirectionalLight {"<<endl;
+	      for(int i=0;i<rank+1;i++)
+	        aFile <<"\t";
+	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
+	    }
+	  else if(aLight->getType()==Ogre::Light::LT_SPOTLIGHT)
+	    {
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"SpotlLight {"<<endl;
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
+	    }
+	  else 
+	    {
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"PointLight {"<<endl;
+	      for(int i=0;i<rank+1;i++)
+		aFile <<"\t";
+	      aFile <<"direction 0.0 0.0 -1.0"<<endl;
+	    }
+ 	  for(int i=0;i<rank+1;i++)
+            aFile <<"\t";
+	  aFile <<"on TRUE"<<endl;
+
+ 	  for(int i=0;i<rank+1;i++)
+            aFile <<"\t";
+	  aFile <<"intensity 1.0"<<endl;
+
+          for(int i=0;i<rank+1;i++)
+            aFile <<"\t";
+	  aFile <<"ambientIntensity 0.0"<<endl;
+
+	  for(int i=0;i<rank+1;i++)
+	    aFile <<"\t";
+	  aFile <<"color 1.0 1.0 1.0"<<endl;
+
+
+ 	  for(int i=0;i<rank+1;i++)
+            aFile <<"\t";
+	  aFile <<"}"<<endl;
+        }
+      else 
+	{
+
+	}
+      j++;
+    }
+  j=0;
+  while(aNode->getChild(j)!=NULL)
+    {
+      exportNode(aFile,(Ogre::SceneNode *)aNode->getChild(j),j,rank+1);
+      j++;
+    }
+
+
+}
+
+
+/**
+ *  Manages the export of a scene node
+ *  @param afile a reference to file were to write
+ *  @param aNode a pointer to the node
+ */  
+void DGtal::VRMLExporter::exportLight(ofstream  & aFile, Ogre::SceneNode * aNode,int rank)
+{
+}
+
+      
+/**	       
+ *  The scene export method	      
+ *  @param aSceneManager a pointer to the scene manager to parse	       
+ *  @param aFileName the name of the file were the scene will be exported	       
+ */      
+	      
+void DGtal::VRMLExporter::exportToFile(Ogre::SceneManager * aSceneManager, std::string aFileName)
+{
+  assert(aSceneManager);
+  ofstream aFile;
+  std::string aName= aFileName+".wrl";
+  aFile.open (aName.c_str());
+  aFile << "#VRML V2.0 utf8"<<endl;
+  Ogre::SceneNode  *aRootSceneNode =aSceneManager->getRootSceneNode ();
+  int i=0;
+
+  while(aRootSceneNode->getChild(i)!=NULL)
+    {
+      exportNode(aFile,(Ogre::SceneNode *)aRootSceneNode->getChild(i),i,2);
+      i++;
+    }
+  aFile.close();
+  std::cout<< "Scene exported to "<<aFileName<<".wrl"<<endl;
+}

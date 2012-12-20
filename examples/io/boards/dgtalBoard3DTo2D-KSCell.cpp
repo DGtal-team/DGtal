@@ -54,8 +54,8 @@ int main()
   Board3DTo2D board;
 
   KSpace K;
-  Point plow(0,0,0);  
-  Point pup(3,3,2);
+  Z3i::Point plow(0,0,0);  
+  Z3i::Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
 
@@ -63,42 +63,42 @@ int main()
   //board << domain; 
 
   // Drawing cell of dimension 3
-  Cell voxelA = K.uCell(Point(1,1,1));
-  SCell voxelB = K.sCell(Point(1,1,3));
+  Cell voxelA = K.uCell(Z3i::Point(1,1,1));
+  SCell voxelB = K.sCell(Z3i::Point(1,1,3));
   board << voxelB << voxelA;
 
   // drawing cells of dimension 2
-  SCell surfelA = K.sCell( Point( 2, 1, 3 ) ); 
-  SCell surfelB = K.sCell( Point( 1, 0, 1 ), false ); 
-  Cell surfelC = K.uCell( Point( 1, 2, 1 ) ); 
-  SCell surfelD = K.sCell( Point( 1, 1, 0 ) );
-  Cell surfelE = K.uCell( Point( 1, 1, 2 ) ); 
+  SCell surfelA = K.sCell( Z3i::Point( 2, 1, 3 ) ); 
+  SCell surfelB = K.sCell( Z3i::Point( 1, 0, 1 ), false ); 
+  Cell surfelC = K.uCell( Z3i::Point( 1, 2, 1 ) ); 
+  SCell surfelD = K.sCell( Z3i::Point( 1, 1, 0 ) );
+  Cell surfelE = K.uCell( Z3i::Point( 1, 1, 2 ) ); 
   board << surfelA << surfelB << surfelC << surfelD << surfelE;
 
-  Cell linelA = K.uCell(Point(2,1 ,2));
-  SCell linelB = K.sCell(Point(2,2 ,1));
-  SCell linelC = K.sCell(Point(1,2 ,2), false);
+  Cell linelA = K.uCell(Z3i::Point(2,1 ,2));
+  SCell linelB = K.sCell(Z3i::Point(2,2 ,1));
+  SCell linelC = K.sCell(Z3i::Point(1,2 ,2), false);
   board << linelA << linelB << linelC;
 
-  Cell center(Point(5,5,5));
+  Cell center(Z3i::Point(5,5,5));
   // Testing display of oriented surfels:
-  SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false ); 
-  SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false ); 
-  SCell ssurfelZY = K.sCell( Point( 6, 5, 5 ), false ); 
+  SCell ssurfelXZ = K.sCell( Z3i::Point( 5, 6, 5 ), false ); 
+  SCell ssurfelXY = K.sCell( Z3i::Point( 5, 5, 6 ), false ); 
+  SCell ssurfelZY = K.sCell( Z3i::Point( 6, 5, 5 ), false ); 
   board << center;
 
-  SCell ssurfelXZo = K.sCell( Point( 5, 4, 5 ), false ); 
-  SCell ssurfelXYo = K.sCell( Point( 5, 5, 4 ), false ); 
-  SCell ssurfelZYo = K.sCell( Point( 4, 5, 5 ), false );  
+  SCell ssurfelXZo = K.sCell( Z3i::Point( 5, 4, 5 ), false ); 
+  SCell ssurfelXYo = K.sCell( Z3i::Point( 5, 5, 4 ), false ); 
+  SCell ssurfelZYo = K.sCell( Z3i::Point( 4, 5, 5 ), false );  
 
   board << ssurfelXZ << ssurfelXY << ssurfelZY;
   board << ssurfelXZo << ssurfelXYo << ssurfelZYo;
 
   // Testing display oriented pointels
-  Cell pointelA = K.uCell(Point(2, 2, 2));
-  SCell pointelB = K.sCell(Point(4, 4, 4), true);
-  SCell pointelC = K.sCell(Point(6, 4, 4), false);
-  SCell linelAC = K.sCell(Point(5, 4, 4), false);
+  Cell pointelA = K.uCell(Z3i::Point(2, 2, 2));
+  SCell pointelB = K.sCell(Z3i::Point(4, 4, 4), true);
+  SCell pointelC = K.sCell(Z3i::Point(6, 4, 4), false);
+  SCell linelAC = K.sCell(Z3i::Point(5, 4, 4), false);
   board << pointelA << pointelB << pointelC << linelAC;
 
   /*board << CameraPosition(2.69044, 1.73705, -1.89961)

@@ -255,8 +255,8 @@ bool showGreedySegmantation()
   Contour theContour( ss );
 
   Decomposition theDecomposition( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
-  Point p1( 0, 0 );
-  Point p2( 31, 31 );
+  Z2i::Point p1( 0, 0 );
+  Z2i::Point p2( 31, 31 );
   Domain domain( p1, p2 );
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )

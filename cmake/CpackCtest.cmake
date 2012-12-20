@@ -28,7 +28,7 @@ ENDIF(WIN32 AND NOT UNIX)
 SET(CPACK_SOURCE_IGNORE_FILES CVS;[.]svn;[.]git;[.]AppleDouble;[.]\#.*;\#.*;.*[.]kdev4;.*~;build.*;doc/html/*;doc/latex/*;doc/html-Board/*)
 
 if(WIN32)
-  SET(CPACK_GENERATOR "NSIS;")
+  SET(CPACK_GENERATOR "NSIS;")	
 else(WIN32)
   SET(CPACK_GENERATOR "TGZ;DEB")
 endif(WIN32)
