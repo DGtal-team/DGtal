@@ -99,7 +99,7 @@ void
 DGtal::VoronoiMap<S,P, p>::computeOtherSteps ( OutputImage &output,
                                                const Dimension dim ) const
 {
-  std::string title = "Voro dimension " +  boost::lexical_cast<string>( dim ) ;
+  std::string title = "Voro dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
