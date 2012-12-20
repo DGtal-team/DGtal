@@ -663,18 +663,7 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = @top_srcdir@/doc/ \
-                         @top_srcdir@/base/doc/ \
-                         @top_srcdir@/kernel/doc/ \ 
-                         @top_srcdir@/io/doc/ \ 
-                         @top_srcdir@/arithmetic/doc/ \ 
-                         @top_srcdir@/images/doc/ \ 
-                         @top_srcdir@/math/doc/ \ 
-                         @top_srcdir@/geometry/doc/ \ 
-                         @top_srcdir@/topology/doc/ \ 
-                         @top_srcdir@/shapes/doc/ \ 
-                         @top_srcdir@/helpers/doc/ \ 
-                         @top_srcdir@/src \
+INPUT                  = @top_srcdir@/src \
                          @top_srcdir@/tests \
                          @top_srcdir@/tools \
                          @top_srcdir@/examples \
@@ -768,17 +757,17 @@ EXAMPLE_RECURSIVE      = YES
 # directories that contain image that are included in the documentation (see
 # the \image command).
 
-IMAGE_PATH             = @top_srcdir@/doc/images \
-                         @top_srcdir@/base/doc/images \
-                         @top_srcdir@/kernel/doc/images \ 
-                         @top_srcdir@/io/doc/images \ 
-                         @top_srcdir@/arithmetic/doc/images \ 
-                         @top_srcdir@/images/doc/images \ 
-                         @top_srcdir@/math/doc/images \ 
-                         @top_srcdir@/geometry/doc/images \ 
-                         @top_srcdir@/topology/doc/images \ 
-                         @top_srcdir@/shapes/doc/images \ 
-                         @top_srcdir@/helpers/doc/images 
+IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
+                         @top_srcdir@/src/DGtal/base/doc/images \
+                         @top_srcdir@/src/DGtal/kernel/doc/images \ 
+                         @top_srcdir@/src/DGtal/io/doc/images \ 
+                         @top_srcdir@/src/DGtal/arithmetic/doc/images \ 
+                         @top_srcdir@/src/DGtal/images/doc/images \ 
+                         @top_srcdir@/src/DGtal/math/doc/images \ 
+                         @top_srcdir@/src/DGtal/geometry/doc/images \ 
+                         @top_srcdir@/src/DGtal/topology/doc/images \ 
+                         @top_srcdir@/src/DGtal/shapes/doc/images \ 
+                         @top_srcdir@/src/DGtal/helpers/doc/images 
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
