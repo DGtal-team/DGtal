@@ -320,7 +320,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::isValid() const
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename FP<TIterator,TInteger,connectivity>::Polygon::size_type
+typename DGtal::FP<TIterator,TInteger,connectivity>::Polygon::size_type
 DGtal::FP<TIterator,TInteger,connectivity>::size() const
 {
   return myPolygon.size();
@@ -474,13 +474,13 @@ inline
 void
 DGtal::FP<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[FP]" << endl;
+  out << "[FP]" << std::endl;
   typename Polygon::const_iterator i = myPolygon.begin();
   for ( ;i != myPolygon.end();++i)
     {
-      out << "\t " << (*i) << endl;
+      out << "\t " << (*i) << std::endl;
     }              
-  out << "[end FP]" << endl;
+  out << "[end FP]" << std::endl;
 }
 
 

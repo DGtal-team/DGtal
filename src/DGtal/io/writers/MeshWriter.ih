@@ -44,21 +44,21 @@
 template<typename TPoint>
 inline
 bool 
-MeshWriter<TPoint>::export2OFF(ostream & out, 
-			       const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
+DGtal::MeshWriter<TPoint>::export2OFF(std::ostream & out, 
+                                      const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   try
     {
-      out << "OFF"<< endl;
-      out << "# generated from MeshWriter from the DGTal library"<< endl;
-      out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << endl;
+      out << "OFF"<< std::endl;
+      out << "# generated from MeshWriter from the DGTal library"<< std::endl;
+      out << aMesh.nbVertex()  << " " << aMesh.nbFaces() << " " << 0 << " " << std::endl;
 	
       for(unsigned int i=0; i< aMesh.nbVertex(); i++){
-	out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << endl;	
+	out << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << std::endl;	
       }
 
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
-	vector<unsigned int>  aFace = aMesh.getFace(i);
+        std::vector<unsigned int>  aFace = aMesh.getFace(i);
 	out << aFace.size() << " " ;
 	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
@@ -71,55 +71,50 @@ MeshWriter<TPoint>::export2OFF(ostream & out,
 	      << ((double) col.green())/255.0 << " "<< ((double) col.blue())/255.0 
 	      << " " << ((double) col.alpha())/255.0 ;
 	}  
-	out << endl;
+	out << std::endl;
       }
     }catch( ... )
     {
-      trace.error() << "OFF writer IO error on export " << endl;
+      trace.error() << "OFF writer IO error on export " << std::endl;
       throw dgtalio;
     }        
   
   return true;
 }
 
-
-
-
-
-
 template<typename TPoint>
 inline
 bool 
-MeshWriter<TPoint>::export2OBJ(ostream &out, 
-			       const  DGtal::MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException){
+DGtal::MeshWriter<TPoint>::export2OBJ(std::ostream &out, 
+                                      const  DGtal::MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   try
     {
-      out << "#  OBJ format"<< endl;
-      out << "# generated from MeshWriter from the DGTal library"<< endl;
-      out << endl;
-      out << "o anObj" << endl;
-      out << endl;
+      out << "#  OBJ format"<< std::endl;
+      out << "# generated from MeshWriter from the DGTal library"<< std::endl;
+      out << std::endl;
+      out << "o anObj" << std::endl;
+      out << std::endl;
       
       // processing vertex
       for(unsigned int i=0; i< aMesh.nbVertex(); i++){
-	out << "v " << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << endl;	
+	out << "v " << aMesh.getVertex(i)[0] << " " << aMesh.getVertex(i)[1] << " "<< aMesh.getVertex(i)[2] << std::endl;	
       }
-      out << endl;
+      out << std::endl;
       // processing faces:
       for (unsigned int i=0; i< aMesh.nbFaces(); i++){
-	vector<unsigned int>  aFace = aMesh.getFace(i);
+        std::vector<unsigned int>  aFace = aMesh.getFace(i);
 	out << "f " ;
 	for(unsigned int j=0; j<aFace.size(); j++){
 	  unsigned int indexVertex = aFace.at(j);
 	  out << (indexVertex+1) << " " ;	    
 	}
-	out << endl;
+	out << std::endl;
       }
-      out << endl;
+      out << std::endl;
     }catch( ... )
     {
-      trace.error() << "OBJ writer IO error on export "  << endl;
+      trace.error() << "OBJ writer IO error on export "  << std::endl;
       throw dgtalio;
     }
   return true;
@@ -133,8 +128,8 @@ template <typename TPoint>
 inline
 bool
 DGtal::operator>> (   MeshFromPoints<TPoint> & aMesh, const std::string & aFilename ){
-  string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
-  ofstream out;
+  std::string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
+  std::ofstream out;
   out.open(aFilename.c_str());
   if(extension== "off") {
     return DGtal::MeshWriter<TPoint>::export2OFF(out, aMesh, true);
