@@ -48,6 +48,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SimpleMatrix.h"
+#include "DGtal/base/ConstAlias.h"
+#include "DGtal/base/Alias.h"
+#include "DGtal/base/Clone.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -103,7 +106,7 @@ public:
        * @param g a functor g(x).
        * @param space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( const Functor & f, const KernelFunctor & g, const KSpace & space );
+  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
   /**
@@ -122,7 +125,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
 
   /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -138,7 +141,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin, std::vector< KernelIterators< KernelConstIterator > > & mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< KernelIterators< KernelConstIterator > > > mask );
 
   /**
        * Convolve the kernel at a given position.
@@ -285,7 +288,7 @@ public:
        * @param g a functor g(x).
        * @param space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( const Functor & f, const KernelFunctor & g, const KSpace & space );
+  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
   /**
@@ -304,7 +307,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
 
   /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -320,7 +323,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin, std::vector< KernelIterators< KernelConstIterator > > & mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< KernelIterators< KernelConstIterator > > > mask );
 
   /**
        * Convolve the kernel at a given position.
@@ -469,7 +472,7 @@ public:
        * @param g a functor g(x).
        * @param space space in which the shape is defined.
        */
-  DigitalSurfaceConvolver ( const Functor & f, const KernelFunctor & g, const KSpace & space );
+  DigitalSurfaceConvolver ( ConstAlias< Functor > f, ConstAlias< KernelFunctor > g, ConstAlias< KSpace > space );
 
 
   /**
@@ -488,7 +491,7 @@ public:
        * @param itgend iterator of the last cell of the kernel support (excluded).
        * @param kOrigin center of the kernel support.
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin );
 
   /**
        * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
@@ -504,7 +507,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( KernelConstIterator itgbegin, KernelConstIterator itgend, Cell kOrigin, std::vector< KernelIterators< KernelConstIterator > > & mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< KernelIterators< KernelConstIterator > > > mask );
 
   /**
        * Convolve the kernel at a given position.
