@@ -128,25 +128,15 @@ public:
    */
   Orientation orientation( const Point & p) const
   {
-    if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
-        || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
-    {
-      return INSIDE;
-    }
-    else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
-    {
-      return INSIDE;
-    }
-    else if ( myShapeA( p ))
-    {
-      return myShapeA.orientation( p );
-    }
-    else if ( myShapeB( p ))
-    {
-      return myShapeB.orientation( p );
-    }
-
-    return OUTSIDE;
+      if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
+      {
+          return INSIDE;
+      }
+      else if ( myShapeA.orientation( p ) == ON ||  myShapeB.orientation( p ) == ON )
+      {
+          return ON;
+      }
+      return OUTSIDE;
   }
 
   /**
@@ -283,21 +273,26 @@ public:
    */
   Orientation orientation( const Point & p) const
   {
-    if (( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == INSIDE )
-        || ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON ))
-    {
-      return ON;
-    }
-    else if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) == ON ) //discutable
-    {
-      return ON;
-    }
-    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
-    {
-      return INSIDE;
-    }
+      if ( myShapeA.orientation( p ) == ON )
+      {
+        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
+        {
+          return ON;
+        }
+      }
+      else if ( myShapeB.orientation( p ) == ON )
+      {
+        if ( myShapeA.orientation( p ) == INSIDE )
+        {
+          return ON;
+        }
+      }
+      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+      {
+        return INSIDE;
+      }
 
-    return OUTSIDE;
+      return OUTSIDE;
   }
 
 
@@ -436,20 +431,30 @@ public:
    */
   Orientation orientation( const Point & p) const
   {
-    if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == ON )
-    {
-      return ON;
-    }
-    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
-    {
-      return OUTSIDE;
-    }
-    else if ( myShapeA.orientation( p ) == INSIDE )
-    {
-      return INSIDE;
-    }
+      if ( myShapeA.orientation( p ) == INSIDE )
+      {
+        if ( myShapeB.orientation( p ) == ON )
+        {
+          return ON;
+        }
+        else if ( myShapeB.orientation( p ) == INSIDE )
+        {
+          return OUTSIDE;
+        }
 
-    return OUTSIDE;
+        return INSIDE;
+      }
+      else if ( myShapeA.orientation( p ) == ON )
+      {
+        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
+        {
+          return OUTSIDE;
+        }
+
+        return ON;
+      }
+
+      return OUTSIDE;
   }
 
 
