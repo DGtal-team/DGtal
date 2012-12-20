@@ -125,7 +125,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 			   p2[0], p2[1], p2[2], 
 			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
      }else if(aNum>4){
-       vector<Display3D::pointD3D> vectPoly;
+       std::vector<Display3D::pointD3D> vectPoly;
        for(unsigned int j=0; j< aFace.size(); j++){
 	 Display3D::pointD3D pt;
 	 pt.x= aMesh.getVertex(aFace.at(j))[0];
@@ -135,7 +135,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
        }
        display.addPolygon(vectPoly, aMesh.getFaceColor(i));
      }else{
-       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< std::endl;
      }
      
      
@@ -776,7 +776,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -978,7 +978,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 // PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsGrid( Display3D & display, 
 					  const DGtal::PointVector<dim,TComponent> & p )
@@ -990,7 +990,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
 		   NumberTraits<TComponent>::castToDouble(p.myArray[2]), display.getLineColor());
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
 					    const DGtal::PointVector<dim,TComponent> & p )
@@ -1002,7 +1002,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor());
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display, 
 						 const DGtal::PointVector<dim,TComponent> & p )
@@ -1014,7 +1014,7 @@ void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display,
 		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor(), 0.5, true);
 }
     
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::PointVector<dim,TComponent> & p )
@@ -1038,7 +1038,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   }
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::PointVector<dim,TComponent> & p, 

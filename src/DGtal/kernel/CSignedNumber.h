@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file CUnsignedInteger.h
+ * @file CSignedNumber.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
@@ -25,27 +25,26 @@
  *
  * @date 2010/07/02
  *
- * Header file for concept CUnsignedInteger.cpp
+ * Header file for concept CSignedNumber.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CUnsignedInteger_RECURSES)
-#error Recursive header files inclusion detected in CUnsignedInteger.h
-#else // defined(CUnsignedInteger_RECURSES)
+#if defined(CSignedNumber_RECURSES)
+#error Recursive header files inclusion detected in CSignedNumber.h
+#else // defined(CSignedNumber_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CUnsignedInteger_RECURSES
+#define CSignedNumber_RECURSES
 
-#if !defined CUnsignedInteger_h
+#if !defined CSignedNumber_h
 /** Prevents repeated inclusion of headers. */
-#define CUnsignedInteger_h
+#define CSignedNumber_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,69 +52,53 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CUnsignedInteger
+  // class CSignedNumber
   /**
-Description of \b concept '\b CUnsignedInteger' <p>
+Description of \b concept '\b CSignedNumber' <p>
      @ingroup Concepts
-
-     @brief Aim: Concept checking for Unsigned Integer. 
+     @brief Aim: Concept checking for Signed Numbers. Models of this
+     concept should be listed in NumberTraits class and should have
+     the isSigned property.
      
- ### Refinement of CInteger
+ ### Refinement of 
     
-    
- ### Associated types :
+ ### Associated types 
     
  ### Notation
-     - \t X : A type that is a model of CUnsignedInteger
-     - \t x, \t y  : Object of type X
+     - \a X : A type that is a model of CSignedNumber
+     - \a x, \a y  : Object of type X
     
  ### Definitions
     
  ### Valid expressions and 
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsUnsigned. </td>
-     <td class=CExpression>      typename NumberTraits<X>::IsUnsigned </td> 
-     <td class=CRequirements>    TagTrue </td>
-     <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+
+
+
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+-----|------------|--------------------|------------|--------------|-----------|---------------|-----------
+\a X should be tagged \b true in \a NumberTraits for \a IsSigned | typename NumberTraits<X>::IsSigned | TagTrue | | | | | |
     
  ### Invariants###
+
     
  ### Models###
-     unsigned short, unsigned int, unsigned long long, uint16_t, uint32_t, uint64_t.
-    
- ### Notes###
+     double, BigInteger,  short, int, long long, int16_t, int32_t, int64_t.
 
+ ### Notes###
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.
-
+    
    */
   template <typename T>
-  struct CUnsignedInteger: CInteger<T>
+  struct CSignedNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE(CUnsignedInteger)
+    BOOST_CONCEPT_USAGE(CSignedNumber)
     {
-      // Will compile iff Unsigned.
-      ConceptUtils::checkTrue( myIsUnsigned );
+      // Will compile iff Signed.
+      ConceptUtils::checkTrue(myIsSigned );
     }
     
     // ------------------------- Private Datas --------------------------------
@@ -123,16 +106,17 @@ Description of \b concept '\b CUnsignedInteger' <p>
     
     // ------------------------- Internals ------------------------------------
   private:
-    typename NumberTraits<T>::IsUnsigned myIsUnsigned;
+    typename NumberTraits<T>::IsSigned myIsSigned;
 
-  }; // end of concept CUnsignedInteger
+  }; // end of concept CSignedNumber
   
 } // namespace DGtal
 
-                                                                           //
+
+//                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CUnsignedInteger_h
+#endif // !defined CSignedNumber_h
 
-#undef CUnsignedInteger_RECURSES
-#endif // else defined(CUnsignedInteger_RECURSES)
+#undef CSignedNumber_RECURSES
+#endif // else defined(CSignedNumber_RECURSES)
