@@ -47,6 +47,7 @@
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
+#include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigExamples.h"
 
@@ -84,6 +85,8 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
       image.setValue(p, value);
     }
 }
+
+using namespace DGtal;
 
 int main( int argc, char** argv )
 {

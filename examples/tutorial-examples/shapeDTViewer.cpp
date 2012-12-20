@@ -49,8 +49,11 @@
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "DGtal/helpers/StdDefs.h"
 //!  [shapeDTViewer-basicIncludes]
 ///////////////////////////////////////////////////////////////////////////////
+
+using namespace DGtal;
 
 int main(int argc, char **argv)
 {
