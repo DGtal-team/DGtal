@@ -74,9 +74,9 @@ namespace DGtal
      - Point: the type for a point in this space.
      - Vector: the type for a vector in this space.
      - Dimension: the type for the dimension in this space. Must be a
-       model of CUnsignedNumvber and CIntegralNumber
+       model of CUnsignedNumber and CIntegralNumber
      - Size: the type for measuring distances or counting elements in
-       this space. Must be a model of  CUnsignedNumvber and CIntegralNumber
+       this space. Must be a model of  CUnsignedNumber and CIntegralNumber
      - RealPoint: the type for a point in the real vector space of same dimension.
      - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
 
