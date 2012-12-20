@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Kernel.dox
+ * @file packageKernel.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page KernelPackage Kernel package
+@page packageKernel Kernel package
    
 @managers Jacques-Olivier Lachaud, David Coeurjolly, Tristan Roussillon
 
@@ -59,11 +59,11 @@ tools.
 
 
 @b Package @b Concepts @b Overview
-- \ref kernelPackageConcepts
+- \ref packageKernelConcepts
 
 
 @b Related @b documentation @b pages
-- \ref PageRef
+
 
 
 
