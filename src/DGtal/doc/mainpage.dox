@@ -54,7 +54,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref packageKernel
   - \ref packageArithmetic
   - \ref GeometryPackage
-  - \ref TopologyPackage
+  - \ref packageTopology
   - \ref pageMathPackage
   - \ref packageImage
   - \ref packageIO
