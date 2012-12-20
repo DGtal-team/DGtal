@@ -66,7 +66,7 @@
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
