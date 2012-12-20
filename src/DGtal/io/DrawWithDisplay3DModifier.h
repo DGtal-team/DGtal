@@ -43,9 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/helpers/StdDefs.h"
-
-
+#include "DGtal/topology/KhalimskySpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -329,7 +327,8 @@ namespace DGtal
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
      */
-    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, double aShift, double aSizeFactor=1.0 )
+    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel, 
+                         double aShift, double aSizeFactor=1.0 )
     {
       mySurfel= aSurfel;
       myShift = aShift;
@@ -344,7 +343,8 @@ namespace DGtal
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the KSSurfel size (default 0.75).
      */
-    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, const DGtal::Z3i::SCell  & aVoxel, 
+    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel, 
+                         const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel, 
 			 double aShift=0.05, double aSizeFactor=0.75  )
     {      
       mySurfel= aSurfel;
@@ -362,7 +362,8 @@ namespace DGtal
       }
     }
     
-    DGtal::Z3i::SCell mySurfel;
+    ///@todo FIX this member
+    DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
     double myShift;
     double mySizeFactor;
   };

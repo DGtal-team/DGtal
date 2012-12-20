@@ -308,7 +308,7 @@ Dot::flushPostscript( std::ostream & stream,
 void
 Dot::flushFIG( std::ostream & stream,
                const TransformFIG & transform,
-               std::map<Color,int> & colormap ) const
+               std::map<DGtal::Color,int> & colormap ) const
 {
     stream << "2 1 0 ";
     // Thickness
@@ -373,7 +373,7 @@ Dot::flushTikZ( std::ostream & stream,
 
 {
   // FIXME: unimplemented
-  stream << "% FIXME: Dot::flushTikZ unimplemented" << endl;
+  stream << "% FIXME: Dot::flushTikZ unimplemented" << std::endl;
 }
 
 Rect
@@ -721,7 +721,7 @@ Image::flushTikZ( std::ostream & stream,
          << transform.mapY( _path[0].y ) << "pt) {\\pgfimage["
 	 << "width=" << transform.scale( (_path[1] - _path[0]).norm() ) << "pt,"
 	 << "height=" << transform.scale( (_path[0] - _path[3]).norm() ) << "pt,"
-         << "]{" << _filename << "}};" << endl;
+         << "]{" << _filename << "}};" << std::endl;
 }
 
 /*
@@ -1277,7 +1277,7 @@ Ellipse::flushTikZ( std::ostream & stream,
 		    const TransformTikZ & transform ) const
 {
   // FIXME: unimplemented
-  stream << "% FIXME: Ellipse::flushTikZ unimplemented" << endl;
+  stream << "% FIXME: Ellipse::flushTikZ unimplemented" << std::endl;
   stream << "\\path[" << tikzProperties(transform) << "] ("
 	 << transform.mapX( _center.x ) << ','
 	 << transform.mapY( _center.y ) << ')'
@@ -2146,15 +2146,15 @@ GouraudTriangle::GouraudTriangle( const Point & p0, float brightness0,
     _path << p0;
     _path << p1;
     _path << p2;
-    _color0.red( static_cast<unsigned char>( min( 255.0f, _color0.red() * brightness0 ) ) );
-    _color0.green( static_cast<unsigned char>( min( 255.0f, _color0.green() * brightness0 ) ) );
-    _color0.blue( static_cast<unsigned char>( min( 255.0f, _color0.blue() * brightness0 ) ) );
-    _color1.red( static_cast<unsigned char>( min( 255.0f, _color1.red() * brightness1 ) ) );
-    _color1.green( static_cast<unsigned char>( min( 255.0f, _color1.green() * brightness1 ) ) );
-    _color1.blue( static_cast<unsigned char>( min( 255.0f, _color1.blue() * brightness1 ) ) );
-    _color2.red( static_cast<unsigned char>( min( 255.0f, _color2.red() * brightness2 ) ) );
-    _color2.green( static_cast<unsigned char>( min( 255.0f, _color2.green() * brightness2 ) ) );
-    _color2.blue( static_cast<unsigned char>( min( 255.0f, _color2.blue() * brightness2 ) ) );
+    _color0.red( static_cast<unsigned char>( std::min( 255.0f, _color0.red() * brightness0 ) ) );
+    _color0.green( static_cast<unsigned char>( std::min( 255.0f, _color0.green() * brightness0 ) ) );
+    _color0.blue( static_cast<unsigned char>( std::min( 255.0f, _color0.blue() * brightness0 ) ) );
+    _color1.red( static_cast<unsigned char>( std::min( 255.0f, _color1.red() * brightness1 ) ) );
+    _color1.green( static_cast<unsigned char>( std::min( 255.0f, _color1.green() * brightness1 ) ) );
+    _color1.blue( static_cast<unsigned char>( std::min( 255.0f, _color1.blue() * brightness1 ) ) );
+    _color2.red( static_cast<unsigned char>( std::min( 255.0f, _color2.red() * brightness2 ) ) );
+    _color2.green( static_cast<unsigned char>( std::min( 255.0f, _color2.green() * brightness2 ) ) );
+    _color2.blue( static_cast<unsigned char>( std::min( 255.0f, _color2.blue() * brightness2 ) ) );
 
     Shape::_fillColor.red( ( _color0.red() + _color1.red() + _color2.red() ) / 3 );
     Shape::_fillColor.green( ( _color0.green() + _color1.green() + _color2.green() ) / 3 );
@@ -2332,7 +2332,7 @@ GouraudTriangle::flushTikZ( std::ostream & stream,
 			    const TransformTikZ & /*transform*/ ) const
 {
   // FIXME: unimplemented
-  stream << "% FIXME: GouraudTriangle::flushTikZ unimplemented" << endl;
+  stream << "% FIXME: GouraudTriangle::flushTikZ unimplemented" << std::endl;
 }
 
 /*
@@ -2497,7 +2497,7 @@ Text::flushPostscript( std::ostream & stream,
 void
 Text::flushFIG( std::ostream & stream,
                 const TransformFIG & transform,
-                std::map<Color,int> & colormap ) const
+                std::map<DGtal::Color,int> & colormap ) const
 {
     stream << "4 0 " ;
     // Color, depth, unused, Font

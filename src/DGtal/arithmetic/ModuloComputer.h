@@ -43,7 +43,6 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
 #include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -80,14 +79,13 @@ namespace DGtal
   class ModuloComputer
   {
   public:    
-    typedef typename NumberTraits<TInteger>::SignedVersion Integer;
+    typedef TInteger Integer;
     typedef typename NumberTraits<Integer>::ParamType IntegerParamType;
 
     typedef typename NumberTraits<TInteger>::UnsignedVersion UnsignedInteger;
     typedef typename NumberTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
     
     /**
      * Initializes the modulo computer with the value [m].

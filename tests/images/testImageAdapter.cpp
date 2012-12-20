@@ -352,8 +352,8 @@ bool testImageAdapter()
 #endif
 
     // 3) fill 255 for 'bell_tower' image
-    typename MyImageAdapter::Domain::ConstIterator bt_it = bell_tower.domain().begin();
-    typename MyImageAdapter::Domain::ConstIterator bt_itEnd = bell_tower.domain().end();
+    MyImageAdapter::Domain::ConstIterator bt_it = bell_tower.domain().begin();
+    MyImageAdapter::Domain::ConstIterator bt_itEnd = bell_tower.domain().end();
     for (; bt_it != bt_itEnd; ++bt_it)
     {
         bell_tower.setValue(*bt_it, 255);
@@ -367,8 +367,8 @@ bool testImageAdapter()
 #endif
 
     // 4) fill 55 for 'cars' image
-    typename MyImageAdapter::Domain::ConstIterator c_it = cars.domain().begin();
-    typename MyImageAdapter::Domain::ConstIterator c_itEnd = cars.domain().end();
+    MyImageAdapter::Domain::ConstIterator c_it = cars.domain().begin();
+    MyImageAdapter::Domain::ConstIterator c_itEnd = cars.domain().end();
     for (; c_it != c_itEnd; ++c_it)
     {
         cars.setValue(*c_it, 55);
@@ -421,8 +421,8 @@ bool testImageAdapter()
     aBoard.saveCairo("floor_lamp.png", Board2D::CairoPNG);
 #endif
     
-    typename MyImageAdapter2::Domain::ConstIterator f_it = floor_lamp.domain().begin();
-    typename MyImageAdapter2::Domain::ConstIterator f_itEnd = floor_lamp.domain().end();
+    MyImageAdapter2::Domain::ConstIterator f_it = floor_lamp.domain().begin();
+    MyImageAdapter2::Domain::ConstIterator f_itEnd = floor_lamp.domain().end();
     for (; f_it != f_itEnd; ++f_it)
     {
         floor_lamp.setValue(*f_it, 0);
