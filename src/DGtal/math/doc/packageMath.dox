@@ -15,49 +15,51 @@
  **/
 
 /**
- * @file Mathematics.dox
+ * @file Algebraic.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/05
  *
- * Documentation file for feature Mathematics
+ * Documentation file for feature Algebraic
  *
  * This file is part of the DGtal library.
  */
 
 /*
  * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page modulePolynomial  Polynomial module
+@page packageMath Mathematical package
 
-@writers Felix Fontein, Jacques-Olivier Lachaud
+@managers Jacques-Olivier Lachaud
 
 @since 0.5
 
 @b LICENSE: LGPL
 
-Part of \ref pageAlgebraicPackage.
 
-@b Module @b Overview
+@b Package @b Overview
 
-This module provides classes to represent polynomials and
-multi-variate polynomials. Number of variables is fixed at compilation
-time. Essentially, a n-variate polynomial is a standard polynomial
-whose coefficients are n-1-variate polynomials.
+This package gathers various mathematical subpackages and modules. For
+now, it consists essentially in a module for defining multivariate
+polynomials.
 
-@b Module @b Documentation
+@b Modules 
+- \ref modulePolynomial (Jacques-Olivier Lachaud, Felix Fontein)
 
-- \ref dgtal_multivariate_polynomial
+@b Package @b Concepts @b Overview
 
+@b Related @b documentation @b pages
 
 @b Related @b examples
 
 - polynomial-derivative.cpp, polynomial2-derivative.cpp.
 - trackImplicitPolynomialSurfaceToOFF.cpp
+
 
 */
 
