@@ -256,7 +256,7 @@ DGtal::DGtalInventor<TSpace>::generate( SoGroup* result ) const
   nb_vtx = 4 * nb_cells;
   if ( nb_vtx != 0 )
     {
-      cout << "2-cells = " << nb_vtx << endl;
+      std::cout << "2-cells = " << nb_vtx << std::endl;
       SoGroup* node_squares = new SoGroup;
       myCoords = new SoCoordinate3;
       coords = new vec3[ nb_vtx ];
