@@ -89,7 +89,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
 @section package_description DGtal Packages
 
   - \ref IntroductionPackage
-  - \ref KernelPackage
+  - \ref packageKernel
   - \ref pageArithmeticPackage
   - \ref GeometryPackage
   - \ref TopologyPackage
