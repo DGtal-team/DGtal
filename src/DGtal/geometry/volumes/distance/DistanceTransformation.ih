@@ -83,7 +83,7 @@ DGtal::DistanceTransformation<S,P,p, IntLong>::checkTypesValidity (  ) const
     {
       trace.warning() << "(DistanceTransformation) The output image value range may"
 		      <<" not be sufficient to store the exact values  according to"
-		      <<" the input domain extent." << endl;
+		      <<" the input domain extent." << std::endl;
       return false;
     }
   return true;
@@ -181,7 +181,7 @@ DGtal::DistanceTransformation<S,P, p, IntLong>::computeOtherSteps ( const Output
                                                                     OutputImage &output,
                                                                     const Dimension dim ) const
 {
-  std::string title = "DT dimension " +  boost::lexical_cast<string>( dim ) ;
+  std::string title = "DT dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;

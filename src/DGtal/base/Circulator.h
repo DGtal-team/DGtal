@@ -88,10 +88,10 @@ namespace DGtal
       typedef typename boost::iterator_category<TIterator>::type
                                                                      iterator_category;
 
-      typedef typename iterator_traits<TIterator>::value_type        value_type;
-      typedef typename iterator_traits<TIterator>::difference_type   difference_type;
-      typedef typename iterator_traits<TIterator>::pointer           pointer;
-      typedef typename iterator_traits<TIterator>::reference         reference;
+    typedef typename std::iterator_traits<TIterator>::value_type        value_type;
+    typedef typename std::iterator_traits<TIterator>::difference_type   difference_type;
+    typedef typename std::iterator_traits<TIterator>::pointer           pointer;
+    typedef typename std::iterator_traits<TIterator>::reference         reference;
 
 
 
