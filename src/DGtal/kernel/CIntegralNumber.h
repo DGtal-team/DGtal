@@ -17,92 +17,104 @@
 #pragma once
 
 /**
- * @file CEuclideanRing.h
+ * @file CIntegralNumber.h
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2011/09/05
+ * @date 2010/07/02
+ *
+ * Header file for concept CIntegralNumber.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CEuclideanRing_RECURSES)
-#error Recursive header files inclusion detected in CEuclideanRing.h
-#else // defined(CEuclideanRing_RECURSES)
+#if defined(CIntegralNumber_RECURSES)
+#error Recursive header files inclusion detected in CIntegralNumber.h
+#else // defined(CIntegralNumber_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CEuclideanRing_RECURSES
+#define CIntegralNumber_RECURSES
 
-#if !defined CEuclideanRing_h
+#if !defined CIntegralNumber_h
 /** Prevents repeated inclusion of headers. */
-#define CEuclideanRing_h
+#define CIntegralNumber_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CCommutativeRing.h"
+#include "DGtal/base/ConceptUtils.h"
+#include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+
   /////////////////////////////////////////////////////////////////////////////
-  // class CEuclideanRing
+  // class CIntegralNumber
   /**
-Description of \b concept '\b CEuclideanRing' <p>
+Description of \b concept '\b CIntegralNumber' <p>
      @ingroup Concepts
-    
-     @brief Aim: Defines the mathematical concept equivalent to a
-     unitary commutative ring with a division operator. 
+     @brief Aim: Concept checking for Integral Numbers. Models of this
+     concept should be listed in NumberTraits class and should have
+     the isIntegral property.
      
- ### Refinement of CCommutativeRing
- ### Associated types :
+ ### Refinement of 
+    
+ ### Associated types 
     
  ### Notation
-     - \a X : A type that is a model of CEuclideanRing
-     - \a x, \a y  : Object of type Integer
+     - \a X : A type that is a model of CIntegralNumber
+     - \a x, \a  y  : Object of type X
     
  ### Definitions
     
- ### Valid expressions 
-
-
+ ### Valid expressions and 
+ 
 
 Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
-Division|   \a x / \a y </td>   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
-
-
+\a X should be tagged \b true in \a NumberTraits for \a IsIntegral. | typename NumberTraits<X>::IsIntegral | TagTrue | | | | | |
+    
+    
  ### Invariants###
+
     
  ### Models###
-       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
-    
+     BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
+
  ### Notes###
-   
-@tparam T the type that should be a model of commutative ring.
+
+@tparam T the type that is checked. T should be a model of
+     CBoundedInteger.
+    
    */
   template <typename T>
-  struct CEuclideanRing : CCommutativeRing<T>
+  struct CIntegralNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:
-
-    BOOST_CONCEPT_USAGE( CEuclideanRing )
+    BOOST_CONCEPT_USAGE(CIntegralNumber)
     {
-      ConceptUtils::sameType( c, T( a/b ) );
-    }   
+      // Will compile iff Integral.
+      ConceptUtils::checkTrue( myIsIntegral );
+    }
+    
     // ------------------------- Internals ------------------------------------
   private:
-    T a,b,c;
+    typename NumberTraits<T>::IsIntegral myIsIntegral;
+
+  }; // end of concept CIntegralNumber
   
-  };
 } // namespace DGtal
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CEuclideanRing_h
+#endif // !defined CIntegralNumber_h
 
-#undef CEuclideanRing_RECURSES
-#endif // else defined(CEuclideanRing_RECURSES)
+#undef CIntegralNumber_RECURSES
+#endif // else defined(CIntegralNumber_RECURSES)
