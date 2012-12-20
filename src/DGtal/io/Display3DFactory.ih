@@ -845,7 +845,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 // SignedKhalimskyCell
-template< Dimension dim, typename TInteger >
+template<  DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display3DFactory::draw( Display3D & display,
 				    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
