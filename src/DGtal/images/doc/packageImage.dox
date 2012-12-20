@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Image.dox
+ * @file packageImage.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page ImagePackage  Image package
+@page packageImage Image package
    
 @managers David Coeurjolly
 
@@ -54,7 +54,7 @@ This package aims to implement Image models and data-structures.
 
 
  @b Related @b documentation @b pages
- - \ref dgtalITK
+ - \ref moduleITKImage
 
 
 
