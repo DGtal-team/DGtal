@@ -99,7 +99,7 @@ namespace DGtal
      not compulsory here, but advised).
 
      @code
-     // This snippet does work.
+     // This snippet does ALWAYS work.
      for ( SurfelConstIterator itX = mySurface.begin(), 
                                itXEnd = mySurface.end();
            itX != itXEnd; ++itX ) 
