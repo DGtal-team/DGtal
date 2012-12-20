@@ -14,7 +14,7 @@
  *
  **/
 
-//#pragma once
+#pragma once
 
 /**
  * @file StandardDSLQ0.h

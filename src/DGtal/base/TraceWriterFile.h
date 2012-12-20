@@ -14,7 +14,7 @@
  *
  **/
 
-//#pragma once
+#pragma once
 /**
  * @file TraceWriterFile.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
