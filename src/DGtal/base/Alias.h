@@ -73,22 +73,14 @@ namespace DGtal
      where the parameter is only used at some point, but not
      referenced after in some data member).
 
-     @code
-     double square( Alias<double> x )
-     {
-       return x * x;
-     }
-     std::cout << "3.5^2 = " << square( 3.5 ) << std::endl;
-     @encode
-
      @tparam T is any type.
 
      @see ConstAlias
      @see Clone
 
      It can be used as follows. Consider this simple example where
-     class A is a big object. Then we define two classes B1 and B2
-     that uses some instance of A. 
+     class \e A is a big object. Then we define two classes \e B1 and \e B2
+     that uses some instance of \e A. 
      
      @code
      const int N = 10000;
@@ -151,7 +143,7 @@ namespace DGtal
 
      @code
      struct B3 {
-       B3( A a ) // not ambiguous, but cost is O(2N) here. 
+       B3( A a ) // not ambiguous, but cost is 2*O(N) here. 
        : myA( a ) {}
      ...
        A myA;
@@ -160,9 +152,9 @@ namespace DGtal
      B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note The user can use either Alias<T> or T* for data
-     members. Normally (depending on the compiler), there is no
-     overhead.
+     @note The user should not use Alias<T> instead of T* for data
+     members. It works in most cases, but there are some subtle
+     differences between the two behaviors.
 
      @note Alias have no copy constructor. Indeed, if they had one,
      there is an ambiguity when duplicating an alias between the copy
@@ -185,10 +177,20 @@ namespace DGtal
     Alias();
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    // Alias ( Alias & other );
+      Copy constructor.
+      @param other the object to clone.
+     
+      Necessary to declare it, but not used ! It has no code so the
+      user cannot instantiate it. (otherwise the user might be
+      tempted to use it as a member).
+     
+      @note clang indication when putting it private: error: calling a
+      private constructor of class 'Alias<A>'.  warning: C++98 requires
+      an accessible copy constructor for class 'Alias<A>' when binding
+      a reference to a temporary; was private
+      [-Wbind-to-temporary-copy]
+    */
+    Alias ( const Alias & other );
 
     /**
      * Assignment.
@@ -230,7 +232,20 @@ namespace DGtal
     T* myPtrT;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+  public:
+
+    /**
+       Hidden copy constructor.
+       @param other the object to clone.
+       
+       It is not defined private since it must be accessible (see
+       warning below otherwise).
+
+       Warning: C++98 requires an accessible copy constructor for class 'DGtal::Alias<A1>'
+       when binding a reference to a temporary; was private [-Wbind-to-temporary-copy]
+    */
+    //Alias ( const Alias & other );
+
 
 
     // ------------------------- Internals ------------------------------------

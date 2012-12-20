@@ -79,8 +79,8 @@ namespace DGtal
      @see Clone
 
      It can be used as follows. Consider this simple example where
-     class A is a big object. Then we define two classes B1 and B2
-     that uses some instance of A. 
+     class \e A is a big object. Then we define two classes \e B1 and \e B2
+     that uses some instance of \e A. 
      
      @code
      const int N = 10000;
@@ -94,16 +94,24 @@ namespace DGtal
      // comments or, for the experienced developper, by looking at
      // other parts of the code.
      struct B1 {
-       B1( A & a ) // ambiguous, cost is O(1) here
+       B1( const A & a ) // ambiguous, cost is O(1) here and lifetime of a should exceed constructor.
        : myA( a ) {}
      ...
-       A & myA;
+       const A & myA;
      };
      struct B2 {
        B2( const A & a ) // ambiguous, cost is O(N) here
        : myA( a ) {}
      ...
        A myA;
+     };
+     struct B3 {
+       B3( const A & a ) // ambiguous, cost is O(N) here
+       { myA = new A( a ); }
+       ~B3() 
+       { if ( myA != 0 ) delete myA; }
+     ...
+       A* myA;
      };
      @endcode
 
@@ -127,6 +135,13 @@ namespace DGtal
        : myA( a ) {}
      ...
        A myA;
+     };
+     struct B3 {
+       B3( Clone<A> a ) // not ambiguous, cost is O(N) here and lifetime of a is whatever.
+       : myA( a.allocate() ) {}
+       ~B3() { if ( myA != 0 ) delete myA; }
+     ...
+       A* myA;
      };
      ...
      A a1;
@@ -153,11 +168,11 @@ namespace DGtal
      B3 b3( a1 ) // The object \a a1 is copied once on the heap as the parameter \a a, and once as the member \a b3.myA.
      @endcode
 
-     @note The user can use either ConstAlias<T> or const T* for data
-     members. Normally (depending on the compiler), there is no
-     overhead.
+     @note The user should not use ConstAlias<T> instead of const T*
+     for data members. It works in most cases, but there are some
+     subtle differences between the two behaviors.
 
-     @note ConstAlias have no copy constructor. Indeed, if they had one,
+     @note ConstAlias has no copy constructor. Indeed, if it had one,
      there is an ambiguity when duplicating an alias between the copy
      constructor or the T* cast followed by the T* constructor.
    */
@@ -178,10 +193,20 @@ namespace DGtal
     ConstAlias();
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     */
-    // ConstAlias ( ConstAlias & other );
+      Copy constructor.
+      @param other the object to clone.
+     
+      Necessary to declare it, but not used ! It has no code so the
+      user cannot instantiate it. (otherwise the user might be
+      tempted to use it as a member).
+     
+      @note clang indication when putting it private: error: calling a
+      private constructor of class 'ConstAlias<A>'.  warning: C++98 requires
+      an accessible copy constructor for class 'ConstAlias<A>' when binding
+      a reference to a temporary; was private
+      [-Wbind-to-temporary-copy]
+    */
+    ConstAlias ( const ConstAlias & other );
 
     /**
      * Assignment.
@@ -223,7 +248,7 @@ namespace DGtal
     const T* myPtrT;
 
     // ------------------------- Hidden services ------------------------------
-  protected:
+  private:
 
 
     // ------------------------- Internals ------------------------------------

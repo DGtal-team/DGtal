@@ -201,6 +201,12 @@ namespace DGtal
     */
     operator T() const;
 
+    /** 
+        Allocates a T instance on the heap and returns its adress.
+        @return a pointer on the instance of T allocated on the process heap.
+    */
+    T* allocate() const;
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
