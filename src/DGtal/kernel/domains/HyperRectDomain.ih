@@ -53,8 +53,8 @@ template<typename TSpace>
 inline
 DGtal::HyperRectDomain<TSpace>::HyperRectDomain ( const Point &aPointA,
               const Point &aPointB ) :
-    myLowerBound(/*std::*/min(aPointA, aPointB)),
-    myUpperBound(/*std::*/max(aPointA, aPointB)),
+    myLowerBound(std::min(aPointA, aPointB)),
+    myUpperBound(std::max(aPointA, aPointB)),
     myPredicate( myLowerBound, myUpperBound ),
     myIteratorBegin(myLowerBound,
         myLowerBound,

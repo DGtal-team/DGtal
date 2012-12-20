@@ -44,7 +44,6 @@
 #include "boost/concept_check.hpp"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -52,48 +51,32 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // class CBoundedInteger
+  // class CBoundedNumber
   /**
-DescriptionDescription of \b concept '\b CBoundedInteger' <p>
+Description of \b concept '\b CBoundedNumber' <p>
      @ingroup Concepts
 
-     \brief Aim: The concept CBoundedInteger specifies what are the bounded
-     integer numbers. Hence, it is a refinement of CInteger Concept
-     ensuring that the numbers are bounded.
+     \brief Aim: The concept CBoundedNumber specifies what are the bounded
+     numbers. Models of this
+     concept should be listed in NumberTraits class and should have
+     the isBounded property.
 
- ### Refinement of CInteger<T>
+ ### Refinement of
 
  ### Associated types :
 
  ### Notation
-     - \t X : A type that is a model of CBoundedInteger
+     - \t X : A type that is a model of CBoundedNumber
 
  ### Definitions
 
  ### Valid expressions and
-     <table>
-     <tr>
-     <td class=CName> \b Name </td>
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td>
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td>
-     <td class=CSemantics> \b Semantics </td>
-     <td class=CPostCondition> \b Postcondition </td>
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr>
-     <td class=CName>            \t X should be tagged \b true in \t NumberTraits for \t IsBounded. </td>
-     <td class=CExpression>      typename NumberTraits<X>::IsBounded </td>
-     <td class=CRequirements>    TagTrue </td>
-     <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
 
+
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+-----|------------|--------------------|------------|--------------|-----------|---------------|-----------
+\a X should be tagged \b true in \a NumberTraits for \a IsBounded | typename NumberTraits<X>::IsBounded | TagTrue | | | | | |
+  
  ### Invariants###
 
  ### Models###
@@ -104,17 +87,17 @@ DescriptionDescription of \b concept '\b CBoundedInteger' <p>
  ### Notes###
 
 @tparam T the type that is checked. T should be a model of
-     CBoundedInteger.
+     CBoundedNumber.
    */
   template <typename T>
-  struct CBoundedInteger : public CInteger<T>
+  struct CBoundedNumber
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    BOOST_CONCEPT_USAGE(CBoundedInteger)
+    BOOST_CONCEPT_USAGE(CBoundedNumber)
     {
 
-      // Bounded Integer should have a TagTrue tag to IsBounded type.
+      // Bounded Number should have a TagTrue tag to IsBounded type.
       ConceptUtils::checkTrue( myIsBounded );
 
     }
@@ -127,14 +110,14 @@ DescriptionDescription of \b concept '\b CBoundedInteger' <p>
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of concept CBoundedInteger
+  }; // end of concept CBoundedNumber
 
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CBoundedInteger_h
+#endif // !defined CBoundedNumber_h
 
-#undef CBoundedInteger_RECURSES
-#endif // else defined(CBoundedInteger_RECURSES)
+#undef CBoundedNumber_RECURSES
+#endif // else defined(CBoundedNumber_RECURSES)
