@@ -43,7 +43,7 @@
 /**
  * Destructor.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
 {
@@ -53,7 +53,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::~MetricAdjacency()
  * Constructor. Does nothing. Due to the symmetry and translation
  * invariance of this digital topology, all methods are static.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
 {
@@ -70,7 +70,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
@@ -87,7 +87,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
  * @return 'true' iff p1 is adjacent to p2 according to this
  * adjacency relation and p1 != p2.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
@@ -110,7 +110,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
 /**
  * @return maximum number of neighbors for this adjacency
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
@@ -124,7 +124,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity()
  * 
  * @return the number of neighbors of this vertex
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
@@ -144,7 +144,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
  * 
  * @param v the vertex whose neighbors will be written
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator>
 inline
 void  
@@ -186,7 +186,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
   * 
   * @param pred the predicate that must be satisfied
   */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator, typename VertexPredicate>
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
@@ -218,7 +218,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay 
@@ -232,7 +232,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 bool
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
@@ -245,7 +245,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TSpace, Dimension maxNorm1>
+template <typename TSpace, DGtal::Dimension maxNorm1>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
@@ -259,15 +259,15 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of hidden services                                         //
-template <typename TSpace, Dimension maxNorm1, Dimension dimension>
+template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity() 
 {
-  Dimension result = 0;
-  for( Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
+  DGtal::Dimension result = 0;
+  for( DGtal::Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
   {
-    result += ( (dimension - m) << 1 ) * static_cast<Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
+    result += ( (dimension - m) << 1 ) * static_cast<DGtal::Dimension>( boost::math::binomial_coefficient<float>(dimension, m) );
   }
   return result;
 }

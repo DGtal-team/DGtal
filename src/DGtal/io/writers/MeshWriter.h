@@ -139,7 +139,7 @@ namespace DGtal
    */
   template <typename TPoint>
   bool
-  operator >> (  MeshFromPoints<TPoint> & aMesh, ostream &out );
+  operator >> (  MeshFromPoints<TPoint> & aMesh, std::ostream &out );
   
 
 

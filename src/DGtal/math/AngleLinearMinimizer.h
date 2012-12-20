@@ -49,7 +49,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/math/AngleComputer.h" 
 #include "DGtal/arithmetic/ModuloComputer.h" 
-//#include "DGtal/io/boards/Board2D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -321,8 +320,6 @@ private:
    * The size of the array @a myValues, ie the maximal number of valid values.
    */
   unsigned int myMaxSize;
-
-
 
 
     // ------------------------- Private Datas --------------------------------

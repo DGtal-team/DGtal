@@ -42,9 +42,8 @@
 // Inclusions
 #include <iostream>
 #include <vector>
-#include "boost/concept_check.hpp"
-#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -133,8 +132,7 @@ namespace DGtal
    * <p> Notes###
    */
   template <typename Adj>
-  struct CAdjacency : 
-    CUndirectedSimpleLocalGraph<Adj>
+  struct CAdjacency : CUndirectedSimpleLocalGraph<Adj>
   {
     // ----------------------- Concept checks ------------------------------
   public:
