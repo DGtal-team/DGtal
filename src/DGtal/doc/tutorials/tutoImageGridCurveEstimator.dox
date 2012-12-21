@@ -31,8 +31,8 @@ Let us assume that the following image has been loaded into
 an image object: 
 
 
- @image html tutorials/imageDomainTuto2.png  "S gray level image" 
- @image latex tutorials/imageDomainTuto2.png  "S gray level image" width=5cm
+ @image html images/imageDomainTuto2.png  "S gray level image" 
+ @image latex images/imageDomainTuto2.png  "S gray level image" width=5cm
 
 
 First of all, we implicitely extract a digital set from an image, 
@@ -48,8 +48,8 @@ whether it belongs to the digital set or not.
 
 This predicate returns true for each dark pixel of the following image: 
 
- @image html tutorials/imageDomainTuto2bis.png  "S binary image" 
- @image latex tutorials/imageDomainTuto2bis.png  "S binary image" width=5cm
+ @image html images/imageDomainTuto2bis.png  "S binary image" 
+ @image latex images/imageDomainTuto2bis.png  "S binary image" width=5cm
 
 \section secttutoImageGridCurveEstimator1 Extracting the contours of a digital set
 
@@ -87,8 +87,8 @@ we get the points range of the grid curve @a c.
 
 The DSS segmentation looks like this: 
 
- @image html tutorials/GridCurveDSSSegmentationTuto3.png  "DSS segmentation " 
- @image latex tutorials/GridCurveDSSSegmentationTuto3.png  "DSS segmentation " width=5cm
+ @image html images/GridCurveDSSSegmentationTuto3.png  "DSS segmentation " 
+ @image latex images/GridCurveDSSSegmentationTuto3.png  "DSS segmentation " width=5cm
 
 Then, we initialize the DSS length estimator from the points range 
 and get the estimated length.

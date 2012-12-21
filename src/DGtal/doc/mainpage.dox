@@ -60,14 +60,14 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
   - \ref packageIO
   
 
-@section manuals_dgtal Helpers and tools
+@section manuals_tutorials Helpers and Tutorials
 
-  - \ref tutorials
+  - \ref packageTutorials
 
 
    
 @section manueldev Manual pages for DGtal developers
-  - \ref FAQGit
+  - \ref moduleFAQGit
   
   
   
