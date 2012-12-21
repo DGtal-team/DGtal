@@ -101,7 +101,7 @@ inline
 void
 DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 {
-  std::string title = "Powermap dimension " +  boost::lexical_cast<string>( dim ) ;
+  std::string title = "Powermap dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
   
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
