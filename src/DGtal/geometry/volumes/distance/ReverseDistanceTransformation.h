@@ -49,6 +49,8 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/CInteger.h"
+#include "DGtal/kernel/CBoundedNumber.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,7 +80,8 @@ namespace DGtal
   public:
     
     //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-    BOOST_CONCEPT_ASSERT(( CBoundedInteger<IntegerShort> ));
+    BOOST_CONCEPT_ASSERT(( CBoundedNumber<IntegerShort> ));
+    BOOST_CONCEPT_ASSERT(( CInteger<IntegerShort> ));
     
 
     ///Type of resulting image

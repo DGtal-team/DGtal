@@ -840,7 +840,7 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveSVG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
-		string filename="output.svg") const ;
+		std::string filename="output.svg") const ;
   
 
 #ifdef WITH_CAIRO
@@ -854,7 +854,8 @@ public:
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveCairo( const char * filename, CairoType type = CairoPNG, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  void saveCairo( const char * filename, CairoType type = CairoPNG, 
+                  PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Save the drawing with cairo. When a size is given (not BoundingBox), the drawing is
