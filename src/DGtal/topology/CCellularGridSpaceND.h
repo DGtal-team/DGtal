@@ -83,7 +83,7 @@ The space is generally finite (except for arbitrary size
 integers). The user should choose between a closed (default) cell
 space or an open cell space.
 
-We refer the reader to \ref dgtal_cellular_topology for further
+We refer the reader to \ref moduleCellularTopology for further
 details.
 
 ### Refinement of

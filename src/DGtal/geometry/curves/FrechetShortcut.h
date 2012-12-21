@@ -141,7 +141,7 @@ namespace DGtal
   protected: 
     
     /**  
-	 Attributes of occulter points: angles min and max for chich
+	 Attributes of occulter points: angles min and max for which
 	the point is an occulter 
     */
     typedef struct occulter_attributes{
@@ -161,6 +161,8 @@ namespace DGtal
     
   public:
     
+    typedef boost::icl::interval_set<double> IntervalSet;
+    
       /** 
 	  Octant of work 
       */
@@ -178,7 +180,7 @@ namespace DGtal
 	 List of forbidden intervals: intervals of angle for which there
 	 exist a backpath of length greater than the error 
       */ 
-      boost::icl::interval_set<double> myForbiddenIntervals;
+      IntervalSet myForbiddenIntervals;
       
       /** 
 	  pointer to the next point to be scanned: set to myEnd + 1 
@@ -204,6 +206,14 @@ namespace DGtal
       Backpath(const Backpath & other);
 
       
+      /**
+	 Assignement
+	 @param other another backpath
+	 @return a reference on 'this'
+      */
+      Backpath& operator=(const Backpath & other);
+    
+
       /**
 	 Destructor 
       */

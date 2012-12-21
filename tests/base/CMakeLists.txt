@@ -19,6 +19,9 @@ SET(DGTAL_TESTS_SRC
    testLabelledMap-benchmark
    testMultiMap-benchmark
    testOpenMP
+   testIteratorFunctions
+   testIteratorCirculatorTraits
+   testCloneAndAliases
    testOwningOrAliasingPtr
    )
 
