@@ -51,29 +51,29 @@ inline
 TImageContainer 
 DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool topbotomOrder ) throw(DGtal::IOException)
 {
-  ifstream infile;
+  std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
   try 
     {
-      infile.open (aFilename.c_str(), ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in);
     }
   catch( ... )
     {
-      trace.error() << "PNMReader : can't open " << aFilename << endl;
+      trace.error() << "PNMReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
   bool isASCIImode = false;
-  string str;
+  std::string str;
   getline( infile, str );
   if ( ! infile.good() )
     {
-      trace.error() << "PNMReader : can't read " << aFilename << endl;
+      trace.error() << "PNMReader : can't read " << aFilename << std::endl;
       throw dgtalio;
     }
   if ( str != "P5" &&  str != "P2")
     {
-      trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << endl;
+      trace.error() << "PNMReader : No P5 or P2 format in " << aFilename << std::endl;
       throw dgtalio;
     }
   if(str== "P2")
@@ -85,12 +85,12 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
       getline( infile, str );
       if ( ! infile.good() )
 	{
-	  trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+	  trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
 	  throw dgtalio;
 	} 
     }
   while ( str[ 0 ] == '#' || str=="");
-  istringstream str_in( str );
+  std::istringstream str_in( str );
   unsigned int w, h;
   str_in >> w >> h;
   
@@ -106,21 +106,21 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
   TImageContainer image(domain);
 
   getline( infile, str );
-  istringstream str2_in( str );
+  std::istringstream str2_in( str );
   unsigned int max_value;
   str2_in >> max_value;  
 
   if ( ! infile.good() )
     {
-      trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+      trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
       throw dgtalio;
     } 
   
   unsigned int nb_read = 0;
   if(!isASCIImode)
-    infile >> noskipws;
+    infile >> std::noskipws;
   else
-    infile >> skipws;
+    infile >> std::skipws;
   
   for(unsigned int y=0; y <h; y++)
     for(unsigned int x=0; x <w; x++)
@@ -156,10 +156,10 @@ DGtal::PNMReader<TImageContainer>::importPGM(const std::string & aFilename, bool
       }
   if ( infile.fail() || infile.bad() )
     {
-      trace.error() << "# nbread=" << nb_read << endl;
+      trace.error() << "# nbread=" << nb_read << std::endl;
       throw dgtalio;
     }
-  infile >> skipws;
+  infile >> std::skipws;
   return  image;
 }
 
@@ -170,27 +170,27 @@ inline
 TImageContainer 
 DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) throw(DGtal::IOException)
 {
-  ifstream infile;
+  std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
   try 
     {
-      infile.open (aFilename.c_str(), ifstream::in);
+      infile.open (aFilename.c_str(), std::ifstream::in);
     }
   catch( ... )
     {
-      trace.error() << "PNMReader : can't open " << aFilename << endl;
+      trace.error() << "PNMReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
  
-  string str;
+  std::string str;
   getline( infile, str );
   if ( ! infile.good() ) {
-    trace.error() << "PNMReader : can't read " << aFilename << endl;
+    trace.error() << "PNMReader : can't read " << aFilename << std::endl;
     throw dgtalio;
   }
   if ( str != "P3d" &&  str != "P3D"){
-    trace.error() << "PNMReader : No P3d format in " << aFilename << endl;
+    trace.error() << "PNMReader : No P3d format in " << aFilename << std::endl;
     throw dgtalio;
   }
   
@@ -198,12 +198,12 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
     {
       getline( infile, str );
       if ( ! infile.good() ){
-	trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+	trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
 	throw dgtalio;
       } 
     }
   while ( str[ 0 ] == '#' || str=="");
-  istringstream str_in( str );
+  std::istringstream str_in( str );
   unsigned int w, h, e;
   str_in >> w >> h >> e ;
 
@@ -220,17 +220,17 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
   TImageContainer image(domain);
 
   getline( infile, str );
-  istringstream str2_in( str );
+  std::istringstream str2_in( str );
   int max_value;
   str2_in >> max_value;  
 
   if ( ! infile.good() ){
-    trace.error() << "PNMReader : Invalid format in " << aFilename << endl;
+    trace.error() << "PNMReader : Invalid format in " << aFilename << std::endl;
     throw dgtalio;
   } 
   unsigned int nb_read = 0;
 
-  infile >> noskipws;
+  infile >> std::noskipws;
   for(unsigned int z=0; z <e; z++){
     for(unsigned int y=0; y <h; y++){
       for(unsigned int x=0; x <w; x++){
@@ -247,10 +247,10 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
   }
   if ( infile.fail() || infile.bad() )
     {
-      trace.error() << "# nbread=" << nb_read << endl;
+      trace.error() << "# nbread=" << nb_read << std::endl;
       throw dgtalio;
     }
-  infile >> skipws;
+  infile >> std::skipws;
   return  image;
 }
 

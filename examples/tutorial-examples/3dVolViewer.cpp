@@ -44,9 +44,11 @@
 #include <boost/program_options/parsers.hpp>
 #include <boost/program_options/variables_map.hpp>
 
+#include "DGtal/helpers/StdDefs.h"
+
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
+using namespace DGtal::Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 namespace po = boost::program_options;

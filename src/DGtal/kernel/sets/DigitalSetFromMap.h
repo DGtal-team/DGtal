@@ -86,7 +86,7 @@ namespace DGtal
 
     typedef Pair1st<Point> Functor; 
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
-    typedef ConstIteratorAdapter<typename Image::Iterator, Functor, Point> Iterator;
+    typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> Iterator;
 
     // ------------------------- Protected Datas ------------------------------
   protected:

@@ -50,39 +50,39 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassRange
   /**
-DescriptionDescription of \b concept '\b CSinglePassRange' ###
-@ingroup Concepts
+     DescriptionDescription of \b concept '\b CSinglePassRange' ###
+     @ingroup Concepts
 
-\brief Aim: Defines the concept describing a range.
+     \brief Aim: Defines the concept describing a range.
 
-### Refinement of CSinglePassConstRange
+     ### Refinement of CConstSinglePassRange
 
-### Provided types:
+     ### Provided types:
 
-- Iterator: the iterator type, a model of iterator concept
-(see boost concept SinglePassIteratorConcept).
+     - Iterator: the iterator type, a model of iterator concept
+     (see boost concept SinglePassIteratorConcept).
 
-### Notation:
+     ### Notation:
 
-- x an object of a model of CSinglePassConstRange.
+     - x an object of a model of CSinglePassConstRange.
 
-Name | Expression | Type requirements | Return type | Precondition | Semantics | Post condition | Complexity|
------|------------|-------------------|-------------|--------------|-----------|----------------|-----------|
-begin| x.begin()  |                   | Iterator    |              |           |                |           |
-end  | x.end()    |                   | Iterator    |              |           |                |           |
+     Name | Expression | Type requirements | Return type | Precondition | Semantics | Post condition | Complexity|
+     -----|------------|-------------------|-------------|--------------|-----------|----------------|-----------|
+     begin| x.begin()  |                   | Iterator    |              |           |                |           |
+     end  | x.end()    |                   | Iterator    |              |           |                |           |
 
 
-### Invariants
+     ### Invariants
 
-### Models
+     ### Models
 
-### Notes
+     ### Notes
 
-@tparam T the type that is checked. T should be a model of CSinglePassRange.
+     @tparam T the type that is checked. T should be a model of CSinglePassRange.
 
    */
   template <typename T>
-  struct CSinglePassRange :  CConstSinglePassRange<T>
+  struct CSinglePassRange : CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -92,8 +92,8 @@ end  | x.end()    |                   | Iterator    |              |           |
 
     BOOST_CONCEPT_USAGE(CSinglePassRange)
     {
- Iterator it=i.begin();
- it=i.end();
+      Iterator it=i.begin();
+      it=i.end();
     };
 
   private:
