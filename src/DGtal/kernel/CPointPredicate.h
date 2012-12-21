@@ -79,7 +79,7 @@ Description of \b concept '\b CPointPredicate' <p>
  ### Notes###
    */
 template <typename T>
-struct CPointPredicate: CPredicate<T>
+struct CPointPredicate: CPredicate<T, typename T::Point>
   {
     // ----------------------- Concept checks ------------------------------
   public:
