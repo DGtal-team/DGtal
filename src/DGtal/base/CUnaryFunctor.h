@@ -54,7 +54,9 @@ Description of \b concept '\b CUnaryFunctor' <p>
      \brief Aim: Defines a unary functor, which
      associates arguments to results
 
-### Refinement of Assignable
+### Refinement of 
+
+ - boost::Assignable
 
 ### Associated types :
 
