@@ -89,7 +89,7 @@ void DGtal::detail::advanceIterator(IC& ic,
   BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<IC> )); 
   ASSERT(n >= 0); 
 
-  unsigned int counter = 0; 
+  int counter = 0; 
   while(counter < n)
     {
       ++ic; 
