@@ -46,17 +46,13 @@ In this package, we present DGtal tools and utilities to import/export images an
 
 @b Modules
 
-- \ref dgtal_dgtalboard (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
-- \ref threeD_visu (Bertrand Kerautret, Martial Tola)
-- \ref image_io (David Coeurjolly, Bertrand Kerautret)
+- \ref moduleBoard2D (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
+- \ref moduleDisplay3D (Bertrand Kerautret, Martial Tola)
+- \ref moduleIO (David Coeurjolly, Bertrand Kerautret)
 
 @b Package @b Concepts @b Overview
 
-- IOPackageConcepts
-
-@b Package @b Concepts @b Overview
- - \ref xxxPackageConcepts
-
+- packageIOConcepts
 
 
 */

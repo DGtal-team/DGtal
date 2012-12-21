@@ -1,5 +1,5 @@
 /**
- * @file imagePackageConcepts.dox
+ * @file packageImageConcepts.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page imgPackageConcepts Main Image Concepts
+@page packageImageConcepts Main Image Concepts
 @writers David Coeurjolly
 
 
