@@ -17,26 +17,24 @@
 #pragma once
 
 /**
- * @file IteratorTraits.h
+ * @file IteratorCirculatorTraits.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/18
  *
- * Header file for module IteratorTraits.cpp
- *
  * This file is part of the DGtal library.
  */
 
-#if defined(IteratorTraits_RECURSES)
-#error Recursive header files inclusion detected in IteratorTraits.h
-#else // defined(IteratorTraits_RECURSES)
+#if defined(IteratorCirculatorTraits_RECURSES)
+#error Recursive header files inclusion detected in IteratorCirculatorTraits.h
+#else // defined(IteratorCirculatorTraits_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IteratorTraits_RECURSES
+#define IteratorCirculatorTraits_RECURSES
 
-#if !defined IteratorTraits_h
+#if !defined IteratorCirculatorTraits_h
 /** Prevents repeated inclusion of headers. */
-#define IteratorTraits_h
+#define IteratorCirculatorTraits_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -243,7 +241,7 @@ struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::inpu
 
 /////////////////////////////////////////////////////////////////////////////
 /**
-* Description of template class 'IteratorTraits' <p>
+* Description of template class 'IteratorCirculatorTraits' <p>
 * \brief Aim: 
 *  Provides nested types for both iterators and circulators:   
 *  Type, Category, Value, Difference, Pointer and Reference. 
@@ -294,12 +292,12 @@ struct IteratorCirculatorTraits<T const*>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/base/IteratorTraits.ih"
+//#include "DGtal/base/IteratorCirculatorTraits.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IteratorTraits_h
+#endif // !defined IteratorCirculatorTraits_h
 
-#undef IteratorTraits_RECURSES
-#endif // else defined(IteratorTraits_RECURSES)
+#undef IteratorCirculatorTraits_RECURSES
+#endif // else defined(IteratorCirculatorTraits_RECURSES)
