@@ -6,7 +6,7 @@
  *
  * @date 2012/03/16
  *
- * Documentation file for feature TopologyPackageConcepts
+ * Documentation file for feature packageTopologyConcepts
  *
  * This file is part of the DGtal library.
  */
@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page TopologyPackageConcepts Topology Concepts and Models
+@page packageTopologyConcepts Topology Concepts and Models
 @writers Jacques-Olivier Lachaud
 
  @dot   

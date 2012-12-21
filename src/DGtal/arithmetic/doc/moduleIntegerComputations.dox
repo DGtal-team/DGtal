@@ -6,11 +6,11 @@ namespace DGtal {
 
 /*!
    
-@page dgtal_integer_computations  Integer computations
+@page moduleIntegerComputations  Integer computations
 
 @writers Jacques-Olivier Lachaud
 
-Part of the \ref pageArithmeticPackage.
+Part of the \ref packageArithmetic.
 
 This module gathers several functions to make computations with
 integers (either basic types or big integer representations). The main
