@@ -57,7 +57,8 @@ Description of \b concept '\b CSeparableMetric' <p>
 
 Separable metrics are metrics satsifying the monotonicity property. 
 
-### Refinement of CMetric.
+### Refinement of 
+  - CMetric.
 
 ### Associated types :
 
