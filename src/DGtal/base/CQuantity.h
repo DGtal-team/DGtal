@@ -57,7 +57,9 @@ Description of \b concept '\b CQuantity' <p>
      @ingroup Concepts
      @brief Aim: defines the concept of quantity in DGtal.
 
-###  Refinement of CLabel and boost::LessThanComparable
+###  Refinement of
+  -  CLabel 
+  -  boost::LessThanComparable
 
 ###  Associated types :
 
