@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page IteratorsRanges Iterators and ranges
+@page moduleIteratorsRanges Iterators and ranges
 @writers Tristan Roussillon
 
 [TOC]
@@ -267,7 +267,7 @@ incremental iterator.
 
 \subsection subsecIteratorRangesAdaptersCirculators  Circulators
 
-Like `Cgal <http://www.cgal.org/>`_, DGtal extends the concept of iterator to circular data structures
+Like [Cgal](http://www.cgal.org/ "CGAL"), DGtal extends the concept of iterator to circular data structures
  by defining the concept of circular iterator or *circulator* for short.
 
 The class Circulator is an adatper that creates a circulator from a classic iterator. 
@@ -462,7 +462,7 @@ they can be viewed as linear or circular range of elements.
 Segmentation algorithms extract from the whole range of elements,
  possibly overlapping subranges called *segments*. 
 
-See @ref modulegeometry2d for further details. 
+See @ref moduleGridCurveAnalysis for further details. 
 
 \subsection secIteratorRangesAppsImage Iterators and ranges in the Image package
 
