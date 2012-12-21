@@ -394,11 +394,11 @@ namespace DGtal
     }
 
     // ----------------------- Comparisons operators --------------------------------------
-    bool operator<( const Self& c) const 
+    bool operator<( const Self& /*c*/) const 
     {
       return true; 
     }
-    bool operator<=( const Self& c) const 
+    bool operator<=( const Self& /*c*/) const 
     {
       return true; 
     }
