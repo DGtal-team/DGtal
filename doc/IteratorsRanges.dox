@@ -88,10 +88,10 @@ rankdir=BT;
     color=black; 
     node [style=solid,color=black];
 
-  "IncrementableTraversalConcept" -> "SinglePassTraversalConcept";
-  "SinglePassTraversalConcept" -> "ForwardTraversalConcept";
-  "ForwardTraversalConcept" -> "BidirectionalTraversalConcept";
-  "BidirectionalTraversalConcept" -> "RandomAccessTraversalConcept";  
+"RandomAccessTraversalConcept" -> "BidirectionalTraversalConcept";
+"BidirectionalTraversalConcept" -> "ForwardTraversalConcept";
+"ForwardTraversalConcept" -> "SinglePassTraversalConcept";
+"SinglePassTraversalConcept" -> "IncrementableTraversalConcept";  
 
   }
 

@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testIteratorTraits.cpp
+ * @file testIteratorCirculatorTraits.cpp
  * @ingroup Tests
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/11/21
  *
- * Functions for testing class IteratorTraits.
+ * Functions for testing class IteratorCirculatorTraits.
  *
  * This file is part of the DGtal library.
  */
@@ -36,7 +36,7 @@
 #endif
 
 #include "DGtal/base/Common.h"
-#include "DGtal/base/IteratorTraits.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/base/Circulator.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -48,7 +48,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class IteratorTraits.
+// Functions for testing class IteratorCirculatorTraits.
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -81,7 +81,7 @@ bool compareCategory( IC, T ){
  * Test of the IteratorCirculatorTraits class
  * (Type and Category).
  */
-bool testIteratorTraits()
+bool testIteratorCirculatorTraits()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -183,7 +183,7 @@ bool testIteratorTraits()
  * Test of the IteratorCirculatorTraits class on adapters
  * (Type and Category).
  */
-bool testIteratorTraitsAndAdapters()
+bool testIteratorCirculatorTraitsAndAdapters()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -304,13 +304,13 @@ bool testIteratorTraitsAndAdapters()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class IteratorTraits" );
+  trace.beginBlock ( "Testing class IteratorCirculatorTraits" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testIteratorTraits() && testIteratorTraitsAndAdapters();
+  bool res = testIteratorCirculatorTraits() && testIteratorCirculatorTraitsAndAdapters();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
