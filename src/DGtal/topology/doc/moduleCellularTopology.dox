@@ -6,12 +6,12 @@ namespace DGtal {
 
 /**
 
-@page dgtal_cellular_topology  Cellular grid space and topology, unoriented and oriented cells, incidence
+@page moduleCellularTopology  Cellular grid space and topology, unoriented and oriented cells, incidence
 
 @writers by Jacques-Olivier Lachaud and Bertrand
 Kerautret
 
-  Part of the \ref TopologyPackage.
+  Part of the \ref packageTopology.
   [TOC]
 
 This part of the manual describes how to define cellular grid space

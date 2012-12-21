@@ -5,12 +5,12 @@ namespace DGtal {
 
 /**
    
-   @page dgtal_helpers_surfaces  Helpers for digital surfaces
+   @page moduleDigitalSurfaceHelpers Helpers for digital surfaces
    
    @writers Bertrand Kerautret and Jacques-Olivier
    Lachaud.
 
-  Part of the \ref TopologyPackage.
+  Part of the \ref packageTopology.
   
    This part of the manual describes how to use the helper class
    Surfaces to build digital surfaces, closed or open, or contours

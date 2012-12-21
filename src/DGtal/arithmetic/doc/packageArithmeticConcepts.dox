@@ -1,6 +1,6 @@
 
 /**
- * @file ArithmeticPackageConcepts.dox
+ * @file packageArithmeticConcepts.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page pageArithmeticPackageConcepts Arithmetic Concepts and Models
+@page packageArithmeticConcepts Arithmetic Concepts and Models
 @writers Jacques-Olivier Lachaud
 
  @dot   

@@ -5,14 +5,14 @@
 namespace DGtal {
 
 /*!
-@page image_io Image and digital object import/export
+@page moduleIO Image and digital object import/export
 @authors David Coeurjolly and Bertrand Kerautret
 
 This part of the manual describes how to import and export images and main DGtal objects from/to various formats. 
 
 [TOC]
 
-\section intro Introductrion
+\section introio Introductrion
 
 In DGtal, file readers and writers are located in the "io/readers/"
 and "io/writers/" folders respectively. Most of them are dedicated to
@@ -65,7 +65,7 @@ PGMWriter<Image, RedFunctor>::exportPGM("export-jet-red.pgm",image, redFunctor);
 \section imagefileformat Image file formats
 
 We first detail import/export format for DGtal images. Please refer to
-@ref moduleImage for details on images in DGtal and their associated
+@ref moduleImages for details on images in DGtal and their associated
 concepts. First of all:
 
  - Image @b readers are  classes templated by an image container type.
@@ -136,7 +136,7 @@ MeshFromPoints which can be exported (see. \ref exportMesh3D).
 \subsection importDigitalSet Importing a 3D digital set from volume file:
 
 Importing and visualizing a digital set from a vol file can be done in
-few code lines. (see. file <a href="digitalSetFromVol_8cpp-example.html"> digitalSetFromVol.cpp</a>). 
+few code lines. (see. digitalSetFromVol.cpp). 
 
 First we select the Image type with \c int:
 
@@ -175,7 +175,7 @@ Then you will obtain the following visualisation:
 
 \subsection importPointList Import 3D point list from file
 
-The example <a href="digitalSetFromPointList_8cpp-example.html" >  digitalSetFromPointList.cpp </a> shows a simple example of 3d set importation:
+The example digitalSetFromPointList.cpp shows a simple example of 3d set importation:
 
 @code
 vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
@@ -205,8 +205,7 @@ You may obtain the following visualisation:
 
 \subsection importMesh3D Import 3D mesh from OFF file
 
-The following example (<a href="io_2meshFromOFF_8cpp-example.html"> meshFromOFF.cpp
-</a>) shows in few lines how to import and display an OFF 3D mesh.
+The following example meshFromOFF.cpp shows in few lines how to import and display an OFF 3D mesh.
 Add the following headers to access to OFF reader and  Viewer3D:
 
 
@@ -226,7 +225,7 @@ You may obtain the following visualisation:
 \image html  visuTrefExample.png   "Visualisation of 3d imported Mesh "  width=5cm
 \image latex  visuTrefExample.png  "Visualisation of 3d imported Mesh" width=5cm
 
-You can also import large scale mesh, like the one of classic Angel scan ( available here: \href http://www.cc.gatech.edu/projects/large_models/ )
+You can also import large scale mesh, like the one of classic Angel scan ( available here:  http://www.cc.gatech.edu/projects/large_models/ )
 
 \image html visuImportOFF.png  "Visualisation of the 3d angel "  width=5cm
 \image latex visuImportOFF.png  "Visualisation of the 3d  angel" width=5cm
@@ -237,7 +236,7 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 
 \subsection exportMesh3D Export 3D mesh in OFF and OBJ format
 
-The following example (<a href="io_2display3DToOFF_8cpp-example.html"> display3DToOFF.cpp </a>  shows in few lines how to export in OFF format a
+The following example display3DToOFF.cpp   shows in few lines how to export in OFF format a
 MeshFromPoints object. This object will be exported from a Display3D
 object (see. display3DToOFF). 
 
@@ -270,7 +269,7 @@ The resulting mesh can be visualized for instance by using meshlab;
 
 This code can be useful if you want to generate illustrations in the
 U3D format. For instance by using the U3D/PDF export from MeshLab or
-JReality (\href www3.math.tu-berlin.de/jreality/). You can for
+JReality ( www3.math.tu-berlin.de/jreality/). You can for
 instance generate some exports in pdf like this example:
 
 
@@ -281,7 +280,7 @@ instance generate some exports in pdf like this example:
 
 
 
-(see this pdf file: \href https://liris.cnrs.fr/dgtal/wordpress/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
+(see this pdf file:  https://liris.cnrs.fr/dgtal/wordpress/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
 
 
 */
@@ -313,9 +312,9 @@ instance generate some exports in pdf like this example:
 /**
 *  Example of OFF generation from a Display3D object.
 
-   @see \ref exportMesh3D
+   @see @ref exportMesh3D
 
-   @image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (\ref http://meshlab.sourceforge.net). "
+   @image html visuDisplay3DToOFF.png   "Visualisation of the Display3D mesh export using MeshLab software (http://meshlab.sourceforge.net). "
 
-* \example io/display3DToOFF.cpp
-**/
+* @example io/display3DToOFF.cpp
+*/

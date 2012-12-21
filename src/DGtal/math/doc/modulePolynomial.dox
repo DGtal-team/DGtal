@@ -1,20 +1,58 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
 
-/* 
+/**
+ * @file Mathematics.dox
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/04/05
+ *
+ * Documentation file for feature Mathematics
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
+//----------------------------------------
+/*!
+@page modulePolynomial Multivariate polynomials
 
-/**
-   
-   @page dgtal_multivariate_polynomial Multivariate polynomials.
-   
-   @writers Felix Fontein (University of Zurich, http://spielwiese.fontein.de) and
-   adapted by Jacques-Olivier Lachaud. 
+@writers Felix Fontein, Jacques-Olivier Lachaud
 
-   Part of the \ref pagePolynomialModule.
-  
-   This part of the manual describes how to define multivariate
-   polynomials, like \f$ xy^2-yz \f$, \f$ x^4-y^2z^2+z^4 \f$, etc.
+@since 0.5
+
+@b LICENSE: LGPL
+
+Part of \ref packageMath.
+
+@b Module @b Overview
+
+This module provides classes to represent polynomials, like \f$
+x^3-3x-1 \f$, and multi-variate polynomials, like \f$ xy^2-yz \f$, \f$
+x^4-y^2z^2+z^4 \f$, etc.  The number of variables is fixed at
+compilation time. Essentially, a n-variate polynomial is defined as a
+standard polynomial whose coefficients are n-1-variate polynomials.
+
+The following examples are related to this module:
+- polynomial-derivative.cpp, polynomial2-derivative.cpp.
+- trackImplicitPolynomialSurfaceToOFF.cpp
 
 [TOC]
 
@@ -56,7 +94,7 @@ MPolynomial<2,double> P2;
 
 In fact, the complete polynomial type is MPolynomial <n, K, A>, where A is
 an allocator for K, for example std::allocator<K>; this is also the
-default parameter. Usually this parameter does not needs to be
+default parameter. Usually this parameter does not need to be
 changed.
 
 This is implemented recursively: MPolynomial <n, K> is a polynomial in
@@ -227,15 +265,15 @@ first- and second-order partial derivatives of a 2-variate polynomial.
 
 \subsection dgtal_mpolynomial_sec1_6 Computing euclidean division and greatest commond divisor (gcd)
 
-Finally, there exist functions euclidDiv(f, g, q, r), requiring
-parameters f, g of the const MPolynomial <1, K> & and q, r of type
+Finally, there exist functions euclidDiv() (parameters f, g, q, r), requiring
+parameters f, g of type const MPolynomial <1, K> & and q, r of type
 MPolynomial <1, K> &. This function computes q, r of f, g such that
 degree(r) < degree(g) and f = q*g + r, i.e. it does long division of
 f by g, storing the quotient in q and the remainder in r. Note that
 euclidDiv() only works if K is a field, or if everything appearing
 is divisible by g.leading().
 
-There is another function, gcd(f, g), accepting f, g of type const
+There is another function, gcd() (parameters f, g), accepting f, g of type const
 MPolynomial <1, K> & and returning a MPolynomial <1, K> object. It
 computes the monic greatest common divisor of f and g using the
 euclidean algorithm. In every step, the remainder is made
@@ -304,7 +342,7 @@ MPolynomial<3, double> P = //...
   This function takes 69ms for a step 0.01, for 8000000 evaluations.
 The C version where the function is explicitely compiled takes 22ms.
 
-\subsection dgtal_mpolynomial_sec3 Input and output for multivariate polynomials
+\section dgtal_mpolynomial_sec3 Input and output for multivariate polynomials
 
 You may simply output a polynomial an output stream with the usual
 operator<<.
@@ -369,6 +407,25 @@ d/dX_0 dP/dX_0(X_0,X_1) = 2
 d/dX_1 dP/dX_1(X_0,X_1) = 2
 @endverbatim
 
+\section dgtal_mpolynomial_sec4 Displaying implicit 3-variate polynomials
+
+If you wish to display surfaces defined as 0-locii of polynomials \f$
+P(x,y,z) \f$, then you may have a look at example
+trackImplicitPolynomialSurfaceToOFF.cpp. The following program
+extract a linear approximation of the given polynomial as a
+triangulated surface in OFF format.
+
+@verbatim
+$ ./examples/topology/trackImplicitPolynomialSurfaceToOFF "(x^2+y^2+2*z^2-1)*(z^2x-0.1)" -2 -2 -2 2 2 2 0.02
+# Digital surface has 112826 surfels.
+# output in marching-cube.off (in 1809ms)
+# You may display it with your favorite OFF displayer (like geomview, etc).
+$ ctmviewer marching-cube.off
+@endverbatim
+
+@image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+@image latex nice-mpolynomial.png width=0.5\textwidth "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+
 
 @see polynomial-read.cpp, polynomial-derivative.cpp, polynomial2-derivative.cpp.
 @see trackImplicitPolynomialSurfaceToOFF.cpp.
@@ -413,6 +470,5 @@ d/dX_1 dP/dX_1(X_0,X_1) = 2
 
 \example math/polynomial2-derivative.cpp
 */
-
 
 }
