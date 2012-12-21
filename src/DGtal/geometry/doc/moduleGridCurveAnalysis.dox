@@ -112,7 +112,7 @@ You can use the STL reverse iterator for that:
 http://www.sgi.com/tech/stl/ReverseIterator.html 
 
 
-	\subsection geometryGridCurve GridCurve and FreemanChain.
+\subsection geometryGridCurve GridCurve and FreemanChain.
 
 Two objects are provided in DGtal to deal with digital curves:
 GridCurve and FreemanChain.  
