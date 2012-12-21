@@ -76,12 +76,12 @@ namespace DGtal
     // ----------------------- public types ------------------------------
   public:
     typedef TDomain Domain;
-    typedef typename TDomain::Space Space;
-    typedef typename TDomain::Space::RealPoint RealPoint;
-    typedef typename TDomain::Point Point;
-    typedef typename TDomain::Vector Vector;
-    typedef typename TDomain::Predicate Predicate;
-    typedef typename TDomain::ConstIterator ConstIterator;
+    typedef typename Domain::Space Space;
+    typedef typename Domain::Space::RealPoint RealPoint;
+    typedef typename Domain::Point Point;
+    typedef typename Domain::Vector Vector;
+    typedef typename Domain::Predicate Predicate;
+    typedef typename Domain::ConstIterator ConstIterator;
     //Arithmetic
     typedef typename Space::Integer Integer;
     typedef typename Space::UnsignedInteger UnsignedInteger;
@@ -123,6 +123,25 @@ namespace DGtal
     static void euclideanShaper( TDigitalSet & aSet,
                                  const TShapeFunctor & aFunctor,
                                  const double h = 1.0);
+
+    /**
+       Add to the set \a aSet the points of the domain that satisfies
+       the predicate \a aPP.
+
+       @param aSet (modified) the digital set that will contain the points.
+       @param aPP a predicate on point.
+       
+       @tparam DigitalSet a model of CDigitalSet such that
+       DigitalSet::Domain is Domain.
+
+       @tparam PointPredicate a model of CPointPredicate such that
+       PointPredicate::Point is Point.
+     */
+    template < typename DigitalSet, typename PointPredicate >
+    static
+    void makeSetFromPointPredicate( DigitalSet & aSet,
+                                    const PointPredicate & aPP );
+    
     
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius

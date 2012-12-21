@@ -91,7 +91,7 @@ namespace DGtal
     typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     /// output iterator types
-    typedef SetValueIterator<TImage> OutputIterator; 
+    typedef SetValueIterator<TImage> OutputIterator;
     typedef SetValueIterator<TImage, typename Domain::ConstReverseIterator> ReverseOutputIterator;
 
     // ------------------------- standard services --------------------------------

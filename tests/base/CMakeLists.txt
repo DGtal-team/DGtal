@@ -20,6 +20,7 @@ SET(DGTAL_TESTS_SRC
    testMultiMap-benchmark
    testIteratorFunctions
    testIteratorCirculatorTraits
+   testCloneAndAliases
    testOwningOrAliasingPtr
    )
 

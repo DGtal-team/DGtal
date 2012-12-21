@@ -5,7 +5,9 @@ compiler:
   - clang
 
 env:
-  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
+  - BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
   - BTYPE="-DCMAKE_BUILD_TYPE=Release" 
   - BTYPE="-DCMAKE_BUILD_TYPE=Debug" 
 
@@ -17,11 +19,24 @@ before_script:
 matrix:
   exclude:
     - compiler: gcc
-      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true  -DWITH_CAIRO=true -DWITH_MAGICK=true -DWITH_GMP=true" 
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_QGLVIEWER=true" 
+    - compiler: gcc
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_CAIRO=true" 
+    - compiler: gcc
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug -DWITH_MAGICK=true -DWITH_GMP=true" 
+    - compiler: clang
+      env: BTYPE="-DCMAKE_BUILD_TYPE=Debug"
  
 
 script: 
   - cmake . $BTYPE
+  - make DGtal
+  - make DGtalIO
+  - cd examples
+  - make
+  - cd ../tests
+  - make
+  - cd ..
   - make
 
 after_script: 

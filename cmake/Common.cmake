@@ -30,11 +30,12 @@ foreach(p LIB BIN INCLUDE DATA)
 endforeach()
 
 # -----------------------------------------------------------------------------
-# Doxygen doc target
+# Doxygen targets
 # -----------------------------------------------------------------------------
 set(INSTALL_DOC_PATH ${CMAKE_INSTALL_PREFIX}/doc/${CMAKE_PROJECT_NAME} )
 INCLUDE(${CMAKE_MODULE_PATH}/doxygen.cmake)
 INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDoc.cmake OPTIONAL)
+INCLUDE(${CMAKE_MODULE_PATH}/TargetDoxygenDox.cmake OPTIONAL)
 
 # -----------------------------------------------------------------------------
 # uninstall target
