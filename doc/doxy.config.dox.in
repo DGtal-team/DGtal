@@ -749,6 +749,7 @@ EXAMPLE_RECURSIVE      = YES
 # the \image command).
 
 IMAGE_PATH             = @top_srcdir@/src/DGtal/doc/images \
+                         @top_srcdir@/src/DGtal/doc/tutorials/images \
                          @top_srcdir@/src/DGtal/base/doc/images \
                          @top_srcdir@/src/DGtal/kernel/doc/images \ 
                          @top_srcdir@/src/DGtal/io/doc/images \ 
