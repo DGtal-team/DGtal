@@ -74,7 +74,7 @@ namespace DGtal
   public:
     typedef TSpace Space;
     typedef typename Space::RealPoint RealPoint;
-    typedef pair<double,double> AngularCoordinates;
+    typedef std::pair<double,double> AngularCoordinates;
      
     /**
      * Constructor.
