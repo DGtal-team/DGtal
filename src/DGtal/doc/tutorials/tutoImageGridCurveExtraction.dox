@@ -118,7 +118,9 @@ you will obtain the followings contours:
 
 
 
-\section  FCfromImageTools Extracting and displaying contours from the DGtalTools project (https://github.com/DGtal-team/DGtalTools)
+\section  FCfromImageTools Extracting and displaying contours from the DGtalTools project 
+
+Project available in the DGtal website (@href http://libdgtal.org/tools/)
 
 
 The directory 2dContourTools contains command line program "pgm2freeman" 
@@ -149,7 +151,7 @@ You will obtain the following result in eps and pdf format (if cairo
 is installed on your system). 
 
 @image html images/churchLevelSets.png
-@image html images/churchLevelSets.png width=6cm "Church level sets."
+@image latex images/churchLevelSets.png width=6cm "Church level sets."
 
 
 By adding the obption @code
@@ -157,7 +159,7 @@ By adding the obption @code
 transparency.
 
 @image html images/churchLevelSetsTransp.png
-@image html images/churchLevelSetsTransp.png width=6cm "Church level sets."
+@image latex images/churchLevelSetsTransp.png width=6cm "Church level sets."
 
 
 \section secttutoImageGridCurveExctraction5 Required includes
