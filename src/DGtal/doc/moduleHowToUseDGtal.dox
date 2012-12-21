@@ -1,5 +1,5 @@
 /**
- * @file HowToUseDGtal.dox
+ * @file moduleHowToUseDGtal.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page HowToUseDGtal How to use DGtal in my own project ?
+@page moduleHowToUseDGtal How to use DGtal in my own project ?
 @writers David Coeurjolly
 
 

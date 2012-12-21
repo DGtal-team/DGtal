@@ -50,7 +50,7 @@ M. Tola (LIRIS, Lyon), X. Provençal (LAMA, Chambéry).
 
 @section package_description DGtal Packages
 
-  - \ref IntroductionPackage
+  - \ref packageIntroduction
   - \ref packageKernel
   - \ref packageArithmetic
   - \ref GeometryPackage
