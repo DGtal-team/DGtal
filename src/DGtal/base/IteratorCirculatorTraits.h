@@ -17,26 +17,24 @@
 #pragma once
 
 /**
- * @file IteratorTraits.h
+ * @file IteratorCirculatorTraits.h
  * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/06/18
  *
- * Header file for module IteratorTraits.cpp
- *
  * This file is part of the DGtal library.
  */
 
-#if defined(IteratorTraits_RECURSES)
-#error Recursive header files inclusion detected in IteratorTraits.h
-#else // defined(IteratorTraits_RECURSES)
+#if defined(IteratorCirculatorTraits_RECURSES)
+#error Recursive header files inclusion detected in IteratorCirculatorTraits.h
+#else // defined(IteratorCirculatorTraits_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define IteratorTraits_RECURSES
+#define IteratorCirculatorTraits_RECURSES
 
-#if !defined IteratorTraits_h
+#if !defined IteratorCirculatorTraits_h
 /** Prevents repeated inclusion of headers. */
-#define IteratorTraits_h
+#define IteratorCirculatorTraits_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -66,14 +64,14 @@ namespace detail
 
 /////////////////////////////////////////////////////////////////////////////
 /**
-* Description of template class 'HasNestedType' <p>
+* Description of template class 'HasNestedTypeType' <p>
 * \brief Aim: 
-*  Checks whether type \e IC has a nested type called 'Type' or not.
+*  Checks whether type @a IC has a nested type called 'Type' or not.
 *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
 *  @tparam IC any iterator or circulator
 */
   template <typename IC> 
-  struct HasNestedType 
+  struct HasNestedTypeType 
   {
     typedef char yes[1]; 
     typedef char no[2]; 
@@ -91,11 +89,12 @@ namespace detail
 /**
 * Description of template class 'IsCirculator' <p>
 * \brief Aim: 
-*  Checks whether type \e IC is a circular or a classical iterator.
+*  Checks whether type @a IC is a circular or a classical iterator.
 *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
+*  Static value set to 'true' for a circulator.  
 *  @tparam IC any iterator or circulator
 */
-  template <typename IC, bool flagHasNestedType = false> 
+  template <typename IC, bool flagHasNestedTypeType = false> 
   struct IsCirculator 
   {
     static const bool value = false; 
@@ -121,14 +120,16 @@ namespace detail
 /**
 * Description of template class 'IsCirculator' <p>
 * \brief Aim: 
-*  Checks whether type \e IC is a circular or a classical iterator.
-*
+*  Checks whether type @a IC is a circular or a classical iterator.
+*  1) if type @a IC has no nested type 'Type', it is a classical iterator. 
+*  2) if type @a IC has a nested type 'Type', this type is returned.
+*  Static value set to 'true' for a circulator.  
 *  @tparam IC any iterator or circulator
 */
 template <typename IC> 
 struct IsCirculator 
 {
-  static const bool value = detail::IsCirculator<IC, detail::HasNestedType<IC>::value >::value; 
+  static const bool value = detail::IsCirculator<IC, detail::HasNestedTypeType<IC>::value >::value; 
 };
 
 namespace detail
@@ -158,7 +159,8 @@ namespace detail
 /**
 * Description of template class 'IteratorCirculatorType' <p>
 * \brief Aim: 
-*  Provides the type of  \e IC as a nested type.
+*  Provides the type of @a IC as a nested type: 
+*  either IteratorType or CirculatorType
 *
 *  @tparam IC any iterator or circulator
 */
@@ -168,11 +170,17 @@ public:
   typedef typename detail::IteratorCirculatorTypeImpl<IsCirculator<IC>::value >::Type Type; 
 };
 
-/////////////////////////////////////////////////////////////////////////////
+//NB. To add a third type of iterator (let's say 'ThirdType'), 
+//you should add a meta function 'IsThird' (like 'IsCirculator')
+//and add a boolean template parameter in IteratorCirculatorTypeImpl
+//so that IteratorCirculatorTypeImpl can be specialized to define
+//the nested type 'Type' as 'ThirdType'.  
+
+//////////////////////////////////////////////////////////////////////
 /**
-* Description of template class 'IteratorCirculatorTagTraits' <p>
+* Description of template class 'ToDGtalCategory' <p>
 * \brief Aim: 
-*  Provides the category of the iterator (resp. circulator)  
+* Provides the DGtal category matching @a C   
 * {ForwardCategory,BidirectionalCategory,RandomAccessCategory}
 * 
 * @tparam C any category
@@ -180,63 +188,60 @@ public:
 
 //default
 template <typename C>
-struct IteratorCirculatorTagTraits {
+struct ToDGtalCategory {
     typedef  C  Category;
 };
 
 //for STL iterators
 template <>
-struct IteratorCirculatorTagTraits<std::forward_iterator_tag> {
+struct ToDGtalCategory<std::forward_iterator_tag> {
     typedef  ForwardCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<std::bidirectional_iterator_tag> {
+struct ToDGtalCategory<std::bidirectional_iterator_tag> {
     typedef  BidirectionalCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<std::random_access_iterator_tag> {
+struct ToDGtalCategory<std::random_access_iterator_tag> {
     typedef  RandomAccessCategory Category;
 };
 
 //for boost traversal categories
 template <>
-struct IteratorCirculatorTagTraits<boost::forward_traversal_tag> {
+struct ToDGtalCategory<boost::forward_traversal_tag> {
     typedef  ForwardCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<boost::bidirectional_traversal_tag> {
+struct ToDGtalCategory<boost::bidirectional_traversal_tag> {
     typedef  BidirectionalCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<boost::random_access_traversal_tag> {
+struct ToDGtalCategory<boost::random_access_traversal_tag> {
     typedef  RandomAccessCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
+struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::forward_traversal_tag> > {
     typedef  ForwardCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
+struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::bidirectional_traversal_tag> > {
     typedef  BidirectionalCategory Category;
 };
 
 template <>
-struct IteratorCirculatorTagTraits<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
+struct ToDGtalCategory<boost::detail::iterator_category_with_traversal<std::input_iterator_tag,boost::random_access_traversal_tag> > {
     typedef  RandomAccessCategory Category;
 };
-
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 /**
-* Description of template class 'IteratorTraits' <p>
+* Description of template class 'IteratorCirculatorTraits' <p>
 * \brief Aim: 
 *  Provides nested types for both iterators and circulators:   
 *  Type, Category, Value, Difference, Pointer and Reference. 
@@ -250,7 +255,7 @@ struct IteratorCirculatorTraits {
   typedef typename IteratorCirculatorType<IC>::Type
                                                                  Type;
 
-  typedef typename IteratorCirculatorTagTraits
+  typedef typename ToDGtalCategory
   <typename boost::iterator_category<IC>::type>::Category
                                                                  Category;
 
@@ -287,12 +292,12 @@ struct IteratorCirculatorTraits<T const*>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-//#include "DGtal/base/IteratorTraits.ih"
+//#include "DGtal/base/IteratorCirculatorTraits.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined IteratorTraits_h
+#endif // !defined IteratorCirculatorTraits_h
 
-#undef IteratorTraits_RECURSES
-#endif // else defined(IteratorTraits_RECURSES)
+#undef IteratorCirculatorTraits_RECURSES
+#endif // else defined(IteratorCirculatorTraits_RECURSES)
