@@ -1,5 +1,5 @@
 /**
- * @file 3dSimpleVolViewer.dox
+ * @file tutoImageGridVolume3dVolViewer.dox
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
@@ -21,15 +21,14 @@ namespace DGtal {
 @author Bertrand Kerautret
 
 
-   * This part of the manual describes a simple tool written in less 
-   * than 50 lines which allows to perform a simple 3D volume
-   * viewer.
-   *  
-   * The viewer is based on Viewer3D and the input file is simply a ".vol" and all voxels contained
-   * in an interval can be displayed in 3D. The source program 3dVolViewer.cpp can be found in the directory  
-   * \c tools/volumetric . We give here a rapid description of the main parts of the simple viewer.
-   *  
-   * First we set the program option using boost 
+  This part of the manual describes a simple tool written in less 
+  than 50 lines which allows to perform a simple 3D volume
+  viewer.
+   
+  The viewer is based on Viewer3D and the input file is simply a ".vol" and all voxels contained
+  in an interval can be displayed in 3D. The source program 3dVolViewer.cpp can be found in the DGtalTools project. We give here a rapid description of the main parts of the simple viewer.
+   
+  First we set the program option using boost 
    @code
    namespace po = boost::program_options;   
     general_opt.add_options()
