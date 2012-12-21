@@ -61,21 +61,6 @@
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CEuclideanRing.h"
 
-//#include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/Color.h"
-//#include "DGtal/io/Display3D.h"
-
-#ifdef _MSC_VER
-#if defined( max )
-#undef max 
-#define _HAS_MSVC_MAX_ true
-#endif
-#if defined( min )
-#undef min 
-#define _HAS_MSVC_MIN_ true
-#endif
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -683,6 +668,10 @@ namespace DGtal
      */ 
     Iterator minElement();
 
+    /**
+       Negates this vector.
+    */
+    void negate();
 
     /**
      * Specify the set of norm types

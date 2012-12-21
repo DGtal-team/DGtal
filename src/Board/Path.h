@@ -78,7 +78,7 @@ struct Path {
   /** 
    * Returns the n-th point of the polyline.
    * 
-   * @param i 
+   * @param n
    * 
    * @return 
    */
@@ -89,7 +89,7 @@ struct Path {
   /** 
    * Returns the n-th point of the polyline.
    * 
-   * @param i 
+   * @param n 
    * 
    * @return 
    */

@@ -47,7 +47,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +82,6 @@ namespace DGtal
     typedef SternBrocot<Integer,Quotient> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
 
   public:
 
