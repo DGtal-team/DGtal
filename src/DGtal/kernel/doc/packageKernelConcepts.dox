@@ -1,5 +1,5 @@
 /**
- * @file kernelPackageConcepts.dox
+ * @file packageKernelConcepts.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page kernelPackageConcepts Kernel and Base Concepts
+@page packageKernelConcepts Kernel and Base Concepts
 @writers David Coeurjolly
 
 

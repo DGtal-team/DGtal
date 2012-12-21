@@ -6,11 +6,11 @@ namespace DGtal {
 
 /**
    
-@page dgtal_digital_surface  Digital surfaces
+@page moduleDigitalSurfaces  Digital surfaces
 
 @writers Jacques-Olivier Lachaud
 
-  Part of the \ref TopologyPackage.
+  Part of the \ref packageTopology.
   
 This part of the manual describes how to define digital surfaces,
 closed or open. A lot of the ideas, concepts, algorithms,
@@ -81,7 +81,7 @@ surfel is a couple (u,v) of face-adjacent voxels. A \e digital \e
 surface is a set of surfels. It is obvious that a spel is a n-cell
 in the cellular grid decomposition of the space, while a surfel is
 clearly some oriented n-1-cell which is incident to the two n-cells
-u and v (see \ref dgtal_cellular_topology).
+u and v (see \ref moduleCellularTopology).
 
 Let \e s be some surfel. It is incident to two oriented voxels. By
 convention, its \e interior pixel is the one that is \b positively
@@ -277,7 +277,7 @@ closed. This process can be illustrated as follows:
 
 @subsection dgtal_digsurf_sec2_3 Other constructions by tracking: 2D contours, surface connected components, 2D slices in 3D surface
 
-You can have a look at page \ref dgtal_helpers_surfaces to see how
+You can have a look at page \ref moduleDigitalSurfaceHelpers to see how
 to construct directly a 2D contour in \f$ Z^2 \f$, how to get the
 set of surface components, how to get 2D contours as slices onto a
 3D surface.
@@ -687,6 +687,30 @@ $ ./examples/topology/volToOff ../examples/samples/lobster.vol 50 255 0
 @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
 
 \example topology/volToOFF.cpp
+*/
+
+/** 
+Implicit polynomial surface defined on the command-line by the
+user (as "(x^2+y^2+2z^2-1)*(z^2x-0.1)"), then extracted using digital
+surface tracking and converted into the corresponding combinatorial
+surface.
+
+@see \ref dgtal_mpolynomial_sec3
+@see \ref dgtal_digsurf_sec4_3
+
+@verbatim
+$ ./examples/topology/trackImplicitPolynomialSurfaceToOFF "(x^2+y^2+2*z^2-1)*(z^2x-0.1)" -2 -2 -2 2 2 2 0.02
+# Digital surface has 112826 surfels.
+# output in marching-cube.off (in 1809ms)
+# You may display it with your favorite OFF displayer (like geomview, etc).
+$ ctmviewer marching-cube.off
+@endverbatim
+
+@image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+@image latex nice-mpolynomial.png width=0.5\textwidth "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
+
+\example topology/trackImplicitPolynomialSurfaceToOFF.cpp
+
 */
 
 }
