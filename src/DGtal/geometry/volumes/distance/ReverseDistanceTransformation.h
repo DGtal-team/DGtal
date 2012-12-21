@@ -52,14 +52,8 @@
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-<<<<<<< HEAD
-#include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/CImage.h"
-=======
-#include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CBoundedNumber.h"
->>>>>>> masterDGtal
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

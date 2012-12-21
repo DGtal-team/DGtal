@@ -67,13 +67,7 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a sperable process to construct
-   * Power maps as discussed in 
-   *
-   *      Optimal Separable Algorithms to Compute the Reverse
-   *      Euclidean Distance Transformation and Discrete Medial Axis in
-   *      Arbitrary Dimension, D. Coeurjolly and A. Montanvert, IEEE
-   *      Transactions on Pattern Analysis and Machine Intelligence,
-   *      29(3):437-448, 2007.
+   * Power maps as discussed in @cite dcoeurjo_pami_RDMA
    *
    * Given an image mapping points to values and a power separable
    * metric, the class computes the power map of the weighted points
