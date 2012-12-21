@@ -35,7 +35,7 @@ example tutorial-examples/freemanChainFromImage.cpp
 \section step1 DigitalSet from thresholded image 
 
 The digitalSet can be obtained after thresholding a given image. As
-described in the section \ref image_io a image can simply be imported
+described in the section \ref moduleIO a image can simply be imported
 with readers as for instance in PNMReader: 
 
 @snippet freemanChainFromImage.cpp freemanChainFromImage-imageImport
@@ -99,7 +99,7 @@ following result where each contour are represented with a specific
 color:
 
 
-  @image html fcExtraction.png 
+  @image html images/fcExtraction.png 
 
 
 Note that if you change the SurfelAdjacency used in the contour extraction:
@@ -112,13 +112,15 @@ SurfelAdjacency<2> sAdj( false );
 you will obtain the followings contours:
 
 
- @image html fcExtraction2.png 
+ @image html images/fcExtraction2.png 
 
 
 
 
 
-\section  FCfromImageTools Extracting and displaying contours from the DGtalTools project (https://github.com/DGtal-team/DGtalTools)
+\section  FCfromImageTools Extracting and displaying contours from the DGtalTools project 
+
+Project available in the DGtal website (@href http://libdgtal.org/tools/)
 
 
 The directory 2dContourTools contains command line program "pgm2freeman" 
@@ -146,17 +148,18 @@ and can be displayed with the command line program "displayContours":
 
 
 You will obtain the following result in eps and pdf format (if cairo
-is installed on your system) (left image). By adding the obption @code
+is installed on your system). 
+
+@image html images/churchLevelSets.png
+@image latex images/churchLevelSets.png width=6cm "Church level sets."
+
+
+By adding the obption @code
 --alphaBG 0.5 @endcode the backgroundImage will be rendered with
-transparency (right image).
-<center>
-<table>
-<TR align=CENTER>
-<TD> @image html churchLevelSets.png </TD>
-<TD> @image html churchLevelSetsTransp.png </TD>
-</TR>
-</table>
-</center>
+transparency.
+
+@image html images/churchLevelSetsTransp.png
+@image latex images/churchLevelSetsTransp.png width=6cm "Church level sets."
 
 
 \section secttutoImageGridCurveExctraction5 Required includes
