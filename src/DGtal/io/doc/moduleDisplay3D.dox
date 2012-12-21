@@ -6,7 +6,7 @@
 namespace DGtal {
 
 /**
- * @page threeD_visu Display3D: a stream mechanism for displaying 3D DGtal objects 
+ * @page moduleDisplay3D Display3D: a stream mechanism for displaying 3D DGtal objects 
  *
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)

@@ -92,7 +92,6 @@ namespace DGtal
 
     /// output iterator types
     typedef SetValueIterator<TImage> OutputIterator;
-    typedef SetValueIterator<TImage> Iterator;
     typedef SetValueIterator<TImage, typename Domain::ConstReverseIterator> ReverseOutputIterator;
 
     // ------------------------- standard services --------------------------------
