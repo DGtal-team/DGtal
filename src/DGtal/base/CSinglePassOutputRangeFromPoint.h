@@ -52,40 +52,36 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassOutputRangeFromPoint
   /**
-Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
+     Description of \b concept '\b CSinglePassOutputRangeFromPoint' <p>
      @ingroup Concepts
      @brief Aim: refined concept of single pass range with a outputIterator() method from a point.
 
- ### Refinement of CSinglePassOutputRange
+     ### Refinement of CConstSinglePassRangeFromPoint and CSinglePassOutputRange
 
- ### Associated types :
+     ### Associated types :
 
- ### Notation
+     ### Notation
      - X : A type that is a model of CSinglePassOutputRangeFromPoint
      - x,  y : object of type X
      - Point: A type of Point
 
+     ### Definitions
 
- ### Definitions
+     ### Valid expressions and semantics
 
- ### Valid expressions and semantics
+     | Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
+     |-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
+     | output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
 
+     ### Invariants
 
+     ### Models
+     - ImageContainerBySTLVector::Range
 
-| Name  | Expression                 | Type requirements    | Return type   | Precondition | Semantics                                           | Post condition | Complexity |
-|-------|----------------------------|----------------------|---------------|--------------|-----------------------------------------------------|----------------|------------|
-| output iterator | outputIterator(const Point &aPoint) | aPoint of type Point | OutputIterator |              | Returns an output iterator on the range first element |                |            |
+     ### Notes
 
- ### Invariants
-
- ### Models
-
-     ImageContainerBySTLVector::Range
-
- ### Notes
-
-@tparam T the type that should be a model of CSinglePassOutputRangeFromPoint.
-@tparam Value the type of object t in (*it) = t.
+     @tparam T the type that should be a model of CSinglePassOutputRangeFromPoint.
+     @tparam Value the type of object t in (*it) = t.
 
    */
   template <typename T, typename Value>

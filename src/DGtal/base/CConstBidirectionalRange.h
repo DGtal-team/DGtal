@@ -44,11 +44,12 @@
 #include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
+namespace DGtal{
 
 /////////////////////////////////////////////////////////////////////////////
 // class CConstBidirectionalRange
 /**
-DescriptionDescription of \b concept '\b CConstBidirectionalRange'
+Description of \b concept '\b CConstBidirectionalRange'
 @ingroup Concepts
 
 \brief Aim: Defines the concept describing a bidirectional const range.
@@ -103,8 +104,6 @@ DescriptionDescription of \b concept '\b CConstBidirectionalRange'
 @tparam T the type that is checked. T should be a model of CConstBidirectionalRange.
 
  */
-namespace DGtal
-{
 template <typename T>
 struct CConstBidirectionalRange: CConstSinglePassRange<T>
 {

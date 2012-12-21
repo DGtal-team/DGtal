@@ -66,7 +66,7 @@
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 
-#include "DGtal/io/boards/Board2D.h"
+//#include "DGtal/io/boards/Board2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -247,7 +247,7 @@ static void draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> &
 // ImageContainerByHashTree
 template <typename C, typename Domain, typename Value, typename HashKey>
 static void drawImageRecursive( DGtal::Board2D & aBoard, 
-                         const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                         const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                          HashKey key,
                          const double p[2],
                          const double len,
@@ -256,7 +256,7 @@ static void drawImageRecursive( DGtal::Board2D & aBoard,
 
 template <typename C, typename Domain, typename Value, typename HashKey>
 static void drawImageHashTree( Board2D & board,
-                const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> &, 
+                const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> &,
                 const Value &, const Value & );
 // ImageContainerByHashTree
 
