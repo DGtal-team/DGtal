@@ -6,11 +6,11 @@ namespace DGtal {
 
 /*!
    
-@page dgtal_lattice_polytope_2d  Lattice polytopes in the digital plane ZxZ (convex polygons with vertices at integer coordinates)
+@page moduleLatticePolytope2D  Lattice polytopes in the digital plane ZxZ (convex polygons with vertices at integer coordinates)
 
 @writers Jacques-Olivier Lachaud
 
-Part of the \ref pageArithmeticPackage.
+Part of the \ref packageArithmetic.
 
 This module gathers classes and functions to represent lattice
 polytopes in 2D (otherwise saide, convex polygons with vertices at

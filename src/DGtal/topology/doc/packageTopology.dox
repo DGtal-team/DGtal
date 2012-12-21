@@ -20,7 +20,7 @@
  *
  * @date 2011/09/19
  *
- * Documentation file for feature Geometric
+ * Documentation file for package Topology
  *
  * This file is part of the DGtal library.
  */
@@ -32,7 +32,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page TopologyPackage Topology package
+@page packageTopology Topology package
    
 @managers Jacques-Olivier Lachaud
 
@@ -57,14 +57,14 @@ Since 0.4.1, high-level classes are provided to navigate onto digital
 surfaces and to represent the topology on the surface.
 
 @b Modules
- - \ref dgtal_topology (Jacques-Olivier Lachaud, Bertrand Kerautret)
- - \ref dgtal_cellular_topology (Jacques-Olivier Lachaud)
- - \ref dgtal_digital_surface (Jacques-Olivier Lachaud)
- - \ref dgtal_helpers_surfaces (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \ref moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \ref moduleCellularTopology (Jacques-Olivier Lachaud)
+ - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
+ - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
 
 
  @b Package @b Concepts @b Overview
- - \ref TopologyPackageConcepts
+ - \ref packageTopologyConcepts
 
 
  @b Related @b documentation @b pages
