@@ -1,5 +1,5 @@
 /**
- * @file FAQDGtalCmake.dox
+ * @file moduleBuildDGtal.dox
  * @authors David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr ) - Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQDGtalCmake Building DGtal
+@page moduleBuildDGtal Building DGtal
 @writers David Coeurjolly - Martial Tola
 
 
@@ -57,7 +57,7 @@ dependencies using:
 @code
 sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
 sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
-libgraphicsmagick++1-dev libinsighttoolkit3-dev libgdcm2-dev doxygen graphviz
+libgraphicsmagick++1-dev libinsighttoolkit3-dev doxygen graphviz
 @endcode
 
 An important feature of cmake is the "out-of-source" build
