@@ -1,5 +1,5 @@
 /**
- * @file tutorials.dox
+ * @file packageTutorials.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutorials Tutorials
+@page packageTutorials Tutorials
 @writers David Coeurjolly, Tristan Roussillon
 
 Table of contents:
