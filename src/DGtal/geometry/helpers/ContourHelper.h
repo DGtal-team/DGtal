@@ -68,7 +68,7 @@ public:
    *
    **/
   
-  static Z2i::Point getMeanPoint(vector<Z2i::Point> contour);
+  static Z2i::Point getMeanPoint(std::vector<Z2i::Point> contour);
   
 
 

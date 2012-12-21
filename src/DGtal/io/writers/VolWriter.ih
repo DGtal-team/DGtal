@@ -46,7 +46,7 @@ namespace DGtal {
   {
     DGtal::IOException dgtalio;
   
-    ofstream out;
+    std::ofstream out;
     typename I::Domain::Vector ext = aImage.extent();
     typename I::Domain domain = aImage.domain();
     typename I::Value val;
@@ -56,15 +56,15 @@ namespace DGtal {
 	out.open(filename.c_str());
 
 	//Vol format
-	out << "X: "<< ext[0]<<endl;
-	out << "Y: "<< ext[1]<<endl;
-	out << "Z: "<< ext[2]<<endl;
-	out << "Voxel-Size: 1"<<endl;
-	out << "Alpha-Color: 0"<<endl;
-	out << "Voxel-Endian: 0"<<endl;
-	out << "Int-Endian: 0123"<<endl;
-	out << "Version: 2"<<endl;
-	out << "."<<endl;
+	out << "X: "<< ext[0]<<std::endl;
+	out << "Y: "<< ext[1]<<std::endl;
+	out << "Z: "<< ext[2]<<std::endl;
+	out << "Voxel-Size: 1"<<std::endl;
+	out << "Alpha-Color: 0"<<std::endl;
+	out << "Voxel-Endian: 0"<<std::endl;
+	out << "Int-Endian: 0123"<<std::endl;
+	out << "Version: 2"<<std::endl;
+	out << "."<<std::endl;
 	
 	//We scan the domain instead of the image because we cannot
 	//trust the image container Iterator
@@ -81,7 +81,7 @@ namespace DGtal {
       }
     catch( ... )
       {
-	std::cout << "Vol writer IO error on export " << filename << endl;
+	trace.error() << "Vol writer IO error on export " << filename << std::endl;
 	throw dgtalio;
       }
     return true;
