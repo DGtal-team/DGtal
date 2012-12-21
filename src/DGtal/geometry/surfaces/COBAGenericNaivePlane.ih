@@ -204,7 +204,7 @@ extendAsIs( const Point & p )
         {
           bool ok = myComputers[ *it ].extendAsIs( p );
           if ( ! ok ) 
-            it = myAxes.erase( *it );
+            it = myAxes.erase( it );
           else
             ++it;
         }
