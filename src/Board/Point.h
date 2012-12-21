@@ -32,16 +32,13 @@ struct Point {
   /** 
    * Point constructor.
    * 
-   * @param x The point's first coordinate.
-   * @param y The point's second coordinate.
    */
   Point():x(0.0),y(0.0) { } 
 
   /** 
    * Point constructor.
    * 
-   * @param x The point's first coordinate.
-   * @param y The point's second coordinate.
+   * @param other
    */
   Point( const Point & other ):x(other.x),y(other.y) { } 
 
