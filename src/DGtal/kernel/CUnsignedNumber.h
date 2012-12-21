@@ -46,6 +46,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -62,7 +63,7 @@ Description of \b concept '\b CUnsignedNumber' <p>
      the isUnsigned property.
      
  ### Refinement of
-    
+    - CQuantity
     
  ### Associated types :
     
@@ -89,7 +90,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 
    */
   template <typename T>
-  struct CUnsignedNumber
+  struct CUnsignedNumber: CQuantity<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

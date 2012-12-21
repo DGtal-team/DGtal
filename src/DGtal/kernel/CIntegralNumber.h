@@ -47,6 +47,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -62,7 +63,9 @@ Description of \b concept '\b CIntegralNumber' <p>
      the isIntegral property.
      
  ### Refinement of 
-    
+   
+    - CQuantity<T>
+ 
  ### Associated types 
     
  ### Notation
@@ -92,7 +95,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
     
    */
   template <typename T>
-  struct CIntegralNumber
+  struct CIntegralNumber: CQuantity<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
