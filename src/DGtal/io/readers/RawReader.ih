@@ -45,7 +45,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   fin = fopen( filename.c_str() , "r" );
 
   if (fin == NULL) 
-      trace.error() << "RawReader : can't open "<< filename<<endl;
+    trace.error() << "RawReader : can't open "<< filename<<std::endl;
   
   
   typename T::Point firstPoint;
@@ -81,7 +81,7 @@ DGtal::RawReader<T>::importRaw8 (const std::string & filename, const Vector & ex
   
   if (count != size )
     {
-      trace.error() << "RawReader: error while opening file "<<filename<<endl;
+      trace.error() << "RawReader: error while opening file "<<filename<<std::endl;
       throw dgtalerror;
     }
   else
