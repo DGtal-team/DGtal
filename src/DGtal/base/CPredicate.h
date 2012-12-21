@@ -89,7 +89,7 @@ namespace DGtal
      kinds of predicates.
    */
   template <typename T, typename TElement>
-  struct CPredicate :  CUnaryFunctor<T,Element,bool>
+  struct CPredicate :  CUnaryFunctor<T,TElement,bool>
   {
     // ----------------------- Concept checks ------------------------------
   public:
