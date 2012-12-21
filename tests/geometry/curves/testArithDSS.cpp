@@ -49,7 +49,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/CDynamicBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 using namespace DGtal;
@@ -464,7 +464,7 @@ void testArithDSSConceptChecking()
    typedef std::vector<Point>::iterator Iterator; 
    typedef ArithmeticalDSS<Iterator,int,8> ArithDSS; 
    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
-   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<ArithDSS> ));
+   BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
 
 
