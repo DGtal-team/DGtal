@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Arithmetic.dox
+ * @file packageArithmetic.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page pageArithmeticPackage  Arithmetic package
+@page packageArithmetic  Arithmetic package
 
 @managers Jacques-Olivier Lachaud
 
@@ -67,15 +67,15 @@ Charrier and Lilian Buzer).
 
 @b Modules
 
-- \ref dgtal_integer_computations (Jacques-Olivier Lachaud)
-- \ref dgtal_irreducible_fraction (Jacques-Olivier Lachaud, Xavier Provençal)
-- \ref dgtal_digital_straightness (Jacques-Olivier Lachaud, Mouhammad Said)
-- \ref dgtal_lattice_polytope_2d (Jacques-Olivier Lachaud, Emilie Charrier)
+- \ref moduleIntegerComputations (Jacques-Olivier Lachaud)
+- \ref moduleIrreducibleFraction (Jacques-Olivier Lachaud, Xavier Provençal)
+- \ref moduleDigitalStraightness (Jacques-Olivier Lachaud, Mouhammad Said)
+- \ref moduleLatticePolytope2D (Jacques-Olivier Lachaud, Emilie Charrier)
 
 
 @b Package @b Concepts @b Overview
 
-- \ref pageArithmeticPackageConcepts
+- \ref packageArithmeticConcepts
 
 @b Related @b documentation @b pages
 

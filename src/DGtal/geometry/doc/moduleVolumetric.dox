@@ -1,5 +1,5 @@
 /**
- * @file volpackage.dox
+ * @file moduleVolumetric.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,18 +17,18 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleVolumetric nD Volumetric Analysis using Separable Processes Package
+@page moduleVolumetric nD Volumetric Analysis using Separable Processes
 
 [TOC]
 
 @author David Coeurjolly
 
-This part of the manual describes the DGtal volumetric package and its
+This part of the manual describes the DGtal volumetric module and its
 classes. We focus here on separable process based volumetric analysis such as distance transformation, reverse distance transformation and medial axis extraction.
 
 
 
-\section intro Introduction
+\section introVol Introduction
 
 For decades, distance transformation (DT) and geometrical skeleton
 extraction have been classic tools for shape analysis
