@@ -477,8 +477,7 @@ namespace DGtal
 
 
       /**
-       * @return a reverse version of '*this'.
-       * TODO : not implemented yet
+       * @return a default-constructed instance of Reverse
        */
       Reverse getReverse() const;
 
@@ -548,7 +547,6 @@ namespace DGtal
        * @param (returns) 'b' from the equation mu <= ax-by < mu + omega
        * @param (returns) 'mu' from the equation mu <= ax-by < mu + omega
        * @param (returns) 'omega' from the equation mu <= ax-by < mu + omega
-       * TODO test this !
        */
       void getArithmeticalDescription( Integer &a, Integer &b, Integer
           &mu, Integer &omega) const;
