@@ -54,14 +54,11 @@ namespace DGtal
 /**
  * Description of template class 'EuclideanShapesDecorator' <p>
  * \brief Aim: Union between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
+ *
+ * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+ * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
  */
 
-  /////////////////////////////////////////////////////////////////////////////
-  // template class EuclideanShapesUnion
-  /**
-   * Description of template class 'EuclideanShapesUnion' <p>
-   * \brief Aim:
-   */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesUnion
   {
@@ -206,6 +203,9 @@ namespace DGtal
   /**
    * Description of template class 'EuclideanShapesIntersection' <p>
    * \brief Aim: Intersection between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
+   *
+   * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+   * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesIntersection
@@ -363,6 +363,9 @@ namespace DGtal
   /**
    * Description of template class 'EuclideanShapesMinus' <p>
    * \brief Aim: Minus between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
+   *
+   * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+   * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesMinus

@@ -54,6 +54,9 @@ namespace DGtal
 /**
  * Description of template class 'DigitalShapesUnion' <p>
  * \brief Aim: Union between two models of CDigitalBoundedShape and CDigitalOrientedShape
+ *
+ * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesUnion
@@ -200,6 +203,9 @@ private:
 /**
  * Description of template class 'DigitalShapesIntersection' <p>
  * \brief Aim: Intersection between two models of CDigitalBoundedShape and CDigitalOrientedShape
+ *
+ * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesIntersection
@@ -357,6 +363,9 @@ private:
 /**
  * Description of template class 'DigitalShapesMinus' <p>
  * \brief Aim: Minus between two models of CDigitalBoundedShape and CDigitalOrientedShape
+ *
+ * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesMinus
