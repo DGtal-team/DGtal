@@ -45,6 +45,7 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -62,6 +63,7 @@ Description of \b concept '\b CBoundedNumber' <p>
      the isBounded property.
 
  ### Refinement of
+  - CQuantity<T>
 
  ### Associated types :
 
@@ -90,7 +92,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
      CBoundedNumber.
    */
   template <typename T>
-  struct CBoundedNumber
+  struct CBoundedNumber: CQuantity<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

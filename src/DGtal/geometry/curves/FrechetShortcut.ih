@@ -65,6 +65,18 @@ DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const Backpath &
 }
 
 
+template <typename TIterator, typename TInteger>
+inline
+typename DGtal::FrechetShortcut<TIterator,TInteger>::Backpath& DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::operator=(const Backpath & other)
+{
+  myS = other.myS;
+  myQuad = other.myQuad;
+  myFlag = other.myFlag;
+  myOcculters = other.myOcculters;
+  myForbiddenIntervals = IntervalSet(other.myForbiddenIntervals);
+  return *this;
+}
+
 
 template <typename TIterator, typename TInteger>
 inline
