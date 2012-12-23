@@ -170,13 +170,12 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                                                                               Clone< Cell > kOrigin,
                                                                                               Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
 {
-  ASSERT ( mask.size () == 9 );
-
-
   myItKernelBegin = itgbegin;
   myItKernelEnd = itgend;
   myKernelCellOrigin = kOrigin;
   myMask = mask;
+
+  ASSERT ( myMask.size () == 9 );
 
   isInit = true;
   isInitMask = true;
@@ -190,12 +189,12 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                                                                               Clone< Cell > kOrigin,
                                                                                               Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
 {
-  ASSERT ( mask.size () == 27 );
-
   myItKernelBegin = itgbegin;
   myItKernelEnd = itgend;
   myKernelCellOrigin = kOrigin;
   myMask = mask;
+
+  ASSERT ( myMask.size () == 27 );
 
   isInit = true;
   isInitMask = true;
