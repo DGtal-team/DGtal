@@ -1,0 +1,270 @@
+/**
+ * @file moduleBuildDGtal.dox
+ * @authors David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr ) - Martial Tola (\c martial.tola@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/05/04
+ * 
+ * Documentation file for feature FAQDGtalCmake
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleBuildDGtal Building DGtal
+@writers David Coeurjolly - Martial Tola
+
+
+This part of the manual describes how to build DGtal on Linux, Mac OS X and Windows. 
+
+[TOC]
+
+\section intro Introduction and first build
+
+The DGtal library uses <a href="http://www.cmake.org">cmake</a> to
+manage the project build on various systems.
+
+
+To build DGtal in is minimal configuration, you need at least these dependencies:
+
+- \e cmake (optionally cmake-gui),
+- \e c++ compiler (g++, clang++, ...)
+- \e boost >= 1.42.0 and boost-program-options.
+
+To build DGtal in is full configuration, you need these dependencies too:
+
+- \e gmp,
+- \e cairo,
+- \e qglviewer,
+- \e graphicsmagick,
+- \e insighttoolkit (ITK).
+
+If you want to generate the documentation, you would need:
+- \e doxygen >= 1.8.0,
+- \e graphviz.
+
+
+\subsection linux Build on Linux-based distributions
+
+From a clean Ubuntu installation, you can download and install all
+dependencies using:
+@code
+sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
+sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
+libgraphicsmagick++1-dev libinsighttoolkit3-dev doxygen graphviz
+@endcode
+
+An important feature of cmake is the "out-of-source" build
+process. Let us suppose that DGtal sources are in the DGTALSOURCES
+folder. Hence, in a terminal you can create a build folder:
+@code
+cd DGTALSOURCES
+mkdir build
+cd build
+@endcode
+
+Next, use the cmake command to generate your Unix Makefile project
+(default generator on Unix/Linux) like below for the minimal DGtal configuration:
+@code
+cmake ..
+@endcode
+
+For the full DGtal configuration, you have to set these options with cmake:
+@code
+cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true
+@endcode
+
+If no error occurs, you can build the DGtal lib and install it:
+@code
+make 
+sudo make install
+@endcode
+
+
+\subsection macos Build on Mac OS X
+
+First of all,
+
+- \e download and install Xcode : <a href="https://developer.apple.com/xcode/">https://developer.apple.com/xcode/</a>
+- \e with recent version of Xcode (for example 4.3.x) you need then to install the 'Command Line Tools' for Xcode. You can install them from inside Xcode's Download preferences. Finally, you also need to do that command:
+@code
+sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
+@endcode
+
+To install DGtal dependencies, we can use any of the available package managers (MacPorts,
+Fink, Homebrew). However, for DGtal, we recommend to use Homebrew (simpler, faster, ...):
+
+- \e download and install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then update it:
+@code
+/usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
+brew update
+@endcode
+
+From a clean Mac OS X Lion (10.7) installation, you first need to do that to install all the dependencies:
+@code
+brew install cmake doxygen graphviz boost
+brew install gmp cairo libqglviewer graphicsmagick
+@endcode
+
+Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
+@code
+tar zxvf InsightToolkit-4.1.0.tar.gz
+cd InsightToolkit-4.1.0
+mkdir build
+cd build
+cmake ..
+make
+sudo make install
+@endcode
+\b here \b 4.1.0 is an example but you may need to adjust the version number...
+
+Then, since recent Mac OS systems are unix-like operating systems, the
+easiest way to compile DGtal with cmake/make is to follow Linux-based instructions.
+
+
+\subsection win Build on Windows / Visual Studio
+
+First of all,
+
+- download and install CMake : http://www.cmake.org/cmake/resources/software.html
+
+- download and install Doxygen : http://www.stack.nl/~dimitri/doxygen/download.html#latestsrc
+- download and install Graphviz : http://www.graphviz.org/Download..php
+
+\subsubsection vs2008-32 Procedure with Visual Studio Express 2008 and 32 bit libraries
+
+- download and install Visual Studio Express 2008 SP1 : http://www.microsoft.com/downloads/fr-fr/details.aspx?FamilyID=3254C868-BCB9-412C-95C6-D100C872EC60
+
+- download and extract Boost headers (only \b "/boost" folder) from source tarball : http://sourceforge.net/projects/boost/files/boost/
+- download and extract Boost 32 bit Pre-Built Binaries (vc32-bin file) : http://boost.teeks99.com/
+- rename the \b "/lib32" folder to \b "/lib"
+- make a folder for Boost dependency with inside these 2 folders : the \b "/boost" folder (for the headers) and the \b "/lib" folder (for the libraries)
+
+- download and extract \b yasm \b Win32 : http://yasm.tortall.net/Download.html
+- copy "\mpir-2.2.1\build.vc9\yasm.rules" to the Visual C++ project defaults directory (mine is "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\VCProjectDefaults\")
+- rename file \b yasm-1.2.0-win32.exe to \b yasm.exe (here 1.2.0 is an example...)
+- move \b yasm.exe to the Visual C++ binary directory (mine is "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin\")
+
+- download and extract MPIR (GMP) source tarball : http://www.mpir.org/#release (important, latest for vs2008-32 is http://www.mpir.org/mpir-2.2.1.tar.bz2), then
+- open the MPIR Visual C++ solution "\mpir-2.2.1\build.vc9\mpir.sln" (\b ignore \b errors) and build \b lib_mpir_gc project in \b Win32 \b Release mode
+- library and header files are then in "\mpir-2.2.1\build.vc9\lib\Win32\Release" folder
+
+- download and extract Qt 32 bit Pre-Built Binaries : http://qt.nokia.com/downloads/windows-cpp-vs2008
+- set a new \b QTDIR environment variable with your \b Qt folder (example "QTDIR=C:\dev32\libs\Qt-4.8.1")
+- add at the end of your \b PATH environment variable your Qt \b bin path (example "Path=...;C:\dev32\libs\Qt-4.8.1\bin")
+- put a \b qt.conf file in your \b Qt \b bin folder, ie just a text file like this one:
+@code
+[Paths]
+Prefix = $(QTDIR)
+@endcode
+
+- download and extract libQGLViewer source tarball : http://www.libqglviewer.com/src/libQGLViewer-2.3.16.zip (here 2.3.16 is an example...)
+- open a Command Prompt window (in 'Start button' - 'All Programs' - 'Accessories'), go inside "libQGLViewer-2.3.16\QGLViewer" folder and then do:
+@code
+qmake -t vclib QGLViewer.pro -spec win32-msvc2008
+@endcode
+- open the \b QGLViewer.vcproj (in QGLViewer folder) with Visual Studio and compile in \b Win32 \b Release mode and then in \b Win32 \b Debug mode 
+- library files are then in "QGLViewer\release" and in "QGLViewer\debug"
+
+\subsubsection vs2010-64 Procedure with Visual Studio Express 2010 and 64 bit libraries
+
+- 1) download and install Visual Studio Express 2010 : http://go.microsoft.com/?linkid=9709972
+- 2) download and install Windows SDK 7.1 (ie MSDK for Windows 7 and .NET Framework 4) : http://download.microsoft.com/download/F/1/0/F10113F5-B750-4969-A255-274341AC6BCE/GRMSDKX_EN_DVD.iso
+- 3) download and install Visual Studio Express 2010 SP1 : http://go.microsoft.com/fwlink/?LinkId=210710
+- 4) download and install Visual C++ 2010 SP1 Compiler Update for the Windows SDK 7.1 : http://download.microsoft.com/download/7/5/0/75040801-126C-4591-BCE4-4CD1FD1499AA/VC-Compiler-KB2519277.exe
+
+- download and extract Boost headers (only \b "/boost" folder) from source tarball : http://sourceforge.net/projects/boost/files/boost/
+- download and extract Boost 64 bit Pre-Built Binaries (vc64-bin file) : http://boost.teeks99.com/
+- rename the \b "/lib64" folder to \b "/lib"
+- make a folder for Boost dependency with inside these 2 folders : the \b "/boost" folder (for the headers) and the \b "/lib" folder (for the libraries)
+
+- download and extract \b vsyasm \b Win64-VS2010 : http://yasm.tortall.net/Download.html and follow the \b readme.txt instructions for integrating \b yasm into Visual Studio 2010
+
+- download and extract MPIR (GMP) source tarball : http://www.mpir.org/#release and then
+- open the MPIR Visual C++ solution "\mpir-2.5.0\build.vc10\mpir.sln" and build \b lib_mpir_gc project in \b x64 \b Release mode (here 2.5.0 is an example...)
+- library and header files are then in "\mpir-2.5.0\build.vc10\x64\Release" folder
+
+- download and extract Qt source tarball : http://download.qt.nokia.com/qt/source/qt-everywhere-opensource-src-4.8.1.tar.gz (here 4.8.1 is an example...)
+- download and install Perl from ActivePerl: http://www.activestate.com/activeperl/downloads
+- open a windows sdk V7.1 prompt (in 'Start button' - 'All Programs' - 'Microsoft Windows SDK v7.1') and then do:
+@code
+SetEnv /Release /x64
+configure -platform win32-msvc2010 -debug-and-release -qt-zlib -qt-libpng -qt-libmng -qt-libtiff -qt-libjpeg -nomake examples -nomake demos -no-qt3support
+nmake
+@endcode
+
+- set a new \b QTDIR environment variable with your \b Qt folder (example "QTDIR=C:\dev64\libs\Qt-4.8.1")
+- add at the end of your \b PATH environment variable your Qt \b bin path (example "Path=...;C:\dev64\libs\Qt-4.8.1\bin")
+- put a \b qt.conf file in your \b Qt \b bin folder, ie just a text file like this one:
+@code
+[Paths]
+Prefix = $(QTDIR)
+@endcode
+
+- download and extract libQGLViewer source tarball : http://www.libqglviewer.com/src/libQGLViewer-2.3.16.zip (here 2.3.16 is an example...)
+- open a windows sdk V7.1 prompt (in 'Start button' - 'All Programs' - 'Microsoft Windows SDK v7.1'), go inside "libQGLViewer-2.3.16\QGLViewer" folder and then do:
+@code
+SetEnv /Release /x64
+qmake -t vclib QGLViewer.pro -spec win32-msvc2010
+@endcode
+- open the \b QGLViewer.vcxproj (in QGLViewer folder) with Visual Studio and compile in \b x64 \b Release mode and then in \b x64 \b Debug mode 
+- library files are then in "QGLViewer\release" and in "QGLViewer\debug"
+
+
+\subsubsection cairo Cairo dependency
+
+Because on Windows, Cairo dependencies are \b MSYS, \b curl, \b zlib, \b libpng, \b pixman and a bit long & not so easy to compile,
+we provide for you the Cairo library and headers files for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2008%20x86.rar">vs2008-32</a> and for <a href="http://liris.cnrs.fr/dgtal/releases/cairo-1.8.8_VS2010%20x64.rar">vs2010-64</a>.
+
+
+Then, finally, use the cmake Windows interface (\b cmake-gui) to generate your Visual Studio
+project. Again, a good practise is to specify a different build
+folder.
+
+On windows, there are no specific locations in the folder
+tree where cmake could find the include files and DLLs shared libraries of the DGtal
+dependencies. Hence, you will have to \b manually set the paths
+to find the dependencies.
+
+For example, with cmake-gui,
+  - \e the \b boost dependency must be set with a new \b BOOST_ROOT \b path option (with "+ Add Entry" button)
+  - \e the \b gmp-mpir dependency must be set with \b GMPXX_LIBRARIES (mpir.lib \b and \b not mpirxx.lib, important!) and \b GMP_LIBRARIES (mpir.lib too) \b file options and \b GMP_INCLUDE_DIR \b path option
+  - \e the \b cairo dependency must be set with \b CAIRO_LIBRAIRIES (cairo.lib \b and \b not cairo-static.lib, important!) \b file option and \b CAIRO_INCLUDE_DIRS \b path option
+  - \e the \b qglviewer dependency must be set with \b QGLVIEWER_LIBRARY_DEBUG (QGLViewerd2.lib) and \b QGLVIEWER_LIBRARY_RELEASE (QGLViewer2.lib) \b file options and \b QGLVIEWER_INCLUDE_DIR \b path option
+
+Important:
+- \e \b BUILD_SHARED_LIBS (ON/OFF) must be \b OFF actually on \b Windows!
+
+Once the Visual Studio project as been  created, you just have to simply open it
+with VS and compile it (but for the moment there are still compilation errors on Windows with some modules...).
+
+
+\section cmakeDGtal DGtal cmake options
+
+In DGtal CMakeLists.txt, several options can be specified to custom the
+library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) such as:
+  - \e CMAKE_BUILD_TYPE
+     - \b Debug: debug mode (e.g. C++ debug flags, DEBUG variable, ...)
+     - \b Release: release build (e.g. optimized C++ compiler options, NDEBUG variable, ...)
+  - \e CMAKE_INSTALL_PREFIX: a string containing the DGtal install path
+  (e.g. by default on some linux: "/usr/local/").
+
+Beside these options, user can also specify these options:
+
+- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
+- \e BUILD_TESTING (ON/OFF): to build the test suite (default: ON)
+
+- \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
+ (default: OFF). If set to ON and in \b Debug build type, verbose
+debug messages are traced out.
+
+- \e \b BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows!
+*/
+
+}
