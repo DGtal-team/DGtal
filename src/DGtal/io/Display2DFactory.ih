@@ -626,14 +626,46 @@ template <typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
            const GridCurve<TKSpace> & object )
 {
+
+  std::string mode = aBoard.getMode( object.className() );
+  if(mode=="Fill"){
+    DGtal::Display2DFactory::drawFill(aBoard, object);
+  }else{
     typedef typename GridCurve<TKSpace>::ConstIterator ConstIterator; 
     ConstIterator it ( object.begin() ); 
     ConstIterator itEnd ( object.end() ); 
     for( ; it != itEnd; ++it)
       {
-	      aBoard << *it;
+	aBoard << *it;
       }
+  }
 }
+
+template <typename TKSpace>
+void DGtal::Display2DFactory::drawFill( DGtal::Board2D & aBoard, 
+				    const GridCurve<TKSpace> & object )
+{
+
+    
+  typedef typename GridCurve<TKSpace>::PointsRange::ConstIterator Iterator; 
+  typedef typename GridCurve<TKSpace>::PointsRange Range; //range
+
+  Range r = object.getPointsRange(); 
+  Iterator it (r.begin());
+  Iterator itEnd (r.end());
+  
+  std::vector< LibBoard::Point > aPolygon;
+  for( ; it != itEnd; ++it)
+    {
+      LibBoard::Point pt((*it)[0], (*it)[1]);
+      aPolygon.push_back(pt);
+    }
+  aBoard.fillPolyline(aPolygon);
+}
+
+
+
+
 // GridCurve
 
 // SCellsRange

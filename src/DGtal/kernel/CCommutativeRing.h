@@ -62,10 +62,6 @@ Description of \b concept '\b CCommutativeRing' <p>
 
  ### Refinement of 
   - CSignedNumber<T>
-  - boost::Assignable<T>, 
-  - boost::EqualityComparable<T>
-  - boost::LessThanComparable<T>
-  - boost::DefaultConstructible<T>
 
  ### Associated types :
 
@@ -100,8 +96,7 @@ Opposite operator                    | - @e x     |                    | @a X   
 @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : CSignedNumber<T>, boost::Assignable<T>,
-    boost::EqualityComparable<T>, boost::LessThanComparable<T>, boost::DefaultConstructible<T>
+  struct CCommutativeRing : CSignedNumber<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:
