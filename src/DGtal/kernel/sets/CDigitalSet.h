@@ -47,6 +47,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,7 +64,9 @@ Description of \b concept '\b CDigitalSet' <p>
      @brief Aim: Represents a set of points within the given
      domain. This set of points is modifiable by the user.
      
- ### Refinement of boost::CopyConstructible, boost::Assignable
+ ### Refinement of 
+   - boost::CopyConstructible
+   - boost::Assignable
 
      @todo add boost::Container ? Not for now, since coding style do
      not match with STL (e.g. Iterator instead of iterator).
@@ -123,16 +126,12 @@ Description of \b concept '\b CDigitalSet' <p>
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
 
-    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Iterator > ));
-    //    BOOST_CONCEPT_ASSERT(( boost_concepts::LvalueIteratorConcept<Iterator > ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<Iterator > ));
-//DigitalSetFromMap cannot be a model of CDigitalSet if lvalue is required because 
-//in STL maps, in pairs <const key, value>, key is const... 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<Iterator > ));
-
-    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<ConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
+    //following the STL concept of simple associative container 
+    //the nested types Iterator and ConstIterator should be the same type
+    BOOST_STATIC_ASSERT(( boost::is_same<Iterator,ConstIterator>::value ));  
 
     // To test if two types A and Y are equals, use
     // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    

@@ -52,7 +52,7 @@
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
-#include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
 

@@ -78,6 +78,7 @@ namespace DGtal
 
     /// Pattern to be used to indent the messages.
 #define TRACE_PATTERN "  "
+#define PROGRESSBARWIDTH 60
 
 
     /**
@@ -149,10 +150,10 @@ namespace DGtal
      * Display a progress bar in the terminal.
      * 
      * @param currentValue current step of the progress bar
-     * @param maximalValue expected maximal value
+     * @param maximalValue expected maximal value (must be >0)
      */
     void progressBar(const double currentValue, 
-                     const double maximalValue) const;
+                     const double maximalValue);
     
 
    // ----------------------- Interface --------------------------------------
@@ -188,6 +189,9 @@ namespace DGtal
     ///A stack to store the block clocks
     std::stack<Clock*> myClockStack;
 
+    ///Progress bar current position
+    unsigned int myProgressBarCurrent;
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -213,7 +217,7 @@ namespace DGtal
   
     // ------------------------- Internals ------------------------------------
   private:
-  
+
   }; // end of class Trace
 
 

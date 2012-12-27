@@ -65,19 +65,7 @@ namespace DGtal
    * construction.
 
    * The algorithm uses a sperable process to construct Voronoi maps
-   * which has been described in:
-   *
-   *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). "A Linear Time Algorithm
-   *     for Computing Exact Euclidean Distance Transforms of Binary Images in
-   *     Arbitrary Dimensions". IEEE Trans. Pattern Analysis and Machine
-   *     Intelligence, 25pp265-270.
-   *
-   * and 
-   *   
-   *     Coeurjolly, D. (2002). "Algorithmique et géométrie discrète pour
-   *     la caractérisation des courbes et des surfaces". PhD Thesis,
-   *     Université Lumière Lyon 2.
-   *
+   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these
    *
    * Given a domain and a point predicate, an instance returns, for
    * each point in the domain, the closest point for which the
