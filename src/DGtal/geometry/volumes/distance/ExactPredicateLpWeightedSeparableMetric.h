@@ -44,7 +44,7 @@
 #include <cmath>
 #include "DGtal/base/Common.h"
 #include "DGtal/math/BasicMathFunctions.h"
-#include "DGtal/base/CQuantity.h"
+#include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////

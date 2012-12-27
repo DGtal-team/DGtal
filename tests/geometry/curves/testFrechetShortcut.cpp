@@ -125,7 +125,6 @@ void testFrechetShortcutConceptChecking()
   BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<Shortcut> ));
 }
 
-
 bool testSegmentation()
 {
   unsigned int nbok = 0;
@@ -192,7 +191,8 @@ bool testSegmentation()
       board << (*it); 
       nb++;
     }
-    
+
+    //board << aCurve;
     trace.info() << theSegmentation << std::endl;
     board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
   }
