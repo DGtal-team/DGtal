@@ -279,6 +279,93 @@ bool testWeightedMetrics()
   return nbok == nb;
 }
 
+bool testSpecialCasesLp()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Testing Special Cases Lp..." );
+  ExactPredicateLpSeparableMetric<Z2i::Space, 1> metric;
+  Z2i::Point a(5,7),b(5,8),bb(6,8),bbb(7,8),c(5,9);
+  Z2i::Point starting(4,0), endpoint(4,15);
+  
+  bool hidden  =metric.hiddenBy(a,b,c,starting,endpoint,1);
+  nbok += (!hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,b,c) returns false" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(b, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,1);
+  nbok += (!hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,bb,c) returns false" << std::endl;
+  
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(bb, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  
+  hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,1);
+  nbok += (hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,bbb,c) returns true" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(bbb, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  trace.endBlock();
+  return nbok == nb;
+}
+
+bool testSpecialCasesL2()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  //Pythagorician triplet to check predicate
+  trace.beginBlock ( "Testing Special Cases L2..." );
+  ExactPredicateLpSeparableMetric<Z2i::Space, 2> metric;
+  Z2i::Point a(8,5),b(8,8),bb(9,8),bbb(10,8),c(8,11);
+  Z2i::Point starting(4,0), endpoint(4,15);
+  
+  bool hidden  =metric.hiddenBy(a,b,c,starting,endpoint,1);
+  nbok += (!hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,b,c) returns false" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(b, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,1);
+  nbok += (!hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,bb,c) returns false" << std::endl;
+  
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(bb, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  
+  hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,1);
+  nbok += (hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,bbb,c) returns true" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
+  << metric.distance(bbb, Z2i::Point(4,8))<<" "
+  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  trace.endBlock();
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -292,7 +379,9 @@ int main( int argc, char** argv )
 
   bool res = testMetrics()
     && testInexactMetrics()
-    && testWeightedMetrics(); // && ... other tests
+    && testWeightedMetrics()
+    && testSpecialCasesL2()
+    && testSpecialCasesLp();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

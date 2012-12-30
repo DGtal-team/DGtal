@@ -141,7 +141,7 @@ namespace DGtal
     /**
      *  Constructor
      */
-    DistanceTransformation( const Domain * aDomain,
+    DistanceTransformation(const Domain * aDomain,
                            const PointPredicate * predicate,
                            const SeparableMetric * aMetric):
       VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,predicate,aMetric)

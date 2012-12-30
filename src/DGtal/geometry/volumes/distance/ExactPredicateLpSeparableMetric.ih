@@ -123,14 +123,21 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa
   
   //Recurrence stop 
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
-    return lower;
+   {
+     Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower )), p);
+     Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - lower )), p);
+     if (nuUpdated <= nvUpdated)
+       return upper;
+     else
+        return lower;
+    }
   
   Abscissa mid = (lower + upper)/2;
   Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - mid )), p);
   Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - mid )), p);
       
   //Recursive call
-  if ( nuUpdated < nvUpdated)
+  if ( nuUpdated <= nvUpdated)
     return binarySearchHidden(udim,vdim,nu,nv,mid,upper);
   else
     return binarySearchHidden(udim,vdim,nu,nv,lower,mid);
