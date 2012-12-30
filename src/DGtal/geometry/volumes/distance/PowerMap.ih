@@ -92,7 +92,7 @@ DGtal::PowerMap<W, Sep,Im>::compute( )
       myImagePtr->setValue ( *it, myInfinity );
   
   //We process the dimensions one by one
-  for ( Dimension dim = 0; dim <  W::Domain::Space::dimension ; dim++ )
+  for ( Dimension dim = 0; dim < W::Domain::Space::dimension ; dim++ )
     computeOtherSteps ( dim );
 }
 

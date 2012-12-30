@@ -234,8 +234,11 @@ namespace DGtal
      /** 
      * Perform a binary search on the interval [lower,upper] to
      * detect the mid-point between u and v according to the l_p
-     * distance.
+     * distance. It returns the abscissa @a q such that q belongs to 
+     * the power cell of v (strictly) but not @a q-1.
      * 
+     * @pre udim < vdim
+     *
      * @param udim coordinate of u along dimension dim
      * @param vdim coordinate of v along dimension dim
      * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding

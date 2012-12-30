@@ -186,6 +186,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testCompareExactBruteForce<Z2i::Space, 2>(32, 8)
+  && testCompareExactBruteForce<Z2i::Space, 1>(32, 8)
   && testCompareExactBruteForce<Z3i::Space, 2>(16, 8)
   && testCompareExactBruteForce<Z2i::Space, 4>(32, 8)
   && testCompareInexactBruteForce<Z2i::Space>(2.0,32, 8) 
