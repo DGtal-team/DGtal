@@ -79,9 +79,9 @@ aMesh2.addPointInMesh(Point(8,8));
 
 aMesh2.addPointInMesh(Point(8,9));
 aMesh2.addPointInMesh(Point(5,9));
-aMesh2.addPointInMesh(Point(3,4));
+DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew = aMesh2.addPointInMesh(Point(3,4));
  aMesh2.addPointInMesh(Point(5,2));
-DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(6,6));
+aMesh2.addPointInMesh(Point(6,6));
 
 
 
@@ -89,10 +89,12 @@ DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPo
 
 //  DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(4,4));
 
-Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr1, 1);
+Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr3, 1);
 
-std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(indexNew.indexTr1);
-std::vector<Point>  tr2 =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(indexNew.indexTr1,1));
+std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(indexNew.indexTr3);
+std::vector<Point>  tr2 =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(indexNew.indexTr3, 1));
+
+
 
 
 //std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(11);
@@ -111,18 +113,18 @@ Board2D aBoard;
   aBoard  << aMesh2 ;
   aBoard.setPenColor(DGtal::Color(200,20,20));
 
-  aBoard.setLineWidth(0.4);
+
   aBoard.setPenColor(DGtal::Color(200,200,20));
   aBoard.fillTriangle(LibBoard::Point(tr1.at(0)[0],tr1.at(0)[1]), 
 			LibBoard::Point(tr1.at(1)[0],tr1.at(1)[1]),
 			LibBoard::Point(tr1.at(2)[0],tr1.at(2)[1]));
-  aBoard.setPenColor(DGtal::Color(200,20,200));
+  aBoard.setPenColor(DGtal::Color(100,100,100));
   aBoard.fillTriangle(LibBoard::Point(tr2.at(0)[0],tr2.at(0)[1]), 
 			LibBoard::Point(tr2.at(1)[0],tr2.at(1)[1]),
 			LibBoard::Point(tr2.at(2)[0],tr2.at(2)[1]));
-
-  aBoard.setPenColor(DGtal::Color(200,20,20));
-aBoard.drawLine(adjPt1[0], adjPt1[1],6, 6);  
+  aBoard.setLineWidth(2);
+  aBoard.setPenColor(DGtal::Color(20,200,20));
+  aBoard.drawLine(adjPt1[0], adjPt1[1],3, 4);  
 
   aBoard.saveEPS("displayMeshFromTriangles.eps");
 

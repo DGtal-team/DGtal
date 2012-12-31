@@ -329,13 +329,19 @@ DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle,
   MeshTriangle trAdj;
   bool isPresent=false;
   if( tr.indexAdjTriangles[num-1] !=0){
+    // First and second points of the num th vertex 
+    unsigned int  indPt1, indPt2;
+    indPt1 = tr.indexesPt[num-1];
+    indPt2 = tr.indexesPt[num%3];
+    
+    
     trAdj= myTrianglesList.at(tr.indexAdjTriangles[num-1]);
   
-    if(trAdj.indexesPt[2]!=tr.indexesPt[0] && trAdj.indexesPt[2]!=tr.indexesPt[1]){
+    if(trAdj.indexesPt[2]!=indPt1 && trAdj.indexesPt[2]!=indPt2){
       return myVertexList.at(trAdj.indexesPt[2]);
-    }else if(trAdj.indexesPt[1]!=tr.indexesPt[0] && trAdj.indexesPt[1]!=tr.indexesPt[1]){
+    }else if(trAdj.indexesPt[1]!=indPt1 && trAdj.indexesPt[1]!=indPt2){
       return myVertexList.at(trAdj.indexesPt[1]);
-    }else if(trAdj.indexesPt[0]!=tr.indexesPt[0] && trAdj.indexesPt[0]!=tr.indexesPt[1]){
+    }else if(trAdj.indexesPt[0]!=indPt1 && trAdj.indexesPt[0]!=indPt2){
       return myVertexList.at(trAdj.indexesPt[0]);
     }else{
       trace.error() << "not found"<<std::endl;
@@ -348,6 +354,9 @@ DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle,
   }
  
 }
+
+
+
 
 
 template<typename TPoint> 

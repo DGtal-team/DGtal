@@ -84,9 +84,6 @@ namespace DGtal
     
     struct MeshTriangle{
       unsigned int indexesPt [3];
-      unsigned int indexPt1;
-      unsigned int indexPt2;
-      unsigned int indexPt3;      
       unsigned int indexAdjTriangles [3];
       bool isActive;
     };
