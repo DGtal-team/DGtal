@@ -214,7 +214,7 @@ namespace DGtal
     GridCurve & operator=( const GridCurve & other );
 
     // ----------------------- common ------------------------------
-
+    
     /**
      * @return the style name used for drawing this object.
      */

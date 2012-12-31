@@ -25,6 +25,7 @@ SET(DGTAL_TESTS_SRC
   testImplicitFunctionModels
   testShapesFromPoints
   testMeshFromPoints
+  testMeshFromTriangles
   testBall3DSurface
   )
 

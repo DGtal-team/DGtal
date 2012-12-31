@@ -775,6 +775,39 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 }
 // InnerPointsRange
 
+
+// MeshFromTriangles
+template<typename TPoint>
+void 
+DGtal::Display2DFactory::draw(DGtal::Board2D & board,
+			      const DGtal::MeshFromTriangles<TPoint> & object){
+  
+  
+  std::vector<TPoint> vectTriangles = object.getTrianglesFromVertex();
+  for(unsigned int i=0; i < vectTriangles.size(); i=i+3){
+    
+    board.setPenColor(Color(20,20,200));
+    //board.setFillColor(Color(200,200,200));
+    LibBoard::Point p1(vectTriangles.at(i)[0], vectTriangles.at(i)[1]);
+    LibBoard::Point p2(vectTriangles.at(i+1)[0], vectTriangles.at(i+1)[1]);
+    LibBoard::Point p3(vectTriangles.at(i+2)[0], vectTriangles.at(i+2)[1]);
+    //board.fillTriangle(p1, p2, p3);
+    board.drawTriangle(p1, p2, p3);
+    board.setPenColor(Color(200,20,20));
+    board.fillCircle(p1.x, p1.y, 0.15); 
+    board.fillCircle(p2.x, p2.y, 0.15); 
+    board.fillCircle(p3.x, p3.y, 0.15); 
+    board.setPenColor(Color(20,20,20));
+    board.drawCircle(p1.x, p1.y, 0.15); 
+    board.drawCircle(p2.x, p2.y, 0.15); 
+    board.drawCircle(p3.x, p3.y, 0.15); 
+  }
+
+}
+// MeshFromTriangles
+
+
+
 // OuterPointsRange
 template <typename TIterator, typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
