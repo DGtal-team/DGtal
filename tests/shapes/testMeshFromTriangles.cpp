@@ -92,6 +92,7 @@ aMesh2.addPointInMesh(Point(6,6));
 Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr3, 1);
 
 std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(indexNew.indexTr3);
+
 std::vector<Point>  tr2 =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(indexNew.indexTr3, 1));
 
 
@@ -129,6 +130,7 @@ Board2D aBoard;
   aBoard.saveEPS("displayMeshFromTriangles.eps");
 
 
+
   bool isIn = aMesh2.isInTriangle(1,p3); 
   bool isIn2 = aMesh2.isInTriangle(1,Point(-1,-1)); 
 
@@ -138,14 +140,30 @@ Board2D aBoard;
   trace.info() << "index of triangle containing pt (1,1):" << aMesh2.getTriangleIndexInclosing(Point(1,1)) << endl;
   trace.info() << "is inCircle 6,6 :" << aMesh2.isInCircle(1,Point(15,10)) << endl;
 
-  
-  aMesh2.flipTriangleOnEdge(4, 1);
-  std::vector<Point>  tr1s =  aMesh2.getTrianglePoints(4);
+
+
+
+
+
+
+ 
+
+
+
+  aMesh2.flipTriangleOnEdge(indexNew.indexTr3, 1);
+  std::vector<Point>  tr1s =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(22, 3));
+  std::vector<Point>  tr1sA =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(aMesh2.getIndexAdjacentTriangle(22, 3),3));
+
   aBoardTrans.setLineWidth(0.4);
   aBoardTrans.setPenColor(DGtal::Color(200,200,20));
   aBoardTrans.fillTriangle(LibBoard::Point(tr1s.at(0)[0],tr1s.at(0)[1]), 
 		      LibBoard::Point(tr1s.at(1)[0],tr1s.at(1)[1]),
 		      LibBoard::Point(tr1s.at(2)[0],tr1s.at(2)[1]));
+  
+  aBoardTrans.setPenColor(DGtal::Color(100,100,100));
+  aBoardTrans.fillTriangle(LibBoard::Point(tr1sA.at(0)[0],tr1sA.at(0)[1]), 
+		      LibBoard::Point(tr1sA.at(1)[0],tr1sA.at(1)[1]),
+		      LibBoard::Point(tr1sA.at(2)[0],tr1sA.at(2)[1]));
   
 
   aBoardTrans << aMesh2;
@@ -169,6 +187,8 @@ Board2D aBoard;
 
   // trace.info() << "Face2 points " << endl;
   // trace.info() << p0f1 << p1f1 << p2f1<< endl;
+
+
   
 
   // return (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 

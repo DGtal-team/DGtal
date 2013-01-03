@@ -152,12 +152,19 @@ namespace DGtal
 
     IndexOfCreatedTriangle addPointInMesh(const TPoint & vertex );
 
+
+
+    IndexOfCreatedTriangle addPointInDelaunayMesh(const TPoint & vertex );
+
+    
+    
     
     /**
      * Adding new vertex.
      *
      **/
     void addVertex(const TPoint &vertex);
+    
 
 
     
@@ -187,7 +194,15 @@ namespace DGtal
     
     
     
+    int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num);
+    
+    int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
+    
+
+
     TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int num);
+
+
 
     
     int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int num);
@@ -202,6 +217,9 @@ namespace DGtal
     std::vector<TPoint> getTrianglesFromVertex() const;
     
 
+
+    unsigned int getNumTriangles() const;
+
     
     bool isInTriangle(unsigned int indexTriangle, const  TPoint &pt);
  
@@ -209,7 +227,15 @@ namespace DGtal
     
 
     bool isInCircle(unsigned int indexTriangle, const  TPoint &ptD);
+
+
+    bool isInCircle(unsigned int indexTriangle, unsigned int indexPtD);
     
+
+    bool isOkForDelaunayTriangulation( unsigned int indexTriangle);
+    
+    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -239,7 +265,7 @@ namespace DGtal
 
   
 
-bool isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, const TPoint &pt2);
+double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, const TPoint &pt2);
 
     
           

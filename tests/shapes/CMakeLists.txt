@@ -26,6 +26,7 @@ SET(DGTAL_TESTS_SRC
   testShapesFromPoints
   testMeshFromPoints
   testMeshFromTriangles
+  testDelaunayTriangulation
   testBall3DSurface
   )
 

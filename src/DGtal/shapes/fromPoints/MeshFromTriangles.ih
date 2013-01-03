@@ -160,6 +160,21 @@ DGtal::MeshFromTriangles<TPoint>::className() const
 
 
 
+template<typename TPoint> 
+inline
+typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle
+DGtal::MeshFromTriangles<TPoint>::addPointInDelaunayMesh(const TPoint & vertex ){
+  typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
+  
+  
+  return resultingIndex;
+
+}
+
+
+
+
+
 
 template<typename TPoint> 
 inline
@@ -169,7 +184,11 @@ DGtal::MeshFromTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
   typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
   
   int indexTrIn = getTriangleIndexInclosing(vertex);
-  assert(indexTrIn!=-1);
+  if(indexTrIn==-1){
+    trace.info() << "Ignoring vertex aligned to triangles faces" << std::endl;
+    return resultingIndex;
+  }
+
   
   MeshTriangle tr = myTrianglesList.at(indexTrIn);
   myTrianglesList.at(indexTrIn).isActive=false;
@@ -217,7 +236,6 @@ DGtal::MeshFromTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
   myTrianglesList.at(myTrianglesList.size()-1).indexAdjTriangles[2] = myTrianglesList.size()-2; //&newTr2;
   
   //Updating Adjacency towards  new faces.
-  
   MeshTriangle &tr1AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-3).indexAdjTriangles[0]);
   if(tr1AdjacentNotNew.indexAdjTriangles[0]==indexTrIn){ 
     tr1AdjacentNotNew.indexAdjTriangles[0]  = myTrianglesList.size()-3;
@@ -290,39 +308,141 @@ template<typename TPoint>
 inline
 bool 
 DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num){
+  
   MeshTriangle &tr = myTrianglesList.at(indexTriangle);
-  MeshTriangle &trAdjacent = myTrianglesList.at(tr.indexAdjTriangles[num-1]);
+  if(!tr.isActive){
+    return false;
+  }
+  unsigned int indexAdjacentTr = tr.indexAdjTriangles[num-1];
+  MeshTriangle &trAdjacent = myTrianglesList.at(indexAdjacentTr);
+  if(indexAdjacentTr==0){
+    trace.error() << " No adjacency" << std::endl;
+    return false;
+  }
   tr.isActive=false;
   trAdjacent.isActive=false;
   MeshTriangle trNew1, trNew2;
-  unsigned int indexp1, indexp2, indexp3;
-  if(num==1){
-    indexp1=tr.indexesPt[0];
-    indexp2=tr.indexesPt[1];
-    indexp3=tr.indexesPt[2];
-  }else if(num==2){
-    indexp1=tr.indexesPt[1];
-    indexp2=tr.indexesPt[2];
-    indexp3=tr.indexesPt[0];
-  }else if(num==3){
-    indexp1=tr.indexesPt[2];
-    indexp2=tr.indexesPt[0];
-    indexp3=tr.indexesPt[1];
+  
+  // First and second points of the num th vertex and third point of tr: 
+  unsigned int  indPt1, indPt2, indPt3;
+  indPt1 = tr.indexesPt[num-1];
+  indPt2 = tr.indexesPt[num%3];
+  indPt3 = tr.indexesPt[(num+1)%3];
+
+  int indPtAdjacent = getIndexAdjacentVertex(indexTriangle, num);
+  
+  trNew1.indexesPt[0] = indPtAdjacent;
+  trNew1.indexesPt[1] = indPt2;
+  trNew1.indexesPt[2] = indPt3;
+  trNew1.isActive = true;
+
+  trNew2.indexesPt[0] = indPt1;
+  trNew2.indexesPt[1] = indPtAdjacent;
+  trNew2.indexesPt[2] = indPt3;
+  trNew2.isActive = true;
+   
+  myTrianglesList.push_back(trNew1);
+  myTrianglesList.push_back(trNew2);  
+ 
+  unsigned int indexTrNew1 = myTrianglesList.size()-2;
+  unsigned int indexTrNew2 = myTrianglesList.size()-1;
+  unsigned int indexTrB = tr.indexAdjTriangles[num-1];
+  
+  trace.info() << " in flip 2" << std::endl;  
+  //----------
+  // Updating adjacency of neighboring triangles
+  
+  // ** Triangles neighboring the main triangle
+  unsigned int indexTrA1 = tr.indexAdjTriangles[num%3];
+  unsigned int indexTrA2 = tr.indexAdjTriangles[(num+1)%3];
+  
+  // Adjacency of TrA1 towards TrNew1
+  if(indexTrA1 != 0){
+    MeshTriangle &trA1 = myTrianglesList.at(indexTrA1);
+    unsigned int numFaceOfA1AdjToNew1 = getNumFaceFromIndexVertex(indexTrA1, indPt2, indPt3);
+    trA1.indexAdjTriangles[numFaceOfA1AdjToNew1] = indexTrNew1;
   }
-  trNew1.indexesPt[0]=indexp1;
-  trNew1.indexesPt[1]=indexp2;
-  trNew1.indexesPt[2]=indexp3;
+
+  // Adjacency of TrA2 towards TrNew2
+  if(indexTrA2 !=0){
+    MeshTriangle &trA2 = myTrianglesList.at(indexTrA2);  
+    unsigned int numFaceOfA2AdjToNew2  = getNumFaceFromIndexVertex(indexTrA2, indPt3, indPt1 );
+    trA2.indexAdjTriangles[numFaceOfA2AdjToNew2-1] = indexTrNew2;
+  }
   
   
-  return true;  
+  // **  Triangles neighboring the adjacent triangle trB 
+  MeshTriangle &trB = myTrianglesList.at(indexTrB);
+  unsigned int numFaceOfBAdjToB2 = getNumFaceFromIndexVertex(indexTrB, indPt1, indPtAdjacent);
+  unsigned int numFaceOfBAdjToB1 = getNumFaceFromIndexVertex(indexTrB, indPtAdjacent, indPt2);
+  unsigned int indexTrB1 = trB.indexAdjTriangles[numFaceOfBAdjToB1-1];
+  unsigned int indexTrB2 = trB.indexAdjTriangles[numFaceOfBAdjToB2-1];
+  if(indexTrB1 != 0){    
+    MeshTriangle & trB1 = myTrianglesList.at(indexTrB1);
+    unsigned int numFaceAdjToBInB1 =  getNumFaceFromIndexVertex(indexTrB1, indPtAdjacent, indPt2);
+    trB1.indexAdjTriangles[numFaceAdjToBInB1-1] = indexTrNew1;
+  }
+  if(indexTrB2!=0){    
+    MeshTriangle & trB2 = myTrianglesList.at(indexTrB2);
+    unsigned int numFaceAdjToBInB2 =  getNumFaceFromIndexVertex(indexTrB2, indPt1, indPtAdjacent);
+    trB2.indexAdjTriangles[numFaceAdjToBInB2-1] = indexTrNew2;
+  }
+
+  
+
+  // Adjacency of new triangles:
+  MeshTriangle &tr1n = myTrianglesList.at(indexTrNew1);
+  MeshTriangle &tr2n = myTrianglesList.at(indexTrNew2);
+  
+
+  unsigned int numFaceNewTr1AdjToA1 = getNumFaceFromIndexVertex(indexTrNew1, indPt2, indPt3 ); 
+  unsigned int numFaceNewTr2AdjToA2 = getNumFaceFromIndexVertex(indexTrNew2, indPt3, indPt1 ); 
+
+  unsigned int numFaceNewTr1AdjToB1 = getNumFaceFromIndexVertex(indexTrNew1, indPtAdjacent, indPt2 ); 
+  unsigned int numFaceNewTr2AdjToB2 = getNumFaceFromIndexVertex(indexTrNew2, indPt1, indPtAdjacent ); 
+
+  unsigned int numFaceNewTr1AdjToNewTr2 = getNumFaceFromIndexVertex(indexTrNew1, indPt3 ,indPtAdjacent );
+  unsigned int numFaceNewTr2AdjToNewTr1 = getNumFaceFromIndexVertex(indexTrNew2, indPt3 ,indPtAdjacent );
+ 
+
+  tr1n.indexAdjTriangles[numFaceNewTr1AdjToA1-1]= indexTrA1;
+  tr1n.indexAdjTriangles[numFaceNewTr1AdjToB1-1]= indexTrB1;
+  
+  tr1n.indexAdjTriangles[numFaceNewTr1AdjToNewTr2-1]= indexTrNew2;
+ 
+  tr2n.indexAdjTriangles[numFaceNewTr2AdjToA2-1]= indexTrA2;
+  tr2n.indexAdjTriangles[numFaceNewTr2AdjToB2-1]= indexTrB2;
+  tr2n.indexAdjTriangles[numFaceNewTr2AdjToNewTr1-1]= indexTrNew1;
+ 
+  return true; 
 }
 
 
 
 template<typename TPoint> 
 inline
-TPoint
-DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle, 
+int 
+DGtal::MeshFromTriangles<TPoint>::getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2){
+  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  if((tr.indexesPt[0]==indPt1 && tr.indexesPt[1]==indPt2)|| (tr.indexesPt[1]==indPt1 && tr.indexesPt[0]==indPt2)){
+    return 1;
+  }else if ((tr.indexesPt[1]==indPt1 && tr.indexesPt[2]==indPt2)|| (tr.indexesPt[2]==indPt1 && tr.indexesPt[1]==indPt2)){
+    return 2;
+  }else if ((tr.indexesPt[2]==indPt1 && tr.indexesPt[0]==indPt2)|| (tr.indexesPt[0]==indPt1 && tr.indexesPt[2]==indPt2)){
+    return 3;
+  }
+  return -1;
+}
+
+
+
+
+
+
+template<typename TPoint> 
+inline
+int
+DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentVertex(unsigned int indexTriangle, 
 						    unsigned int num){
   
   MeshTriangle &tr = myTrianglesList.at(indexTriangle);
@@ -333,27 +453,43 @@ DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle,
     unsigned int  indPt1, indPt2;
     indPt1 = tr.indexesPt[num-1];
     indPt2 = tr.indexesPt[num%3];
-    
-    
     trAdj= myTrianglesList.at(tr.indexAdjTriangles[num-1]);
-  
     if(trAdj.indexesPt[2]!=indPt1 && trAdj.indexesPt[2]!=indPt2){
-      return myVertexList.at(trAdj.indexesPt[2]);
+      return trAdj.indexesPt[2];
     }else if(trAdj.indexesPt[1]!=indPt1 && trAdj.indexesPt[1]!=indPt2){
-      return myVertexList.at(trAdj.indexesPt[1]);
+      return trAdj.indexesPt[1];
     }else if(trAdj.indexesPt[0]!=indPt1 && trAdj.indexesPt[0]!=indPt2){
-      return myVertexList.at(trAdj.indexesPt[0]);
+      return trAdj.indexesPt[0];
     }else{
-      trace.error() << "not found"<<std::endl;
-      return TPoint(0,0);
+      return -1;
     }
     
   }else{
+    return -1;
+  }
+
+}
+
+
+
+
+template<typename TPoint> 
+inline
+TPoint
+DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle, 
+						    unsigned int num){
+  
+  int indexPt = getAdjacentVertex(indexTriangle, num);
+  if(num!=-1){
+    return myVertexList.at(indexPt);
+  }
+  else{
     trace.error() << "not found"<<std::endl;
     return TPoint(0,0);
   }
- 
+   
 }
+
 
 
 
@@ -396,6 +532,8 @@ DGtal::MeshFromTriangles<TPoint>::addVertex(const TPoint &aPoint){
 }
 
 
+
+
 template<typename TPoint>
 inline 
 void
@@ -416,14 +554,14 @@ DGtal::MeshFromTriangles<TPoint>::addTriangle(unsigned int index1,
 
 template<typename TPoint> 
 inline
-bool 
+double 
 DGtal::MeshFromTriangles<TPoint>::isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint &pt1, const  TPoint & pt2){
   TPoint u (ptB[0]-ptA[0], ptB[1]-ptA[1]);
   TPoint v1 (pt1[0]-ptA[0], pt1[1]-ptA[1]);
   TPoint v2 (pt2[0]-ptA[0], pt2[1]-ptA[1]);
   double cp1 = u[0]*v1[1]-u[1]*v1[0];
   double cp2 = u[0]*v2[1]-u[1]*v2[0];
-  return cp1*cp2 >=0;
+  return cp1*cp2;
 }
 
 
@@ -443,8 +581,13 @@ DGtal::MeshFromTriangles<TPoint>::isInTriangle(const  MeshTriangle &triangle, co
   TPoint ptA = myVertexList.at(triangle.indexesPt[0]);
   TPoint ptB = myVertexList.at(triangle.indexesPt[1]);
   TPoint ptC = myVertexList.at(triangle.indexesPt[2]);
-  
-  return isSameSide(ptA, ptB, pt, ptC) && isSameSide(ptB, ptC, pt, ptA) && isSameSide(ptC, ptA, pt, ptB);
+  double isSameSide1 = isSameSide(ptA, ptB, pt, ptC);
+  double isSameSide2 = isSameSide(ptB, ptC, pt, ptA);
+  double isSameSide3 = isSameSide(ptC, ptA, pt, ptB);
+  if(isSameSide1==0 || isSameSide2==0 || isSameSide3==0){
+    trace.info() << "Vertex aligned to triangle face"<< std::endl;
+  }
+  return isSameSide1>0.0 && isSameSide2>0.0 && isSameSide3 > 0.0 ;
 
 }
 
@@ -454,12 +597,37 @@ template<typename TPoint>
 inline
 int 
 DGtal::MeshFromTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
-  for(unsigned int i=0; i< myTrianglesList.size(); i++){
-    if(isInTriangle(i, p) && myTrianglesList.at(i).isActive)
+  for(unsigned int i=1; i< myTrianglesList.size(); i++){
+    if(myTrianglesList.at(i).isActive && isInTriangle(i, p))
       return i;
   }
   trace.error() << "no include"<< std::endl;
     return -1;
+}
+
+
+
+template<typename TPoint> 
+inline
+bool
+DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPtD){
+  return isInCircle(indexTriangle, myVertexList.at(indexPtD));   
+}
+
+
+
+template<typename TPoint> 
+inline
+bool 
+DGtal::MeshFromTriangles<TPoint>::isOkForDelaunayTriangulation( unsigned int indexTriangle){
+  bool res = true;
+  for(unsigned int i=1; i<=3; i++){
+    int indexAdjPt = getIndexAdjacentVertex(indexTriangle, i);
+    if(indexAdjPt!=-1 ){
+      res=res&& isInCircle(indexTriangle, indexAdjPt);
+    }
+  }  
+  return res && myTrianglesList.at(indexTriangle).isActive;
 }
 
 
@@ -495,6 +663,14 @@ DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  
 
   return mat.determinant() > 0.0;
   
+}
+
+
+template< typename TPoint> 
+inline 
+unsigned int
+DGtal::MeshFromTriangles<TPoint>::getNumTriangles() const{
+  return myTrianglesList.size();  
 }
 
 
