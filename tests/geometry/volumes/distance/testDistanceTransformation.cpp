@@ -84,8 +84,6 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
  */
 bool testDistanceTransformation()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
   bool allfine;
   
   trace.beginBlock ( "Testing the whole DT computation" );

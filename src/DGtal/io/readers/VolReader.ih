@@ -141,7 +141,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     }
   }
 
-  int sx, sy, sz;
+  int sx = 0, sy= 0, sz= 0;
 
   getHeaderValueAsInt( "X", &sx, header );
   getHeaderValueAsInt( "Y", &sy, header );
@@ -163,7 +163,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     }
 
 
-    if ( sx != rawsx || sy != rawsy || sz != rawsz )
+    if ( (sx != rawsx) || (sy != rawsy) || (sz != rawsz) )
     {
       trace.warning() << "VolReader: Warning : Incoherent vol header with raw header !\n";
     }

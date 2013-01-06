@@ -134,8 +134,6 @@ int main( int argc, char** argv )
   
   int min, max, increment;
   if(! thresholdRange){
-    min=(int)minThreshold;
-    max= (int)maxThreshold;
     increment =  (int)(maxThreshold- minThreshold);
   }else{
     vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
@@ -143,9 +141,7 @@ int main( int argc, char** argv )
       trace.info() << "Incomplete option \"--thresholdRange\""<< endl;
       return 0;
     }
-    min=vectRange.at(0);
     increment=vectRange.at(1);
-    max = vectRange.at(2);
   }
 
 

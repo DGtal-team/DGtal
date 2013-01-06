@@ -68,7 +68,7 @@ template <typename T>
 inline
 typename DGtal::InexactPredicateLpSeparableMetric<T>::Value
 DGtal::InexactPredicateLpSeparableMetric<T>::localDistance (const Point &aP, 
-                                                              const Vector &aDir) const
+                                                            const Vector &aDir) const
 {
   double res= 0.0;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -110,23 +110,31 @@ DGtal::InexactPredicateLpSeparableMetric<T>::closest (const Point &origin,
 //------------------------------------------------------------------------------
 template <typename T>
 inline
-typename DGtal::InexactPredicateLpSeparableMetric<T>::Abscissa 
+typename DGtal::InexactPredicateLpSeparableMetric<T>::Abscissa
 DGtal::InexactPredicateLpSeparableMetric<T>::binarySearchHidden(const Abscissa &udim, 
                                                                 const Abscissa &vdim,
-                                                                const double &nu,
-                                                                const double &nv,
+                                                                const Value &nu,
+                                                                const Value &nv,
                                                                 const Abscissa &lower,
                                                                 const Abscissa &upper) const
 {   
-  ASSERT(  (nu +  std::pow( static_cast<double>(abs( udim - lower)), myExponent)) <=
+  ASSERT(  (nu +  std::pow( static_cast<double>(abs( udim - lower)),  myExponent)) <
            (nv +  std::pow( static_cast<double>(abs( vdim - lower)), myExponent)));
   
   //Recurrence stop 
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
-    return lower;
+    {
+      //testing upper
+      double nuUpdated = nu +  std::pow( static_cast<double>(abs( udim - upper )), myExponent);
+      double nvUpdated = nv +  std::pow( static_cast<double>(abs( vdim - upper )), myExponent);
+      if (nuUpdated < nvUpdated)
+        return upper;
+      else
+        return lower;
+    }
   
   Abscissa mid = (lower + upper)/2;
-  double nuUpdated = nu + std::pow( static_cast<double>(abs( udim - mid )), myExponent);
+  double nuUpdated = nu +  std::pow( static_cast<double>(abs( udim - mid )), myExponent);
   double nvUpdated = nv +  std::pow( static_cast<double>(abs( vdim - mid )), myExponent);
       
   //Recursive call
@@ -151,44 +159,62 @@ DGtal::InexactPredicateLpSeparableMetric<T>::hiddenBy(const Point &u,
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
       
-  //Partial norm computation
-  // (sum_{i!=dim}  |u_i-v_i|^p
+  //Partial norm computation (sum_{i!=dim}  |u_i-v_i|^p
   double nu = 0.0;
   double nv = 0.0;
   double nw = 0.0;
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += std::pow ( static_cast<double>(abs(u[i]  - startingPoint[i])) , myExponent);
-        nv += std::pow ( static_cast<double>(abs(v[i] - startingPoint[i] )) , myExponent);
-        nw += std::pow ( static_cast<double>(abs(w[i] - startingPoint[i] )) , myExponent);
+        nu += std::pow( static_cast<double>(abs(u[i] - startingPoint[i])), myExponent);
+        nv += std::pow( static_cast<double>(abs(v[i] - startingPoint[i])), myExponent);
+        nw += std::pow( static_cast<double>(abs(w[i] - startingPoint[i])), myExponent);
       }
  
-  //Intersection of voronoi boundary
-     
+  //Abscissa of voronoi edges
+  Abscissa uv,vw;
+  double dv,dw,du,ddv,ddw;
 
-  //Optimization if vw lies before starting
-  if ((nv + std::pow( static_cast<double>(abs( v[dim] - lower)),  myExponent)) >
-      (nw + std::pow( static_cast<double>(abs( w[dim] - lower)), myExponent)))
-    {
-      return true;
-    }
-  //Optimization if vw lies before starting   
-  if ((nu + std::pow( static_cast<double>(abs( u[dim] - lower)), myExponent )) >
-      (nv + std::pow( static_cast<double>(abs( v[dim] - lower)), myExponent)))
-    {
-      return false;
-    }
-  
-  //Binary search
-  Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
-  Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
+  //checking distances to lower bound
+  du = nu + std::pow( static_cast<double>(abs( u[dim] - lower)), myExponent);
+  dv = nv + std::pow( static_cast<double>(abs( v[dim] - lower)), myExponent);
+  dw = nw + std::pow( static_cast<double>(abs( w[dim] - lower)), myExponent);
 
-  if ( uv > vw )
-    return true;
-  else
-    return false;
-      
+  //Precondition of binarySearchHidden is true
+  if (du < dv )
+    {
+      uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper);
+      if (dv < dw)
+        {
+          vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper); //precondition
+          return (uv > vw);
+        }
+
+      if (dw > dv)
+        return true; 
+      else
+        {
+          //check if uv + 1 is stricly in W
+       
+          //first, optimisation
+          if (uv == upper) return true;
+          
+          //distances at uv+1
+          ddv = nv + std::pow( static_cast<double>(abs( v[dim] - uv -1)), myExponent);
+          ddw = nw + std::pow( static_cast<double>(abs( w[dim] - uv -1)), myExponent);
+          if (ddw < ddv)
+            return true;
+          else
+            return false;
+        }
+    }
+  else  // du >= dv
+    {
+      if (dv <= dw)
+        return false;
+      else
+        return true;
+    }
 }
 //------------------------------------------------------------------------------
 template <typename T>
@@ -204,7 +230,7 @@ inline
 bool
 DGtal::InexactPredicateLpSeparableMetric<T>::isValid() const
 {
-    return true;
+  return true;
 }
 //------------------------------------------------------------------------------
 template <typename T>
