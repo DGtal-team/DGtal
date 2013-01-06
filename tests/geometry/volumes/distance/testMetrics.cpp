@@ -279,6 +279,92 @@ bool testWeightedMetrics()
   return nbok == nb;
 }
 
+bool testBinarySearch()
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+ 
+  trace.beginBlock ( "Testing binary search of Voronoi abscissa..." );
+  ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Promoted partialA, partialB;
+  ExactPredicateLpSeparableMetric<Z2i::Space, 1> metric;
+  typedef ExactPredicateLpSeparableMetric<Z2i::Space, 1>::Abscissa Abscissa;
+  
+  trace.beginBlock("Classical case");
+  Z2i::Point a(5,5), b(7,10);
+  
+  partialA = 5;
+  partialB = 7;
+  
+  // (0,9) strict in B
+  // distance( (0,9), (5,5) ) = 9
+  // distance( (0,9), (7,10)) = 8
+  //
+  // (0,8) strict in A
+  // distance( (0,8), (5,5) ) = 8
+  // distance( (0,8), (7,10) ) = 9
+  
+  Abscissa res = metric.binarySearchHidden(5, 10, partialA, partialB, 0, 15);
+  trace.info() << "Abscissa ="<<res<<std::endl;
+  
+  nbok += (res == 8) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "last strict in A==(0,8)" << std::endl;
+  trace.endBlock();
+  
+  trace.beginBlock("Equidistant case");
+  Z2i::Point aa(5,5), bb(6,10);
+  
+  partialA = 5;
+  partialB = 5;
+  
+  // (0,8)  in BB and AA
+  // distance( (0,8), (5,5) ) = 8
+  // distance( (0,8), (6,10)) = 8
+  //
+  // (0,7) strict in AA
+  // distance( (0,7), (5,5) ) = 7
+  // distance( (0,7), (6,10) ) = 9
+  
+  Abscissa res2 = metric.binarySearchHidden(5, 10, partialA, partialB, 0, 15);
+  trace.info() << "Abscissa ="<<res2<<std::endl;
+  
+  nbok += (res2 == 7) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "last strict in AA==(0,7) (VoroVertex)" << std::endl;
+  trace.endBlock();
+  
+  //trace.beginBlock("Lower than lowerBound case");
+  //Z2i::Point aaa(105,5), bbb(0,10); 
+  //partialA = 105;
+  //partialB = 0;
+  // (0,0) strict in BBB
+  // distance( (0,0), (105,5) ) = 120
+  // distance( (0,0), (0,10)) = 10
+  // Not tested since in the precondition of binarySearch
+  
+  trace.beginBlock("Greater than lowerBound case");
+  
+  partialA = 0;
+  partialB = 105;
+  
+  // (0,15) strict in AAAA
+  // distance( (0,15), (0,5) ) = 10
+  // distance( (0,15), (105,10)) = 110
+  
+  Abscissa res4 = metric.binarySearchHidden(5, 10, partialA, partialB, 0, 15);
+  trace.info() << "Abscissa ="<<res4<<std::endl;
+  
+  nbok += (res4 >= 15) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "should be >= upper bound (15)" << std::endl;
+  trace.endBlock();
+
+  
+  trace.endBlock();
+  return nbok == nb;
+}
+
+
 bool testSpecialCasesLp()
 {
   unsigned int nbok = 0;
@@ -286,7 +372,7 @@ bool testSpecialCasesLp()
   
   trace.beginBlock ( "Testing Special Cases Lp..." );
   ExactPredicateLpSeparableMetric<Z2i::Space, 1> metric;
-  Z2i::Point a(5,7),b(5,8),bb(6,8),bbb(7,8),c(5,9);
+  Z2i::Point a(5,7),b(5,8),bb(6,8),bbb(7,8),c(5,9), bbbb(105,8);
   Z2i::Point starting(4,0), endpoint(4,15);
   
   bool hidden  =metric.hiddenBy(a,b,c,starting,endpoint,1);
@@ -298,6 +384,7 @@ bool testSpecialCasesLp()
   << metric.distance(b, Z2i::Point(4,8))<<" "
   << metric.distance(c, Z2i::Point(4,8))<<std::endl;
   
+  //(a,bb,c)
   hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,1);
   nbok += (!hidden) ? 1 : 0;
   nb++;
@@ -309,6 +396,7 @@ bool testSpecialCasesLp()
   << metric.distance(c, Z2i::Point(4,8))<<std::endl;
   
   
+  //(a,bbb,c)
   hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,1);
   nbok += (hidden) ? 1 : 0;
   nb++;
@@ -317,6 +405,14 @@ bool testSpecialCasesLp()
   trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
   << metric.distance(bbb, Z2i::Point(4,8))<<" "
   << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  
+  //(a,bbbb,c) x_abbbb should be > upper
+  hidden  =metric.hiddenBy(a,bbbb,c,starting,endpoint,1);
+  nbok += (hidden) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") "
+  << "(a,bbbb,c) returns true" << std::endl;
+ 
   
   trace.endBlock();
   return nbok == nb;
@@ -380,6 +476,7 @@ int main( int argc, char** argv )
   bool res = testMetrics()
     && testInexactMetrics()
     && testWeightedMetrics()
+    && testBinarySearch()
     && testSpecialCasesL2()
     && testSpecialCasesLp();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
