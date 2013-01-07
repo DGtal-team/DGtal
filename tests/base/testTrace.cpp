@@ -114,7 +114,7 @@ void testFileStream()
 
 void testTimings()
 {
-  size_t duration,duration2;
+  size_t duration;
  
   trace.beginBlock("Level0");
   double tmp=1.0;
@@ -156,6 +156,7 @@ void testTimings()
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
   
+  trace.info()<<"Duration = "<<duration <<std::endl;
   trace.endBlock();
 
 }
