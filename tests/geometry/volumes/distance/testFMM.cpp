@@ -527,7 +527,7 @@ bool testDisplayDTFromCircle(int size)
   }
   trace.endBlock();
 
-  double dmin = 2*size*size; 
+  double dmin = 0; //2*size*size;
   double dmax = 0; 
   trace.beginBlock ( "Both " );
   {
