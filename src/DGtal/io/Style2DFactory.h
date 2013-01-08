@@ -45,7 +45,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
-#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.h"
+#include "DGtal/shapes/fromPoints/TriangularMeshFrom2DPoints.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 #include "DGtal/geometry/curves/FP.h"

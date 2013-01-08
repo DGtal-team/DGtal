@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file test3DMeshFrom2DTriangles.cpp
+ * @file test3DTriangularMeshFrom2DPoints.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/07/02
  *
- * Functions for testing class 3DMeshFrom2DTriangles.
+ * Functions for testing class 3DTriangularMeshFrom2DPoints.
  *
  * This file is part of the DGtal library.
  */
@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.h"
+#include "DGtal/shapes/fromPoints/TriangularMeshFrom2DPoints.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -46,7 +46,7 @@ using namespace DGtal::Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class MeshFrom2DTriangles.
+// Functions for testing class TriangularMeshFrom2DPoints.
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -57,12 +57,12 @@ bool testMeshFromTriangleFct()
 {
   trace.beginBlock ( "Testing MeshFromTriangle fct ..." );
 
-  MeshFrom2DTriangles<Point> aMesh (Point (0,0), Point(100,100));
+  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
   aMesh.addPointInMesh(Point(80,80));
   
   aMesh.addPointInMesh(Point(80,90));
   aMesh.addPointInMesh(Point(50,90));
-  DGtal::MeshFrom2DTriangles<Point>::IndexOfCreatedTriangle indexNew = aMesh.addPointInMesh(Point(3,4));
+  DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew = aMesh.addPointInMesh(Point(3,4));
   aMesh.addPointInMesh(Point(50,20));
   aMesh.addPointInMesh(Point(60,60));
   Board2D aBoard;
@@ -94,8 +94,8 @@ bool testMeshFromDelaunayConstruction()
 {
   trace.beginBlock ( "Testing Mesh with delaunay contruction  " );
   
-  MeshFrom2DTriangles<Point> aMesh (Point (0,0), Point(100,100));
-  MeshFrom2DTriangles<Point> aMesh2 (Point (0,0), Point(100,100));
+  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
+  TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(100,100));
   
   aMesh.addPointInDelaunayMesh(Point(80,80));
   aMesh.addPointInDelaunayMesh(Point(80,90));
@@ -153,13 +153,13 @@ bool testMeshFromDelaunayConstruction()
  * Example of a test. To be completed.
  *
  */
-bool testMeshFrom2DTriangles()
+bool testTriangularMeshFrom2DPoints()
 {
   
-  trace.beginBlock ( "Testing MeshFrom2DTriangles ...." );
+  trace.beginBlock ( "Testing TriangularMeshFrom2DPoints ...." );
 
 
-  MeshFrom2DTriangles<Point> aMesh(Point(0,0), Point(10,10));
+  TriangularMeshFrom2DPoints<Point> aMesh(Point(0,0), Point(10,10));
   Point p0=Point(0,0);
   Point p1=Point(0,1);
   Point p2=Point(1,2);
@@ -173,7 +173,7 @@ bool testMeshFrom2DTriangles()
  
 
   // std::vector<Point> vectTrianglePoints = aMesh.getTrianglesFromVertex();
-  MeshFrom2DTriangles<Point> aMesh2 (Point (0,0), Point(10,10));
+  TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(10,10));
   aMesh2.addPointInMesh(Point(7,8));
 
 
@@ -181,7 +181,7 @@ bool testMeshFrom2DTriangles()
 
 aMesh2.addPointInMesh(Point(8,9));
 aMesh2.addPointInMesh(Point(5,9));
-DGtal::MeshFrom2DTriangles<Point>::IndexOfCreatedTriangle indexNew = aMesh2.addPointInMesh(Point(3,4));
+DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew = aMesh2.addPointInMesh(Point(3,4));
  aMesh2.addPointInMesh(Point(5,2));
 aMesh2.addPointInMesh(Point(6,6));
 
@@ -189,7 +189,7 @@ aMesh2.addPointInMesh(Point(6,6));
 
 
 
-//  DGtal::MeshFrom2DTriangles<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(4,4));
+//  DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(4,4));
 
 
 Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr3, 1);
@@ -230,7 +230,7 @@ Board2D aBoard;
   aBoard.setPenColor(DGtal::Color(20,200,20));
   aBoard.drawLine(adjPt1[0], adjPt1[1],3, 4);  
 
-  aBoard.saveEPS("displayMeshFrom2DTriangles.eps");
+  aBoard.saveEPS("displayTriangularMeshFrom2DPoints.eps");
 
 
 
@@ -270,7 +270,7 @@ Board2D aBoard;
   
 
   aBoardTrans << aMesh2;
-  aBoardTrans.saveEPS("displayMeshFrom2DTrianglesTrans.eps");
+  aBoardTrans.saveEPS("displayTriangularMeshFrom2DPointsTrans.eps");
 
 
   // Point p0f0 = vectTrianglePoints.at(0);
@@ -310,7 +310,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMeshFrom2DTriangles(); // && ... other tests
+  bool res = testTriangularMeshFrom2DPoints(); // && ... other tests
   res = res &  testMeshFromTriangleFct();
   res = res & testMeshFromDelaunayConstruction();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

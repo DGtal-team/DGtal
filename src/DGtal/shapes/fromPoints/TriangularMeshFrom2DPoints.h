@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file MeshFrom2DTriangles.h
+ * @file TriangularMeshFrom2DPoints.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/12/27
  *
- * Header file for module MeshFrom2DTriangles.cpp
+ * Header file for module TriangularMeshFrom2DPoints.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(MeshFrom2DTriangles_RECURSES)
-#error Recursive header files inclusion detected in MeshFrom2DTriangles.h
-#else // defined(MeshFrom2DTriangles_RECURSES)
+#if defined(TriangularMeshFrom2DPoints_RECURSES)
+#error Recursive header files inclusion detected in TriangularMeshFrom2DPoints.h
+#else // defined(TriangularMeshFrom2DPoints_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define MeshFrom2DTriangles_RECURSES
+#define TriangularMeshFrom2DPoints_RECURSES
 
-#if !defined MeshFrom2DTriangles_h
+#if !defined TriangularMeshFrom2DPoints_h
 /** Prevents repeated inclusion of headers. */
-#define MeshFrom2DTriangles_h
+#define TriangularMeshFrom2DPoints_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,9 +52,9 @@ namespace DGtal
 
   
   /////////////////////////////////////////////////////////////////////////////
-  // template class MeshFrom2DTriangles
+  // template class TriangularMeshFrom2DPoints
   /**
-   * Description of template class 'MeshFrom2DTriangles' <p> \brief Aim:
+   * Description of template class 'TriangularMeshFrom2DPoints' <p> \brief Aim:
   
    @endcode 
    *
@@ -64,7 +64,7 @@ namespace DGtal
    *
    */
   template <typename TPoint >
-  class MeshFrom2DTriangles
+  class TriangularMeshFrom2DPoints
   {
     
 
@@ -108,7 +108,7 @@ namespace DGtal
      * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
      */
-    MeshFrom2DTriangles();    
+    TriangularMeshFrom2DPoints();    
 
 
 
@@ -118,7 +118,7 @@ namespace DGtal
      * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
      */
-    MeshFrom2DTriangles(const TPoint &ptUpper, const TPoint & ptLower);    
+    TriangularMeshFrom2DPoints(const TPoint &ptUpper, const TPoint & ptLower);    
     
 
     
@@ -129,7 +129,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~MeshFrom2DTriangles();
+    ~TriangularMeshFrom2DPoints();
 
 
 
@@ -284,7 +284,7 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
      * @param other the object to clone.
      * Forbidden by default.
      */
-    MeshFrom2DTriangles ( const MeshFrom2DTriangles & other );
+    TriangularMeshFrom2DPoints ( const TriangularMeshFrom2DPoints & other );
 
     /**
      * Assignment.
@@ -292,7 +292,7 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    MeshFrom2DTriangles & operator= ( const MeshFrom2DTriangles & other );
+    TriangularMeshFrom2DPoints & operator= ( const TriangularMeshFrom2DPoints & other );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -306,33 +306,33 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
 
 
 
-  }; // end of class MeshFrom2DTriangles
+  }; // end of class TriangularMeshFrom2DPoints
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'MeshFrom2DTriangles'.
+   * Overloads 'operator<<' for displaying objects of class 'TriangularMeshFrom2DPoints'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'MeshFrom2DTriangles' to write.
+   * @param object the object of class 'TriangularMeshFrom2DPoints' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint>
   std::ostream&
-  operator<< ( std::ostream & out, const MeshFrom2DTriangles<TPoint> & object );
+  operator<< ( std::ostream & out, const TriangularMeshFrom2DPoints<TPoint> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.ih"
+#include "DGtal/shapes/fromPoints/TriangularMeshFrom2DPoints.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined MeshFrom2DTriangles_h
+#endif // !defined TriangularMeshFrom2DPoints_h
 
-#undef MeshFrom2DTriangles_RECURSES
-#endif // else defined(MeshFrom2DTriangles_RECURSES)
+#undef TriangularMeshFrom2DPoints_RECURSES
+#endif // else defined(TriangularMeshFrom2DPoints_RECURSES)
 
 
 

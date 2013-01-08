@@ -776,11 +776,11 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 // InnerPointsRange
 
 
-// MeshFrom2DTriangles
+// TriangularMeshFrom2DPoints
 template<typename TPoint>
 void 
 DGtal::Display2DFactory::draw(DGtal::Board2D & board,
-			      const DGtal::MeshFrom2DTriangles<TPoint> & object){
+			      const DGtal::TriangularMeshFrom2DPoints<TPoint> & object){
   
   
   std::vector<TPoint> vectTriangles = object.getTrianglesFromVertex();
@@ -804,7 +804,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D & board,
   }
 
 }
-// MeshFrom2DTriangles
+// TriangularMeshFrom2DPoints
 
 
 
