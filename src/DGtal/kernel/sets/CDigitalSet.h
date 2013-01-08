@@ -61,14 +61,14 @@ namespace DGtal
 Description of \b concept '\b CDigitalSet' <p>
      @ingroup Concepts
 
-     @brief Aim: Represents a set of points within the given
+@brief Aim: Represents a set of points within the given
      domain. This set of points is modifiable by the user.
      
  ### Refinement of 
    - boost::CopyConstructible
    - boost::Assignable
 
-     @todo add boost::Container ? Not for now, since coding style do
+@todo add boost::Container ? Not for now, since coding style do
      not match with STL (e.g. Iterator instead of iterator).
     
  ### Associated types :
@@ -79,36 +79,18 @@ Description of \b concept '\b CDigitalSet' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+ ### Valid expressions and semantics
+
+ | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| | | | | | | | |
+     
     
-     </table>
+ ### Invariants
     
- ### Invariants###
+ ### Models
     
- ### Models###
-    
- ### Notes###
+ ### Notes
 
 @tparam T the type that should be a model of CDigitalSet.
    */

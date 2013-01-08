@@ -54,47 +54,39 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CColorMap
   /**
-   * DescriptionDescription of \b concept \b 'CColorMap' <p>
-   * @ingroup Concepts
-   * \brief Aim: Defines the concept describing a color map. A color map converts
-   * a value within a given range into an RGB triple.
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CColorMap
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td>Construction</td> <td>CMap<Value> cmap(min,max);</td> <td>min and max are of the same Value</td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * <tr> 
-   * <td>Obtain a color</td> <td>color=cmap(value)</td> <td>value is a Value</td> <td>DGtal::Color</td>
-   * <td>min &le; value &le; max </td> <td>Returns a color computed after the position of \em value \em within
-   * the range [min,max]</td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   *        GradientColorMap
-   *        HueShadeColorMap
-   *        ColorBrightnessColorMap 
-   *        GrayScaleColorMap
-   *        RandomColorMap
-   * <p> Notes###
+Description of \b concept \b 'CColorMap' <p>
+@ingroup Concepts
+    
+@brief Aim: Defines the concept describing a color map. A color map converts
+    a value within a given range into an RGB triple.
+    
+### Refinement of
+   
+### Associated types :
+   
+### Notation
+    - \t X : A type that is a model of CColorMap
+    - \t x, \t y  : Object of type X
+   
+### Definitions
+   
+### Valid expressions and semantics
+
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Construction | CMap<Value> cmap(min, max); | min and max are of the same Value | | | | | |
+|Obtain a color | color = cmap(value) | value is a Value | DGtal::Color | min  &le; value &le; max | Returns a color computed after the position of \em value \em within the range [min,max] | | |
+
+### Invariants
+   
+#### Models
+           GradientColorMap
+           HueShadeColorMap
+           ColorBrightnessColorMap 
+           GrayScaleColorMap
+           RandomColorMap
+### Notes
    */
   template <typename CMap>
   struct CColorMap
