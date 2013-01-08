@@ -48,6 +48,107 @@ using namespace DGtal::Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class MeshFromTriangles.
 ///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testMeshFromTriangleFct()
+{
+  trace.beginBlock ( "Testing MeshFromTriangle fct ..." );
+
+  MeshFromTriangles<Point> aMesh (Point (0,0), Point(100,100));
+  aMesh.addPointInMesh(Point(80,80));
+  
+  aMesh.addPointInMesh(Point(80,90));
+  aMesh.addPointInMesh(Point(50,90));
+  DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew = aMesh.addPointInMesh(Point(3,4));
+  aMesh.addPointInMesh(Point(50,20));
+  aMesh.addPointInMesh(Point(60,60));
+  Board2D aBoard;
+  aBoard << aMesh;
+  
+  
+  for (unsigned int i =0; i < 10000 ; i++){
+    unsigned int x = rand()%100;
+    unsigned int y = rand()%100;
+    Point p(x,y);
+        if(aMesh.isInCircle(aMesh.getNumTriangles()-1, p)){
+     aBoard<< p; 
+    }
+     
+  } 
+  aBoard.saveEPS("tesMeshFromTriangleFct.eps");
+  return true;
+}
+
+
+
+
+
+/**
+ * Example of a test. To be completed.
+ *
+ */
+bool testMeshFromDelaunayConstruction()
+{
+  trace.beginBlock ( "Testing Mesh with delaunay contruction  " );
+  
+  MeshFromTriangles<Point> aMesh (Point (0,0), Point(100,100));
+  MeshFromTriangles<Point> aMesh2 (Point (0,0), Point(100,100));
+  
+  aMesh.addPointInDelaunayMesh(Point(80,80));
+  aMesh.addPointInDelaunayMesh(Point(80,90));
+  aMesh.addPointInDelaunayMesh(Point(50,90));
+  aMesh.addPointInDelaunayMesh(Point(3,4));
+  aMesh.addPointInDelaunayMesh(Point(50,20));
+  aMesh.addPointInDelaunayMesh(Point(60,60));
+
+
+
+
+
+
+
+
+
+
+  aMesh2.addPointInMesh(Point(80,80));
+  aMesh2.addPointInMesh(Point(80,90));
+  aMesh2.addPointInMesh(Point(50,90));
+  aMesh2.addPointInMesh(Point(3,4));
+  aMesh2.addPointInMesh(Point(50,20));
+  aMesh2.addPointInMesh(Point(60,60));
+  
+  srand ( time(NULL) );
+  for (unsigned int i =0; i < 1000 ; i++){
+    
+    cerr << "adding " << i << endl; 
+    unsigned int x = 10+rand()%80;
+    unsigned int y = 10+rand()%80;
+    Point p(x,y);
+    double norme = sqrt((x-50)*(x-50)+(y-50)*(y-50));
+    if(norme < 40 && norme > 30){
+      aMesh2.addPointInMesh(p);
+      aMesh.addPointInDelaunayMesh(p);
+    }
+  } 
+
+
+  Board2D aBoard;
+  aBoard << aMesh;
+
+  Board2D aBoard2;
+  aBoard2 << aMesh2;
+  
+  
+  
+  aBoard2.saveEPS("tesMeshConstruction.eps");
+  aBoard.saveEPS("tesMeshConstructionDelaunay.eps");
+  return true;
+}
+
+
 /**
  * Example of a test. To be completed.
  *
@@ -55,10 +156,10 @@ using namespace DGtal::Z2i;
 bool testMeshFromTriangles()
 {
   
-  trace.beginBlock ( "Testing MeshFromTriangles ..." );
+  trace.beginBlock ( "Testing MeshFromTriangles ...." );
 
 
-  MeshFromTriangles<Point> aMesh;
+  MeshFromTriangles<Point> aMesh(Point(0,0), Point(10,10));
   Point p0=Point(0,0);
   Point p1=Point(0,1);
   Point p2=Point(1,2);
@@ -67,12 +168,13 @@ bool testMeshFromTriangles()
   Point p4=Point(3,3);
   Point p5=Point(4,4);
 
+
   
  
 
   // std::vector<Point> vectTrianglePoints = aMesh.getTrianglesFromVertex();
-MeshFromTriangles<Point> aMesh2 (Point (0,0), Point(10,10));
-aMesh2.addPointInMesh(Point(8,8));
+  MeshFromTriangles<Point> aMesh2 (Point (0,0), Point(10,10));
+  aMesh2.addPointInMesh(Point(7,8));
 
 
 
@@ -88,6 +190,7 @@ aMesh2.addPointInMesh(Point(6,6));
 
 
 //  DGtal::MeshFromTriangles<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(4,4));
+
 
 Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr3, 1);
 
@@ -208,6 +311,8 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testMeshFromTriangles(); // && ... other tests
+  res = res &  testMeshFromTriangleFct();
+  res = res & testMeshFromDelaunayConstruction();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

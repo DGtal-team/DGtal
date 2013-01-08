@@ -165,11 +165,46 @@ inline
 typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle
 DGtal::MeshFromTriangles<TPoint>::addPointInDelaunayMesh(const TPoint & vertex ){
   typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
+  typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle tmpIndex;
+  int indexTrIn = getTriangleIndexInclosing(vertex);
+  if(indexTrIn==-1 || indexTrIn==0 ){
+    trace.info() << "Ignoring vertex aligned to triangles faces" << std::endl;
+    return resultingIndex;
+  }
   
+  tmpIndex = addPointInMesh(vertex);
+  // Swap test on each new created triangle on face 1 since all new
+  // triangles are created with the new point at the last position.
+  swapTest(tmpIndex.indexTr1, 1);
+  swapTest(tmpIndex.indexTr2, 1);
+  swapTest(tmpIndex.indexTr3, 1);
   
   return resultingIndex;
 
 }
+
+template<typename TPoint>
+inline
+void 
+DGtal::MeshFromTriangles<TPoint>::swapTest(unsigned int indexTriangle, unsigned int numFace){
+  int indexAdjacentVertex = getIndexAdjacentVertex(indexTriangle, numFace);
+  if(indexAdjacentVertex == -1){
+    return;
+  }
+  
+  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  TPoint ptAdj = myVertexList.at(indexAdjacentVertex);
+  if(isInCircle(indexTriangle, ptAdj)){
+    if(flipTriangleOnEdge(indexTriangle, 1)){
+      unsigned int indexTrNew1 = myTrianglesList.size()-2;
+      unsigned int indexTrNew2 = myTrianglesList.size()-1;
+      swapTest(indexTrNew1, 1);
+      swapTest(indexTrNew2, 1);
+    }
+  } 
+  return;
+}
+
 
 
 
@@ -184,8 +219,8 @@ DGtal::MeshFromTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
   typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
   
   int indexTrIn = getTriangleIndexInclosing(vertex);
-  if(indexTrIn==-1){
-    trace.info() << "Ignoring vertex aligned to triangles faces" << std::endl;
+  if(indexTrIn==-1 || indexTrIn==0 ){
+    trace.info() << "Vertex " << vertex << " aligned with existing face not yet implemented! point ignored " << std::endl;
     return resultingIndex;
   }
 
@@ -309,6 +344,7 @@ inline
 bool 
 DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num){
   
+
   MeshTriangle &tr = myTrianglesList.at(indexTriangle);
   if(!tr.isActive){
     return false;
@@ -347,8 +383,9 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
   unsigned int indexTrNew1 = myTrianglesList.size()-2;
   unsigned int indexTrNew2 = myTrianglesList.size()-1;
   unsigned int indexTrB = tr.indexAdjTriangles[num-1];
-  
-  trace.info() << " in flip 2" << std::endl;  
+
+
+
   //----------
   // Updating adjacency of neighboring triangles
   
@@ -356,11 +393,12 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
   unsigned int indexTrA1 = tr.indexAdjTriangles[num%3];
   unsigned int indexTrA2 = tr.indexAdjTriangles[(num+1)%3];
   
+
   // Adjacency of TrA1 towards TrNew1
   if(indexTrA1 != 0){
     MeshTriangle &trA1 = myTrianglesList.at(indexTrA1);
     unsigned int numFaceOfA1AdjToNew1 = getNumFaceFromIndexVertex(indexTrA1, indPt2, indPt3);
-    trA1.indexAdjTriangles[numFaceOfA1AdjToNew1] = indexTrNew1;
+    trA1.indexAdjTriangles[numFaceOfA1AdjToNew1-1] = indexTrNew1;
   }
 
   // Adjacency of TrA2 towards TrNew2
@@ -369,8 +407,8 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
     unsigned int numFaceOfA2AdjToNew2  = getNumFaceFromIndexVertex(indexTrA2, indPt3, indPt1 );
     trA2.indexAdjTriangles[numFaceOfA2AdjToNew2-1] = indexTrNew2;
   }
-  
-  
+
+ 
   // **  Triangles neighboring the adjacent triangle trB 
   MeshTriangle &trB = myTrianglesList.at(indexTrB);
   unsigned int numFaceOfBAdjToB2 = getNumFaceFromIndexVertex(indexTrB, indPt1, indPtAdjacent);
@@ -389,6 +427,8 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
   }
 
   
+
+
 
   // Adjacency of new triangles:
   MeshTriangle &tr1n = myTrianglesList.at(indexTrNew1);
@@ -413,7 +453,9 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
   tr2n.indexAdjTriangles[numFaceNewTr2AdjToA2-1]= indexTrA2;
   tr2n.indexAdjTriangles[numFaceNewTr2AdjToB2-1]= indexTrB2;
   tr2n.indexAdjTriangles[numFaceNewTr2AdjToNewTr1-1]= indexTrNew1;
- 
+
+
+  
   return true; 
 }
 
@@ -479,7 +521,7 @@ TPoint
 DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle, 
 						    unsigned int num){
   
-  int indexPt = getAdjacentVertex(indexTriangle, num);
+  int indexPt = getIndexAdjacentVertex(indexTriangle, num);
   if(num!=-1){
     return myVertexList.at(indexPt);
   }
@@ -584,10 +626,13 @@ DGtal::MeshFromTriangles<TPoint>::isInTriangle(const  MeshTriangle &triangle, co
   double isSameSide1 = isSameSide(ptA, ptB, pt, ptC);
   double isSameSide2 = isSameSide(ptB, ptC, pt, ptA);
   double isSameSide3 = isSameSide(ptC, ptA, pt, ptB);
-  if(isSameSide1==0 || isSameSide2==0 || isSameSide3==0){
-    trace.info() << "Vertex aligned to triangle face"<< std::endl;
+  bool res = isSameSide1>=0.0 && isSameSide2>=0.0 && isSameSide3 >= 0.0; 
+  
+  // In this case it is an inside point but we ignore it is not yet taken into account.
+  if(res && (isSameSide1==0.0 || isSameSide2==0.0 || isSameSide3==0.0)){
+    return false;
   }
-  return isSameSide1>0.0 && isSameSide2>0.0 && isSameSide3 > 0.0 ;
+  return res ;
 
 }
 
@@ -601,8 +646,7 @@ DGtal::MeshFromTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
     if(myTrianglesList.at(i).isActive && isInTriangle(i, p))
       return i;
   }
-  trace.error() << "no include"<< std::endl;
-    return -1;
+  return -1;
 }
 
 

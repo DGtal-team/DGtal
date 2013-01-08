@@ -234,6 +234,10 @@ namespace DGtal
 
     bool isOkForDelaunayTriangulation( unsigned int indexTriangle);
     
+
+    void swapTest(unsigned int indexTriangle, unsigned int numFace);
+
+    
     
 
     /**
