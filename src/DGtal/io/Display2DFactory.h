@@ -64,7 +64,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
-#include "DGtal/shapes/fromPoints/MeshFromTriangles.h"
+#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 
 #include "DGtal/io/boards/Board2D.h"
@@ -280,10 +280,10 @@ template < Dimension dim, typename TInteger >
 
 
 
-// MeshFromTriangles
+// MeshFrom2DTriangles
 template<typename TPoint>
-static void draw(DGtal::Board2D & board, const DGtal::MeshFromTriangles<TPoint> & );
-// MeshFromTriangles
+static void draw(DGtal::Board2D & board, const DGtal::MeshFrom2DTriangles<TPoint> & );
+// MeshFrom2DTriangles
 
 
     

@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file test3DMeshFromTriangles.cpp
+ * @file test3DMeshFrom2DTriangles.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/07/02
  *
- * Functions for testing class 3DMeshFromTriangles.
+ * Functions for testing class 3DMeshFrom2DTriangles.
  *
  * This file is part of the DGtal library.
  */
@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/fromPoints/MeshFromTriangles.h"
+#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -44,19 +44,19 @@ using namespace DGtal::Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class MeshFromTriangles.
+// Functions for testing class MeshFrom2DTriangles.
 ///////////////////////////////////////////////////////////////////////////////
 /**
  * Example of a test. To be completed.
  *
  */
-bool testMeshFromTriangles()
+bool testMeshFrom2DTriangles()
 {
   
-  trace.beginBlock ( "Testing MeshFromTriangles ..." );
+  trace.beginBlock ( "Testing MeshFrom2DTriangles ..." );
 
 
-MeshFromTriangles<Point> aMesh(Point(0,0),Point(10,10));
+MeshFrom2DTriangles<Point> aMesh(Point(0,0),Point(10,10));
 
 
 
@@ -123,7 +123,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMeshFromTriangles(); // && ... other tests
+  bool res = testMeshFrom2DTriangles(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

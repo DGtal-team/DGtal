@@ -567,10 +567,10 @@ defaultStyle(const DGtal::GridCurve<TKSpace> & /*object*/,
 // GridCurve
 
 
-// MeshFromTriangles
+// MeshFrom2DTriangles
 template <typename TPoint>
 DGtal::DrawableWithBoard2D* 
-defaultStyle(const DGtal::MeshFromTriangles<TPoint> & /*object*/, 
+defaultStyle(const DGtal::MeshFrom2DTriangles<TPoint> & /*object*/, 
              std::string mode = "" )
 {
   UNUSED_ARGUMENT(mode);

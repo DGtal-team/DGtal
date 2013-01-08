@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file MeshFromTriangles.h
+ * @file MeshFrom2DTriangles.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/12/27
  *
- * Header file for module MeshFromTriangles.cpp
+ * Header file for module MeshFrom2DTriangles.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(MeshFromTriangles_RECURSES)
-#error Recursive header files inclusion detected in MeshFromTriangles.h
-#else // defined(MeshFromTriangles_RECURSES)
+#if defined(MeshFrom2DTriangles_RECURSES)
+#error Recursive header files inclusion detected in MeshFrom2DTriangles.h
+#else // defined(MeshFrom2DTriangles_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define MeshFromTriangles_RECURSES
+#define MeshFrom2DTriangles_RECURSES
 
-#if !defined MeshFromTriangles_h
+#if !defined MeshFrom2DTriangles_h
 /** Prevents repeated inclusion of headers. */
-#define MeshFromTriangles_h
+#define MeshFrom2DTriangles_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -52,9 +52,9 @@ namespace DGtal
 
   
   /////////////////////////////////////////////////////////////////////////////
-  // template class MeshFromTriangles
+  // template class MeshFrom2DTriangles
   /**
-   * Description of template class 'MeshFromTriangles' <p> \brief Aim:
+   * Description of template class 'MeshFrom2DTriangles' <p> \brief Aim:
   
    @endcode 
    *
@@ -64,7 +64,7 @@ namespace DGtal
    *
    */
   template <typename TPoint >
-  class MeshFromTriangles
+  class MeshFrom2DTriangles
   {
     
 
@@ -108,7 +108,7 @@ namespace DGtal
      * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
      */
-    MeshFromTriangles();    
+    MeshFrom2DTriangles();    
 
 
 
@@ -118,7 +118,7 @@ namespace DGtal
      * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
      */
-    MeshFromTriangles(const TPoint &ptUpper, const TPoint & ptLower);    
+    MeshFrom2DTriangles(const TPoint &ptUpper, const TPoint & ptLower);    
     
 
     
@@ -129,7 +129,7 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~MeshFromTriangles();
+    ~MeshFrom2DTriangles();
 
 
 
@@ -284,7 +284,7 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
      * @param other the object to clone.
      * Forbidden by default.
      */
-    MeshFromTriangles ( const MeshFromTriangles & other );
+    MeshFrom2DTriangles ( const MeshFrom2DTriangles & other );
 
     /**
      * Assignment.
@@ -292,7 +292,7 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    MeshFromTriangles & operator= ( const MeshFromTriangles & other );
+    MeshFrom2DTriangles & operator= ( const MeshFrom2DTriangles & other );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -306,33 +306,33 @@ double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, cons
 
 
 
-  }; // end of class MeshFromTriangles
+  }; // end of class MeshFrom2DTriangles
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'MeshFromTriangles'.
+   * Overloads 'operator<<' for displaying objects of class 'MeshFrom2DTriangles'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'MeshFromTriangles' to write.
+   * @param object the object of class 'MeshFrom2DTriangles' to write.
    * @return the output stream after the writing.
    */
   template <typename TPoint>
   std::ostream&
-  operator<< ( std::ostream & out, const MeshFromTriangles<TPoint> & object );
+  operator<< ( std::ostream & out, const MeshFrom2DTriangles<TPoint> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/shapes/fromPoints/MeshFromTriangles.ih"
+#include "DGtal/shapes/fromPoints/MeshFrom2DTriangles.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined MeshFromTriangles_h
+#endif // !defined MeshFrom2DTriangles_h
 
-#undef MeshFromTriangles_RECURSES
-#endif // else defined(MeshFromTriangles_RECURSES)
+#undef MeshFrom2DTriangles_RECURSES
+#endif // else defined(MeshFrom2DTriangles_RECURSES)
 
 
 

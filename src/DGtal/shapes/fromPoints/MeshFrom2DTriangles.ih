@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file MeshFromTriangles.ih
+ * @file MeshFrom2DTriangles.ih
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2012/06/29
  *
- * Implementation of inline methods defined in MeshFromTriangles.h
+ * Implementation of inline methods defined in MeshFrom2DTriangles.h
  *
  * This file is part of the DGtal library.
  */
@@ -44,7 +44,7 @@
  */
 template <typename TPoint>
 inline
-DGtal::MeshFromTriangles<TPoint>::MeshFromTriangles()
+DGtal::MeshFrom2DTriangles<TPoint>::MeshFrom2DTriangles()
 {
   MeshTriangle emptyTriangle;
   emptyTriangle.indexesPt[0]=0; emptyTriangle.indexesPt[1]=0; emptyTriangle.indexesPt[2]=0;
@@ -59,7 +59,7 @@ DGtal::MeshFromTriangles<TPoint>::MeshFromTriangles()
  */
 template <typename TPoint>
 inline
-DGtal::MeshFromTriangles<TPoint>::MeshFromTriangles(const TPoint &ptLower, const TPoint &ptUpper)
+DGtal::MeshFrom2DTriangles<TPoint>::MeshFrom2DTriangles(const TPoint &ptLower, const TPoint &ptUpper)
 {
   MeshTriangle emptyTriangle;
   emptyTriangle.indexesPt[0]=0; emptyTriangle.indexesPt[1]=0; emptyTriangle.indexesPt[2]=0;
@@ -107,7 +107,7 @@ DGtal::MeshFromTriangles<TPoint>::MeshFromTriangles(const TPoint &ptLower, const
  */
 template <typename TPoint>
 inline
-DGtal::MeshFromTriangles<TPoint>::~MeshFromTriangles()
+DGtal::MeshFrom2DTriangles<TPoint>::~MeshFrom2DTriangles()
 {
 }
 
@@ -121,9 +121,9 @@ DGtal::MeshFromTriangles<TPoint>::~MeshFromTriangles()
 template <typename TPoint>
 inline
 void
-DGtal::MeshFromTriangles<TPoint>::selfDisplay ( std::ostream & out ) const
+DGtal::MeshFrom2DTriangles<TPoint>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[MeshFromTriangles]";
+  out << "[MeshFrom2DTriangles]";
 }
 
 /**
@@ -133,7 +133,7 @@ DGtal::MeshFromTriangles<TPoint>::selfDisplay ( std::ostream & out ) const
 template <typename TPoint>
 inline
 bool
-DGtal::MeshFromTriangles<TPoint>::isValid() const
+DGtal::MeshFrom2DTriangles<TPoint>::isValid() const
 {
     return true;
 }
@@ -153,19 +153,19 @@ DGtal::MeshFromTriangles<TPoint>::isValid() const
 template <typename TPoint>
 inline
 std::string
-DGtal::MeshFromTriangles<TPoint>::className() const
+DGtal::MeshFrom2DTriangles<TPoint>::className() const
 {
-  return "MeshFromTriangles";
+  return "MeshFrom2DTriangles";
 }
 
 
 
 template<typename TPoint> 
 inline
-typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle
-DGtal::MeshFromTriangles<TPoint>::addPointInDelaunayMesh(const TPoint & vertex ){
-  typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
-  typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle tmpIndex;
+typename DGtal::MeshFrom2DTriangles<TPoint>::IndexOfCreatedTriangle
+DGtal::MeshFrom2DTriangles<TPoint>::addPointInDelaunayMesh(const TPoint & vertex ){
+  typename DGtal::MeshFrom2DTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
+  typename DGtal::MeshFrom2DTriangles<TPoint>::IndexOfCreatedTriangle tmpIndex;
   int indexTrIn = getTriangleIndexInclosing(vertex);
   if(indexTrIn==-1 || indexTrIn==0 ){
     trace.info() << "Ignoring vertex aligned to triangles faces" << std::endl;
@@ -186,7 +186,7 @@ DGtal::MeshFromTriangles<TPoint>::addPointInDelaunayMesh(const TPoint & vertex )
 template<typename TPoint>
 inline
 void 
-DGtal::MeshFromTriangles<TPoint>::swapTest(unsigned int indexTriangle, unsigned int numFace){
+DGtal::MeshFrom2DTriangles<TPoint>::swapTest(unsigned int indexTriangle, unsigned int numFace){
   int indexAdjacentVertex = getIndexAdjacentVertex(indexTriangle, numFace);
   if(indexAdjacentVertex == -1){
     return;
@@ -213,10 +213,10 @@ DGtal::MeshFromTriangles<TPoint>::swapTest(unsigned int indexTriangle, unsigned 
 
 template<typename TPoint> 
 inline
-typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle 
-DGtal::MeshFromTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
+typename DGtal::MeshFrom2DTriangles<TPoint>::IndexOfCreatedTriangle 
+DGtal::MeshFrom2DTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
   
-  typename DGtal::MeshFromTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
+  typename DGtal::MeshFrom2DTriangles<TPoint>::IndexOfCreatedTriangle resultingIndex;
   
   int indexTrIn = getTriangleIndexInclosing(vertex);
   if(indexTrIn==-1 || indexTrIn==0 ){
@@ -307,7 +307,7 @@ DGtal::MeshFromTriangles<TPoint>::addPointInMesh(const TPoint & vertex ){
 template<typename TPoint> 
 inline
 std::vector<TPoint> 
-DGtal::MeshFromTriangles<TPoint>::getTrianglePointsAdj(unsigned int i, unsigned int adjNum){
+DGtal::MeshFrom2DTriangles<TPoint>::getTrianglePointsAdj(unsigned int i, unsigned int adjNum){
   MeshTriangle tr = myTrianglesList.at(i);
   return getTrianglePoints(tr.indexAdjTriangles[adjNum-1]);
 }
@@ -318,7 +318,7 @@ DGtal::MeshFromTriangles<TPoint>::getTrianglePointsAdj(unsigned int i, unsigned 
 template<typename TPoint> 
 inline
 std::vector<TPoint> 
-DGtal::MeshFromTriangles<TPoint>::getTrianglePoints(unsigned int i){
+DGtal::MeshFrom2DTriangles<TPoint>::getTrianglePoints(unsigned int i){
   assert(i>=0);
   MeshTriangle tr = myTrianglesList.at(i);
   return getTrianglePoints(tr);
@@ -328,7 +328,7 @@ DGtal::MeshFromTriangles<TPoint>::getTrianglePoints(unsigned int i){
 template<typename TPoint> 
 inline
 std::vector<TPoint> 
-DGtal::MeshFromTriangles<TPoint>::getTrianglePoints(const MeshTriangle &tr){
+DGtal::MeshFrom2DTriangles<TPoint>::getTrianglePoints(const MeshTriangle &tr){
   std::vector<TPoint> result;
   result.push_back(myVertexList.at(tr.indexesPt[0]));
   result.push_back(myVertexList.at(tr.indexesPt[1]));
@@ -342,7 +342,7 @@ DGtal::MeshFromTriangles<TPoint>::getTrianglePoints(const MeshTriangle &tr){
 template<typename TPoint> 
 inline
 bool 
-DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num){
+DGtal::MeshFrom2DTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num){
   
 
   MeshTriangle &tr = myTrianglesList.at(indexTriangle);
@@ -464,7 +464,7 @@ DGtal::MeshFromTriangles<TPoint>::flipTriangleOnEdge(unsigned int indexTriangle,
 template<typename TPoint> 
 inline
 int 
-DGtal::MeshFromTriangles<TPoint>::getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2){
+DGtal::MeshFrom2DTriangles<TPoint>::getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2){
   MeshTriangle tr = myTrianglesList.at(indexTriangle);
   if((tr.indexesPt[0]==indPt1 && tr.indexesPt[1]==indPt2)|| (tr.indexesPt[1]==indPt1 && tr.indexesPt[0]==indPt2)){
     return 1;
@@ -484,7 +484,7 @@ DGtal::MeshFromTriangles<TPoint>::getNumFaceFromIndexVertex(unsigned int indexTr
 template<typename TPoint> 
 inline
 int
-DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentVertex(unsigned int indexTriangle, 
+DGtal::MeshFrom2DTriangles<TPoint>::getIndexAdjacentVertex(unsigned int indexTriangle, 
 							 unsigned int num) const {
   
   MeshTriangle tr = myTrianglesList.at(indexTriangle);
@@ -518,7 +518,7 @@ DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentVertex(unsigned int indexTrian
 template<typename TPoint> 
 inline
 TPoint
-DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle, 
+DGtal::MeshFrom2DTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle, 
 						    unsigned int num){
   
   int indexPt = getIndexAdjacentVertex(indexTriangle, num);
@@ -540,7 +540,7 @@ DGtal::MeshFromTriangles<TPoint>::getAdjacentVertex(unsigned int indexTriangle,
 template<typename TPoint> 
 inline
 int 
-DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentTriangle(unsigned int indexTriangle, 
+DGtal::MeshFrom2DTriangles<TPoint>::getIndexAdjacentTriangle(unsigned int indexTriangle, 
 							   unsigned int num){
     MeshTriangle &tr = myTrianglesList.at(indexTriangle);
     return tr.indexAdjTriangles[num-1];
@@ -551,7 +551,7 @@ DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentTriangle(unsigned int indexTri
 template<typename TPoint> 
 inline
 std::vector<TPoint> 
-DGtal::MeshFromTriangles<TPoint>::getTrianglesFromVertex() const{
+DGtal::MeshFrom2DTriangles<TPoint>::getTrianglesFromVertex() const{
   
   std::vector<TPoint> vectResult;
   for(unsigned int i=1; i< myTrianglesList.size(); i++){
@@ -569,7 +569,7 @@ DGtal::MeshFromTriangles<TPoint>::getTrianglesFromVertex() const{
 template<typename TPoint> 
 inline
 void 
-DGtal::MeshFromTriangles<TPoint>::addVertex(const TPoint &aPoint){
+DGtal::MeshFrom2DTriangles<TPoint>::addVertex(const TPoint &aPoint){
   myVertexList.push_back(aPoint);    
 }
 
@@ -579,7 +579,7 @@ DGtal::MeshFromTriangles<TPoint>::addVertex(const TPoint &aPoint){
 template<typename TPoint>
 inline 
 void
-DGtal::MeshFromTriangles<TPoint>::addTriangle(unsigned int index1, 
+DGtal::MeshFrom2DTriangles<TPoint>::addTriangle(unsigned int index1, 
 					      unsigned int index2,  unsigned int index3 ){
   MeshTriangle triangle;
   triangle.indexesPt[0] = index1;
@@ -597,7 +597,7 @@ DGtal::MeshFromTriangles<TPoint>::addTriangle(unsigned int index1,
 template<typename TPoint> 
 inline
 double 
-DGtal::MeshFromTriangles<TPoint>::isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint &pt1, const  TPoint & pt2){
+DGtal::MeshFrom2DTriangles<TPoint>::isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint &pt1, const  TPoint & pt2){
   TPoint u (ptB[0]-ptA[0], ptB[1]-ptA[1]);
   TPoint v1 (pt1[0]-ptA[0], pt1[1]-ptA[1]);
   TPoint v2 (pt2[0]-ptA[0], pt2[1]-ptA[1]);
@@ -611,7 +611,7 @@ DGtal::MeshFromTriangles<TPoint>::isSameSide(const TPoint &ptA, const TPoint &pt
 template<typename TPoint> 
 inline
 bool 
-DGtal::MeshFromTriangles<TPoint>::isInTriangle(unsigned int indexTriangle, const TPoint &pt){
+DGtal::MeshFrom2DTriangles<TPoint>::isInTriangle(unsigned int indexTriangle, const TPoint &pt){
   return isInTriangle(myTrianglesList.at(indexTriangle), pt);
 }
 
@@ -619,7 +619,7 @@ DGtal::MeshFromTriangles<TPoint>::isInTriangle(unsigned int indexTriangle, const
 template<typename TPoint> 
 inline
 bool 
-DGtal::MeshFromTriangles<TPoint>::isInTriangle(const  MeshTriangle &triangle, const TPoint &pt){
+DGtal::MeshFrom2DTriangles<TPoint>::isInTriangle(const  MeshTriangle &triangle, const TPoint &pt){
   TPoint ptA = myVertexList.at(triangle.indexesPt[0]);
   TPoint ptB = myVertexList.at(triangle.indexesPt[1]);
   TPoint ptC = myVertexList.at(triangle.indexesPt[2]);
@@ -641,7 +641,7 @@ DGtal::MeshFromTriangles<TPoint>::isInTriangle(const  MeshTriangle &triangle, co
 template<typename TPoint> 
 inline
 int 
-DGtal::MeshFromTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
+DGtal::MeshFrom2DTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
   for(unsigned int i=1; i< myTrianglesList.size(); i++){
     if(myTrianglesList.at(i).isActive && isInTriangle(i, p))
       return i;
@@ -654,7 +654,7 @@ DGtal::MeshFromTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
 template<typename TPoint> 
 inline
 bool
-DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const{
+DGtal::MeshFrom2DTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const{
   return isInCircle(indexTriangle, myVertexList.at(indexPtD));   
 }
 
@@ -663,7 +663,7 @@ DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigne
 template<typename TPoint> 
 inline
 bool 
-DGtal::MeshFromTriangles<TPoint>::isOkForDelaunayTriangulation( unsigned int indexTriangle){
+DGtal::MeshFrom2DTriangles<TPoint>::isOkForDelaunayTriangulation( unsigned int indexTriangle){
   bool res = true;
   for(unsigned int i=1; i<=3; i++){
     int indexAdjPt = getIndexAdjacentVertex(indexTriangle, i);
@@ -678,7 +678,7 @@ DGtal::MeshFromTriangles<TPoint>::isOkForDelaunayTriangulation( unsigned int ind
 template<typename TPoint> 
 inline
 bool
-DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  TPoint &ptD) const{
+DGtal::MeshFrom2DTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  TPoint &ptD) const{
   MeshTriangle tr;
   TPoint ptA = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[0]);
   TPoint ptB = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[1]); 
@@ -713,7 +713,7 @@ DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  
 template< typename TPoint> 
 inline 
 unsigned int
-DGtal::MeshFromTriangles<TPoint>::getNumTriangles() const{
+DGtal::MeshFrom2DTriangles<TPoint>::getNumTriangles() const{
   return myTrianglesList.size();  
 }
 
@@ -722,7 +722,7 @@ template <typename TPoint>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-		    const MeshFromTriangles<TPoint> & object )
+		    const MeshFrom2DTriangles<TPoint> & object )
 {
   object.selfDisplay( out );
   return out;
