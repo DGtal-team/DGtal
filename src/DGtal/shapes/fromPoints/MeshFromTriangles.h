@@ -194,7 +194,7 @@ namespace DGtal
     
     
     
-    int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num);
+    int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
     
     int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
     
@@ -226,10 +226,10 @@ namespace DGtal
     bool isInTriangle(const  MeshTriangle &triangle, const TPoint &pt);
     
 
-    bool isInCircle(unsigned int indexTriangle, const  TPoint &ptD);
+    bool isInCircle(unsigned int indexTriangle, const  TPoint &ptD) const;
 
 
-    bool isInCircle(unsigned int indexTriangle, unsigned int indexPtD);
+    bool isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const;
     
 
     bool isOkForDelaunayTriangulation( unsigned int indexTriangle);

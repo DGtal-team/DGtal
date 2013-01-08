@@ -128,7 +128,7 @@ bool testMeshFromDelaunayConstruction()
     unsigned int y = 10+rand()%80;
     Point p(x,y);
     double norme = sqrt((x-50)*(x-50)+(y-50)*(y-50));
-    if(norme < 40 && norme > 30){
+    if((norme < 41 && norme > 39) || (norme < 31 && norme > 29)){
       aMesh2.addPointInMesh(p);
       aMesh.addPointInDelaunayMesh(p);
     }

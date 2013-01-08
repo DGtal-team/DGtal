@@ -485,9 +485,9 @@ template<typename TPoint>
 inline
 int
 DGtal::MeshFromTriangles<TPoint>::getIndexAdjacentVertex(unsigned int indexTriangle, 
-						    unsigned int num){
+							 unsigned int num) const {
   
-  MeshTriangle &tr = myTrianglesList.at(indexTriangle);
+  MeshTriangle tr = myTrianglesList.at(indexTriangle);
   MeshTriangle trAdj;
   bool isPresent=false;
   if( tr.indexAdjTriangles[num-1] !=0){
@@ -554,7 +554,7 @@ std::vector<TPoint>
 DGtal::MeshFromTriangles<TPoint>::getTrianglesFromVertex() const{
   
   std::vector<TPoint> vectResult;
-  for(unsigned int i=0; i< myTrianglesList.size(); i++){
+  for(unsigned int i=1; i< myTrianglesList.size(); i++){
     MeshTriangle triangle = myTrianglesList.at(i);
     if(triangle.isActive){
       vectResult.push_back(myVertexList.at(triangle.indexesPt[0]));
@@ -654,7 +654,7 @@ DGtal::MeshFromTriangles<TPoint>::getTriangleIndexInclosing(TPoint p){
 template<typename TPoint> 
 inline
 bool
-DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPtD){
+DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const{
   return isInCircle(indexTriangle, myVertexList.at(indexPtD));   
 }
 
@@ -678,7 +678,7 @@ DGtal::MeshFromTriangles<TPoint>::isOkForDelaunayTriangulation( unsigned int ind
 template<typename TPoint> 
 inline
 bool
-DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  TPoint &ptD){
+DGtal::MeshFromTriangles<TPoint>::isInCircle(unsigned int indexTriangle, const  TPoint &ptD) const{
   MeshTriangle tr;
   TPoint ptA = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[0]);
   TPoint ptB = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[1]); 
