@@ -67,21 +67,12 @@ Description of \b concept '\b CLabel' <p>
 
  ### Definitions
 
- ### Valid expressions and
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
+ ### Valid expressions and semantics
 
-     </table>
 
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|               |            |                     |             |                  |           |                |            |     
  ### Invariants###
 
  ### Models###

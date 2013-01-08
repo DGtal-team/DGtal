@@ -76,7 +76,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name           | Expression            |   | Return type | Precondition | Semantics                          |   | Complexity      |
-     |----------------+-----------------------+---+-------------+--------------+------------------------------------+---+-----------------|
+     |----------------|-----------------------|---|-------------|--------------|------------------------------------|---|-----------------|
      | Initialization | x.init( h, itb, ite ) |   | void        | h > 0        | Grid step and range initialization |   | constant        |
      | Evaluation     | x.eval( )             |   | Quantity    |              | Estimation of the quantity         |   | model dependant |
 
