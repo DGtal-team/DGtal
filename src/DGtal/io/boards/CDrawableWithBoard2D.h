@@ -56,12 +56,13 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithBoard2D
   /**
-     Description of \b concept '\b CDrawableWithBoard2D' <p>
-     @ingroup Concepts
+Description of \b concept '\b CDrawableWithBoard2D' <p>
+@ingroup Concepts
      
-     @brief Aim:  The concept CDrawableWithBoard2D specifies what are the classes
-     that admit an export with Board2D.
-     An object x satisfying this concept may then be used as:
+@brief Aim:  The concept CDrawableWithBoard2D specifies what are the classes
+that admit an export with Board2D.
+
+An object x satisfying this concept may then be used as:
      
    \code
    Board2D board;
@@ -69,31 +70,31 @@ namespace DGtal
          << x;
    \endcode 
    
-   ### Refinement of
+### Refinement of
    
-   ### Associated types :
+### Associated types :
    
-   ### Notation
+### Notation
    - \t X : A type that is a model of CDrawableWithBoard2D
    - \t x, \t y  : Object of type X
    - \t m  : a string of characters
    
-   ### Definitions
+### Definitions
    
-   ### Valid expressions and semantics
+### Valid expressions and semantics
    
-    | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-    |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-    |the default draw style | x.defaultStyle( m ="" ) | \t mode \t m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
-    |the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
-    |the way the objet \t x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \t board stream | | |
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|the default draw style | x.defaultStyle( m ="" ) | \t mode \t m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
+|the way the objet \t x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \t board stream | | |
    
-    ### Invariants
+ ### Invariants
    
-    ### Models
-    ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+ ### Models
+    ArithmeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
    
-    ### Notes
+ ### Notes
     @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */

@@ -94,7 +94,7 @@ An object x satisfying this concept may then be used as:
     @todo ImageContainerByHashTree does not implement setStyle(display &).
     @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */  
-
+  
   class Display3D;
   
   template <typename T>

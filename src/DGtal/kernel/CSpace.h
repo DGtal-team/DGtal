@@ -58,16 +58,15 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
- Description of \b concept '\b CSpace' <p>
- @ingroup Concepts
+Description of \b concept '\b CSpace' <p>
+@ingroup Concepts
     
- \brief Aim: Defines the concept describing a digital space, ie a
+@brief Aim: Defines the concept describing a digital space, ie a
  cartesian product of integer lines.
      
  ### Refinement of
     
  ### Provided types :
-
      - Space: the type itself.
      - Integer: the type for the components or coordinates of the
        space. Must be a model of CInteger.
@@ -92,13 +91,12 @@ namespace DGtal
 | dimension     | \e X::dimension  |                   |               |              | X should have a static member \c dimension of type \c Dimension. | | |
 
     
- ### Invariants###
+ ### Invariants
     
- ### Models###
-
- - SpaceND is the usual model of CSpace.
+ ### Models
+     SpaceND is the usual model of CSpace.
     
- ### Notes###
+ ### Notes
 
  @tparam T the type that is checked. T should be a model of CSpace.
 

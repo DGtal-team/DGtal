@@ -63,19 +63,19 @@ Description of \b concept '\b CEuclideanRing' <p>
     
  ### Definitions
     
- ### Valid expressions 
+ ### Valid expressions and semantics
 
 
 
-Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+|Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity| 
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
-Division|   \a x / \a y </td>   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
+| Division|   \a x / \a y </td>   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
 
 
  ### Invariants###
     
  ### Models###
-       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
+DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
  ### Notes###
    
