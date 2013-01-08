@@ -71,13 +71,13 @@ Description of \b concept '\b CInteger' <p>
     
  ### Definitions
     
- ### Valid expressions and 
+ ### Valid expressions and semantics
  
- ### Invariants###
+ ### Invariants
 
     
- ### Models###
-     BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
+ ### Models
+BigInteger,  short, int, long long, int16_t, int32_t, int64_t, ...
 
  ### Notes###
 
