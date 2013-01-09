@@ -160,9 +160,6 @@ namespace DGtal
     virtual void setStyle( Display3D &  ) const {}
   };
 
-  
-  
-
   /**
    * Interface that specifies that an object can draw itself on a
    * board. 
