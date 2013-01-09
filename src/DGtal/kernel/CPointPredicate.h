@@ -60,23 +60,21 @@ Description of \b concept '\b CPointPredicate' <p>
      Associates booleans to points.
     
  ### Refinement of 
-  - CPredicate
+    CPredicate
 
     
  ### Associated types :
-
      - Point : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
- ### Models###
-    
+ ### Models
     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
+    - complex predicate constructor: BinaryPointPredicate
+    - others: DomainPredicate, SetPredicate
     
- ### Notes###
+ ### Notes
    */
 template <typename T>
 struct CPointPredicate: CPredicate<T, typename T::Point>
