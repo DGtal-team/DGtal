@@ -57,12 +57,12 @@ bool testTriangularMeshFrom2DPointsFct()
 {
   trace.beginBlock ( "Testing TriangularMeshFrom2DPoints  functions ..." );
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
-  aMesh.addPointInMesh(Point(80,80));
-  aMesh.addPointInMesh(Point(80,90));
-  aMesh.addPointInMesh(Point(50,90));
-  aMesh.addPointInMesh(Point(30,40));
-  aMesh.addPointInMesh(Point(50,20));
-  aMesh.addPointInMesh(Point(60,60));
+  aMesh.addPointInsideMesh(Point(80,80));
+  aMesh.addPointInsideMesh(Point(80,90));
+  aMesh.addPointInsideMesh(Point(50,90));
+  aMesh.addPointInsideMesh(Point(30,40));
+  aMesh.addPointInsideMesh(Point(50,20));
+  aMesh.addPointInsideMesh(Point(60,60));
   Board2D aBoard;
   aBoard << aMesh;
   
@@ -89,8 +89,8 @@ bool testMeshOnSimpleConstruction()
   trace.beginBlock ( "Testing Simple Triangular Mesh construction..." );
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
   
-  aMesh.addPointInMesh(Point(4,3));
-  aMesh.addPointInMesh(Point(7,8));  
+  aMesh.addPointInsideMesh(Point(4,3));
+  aMesh.addPointInsideMesh(Point(7,8));  
   
   bool isIn = aMesh.isInTriangle(3, Point(5,1)); 
   isIn = isIn && aMesh.isInTriangle(4, Point(1,3)); 
@@ -98,11 +98,11 @@ bool testMeshOnSimpleConstruction()
   isIn = isIn && aMesh.isInTriangle(6, Point(8,9)); 
   isIn = isIn && aMesh.isInTriangle(7, Point(9,7)); 
   isIn = isIn && aMesh.isInTriangle(8, Point(6,6)); 
-  unsigned int indexTr = aMesh.getTriangleIndexInclosing(Point(1,1));
+  unsigned int indexTr = aMesh.getTriangleIndexInclosingPoint(Point(1,1));
   trace.info() << "index of triangle containing pt (1,1): " << indexTr  << endl;
   unsigned int indexAdjacentTR = aMesh.getIndexAdjacentTriangle(5, 1);
   trace.info() << "index of triangle adjacent to Triangle of index 5 on face 1: " << indexAdjacentTR  << endl;
-  unsigned int indexPt6_6 = aMesh.getTriangleIndexInclosing(Point(6,6));
+  unsigned int indexPt6_6 = aMesh.getTriangleIndexInclosingPoint(Point(6,6));
   trace.info() << "index of triangle including point of coords (6, 6): " << indexPt6_6   << endl;
   Board2D aBoard;
   aBoard << aMesh;
@@ -137,15 +137,16 @@ bool testMeshOnSimpleConstruction()
 bool testTriangleFlipping(){
   trace.beginBlock ( "Testing triangle flipping  " );
    TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
-   aMesh.addPointInMesh(Point(4,3));
-   aMesh.addPointInMesh(Point(7,8)); 
+   aMesh.addPointInsideMesh(Point(4,3));
+   aMesh.addPointInsideMesh(Point(7,8)); 
 
    aMesh.flipTriangleOnEdge(5, 1);
 
+
    // Testing resulting triangles.
-   unsigned int indexTr = aMesh.getTriangleIndexInclosing(Point(4,6));
+   unsigned int indexTr = aMesh.getTriangleIndexInclosingPoint(Point(4,6));
    trace.info() << "index of tr containing (4,6)=" << indexTr << endl;
-   unsigned int indexTr2 = aMesh.getTriangleIndexInclosing(Point(3,7));
+   unsigned int indexTr2 = aMesh.getTriangleIndexInclosingPoint(Point(3,7));
    trace.info() << "index of tr containing (8,2)=" << indexTr2 << endl;
    Board2D aBoard;
    aBoard << aMesh;
@@ -163,7 +164,7 @@ bool testTriangleFlipping(){
    aBoard.fillTriangle(LibBoard::Point(trAdjToNew1F1.at(0)[0],trAdjToNew1F1.at(0)[1]), 
 		       LibBoard::Point(trAdjToNew1F1.at(1)[0],trAdjToNew1F1.at(1)[1]),
 		       LibBoard::Point(trAdjToNew1F1.at(2)[0],trAdjToNew1F1.at(2)[1]));
-   unsigned int indexTr3 = aMesh.getTriangleIndexInclosing(Point(5,9));
+   unsigned int indexTr3 = aMesh.getTriangleIndexInclosingPoint(Point(5,9));
    trace.info() << "index of tr containing (5,9) = " << indexTr3 << endl;
    trace.info() << "index of tr Adj to TrNew1 face 1 =" << adjIndexTr1NewF1 << endl;
 
@@ -186,30 +187,30 @@ bool testMeshFromDelaunayConstruction()
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
   TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(100,100));
   
-  aMesh.addPointInDelaunayMesh(Point(80,80));
-  aMesh.addPointInDelaunayMesh(Point(80,90));
-  aMesh.addPointInDelaunayMesh(Point(50,90));
-  aMesh.addPointInDelaunayMesh(Point(3,4));
-  aMesh.addPointInDelaunayMesh(Point(50,20));
-  aMesh.addPointInDelaunayMesh(Point(60,60));
+  aMesh.addPointInsideDelaunayMesh(Point(80,80));
+  aMesh.addPointInsideDelaunayMesh(Point(80,90));
+  aMesh.addPointInsideDelaunayMesh(Point(50,90));
+  aMesh.addPointInsideDelaunayMesh(Point(3,4));
+  aMesh.addPointInsideDelaunayMesh(Point(50,20));
+  aMesh.addPointInsideDelaunayMesh(Point(60,60));
 
 
-  aMesh2.addPointInMesh(Point(80,80));
-  aMesh2.addPointInMesh(Point(80,90));
-  aMesh2.addPointInMesh(Point(50,90));
-  aMesh2.addPointInMesh(Point(3,4));
-  aMesh2.addPointInMesh(Point(50,20));
-  aMesh2.addPointInMesh(Point(60,60));
+  aMesh2.addPointInsideMesh(Point(80,80));
+  aMesh2.addPointInsideMesh(Point(80,90));
+  aMesh2.addPointInsideMesh(Point(50,90));
+  aMesh2.addPointInsideMesh(Point(3,4));
+  aMesh2.addPointInsideMesh(Point(50,20));
+  aMesh2.addPointInsideMesh(Point(60,60));
   
   srand ( time(NULL) );
-  for (unsigned int i =0; i < 1000 ; i++){
+  for (unsigned int i =0; i < 10000 ; i++){
     unsigned int x = 10+rand()%80;
     unsigned int y = 10+rand()%80;
     Point p(x,y);
     double norme = sqrt((x-50)*(x-50)+(y-50)*(y-50));
     if((norme < 41 && norme > 39) || (norme < 31 && norme > 29)){
-      aMesh2.addPointInMesh(p);
-      aMesh.addPointInDelaunayMesh(p);
+      aMesh2.addPointInsideMesh(p);
+      aMesh.addPointInsideDelaunayMesh(p);
     }
   } 
 
