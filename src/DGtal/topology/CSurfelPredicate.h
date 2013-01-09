@@ -53,22 +53,21 @@ namespace DGtal
   /**
 Description of \b concept '\b CSurfelPredicate' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a surfel.
+@brief Aim: Defines a predicate on a surfel.
      
-     Associates a boolean to surfels.
+Associates a boolean to surfels.
 
- ### Refinement of CPredicate< T, T::Surfel >.
+ ### Refinement of 
+       CPredicate< T, T::Surfel >.
     
- ### Associated types :
-
-     - Surfel : specifies the type for an element of the domain (inner
+ ### Associated types:
+      - Surfel: specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
  ### Models###
-        
-     - BoundaryPredicate, FrontierPredicate, SurfelSetPredicate
+      BoundaryPredicate, FrontierPredicate, SurfelSetPredicate
 
  ### Notes###
    */
