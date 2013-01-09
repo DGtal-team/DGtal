@@ -161,9 +161,6 @@ namespace DGtal
     virtual ~DrawableWithDisplay3D() {}
   };
 
-  
-  
-
   /**
    * Interface that specifies that an object can draw itself on a
    * board. 
