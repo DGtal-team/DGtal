@@ -206,17 +206,71 @@ namespace DGtal
     
     unsigned int getTriangleIndexInclosingPoint(const TPoint & aPoint);
     
+    
+    /**
+     * Returns the index of the adjacent vertex of the triangle given
+     * at index indexTriangle according a edge number. If no point
+     * exits it returns 0 which is associated to the index of an empty
+     * point.
+     *
+     * @param indexTriangle: the index of the considered triangle.
+     * @param numEdge: the edge number (starting from 1 to 3), the
+     * edges are ordered according the first triangle point in
+     * clockwise order.
+     * @return the index of the adjacent point.  
+     **/
         
-    unsigned int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
+    unsigned int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int numEdge) const;
+        
 
+    /**
+     *  Returns the index of the adjacent triangle according to the
+     *  triangle edge number. If no triangle exits, it returns 0 which
+     *  is associated to the index of an empty triangle.
+     *
+     * @param numEdge: the edge number (starting from 1 to 3), the
+     * edges are ordered according the first triangle point in
+     * clockwise order.
+     *
+     * @return the index of the adjacent triangle.  
+     *
+     **/
     
-    unsigned int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
+    unsigned int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int numEdge);
+    
+    
+    /**
+     * Returns the number associated to the triangle edge which
+     * contains the two points of index indPt1 and indPt2. The order
+     * of points has no importance. If such edge does not exit in the
+     * given triangle it returns 0.
+     * 
+     * @param indexTriangle: index of the considered triangle (starting from 1, 0 is the empty triangle)
+     * @param indexPt1: index of the a vertex.
+     * @param indexPt2: index of another vertex.
+     * @return the number associated to the triangle edge containing the points.
+     *
+     **/
 
+    unsigned int getNumEdgeFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
+
+
+     /**
+     * Returns the adjacent vertex of the triangle given at index
+     * indexTriangle according a edge number. If no point exits it
+     * returns the empty point of index 0.
+     *
+     * @param indexTriangle: the index of the considered triangle.
+     * @param numEdge: the edge number (starting from 1 to 3), the
+     * edges are ordered according the first triangle point in
+     * clockwise order.
+     * @return the adjacent point.  
+     **/
     
-    unsigned int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int num);
+    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int numEdge);
     
-    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int num);
-    
+
+
 
     bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);        
     
