@@ -142,6 +142,7 @@ bool testTriangleFlipping(){
 
    aMesh.flipTriangleOnEdge(5, 1);
 
+
    // Testing resulting triangles.
    unsigned int indexTr = aMesh.getTriangleIndexInclosingPoint(Point(4,6));
    trace.info() << "index of tr containing (4,6)=" << indexTr << endl;
@@ -202,7 +203,7 @@ bool testMeshFromDelaunayConstruction()
   aMesh2.addPointInsideMesh(Point(60,60));
   
   srand ( time(NULL) );
-  for (unsigned int i =0; i < 1000 ; i++){
+  for (unsigned int i =0; i < 10000 ; i++){
     unsigned int x = 10+rand()%80;
     unsigned int y = 10+rand()%80;
     Point p(x,y);

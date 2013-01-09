@@ -191,16 +191,16 @@ namespace DGtal
        
     
     
-    int getTriangleIndexInclosingPoint(TPoint p);
+    unsigned int getTriangleIndexInclosingPoint(TPoint p);
     
         
-    int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
+    unsigned int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
 
     
-    int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
+    unsigned int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
 
     
-    int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int num);
+    unsigned int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int num);
     
     TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int num);
     
