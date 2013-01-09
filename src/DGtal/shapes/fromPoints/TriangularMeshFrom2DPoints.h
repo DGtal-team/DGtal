@@ -202,7 +202,7 @@ namespace DGtal
      * @return the index of the triangle containing the point.  
      **/
     
-    unsigned int getTriangleIndexInclosingPoint(const TPoint & aPoint);
+    unsigned int getTriangleIndexInclosingPoint(const TPoint & aPoint) const;
     
     
     /**
@@ -250,7 +250,7 @@ namespace DGtal
      *
      **/
 
-    unsigned int getNumEdgeFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
+    unsigned int getNumEdgeFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2) const ; 
 
 
      /**
@@ -302,28 +302,81 @@ namespace DGtal
     
 
     /**
-     * 
+     *  Returns a vector containning the sequence of vertex that we
+     *  can enumerate by visiting each triangle. Used to display the
+     *  triangularMesh.  
+     *
+     *  @return the vector containing all the vertex
+     *  defining the triangles.
      **/
 
     std::vector<TPoint> getTrianglesAsVertexVect() const;   
 
 
 
+    
+    /**
+     * @return the current number of triangles 
+     * 
+     **/   
     unsigned int getNumTriangles() const;
 
+
+
+    /**
+     * Check if a point is located stricly inside a triangle (return false if the point belongs to an triangle edge). 
+     * @param indexTriangle: the index of a triangle.
+     * @param tp: the point to tested.
+     **/
     
-    bool isInTriangle(unsigned int indexTriangle, const  TPoint &pt);
- 
-    bool isInTriangle(const  MeshTriangle &triangle, const TPoint &pt);
+    bool isInTriangle(unsigned int indexTriangle, const  TPoint &pt) const;
+    
     
 
-    bool isInCircle(unsigned int indexTriangle, const  TPoint &ptD) const;
+    /**
+     * Check if a point is located stricly inside a triangle (return false if the point belongs to an triangle edge). 
+     * @param indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     * @param tp: the point to tested.
+     **/
+    
+    bool isInTriangle(const  MeshTriangle &triangle, const TPoint &pt) const;
+    
+    
+    
+    /** 
+     * Check if a point is included in the circumcirle of a given triangle.
+     * @param indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     * @param pt: the tested point.
+     *
+     **/
+    
+    bool isInCircle(unsigned int indexTriangle, const  TPoint &pt) const;
 
+    /** 
+     * Check if a point is included in the circumcirle of a given triangle.
+     * @param indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     * @param indexPt: the index of the tested point.
+     *
+     **/
 
-    bool isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const;
+    bool isInCircle(unsigned int indexTriangle, unsigned int indexPt) const;
     
 
-    void swapTest(unsigned int indexTriangle, unsigned int numFace);
+
+    /**
+     * Test and apply triangle swap according to the Delaunay
+     * condition (point inside or outside the circumcirle). The tested
+     * point is the one which is adjacent to the edge identified with
+     * numEdge. If the swap is performed, it also applied the test on
+     * new adjacent faces.
+     * 
+     * @param  indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     * @param  numEdge: the edge number (starting from 1 to 3), the
+     * edges are ordered according the first triangle point in
+     * clockwise order. 
+     **/
+
+    void swapTest(unsigned int indexTriangle, unsigned int numEdge);
 
     
     
@@ -357,8 +410,8 @@ namespace DGtal
 
   
 
-double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, const TPoint &pt2);
-
+    double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, const TPoint &pt2) const ;
+    
     
           
 
