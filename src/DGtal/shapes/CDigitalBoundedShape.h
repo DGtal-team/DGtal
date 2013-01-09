@@ -54,61 +54,36 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalBoundedShape
   /**
-   * DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
-   * @ingroup Concepts
-   * Aim: designs the concept of bounded shapes in DGtal (shape for
-   * which upper and lower bounding bounds are available).
-   * 
-   * <p> Refinement of 
-   *
-   * <p> Associated types :
-   *   - Point: type for points (to characterize upper/lower bounds).
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CDigitalBoundedShape
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   <tr> 
-        <td class=CName> Lower bound        </td> 
-        <td class=CExpression> x.getLowerBound()      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> Point     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> compute and return the lower bound of
-   * the shape bounding box      </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-  <tr> 
-        <td class=CName> Upper bound        </td> 
-        <td class=CExpression> x.getUpperBound()      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> Point     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> compute and return the upper bound of
-   * the shape bounding box      </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
+@ingroup Concepts
+@brief Aim: designs the concept of bounded shapes in DGtal (shape for
+    which upper and lower bounding bounds are available).
     
-      </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   * 
-   *   Implicit and Parametric shapes of the shape factory.
-   *
-   *
-   * <p> Notes###
+### Refinement of 
+   
+### Associated types :
+    - Point: type for points (to characterize upper/lower bounds).
+   
+### Notation
+    - \t X : A type that is a model of CDigitalBoundedShape
+    - \t x, \t y  : Object of type X
+   
+### Definitions
+   
+### Valid expressions and semantics
+   
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Lower bound    | x.getLowerBound()| |             |Point        |                  |compute and return the lower bound of the shape bounding box | | |
+|Upper bound    | x.getUpperBound()| |             |Point        |                  |compute and return the upper bound of the shape bounding box | | |
+   
+### Invariants
+   
+### Models
+      Implicit and Parametric shapes of the shape factory.
+   
+   
+### Notes
    */
   template <typename TShape>
   struct CDigitalBoundedShape

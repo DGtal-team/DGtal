@@ -57,7 +57,7 @@ namespace DGtal
 Description of \b concept '\b CBoundedNumber' <p>
      @ingroup Concepts
 
-     \brief Aim: The concept CBoundedNumber specifies what are the bounded
+@brief Aim: The concept CBoundedNumber specifies what are the bounded
      numbers. Models of this
      concept should be listed in NumberTraits class and should have
      the isBounded property.
@@ -65,28 +65,28 @@ Description of \b concept '\b CBoundedNumber' <p>
  ### Refinement of
   - CQuantity<T>
 
- ### Associated types :
+ ### Associated types:
 
  ### Notation
      - \t X : A type that is a model of CBoundedNumber
 
  ### Definitions
 
- ### Valid expressions and
+ ### Valid expressions and semantics
 
 
 Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsBounded | typename NumberTraits<X>::IsBounded | TagTrue | | | | | |
   
- ### Invariants###
+ ### Invariants
 
- ### Models###
+ ### Models
 
-     short, int, unsigned int, long long, unsigned long long,
-     uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
+short, int, unsigned int, long long, unsigned long long,
+uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
 
- ### Notes###
+ ### Notes
 
 @tparam T the type that is checked. T should be a model of
      CBoundedNumber.

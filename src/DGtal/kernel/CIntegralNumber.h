@@ -58,7 +58,8 @@ namespace DGtal
   /**
 Description of \b concept '\b CIntegralNumber' <p>
      @ingroup Concepts
-     @brief Aim: Concept checking for Integral Numbers. Models of this
+
+@brief Aim: Concept checking for Integral Numbers. Models of this
      concept should be listed in NumberTraits class and should have
      the isIntegral property.
      
@@ -74,7 +75,7 @@ Description of \b concept '\b CIntegralNumber' <p>
     
  ### Definitions
     
- ### Valid expressions and 
+ ### Valid expressions and semantics
  
 
 Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
@@ -82,13 +83,14 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 \a X should be tagged \b true in \a NumberTraits for \a IsIntegral. | typename NumberTraits<X>::IsIntegral | TagTrue | | | | | |
     
     
- ### Invariants###
+ ### Invariants
 
     
- ### Models###
-     BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
+ ### Models
 
- ### Notes###
+BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
+
+ ### Notes
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.
