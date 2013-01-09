@@ -261,7 +261,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( resAll ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  return resAll;
+  return resAll ? 0 : 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

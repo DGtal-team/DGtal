@@ -81,15 +81,12 @@ namespace DGtal
      * Structure for representing the faces from the vertex index.
      **/
 
-    
     struct MeshTriangle{
       unsigned int indexesPt [3];
       unsigned int indexAdjTriangles [3];
       bool isActive;
     };
       
-
-    
     
     struct IndexOfCreatedTriangle{
       unsigned int indexTr1;
@@ -98,17 +95,18 @@ namespace DGtal
     };
     
     
-
-    // ----------------------- Standard services ------------------------------
-  public:
+  private:
 
     /**
-     * Constructor.
-     * By default the constructed mesh does not contain nor store color information about the mesh.
-     * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
+     * Default Constructor.
+     * Forbidden since 
      * 
      */
     TriangularMeshFrom2DPoints();    
+
+    
+    // ----------------------- Standard services ------------------------------
+  public:
 
 
 
@@ -165,36 +163,16 @@ namespace DGtal
      **/
     void addVertex(const TPoint &vertex);
     
-
-
-    
-    /**
-     * Adding new Triangle.
-     *
-     **/
-    void addTriangle(unsigned int index1, unsigned int index2,  unsigned int index3 );
-
-
-    /**
-     * Adding new Triangle.
-     *
-     **/
-    void addTriangle(unsigned int index1, unsigned int index2,  unsigned int index3,
-		     MeshTriangle *t1, MeshTriangle *t2, MeshTriangle t3);
-
-    
     
 
     int getTriangleIndexInclosing(TPoint p);
     
     
-
-    bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);
-    
-    
+    bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);    
     
     
     int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
+
     
     int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
     
@@ -214,8 +192,7 @@ namespace DGtal
     
     
     
-    std::vector<TPoint> getTrianglesFromVertex() const;
-    
+    std::vector<TPoint> getTrianglesFromVertex() const;   
 
 
     unsigned int getNumTriangles() const;
@@ -230,9 +207,6 @@ namespace DGtal
 
 
     bool isInCircle(unsigned int indexTriangle, unsigned int indexPtD) const;
-    
-
-    bool isOkForDelaunayTriangulation( unsigned int indexTriangle);
     
 
     void swapTest(unsigned int indexTriangle, unsigned int numFace);

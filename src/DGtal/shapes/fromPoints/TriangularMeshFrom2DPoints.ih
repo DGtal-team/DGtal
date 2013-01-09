@@ -77,8 +77,6 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoi
   myVertexList.push_back(ptLower);
   
   // Upper triangle
-  //  addTriangle(0, 1, 2);
-  //  addTriangle(2, 3, 0);
   MeshTriangle tr1;
   MeshTriangle tr2;
   tr1.indexesPt[0]=0;  tr1.indexesPt[1]=1;   tr1.indexesPt[2]=2;
@@ -576,23 +574,6 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addVertex(const TPoint &aPoint){
 
 
 
-template<typename TPoint>
-inline 
-void
-DGtal::TriangularMeshFrom2DPoints<TPoint>::addTriangle(unsigned int index1, 
-					      unsigned int index2,  unsigned int index3 ){
-  MeshTriangle triangle;
-  triangle.indexesPt[0] = index1;
-  triangle.indexesPt[1] = index2;
-  triangle.indexesPt[2] = index3;
-  triangle.indexAdjTriangles[0]=0;
-  triangle.indexAdjTriangles[1]=0;
-  triangle.indexAdjTriangles[2]=0;
-  triangle.isActive=true;
-  myTrianglesList.push_back(triangle);
-}
-
-
 
 template<typename TPoint> 
 inline
@@ -660,19 +641,6 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::isInCircle(unsigned int indexTriangle
 
 
 
-template<typename TPoint> 
-inline
-bool 
-DGtal::TriangularMeshFrom2DPoints<TPoint>::isOkForDelaunayTriangulation( unsigned int indexTriangle){
-  bool res = true;
-  for(unsigned int i=1; i<=3; i++){
-    int indexAdjPt = getIndexAdjacentVertex(indexTriangle, i);
-    if(indexAdjPt!=-1 ){
-      res=res&& isInCircle(indexTriangle, indexAdjPt);
-    }
-  }  
-  return res && myTrianglesList.at(indexTriangle).isActive;
-}
 
 
 template<typename TPoint> 
