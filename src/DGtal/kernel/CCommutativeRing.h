@@ -71,10 +71,10 @@ Description of \b concept '\b CCommutativeRing' <p>
 
  ### Definitions
 
- ### Valid expressions
+ ### Valid expressions and semantics
 
 
-Name                                 | Expression |  Type requirements | Return type| Precondition | Semantis                             | Postcondition | Complexity|
+Name                                 | Expression |  Type requirements | Return type| Precondition | Semantics                             | Postcondition | Complexity|
 -------------------------------------|------------|--------------------|------------|--------------|--------------------------------------|---------------|-----------|
 Construction from basic integer type | @e X( i )  |                    |            |              | \e X represents the integer \e i     |               |           |
 Should have a 0                      |   @e X(0)  |                    |            |              | Neutral element for addition         |               |           |
