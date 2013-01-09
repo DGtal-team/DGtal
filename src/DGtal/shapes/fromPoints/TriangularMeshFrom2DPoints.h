@@ -67,15 +67,10 @@ namespace DGtal
   class TriangularMeshFrom2DPoints
   {
     
-
-
-    
-    
     
     // ----------------------- associated types ------------------------------
   public:
   
-
 
     /**
      * Structure for representing the faces from the vertex index.
@@ -97,12 +92,6 @@ namespace DGtal
     
   private:
 
-    /**
-     * Default Constructor.
-     * Forbidden since 
-     * 
-     */
-    TriangularMeshFrom2DPoints();    
 
     
     // ----------------------- Standard services ------------------------------
@@ -111,19 +100,25 @@ namespace DGtal
 
 
     /**
-     * Constructor.
-     * By default the constructed mesh does not contain nor store color information about the mesh.
-     * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
+     * Default Constructor.
      * 
+     * 
+     */
+    TriangularMeshFrom2DPoints();    
+    
+
+    /**
+     * Constructor from a bounding box.
+     * This constructor adds two new triangles in the mesh associated to the bounding box given by the upper and lower points.
+     *
+     *  @param ptUpper: upper bounding box point.
+     *  @param ptLower: lower bounding box point. 
+     *
      */
     TriangularMeshFrom2DPoints(const TPoint &ptUpper, const TPoint & ptLower);    
     
-
     
-
     
-
-
     /**
      * Destructor.
      */
@@ -147,43 +142,71 @@ namespace DGtal
   public:
     
 
-
-    IndexOfCreatedTriangle addPointInMesh(const TPoint & vertex );
-
-
-
-    IndexOfCreatedTriangle addPointInDelaunayMesh(const TPoint & vertex );
-
-    
-    
     
     /**
-     * Adding new vertex.
-     *
-     **/
-    void addVertex(const TPoint &vertex);
-    
-    
+     * Add a vertex inside the mesh. From the triangle containing the
+     * given vertex (given by basic search), it constructs three new
+     * triangles starting from the first triangle point and following
+     * a clockwise order. Adjacency of the new triangles are also
+     * updated. 
 
-    int getTriangleIndexInclosing(TPoint p);
+     * Notes that when the point is outside to the mesh or when it is
+     * along an existing edge mesh; the vertex is simply ignored and
+     * in this case the resulting index of created face is set to 0.
+     * 
+     * This operation is performed * in O(n) with n is the number of
+     * triangle mesh.
+     *
+     *  @param vertex: The new point.
+     *  @return the index (IndexOfCreatedTriangle) of the created triangles. 
+     */
+
+    IndexOfCreatedTriangle addPointInsideMesh(const TPoint & vertex );
+
+    
+    /**
+     * Add a vertex inside the mesh with checking and maintaining
+     * Delaunay triangulation . From the triangle containing the given
+     * vertex (given by basic search), it constructs three new
+     * triangles starting from the first triangle point and following
+     * a clockwise order. If the triangle does not satisfy the
+     * Delaunay condition the triangle is transformed with adjacent
+     * triangle. Adjacency of the new triangles are also updated. 
+     *
+     * Notes that when the point is outside of any triangle mesh or
+     * when it is along an existing edge mesh; the vertex is simply
+     * ignored and in this case the resulting index of created face is
+     * set to 0.
+     * 
+     * This operation is performed * in O(n) with n is the number of
+     * triangle mesh.
+     *
+     *  @param vertex: The new point.
+     *  @return the index (IndexOfCreatedTriangle) of the created triangles. 
+     */
+   
+    
+    IndexOfCreatedTriangle addPointInsideDelaunayMesh(const TPoint & vertex );
+
+       
     
     
-    bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);    
+    int getTriangleIndexInclosingPoint(TPoint p);
     
-    
+        
     int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
 
     
     int getNumFaceFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2); 
-    
-
-
-    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int num);
-
-
 
     
     int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int num);
+    
+    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int num);
+    
+
+    bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);        
+    
     
 
     std::vector<TPoint> getTrianglePointsAdj(unsigned int i, unsigned int adjNum );
