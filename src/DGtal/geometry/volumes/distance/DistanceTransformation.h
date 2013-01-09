@@ -76,7 +76,7 @@ namespace DGtal
    * This class is a model of CConstImage.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
-   * @tparam TPointPredicate point predicate returning true for points
+   * @tparam TPointPredicate point predicate returning false for points
    * from which we compute the distance (model of CPointPredicate)
    * @tparam TSeparableMetric a model of CSeparableMetric
    * @tparam TImageContainer any model of CImage to store the

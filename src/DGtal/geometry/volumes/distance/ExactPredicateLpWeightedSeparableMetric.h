@@ -46,6 +46,7 @@
 #include "DGtal/math/BasicMathFunctions.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -176,19 +177,19 @@ namespace DGtal
                                    const Weight &wS) const;
     
     // ----------------------- CPowerSeparableMetric --------------------------------------
-    /** 
-     * Given three sites (a,b,c) and a straight segment
+   
+    /**
+     * Given three weighted sites (u,v,w) and a straight segment
      * [startingPoint,endPoint] along dimension dim, we detect if the
-     * voronoi cells of a and c @e hide the voronoi cell of c on the
+     * power cells of @a u and @a w @e strictly hide the power cell of @a v on the
      * straight line.
      *
      * This method is in @f$ O(log(n))@f$ if @a n is the size of the
      * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
-     * @f$ O(1)@f$. 
-     
-     * @pre both voronoi cells associated with @a a and @a b must
-     * intersect the straight line. 
-     * 
+     * @f$ O(1)@f$.
+     *
+     * @pre u,v and w must be such that u[dim] < v[dim] < w[dim]
+     *
      * @param u a site
      * @param wu a weight
      * @param v a site
@@ -199,7 +200,7 @@ namespace DGtal
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
      * 
-     * @return true if (a,c) hides b.
+     * @return true if (u,w) hides v.
      */ 
     bool hiddenByWeighted(const Point &u, 
                           const Weight &wu,
@@ -240,7 +241,7 @@ namespace DGtal
 
      /** 
      * Perform a binary search on the interval [lower,upper] to
-     * detect the mid-point between u and v according to the l_p
+     * detect the mid-point between u and v according to the weighted l_p
      * distance.
      * 
      * @param udim coordinate of u along dimension dim

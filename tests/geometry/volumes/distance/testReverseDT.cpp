@@ -39,7 +39,6 @@
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -260,18 +259,14 @@ bool testReverseDTL1()
   for( ; itrec != itend; ++itrec,++itinit)
     if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
-
+  
   nbok += ok ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
-  trace.endBlock();
-  
+  trace.endBlock();  
   return nbok == nb;
 }
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
