@@ -54,20 +54,18 @@ namespace DGtal
   /**
 Description of \b concept '\b CUndirectedSimpleGraph' <p>
      @ingroup Concepts
-     @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
+@brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
- ### Refinement of CUndirectedSimpleLocalGraph, CSinglePassConstRange
+ ### Refinement of 
+      CUndirectedSimpleLocalGraph, CSinglePassConstRange
     
  ### Associated types :
-
      - Edge: the type for the edges of the graph.
 
-     The following types are defined in CSinglePassConstRange
-
+     The following types are defined in CSinglePassConstRange 
      - ConstIterator: const iterator on Vertex
 
      The following types are defined in CUndirectedSimpleLocalGraph
-
      - Size: an integral type to count the number of vertices.
      - Vertex: the type for the vertices of the graph.
      - VertexSet: the type for storing a set of vertices.
@@ -83,35 +81,17 @@ Description of \b concept '\b CUndirectedSimpleGraph' <p>
  ### Definitions
     
  ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            Size</td> 
-        <td class=CExpression>      x.size()</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      Size</td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Returns the number of vertices of this graph.</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-     </table>
+
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | | 
+       
     
  ### Invariants###
     
  ### Models###
-
-     - DigitalSurface, Object
+     DigitalSurface, Object
 
  ### Notes###
 

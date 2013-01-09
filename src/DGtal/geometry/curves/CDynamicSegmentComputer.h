@@ -68,29 +68,13 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
  ### Definitions
     
  ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName> retraction  </td> 
-        <td class=CExpression> x.retractForward()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> bool     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns 'true' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-     </table>
-    
+
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Retraction    |x.retractForward() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise ||| 
+
+
  ### Invariants###
     
  ### Models###
