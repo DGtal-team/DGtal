@@ -50,7 +50,8 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints()
   emptyTriangle.indexesPt[0]=0; emptyTriangle.indexesPt[1]=0; emptyTriangle.indexesPt[2]=0;
   emptyTriangle.indexAdjTriangles[0]=0; emptyTriangle.indexAdjTriangles[1]=0; emptyTriangle.indexAdjTriangles[2]=0;
   myTrianglesList.push_back(emptyTriangle);
-
+  // pushing empty point
+  myVertexList.push_back(TPoint(0,0));
 }
 
 
@@ -66,6 +67,9 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoi
   emptyTriangle.indexAdjTriangles[0]=0; emptyTriangle.indexAdjTriangles[1]=0; emptyTriangle.indexAdjTriangles[2]=0;
   myTrianglesList.push_back(emptyTriangle);  
 
+  // pushing empty point
+  myVertexList.push_back(TPoint(0,0));
+  
   // We define two triangles of the bounding box points
   TPoint ptLowerU (ptLower[0], ptUpper[1]);
   TPoint ptUpperL (ptUpper[0], ptLower[1]);
@@ -78,8 +82,8 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoi
   // Upper and lower triangles
   MeshTriangle tr1;
   MeshTriangle tr2;
-  tr1.indexesPt[0]=0;  tr1.indexesPt[1]=1;   tr1.indexesPt[2]=2;
-  tr2.indexesPt[0]=2;  tr2.indexesPt[1]=3;   tr2.indexesPt[2]=0;
+  tr1.indexesPt[0]=1;  tr1.indexesPt[1]=2;   tr1.indexesPt[2]=3;
+  tr2.indexesPt[0]=3;  tr2.indexesPt[1]=4;   tr2.indexesPt[2]=1;
   myTrianglesList.push_back(tr1);
   myTrianglesList.push_back(tr2);
   
@@ -613,9 +617,9 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::isInTriangle(const  MeshTriangle &tri
 template<typename TPoint> 
 inline
 unsigned int 
-DGtal::TriangularMeshFrom2DPoints<TPoint>::getTriangleIndexInclosingPoint(TPoint p){
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getTriangleIndexInclosingPoint(const TPoint & aPoint){
   for(unsigned int i=1; i< myTrianglesList.size(); i++){
-    if(myTrianglesList.at(i).isActive && isInTriangle(i, p))
+    if(myTrianglesList.at(i).isActive && isInTriangle(i, aPoint))
       return i;
   }
   return 0;

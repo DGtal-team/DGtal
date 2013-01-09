@@ -54,10 +54,19 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class TriangularMeshFrom2DPoints
   /**
-   * Description of template class 'TriangularMeshFrom2DPoints' <p> \brief Aim:
-  
-   @endcode 
+   * Description of template class 'TriangularMeshFrom2DPoints' <p>
+   * \brief Aim: This class is mainly defined to apply reconstruction
+   * of Delaunay 2D triangular Mesh.
    *
+   *
+   *
+   * This classe proposes to use the incremental construction of
+   * [Guibas, D. E. Knuth, and M. Sharir (1992): \cite Guibas1992]
+   * which permits to obtain a Delaunay triangular mesh. The algorithm
+   * is given here in 2D even the type of point could given as nD, but
+   * in such case onlye  the two coordinates will be considered.
+   *
+   * To use this class to construct an Delaunay Triangular Mesh you can use:
    * 
    *
    * @see  ...
@@ -66,12 +75,10 @@ namespace DGtal
   template <typename TPoint >
   class TriangularMeshFrom2DPoints
   {
-    
-    
+   
     // ----------------------- associated types ------------------------------
   public:
   
-
     /**
      * Structure for representing the faces from the vertex index.
      **/
@@ -80,8 +87,7 @@ namespace DGtal
       unsigned int indexesPt [3];
       unsigned int indexAdjTriangles [3];
       bool isActive;
-    };
-      
+    };      
     
     struct IndexOfCreatedTriangle{
       unsigned int indexTr1;
@@ -91,7 +97,6 @@ namespace DGtal
     
     
   private:
-
 
     
     // ----------------------- Standard services ------------------------------
@@ -190,8 +195,16 @@ namespace DGtal
 
        
     
+    /**
+     * Return the index of the triangle containing the given point as
+     * parameter. If no triangle exists it returns 0 which is
+     * associated to the index of an empty triangle.
+     *
+     * @param aPoint: the point for which we search the inclosing triangle.
+     * @return the index of the triangle containing the point.  
+     **/
     
-    unsigned int getTriangleIndexInclosingPoint(TPoint p);
+    unsigned int getTriangleIndexInclosingPoint(const TPoint & aPoint);
     
         
     unsigned int getIndexAdjacentVertex(unsigned int indexTriangle, unsigned int num) const;
