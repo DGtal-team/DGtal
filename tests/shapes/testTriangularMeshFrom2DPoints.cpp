@@ -50,44 +50,133 @@ using namespace DGtal::Z2i;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Example of a test. To be completed.
+ * Test on various intern fonctions
  *
  */
-bool testMeshFromTriangleFct()
+bool testTriangularMeshFrom2DPointsFct()
 {
-  trace.beginBlock ( "Testing MeshFromTriangle fct ..." );
-
+  trace.beginBlock ( "Testing TriangularMeshFrom2DPoints  functions ..." );
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
   aMesh.addPointInMesh(Point(80,80));
-  
   aMesh.addPointInMesh(Point(80,90));
   aMesh.addPointInMesh(Point(50,90));
-  DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew = aMesh.addPointInMesh(Point(3,4));
+  aMesh.addPointInMesh(Point(30,40));
   aMesh.addPointInMesh(Point(50,20));
   aMesh.addPointInMesh(Point(60,60));
   Board2D aBoard;
   aBoard << aMesh;
   
-  
   for (unsigned int i =0; i < 10000 ; i++){
     unsigned int x = rand()%100;
     unsigned int y = rand()%100;
     Point p(x,y);
-        if(aMesh.isInCircle(aMesh.getNumTriangles()-1, p)){
-     aBoard<< p; 
-    }
-     
+    if(aMesh.isInCircle(aMesh.getNumTriangles()-1, p)){
+      aBoard<< p; 
+    }    
   } 
-  aBoard.saveEPS("tesMeshFromTriangleFct.eps");
-  return true;
+  aBoard.saveEPS("tesMeshFromTriangleFct.eps");  
+  return aMesh.isInCircle(4, Point(90, 50));
+}
+
+
+
+/**
+ * Test on simple Triangular Mesh Construction and fonctions on resulting mesh.
+ *
+ */
+bool testMeshOnSimpleConstruction()
+{
+  trace.beginBlock ( "Testing Simple Triangular Mesh construction..." );
+  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
+  
+  aMesh.addPointInMesh(Point(4,3));
+  aMesh.addPointInMesh(Point(7,8));  
+  
+  bool isIn = aMesh.isInTriangle(3, Point(5,1)); 
+  isIn = isIn && aMesh.isInTriangle(4, Point(1,3)); 
+  isIn = isIn && aMesh.isInTriangle(5, Point(5,3)); 
+  isIn = isIn && aMesh.isInTriangle(6, Point(8,9)); 
+  isIn = isIn && aMesh.isInTriangle(7, Point(9,7)); 
+  isIn = isIn && aMesh.isInTriangle(8, Point(6,6)); 
+  unsigned int indexTr = aMesh.getTriangleIndexInclosing(Point(1,1));
+  trace.info() << "index of triangle containing pt (1,1): " << indexTr  << endl;
+  unsigned int indexAdjacentTR = aMesh.getIndexAdjacentTriangle(5, 1);
+  trace.info() << "index of triangle adjacent to Triangle of index 5 on face 1: " << indexAdjacentTR  << endl;
+  unsigned int indexPt6_6 = aMesh.getTriangleIndexInclosing(Point(6,6));
+  trace.info() << "index of triangle including point of coords (6, 6): " << indexPt6_6   << endl;
+  Board2D aBoard;
+  aBoard << aMesh;
+
+ std::vector<Point>  tr1 =  aMesh.getTrianglePoints(indexAdjacentTR);
+ std::vector<Point>  tr2 =  aMesh.getTrianglePoints(5);
+ 
+ aBoard.setPenColor(DGtal::Color(200,200,20));
+ aBoard.fillTriangle(LibBoard::Point(tr1.at(0)[0],tr1.at(0)[1]), 
+		     LibBoard::Point(tr1.at(1)[0],tr1.at(1)[1]),
+		     LibBoard::Point(tr1.at(2)[0],tr1.at(2)[1]));
+ aBoard.setPenColor(DGtal::Color(100,100,100));
+ aBoard.fillTriangle(LibBoard::Point(tr2.at(0)[0],tr2.at(0)[1]), 
+		     LibBoard::Point(tr2.at(1)[0],tr2.at(1)[1]),
+		     LibBoard::Point(tr2.at(2)[0],tr2.at(2)[1]));
+ 
+  aBoard.saveEPS("testSimpleTriangularMesh.eps");
+
+  return isIn && indexTr ==4 && indexPt6_6 == indexAdjacentTR;
 }
 
 
 
 
 
+
 /**
- * Example of a test. To be completed.
+ * Test on triangle transformation.
+ *
+ */
+
+bool testTriangleFlipping(){
+  trace.beginBlock ( "Testing triangle flipping  " );
+   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
+   aMesh.addPointInMesh(Point(4,3));
+   aMesh.addPointInMesh(Point(7,8)); 
+
+   aMesh.flipTriangleOnEdge(5, 1);
+
+   // Testing resulting triangles.
+   unsigned int indexTr = aMesh.getTriangleIndexInclosing(Point(4,6));
+   trace.info() << "index of tr containing (4,6)=" << indexTr << endl;
+   unsigned int indexTr2 = aMesh.getTriangleIndexInclosing(Point(3,7));
+   trace.info() << "index of tr containing (8,2)=" << indexTr2 << endl;
+   Board2D aBoard;
+   aBoard << aMesh;
+   
+   // Testing adjacency of resulting triangles.
+   std::vector<Point>  tr1New =  aMesh.getTrianglePoints(indexTr);
+   unsigned int adjIndexTr1NewF1 = aMesh.getIndexAdjacentTriangle(indexTr, 1);
+   std::vector<Point>  trAdjToNew1F1 =  aMesh.getTrianglePoints(adjIndexTr1NewF1);
+   
+   aBoard.setPenColor(DGtal::Color(200,200,20));
+   aBoard.fillTriangle(LibBoard::Point(tr1New.at(0)[0],tr1New.at(0)[1]), 
+		       LibBoard::Point(tr1New.at(1)[0],tr1New.at(1)[1]),
+		       LibBoard::Point(tr1New.at(2)[0],tr1New.at(2)[1]));
+   aBoard.setPenColor(DGtal::Color(100,100,100));
+   aBoard.fillTriangle(LibBoard::Point(trAdjToNew1F1.at(0)[0],trAdjToNew1F1.at(0)[1]), 
+		       LibBoard::Point(trAdjToNew1F1.at(1)[0],trAdjToNew1F1.at(1)[1]),
+		       LibBoard::Point(trAdjToNew1F1.at(2)[0],trAdjToNew1F1.at(2)[1]));
+   unsigned int indexTr3 = aMesh.getTriangleIndexInclosing(Point(5,9));
+   trace.info() << "index of tr containing (5,9) = " << indexTr3 << endl;
+   trace.info() << "index of tr Adj to TrNew1 face 1 =" << adjIndexTr1NewF1 << endl;
+
+
+   aBoard.saveEPS("testTriangleFlipping.eps");
+   return (indexTr==indexTr2) && (indexTr3 == adjIndexTr1NewF1) ;
+}
+
+
+
+
+/**
+ * Test on simple Delaunay construction.
  *
  */
 bool testMeshFromDelaunayConstruction()
@@ -105,14 +194,6 @@ bool testMeshFromDelaunayConstruction()
   aMesh.addPointInDelaunayMesh(Point(60,60));
 
 
-
-
-
-
-
-
-
-
   aMesh2.addPointInMesh(Point(80,80));
   aMesh2.addPointInMesh(Point(80,90));
   aMesh2.addPointInMesh(Point(50,90));
@@ -122,8 +203,6 @@ bool testMeshFromDelaunayConstruction()
   
   srand ( time(NULL) );
   for (unsigned int i =0; i < 1000 ; i++){
-    
-    cerr << "adding " << i << endl; 
     unsigned int x = 10+rand()%80;
     unsigned int y = 10+rand()%80;
     Point p(x,y);
@@ -134,170 +213,22 @@ bool testMeshFromDelaunayConstruction()
     }
   } 
 
-
   Board2D aBoard;
   aBoard << aMesh;
 
   Board2D aBoard2;
   aBoard2 << aMesh2;
   
-  
-  
-  aBoard2.saveEPS("tesMeshConstruction.eps");
-  aBoard.saveEPS("tesMeshConstructionDelaunay.eps");
+  aBoard2.saveEPS("testMeshConstruction.eps");
+  aBoard.saveEPS("testMeshConstructionDelaunay.eps");
   return true;
 }
 
 
-/**
- * Example of a test. To be completed.
- *
- */
-bool testTriangularMeshFrom2DPoints()
-{
-  
-  trace.beginBlock ( "Testing TriangularMeshFrom2DPoints ...." );
-
-
-  TriangularMeshFrom2DPoints<Point> aMesh(Point(0,0), Point(10,10));
-  Point p0=Point(0,0);
-  Point p1=Point(0,1);
-  Point p2=Point(1,2);
-
-  Point p3=Point(3,2);
-  Point p4=Point(3,3);
-  Point p5=Point(4,4);
-
-
-  
- 
-
-  // std::vector<Point> vectTrianglePoints = aMesh.getTrianglesFromVertex();
-  TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(10,10));
-  aMesh2.addPointInMesh(Point(7,8));
 
 
 
 
-aMesh2.addPointInMesh(Point(8,9));
-aMesh2.addPointInMesh(Point(5,9));
-DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew = aMesh2.addPointInMesh(Point(3,4));
- aMesh2.addPointInMesh(Point(5,2));
-aMesh2.addPointInMesh(Point(6,6));
-
-
-
-
-
-//  DGtal::TriangularMeshFrom2DPoints<Point>::IndexOfCreatedTriangle indexNew =  aMesh2.addPointInMesh(Point(4,4));
-
-
-Point adjPt1 = aMesh2.getAdjacentVertex(indexNew.indexTr3, 1);
-
-std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(indexNew.indexTr3);
-
-std::vector<Point>  tr2 =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(indexNew.indexTr3, 1));
-
-
-
-
-//std::vector<Point>  tr1 =  aMesh2.getTrianglePoints(11);
-//std::vector<Point>  tr2 =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(9,2));
-
-
-//std::vector<Point>  tr1 =  aMesh2.getTrianglePointsAdj(indexNew.indexTr3, 1);
-
-
-
-
-
-Board2D aBoardTrans; 
-
-Board2D aBoard; 
-  aBoard  << aMesh2 ;
-  aBoard.setPenColor(DGtal::Color(200,20,20));
-
-
-  aBoard.setPenColor(DGtal::Color(200,200,20));
-  aBoard.fillTriangle(LibBoard::Point(tr1.at(0)[0],tr1.at(0)[1]), 
-			LibBoard::Point(tr1.at(1)[0],tr1.at(1)[1]),
-			LibBoard::Point(tr1.at(2)[0],tr1.at(2)[1]));
-  aBoard.setPenColor(DGtal::Color(100,100,100));
-  aBoard.fillTriangle(LibBoard::Point(tr2.at(0)[0],tr2.at(0)[1]), 
-			LibBoard::Point(tr2.at(1)[0],tr2.at(1)[1]),
-			LibBoard::Point(tr2.at(2)[0],tr2.at(2)[1]));
-  aBoard.setLineWidth(2);
-  aBoard.setPenColor(DGtal::Color(20,200,20));
-  aBoard.drawLine(adjPt1[0], adjPt1[1],3, 4);  
-
-  aBoard.saveEPS("displayTriangularMeshFrom2DPoints.eps");
-
-
-
-  bool isIn = aMesh2.isInTriangle(1,p3); 
-  bool isIn2 = aMesh2.isInTriangle(1,Point(-1,-1)); 
-
-  trace.info() << "pt is in triangle 1:" << isIn<< endl;
-  trace.info() << "pt -1,-1 is in triangle 2:" << isIn2<< endl;
-  trace.info() << "index of triangle containing pt (8,8):" << aMesh2.getTriangleIndexInclosing(Point(8,8)) << endl;
-  trace.info() << "index of triangle containing pt (1,1):" << aMesh2.getTriangleIndexInclosing(Point(1,1)) << endl;
-  trace.info() << "is inCircle 6,6 :" << aMesh2.isInCircle(1,Point(15,10)) << endl;
-
-
-
-
-
-
-
- 
-
-
-
-  aMesh2.flipTriangleOnEdge(indexNew.indexTr3, 1);
-  std::vector<Point>  tr1s =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(22, 3));
-  std::vector<Point>  tr1sA =  aMesh2.getTrianglePoints(aMesh2.getIndexAdjacentTriangle(aMesh2.getIndexAdjacentTriangle(22, 3),3));
-
-  aBoardTrans.setLineWidth(0.4);
-  aBoardTrans.setPenColor(DGtal::Color(200,200,20));
-  aBoardTrans.fillTriangle(LibBoard::Point(tr1s.at(0)[0],tr1s.at(0)[1]), 
-		      LibBoard::Point(tr1s.at(1)[0],tr1s.at(1)[1]),
-		      LibBoard::Point(tr1s.at(2)[0],tr1s.at(2)[1]));
-  
-  aBoardTrans.setPenColor(DGtal::Color(100,100,100));
-  aBoardTrans.fillTriangle(LibBoard::Point(tr1sA.at(0)[0],tr1sA.at(0)[1]), 
-		      LibBoard::Point(tr1sA.at(1)[0],tr1sA.at(1)[1]),
-		      LibBoard::Point(tr1sA.at(2)[0],tr1sA.at(2)[1]));
-  
-
-  aBoardTrans << aMesh2;
-  aBoardTrans.saveEPS("displayTriangularMeshFrom2DPointsTrans.eps");
-
-
-  // Point p0f0 = vectTrianglePoints.at(0);
-  // Point p1f0 = vectTrianglePoints.at(1);
-  // Point p2f0 = vectTrianglePoints.at(2);
-
-  // Point p0f1 = vectTrianglePoints.at(3);
-  // Point p1f1 = vectTrianglePoints.at(4);
-  // Point p2f1 = vectTrianglePoints.at(5);
-  
-  // trace.info() << "Set of points" << endl;
-  // trace.info() << p0 << p1 << p2 << endl;
-  // trace.info() << p3 << p4 << p5 << endl;
-  
-  // trace.info() << "Face1 points " << endl;
-  // trace.info() << p0f0 << p1f0 << p2f0<< endl;
-
-  // trace.info() << "Face2 points " << endl;
-  // trace.info() << p0f1 << p1f1 << p2f1<< endl;
-
-
-  
-
-  // return (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
-  //   (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
-return true;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -309,13 +240,28 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-
-  bool res = testTriangularMeshFrom2DPoints(); // && ... other tests
-  res = res &  testMeshFromTriangleFct();
-  res = res & testMeshFromDelaunayConstruction();
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  
+  bool res1 =  testMeshOnSimpleConstruction();
+  trace.emphase() << ( res1 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  
+  bool res2 =  testTriangularMeshFrom2DPointsFct();
+  trace.emphase() << ( res2 ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  
+  bool res3 = testTriangleFlipping();
+  trace.emphase() << ( res3 ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+
+  bool res4 = testMeshFromDelaunayConstruction();
+  trace.emphase() << ( res4 ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  
+  bool resAll = res1 & res2 &  res3 & res4; 
+  trace.emphase() << ( resAll ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+
+  return resAll;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
