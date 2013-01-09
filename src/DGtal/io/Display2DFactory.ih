@@ -783,7 +783,7 @@ DGtal::Display2DFactory::draw(DGtal::Board2D & board,
 			      const DGtal::TriangularMeshFrom2DPoints<TPoint> & object){
   
   
-  std::vector<TPoint> vectTriangles = object.getTrianglesFromVertex();
+  std::vector<TPoint> vectTriangles = object.getTrianglesAsVertexVect();
   for(unsigned int i=0; i < vectTriangles.size(); i=i+3){
     
     board.setPenColor(Color(20,20,200));

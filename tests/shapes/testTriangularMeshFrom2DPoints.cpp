@@ -134,13 +134,13 @@ bool testMeshOnSimpleConstruction()
  *
  */
 
-bool testTriangleFlipping(){
-  trace.beginBlock ( "Testing triangle flipping  " );
+bool testTriangleSwaping(){
+  trace.beginBlock ( "Testing triangle swaping  " );
    TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
    aMesh.addPointInsideMesh(Point(4,3));
    aMesh.addPointInsideMesh(Point(7,8)); 
 
-   aMesh.flipTriangleOnEdge(5, 1);
+   aMesh.swapTriangleOnEdge(5, 1);
 
 
    // Testing resulting triangles.
@@ -169,7 +169,7 @@ bool testTriangleFlipping(){
    trace.info() << "index of tr Adj to TrNew1 face 1 =" << adjIndexTr1NewF1 << endl;
 
 
-   aBoard.saveEPS("testTriangleFlipping.eps");
+   aBoard.saveEPS("testTriangleSwaping.eps");
    return (indexTr==indexTr2) && (indexTr3 == adjIndexTr1NewF1) ;
 }
 
@@ -250,7 +250,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( res2 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
-  bool res3 = testTriangleFlipping();
+  bool res3 = testTriangleSwaping();
   trace.emphase() << ( res3 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

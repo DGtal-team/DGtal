@@ -145,9 +145,7 @@ namespace DGtal
     
     // ----------------------- Interface --------------------------------------
   public:
-    
-
-    
+        
     /**
      * Add a vertex inside the mesh. From the triangle containing the
      * given vertex (given by basic search), it constructs three new
@@ -236,7 +234,7 @@ namespace DGtal
      *
      **/
     
-    unsigned int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int numEdge);
+    unsigned int getIndexAdjacentTriangle(unsigned int indexTriangle, unsigned int numEdge) const;
     
     
     /**
@@ -267,22 +265,48 @@ namespace DGtal
      * @return the adjacent point.  
      **/
     
-    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int numEdge);
+    TPoint getAdjacentVertex(unsigned int indexTriangle, unsigned int numEdge) const;
     
 
+    /**
+     *  Transform the given triangle into another one constructed from
+     *  the adjacent vertex given according the edge number.
+     * 
+     *  @param indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     *  @param numEdge:  numEdge: the edge number (starting from 1 to 3), the
+     * edges are ordered according the first triangle point in
+     * clockwise order.
+     *  @return true: if the swap was possible or not.
+     **/
+    
+    bool swapTriangleOnEdge(unsigned int indexTriangle, unsigned int numEdge);        
+    
+    
+    /**
+     * Returns a vector containing the three vertex associated to the triangle of index i.
+     * @param indexTriangle:  the index of the considered triangle (starting from 1, 0 is the empty triangle).
+     * @return a vector containing the three triangle vertex.
+     **/
+
+    std::vector<TPoint> getTrianglePoints(unsigned int indexTriangle) const;
 
 
-    bool flipTriangleOnEdge(unsigned int indexTriangle, unsigned int num);        
-    
+    /**
+     * Returns a vector containing the three vertex associated to the triangle tr.
+     * @param tr: the triangle.
+     * @return a vector containing the three triangle vertex.
+     **/
+
+    std::vector<TPoint> getTrianglePoints(const MeshTriangle &tr) const;
+        
     
 
-    std::vector<TPoint> getTrianglePointsAdj(unsigned int i, unsigned int adjNum );
-    std::vector<TPoint> getTrianglePoints(unsigned int i);
-    std::vector<TPoint> getTrianglePoints(const MeshTriangle &tr);
-    
-    
-    
-    std::vector<TPoint> getTrianglesFromVertex() const;   
+    /**
+     * 
+     **/
+
+    std::vector<TPoint> getTrianglesAsVertexVect() const;   
+
 
 
     unsigned int getNumTriangles() const;
