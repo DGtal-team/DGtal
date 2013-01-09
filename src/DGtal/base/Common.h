@@ -158,6 +158,7 @@ namespace DGtal
      * @param display3D any object of type Display3D.
      */
     virtual void setStyle( Display3D &  ) const {}
+    virtual ~DrawableWithDisplay3D() {}
   };
 
   /**
@@ -172,6 +173,7 @@ namespace DGtal
      * @param board any object of type Board.
      */
     virtual void setStyle( Board2D &  ) const {}
+    virtual ~DrawableWithBoard2D() {}
   };
   
 } // namespace DGtal

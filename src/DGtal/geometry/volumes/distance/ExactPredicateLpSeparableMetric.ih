@@ -118,12 +118,20 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa
                                                                   const Abscissa &lower,
                                                                   const Abscissa &upper) const
 {   
-  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <=
-           (nv +  BasicMathFunctions::power( static_cast<Promoted>( abs( vdim - lower)), p)));
+  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <
+           (nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - lower)), p)));
   
   //Recurrence stop 
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
-    return lower;
+    {
+      //testing upper
+      Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - upper )), p);
+      Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - upper )), p);
+      if (nuUpdated < nvUpdated)
+        return upper;
+      else
+        return lower;
+    }
   
   Abscissa mid = (lower + upper)/2;
   Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - mid )), p);
@@ -151,44 +159,62 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
       
-  //Partial norm computation
-  // (sum_{i!=dim}  |u_i-v_i|^p
+  //Partial norm computation (sum_{i!=dim}  |u_i-v_i|^p
   Promoted nu = NumberTraits<Promoted>::ZERO;
   Promoted nv = NumberTraits<Promoted>::ZERO;
   Promoted nw = NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += BasicMathFunctions::power ( static_cast<Promoted>(abs(u[i]  - startingPoint[i])) , p);
-        nv += BasicMathFunctions::power ( static_cast<Promoted>(abs(v[i] - startingPoint[i] )) , p);
-        nw += BasicMathFunctions::power ( static_cast<Promoted>(abs(w[i] - startingPoint[i] )) , p);
+        nu += BasicMathFunctions::power ( static_cast<Promoted>(abs(u[i] - startingPoint[i])), p);
+        nv += BasicMathFunctions::power ( static_cast<Promoted>(abs(v[i] - startingPoint[i])), p);
+        nw += BasicMathFunctions::power ( static_cast<Promoted>(abs(w[i] - startingPoint[i])), p);
       }
  
-  //Intersection of voronoi boundary
-     
+  //Abscissa of voronoi edges
+  Abscissa uv,vw;
+  Promoted dv,dw,du,ddv,ddw;
 
-  //Optimization if vw lies before starting
-  if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
-      (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
-    {
-      return true;
-    }
-  //Optimization if vw lies before starting   
-  if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
-      (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
-    {
-      return false;
-    }
-  
-  //Binary search
-  Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
-  Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
+  //checking distances to lower bound
+  du = nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)), p);
+  dv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p);
+  dw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p);
 
-  if ( uv > vw )
-    return true;
-  else
-    return false;
-      
+  //Precondition of binarySearchHidden is true
+  if (du < dv )
+    {
+      uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper);
+      if (dv < dw)
+        {
+          vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper); //precondition
+          return (uv > vw);
+        }
+
+      if (dw > dv)
+        return true; 
+      else
+        {
+          //check if uv + 1 is stricly in W
+       
+          //first, optimisation
+          if (uv == upper) return true;
+          
+          //distances at uv+1
+          ddv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - uv -1)), p);
+          ddw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - uv -1)), p);
+          if (ddw < ddv)
+            return true;
+          else
+            return false;
+        }
+    }
+  else  // du >= dv
+    {
+      if (dv <= dw)
+        return false;
+      else
+        return true;
+    }
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>

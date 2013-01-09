@@ -53,7 +53,7 @@ template <typename T, DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Promoted
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::exactDistanceRepresentation (const Point &aP,
-                                                                                      const Point &aQ) const
+                                                                                    const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -67,8 +67,8 @@ template <typename T,DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Weight
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::powerDistance (const Point &aP,
-                                                                        const Point &aQ,
-                                                                        const Weight &aW) const
+                                                                      const Point &aQ,
+                                                                      const Weight &aW) const
 {
   return exactDistanceRepresentation(aP,aQ) - aW;
 }
@@ -100,18 +100,26 @@ template <typename T, DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Abscissa 
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
-                                                                            const Abscissa &vdim,
-                                                                            const Promoted &nu,
-                                                                            const Promoted &nv,
-                                                                            const Abscissa &lower,
-                                                                            const Abscissa &upper) const
+                                                                          const Abscissa &vdim,
+                                                                          const Promoted &nu,
+                                                                          const Promoted &nv,
+                                                                          const Abscissa &lower,
+                                                                          const Abscissa &upper) const
 {   
-  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <=
-           (nv +  BasicMathFunctions::power( static_cast<Promoted>( abs( vdim - lower)), p)));
+  ASSERT(  (nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <
+           (nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - lower)), p)));
   
   //Recurrence stop 
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
-    return lower;
+    {
+      //testing upper
+      Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - upper )), p);
+      Promoted nvUpdated = nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - upper )), p);
+      if (nuUpdated < nvUpdated)
+        return upper;
+      else
+        return lower;
+    }
   
   Abscissa mid = (lower + upper)/2;
   Promoted nuUpdated = nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - mid )), p);
@@ -122,76 +130,82 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::binarySearchHidden(const 
     return binarySearchHidden(udim,vdim,nu,nv,mid,upper);
   else
     return binarySearchHidden(udim,vdim,nu,nv,lower,mid);
-      
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p ,  typename P>
 inline
 bool 
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Point &u, 
-                                                                          const Weight &wu,
-                                                                          const Point &v,
-                                                                          const Weight &wv,
-                                                                          const Point &w, 
-                                                                          const Weight &ww,
-                                                                          const Point &startingPoint,
-                                                                          const Point &endPoint,
-                                                                          const typename Point::UnsignedComponent dim) const
+                                                                        const Weight &wu,
+                                                                        const Point &v,
+                                                                        const Weight &wv,
+                                                                        const Point &w, 
+                                                                        const Weight &ww,
+                                                                        const Point &startingPoint,
+                                                                        const Point &endPoint,
+                                                                        const typename Point::UnsignedComponent dim) const
 {
   //Interval bound for the binary search
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
       
- 
-
-  if (startingPoint[0] == 4)
-    {
-      trace.info() << "Comparing: "<< u <<" ["<<wu<<"] -  "<< v <<" ["<<wv<<"]  - "<<w<<" ["<<ww<<"]"<<std::endl;
-    }
-
   //Partial norm computation
   // (sum_{i!=dim}  |u_i-v_i|^p
-  Promoted nu = NumberTraits<Promoted>::ZERO;
-  Promoted nv = NumberTraits<Promoted>::ZERO;
-  Promoted nw = NumberTraits<Promoted>::ZERO;
+  Promoted nu = -wu;
+  Promoted nv = -wv;
+  Promoted nw = -ww;
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
       {
-        nu += BasicMathFunctions::power ( static_cast<Promoted>(abs(u[i]  - startingPoint[i])) , p);
+        nu += BasicMathFunctions::power ( static_cast<Promoted>(abs(u[i] - startingPoint[i])) , p);
         nv += BasicMathFunctions::power ( static_cast<Promoted>(abs(v[i] - startingPoint[i] )) , p);
         nw += BasicMathFunctions::power ( static_cast<Promoted>(abs(w[i] - startingPoint[i] )) , p);
       }
  
-  //Intersection of voronoi boundary
-     
-  //Optimization if vw lies before starting
-  if ((nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)),  p)) >
-      (nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p)))
+  //Abscissa of voronoi edges
+  Abscissa uv,vw;
+  Promoted dv,dw,du,ddv,ddw;
+   
+  //checking distances to lower bound
+  du = nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)), p);
+  dv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p);
+  dw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - lower)), p);
+
+  //Precondition of binarySearchHidden is true
+  if (du < dv )
     {
-      if(startingPoint[0]==4)
-        trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)true<<std::endl;
-      return true;
+      uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper);
+      if (dv < dw)
+        {
+          vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper); //precondition
+          return (uv > vw);
+        }
+
+      if (dw > dv)
+        return true; 
+      else
+        {
+          //check if uv + 1 is stricly in W
+       
+          //first, optimisation
+          if (uv == upper) return true;
+          
+          //distances at uv+1
+          ddv = nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - uv -1)), p);
+          ddw = nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - uv -1)), p);
+          if (ddw < ddv)
+            return true;
+          else
+            return false;
+        }
     }
-  //Optimization if vw lies before starting   
-  if ((nu + BasicMathFunctions::power( static_cast<Promoted>(abs( u[dim] - lower)),  p)) >
-      (nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - lower)), p)))
+  else  // du >= dv
     {
-      if(startingPoint[0]==4)
-        trace.info()<<"Testing "<<u<<"  "<<v<<"  "<<w<<" --> "<<(int)false<<std::endl;
-      return false;
+      if (dv <= dw)
+        return false;
+      else
+        return true;
     }
-  
-  //Binary search
-  Abscissa uv = binarySearchHidden(u[dim],v[dim],nu,nv,lower,upper); 
-  Abscissa vw = binarySearchHidden(v[dim],w[dim],nv,nw,lower,upper);
-  if(startingPoint[0]==4)
-    trace.info() <<"      res= "<<(int)(uv>vw)<<std::endl;
-  
-  if ( uv > vw )
-    return true;
-  else
-    return false;
-      
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
@@ -207,7 +221,7 @@ inline
 bool
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::isValid() const
 {
-    return true;
+  return true;
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
@@ -242,7 +256,7 @@ template <typename T, typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Promoted
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::exactDistanceRepresentation (const Point &aP,
-                                                                                      const Point &aQ) const
+                                                                                    const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -256,8 +270,8 @@ template <typename T, typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Weight
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::powerDistance (const Point &aP,
-                                                                        const Point &aQ,
-                                                                        const Weight &aW) const
+                                                                      const Point &aQ,
+                                                                      const Weight &aW) const
 {
   return exactDistanceRepresentation(aP,aQ) - aW;
 }
@@ -266,15 +280,15 @@ template <typename T,  typename P>
 inline
 DGtal::Closest
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::closestWeighted (const Point &origin, 
-                                                                          const Point &first, 
-                                                                          const Weight &wF,
-                                                                          const Point &second,
-                                                                          const Weight &wS) const
+                                                                        const Point &first, 
+                                                                        const Weight &wF,
+                                                                        const Point &second,
+                                                                        const Weight &wS) const
 {
   Promoted a=NumberTraits<Promoted>::ZERO,
     b=NumberTraits<Promoted>::ZERO;
       
-  a = exactDistanceRepresentation(origin,first) - wF;
+  a = exactDistanceRepresentation(origin,first)  - wF;
   b = exactDistanceRepresentation(origin,second) - wS;
 
   if (a<b)
@@ -290,11 +304,11 @@ template <typename T,  typename P>
 inline
 typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Abscissa 
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
-                                                                            const Abscissa &vdim,
-                                                                            const Promoted &nu,
-                                                                            const Promoted &nv,
-                                                                            const Abscissa &lower,
-                                                                            const Abscissa &upper) const
+                                                                          const Abscissa &vdim,
+                                                                          const Promoted &nu,
+                                                                          const Promoted &nv,
+                                                                          const Abscissa &lower,
+                                                                          const Abscissa &upper) const
 {   
   ASSERT(false && "Not Necessary for l_2");
   
@@ -304,14 +318,14 @@ template <typename T,   typename P>
 inline
 bool 
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::hiddenByWeighted(const Point &u, 
-                                                                          const Weight &wu,
-                                                                          const Point &v,
-                                                                          const Weight &wv,
-                                                                          const Point &w, 
-                                                                          const Weight &ww,
-                                                                          const Point &startingPoint,
-                                                                          const Point &endPoint,
-                                                                          const typename Point::UnsignedComponent dim) const
+                                                                        const Weight &wu,
+                                                                        const Point &v,
+                                                                        const Weight &wv,
+                                                                        const Point &w, 
+                                                                        const Weight &ww,
+                                                                        const Point &startingPoint,
+                                                                        const Point &endPoint,
+                                                                        const typename Point::UnsignedComponent dim) const
 {
   Promoted a,b, c;
 
@@ -319,7 +333,9 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::hiddenByWeighted(const Po
   b = w[dim] - v[dim];
   c = a + b;  
   
-  Promoted d2_v=NumberTraits<Promoted>::ZERO, d2_u=NumberTraits<Promoted>::ZERO ,d2_w=NumberTraits<Promoted>::ZERO;
+  Promoted d2_v= -wv,
+    d2_u= -wu,
+    d2_w= -ww;
 
   for(DGtal::Dimension i  = 0 ; i < Point::dimension ; i++)
     if (i != dim)
@@ -345,5 +361,5 @@ inline
 bool
 DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::isValid() const
 {
-    return true;
+  return true;
 }

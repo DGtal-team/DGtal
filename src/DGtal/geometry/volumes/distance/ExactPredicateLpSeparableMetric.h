@@ -46,6 +46,7 @@
 #include "DGtal/math/BasicMathFunctions.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -175,17 +176,16 @@ namespace DGtal
     
       // ----------------------- CSeparableMetric --------------------------------------
     /** 
-     * Given three sites (a,b,c) and a straight segment
+     * Given three sites (u,v,w) and a straight segment
      * [startingPoint,endPoint] along dimension dim, we detect if the
-     * voronoi cells of a and c @e hide the voronoi cell of c on the
+     * voronoi cells of @a u and @a w strictly hide the voronoi cell of @a v on the
      * straight line.
      *
      * This method is in @f$ O(log(n))@f$ if @a n is the size of the
      * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
      * @f$ O(1)@f$. 
      *
-     * @pre both voronoi cells associated with @a a and @a b must
-     * intersect the straight line. 
+     * @pre u,v and w must be such that u[dim] < v[dim] < w[dim]
      * 
      * @param u a site
      * @param v a site
@@ -194,7 +194,7 @@ namespace DGtal
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
      * 
-     * @return true if (a,c) hides b.
+     * @return true if (u,w) hides v (strictly).
      */ 
     bool hiddenBy(const Point &u, 
                   const Point &v,
@@ -216,8 +216,35 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
+    
+    /**
+     * Perform a binary search on the interval [lower,upper] to
+     * detect the mid-point between u and v according to the l_p
+     * distance. It returns the abscissa @a q such that q belongs to
+     * the power cell of u (strictly) but not @a q-1.
+     *
+     * @pre udim < vdim
+     *
+     * @param udim coordinate of u along dimension dim
+     * @param vdim coordinate of v along dimension dim
+     * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
+     * the term along the dimension dim
+     * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
+     * the term along the dimension dim
+     * @param lower interval lower bound
+     * @param upper interval upper bound
+     *
+     * @return the u Voronoi cell greatest point coordinates along dimension dim.
+     */
+    Abscissa binarySearchHidden(const Abscissa &udim,
+                                const Abscissa &vdim,
+                                const Promoted &nu,
+                                const Promoted &nv,
+                                const Abscissa &lower,
+                                const Abscissa &upper) const;
+    
+    // ------------------------- Private methods ------------------------------
+    private:
 
     /** 
      * Compute the Lp distance without the computation of the power
@@ -229,38 +256,8 @@ namespace DGtal
      * @return the power p of the l_p distance between aP and aQ.
      */    
     Promoted exactDistanceRepresentation(const Point &aP, const Point &aQ) const;
-
-     /** 
-     * Perform a binary search on the interval [lower,upper] to
-     * detect the mid-point between u and v according to the l_p
-     * distance.
-     * 
-     * @param udim coordinate of u along dimension dim
-     * @param vdim coordinate of v along dimension dim
-     * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
-     * the term along the dimension dim
-     * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
-     * the term along the dimension dim
-     * @param lower interval lower bound 
-     * @param upper interval upper bound
-     * 
-     * @return the Voronoi boundary point coordinates along dimension dim.
-     */
-    Abscissa binarySearchHidden(const Abscissa &udim, 
-                                const Abscissa &vdim,
-                                const Promoted &nu,
-                                const Promoted &nv,
-                                const Abscissa &lower,
-                                const Abscissa &upper) const;
-
-      
-    // ------------------------- Private Datas --------------------------------
-  private:
-
-
-    // ------------------------- Internals ------------------------------------
-  private:
-
+   
+  
   }; // end of class ExactPredicateLpSeparableMetric
 
 
