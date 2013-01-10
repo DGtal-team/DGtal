@@ -620,7 +620,7 @@ template<typename TPoint>
 inline
 bool
 DGtal::TriangularMeshFrom2DPoints<TPoint>::isInCircle(unsigned int indexTriangle, unsigned int indexPt) const{
-  return isInCircle(indexTriangle, myVertexList.at(indexPtD));   
+  return isInCircle(indexTriangle, myVertexList.at(indexPt));   
 }
 
 
@@ -637,9 +637,9 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::isInCircle(unsigned int indexTriangle
   TPoint ptC = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[2]);  
   
   SimpleMatrix<double, 4,4> mat;
-  mat.setComponent(0, 0,(double) (ptD[0]*ptD[0]+ptD[1]*ptD[1]));
-  mat.setComponent(0, 1,(double) ptD[0]);
-  mat.setComponent(0, 2,(double) ptD[1]);
+  mat.setComponent(0, 0,(double) (pt[0]*pt[0]+pt[1]*pt[1]));
+  mat.setComponent(0, 1,(double) pt[0]);
+  mat.setComponent(0, 2,(double) pt[1]);
   mat.setComponent(0, 3, 1.0 );
 
   mat.setComponent(1, 0,(double) (ptA[0]*ptA[0]+ptA[1]*ptA[1]));

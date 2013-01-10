@@ -75,6 +75,9 @@ namespace DGtal
   template <typename TPoint >
   class TriangularMeshFrom2DPoints
   {
+
+ public: 
+
    
     // ----------------------- associated types ------------------------------
   public:
@@ -94,6 +97,9 @@ namespace DGtal
       unsigned int indexTr2;
       unsigned int indexTr3;
     };
+
+    typedef typename std::vector<MeshTriangle> StorageTr; 
+
     
     
   private:
@@ -101,6 +107,7 @@ namespace DGtal
     
     // ----------------------- Standard services ------------------------------
   public:
+
 
 
 
@@ -401,7 +408,7 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
     std::vector<TPoint>  myVertexList;
-    std::vector<MeshTriangle> myTrianglesList;
+    StorageTr  myTrianglesList;
     
 
     
