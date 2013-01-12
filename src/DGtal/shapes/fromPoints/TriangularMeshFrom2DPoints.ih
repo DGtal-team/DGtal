@@ -36,6 +36,113 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Iterator on points
+
+
+template <typename TPoint>
+inline
+DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator::TriangularMeshIterator(const TriangularMeshFrom2DPoints & aTrMesh, 
+										 unsigned int n) : myTriangularMesh( &aTrMesh ), myPos( n )
+{
+  if(n>=aTrMesh.getNumTriangles()){
+     myCurrentTriangle.point1 = TPoint(0,0);
+     myCurrentTriangle.point2 = TPoint(0,0);
+     myCurrentTriangle.point3 = TPoint(0,0);
+  }else{
+    unsigned int  nbFound = 0;
+    MeshTriangleWithIndex firstTr;
+    while((nbFound!=n+1) && myPos< myTriangularMesh->getTriangleContainerSize()){
+      firstTr = myTriangularMesh->myTrianglesList.at(myPos);
+      if(firstTr.isActive){
+	nbFound++;
+      }
+      if(nbFound!=n+1){
+	myPos++;
+      }
+    }
+    myCurrentTriangle.point1 = myTriangularMesh->myVertexList.at(firstTr.indexesPt[0]);
+    myCurrentTriangle.point2 = myTriangularMesh->myVertexList.at(firstTr.indexesPt[1]);
+    myCurrentTriangle.point3 = myTriangularMesh->myVertexList.at(firstTr.indexesPt[2]);
+  }
+}
+
+
+
+template <typename TPoint>
+inline
+void 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator::next()
+{
+  if ( myPos < myTriangularMesh->getTriangleContainerSize() )
+  {
+    bool found = false;
+    myPos++;
+    MeshTriangleWithIndex firstNextTr;
+    while(!found && myPos< myTriangularMesh->getTriangleContainerSize()){
+	firstNextTr = myTriangularMesh->myTrianglesList.at(myPos);
+	found = firstNextTr.isActive;
+	if(!found){
+	  myPos++;
+	}
+    }
+    if(!found){
+      myCurrentTriangle.point1 = TPoint(0,0);
+      myCurrentTriangle.point2 = TPoint(0,0);
+      myCurrentTriangle.point3 = TPoint(0,0);
+    }else{
+      myCurrentTriangle.point1 = myTriangularMesh->myVertexList.at(firstNextTr.indexesPt[0]);
+      myCurrentTriangle.point2 = myTriangularMesh->myVertexList.at(firstNextTr.indexesPt[1]);
+      myCurrentTriangle.point3 = myTriangularMesh->myVertexList.at(firstNextTr.indexesPt[2]);
+    }
+  } 
+}
+
+
+template <typename TPoint>
+inline
+typename DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator & 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator::operator= ( const TriangularMeshIterator & anOther )
+{	
+  if ( this != &anOther )
+  {
+    myTriangularMesh = anOther.myTriangularMesh;
+    myPos = anOther.myPos;
+    myCurrentTriangle = anOther.myCurrentTriangle;
+  }
+  return *this;
+}
+
+
+
+
+
+
+
+template <typename TPoint>
+inline
+typename DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator
+DGtal::TriangularMeshFrom2DPoints<TPoint>::begin() const{
+  return DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator(*this, 0);
+}
+
+
+
+
+template <typename TPoint>
+inline
+typename DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator
+DGtal::TriangularMeshFrom2DPoints<TPoint>::end() const{
+  return DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator(*this, this->getTriangleContainerSize());
+}
+
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
@@ -46,12 +153,13 @@ template <typename TPoint>
 inline
 DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints()
 {
-  MeshTriangle emptyTriangle;
+  MeshTriangleWithIndex emptyTriangle;
   emptyTriangle.indexesPt[0]=0; emptyTriangle.indexesPt[1]=0; emptyTriangle.indexesPt[2]=0;
   emptyTriangle.indexAdjTriangles[0]=0; emptyTriangle.indexAdjTriangles[1]=0; emptyTriangle.indexAdjTriangles[2]=0;
   myTrianglesList.push_back(emptyTriangle);
   // pushing empty point
   myVertexList.push_back(TPoint(0,0));
+  myNumberOfTriangle=0;
 }
 
 
@@ -62,7 +170,7 @@ template <typename TPoint>
 inline
 DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoint &ptLower, const TPoint &ptUpper)
 {
-  MeshTriangle emptyTriangle;
+  MeshTriangleWithIndex emptyTriangle;
   emptyTriangle.indexesPt[0]=0; emptyTriangle.indexesPt[1]=0; emptyTriangle.indexesPt[2]=0;
   emptyTriangle.indexAdjTriangles[0]=0; emptyTriangle.indexAdjTriangles[1]=0; emptyTriangle.indexAdjTriangles[2]=0;
   myTrianglesList.push_back(emptyTriangle);  
@@ -80,8 +188,8 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoi
   myVertexList.push_back(ptLower);
   
   // Upper and lower triangles
-  MeshTriangle tr1;
-  MeshTriangle tr2;
+  MeshTriangleWithIndex tr1;
+  MeshTriangleWithIndex tr2;
   tr1.indexesPt[0]=1;  tr1.indexesPt[1]=2;   tr1.indexesPt[2]=3;
   tr2.indexesPt[0]=3;  tr2.indexesPt[1]=4;   tr2.indexesPt[2]=1;
   myTrianglesList.push_back(tr1);
@@ -97,6 +205,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::TriangularMeshFrom2DPoints(const TPoi
   myTrianglesList.at(0).isActive=false;
   myTrianglesList.at(1).isActive=true;
   myTrianglesList.at(2).isActive=true;
+  myNumberOfTriangle=2;
   
 }
 
@@ -164,11 +273,11 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
   }
 
   
-  MeshTriangle tr = myTrianglesList.at(indexTrIn);
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTrIn);
   myTrianglesList.at(indexTrIn).isActive=false;
   myVertexList.push_back(vertex);
     
-  MeshTriangle newTr1;
+  MeshTriangleWithIndex newTr1;
   newTr1.indexesPt[0] = tr.indexesPt[0];
   newTr1.indexesPt[1] = tr.indexesPt[1];  
   newTr1.indexesPt[2] = myVertexList.size()-1;
@@ -177,7 +286,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
   
   resultingIndex.indexTr1=myTrianglesList.size()-1;
   
-  MeshTriangle newTr2;
+  MeshTriangleWithIndex newTr2;
   newTr2.indexesPt[0] = tr.indexesPt[1];
   newTr2.indexesPt[1] = tr.indexesPt[2];
   newTr2.indexesPt[2] = myVertexList.size()-1;
@@ -186,7 +295,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
   resultingIndex.indexTr2=myTrianglesList.size()-1;
   
   
-  MeshTriangle newTr3;
+  MeshTriangleWithIndex newTr3;
   newTr3.indexesPt[0] = tr.indexesPt[2];
   newTr3.indexesPt[1] = tr.indexesPt[0];
   newTr3.indexesPt[2] = myVertexList.size()-1;
@@ -210,7 +319,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
   myTrianglesList.at(myTrianglesList.size()-1).indexAdjTriangles[2] = myTrianglesList.size()-2; //&newTr2;
   
   //Updating Adjacency towards  new faces.
-  MeshTriangle &tr1AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-3).indexAdjTriangles[0]);
+  MeshTriangleWithIndex &tr1AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-3).indexAdjTriangles[0]);
   if(tr1AdjacentNotNew.indexAdjTriangles[0]==indexTrIn){ 
     tr1AdjacentNotNew.indexAdjTriangles[0]  = myTrianglesList.size()-3;
   }else if(tr1AdjacentNotNew.indexAdjTriangles[1]==indexTrIn){ 
@@ -219,7 +328,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
     tr1AdjacentNotNew.indexAdjTriangles[2]  = myTrianglesList.size()-3;
   }
 
-  MeshTriangle &tr2AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-2).indexAdjTriangles[0]);
+  MeshTriangleWithIndex &tr2AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-2).indexAdjTriangles[0]);
   if(tr2AdjacentNotNew.indexAdjTriangles[0]==indexTrIn){ 
     tr2AdjacentNotNew.indexAdjTriangles[0]  = myTrianglesList.size()-2;
   }else if(tr2AdjacentNotNew.indexAdjTriangles[1]==indexTrIn){ 
@@ -228,7 +337,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
     tr2AdjacentNotNew.indexAdjTriangles[2]  = myTrianglesList.size()-2;
   }
   
-  MeshTriangle &tr3AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-1).indexAdjTriangles[0]);
+  MeshTriangleWithIndex &tr3AdjacentNotNew = myTrianglesList.at(myTrianglesList.at(myTrianglesList.size()-1).indexAdjTriangles[0]);
   if(tr3AdjacentNotNew.indexAdjTriangles[0]==indexTrIn){ 
     tr3AdjacentNotNew.indexAdjTriangles[0]  = myTrianglesList.size()-1;
   }else if(tr3AdjacentNotNew.indexAdjTriangles[1]==indexTrIn){ 
@@ -236,7 +345,8 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::addPointInsideMesh(const TPoint & ver
   }else if(tr3AdjacentNotNew.indexAdjTriangles[2]==indexTrIn){ 
     tr3AdjacentNotNew.indexAdjTriangles[2]  = myTrianglesList.size()-1;
   }
-  
+  myNumberOfTriangle+=3;
+
   return resultingIndex;
 }
 
@@ -290,8 +400,8 @@ unsigned int
 DGtal::TriangularMeshFrom2DPoints<TPoint>::getIndexAdjacentVertex(unsigned int indexTriangle, 
 								  unsigned int numEdge) const {
   assert(indexTriangle>0);
-  MeshTriangle tr = myTrianglesList.at(indexTriangle);
-  MeshTriangle trAdj;
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex trAdj;
   bool isPresent=false;
   if( tr.indexAdjTriangles[numEdge-1] !=0){
     // First and second points of the num th vertex 
@@ -322,7 +432,7 @@ unsigned int
 DGtal::TriangularMeshFrom2DPoints<TPoint>::getIndexAdjacentTriangle(unsigned int indexTriangle, 
 								    unsigned int num) const{
   assert(indexTriangle>0);
-  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTriangle);
   return tr.indexAdjTriangles[num-1]; 
 }
 
@@ -333,7 +443,7 @@ inline
 unsigned int 
 DGtal::TriangularMeshFrom2DPoints<TPoint>::getNumEdgeFromIndexVertex(unsigned int indexTriangle, unsigned int indPt1, unsigned int indPt2) const {
   assert(indexTriangle>0);
-  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTriangle);
   if((tr.indexesPt[0]==indPt1 && tr.indexesPt[1]==indPt2)|| (tr.indexesPt[1]==indPt1 && tr.indexesPt[0]==indPt2)){
     return 1;
   }else if ((tr.indexesPt[1]==indPt1 && tr.indexesPt[2]==indPt2)|| (tr.indexesPt[2]==indPt1 && tr.indexesPt[1]==indPt2)){
@@ -368,7 +478,7 @@ inline
 std::vector<TPoint> 
 DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglePoints(unsigned int indexTriangle) const {
   assert(indexTriangle>0);
-  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTriangle);
   return getTrianglePoints(tr);
 }
 
@@ -377,7 +487,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglePoints(unsigned int indexT
 template<typename TPoint> 
 inline
 std::vector<TPoint> 
-DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglePoints(const MeshTriangle &tr) const {
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglePoints(const MeshTriangleWithIndex &tr) const {
   std::vector<TPoint> result;
   result.push_back(myVertexList.at(tr.indexesPt[0]));
   result.push_back(myVertexList.at(tr.indexesPt[1]));
@@ -401,7 +511,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::swapTest(unsigned int indexTriangle, 
     return;
   }
   
-  MeshTriangle tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex tr = myTrianglesList.at(indexTriangle);
   TPoint ptAdj = myVertexList.at(indexAdjacentVertex);
   if(isInCircle(indexTriangle, ptAdj)){
     if(swapTriangleOnEdge(indexTriangle, 1)){
@@ -430,19 +540,19 @@ bool
 DGtal::TriangularMeshFrom2DPoints<TPoint>::swapTriangleOnEdge(unsigned int indexTriangle, unsigned int num){
   
 
-  MeshTriangle &tr = myTrianglesList.at(indexTriangle);
+  MeshTriangleWithIndex &tr = myTrianglesList.at(indexTriangle);
   if(!tr.isActive){
     return false;
   }
   unsigned int indexAdjacentTr = tr.indexAdjTriangles[num-1];
-  MeshTriangle &trAdjacent = myTrianglesList.at(indexAdjacentTr);
+  MeshTriangleWithIndex &trAdjacent = myTrianglesList.at(indexAdjacentTr);
   if(indexAdjacentTr==0){
     trace.error() << " No adjacency" << std::endl;
     return false;
   }
   tr.isActive=false;
   trAdjacent.isActive=false;
-  MeshTriangle trNew1, trNew2;
+  MeshTriangleWithIndex trNew1, trNew2;
   
   // First and second points of the num th vertex and third point of tr: 
   unsigned int  indPt1, indPt2, indPt3;
@@ -481,32 +591,32 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::swapTriangleOnEdge(unsigned int index
 
   // Adjacency of TrA1 towards TrNew1
   if(indexTrA1 != 0){
-    MeshTriangle &trA1 = myTrianglesList.at(indexTrA1);
+    MeshTriangleWithIndex &trA1 = myTrianglesList.at(indexTrA1);
     unsigned int numFaceOfA1AdjToNew1 = getNumEdgeFromIndexVertex(indexTrA1, indPt2, indPt3);
     trA1.indexAdjTriangles[numFaceOfA1AdjToNew1-1] = indexTrNew1;
   }
 
   // Adjacency of TrA2 towards TrNew2
   if(indexTrA2 !=0){
-    MeshTriangle &trA2 = myTrianglesList.at(indexTrA2);  
+    MeshTriangleWithIndex &trA2 = myTrianglesList.at(indexTrA2);  
     unsigned int numFaceOfA2AdjToNew2  = getNumEdgeFromIndexVertex(indexTrA2, indPt3, indPt1 );
     trA2.indexAdjTriangles[numFaceOfA2AdjToNew2-1] = indexTrNew2;
   }
 
  
   // **  Triangles neighboring the adjacent triangle trB 
-  MeshTriangle &trB = myTrianglesList.at(indexTrB);
+  MeshTriangleWithIndex &trB = myTrianglesList.at(indexTrB);
   unsigned int numFaceOfBAdjToB2 = getNumEdgeFromIndexVertex(indexTrB, indPt1, indPtAdjacent);
   unsigned int numFaceOfBAdjToB1 = getNumEdgeFromIndexVertex(indexTrB, indPtAdjacent, indPt2);
   unsigned int indexTrB1 = trB.indexAdjTriangles[numFaceOfBAdjToB1-1];
   unsigned int indexTrB2 = trB.indexAdjTriangles[numFaceOfBAdjToB2-1];
   if(indexTrB1 != 0){    
-    MeshTriangle & trB1 = myTrianglesList.at(indexTrB1);
+    MeshTriangleWithIndex & trB1 = myTrianglesList.at(indexTrB1);
     unsigned int numFaceAdjToBInB1 =  getNumEdgeFromIndexVertex(indexTrB1, indPtAdjacent, indPt2);
     trB1.indexAdjTriangles[numFaceAdjToBInB1-1] = indexTrNew1;
   }
   if(indexTrB2!=0){    
-    MeshTriangle & trB2 = myTrianglesList.at(indexTrB2);
+    MeshTriangleWithIndex & trB2 = myTrianglesList.at(indexTrB2);
     unsigned int numFaceAdjToBInB2 =  getNumEdgeFromIndexVertex(indexTrB2, indPt1, indPtAdjacent);
     trB2.indexAdjTriangles[numFaceAdjToBInB2-1] = indexTrNew2;
   }
@@ -514,8 +624,8 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::swapTriangleOnEdge(unsigned int index
   
 
   // Adjacency of new triangles:
-  MeshTriangle &tr1n = myTrianglesList.at(indexTrNew1);
-  MeshTriangle &tr2n = myTrianglesList.at(indexTrNew2);
+  MeshTriangleWithIndex &tr1n = myTrianglesList.at(indexTrNew1);
+  MeshTriangleWithIndex &tr2n = myTrianglesList.at(indexTrNew2);
   
 
   unsigned int numFaceNewTr1AdjToA1 = getNumEdgeFromIndexVertex(indexTrNew1, indPt2, indPt3 ); 
@@ -556,7 +666,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglesAsVertexVect() const{
   
   std::vector<TPoint> vectResult;
   for(unsigned int i=1; i< myTrianglesList.size(); i++){
-    MeshTriangle triangle = myTrianglesList.at(i);
+    MeshTriangleWithIndex triangle = myTrianglesList.at(i);
     if(triangle.isActive){
       vectResult.push_back(myVertexList.at(triangle.indexesPt[0]));
       vectResult.push_back(myVertexList.at(triangle.indexesPt[1]));
@@ -597,7 +707,7 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::isInTriangle(unsigned int indexTriang
 template<typename TPoint> 
 inline
 bool 
-DGtal::TriangularMeshFrom2DPoints<TPoint>::isInTriangle(const  MeshTriangle &triangle, const TPoint &pt) const{
+DGtal::TriangularMeshFrom2DPoints<TPoint>::isInTriangle(const  MeshTriangleWithIndex &triangle, const TPoint &pt) const{
   TPoint ptA = myVertexList.at(triangle.indexesPt[0]);
   TPoint ptB = myVertexList.at(triangle.indexesPt[1]);
   TPoint ptC = myVertexList.at(triangle.indexesPt[2]);
@@ -631,7 +741,7 @@ template<typename TPoint>
 inline
 bool
 DGtal::TriangularMeshFrom2DPoints<TPoint>::isInCircle(unsigned int indexTriangle, const  TPoint &pt) const{
-  MeshTriangle tr;
+  MeshTriangleWithIndex tr;
   TPoint ptA = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[0]);
   TPoint ptB = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[1]); 
   TPoint ptC = myVertexList.at(myTrianglesList.at(indexTriangle).indexesPt[2]);  
@@ -662,11 +772,24 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::isInCircle(unsigned int indexTriangle
 }
 
 
+
+
+
+
+
+template< typename TPoint> 
+inline 
+unsigned int
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getTriangleContainerSize() const{
+  return myTrianglesList.size();  
+}
+
+
 template< typename TPoint> 
 inline 
 unsigned int
 DGtal::TriangularMeshFrom2DPoints<TPoint>::getNumTriangles() const{
-  return myTrianglesList.size();  
+  return myNumberOfTriangle;  
 }
 
 

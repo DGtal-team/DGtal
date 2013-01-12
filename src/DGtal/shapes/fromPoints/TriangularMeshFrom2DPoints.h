@@ -85,11 +85,17 @@ namespace DGtal
     /**
      * Structure for representing the faces from the vertex index.
      **/
-
-    struct MeshTriangle{
+    struct MeshTriangleWithIndex{
       unsigned int indexesPt [3];
       unsigned int indexAdjTriangles [3];
       bool isActive;
+    };      
+    
+    // Used by iterators
+    struct MeshTriangle{
+      TPoint point1;
+      TPoint point2;
+      TPoint point3;
     };      
     
     struct IndexOfCreatedTriangle{
@@ -98,8 +104,8 @@ namespace DGtal
       unsigned int indexTr3;
     };
 
-    typedef typename std::vector<MeshTriangle> StorageTr; 
-
+    typedef typename std::vector<MeshTriangleWithIndex> StorageTr; 
+    typedef unsigned int Size;
     
     
   private:
@@ -146,6 +152,157 @@ namespace DGtal
      * @return the style name used for drawing this object.
      */
     std::string className() const;
+
+
+
+
+    
+  // ----------------------- Storage service ------------------------------
+
+    
+    class TriangularMeshIterator
+    {
+    private:
+      
+      const TriangularMeshFrom2DPoints * myTriangularMesh;
+      
+      // The current position in the mesh (according the triangle numbers)
+      unsigned int myPos;
+      
+      // The current triangle
+      MeshTriangle  myCurrentTriangle;
+
+
+
+
+
+      
+      
+    public:
+      TriangularMeshIterator(): myTriangularMesh( NULL ), myPos(1){}
+      /**
+       * Constructor.
+       * Nb: complexity in O(1).
+       *
+       * @param aTrMesh a TriangularMeshFrom2DPoints,
+       * @param n the position in [TriangularMeshFrom2DPoints] (within 0 and numberOfTriangle()).
+       */
+      TriangularMeshIterator( const TriangularMeshFrom2DPoints & aTrMesh, unsigned int n =0);
+      
+        /**
+         * Destructor. Does nothing.
+         */
+        ~TriangularMeshIterator()
+        { }
+      
+    public:
+
+      /**
+       * @return the current coordinates.
+       */
+      const MeshTriangle& operator*() const
+      {
+	return myCurrentTriangle;
+      }
+      
+      /**
+       * @return the current coordinates.
+       */
+      const TPoint& get() const
+      {
+	return myCurrentTriangle;
+      }
+       /**
+         * Pre-increment.
+         * Goes to the next point on the TriangleMesh.
+         */
+        TriangularMeshIterator & operator++()
+        {
+          this->next();
+          return *this;
+        }
+
+        /**
+         * Post-increment.
+         * Goes to the next point on the TriangleMesh.
+         */
+        TriangularMeshIterator operator++(int)
+        {
+          TriangularMeshIterator tmp(*this);
+          this->next();
+          return tmp;
+        }
+      /**
+       * Copy constructor.
+         * @param other the iterator to clone.
+         */
+       TriangularMeshIterator( const TriangularMeshIterator & anOther )
+          : myTriangularMesh( anOther.myTriangularMesh ), myPos( anOther.myPos ), myCurrentTriangle( anOther.myCurrentTriangle )
+        { } 
+
+       
+      /**
+       * Copy operator
+       **/
+      TriangularMeshIterator &  operator= ( const TriangularMeshIterator & anOther );
+      
+        /**
+         * Goes to the next point on the chain.
+         */
+        void next();
+
+
+        /**
+         * Equality operator.
+         *
+         * @param aOther the iterator to compare with (must be defined on
+         * the same chain).
+         *
+         * @return 'true' if their current positions coincide.
+         */
+        bool operator== ( const TriangularMeshIterator & anOther ) const
+        {
+          ASSERT( myTriangularMesh == anOther.myTriangularMesh );
+          return myPos == anOther.myPos;
+        }
+
+
+        /**
+         * Inequality operator.
+         *
+         * @param aOther the iterator to compare with (must be defined on
+         * the same chain).
+         *
+         * @return 'true' if their current positions differs.
+         */
+        bool operator!= ( const TriangularMeshIterator & anOther ) const
+        {
+          ASSERT( myTriangularMesh == anOther.myTriangularMesh );
+          return myPos != anOther.myPos;
+        }
+
+
+    };
+
+    
+
+
+
+
+
+    // ----------------------- Iterator services--------------------------------   
+    
+    /**
+     *   Iterator service
+     *   @return begin iterator.
+     **/
+    TriangularMeshIterator begin() const;
+
+    /**
+     *   Iterator service
+     *   @return end iterator.
+     **/
+    TriangularMeshIterator end() const;
 
 
 
@@ -304,7 +461,7 @@ namespace DGtal
      * @return a vector containing the three triangle vertex.
      **/
 
-    std::vector<TPoint> getTrianglePoints(const MeshTriangle &tr) const;
+    std::vector<TPoint> getTrianglePoints(const MeshTriangleWithIndex &tr) const;
         
     
 
@@ -328,7 +485,7 @@ namespace DGtal
      **/   
     unsigned int getNumTriangles() const;
 
-
+    
 
     /**
      * Check if a point is located stricly inside a triangle (return false if the point belongs to an triangle edge). 
@@ -346,7 +503,7 @@ namespace DGtal
      * @param tp: the point to tested.
      **/
     
-    bool isInTriangle(const  MeshTriangle &triangle, const TPoint &pt) const;
+    bool isInTriangle(const  MeshTriangleWithIndex &triangle, const TPoint &pt) const;
     
     
     
@@ -409,15 +566,37 @@ namespace DGtal
   private:
     std::vector<TPoint>  myVertexList;
     StorageTr  myTrianglesList;
-    
-
+    unsigned int myNumberOfTriangle;
     
     // ------------------------- Hidden services ------------------------------
   protected:
 
   
 
+    /**
+     * Return a positive or negative number according two point pt1
+     * and pt2 are on the same side in reference to a segment.
+     *
+     * @param ptA a point.
+     * @param ptB a point.
+     * @param pt1 a  point to be tested.
+     * @param pt2 the another point to be tested.
+     * @return a positive number if 
+     * 
+     **/
+    
+
     double isSameSide(const TPoint &ptA, const TPoint &ptB, const TPoint & pt1, const TPoint &pt2) const ;
+    
+    
+    
+    
+    /**
+     * @return the size of the triangle container.
+     *
+     **/
+    
+    unsigned int getTriangleContainerSize() const;
     
     
           

@@ -202,6 +202,7 @@ bool testMeshFromDelaunayConstruction()
   aMesh2.addPointInsideMesh(Point(50,20));
   aMesh2.addPointInsideMesh(Point(60,60));
   
+
   srand ( time(NULL) );
   for (unsigned int i =0; i < 10000 ; i++){
     unsigned int x = 10+rand()%80;
@@ -223,6 +224,26 @@ bool testMeshFromDelaunayConstruction()
   aBoard2.saveEPS("testMeshConstruction.eps");
   aBoard.saveEPS("testMeshConstructionDelaunay.eps");
   return true;
+}
+
+
+
+/**
+ * Test iterator on mesh
+ *
+ **/
+bool testIteratorOnTriangularMesh(){
+  trace.beginBlock ( "Testing iterator on Triangular mesh  " );
+  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(10,10));
+  aMesh.addPointInsideDelaunayMesh(Point(4,3));
+  aMesh.addPointInsideDelaunayMesh(Point(7,8)); 
+  Point ptLast;
+  TriangularMeshFrom2DPoints<Point>::TriangularMeshIterator it = aMesh.begin();
+  for ( ; it!= aMesh.end(); it++){
+    trace.info() << "triangle: " << (*it).point1 << " " << (*it).point2 << " " << (*it).point3 << endl;
+    ptLast = (*it).point3;
+  }
+  return ptLast[0]==7 && ptLast[1]==8;
 }
 
 
@@ -258,7 +279,12 @@ int main( int argc, char** argv )
   trace.emphase() << ( res4 ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   
-  bool resAll = res1 & res2 &  res3 & res4; 
+  bool res5 = testIteratorOnTriangularMesh();
+  trace.emphase() << ( res5 ? "Passed." : "Error." ) << endl;
+  trace.endBlock();
+  
+
+  bool resAll = res1 & res2 &  res3 & res4 & res5; 
   trace.emphase() << ( resAll ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

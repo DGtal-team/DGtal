@@ -782,16 +782,15 @@ void
 DGtal::Display2DFactory::draw(DGtal::Board2D & board,
 			      const DGtal::TriangularMeshFrom2DPoints<TPoint> & object){
   
-  
-  std::vector<TPoint> vectTriangles = object.getTrianglesAsVertexVect();
-  for(unsigned int i=0; i < vectTriangles.size(); i=i+3){
+
+  for(typename  TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator it = object.begin();
+       it!=object.end(); it++){
     
     board.setPenColor(Color(20,20,200));
-    //board.setFillColor(Color(200,200,200));
-    LibBoard::Point p1(vectTriangles.at(i)[0], vectTriangles.at(i)[1]);
-    LibBoard::Point p2(vectTriangles.at(i+1)[0], vectTriangles.at(i+1)[1]);
-    LibBoard::Point p3(vectTriangles.at(i+2)[0], vectTriangles.at(i+2)[1]);
-    //board.fillTriangle(p1, p2, p3);
+    
+    LibBoard::Point p1((*it).point1[0], (*it).point1[1]);
+    LibBoard::Point p2((*it).point2[0], (*it).point2[1]);
+    LibBoard::Point p3((*it).point3[0], (*it).point3[1]);
     board.drawTriangle(p1, p2, p3);
     board.setPenColor(Color(200,20,20));
     board.fillCircle(p1.x, p1.y, 0.15); 
