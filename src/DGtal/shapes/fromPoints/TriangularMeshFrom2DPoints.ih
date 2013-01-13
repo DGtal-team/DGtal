@@ -790,6 +790,19 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglesIncidentToVertex(unsigned
 
 template< typename TPoint> 
 inline 
+std::vector<typename DGtal::TriangularMeshFrom2DPoints<TPoint>::MeshTriangle>
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getAllTriangles() const {
+  std::vector<MeshTriangle> result;
+  
+  for(typename  TriangularMeshFrom2DPoints<TPoint>::TriangularMeshIterator it = begin();
+       it!= end(); it++){
+    result.push_back(*it);
+  } 
+  return result;
+}
+
+template< typename TPoint> 
+inline 
 void
 DGtal::TriangularMeshFrom2DPoints<TPoint>::removeTriangle(unsigned int index){
   myTrianglesList.at(index).isActive = false;
@@ -829,6 +842,29 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::removeTrianglesOfBoundingVertex(){
   return nbRemoved;
 }
 
+
+
+template< typename TPoint> 
+inline 
+std::vector< std::vector<TPoint> > 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getVoronoiDiagram(){
+  std::vector< std::vector< TPoint> > result;
+  for(unsigned int i=0; i<myVertexList.size(); i++){
+    std::vector< TPoint> aPolygon;
+    std::vector<MeshTriangle> vectTr = getTrianglesIncidentToVertex(i);
+    DGtal::TriangularMeshFrom2DPoints<TPoint>::CompToOrderTriangle comp;
+    comp.pointCenter = myVertexList.at(i);
+    sort(vectTr.begin(), vectTr.end(), comp);
+    for(unsigned int i=0; i < vectTr.size(); i++){
+      TPoint p1 = vectTr.at(i).point1;
+      TPoint p2 = vectTr.at(i).point2;
+      TPoint p3 = vectTr.at(i).point3;
+      aPolygon.push_back(TPoint((typeof(p1[0]))((p1[0]+p2[0]+p3[0])/3.0),(typeof(p1[1]))((p1[1]+p2[1]+p3[1])/3.0)));
+    }
+    result.push_back(aPolygon);
+  }
+  return result;
+}
 
 
 template< typename TPoint> 

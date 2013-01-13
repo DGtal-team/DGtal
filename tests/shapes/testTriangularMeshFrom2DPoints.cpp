@@ -29,9 +29,12 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/fromPoints/TriangularMeshFrom2DPoints.h"
+#include "DGtal/io/Color.h"
+#include "DGtal/io/colormaps/GradientColorMap.h"
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -211,7 +214,6 @@ bool testMeshFromDelaunayConstruction()
   Board2D aBoard;
 
 
-
   Board2D aBoard2;
   aBoard2 << aMesh2;    
   aMesh.removeTrianglesOfBoundingVertex();
@@ -223,12 +225,41 @@ bool testMeshFromDelaunayConstruction()
 			LibBoard::Point(tr1New.point2[0],tr1New.point2[1]),
 			LibBoard::Point(tr1New.point3[0],tr1New.point3[1]));
   }
+  std::vector<DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle> allTr = aMesh.getAllTriangles();
+  DGtal::TriangularMeshFrom2DPoints<Point>::CompToOrderTriangle comp;
+  comp.pointCenter = Point(50,50);
+  sort(allTr.begin(), allTr.end(), comp);
+  GradientColorMap<int> cmap_grad(0, allTr.size());
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
+  for (unsigned int i = 0; i<allTr.size(); i++){
+    aBoard.setPenColor( cmap_grad(i) );
+    DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle tr1New = allTr.at(i);
+    aBoard.fillTriangle(LibBoard::Point(tr1New.point1[0],tr1New.point1[1]), 
+			LibBoard::Point(tr1New.point2[0],tr1New.point2[1]),
+			LibBoard::Point(tr1New.point3[0],tr1New.point3[1]));
+  } 
+  aBoard.setPenColor(DGtal::Color(20,20,20));
+  std::vector< std::vector<Point> > vectPolygons = aMesh.getVoronoiDiagram();
+  for(unsigned int i=0;i<vectPolygons.size();  i++){
+    std::vector< Point> aPolygon = vectPolygons.at(i);
+    std::vector< LibBoard::Point > tmpCnt;
+    for(unsigned int j=0; j< aPolygon.size(); j++){
+      tmpCnt.push_back( LibBoard::Point(aPolygon.at(j)[0], aPolygon.at(j)[1]));
+    }
+    aBoard.drawPolyline(tmpCnt);
+  }
+  
+
   aBoard << aMesh;  
   aBoard2.saveEPS("testMeshConstruction.eps");
   aBoard.saveEPS("testMeshConstructionDelaunay.eps");
   aBoard.saveFIG("testMeshConstructionDelaunay.fig");
   return true;
 }
+
+
 
 
 

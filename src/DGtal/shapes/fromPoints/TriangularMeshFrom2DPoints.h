@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include <math.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/kernel/SimpleMatrix.h"
@@ -104,6 +105,35 @@ namespace DGtal
       unsigned int indexTr3;
     };
 
+    // Used for generating Voronoi diagram
+    struct CompToOrderTriangle{
+      TPoint pointCenter;
+      bool operator() ( MeshTriangle t1, MeshTriangle t2 )
+      {
+	double p1x = (t1.point1[0]+t1.point2[0]+ t1.point3[0])/3.0;
+	double p1y = (t1.point1[1]+t1.point2[1]+ t1.point3[1])/3.0;
+      
+	double p2x = (t2.point1[0]+t2.point2[0]+ t2.point3[0])/3.0;
+	double p2y = (t2.point1[1]+t2.point2[1]+ t2.point3[1])/3.0;
+
+	double dx1 = p1x-pointCenter[0];
+	double dx2 = p2x-pointCenter[0];
+	
+	double dy1 = p1y-pointCenter[1];
+	double dy2 = p2y-pointCenter[1];
+	
+	  double norm1 = sqrt(dx1*dx1+dy1*dy1);
+	  double norm2 = sqrt(dx2*dx2+dy2*dy2);
+
+	  double angle1 = atan2((double)(dy1/norm1),(double)(dx1/norm1));
+	  double angle2 = atan2((double)(dy2/norm2),(double)(dx2/norm2));
+	  if(angle1<0.0) angle1+= 2.0* 3.14159265;
+	  if(angle2<0.0) angle2+= 2.0*3.14159265;
+	  
+	  return angle1< angle2;
+	};
+    };
+    
     typedef typename std::vector<MeshTriangleWithIndex> StorageTr; 
     typedef unsigned int Size;
     
@@ -592,6 +622,29 @@ namespace DGtal
      **/
     std::vector<MeshTriangle> getTrianglesIncidentToVertex(unsigned int aVertexIndex);
 
+
+    
+    /**
+     * Return a vector containing all the MeshTriangle of the mesh. 
+     *
+     * @return the set of triangles
+     **/
+    std::vector<MeshTriangle> getAllTriangles() const;
+
+
+    /**
+     * Return the voronoi diagram defined as a set of polygons.
+     *
+     * Nb: It only works if the saving map point to vertex option
+     * (saveMapPointToTriangle) was set in the constructor (not done
+     * by default)
+     *
+     *  @return the vector containing the contour polygons given as vector of points. 
+     *
+     **/
+    std::vector< std::vector<TPoint> > getVoronoiDiagram();
+    
+    
 
     /**
      * Writes/Displays the object on an output stream.
