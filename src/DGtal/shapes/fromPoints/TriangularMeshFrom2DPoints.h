@@ -119,21 +119,22 @@ namespace DGtal
 
     /**
      * Default Constructor.
-     * 
+     * @param saveMapPointToTriangle when set to true, it saves for each point the set of triangle incident to it (default no saving). 
      * 
      */
-    TriangularMeshFrom2DPoints();    
+    TriangularMeshFrom2DPoints( bool saveMapPointToTriangle=false );    
     
 
     /**
      * Constructor from a bounding box.
      * This constructor adds two new triangles in the mesh associated to the bounding box given by the upper and lower points.
      *
-     *  @param ptUpper: upper bounding box point.
-     *  @param ptLower: lower bounding box point. 
-     *
+     *  @param ptUpper upper bounding box point.
+     *  @param ptLower lower bounding box point.     
+     *  @param saveMapPointToTriangle when set to true, it saves for each point the set of triangle incident to it (default no saving). 
+     *"
      */
-    TriangularMeshFrom2DPoints(const TPoint &ptUpper, const TPoint & ptLower);    
+    TriangularMeshFrom2DPoints(const TPoint &ptUpper, const TPoint & ptLower, bool saveMapPointToTriangle=false);    
     
     
     
@@ -463,18 +464,6 @@ namespace DGtal
         
     
 
-    // /**
-    //  *  Returns a vector containning the sequence of vertex that we
-    //  *  can enumerate by visiting each triangle. Used to display the
-    //  *  triangularMesh.  
-    //  *
-    //  *  @return the vector containing all the vertex
-    //  *  defining the triangles.
-    //  **/
-
-    // std::vector<TPoint> getTrianglesAsVertexVect() const;   
-
-
 
     
     /**
@@ -557,8 +546,13 @@ namespace DGtal
     
 
     /**
+     * Return a vector containing a set of MeshTriangle. It only works
+     * if the saving map point to vertex option
+     * (saveMapPointToTriangle) was set in the constructor (not done
+     * by default)
      *
-     *
+     * @parameter aVertexIndex 
+     * @return the set of triangles
      **/
     std::vector<MeshTriangle> getTrianglesIncidentToVertex(unsigned int aVertexIndex);
 
@@ -585,6 +579,7 @@ namespace DGtal
     std::vector<TPoint>  myVertexList;
     StorageTr  myTrianglesList;
     unsigned int myNumberOfTriangle;
+    bool myIsSavingMapPointToTriangle;
     // The map for recovering for each point a source triangle
     std::multimap<TPoint, unsigned int> myMapVertexToTriangle;
     

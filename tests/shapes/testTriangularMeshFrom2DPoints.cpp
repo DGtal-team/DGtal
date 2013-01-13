@@ -183,7 +183,7 @@ bool testMeshFromDelaunayConstruction()
 {
   trace.beginBlock ( "Testing Mesh with delaunay contruction  " );
   
-  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100));
+  TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100), true);
   TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(100,100));
   
   aMesh.addPointInsideDelaunayMesh(Point(80,80));
