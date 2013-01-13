@@ -172,9 +172,7 @@ namespace DGtal
       // The current triangle
       MeshTriangle  myCurrentTriangle;
 
-
-
-
+      
 
       
       
@@ -465,16 +463,16 @@ namespace DGtal
         
     
 
-    /**
-     *  Returns a vector containning the sequence of vertex that we
-     *  can enumerate by visiting each triangle. Used to display the
-     *  triangularMesh.  
-     *
-     *  @return the vector containing all the vertex
-     *  defining the triangles.
-     **/
+    // /**
+    //  *  Returns a vector containning the sequence of vertex that we
+    //  *  can enumerate by visiting each triangle. Used to display the
+    //  *  triangularMesh.  
+    //  *
+    //  *  @return the vector containing all the vertex
+    //  *  defining the triangles.
+    //  **/
 
-    std::vector<TPoint> getTrianglesAsVertexVect() const;   
+    // std::vector<TPoint> getTrianglesAsVertexVect() const;   
 
 
 
@@ -543,7 +541,27 @@ namespace DGtal
     void swapTest(unsigned int indexTriangle, unsigned int numEdge);
 
     
+    /**
+     *
+     **/
     
+    void addTriangle(const MeshTriangleWithIndex &tr, bool addToVertexMap=false);
+
+
+    /**
+     *
+     **/
+    
+    void removeTriangle(unsigned int index);
+    
+    
+
+    /**
+     *
+     *
+     **/
+    std::vector<MeshTriangle> getTrianglesIncidentToVertex(unsigned int aVertexIndex);
+
 
     /**
      * Writes/Displays the object on an output stream.
@@ -567,6 +585,8 @@ namespace DGtal
     std::vector<TPoint>  myVertexList;
     StorageTr  myTrianglesList;
     unsigned int myNumberOfTriangle;
+    // The map for recovering for each point a source triangle
+    std::multimap<TPoint, unsigned int> myMapVertexToTriangle;
     
     // ------------------------- Hidden services ------------------------------
   protected:

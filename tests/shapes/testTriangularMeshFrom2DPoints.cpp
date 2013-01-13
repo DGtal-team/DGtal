@@ -41,10 +41,6 @@ using namespace std;
 using namespace DGtal;
 using namespace DGtal::Z2i;
 
-
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class TriangularMeshFrom2DPoints.
 ///////////////////////////////////////////////////////////////////////////////
@@ -119,7 +115,10 @@ bool testMeshOnSimpleConstruction()
 		     LibBoard::Point(tr2.at(1)[0],tr2.at(1)[1]),
 		     LibBoard::Point(tr2.at(2)[0],tr2.at(2)[1]));
  
-  aBoard.saveEPS("testSimpleTriangularMesh.eps");
+ 
+ 
+
+ aBoard.saveEPS("testSimpleTriangularMesh.eps");
 
   return isIn && indexTr ==4 && indexPt6_6 == indexAdjacentTR;
 }
@@ -215,12 +214,23 @@ bool testMeshFromDelaunayConstruction()
     }
   } 
 
+  
   Board2D aBoard;
-  aBoard << aMesh;
+
+
 
   Board2D aBoard2;
-  aBoard2 << aMesh2;
-  
+  aBoard2 << aMesh2;    
+
+  std::vector< DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle > vectTr = aMesh.getTrianglesIncidentToVertex(0);
+  for (unsigned int i = 0; i<vectTr.size(); i++){
+    aBoard.setPenColor(DGtal::Color(200,200,20));
+    DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle tr1New = vectTr.at(i);
+    aBoard.fillTriangle(LibBoard::Point(tr1New.point1[0],tr1New.point1[1]), 
+			LibBoard::Point(tr1New.point2[0],tr1New.point2[1]),
+			LibBoard::Point(tr1New.point3[0],tr1New.point3[1]));
+  }
+  aBoard << aMesh;  
   aBoard2.saveEPS("testMeshConstruction.eps");
   aBoard.saveEPS("testMeshConstructionDelaunay.eps");
   return true;
@@ -245,6 +255,7 @@ bool testIteratorOnTriangularMesh(){
   }
   return ptLast[0]==7 && ptLast[1]==8;
 }
+
 
 
 
