@@ -59,8 +59,8 @@ inline
 DGtal::DigitalSetDomain<TDigitalSet>
 ::DigitalSetDomain ( const DigitalSetDomain & other )
   : mySet( other.mySet ),
-    myLowerBound( other.myLowerBound ), 
     myUpperBound( other.myUpperBound ),
+    myLowerBound( other.myLowerBound ), 
     myPredicate( other.mySet )
 {}
 
