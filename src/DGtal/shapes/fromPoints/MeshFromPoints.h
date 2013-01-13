@@ -64,18 +64,16 @@ namespace DGtal
    * Since it realized the concept of CDrawableWithDisplay3D we can display an MeshFromPoints with a Display3D object:
    *
    * First we have to include the following header files:
-   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInclude 
+   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshFromPointsUseInclude 
    *
    * Prepare display using QGLviewer: Viewer3D
-   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseInitDisplay 
+   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshFromPointsUseInitDisplay 
    *
    * Construct a MeshFromPoints with various faces:
-   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseMeshCreation
+   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshFromPointsUseMeshCreation
    
    * Displaying the result:
-   @snippet tests/shapes/testMeshFromPointsDisplay.cpp MeshFromPointsUseDisplay
-
-   @endcode 
+   @snippet examples/shapes/Mesh3DConstructionAndVisualisation.cpp MeshFromPointsUseDisplay
    *
    * 
    *
