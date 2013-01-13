@@ -657,30 +657,6 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::swapTriangleOnEdge(unsigned int index
 
 
 
-
-
-// template<typename TPoint> 
-// inline
-// std::vector<TPoint> 
-// DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglesAsVertexVect() const{
-  
-//   std::vector<TPoint> vectResult;
-//   for(unsigned int i=1; i< myTrianglesList.size(); i++){
-//     MeshTriangleWithIndex triangle = myTrianglesList.at(i);
-//     if(triangle.isActive){
-//       vectResult.push_back(myVertexList.at(triangle.indexesPt[0]));
-//       vectResult.push_back(myVertexList.at(triangle.indexesPt[1]));
-//       vectResult.push_back(myVertexList.at(triangle.indexesPt[2]));
-//     }
-//   }
-//   return vectResult;
-// }
-
-
-
-
-
-
 template<typename TPoint> 
 inline
 double 
@@ -794,7 +770,6 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::getTrianglesIncidentToVertex(unsigned
   assert(myIsSavingMapPointToTriangle);
   std::vector<MeshTriangle> result;
   std::pair< typename std::multimap<TPoint, unsigned int>::iterator, typename std::multimap<TPoint,unsigned int>::iterator> rangeIt;
-  trace.info()<< myVertexList.at(aVertexIndex) << std::endl;
   rangeIt = myMapVertexToTriangle.equal_range( myVertexList.at(aVertexIndex) );
   for(typename std::multimap<TPoint,unsigned int>::iterator it= rangeIt.first; it!=rangeIt.second; ++it){
     unsigned int  indexTr= it->second;
@@ -820,6 +795,39 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::removeTriangle(unsigned int index){
   myTrianglesList.at(index).isActive = false;
 }
 
+
+
+
+template< typename TPoint> 
+inline 
+unsigned int 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::removeTrianglesIncidentToVertex(unsigned int aVertexIndex){
+  assert(myIsSavingMapPointToTriangle);
+  unsigned int nbRemoved =0;
+  std::pair< typename std::multimap<TPoint, unsigned int>::iterator, typename std::multimap<TPoint,unsigned int>::iterator> rangeIt;
+  rangeIt = myMapVertexToTriangle.equal_range( myVertexList.at(aVertexIndex) );
+  for(typename std::multimap<TPoint,unsigned int>::iterator it= rangeIt.first; it!=rangeIt.second; ++it){
+    unsigned int  indexTr= it->second;
+    MeshTriangleWithIndex &trInd = myTrianglesList.at(indexTr);
+    if(trInd.isActive){
+      trInd.isActive=false;
+      nbRemoved++;
+    }
+  } 
+  return nbRemoved;
+}
+
+
+template< typename TPoint> 
+inline 
+unsigned int 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::removeTrianglesOfBoundingVertex(){
+  unsigned int nbRemoved;
+  for (unsigned int i=0; i<4; i++){
+    nbRemoved=removeTrianglesIncidentToVertex(i);
+  }
+  return nbRemoved;
+}
 
 
 

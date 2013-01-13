@@ -531,23 +531,59 @@ namespace DGtal
 
     
     /**
-     *
+     * Add a triangle in the mesh.
+     * @param the new triangle.
+     * @param addToVertexMap if true the multi map associating each point to its incident triangles is saved.
      **/
     
     void addTriangle(const MeshTriangleWithIndex &tr, bool addToVertexMap=false);
 
 
     /**
-     *
+     * Remove the triangle from the given index;
+     * 
+     * @param index the triangle index to be removed
      **/
     
     void removeTriangle(unsigned int index);
     
-    
+
+
 
     /**
-     * Return a vector containing a set of MeshTriangle. It only works
-     * if the saving map point to vertex option
+     * Remove all triangles which are incident to vertex.
+     *
+     * NB: It only works if the saving map point to vertex option
+     * (saveMapPointToTriangle) was set in the constructor (not done
+     * by default)
+     *
+     * @param indexVertex 
+     * @return the number of triangles which were removed.
+     **/
+    
+    unsigned int removeTrianglesIncidentToVertex(unsigned int indexVertex);
+    
+
+
+    
+    /**
+     * Remove all triangles which are incident to bounding vertex.
+     *
+     * NB: It only works if the saving map point to vertex option
+     * (saveMapPointToTriangle) was set in the constructor (not done
+     * by default)
+     *
+     * @return the number of triangles which were removed.
+     **/
+    
+    unsigned int removeTrianglesOfBoundingVertex();
+    
+
+
+    /**
+     * Return a vector containing a set of MeshTriangle. 
+     *
+     * Nb: It only works if the saving map point to vertex option
      * (saveMapPointToTriangle) was set in the constructor (not done
      * by default)
      *

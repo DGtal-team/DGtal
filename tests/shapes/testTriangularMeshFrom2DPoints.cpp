@@ -186,13 +186,6 @@ bool testMeshFromDelaunayConstruction()
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100), true);
   TriangularMeshFrom2DPoints<Point> aMesh2 (Point (0,0), Point(100,100));
   
-  aMesh.addPointInsideDelaunayMesh(Point(80,80));
-  aMesh.addPointInsideDelaunayMesh(Point(80,90));
-  aMesh.addPointInsideDelaunayMesh(Point(50,90));
-  aMesh.addPointInsideDelaunayMesh(Point(3,4));
-  aMesh.addPointInsideDelaunayMesh(Point(50,20));
-  aMesh.addPointInsideDelaunayMesh(Point(60,60));
-
 
   aMesh2.addPointInsideMesh(Point(80,80));
   aMesh2.addPointInsideMesh(Point(80,90));
@@ -221,8 +214,8 @@ bool testMeshFromDelaunayConstruction()
 
   Board2D aBoard2;
   aBoard2 << aMesh2;    
-
-  std::vector< DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle > vectTr = aMesh.getTrianglesIncidentToVertex(0);
+  aMesh.removeTrianglesOfBoundingVertex();
+  std::vector< DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle > vectTr = aMesh.getTrianglesIncidentToVertex(5);
   for (unsigned int i = 0; i<vectTr.size(); i++){
     aBoard.setPenColor(DGtal::Color(200,200,20));
     DGtal::TriangularMeshFrom2DPoints<Point>::MeshTriangle tr1New = vectTr.at(i);
@@ -233,8 +226,10 @@ bool testMeshFromDelaunayConstruction()
   aBoard << aMesh;  
   aBoard2.saveEPS("testMeshConstruction.eps");
   aBoard.saveEPS("testMeshConstructionDelaunay.eps");
+  aBoard.saveFIG("testMeshConstructionDelaunay.fig");
   return true;
 }
+
 
 
 
