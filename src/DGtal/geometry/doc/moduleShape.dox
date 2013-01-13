@@ -169,4 +169,15 @@ parameters which are not specified in the captions).
 
 */
 
+
+
+
+
+/**
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+\example shapes/Mesh3DConstructionAndVisualisation.cpp
+
+*
+*/
+
 }
