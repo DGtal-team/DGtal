@@ -64,13 +64,24 @@ namespace DGtal
    * This classe proposes to use the incremental construction of
    * [Guibas, D. E. Knuth, and M. Sharir (1992): \cite Guibas1992]
    * which permits to obtain a Delaunay triangular mesh. The algorithm
-   * is given here in 2D even the type of point could given as nD, but
-   * in such case onlye  the two coordinates will be considered.
+   * is given here in 2D even the type of point can be given in nD, but
+   * in such case only  the two first coordinates will be considered.
    *
-   * To use this class to construct an Delaunay Triangular Mesh you can use:
+   * To use this class to construct an Delaunay Triangular Mesh you
+   * have first to include the following header files:
    * 
+   *  @snippet examples/shapes/DelaunayTriangulationAndVoronoi.cpp TriangularMeshFrom2DPointsINC 
    *
-   * @see  ...
+   * Then you construct an empty mesh from two bounding box points:
+   *
+   *  @snippet examples/shapes/DelaunayTriangulationAndVoronoi.cpp TriangularMeshFrom2DPointsINIT 
+   *
+   * And adding point to mesh:
+   * @snippet examples/shapes/DelaunayTriangulationAndVoronoi.cpp TriangularMeshFrom2DPointsADDPOINT
+   *
+   * Finally display the results:
+   * @snippet examples/shapes/DelaunayTriangulationAndVoronoi.cpp TriangularMeshFrom2DPointsDISPLAYRES
+   *
    *
    */
   template <typename TPoint >
@@ -494,6 +505,13 @@ namespace DGtal
         
     
 
+    
+    /**
+     * @return the set of vertex. 
+     * 
+     **/   
+    std::vector<TPoint> getAllVertex() const;
+    
 
     
     /**

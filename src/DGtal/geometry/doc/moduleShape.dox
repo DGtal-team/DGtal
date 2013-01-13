@@ -180,4 +180,13 @@ parameters which are not specified in the captions).
 *
 */
 
+/**
+   \image html  delaunayTriangularMesh.png  "Delaunay triangular mesh from random points."
+   \image html  voronoiDiagram.png  "Voronoi diagram from random points."
+
+   \example shapes/DelaunayTriangulationAndVoronoi.cpp
+
+*
+*/
+
 }

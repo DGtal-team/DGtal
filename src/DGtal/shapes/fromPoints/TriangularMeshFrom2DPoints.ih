@@ -867,6 +867,19 @@ DGtal::TriangularMeshFrom2DPoints<TPoint>::getVoronoiDiagram(){
 }
 
 
+
+
+
+template< typename TPoint> 
+inline 
+std::vector<TPoint> 
+DGtal::TriangularMeshFrom2DPoints<TPoint>::getAllVertex() const{
+  return myVertexList;
+  
+}
+
+
+
 template< typename TPoint> 
 inline 
 unsigned int

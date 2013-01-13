@@ -249,8 +249,7 @@ bool testMeshFromDelaunayConstruction()
       tmpCnt.push_back( LibBoard::Point(aPolygon.at(j)[0], aPolygon.at(j)[1]));
     }
     aBoard.drawPolyline(tmpCnt);
-  }
-  
+  }  
 
   aBoard << aMesh;  
   aBoard2.saveEPS("testMeshConstruction.eps");
