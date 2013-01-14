@@ -64,9 +64,10 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
+#include "DGtal/shapes/fromPoints/TriangularMeshFrom2DPoints.h"
 #include "DGtal/arithmetic/LatticePolytope2D.h"
 
-//#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/boards/Board2D.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -276,6 +277,15 @@ template < Dimension dim, typename TInteger >
   static void draw( DGtal::Board2D & board, const DGtal::KhalimskyCell<dim, TInteger> & );
 // KhalimskyCell
     
+
+
+
+// TriangularMeshFrom2DPoints
+template<typename TPoint>
+static void draw(DGtal::Board2D & board, const DGtal::TriangularMeshFrom2DPoints<TPoint> & );
+// TriangularMeshFrom2DPoints
+
+
     
 // Object
 template <typename TDigitalTopology, typename TDigitalSet>

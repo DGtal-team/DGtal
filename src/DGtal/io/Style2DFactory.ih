@@ -566,6 +566,18 @@ defaultStyle(const DGtal::GridCurve<TKSpace> & /*object*/,
 }
 // GridCurve
 
+
+// TriangularMeshFrom2DPoints
+template <typename TPoint>
+DGtal::DrawableWithBoard2D* 
+defaultStyle(const DGtal::TriangularMeshFrom2DPoints<TPoint> & /*object*/, 
+             std::string mode = "" )
+{
+  UNUSED_ARGUMENT(mode);
+  return new DGtal::DrawableWithBoard2D; 
+}
+// GridCurve
+
 // SCellsRange
 template <typename TIterator, typename TSCell>
 DGtal::DrawableWithBoard2D* 
