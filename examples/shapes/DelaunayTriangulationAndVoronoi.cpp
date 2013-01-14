@@ -53,9 +53,11 @@ int main( int argc, char** argv )
   TriangularMeshFrom2DPoints<Point> aMesh (Point (0,0), Point(100,100), true);  
   
   //! [TriangularMeshFrom2DPointsINIT] 
-  
+
+    
   srand ( time(NULL) );
-  for (unsigned int i =0; i < 100 ; i++){
+  for (unsigned int i =0; i < 1000 ; i++){
+
     unsigned int x = 10+rand()%80;
     unsigned int y = 10+rand()%80;
     Point p(x,y);
@@ -67,7 +69,7 @@ int main( int argc, char** argv )
       
     
   } 
-
+  
   aMesh.removeTrianglesOfBoundingVertex();
   //! [TriangularMeshFrom2DPointsDISPLAYRES] 
   Board2D aBoard;
@@ -90,7 +92,7 @@ int main( int argc, char** argv )
 
   aBoard2 << Point(0,0) << Point(100,100);
   aBoard2.saveEPS("exampleVoronoi.eps");
-
+  trace.endBlock();
   return true;
 }
 //                                                                           //

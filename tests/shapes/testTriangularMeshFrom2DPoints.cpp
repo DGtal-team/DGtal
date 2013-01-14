@@ -73,7 +73,7 @@ bool testTriangularMeshFrom2DPointsFct()
       aBoard<< p; 
     }    
   } 
-  aBoard.saveEPS("tesMeshFromTriangleFct.eps");  
+  aBoard.saveEPS("testMeshFromTriangleFct.eps");  
   return aMesh.isInCircle(4, Point(90, 50));
 }
 
@@ -197,9 +197,9 @@ bool testMeshFromDelaunayConstruction()
   aMesh2.addPointInsideMesh(Point(50,20));
   aMesh2.addPointInsideMesh(Point(60,60));
   
-
   srand ( time(NULL) );
   for (unsigned int i =0; i < 10000 ; i++){
+    trace.progressBar((double) i, 10000);
     unsigned int x = 10+rand()%80;
     unsigned int y = 10+rand()%80;
     Point p(x,y);
