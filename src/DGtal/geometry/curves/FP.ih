@@ -95,14 +95,14 @@ algorithm(const TIterator& itb,
 
   //std::cerr << "First MS" << std::endl << longestDSS << std::endl; 
 	
-  typedef details::AdapterDSS<DSSComputer> AdapterDSS; 
-  AdapterDSS* adapter = 0; //adapter for the current DSS
+  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  DSSDecorator* adapter = 0; //adapter for the current DSS
 	
   if (longestDSS.end() != ite) 
     {
       //if the curve is not straight
       //it is either locally convex or concave at longestDSS.end() 
-      adapter = initConvexityConcavity<AdapterDSS>( longestDSS );
+      adapter = initConvexityConcavity<DSSDecorator>( longestDSS );
 	    
       ASSERT(adapter);
       if ( adapter->isInConvexPart() ) myPolygon = vTmpU;
@@ -120,7 +120,7 @@ algorithm(const TIterator& itb,
 	  if ( go )
 	    { 
 	      delete (adapter); 
-	      adapter = initConvexityConcavity<AdapterDSS>( longestDSS );
+	      adapter = initConvexityConcavity<DSSDecorator>( longestDSS );
 	    }
 	}    
 	    
@@ -130,7 +130,7 @@ algorithm(const TIterator& itb,
       //the curve is assumed to be convex
       //if it is straight
       myPolygon = vTmpU;
-      adapter = new details::AdapterDSS4ConvexPart<DSSComputer>(longestDSS);
+      adapter = new details::DSSDecorator4ConvexPart<DSSComputer>(longestDSS);
       ASSERT(adapter);
     }
 
@@ -174,9 +174,9 @@ algorithm(const TIterator& itb,
   //std::cerr << "First MS" << std::endl << currentDSS << std::endl; 
 
   //local convexity
-  typedef details::AdapterDSS<DSSComputer> AdapterDSS; 
-  AdapterDSS* adapter = 0; //adapter for the current DSS
-  adapter = initConvexityConcavity<AdapterDSS>( currentDSS );
+  typedef details::DSSDecorator<DSSComputer> DSSDecorator; 
+  DSSDecorator* adapter = 0; //adapter for the current DSS
+  adapter = initConvexityConcavity<DSSDecorator>( currentDSS );
 
   //stopping point 
   Point stoppingPoint = adapter->lastLeaningPoint(); 
@@ -196,7 +196,7 @@ algorithm(const TIterator& itb,
   while ( go ) 
     { //main loop
       delete (adapter); 
-      adapter = initConvexityConcavity<AdapterDSS>( currentDSS );
+      adapter = initConvexityConcavity<DSSDecorator>( currentDSS );
 
       if ( !removingStep( adapter ) )
 	{ //disconnected digital curve
@@ -229,12 +229,12 @@ DGtal::FP<TIterator,TInteger,connectivity>
   if ( aDSS.getRemainder( aDSS.end() ) < (aDSS.getMu()) ) 
     {      //concave part
       return new details
-	::AdapterDSS4ConcavePart<typename Adapter::DSS>(aDSS);
+	::DSSDecorator4ConcavePart<typename Adapter::DSS>(aDSS);
     } 
   else 
     {     //convex part
       return new details
-	::AdapterDSS4ConvexPart<typename Adapter::DSS>(aDSS);
+	::DSSDecorator4ConvexPart<typename Adapter::DSS>(aDSS);
     }
 }
 
@@ -353,7 +353,7 @@ const typename DGtal::FP<TIterator,TInteger,connectivity>::Polygon&
 DGtal::FP<TIterator,TInteger,connectivity>::polygon() const
 {
   return myPolygon;
-};
+}
     
 template <typename TIterator, typename TInteger, int connectivity>
 inline
@@ -362,7 +362,7 @@ DGtal::FP<TIterator,TInteger,connectivity>::isClosed() const
 {
   //since the input digital curve has to be connected
   return IsCirculator<TIterator>::value;
-};
+}
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
