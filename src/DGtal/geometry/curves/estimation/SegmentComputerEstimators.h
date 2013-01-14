@@ -1431,9 +1431,9 @@ namespace DGtal
 	ConstIterator back = mySCPtr->begin();  
 	ConstIterator front = mySCPtr->end();
 	bool isConnectedAtBack = isNotEmpty(myBegin, back)
-	  &&((*boost::prior(back)-*back).norm(Vector::L1) <= NumberTraits<Integer>::ONE);  
+	  &&((*boost::prior(back)-*back).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
 	bool isConnectedAtFront = isNotEmpty(front, myEnd)
-	  &&((*boost::prior(front)-*front).norm(Vector::L1) <= NumberTraits<Integer>::ONE);  
+	  &&((*boost::prior(front)-*front).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
   
 
 	if (isConnectedAtBack) {
