@@ -77,7 +77,8 @@ DGtal::MLPLengthEstimator<T>::init(const double h,
   myIsInitBefore = true;
   myRep.clear();
 
-  FaithfulPolygon fp( itb, ite, isClosed ); 
+  //TODO deal with circulators
+  FaithfulPolygon fp( itb, ite ); 
   myRep.resize( fp.size() );
   fp.copyMLP( myRep.begin() );
 
