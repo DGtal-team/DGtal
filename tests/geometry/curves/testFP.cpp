@@ -49,78 +49,51 @@ using namespace LibBoard;
 // Functions for testing class FP.
 ///////////////////////////////////////////////////////////////////////////////
 
-template<typename Coordinate>
-void 
-drawVectorOfPointsAsPolygon( const vector<PointVector<2,Coordinate> >& v, Board2D & aBoard) 
-{
-  //polyline to draw
-  vector<LibBoard::Point> polyline;
 
-  typename vector<PointVector<2,Coordinate> >::const_iterator i = v.begin();
-  for ( ;i != v.end();++i) {
-      PointVector<2,Coordinate> p = (*i);
-      double xp = (double) p[0];
-      double yp = (double) p[1];
-      polyline.push_back(LibBoard::Point(xp,yp));
-  }
-
-  aBoard.drawPolyline(polyline);
-
-}
 
 /**
- * Example of a test. To be completed.
+ * Test 
  *
  */
-bool testDrawingFP()
+bool testFP(string filename)
 {
 
-  typedef int Coordinate;
-  typedef HyperRectDomain<SpaceND<2,Coordinate> > Domain;
-  typedef PointVector<2,Coordinate> Point;
-  typedef PointVector<2,double> RealPoint;
-  typedef FreemanChain<Coordinate> Contour; 
-  typedef FP<Contour::ConstIterator,Coordinate,4> FP;
 
-  std::string filename = testPath + "samples/france.fc";
-  std::cout << filename << std::endl;
-
-  std::fstream fst;
-  fst.open (filename.c_str(), std::ios::in);
-  Contour theContour(fst);
-
-  trace.beginBlock ( "FP of a 4-connected digital curve..." );
-
-  FP theFP( theContour.begin(),theContour.end(),true );
-  //trace.info() << theFP << std::endl;
-
-  // Draw the FP
-  Board2D aBoard;
-  aBoard << SetMode( "PointVector", "Grid" ) << theContour;
-  aBoard << theFP;
-  aBoard.saveEPS("FP.eps");
-
-  //accessors: 
-  Board2D newBoard;
-  newBoard << SetMode( "PointVector", "Grid" ) << theContour;
-
-  trace.info() << "FP" << endl;
-  vector<Point> v( theFP.size() );
-  theFP.copyFP( v.begin() );
-//  copy( v.begin(),v.end(),ostream_iterator<Point>(cout, "\n") );
-  drawVectorOfPointsAsPolygon<int>(v, newBoard); 
-
-  trace.info() << "MLP" << endl;
-  vector<RealPoint> v2( theFP.size() );
-  theFP.copyMLP( v2.begin() );
-//  copy( v2.begin(),v2.end(),ostream_iterator<RealPoint>(cout, "\n") );
-  drawVectorOfPointsAsPolygon<double>(v2, newBoard); 
-
-  newBoard.saveEPS("FP_MLP.eps");
-
-  trace.endBlock();
+  trace.info() << endl;
+  trace.info() << "Reading GridCurve from " << filename << endl;
   
-  return true;
+  ifstream instream; // input stream
+  instream.open (filename.c_str(), ifstream::in);
+
+  //range of points
+  typedef int Coordinate; 
+  typedef KhalimskySpaceND<2,Coordinate> Kspace; //space
+  GridCurve<Kspace> c; //building grid curve
+  c.initFromVectorStream(instream);
+  typedef GridCurve<Kspace >::PointsRange Range;//range
+  Range r = c.getPointsRange();//building range
+
+  typedef Range::ConstIterator ConstIterator;//constIterator
+
+  //faithful polyon
+  trace.info() << "Building FP (process digital curve as"; 
+  trace.info() << ( (c.isClosed())?"closed":"open" ) << ")" << endl;
+
+  bool res = true; 
+  if (c.isClosed())
+    {
+      typedef FP<Range::ConstCirculator,Coordinate,4> FP; 
+      FP theFP( r.c(), r.c() );
+      res = theFP.isValid();       
+    }
+  else 
+    {
+      typedef FP<Range::ConstIterator,Coordinate,4> FP; 
+      FP theFP( r.begin(), r.end() );
+      res = theFP.isValid(); 
+    }
+  return res;
+ 
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -134,7 +107,16 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDrawingFP(); // && ... other tests
+  std::string sinus2D4 = testPath + "samples/sinus2D4.dat";
+  std::string square = testPath + "samples/smallSquare.dat";
+  std::string dss = testPath + "samples/DSS.dat";
+
+  bool res = testFP(sinus2D4)
+            && testFP(square)
+            && testFP(dss)
+//other tests
+;
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
