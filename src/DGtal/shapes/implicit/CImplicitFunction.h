@@ -53,11 +53,10 @@ namespace DGtal
 Description of \b concept '\b CImplicitFunction' <p>
      @ingroup Concepts
 
-     @brief Aim: Describes any function of the form f(x), where x is
+@brief Aim: Describes any function of the form f(x), where x is
      some real point in the given space, and f(x) is some value.
      
  ### Associated types :
-    
      - RealPoint: the type for the domain
      - Value: the type for the range
 
@@ -68,38 +67,20 @@ Description of \b concept '\b CImplicitFunction' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            function call</td> 
-        <td class=CExpression>      \c f( \c a )</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      Value</td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Evaluates the function \c f at point \c a</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-     </table>
-    
- ### Invariants###
-    
- ### Models###
+ ### Valid expressions and semantics
+     
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Function call  | \c f( \c a )|                    | Value       |                  | Evaluates the function \c f at point \c a | | |
 
-     - ImplicitBall, ImplicitPolynomial3Shape, ImplicitHyperCube, ImplicitRoundedHyperCube, ImplicitNorm1Ball
 
- ### Notes###
+ ### Invariants
+    
+ ### Models
+     ImplicitBall, ImplicitPolynomial3Shape, ImplicitHyperCube, ImplicitRoundedHyperCube, ImplicitNorm1Ball
+
+ ### Notes
+
 
 @tparam T the type that should be a model of CImplicitFunction.
    */

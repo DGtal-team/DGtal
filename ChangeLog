@@ -1,9 +1,15 @@
 === DGtal 0.6 ===
  
- *General*
+ *General/Documentation*
     - update documentation for boost concepts, so that subconcepts are
       displayed and html reference pages are pointed.
-
+    - package/module documentation files are now in their associated
+      package folder (e.g. kernel/doc/ for kernel package related
+      documentation pages). The "make doc" command (or "make dox", see
+      below) generates the documentation in the "html/" sub-folder of your
+      current build folder.
+    - latex citations within doxygen documents are now working
+ 
  *Base Package*
     - correct concept checks for some range concepts.
 
@@ -11,12 +17,15 @@
     - new class for representing lattice polytopes in 2D (with cut
       operations)
     - bugfix in LighterSternBrocot::Fraction
+    - bugfix in ArithmeticalDSS (thanks, Kacper)
 
  *Image Package*
     - Update on image writers (no colormap required for scalar only writers).
       Documentation updated.
     - New image adapters to adapt both domains and values of an image (ImageAdapter 
       and ConstImageAdapter).
+    - several enhancements of the main image concept and its image
+      container models
 
  *Geometry Package*
     - new primitives for digital plane recognition. Naive planes, and
@@ -30,6 +39,11 @@
     - update documentation for digital surfaces and digital surface
       containers so as to emphasize the fact that the ranges are only
       single-pass.
+
+ *For developers*
+    - new "make dox" target to only build dox file documentation
+      ("make doc" for complete documentation build)
+ 
 
 === DGtal 0.5.1 ===
 Posted on June, 6th, 2012 by David Coeurjolly
