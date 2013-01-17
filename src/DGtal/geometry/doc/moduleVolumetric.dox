@@ -280,7 +280,7 @@ closestWeighted() methods for the given metric, and @f$ H @f$ the cost
 of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
 of the separable metrics can be summarized as follows:
 
-| Metric Type | C | H | Note |
+| Models of CSeparableMetric/CPowerSeparableMetric| Type | C | H | Note |
 |-------------|-------------------------|---------------------------|------| 
 | ExactPredicateLpSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
 | ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
