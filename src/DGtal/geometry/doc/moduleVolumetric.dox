@@ -33,24 +33,25 @@ axis extraction.
 
 For decades, distance transformation (DT) and geometrical skeleton
 extraction have been classic tools for shape analysis
-[ROSEN_66,ROSEN_68]. The DT of a shape consists in labelling object
-grid points with the distance to the closest background pixel. From
-the DT values, we thus have information on the shape geometry.  Beside
-its applications in shape description, DT has been used in many
-situations such as shape analysis, shape matching, shape-based
-interpolation, motion planning, image registration, or differential
-measurement estimation.
+@cite Rosenfeld1966a 
+@cite Rosenfeld1968a. The DT of a shape consists in
+labelling object grid points with the distance to the closest
+background pixel. From the DT values, we thus have information on the
+shape geometry.  Beside its applications in shape description, DT has
+been used in many situations such as shape analysis, shape matching,
+shape-based interpolation, motion planning, image registration, or
+differential measurement estimation.
 
 
 In the literature, many techniques have been proposed to compute the
 DT given a metric with a trade-off between algorithmic performances
 and the @e accuracy of the metric compared to the Euclidean one.
 Hence, many papers have considered distances based on chamfer masks
-@cite Rosenfeld1966 @cite Rosenfled1968, or sequences of chamfer
+@cite Rosenfeld1966a  @cite Rosenfled1968a, or sequences of chamfer
 distances; the vector displacement based Euclidean distance
-[DANI_80,RAGN_90,MULL_92] the Voronoi diagram based Euclidean distance
-[BREU_95, MAUR_2003] or the square of the Euclidean distance
-[SAITO_94,HIRA_96].  From a computational point of view, several of
+@cite Danielson1980a @cite Ragnemalm1993a the Voronoi diagram based Euclidean distance
+@cite Breu1995a @cite Maurer2003a or the square of the Euclidean distance
+@cite Saito1994a @cite Hirata1996a.  From a computational point of view, several of
 these methods lead to time optimal algorithms to compute the
 error-free Euclidean Distance Transformation (EDT) for @e n-
 dimensional binary images: the extension of these algorithms is
