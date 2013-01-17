@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page GeometryPackage Geometry package
+@page packageGeometry Geometry package
 
 @managers Tristan Roussillon, David Coeurjolly, Jacques-Olivier Lachaud
 @since 0.3
@@ -65,8 +65,6 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - Geometric estimators <!-- \ref moduleEsimators -->  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
 
 - \ref moduleVolumetric (David Coeurjolly)
-
-- \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
 
 - \ref moduleNaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
