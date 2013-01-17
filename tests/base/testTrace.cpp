@@ -156,8 +156,8 @@ void testTimings()
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
 
-  duration2 = trace.endBlock();
-  trace.info()<<"Duration="<<duration<<"   Duration2="<<duration2<<std::endl;
+  duration += trace.endBlock();
+  trace.info()<<"Duration="<<duration<<std::endl;
 
 }
 
