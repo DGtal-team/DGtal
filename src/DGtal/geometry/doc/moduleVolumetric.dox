@@ -199,7 +199,6 @@ new Voronoi map:
 @image html voronoimap-vorol8.png "Voronoi map for the l_8 metric."
 @image latex voronoimap-vorol8.png "Voronoi map for the l_8 metric."
 
-
 @section DTsec Distance Transformation
 
 As discussed earlier, the distance transformation is given by
@@ -224,10 +223,13 @@ a colormap to display distance values for the @f$ l_2 @f$ mertic:
 @image latex voronoimap-dt.png  "Distance transformation for  the l_2 metric."
 
 
+
 @section RDTSec Digital Power Map and Reverse Distance Transformation
 
 
+
 @section MASec Digital Medial Axis
+
 
 
 @section metricSec Metric and Separable Metric concepts
@@ -242,11 +244,7 @@ Beside separable algorithms, metrics in DGtal have been structured in
 terms of concepts:
 
 @dot
-graph metric_concepts_2 {
-    style=filled;
-    color=lightgrey;
-    node [style=filled,color=white];
-               
+digraph metric_concepts_2_vor {
     CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
     CMetric [label="CMetric" URL="@ref CMetric"];
     CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
@@ -262,8 +260,41 @@ graph metric_concepts_2 {
   }
 @enddot
 
+For instance, CLocalPremetric models only requires that a local metric
+is defined (@e i.e. between a point and a neighboring point in a given
+direction). 
+
+
+
 @subsection subSepMetrics SeparableMetric models
 
+
+
+@section CostSec Computational Costs 
+
+
+As discussed, both VoronoiMap and PowerMap (and their associated
+subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
+@f$ corresponds to the cost of the @a closest() or @a
+closestWeighted() methods for the given metric, and @f$ H @f$ the cost
+of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
+of the separable metrics can be summarized as follows:
+
+| Metric Type | C | H | Note |
+|-------------|-------------------------|---------------------------|------| 
+| ExactPredicateLpSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
+| InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
+| ExactPredicateLpWeightedSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpWeightedSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+
+
+Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
+
+ \f[  O(d\cdot n^d\cdot (C+H))  \f]
+
+For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@f$.
 
 */
 
@@ -275,5 +306,6 @@ graph metric_concepts_2 {
 
 \example geometry/volumes/distance/voronoimap2D.cpp
 */
+
 
 }
