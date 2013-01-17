@@ -115,7 +115,6 @@ for ( ConstIterator it = s.begin(),
     // Methods
     BOOST_CONCEPT_USAGE( CIncrementalSegmentComputer )
     {
-      typename T::ConstIterator(myI);
       myX.init(myI);     
 
       ConceptUtils::sameType( myB, myX.isExtendableForward() );
