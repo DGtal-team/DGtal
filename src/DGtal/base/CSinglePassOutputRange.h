@@ -66,9 +66,9 @@ namespace DGtal
      ###  Definitions
 
      | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
-     |----------+------------------+-------------------+----------------+--------------+----------------------------------------------------+----------------+------------|
-     | creation | outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
-     |          |                  |                   |                |              |                                                    |                |            |
+     |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
+     | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
+     
 
      ###  Invariants
 

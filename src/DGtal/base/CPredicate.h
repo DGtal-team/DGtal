@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,7 +58,9 @@ namespace DGtal
      @tparam T the type that should be a model of this predicate
      @tparam TELement the type of an element of the predicate domain.
 
-     ###  Refinement of  boost::Assignable
+     ###  Refinement of 
+
+  - CUnaryFunctor
 
      ###  Associated types :
 
@@ -86,22 +89,12 @@ namespace DGtal
      kinds of predicates.
    */
   template <typename T, typename TElement>
-    struct CPredicate : boost::Assignable<T>
+  struct CPredicate :  CUnaryFunctor<T,TElement,bool>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef TElement Element;
 
-    BOOST_CONCEPT_USAGE( CPredicate )
-    {
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-      // x( p ) returns bool.
-      ConceptUtils::sameType( myBool, myPred.operator() ( myElement ) );
-    }
     // ------------------------- Private Datas --------------------------------
   private:
     T myPred;

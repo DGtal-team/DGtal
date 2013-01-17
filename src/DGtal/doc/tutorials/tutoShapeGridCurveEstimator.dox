@@ -83,8 +83,8 @@ The GridCurve object is merely built from the retrieved contour:
 
 Here is a picture of the contour:
 
- @image html tutorials/Flower1.png  "Flower (h=1)" 
- @image latex tutorials/Flower1.png  "Flower (h=1)" width=5cm
+ @image html images/Flower1.png  "Flower (h=1)" 
+ @image latex images/Flower1.png  "Flower (h=1)" width=5cm
 
 \section secttutoShapeGridCurveEstimator2 Length estimation
 
@@ -124,8 +124,8 @@ h=0.1 instead of h=1:
 
 Here is a picture of the contour:
 
- @image html tutorials/Flower01.png  "Flower (h=0.1)" 
- @image latex tutorials/Flower01.png  "Flower (h=0.1)" width=5cm
+ @image html images/Flower01.png  "Flower (h=0.1)" 
+ @image latex images/Flower01.png  "Flower (h=0.1)" width=5cm
 
 At grid step 0.1, the estimation is better and close to the ground truth (165.961), 
 since we get:  
@@ -147,8 +147,8 @@ at increasing resolution and list, for each resolution,
 the ground truth and the length estimated by all the available methods. 
 For instance, the data of the following plot come from this tool: 
 
- @image html tutorials/graphTuto4.png  "Perimeter of a digitized disk of radius 10" 
- @image latex tutorials/graphTuto4.png  "Perimeter of a digitized disk of radius 10" width=5cm
+ @image html images/graphTuto4.png  "Perimeter of a digitized disk of radius 10" 
+ @image latex images/graphTuto4.png  "Perimeter of a digitized disk of radius 10" width=5cm
 
 \section secttutoShapeGridCurveEstimator4 Required includes
 

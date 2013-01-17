@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageKernelConcepts Kernel and Base Concepts
+@page packageKernelConcepts Kernel Concepts
 @writers David Coeurjolly
 
 
@@ -25,72 +25,109 @@ namespace DGtal {
  @dot
 digraph GKERNEL {
   rankdir=BT;
+  
+   subgraph cluster_ext {
+       rank = same;
+       style=invis;
+       
+       subgraph cluster_base {
+           style=filled;
+	   color="#eeeeff";
+	   node [style=filled,color=white];
+	   label="base";
+	   CQuantity [ label="CQuantity" URL="\ref CQuantity" ];
+	   CUnaryFunctor [ label="CUnaryFunctor" URL="\ref CUnaryFunctor" ];
+	   CPredicate [ label="CPredicate" URL="\ref CPredicate" ];
+	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref CConstSinglePassRange"]
+	   }
+	   
+       subgraph cluster_boost {
+           style=filled;
+	   color=white;
+	   node [style=filled,color=orange];
+	   label="boost";
+	   
+	   boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
+	   boost_Assignable [ label="boost::Assignable" URL="\ref boost::Assignable" ];
+	   
+        }
 
-  subgraph cluster_0 {
-    style=filled;
-    color=lightgrey;
-    node [style=filled,color=white];
-    CPointPredicate -> CPointFunctor ;
-    CSpace;
-    CUnsignedInteger-> CInteger;
-    CEuclideanRing->CCommutativeRing ;
-    CSignedInteger ->  CInteger;
-    CDomain;
+   }
 
-    CDomainArchetype;
-    CDigitalSet;
-    CDigitalSetArchetype;
-    label = "Kernel";
-  }
 
-  "CDomain" -> CImageContainer  [label="use",style=dashed];
-   CDomain -> CSpace [label="use",style=dashed];
-  "CInteger" -> CSpace  [label="use",style=dashed];
-  "CUnsignedInteger" -> CSpace [label="use",style=dashed];
+   subgraph cluster_main {
+      style=filled;
+      color="#ddddee";
+      node [style=filled,color=white];
+      label="kernel (main concepts)";
+      
+      CPointPredicate [label="CPointPredicate" URL="@ref  CPointPredicate"];
+      CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];
+      CSpace [label="CSpace" ULR="@ref CSpace"];
+      CInteger [label="CInteger" URL="@ref CInteger"];
+      CUnsignedNumber [label="CUnsignedNumber" URL="@ref CUnsignedNumber"];
+      CSignedNumber [label="CSignedNumber" URL="@ref CSignedNumber"];
+      CIntegralNumber [label="CIntegralNumber" URL="@ref CIntegralNumber"];
+      CBoundedNumber [label="CBoundedNumber" URL="@ref CBoundedNumber"];
+      CEuclideanRing [label="CEuclideanRing" URL="@ref CEuclideanRing"];
+      CCommutativeRing [label="CCommutativeRing" URL="@ref CCommutativeRing"];
+      CDomain [label="CDomain" URL="@ref CDomain"];
+    
+      CPointFunctor -> CUnaryFunctor;
+      CPointPredicate -> CPredicate;
 
-  CInteger-> boost_EqualityComparable;
-  CCommutativeRing-> boost_EqualityComparable;
+      CSignedNumber -> CQuantity;
+      CUnsignedNumber -> CQuantity;
+      CIntegralNumber -> CQuantity;
+      CBoundedNumber -> CQuantity;
+
+      CInteger -> CIntegralNumber;
+      CInteger -> CEuclideanRing;
+      CEuclideanRing -> CCommutativeRing;
+      CCommutativeRing -> CSignedNumber;
+    
+      CDomain-> CConstSinglePassRange;
+		
+      CDigitalSet -> CDomain   [label="use",style=dashed] ;
+		
+      CSpace -> CInteger  [label="use",style=dashed];
+      CSpace -> CIntegralNumber  [label="use",style=dashed];
+      CSpace -> CUnsignedNumber  [label="use",style=dashed];
+      CDomain -> CSpace [label="use",style=dashed];
+      }
+
+
+
+ CDigitalSet -> boost_Assignable;
+ CDigitalSet -> boost_CopyConstructible;
+
+  subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="Kernel (main models)";
+
+        SpaceND [ label="SpaceND" URL="\ref SpaceND" ] ;
+        HyperRectDomain [ label="HyperRectDomain" URL="\ref HyperRectDomain" ] ;
+        DigitalSetBySTLSet [ label="DigitalSetBySTLSet" URL="\ref DigitalSetBySTLSet" ] ;
+        DigitalSetBySTLVector [ label="DigitalSetBySTLVector" URL="\ref DigitalSetBySTLVector" ] ;
+	SetPredicate [ label="SetPredicate" URL="\ref SetPredicate" ] ;
+	DomainPredicate [ label="DomainPredicate" URL="\ref DomainPredicate" ] ;
+     }
+     
+   SpaceND ->CSpace;
+   HyperRectDomain -> CDomain;
+   DigitalSetBySTLVector -> CDigitalSet;
+   DigitalSetBySTLSet -> CDigitalSet;
+   SetPredicate -> CDigitalSet [label="use",style=dashed];
+   SetPredicate -> CPointPredicate;
+   DomainPredicate -> CDomain [label="use",style=dashed];
+   DomainPredicate -> CPointPredicate;
+   
+   
+ 
   }
 @enddot
-
-@dot
-digraph GBASE {
-  rankdir=BT;
-
-  subgraph cluster_0 {
-    style=filled;
-    color=lightgrey;
-    node [style=filled,color=white];
-
-    CSinglePassRange-> CConstSinglePassRange ;
-    CSinglePassRangeFromPoint -> CConstSinglePassRangeFromPoint;
-    CSinglePassRangeFromPoint -> CSinglePassRange;
-    CConstSinglePassRangeFromPoint -> CConstSinglePassRange;
-
-    CBidirectionalRange -> CSinglePassRange;
-    CBidirectionalRange -> CConstBidirectionalRange;
-    CBidirectionalRangeFromPoint -> CConstBidirectionalRange;
-    CBidirectionalRangeFromPoint -> CConstBidirectionalRangeFromPoint;
-    CConstBidirectionalRangeFromPoint -> CConstBidirectionalRange;
-
-    CBidirectionalOutputRange -> CSinglePassOutputRange;
-    CBidirectionalOutputRangeFromPoint -> CBidirectionalOutputRange;
-
-    CQuantity -> CLabel;
-    CPredicate;
-    label = "Base";
-  }
-
-  "CSinglePassOutputRange" -> boost_OutputIterator [label="use", style=dashed];
-  "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
-  "CSinglePassRange"->  boost_SingePassIteratorConcept [label="use",style=dashed] ;
-  CPredicate -> boost_Assignable;
-  CQuantity -> boost_LessThanComparable;
-  CLabel -> boost_DefaultConstructible;
-  CLabel -> boost_Assignable;
-  CLabel -> boost_EqualityComparable;
-  }
- @enddot
 
 */
 

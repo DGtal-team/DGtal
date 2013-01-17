@@ -53,16 +53,17 @@ namespace DGtal
 /**
 Description of \b concept '\b CWithGradientMap' <p>
 @ingroup Concepts
+
 @brief Aim:
 Such object provides a gradient map that associates to each argument some real vector.
 
 ### Refinement of
 
 ### Associated types :
-- \e Argument : the type of each element of the domain
-- \e RealVector : the type for representing the gradient values.
-- \e GradientMap : functor \e Argument -> \e RealVector, a model of CUnaryFunctor<T, Argument, RealVector > and boost::CopyConstructible.
-- \e gradientMap() const: returns a \e GradientMap.
+   - \e Argument : the type of each element of the domain
+   - \e RealVector : the type for representing the gradient values.
+   - \e GradientMap : functor \e Argument -> \e RealVector, a model of CUnaryFunctor<T, Argument, RealVector > and boost::CopyConstructible.
+   - \e gradientMap() const: returns a \e GradientMap.
 
 ### Notation
  - \e X : A type that is a model of CWithGradientMap
@@ -79,8 +80,7 @@ Such object provides a gradient map that associates to each argument some real v
 ### Invariants
 
 ### Models
-
-- ImplicitFunctionDiff1LinearCellEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
+    ImplicitFunctionDiff1LinearCellEmbedder, DigitalSurfaceEmbedderWithNormalVectorEstimator
 
 ### Notes
 

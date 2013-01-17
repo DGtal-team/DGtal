@@ -1,5 +1,5 @@
 /**
- * @file FAQGit.dox
+ * @file moduleFAQGit.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page FAQGit Git/Github source code management in DGtal
+@page moduleFAQGit Git/Github source code management in DGtal
 @author David Coeurjolly
 
 This part of the manual describes how the DGtal Git repository is used on github

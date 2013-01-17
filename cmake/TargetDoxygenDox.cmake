@@ -4,7 +4,7 @@ FIND_PACKAGE(Doxygen)
 
 
 IF (DOXYGEN_FOUND)
-
+  
   # click+jump in Emacs and Visual Studio (for doxy.config) (jw)
   IF    (CMAKE_BUILD_TOOL MATCHES "(msdev|devenv)")
     SET(DOXY_WARN_FORMAT "\"$file($line) : $text \"")
@@ -24,7 +24,7 @@ IF (DOXYGEN_FOUND)
     MESSAGE(STATUS "dvips command DVIPS_CONVERTER not found but usually required.")
   ENDIF (NOT DVIPS_CONVERTER)
   
-  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
+  IF   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.dox.in")
     MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.dox.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.dox")
     CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.dox.in 
       ${CMAKE_CURRENT_BINARY_DIR}/doxy.config.dox
@@ -103,5 +103,6 @@ IF (DOXYGEN_FOUND)
     ENDIF(HTML_HELP_COMPILER)
     # MESSAGE(SEND_ERROR "HTML_HELP_COMPILER=${HTML_HELP_COMPILER}")
   ENDIF (WIN32) 
+
 ENDIF(DOXYGEN_FOUND)
 

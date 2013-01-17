@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file Introduction.dox
+ * @file packageIntroduction.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page IntroductionPackage Preliminaries
+@page packageIntroduction Preliminaries
    
 
 @managers David Coeurjolly, Jacques-Olivier Lachaud
@@ -49,12 +49,12 @@ also illustrate a mechanism to use DGtal in your own project.
 
 @b Modules
  - \ref moduleIntroduction (Tristan Roussillon)
- - \ref FAQDGtalCmake (Martial Tola, David Coeurjolly)
- - \ref HowToUseDGtal (David Coeurjolly)
+ - \ref moduleBuildDGtal (Martial Tola, David Coeurjolly)
+ - \ref moduleHowToUseDGtal (David Coeurjolly)
 
 
  @b Related @b documentation @b pages
- - \ref HowToUseDGtal-qmake
+ - \ref moduleHowToUseDGtal-qmake
 
 
 

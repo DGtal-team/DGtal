@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/IteratorTraits.h"
+#include "DGtal/base/IteratorCirculatorTraits.h"
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/utility.hpp>
 //////////////////////////////////////////////////////////////////////////////

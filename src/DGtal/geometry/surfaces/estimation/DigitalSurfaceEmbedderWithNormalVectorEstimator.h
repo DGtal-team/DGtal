@@ -52,7 +52,7 @@ namespace DGtal
   // Forward declaration.
   template < typename TDigitalSurfaceEmbedder,
              typename TNormalVectorEstimator >
-  struct DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap;
+  class DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap;
 
   /////////////////////////////////////////////////////////////////////////////
   /**
