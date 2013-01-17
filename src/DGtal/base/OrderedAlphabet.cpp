@@ -158,9 +158,9 @@ DGtal::OrderedAlphabet::firstLyndonFactor
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-  ++i;
+        ++i;
       else 
-  i = s;
+        i = s;
       ++j;
     }
   len = (size_t) j - i;
@@ -194,9 +194,9 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-  mc.increment( i );
+        mc.increment( i );
       else 
-  i = s;
+        i = s;
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -391,23 +391,23 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
     {
       // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
       if ( equal( w[ i ], w[ j ] ) )
-  {
-    if ( j == mc.cast( s + q - 1 ) )
-      q += p;
-    mc.increment( i );
-  }
+        {
+          if ( j == mc.cast( s + q - 1 ) )
+            q += p;
+          mc.increment( i );
+        }
       else 
-  {
-    if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
-      {
-        len = j; nb = 0;
-        return false;
-      }
-    unsigned int tmp = p; 
-    p = q;
-    q += q - tmp;
-    i = s;
-  }
+        {
+          if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
+            {
+              len = j; nb = 0;
+              return false;
+            }
+          unsigned int tmp = p; 
+          p = q;
+          q += q - tmp;
+          i = s;
+        }
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -451,10 +451,10 @@ DGtal::OrderedAlphabet::isValid() const
  * position [s] on the word [w]. The alphabet may be modified
  * (reversed or shifted). The output alphabet is some a0 < a1 < a2 < ...
  *
- * @param (returns) the number of letters a1 in the extracted edge (a1
+ * @param nb_a1 (returns) the number of letters a1 in the extracted edge (a1
  * in the output alphabet)
  *
- * @param (returns) the number of letters a2 in the extracted edge (a2
+ * @param nb_a2 (returns) the number of letters a2 in the extracted edge (a2
  * in the output alphabet)
  *
  * @param w the input (cyclic) word (may be modified in the process).
@@ -481,15 +481,15 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
   if ( ! inC ) 
     // case : change of convexity
     {
-//       cerr << "Convexity change" <<  orderedAlphabet() ;
-//       cerr << " (" << w[ len ] << "==" << letter( 2 ) << ")";
+      //       cerr << "Convexity change" <<  orderedAlphabet() ;
+      //       cerr << " (" << w[ len ] << "==" << letter( 2 ) << ")";
       // JOL : temporary change of letter w[ s ]
       char tmp = w[ s ];
       index_t tmp_s = s;
       w[ s ] = letter( 2 ); // a3
       this->reverseAround12();
       cvx = ! cvx;
-//       cerr << " => " << orderedAlphabet() << endl;
+      //       cerr << " => " << orderedAlphabet() << endl;
       l = nextEdge( nb_a1, nb_a2, w, s, cvx );
       // JOL : former letter is put back in string.
       w[ tmp_s ] = tmp;
@@ -497,9 +497,9 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
   else if ( ( len == 1 ) && ( order( w[ s ] ) == 1 ) ) 
     // case u=a1 => Quadrant change
     {
-//       cerr << "Quadrant change " << orderedAlphabet() ;
+      //       cerr << "Quadrant change " << orderedAlphabet() ;
       this->shiftRight();
-//       cerr << " => " << orderedAlphabet() << endl;
+      //       cerr << " => " << orderedAlphabet() << endl;
       s = mc.cast( s + nb );
       nb_a1 = 0;
       nb_a2 = nb - 1;
@@ -507,7 +507,7 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
     }
   else 
     { // standard (convex) case.
-//       cerr << "standard (convex) case " << orderedAlphabet() << endl;
+      //       cerr << "standard (convex) case " << orderedAlphabet() << endl;
       l = len * nb;
       char a2 = letter( 2 ); 
       nb_a1 = len;
@@ -515,18 +515,18 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
       index_t ss = s;
       s = mc.cast( s + l );
       while ( len != 0 )
-  {
-    if ( w[ ss ] == a2 ) ++nb_a2;
-    mc.increment( ss );
-    --len;
-  }
+        {
+          if ( w[ ss ] == a2 ) ++nb_a2;
+          mc.increment( ss );
+          --len;
+        }
       nb_a1 -= nb_a2;
       nb_a1 *= nb;
       nb_a2 *= nb;
     }
   return l;
 }
-            
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :
