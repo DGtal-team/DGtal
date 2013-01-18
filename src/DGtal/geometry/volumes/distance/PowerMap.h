@@ -51,7 +51,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
-
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/geometry/volumes/distance/CPowerSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -152,6 +152,8 @@ namespace DGtal
      * each point satisfying the foreground predicate, the closest
      * site for which the predicate is false. 
      *
+     * All parameters are aliased in this class.
+     *
      * @param aDomain defines the (hyperrectangular) domain on which
      * the computation is performed.  
      * @param WeightImage an image
@@ -159,9 +161,9 @@ namespace DGtal
      * @param aMetric a power
      * seprable metric instance.
      */
-    PowerMap(const Domain * aDomain,
-	     const WeightImage * aWeightImage,
-             const PowerSeparableMetric *aMetric);
+    PowerMap(ConstAlias<Domain> aDomain,
+             ConstAlias<WeightImage> aWeightImage,
+             ConstAlias<PowerSeparableMetric> aMetric);
 
     /**
      * Default destructor

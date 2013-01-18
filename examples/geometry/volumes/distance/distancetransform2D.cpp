@@ -116,8 +116,8 @@ int main()
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
  
  
-  DTL2 dtL2( &image.domain(), &predicate, &Z2i::l2Metric);
-  DTL1 dtL1(&image.domain(),  &predicate, &Z2i::l1Metric);
+  DTL2 dtL2(image.domain(), predicate, Z2i::l2Metric);
+  DTL1 dtL1(image.domain(), predicate, Z2i::l1Metric);
   //! [DTCompute]
 
 
