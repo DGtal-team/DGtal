@@ -804,6 +804,21 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const PointVector<dim, Component> & object );
 
+  /**
+     External multiplication operator with a scalar number
+
+     @param coeff is the factor \a aVector is multiplied by.
+     @param aVector is the vector that is multiplied by the factor \a coef.
+
+     @return a new Vector that is the multiplication of \a aVector by
+     \a coeff.
+  */
+  template<Dimension dim, typename Component>
+  PointVector<dim, Component> 
+  operator*( Component coeff,
+	     const PointVector<dim, Component> & aVector );
+
+
   template< Dimension dim, typename Component>
   PointVector<dim, Component>  PointVector<dim, Component>::zero;
 } // namespace DGtal
