@@ -74,14 +74,26 @@ DGtal::PointVector<dim, TComponent>::PointVector()
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent>
-template<typename Functor>
+template<typename BinaryFunctor>
 inline
-DGtal::PointVector<dim, TComponent>::PointVector(const Self& apoint1,
+DGtal::PointVector<dim, TComponent>::
+PointVector(const Self& apoint1,
             const Self& apoint2,
-            const Functor& f)
+            const BinaryFunctor& f)
 {
   for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent>
+template<typename UnaryFunctor>
+inline
+DGtal::PointVector<dim, TComponent>::
+PointVector(const Self& apoint1,
+	    const UnaryFunctor& f)
+{
+  for ( Dimension i = 0; i < dim; ++i )
+    myArray[ i ] = f.operator()( apoint1[i] );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent>
@@ -537,6 +549,14 @@ DGtal::PointVector<dim, TComponent>
 DGtal::PointVector<dim, TComponent>::operator- ( const Self& v ) const
 {
   return Self(*this, v, MinusFunctor<Component>());
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent>
+inline
+DGtal::PointVector<dim, TComponent>
+DGtal::PointVector<dim, TComponent>::operator-() const
+{
+  return Self(*this, UnaryMinusFunctor<Component>());
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent>
