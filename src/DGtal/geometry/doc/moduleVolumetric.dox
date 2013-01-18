@@ -144,7 +144,9 @@ was the underlying digital space type used when specifying VoronoiMap
 template parameters).
 
 Let us illustrate the construction in dimension 2 (see
-voronoimap2D.cpp).  First of all, we need couple of includes:
+voronoimap2D.cpp). Other examples can be found in distancetransform2D.cpp and distancetransform3D.cpp.
+
+ First of all, we need couple of includes:
 
 @snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-header
 

@@ -25,7 +25,7 @@
  * An example file named distancetransform2D. The aim of this example
  * is to demonstrate the distance transformation package of the DGtal
  * library. Using a simple random seed example, we compute the
- * distance transformation (linear in time algorithm) using the L1,
+ * distance transformation (li    near in time algorithm) using the L1,
  * Linfinity and L2 metrics.
  *
  * This file is part of the DGtal library.
