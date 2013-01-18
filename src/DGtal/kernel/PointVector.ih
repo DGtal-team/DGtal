@@ -775,6 +775,17 @@ DGtal::operator<<( std::ostream & out,
   return out;
 }
 //------------------------------------------------------------------------------
+template< DGtal::Dimension dim, typename Component>
+inline
+DGtal::PointVector<dim, Component> 
+DGtal::operator*( Component coeff,
+		  const PointVector<dim, Component> & aVector )
+{
+  return PointVector<dim, Component>
+    ( aVector, MultiplicationByScalarFunctor<Component>( coeff ) );
+}
+
+//------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent>
 inline
 bool

@@ -106,11 +106,39 @@ namespace DGtal
   template <class T>
   struct UnaryMinusFunctor : std::unary_function<T,T>
   { 
+    /**
+       @param x any value.
+       @return the opposite of \a x, i.e. -x.
+    */
     inline
     T operator() (const T &x) const
     {
       return -x;
     }
+  };
+
+  /**
+   * Unary minus functor. 
+   */
+  template <class T>
+  struct MultiplicationByScalarFunctor : std::unary_function<T,T>
+  {
+    inline
+    MultiplicationByScalarFunctor( const T & aValue )
+      : myValue( aValue )
+    {}
+
+    /**
+       @param x any value.
+       @return the value myValue * \a x.
+    */
+    inline
+    T operator() (const T &x) const
+    {
+      return myValue * x;
+    }
+
+    T myValue;
   };
 
 ///////////////////////////////////////////////////////////////////////////////
