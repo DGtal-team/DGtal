@@ -52,6 +52,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -186,9 +187,9 @@ namespace DGtal
      * 
      *@param aMetric a pointer to the separable metric instance.
      */
-    VoronoiMap(const Domain * aDomain,
-               const PointPredicate * predicate,
-               const SeparableMetric * aMetric);
+    VoronoiMap(ConstAlias<Domain> aDomain,
+               ConstAlias<PointPredicate> predicate,
+               ConstAlias<SeparableMetric> aMetric);
 
     /**
      * Default destructor

@@ -83,7 +83,7 @@ int main( int argc, char** argv )
   
   //! [Voro2D-Voro]
   typedef VoronoiMap<Z2i::Space, NotPredicate, L2Metric > Voronoi2D;
-  Voronoi2D voronoimap(&domain,&notSetPred,&l2);
+  Voronoi2D voronoimap(domain,notSetPred,l2);
   //! [Voro2D-Voro]
   
   //! [Voro2D-trace]
@@ -117,7 +117,7 @@ int main( int argc, char** argv )
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 8> L8Metric;
   L8Metric l8;
   typedef VoronoiMap<Z2i::Space, NotPredicate, L8Metric > Voronoi2D_l8;
-  Voronoi2D_l8 voronoimap_l8(&domain,&notSetPred,&l8);
+  Voronoi2D_l8 voronoimap_l8(domain,notSetPred,l8);
   board.clear();
   board << domain;
   for(Voronoi2D_l8::Domain::ConstIterator it = voronoimap_l8.domain().begin(),
@@ -133,7 +133,7 @@ int main( int argc, char** argv )
   
   //! [Voro2D-DT]
   typedef DistanceTransformation<Z2i::Space, NotPredicate, L2Metric > DT;
-  DT dt(&domain,&notSetPred,&l2);
+  DT dt(domain,notSetPred,l2);
   board.clear();
   board << domain;
   
