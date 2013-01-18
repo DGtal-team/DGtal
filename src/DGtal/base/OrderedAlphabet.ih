@@ -148,8 +148,8 @@ std::ostream&
 DGtal::operator<< ( std::ostream & out,
                   const OrderedAlphabet & object )
 {
-    object.selfDisplay ( out );
-    return out;
+  object.selfDisplay ( out );
+  return out;
 }
 
 
