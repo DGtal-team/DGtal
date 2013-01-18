@@ -48,14 +48,6 @@ digraph GARITHMETIC {
                  CUnsignedInteger [ label="CUnsignedInteger" URL="\ref CUnsignedInteger" ];
                  CSpace [ label="CSpace" URL="\ref CSpace" ];
         }
-        subgraph cluster_io {
-                 style=filled;
-                 color="#e4e4ff";
-                 node [style=filled,color=white];
-                 label="io";
-
-                 CDrawableWithBoard2D [ label="CDrawableWithBoard2D" URL="\ref CDrawableWithBoard2D" ];
-        }
         subgraph cluster_boost {
                  style=filled;
                  color=white;
@@ -108,7 +100,6 @@ digraph GARITHMETIC {
     IntegerComputer -> CInteger [label="use",style=dashed];
     IntegerComputer -> CUnsignedInteger [label="use",style=dashed];
     LatticePolytope2D -> CSpace [label="use",style=dashed];
-    LatticePolytope2D -> CDrawableWithBoard2D
     LatticePolytope2D -> boost_DefaultConstructible;
     LatticePolytope2D -> boost_CopyConstructible;
     LatticePolytope2D -> boost_Assignable;
