@@ -579,7 +579,6 @@ exportSurfaceAs3DOFF ( std::ostream & out ) const
         it != it_end; ++it )
     {
       Point p = K.sKCoords( *it );
-      p *= 100000;
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
       // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
     }
@@ -646,7 +645,6 @@ exportEmbeddedSurfaceAs3DOFF
         it != it_end; ++it )
     {
       RealPoint p( cembedder( K.unsigns( *it ) ) );
-      p *= 100000;
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
       // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
     }
@@ -723,7 +721,6 @@ exportEmbeddedSurfaceAs3DNOFF
     {
       MyCell c = K.unsigns( *it );
       p = cembedder( c );
-      p *= 100000;
       v = gradMap( c );
       //cembedder.embedSCell( *it, p, v );
       double norm = v.norm();
