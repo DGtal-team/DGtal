@@ -13,7 +13,6 @@
       below) generates the documentation in the "html/" sub-folder of your
       current build folder.
     - latex citations within doxygen documents are now working
-    
  
  *Base Package*
     - correct concept checks for some range concepts.
