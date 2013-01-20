@@ -40,6 +40,10 @@
       containers so as to emphasize the fact that the ranges are only
       single-pass.
 
+ *Graph Package*
+    - New package gathering graph related structures and algorithms
+      (visitors, graph concepts, ...)
+	
  *For developers*
     - new "make dox" target to only build dox file documentation
       ("make doc" for complete documentation build)
