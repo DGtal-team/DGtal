@@ -21,9 +21,11 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page Graph  Graph Main Concepts
+@page packageGraphConcepts  Graph Main Concepts
 
 @writers David Coeurjolly
+
+TODO 
 
 @dot
 digraph GGraph {
