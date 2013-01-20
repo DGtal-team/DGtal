@@ -33,8 +33,8 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/base/Common.h"
-#include "DGtal/topology/CVertexMap.h"
-#include "DGtal/topology/STLMapToVertexMapAdapter.h"
+#include "DGtal/graph/CVertexMap.h"
+#include "DGtal/graph/STLMapToVertexMapAdapter.h"
 #include <map>
 ///////////////////////////////////////////////////////////////////////////////
 

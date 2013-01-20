@@ -1,0 +1,100 @@
+/**
+ * @file packageGraphConcepts.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/01/20
+ *
+ * Documentation file for feature Graph
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ *
+ *
+ * The content is just an example of dot graph structure. Please
+ * update it.
+ *
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page packageGraphConcepts  Graph Main Concepts
+
+@writers David Coeurjolly
+
+TODO 
+
+@dot
+digraph GGraph {
+    rankdir= BT
+
+    subgraph cluster_ext {
+	rank = same;
+        style=invis;
+        subgraph cluster_base {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="base";
+
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ];
+        }
+        subgraph cluster_kernel {
+                 style=filled;
+                 color="#ddddee";
+                 node [style=filled,color=white];
+                 label="kernel";
+                 
+                 CSpace [ label="CSpace" URL="\ref CSpace" ];
+        }
+        subgraph cluster_io {
+                 style=filled;
+                 color="#e4e4ff";
+                 node [style=filled,color=white];
+                 label="io";
+
+                 CDrawableWithBoard2D [ label="CDrawableWithBoard2D" URL="\ref CDrawableWithBoard2D" ];
+        }
+        subgraph cluster_boost {
+                 style=filled;
+                 color=white;
+                 node [style=filled,color=orange];
+                 label="boost";
+
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
+                 boost_DefaultConstructible [ label="boost::DefaultConstructible" URL="\ref boost::DefaultConstructible" ];
+                 boost_Assignable [ label="boost::Assignable" URL="\ref boost::Assignable" ];
+                 boost_Sequence [ label="boost::Sequence" URL="\ref boost::Sequence" ];
+        }
+    }
+  
+    subgraph cluster_concepts {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label="Graph (main concepts)";
+
+        CPositiveIrreducibleFraction [ label="CPositiveIrreducibleFraction" URL="\ref CPositiveIrreducibleFraction" ] ;
+    }
+    CPositiveIrreducibleFraction -> CConstSinglePassRange;
+    
+    subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="Graph (main models)";
+
+        SternBrocot_Fraction [ label="SternBrocot::Fraction" URL="\ref SternBrocot::Fraction" ] ;
+        }
+
+    SternBrocot_Fraction -> CPositiveIrreducibleFraction;
+    ClosedIntegerHalfPlane -> CSpace [label="use",style=dashed];
+}
+@enddot
+
+*/
+
+}
