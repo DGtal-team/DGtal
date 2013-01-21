@@ -65,6 +65,7 @@ template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::KhalimskyCell< dim, TInteger >::KhalimskyCell()
 {
+  myCoordinates.reset();
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -151,7 +152,9 @@ className() const
 template < DGtal::Dimension dim, typename TInteger >
 inline
 DGtal::SignedKhalimskyCell< dim, TInteger >::SignedKhalimskyCell()
+  : myPositive( true )
 {
+  myCoordinates.reset();
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
