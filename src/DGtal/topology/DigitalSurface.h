@@ -195,6 +195,11 @@ namespace DGtal
       Vertex base;  ///< base surfel 
       Dimension k;  ///< direction toward the head surfel
       bool epsilon; ///< orientation toward the head surfel
+      /**
+         Default constructor. The arc is invalid.
+      */
+      inline Arc()
+        : base(), k( 0 ), epsilon( false ) {}
       inline Arc( const Vertex & theTail, Dimension aK, bool aEpsilon )
 	: base( theTail ), k( aK ), epsilon( aEpsilon ) {}
       inline bool operator==( const Arc & other ) const
@@ -209,6 +214,11 @@ namespace DGtal
 	       && ( ( k < other.k ) 
 		    || ( ( k == other.k ) 
 			 && ( epsilon < other.epsilon ) ) ) );
+      }
+      inline bool operator!=( const Arc & other ) const
+      {
+	return ( base != other.base ) 
+	  || ( k != other.k ) || ( epsilon != other.epsilon );
       }
     };
 
