@@ -149,7 +149,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   if ( getHeaderValue( "Version", header ) == NULL )
   {
-    int rawsx, rawsy, rawsz;
+    int rawsx=0, rawsy=0, rawsz=0;
     long int count = 0;
     // Size of the volume
     count += (long)fread( &rawsx, sizeof( int ), 1, fin );
