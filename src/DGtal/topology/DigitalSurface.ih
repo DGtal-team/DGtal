@@ -326,7 +326,7 @@ opposite( const Arc & a ) const
       unsigned int i = myTracker->orthDir();
       return Arc( s, i, 
 		  ( orientation == a.epsilon )
-		  == container().space().sDirect( s, i ) );
+		  != container().space().sDirect( s, i ) );
     } 
 }
 //-----------------------------------------------------------------------------
