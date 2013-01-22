@@ -46,6 +46,9 @@
 /// *must* include graph_concepts.hpp after defining our graph wrapper.
 #include <boost/graph/graph_concepts.hpp>
 #include <boost/graph/breadth_first_search.hpp>
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/stoer_wagner_min_cut.hpp>
+#include <boost/graph/boykov_kolmogorov_max_flow.hpp>
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -79,8 +82,8 @@ bool testDigitalSurfaceBoostGraphInterface()
   trace.beginBlock( "Constructing implicit shape." );
   double p1[] = {-2,-2,-2};
   double p2[] = { 2, 2, 2};
-  std::string poly_str = "x*x+y*y+2*z*z-1";
-  double step = 0.02;
+  std::string poly_str = "x*x+y*y+z*z-1";
+  double step = 0.4;
   Polynomial3 P;
   Polynomial3Reader reader;
   std::string::const_iterator iter 
@@ -136,10 +139,15 @@ bool testDigitalSurfaceBoostGraphInterface()
   typedef MyDigitalSurface Graph;
   typedef boost::graph_traits<Graph>::vertex_descriptor vertex_descriptor; // ie DigitalSurface::Vertex
   typedef boost::graph_traits<Graph>::edge_descriptor edge_descriptor; // ie DigitalSurface::Arc
+  typedef boost::graph_traits<Graph>::vertices_size_type vertices_size_type; // ie DigitalSurface::Size
+  typedef boost::graph_traits<Graph>::vertex_iterator vertex_iterator;
+  typedef boost::graph_traits<Graph>::out_edge_iterator out_edge_iterator;
+  typedef boost::graph_traits<Graph>::edge_iterator edge_iterator;
 
   BOOST_CONCEPT_ASSERT(( boost::VertexListGraphConcept<Graph> ));
   BOOST_CONCEPT_ASSERT(( boost::AdjacencyGraphConcept<Graph> ));
   BOOST_CONCEPT_ASSERT(( boost::IncidenceGraphConcept<Graph> ));
+  BOOST_CONCEPT_ASSERT(( boost::EdgeListGraphConcept<Graph> ));
   // BOOST_CONCEPT_ASSERT(( BidirectionalGraphConcept<Graph> ));
   trace.endBlock();
 
@@ -165,12 +173,11 @@ bool testDigitalSurfaceBoostGraphInterface()
 
   // Display results
   trace.beginBlock ( "Display breadth_first_visit result ..." );
-  typedef boost::graph_traits<Graph>::vertex_iterator vertex_iter;
-  std::pair<vertex_iter, vertex_iter> vp;
   unsigned long maxD = 0;
   vertex_descriptor furthest = start;
   unsigned long nbV = 0;
-  for ( vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++nbV )
+  for ( std::pair<vertex_iterator, vertex_iterator>
+          vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++nbV )
     {
       unsigned long d = boost::get( propDistanceMap, *vp.first );
       if ( d > maxD ) 
@@ -184,13 +191,151 @@ bool testDigitalSurfaceBoostGraphInterface()
   ++nb, nbok += ( nbV == digSurf.size() ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nb vertices is ok" << std::endl;
-  ++nb, nbok += ( maxD == 189 ) ? 1 : 0; 
+  ++nb, nbok += ( maxD == 12 ) ? 1 : 0; 
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "maxD == 189" << std::endl;
+	       << "maxD == 12" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing VertexListGraph interface with connected_components ..." );
+  // get the property map for labelling vertices.
+  typedef std::map< vertex_descriptor, vertices_size_type > StdComponentMap;
+  StdComponentMap componentMap;
+  boost::associative_property_map< StdComponentMap > propComponentMap( componentMap );
+  vertices_size_type nbComp =
+    boost::connected_components // boost graph connected components algorithm.
+    ( digSurf, // the graph
+      propComponentMap, // the mapping vertex -> label
+      boost::color_map( propColorMap ) // this map is used internally when computing connected components.
+      );
+  trace.info() << "- nbComponents = " << nbComp << std::endl;
+  ++nb, nbok += ( nbComp == 1 ) ? 1 : 0; 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+	       << "nbComp == 1" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing UndirectedGraph interface with Wagner-Stoer min cut ..." );
+  // get the property map for weighting edges.
+  typedef double weight_type;
+  typedef std::map< edge_descriptor, weight_type > StdWeightMap;
+  StdWeightMap weightMap;
+  boost::associative_property_map< StdWeightMap > propWeightMap( weightMap );
+  typedef std::map< vertex_descriptor, vertices_size_type > StdVertexIndexMap;
+  StdVertexIndexMap vertexIndexMap;
+  boost::associative_property_map< StdVertexIndexMap > propVertexIndexMap( vertexIndexMap );
+  vertices_size_type idxV = 0;
+  // The weight is smaller for edges traversing plane z=0 than anywhere else.
+  // The min cut thus cuts the sphere in two approximate halves.
+  for ( std::pair<vertex_iterator, vertex_iterator> 
+          vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++idxV )
+    {
+      vertex_descriptor v1 = *vp.first;
+      vertexIndexMap[ v1 ] = idxV; 
+      for ( std::pair<out_edge_iterator, out_edge_iterator>
+              ve = boost::out_edges( v1, digSurf ); ve.first != ve.second; ++ve.first )
+        {
+          vertex_descriptor v2 = boost::target( *ve.first, digSurf );
+          if ( v1 < v2 )
+            {
+              KSpace::SCell sep = digSurf.separator( *ve.first );
+              weight_type weight = ( K.sKCoord( sep, 2 ) == 0 ) ? 0.01 : 1.0;
+              weightMap[ *ve.first ] = weight;
+              weightMap[ digSurf.opposite( *ve.first ) ] = weight;
+            }
+        }
+    }  
+  // get the parity map for assigning a set to each vertex.
+  typedef std::map< vertex_descriptor, bool > StdParityMap;
+  StdParityMap parityMap;
+  boost::associative_property_map< StdParityMap > propParityMap( parityMap );
+
+  weight_type total_weight =
+    boost::stoer_wagner_min_cut // boost wagner stoer min cut algorithm.
+    ( digSurf, // the graph
+      propWeightMap, // the mapping edge -> weight
+      boost::parity_map( propParityMap ) // this map stores the vertex assignation
+      .vertex_index_map( propVertexIndexMap )
+      );
+  trace.info() << "- total weight = " << total_weight << std::endl;
+  unsigned long nb0 = 0;
+  unsigned long nb1 = 0;
+  for ( std::pair<vertex_iterator, vertex_iterator> 
+           vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++idxV )
+     {
+       vertex_descriptor v1 = *vp.first;
+       //trace.info() << "- " << v1 << " in " << parityMap[ v1 ] << std::endl;
+       if ( parityMap[ v1 ] ) ++nb1;
+       else ++nb0;
+     }
+  ++nb, nbok += ( total_weight < 1.0 ) ? 1 : 0; 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "total_weight < 1.0" 
+               << ", nb0=" << nb0 << " nb1=" << nb1 << std::endl;
+  trace.info() << "- parity[ " << start << " ] = " << parityMap[ start ] << std::endl;
+  trace.info() << "- parity[ " << furthest << " ] = " << parityMap[ furthest ] << std::endl;
+  ++nb, nbok += ( parityMap[ start ] != parityMap[ furthest ] ) ? 1 : 0; 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "parityMap[ start ] != parityMap[ furthest ]" << std::endl;
+  trace.endBlock();
+
+  trace.beginBlock ( "Testing EdgeListGraph and IncidenceGraph interfaces with Boykov-Kolmogorov max flow ..." );
+  typedef double capacity_type;
+  // get the property map for edge capacity.
+  typedef std::map< edge_descriptor, weight_type > StdEdgeCapacityMap;
+  StdEdgeCapacityMap edgeCapacityMap;
+  boost::associative_property_map< StdEdgeCapacityMap > propEdgeCapacityMap( edgeCapacityMap );
+  // get the property map for edge residual capacity.
+  typedef std::map< edge_descriptor, weight_type > StdEdgeResidualCapacityMap;
+  StdEdgeResidualCapacityMap edgeResidualCapacityMap;
+  boost::associative_property_map< StdEdgeResidualCapacityMap > propEdgeResidualCapacityMap( edgeResidualCapacityMap );
+  // get the property map for reverse edge.
+  typedef std::map< edge_descriptor, edge_descriptor > StdReversedEdgeMap;
+  StdReversedEdgeMap reversedEdgeMap;
+  boost::associative_property_map< StdReversedEdgeMap > propReversedEdgeMap( reversedEdgeMap );
+  // get the property map for vertex predecessor.
+  typedef std::map< vertex_descriptor, edge_descriptor > StdPredecessorMap;
+  StdPredecessorMap predecessorMap;
+  boost::associative_property_map< StdPredecessorMap > propPredecessorMap( predecessorMap );
+  // We already have vertex color map, vertex distance map and vertex index map.
+  unsigned long nbEdges = 0;
+  // The weight is smaller for edges traversing plane z=0 than anywhere else.
+  // The min cut thus cuts the sphere in two approximate halves.
+  for ( std::pair<edge_iterator, edge_iterator>
+          ve = boost::edges( digSurf ); ve.first != ve.second; ++ve.first, ++nbEdges )
+    {
+      edge_descriptor e = *ve.first;
+      edge_descriptor rev_e = digSurf.opposite( e );
+      vertex_descriptor v1 = boost::source( e, digSurf );
+      vertex_descriptor v2 = boost::target( e, digSurf );
+      ASSERT( boost::source( rev_e, digSurf ) == v2 ); 
+      ASSERT( boost::target( rev_e, digSurf ) == v1 ); 
+      if ( v1 < v2 )
+        {
+          KSpace::SCell sep = digSurf.separator( *ve.first );
+          capacity_type capacity = ( K.sKCoord( sep, 2 ) == 0 ) ? 0.01 : 1.0;
+          edgeCapacityMap[ e ] = capacity;
+          edgeCapacityMap[ digSurf.opposite( e ) ] = capacity;
+          reversedEdgeMap[ e ] = digSurf.opposite( e );
+          reversedEdgeMap[ digSurf.opposite( e ) ] = e;
+        }
+    }  
+  trace.info() << "- nb edges = " << nbEdges << std::endl;
+  distanceMap.clear();
+  colorMap.clear();
+  capacity_type max_flow =
+    boost::boykov_kolmogorov_max_flow // boykov kolmogorov max flow algorithm.
+    ( digSurf, // the graph
+      propEdgeCapacityMap, propEdgeResidualCapacityMap,
+      propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap, 
+      start, furthest );
+  trace.info() << "- max flow = " << max_flow << std::endl;
+  ++nb, nbok += ( abs( max_flow - total_weight ) < 0.0000001 ) ? 1 : 0; 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "max_flow == min_cut, Duality max-flow/min-cut." << std::endl;
   trace.endBlock();
   
   return nbok == nb;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
