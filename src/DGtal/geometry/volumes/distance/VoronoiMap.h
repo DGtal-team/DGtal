@@ -156,8 +156,7 @@ namespace DGtal
  
     ///Type of resulting image
     typedef TImageContainer OutputImage;
-    
-    ///Definition of the image value type.
+     ///Definition of the image value type.
     typedef Vector Value;
     
     ///Definition of the image value type.
