@@ -162,6 +162,12 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
   }
   /// End of computation of masks
 
+  std::cout << "full k size " << kernels[ 4 ].size()<<std::endl;
+  std::cout << "0 k size " << kernels[ 0 ].size()<<std::endl;
+  std::cout << "1 k size " << kernels[ 1 ].size()<<std::endl;
+  std::cout << "2 k size " << kernels[ 2 ].size()<<std::endl;
+  std::cout << "7 k size " << kernels[ 7 ].size()<<std::endl;
+
   myOrigin = KSpaceKernel.sSpel( pOrigin );
   myConvolver.init ( kernelsIterators[ 4 ].itBegin, kernelsIterators[ 4 ].itEnd, myOrigin, kernelsIterators );
 }

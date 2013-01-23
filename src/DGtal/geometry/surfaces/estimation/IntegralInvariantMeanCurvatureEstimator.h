@@ -64,7 +64,7 @@ namespace DGtal
    * Description of template class 'IntegralInvariantMeanCurvatureEstimator' <p>
    * \brief Aim: This class implement a Integral Invariant mean curvature estimation.
    *
-   * See related article:
+   * @see related article:
    *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
    *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
    *       https://liris.cnrs.fr/publis/?id=5866
