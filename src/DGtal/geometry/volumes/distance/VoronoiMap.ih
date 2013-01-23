@@ -224,9 +224,9 @@ DGtal::VoronoiMap<S,P,TSep, TImage>::computeOtherStep1D ( const Point &startingP
  */
 template <typename S,typename P,typename TSep, typename TImage>
 inline
-DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( const Domain *aDomain,
-                                          const PointPredicate * aPredicate,
-                                          const SeparableMetric * aMetric):
+DGtal::VoronoiMap<S,P, TSep, TImage>::VoronoiMap( ConstAlias<Domain> aDomain,
+                                          ConstAlias<PointPredicate> aPredicate,
+                                          ConstAlias<SeparableMetric> aMetric):
   myDomainPtr(aDomain), myPointPredicatePtr(aPredicate),
   myMetricPtr(aMetric)
 {

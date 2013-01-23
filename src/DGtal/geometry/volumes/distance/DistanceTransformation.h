@@ -52,6 +52,7 @@
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
 #include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -136,15 +137,16 @@ namespace DGtal
     typedef typename VoronoiMap<TSpace,TPointPredicate,
 				TSeparableMetric,TImageContainer>::Domain  Domain;
     
-
-
     /**
      *  Constructor
+     * See documentation of VoronoiMap constructor.
      */
-    DistanceTransformation(const Domain * aDomain,
-                           const PointPredicate * predicate,
-                           const SeparableMetric * aMetric):
-      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,predicate,aMetric)
+    DistanceTransformation(ConstAlias<Domain> aDomain,
+                           ConstAlias<PointPredicate> predicate,
+                           ConstAlias<SeparableMetric> aMetric):
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(static_cast<const Domain&>(aDomain),
+                                                                          static_cast<const PointPredicate&>(predicate),
+                                                                          static_cast<const SeparableMetric&>(aMetric))
     {}
     
     /**

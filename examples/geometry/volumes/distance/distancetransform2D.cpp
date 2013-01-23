@@ -25,7 +25,7 @@
  * An example file named distancetransform2D. The aim of this example
  * is to demonstrate the distance transformation package of the DGtal
  * library. Using a simple random seed example, we compute the
- * distance transformation (linear in time algorithm) using the L1,
+ * distance transformation (li    near in time algorithm) using the L1,
  * Linfinity and L2 metrics.
  *
  * This file is part of the DGtal library.
@@ -116,8 +116,8 @@ int main()
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
  
  
-  DTL2 dtL2( &image.domain(), &predicate, &Z2i::l2Metric);
-  DTL1 dtL1(&image.domain(),  &predicate, &Z2i::l1Metric);
+  DTL2 dtL2(image.domain(), predicate, Z2i::l2Metric);
+  DTL1 dtL1(image.domain(), predicate, Z2i::l1Metric);
   //! [DTCompute]
 
 
