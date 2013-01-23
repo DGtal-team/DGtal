@@ -97,12 +97,6 @@ equal( const edge_iterator & other ) const
       ASSERT( other.myOutEdgeRange.first != other.myOutEdgeRange.second );
       return *myOutEdgeRange.first == *other.myOutEdgeRange.first;
     }
-  // if ( ( other.myVertexRange.first == other.myVertexRange.second ) // end()
-  //      || ( myVertexRange.first == myVertexRange.second ) )
-  //   return myVertexRange == other.myVertexRange; // equal if one of them is end.
-  // else
-  //   return ( myVertexRange.first == other.myVertexRange.first )
-  //     && ( myOutEdgeRange.first == other.myOutEdgeRange.first );
 }
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
