@@ -56,7 +56,7 @@
 namespace boost
 {
   /**
-     This is the kind of boost graph that a digital surface (see DigitalSurface) can mimick.
+     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimick.
   */
   struct DigitalSurface_graph_traversal_category 
     : public virtual adjacency_graph_tag,
@@ -66,14 +66,14 @@ namespace boost
 
   /**
      Defines the boost graph traits for any kind of digital surface
-     (see DigitalSurface). With these definitions, a DigitalSurface is
+     (see DGtal::DigitalSurface). With these definitions, a DGtal::DigitalSurface is
      a model of VertexListGraphConcept, AdjacencyGraphConcept,
      IncidenceGraphConcept, EdgeListGraphConcept. You may use
-     DigitalSurface as is in BOOST graph algorithms (see
+     DGtal::DigitalSurface as is in BOOST graph algorithms (see
      http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/table_of_contents.html).
 
      The difficult part is that models of CUndirectedSimpleGraph (like
-     DigitalSurface) are only required to provide vertex iterators
+     DGtal::DigitalSurface) are only required to provide vertex iterators
      that are models of SinglePassIterator. Furthermore, no edge
      iterators are required, only the list of adjacent
      vertices. Therefore, most of the work is to create iterators over
@@ -81,18 +81,19 @@ namespace boost
      MultiPassInputIterator (very similar to ForwardIterator).
 
      @remark Note that, for now, vertex iterators are taken as is from
-     the DigitalSurface container. Hence, they must be models of
+     the DGtal::DigitalSurface container. Hence, they must be models of
      MultiPassInputIterator. This \b is the case for containers
-     SetOfSurfels, DigitalSetBoundary, ImplicitDigitalSurface,
-     ExplicitDigitalSurface. This \b is \b not the case of containers
-     LightImplicitDigitalSurface and LightExplicitDigitalSurface.
+     DGtal::SetOfSurfels, DGtal::DigitalSetBoundary, DGtal::ImplicitDigitalSurface,
+     DGtal::ExplicitDigitalSurface. This \b is \b not the case of containers
+     DGtal::LightImplicitDigitalSurface and DGtal::LightExplicitDigitalSurface.
 
      
      @tparam TDigitalSurfaceContainer the container chosen for the
-     digital surface. Should work with DigitalSetBoundary,
-     SetOfSurfels, ExplicitDigitalSurface,
-     ImplicitDigitalSurface. Light* containers may not work since
-     their vertex iterator is not multipass.
+     digital surface. Should work with DGtal::DigitalSetBoundary,
+     DGtal::SetOfSurfels, DGtal::ExplicitDigitalSurface,
+     DGtal::ImplicitDigitalSurface. DGtal::LightImplicitDigitalSurface
+     and DGtal::LightExplicitDigitalSurface containers may not work
+     since their vertex iterator is not multipass.
   */
   template < class TDigitalSurfaceContainer >
   struct graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > > 
@@ -150,7 +151,7 @@ namespace boost
        iterators for visiting edges or adjacent vertices, but merely
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of adjacent vertices (a std::vector) with
-       other (potentially) iterators, through a CountedPtr. When the
+       other (potentially) iterators, through a DGtal::CountedPtr. When the
        last iterator pointing in this structure is desallocated, the
        container is automatically desallocated. This is for instance
        used by function \ref adjacent_vertices, which returns a pair
@@ -229,7 +230,7 @@ namespace boost
        iterators for visiting edges or adjacent vertices, but merely
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of out edges (a std::vector) with other
-       (potentially) iterators, through a CountedPtr. When the last
+       (potentially) iterators, through a DGtal::CountedPtr. When the last
        iterator pointing in this structure is desallocated, the
        container is automatically desallocated. This is for instance
        used by function \ref out_edges, which returns a pair of
