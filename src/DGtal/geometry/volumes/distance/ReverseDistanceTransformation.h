@@ -54,6 +54,7 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -138,10 +139,12 @@ namespace DGtal
     /**
      *  Constructor
      */
-    ReverseDistanceTransformation(const Domain * aDomain,
-                                  const WeightImage * aWeightImage,
-                                  const PowerSeparableMetric * aMetric):
-      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(aDomain,aWeightImage,aMetric)
+    ReverseDistanceTransformation(ConstAlias<Domain> aDomain,
+                                  ConstAlias<WeightImage> aWeightImage,
+                                  ConstAlias<PowerSeparableMetric> aMetric):
+      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(static_cast<const Domain&>(aDomain),
+                                                               static_cast<const WeightImage &>(aWeightImage),
+                                                               static_cast<const PowerSeparableMetric &>(aMetric))
     {}
     
     /**

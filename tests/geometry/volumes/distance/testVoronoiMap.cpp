@@ -249,7 +249,7 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L2Metric> Voro2;  
   L2Metric l2;
-  Voro2 voro(&aSet.domain(), &myPredicate, &l2 );
+  Voro2 voro(aSet.domain(), myPredicate, l2 );
 
   trace.endBlock();
 
@@ -257,14 +257,14 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,6> L6Metric;
   L6Metric l6;
   typedef VoronoiMap<typename Set::Space, Predicate, L6Metric> Voro6;
-  Voro6 voro6(&aSet.domain(), &myPredicate, &l6 );
+  Voro6 voro6(aSet.domain(), myPredicate, l6 );
   trace.endBlock();
 
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, L2Metric> DT;
-  DT dt(&aSet.domain(), &myPredicate, &l2);
+  DT dt(aSet.domain(), myPredicate, l2);
   trace.endBlock();
 
 
@@ -408,7 +408,7 @@ bool testVoronoiMapFromSites(const Set &aSet)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L2Metric> Voro2;
   L2Metric l2;
-  Voro2 voro(&aSet.domain(), &myPredicate, &l2);
+  Voro2 voro(aSet.domain(), myPredicate, l2);
   trace.endBlock();
 
 
@@ -416,13 +416,13 @@ bool testVoronoiMapFromSites(const Set &aSet)
   typedef ExactPredicateLpSeparableMetric<typename Set::Space,3> L3Metric;
   typedef VoronoiMap<typename Set::Space, Predicate, L3Metric> Voro3;
   L3Metric l3;
-  Voro3 voro3(&aSet.domain(), &myPredicate, &l3);
+  Voro3 voro3(aSet.domain(), myPredicate, l3);
   trace.endBlock();
 
 
   trace.beginBlock(" DT computation");
   typedef DistanceTransformation<typename Set::Space, Predicate, L2Metric> DT;
-  DT dt(&aSet.domain(), &myPredicate, &l2);
+  DT dt(aSet.domain(), myPredicate, l2);
 
   trace.endBlock();
 
@@ -584,7 +584,6 @@ int main( int argc, char** argv )
     && testSimple3D() 
     && testSimpleRandom3D()
     && testSimple4D()
-    
     ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

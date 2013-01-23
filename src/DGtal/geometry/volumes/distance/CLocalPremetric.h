@@ -82,7 +82,7 @@ a null vector.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|-------------------------------------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| local distance computation      | v = x.localDistance( aPoint, aDirection)  | aPoint of type @a Point and aDirection of type aDirection |  v of type @a Value  |     | returns the distance at point @a aPoint in the direction @a aDirection. @a aDirection == null vector if and only if v==0      |                |    -         |
+| local distance computation      | v = x.localDistance( aPoint,aDirection)  | aPoint of type @a Space::Point and aDirection of type @a Space::Vector |  v of type @a Value  |     | returns the distance at point @a aPoint in the direction @a aDirection. @a aDirection == null vector if and only if v==0      |                |    -         |
 
 ### Invariants
 
