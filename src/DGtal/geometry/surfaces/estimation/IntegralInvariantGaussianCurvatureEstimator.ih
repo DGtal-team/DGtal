@@ -68,7 +68,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::I
 template <typename TKSpace, typename TShapeFunctor, int dimension>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
 {
   trace.error() << "Not available yet.";
 }
@@ -76,10 +76,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimen
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double re )
 {
   h = _h;
-  radius =  suggestedSize( h, k, alpha );
+  radius =  re;
 
   dh2 = h*h;
   d3_r = 3.0 / radius;
@@ -168,10 +168,10 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double re )
 {
   h = _h;
-  radius = suggestedSize( h, k, alpha );
+  radius = re;
 
   double r3 = radius * radius * radius;
   double r6 = r3 * r3;
@@ -405,37 +405,6 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
     ++result;
   }
 }
-
-
-
-
-
-
-template <typename TKSpace, typename TShapeFunctor, int dimension>
-inline
-double
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
-template <typename TKSpace, typename TShapeFunctor>
-inline
-double
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
-template <typename TKSpace, typename TShapeFunctor>
-inline
-double
-DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
-
 
 
 

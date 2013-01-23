@@ -60,11 +60,11 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    if ( argc != 4 )
+    if ( argc != 3 )
     {
         trace.error() << "Usage: " << argv[0]
-                               << " <fileName.vol> <h> <k>" << std::endl;
-        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0.1 4" << std::endl;
+                               << " <fileName.vol> <re_convolution_kernel>" << std::endl;
+        trace.error() << "Example : "<< argv[0] << " Al.150.vol 7.39247665" << std::endl;
         return 0;
     }
 
@@ -74,10 +74,10 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    double h = atof(argv[2]);
-    double k = atof(argv[3]);
+    double h = 1.0;
+    double re_convolution_kernel = atof(argv[2]);
 
-    // Construction of the shape from vol file
+    /// Construction of the shape from vol file
     typedef ImageSelector< Z3i::Domain, bool>::Type Image;
     typedef Z3i::KSpace::Surfel Surfel;
     typedef LightImplicitDigitalSurface< Z3i::KSpace, Image > MyLightImplicitDigitalSurface;
@@ -109,19 +109,19 @@ int main( int argc, char** argv )
     SurfelConstIterator aend = SurfelConstIterator(0);
 
 
-    // Integral Invariant stuff
+    /// Integral Invariant stuff
     typedef FunctorOnCells< Image, Z3i::KSpace > MyFunctor;
     typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIGaussianEstimator;
 
     MyFunctor functor ( image, KSpaceShape, domain ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyIIGaussianEstimator estimator ( KSpaceShape, functor );
-    estimator.init( h, k ); // Initialisation for a given k (radius_e kernel = k*h^(4/3) <=> radius_d kernel = k*h^(1/3))
+    estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
     std::vector< double > results;
     back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
     estimator.eval ( abegin, aend, resultsIterator ); // Computation
 
 
-    // Drawing results
+    /// Drawing results
     typedef MyIIGaussianEstimator::Quantity Quantity;
     Quantity min = numeric_limits < Quantity >::max();
     Quantity max = numeric_limits < Quantity >::min();
@@ -140,13 +140,12 @@ int main( int argc, char** argv )
     QApplication application( argc, argv );
     Viewer3D viewer;
     viewer.show();
-    viewer << SetMode3D(image.domain().className(), "BoundingBox") << image.domain();
 
     typedef GradientColorMap< Quantity > Gradient;
     Gradient cmap_grad( min, max );
     cmap_grad.addColor( Color( 50, 50, 255 ) );
-    cmap_grad.addColor( Color( 255, 255, 10 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
+    cmap_grad.addColor( Color( 255, 255, 10 ) );
 
     Visitor *depth2 = new Visitor (digSurf, *digSurf.begin());
     abegin = SurfelConstIterator(depth2);

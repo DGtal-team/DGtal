@@ -70,7 +70,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Integ
 template <typename TKSpace, typename TShapeFunctor, int dimension>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
 {
   trace.error() << "Not available yet.";
 }
@@ -78,10 +78,10 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init ( const double _h, const double re )
 {
   h = _h;
-  radius = suggestedSize( h, k, alpha );
+  radius = re;
 
   dh2 = h*h;
   d3_r = 3.0 / radius;
@@ -162,12 +162,6 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
   }
   /// End of computation of masks
 
-  std::cout << "full k size " << kernels[ 4 ].size()<<std::endl;
-  std::cout << "0 k size " << kernels[ 0 ].size()<<std::endl;
-  std::cout << "1 k size " << kernels[ 1 ].size()<<std::endl;
-  std::cout << "2 k size " << kernels[ 2 ].size()<<std::endl;
-  std::cout << "7 k size " << kernels[ 7 ].size()<<std::endl;
-
   myOrigin = KSpaceKernel.sSpel( pOrigin );
   myConvolver.init ( kernelsIterators[ 4 ].itBegin, kernelsIterators[ 4 ].itEnd, myOrigin, kernelsIterators );
 }
@@ -175,10 +169,10 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
 template <typename TKSpace, typename TShapeFunctor>
 inline
 void
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double k, const double alpha )
+DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init ( const double _h, const double re )
 {
   h = _h;
-  radius =  suggestedSize( h, k, alpha );
+  radius =  re;
 
   dh3 = h*h*h;
   d8_3r = 8.0 / (3.0 * radius);
@@ -367,37 +361,6 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval 
     ++result;
   }
 }
-
-
-
-
-
-
-
-template <typename TKSpace, typename TShapeFunctor, int dimension>
-inline
-double
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
-template <typename TKSpace, typename TShapeFunctor>
-inline
-double
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
-template <typename TKSpace, typename TShapeFunctor>
-inline
-double
-DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::suggestedSize ( const double _h, const double k, const double alpha )
-{
-  return k * std::pow(_h, alpha);
-}
-
 
 
 

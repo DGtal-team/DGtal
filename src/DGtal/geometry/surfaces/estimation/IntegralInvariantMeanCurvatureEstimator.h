@@ -128,15 +128,12 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel k, alpha, and grid step h.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param h precision of the grid
-      * @param k constant of the kernel support
-      * @param useSuggestedSize determine if you want to compute the best radius for the kernel support using your r and h. Default value to true.
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -165,15 +162,6 @@ public:
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
 
-  /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -216,7 +204,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
 private:
@@ -282,15 +270,12 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel radius, and grid step.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
+      * @param h precision of the grid
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -320,16 +305,6 @@ public:
                                                                                  OutputIterator & result );
 
   /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
-
-  /**
       * @return iterator of the begin spel of the kernel support
       */
   const ConstIteratorKernel & beginKernel() const;
@@ -354,7 +329,7 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 9 for each shiftings (8-adjacence and full kernel included)
+  /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
   std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
@@ -371,7 +346,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
   /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
@@ -442,15 +417,12 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel radius, and grid step.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
+      * @param h precision of the grid
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
       * Compute the integral invariant mean curvature to cell *it of a shape.
@@ -479,16 +451,6 @@ public:
                                                                                  OutputIterator & result );
 
   /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
-
-  /**
       * @return iterator of the begin spel of the kernel support
       */
   const ConstIteratorKernel & beginKernel() const;
@@ -513,7 +475,7 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 27 for each shiftings (26-adjacence and full kernel included)
+  /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
   std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
@@ -530,7 +492,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
   /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
