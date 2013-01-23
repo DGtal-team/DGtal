@@ -56,7 +56,7 @@
 namespace boost
 {
   /**
-     This is the kind of boost graph that a digital surface can mimick.
+     This is the kind of boost graph that a digital surface (see DigitalSurface) can mimick.
   */
   struct DigitalSurface_graph_traversal_category 
     : public virtual adjacency_graph_tag,
@@ -65,7 +65,28 @@ namespace boost
       public virtual edge_list_graph_tag { };
 
   /**
-     Defines the graph traits for any kind of digital surface.
+     Defines the boost graph traits for any kind of digital surface
+     (see DigitalSurface). With these definitions, a DigitalSurface is
+     a model of VertexListGraphConcept, AdjacencyGraphConcept,
+     IncidenceGraphConcept, EdgeListGraphConcept. You may use
+     DigitalSurface as is in BOOST graph algorithms (see
+     http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/table_of_contents.html).
+
+     The difficult part is that models of CUndirectedSimpleGraph (like
+     DigitalSurface) are only required to provide vertex iterators
+     that are models of SinglePassIterator. Furthermore, no edge
+     iterators are required, only the list of adjacent
+     vertices. Therefore, most of the work is to create iterators over
+     edges that are "persistent", i.e. models of
+     MultiPassInputIterator (very similar to ForwardIterator).
+
+     @remark Note that, for now, vertex iterators are taken as is from
+     the DigitalSurface container. Hence, they must be models of
+     MultiPassInputIterator. This \b is the case for containers
+     SetOfSurfels, DigitalSetBoundary, ImplicitDigitalSurface,
+     ExplicitDigitalSurface. This \b is \b not the case of containers
+     LightImplicitDigitalSurface and LightExplicitDigitalSurface.
+
      
      @tparam TDigitalSurfaceContainer the container chosen for the
      digital surface. Should work with DigitalSetBoundary,
@@ -92,17 +113,17 @@ namespace boost
     /// the type for counting out or in edges
     typedef typename Adapted::Size degree_size_type;
 
-    
-
+    /// Vertex type
     typedef typename Adapted::Vertex Vertex;
     /// Vertex type
     typedef Vertex vertex_descriptor;
+    /// (oriented) edge type
     typedef typename Adapted::Arc Arc;
-    /// Edge type
+    /// (oriented) edge type
     typedef Arc edge_descriptor;
-    /// Iterator for visiting vertices (should be multipass).
+    /// Iterator for visiting vertices. It must be a model of
+    /// MultiPassInputIterator, i.e. a kind of ForwardIterator.
     typedef typename Adapted::ConstIterator vertex_iterator;
-    //typedef typename std::set<Vertex>::const_iterator vertex_iterator;
 
     /// This is the intermediate data structure that is used for visiting adjacent vertices.
     typedef std::vector< vertex_descriptor > AdjacentVertexContainer;
@@ -120,7 +141,39 @@ namespace boost
       return vertex_descriptor( 0 );
     }
 
-    /// Iterator for visiting adjacent vertices.
+    /**
+       Iterator for visiting adjacent vertices.  We use an iterator
+       facade to create a STL-compliant iterator with as little effort
+       as possible. 
+
+       \note The difficulty is that DGtal graphs do not provide
+       iterators for visiting edges or adjacent vertices, but merely
+       provide a method that outputs them. Therefore, this iterator \b
+       shares the container of adjacent vertices (a std::vector) with
+       other (potentially) iterators, through a CountedPtr. When the
+       last iterator pointing in this structure is desallocated, the
+       container is automatically desallocated. This is for instance
+       used by function \ref adjacent_vertices, which returns a pair
+       of adjacency_iterator, both points on the same
+       container. Another problem is that the user may have called
+       twice \ref adjacent_vertices on the same vertex, and may wish
+       to compare iterators obtained by two different calls.
+
+       @code
+       typedef typename DigitalSurface<...> G;
+       typedef typename graph_traits<G>::adjacency_iterator adjacency_iterator;
+       G g(...);
+       std::pair<adjacency_iterator,adjacency_iterator> vp1 = boost::adjacent_vertices( vertex, g );
+       std::pair<adjacency_iterator,adjacency_iterator> vp2 = boost::adjacent_vertices( vertex, g );
+       @endcode
+
+       In this case, \a vp1 and \a vp2 are not pointing on the same
+       structure, hence the address pointed by \a vp1 is different
+       from the address pointed by \a vp2. They are then not
+       comparable a priori. The adjacency_iterator is written so that
+       vp1 (.first or .second) and vp2 (.first or .second) \b are
+       comparable, using value comparison and out-of-range check.
+    */
     class adjacency_iterator 
       : public iterator_facade< adjacency_iterator,
                                 Vertex,
@@ -167,7 +220,39 @@ namespace boost
       friend class iterator_core_access;
     }; // end class adjacency_iterator 
 
-    /// Iterator for visiting out edges.
+    /**
+       Iterator for visiting out edges.  We use an iterator
+       facade to create a STL-compliant iterator with as little effort
+       as possible. 
+
+       \note The difficulty is that DGtal graphs do not provide
+       iterators for visiting edges or adjacent vertices, but merely
+       provide a method that outputs them. Therefore, this iterator \b
+       shares the container of out edges (a std::vector) with other
+       (potentially) iterators, through a CountedPtr. When the last
+       iterator pointing in this structure is desallocated, the
+       container is automatically desallocated. This is for instance
+       used by function \ref out_edges, which returns a pair of
+       out_edge_iterator, both points on the same container. Another
+       problem is that the user may have called twice \ref out_edges
+       on the same vertex, and may wish to compare iterators obtained
+       by two different calls..
+
+       @code
+       typedef typename DigitalSurface<...> G;
+       typedef typename graph_traits<G>::out_edge_iterator out_edge_iterator;
+       G g(...);
+       std::pair<out_edge_iterator,out_edge_iterator> vp1 = boost::out_edges( vertex, g );
+       std::pair<out_edge_iterator,out_edge_iterator> vp2 = boost::out_edges( vertex, g );
+       @endcode
+
+       In this case, \a vp1 and \a vp2 are not pointing on the same
+       structure, hence the address pointed by \a vp1 is different
+       from the address pointed by \a vp2. They are then not
+       comparable a priori. The out_edge_iterator is written so that
+       vp1 (.first or .second) and vp2 (.first or .second) \b are
+       comparable, using value comparison and out-of-range check.
+    */
     class out_edge_iterator 
       : public iterator_facade< out_edge_iterator,
                                 Arc,
@@ -214,7 +299,38 @@ namespace boost
       friend class iterator_core_access;
     }; // end class out_edge_iterator
 
-    /// Iterator for visiting all edges.
+    /**
+       Iterator for visiting all edges of the graph.  We use an iterator
+       facade to create a STL-compliant iterator with as little effort
+       as possible. 
+
+       \note The difficulty is that DGtal graphs do not provide
+       iterators for visiting edges or adjacent vertices, but merely
+       provide a method that outputs them. Therefore, this iterator
+       mixes a vertex_iterator (to visit all vertices) and a local
+       out_edge_iterator (to visit all out edges of each vertex). This
+       is for instance used by function \ref edges, which returns a
+       pair of edge_iterator. A potential problem is that the user may
+       have called twice \ref edges, and may wish to compare iterators
+       obtained by two different calls. Here, edges are constructed on
+       the fly, hence iterators may not point on the same container
+       even if the values are the same.
+
+       @code
+       typedef typename DigitalSurface<...> G;
+       typedef typename graph_traits<G>::edge_iterator edge_iterator;
+       G g(...);
+       std::pair<edge_iterator,edge_iterator> vp1 = boost::edges( g );
+       std::pair<edge_iterator,edge_iterator> vp2 = boost::edges( g );
+       @endcode
+
+       In this case, \a vp1 and \a vp2 are not pointing on the same
+       structure, hence the address pointed by \a vp1 is different
+       from the address pointed by \a vp2. They are then not
+       comparable a priori. The edge_iterator is written so that
+       vp1 (.first or .second) and vp2 (.first or .second) \b are
+       comparable, using value comparison and out-of-range check.
+    */
     class edge_iterator 
       : public iterator_facade< edge_iterator,
                                 Arc,
@@ -295,18 +411,6 @@ namespace boost
     >
   vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf );
 
-  // /**
-  //    @param digSurf a valid digital surface.
-  //    @return the invalid vertex for \a digSurf (default Vertex).
-  // */
-  // template < class TDigitalSurfaceContainer >
-  // inline 
-  // typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor
-  // null_vertex()
-  // {
-  //   return typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::Vertex( 0 );
-  // }
-
   /**
      @param digSurf a valid digital surface.
      @return the number of vertices of \a digSurf.
@@ -346,30 +450,6 @@ namespace boost
                            Iterator( ptrAdjVertices->end(), ptrAdjVertices ) );
   }
 
-  // namespace detail {
-  //   template < class TDigitalSurfaceContainer >
-  //   struct OutEdgeBackInsertIterator 
-  //     : public iterator<output_iterator_tag,void,void,void,void> 
-  //   {
-  //     typedef DGtal::DigitalSurface< TDigitalSurfaceContainer > Graph;
-  //     typedef OutEdgeBackInsertIterator< TDigitalSurfaceContainer > Self;
-
-  //     typedef typename graph_traits< Graph >::vertex_descriptor vertex_descriptor;
-  //     typedef typename graph_traits< Graph >::edge_descriptor edge_descriptor;
-  //     typedef typename graph_traits< Graph >::out_edge_iterator out_edge_iterator;
-  //     typedef typename graph_traits< Graph >::OutEdgeContainer OutEdgeContainer;
-
-  //     typedef OutEdgeContainer container_type;
-
-  //     inline
-  //     OutEdgeBackInsertIterator( ConstAlias< Graph > graph, ConstAlias< OutEdgeContainer > container )
-  //       : myGraph( graph ), myContainer( container )
-  //     {}
-  //     Self & operator=( const vertex_descriptor & t )
-  //     { container->push_back(value); return *this; }
-
-  //   };
-  // }
 
   /**
      @param u a vertex belonging to \a digSurf.
