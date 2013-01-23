@@ -73,7 +73,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   string poly_str = "x^2 + y^2 + z^2 - 25";
   double border_min[3] = { -10, -10, -10 };
   double border_max[3] = { 10, 10, 10 };
-  double k = 5.00153;
+  double re_convolution_kernel = 4.217163327;
   double realValue = 0.2; // = 1/r
 
   trace.beginBlock ( "Testing integral invariant 3D Mean curvature initialization ..." );
@@ -113,7 +113,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
 
   try
   {
-    estimator.init( h, k );
+    estimator.init( h, re_convolution_kernel );
   }
   catch(...)
   {

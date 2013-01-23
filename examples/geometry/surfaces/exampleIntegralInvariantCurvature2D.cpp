@@ -62,16 +62,17 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    // Construction of the shape + digitalization
-    double h = 1;
+    /// Construction of the shape + digitalization
+    double h = 0.5;
 
     typedef Flower2D< Z2i::Space > MyShape;
     typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
     typedef Z2i::KSpace::Surfel Surfel;
+    typedef Z2i::KSpace::SCell SCell;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
 
-    MyShape shape( 0, 0, 20.00000124, 19.0000123, 4, 3.0 );
+    MyShape shape( 0, 0, 20.00000124, 10.0000123, 4, 3.0 );
     MyGaussDigitizer digShape;
     digShape.attach( shape );
     digShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
@@ -95,21 +96,21 @@ int main( int argc, char** argv )
     SurfelConstIterator aend = SurfelConstIterator(0);
 
 
-    // Integral Invariant stuff
-    double k = 5.0;
+    /// Integral Invariant stuff
+    double re_convolution_kernel = 3.96850263;
 
     typedef FunctorOnCells< MyGaussDigitizer, Z2i::KSpace > MyFunctor;
     typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyIIMeanEstimator;
 
     MyFunctor functor ( digShape, KSpaceShape, domainShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyIIMeanEstimator estimator ( KSpaceShape, functor );
-    estimator.init( h, k ); // Initialisation for a given k (radius_e kernel = k*h^(4/3) <=> radius_d kernel = k*h^(1/3))
+    estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
     std::vector< double > results;
     back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
     estimator.eval ( abegin, aend, resultsIterator ); // Computation
 
 
-    // Drawing results
+    /// Drawing results
     typedef MyIIMeanEstimator::Quantity Quantity;
     Quantity min = numeric_limits < Quantity >::max();
     Quantity max = numeric_limits < Quantity >::min();
@@ -125,23 +126,22 @@ int main( int argc, char** argv )
         }
     }
     Board2D board;
-    board << SetMode( domainShape.className(), "Paving" )
-          << domainShape;
     Visitor *depth2 = new Visitor (digSurf, *digSurf.begin());
     abegin = SurfelConstIterator(depth2);
 
     typedef GradientColorMap< Quantity > Gradient;
     Gradient cmap_grad( min, max );
     cmap_grad.addColor( Color( 50, 50, 255 ) );
-    cmap_grad.addColor( Color( 255, 255, 10 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
+    cmap_grad.addColor( Color( 255, 255, 10 ) );
 
     board << SetMode( (*abegin).className(), "Paving" );
     string specificStyle = (*abegin).className() + "/Paving";
     for ( unsigned int i = 0; i < results.size(); ++i )
     {
+        SCell currentCell = KSpaceShape.sIndirectIncident( *abegin, *KSpaceShape.sOrthDirs( *abegin ) ); // We apply the color to the inner spel (more visible than surfel)
         board << CustomStyle( specificStyle, new CustomColors( Color::Black, cmap_grad( results[ i ] )))
-              << *abegin;
+              << currentCell;
         ++abegin;
     }
     board.saveSVG ( "example-integralinvariant2D.svg" );

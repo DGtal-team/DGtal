@@ -82,7 +82,7 @@ namespace DGtal
    * For example, if __(...)__ is the kernel, and the deplacement is to the right, we want ___[...]_
    * but some same cell from kernel are used. We have to keep same values (in ..) remove not used values (in -)
    * and add new values (in +) :  __(-[..)+]_
-   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface.
+   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface. @todo Change position -> init() || eval()
    *
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
@@ -131,18 +131,15 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel k, alpha, and grid step h.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantGaussianCurvatureEstimator with a specific Euclidean kernel re, and grid step h.
       *
       * @param h precision of the grid
-      * @param k radius of the kernel support
-      * @param useSuggestedSize determine if you want to compute the best radius for the kernel support using your r and h. Default value to true.
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
-      * Compute the integral invariant mean curvature to cell *it of a shape.
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
       *
@@ -153,7 +150,7 @@ public:
   template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
 
   /**
-      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
@@ -167,16 +164,6 @@ public:
   void eval ( const ConstIteratorOnCells & itb,
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
-
-  /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k radius of the kernel support before computation
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -219,7 +206,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
 private:
@@ -285,18 +272,15 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel radius, and grid step.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantGaussianCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
       * @param _h precision of the grid
-      * @param k constant of the kernel support
-      * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
-      * Compute the integral invariant mean curvature to cell *it of a shape.
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
       *
@@ -308,7 +292,7 @@ public:
 
 
   /**
-      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
@@ -322,16 +306,6 @@ public:
   void eval ( const ConstIteratorOnCells & itb,
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
-
-  /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -358,7 +332,7 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 9 for each shiftings (8-adjacence and full kernel included)
+  /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
   std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
@@ -375,7 +349,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
   /// kernel's radius-dependant variable. Used to compute IntegralInvariant.
@@ -446,18 +420,15 @@ public:
 public:
 
   /**
-      * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific kernel radius, and grid step.
-      * Kernel radius = k*h^alpha
-      * Diffuse the modification to the KernelFunctor.
+      * Initialise the IntegralInvariantGaussianCurvatureEstimator with a specific Euclidean kernel radius re, and grid step k.
       *
       * @param _h precision of the grid
-      * @param k constant of the kernel support
-      * @param alpha set the alpha to build the better radius for the kernel support (radius=k*h^alpha). Default value is 1/3.
+      * @param re Euclidean radius of the kernel support
       */
-  void init ( const double _h, const double k, const double alpha = 1.0/3.0 );
+  void init ( const double _h, const double re );
 
   /**
-      * Compute the integral invariant mean curvature to cell *it of a shape.
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
       *
@@ -468,7 +439,7 @@ public:
   template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
 
   /**
-      * Compute the integral invariant mean curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
@@ -482,16 +453,6 @@ public:
   void eval ( const ConstIteratorOnCells & itb,
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
-
-  /**
-      * Compute the best radius for the kernel support (k*h^alpha)
-      *
-      * @param _h precision of the grid
-      * @param k constant of the kernel support
-      *
-      * @return suggested size for the kernel support radius
-      */
-  static double suggestedSize( const double _h, const double k, const double alpha = 1.0/3.0 );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -518,7 +479,7 @@ public:
   // ------------------------- Private Datas --------------------------------
 private:
 
-  /// array of shifting masks. Size = 27 for each shiftings (26-adjacence and full kernel included)
+  /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
   std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
@@ -535,7 +496,7 @@ private:
   /// precision of the grid
   float h;
 
-  /// radius of the kernel (using k*h^alpha, @see suggestedSize())
+  /// Euclidean radius of the kernel
   float radius;
 
   Quantity d6_PIr6; /// 6/PI*r^6

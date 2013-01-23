@@ -69,7 +69,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 
   double max_radius_shape = 20.00217;
   double min_radius_shape = 5.00217;
-  double k = 5.00123;
+  double re_convolution_kernel = 1.842015749;
 
   trace.beginBlock ( "Testing initialization of integral invariant 2D curvature ..." );
 
@@ -97,7 +97,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
 
   try
   {
-    estimator.init( h, k );
+    estimator.init( h, re_convolution_kernel );
   }
   catch(...)
   {
