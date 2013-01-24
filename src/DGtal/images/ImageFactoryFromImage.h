@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ImageFactoryForImage.h
+ * @file ImageFactoryFromImage.h
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/01/23
  *
- * Header file for module ImageFactoryForImage.cpp
+ * Header file for module ImageFactoryFromImage.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImageFactoryForImage_RECURSES)
-#error Recursive header files inclusion detected in ImageFactoryForImage.h
-#else // defined(ImageFactoryForImage_RECURSES)
+#if defined(ImageFactoryFromImage_RECURSES)
+#error Recursive header files inclusion detected in ImageFactoryFromImage.h
+#else // defined(ImageFactoryFromImage_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImageFactoryForImage_RECURSES
+#define ImageFactoryFromImage_RECURSES
 
-#if !defined ImageFactoryForImage_h
+#if !defined ImageFactoryFromImage_h
 /** Prevents repeated inclusion of headers. */
-#define ImageFactoryForImage_h
+#define ImageFactoryFromImage_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,19 +51,19 @@
 namespace DGtal
 {
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageFactoryForImage
+// Template class ImageFactoryFromImage
 /**
- * Description of template class 'ImageFactoryForImage' <p>
+ * Description of template class 'ImageFactoryFromImage' <p>
  * \brief Aim: todo
  */
 template <typename TImageContainer>
-class ImageFactoryForImage
+class ImageFactoryFromImage
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageFactoryForImage<TImageContainer> Self; 
+    typedef ImageFactoryFromImage<TImageContainer> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -80,11 +80,11 @@ public:
 
 public:
 
-    ImageFactoryForImage(Alias<ImageContainer> anImage):
+    ImageFactoryFromImage(Alias<ImageContainer> anImage):
             myImagePtr(anImage)
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryForImage Ctor fromRef " << std::endl;
+        trace.warning() << "ImageFactoryFromImage Ctor fromRef " << std::endl;
 #endif
     }
 
@@ -93,10 +93,10 @@ public:
     * @param other the object to copy.
     * @return a reference on 'this'.
     */
-    ImageFactoryForImage & operator= ( const ImageFactoryForImage & other )
+    ImageFactoryFromImage & operator= ( const ImageFactoryFromImage & other )
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryForImage assignment " << std::endl;
+        trace.warning() << "ImageFactoryFromImage assignment " << std::endl;
 #endif
         if (&other != this)
         {
@@ -109,7 +109,7 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageFactoryForImage() {}
+    ~ImageFactoryFromImage() {}
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -141,7 +141,7 @@ public:
     }
 
     /**
-     * Returns the pointer on the Image container data for the Domain aDomain.
+     * Returns a pointer of an OutputImage created with the Domain aDomain.
      * @return an ImagePtr.
      */
     OutputImage * requestImage(const Domain &aDomain)
@@ -160,9 +160,9 @@ private:
     /**
      * Default constructor.
      */
-    ImageFactoryForImage() {
+    ImageFactoryFromImage() {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryForImage Ctor default " << std::endl;
+        trace.warning() << "ImageFactoryFromImage Ctor default " << std::endl;
 #endif
     }
     
@@ -178,30 +178,30 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class ImageFactoryForImage
+}; // end of class ImageFactoryFromImage
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'ImageFactoryForImage'.
+ * Overloads 'operator<<' for displaying objects of class 'ImageFactoryFromImage'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'ImageFactoryForImage' to write.
+ * @param object the object of class 'ImageFactoryFromImage' to write.
  * @return the output stream after the writing.
  */
 template <typename TImageContainer>
 std::ostream&
-operator<< ( std::ostream & out, const ImageFactoryForImage<TImageContainer> & object );
+operator<< ( std::ostream & out, const ImageFactoryFromImage<TImageContainer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/ImageFactoryForImage.ih"
+#include "DGtal/images/ImageFactoryFromImage.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImageFactoryForImage_h
+#endif // !defined ImageFactoryFromImage_h
 
-#undef ImageFactoryForImage_RECURSES
-#endif // else defined(ImageFactoryForImage_RECURSES)
+#undef ImageFactoryFromImage_RECURSES
+#endif // else defined(ImageFactoryFromImage_RECURSES)
