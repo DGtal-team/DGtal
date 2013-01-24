@@ -1,4 +1,4 @@
-/**TiledImage
+/**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
  *  published by the Free Software Foundation, either version 3 of the
@@ -35,7 +35,8 @@
 
 //#define DEBUG_VERBOSE
 
-#include "DGtal/images/ImageFactoryForImage.h"
+#include "DGtal/images/ImageFactoryFromImage.h"
+#include "DGtal/images/ImageCache.h"
 
 #include "ConfigTest.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -62,10 +63,10 @@ bool testSimple()
 
     trace.info() << "Original image: " << image << endl;
 
-    typedef ImageFactoryForImage<VImage > MyImageFactoryForImage;
-    MyImageFactoryForImage factImage(image);
+    typedef ImageFactoryFromImage<VImage > MyImageFactoryFromImage;
+    MyImageFactoryFromImage factImage(image);
     
-    typedef MyImageFactoryForImage::OutputImage OutputImage;
+    typedef MyImageFactoryFromImage::OutputImage OutputImage;
     
     Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));
     OutputImage *image1 = factImage.requestImage(domain1);
@@ -86,6 +87,32 @@ bool testSimple()
     OutputImage *image4 = factImage.requestImage(domain4);
     OutputImage::ConstRange r4 = image4->constRange();
     cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
+    
+    typedef ImageCache<OutputImage > MyImageCache;
+    MyImageCache imageCache(MyImageCache::LAST);
+    /*VImage*/OutputImage::Value aValue;
+    
+    trace.info() << "Image cache: " << imageCache << endl;
+    if (imageCache.read(Z2i::Point(2,2), aValue)) 
+      trace.info() << "Point inside, value: " << aValue << endl;
+    else
+      trace.info() << "Point outside." << endl;
+    
+    imageCache.update(image1);
+    
+    trace.info() << "Image cache: " << imageCache << endl;
+    if (imageCache.read(Z2i::Point(2,2), aValue)) 
+      trace.info() << "Point inside, value: " << aValue << endl;
+    else
+      trace.info() << "Point outside." << endl;
+    
+    imageCache.update(image4);
+    
+    trace.info() << "Image cache: " << imageCache << endl;
+    if (imageCache.read(Z2i::Point(2,2), aValue)) 
+      trace.info() << "Point inside, value: " << aValue << endl;
+    else
+      trace.info() << "Point outside." << endl;
     
     trace.endBlock();
     

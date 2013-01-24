@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ImageFactoryForImage.ih
+ * @file ImageCache.ih
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2013/01/23
+ * @date 2013/01/24
  *
- * Implementation of inline methods defined in ImageFactoryForImage.h
+ * Implementation of inline methods defined in ImageCache.h
  *
  * This file is part of the DGtal library.
  */
@@ -49,9 +49,15 @@
 template <typename TImageContainer>
 inline
 void
-DGtal::ImageFactoryForImage<TImageContainer>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageCache<TImageContainer>::selfDisplay ( std::ostream & out ) const
 {
-    out << "[ImageFactoryForImage] " << (*myImagePtr);
+    //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
+    {
+      if (myImagePtr==NULL)
+        out << "[ImageCache] " << "empty";
+      else
+        out << "[ImageCache] " << (*myImagePtr);
+    }
 }
 
 
@@ -63,7 +69,7 @@ template <typename TImageContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ImageFactoryForImage<TImageContainer> & object )
+                    const ImageCache<TImageContainer> & object )
 {
     object.selfDisplay( out );
     return out;
