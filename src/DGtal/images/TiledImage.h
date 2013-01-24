@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ImageCache.h
+ * @file TiledImage.h
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/01/24
  *
- * Header file for module ImageCache.cpp
+ * Header file for module TiledImage.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ImageCache_RECURSES)
-#error Recursive header files inclusion detected in ImageCache.h
-#else // defined(ImageCache_RECURSES)
+#if defined(TiledImage_RECURSES)
+#error Recursive header files inclusion detected in TiledImage.h
+#else // defined(TiledImage_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ImageCache_RECURSES
+#define TiledImage_RECURSES
 
-#if !defined ImageCache_h
+#if !defined TiledImage_h
 /** Prevents repeated inclusion of headers. */
-#define ImageCache_h
+#define TiledImage_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -45,47 +45,56 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
+
+#include "DGtal/images/ImageFactoryFromImage.h"
+#include "DGtal/images/ImageCache.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageCache
+// Template class TiledImage
 /**
- * Description of template class 'ImageCache' <p>
+ * Description of template class 'TiledImage' <p>
  * \brief Aim: todo
  */
 template <typename TImageContainer>
-class ImageCache
+class TiledImage
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageCache<TImageContainer> Self; 
+    typedef TiledImage<TImageContainer> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    //typedef typename TImageContainer::Domain Domain;
+    typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
+    typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    
+    typedef ImageCache<OutputImage > MyImageCache;
+    
     ///New types
-    enum Read_selectors {LAST, FIFO, LRU, NEIGHBORS}; // cache policy
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
-    ImageCache(Read_selectors AReadSelector=LAST):
-            readSelector(AReadSelector), myImagePtr(NULL)
+    TiledImage(Alias<ImageContainer> anImage, Alias<std::vector<Domain> > Di):
+            myImagePtr(anImage), myDi(Di)
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache Ctor fromRef " << std::endl;
+        trace.warning() << "TiledImage Ctor fromRef " << std::endl;
 #endif
+        myFactImage = new MyImageFactoryFromImage(myImagePtr);
+        myImageCache = new MyImageCache(MyImageCache::LAST);
     }
 
     /**
@@ -93,15 +102,17 @@ public:
     * @param other the object to copy.
     * @return a reference on 'this'.
     */
-    ImageCache & operator= ( const ImageCache & other )
+    TiledImage & operator= ( const TiledImage & other )
     {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache assignment " << std::endl;
+        trace.warning() << "TiledImage assignment " << std::endl;
 #endif
         if (&other != this)
         {
             myImagePtr = other.myImagePtr;
-            readSelector = other.readSelector;
+            myDi = other.myDi;
+            myFactImage = other.myFactImage;
+            myImageCache = other.myImageCache;
         }
         return *this;
     }
@@ -110,7 +121,11 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageCache() {}
+    ~TiledImage()
+    {
+      delete myFactImage;
+      delete myImageCache;
+    }
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -142,37 +157,37 @@ public:
     }
     
     /**
-     * Get the value of an image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
+     * Get the domain containing aPoint.
      *
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     * @param aPoint the point.
+     * @return the domain containing aPoint.
      */
-    bool read(const Point & aPoint, Value &aValue) const
+    Domain findSubDomain(const Point & aPoint) const
     {
-        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        {
-          if (myImagePtr==NULL)
-              return false;
-          
-          if (myImagePtr->domain().isInside(aPoint))
-          {
-              aValue = myImagePtr->operator()(aPoint);
-              return true;
-          }
-          else
-              return false;
-        }
-        
-        return false;
+        for(std::size_t i=0; i<myDi.size(); ++i)
+          if (myDi[i].isInside(aPoint))
+            return myDi[i];
     }
-
+    
     /**
-     * Update the cache according to the cache policy
+     * Get the value of an image (from cache) at a given position given
+     * by aPoint.
+     *
+     * @param aPoint the point.
+     * @return the value at aPoint.
      */
-    void update(Alias<ImageContainer> anImage)
+    Value operator()(const Point & aPoint) const
     {
-      //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        myImagePtr = anImage;
+        typename OutputImage::Value aValue;
+        
+        if (myImageCache->read(aPoint, aValue))
+          return aValue;
+        else
+        {
+          myImageCache->update(myFactImage->requestImage(findSubDomain(aPoint)));
+          myImageCache->read(aPoint, aValue);
+          return aValue;
+        }
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -180,9 +195,9 @@ private:
     /**
      * Default constructor.
      */
-    ImageCache() {
+    TiledImage() {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache Ctor default " << std::endl;
+        trace.warning() << "TiledImage Ctor default " << std::endl;
 #endif
     }
     
@@ -192,38 +207,45 @@ protected:
     /// Alias on the image container
     ImageContainer * myImagePtr;
     
+    /// Domains list
+    std::vector<Domain> myDi;
+    
+    /// ImageFactory pointer
+    MyImageFactoryFromImage *myFactImage;
+    
+    /// ImageCache pointer
+    MyImageCache *myImageCache;
+    
 private:
-  
-    /// Cache policy
-    Read_selectors readSelector;
+
 
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class ImageCache
+}; // end of class TiledImage
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'ImageCache'.
+ * Overloads 'operator<<' for displaying objects of class 'TiledImage'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'ImageCache' to write.
+ * @param object the object of class 'TiledImage' to write.
  * @return the output stream after the writing.
  */
 template <typename TImageContainer>
 std::ostream&
-operator<< ( std::ostream & out, const ImageCache<TImageContainer> & object );
+operator<< ( std::ostream & out, const TiledImage<TImageContainer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/ImageCache.ih"
+#include "DGtal/images/TiledImage.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ImageCache_h
+#endif // !defined TiledImage_h
 
-#undef ImageCache_RECURSES
-#endif // else defined(ImageCache_RECURSES)
+#undef TiledImage_RECURSES
+#endif // else defined(TiledImage_RECURSES)
