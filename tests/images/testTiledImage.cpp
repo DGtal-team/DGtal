@@ -37,6 +37,7 @@
 
 #include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/ImageCache.h"
+#include "DGtal/images/TiledImage.h"
 
 #include "ConfigTest.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -63,6 +64,7 @@ bool testSimple()
 
     trace.info() << "Original image: " << image << endl;
 
+    // 1) ImageFactoryFromImage
     typedef ImageFactoryFromImage<VImage > MyImageFactoryFromImage;
     MyImageFactoryFromImage factImage(image);
     
@@ -88,31 +90,45 @@ bool testSimple()
     OutputImage::ConstRange r4 = image4->constRange();
     cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
+    // 2) ImageCache    
     typedef ImageCache<OutputImage > MyImageCache;
     MyImageCache imageCache(MyImageCache::LAST);
     /*VImage*/OutputImage::Value aValue;
     
     trace.info() << "Image cache: " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point inside, value: " << aValue << endl;
+      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
-      trace.info() << "Point outside." << endl;
+      trace.info() << "Point 2,2 is not in an image from cache." << endl;
     
     imageCache.update(image1);
     
     trace.info() << "Image cache: " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point inside, value: " << aValue << endl;
+      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
-      trace.info() << "Point outside." << endl;
+      trace.info() << "Point 2,2 is not in an image from cache." << endl;
     
     imageCache.update(image4);
     
     trace.info() << "Image cache: " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point inside, value: " << aValue << endl;
+      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
-      trace.info() << "Point outside." << endl;
+      trace.info() << "Point 2,2 is not in an image from cache." << endl;
+    
+    // 3) TiledImage    
+    std::vector<Z2i::Domain> domains;
+    domains.push_back(domain1);
+    domains.push_back(domain2);
+    domains.push_back(domain3);
+    domains.push_back(domain4);
+    
+    typedef TiledImage<VImage > MyTiledImage;
+    MyTiledImage tiledImage(image, domains);
+    
+    trace.info() << "Value for Point 2,2: " << tiledImage(Z2i::Point(2,2)) << endl;
+    trace.info() << "Value for Point 3,1: " << tiledImage(Z2i::Point(3,1)) << endl;
     
     trace.endBlock();
     
