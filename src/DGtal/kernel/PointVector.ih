@@ -199,37 +199,37 @@ DGtal::PointVector<dim, TComponent, TContainer>::end() const
   return myArray.end();
 }
 //------------------------------------------------------------------------------
-// template<Dimension dim, typename TComponent, typename TContainer>
-// inline
-// typename DGtal::PointVector<dim, TComponent, TContainer>::ReverseIterator
-// DGtal::PointVector<dim, TComponent, TContainer>::rbegin()
-// {
-//   return myArray.rbegin();
-// }
-// //------------------------------------------------------------------------------
-// template<Dimension dim, typename TComponent, typename TContainer>
-// inline
-// typename DGtal::PointVector<dim, TComponent, TContainer>::ReverseIterator
-// DGtal::PointVector<dim, TComponent, TContainer>::rend()
-// {
-//   return myArray.rend();
-// }
-// //------------------------------------------------------------------------------
-// template<Dimension dim, typename TComponent, typename TContainer>
-// inline
-// typename DGtal::PointVector<dim, TComponent, TContainer>::ConstReverseIterator
-// DGtal::PointVector<dim, TComponent, TContainer>::rbegin() const
-// {
-//   return myArray.rbegin();
-// }
-// //------------------------------------------------------------------------------
-// template<Dimension dim, typename TComponent, typename TContainer>
-// inline
-// typename DGtal::PointVector<dim, TComponent, TContainer>::ConstReverseIterator
-// DGtal::PointVector<dim, TComponent, TContainer>::rend() const
-// {
-//   return myArray.rend();
-// }
+template<Dimension dim, typename TComponent, typename TContainer>
+inline
+typename DGtal::PointVector<dim, TComponent, TContainer>::ReverseIterator
+DGtal::PointVector<dim, TComponent, TContainer>::rbegin()
+{
+  return myArray.rbegin();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent, typename TContainer>
+inline
+typename DGtal::PointVector<dim, TComponent, TContainer>::ReverseIterator
+DGtal::PointVector<dim, TComponent, TContainer>::rend()
+{
+  return myArray.rend();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent, typename TContainer>
+inline
+typename DGtal::PointVector<dim, TComponent, TContainer>::ConstReverseIterator
+DGtal::PointVector<dim, TComponent, TContainer>::rbegin() const
+{
+  return myArray.rbegin();
+}
+//------------------------------------------------------------------------------
+template<Dimension dim, typename TComponent, typename TContainer>
+inline
+typename DGtal::PointVector<dim, TComponent, TContainer>::ConstReverseIterator
+DGtal::PointVector<dim, TComponent, TContainer>::rend() const
+{
+  return myArray.rend();
+}
 //------------------------------------------------------------------------------
 template<Dimension dim, typename TComponent, typename TContainer>
 inline
