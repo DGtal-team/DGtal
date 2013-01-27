@@ -231,9 +231,17 @@ namespace DGtal
      *  The new point is initialized by the result of functor f
      *  for each coordinate of apoint1 and apoint2
      */
-    template<typename Functor>
+    template<typename BinaryFunctor>
     PointVector( const Self& apoint1, const Self& apoint2,
-		 const Functor& f );
+		 const BinaryFunctor& f );
+
+    /** Constructor taking apoint and a unary functor as parameters.
+     *  The new point is initialized by the result of functor f
+     *  for each coordinate of apoint1
+     */
+    template<typename UnaryFunctor>
+    PointVector( const Self& apoint1, 
+		 const UnaryFunctor& f );
 
     /**
      * Destructor.
@@ -535,6 +543,14 @@ namespace DGtal
      */
     Self operator- ( const Self & v ) const;
 
+    /**
+     * Unary minus operator.
+     * -Vector => Vector
+     *
+     * @return a new Vector that is the opposite of 'this', i.e. -'this'.
+     */
+    Self operator-() const;
+
     
     /**
      * Division operator with assignement.
@@ -782,12 +798,11 @@ namespace DGtal
 	     const PointVector<dim, Component,Container> & aVector );
 
 
-
-
   ///Static const for zero definition
   template< Dimension dim, typename Component, typename TC>
   PointVector<dim, Component,TC>  PointVector<dim, Component,TC>::zero;
 
+  
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

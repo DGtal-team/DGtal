@@ -74,14 +74,25 @@ DGtal::PointVector<dim, TComponent, TContainer>::PointVector()
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-template<typename Functor>
+template<typename BinaryFunctor>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector(const Self& apoint1,
-            const Self& apoint2,
-            const Functor& f)
+                                                             const Self& apoint2,
+                                                             const BinaryFunctor& f)
 {
   for ( Dimension i = 0; i < dim; ++i )
     myArray[ i ] = f.operator() (apoint1[i], apoint2[i]);
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+template<typename UnaryFunctor>
+inline
+DGtal::PointVector<dim, TComponent,TContainer>::
+PointVector(const Self& apoint1,
+	    const UnaryFunctor& f)
+{
+  for ( Dimension i = 0; i < dim; ++i )
+    myArray[ i ] = f.operator()( apoint1[i] );
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
@@ -533,6 +544,14 @@ DGtal::PointVector<dim, TComponent, TContainer>::operator- ( const Self& v ) con
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
+DGtal::PointVector<dim, TComponent,TContainer>
+DGtal::PointVector<dim, TComponent,TContainer>::operator-() const
+{
+  return Self(*this, UnaryMinusFunctor<Component>());
+}
+//------------------------------------------------------------------------------
+template<DGtal::Dimension dim, typename TComponent, typename TContainer>
+inline
 void
 DGtal::PointVector<dim, TComponent, TContainer>::reset()
 {
@@ -634,19 +653,19 @@ DGtal::PointVector<dim, TComponent, TContainer>::norm (const
     {
     case L_2:
       for ( DGtal::Dimension i = 0; i < dimension; i++ )
-        tmp += NumberTraits<Component>::castToDouble(this->operator[]( i )) *
-    NumberTraits<Component>::castToDouble(this->operator[] ( i ));
+        tmp += NumberTraits<Component>::castToDouble(myArray[ i ]) *
+    NumberTraits<Component>::castToDouble(myArray[ i ]);
       tmp = ( double ) sqrt ( tmp );
       break;
     case L_1:
       for ( DGtal::Dimension i = 0; i < dimension; i++ )
-        tmp += fabs (  NumberTraits<Component>::castToDouble(this->operator[]( i ) ));
+        tmp += fabs (  NumberTraits<Component>::castToDouble(myArray[ i ] ));
       break;
     case L_infty:
-      tmp = fabs( NumberTraits<Component>::castToDouble( this->operator[]( 0 )));
+      tmp = fabs( NumberTraits<Component>::castToDouble( myArray[ 0 ]));
       for ( DGtal::Dimension i = 1; i < dimension; i++ )
-        if ( tmp < fabs ( NumberTraits<Component>::castToDouble(this->operator[] ( i ) ) ))
-          tmp = fabs ( NumberTraits<Component>::castToDouble(this->operator[] ( i ) ));
+        if ( tmp < fabs ( NumberTraits<Component>::castToDouble(myArray[ i ] ) ))
+          tmp = fabs ( NumberTraits<Component>::castToDouble(myArray[ i ] ));
       break;
   }
   return tmp;
@@ -723,7 +742,7 @@ DGtal::PointVector<dim,TComponent, TContainer>::selfDisplay( std::ostream & out 
 {
   out << "[PointVector] {";
   for (DGtal::Dimension i = 0; i < dimension ; ++i)
-    out << this->operator[]( i ) << (i == dimension - 1 ? "" : ", ");
+    out << myArray[ i ] << (i == dimension - 1 ? "" : ", ");
   out << "}";
 }
 
