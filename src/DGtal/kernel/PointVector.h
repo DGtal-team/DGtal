@@ -94,6 +94,11 @@ namespace DGtal
    * operator). This type is used to represent PointVector elements
    * (Coordinate for Point and Component for Vector) and define
    * operations on Point or Vectors.
+   * @tparam TContainer specifies the container to be used to store
+   * the point coordinates. At this point, such container must be a
+   * random access bidirectionnal a-la STL containers (e.g. vector,
+   * boost/array).
+   *
    *
    * If TEuclideanRing is a Integer type (built-in integers,
    * BigIntegers, ...), the "/" operator on Points corresponds to
@@ -168,8 +173,8 @@ namespace DGtal
      **/
     typedef typename Container::iterator Iterator;
     typedef typename Container::const_iterator ConstIterator;
-    // typedef typename Container::reverse_iterator ReverseIterator;
-    //typedef typename Container::const_reverse_iterator ConstReverseIterator;
+    typedef typename Container::reverse_iterator ReverseIterator;
+    typedef typename Container::const_reverse_iterator ConstReverseIterator;
 
     /**
      * Constructor.
@@ -364,28 +369,28 @@ namespace DGtal
      *
      * @return a ReverseIterator on the first element of a Point/Vector.
      **/
-    //ReverseIterator rbegin();
+    ReverseIterator rbegin();
 
     /**
      * PointVector rend() reverse iterator.
      *
      * @return a ReverseIterator on the last element of a Point/Vector.
      **/
-    //ReverseIterator rend();
+    ReverseIterator rend();
 
     /**
      * PointVector rbegin() const reverse iterator.
      *
      * @return an ConstReverseIterator on the first element of a Point/Vector.
      **/
-    //    ConstReverseIterator rbegin() const;
+    ConstReverseIterator rbegin() const;
     
     /**
      * PointVector rend() const reverse iterator.
      *
      * @return a ConstReverseIterator on the last element of a Point/Vector.
      **/
-    //ConstReverseIterator rend() const;
+    ConstReverseIterator rend() const;
 
     // ----------------------- Array services ------------------------------
   public:

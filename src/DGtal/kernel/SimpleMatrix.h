@@ -48,7 +48,7 @@
 #ifdef CPP11_ARRAY
 #include <array>
 #else
-#include <boost/array>
+#include <boost/array.hpp>
 #endif
 //////////////////////////////////////////////////////////////////////////////
 
