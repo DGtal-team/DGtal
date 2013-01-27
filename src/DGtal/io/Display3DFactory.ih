@@ -125,7 +125,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 			   p2[0], p2[1], p2[2], 
 			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
      }else if(aNum>4){
-       vector<Display3D::pointD3D> vectPoly;
+       std::vector<Display3D::pointD3D> vectPoly;
        for(unsigned int j=0; j< aFace.size(); j++){
 	 Display3D::pointD3D pt;
 	 pt.x= aMesh.getVertex(aFace.at(j))[0];
@@ -135,7 +135,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
        }
        display.addPolygon(vectPoly, aMesh.getFaceColor(i));
      }else{
-       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< endl;
+       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< std::endl;
      }
      
      
@@ -776,7 +776,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -784,7 +784,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   ASSERT(dim == 3);
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
-  ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration")||
+  ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration"||mode=="IllustrationCustomColor")||
    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
@@ -811,19 +811,28 @@ void DGtal::Display3DFactory::draw( Display3D & display,
    
   switch (spaceDim) {
   case 0:  
-    display.setFillColor(DGtal::Color(200, 20, 20, 255));
+    if(mode!=""&& mode!="IllustrationCustomColor"){
+      display.setFillColor(DGtal::Color(200, 20, 20, 255));
+    }
     display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, false, false);
     break;
   case 1:
-    display.setFillColor(DGtal::Color(20, 20, 200, 255));
+    if(mode!=""&& mode!="IllustrationCustomColor"){
+      display.setFillColor(DGtal::Color(20, 20, 200, 255));
+    }
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ));
     break;
   case 2:
+    if(mode!="" && mode!="IllustrationCustomColor"){
+      display.setFillColor(DGtal::Color(20, 20, 200, 255));
+    }
     display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, false, false, basicMode); 
     break;
   case 3:
-    display.setFillColor(DGtal::Color(255, 180, 250, 255));
-    if(mode=="Illustration"){
+    if(mode!="" && mode!="IllustrationCustomColor"){
+      display.setFillColor(DGtal::Color(255, 180, 250, 255));
+    }
+    if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
       display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
     }else{
       display.addKSVoxel((int)x, (int) y, (int) z);
@@ -833,6 +842,85 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   display.setFillColor(fillColorSave);
 }
 // KhalimskyCell
+
+
+// SignedKhalimskyCell
+template<  DGtal::Dimension dim, typename TInteger >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,
+				    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
+{
+
+   ASSERT(dim == 3);
+  DGtal::Color fillColorSave = display.getFillColor();  
+  std::string mode = display.getMode( sk.className() );
+  ASSERT((mode==""  || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration" || mode=="IllustrationCustomColor")||
+    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
+  // used to display surfels located at a same position.
+  double factorVolSurfel=1.0;
+  bool basicMode=false;
+  if(mode=="Highlighted"){
+    factorVolSurfel = 1.2;
+    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
+  }else if(mode=="Transparent"){
+    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
+  }else if(mode=="Basic"){
+    basicMode=true;
+  }
+  float x = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
+  float y = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[1] ) >> 1 );
+  float z = (float) 
+    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[2] ) >> 1 );
+  
+  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
+  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
+  bool zodd = ( sk.myCoordinates[ 2 ] & 1 );
+    
+  
+  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
+  // pointel
+  switch (spaceDim) {
+    
+  case 0:
+    if(mode!="" && mode!="IllustrationCustomColor"){
+      if( sk.myPositive)
+	display.setFillColor(DGtal::Color(20, 20, 250, 255));
+      else
+	display.setFillColor(DGtal::Color(20, 20, 150, 255));
+    }
+      display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, sk.myPositive);
+      break;
+  case 1:
+    if(mode!="" && mode!="IllustrationCustomColor"){
+      display.setFillColor(DGtal::Color(20, 200, 200, 255));
+    }    
+    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
+          0.02, true, sk.myPositive);
+    break;
+  case 2:
+    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
+    break;
+  case 3:
+    if(mode!="" && mode!="IllustrationCustomColor"){
+      if( sk.myPositive){
+      	display.setFillColor(DGtal::Color(20, 20, 200, 255));
+      }else{
+	display.setFillColor(DGtal::Color(20, 200, 20, 255));
+      }
+    }
+    if(mode=="Illustration"|| mode=="IllustrationCustomColor"){
+      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
+    }else{
+      display.addKSVoxel((int)x, (int) y, (int) z);
+    }
+    break; 
+  } 
+  display.setFillColor(fillColorSave);
+}
+// SignedKhalimskyCell
+
 
 
 // Object
@@ -890,7 +978,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 // PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsGrid( Display3D & display, 
 					  const DGtal::PointVector<dim,TComponent> & p )
@@ -902,7 +990,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
 		   NumberTraits<TComponent>::castToDouble(p.myArray[2]), display.getLineColor());
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsPaving( Display3D & display, 
 					    const DGtal::PointVector<dim,TComponent> & p )
@@ -914,7 +1002,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor());
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display, 
 						 const DGtal::PointVector<dim,TComponent> & p )
@@ -926,7 +1014,7 @@ void DGtal::Display3DFactory::drawAsPavingWired( Display3D & display,
 		   NumberTraits<TComponent>::castToInt64_t(p.myArray[2]), display.getFillColor(), 0.5, true);
 }
     
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::PointVector<dim,TComponent> & p )
@@ -950,7 +1038,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   }
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
 				    const DGtal::PointVector<dim,TComponent> & p, 
@@ -968,78 +1056,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 }
 // PointVector
 
-
-// SignedKhalimskyCell
-template< Dimension dim, typename TInteger >
-inline
-void DGtal::Display3DFactory::draw( Display3D & display,
-				    const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
-{
-
-   ASSERT(dim == 3);
-  DGtal::Color fillColorSave = display.getFillColor();  
-  std::string mode = display.getMode( sk.className() );
-  ASSERT((mode==""  || mode=="Highlighted" || mode=="Transparent" || mode=="Basic" || mode=="Illustration")||
-    ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::SignedKhalimskyCell<dim, TInteger> & sk ): Unknown mode "+mode)=="");
-  // used to display surfels located at a same position.
-  double factorVolSurfel=1.0;
-  bool basicMode=false;
-  if(mode=="Highlighted"){
-    factorVolSurfel = 1.2;
-    display.setFillColor(DGtal::Color(255, 50, 50, 255));  
-  }else if(mode=="Transparent"){
-    display.setFillColor(DGtal::Color(180, 180, 250, 25));  
-  }else if(mode=="Basic"){
-    basicMode=true;
-  }
-  float x = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
-  float y = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[1] ) >> 1 );
-  float z = (float) 
-    ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[2] ) >> 1 );
-  
-  bool xodd = ( sk.myCoordinates[ 0 ] & 1 );
-  bool yodd = ( sk.myCoordinates[ 1 ] & 1 );
-  bool zodd = ( sk.myCoordinates[ 2 ] & 1 );
-    
-  
-  unsigned int spaceDim= (xodd ? 1:0) + (yodd ? 1:0) + (zodd ? 1:0);
-  // pointel
-  switch (spaceDim) {
-    
-  case 0:
-    if( sk.myPositive)
-      display.setFillColor(DGtal::Color(20, 20, 250, 255));
-    else
-      display.setFillColor(DGtal::Color(20, 20, 150, 255));
-    
-    display.addKSPointel(x-0.5, y-0.5, z-0.5, 0.05, true, sk.myPositive);
-    break;
-  case 1:
-    display.setFillColor(DGtal::Color(20, 200, 200, 255));
-    display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
-          0.02, true, sk.myPositive);
-    break;
-  case 2:
-    display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
-    break;
-  case 3:
-    if( sk.myPositive){
-      	display.setFillColor(DGtal::Color(20, 20, 200, 255));
-    }else{
-      display.setFillColor(DGtal::Color(20, 200, 20, 255));
-    }
-    if(mode=="Illustration"){
-      display.addKSVoxel((int)x, (int) y, (int) z, 0.7);
-    }else{
-      display.addKSVoxel((int)x, (int) y, (int) z);
-    }
-    break; 
-  } 
-  display.setFillColor(fillColorSave);
-}
-// SignedKhalimskyCell
 
 // GridCurve
 template< typename TKSpace >

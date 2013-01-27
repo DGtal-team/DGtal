@@ -70,29 +70,11 @@ Description of \b concept '\b CConvolutionWeights' <p>
  ### Definitions
 
  ### Valid expressions and
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr>
-        <td class=CName> Apply function           </td>
-        <td class=CExpression>  x(v)     </td>
-        <td class=CRequirements> v of type const  Vector&    </td>
-        <td class=CReturnType> double     </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics>  the value of the kernel at @e v     </td>
-        <td class=CPostCondition>   </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
 
-     </table>
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Apply function|x(v)        |v of type const Vector&| double    |                  |the value of the kernel at @e v | | O(1) |
 
  ### Invariants###
 

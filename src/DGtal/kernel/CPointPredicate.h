@@ -42,7 +42,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/CUnaryFunctor.h"
+
+#include "DGtal/base/CPredicate.h"
+
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,39 +56,40 @@ namespace DGtal
 Description of \b concept '\b CPointPredicate' <p>
      @ingroup Concepts
      \brief Aim: Defines a predicate on a point. 
-     
+   
      Associates booleans to points.
     
- ### Refinement of CUnaryFunctor
+ ### Refinement of 
+    CPredicate
+
     
  ### Associated types :
-
      - Point : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
- ### Models###
+ ### Models
+    - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
+    - complex predicate constructor: BinaryPointPredicate
+    - others: DomainPredicate, SetPredicate
     
-     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
-    
- ### Notes###
+ ### Notes
    */
-  template <typename T>
-  struct CPointPredicate
+template <typename T>
+struct CPointPredicate: CPredicate<T, typename T::Point>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef typename T::Point Point;
-
+    
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
-
+    
     // ------------------------- Private Datas --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:
+    
     
   }; // end of concept CPointPredicate
   

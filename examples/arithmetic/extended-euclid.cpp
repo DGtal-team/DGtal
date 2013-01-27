@@ -1,0 +1,83 @@
+/**
+ * @file extended-euclid.cpp
+ * @ingroup Examples
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/02/06
+ *
+ * An example file named extended-euclid.
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+//! [extended-euclid-basicIncludes]
+#include <cstdlib>
+#include <cmath>
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include "DGtal/arithmetic/IntegerComputer.h"
+//! [extended-euclid-basicIncludes]
+
+///////////////////////////////////////////////////////////////////////////////
+
+using namespace DGtal;
+
+///////////////////////////////////////////////////////////////////////////////
+
+void usage( int, char** argv )
+{
+  std::cerr << "Usage: " << argv[ 0 ] << " <a> <b> <c>" << std::endl;
+  std::cerr << "\t - solves the diophantine equation ax+by=c by the extended Euclid algorithm." << std::endl;
+  std::cerr << "\t - note: c should be a multiple of gcd(a,b)." << std::endl;
+}
+
+/**
+   Main.
+*/
+int main( int argc, char** argv )
+{
+  if ( argc < 4 )
+    {
+      usage( argc, argv );
+      return 0;
+    }
+
+  //! [extended-euclid-types]
+  typedef BigInteger Integer;
+  typedef IntegerComputer<Integer> IC;
+  //! [extended-euclid-types]
+
+  //! [extended-euclid-instantiation]
+  Integer a( argv[ 1 ] );
+  Integer b( argv[ 2 ] );
+  Integer c( argv[ 3 ] );
+  IC ic;
+  Integer g = ic.gcd( a, b );
+  if ( ic.isZero( g ) )
+    {
+      std::cerr << "[Error] parameters a and b should be non-null." << std::endl;
+      return 1;
+    }
+  if ( ic.isNotZero( c % g ) )
+    {
+      std::cerr << "[Error] parameter c should be a multiple of gcd(a,b)." << std::endl;
+      return 2;
+    }
+  //! [extended-euclid-instantiation]
+
+  //! [extended-euclid-process]
+  IC::Vector2I X = ic.extendedEuclid( a, b, c );
+  std::cout << "x=" << X[ 0 ] << " y=" << X[ 1 ] << std::endl;
+  Integer d = a*X[ 0 ] + b*X[ 1 ];
+  if ( c != d )
+    {
+      std::cerr << "[Internal Error] Output of extended Euclid algorithm is incorrect." << std::endl;
+      return 3;
+    }
+  //! [extended-euclid-process]
+  return 0;
+}
+

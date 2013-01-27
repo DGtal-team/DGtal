@@ -1,22 +1,3 @@
-/* -*- mode: c++ -*- */
-/**
- * @file   ShapeList.ih
- * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
- * @date   Sat Aug 18 2007
- * 
- * @brief  Inline methods of the Transform classes.
- */
-/*
- * \@copyright This File is part of the Board library which is
- * licensed under the terms of the GNU Lesser General Public Licence.
- * See the LICENCE file for further details.
- */
-
-#if defined( max )
-#undef max 
-#define _HAS_MSVC_MAX_ true
-#endif
-
 ShapeList::ShapeList( int depthValue )
   : Shape( DGtal::Color::None, DGtal::Color::None, 1.0, SolidStyle, ButtCap, MiterJoin, depthValue ),
     _nextDepth( std::numeric_limits<int>::max() - 1 )
@@ -35,7 +16,3 @@ ShapeList::last( const unsigned int position )
     throw -1;
   }
 }
-
-#if defined( _HAS_MSVC_MAX_ )
-#define max(A,B) ((A)>(B)?(A):(B))
-#endif

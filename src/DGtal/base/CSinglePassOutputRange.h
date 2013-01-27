@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CConstSinglePassRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -49,43 +50,38 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSinglePassOutputRange
   /**
-Description of \b concept '\b CSinglePassOutputRange' <p>
+     Description of \b concept '\b CSinglePassOutputRange' <p>
      @ingroup Concepts
-     @brief Aim: refined concept of single pass range which require that an output iterator exists.
+     @brief Aim: refined concept of const single pass range which require that an output iterator exists.
 
+     ###  Refinement of CSinglePassRange
 
- ###  Refinement of
-
- ###  Associated types :
+     ###  Associated types :
      - OutputIterator: type of output iterator on the range.
 
- ###  Notation
+     ###  Notation
      - \a X : A type that is a model of CSinglePassOutputRange
      - \a x, \a y : object of type X
 
+     ###  Definitions
 
- ###  Definitions
+     | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
+     |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
+     | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
+     
 
+     ###  Invariants
 
-| Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
-|----------+------------------+-------------------+----------------+--------------+----------------------------------------------------+----------------+------------|
-| creation | outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
-|          |                  |                   |                |              |                                                    |                |            |
+     ###  Models
+     - ImageContainerBySTLVector::Range
 
+     ###  Notes
 
- ###  Invariants
-
- ###  Models
-
-     ImageContainerBySTLVector::Range
-
- ###  Notes
-
-@tparam T the type that should be a model of CSinglePassOutputRange.
-@tparam Value the type of object t in (*it) = t.
+     @tparam T the type that should be a model of CSinglePassOutputRange.
+     @tparam Value the type of object t in (*it) = t.
    */
   template <typename T, typename Value>
-  struct CSinglePassOutputRange
+  struct CSinglePassOutputRange : CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

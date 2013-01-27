@@ -651,6 +651,10 @@ namespace DGtal
      */ 
     Iterator minElement() ;
 
+    /**
+       Negates this vector.
+    */
+    void negate();
 
     /**
      * Specify the set of norm types
@@ -762,6 +766,23 @@ namespace DGtal
   template<Dimension dim, typename Component, typename TC>
   std::ostream&
   operator<<( std::ostream & out, const PointVector<dim, Component, TC> & object );
+
+  /**
+     External multiplication operator with a scalar number
+
+     @param coeff is the factor \a aVector is multiplied by.
+     @param aVector is the vector that is multiplied by the factor \a coef.
+
+     @return a new Vector that is the multiplication of \a aVector by
+     \a coeff.
+  */
+  template<Dimension dim, typename Component, typename Container>
+  PointVector<dim, Component,Container> 
+  operator*( Component coeff,
+	     const PointVector<dim, Component,Container> & aVector );
+
+
+
 
   ///Static const for zero definition
   template< Dimension dim, typename Component, typename TC>

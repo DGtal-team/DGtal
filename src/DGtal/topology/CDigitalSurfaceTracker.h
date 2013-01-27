@@ -54,7 +54,8 @@ Description of \b concept '\b CDigitalSurfaceTracker' <p>
      @ingroup Concepts
      @brief Aim:
      
- ### Refinement of boost_concepts::CopyConstructible
+ ### Refinement of 
+     boost::CopyConstructible
     
  ### Associated types :
     
@@ -64,38 +65,18 @@ Description of \b concept '\b CDigitalSurfaceTracker' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+ ### Valid expressions and semantics
     
-     </table>
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| | | | | | | | | 
+     
+ ### Invariants
     
- ### Invariants###
-    
- ### Models###
-
+ ### Models
      A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
 
- ### Notes###
+ ### Notes
 
 @tparam T the type that should be a model of CDigitalSurfaceTracker.
    */

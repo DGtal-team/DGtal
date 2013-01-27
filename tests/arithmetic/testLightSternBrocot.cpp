@@ -745,6 +745,30 @@ bool testLightSternBrocot()
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
+/**
+   Bug report of I. Sivignon.
+*/
+template <typename SB>
+bool 
+testAncestors()
+{
+  typedef typename SB::Fraction Fraction; 
+  typedef typename Fraction::Integer Integer; 
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef typename DSL::Point Point;
+
+  // Instanciation d'un DSL
+  DSL D(1077,1495,6081);
+  
+  // Definition du sous-segment [AB] et calcul des caractéristiques
+  Point A(3,-3);
+  Point B(4,-2);
+  ASSERT( D( A ) && "Point A belongs to D." );
+  ASSERT( D( B ) && "Point A belongs to D." );
+  DSL D1 = D.reversedSmartDSS(A,B); // may raise an assert.
+  std::cerr << D1 << std::endl;
+  return D1.slope() == Fraction( 1, 1 );
+}
 
 int main( int , char** )
 {
@@ -758,7 +782,8 @@ int main( int , char** )
   trace.beginBlock ( "Testing class LightSternBrocot" );
   bool res = testLightSternBrocot()
     && testPattern<SB>()
-    && testSubStandardDSLQ0<Fraction>();
+    && testSubStandardDSLQ0<Fraction>()
+    && testAncestors<SB>();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 

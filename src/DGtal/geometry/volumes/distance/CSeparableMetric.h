@@ -52,38 +52,34 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSeparableMetric
   /**
-   * DescriptionDescription of \b concept '\b CSeparableMetric' <p>
-   * @ingroup Concepts
-   * Aim: The concept CSeparableMetric specifies what are the classes
-   * that implement a model of separable metrics.
-   * 
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CSeparableMetric
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * <td> </td> <td> </td> <td> </td> <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   *    l_0, l_1 and l_2 metrics defined in the SeparableMetricHelper.H
-   * <p> Notes###
+    Description of \b concept '\b CSeparableMetric' <p>
+    @ingroup Concepts
+    
+    @brief Aim: The concept CSeparableMetric specifies what are the classes
+    that implement a model of separable metrics.
+    
+   ### Refinement of
+   
+   ### Associated types :
+   
+   ### Notation
+    - \t X : A type that is a model of CSeparableMetric
+    - \t x, \t y  : Object of type X
+   
+   ### Definitions
+   
+   ### Valid expressions and semantics
+
+   
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| | | | | | | | |
+   
+   ### Invariants
+   
+   ### Models
+    l_0, l_1 and l_2 metrics defined in the SeparableMetricHelper.h
+   ### Notes
    */
   template <typename T>
   struct CSeparableMetric

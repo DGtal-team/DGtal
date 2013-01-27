@@ -329,12 +329,20 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::DigitalSetBySTLSet<Domain> & s )
 {
   typedef typename Domain::Point Point;
+  typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
   ASSERT(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
+// <<<<<<< HEAD
+//     board.drawRectangle( NumberTraits<Coordinate>::castToDouble( (*it)[0] ) - 0.5,
+//                          NumberTraits<Coordinate>::castToDouble( (*it)[1] ) + 0.5,
+//                          1,
+//                          1 );      
+// =======
     draw(board, *it);
   
+  //>>>>>>> master
 }
 // DigitalSetBySTLSet
 
@@ -584,19 +592,80 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 }
 // GeometricalDCA
 
+ 
+
+// FrechetShortcut
+template <typename TIterator,typename TInteger>
+inline
+  void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterator,TInteger> & f)
+{
+  typedef TIterator Iterator;
+  typedef PointVector<2,TInteger> Point; 
+  typedef typename Point::Coordinate Coordinate; 
+
+  // get first point of the shortcut
+  Point p1 = *(f.begin());
+  double px1 = NumberTraits<Coordinate>::castToDouble(p1[0]);
+  double py1 = NumberTraits<Coordinate>::castToDouble(p1[1]);
+  
+  // get last point of the shortcut
+  Iterator it (f.end());
+  --it;
+  Point p2(*it);
+  double px2 = NumberTraits<Coordinate>::castToDouble(p2[0]);
+  double py2 = NumberTraits<Coordinate>::castToDouble(p2[1]);
+  
+  aBoard.drawLine(px1,py1,px2,py2);
+}
+// FrechetShortcut
+
+
+
 // GridCurve
 template <typename TKSpace>
 void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard, 
            const GridCurve<TKSpace> & object )
 {
+
+  std::string mode = aBoard.getMode( object.className() );
+  if(mode=="Fill"){
+    DGtal::Display2DFactory::drawFill(aBoard, object);
+  }else{
     typedef typename GridCurve<TKSpace>::ConstIterator ConstIterator; 
     ConstIterator it ( object.begin() ); 
     ConstIterator itEnd ( object.end() ); 
     for( ; it != itEnd; ++it)
       {
-	      aBoard << *it;
+	aBoard << *it;
       }
+  }
 }
+
+template <typename TKSpace>
+void DGtal::Display2DFactory::drawFill( DGtal::Board2D & aBoard, 
+				    const GridCurve<TKSpace> & object )
+{
+
+    
+  typedef typename GridCurve<TKSpace>::PointsRange::ConstIterator Iterator; 
+  typedef typename GridCurve<TKSpace>::PointsRange Range; //range
+
+  Range r = object.getPointsRange(); 
+  Iterator it (r.begin());
+  Iterator itEnd (r.end());
+  
+  std::vector< LibBoard::Point > aPolygon;
+  for( ; it != itEnd; ++it)
+    {
+      LibBoard::Point pt((*it)[0], (*it)[1]);
+      aPolygon.push_back(pt);
+    }
+  aBoard.fillPolyline(aPolygon);
+}
+
+
+
+
 // GridCurve
 
 // SCellsRange
@@ -833,7 +902,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
 void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
-                                                  const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+                                                  const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                                                   HashKey key,
                                                   const double p[2],
                                                   const double len,
@@ -881,8 +950,8 @@ void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
   
 template <typename C, typename Domain, typename Value, typename HashKey>
 inline
-void DGtal::Display2DFactory::drawImage( Board2D & board,
-                const DGtal::ImageContainerByHashTree<Domain, Value, HashKey> & i,
+void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
+                const DGtal::experimental::ImageContainerByHashTree<Domain, Value, HashKey> & i,
                 const Value &minV, const Value &maxV )
 {
    static const HashKey ROOT_KEY = static_cast<HashKey>(1);
@@ -904,15 +973,18 @@ void DGtal::Display2DFactory::drawImage( Board2D & board,
 // ImageContainerByHashTree
 
 
-// ImageContainerBySTLVector
-template <typename Colormap, typename D, typename V>
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
+template <typename Colormap, typename Image>
 inline
 void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
-                                         const DGtal::ImageContainerBySTLVector<D, V> & i,
-                                         const V &minV,
-                                         const V &maxV )
+                                         const Image & i,
+                                         const typename Image::Value & minV,
+                                         const typename Image::Value & maxV )
 {
-  ASSERT(D::dimension == 2);
+  typedef typename Image::Domain D;
+  typedef typename Image::Value V;
+  
+  ASSERT(D::Space::dimension == 2);
 
   Colormap colormap(minV, maxV);
   Color c;
@@ -931,11 +1003,11 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
        castToInt64_t((*it)[1]) + 0.5, 1, 1);
   }
 }
-// ImageContainerBySTLVector
+// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
 
 
 // KhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
@@ -1012,7 +1084,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // PointVector
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1022,7 +1094,7 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board,
                        (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1032,7 +1104,7 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board,
                    (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
   
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
@@ -1052,7 +1124,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
     }
 }
 
-template<Dimension dim, typename TComponent>
+template<DGtal::Dimension dim, typename TComponent>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board, 
           const DGtal::PointVector<dim,TComponent> & p, 
@@ -1112,7 +1184,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 
 
 // SignedKhalimskyCell
-template < Dimension dim, typename TInteger >
+template < DGtal::Dimension dim, typename TInteger >
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
@@ -1160,6 +1232,40 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SetMode & sm )
 {
   board.myModes[ sm.myClassname ] = sm.myMode;
+}
+
+template <typename TSpace, typename TSequence>
+inline
+void 
+DGtal::Display2DFactory::draw
+( DGtal::Board2D & aBoard, 
+  const DGtal::LatticePolytope2D<TSpace, TSequence> & cip )
+{
+  typedef typename LibBoard::Point BoardPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Point CIPPoint;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::ConstIterator ConstIterator;
+  typedef typename DGtal::LatticePolytope2D<TSpace>::Integer Integer;
+  std::string mode = aBoard.getMode( cip.className() );
+  ASSERT( mode=="Filled" || mode=="" || mode=="Transparent" ||
+          ("draw(Board2D & aBoard, const DGtal::LatticePolytope2D<Space,Sequence> & cip): Unknown mode "+mode)==""  );
+  
+  std::vector<BoardPoint> pts;
+
+  for ( ConstIterator it = cip.begin(), it_end = cip.end(); it != it_end; ++it )
+    {
+      CIPPoint p = *it;
+      pts.push_back( BoardPoint( NumberTraits<Integer>::castToDouble( p[ 0 ] ),
+                                 NumberTraits<Integer>::castToDouble( p[ 1 ] ) ) );
+    }
+  aBoard.drawClosedPolyline( pts );
+  // if ( mode == "Transparent"  || ( mode == "" )  )
+  //   {
+  //     aBoard.drawClosedPolyline( pts );
+  //   }
+  // else
+  //   {
+  //     aBoard.fillPolyline( pts );
+  //   }
 }
 
 

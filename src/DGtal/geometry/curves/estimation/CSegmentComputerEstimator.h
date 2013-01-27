@@ -76,7 +76,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name     | Expression          | Type requirements | Return type | Precondition | Semantics                       | Post condition | Complexity      |
-     |----------+---------------------+-------------------+-------------+--------------+---------------------------------+----------------+-----------------|
+     |----------|---------------------|-------------------|-------------|--------------|---------------------------------|----------------|-----------------|
      | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |                              
 
      ### Invariants

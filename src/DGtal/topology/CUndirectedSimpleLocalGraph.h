@@ -55,12 +55,11 @@ namespace DGtal
   /**
 Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
      @ingroup Concepts
-     @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
+@brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
      
  ### Refinement of
     
  ### Associated types :
-
      - Size: an integral type to count the number of vertices.
      - Vertex: the type for the vertices of the graph.
      - VertexSet: the type for storing a set of vertices.
@@ -75,66 +74,19 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            Degree</td> 
-        <td class=CExpression>      x.degree( v )</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      Size</td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Returns the degree of vertex \c v</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-      <tr> 
-        <td class=CName>            Best capacity</td> 
-        <td class=CExpression>      x.bestCapacity()</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      Size</td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Returns the approximate number of neighbors to be expected. Useful to prepare data structures.</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-      <tr> 
-        <td class=CName>            Neighborhood</td> 
-        <td class=CExpression>      x.writeNeighbors<OutputIterator>( out, v )</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Writes with the output iterator \c out the neighboring vertices of \c v.</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-      <tr> 
-        <td class=CName>            Neighborhood</td> 
-        <td class=CExpression>      x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p )</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p.</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-     </table>
-    
+ ### Valid expressions and semantics 
+     
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Degree        | x.degree(v)|                     | Size        |                  |Returns the degree of vertex \c v | | |
+|Capacity       | x.bestCapacity() |               | Size        |                  |Returns the approximate number of neighbors to be expected. Useful to prepare data structures. | | |      
+|Neighbourhood | x.writeNeighbors<OutputIterator>( out, v ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v. | | |
+| Neighborhood | x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p. | | |  
+            
  ### Invariants###
     
  ### Models###
-
-     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
+        DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
 
  ### Notes###
 
@@ -159,7 +111,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     };
  
     // possibly check these types so as to satisfy a concept with
-    BOOST_CONCEPT_ASSERT(( CInteger< Size > ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CUndirectedSimpleLocalGraph )

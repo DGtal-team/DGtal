@@ -134,7 +134,9 @@ bool testCompareEstimator(const std::string &name, Shape & aShape, double h)
       trace.info() << "Nb samples= "<< error.samples()<<std::endl;
       trace.info() << "Error mean= "<< error.mean()<<std::endl;
       trace.info() << "Error max= "<< error.max()<<std::endl;
-      nbok += ( (error.samples() == r.size())&&(error.max() == 0) )?1:0; 
+      nbok += ( ( ( (unsigned int)error.samples() ) == r.size())
+                && (error.max() == 0) )
+        ? 1 : 0; 
       nb++;
       trace.info() << nbok << "/" << nb << std::endl; 
 

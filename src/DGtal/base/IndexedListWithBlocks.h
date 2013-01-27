@@ -55,24 +55,23 @@ namespace DGtal
      Aim: Represents a mixed list/array structure which is useful in
      some context. It is essentially a list of blocks.
 
-@verbatim
-if less than 3 values and N = 2
-+------+------+------+------+------+
-| size | V[0] | V[1] | ...  |  0   |
-+------+------+------+------+------+
+     @verbatim
+     if less than 3 values and N = 2
+     +------+------+------+------+------+
+     | size | V[0] | V[1] | ...  |  0   |
+     +------+------+------+------+------+
 
-if only 3 values and N = 2
-+------+------+------+------+------+
-| size | V[0] | V[1] | V[2] | V[3] |
-+------+------+------+------+------+
+     if only 3 values and N = 2
+     +------+------+------+------+------+
+     | size | V[0] | V[1] | V[2] | V[3] |
+     +------+------+------+------+------+
 
-if more than 3 values and N = 2, M = 4
-+------+------+------+------+------+        +------+------+------+------+------+
-| size | V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
-+------+------+------+------+------+        +------+------+------+------+------+
+     if more than 3 values and N = 2, M = 4
+     +------+------+------+------+------+        +------+------+------+------+------+
+     | size | V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
+     +------+------+------+------+------+        +------+------+------+------+------+
 
-@endverbatim
-
+     @endverbatim
 
      Such a structure is useful when:
      - the user knows at which position/index lies its value.

@@ -92,7 +92,7 @@ namespace DGtal
   Proxy class to a DigitalSurfaceContainer.
 
   DigitalSurface is a model of the concept CUndirectedSimpleGraph,
-  CUndirectedSimpleLocalGraph, CSinglePassConstRange,
+  CUndirectedSimpleLocalGraph, CConstSinglePassRange,
   boost::CopyConstructible, boost::Assignable.
 
   @todo Should be a model of CCubicalComplex
@@ -100,6 +100,8 @@ namespace DGtal
   @tparam TDigitalSurfaceContainer any model of
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
+
+  @see \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -303,6 +305,45 @@ namespace DGtal
     
     /**
        @return a ConstIterator on the first surfel in the container.
+
+     @remark The digital surface delegates operations to some model of
+     CDigitalSurfaceContainer. Therefore, ranges have only the
+     guarantee to be a model CConstSinglePassRange, but \b not
+     necessarily a model of CConstBidirectionalRange. For instance, if
+     you wish to do an algorithm like: for all vertex x, for all
+     vertex y, compute something, then the following code may not
+     work depending on the container:
+
+     @code
+     // This snippet may NOT work.
+     const ConstIterator itb = mySurface.begin(); 
+     const ConstIterator ite = mySurface.end();
+     for ( ConstIterator itX = itb; itX != ite; ++itX ) 
+     { 
+       for ( ConstIterator itY = itb; itY != ite; ++itY ) 
+       { // compute something with *itX and *itY.
+         // But itX == itY at each step ! }
+       // now itX == itY == ite !
+       }
+     @endcode
+     
+     You may use this range only once ! This is because the iterators
+     are only single pass. If you wish to visit twice the range, you
+     must indeed creates two ranges by calling begin() twice (end() is
+     not compulsory here, but advised).
+
+     @code
+     // This snippet does ALWAYS work.
+     for ( ConstIterator itX = mySurface.begin(), 
+                         itXEnd = mySurface.end();
+           itX != itXEnd; ++itX ) 
+     {
+       for ( ConstIterator itY = mySurface.begin(), 
+                           itYEnd = mySurface.end();
+             itY != itYEnd; ++itY ) 
+         { // compute something with *itX and *itY. }
+     }
+     @endcode
     */
     ConstIterator begin() const;
 
