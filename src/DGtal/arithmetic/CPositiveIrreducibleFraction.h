@@ -46,7 +46,6 @@
 #include "DGtal/base/CBackInsertable.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -87,7 +86,7 @@ except the last one. In this sense, a fraction is a sequence
   representing the depth of the fraction. Might be the same as Integer
   but may be also smaller, since quotients are generally much smaller
   than the convergent numerators and denominators. Must be a model of
-  CSignedInteger since depths may be negative (1/0 is -1).
+  CInteger since depths may be negative (1/0 is -1).
 
 - \e Value and \e value_type: the type \c std::pair<Quotient,Quotient>, useful
   to create back insertion sequence.
@@ -171,7 +170,7 @@ public:
   typedef typename T::const_iterator const_iterator;
 
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
+  BOOST_CONCEPT_ASSERT(( CInteger< Quotient > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, std::pair<Quotient,Quotient> >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType<value_type, Value >::value ));
 

@@ -103,7 +103,7 @@ Description of \b concept '\b CDynamicBidirectionalSegmentComputer' <p>
     // ----------------------- Concept checks ------------------------------
   public:
     // Methods
-    BOOST_CONCEPT_USAGE( CDynamicSegmentComputer )
+    BOOST_CONCEPT_USAGE( CDynamicBidirectionalSegmentComputer )
     {
       ConceptUtils::sameType( myB, myX.retractBackward() );
     }

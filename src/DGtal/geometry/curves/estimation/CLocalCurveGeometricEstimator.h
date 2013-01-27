@@ -77,7 +77,7 @@ namespace DGtal
      ### Valid expressions and semantics
 
      | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
-     |----------------+-------------------------------+---+------------------------------+--------------+-------------------------------------------+---+-----------------|
+     |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
      | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
      | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
      | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |

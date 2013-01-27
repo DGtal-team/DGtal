@@ -45,7 +45,8 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/colormaps/CColorMap.h"
+#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/base/BasicFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -57,36 +58,33 @@ namespace DGtal
    * Description of template struct 'RawWriter' <p>
    * \brief Aim: Raw binary export of an Image.
    *
+   * A functor can be specified to convert image values to raw values
+   * (unsigned char for exportRaw8).
+   *
    * @tparam TImage the Image type.
-   * @tparam TColormap the type of the colormap to use in the export.
+   * @tparam TFunctor the type of functor used in the export.
    */
-  template <typename TImage, typename TColormap>
+  template <typename TImage, typename TFunctor = DefaultFunctor>
   struct RawWriter
   {
     // ----------------------- Standard services ------------------------------
 
-    BOOST_CONCEPT_ASSERT((CColorMap<TColormap>));
-
-    BOOST_STATIC_ASSERT((boost::is_same< typename TColormap::Value, 
-       typename TImage::Value>::value));
-    
     typedef TImage Image;
     typedef typename TImage::Value Value;
-    typedef TColormap Colormap;
-
+    typedef TFunctor Functor;
+    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+    
     /** 
-     * Export an Image to  Raw format (8bits). The pipeline can be sketched
-     * as follows: Value --<colormap>--> Board::Color ----> unsigned char.
-     * 
+     * Export an Image to  Raw format (8bits, unsigned char).
+     *
      * @param filename name of the output file
      * @param aImage the image to export
-     * @param minV the minimum value of aImage (for colormap)
-     * @param maxV the maximum value of aImage (for colormap) 
-     * 
+     * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
     static bool exportRaw8(const std::string & filename, const Image &aImage, 
-        const Value & minV, const Value & maxV);
+			   const Functor & aFunctor = Functor());
     
   };
 }//namespace

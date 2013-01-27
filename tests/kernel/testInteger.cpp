@@ -32,7 +32,7 @@
 #include <string>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,16 +53,8 @@ bool testInteger()
   
   trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( CInteger<int> ));
-  BOOST_CONCEPT_ASSERT(( CInteger<unsigned int> ));
-  BOOST_CONCEPT_ASSERT(( CInteger<DGtal::uint16_t> ));
   BOOST_CONCEPT_ASSERT(( CInteger<DGtal::int16_t> ));
 
-  //OS depedent instances
-  //BOOST_CONCEPT_ASSERT(( CInteger<long int> ));
-  
-  // These tests fail : bool is not a model of CInteger.
-  // BOOST_CONCEPT_ASSERT(( CInteger<std::string> ));
-  // BOOST_CONCEPT_ASSERT(( CInteger<bool> ));
   nbok += true ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -96,7 +88,7 @@ bool testInteger()
   trace.endBlock();
 
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
-  BOOST_CONCEPT_ASSERT(( CUnsignedInteger<unsigned int> ));
+  BOOST_CONCEPT_ASSERT(( CUnsignedNumber<unsigned int> ));
   // These tests fail : int is not a model of CUnsignedInteger.
   // BOOST_CONCEPT_ASSERT(( CUnsignedInteger<int> ));
   nbok += true ? 1 : 0; 

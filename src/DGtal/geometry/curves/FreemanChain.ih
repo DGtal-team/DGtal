@@ -348,7 +348,7 @@ void DGtal::FreemanChain<TInteger>::computeBoundingBox( TInteger & min_x,
 
 template <typename TInteger>
 inline
-typename FreemanChain<TInteger>::ConstIterator
+typename DGtal::FreemanChain<TInteger>::ConstIterator
 DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
 {
   ConstIterator it = begin();
@@ -370,7 +370,7 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
   // reorder a and b.
   it.previous();
   if ( it.getCode() != code2 )
-    swap( code1, code2 );
+    std::swap( code1, code2 );
   // find first a.
   do
   {
@@ -399,7 +399,7 @@ DGtal::FreemanChain<TInteger>::findQuadrantChange( OrderedAlphabet & A ) const
 
 template <typename TInteger>
 inline
-typename FreemanChain<TInteger>::ConstIterator
+typename DGtal::FreemanChain<TInteger>::ConstIterator
 DGtal::FreemanChain<TInteger>::findQuadrantChange4( OrderedAlphabet & A ) const
 {
   ConstIterator it = begin();
@@ -643,7 +643,7 @@ template <typename TInteger>
 inline
 void DGtal::FreemanChain<TInteger>::read( std::istream & in, FreemanChain & c ) 
 {
-  string str;
+  std::string str;
   while ( true )
   {
     getline( in, str );
@@ -651,7 +651,7 @@ void DGtal::FreemanChain<TInteger>::read( std::istream & in, FreemanChain & c )
       return;
     if ( ( str.size() > 0 ) && ( str[ 0 ] != '#' ) )
     {
-      istringstream str_in( str );
+      std::istringstream str_in( str );
       str_in >> c.x0 >> c.y0 >> c.chain;
       return;
     }
@@ -672,7 +672,7 @@ void DGtal::FreemanChain<TInteger>::readFromPointsRange( const TConstIterator& i
     
     if (it != itEnd)
     { //if there is more than one element
-      ostringstream oss;
+      std::ostringstream oss;
       Point pt( startingPt );
       do 
       {
@@ -969,16 +969,16 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
   unsigned int nb = (unsigned int)c.chain.size();
   if ( nb == 0 )
   {
-    cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-      << " cleanOuterSpikes: Empty input chain"
-      << endl;
+    std::cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+              << " cleanOuterSpikes: Empty input chain"
+              << std::endl;
     return false;
   }
 
   ModuloComputer< DGtal::int32_t > mc( nb );
   ModuloComputer< DGtal::int32_t >::UnsignedInteger i = 0;
   ModuloComputer< DGtal::int32_t >::UnsignedInteger j = 0;
-  vector<unsigned int> c2cleanTMP;
+  std::vector<unsigned int> c2cleanTMP;
   aCleanC.chain.reserve( nb );
   aCleanC.chain = "";
   aC2clean.clear();
@@ -1003,11 +1003,11 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
       size_spike += 2;
       if ( size_spike >= nb )
       {
-        cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-          << " Spike is longer than contour !"
-          << " size_spike=" << size_spike
-          << " nb=" << nb
-          << endl;
+        std::cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+                  << " Spike is longer than contour !"
+                  << " size_spike=" << size_spike
+                  << " nb=" << nb
+                  << std::endl;
         return false;
       }
     }
@@ -1038,17 +1038,17 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
       aClean2c.push_back( ni );
     }
     if ( size_spike != 0 )
-      cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-        << "No starting point found (only spikes !)" << endl;
+      std::cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+                << "No starting point found (only spikes !)" << std::endl;
 
     return size_spike == 0;
   }
   // Loops over all letters.
   ConstIterator it_begin = it;
-  deque<unsigned int> clean_code;
-  deque<unsigned int> clean_idx;
-  vector<unsigned int> begin_outer_spike;
-  vector<unsigned int> end_outer_spike;
+  std::deque<unsigned int> clean_code;
+  std::deque<unsigned int> clean_idx;
+  std::vector<unsigned int> begin_outer_spike;
+  std::vector<unsigned int> end_outer_spike;
   // i follows iterator it.
   do
   {
@@ -1162,10 +1162,10 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
         aC2clean[ ii ] = 0;
       else
       {
-        cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-          << "Bad correspondence for aC2clean[" << ii << "]"
-          << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
-          << endl;
+        std::cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+                  << "Bad correspondence for aC2clean[" << ii << "]"
+                  << " = " << aC2clean[ ii ] << " >= " << aCleanC.chain.size()
+                  << std::endl;
         aC2clean[ ii ] = aC2clean[ ii ] % aCleanC.chain.size();
       }
     }
@@ -1173,127 +1173,14 @@ bool DGtal::FreemanChain<TInteger>::cleanOuterSpikes(
   for ( unsigned int jj = 0; j < aCleanC.chain.size(); ++jj )
     if ( aClean2c[ jj ] >= nb )
     {
-      cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
-        << "Bad correspondence for aClean2c[" << jj << "]"
-        << " = " << aClean2c[ jj ] << " >= " << nb
-        << endl;
+      std::cerr << "[DGtal::FreemanChain::cleanOuterSpikes]"
+                << "Bad correspondence for aClean2c[" << jj << "]"
+                << " = " << aClean2c[ jj ] << " >= " << nb
+                << std::endl;
       aClean2c[ jj ] = aClean2c[ jj ] % nb;
     }
   return true;
 }
-
-
-
-
-
-
-
-
-
-//     /**
-//      * Given a Freeman chain [c] coding a 4-connected pixel loop, computes
-//      * its subsampling by the transformation:
-//      * X = ( x - x0 ) div h,
-//      * Y = ( y - y0 ) div v.
-//      *
-//      * @param aSubc (output) the subsampled Freeman chain code (may
-//      * contain spikes)
-//      *
-//      * @param aC2subc (output) the mapping associating an element to
-//      * its subsampled element.
-//      *
-//      * @param aSubc2c (output) the inverse mapping associating a
-//      * subsampled element to its element. More precisely, subc2c[ j ]
-//      * is the last pointel to be in j.
-//      *
-//      * @param c the input chain code.
-//      *
-//      * @param h the subsampling along x
-//      * @param v the subsampling along y
-//      * @param x0 the x-origin of the frame (X,Y) in (x,y)
-//      * @param y0 the y-origin of the frame (X,Y) in (x,y)
-//      *
-//      * @return 'false' if initial contour was empty or if [subc] is empty,
-//      * 'true' otherwise.
-//      */
-//     static bool subsample( FreemanChain & aSubc,
-//          std::vector<unsigned int> & aC2subc,
-//          std::vector<unsigned int> & aSubc2c,
-//          const FreemanChain & c,
-//          unsigned int h, unsigned int v,
-//          int x0, int y0 ){
-//       if ( ( h == 0 ) || ( v == 0 ) ) return false;
-//       FreemanChain<TInteger>::ConstIterator it = c.begin();
-//   unsigned int j = 0;
-//   unsigned int nb = c.chain.size();
-//   if ( nb == 0 ) return false;
-//   Point fxy( it.get() );
-//   Point fXY;
-//   fXY[0]= ( fxy[0] - x0 ) / h;
-//   fXY[1]= ( fxy[1] - y0 ) / v;
-//   aSubc.x0 = fXY[0];
-//   aSubc.y0 = fXY[1];
-//   aC2subc.clear();
-//   aC2subc.reserve( nb );
-//   aSubc2c.clear();
-//   aSubc2c.reserve( nb );
-//   for ( unsigned int i = 0; i < nb; ++i )
-//     {
-//       aC2subc.push_back( j );
-//       it.nextInLoop();
-//       Point nxy( it.get() );
-//       Point nXY;
-//       nXY[0]= ( nxy[0] - x0 ) / h;
-//       nXY[1]= ( nxy[1] - y0 ) / v;
-//       if ( nXY != fXY )
-//   {
-//     aSubc2c.push_back( i );
-//     char code;
-//     if ( nXY[0] > fXY[0] )       code = '0';
-//     else if ( nXY[0] < fXY[0] )  code = '2';
-//     else if ( nXY[1] > fXY[1] )  code = '1';
-//     else                           code = '3';
-//     aSubc.chain += code;
-//     ++j;
-//     fXY = nXY;
-//   }
-//     }
-// //   aC2subc.push_back( j );
-// //   it.nextInLoop();
-// //   for ( unsigned int i = 1; i <= nb; ++i )
-// //     {
-// //       // JOL
-// //       //aC2subc.push_back( j );
-// //       Vector2i nxy( it.get() );
-// //       Vector2i nXY( ( nxy.x() - x0 ) / h, ( nxy.y() - y0 ) / v );
-// //       if ( nXY != fXY )
-// //   {
-// //     char code;
-// //     if ( nXY.x() > fXY.x() )       code = '0';
-// //     else if ( nXY.x() < fXY.x() )  code = '2';
-// //     else if ( nXY.y() > fXY.y() )  code = '1';
-// //     else                           code = '3';
-// //     aSubc.chain += code;
-// //     aSubc2c.push_back( i - 1 );
-// //     ++j;
-// //     fXY = nXY;
-// //   }
-// //       if ( i != nb ) aC2subc.push_back( j );
-// //       it.nextInLoop();
-// //     }
-// //   // TODO : enhance this.
-//   unsigned int nbsub =  aSubc.chain.size();
-//   // Last correspondence may be in fact to 0 instead of nbsub.
-//   if ( nbsub != 0 )
-//     for ( unsigned int i = 0; i < nb; ++i )
-//       if ( aC2subc[ i ] >= nbsub ) aC2subc[ i ] -= nbsub;
-//   ASSERT( aC2subc.size() == nb );
-//   return nbsub != 0;
-//     }
-
-
-
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Drawing services                 

@@ -206,7 +206,7 @@ namespace DGtal
      **/ 
     
     struct  polygonD3D{
-      vector<pointD3D> vectPoints;
+      std::vector<pointD3D> vectPoints;
       double nx, ny, nz;
       unsigned int R,G,B,T;
     };
@@ -226,6 +226,8 @@ namespace DGtal
       myScaleX=1.0;
       myScaleY=1.0;
       myScaleZ=1.0;
+      myBoundingPtEmptyTag = true;
+      
     };
 
     // ----------------------- Interface --------------------------------------
@@ -592,7 +594,9 @@ namespace DGtal
     StyleMapping myStyles;
   
   
-  
+    
+    /// True if the bounding box is empty (no objects added)
+    bool myBoundingPtEmptyTag;
     double  myBoundingPtUp [3];
     double  myBoundingPtLow [3];
 
@@ -760,7 +764,7 @@ namespace DGtal
    **/
   
   void
-  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
   
   
 

@@ -44,9 +44,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/CSignedInteger.h"
+#include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/NumberTraits.h"
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,102 +60,31 @@ Description of \b concept '\b CCommutativeRing' <p>
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring.
 
- ### Refinement of boost::Assignable<T>,
-     boost::EqualityComparable<T>, boost::LessThanComparable<T>
+ ### Refinement of 
+  - CSignedNumber<T>
 
  ### Associated types :
 
  ### Notation
-     - \t X : A type that is a model of CCommutativeRing
-     - \t x, \t y  : Object of type Integer
+     - \e X : A type that is a model of CCommutativeRing
+     - \e x, \e y  : Object of type @e X
 
  ### Definitions
 
- ### Valid expressions and
-     <table>
-     <tr>
-     <td class=CName> \b Name </td>
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td>
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td>
-     <td class=CSemantics> \b Semantics </td>
-     <td class=CPostCondition> \b Postcondition </td>
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr>
-     <td class=CName>            Construction from basic integer type </td>
-     <td class=CExpression>      X( i ) </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       \t X represents the integer \t i</td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>            Addition </td>
-     <td class=CExpression>      \t x + \t y </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       addition of two numbers </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>            Subtraction </td>
-     <td class=CExpression>      \t x - \t y </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       subtraction of two numbers </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>            Multiplication </td>
-     <td class=CExpression>      \t x - \t y </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       subtraction of two numbers </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>            Opposite operator </td>
-     <td class=CExpression>      - \t x </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       defines the opposite of \t x (\t x + \t -x = 0) </td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>             \t X should have a 0 (neutral
-     element for addition) </td>
-     <td class=CExpression>      \t X( 0 ) </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       the value 0</td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr>
-     <td class=CName>             \t X should have  a 1 (neutral
-     element for multiplication)</td>
-     <td class=CExpression>      \t X ( 1 )  </td>
-     <td class=CRequirements>     </td>
-     <td class=CReturnType>      \t X </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       the value 1</td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+ ### Valid expressions and semantics
+
+
+Name                                 | Expression |  Type requirements | Return type| Precondition | Semantics                             | Postcondition | Complexity|
+-------------------------------------|------------|--------------------|------------|--------------|--------------------------------------|---------------|-----------|
+Construction from basic integer type | @e X( i )  |                    |            |              | \e X represents the integer \e i     |               |           |
+Should have a 0                      |   @e X(0)  |                    |            |              | Neutral element for addition         |               |           |
+Should have a 1                      |   @e X(1)  |                    |            |              | Neutral element for multiplication   |               |           |
+Addition                             | @e x + @e y|                    | @a X       |              | addition of two numbers              |               |           |
+Substraction                         | @e x - @e y|                    | @a X       |              | substraction of two numbers          |               |           |
+Multiplication                       | @e x * @e y|                    | @a X       |              | multiplication of two numbers        |               |           |
+Addition                             | @e x + @e y|                    | @a X       |              | addition of two numbers              |               |           |
+Opposite operator                    | - @e x     |                    | @a X       |              | opposite of a number                 |               |           |
+
 
  ### Invariants###
 
@@ -168,8 +96,7 @@ Description of \b concept '\b CCommutativeRing' <p>
 @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
-  struct CCommutativeRing : boost::Assignable<T>,
-    boost::EqualityComparable<T>, boost::LessThanComparable<T>
+  struct CCommutativeRing : CSignedNumber<T>
   {
     // ----------------------- Concept checks ------------------------------
   public:

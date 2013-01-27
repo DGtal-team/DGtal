@@ -60,8 +60,8 @@ DGtal::GrayscaleColorMap<Value>::~GrayscaleColorMap()
 }
 
 template <typename Value>
-GrayscaleColorMap<Value> &
-GrayscaleColorMap<Value>::operator=
+DGtal::GrayscaleColorMap<Value> &
+DGtal::GrayscaleColorMap<Value>::operator=
 ( const GrayscaleColorMap<Value> & other )
 {
   if ( &other != this ) {
@@ -93,7 +93,7 @@ DGtal::GrayscaleColorMap<Value>::max() const
 
 template<typename Value>
 inline
-Color
+DGtal::Color
 DGtal::GrayscaleColorMap<Value>::operator()( const Value & value ) const
 {
   return GrayscaleColorMap<Value>::getColor( myMin, myMax, value );
@@ -129,7 +129,7 @@ DGtal::GrayscaleColorMap<Value>::isValid() const
 
 template <typename Value>
 inline
-Color
+DGtal::Color
 DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
                  const Value & max,
                  const Value & value )

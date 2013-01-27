@@ -41,7 +41,6 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,7 +49,7 @@ namespace DGtal
   /**
    * IOException derived class.
    */ 
-  class IOException: public exception
+  class IOException: public std::exception
   {
     virtual const char* what() const throw()
     {
@@ -61,7 +60,7 @@ namespace DGtal
   /**
    * InputException derived class.
    */ 
-  class InputException: public exception
+  class InputException: public std::exception
   {
     public:
     virtual const char* what() const throw()
@@ -73,7 +72,7 @@ namespace DGtal
   /**
    * ConnectivityException derived class.
    */ 
-  class ConnectivityException: public exception
+  class ConnectivityException: public std::exception
   {
     public:
     virtual const char* what() const throw()
@@ -85,7 +84,7 @@ namespace DGtal
   /**
    * MemoryException derived class.
    */ 
-  class MemoryException: public exception
+  class MemoryException: public std::exception
   {
     virtual const char* what() const throw()
     {
@@ -96,7 +95,7 @@ namespace DGtal
   /**
    * InfiniteNumberException derived class.
    */ 
-  class InfiniteNumberException: public exception
+  class InfiniteNumberException: public std::exception
   {
     virtual const char* what() const throw()
     {
