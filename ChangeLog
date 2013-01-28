@@ -12,6 +12,7 @@
  
  *Base Package*
     - correct concept checks for some range concepts.
+    - Statistic class moved to math package
 
  *Arithmetic Package*
     - new class for representing lattice polytopes in 2D (with cut
