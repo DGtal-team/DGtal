@@ -46,7 +46,7 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/CowPtr.h"
-#include "DGtal/topology/CVertexMap.h"
+#include "DGtal/graph/CVertexMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

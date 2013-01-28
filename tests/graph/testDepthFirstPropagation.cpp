@@ -34,10 +34,8 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/topology/CUndirectedSimpleGraph.h"
-#include "DGtal/topology/DepthFirstVisitor.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
 #include <set>
 #include <iterator>
 ///////////////////////////////////////////////////////////////////////////////

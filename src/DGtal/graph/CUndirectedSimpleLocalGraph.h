@@ -44,7 +44,7 @@
 #include <boost/concept_archetype.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/topology/CVertexMap.h"
+#include "DGtal/graph/CVertexMap.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
