@@ -395,6 +395,16 @@ DGtal::DigitalSetBySTLVector<Domain>
   return *this;
 }
 
+//-----------------------------------------------------------------------------
+template <typename Domain>
+inline
+bool
+DGtal::DigitalSetBySTLVector<Domain>
+::operator()( const Point & p ) const
+{
+  return find( p ) != end();
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------

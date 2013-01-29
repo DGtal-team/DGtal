@@ -257,7 +257,15 @@ DGtal::DigitalSetFromMap<TMapImage>
     }
   return *this;
 }
-
+// ------------------------------------------------------------------------
+template <typename TMapImage>
+inline
+bool
+DGtal::DigitalSetFromMap<TMapImage>
+::operator()( const Point & p ) const
+{
+  return myImgPtr->find( p ) != myImgPtr->end();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------
