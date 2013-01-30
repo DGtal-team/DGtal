@@ -45,6 +45,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/graph/CVertexMap.h"
+#include "DGtal/graph/CVertexPredicate.h"
+#include "DGtal/graph/CVertexPredicateArchetype.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -86,7 +88,8 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
  ### Invariants###
     
  ### Models###
-        DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
+     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
+     - Object, MetricAdjacency, DomainAdjacency
 
  ### Notes###
 
@@ -124,7 +127,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
       ConceptUtils::sameType( mySize, myX.bestCapacity() );
       ConceptUtils::sameType( mySize, myX.degree( myVertex ) );
       myX.writeNeighbors( myOutIt, myVertex );
-      // @todo create VertexPredicate to test the other writeNeighbors method.
+      myX.writeNeighbors( myOutIt, myVertex, myVPred );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -133,7 +136,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     Size mySize;
     Vertex myVertex;
     mutable boost::output_iterator_archetype<Vertex> myOutIt;
-    
+    CVertexPredicateArchetype<Vertex> myVPred;
     // ------------------------- Internals ------------------------------------
   private:
     

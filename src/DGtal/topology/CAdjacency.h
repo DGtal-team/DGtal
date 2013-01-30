@@ -86,10 +86,6 @@ neighborhood graph on the points of a digital domain.
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
 | proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
-| write neighborhood | adj.writeNeighborhood( p, out_it ) | \c p of type Point, \c out_it any output iterator. | | | writes the whole neighborhood of \c p with the given output iterator \c out_it | | |
-| write proper neighborhood | adj.writeProperNeighborhood( p, out_it ) | \c p of type Point, \c out_it any output iterator. | | | writes the whole neighborhood of \c p (except \c p itself), with the given output iterator \c out_it | | |
-| write neighborhood satisfying a predicate | adj.writeNeighborhood( p, out_it,pred ) | \c p of type Point, \c out_it any output iterator, \c pred any point predicate. | | | writes the points of the neighborhood of \c p that satisfy the predicate \c pred, with the given output iterator \c out_it | | |
-|write proper neighborhood satisfying a predicate | adj.writeProperNeighborhood( p, out_it,pred ) | \c p of type Point, \c out_it any output iterator, \c pred any point predicate. | | | writes the points of the neighborhood of \c p (except \c p itself) that satisfy the predicate \c pred, with the given output iterator \c out_it | | |
     
 ### Invariants
    

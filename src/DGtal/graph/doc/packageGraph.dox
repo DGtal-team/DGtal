@@ -35,7 +35,7 @@ namespace DGtal {
 /*!
 @page packageGraph  Graph package
 
-@managers Jacques-Olivier Lachaud David Coeurjolly
+@managers Jacques-Olivier Lachaud, David Coeurjolly
 
 @since 0.6
 
@@ -53,7 +53,6 @@ The aim of this package is to gather concepts and classes related to graphs.
  - \ref packageGraphConcepts
 
 @b Related @b documentation @b pages
- - \ref PageRef
 
 */
 
