@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/sets/SetPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -81,9 +82,9 @@ namespace DGtal
 
     /**
      * Constructor from set.
-     * @param aSet the digital set.
+     * @param aSet the digital set (only aliased).
      */
-    DigitalSetDomain ( const DigitalSet & aSet );
+    DigitalSetDomain ( ConstAlias<DigitalSet> aSet );
 
 
     /**
@@ -136,9 +137,9 @@ namespace DGtal
     bool isInside( const Point & p ) const;
 
     /**
-     * @return a const reference to the "IsInside" predicate.
+     * @return a light "IsInside" predicate.
      */
-    const Predicate & predicate() const;
+    Predicate predicate() const;
 
 
     // ----------------------- Interface --------------------------------------
@@ -164,7 +165,7 @@ namespace DGtal
     /**
      * The set describing the points of the domain.
      */
-    const DigitalSet & mySet;
+    const DigitalSet* mySet;
 
     /**
      * upper bound of the bounding box.
@@ -175,9 +176,6 @@ namespace DGtal
      * lower bound of the bounding box.
      */
     Point myLowerBound;
-
-    /// The "IsInside" predicate.
-    Predicate myPredicate;
 
     // ------------------------- Hidden services ------------------------------
   protected:
