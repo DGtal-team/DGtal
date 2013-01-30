@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -51,11 +52,19 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SetPredicate
   /**
-   * Description of template class 'SetPredicate' <p> \brief Aim:
-   * The predicate returning true iff the point is in the domain given
-   * at construction.
-   *
-   * Model of CPointPredicate
+     Description of template class 'SetPredicate' <p> \brief Aim: The
+     predicate returning true iff the point is in the set given at
+     construction. The set given at construction is aliased in the
+     predicate and not cloned, which means that the lifetime of the
+     set should exceed the lifetime of the predicate.
+
+     Model of CPointPredicate.
+     
+     @note Since 0.6, digital sets are also models of CPointPredicate,
+     hence using a SetPredicate is therefore no more
+     compulsory. However, SetPredicate may be useful if one wishes a
+     "light" predicate and not copy the whole set.
+
    */
   template <typename TDigitalSet>
   struct SetPredicate
@@ -68,9 +77,9 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aSet any set.
+     * @param aSet any set (only aliased).
      */
-    SetPredicate ( const DigitalSet & aSet );
+    SetPredicate ( ConstAlias<DigitalSet> aSet );
 
     /**
      * Copy constructor.

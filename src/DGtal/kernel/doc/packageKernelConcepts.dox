@@ -88,6 +88,7 @@ digraph GKERNEL {
     
       CDomain-> CConstSinglePassRange;
 		
+      CDigitalSet -> CPointPredicate;
       CDigitalSet -> CDomain   [label="use",style=dashed] ;
 		
       CSpace -> CInteger  [label="use",style=dashed];
