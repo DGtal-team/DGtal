@@ -43,7 +43,10 @@
  *Graph Package*
     - New package gathering graph related structures and algorithms
       (visitors, graph concepts, ...)
-	
+    - Add concepts for graph visitors
+    - Add boost::graph support for DigitalSurface
+    - Add documentation for graph package.
+
  *For developers*
     - new "make dox" target to only build dox file documentation
       ("make doc" for complete documentation build)

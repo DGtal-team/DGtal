@@ -63,7 +63,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     
  ### Associated types :
      - Size: an integral type to count the number of vertices.
-     - Vertex: the type for the vertices of the graph.
+     - Vertex: the type for the vertices of the graph (a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible).
      - VertexSet: the type for storing a set of vertices.
      - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
@@ -115,6 +115,9 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
  
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
+    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Vertex > ));
+    BOOST_CONCEPT_ASSERT(( boost::Assignable< Vertex > ));
+    BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Vertex > ));
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CUndirectedSimpleLocalGraph )

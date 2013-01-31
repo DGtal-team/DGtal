@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testAdjacency.cpp
+ * @file testDepthFirstPropagation.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -36,6 +36,7 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
+#include "DGtal/graph/CGraphVisitor.h"
 #include <set>
 #include <iterator>
 ///////////////////////////////////////////////////////////////////////////////
@@ -88,8 +89,9 @@ void testDepthFirstPropagation()
   
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
-  
-  DepthFirstVisitor<Object, set<Point> > bfv (obj, c1);
+  typedef DepthFirstVisitor<Object, set<Point> > Visitor;
+  BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
+  Visitor bfv (obj, c1);
   
   int cpt=0;
   
