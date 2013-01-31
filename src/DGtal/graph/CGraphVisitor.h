@@ -74,8 +74,6 @@ the traversal with a given predicate.
 - \c MarkSet: the type used for representing a set of marked vertices, a model of boost::SimpleAssociativeContainer and boost::UniqueAssociativeContainer, whose key type / value type is Vertex.
 - \c Data: the type is associated to the current node and may be used for several purposes (like measuring the distance between the current element and the starting point/set), a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible.
 - \c Node: the pair<Vertex,Data>, where Vertex is the current node, Data is the attached data.
-- \c VertexConstIterator: a model of boost::InputIterator and boost::SinglePassIterator on Vertex, which can be used to visit all the vertices of the graph.
-- \c NodeConstIterator: a model of boost::InputIterator and boost::SinglePassIterator on Node, which can be used to visit all the vertices of the graph.
  
 ### Notation
  - \e X : A type that is a model of CGraphVisitor
