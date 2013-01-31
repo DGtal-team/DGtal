@@ -71,7 +71,7 @@ typename DGtal::GraphVisitorRange<TGraphVisitor>::ConstIterator
 DGtal::GraphVisitorRange<TGraphVisitor>::
 end() const
 {
-  return ConstIterator( 0 );
+  return ConstIterator();
 }
 //-----------------------------------------------------------------------------
 template <typename TGraphVisitor>
@@ -90,7 +90,7 @@ typename DGtal::GraphVisitorRange<TGraphVisitor>::NodeConstIterator
 DGtal::GraphVisitorRange<TGraphVisitor>::
 endNode() const
 {
-  return NodeConstIterator( 0 );
+  return NodeConstIterator();
 }
 
 ///////////////////////////////////////////////////////////////////////////////

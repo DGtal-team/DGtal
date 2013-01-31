@@ -55,6 +55,9 @@ The aim of this package is to gather concepts and classes related to graphs.
 
 @b Related @b documentation @b pages
 
+@b Related @b examples
+ - graphTraversal.cpp
+
 */
 
 }
