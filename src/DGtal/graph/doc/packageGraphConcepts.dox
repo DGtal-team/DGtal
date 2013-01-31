@@ -61,7 +61,10 @@ digraph GGraph {
                  label="boost";
 
                  boost_Assignable [ label="boost::Assignable" URL="\ref boost::Assignable" ];
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
                  boost_OutputIterator [ label="boost::OutputIterator" URL="\ref boost::OutputIterator" ];
+                 boost_UniqueAssociativeContainer  [ label="boost::UniqueAssociativeContainer" URL="\ref boost::UniqueAssociativeContainer" ];
+                 boost_PairAssociativeContainer  [ label="boost::PairAssociativeContainer" URL="\ref boost::PairAssociativeContainer" ];
         }
         subgraph cluster_std {
                  style=filled;
@@ -69,7 +72,6 @@ digraph GGraph {
                  node [style=filled,color=orange];
                  label="std";
 
-                 std_MultipleAssociativeContainer  [ label="boost::MultipleAssociativeContainer" URL="\ref boost::MultipleAssociativeContainer" ];
        }
     }
   
@@ -83,7 +85,7 @@ digraph GGraph {
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref CVertexMap" ] ;
-        CGraphVisitor [ label="CVertexMap" URL="\ref CVertexMap" ] ;
+        CGraphVisitor [ label="CGraphVisitor" URL="\ref CGraphVisitor" ] ;
     }
 
     CVertexPredicate -> CPredicate;
@@ -106,6 +108,7 @@ digraph GGraph {
         STLMapToVertexMapAdapter [ label="STLMapToVertexMapAdapter" URL="\ref STLMapToVertexMapAdapter" ] ;
         BreadthFirstVisitor [ label="BreadthFirstVisitor" URL="\ref BreadthFirstVisitor" ] ;
         DepthFirstVisitor [ label="DepthFirstVisitor" URL="\ref DepthFirstVisitor" ] ;
+        GraphVisitorRange [ label="GraphVisitorRange" URL="\ref GraphVisitorRange" ] ;
         }
 
     subgraph cluster_topology {
@@ -121,7 +124,8 @@ digraph GGraph {
 
     CVertexPredicateArchetype -> CVertexPredicate;
     STLMapToVertexMapAdapter -> CVertexMap;
-    STLMapToVertexMapAdapter -> std_MultipleAssociativeContainer [label="use",style=dashed] ;
+    STLMapToVertexMapAdapter -> boost_UniqueAssociativeContainer [label="use",style=dashed] ;
+    STLMapToVertexMapAdapter -> boost_PairAssociativeContainer [label="use",style=dashed] ;
     CAdjacency -> CUndirectedSimpleLocalGraph;
     DigitalSurface -> CUndirectedSimpleGraph;
     Object -> CUndirectedSimpleGraph;
