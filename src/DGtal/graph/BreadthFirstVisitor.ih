@@ -48,7 +48,17 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::~BreadthFirstVisitor()
 template < typename TGraph, typename TMarkSet >
 inline
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
-::BreadthFirstVisitor( const Graph & g )
+::BreadthFirstVisitor( const BreadthFirstVisitor & other )
+  : myGraph( other.myGraph ), 
+    myMarkedVertices( other.myMarkedVertices ),
+    myQueue( other.myQueue )
+{
+}
+//-----------------------------------------------------------------------------
+template < typename TGraph, typename TMarkSet >
+inline
+DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
+::BreadthFirstVisitor( ConstAlias<Graph> g )
   : myGraph( g )
 {
 }
@@ -56,7 +66,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
 template < typename TGraph, typename TMarkSet >
 inline
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
-::BreadthFirstVisitor( const Graph & g, const Vertex & p )
+::BreadthFirstVisitor( ConstAlias<Graph> g, const Vertex & p )
   : myGraph( g )
 {
   myMarkedVertices.insert( p );
@@ -67,7 +77,7 @@ template < typename TGraph, typename TMarkSet >
 template <typename VertexIterator>
 inline
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
-::BreadthFirstVisitor( const Graph & g,
+::BreadthFirstVisitor( ConstAlias<Graph> g,
                        VertexIterator b, VertexIterator e )
   : myGraph( g )
 {
@@ -119,7 +129,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand()
 {
   ASSERT( ! finished() );
   Node node = myQueue.front();
-  Size d = node.second + 1; 
+  Data d = node.second + 1; 
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );
@@ -146,7 +156,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand
 {
   ASSERT( ! finished() );
   Node node = myQueue.front();
-  Size d = node.second + 1; 
+  Data d = node.second + 1; 
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );

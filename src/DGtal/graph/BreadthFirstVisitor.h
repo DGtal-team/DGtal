@@ -44,6 +44,7 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
@@ -99,6 +100,7 @@ namespace DGtal
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
+    typedef Size Data; //< Data attached to each Vertex is the topological distance to the seed.
 
     // Cannot check this since some types using it are incomplete.
     //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
@@ -109,7 +111,7 @@ namespace DGtal
 
     /// Type stocking the vertex and its topological distance wrt the
     /// initial point or set.
-    typedef std::pair< Vertex, Size > Node;
+    typedef std::pair< Vertex, Data > Node;
     /// Internal data structure for computing the breadth-first expansion.
     typedef std::queue< Node > NodeQueue;
     /// Internal data structure for storing vertices.
@@ -247,12 +249,18 @@ namespace DGtal
     ~BreadthFirstVisitor();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
+
+    /**
      * Constructor from the graph only. The visitor is in the state
      * 'finished()'. Useful to create an equivalent of 'end()' iterator.
      *
      * @param graph the graph in which the breadth first traversal takes place.
      */
-    BreadthFirstVisitor( const Graph & graph );
+    BreadthFirstVisitor( ConstAlias<Graph> graph );
 
     /**
      * Constructor from a point. This point provides the initial core
@@ -261,7 +269,7 @@ namespace DGtal
      * @param graph the graph in which the breadth first traversal takes place.
      * @param p any vertex of the graph.
      */
-    BreadthFirstVisitor( const Graph & graph, const Vertex & p );
+    BreadthFirstVisitor( ConstAlias<Graph> graph, const Vertex & p );
 
     /**
        Constructor from iterators. All vertices visited between the
@@ -276,7 +284,7 @@ namespace DGtal
        @param e the end iterator in a container of vertices. 
     */
     template <typename VertexIterator>
-    BreadthFirstVisitor( const Graph & graph, 
+    BreadthFirstVisitor( ConstAlias<Graph> graph, 
                          VertexIterator b, VertexIterator e );
 
 
@@ -290,7 +298,7 @@ namespace DGtal
 
     /**
        @return a const reference on the current visited vertex. The
-       node is a pair <Vertex,Size> where the second term is the
+       node is a pair <Vertex,Data> where the second term is the
        topological distance to the start vertex or set.
 
        NB: valid only if not 'finished()'.
@@ -307,8 +315,8 @@ namespace DGtal
     void ignore();
 
     /**
-       Goes to the next vertex and taked into account the current
-       vertex for determining the future vsited vertices.
+       Goes to the next vertex and take into account the current
+       vertex for determining the future visited vertices.
        NB: valid only if not 'finished()'.
      */
     void expand();
@@ -411,13 +419,6 @@ namespace DGtal
     BreadthFirstVisitor();
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
 
     /**
      * Assignment.
