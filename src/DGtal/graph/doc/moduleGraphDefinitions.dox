@@ -1,0 +1,80 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+
+   @page moduleGraphDefinitions Basic graph definitions and concepts
+
+   @writers by Jacques-Olivier Lachaud
+
+   Part of the \ref packageGraph.
+   [TOC]
+
+   This module defines what are graphs in DGtal, as well as basic
+   associated concepts. Relevant digital models of graph are notably
+   found in package \ref packageTopology.
+
+   @section dgtal_graph_def_1 Graph concepts in DGtal
+
+   There are many different ways for representing a given graph, even
+   without considering types that attached data to vertices and edges,
+   the most notable ones are adjacency lists per vertex, incidence
+   matrix, outgoing edges per vertex. A rather comprehensive set of \b
+   finite graph concepts may for instance be found in the boost::graph
+   module.
+
+   Graphs in DGtal may be finite (like Object) or only locally finite
+   (like MetricAdjacency). Graphs in DGtal are undirected. Therefore,
+   they are two different concepts for graphs:
+
+   - locally finite graphs satisfy concept
+     CUndirectedSimpleLocalGraph. There is no way to iterate through
+     all vertices of that kind of graph (since they can be
+     infinite). Edges of this graph are given through an adjacency
+     list for each vertex.
+
+     - Notable models: MetricAdjacency
+     - Notable refinements: CAdjacency, CUndirectedSimpleGraph
+
+   - finite graphs satisfy concept CUndirectedSimpleGraph, a
+     refinement of CUndirectedSimpleLocalGraph. Such graphs provide
+     vertex iterators to enumerate all the vertices of the graph. Such
+     iterators may only be single pass input iterators.
+
+     - Notable models: Object, DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
+
+   All graphs define a \c Vertex (which must be instance-able,
+   copy-able, assignable) and a \c Size type (type for counting
+   vertices). Furthermore, they must provide a default type \c
+   VertexSet for representing a set of Vertex, and a defaut type
+   rebinder \c VertexMap for representing a map with key Vertex.
+
+   @note DGtal graph concepts are very light compared to boost::graph
+   for instance. The advantage is that it is easy to create new models
+   of graph in DGtal. The disadvantage is that you may not be able to
+   design the best optimized graph algorithms in some case. @see
+   dgtal_graph_def_3
+
+   @note For now, DGtal does not provide a generic graph model.
+
+
+   @section dgtal_graph_def_2 Using graphs
+
+   This section gathers the basic ways of using graphs.
+
+   @subsection dgtal_graph_def_2_1 Instantiating graphs
+
+   The instanciation of graphs (like any object) is dependent on the
+   chosen graph model. For instance, to instantiate a MetricAdjacency
+   or an Object, you can consult \ref moduleDigitalTopology. To
+   instantiate a DigitalSurface, you may consult \ref
+   dgtal_digsurf_sec3.
+
+   
+   
+
+
+*/

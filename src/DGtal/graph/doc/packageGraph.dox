@@ -47,6 +47,7 @@ namespace DGtal {
 The aim of this package is to gather concepts and classes related to graphs.
 
 @b Modules
+ - \ref moduleGraphDefinitions (Jacques-Olivier Lachaud, David Coeurjolly)
 
 
 @b Package @b Concepts @b Overview
