@@ -83,6 +83,7 @@ digraph GGraph {
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref CVertexPredicate" ] ;
         CVertexMap [ label="CVertexMap" URL="\ref CVertexMap" ] ;
+        CGraphVisitor [ label="CVertexMap" URL="\ref CVertexMap" ] ;
     }
 
     CVertexPredicate -> CPredicate;
@@ -91,6 +92,7 @@ digraph GGraph {
     CUndirectedSimpleLocalGraph -> CVertexMap [label="use",style=dashed] ;
     CUndirectedSimpleLocalGraph -> boost_OutputIterator [label="use",style=dashed] ;
     CUndirectedSimpleLocalGraph -> CVertexPredicate [label="use",style=dashed] ;
+    CGraphVisitor -> boost_CopyConstructible;
 
     subgraph cluster_down {
     
@@ -124,8 +126,10 @@ digraph GGraph {
     DigitalSurface -> CUndirectedSimpleGraph;
     Object -> CUndirectedSimpleGraph;
     BreadthFirstVisitor -> CUndirectedSimpleLocalGraph  [label="use",style=dashed] ;
+    BreadthFirstVisitor -> CGraphVisitor ;
     DepthFirstVisitor -> CUndirectedSimpleLocalGraph  [label="use",style=dashed] ;
-
+    DepthFirstVisitor -> CGraphVisitor ;
+    GraphVisitorRange -> CGraphVisitor  [label="use",style=dashed] ;
     }
 }
 @enddot
