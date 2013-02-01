@@ -15,9 +15,9 @@ namespace DGtal {
 
    This module defines what are graphs in DGtal, as well as basic
    associated concepts. Relevant digital models of graph are notably
-   found in package \ref packageTopology.
+   found in \ref packageTopology.
 
-   The following programs are related to this documentation: graphTraversal.cpp
+   The following programs are related to this documentation: \ref graph/graphTraversal.cpp
 
    @section dgtal_graph_def_1 Graph concepts in DGtal
 
@@ -76,11 +76,12 @@ namespace DGtal {
    dgtal_digsurf_sec3.
 
    Here is a simple example for creating a 2D digital object seen with
-   the (4,8) adjacency (in example graphTraversal.cpp)
+   the (4,8) adjacency (in example \ref graph/graphTraversal.cpp)
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-instanciation
 
    The last line above checks that Object are finite graphs.
+
 
    @subsection dgtal_graph_def_2_2 Enumerating vertices of a graph
 
@@ -88,7 +89,75 @@ namespace DGtal {
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-enumeration
 
+   @image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
+   @image latex graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order." width=0.5\textwidth
+
+
+   @subsection dgtal_graph_def_2_3 Enumerating edges of a graph
+
+   You may obtain edges of a graph by using method writeNeighbors as follows:
+
+   @snippet graph/graphTraversal.cpp graphTraversal-vertex-edge-enumeration
+
+
+   @subsection dgtal_graph_def_2_4 Graph traversal with visitors
    
+   Sometimes it is more convenient to traverse in a specific order,
+   and not in the arbitrary order given by vertex enumeration. That is
+   exactly the purpose of visitors, specified by concept
+   CGraphVisitor. Visitors traverse the graph or only subparts of the
+   graph by adjacencies. In some sense, they trace a tree from the
+   initial seed. A vertex is visited at most once. Data may be
+   associated to each visited vertex, like its distance to the initial
+   seed. Two (classical) models of visitors are provided:
+
+   - model BreadthFirstVisitor performs the traversal of a \b
+     connected graph by breadth-first search. If the graph is not
+     connected, only the connected component(s) containing the initial
+     seed(s) are visited. This visitor also computes the distance to
+     the initial seed(s), which is also the topological distance to
+     the seed(s).
+
+   - model DepthFirstVisitor performs the traversal of a \b connected
+     graph by depth-first search. If the graph is not connected, only
+     the connected component(s) containing the initial seed(s) are
+     visited. This visitor also computes the distance to the initial
+     seed(s) as the number of ancestors in the depth search.
+
+   The snippet below shows how to use a visitor to color vertices
+   according to the topological distance to the initial seed (the
+   point (-2,-1)). The node is a \c std::pair<Vertex,Data>, where \c
+   Data is the distance.
+
+   @snippet graph/graphTraversal.cpp graphTraversal-graph-bfs
+
+   @image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
+
+   @note The traversal of the graph can be changed dynamically in two ways: 
+     - visited vertices can be limited with a model of CVertexPredicate
+       (e.g. see BreadthFirstVisitor::expand( const VertexPredicate & )
+       ).
+     - you may forbid some visited vertices to have descendants
+       (e.g. see BreadthFirstVisitor::ignore() ).
+
+
+   @subsection dgtal_graph_def_2_5 Transforming a visitor into a range
+
+   It is sometimes convenient to transform a visitor into the usual
+   range / iterator pair. For instance, it is used by light containers
+   for digital surfaces to iterate through all vertices on-the-fly
+   (see LightImplicitDigitalSurface, LightExplicitDigitalSurface).
+   This is done easily with class GraphVisitorRange. This class
+   transforms an arbitary model of CGraphVisitor into a single pass
+   input range (on \c Vertex or on \c Node).
+
+   The following snippet transforms a DepthFirstVisitor into a range.
+
+   @snippet graph/graphTraversal.cpp graphTraversal-graph-dfs-range
+
+   @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)."
+   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)." width=0.5\textwidth
+
 
 */
 
