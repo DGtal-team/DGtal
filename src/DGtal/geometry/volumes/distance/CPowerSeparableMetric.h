@@ -77,6 +77,7 @@ namespace DGtal
 
  ### Models
 
+ExactPredicateLpPowerSeparableMetric, 
 
  ### Notes
 

@@ -83,6 +83,8 @@ Inherited from CMetric;
 
 ### Models
 
+ ExactPredicateLpPowerSeparableMetric
+
 ### Notes
 
 @tparam T the type that should be a model of CPowerMetric.

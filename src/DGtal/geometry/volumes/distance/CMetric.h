@@ -92,6 +92,8 @@ Inherited from CLocalPremetric:
 
 ### Models
 
+ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
+
 ### Notes
 
 @tparam T the type that should be a model of CMetric.
