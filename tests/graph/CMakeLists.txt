@@ -1,5 +1,9 @@
 SET(DGTAL_TESTS_SRC
+   testBreadthFirstPropagation
+   testDepthFirstPropagation
    testDigitalSurfaceBoostGraphInterface
+   testExpander
+   testSTLMapToVertexMapAdapter
    )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})
@@ -10,6 +14,7 @@ ENDFOREACH(FILE)
 
 
 SET(DGTAL_BENCH_SRC
+   testExpander-benchmark
 )
 
 

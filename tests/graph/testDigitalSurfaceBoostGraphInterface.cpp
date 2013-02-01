@@ -45,6 +45,8 @@
 /// the compiler is unable to find our function boost::vertices. We
 /// *must* include graph_concepts.hpp after defining our graph wrapper.
 #include <boost/graph/graph_concepts.hpp>
+#include <boost/graph/adjacency_list.hpp>
+#include <boost/graph/copy.hpp>
 #include <boost/graph/breadth_first_search.hpp>
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/stoer_wagner_min_cut.hpp>
@@ -57,6 +59,62 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class DigitalSurfaceBoostGraphInterface.
 ///////////////////////////////////////////////////////////////////////////////
+
+
+struct surfel_position_t {
+    typedef boost::vertex_property_tag kind;
+};
+
+struct surfel_position {
+  Z3i::Point myP;
+  surfel_position() : myP()
+  {
+  }
+};
+
+typedef boost::property< boost::vertex_index_t, std::size_t, 
+                         boost::property<surfel_position_t, surfel_position> > VertexProperties;
+
+
+template <typename Graph1, typename Graph2, typename VertexIndexMap>
+struct my_vertex_copier {
+  typedef typename boost::property_map< Graph2, boost::vertex_index_t>::type graph_vertex_index_map;
+  typedef typename boost::property_map< Graph2, surfel_position_t>::type graph_vertex_position_map;
+  typedef typename boost::graph_traits< Graph1 >::vertex_descriptor Vertex1;
+  typedef typename boost::graph_traits< Graph2 >::vertex_descriptor Vertex2;
+
+  const Graph1 & myG1;
+  graph_vertex_index_map graph_vertex_index;
+  graph_vertex_position_map graph_vertex_position;
+  VertexIndexMap & myIndexMap;
+
+  my_vertex_copier(const Graph1& g1, Graph2& g2, VertexIndexMap & indexMap )
+    : myG1( g1 ), 
+      graph_vertex_index( boost::get( boost::vertex_index_t(), g2 ) ),
+      graph_vertex_position( boost::get( surfel_position_t(), g2) ),
+      myIndexMap( indexMap )
+  {}
+
+  void operator()( const Vertex1& v1, const Vertex2& v2 ) const {
+    std::size_t idx = myIndexMap[ v1 ];
+    // Does not work !
+    // put( graph_vertex_index, v2, idx);
+    surfel_position pos;
+    pos.myP = v1.myCoordinates;
+    //std::cout << "surfel " << idx << " at " << pos.myP << std::endl;
+    put( graph_vertex_position, v2, pos);
+  }
+};
+template <typename Graph1, typename Graph2>
+struct my_edge_copier {
+  my_edge_copier(const Graph1& g1, Graph2& g2)
+  {}
+  template <typename Edge1, typename Edge2>
+  void operator()(const Edge1& /*v1*/, Edge2& /*v2*/) const {
+    // does nothing
+  }
+};
+
 /**
  * Example of a test. To be completed.
  *
@@ -332,7 +390,32 @@ bool testDigitalSurfaceBoostGraphInterface()
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "max_flow == min_cut, Duality max-flow/min-cut." << std::endl;
   trace.endBlock();
-  
+
+  trace.beginBlock ( "Testing AdjacencyListGraph with copy_graph ..." );
+  typedef boost::adjacency_list< boost::vecS, boost::vecS, boost::undirectedS, VertexProperties > BGraph;
+  BGraph bG;
+  boost::copy_graph( digSurf, bG,
+                     boost::vertex_copy( my_vertex_copier<Graph,BGraph,StdVertexIndexMap>( digSurf, bG, vertexIndexMap ) )
+                     .edge_copy( my_edge_copier<Graph,BGraph>( digSurf, bG ) )
+                     .vertex_index_map( propVertexIndexMap )
+                     );
+  typedef typename boost::graph_traits< BGraph >::vertex_descriptor vertex_descriptor_2;
+  typedef typename boost::graph_traits< BGraph >::vertex_iterator vertex_iterator_2;
+  typedef typename boost::property_map< BGraph, surfel_position_t>::type GraphSurfelPositionMap;
+  GraphSurfelPositionMap surfelPos( boost::get( surfel_position_t(), bG) );
+  for ( std::pair<vertex_iterator_2, vertex_iterator_2> 
+           vp = boost::vertices( bG ); vp.first != vp.second; ++vp.first )
+     {
+       vertex_descriptor_2 v1 = *vp.first;
+       surfel_position pos = boost::get( surfelPos, v1 );
+       trace.info() << "- " << v1 << " was at " << pos.myP << std::endl;
+     }
+  ++nb, nbok += boost::num_vertices( bG ) == boost::num_vertices( digSurf ) ? 1 : 0; 
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "after copy: Boost graph has " << num_vertices( bG ) 
+               << " vertices." << std::endl;
+  trace.endBlock();
+
   return nbok == nb;
 }
 

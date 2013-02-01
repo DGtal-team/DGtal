@@ -15,6 +15,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 //! [graphTraversal-basicIncludes]
 #include <iostream>
+#include <vector>
+#include <iterator>
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
@@ -80,6 +82,26 @@ int main( int /* argc */, char** /* argv */ )
     }
   board.saveEPS("graphTraversal-enum.eps");
   //! [graphTraversal-graph-enumeration]
+
+  {
+    //! [graphTraversal-vertex-edge-enumeration]
+    int n = 0;
+    int m = 0;
+    std::vector<Vertex> neighbors;
+    for ( Graph::ConstIterator it = g.begin(), itEnd = g.end();
+          it != itEnd; ++it, ++n )
+      { 
+        Vertex vtx = *it;
+        std::back_insert_iterator< std::vector<Vertex> > neighIt 
+          = std::back_inserter( neighbors );
+        g.writeNeighbors( neighIt, vtx );
+        m += neighbors.size();
+        neighbors.clear();
+      }
+    trace.info() << "Graph has " << n << " vertices and "
+                 << (m/2) << " edges." << std::endl;
+    //! [graphTraversal-vertex-edge-enumeration]
+  }
 
   board.clear();
   board << SetMode( domain.className(), "Paving" )

@@ -23,7 +23,7 @@ namespace DGtal {
 /*!
 @page packageGraphConcepts  Graph Main Concepts
 
-@writers David Coeurjolly, Jacques-Olivier Lachaud
+@writers Jacques-Olivier Lachaud
 
 @dot
 digraph GGraph {

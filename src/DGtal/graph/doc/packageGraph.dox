@@ -44,10 +44,14 @@ namespace DGtal {
 
 @b Package @b Overview
 
-The aim of this package is to gather concepts and classes related to graphs.
+The aim of this package is to gather concepts and classes related to
+graphs. Simple visitors are provided to traverse the graph. For more
+elaborate graph algorithm, a possible option is to use wrappers to
+boost::graph.
 
 @b Modules
  - \ref moduleGraphDefinitions (Jacques-Olivier Lachaud, David Coeurjolly)
+ - \ref moduleBoostGraphWrapping (Jacques-Olivier Lachaud)
 
 
 @b Package @b Concepts @b Overview
@@ -56,7 +60,7 @@ The aim of this package is to gather concepts and classes related to graphs.
 @b Related @b documentation @b pages
 
 @b Related @b examples
- - graphTraversal.cpp
+ - \ref graph/graphTraversal.cpp
 
 */
 

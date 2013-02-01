@@ -55,14 +55,6 @@
 // The interface to the Boost Graph should be defined in namespace boost.
 namespace boost
 {
-  /**
-     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimick.
-  */
-  struct DigitalSurface_graph_traversal_category 
-    : public virtual adjacency_graph_tag,
-      public virtual vertex_list_graph_tag,
-      public virtual incidence_graph_tag,
-      public virtual edge_list_graph_tag { };
 
   /**
      Defines the boost graph traits for any kind of digital surface
