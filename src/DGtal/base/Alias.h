@@ -221,16 +221,9 @@ namespace DGtal
     /**
       Copy constructor.
       @param other the object to clone.
-     
-      Necessary to declare it, but not used ! It has no code so the
-      user cannot instantiate it. (otherwise the user might be
-      tempted to use it as a member).
-     
-      @note clang indication when putting it private: error: calling a
-      private constructor of class 'Alias<A>'.  warning: C++98 requires
-      an accessible copy constructor for class 'Alias<A>' when binding
-      a reference to a temporary; was private
-      [-Wbind-to-temporary-copy]
+          
+      @note Keep in mind that Alias<T> type should not be used in class
+      members (efficiency issue). 
     */
     Alias ( const Alias & other );
 
