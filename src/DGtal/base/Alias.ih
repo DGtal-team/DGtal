@@ -66,6 +66,11 @@ DGtal::Alias<T>::Alias( T & t ) : myPtrT( &t )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
+DGtal::Alias<T>::Alias(const  Alias<T> & other ) : myPtrT( other.myPtrT )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
 DGtal::Alias<T>::Alias( T* pT ) : myPtrT( pT )
 {}
 //-----------------------------------------------------------------------------

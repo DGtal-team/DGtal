@@ -53,7 +53,7 @@ DGtal::ConstAlias<T>::ConstAlias()
 template <typename T>
 inline
 DGtal::ConstAlias<T> &
-DGtal::ConstAlias<T>::operator=( ConstAlias & other )
+DGtal::ConstAlias<T>::operator=( ConstAlias<T> & other )
 { 
   myPtrT = other.myPtrT;
   return *this;
@@ -62,6 +62,11 @@ DGtal::ConstAlias<T>::operator=( ConstAlias & other )
 template <typename T>
 inline
 DGtal::ConstAlias<T>::ConstAlias( const T & t ) : myPtrT( &t )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
+DGtal::ConstAlias<T>::ConstAlias( const ConstAlias<T> & other ) : myPtrT( other.myPtrT )
 {}
 //-----------------------------------------------------------------------------
 template <typename T>

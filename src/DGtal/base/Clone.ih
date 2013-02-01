@@ -52,6 +52,12 @@ DGtal::Clone<T>::Clone( const T & t )
 //-----------------------------------------------------------------------------
 template <typename T>
 inline
+DGtal::Clone<T>::Clone( const Clone<T> & other ) 
+  : myRefT( other.myRefT )
+{}
+//-----------------------------------------------------------------------------
+template <typename T>
+inline
 DGtal::Clone<T>::Clone( const T* ptrT )
   : myRefT( *ptrT )
 {
