@@ -66,17 +66,17 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Power map
    * construction.
 
-   * The algorithm uses a sperable process to construct
+   * The algorithm uses a separable process to construct
    * Power maps as discussed in @cite dcoeurjo_pami_RDMA
    *
    * Given an image mapping points to values and a power separable
    * metric, the class computes the power map of the weighted points
    * specified in the image. Similarly to the VoronoiMap class, if two
-   * points are equi-disatant according to the power distance, this
+   * points are equi-distant according to the power distance, this
    * power map will only consider one of them.
    *
    * If the separable metric has a complexity of O(h) for its
-   * "hiddenByWeighted" predicate, the overall Power map construction
+   * "hiddenByPower" predicate, the overall Power map construction
    * algorithm is in @f$ O(h.d.n^d)@f$ for @f$ n^d@f$ domains (see
    * class constructor). For Euclidean the @f$ l_2@f$ metric, the
    * overall computation is in @f$ O(d.n^d)@f$, which is optimal.
@@ -154,7 +154,7 @@ namespace DGtal
      *
      * All parameters are aliased in this class.
      *
-     * @param aDomain defines the (hyperrectangular) domain on which
+     * @param aDomain defines the (hyper-rectangular) domain on which
      * the computation is performed.  
      * @param WeightImage an image
      * returning the weight for some points
