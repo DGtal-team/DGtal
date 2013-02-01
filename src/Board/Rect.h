@@ -33,10 +33,10 @@ struct Rect {
   /** 
    * Rect constructor.
    * 
-   * @param left 
-   * @param top 
-   * @param width 
-   * @param height 
+   * @param leftX 
+   * @param topY
+   * @param rectWidth
+   * @param rectHeight 
    * 
    * @return 
    */

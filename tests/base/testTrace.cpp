@@ -134,7 +134,7 @@ void testTimings()
   trace.info()<<"..."<<std::endl;
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = (long)cos((double)tmp+i);
-  duration = trace.endBlock();
+  duration += trace.endBlock();
   
   trace.beginBlock("Level2B");
   trace.info()<<"..."<<std::endl;
@@ -155,8 +155,9 @@ void testTimings()
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
-  
+
   duration2 = trace.endBlock();
+  trace.info()<<"Duration="<<duration<<"   Duration2="<<duration2<<std::endl;
 
 }
 

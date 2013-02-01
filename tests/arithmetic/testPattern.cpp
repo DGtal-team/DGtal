@@ -109,7 +109,7 @@ testPatterns()
   std::cerr << "(" << nbok << "/" << nb << ") f1=";
   f1.selfDisplay( std::cerr );
   std::cerr << endl;
-  IntegerComputer< unsigned int > ic;
+  IntegerComputer<unsigned  int > ic;
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
       unsigned int p = random() % 1000;

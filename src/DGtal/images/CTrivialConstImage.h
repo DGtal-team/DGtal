@@ -49,56 +49,38 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CTrivialConstImage
   /**
-   * Description of \b concept '\b CTrivialConstImage' <p>
-   *
-   * @ingroup Concepts
-   * Aim: Defines the concept describing a read-only image,
-   * which is a refinement of CPointFunctor.
-   *
-###  Refinement of CPointFunctor
-   *
+Description of \b concept '\b CTrivialConstImage' <p>
+@ingroup Concepts
+     
+@brief Aim: Defines the concept describing a read-only image,
+which is a refinement of CPointFunctor.
+     
+###  Refinement of 
+     CPointFunctor
+     
 ###  Associated types :
-   * - \t Domain: type of the image domain, model of concept CDomain
-   *
+     - \t Domain: type of the image domain, model of concept CDomain
+     
 ###  Notation
-   * - \t X : A type that is a model of CTrivialConstImage
-   * - \t x, \t y  : Object of type X
-   *
+    - \t X : A type that is a model of CTrivialConstImage
+    - \t x, \t y  : Object of type X
+    
 ###  Definitions
-   *
-###  Valid expressions and
-      <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
+   
+###  Valid expressions and semantics
 
-	<tr>
-        <td class=CName> accessor to the domain            </td>
-        <td class=CExpression>  x.domain()   </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType>  const Domain &    </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics>  returns a const reference to the image domain     </td>
-        <td class=CPostCondition>   </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
+   
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Accessor to the domain | x.domain() | | const Domain & | | returns a const reference to the image domain | | O(1) |
 
 
-    </table>
 
-   *
 ###  Invariants
-   *
+
 ###  Models
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
-   *
+ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+
    */
 
   template <typename I>

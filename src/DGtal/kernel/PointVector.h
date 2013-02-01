@@ -229,9 +229,17 @@ namespace DGtal
      *  The new point is initialized by the result of functor f
      *  for each coordinate of apoint1 and apoint2
      */
-    template<typename Functor>
+    template<typename BinaryFunctor>
     PointVector( const Self& apoint1, const Self& apoint2,
-		 const Functor& f );
+		 const BinaryFunctor& f );
+
+    /** Constructor taking apoint and a unary functor as parameters.
+     *  The new point is initialized by the result of functor f
+     *  for each coordinate of apoint1
+     */
+    template<typename UnaryFunctor>
+    PointVector( const Self& apoint1, 
+		 const UnaryFunctor& f );
 
     /**
      * Destructor.
@@ -552,6 +560,14 @@ namespace DGtal
      */
     Self operator- ( const Self & v ) const;
 
+    /**
+     * Unary minus operator.
+     * -Vector => Vector
+     *
+     * @return a new Vector that is the opposite of 'this', i.e. -'this'.
+     */
+    Self operator-() const;
+
     
     /**
      * Division operator with assignement.
@@ -787,6 +803,21 @@ namespace DGtal
   template<Dimension dim, typename Component>
   std::ostream&
   operator<<( std::ostream & out, const PointVector<dim, Component> & object );
+
+  /**
+     External multiplication operator with a scalar number
+
+     @param coeff is the factor \a aVector is multiplied by.
+     @param aVector is the vector that is multiplied by the factor \a coef.
+
+     @return a new Vector that is the multiplication of \a aVector by
+     \a coeff.
+  */
+  template<Dimension dim, typename Component>
+  PointVector<dim, Component> 
+  operator*( Component coeff,
+	     const PointVector<dim, Component> & aVector );
+
 
   template< Dimension dim, typename Component>
   PointVector<dim, Component>  PointVector<dim, Component>::zero;

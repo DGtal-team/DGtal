@@ -75,8 +75,9 @@ namespace DGtal
     typedef typename Domain::Space Space;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
-    typedef typename std::vector<Point>::iterator Iterator;
+    typedef typename std::vector<Point>::const_iterator Iterator;
     typedef typename std::vector<Point>::const_iterator ConstIterator;
+    typedef typename std::vector<Point>::iterator MutableIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
