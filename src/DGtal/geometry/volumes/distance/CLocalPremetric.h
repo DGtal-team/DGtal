@@ -42,7 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#incldue "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/CUnsignedNumber.h"
 #include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
 //////////////////////////////////////////////////////////////////////////////
