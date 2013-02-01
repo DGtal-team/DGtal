@@ -79,9 +79,9 @@ bool checkVoronoi(Image &result,Pred &pointPredicate, Metric &metric)
         itendbis=result.domain().end();
         itbis != itendbis; ++itbis)
     {
-      if (!pointPredicate(*itbis) && (metric.distance(*it, *itbis) < dist))
+      if (!pointPredicate(*itbis) && (metric(*it, *itbis) < dist))
       {
-        trace.error()<< "Error in Voronoi map at "<< *it<<" computed="<<dist<<" but find="<<metric.distance(*it, *itbis) << std::endl;
+        trace.error()<< "Error in Voronoi map at "<< *it<<" computed="<<dist<<" but find="<<metric(*it, *itbis) << std::endl;
         return false;
       }
     }

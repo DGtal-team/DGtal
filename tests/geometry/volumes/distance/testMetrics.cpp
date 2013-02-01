@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -61,7 +61,7 @@ bool testMetrics()
   trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
 
-  trace.info() << "distance between a and bb = "<< metric.distance(a,bb)<< std::endl;
+  trace.info() << "distance between a and bb = "<< metric(a,bb)<< std::endl;
 
 
   DGtal::Closest closest  =metric.closest(a,d,c);
@@ -198,7 +198,7 @@ bool testInexactMetrics()
   
   return nbok == nb;
 }
-bool testWeightedMetrics()
+bool testPowerMetrics()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -209,7 +209,7 @@ bool testWeightedMetrics()
   Z2i::Point d(5,-6);
   Z2i::Point starting( 0, 5), endpoint(10,5);
   
-  typedef ExactPredicateLpWeightedSeparableMetric<Z2i::Space, 2> Metric;
+  typedef ExactPredicateLpPowerSeparableMetric<Z2i::Space, 2> Metric;
   Metric metric;
 
   trace.info()<< "a= "<<a<<std::endl;
@@ -219,13 +219,13 @@ bool testWeightedMetrics()
   trace.info()<< "c= "<<c<<std::endl;
   trace.info()<< "d= "<<d<<std::endl;
   
-  bool closer = (metric.closestWeighted(bbis,a,0,c,0) == DGtal::ClosestFIRST);  
+  bool closer = (metric.closestPower(bbis,a,0,c,0) == DGtal::ClosestFIRST);  
   nbok += (closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "a is closer" << std::endl;
 
-  closer = (metric.closestWeighted(bbis,a,10,c,35) == DGtal::ClosestFIRST);
+  closer = (metric.closestPower(bbis,a,10,c,35) == DGtal::ClosestFIRST);
   nbok += (!closer) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -234,25 +234,25 @@ bool testWeightedMetrics()
 
 
   trace.beginBlock("Testing Hidden with w=0");
-  bool hidden  =metric.hiddenByWeighted(a,0,b,0,c,0,starting,endpoint,0); 
+  bool hidden  =metric.hiddenByPower(a,0,b,0,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,b,c) returns false" << std::endl;
       
-  hidden  =metric.hiddenByWeighted(a,0,bb,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByPower(a,0,bb,0,c,0,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,bb,c) returns true" << std::endl;
   
-  hidden  =metric.hiddenByWeighted(a,0,bbb,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByPower(a,0,bbb,0,c,0,starting,endpoint,0); 
   nbok += (!hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,bbb,c) returns false" << std::endl;
 
-  hidden  =metric.hiddenByWeighted(a,0,d,0,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByPower(a,0,d,0,c,0,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -261,13 +261,13 @@ bool testWeightedMetrics()
 
   trace.beginBlock("Testing Hidden with w!=0");
 
-  hidden  =metric.hiddenByWeighted(a,0,d,30,c,0,starting,endpoint,0); 
+  hidden  =metric.hiddenByPower(a,0,d,30,c,0,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "(a,0,d,30,c,0) returns true" << std::endl;
 
-  hidden  =metric.hiddenByWeighted(a,10,d,10,c,10,starting,endpoint,0); 
+  hidden  =metric.hiddenByPower(a,10,d,10,c,10,starting,endpoint,0); 
   nbok += (hidden) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -380,9 +380,9 @@ bool testSpecialCasesLp()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,b,c) returns false" << std::endl;
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(b, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+  << metric(b, Z2i::Point(4,8))<<" "
+  << metric(c, Z2i::Point(4,8))<<std::endl;
   
   //(a,bb,c)
   hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,1);
@@ -391,9 +391,9 @@ bool testSpecialCasesLp()
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,bb,c) returns false" << std::endl;
   
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(bb, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+  << metric(bb, Z2i::Point(4,8))<<" "
+  << metric(c, Z2i::Point(4,8))<<std::endl;
   
   
   //(a,bbb,c)
@@ -401,10 +401,10 @@ bool testSpecialCasesLp()
   nbok += (hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "(a,bbb,c) returns true" << std::endl;
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(bbb, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+	       << "(a,bbb,c) returns true" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+	       << metric(bbb, Z2i::Point(4,8))<<" "
+	       << metric(c, Z2i::Point(4,8))<<std::endl;
   
   //(a,bbbb,c) x_abbbb should be > upper
   hidden  =metric.hiddenBy(a,bbbb,c,starting,endpoint,1);
@@ -433,30 +433,30 @@ bool testSpecialCasesL2()
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "(a,b,c) returns false" << std::endl;
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(b, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+	       << "(a,b,c) returns false" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+	       << metric(b, Z2i::Point(4,8))<<" "
+	       << metric(c, Z2i::Point(4,8))<<std::endl;
   
   hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,1);
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "(a,bb,c) returns false" << std::endl;
+	       << "(a,bb,c) returns false" << std::endl;
   
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(bb, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+	       << metric(bb, Z2i::Point(4,8))<<" "
+	       << metric(c, Z2i::Point(4,8))<<std::endl;
   
   
   hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,1);
   nbok += (hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-  << "(a,bbb,c) returns true" << std::endl;
-  trace.info() << "Distances at (4,8) "<<metric.distance(a, Z2i::Point(4,8))<<" "
-  << metric.distance(bbb, Z2i::Point(4,8))<<" "
-  << metric.distance(c, Z2i::Point(4,8))<<std::endl;
+	       << "(a,bbb,c) returns true" << std::endl;
+  trace.info() << "Distances at (4,8) "<<metric(a, Z2i::Point(4,8))<<" "
+	       << metric(bbb, Z2i::Point(4,8))<<" "
+	       << metric(c, Z2i::Point(4,8))<<std::endl;
   
   trace.endBlock();
   return nbok == nb;
@@ -475,7 +475,7 @@ int main( int argc, char** argv )
 
   bool res = testMetrics()
     && testInexactMetrics()
-    && testWeightedMetrics()
+    && testPowerMetrics()
     && testBinarySearch()
     && testSpecialCasesL2()
     && testSpecialCasesLp();

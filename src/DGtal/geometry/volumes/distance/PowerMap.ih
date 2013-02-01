@@ -185,10 +185,10 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
 	  if ( psite != myInfinity )
 	    {
 	      while ((nbSites >= 1) && 
-		     ( myMetricPtr->hiddenByWeighted(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
-                                                     Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
-                                                     psite,  myWeightImagePtr->operator()(psite),
-                                                     startingPoint, endpoint, dim) ))
+		     ( myMetricPtr->hiddenByPower(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
+						  Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
+						  psite,  myWeightImagePtr->operator()(psite),
+						  startingPoint, endpoint, dim) ))
 		{
 		  nbSites --; 
                   Sites.pop_back();
@@ -218,9 +218,9 @@ DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
   for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
     {
       while ( (k < nbSites) && 
-	      ( myMetricPtr->closestWeighted(point, 
-                                             Sites[k], myWeightImagePtr->operator()(Sites[k]),
-                                             Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
+	      ( myMetricPtr->closestPower(point, 
+					  Sites[k], myWeightImagePtr->operator()(Sites[k]),
+					  Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
 		!= DGtal::ClosestFIRST ))
         k++;
       

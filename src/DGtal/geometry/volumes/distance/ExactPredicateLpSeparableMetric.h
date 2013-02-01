@@ -145,7 +145,7 @@ namespace DGtal
      * 
      * @return the distance between @a aP and @a aP+@a aDir. 
      */
-    Value localDistance(const Point & aP, const Vector &aDir) const;
+    Value local(const Point & aP, const Vector &aDir) const;
 
    
     // ----------------------- CMetric --------------------------------------
@@ -157,7 +157,7 @@ namespace DGtal
      * 
      * @return the distance between aP and aQ.
      */
-    Value distance(const Point & aP, const Point &aQ) const;
+    Value operator()(const Point & aP, const Point &aQ) const;
     
     /** 
      * Given an origin and two points, this method decides which one
@@ -327,7 +327,7 @@ namespace DGtal
      * 
      * @return the distance between @a aP and @a aP+@a aDir. 
      */
-    Value localDistance(const Point & aP, const Vector &aDir) const;
+    Value local(const Point & aP, const Vector &aDir) const;
 
    
     // ----------------------- CMetric --------------------------------------
@@ -339,7 +339,7 @@ namespace DGtal
      * 
      * @return the distance between aP and aQ.
      */
-    Value distance(const Point & aP, const Point &aQ) const;
+    Value operator()(const Point & aP, const Point &aQ) const;
     
     /** 
      * Given an origin and two points, this method decides which one

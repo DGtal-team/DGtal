@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"

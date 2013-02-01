@@ -183,8 +183,8 @@ namespace DGtal
      */
     Value operator()(const Point &aPoint) const
     {
-      return this->myMetricPtr->distance(aPoint, 
-                                         this->myImagePtr->operator()(aPoint));
+      return this->myMetricPtr->operator()(aPoint, 
+					   this->myImagePtr->operator()(aPoint));
     }    
           
     /**
