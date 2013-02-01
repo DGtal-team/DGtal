@@ -60,7 +60,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
  - Digital straight segments --- coming soon ---
  - Digital circular arcs     --- coming soon ---
  - Other 
-   -# \ref moduleFrechetShortcut (Isabelle Sivignon)
+ - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
 - Geometric estimators <!-- \ref moduleEsimators -->  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
 
