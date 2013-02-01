@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#incldue "DGtal/kernel/CSpace.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
 #include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -88,6 +90,7 @@ a null vector.
 
 ### Models
 
+ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
 
 ### Notes
 
@@ -103,6 +106,10 @@ public:
   typedef typename T::Space::Vector Vector;
   typedef typename T::Value Value;
     
+  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
+  BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Value > ));
+  
+
   BOOST_CONCEPT_USAGE( CLocalPremetric )
   {
     checkConstConstraints();

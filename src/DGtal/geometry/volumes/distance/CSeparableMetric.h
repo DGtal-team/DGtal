@@ -78,6 +78,9 @@ Separable metrics are metrics satsifying the monotonicity property.
 ### Models
 
 
+ExactPredicateLpSeparableMetric, InexactPredicateLpSeparableMetric
+
+
 ### Notes
 
 @tparam T the type that should be a model of CSeparableMetric.
