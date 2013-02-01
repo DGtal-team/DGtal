@@ -71,8 +71,8 @@ a null vector.
 
 ### Associated types :
  
- - @e Space: type of space on which the premetric is defined
- - @e Value: the value type of the metric (model of CUnsignedInteger) 
+ - @e Space: type of space on which the premetric is defined (model of CSpace)
+ - @e Value: the value type of the metric (model of CUnsignedNumber) 
 
 ### Notation
  - \e X : A type that is a model of CLocalPremetric
