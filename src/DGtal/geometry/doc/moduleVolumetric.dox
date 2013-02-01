@@ -50,7 +50,7 @@ Hence, many papers have considered distances based on chamfer masks
 @cite Rosenfeld1966   @cite Rosenfled1968  @cite Borgefors1986CVGIP , or sequences of chamfer
 distances; the vector displacement based Euclidean distance
 @cite Danielsson1980  @cite Ragnemalm1993 the Voronoi diagram based Euclidean distance
-@cite Breu1995   @cite Maurer2003  or the square of the Euclidean distance
+@cite Breu1995   @cite Maurer2003PAMI  or the square of the Euclidean distance
 @cite Saito1994-DT   @cite Hirata1996  .  From a computational point of view, several of
 these methods lead to time optimal algorithms to compute the
 error-free Euclidean Distance Transformation (EDT) for @e n-
@@ -64,7 +64,7 @@ can be used to compute both the reverse distance transformation and a
 discrete medial axis of the binary shape.
 
 In fact, the separable decomposition and the associated algorithmic
-tools can be used on a wider class of metrics (see  @cite Hirata1966  or
+tools can be used on a wider class of metrics (see  @cite Hirata1996  or
 @cite Maurer2003). For instance, all weighted \f$l_p\f$ metrics defined in
 @f$R^n@f$ by
  \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^n w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
