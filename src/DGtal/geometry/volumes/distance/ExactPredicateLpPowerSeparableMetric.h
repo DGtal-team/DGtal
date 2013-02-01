@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file ExactPredicateLpWeightedSeparableMetric.h
+ * @file ExactPredicateLpPowerSeparableMetric.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/11/02
  *
- * Header file for module ExactPredicateLpWeightedSeparableMetric.cpp
+ * Header file for module ExactPredicateLpPowerSeparableMetric.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(ExactPredicateLpWeightedSeparableMetric_RECURSES)
-#error Recursive header files inclusion detected in ExactPredicateLpWeightedSeparableMetric.h
-#else // defined(ExactPredicateLpWeightedSeparableMetric_RECURSES)
+#if defined(ExactPredicateLpPowerSeparableMetric_RECURSES)
+#error Recursive header files inclusion detected in ExactPredicateLpPowerSeparableMetric.h
+#else // defined(ExactPredicateLpPowerSeparableMetric_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define ExactPredicateLpWeightedSeparableMetric_RECURSES
+#define ExactPredicateLpPowerSeparableMetric_RECURSES
 
-#if !defined ExactPredicateLpWeightedSeparableMetric_h
+#if !defined ExactPredicateLpPowerSeparableMetric_h
 /** Prevents repeated inclusion of headers. */
-#define ExactPredicateLpWeightedSeparableMetric_h
+#define ExactPredicateLpPowerSeparableMetric_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,9 +53,9 @@ namespace DGtal
 {
   
 /////////////////////////////////////////////////////////////////////////////
-// template class ExactPredicateLpWeightedSeparableMetric
+// template class ExactPredicateLpPowerSeparableMetric
 /**
- * Description of template class 'ExactPredicateLpWeightedSeparableMetric' <p>
+ * Description of template class 'ExactPredicateLpPowerSeparableMetric' <p>
   * \brief Aim: implements weighted separable l_p metrics with  exact
    * predicates.
    *
@@ -70,8 +70,8 @@ namespace DGtal
    * This class is said to be exact in the sense that the power @a p
    * is computed without approximation (exponentiation by squaring in
    * @f$ O(log(p))@f$ per computation, see
-   * BasicMathFunctions::power). As a consequence, @a hiddenByWeighted
-   * and @a closestWeighted methods are error free if the capacity of the
+   * BasicMathFunctions::power). As a consequence, @a hiddenByPower
+   * and @a closestPower methods are error free if the capacity of the
    * template type @a TPromoted allows to store sums of @f$
    * |x_i-y_i|^p@f$ quantities.
    *
@@ -84,7 +84,7 @@ namespace DGtal
    */
   template <typename TSpace, DGtal::uint32_t p,  
             typename TPromoted=DGtal::int64_t>
-  class ExactPredicateLpWeightedSeparableMetric
+  class ExactPredicateLpPowerSeparableMetric
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -114,26 +114,26 @@ namespace DGtal
     /**
      * Constructor.
      */
-    ExactPredicateLpWeightedSeparableMetric();
+    ExactPredicateLpPowerSeparableMetric();
 
    
     /**
      * Destructor.
      */
-    ~ExactPredicateLpWeightedSeparableMetric();
+    ~ExactPredicateLpPowerSeparableMetric();
 
   /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ExactPredicateLpWeightedSeparableMetric ( const ExactPredicateLpWeightedSeparableMetric & other ) {}
+    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
     
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpWeightedSeparableMetric & operator= ( const ExactPredicateLpWeightedSeparableMetric & other ) { return *this;}
+    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) { return *this;}
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -170,7 +170,7 @@ namespace DGtal
      $
      * @return a Closest enum: FIRST, SECOND or BOTH.
      */  
-    DGtal::Closest closestWeighted(const Point &origin,
+    DGtal::Closest closestPower(const Point &origin,
                                    const Point &first,
                                    const Weight &wF,
                                    const Point &second,
@@ -202,7 +202,7 @@ namespace DGtal
      * 
      * @return true if (u,w) hides v.
      */ 
-    bool hiddenByWeighted(const Point &u, 
+    bool hiddenByPower(const Point &u, 
                           const Weight &wu,
                           const Point &v,
                           const Weight &wv,
@@ -270,7 +270,7 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class ExactPredicateLpWeightedSeparableMetric
+  }; // end of class ExactPredicateLpPowerSeparableMetric
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -280,7 +280,7 @@ namespace DGtal
 
  template <typename TSpace,
            typename TPromoted>
- class ExactPredicateLpWeightedSeparableMetric<TSpace, 2, TPromoted>
+ class ExactPredicateLpPowerSeparableMetric<TSpace, 2, TPromoted>
   {
     // ----------------------- Standard services ------------------------------
   public:
@@ -305,27 +305,27 @@ namespace DGtal
     /**
      * Constructor.
      */
-    ExactPredicateLpWeightedSeparableMetric();
+    ExactPredicateLpPowerSeparableMetric();
 
    
     /**
      * Destructor.
      */
-    ~ExactPredicateLpWeightedSeparableMetric();
+    ~ExactPredicateLpPowerSeparableMetric();
 
   
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    ExactPredicateLpWeightedSeparableMetric ( const ExactPredicateLpWeightedSeparableMetric & other ) {}
+    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
     
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpWeightedSeparableMetric & operator= ( const ExactPredicateLpWeightedSeparableMetric & other ) 
+    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) 
     { return *this;}
 
    
@@ -360,7 +360,7 @@ namespace DGtal
      $
      * @return a Closest enum: FIRST, SECOND or BOTH.
      */  
-    DGtal::Closest closestWeighted(const Point &origin, 
+    DGtal::Closest closestPower(const Point &origin, 
                                    const Point &first,
                                    const Weight &wF,
                                    const Point &second,
@@ -398,7 +398,7 @@ namespace DGtal
      * 
      * @return true if (a,c) hides b.
      */ 
-    bool hiddenByWeighted(const Point &u, 
+    bool hiddenByPower(const Point &u, 
                           const Weight &wu,
                           const Point &v,
                           const Weight &wv,
@@ -455,29 +455,29 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class ExactPredicateLpWeightedSeparableMetric
+  }; // end of class ExactPredicateLpPowerSeparableMetric
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpWeightedSeparableMetric'.
+   * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpPowerSeparableMetric'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'ExactPredicateLpWeightedSeparableMetric' to write.
+   * @param object the object of class 'ExactPredicateLpPowerSeparableMetric' to write.
    * @return the output stream after the writing.
    */
   template <typename T, DGtal::uint32_t p , typename P>
   std::ostream&
-  operator<< ( std::ostream & out, const ExactPredicateLpWeightedSeparableMetric<T,p,P> & object );
+  operator<< ( std::ostream & out, const ExactPredicateLpPowerSeparableMetric<T,p,P> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.ih"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined ExactPredicateLpWeightedSeparableMetric_h
+#endif // !defined ExactPredicateLpPowerSeparableMetric_h
 
-#undef ExactPredicateLpWeightedSeparableMetric_RECURSES
-#endif // else defined(ExactPredicateLpWeightedSeparableMetric_RECURSES)
+#undef ExactPredicateLpPowerSeparableMetric_RECURSES
+#endif // else defined(ExactPredicateLpPowerSeparableMetric_RECURSES)

@@ -59,7 +59,7 @@ bool runATest( unsigned int maxTest)
     {
       Z3i::Point P( rand() % dim,rand() % dim ,rand() % dim );
       Z3i::Point Q( rand() % dim, rand() % dim, rand() % dim);
-      sum += exactMetric.distance(P,Q);
+      sum += exactMetric(P,Q);
     }
 
   trace.endBlock();
@@ -69,7 +69,7 @@ bool runATest( unsigned int maxTest)
     {
       Z3i::Point P( rand() % dim,rand() % dim ,rand() % dim );
       Z3i::Point Q( rand() % dim, rand() % dim, rand() % dim);
-      sum += approxMetric.distance(P,Q);
+      sum += approxMetric(P,Q);
     }
   trace.endBlock();
   
@@ -79,8 +79,8 @@ bool runATest( unsigned int maxTest)
     {
       Z3i::Point P( rand() % dim,rand() % dim ,rand() % dim );
       Z3i::Point Q( rand() % dim, rand() % dim, rand() % dim);
-      d = exactMetric.distance(P,Q);
-      d2 = approxMetric.distance(P,Q);
+      d = exactMetric(P,Q);
+      d2 = approxMetric(P,Q);
       MSE += (d-d2)*(d-d2);
     }
   trace.endBlock();

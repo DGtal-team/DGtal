@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/volumes/distance/PowerMap.h"
 #include "DGtal/geometry/volumes/distance/ReducedMedialAxis.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 ///////////////////////////////////////////////////////////////////////////////
 

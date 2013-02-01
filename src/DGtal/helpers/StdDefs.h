@@ -52,7 +52,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpWeightedSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -110,8 +110,8 @@ namespace DGtal
 
     typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
-    typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
-    typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,1> L1PowerMetric;
  
     static const L2Metric l2Metric;
     static const L1Metric l1Metric;
@@ -187,8 +187,8 @@ namespace DGtal
 
     typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
-    typedef ExactPredicateLpWeightedSeparableMetric<Space,2> L2PowerMetric;
-    typedef ExactPredicateLpWeightedSeparableMetric<Space,1> L1PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,1> L1PowerMetric;
 
     static const L2Metric l2Metric;
     static const L1Metric l1Metric;

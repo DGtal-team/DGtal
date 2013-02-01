@@ -71,7 +71,7 @@ namespace DGtal
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| hiddenBy predicate |  hiddenByWeighted(u,Wu,v,Wv,w,Wv,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, Wu,Wv,Ww of type @a Weight, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
+| hiddenBy predicate |  hiddenByPower(u,Wu,v,Wv,w,Wv,startingPoint,endPoint,dim)    | u,v,w,startingPoint,endPoint of type @a Point, Wu,Wv,Ww of type @a Weight, dim of type DGtal::Dimension |   @a startingPoint and @a endPoint only differ by their @a dim-th coordinate   | returns true if the intersection between the segment [@a startingPoint,@a endPoint] and the Voronoi cell associated with @a v is empty (hidden on the segment by @a u and @a w Voronoi cells).   |           |                |   -         |
 
  ### Invariants
 
@@ -98,7 +98,7 @@ namespace DGtal
     {
       // const method dummyConst should take parameter myA of type A and return
       // something of type B
-      ConceptUtils::sameType( myBool, myX.hiddenByWeighted(u,wu,v,wv,w,ww,start,end,dim) );
+      ConceptUtils::sameType( myBool, myX.hiddenByPower(u,wu,v,wv,w,ww,start,end,dim) );
     }
     // ------------------------- Private Datas --------------------------------
   private:

@@ -278,7 +278,7 @@ direction).
 As discussed, both VoronoiMap and PowerMap (and their associated
 subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
 @f$ corresponds to the cost of the @a closest() or @a
-closestWeighted() methods for the given metric, and @f$ H @f$ the cost
+closestPower() methods for the given metric, and @f$ H @f$ the cost
 of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
 of the separable metrics can be summarized as follows:
 
@@ -288,8 +288,8 @@ of the separable metrics can be summarized as follows:
 | ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
 | ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
 | InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
-| ExactPredicateLpWeightedSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
-| ExactPredicateLpWeightedSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
 
 
 Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:

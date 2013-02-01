@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file ExactLpWeightedSeparableMetric.ih
+ * @file ExactLpPowerSeparableMetric.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/11/02
  *
- * Implementation of inline methods defined in ExactLpWeightedSeparableMetric.h
+ * Implementation of inline methods defined in ExactLpPowerSeparableMetric.h
  *
  * This file is part of the DGtal library.
  */
@@ -39,20 +39,20 @@
 // ----------------------- Standard services ------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::ExactPredicateLpWeightedSeparableMetric()
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::ExactPredicateLpPowerSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::~ExactPredicateLpWeightedSeparableMetric()
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::~ExactPredicateLpPowerSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Promoted
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::exactDistanceRepresentation (const Point &aP,
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::Promoted
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::exactDistanceRepresentation (const Point &aP,
                                                                                     const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
@@ -65,8 +65,8 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::exactDistanceRepresentati
 //------------------------------------------------------------------------------
 template <typename T,DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Weight
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::powerDistance (const Point &aP,
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::Weight
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::powerDistance (const Point &aP,
                                                                       const Point &aQ,
                                                                       const Weight &aW) const
 {
@@ -76,7 +76,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::powerDistance (const Poin
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::closestWeighted (const Point &origin, 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::closestPower (const Point &origin, 
                                                                         const Point &first,  
                                                                         const Weight &wf,
                                                                         const Point &second,
@@ -98,8 +98,8 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::closestWeighted (const Po
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::Abscissa 
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::Abscissa 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
                                                                           const Abscissa &vdim,
                                                                           const Promoted &nu,
                                                                           const Promoted &nv,
@@ -135,7 +135,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::binarySearchHidden(const 
 template <typename T, DGtal::uint32_t p ,  typename P>
 inline
 bool 
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Point &u, 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u, 
                                                                         const Weight &wu,
                                                                         const Point &v,
                                                                         const Weight &wv,
@@ -211,15 +211,15 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::hiddenByWeighted(const Po
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 void
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::selfDisplay ( std::ostream & out ) const
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ExactPredicateLpWeightedSeparableMetric] p="<<p;
+  out << "[ExactPredicateLpPowerSeparableMetric] p="<<p;
 }
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 bool
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,p,P>::isValid() const
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::isValid() const
 {
   return true;
 }
@@ -228,7 +228,7 @@ template <typename T, DGtal::uint32_t p,  typename P>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, 
-                    const ExactPredicateLpWeightedSeparableMetric<T,p,P> & object )
+                    const ExactPredicateLpPowerSeparableMetric<T,p,P> & object )
 {
   object.selfDisplay( out );
   return out;
@@ -242,20 +242,20 @@ DGtal::operator<< ( std::ostream & out,
 // ----------------------- Standard services ------------------------------
 template <typename T,  typename P>
 inline
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::ExactPredicateLpWeightedSeparableMetric()
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::ExactPredicateLpPowerSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
 template <typename T,  typename P>
 inline
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::~ExactPredicateLpWeightedSeparableMetric()
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::~ExactPredicateLpPowerSeparableMetric()
 {
 }
 //------------------------------------------------------------------------------
 template <typename T, typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Promoted
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::exactDistanceRepresentation (const Point &aP,
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::Promoted
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::exactDistanceRepresentation (const Point &aP,
                                                                                     const Point &aQ) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
@@ -268,8 +268,8 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::exactDistanceRepresentati
 //------------------------------------------------------------------------------
 template <typename T, typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Weight
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::powerDistance (const Point &aP,
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::Weight
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::powerDistance (const Point &aP,
                                                                       const Point &aQ,
                                                                       const Weight &aW) const
 {
@@ -279,7 +279,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::powerDistance (const Poin
 template <typename T,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::closestWeighted (const Point &origin, 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::closestPower (const Point &origin, 
                                                                         const Point &first, 
                                                                         const Weight &wF,
                                                                         const Point &second,
@@ -302,8 +302,8 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::closestWeighted (const Po
 //------------------------------------------------------------------------------
 template <typename T,  typename P>
 inline
-typename DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::Abscissa 
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::Abscissa 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::binarySearchHidden(const Abscissa &udim, 
                                                                           const Abscissa &vdim,
                                                                           const Promoted &nu,
                                                                           const Promoted &nv,
@@ -317,7 +317,7 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::binarySearchHidden(const 
 template <typename T,   typename P>
 inline
 bool 
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::hiddenByWeighted(const Point &u, 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::hiddenByPower(const Point &u, 
                                                                         const Weight &wu,
                                                                         const Point &v,
                                                                         const Weight &wv,
@@ -351,15 +351,15 @@ DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::hiddenByWeighted(const Po
 template <typename T,   typename P>
 inline
 void
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::selfDisplay ( std::ostream & out ) const
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ExactPredicateLpWeightedSeparableMetric] p=2";
+  out << "[ExactPredicateLpPowerSeparableMetric] p=2";
 }
 //------------------------------------------------------------------------------
 template <typename T,  typename P>
 inline
 bool
-DGtal::ExactPredicateLpWeightedSeparableMetric<T,2,P>::isValid() const
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::isValid() const
 {
   return true;
 }

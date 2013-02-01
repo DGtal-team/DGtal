@@ -66,8 +66,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::exactDistanceRepresentation (cons
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::localDistance (const Point &aP, 
-                                                              const Vector &aDir) const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::local (const Point &aP, 
+						      const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -80,8 +80,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::localDistance (const Point &aP,
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,p,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,p,P>::distance (const Point &aP,
-                                                         const Point &aQ) const
+DGtal::ExactPredicateLpSeparableMetric<T,p,P>::operator()(const Point &aP,
+							  const Point &aQ) const
 {
   return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)), 1.0/(double)p);
 }
@@ -278,8 +278,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::exactDistanceRepresentation (cons
 template <typename T,   typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::localDistance (const Point &aP, 
-                                                              const Vector &aDir) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::local (const Point &aP, 
+						      const Vector &aDir) const
 {
   Promoted res= NumberTraits<Promoted>::ZERO;
   for(DGtal::Dimension d=0; d< Point::dimension ; ++d)
@@ -292,8 +292,8 @@ DGtal::ExactPredicateLpSeparableMetric<T,2,P>::localDistance (const Point &aP,
 template <typename T,   typename P>
 inline
 typename DGtal::ExactPredicateLpSeparableMetric<T,2,P>::Value
-DGtal::ExactPredicateLpSeparableMetric<T,2,P>::distance (const Point &aP,
-                                                         const Point &aQ) const
+DGtal::ExactPredicateLpSeparableMetric<T,2,P>::operator() (const Point &aP,
+							   const Point &aQ) const
 {
   return std::pow( NumberTraits<Promoted>::castToDouble(exactDistanceRepresentation(aP,aQ)),
                    1.0/2.0);
