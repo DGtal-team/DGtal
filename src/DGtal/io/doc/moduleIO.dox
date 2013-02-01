@@ -302,7 +302,7 @@ instance generate some exports in pdf like this example:
 
    @see \ref importMesh3D
 
-   @image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
+   \image html visuTrefExample.png   "Visualisation of the sample/tref.off file"
 
 * \example io/meshFromOFF.cpp
 **/
