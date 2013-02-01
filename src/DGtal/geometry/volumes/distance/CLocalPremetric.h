@@ -107,9 +107,6 @@ public:
   typedef typename T::Value Value;
     
   BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
-  BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Value > ));
-  
-
   BOOST_CONCEPT_USAGE( CLocalPremetric )
   {
     checkConstConstraints();
