@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
-#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/base/CQuantity.h"
 #include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -107,6 +107,8 @@ public:
   typedef typename T::Value Value;
     
   BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
+  BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+
   BOOST_CONCEPT_USAGE( CLocalPremetric )
   {
     checkConstConstraints();
