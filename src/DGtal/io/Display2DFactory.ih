@@ -383,7 +383,7 @@ void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard,
   }
 
   // now with accessor
-  if (fp.flagIsClosed()) {
+  if (fp.isClosed()) {
       Point p = (*fp.polygon().begin());
       double xp = (double)NumberTraits<TInteger>::castToInt64_t(p[0]);
       double yp = (double)NumberTraits<TInteger>::castToInt64_t(p[1]);

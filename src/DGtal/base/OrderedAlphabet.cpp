@@ -158,9 +158,9 @@ DGtal::OrderedAlphabet::firstLyndonFactor
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-  ++i;
+        ++i;
       else 
-  i = s;
+        i = s;
       ++j;
     }
   len = (size_t) j - i;
@@ -194,9 +194,9 @@ DGtal::OrderedAlphabet::firstLyndonFactorMod
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
       if ( equal( w[ i ], w[ j ] ) )
-  mc.increment( i );
+        mc.increment( i );
       else 
-  i = s;
+        i = s;
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -291,15 +291,8 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
   lf1 = n1 = slope1;
   lf2 = n2 = slope2;
   nb = 1;
-  //cerr << "input : " << w << endl;
   
-  // Convex is not used so I comment it
-  ///bool convex;
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
-
-    //cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
-    //  << q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
-    //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;g
 
     //This 'if/else if' is added to compute the vector defined by
     //the Christoffel word, this is usefull in order to compute the
@@ -321,7 +314,6 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
       ++i;
     } else {
       if ( ( j != q ) || ( order ( w[ j ] ) != 2 ) ) {
-	//   convex = false;
         break;
       }
       index_t tmp = p; 
@@ -339,15 +331,10 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
     ++j;
   }
   len = (size_t) j - i;
-  //cerr << "Termine" << endl;
-  //cerr << "i=" << i << " j=" << j << " p=" << p << " q=" 
-  //  << q << " nb=" << nb << " n1=" << n1 << " n2=" << n2 
-  //  << " lf1=" << lf1 << " lf2=" << lf2 << endl;
 
   if ( nb != (size_t) (j-s) / len)
     cout << "ASSERT(" << nb << " == (" << j << "-" << s << ") / "<<len << ")" << endl;
   ASSERT( nb == (size_t) (j-s) / len);
-  //nb = (size_t) (j-s) / len;
   return true;
 }
 
@@ -389,25 +376,24 @@ DGtal::OrderedAlphabet::duvalPPMod( size_t & len, size_t & nb,
   unsigned int q = 2;
   while ( ( j != e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) )
     {
-      // cerr << "i=" << i << " j=" << j << " p=" << p << " q=" << q << endl;
       if ( equal( w[ i ], w[ j ] ) )
-  {
-    if ( j == mc.cast( s + q - 1 ) )
-      q += p;
-    mc.increment( i );
-  }
+        {
+          if ( j == mc.cast( s + q - 1 ) )
+            q += p;
+          mc.increment( i );
+        }
       else 
-  {
-    if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
-      {
-        len = j; nb = 0;
-        return false;
-      }
-    unsigned int tmp = p; 
-    p = q;
-    q += q - tmp;
-    i = s;
-  }
+        {
+          if ( ( j != mc.cast( s + q - 1 ) ) || ( order ( w[ j ] ) != 2 ) )
+            {
+              len = j; nb = 0;
+              return false;
+            }
+          unsigned int tmp = p; 
+          p = q;
+          q += q - tmp;
+          i = s;
+        }
       mc.increment( j );
     }
   len = j >= i ? (size_t) ( j - i )
@@ -451,10 +437,10 @@ DGtal::OrderedAlphabet::isValid() const
  * position [s] on the word [w]. The alphabet may be modified
  * (reversed or shifted). The output alphabet is some a0 < a1 < a2 < ...
  *
- * @param (returns) the number of letters a1 in the extracted edge (a1
+ * @param nb_a1 (returns) the number of letters a1 in the extracted edge (a1
  * in the output alphabet)
  *
- * @param (returns) the number of letters a2 in the extracted edge (a2
+ * @param nb_a2 (returns) the number of letters a2 in the extracted edge (a2
  * in the output alphabet)
  *
  * @param w the input (cyclic) word (may be modified in the process).
@@ -481,15 +467,12 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
   if ( ! inC ) 
     // case : change of convexity
     {
-//       cerr << "Convexity change" <<  orderedAlphabet() ;
-//       cerr << " (" << w[ len ] << "==" << letter( 2 ) << ")";
       // JOL : temporary change of letter w[ s ]
       char tmp = w[ s ];
       index_t tmp_s = s;
       w[ s ] = letter( 2 ); // a3
       this->reverseAround12();
       cvx = ! cvx;
-//       cerr << " => " << orderedAlphabet() << endl;
       l = nextEdge( nb_a1, nb_a2, w, s, cvx );
       // JOL : former letter is put back in string.
       w[ tmp_s ] = tmp;
@@ -497,9 +480,7 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
   else if ( ( len == 1 ) && ( order( w[ s ] ) == 1 ) ) 
     // case u=a1 => Quadrant change
     {
-//       cerr << "Quadrant change " << orderedAlphabet() ;
       this->shiftRight();
-//       cerr << " => " << orderedAlphabet() << endl;
       s = mc.cast( s + nb );
       nb_a1 = 0;
       nb_a2 = nb - 1;
@@ -507,7 +488,6 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
     }
   else 
     { // standard (convex) case.
-//       cerr << "standard (convex) case " << orderedAlphabet() << endl;
       l = len * nb;
       char a2 = letter( 2 ); 
       nb_a1 = len;
@@ -515,18 +495,18 @@ DGtal::OrderedAlphabet::nextEdge( size_t & nb_a1,
       index_t ss = s;
       s = mc.cast( s + l );
       while ( len != 0 )
-  {
-    if ( w[ ss ] == a2 ) ++nb_a2;
-    mc.increment( ss );
-    --len;
-  }
+        {
+          if ( w[ ss ] == a2 ) ++nb_a2;
+          mc.increment( ss );
+          --len;
+        }
       nb_a1 -= nb_a2;
       nb_a1 *= nb;
       nb_a2 *= nb;
     }
   return l;
 }
-            
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Internals - private :

@@ -47,7 +47,7 @@ In the literature, many techniques have been proposed to compute the
 DT given a metric with a trade-off between algorithmic performances
 and the @e accuracy of the metric compared to the Euclidean one.
 Hence, many papers have considered distances based on chamfer masks
-@cite Rosenfeld1966   @cite Rosenfled1968  @cite Borgefors1986CVGIP , or sequences of chamfer
+@cite Rosenfeld1966   @cite Rosenfeld1968  @cite Borgefors1986CVGIP , or sequences of chamfer
 distances; the vector displacement based Euclidean distance
 @cite Danielsson1980  @cite Ragnemalm1993 the Voronoi diagram based Euclidean distance
 @cite Breu1995   @cite Maurer2003PAMI  or the square of the Euclidean distance

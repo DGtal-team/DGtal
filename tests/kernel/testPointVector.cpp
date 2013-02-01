@@ -229,6 +229,8 @@ bool testIterator()
 
 bool testOperators()
 {
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
   trace.beginBlock("Point Operators Test");
 
   DGtal::int32_t t1[] = {1,2,3,4};
@@ -240,13 +242,24 @@ bool testOperators()
   trace.info() << "p1+p2: "<<p1+p2 <<std::endl;
   trace.info() << "p1*2+p2: "<<p1*2+p2 <<std::endl;
   trace.info() << "p1-p2: "<<p1-p2 <<std::endl;
+  trace.info() << "-p2: "<< -p2 <<std::endl;
   trace.info() << "inf(p1,p2): "<<p1.inf(p2) <<std::endl;
   trace.info() << "sup(p1,p2): "<<p1.sup(p2) <<std::endl;
   trace.info() << "p1 dot p2: "<<p1.dot(p2) <<std::endl;
 
   trace.endBlock();
 
-  return true;
+  trace.beginBlock("Vector Operators Test");
+  PointVector<4,DGtal::int32_t> p3 = -p1;
+  PointVector<4,DGtal::int32_t> p4 = -p3;
+  ++nb, nbok += ( p4 == p1 ) ? 1 : 0;
+  p4 = 2*p1 + p3;
+  trace.info() << "2*p1+p3: "<< p4 << " (==p1)" << std::endl;
+  ++nb, nbok += ( p4 == p1 ) ? 1 : 0;
+  trace.info() << "2*p1+3*p2: "<< 2*p1+3*p2 << std::endl;
+  trace.endBlock();
+
+  return nb == nbok;
 }
 
 bool testIntegerNorms()

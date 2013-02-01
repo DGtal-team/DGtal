@@ -66,8 +66,6 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 - \ref moduleVolumetric (David Coeurjolly)
 
-- \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly)
-
 - \ref moduleNaivePlaneRecognition (Jacques-Olivier Lachaud, Emilie Charrier, Lilian Buzer)
 
 @b Package @b Concepts @b Overview

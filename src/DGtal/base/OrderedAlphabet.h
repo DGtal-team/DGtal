@@ -60,6 +60,10 @@ namespace DGtal
    * \brief Aim: Describes an alphabet over an interval of (ascii) letters,
    * where the lexicographic order can be changed (shifted, reversed, ...).
    * Useful for the arithmetic minimum length polygon (AMLP).
+   *
+   * Standard operators '<' and '<=' compares letters using their ascii codes. 
+   * In order to compare letters with respect to an 'OrderedAlphabet', one uses
+   * the classe's functions 'less' and 'lessOrEqual'.
    */
   class OrderedAlphabet
   {
@@ -296,10 +300,10 @@ namespace DGtal
      * position [s] on the word [w]. The alphabet may be modified
      * (reversed or shifted). The output alphabet is some a0 < a1 < a2 < ...
      *
-     * @param (returns) the number of letters a1 in the extracted edge (a1
+     * @param nb_a1 (returns) the number of letters a1 in the extracted edge (a1
      * in the output alphabet)
      *
-     * @param (returns) the number of letters a2 in the extracted edge (a2
+     * @param nb_a2 (returns) the number of letters a2 in the extracted edge (a2
      * in the output alphabet)
      *
      * @param w the input (cyclic) word (may be modified in the process).
