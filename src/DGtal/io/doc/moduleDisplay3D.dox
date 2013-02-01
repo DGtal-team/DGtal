@@ -6,7 +6,7 @@
 namespace DGtal {
 
 /**
- * @page threeD_visu Display3D: a stream mechanism for displaying 3D DGtal objects 
+ * @page moduleDisplay3D Display3D: a stream mechanism for displaying 3D DGtal objects 
  *
  * This part of the manual describes how to visualize 3D objects and how to 
  * import them from binary file (.obj or pgm3d)
@@ -189,10 +189,12 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
   - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
   - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration".
-  - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration".
+  - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
+  - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
 
-
+Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
+(with CustomColors3D objects) can be changed only with the empty mode
+("") and the "IllustrationCustomColor" mode.
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 

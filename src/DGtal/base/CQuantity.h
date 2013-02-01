@@ -68,29 +68,11 @@ Description of \b concept '\b CQuantity' <p>
 ###  Definitions
 
 ###  Valid expressions and semantics
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr>
-        <td class=CName>            </td>
-        <td class=CExpression>      </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics>       </td>
-        <td class=CPostCondition>   </td>
-        <td class=CComplexity>      </td>
-      </tr>
 
-     </table>
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|               |            | | | | | | | 
+
 
 ###  Invariants
 

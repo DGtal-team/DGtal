@@ -378,8 +378,6 @@ DGtal::AngleLinearMinimizerByGradientDescent::oneStep( unsigned int i1, unsigned
       i = inext;
     }
   while ( i != i2 );
-  double E1 = getFormerEnergy( i1, i2 );
-  double E2 = getEnergy( i1, i2 );  
 }
 
 

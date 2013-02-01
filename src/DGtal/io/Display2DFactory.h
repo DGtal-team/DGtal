@@ -181,6 +181,8 @@ static  void draw(DGtal::Board2D & aBoard, const DGtal::FrechetShortcut<TIterato
 template <typename TKSpace>
 static void draw( DGtal::Board2D & aBoard, 
            const GridCurve<TKSpace> & object );
+template <typename TKSpace>
+static void drawFill( DGtal::Board2D & aBoard, const GridCurve<TKSpace> & object );
 // GridCurve
     
 // SCellsRange
