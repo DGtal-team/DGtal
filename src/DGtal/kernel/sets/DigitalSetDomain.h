@@ -44,7 +44,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -71,7 +70,7 @@ namespace DGtal
     typedef typename Domain::Size Size;
     typedef typename Domain::Dimension Dimension;
     typedef typename DigitalSet::ConstIterator ConstIterator;
-    typedef SetPredicate<DigitalSet> Predicate;
+    typedef DigitalSet Predicate; // since 0.6, DigitalSet are PointPredicate
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -139,7 +138,7 @@ namespace DGtal
     /**
      * @return a light "IsInside" predicate.
      */
-    Predicate predicate() const;
+    const Predicate & predicate() const;
 
 
     // ----------------------- Interface --------------------------------------

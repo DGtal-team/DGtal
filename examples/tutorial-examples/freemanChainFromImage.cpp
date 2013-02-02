@@ -67,7 +67,6 @@ int main()
 
   //! [freemanChainFromImage-setAppend]
   Z2i::DigitalSet set2d (image.domain());
-  SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 1, 255);
   //! [freemanChainFromImage-setAppend]
 
@@ -85,7 +84,7 @@ int main()
   //! [freemanChainFromImage-extraction]
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-                ks, set2dPredicate, sAdj );  
+                ks, set2d, sAdj );  
   //! [freemanChainFromImage-extraction]
   
 
