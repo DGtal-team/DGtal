@@ -48,6 +48,10 @@
 
 namespace DGtal
 {
+  // 2013/02/02: JOL: Since 0.6, models of CDigitalSet are also models
+  // of CPointPredicate. Therefore, this facade to models of
+  // CDigitalSet is no longer useful.
+  namespace deprecated {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SetPredicate
@@ -60,10 +64,9 @@ namespace DGtal
 
      Model of CPointPredicate.
      
-     @note Since 0.6, digital sets are also models of CPointPredicate,
+     @deprecated Since 0.6, digital sets are also models of CPointPredicate,
      hence using a SetPredicate is therefore no more
-     compulsory. However, SetPredicate may be useful if one wishes a
-     "light" predicate and not copy the whole set.
+     useful. 
 
    */
   template <typename TDigitalSet>
@@ -118,6 +121,7 @@ namespace DGtal
 
   }; // end of struct SetPredicate
 
+  } // namespace deprecated
 
 } // namespace DGtal
 

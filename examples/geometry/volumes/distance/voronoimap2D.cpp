@@ -34,7 +34,6 @@
 
 //! [Voro2D-header]
 #include "DGtal/kernel/BasicPointPredicates.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
@@ -76,9 +75,8 @@ int main( int argc, char** argv )
   //! [Voro2D-SmallImage]
   
   //! [Voro2D-Predicate]
-  SetPredicate<Z2i::DigitalSet> setPred(set);
-  typedef NotPointPredicate<SetPredicate<Z2i::DigitalSet> > NotPredicate;
-  NotPredicate notSetPred(setPred);
+  typedef NotPointPredicate<Z2i::DigitalSet> NotPredicate;
+  NotPredicate notSetPred(set);
   //! [Voro2D-Predicate]
   
   //! [Voro2D-Voro]

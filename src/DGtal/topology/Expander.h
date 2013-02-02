@@ -50,6 +50,11 @@
 
 namespace DGtal
 {
+  // 2013/02/02: JOL: There is a known problem in Expander related to
+  // use of a non-valid reference.  For instance, Object does not use
+  // anymore the Expander for computing simple points. With
+  // deprecation of SetPredicate, testExpander does not work
+  // anymore. Use BreadthFirstVisitor instead.
 
   /////////////////////////////////////////////////////////////////////////////
   // template class Expander
