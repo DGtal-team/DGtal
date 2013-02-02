@@ -181,7 +181,7 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::insertNew( const Point & p )
 {
   // ASSERT( myDomain.isInside( p ) );
-  ASSERT_ALL_PRE( find( p ) == end() );
+  ASSERT( find( p ) == end() );
   myVector.push_back( p );
 }
 

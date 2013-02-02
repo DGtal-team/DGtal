@@ -100,7 +100,7 @@ template <typename TPointPredicate>
 inline
 DGtal::NotPointPredicate<TPointPredicate>
 ::NotPointPredicate( const PointPredicate & pred )
-  : myPred( pred )
+  : myPredPtr( &pred )
 {
 }
 //------------------------------------------------------------------------------
@@ -110,7 +110,17 @@ bool
 DGtal::NotPointPredicate<TPointPredicate>
 ::operator()( const Point & p ) const
 {
-  return ! myPred( p );
+  return ! myPredPtr->operator()( p );
+}
+//------------------------------------------------------------------------------
+template <typename TPointPredicate>
+inline
+
+DGtal::NotPointPredicate<TPointPredicate>&
+DGtal::NotPointPredicate<TPointPredicate>::operator=( const DGtal::NotPointPredicate<TPointPredicate> & p )
+{
+  myPredPtr = p.myPredPtr;
+  return *this;
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate>

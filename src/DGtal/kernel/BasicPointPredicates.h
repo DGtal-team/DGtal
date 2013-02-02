@@ -214,13 +214,17 @@ namespace DGtal
     NotPointPredicate( const PointPredicate & pred );
 
     /**
+     * Assignment operator.
+     */
+    NotPointPredicate &operator=( const NotPointPredicate & pred );
+   /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// the PointPredicate that is inversed.
-    const PointPredicate & myPred;
+    /// An alias to the  PointPredicate that is inversed.
+    const PointPredicate * myPredPtr;
   };
 
   /////////////////////////////////////////////////////////////////////////////
