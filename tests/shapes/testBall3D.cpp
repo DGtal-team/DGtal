@@ -33,7 +33,6 @@
 #include <iostream>
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
