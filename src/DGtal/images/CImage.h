@@ -54,32 +54,31 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // struct CImage
 /**
- * DescriptionDescription of \b concept '\b CImage' <p>
- *
- * @ingroup Concepts
- * Aim: Defines the concept describing a read/write image,
- * having an output iterator.
- *
+   Description of \b concept '\b CImage' <p>
+   @ingroup Concepts
+   @brief Aim: Defines the concept describing a read/write image,
+   having an output iterator.
+   
 ### Refinement of
- *
- *  CTrivialImage and CConstImage
- *
+
+  CTrivialImage and CConstImage
+
 ### Associated types:
- * - the same as CTrivialImage
- * - the same as CConstImage
- * - \a Range : type of the Range
- *
- *
+- the same as CTrivialImage
+- the same as CConstImage
+- \a Range : type of the Range
+ 
+ 
  ### Notation
- * - \t X : A type that is a model of CImage
- * - \t x : Object of type X
- * - \t aPoint : Object of type Point
- * - \t aValue : Object of type Value
- *
- *
+  - \t X : A type that is a model of CImage
+  - \t x : Object of type X
+  - \t aPoint : Object of type Point
+  - \t aValue : Object of type Value
+ 
+ 
  ### Definitions
- *
- ### Valid expressions and
+ 
+ ### Valid expressions and semantics
 
 
 | Name                                | Expression                         | Type requirements    | Return type           | Precondition                       | Semantics                                             | Post condition | Complexity |
@@ -87,15 +86,15 @@ namespace DGtal
 | get range                           | x.range()                          |                      | Range                 |                                    | Returns a range on the image values                   |                |            |
 
 
- *
+ 
 ### Invariants
 
 ### Models
- * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
- *
+  ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+ 
 
 ### Notes
- *
+ 
  */
 
 template <typename I>

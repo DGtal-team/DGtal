@@ -141,7 +141,7 @@ namespace DGtal
   protected: 
     
     /**  
-	 Attributes of occulter points: angles min and max for chich
+	 Attributes of occulter points: angles min and max for which
 	the point is an occulter 
     */
     typedef struct occulter_attributes{
@@ -153,13 +153,15 @@ namespace DGtal
        Map between the point and their attributes if they are
        occulters 
     */
-    typedef map <ConstIterator,occulter_attributes > occulter_list;
+    typedef std::map <ConstIterator,occulter_attributes > occulter_list;
     
   public:
     friend class FrechetShortcut<ConstIterator,Integer>;
     
     
   public:
+    
+    typedef boost::icl::interval_set<double> IntervalSet;
     
       /** 
 	  Octant of work 
@@ -178,7 +180,7 @@ namespace DGtal
 	 List of forbidden intervals: intervals of angle for which there
 	 exist a backpath of length greater than the error 
       */ 
-      boost::icl::interval_set<double> myForbiddenIntervals;
+      IntervalSet myForbiddenIntervals;
       
       /** 
 	  pointer to the next point to be scanned: set to myEnd + 1 
@@ -204,6 +206,14 @@ namespace DGtal
       Backpath(const Backpath & other);
 
       
+      /**
+	 Assignement
+	 @param other another backpath
+	 @return a reference on 'this'
+      */
+      Backpath& operator=(const Backpath & other);
+    
+
       /**
 	 Destructor 
       */
@@ -488,14 +498,14 @@ namespace DGtal
 	  {
 	    double alpha = y/x;
 	  
-	  if(x>0 && y>=0)
-	    return atan(alpha);
-	  else
-	    if(x>0 && y<0)
-	      return atan(alpha)+2*M_PI;
+	    if(x>0 && y>=0)
+	      return atan(alpha);
 	    else
-	      if(x<0)
-		return atan(alpha)+M_PI;
+	      if(x>0 && y<0)
+		return atan(alpha)+2*M_PI;
+	      else
+		if(x<0)
+		  return atan(alpha)+M_PI;
 	  }
 	else
 	  {
@@ -504,9 +514,10 @@ namespace DGtal
 	    else
 	      return 3*M_PI_2;
 	  }
+	return -1;
       }      
-            
-
+      
+      
       
       /**
 	 Angle between two vectors
@@ -569,21 +580,23 @@ namespace DGtal
       Coordinate y = q[1]-p[1];
       
       if(x>=0)
-	if(y>=0)
-	  {
-	    if(x>y)
-	      d=0; // 0 <= y < x  
-	    else
-	      if(x!=0)
-		d=1; // 0 <= x <= y
-	  }
-	else
-	  {
-	    if(x>=abs(y)) 
-	      d=7; // 0 < abs(y) <= x 
-	    else
-	      d=6; // 0 <= x < abs(y)
-	  }
+	{
+	  if(y>=0)
+	    {
+	      if(x>y)
+		d=0; // 0 <= y < x  
+	      else
+		if(x!=0)
+		  d=1; // 0 <= x <= y
+	    }
+	  else
+	    {
+	      if(x>=abs(y)) 
+		d=7; // 0 < abs(y) <= x 
+	      else
+		d=6; // 0 <= x < abs(y)
+	    }
+	}
       if(x<=0)
 	{
 	  if(y>0)

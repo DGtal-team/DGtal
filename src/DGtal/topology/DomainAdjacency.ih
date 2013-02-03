@@ -154,7 +154,11 @@ typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size
 DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
 ( const Vertex & v ) const
 {
-  return myAdjacency.degree( v );
+  std::vector<Vertex> vect;
+  std::back_insert_iterator< std::vector<Vertex> > out_it(vect);
+  myAdjacency.writeNeighbors( out_it, v, myPred );
+  return vect.size();
+  //  return myAdjacency.degree( v );
 }
 
 /**
@@ -176,7 +180,9 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
   //myAdjacency.writeProperNeighborhood( v, it, myPred );//writeNeighbors<OutputIterator>( v, it );
-  myAdjacency.writeNeighbors( it, v );
+  // myAdjacency.writeNeighbors( it, v );
+  myAdjacency.writeNeighbors( it, v, myPred );
+
 }
 
 /**
@@ -201,11 +207,11 @@ void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
-  vector<Vertex> vect;
-  back_insert_iterator< vector<Vertex> > out_it(vect);
+  std::vector<Vertex> vect;
+  std::back_insert_iterator< std::vector<Vertex> > out_it(vect);
   //myAdjacency.writeProperNeighborhood( vect, out_it, myPred );
   myAdjacency.writeNeighbors( out_it, v, myPred );
-  for( typename vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
+  for( typename std::vector<Vertex>::const_iterator cit = vect.begin(); cit != vect.end(); cit ++ )
   {
     if( pred(*cit) )
     {

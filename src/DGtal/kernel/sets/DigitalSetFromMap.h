@@ -86,7 +86,7 @@ namespace DGtal
 
     typedef Pair1st<Point> Functor; 
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
-    typedef ConstIteratorAdapter<typename Image::Iterator, Functor, Point> Iterator;
+    typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> Iterator;
 
     // ------------------------- Protected Datas ------------------------------
   protected:
@@ -271,6 +271,15 @@ namespace DGtal
     template< typename TDigitalSet >
     Self & operator+=
     ( const TDigitalSet & aSet );
+
+    // ----------------------- Model of CPointPredicate -----------------------------
+  public:
+
+    /**
+       @param p any point.
+       @return 'true' if and only if \a p belongs to this set.
+    */
+    bool operator()( const Point & p ) const;
 
     // ----------------------- Other Set services -----------------------------
   public:

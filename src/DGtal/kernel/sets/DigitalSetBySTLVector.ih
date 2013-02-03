@@ -181,7 +181,7 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::insertNew( const Point & p )
 {
   // ASSERT( myDomain.isInside( p ) );
-  ASSERT_ALL_PRE( find( p ) == end() );
+  ASSERT( find( p ) == end() );
   myVector.push_back( p );
 }
 
@@ -244,7 +244,11 @@ inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::erase( Iterator it )
 {
-  *it = myVector.back();
+  //take a mutable iterator
+  typename std::iterator_traits<Iterator>::difference_type d = it - this->begin();   
+  typename std::vector<Point>::iterator it2 = myVector.begin() + d;
+  //swap  
+  *it2 = myVector.back();
   myVector.pop_back();
 }
 
@@ -263,8 +267,14 @@ DGtal::DigitalSetBySTLVector<Domain>::erase( Iterator first, Iterator last )
   while ( ( last != end() ) 
     && ( first != last ) )
     {
-      *first++ = myVector.back();
+      //take a mutable iterator
+      typename std::iterator_traits<Iterator>::difference_type d = first - this->begin();   
+      typename std::vector<Point>::iterator first2 = myVector.begin() + d;
+      //swap
+      *first2 = myVector.back();
       myVector.pop_back();
+      //advance
+      first++; 
     }
   if ( first != last )
     while ( first != end() )
@@ -374,7 +384,7 @@ DGtal::DigitalSetBySTLVector<Domain>
     {
       std::vector<Point> other( aSet.myVector );
       std::stable_sort( other.begin(), other.end() );
-      std::stable_sort( begin(), end() );
+      std::stable_sort( myVector.begin(), myVector.end() );
       std::vector<Point> new_vector;
       new_vector.reserve( size() + other.size() );
       std::set_union( begin(), end(), other.begin(), other.end(), 
@@ -383,6 +393,16 @@ DGtal::DigitalSetBySTLVector<Domain>
       myVector.swap( new_vector );
     }
   return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename Domain>
+inline
+bool
+DGtal::DigitalSetBySTLVector<Domain>
+::operator()( const Point & p ) const
+{
+  return find( p ) != end();
 }
 
 

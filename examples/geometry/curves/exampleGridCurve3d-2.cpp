@@ -99,7 +99,6 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/cat10.vol"; 
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
   setFromImage( image, DigitalSetInserter<DigitalSet>(set3d), 1); 
   trace.info() << set3d.size() << " voxels." << std::endl; 
   trace.endBlock();
@@ -127,7 +126,7 @@ int main( int argc, char** argv )
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
   MySetOfSurfels theSetOfSurfels( ks, surfAdj );
   Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
-                                   ks, set3dPredicate,
+                                   ks, set3d,
                                    image.domain().lowerBound(), 
                                    image.domain().upperBound() );
   MyDigitalSurface digSurf( theSetOfSurfels );

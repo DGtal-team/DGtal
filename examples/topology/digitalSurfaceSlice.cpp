@@ -69,7 +69,6 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/Al.100.vol"; 
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           0, 1 );
   Viewer3D viewer;  
@@ -103,7 +102,7 @@ int main( int argc, char** argv )
   typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
   MySetOfSurfels theSetOfSurfels( ks, surfAdj );
   Surfaces<KSpace>::sMakeBoundary( theSetOfSurfels.surfelSet(),
-                                   ks, set3dPredicate,
+                                   ks, set3d,
                                    image.domain().lowerBound(), 
                                    image.domain().upperBound() );
   MyDigitalSurface digSurf( theSetOfSurfels );

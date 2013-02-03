@@ -56,6 +56,7 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
+using namespace DGtal;
 
 int main()
 {
@@ -94,21 +95,19 @@ int main()
   //! [ImageSetDT-DT]
   typedef IntervalForegroundPredicate<Image> Binarizer; 
   Binarizer b(image,1, 135); 
-  typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, 2> DTL2;
-  typedef DTL2::OutputImage OutputImage;
-  DTL2 dt(image.domain(),b);
-
-  OutputImage result = dt.compute(); 
+  typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, Z2i::L2Metric> DTL2;
+  DTL2 dt(&image.domain(),&b, &Z2i::l2Metric );
   //! [ImageSetDT-DT]
  
 
   //! [ImageSetDT-DTvis]
-  OutputImage::Value maxDT = (*std::max_element(result.begin(), 
-						result.end()));
-  typedef DGtal::HueShadeColorMap<OutputImage::Value,2> HueTwice;
+  DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(), 
+                                         dt.constRange().end()));
+  typedef DGtal::HueShadeColorMap<DTL2::Value,2> HueTwice;
 
   aBoard.clear();
-  Display2DFactory::drawImage<HueTwice>(aBoard, result, (OutputImage::Value)0, (OutputImage::Value)maxDT);
+  Display2DFactory::drawImage<HueTwice>(aBoard, dt, (DTL2::Value)0, 
+                                        (DTL2::Value)maxDT);
   aBoard.saveEPS("imageDomainTuto3.eps");
   //! [ImageSetDT-DTvis]
 

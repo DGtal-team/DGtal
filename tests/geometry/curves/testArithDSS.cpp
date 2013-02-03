@@ -49,7 +49,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "DGtal/io/boards/Board2D.h"
 
-#include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/CDynamicBidirectionalSegmentComputer.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
 using namespace DGtal;
@@ -267,6 +267,115 @@ bool testExtendretractForward()
   return isOk;
 }
 
+template<typename Iterator>
+bool testIsInsideForOneQuadrant(const Iterator& k, const Iterator& l, const Iterator& ite) 
+{
+  ASSERT(k < l); 
+  ASSERT(l < ite); 
+
+  typedef ArithmeticalDSS<Iterator,int,4> DSS4;  
+  DSS4 theDSS4;
+
+  theDSS4.init( k );
+  while ( (theDSS4.end() != l )
+          &&(theDSS4.extendForward()) ) {}
+
+  ASSERT( theDSS4.isValid() ); 
+
+  //all DSS points are in the DSS
+  bool flagIsInside = true; 
+  for (Iterator i = theDSS4.begin(); i != theDSS4.end(); ++i)
+    {
+      if ( !theDSS4.isInDSS(i) )
+	  flagIsInside = false; 
+    } 
+  //all other points are not in the DSS
+  bool flagIsOutside = true; 
+  for (Iterator i = l; i != ite; ++i)
+    {
+      if ( theDSS4.isInDSS(i) )
+	flagIsOutside = false; 
+    }
+  return (flagIsInside && flagIsOutside); 
+}
+
+/**
+ * checking isDSL and isDSS methods
+ */
+bool testIsInside()
+{
+
+  typedef PointVector<2,int> Point;
+  typedef std::vector<Point>::iterator Iterator;
+  typedef std::vector<Point>::reverse_iterator ReverseIterator;
+
+  int nb = 0; 
+  int nbok = 0; 
+
+  std::vector<Point> contour;
+  contour.push_back(Point(0,0));
+  contour.push_back(Point(1,1));
+  contour.push_back(Point(2,1));
+  contour.push_back(Point(3,1));
+  contour.push_back(Point(4,1));
+  contour.push_back(Point(4,2));
+  contour.push_back(Point(5,2));
+  contour.push_back(Point(6,2));
+  contour.push_back(Point(6,3));
+  contour.push_back(Point(7,3));
+
+  std::vector<Point> contour2;
+  contour2.push_back(Point(0,0));
+  contour2.push_back(Point(1,-1));
+  contour2.push_back(Point(2,-1));
+  contour2.push_back(Point(3,-1));
+  contour2.push_back(Point(4,-1));
+  contour2.push_back(Point(4,-2));
+  contour2.push_back(Point(5,-2));
+  contour2.push_back(Point(6,-2));
+  contour2.push_back(Point(6,-3));
+  contour2.push_back(Point(7,-3));
+
+  trace.beginBlock("isInside tests for each of the four quadrants");
+  { //quadrant 1
+    Iterator itb = contour.begin() + 1;
+    Iterator ite = itb + 8;  
+    if (testIsInsideForOneQuadrant(itb, ite, contour.end()) )
+      nbok++; 
+    nb++; 
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+  }
+
+  { //quadrant 2
+    ReverseIterator itb = contour2.rbegin() + 1;
+    ReverseIterator ite = itb + 8;  
+    if (testIsInsideForOneQuadrant(itb, ite, contour2.rend()) )
+      nbok++; 
+    nb++; 
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+  }
+
+  { //quadrant 3
+    ReverseIterator itb = contour.rbegin() + 1;
+    ReverseIterator ite = itb + 8;  
+    if (testIsInsideForOneQuadrant(itb, ite, contour.rend()) )
+      nbok++; 
+    nb++; 
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+  }
+
+  { //quadrant 4
+    Iterator itb = contour2.begin() + 1;
+    Iterator ite = itb + 8;  
+    if (testIsInsideForOneQuadrant(itb, ite, contour2.end()) )
+      nbok++; 
+    nb++; 
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+  }
+  trace.endBlock();
+
+  return (nb == nbok); 
+}
 
 #ifdef WITH_BIGINTEGER
 /**
@@ -355,7 +464,7 @@ void testArithDSSConceptChecking()
    typedef std::vector<Point>::iterator Iterator; 
    typedef ArithmeticalDSS<Iterator,int,8> ArithDSS; 
    BOOST_CONCEPT_ASSERT(( CDrawableWithBoard2D<ArithDSS> ));
-   BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<ArithDSS> ));
+   BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
 
 
@@ -380,6 +489,7 @@ int main(int argc, char **argv)
 #ifdef WITH_BIGINTEGER
     && testBIGINTEGER()
 #endif
+    && testIsInside()
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

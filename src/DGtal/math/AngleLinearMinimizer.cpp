@@ -86,7 +86,7 @@ DGtal::AngleLinearMinimizer::init( unsigned int nbMax )
 double
 DGtal::AngleLinearMinimizer::getEnergy( unsigned int i1, unsigned int i2 ) const
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer<int> mc( size() );
   double E = 0.0;
   for ( unsigned int i = mc.next( i1 ); i != i2; ) 
     {
@@ -105,7 +105,7 @@ DGtal::AngleLinearMinimizer::getEnergy( unsigned int i1, unsigned int i2 ) const
 double
 DGtal::AngleLinearMinimizer::getFormerEnergy( unsigned int i1, unsigned int i2 ) const
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer<int> mc( size() );
   double E = 0.0;
   for ( unsigned int i = mc.next( i1 ); i != i2; ) 
     {
@@ -125,9 +125,9 @@ DGtal::AngleLinearMinimizer::getFormerEnergy( unsigned int i1, unsigned int i2 )
 std::vector<double>
 DGtal::AngleLinearMinimizer::getGradient() const
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer<int> mc( size() );
   
-  vector<double> grad( size() );
+  std::vector<double> grad( size() );
   for ( unsigned int i = 0; i < size(); i++ ) 
     {
       unsigned int iprev = mc.previous( i );
@@ -165,9 +165,9 @@ DGtal::AngleLinearMinimizer::getGradient() const
 std::vector<double>
 DGtal::AngleLinearMinimizer::getFormerGradient() const
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer< int> mc( size() );
 
-  vector<double> grad( size() );
+  std::vector<double> grad( size() );
   for ( unsigned int i = 0; i < size(); i++ ) 
     {
       unsigned int iprev = mc.previous( i );
@@ -211,7 +211,7 @@ double
 DGtal::AngleLinearMinimizer::optimize( unsigned int i1, unsigned int i2 )
 {
   ASSERT( size() > 2 );
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer< int> mc( size() );
 
   unsigned int i = i1;
   // (I) first pass to work on old values.
@@ -253,7 +253,7 @@ DGtal::AngleLinearMinimizer::lastDelta() const
 void
 DGtal::AngleLinearMinimizer::oneStep( unsigned int i1, unsigned int i2 )
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer< int> mc( size() );
 
   double mid;
   unsigned int i = i1; 
@@ -304,7 +304,7 @@ DGtal::AngleLinearMinimizer::oneStep( unsigned int i1, unsigned int i2 )
 void
 DGtal::AngleLinearMinimizerByRelaxation::oneStep( unsigned int i1, unsigned int i2 )
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer< int> mc( size() );
 
   double mid;
   unsigned int i = i1; 
@@ -360,9 +360,9 @@ DGtal::AngleLinearMinimizerByRelaxation::lastDelta() const
 void
 DGtal::AngleLinearMinimizerByGradientDescent::oneStep( unsigned int i1, unsigned int i2 )
 {
-  ModuloComputer<unsigned int> mc( size() );
+  ModuloComputer< int> mc( size() );
 
-  vector<double> grad ( getFormerGradient() );
+  std::vector<double> grad ( getFormerGradient() );
   double mid;
   unsigned int i = i1; 
   do 
@@ -378,9 +378,6 @@ DGtal::AngleLinearMinimizerByGradientDescent::oneStep( unsigned int i1, unsigned
       i = inext;
     }
   while ( i != i2 );
-  double E1 = getFormerEnergy( i1, i2 );
-  double E2 = getEnergy( i1, i2 );  
-  cerr << "E1=" << E1 << " E2=" << E2 << " s=" << myStep << endl;
 }
 
 
@@ -388,7 +385,7 @@ DGtal::AngleLinearMinimizerByGradientDescent::oneStep( unsigned int i1, unsigned
 double
 DGtal::AngleLinearMinimizerByGradientDescent::lastDelta() const
 {
-  vector<double> grad ( getFormerGradient() );
+  std::vector<double> grad ( getFormerGradient() );
   double ninf = 0.0;
   for ( unsigned int i = 0; i < size(); i++ ) 
     {
@@ -408,8 +405,8 @@ DGtal::AngleLinearMinimizerByGradientDescent::lastDelta() const
 void
 DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::oneStep( unsigned int i1, unsigned int i2 )
 {
-  ModuloComputer<unsigned int> mc( size() );
-  vector<double> grad ( getFormerGradient() );
+  ModuloComputer< int> mc( size() );
+  std::vector<double> grad ( getFormerGradient() );
   
   double mid;
   unsigned int i = i1; 
@@ -429,7 +426,6 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::oneStep( unsigned int 
 
   double E1 = getFormerEnergy( i1, i2 );
   double E2 = getEnergy( i1, i2 );
-  cerr << "E1=" << E1 << " E2=" << E2 << " s=" << myStep << endl;
   if ( E1 <= E2 )
     {
       myStep /= 4.0;
@@ -446,7 +442,7 @@ DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::oneStep( unsigned int 
 double
 DGtal::AngleLinearMinimizerByAdaptiveStepGradientDescent::lastDelta() const
 {
-  vector<double> grad ( getFormerGradient() );
+  std::vector<double> grad ( getFormerGradient() );
   double ninf = 0.0;
   for ( unsigned int i = 0; i < size(); i++ ) 
     {

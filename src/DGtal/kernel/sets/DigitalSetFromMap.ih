@@ -171,7 +171,7 @@ inline
 void
 DGtal::DigitalSetFromMap<TMapImage>::erase( Iterator it )
 {
-  myImgPtr->erase( it.base() );
+  myImgPtr->erase( *it );
 }
 
 // ------------------------------------------------------------------------
@@ -247,18 +247,25 @@ DGtal::DigitalSetFromMap<TMapImage>
 {
   if ( this != &aSet )
     {
-      Iterator itDst = this->end();
+      typename TMapImage::iterator itDst = myImgPtr->end();
       for ( typename TDigitalSet::ConstIterator itSrc = aSet.begin();
 	    itSrc != aSet.end();
 	    ++itSrc )
 	{
-	  itDst = Iterator( myImgPtr->insert( itDst.base(), Pair(*itSrc, myDefault) ),
-			    myFun );
+	  itDst = myImgPtr->insert( itDst, Pair(*itSrc, myDefault) );
 	}
     }
   return *this;
 }
-
+// ------------------------------------------------------------------------
+template <typename TMapImage>
+inline
+bool
+DGtal::DigitalSetFromMap<TMapImage>
+::operator()( const Point & p ) const
+{
+  return myImgPtr->find( p ) != myImgPtr->end();
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------

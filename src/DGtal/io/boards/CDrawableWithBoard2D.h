@@ -45,67 +45,58 @@
 
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Display2DFactory.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
+  ///Forward declaration
+  class Board2D;
+ 
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithBoard2D
   /**
-   * DescriptionDescription of \b concept '\b CDrawableWithBoard2D' <p>
-   * @ingroup Concepts
-   * Aim:  The concept CDrawableWithBoard2D specifies what are the classes
-   * that admit an export with Board2D.
-   * An object x satisfying this concept may then be used as:
-   * 
+Description of \b concept '\b CDrawableWithBoard2D' <p>
+@ingroup Concepts
+     
+@brief Aim:  The concept CDrawableWithBoard2D specifies what are the classes
+that admit an export with Board2D.
+
+An object x satisfying this concept may then be used as:
+     
    \code
    Board2D board;
    board << CustomStyle( x.className(), x.defaultStyle() )
          << x;
    \endcode 
-   *
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithBoard2D
-   * - \t x, \t y  : Object of type X
-   * - \t m  : a string of characters
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td>
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> DrawableWithBoard2D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * <tr>
-   * <td> the name of the model X</td> <td> x.className() </td> <td></td><td> std::string </td> <td> </td> <td> returns a string telling the name of the model X </td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.setStyle(Board2D &board) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c board stream the object \c x </td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
-   *
-   * <p> Notes###
-   * @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
-   * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
+   
+### Refinement of
+   
+### Associated types :
+   
+### Notation
+   - \t X : A type that is a model of CDrawableWithBoard2D
+   - \t x, \t y  : Object of type X
+   - \t m  : a string of characters
+   
+### Definitions
+   
+### Valid expressions and semantics
+   
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|the default draw style | x.defaultStyle( m ="" ) | \t mode \t m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
+|the way the objet \t x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \t board stream | | |
+   
+ ### Invariants
+   
+ ### Models
+    ArithmeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+   
+ ### Notes
+    @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
+    @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
    */
   template <typename T>
   struct CDrawableWithBoard2D

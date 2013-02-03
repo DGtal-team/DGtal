@@ -32,7 +32,7 @@ find_library(QGLVIEWER_LIBRARY_DEBUG
                    /usr/local/lib
                    ENV QGLVIEWERROOT
                    ENV LD_LIBRARY_PATH
-                   ENV LIBRARY_PATH
+                    ENV LIBRARY_PATH
              PATH_SUFFIXES QGLViewer QGLViewer/debug      
             )
 
@@ -49,7 +49,6 @@ endif()
 
 IF(QGLVIEWER_INCLUDE_DIR AND QGLVIEWER_LIBRARIES)
    SET(QGLVIEWER_FOUND TRUE)
-   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DQGLVIEWER_FOUND")
 ENDIF(QGLVIEWER_INCLUDE_DIR AND QGLVIEWER_LIBRARIES)
 
 IF(QGLVIEWER_FOUND)

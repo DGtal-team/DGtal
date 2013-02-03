@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/base/CPredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -59,26 +59,26 @@ Description of \b concept '\b CPointPredicate' <p>
    
      Associates booleans to points.
     
- ### Refinement of CUnaryFunctor
+ ### Refinement of 
+    CPredicate
 
     
  ### Associated types :
-
      - Point : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate
 
- ### Models###
+ ### Models
+    - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
+    - complex predicate constructor: BinaryPointPredicate
+    - others: DomainPredicate, SetPredicate
+    - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
     
-     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
-     - complex predicate constructor: BinaryPointPredicate
-     - others: DomainPredicate,SetPredicate
-    
- ### Notes###
+ ### Notes
    */
 template <typename T>
-  struct CPointPredicate
+struct CPointPredicate: CPredicate<T, typename T::Point>
   {
     // ----------------------- Concept checks ------------------------------
   public:

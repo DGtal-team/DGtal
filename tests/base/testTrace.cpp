@@ -114,7 +114,7 @@ void testFileStream()
 
 void testTimings()
 {
-  size_t duration,duration2;
+  size_t duration;
  
   trace.beginBlock("Level0");
   double tmp=1.0;
@@ -134,7 +134,7 @@ void testTimings()
   trace.info()<<"..."<<std::endl;
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = (long)cos((double)tmp+i);
-  duration = trace.endBlock();
+  duration += trace.endBlock();
   
   trace.beginBlock("Level2B");
   trace.info()<<"..."<<std::endl;
@@ -155,8 +155,9 @@ void testTimings()
   for (unsigned int i=0 ; i< 4334450; i++)
     tmp = (long)cos((double)tmp+i);
   duration += trace.endBlock();
-  
-  duration2 = trace.endBlock();
+
+  duration += trace.endBlock();
+  trace.info()<<"Duration="<<duration<<std::endl;
 
 }
 

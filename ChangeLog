@@ -1,13 +1,40 @@
 === DGtal 0.6 ===
  
+ *General*
+    - Multithread capabilities via OpenMP are now detected during DGtal
+      build. Example of usage can be found in the Volumetric module.
+
+ *Documentation*
+    - update documentation for boost concepts, so that subconcepts are
+      displayed and html reference pages are pointed.
+    - package/module documentation files are now in their associated
+      package folder (e.g. kernel/doc/ for kernel package related
+      documentation pages). The "make doc" command (or "make dox", see
+      below) generates the documentation in the "html/" sub-folder of your
+      current build folder.
+    - latex citations within doxygen documents are now working
+ 
+ *Base Package*
+    - correct concept checks for some range concepts.
+
+ *Kernel Package*
+    - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
+SetPredicate is now deprecated.
+    - new documentation for module digital sets.
+
  *Arithmetic Package*
     - new class for representing lattice polytopes in 2D (with cut
       operations)
     - bugfix in LighterSternBrocot::Fraction
+    - bugfix in ArithmeticalDSS (thanks, Kacper)
 
- *Image Package* 
+ *Image Package*
     - Update on image writers (no colormap required for scalar only writers).
       Documentation updated.
+    - New image adapters to adapt both domains and values of an image (ImageAdapter 
+      and ConstImageAdapter).
+    - several enhancements of the main image concept and its image
+      container models
 
  *Geometry Package*
     - new primitives for digital plane recognition. Naive planes, and
@@ -16,7 +43,26 @@
       implementation, which uses 2D lattice polytopes.
     - Fréchet segment computer added to compute bounded simplifications of
       digital curves for instance.
+    - Complete rewritting of volumetric tools by separable processes:
+      new generic algorithms (VoronoiMap, PowerMap) and metric
+      concepts hierarchy (l_2, l_p, ...p) to efficiently compute
+      DistanceTransformation, ReverseDistanceTransformation and
+      preliminary medial axis extraction.
+    - Separable volumetric tools are now multithread using OpenMP.
 
+ *Topology Package*
+    - update documentation for digital surfaces and digital surface
+      containers so as to emphasize the fact that the ranges are only
+      single-pass.
+
+ *Math Package*
+    - Exact exponentiation x^p by squaring on O(log p) added
+      (BasicMathFunctions::power).
+	
+ *For developers*
+    - new "make dox" target to only build dox file documentation
+      ("make doc" for complete documentation build)
+ 
 
 === DGtal 0.5.1 ===
 Posted on June, 6th, 2012 by David Coeurjolly

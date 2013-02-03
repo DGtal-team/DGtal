@@ -121,7 +121,7 @@ if ( &anOther != this ) {
 }
 
 inline
-Color 
+DGtal::Color 
 DGtal::RandomColorMap::operator()( const unsigned int & aValue ) const
 {
   return (*myGradientMap)(myColorIndex.at(aValue));    

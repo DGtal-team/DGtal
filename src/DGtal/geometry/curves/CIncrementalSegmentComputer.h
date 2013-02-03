@@ -73,48 +73,13 @@ Description of \b concept '\b CIncrementalSegmentComputer' <p>
  ### Definitions
     
  ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName> initialization  </td> 
-        <td class=CExpression> x.init(i)     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> void     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> set a segment to i      </td> 
-        <td class=CPostCondition>  x is valid and P is true  </td> 
-        <td class=CComplexity> O(1)     </td>
-      </tr>
-      <tr> 
-        <td class=CName> extension test  </td> 
-        <td class=CExpression> x.isExtendableForward()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> bool     </td>
-        <td class=CPrecondition>  x is valid and P is true    </td> 
-        <td class=CSemantics> checks whether x can be extended to x.end() or not </td> 
-        <td class=CPostCondition>  x is valid and P is true       </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-      <tr> 
-        <td class=CName> extension </td> 
-        <td class=CExpression> x.extendForward()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> bool     </td>
-        <td class=CPrecondition>  x is valid and P is true    </td> 
-        <td class=CSemantics> check whether x can be extended to x.end() or not, only extend if true </td> 
-        <td class=CPostCondition>  x is valid and P is true      </td> 
-        <td class=CComplexity>     </td>
-      </tr>
-     </table>
+
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Initialization| x.init(i)  |                     |void         |                  |set a segment to i |x is valid and P is true | O(1) |
+| Extension test| x.isExtendableForward()|         |bool         | x is valid and P is true | check whether x can be extended to x.end() or not | x is valid and P is true | |
+| Extension     | x.extendForward()|               |bool         | x is valid and P is true | check whether x can be extended to x.end() or not, extend only if true | x is valid and P is true | |
     
  ### Invariants###
 
@@ -150,7 +115,6 @@ for ( ConstIterator it = s.begin(),
     // Methods
     BOOST_CONCEPT_USAGE( CIncrementalSegmentComputer )
     {
-      typename T::ConstIterator i(myI);
       myX.init(myI);     
 
       ConceptUtils::sameType( myB, myX.isExtendableForward() );
