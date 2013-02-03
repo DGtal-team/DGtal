@@ -58,9 +58,9 @@ bool testExactMetricBalls()
   Z2i::DigitalSet set(domain);
   
   set.insertNew(Z2i::Point(64,64));
-  typedef NotPointPredicate< SetPredicate<Z2i::DigitalSet> > NegPred;
-  SetPredicate<Z2i::DigitalSet> setpred(set); 
-  NegPred predicate( setpred );
+  typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
+  // SetPredicate<Z2i::DigitalSet> setpred(set); 
+  NegPred predicate( set );
   
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
   Metric metric;
@@ -91,9 +91,9 @@ bool testInexactMetricBalls(double norm)
   Z2i::DigitalSet set(domain);
   
   set.insertNew(Z2i::Point(64,64));
-  typedef NotPointPredicate< SetPredicate<Z2i::DigitalSet> > NegPred;
-  SetPredicate<Z2i::DigitalSet> setpred(set); 
-  NegPred predicate( setpred );
+  typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
+  // SetPredicate<Z2i::DigitalSet> setpred(set); 
+  NegPred predicate( set );
   
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
   Metric metric(norm);

@@ -16,7 +16,6 @@
 #include <iostream>
 #include <queue>
 #include <QtGui/qapplication.h>
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -59,7 +58,6 @@ int main( int argc, char** argv )
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           minThreshold, maxThreshold);
   trace.endBlock();
@@ -82,7 +80,7 @@ int main( int argc, char** argv )
   //! [volScanBoundary-ExtractingSurface]
   trace.beginBlock( "Extracting boundary by scanning the space. " );
   KSpace::SCellSet boundary;
-  Surfaces<KSpace>::sMakeBoundary( boundary, ks, set3dPredicate,
+  Surfaces<KSpace>::sMakeBoundary( boundary, ks, set3d,
                                    image.domain().lowerBound(), 
                                    image.domain().upperBound() );
   trace.endBlock();

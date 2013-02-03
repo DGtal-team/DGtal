@@ -42,20 +42,32 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
+  // 2013/02/02: JOL: Since 0.6, models of CDigitalSet are also models
+  // of CPointPredicate. Therefore, this facade to models of
+  // CDigitalSet is no longer useful.
+  namespace deprecated {
 
   /////////////////////////////////////////////////////////////////////////////
   // template class SetPredicate
   /**
-   * Description of template class 'SetPredicate' <p> \brief Aim:
-   * The predicate returning true iff the point is in the domain given
-   * at construction.
-   *
-   * Model of CPointPredicate
+     Description of template class 'SetPredicate' <p> \brief Aim: The
+     predicate returning true iff the point is in the set given at
+     construction. The set given at construction is aliased in the
+     predicate and not cloned, which means that the lifetime of the
+     set should exceed the lifetime of the predicate.
+
+     Model of CPointPredicate.
+     
+     @deprecated Since 0.6, digital sets are also models of CPointPredicate,
+     hence using a SetPredicate is therefore no more
+     useful. 
+
    */
   template <typename TDigitalSet>
   struct SetPredicate
@@ -68,9 +80,9 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aSet any set.
+     * @param aSet any set (only aliased).
      */
-    SetPredicate ( const DigitalSet & aSet );
+    SetPredicate ( ConstAlias<DigitalSet> aSet );
 
     /**
      * Copy constructor.
@@ -109,6 +121,7 @@ namespace DGtal
 
   }; // end of struct SetPredicate
 
+  } // namespace deprecated
 
 } // namespace DGtal
 
