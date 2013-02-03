@@ -228,11 +228,19 @@ a colormap to display distance values for the @f$ l_2 @f$ mertic:
 
 @section RDTSec Digital Power Map and Reverse Distance Transformation
 
+Similarly to Voronoi diagram and digital Voronoi maps, digital Power
+maps are defined as the intersection between the integer grid and a
+power diagram. Given a set of weighed points, power diagram can be
+seen as Voronoi diagram where the metric is modified with additive
+weigths. For example, considering the @f$ l_2@f$ metric, the power
+distance between a point @f$p@f$ and a weighted point @f$(q,w)@f$ is
+defined by
+@f[ pow(p,q) = \| p - q\|_2^2  - w @f]
 
-
-@section MASec Digital Medial Axis
-
-
+Hence, similarly to Voronoi diagram, the power diagram is a
+decomposition of the space ino cells from weighed sites where each
+cell is associated with a site and each point in the cell has got
+minimal power distance  to the cell stie
 
 @section metricSec Metric and Separable Metric concepts
 
