@@ -18,7 +18,8 @@
     - correct concept checks for some range concepts.
 
  *Kernel Package*
-    - digital sets are now also point predicates, update of DigitalSetDomain accordingly.
+    - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
+SetPredicate is now deprecated.
     - new documentation for module digital sets.
 
  *Arithmetic Package*
