@@ -16,7 +16,6 @@
 #include <iostream>
 #include <QtGui/qapplication.h>
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"

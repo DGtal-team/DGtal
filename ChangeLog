@@ -17,6 +17,10 @@
  *Base Package*
     - correct concept checks for some range concepts.
 
+ *Kernel Package*
+    - digital sets are now also point predicates, update of DigitalSetDomain accordingly.
+    - new documentation for module digital sets.
+
  *Arithmetic Package*
     - new class for representing lattice polytopes in 2D (with cut
       operations)

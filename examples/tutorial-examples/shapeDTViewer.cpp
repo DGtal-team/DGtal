@@ -35,6 +35,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 //! [shapeDTViewer-basicIncludes]
+#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
@@ -42,12 +43,10 @@
 #include "DGtal/shapes/Shapes.h" 
 #include "DGtal/shapes/ShapeFactory.h" 
 
-#include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h" 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/helpers/StdDefs.h"
 //!  [shapeDTViewer-basicIncludes]
@@ -76,11 +75,8 @@ int main(int argc, char **argv)
   
 
   //! [ImageSetDT-DT]
-  typedef DGtal::SetPredicate<DGtal::Z3i::DigitalSet> Predicate;
-  Predicate aPredicate(mySet);
-  
-  typedef DGtal::DistanceTransformation<Z3i::Space, Predicate, Z3i::L2Metric> DTL2;
-  DTL2 dt(&domain,&aPredicate,&Z3i::l2Metric );
+  typedef DGtal::DistanceTransformation<Z3i::Space, DGtal::Z3i::DigitalSet, Z3i::L2Metric> DTL2;
+  DTL2 dt(&domain,&mySet,&Z3i::l2Metric );
   //! [ImageSetDT-DT]
 
   DTL2::Value maxDT = (*std::max_element(dt.constRange().begin(), 

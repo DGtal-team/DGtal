@@ -45,7 +45,6 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -308,16 +307,19 @@ bool testDTFromSet()
   
   Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
-  SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
+  // Since 0.6, models of CDigitalSet are models of CPointPredicate.
+  // SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,2> L2Metric;
+  typedef DistanceTransformation<TSpace, Z2i::DigitalSet, L2Metric> L2DT;
   L2Metric l2;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric> dt(&domain,&aPredicate, &l2);
+  L2DT dt(&domain,&aSet, &l2);
   typedef ExactPredicateLpSeparableMetric<Z2i::Space,1> L1Metric;
+  typedef DistanceTransformation<TSpace, Z2i::DigitalSet, L1Metric> L1DT;
   L1Metric l1;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric> dt1(&domain,&aPredicate, &l1);
+  L1DT dt1(&domain,&aSet, &l1);
  
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::Value maxv = 0;
-  for ( DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
+  L2DT::Value maxv = 0;
+  for ( L2DT::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -327,7 +329,7 @@ bool testDTFromSet()
   
   board.clear();
   maxv = 0;
-  for ( DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, L1Metric>::ConstRange::ConstIterator it = dt1.constRange().begin(), itend = dt1.constRange().end();
+  for ( L1DT::ConstRange::ConstIterator it = dt1.constRange().begin(), itend = dt1.constRange().end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
@@ -575,7 +577,8 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
   typedef HyperRectDomain<Space> Domain;
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
-  typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+  // typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+  typedef NotPointPredicate<Set> NegPredicate;
 
   Point low=Point::diagonal(0),
     up=Point::diagonal(size);
@@ -595,8 +598,8 @@ bool testCompareExactInexact(unsigned int size, unsigned int nb)
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
   trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
 
-  SetPredicate<Set> setPred(set);
-  NegPredicate negPred(setPred);
+  // SetPredicate<Set> setPred(set);
+  NegPredicate negPred(set);
   
   typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
   typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;

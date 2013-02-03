@@ -98,7 +98,7 @@ bool testCompareExactBruteForce(unsigned int size, unsigned int nb)
   typedef HyperRectDomain<Space> Domain;
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
-  typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+  typedef NotPointPredicate<Set> NegPredicate;
   
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);
@@ -118,8 +118,7 @@ bool testCompareExactBruteForce(unsigned int size, unsigned int nb)
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
   trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
   
-  SetPredicate<Set> setPred(set);
-  NegPredicate negPred(setPred);
+  NegPredicate negPred(set);
   
   typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
   MetricEx metricEx;
@@ -141,7 +140,7 @@ bool testCompareInexactBruteForce(double norm, unsigned int size, unsigned int n
   typedef HyperRectDomain<Space> Domain;
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
-  typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+  typedef NotPointPredicate<Set> NegPredicate;
   
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);
@@ -161,8 +160,7 @@ bool testCompareInexactBruteForce(double norm, unsigned int size, unsigned int n
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
   trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
   
-  SetPredicate<Set> setPred(set);
-  NegPredicate negPred(setPred);
+  NegPredicate negPred(set);
   
   typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
   MetricInex metricInex(norm);
