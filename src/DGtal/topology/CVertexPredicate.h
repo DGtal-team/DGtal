@@ -53,15 +53,15 @@ namespace DGtal
   /**
 Description of \b concept '\b CVertexPredicate' <p>
      @ingroup Concepts
-     \brief Aim: Defines a predicate on a vertex.
-     
-     Associates a boolean to vertices.
+@brief Aim: Defines a predicate on a vertex.
 
- ### Refinement of CPredicate< T, T::Vertex >.
+Associates a boolean to vertices.
+
+ ### Refinement of 
+        CPredicate< T, T::Vertex >.
     
- ### Associated types :
-
-     - Vertex : specifies the type for an element of the domain (inner
+ ### Associated types:
+       - Vertex : specifies the type for an element of the domain (inner
        type).
 
      @see CPredicate

@@ -215,14 +215,17 @@ DGtal::Trace::info() const
 }
 
 inline void
-DGtal::Trace::progressBar(const double currentValue, const double maximumValue) const
+DGtal::Trace::progressBar(const double currentValue, const double maximumValue)
 {
   // how wide you want the progress meter to be
-  int totaldotz=60;
   double fraction = currentValue /maximumValue;
 
   // part of the progressmeter that's already "full"
-  int dotz = (int)floor(fraction * totaldotz);
+  int dotz = (int)floor(fraction * PROGRESSBARWIDTH);
+  if (dotz == PROGRESSBARWIDTH)
+    return;
+
+  myProgressBarCurrent = dotz;
 
   // create the "meter"
   int ii=0;
@@ -233,7 +236,7 @@ DGtal::Trace::progressBar(const double currentValue, const double maximumValue) 
       myWriter.outputStream()<< "#";
     }
   // remaining part (spaces)
-  for ( ; ii < totaldotz;ii++) 
+  for ( ; ii < PROGRESSBARWIDTH;ii++)
     {
       myWriter.outputStream()<< " ";
     }

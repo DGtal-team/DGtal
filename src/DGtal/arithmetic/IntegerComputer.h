@@ -43,7 +43,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/SpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -96,7 +97,8 @@ href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
     typedef typename SpaceND<3,Integer>::Vector Vector3I;
 
     BOOST_CONCEPT_ASSERT((CInteger<Integer>));
-    BOOST_CONCEPT_ASSERT((CUnsignedInteger<UnsignedInteger>));    
+    BOOST_CONCEPT_ASSERT((CUnsignedNumber<UnsignedInteger>));
+    BOOST_CONCEPT_ASSERT((CIntegralNumber<UnsignedInteger>));
 
     // ----------------------- Standard services ------------------------------
   public:

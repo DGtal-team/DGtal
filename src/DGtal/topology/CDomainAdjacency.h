@@ -52,56 +52,44 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CDomainAdjacency
   /**
-   * DescriptionDescription of \b concept '\b CDomainAdjacency' <p> 
-   * @ingroup Concepts 
-   *
-   * \brief Aim: Refines the concept CAdjacency by telling that the
-   * adjacency is specific to a given domain of the embedding digital
-   * space.
-   *
-   * This class is useful to define subspaces with restricted
-   * neighborhood relations. For instance, you can limit the adjacency
-   * to an object, then to its border, then to a subset of its border,
-   * etc.
-   * 
-   * <p> Refinement of CAdjacency
-   *
-   * <p> Associated types :
-   *
-   * - Domain: the domain of this adjacency.
-   * - Predicate: the type of the predicate "is in domain ?"
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CDomainAdjacency
-   * - \t x, \t y  : Object of type X
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> embedding domain</td> <td> x.domain()</td> 
-   * <td> </td> <td> const Domain & </td>
-   * <td> </td> <td> return a reference to the embedding domain.</td> <td> </td> <td> O(1) </td>
-   * </tr>
-   * <tr> 
-   * <td> "is in domain ?" predicate</td> <td> x.predicate() </td> 
-   * <td> </td> <td> const Predicate & </td>
-   * <td> </td> <td> return a reference to the predicate object that is characteristic of the embedding domain.</td> <td> </td> <td> O(1) </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   *
-   * - DomainAdjacency
-   *
-   * <p> Notes###
+Description of \b concept '\b CDomainAdjacency' <p> 
+    @ingroup Concepts 
+   
+@brief Aim: Refines the concept CAdjacency by telling that the
+    adjacency is specific to a given domain of the embedding digital
+    space.
+   
+This class is useful to define subspaces with restricted
+neighborhood relations. For instance, you can limit the adjacency
+to an object, then to its border, then to a subset of its border,
+etc.
+    
+### Refinement of 
+     CAdjacency
+   
+### Associated types :
+    - Domain: the domain of this adjacency.
+    - Predicate: the type of the predicate "is in domain ?"
+   
+###  Notation
+    - \t X : A type that is a model of CDomainAdjacency
+    - \t x, \t y  : Object of type X
+   
+### Definitions
+   
+###  Valid expressions and semantics
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| embedding domain | x.domain() | | const Domain & | | return a reference to the embedding domain.| |  O(1) |
+| "is in domain ?" predicate | x.predicate() | | const Predicate & | | return a reference to the predicate object that is characteristic of the embedding domain.| |  O(1) |
+   
+### Invariants
+   
+### Models
+    DomainAdjacency
+   
+### Notes
    */
   template <typename T>
   struct CDomainAdjacency : CAdjacency<T>

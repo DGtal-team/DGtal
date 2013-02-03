@@ -12,7 +12,7 @@ IF (DOXYGEN_FOUND)
   # we need latex for doxygen because of the formulas
   FIND_PACKAGE(LATEX)
   IF    (NOT LATEX_COMPILER)
-    MESSAGE(STATUS "latex command LATEX_COMPILER not found but usually required. You will probably get warnings and user inetraction on doxy run.")
+    MESSAGE(STATUS "latex command LATEX_COMPILER not found but usually required. You will probably get warnings and user interaction on doxy run.")
   ENDIF (NOT LATEX_COMPILER)
   IF    (NOT MAKEINDEX_COMPILER)
     MESSAGE(STATUS "makeindex command MAKEINDEX_COMPILER not found but usually required.")
@@ -81,7 +81,8 @@ IF (DOXYGEN_FOUND)
   
   ADD_CUSTOM_TARGET(doc ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})
   ADD_CUSTOM_TARGET(doc-Board ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG_BOARD})
-  ADD_DEPENDENCIES(doc doc-Board)
+  ADD_CUSTOM_TARGET(doc-all ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})
+  ADD_DEPENDENCIES(doc-all doc-Board)
   
 #  ADD_CUSTOM_TARGET(doc)
   

@@ -65,9 +65,9 @@ namespace DGtal
 
      It is a model of boost::CopyConstructible,
      boost::DefaultConstructible, boost::Assignable. It is also a
-     model of boost::Container (it contains the sequence of points). It
-     is also a model of CDrawableWithBoard2D, and is displayable on a
-     Board2D object.
+     model of boost::Container (it contains the sequence of
+     points). It is also displayable on a Board2D object with two
+     modes: "" or "Transparent", "Filled".
 
      It contains no more data than the sequence of points, except mutable
      data for intermediate computations.
@@ -504,7 +504,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * @return the style name used for drawing this object.
+     * @return the class name. It is notably used for drawing this object.
      */
     std::string className() const;
 

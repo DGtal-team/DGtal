@@ -68,39 +68,13 @@ Description of \b concept '\b CSegment' <p>
      - \t x, \t y : object of type X
 
  ### Valid expressions and semantics
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr>
-        <td class=CName> begin method  </td>
-        <td class=CExpression> x.begin()     </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType> ConstIterator     </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics> provides an iterator on the first element of the segment      </td>
-        <td class=CPostCondition>       </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
-      <tr>
-        <td class=CName> end method  </td>
-        <td class=CExpression> x.end()     </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType> ConstIterator     </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics> past-the-end value      </td>
-        <td class=CPostCondition>       </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
 
-     </table>
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|begin method   | x.begin()  |                     | ConstIterator|                 | provides an iterator on the first element of the segment| | O(1)|
+|end method     | x.end()    |                     | ConstIterator|                 |past-the-end value | | O(1) |
+     
 
  ### Invariants###
      The range [x.begin(),x.end()) is valid (x.end() is reachable from x.begin())

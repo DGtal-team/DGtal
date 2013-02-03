@@ -122,7 +122,7 @@ surfel() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 inline
-Dimension
+DGtal::Dimension
 DGtal::SurfelNeighborhood<TKSpace>::
 orthDir() const
 {
@@ -156,7 +156,7 @@ template <typename TKSpace>
 inline
 typename DGtal::SurfelNeighborhood<TKSpace>::SCell
 DGtal::SurfelNeighborhood<TKSpace>::
-innerAdjacentSpel( Dimension track_dir, bool pos ) const
+innerAdjacentSpel( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sAdjacent( innerSpel(), track_dir, pos );
@@ -166,7 +166,7 @@ template <typename TKSpace>
 inline
 typename DGtal::SurfelNeighborhood<TKSpace>::SCell
 DGtal::SurfelNeighborhood<TKSpace>::
-outerAdjacentSpel( Dimension track_dir, bool pos ) const
+outerAdjacentSpel( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sAdjacent( outerSpel(), track_dir, pos );
@@ -179,7 +179,7 @@ template <typename TKSpace>
 inline
 typename DGtal::SurfelNeighborhood<TKSpace>::SCell
 DGtal::SurfelNeighborhood<TKSpace>::
-follower1( Dimension track_dir, bool pos ) const
+follower1( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sIncident( innerSpel(), track_dir, pos );
@@ -189,7 +189,7 @@ template <typename TKSpace>
 inline
 typename DGtal::SurfelNeighborhood<TKSpace>::SCell
 DGtal::SurfelNeighborhood<TKSpace>::
-follower2( Dimension track_dir, bool pos ) const
+follower2( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sAdjacent( surfel(), track_dir, pos );
@@ -202,7 +202,7 @@ template <typename TKSpace>
 inline
 typename DGtal::SurfelNeighborhood<TKSpace>::SCell
 DGtal::SurfelNeighborhood<TKSpace>::
-follower3( Dimension track_dir, bool pos ) const
+follower3( DGtal::Dimension track_dir, bool pos ) const
 {
   ASSERT( ( mySpace != 0 ) && ( track_dir != myOrthDir ) );
   return mySpace->sIncident( outerSpel(), track_dir, pos );
@@ -218,7 +218,7 @@ unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnSpelSet( SCell & adj_surfel,
                       const SpelSet & obj, 
-                      Dimension track_dir,
+                      DGtal::Dimension track_dir,
                       bool pos ) const
 {
   // Check that [m_surfel] is a bel.
@@ -282,7 +282,7 @@ unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnDigitalSet( SCell & adj_surfel,
                          const DigitalSet & obj, 
-                         Dimension track_dir,
+                         DGtal::Dimension track_dir,
                          bool pos ) const
 {
   // Check that [m_surfel] is a bel.
@@ -349,7 +349,7 @@ unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnPointPredicate( SCell & adj_surfel,
                              const PointPredicate & pp, 
-                             Dimension track_dir,
+                             DGtal::Dimension track_dir,
                              bool pos ) const
 {
   BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
@@ -413,7 +413,7 @@ unsigned int
 DGtal::SurfelNeighborhood<TKSpace>::
 getAdjacentOnSurfelPredicate( SCell & adj_surfel,
                               const SurfelPredicate & sp, 
-                              Dimension track_dir,
+                              DGtal::Dimension track_dir,
                               bool pos ) const
 {
   BOOST_CONCEPT_ASSERT(( CSurfelPredicate<SurfelPredicate> ));

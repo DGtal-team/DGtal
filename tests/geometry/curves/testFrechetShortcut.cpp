@@ -125,7 +125,6 @@ void testFrechetShortcutConceptChecking()
   BOOST_CONCEPT_ASSERT(( CForwardSegmentComputer<Shortcut> ));
 }
 
-
 bool testSegmentation()
 {
   unsigned int nbok = 0;
@@ -164,15 +163,15 @@ bool testSegmentation()
   typedef Curve::PointsRange::ConstIterator Iterator;
   typedef FrechetShortcut<Iterator,int> SegmentComputer;
   
-  Curve c; //grid curve
-  c.initFromVector(contour);
+  Curve aCurve; //grid curve
+  aCurve.initFromVector(contour);
   
   typedef Curve::PointsRange Range; //range
-  Range r = c.getPointsRange(); //range
+  Range r = aCurve.getPointsRange(); //range
   
   Board2D board; 
   board << r;
-  board << c.getArrowsRange();
+  board << aCurve.getArrowsRange();
   
 
   double error = 3;
@@ -192,7 +191,8 @@ bool testSegmentation()
       board << (*it); 
       nb++;
     }
-    
+
+    //board << aCurve;
     trace.info() << theSegmentation << std::endl;
     board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
   }

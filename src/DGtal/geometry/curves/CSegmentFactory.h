@@ -71,39 +71,13 @@ Description of \b concept '\b CSegmentFactory' <p>
  ### Definitions
 
  ### Valid expressions and semantics
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-       <tr> 
-        <td class=CName> getSelf method  </td> 
-        <td class=CExpression> x.getSelf()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> X::Self   </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity> depends on the internal structures defined in x     </td>
-      </tr>
-      <tr> 
-        <td class=CName> conversion  </td> 
-        <td class=CExpression> x.getReverse()     </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> X::Reverse     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) </td> 
-        <td class=CPostCondition>       </td> 
-        <td class=CComplexity> depends on the internal structures defined in x     </td>
-      </tr>
 
-     </table>
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| getSelf method| x.getSelf()|                     |X::Self      |                  |returns an instance of Self, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
+| conversion    | x.getReverse() |                 |X::Reverse   |                  |returns an instance of Reverse, which is constructed from the same input parameters used to construct x (if any) | | depends on the internal structures defined in x |
+
 
  ### Invariants###
 

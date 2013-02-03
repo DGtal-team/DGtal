@@ -264,7 +264,7 @@ DGtal::Display3D::addQuad(double x1, double y1, double z1,
   normalize(n);
 
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning quad not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning quad not added due to identical vertex... "<<std::endl;
     return;
   }
 
@@ -307,7 +307,7 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
   normalize(n);
   
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning triangle not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning triangle not added due to identical vertex... "<<std::endl;
     return;
   }
   
@@ -333,7 +333,8 @@ DGtal::Display3D::addTriangle(double x1, double y1, double z1,  double x2,
 
 inline
 void 
-DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGtal::Color aColor)
+DGtal::Display3D::addPolygon(std::vector<Display3D::pointD3D> vectPointsPolygon, 
+                             DGtal::Color aColor)
 {
   polygonD3D aPolygon;
   for(unsigned int i=0; i< vectPointsPolygon.size();i++){
@@ -362,7 +363,7 @@ DGtal::Display3D::addPolygon(vector<Display3D::pointD3D> vectPointsPolygon, DGta
   normalize(n);  
   
   if(u[0]==0.0 && u[1]==0.0 && u[2]==0.0){
-    trace.error()<< "Warning polygin not added due to identical vertex... "<<endl;
+    trace.error()<< "Warning polygin not added due to identical vertex... "<<std::endl;
     return;
   }
 
@@ -722,7 +723,7 @@ DGtal::Display3D::addClippingPlane(double a, double b, double c, double d, bool 
   
     }else
     {
-      std::cerr <<"Warning maximal clipping plane added" << endl;
+      std::cerr <<"Warning maximal clipping plane added" << std::endl;
     }
 }
 
@@ -924,14 +925,14 @@ DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D
 
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D,  string aFilename)
+DGtal::operator>> ( const Display3D &aDisplay3D,  std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
   DGtal::MeshFromPoints<Display3D::pointD3D> mesh(true);
   aDisplay3D >> mesh;
-  trace.info() << "generating faces done." << endl;
+  trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
-  trace.info() << "file exported in file: " << aFilename << endl;
+  trace.info() << "file exported in file: " << aFilename << std::endl;
 }
 
 

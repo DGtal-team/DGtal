@@ -44,7 +44,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CConstSinglePassRange.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -82,7 +83,7 @@ The space is generally finite (except for arbitrary size
 integers). The user should choose between a closed (default) cell
 space or an open cell space.
 
-We refer the reader to \ref dgtal_cellular_topology for further
+We refer the reader to \ref moduleCellularTopology for further
 details.
 
 ### Refinement of
@@ -93,7 +94,7 @@ details.
 ### Associated types :
 
 - \e Integer: the integral type for representing coordinates in the space (model of CInteger).
-- \e Size: the integral unsigned type for representing sizes in the space (model of CUnsignedInteger).
+- \e Size: the integral unsigned type for representing sizes in the space (model of CUnsignedNumber and CIntegralNumber).
 - \e Space: the corresponding digital space (same dimension and same \e Integer type as this).
 - \e Cell: the type that represents an unsigned cell. Cell's are ordered.
 - \e SCell: the type that represents a signed cell. SCell's are ordered.
@@ -339,7 +340,8 @@ public:
   typedef typename T::template SurfelMap<Dummy>::Type SurfelMap;
   
   BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-  BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
+  BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Size > ));
+  BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Integer, typename Space::Integer >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Point, typename Space::Point >::value ));
   BOOST_STATIC_ASSERT(( ConceptUtils::SameType< Vector, typename Space::Vector >::value ));
