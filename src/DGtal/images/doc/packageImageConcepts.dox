@@ -25,48 +25,56 @@ namespace DGtal {
  @dot
 digraph GIMAGE {
   rankdir=BT;
- subgraph cluster_ext {
+
+   subgraph cluster_ext {
  	rank = same;
         style=invis;
-        subgraph cluster_1 {
+
+        subgraph cluster_base {
                  style=filled;
                  color="#eeeeff";
                  node [style=filled,color=white];
                  label="base";
 
-                 CLabel;  
+                 CLabel [label="CLabel" URL="@ref CLabel"];  
 		 }
 
-        subgraph cluster_1 {
+        subgraph cluster_kernel {
                  style=filled;
                  color="#eeeeff";
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CPointFunctor ;  
-		 CDomain;
-		 CConstBidirectionalRangeFromPoint;
-		 CBidirectionalOutputRangeFromPoint;
+                 CPointFunctor [label="CPointFunctor" URL="@ref CPointFunctor"];   
+		 CDomain [label="CDomain" URL="@ref CDomain"]; 
+		 CConstBidirectionalRangeFromPoint [label="CConstBidirectionalRangeFromPoint" URL="@ref CConstBidirectionalRangeFromPoint"]; 
+		 CBidirectionalOutputRangeFromPoint [label="CBidirectionalOutputRangeFromPoint" URL="@ref CBidirectionalOutputRangeFromPoint"]; 
 		 }
 	 }
 
-subgraph cluster_0 {
+  subgraph cluster_main {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
     label="Image (main concepts)";
 
-    
+    CImage [label="CImage" URL="@ref CImage"];
+    CConstImage [label="CConstImage" URL="@ref CConstImage"];
+    CTrivialImage [label="CTrivialImage" URL="@ref CTrivialImage"];
+    CTrivialConstImage [label="CTrivialConstImage" URL="@ref CTrivialConstImage"];
+
     CImage -> CConstImage;
     CImage -> CTrivialImage;
     CConstImage -> CTrivialConstImage;
     CTrivialImage -> CTrivialConstImage;
 
   }
-  CLabel -> CTrivialConstImage [label="use",style=dashed] ;
-  CDomain -> CConstImage [label="use",style=dashed] ;
-  CConstBidirectionalRangeFromPoint -> CConstImage [label="use",style=dashed] ;
-  CBidirectionalOutputRangeFromPoint -> CImage[label="use",style=dashed] ;
+
+  CTrivialConstImage -> CLabel [label="use",style=dashed] ;
+  CTrivialConstImage -> CDomain [label="use",style=dashed] ;
+  CConstImage -> CDomain [label="use",style=dashed] ;
+  CConstImage -> CConstBidirectionalRangeFromPoint [label="use",style=dashed] ;
+  CImage -> CBidirectionalOutputRangeFromPoint [label="use",style=dashed] ;
   CTrivialConstImage -> CPointFunctor;
 
  subgraph cluster_models {
@@ -74,20 +82,23 @@ subgraph cluster_0 {
         color="#ccffcc";
         node [style=filled,color=white];
         label="Image (main models)";
-
-	Image;
-	ImageContainerBySTLVector;
-	ImageContainerBySTLMap;
-	ImageContainerByHashTree;
-	ImageCotnainerByITKImage;
-    }
+	ImageContainerBySTLVector [label="ImageContainerBySTLVector" URL="@ref ImageContainerBySTLVector"];
+	ImageContainerBySTLMap  [label="ImageContainerBySTLMap" URL="@ref ImageContainerBySTLMap"];
+	ImageContainerByHashTree  [label="ImageContainerByHashTree" URL="@ref ImageContainerByHashTree"];
+	ImageContainerByITKImage  [label="ImageContainerByITKImage" URL="@ref ImageContainerByITKImage"];
     
-	Image -> CImage;
-	ImageContainerBySTLVector -> CImage;
-	ImageContainerBySTLMap -> CImage;
-	ImageContainerByHashTree -> CImage;
-	ImageContainerByITKImage -> CImage;
+	ImageAdapter  [label="ImageAdapter" URL="@ref ImageAdapter"];
+	ConstImageAdapter  [label="ConstImageAdapter" URL="@ref ConstImageAdapter"];
 
+	}
+    
+    ImageAdapter -> CImage;
+    ConstImageAdapter -> CConstImage;
+    ImageContainerBySTLVector -> CImage;
+    ImageContainerBySTLMap -> CImage;
+    ImageContainerByHashTree -> CImage;
+    ImageContainerByITKImage -> CImage;
+    
  }
 @enddot
 
