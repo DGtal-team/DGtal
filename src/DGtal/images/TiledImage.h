@@ -87,12 +87,10 @@ public:
 
 public:
 
-    TiledImage(Alias<ImageContainer> anImage, Alias<std::vector<Domain> > Di):
-            myImagePtr(anImage), myDi(Di)
+    TiledImage(Alias<ImageContainer> anImage, 
+               Alias<std::vector<Domain> > Di):
+      myImagePtr(anImage), myDi(Di)
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "TiledImage Ctor fromRef " << std::endl;
-#endif
         myFactImage = new MyImageFactoryFromImage(myImagePtr);
         myImageCache = new MyImageCache(MyImageCache::LAST);
     }
@@ -104,9 +102,6 @@ public:
     */
     TiledImage & operator= ( const TiledImage & other )
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "TiledImage assignment " << std::endl;
-#endif
         if (&other != this)
         {
             myImagePtr = other.myImagePtr;
@@ -157,16 +152,22 @@ public:
     }
     
     /**
-     * Get the domain containing aPoint.
+     * Get the first domain containing aPoint.
      *
      * @param aPoint the point.
      * @return the domain containing aPoint.
      */
     Domain findSubDomain(const Point & aPoint) const
     {
-        for(std::size_t i=0; i<myDi.size(); ++i)
-          if (myDi[i].isInside(aPoint))
-            return myDi[i];
+      ASSERT( myImagePtr->domain().isInside(aPoint));
+      
+      for(std::size_t i=0; i<myDi.size(); ++i)
+        if (myDi[i].isInside(aPoint))
+          return myDi[i];
+      
+      //Compiler warning... should never happen
+      VERIFY_MSG(true, "Shoud never happen (aPoint must be in one subdomain)");
+      return myImagePtr->domain();        
     }
     
     /**
@@ -178,11 +179,13 @@ public:
      */
     Value operator()(const Point & aPoint) const
     {
-        typename OutputImage::Value aValue;
+      ASSERT( myImagePtr->domain().isInside(aPoint));
+
+      typename OutputImage::Value aValue;
         
-        if (myImageCache->read(aPoint, aValue))
-          return aValue;
-        else
+      if (myImageCache->read(aPoint, aValue))
+        return aValue;
+      else
         {
           myImageCache->update(myFactImage->requestImage(findSubDomain(aPoint)));
           myImageCache->read(aPoint, aValue);
@@ -195,11 +198,7 @@ private:
     /**
      * Default constructor.
      */
-    TiledImage() {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "TiledImage Ctor default " << std::endl;
-#endif
-    }
+  TiledImage() {}
     
     // ------------------------- Private Datas --------------------------------
 protected:

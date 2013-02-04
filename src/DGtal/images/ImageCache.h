@@ -74,18 +74,15 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ///New types
-    enum Read_selectors {LAST, FIFO, LRU, NEIGHBORS}; // cache policy
+    enum ReadPolicy{LAST, FIFO, LRU, NEIGHBORS}; // cache policy
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
-    ImageCache(Read_selectors AReadSelector=LAST):
-            readSelector(AReadSelector), myImagePtr(NULL)
+    ImageCache(ReadPolicy AReadSelector=LAST):
+            myReadPolicy(AReadSelector), myImagePtr(NULL)
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache Ctor fromRef " << std::endl;
-#endif
     }
 
     /**
@@ -95,13 +92,10 @@ public:
     */
     ImageCache & operator= ( const ImageCache & other )
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache assignment " << std::endl;
-#endif
         if (&other != this)
         {
             myImagePtr = other.myImagePtr;
-            readSelector = other.readSelector;
+            myReadPolicy = other.myReadPolicy;            
         }
         return *this;
     }
@@ -180,11 +174,7 @@ private:
     /**
      * Default constructor.
      */
-    ImageCache() {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageCache Ctor default " << std::endl;
-#endif
-    }
+    ImageCache() {  }
     
     // ------------------------- Private Datas --------------------------------
 protected:
@@ -195,7 +185,7 @@ protected:
 private:
   
     /// Cache policy
-    Read_selectors readSelector;
+  ReadPolicy myReadPolicy;
 
     // ------------------------- Internals ------------------------------------
 private:

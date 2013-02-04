@@ -50,19 +50,19 @@
 
 namespace DGtal
 {
-/////////////////////////////////////////////////////////////////////////////
-// Template class ImageFactoryFromImage
-/**
- * Description of template class 'ImageFactoryFromImage' <p>
- * \brief Aim: todo
- */
-template <typename TImageContainer>
-class ImageFactoryFromImage
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // Template class ImageFactoryFromImage
+  /**
+   * Description of template class 'ImageFactoryFromImage' <p>
+   * \brief Aim: todo
+   */
+  template <typename TImageContainer>
+  class ImageFactoryFromImage
+  {
 
     // ----------------------- Types ------------------------------
 
-public:
+  public:
     typedef ImageFactoryFromImage<TImageContainer> Self; 
     
     ///Checking concepts
@@ -78,31 +78,25 @@ public:
 
     // ----------------------- Standard services ------------------------------
 
-public:
+  public:
 
     ImageFactoryFromImage(Alias<ImageContainer> anImage):
-            myImagePtr(anImage)
+      myImagePtr(anImage)
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryFromImage Ctor fromRef " << std::endl;
-#endif
     }
 
     /**
-    * Assignment.
-    * @param other the object to copy.
-    * @return a reference on 'this'.
-    */
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
     ImageFactoryFromImage & operator= ( const ImageFactoryFromImage & other )
     {
-#ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryFromImage assignment " << std::endl;
-#endif
-        if (&other != this)
+      if (&other != this)
         {
-            myImagePtr = other.myImagePtr;
+          myImagePtr = other.myImagePtr;
         }
-        return *this;
+      return *this;
     }
 
     /**
@@ -112,7 +106,7 @@ public:
     ~ImageFactoryFromImage() {}
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /////////////////// Domains //////////////////
 
@@ -137,7 +131,7 @@ public:
      */
     bool isValid() const
     {
-        return (myImagePtr->isValid() );
+      return (myImagePtr->isValid() );
     }
 
     /**
@@ -146,50 +140,50 @@ public:
      */
     OutputImage * requestImage(const Domain &aDomain)
     {
-        DefaultFunctor idD;
-        DefaultFunctor idV;
-        DefaultFunctor idVm1;
+      DefaultFunctor idD;
+      DefaultFunctor idV;
+      DefaultFunctor idVm1;
         
-        OutputImage* adaptImage = new OutputImage(*myImagePtr, aDomain, idD, idV, idVm1);
+      OutputImage* adaptImage = new OutputImage(*myImagePtr, aDomain, idD, idV, idVm1);
         
-        return adaptImage;
+      return adaptImage;
     }
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  private:
     /**
      * Default constructor.
      */
     ImageFactoryFromImage() {
 #ifdef DEBUG_VERBOSE
-        trace.warning() << "ImageFactoryFromImage Ctor default " << std::endl;
+      trace.warning() << "ImageFactoryFromImage Ctor default " << std::endl;
 #endif
     }
     
     // ------------------------- Private Datas --------------------------------
-protected:
+  protected:
 
     /// Alias on the image container
     ImageContainer * myImagePtr;
 
-private:
+  private:
 
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
-}; // end of class ImageFactoryFromImage
+  }; // end of class ImageFactoryFromImage
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'ImageFactoryFromImage'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'ImageFactoryFromImage' to write.
- * @return the output stream after the writing.
- */
-template <typename TImageContainer>
-std::ostream&
-operator<< ( std::ostream & out, const ImageFactoryFromImage<TImageContainer> & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ImageFactoryFromImage'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ImageFactoryFromImage' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename TImageContainer>
+  std::ostream&
+  operator<< ( std::ostream & out, const ImageFactoryFromImage<TImageContainer> & object );
 
 } // namespace DGtal
 
