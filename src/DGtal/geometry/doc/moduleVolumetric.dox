@@ -239,8 +239,13 @@ defined by
 
 Hence, similarly to Voronoi diagram, the power diagram is a
 decomposition of the space ino cells from weighed sites where each
-cell is associated with a site and each point in the cell has got
-minimal power distance  to the cell stie
+cell (maybe empty) is associated with a site and each point in the
+cell has got minimal power distance to the cell site (compared to its
+power distance to all other sites) @cite Aurenhammer1987 .
+
+
+
+
 
 @section metricSec Metric and Separable Metric concepts
 
@@ -261,7 +266,6 @@ digraph metric_concepts_2_vor {
     CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
     CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
 
-    CPowerMetric -> CMetric;
     CMetric -> CLocalPremetric;
     CSeparableMetric -> CMetric;
     CPowerSeparableMetric -> CPowerMetric;
