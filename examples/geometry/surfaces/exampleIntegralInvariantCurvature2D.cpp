@@ -97,21 +97,22 @@ int main( int argc, char** argv )
 
 
     /// Integral Invariant stuff
-    double re_convolution_kernel = 3.96850263;
+    //! [IntegralInvariantUsage]
+    double re_convolution_kernel = 3.96850263; // Euclidean radius of the convolution kernel. Set by user.
 
     typedef FunctorOnCells< MyGaussDigitizer, Z2i::KSpace > MyFunctor;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyIIMeanEstimator;
+    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyCurvatureEstimator; // mean curvature estimator
 
     MyFunctor functor ( digShape, KSpaceShape, domainShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
-    MyIIMeanEstimator estimator ( KSpaceShape, functor );
-    estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
+    MyCurvatureEstimator estimator ( KSpaceShape, functor );
+    estimator.init( h, re_convolution_kernel ); // Initialisation for a grid step h and a given Euclidean radius of convolution kernel re
     std::vector< double > results;
-    back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
-    estimator.eval ( abegin, aend, resultsIterator ); // Computation
-
+    back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariant curvature computation
+    estimator.eval ( abegin, aend, resultsIterator ); // Computation of the estimator between two iterators of surfels on the digitized shape border
+    //! [IntegralInvariantUsage]
 
     /// Drawing results
-    typedef MyIIMeanEstimator::Quantity Quantity;
+    typedef MyCurvatureEstimator::Quantity Quantity;
     Quantity min = numeric_limits < Quantity >::max();
     Quantity max = numeric_limits < Quantity >::min();
     for ( unsigned int i = 0; i < results.size(); ++i )
