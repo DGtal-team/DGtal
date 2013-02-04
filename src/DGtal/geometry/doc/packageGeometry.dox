@@ -63,6 +63,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
    -# \ref moduleFrechetShortcut (Isabelle Sivignon)
 
 - Geometric estimators <!-- \ref moduleEsimators -->  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
+ - \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (David Coeurjolly, Jacques-Olivier Lachaud, Jérémy Levallois)
 
 - \ref moduleVolumetric (David Coeurjolly)
 

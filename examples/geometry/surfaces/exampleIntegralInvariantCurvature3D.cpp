@@ -111,10 +111,10 @@ int main( int argc, char** argv )
 
     /// Integral Invariant stuff
     typedef FunctorOnCells< Image, Z3i::KSpace > MyFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIGaussianEstimator;
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
     MyFunctor functor ( image, KSpaceShape, domain ); // Creation of a functor on Cells, returning true if the cell is inside the shape
-    MyIIGaussianEstimator estimator ( KSpaceShape, functor );
+    MyCurvatureEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
     std::vector< double > results;
     back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
@@ -122,7 +122,7 @@ int main( int argc, char** argv )
 
 
     /// Drawing results
-    typedef MyIIGaussianEstimator::Quantity Quantity;
+    typedef MyCurvatureEstimator::Quantity Quantity;
     Quantity min = numeric_limits < Quantity >::max();
     Quantity max = numeric_limits < Quantity >::min();
     for ( unsigned int i = 0; i < results.size(); ++i )

@@ -71,7 +71,8 @@ namespace DGtal
    *
    * The algorithm we propose uses volume of a kernel (2D: Ball2D, 3D: Ball3D) to approximate mean curvature.
    * To compute the volume, we convolve a kernel around the surface and counting the number of cells belonging the shape.
-   * Theorical multigrid convergence is proved, with a convergence speed of O(h^1/3).
+   * Theorical multigrid convergence is proved, with a convergence speed of O(h^1/3) with hypothesis about the shape geometry
+   * and the convolution kernel radius.
    * Experimental results showed a multigrid convergence.
    *
    * Because this algorithm compute value on adjacent cell, we can optimize this step by uses previous
