@@ -231,7 +231,8 @@ bool testRange(const Range &aRange)
 {
   trace.info() << "Reverse Circulator" << endl;
   typename Range::ConstReverseCirculator c = aRange.rc();
-  typename Range::ConstReverseCirculator cend = aRange.rc();
+  ++c; 
+  typename Range::ConstReverseCirculator cend = c;
   if (isNotEmpty(c,cend)) 
   {
     do 

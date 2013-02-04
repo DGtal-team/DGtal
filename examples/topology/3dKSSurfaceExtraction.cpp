@@ -98,8 +98,7 @@ int main( int argc, char** argv )
   //of exterior. You can also get the SignefKhalimskySpaceND with default
   //sign:
 
-  SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
-  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, false);
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, false);
   
   
   QApplication application(argc,argv);
