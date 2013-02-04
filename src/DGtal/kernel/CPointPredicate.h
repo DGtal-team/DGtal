@@ -73,6 +73,7 @@ Description of \b concept '\b CPointPredicate' <p>
     - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
     - complex predicate constructor: BinaryPointPredicate
     - others: DomainPredicate, SetPredicate
+    - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
     
  ### Notes
    */

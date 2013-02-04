@@ -58,7 +58,29 @@ digraph GGeom   {
 
     label="geometry/curves (main concepts)";
   }
+
+subgraph cluster_concepts_2 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+               
+    CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
+    CMetric [label="CMetric" URL="@ref CMetric"];
+    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
+    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
+
+    CPowerMetric -> CMetric;
+    CMetric -> CLocalPremetric;
+    CSeparableMetric -> CMetric;
+    CPowerSeparableMetric -> CPowerMetric;
+
+    label="geometry/volumes (main concepts)";
+  }
  
+  CLocalPremetric -> boost_CopyConstructible;
+  CLocalPremetric -> boost_Assignable;
+  
   CSegment -> boost_CopyConstructible ;
   CSegment -> boost_DefaultConstructible;
   CSegment -> boost_Assignable;

@@ -55,13 +55,13 @@ Description of \b concept '\b CPointFunctor' <p>
 
 @brief Aim: Defines a functor on points.
      
-     Associates values to points.
+ Associates values to points.
     
  ### Refinement of CUnaryFunctor
     
- ### Associated types :
-     - Point : specifies the type for a point (inner type).
-     - Value : specifies the type for a value (inner type).
+ ### Associated types
+ - Point : specifies the type for a point (inner type).
+ - Value : specifies the type for a value (inner type).
     
  ### Notation
      - \t X : A type that is a model of CPointFunctor
@@ -79,8 +79,7 @@ Description of \b concept '\b CPointFunctor' <p>
     
  ### Invariants
     
- ### Models
-     Shapes and images are models of (refinements of) this concept  
+ - Shapes and images are models of (refinements of) this concept  
     
  ### Notes###
    */
