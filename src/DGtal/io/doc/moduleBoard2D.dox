@@ -157,6 +157,7 @@ is always default mode).
 - class ArithmeticalDSS, modes: "" / "BoundingBox", "Points"
 - class FreemanChain, modes: "" / "Grid", "InterGrid"
 - class GridCurve, modes: "" / "Fill"
+- class LatticePolytope2D, modes: "" / "Transparent", "Filled"
   
 For instance, to change the drawing mode for the next object \c dss of type
 ArithmeticalDSS, you may use the line

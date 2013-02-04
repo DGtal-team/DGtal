@@ -37,7 +37,6 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/kernel/domains/DomainPredicate.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
@@ -45,6 +44,7 @@
 //DT
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 
 //FMM
 #include "DGtal/geometry/volumes/distance/FMM.h"
@@ -526,7 +526,7 @@ bool testDisplayDTFromCircle(int size)
   }
   trace.endBlock();
 
-  double dmin = 2*size*size; 
+  double dmin = 0; //2*size*size;
   double dmax = 0; 
   trace.beginBlock ( "Both " );
   {
@@ -621,10 +621,11 @@ bool testComparison(int size, int area, double dist)
   trace.beginBlock ( " DT computation " );
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
-  typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, norm> DT; 
-  DT dt(d,aPredicate);
-  typename DT::OutputImage resultImage = dt.compute (  );
-  trace.info() << resultImage << std::endl; 
+  typedef ExactPredicateLpSeparableMetric<SpaceND<dimension,int>, norm> LNorm;
+  typedef DistanceTransformation<SpaceND<dimension,int>, Predicate, LNorm> DT; 
+  LNorm lnorm;
+  DT dt(&d,&aPredicate, &lnorm);
+  trace.info() << dt << std::endl; 
 
   trace.endBlock();
 
@@ -640,7 +641,7 @@ bool testComparison(int size, int area, double dist)
 	flagIsOk = false; 
       else 
 	{
-	  if (resultImage(*it) != map(*it))
+	  if (dt(*it) != map(*it))
 	    flagIsOk = false;
 	}
     }
@@ -680,18 +681,16 @@ int main ( int argc, char** argv )
   res = res && testDisplayDT3d( size, area, std::sqrt(size*size*size) )
     ; 
 
-  //3d L1 and Linf comparison
+  //3d L1 and  comparison
   size = 20; 
   area = int( std::pow(double(2*size+1),3) )+1; 
   res = res  
     && testComparison<3,1>( size, area, 3*size+1 )
-    && testComparison<3,0>( size, area, size+1 )
     ;
   size = 5; 
   area = int( std::pow(double(2*size+1),4) ) + 1;
   res = res
     && testComparison<4,1>( size, area, 4*size+1 )
-    && testComparison<4,0>( size, area, size+1 )
     ;
 
   //&& ... other tests

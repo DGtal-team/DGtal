@@ -154,8 +154,6 @@ bool testIntegralInvariantGaussianCurvatureEstimator3D( double h, double delta )
     mean += resultsIICurvature[ i ];
   }
   mean /= rsize;
-  std::cout << realValue << std::endl;
-  std::cout << mean << std::endl;
 
   if ( std::abs ( realValue - mean ) > delta )
   {

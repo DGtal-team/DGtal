@@ -247,11 +247,12 @@ namespace DGtal
   template < typename TKSpace,
              typename TImplicitFunctionDiff1,
              typename TEmbedder >
-  struct ImplicitFunctionDiff1LinearCellEmbedderGradientMap
+  class ImplicitFunctionDiff1LinearCellEmbedderGradientMap
     : public ImplicitFunctionDiff1LinearCellEmbedder< TKSpace, 
                                                       TImplicitFunctionDiff1,
                                                       TEmbedder>
   {
+  public:
     typedef ImplicitFunctionDiff1LinearCellEmbedderGradientMap
     < TKSpace, TImplicitFunctionDiff1, TEmbedder> Self;
     typedef ImplicitFunctionDiff1LinearCellEmbedder

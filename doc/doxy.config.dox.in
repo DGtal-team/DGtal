@@ -52,7 +52,7 @@ PROJECT_LOGO           =
 # If a relative path is entered, it will be relative to the location
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       =
+OUTPUT_DIRECTORY       = .
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create
 # 4096 sub-directories (in 2 levels) under the output directory of each output
@@ -601,7 +601,7 @@ LAYOUT_FILE            =
 # of the bibliography can be controlled using LATEX_BIB_STYLE. To use this
 # feature you need bibtex and perl available in the search path.
 
-CITE_BIB_FILES         = @top_srcdir@/doc/global.bib
+CITE_BIB_FILES         = @top_srcdir@/src/DGtal/doc/global.bib
 
 #---------------------------------------------------------------------------
 # configuration options related to warning and progress messages
@@ -663,7 +663,10 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = @top_srcdir@/src/DGtal/
+INPUT                  = @top_srcdir@/src \
+                         @top_srcdir@/tests \
+                         @top_srcdir@/examples \
+                         @top_bindir@/src/DGtal/base
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
@@ -1147,7 +1150,7 @@ DISABLE_INDEX          = NO
 # Since the tree basically has the same information as the tab index you
 # could consider to set DISABLE_INDEX to NO when enabling this option.
 
-GENERATE_TREEVIEW      = HIERARCHIES
+GENERATE_TREEVIEW      = NO
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values
 # (range [0,1..20]) that doxygen will group on one line in the generated HTML
@@ -1212,7 +1215,8 @@ MATHJAX_RELPATH        = http://cdn.mathjax.org/mathjax/latest
 # The MATHJAX_EXTENSIONS tag can be used to specify one or MathJax extension
 # names that should be enabled during MathJax rendering.
 
-MATHJAX_EXTENSIONS     = TeX/AMSmath TeX/AMSsymbols
+MATHJAX_EXTENSIONS     = TeX/AMSmath \
+                       TeX/AMSsymbols
 
 # When the SEARCHENGINE tag is enabled doxygen will generate a search box
 # for the HTML output. The underlying search engine uses javascript
@@ -1331,7 +1335,7 @@ LATEX_SOURCE_CODE      = NO
 # bibliography, e.g. plainnat, or ieeetr. The default style is "plain". See
 # http://en.wikipedia.org/wiki/BibTeX for more info.
 
-LATEX_BIB_STYLE        = plain
+LATEX_BIB_STYLE        = alpha
 
 #---------------------------------------------------------------------------
 # configuration options related to the RTF output

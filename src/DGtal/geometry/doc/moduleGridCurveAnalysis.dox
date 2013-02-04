@@ -428,7 +428,7 @@ See @ref dgtal_dgtalboard for the drawing mechanism.
 As seen above, the code can be different if an iterator or a circulator is used 
 as the nested ConstIterator type. Moreover, some tasks can be made faster for a 
 given kind of segment computer than for another kind of segment computer. 
-That's why many generic functions are provided in @href SegmentComputerUtils.h:
+That's why many generic functions are provided in @ref SegmentComputerUtils.h:
 
 - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension, 
 - maximalRetraction, oppositeEndMaximalRetraction,  
@@ -442,7 +442,7 @@ These functions are used in the segmentation algorithms introduced below.
 
 A given range contains a finite set of segments verifying a given 
 predicate P.  
-A <em>segmentation</em> is a subset of the whole set of segments, 
+A @e segmentation< is a subset of the whole set of segments, 
 such that:
   
 i. each element of the range belongs to a segment of the subset and 

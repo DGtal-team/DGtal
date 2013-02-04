@@ -65,8 +65,7 @@ DGtal::Expander<TObject>
     myCore( myEmbeddingDomain ), 
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),
-    myInCorePred( myCore ), 
-    myNotInCorePred( myInCorePred )
+    myNotInCorePred( myCore )
 {
   ASSERT( myObjectDomain.isInside( p ) );
   myCore.insertNew( p );
@@ -97,8 +96,7 @@ DGtal::Expander<TObject>
     myCore( myEmbeddingDomain ), 
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),
-    myInCorePred( myCore ),
-    myNotInCorePred( myInCorePred )
+    myNotInCorePred( myCore )
 {
   myCore.insertNew( b, e );  
   computeNextLayer( myCore );

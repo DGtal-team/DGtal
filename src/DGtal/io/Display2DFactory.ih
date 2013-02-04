@@ -137,7 +137,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
       drawAsBoundingBox( board, a );
     }
   else
-    ASSERT(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode)==""  );
+    VERIFY(false && ("draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode)==""  );
 
 }
 // ArithmeticalDSS
@@ -288,7 +288,7 @@ inline
 void DGtal::Display2DFactory::draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2, bool anOrientation)
 {
   std::string mode = aBoard.getMode( cf3p.className() );
-  ASSERT( (mode=="Arc" || mode=="" || mode=="Sector"|| mode=="Annulus") ||
+  VERIFY( (mode=="Arc" || mode=="" || mode=="Sector"|| mode=="Annulus") ||
     ("draw(Board2D & aBoard, const DGtal::CircleFrom3Points<Point> & cf3p, const Point& aPoint1, const Point& aPoint2): Unknown mode "+mode)==""  );
   
   if ( mode == "Arc"  || ( mode == "" )  )
@@ -332,17 +332,9 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   typedef typename Point::Coordinate Coordinate;
   typedef typename std::set<Point>::const_iterator ConstIterator;
     
-  ASSERT(Domain::Space::dimension == 2);
+  VERIFY(Domain::Space::dimension == 2);
   for(ConstIterator it =  s.begin(); it != s.end(); ++it)       
-// <<<<<<< HEAD
-//     board.drawRectangle( NumberTraits<Coordinate>::castToDouble( (*it)[0] ) - 0.5,
-//                          NumberTraits<Coordinate>::castToDouble( (*it)[1] ) + 0.5,
-//                          1,
-//                          1 );      
-// =======
     draw(board, *it);
-  
-  //>>>>>>> master
 }
 // DigitalSetBySTLSet
 
@@ -362,7 +354,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
       draw(board, *it);
   }
   else
-    ASSERT(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
+    VERIFY(false && ("draw-NOT-YET-IMPLEMENTED-in-ND"));
 }
 // DigitalSetBySTLVector
 
@@ -391,7 +383,7 @@ void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard,
   }
 
   // now with accessor
-  if (fp.flagIsClosed()) {
+  if (fp.isClosed()) {
       Point p = (*fp.polygon().begin());
       double xp = (double)NumberTraits<TInteger>::castToInt64_t(p[0]);
       double yp = (double)NumberTraits<TInteger>::castToInt64_t(p[1]);
@@ -415,7 +407,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
   else
     {
       mode = "draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & fp ): Unknown mode "+mode;
-      ASSERT2(false,  mode  );
+      VERIFY_MSG(false, mode );
     }
 }
 // FP
@@ -470,7 +462,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 	   const DGtal::FreemanChain<TInteger> & f )
 {
   std::string mode = aBoard.getMode( f.className() );
-  ASSERT( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
+  VERIFY( (mode=="Grid" || mode=="" || mode=="InterGrid") ||
     ("draw( DGtal::Board2D & board, const DGtal::FreemanChain<TInteger> & f ): Unknown mode "+mode)==""  );
   
   if ( mode == "Grid"  || ( mode == "" )  )
@@ -570,7 +562,7 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 			     PointVector<2,double>(rx,ry) ); 
       
 	  //orientation
-	  ASSERT( g.getGeometricalDSSPtr().get() != 0 ); 
+	  VERIFY( g.getGeometricalDSSPtr().get() != 0 ); 
 	  bool orientation = g.getGeometricalDSSPtr()->isClockwiseOriented(); 
 
 	  //mode
@@ -584,7 +576,7 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 	}
       else 
 	{
-	  ASSERT( g.getGeometricalDSSPtr().get() != 0 ); 
+	  VERIFY( g.getGeometricalDSSPtr().get() != 0 ); 
 	  aBoard << ( *(g.getGeometricalDSSPtr()) );
 	} 
     }
@@ -832,7 +824,7 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & aboard,
 {
   typedef typename TSpace::Integer Integer;
   
-  ASSERT(TSpace::dimension == 2 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
+  VERIFY(TSpace::dimension == 2 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 2)
   {
@@ -869,7 +861,7 @@ void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & aboard,
 {
   typedef typename TSpace::Integer Integer;
   
-  ASSERT(TSpace::dimension==2 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND" );
+  VERIFY(TSpace::dimension==2 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND" );
   
   if (TSpace::dimension == 2)
   {
@@ -887,7 +879,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = board.getMode( h.className() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving") ||
+  VERIFY((mode=="" || mode=="Grid" || mode=="Paving") ||
    ("draw( DGtal::Board2D & board, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
   
   if ( ( mode == "" ) || ( mode == "Grid" ) )
@@ -910,7 +902,7 @@ void DGtal::Display2DFactory::drawImageRecursive( DGtal::Board2D & aBoard,
                                                   const C& cmap )
 {
   
-  ASSERT ( Domain::dimension == 2 );
+  VERIFY ( Domain::dimension == 2 );
   
   double np[2], nlen;
 
@@ -956,7 +948,7 @@ void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
 {
    static const HashKey ROOT_KEY = static_cast<HashKey>(1);
   
-  ASSERT ( Domain::dimension == 2 );
+  VERIFY ( Domain::dimension == 2 );
 
   C colormap ( minV, maxV );
 
@@ -972,7 +964,7 @@ void DGtal::Display2DFactory::drawImageHashTree( Board2D & board,
 }
 // ImageContainerByHashTree
 
-
+// Draw image generic
 // ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
 template <typename Colormap, typename Image>
 inline
@@ -984,27 +976,23 @@ void DGtal::Display2DFactory::drawImage( DGtal::Board2D & board,
   typedef typename Image::Domain D;
   typedef typename Image::Value V;
   
-  ASSERT(D::Space::dimension == 2);
+  VERIFY(D::Space::dimension == 2);
 
   Colormap colormap(minV, maxV);
   Color c;
-  V val;
-  D ldomain(i.domain());
-
-  for (typename D::ConstIterator it =  ldomain.begin();
-       it != ldomain.end(); ++it)
+  typename Image::Value val;
+  for (typename Image::Domain::ConstIterator it =  i.domain().begin();
+       it != i.domain().end(); ++it)
   {
     val = i.operator()( (*it) );
     c = colormap( val );
     board.setFillColorRGBi( c.red(), c.green(), c.blue());
-    board.drawRectangle( NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[0]) - 0.5, 
-       NumberTraits<typename D::Integer>::
-       castToInt64_t((*it)[1]) + 0.5, 1, 1);
+    board.drawRectangle( NumberTraits<typename Image::Domain::Space::Integer>::
+                         castToDouble((*it)[0]) - 0.5, 
+                         NumberTraits<typename Image::Domain::Space::Integer>::
+                         castToDouble((*it)[1]) + 0.5, 1, 1);
   }
 }
-// ImageContainerBySTLVector, ImageContainerByHashTree, Image and ImageAdapter...
-
 
 // KhalimskyCell
 template < DGtal::Dimension dim, typename TInteger >
@@ -1012,7 +1000,7 @@ inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::KhalimskyCell<dim, TInteger> & k )
 {
-  ASSERT( dim == 2 );
+  VERIFY( dim == 2 );
   float x = (float) 
     ( NumberTraits<TInteger>::castToInt64_t( k.myCoordinates[0] ) >> 1 );
   float y = (float) 
@@ -1078,7 +1066,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
       drawWithAdjacencies( board, o );
     }
     else
-      ASSERT(false && (("draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
+      VERIFY(false && (("draw( DGtal::Board2D & board, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
 }
 // Object
 
@@ -1089,7 +1077,7 @@ inline
 void DGtal::Display2DFactory::drawAsPaving( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
-  ASSERT(dim == 2);
+  VERIFY(dim == 2);
   board.drawRectangle( (float) NumberTraits<TComponent>::castToDouble(p.myArray[0]) - 0.5f, 
                        (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]) + 0.5f, 1, 1 );     
 }
@@ -1099,7 +1087,7 @@ inline
 void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & board, 
            const DGtal::PointVector<dim,TComponent> & p )
 {
-  ASSERT(dim == 2);
+  VERIFY(dim == 2);
   board.fillCircle((float) NumberTraits<TComponent>::castToDouble(p.myArray[0]), 
                    (float) NumberTraits<TComponent>::castToDouble(p.myArray[1]),0.1);
 }
@@ -1110,7 +1098,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::PointVector<dim,TComponent> & p )
 {
   std::string mode = board.getMode( p.className() );
-  ASSERT( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
+  VERIFY( (mode=="Paving" || mode=="Grid" || mode=="Both" || mode=="") ||
     ("draw( DGtal::Board2D & board, const DGtal::PointVector<dim,TComponent> & p ): Unknown mode "+mode)==""  );
 
   if ( mode == "Paving"  || ( mode == "" )  )
@@ -1130,7 +1118,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
           const DGtal::PointVector<dim,TComponent> & p, 
           const DGtal::PointVector<dim,TComponent> & apoint )
 {
-  ASSERT(dim == 2);
+  VERIFY(dim == 2);
 
   board.drawArrow((float)apoint[0], (float) apoint[1],
       (float) apoint[0] + p.myArray[0], (float)apoint[1] + p.myArray[1],
@@ -1189,7 +1177,7 @@ inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 	   const DGtal::SignedKhalimskyCell<dim, TInteger> & sk )
 {
-  ASSERT( dim == 2 );
+  VERIFY( dim == 2 );
   float x = (float) 
     ( NumberTraits<TInteger>::castToInt64_t( sk.myCoordinates[0] ) >> 1 );
   float y = (float) 
@@ -1246,7 +1234,7 @@ DGtal::Display2DFactory::draw
   typedef typename DGtal::LatticePolytope2D<TSpace>::ConstIterator ConstIterator;
   typedef typename DGtal::LatticePolytope2D<TSpace>::Integer Integer;
   std::string mode = aBoard.getMode( cip.className() );
-  ASSERT( mode=="Filled" || mode=="" || mode=="Transparent" ||
+  VERIFY( mode=="Filled" || mode=="" || mode=="Transparent" ||
           ("draw(Board2D & aBoard, const DGtal::LatticePolytope2D<Space,Sequence> & cip): Unknown mode "+mode)==""  );
   
   std::vector<BoardPoint> pts;
