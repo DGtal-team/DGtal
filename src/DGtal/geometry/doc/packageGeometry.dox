@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file packageGeometry.doc
+ * @file packageGeometry.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -70,7 +70,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 @b Package @b Concepts @b Overview
 
-- \ref geomPackageConcepts
+- \ref packageGeometryConcepts
 
 
 @b Related @b documentation @b pages
