@@ -51,22 +51,22 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
-     Description of \b concept '\b CConstImage' <p>
-     @ingroup Concepts
-    
-    @brief Aim: Defines the concept describing a read-only image,
-    which is a refinement of CPointFunctor.
-   
+ * Description of \b concept '\b CConstImage' <p>
+ *
+ * @ingroup Concepts
+ * @brief Aim: Defines the concept describing a read-only image,
+ * which is a refinement of CPointFunctor.
+ *
 ### Refinement of CTrivialConstImage
    
 ###  Associated types :
-    - \t Domain: type of the image domain, model of concept CDomain
-    - \t ConstRange: type of range of image values,
+    - \e Domain: type of the image domain, model of concept CDomain
+    - \e ConstRange: type of range of image values,
     model of concept CConstBidirectionalRangeFromPoint
     
 ###  Notation
-- \t X : A type that is a model of CConstImage
-- \t x, \t y  : Object of type X
+- \e X : A type that is a model of CConstImage
+- \e x, \e y  : Object of type X
 
 ###  Definitions
 

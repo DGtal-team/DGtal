@@ -508,7 +508,7 @@ bool testStaticServices()
     && (clean2c == clean2cExpected);
   nbOk += (test) ? 1 : 0;
   trace.info() << "Test 9 " << ((test) ? "passed" : "failed" ) << endl;
-
+  trace.info() << "All tests="<<nbOk<<std::endl;
   trace.endBlock();
   return test;
 }
