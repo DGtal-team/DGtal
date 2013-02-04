@@ -54,14 +54,13 @@ namespace DGtal
 Description of \b concept '\b CImplicitFunctionDiff1' <p>
      @ingroup Concepts
 
-     @brief Aim: Describes a 1-differentiable function of the form
+@brief Aim: Describes a 1-differentiable function of the form
      f(x), where x is some real point in the given space, and f(x) is
      some value. 
 
  ### Refinement of CImplicitFunction
       
- ### Associated types :
-    
+ ### Associated types :    
      - RealPoint: the type for the domain
      - RealVector: the type for a vector in the domain
      - Value: the type for the range
@@ -73,38 +72,18 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            gradient operator</td> 
-        <td class=CExpression>      \c gradient( \c a )</td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      RealVector</td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       Evaluates the gradient of the function \c f at point \c a</td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-     </table>
-    
- ### Invariants###
-    
- ### Models###
+ ### Valid expressions and
 
-     - ImplicitPolynomial3Shape
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| gradient operator | \c gradient( \c a ) |        | RealVector  |                  |Evaluates the gradient of the function \c f at point \c a | | |  
+      
+ ### Invariants
+    
+ ### Models
+      ImplicitPolynomial3Shape
 
- ### Notes###
+ ### Notes
 
 @tparam T the type that should be a model of CImplicitFunctionDiff1.
    */

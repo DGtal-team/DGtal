@@ -31,7 +31,10 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -52,8 +55,7 @@ double mynorm(const Point &point, const double p)
   for(unsigned int i=0; i< Point::dimension; i++)
     res +=  std::pow ( (double)abs(point[i]) , p);
   
-  // x^p = exp(p*log(x))
-  return exp( 1.0/p*log(res));
+  return std::pow(res, 1.0/p);
 }
 
 template <typename VoroMap>
@@ -79,7 +81,6 @@ void saveVoroMap(const std::string &filename,const VoroMap &output,const double 
       it != itend; ++it)
     {
       typename VoroMap::Value point = output(*it);
-      
       board << CustomStyle( (*it).className(), new CustomColors( hue(mynorm(point- (*it),p)), 
                                                                  hue(mynorm(point- (*it),p))))
             << (*it);
@@ -123,6 +124,15 @@ bool checkVoronoiL2(const Set &aSet, const Image & voro)
   return true;
 }
 
+
+bool testCheckConcept()
+{
+  typedef ExactPredicateLpSeparableMetric<Z3i::Space,2> L2Metric;
+  BOOST_CONCEPT_ASSERT(( CConstImage< VoronoiMap<Z3i::Space, Z3i::DigitalSet, L2Metric> >));
+  
+  return true;
+}
+
 /**
  * Example of a test. To be completed.
  *
@@ -158,31 +168,26 @@ bool testVoronoiMap()
   
 
 
-  typedef SetPredicate<Z2i::DigitalSet> Predicate;
-  Predicate myPredicate(mySet);
-
-  //typedef NotPointPredicate<Predicate> NegPredicate;
-  //NegPredicate myNegPredicate( myPredicate );
-
-  typedef VoronoiMap<Z2i::Space, Predicate, 2> Voro2;
-  
-  Voro2 voro(domain, myPredicate);
-
-  Voro2::OutputImage output = voro.compute();
-  
+  typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
+  typedef VoronoiMap<Z2i::Space, Z2i::DigitalSet, L2Metric> Voro2;
+  L2Metric l2;
+  Voro2 voro(&domain, &mySet,&l2);
+ 
   for(int j=-10; j <= 10; j++)
     {    
       for(int i=-10; i<=10; i++)
-        trace.info() << "("<<output( Z2i::Point(i,j))[0]<<","<< output( Z2i::Point(i,j))[1]<<") ";
+        trace.info() << "("<<voro( Z2i::Point(i,j))[0]<<","<< voro( Z2i::Point(i,j))[1]<<") ";
       trace.info()<<std::endl;
     }
 
-
+  trace.info()<<"Exporting o SVG"<<std::endl;
+ 
   Board2D board;
-  for(Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+  for(Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), 
+        itend = voro.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = output(*it);
+      Z2i::Point p = voro(*it);
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);
@@ -190,7 +195,7 @@ bool testVoronoiMap()
 
   board.saveSVG("Voromap.svg");
 
-  nbok += checkVoronoiL2(sites,output) ? 1 : 0; 
+  nbok += checkVoronoiL2(sites,voro) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Voronoi diagram is valid !" << std::endl;
@@ -227,34 +232,26 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
     mySet.erase (*it);
   
 
-  typedef SetPredicate<Set> Predicate;
-  Predicate myPredicate(mySet);
-
   trace.beginBlock(" Voro computation");
-  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;  
-  Voro2 voro(aSet.domain(), myPredicate);
-  typename Voro2::OutputImage output = voro.compute();
+  typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
+  typedef VoronoiMap<typename Set::Space, Set, L2Metric> Voro2;  
+  L2Metric l2;
+  Voro2 voro(aSet.domain(), mySet, l2 );
+
   trace.endBlock();
 
-
-  // trace.beginBlock(" Voro computation (l_1)");
-  // typedef VoronoiMap<typename Set::Space, Predicate, 1> Voro1;  
-  // Voro1 voro1(aSet.domain(), myPredicate);
-  // typename Voro1::OutputImage output1 = voro1.compute();
-  // trace.endBlock();
-
-  trace.beginBlock(" Voronoi computation l_3");
-  typedef VoronoiMap<typename Set::Space, Predicate, 3> Voro6;
-  Voro6 voro6(aSet.domain(), myPredicate);
-  typename Voro6::OutputImage output6 = voro6.compute();
+  trace.beginBlock(" Voronoi computation l_6");
+  typedef ExactPredicateLpSeparableMetric<typename Set::Space,6> L6Metric;
+  L6Metric l6;
+  typedef VoronoiMap<typename Set::Space, Set, L6Metric> Voro6;
+  Voro6 voro6(aSet.domain(), mySet, l6 );
   trace.endBlock();
 
 
 
   trace.beginBlock(" DT computation");
-  typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
-  DT dt(aSet.domain(), myPredicate);
-  typename DT::OutputImage output2 = dt.compute();
+  typedef DistanceTransformation<typename Set::Space, Set, L2Metric> DT;
+  DT dt(aSet.domain(), mySet, l2);
   trace.endBlock();
 
 
@@ -275,45 +272,64 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
       for(int j= aSet.domain().lowerBound()[1]; j <= aSet.domain().upperBound()[1]; j++)
 	{    
 	  for(int i=aSet.domain().lowerBound()[0]; i<=aSet.domain().upperBound()[0]; i++)
-	    trace.info() << "("<<output( Z2i::Point(i,j))[0]<<","<< output( Z2i::Point(i,j))[1]<<") ";
+	    trace.info() << "("<<voro( Z2i::Point(i,j))[0]<<","<< voro( Z2i::Point(i,j))[1]<<") ";
 	  trace.info()<<std::endl;
 	}
     }
 
   Board2D board;
-  for(typename Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
+  board << voro.domain();
+  for(typename Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), itend = voro.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = output(*it);
-      unsigned char c = (p[1]*13 + p[0] * 7) % 256;
-      board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
-            << (*it);;
+      if (!mySet(*it))
+	board  << (*it);
     }
-
-  std::string filename= "Voromap-"+name+".svg";
-  board.saveSVG(filename.c_str());
-  filename= "Voromap-hue"+name+".svg";
-  saveVoroMap(filename.c_str(),output,2);
-
-
-  board.clear();
-  for(typename Voro2::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
-      it != itend; ++it)
-    {
-      Z2i::Point p = output(*it);
-      if (p != (*it))
-	Display2DFactory::draw( board,   p - (*it), (*it)); 
-    }
-
-  filename= "Voromap-diag-"+name+".svg";
+  std::string filename= "Voromap-"+name+"-orig.svg";
   board.saveSVG(filename.c_str());
   
   board.clear();
-  for(typename Voro6::OutputImage::Domain::ConstIterator it = output6.domain().begin(), 
-        itend = output6.domain().end();
+  board << voro.domain();
+  board.setPenColor(Color(0,0,0));
+  for(typename Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), itend = voro.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = output6(*it);
+      Z2i::Point p = voro(*it);
+      if ((p != (*it)) && (p != voro.domain().upperBound() + Z2i::Point::diagonal(1))
+	  &&  (p != voro.domain().lowerBound()))
+	Display2DFactory::draw( board,   p - (*it), (*it)); 
+    }
+
+  filename= "Voromap-"+name+"-diag.svg";
+  board.saveSVG(filename.c_str());
+  
+
+  board.clear();
+  board << voro.domain();
+  for(typename Voro2::OutputImage::Domain::ConstIterator it = voro.domain().begin(), itend = voro.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = voro(*it);
+      unsigned char c = (p[1]*13 + p[0] * 7) % 256;
+      //    if ((p != (*it)) && (p != voro.domain().upperBound() + Z2i::Point::diagonal(1))
+      //	  &&  (p != voro.domain().lowerBound()))
+	board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
+	      << (*it);;
+    }
+
+  filename= "Voromap-"+name+".svg";
+  board.saveSVG(filename.c_str());
+  filename= "Voromap-"+name+"-hue.svg";
+  saveVoroMap(filename.c_str(),voro,2);
+
+
+  
+  board.clear();
+  for(typename Voro6::OutputImage::Domain::ConstIterator it = voro6.domain().begin(), 
+        itend = voro6.domain().end();
+      it != itend; ++it)
+    {
+      Z2i::Point p = voro6(*it);
       if (p != (*it))
 	Display2DFactory::draw( board,   p - (*it), (*it)); 
     }
@@ -322,10 +338,10 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   board.saveSVG(filename.c_str());
 
   board.clear();
-  for(typename Voro6::OutputImage::Domain::ConstIterator it = output6.domain().begin(), itend = output6.domain().end();
+  for(typename Voro6::OutputImage::Domain::ConstIterator it = voro6.domain().begin(), itend = voro6.domain().end();
       it != itend; ++it)
     {
-      Z2i::Point p = output6(*it);
+      Z2i::Point p = voro6(*it);
       unsigned char c = (p[1]*13 + p[0] * 7) % 256;
       board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
             << (*it);;
@@ -334,28 +350,10 @@ bool testVoronoiMapFromSites2D(const Set &aSet, const std::string &name)
   filename= "Voromap-l6"+name+".svg";
   board.saveSVG(filename.c_str());
   filename= "Voromap-hue-l6-"+name+".svg";
-  saveVoroMap(filename.c_str(),output6,3);
-
-
-
-
-  // board.clear();
-
-  // for(typename Voro1::OutputImage::Domain::ConstIterator it = output.domain().begin(), itend = output.domain().end();
-  //     it != itend; ++it)
-  //   {
-  //     Z2i::Point p = output(*it);
-  //     unsigned char c = (p[1]*13 + p[0] * 7) % 256;
-  //     board << CustomStyle( (*it).className(), new CustomColors(Color(c,c,c),Color(c,c,c)))
-  //           << (*it);;
-  //   }
-
-  // filename= "Voromap-l1-"+name+".svg";
-  // board.saveSVG(filename.c_str());
-
+  saveVoroMap(filename.c_str(),voro6,3);
 
  
-  nbok += checkVoronoiL2(aSet,output) ? 1 : 0; 
+  nbok += checkVoronoiL2(aSet,voro) ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Voronoi diagram is valid !" << std::endl;
@@ -387,35 +385,32 @@ bool testVoronoiMapFromSites(const Set &aSet)
     mySet.erase (*it);
   
 
-  typedef SetPredicate<Set> Predicate;
-  Predicate myPredicate(mySet);
-
-  //typedef NotPointPredicate<Predicate> NegPredicate;
-  //NegPredicate myNegPredicate( myPredicate );
 
   trace.beginBlock(" Voronoi computation");
-  typedef VoronoiMap<typename Set::Space, Predicate, 2> Voro2;
-  Voro2 voro(aSet.domain(), myPredicate);
-  typename Voro2::OutputImage output = voro.compute();
+  typedef ExactPredicateLpSeparableMetric<typename Set::Space,2> L2Metric;
+  typedef VoronoiMap<typename Set::Space, Set, L2Metric> Voro2;
+  L2Metric l2;
+  Voro2 voro(aSet.domain(), mySet, l2);
   trace.endBlock();
 
 
   trace.beginBlock(" Voronoi computation l_3");
-  typedef VoronoiMap<typename Set::Space, Predicate, 3> Voro3;
-  Voro3 voro3(aSet.domain(), myPredicate);
-  typename Voro3::OutputImage output3 = voro3.compute();
+  typedef ExactPredicateLpSeparableMetric<typename Set::Space,3> L3Metric;
+  typedef VoronoiMap<typename Set::Space, Set, L3Metric> Voro3;
+  L3Metric l3;
+  Voro3 voro3(aSet.domain(), mySet, l3);
   trace.endBlock();
 
 
   trace.beginBlock(" DT computation");
-  typedef DistanceTransformation<typename Set::Space, Predicate, 2> DT;
-  DT dt(aSet.domain(), myPredicate);
-  typename DT::OutputImage output2 = dt.compute();
+  typedef DistanceTransformation<typename Set::Space, Set, L2Metric> DT;
+  DT dt(aSet.domain(), mySet, l2);
+
   trace.endBlock();
 
 
   trace.beginBlock("Validating the Voronoi Map");
-  nbok += (checkVoronoiL2(aSet,output)   )? 1 : 0; 
+  nbok += (checkVoronoiL2(aSet,voro)   )? 1 : 0; 
   trace.endBlock();
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
@@ -427,11 +422,11 @@ bool testVoronoiMapFromSites(const Set &aSet)
 
 bool testSimple2D()
 {
-
- Z2i::Point a(-10,-10);
+  
+  Z2i::Point a(-10,-10);
   Z2i::Point b(10,10);
   Z2i::Domain domain(a,b);
-
+  
   Z2i::DigitalSet sites(domain);
   bool ok;
 
@@ -564,12 +559,14 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testVoronoiMap() 
+  bool res = testCheckConcept() 
+    && testVoronoiMap() 
     && testSimple2D()
     &&  testSimpleRandom2D()
     && testSimple3D() 
     && testSimpleRandom3D()
-    && testSimple4D(); // && ... other tests
+    && testSimple4D()
+    ; // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -111,7 +111,6 @@
 #include "DGtal/base/BasicTypes.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/BasicArchetypes.h"
-#include "DGtal/base/GlobalFunctions.h"
 #include "DGtal/base/Exceptions.h"
 
 
@@ -131,7 +130,11 @@ namespace DGtal
    */
   enum Orientation { INSIDE = 0, ON = 1, OUTSIDE = 2};
   
-
+  /** 
+   * Global enum definition for closest point test (geometry/volumes/distance/..).
+   */
+  enum Closest { ClosestFIRST = 0, ClosestSECOND = 1, ClosestBOTH = 2};
+ 
 
   /** DGtal Global variables
    *
@@ -155,10 +158,8 @@ namespace DGtal
      * @param display3D any object of type Display3D.
      */
     virtual void setStyle( Display3D &  ) const {}
+    virtual ~DrawableWithDisplay3D() {}
   };
-
-  
-  
 
   /**
    * Interface that specifies that an object can draw itself on a
@@ -172,6 +173,7 @@ namespace DGtal
      * @param board any object of type Board.
      */
     virtual void setStyle( Board2D &  ) const {}
+    virtual ~DrawableWithBoard2D() {}
   };
   
 } // namespace DGtal

@@ -51,71 +51,42 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // struct CConstImage
   /**
-   * DescriptionDescription of \b concept '\b CConstImage' <p>
-   *
-   * @ingroup Concepts
-   * Aim: Defines the concept describing a read-only image,
-   * which is a refinement of CPointFunctor.
-   *
+ * Description of \b concept '\b CConstImage' <p>
+ *
+ * @ingroup Concepts
+ * @brief Aim: Defines the concept describing a read-only image,
+ * which is a refinement of CPointFunctor.
+ *
 ### Refinement of CTrivialConstImage
-   *
+   
 ###  Associated types :
-   * - \t Domain: type of the image domain, model of concept CDomain
-   * - \t ConstRange: type of range of image values,
-   * model of concept CConstBidirectionalRangeFromPoint
-   *
+    - \e Domain: type of the image domain, model of concept CDomain
+    - \e ConstRange: type of range of image values,
+    model of concept CConstBidirectionalRangeFromPoint
+    
 ###  Notation
-   * - \t X : A type that is a model of CConstImage
-   * - \t x, \t y  : Object of type X
-   *
+- \e X : A type that is a model of CConstImage
+- \e x, \e y  : Object of type X
+
 ###  Definitions
-   *
-###  Valid expressions and
-      <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
 
-	<tr>
-        <td class=CName> accessor to the domain            </td>
-        <td class=CExpression>  x.domain()   </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType>  const Domain &    </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics>  returns a const reference to the image domain     </td>
-        <td class=CPostCondition>   </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
-
-	<tr>
-        <td class=CName> accessor to the range of the image values            </td>
-        <td class=CExpression>  x.constRange()   </td>
-        <td class=CRequirements>    </td>
-        <td class=CReturnType>  ConstRange    </td>
-        <td class=CPrecondition>    </td>
-        <td class=CSemantics>  returns a constant range     </td>
-        <td class=CPostCondition>   </td>
-        <td class=CComplexity> O(1)     </td>
-      </tr>
+###  Valid expressions and semantics
 
 
-    </table>
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|Accessor to the domain |x.domain() | |const Domain & | | returns a const reference to the image domain | | O(1) | 
+|Accessor to the range of the image values | x.constRange() | | ConstRange | | returns a constant range | | O(1) |
 
-   *
+
+
 ###  Invariants
-   *
+
 ###  Model
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
-   *
+   ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+  
 ###  Notes
-   *
+
    */
 
   template <typename I>

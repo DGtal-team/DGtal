@@ -81,7 +81,21 @@ are also in @f$E@f$.
 For a flexible digitization, here you have all the steps involved in
 the digitization of an Euclidean shape (@a aShape of type @a Shape):
 
-@snippet testGaussDigitizer.cpp DigitizerDoc
+@code
+  // Creates a digitizer on the window (xLow, xUp).
+  RealPoint xLow( -5.3, -4.3 );
+  RealPoint xUp( 7.4, 4.7 );
+  GaussDigitizer<Space,Shape> dig;  
+  dig.attach( aShape ); // attaches the shape.
+  dig.init( xLow, xUp, h ); 
+  
+  // The domain size is given by the digitizer according to the window
+  // and the step.
+  Domain domain = dig.getDomain();
+  MySet aSet( domain );
+  // Creates a set from the digitizer.
+  Shapes<Domain>::digitalShaper( aSet, dig );
+@endcode
 
 @note A simpler (but less flexible) possibility is to use the Euclidean shaper helper method is available in the Shapes class, e.g.: 
 @code
@@ -201,6 +215,17 @@ The following images show you unary operations apply on two Ball2D (results are 
 @image latex minus_shapes.png "Minus operation" width=5cm
 
 @see tests/shapes/testEuclideanShapesDecorator.cpp tests/shapes/testDigitalShapesDecorator.cpp
+*/
+
+
+
+
+
+/**
+   \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
+\example shapes/Mesh3DConstructionAndVisualisation.cpp
+
+*
 */
 
 }
