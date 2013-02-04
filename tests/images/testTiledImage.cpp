@@ -95,7 +95,7 @@ bool testSimple()
     MyImageCache imageCache(MyImageCache::LAST);
     /*VImage*/OutputImage::Value aValue;
     
-    trace.info() << "Image cache: " << imageCache << endl;
+    trace.info() << "Image cache (empty cache): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
@@ -103,7 +103,7 @@ bool testSimple()
     
     imageCache.update(image1);
     
-    trace.info() << "Image cache: " << imageCache << endl;
+    trace.info() << "Image cache (not empty but wrong domain): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
@@ -111,7 +111,7 @@ bool testSimple()
     
     imageCache.update(image4);
     
-    trace.info() << "Image cache: " << imageCache << endl;
+    trace.info() << "Image cache (not empty but good domain): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
