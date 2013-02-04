@@ -52,7 +52,6 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/geometry/volumes/distance/FMMPointFunctors.h"

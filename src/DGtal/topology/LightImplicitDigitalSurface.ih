@@ -30,8 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iterator>
-#include "DGtal/kernel/sets/SetPredicate.h"
-#include "DGtal/graph/CVertexPredicate.h"
+#include "DGtal/topology/CVertexPredicate.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 

@@ -249,11 +249,6 @@ namespace DGtal
     bool myFinished;
 
     /**
-     * Predicate in-core.
-     */
-    InCoreDomainPredicate myInCorePred;
-
-    /**
      * Predicate ensuring the not-in-core expansion. 
      */
     NotInCoreDomainPredicate myNotInCorePred;

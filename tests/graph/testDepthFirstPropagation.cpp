@@ -138,7 +138,6 @@ void testDepthFirstPropagation()
 
   DepthFirstVisitor<Object, set<Point> > bfv2 (obj, c1);
   
-  cpt=0;
   
   while( !bfv2.finished() )
     {

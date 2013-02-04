@@ -150,7 +150,7 @@ bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_
             }
           //cerr << "check " << Bits::bitString(key2) << " ok." << endl;
         }
-      key2 <<=dim;
+      //key2 <<=dim;
     }
   cerr << "test_get: success !" << endl
        << "tested with " << count << " keys" << endl;

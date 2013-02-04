@@ -246,6 +246,15 @@ namespace DGtal
     DigitalSetBySTLVector<Domain> & operator+=
     ( const DigitalSetBySTLVector<Domain> & aSet );
 
+    // ----------------------- Model of CPointPredicate -----------------------------
+  public:
+
+    /**
+       @param p any point.
+       @return 'true' if and only if \a p belongs to this set.
+    */
+    bool operator()( const Point & p ) const;
+
     // ----------------------- Other Set services -----------------------------
   public:
     

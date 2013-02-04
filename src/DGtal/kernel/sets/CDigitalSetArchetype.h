@@ -244,6 +244,16 @@ namespace DGtal
     ( const CDigitalSetArchetype<Domain> & aSet )
     { return *this; }
 
+    // ----------------------- Model of CPointPredicate -----------------------------
+  public:
+
+    /**
+       @param p any point.
+       @return 'true' if and only if \a p belongs to this set.
+    */
+    bool operator()( const Point & p ) const
+    { return p == p; }
+
     // ----------------------- Other Set services -----------------------------
   public:
     

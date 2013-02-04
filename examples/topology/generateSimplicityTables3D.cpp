@@ -113,10 +113,10 @@ int main( int argc, char** argv )
   trace.beginBlock ( "Generate 3d table for 26_6 topology" );
   // Too big for stack. Use heap instead.
   ConfigMap* table26_6 = new ConfigMap;
-  generateSimplicityTable< Object26_6 >( dt26_6, *table26_6 );
+  generateSimplicityTable< Object6_26 >( dt6_26, *table26_6 );
   trace.endBlock();
 
-  ofstream file26_6( "simplicity_table26_6.txt" );
+  ofstream file26_6( "simplicity_table6_26.txt" );
   file26_6 << *table26_6;
   file26_6.close();
 
