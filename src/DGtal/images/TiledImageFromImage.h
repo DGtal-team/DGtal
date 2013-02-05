@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file TiledImage.h
+ * @file TiledImageFromImage.h
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/01/24
  *
- * Header file for module TiledImage.cpp
+ * Header file for module TiledImageFromImage.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(TiledImage_RECURSES)
-#error Recursive header files inclusion detected in TiledImage.h
-#else // defined(TiledImage_RECURSES)
+#if defined(TiledImageFromImage_RECURSES)
+#error Recursive header files inclusion detected in TiledImageFromImage.h
+#else // defined(TiledImageFromImage_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define TiledImage_RECURSES
+#define TiledImageFromImage_RECURSES
 
-#if !defined TiledImage_h
+#if !defined TiledImageFromImage_h
 /** Prevents repeated inclusion of headers. */
-#define TiledImage_h
+#define TiledImageFromImage_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -53,19 +53,19 @@
 namespace DGtal
 {
 /////////////////////////////////////////////////////////////////////////////
-// Template class TiledImage
+// Template class TiledImageFromImage
 /**
- * Description of template class 'TiledImage' <p>
+ * Description of template class 'TiledImageFromImage' <p>
  * \brief Aim: todo
  */
 template <typename TImageContainer>
-class TiledImage
+class TiledImageFromImage
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef TiledImage<TImageContainer> Self; 
+    typedef TiledImageFromImage<TImageContainer> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -79,7 +79,7 @@ public:
     typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCache<OutputImage > MyImageCache;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage > MyImageCache;
     
     ///New types
 
@@ -87,12 +87,13 @@ public:
 
 public:
 
-    TiledImage(Alias<ImageContainer> anImage, 
+    TiledImageFromImage(Alias<ImageContainer> anImage, 
                Alias<std::vector<Domain> > Di):
       myImagePtr(anImage), myDi(Di)
     {
-        myFactImage = new MyImageFactoryFromImage(myImagePtr);
-        myImageCache = new MyImageCache(MyImageCache::LAST);
+        myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
+        
+        myImageCache = new MyImageCache(myImageFactoryFromImage, MyImageCache::LAST);
     }
 
     /**
@@ -100,13 +101,13 @@ public:
     * @param other the object to copy.
     * @return a reference on 'this'.
     */
-    TiledImage & operator= ( const TiledImage & other )
+    TiledImageFromImage & operator= ( const TiledImageFromImage & other )
     {
         if (&other != this)
         {
             myImagePtr = other.myImagePtr;
             myDi = other.myDi;
-            myFactImage = other.myFactImage;
+            myImageFactoryFromImage = other.myImageFactoryFromImage;
             myImageCache = other.myImageCache;
         }
         return *this;
@@ -116,10 +117,10 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~TiledImage()
+    ~TiledImageFromImage()
     {
-      delete myFactImage;
       delete myImageCache;
+      delete myImageFactoryFromImage;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -157,29 +158,28 @@ public:
      * @param aPoint the point.
      * @return the domain containing aPoint.
      */
-    Domain findSubDomain(const Point & aPoint) const
+    const Domain & findSubDomain(const Point & aPoint) const
     {
       ASSERT( myImagePtr->domain().isInside(aPoint));
       
       for(std::size_t i=0; i<myDi.size(); ++i)
         if (myDi[i].isInside(aPoint))
-          return myDi[i];
+          return (myDi[i]);
       
-      //Compiler warning... should never happen
+      // compiler warning... should never happen
       VERIFY_MSG(true, "Shoud never happen (aPoint must be in one subdomain)");
       return myImagePtr->domain();        
     }
     
     /**
-     * Get the value of an image (from cache) at a given position given
-     * by aPoint.
+     * Get the value of an image (from cache) at a given position given by aPoint.
      *
      * @param aPoint the point.
      * @return the value at aPoint.
      */
     Value operator()(const Point & aPoint) const
     {
-      ASSERT( myImagePtr->domain().isInside(aPoint));
+      ASSERT(myImagePtr->domain().isInside(aPoint));
 
       typename OutputImage::Value aValue;
         
@@ -187,9 +187,28 @@ public:
         return aValue;
       else
         {
-          myImageCache->update(myFactImage->requestImage(findSubDomain(aPoint)));
+          myImageCache->update(findSubDomain(aPoint));
           myImageCache->read(aPoint, aValue);
           return aValue;
+        }
+    }
+    
+    /**
+     * Set a value on an image (from cache) at a position specified by a aPoint.
+     *
+     * @param aPoint the point.
+     * @param aValue the value.
+     */
+    void setValue(const Point &aPoint, const Value &aValue)
+    {
+        ASSERT(myImagePtr->domain().isInside(aPoint));
+          
+        if (myImageCache->write(aPoint, aValue))
+          return;
+        else
+        {
+          myImageCache->update(findSubDomain(aPoint));
+          myImageCache->write(aPoint, aValue);
         }
     }
 
@@ -198,7 +217,7 @@ private:
     /**
      * Default constructor.
      */
-  TiledImage() {}
+    TiledImageFromImage() {}
     
     // ------------------------- Private Datas --------------------------------
 protected:
@@ -209,11 +228,11 @@ protected:
     /// Domains list
     std::vector<Domain> myDi;
     
-    /// ImageFactory pointer
-    MyImageFactoryFromImage *myFactImage;
-    
     /// ImageCache pointer
     MyImageCache *myImageCache;
+    
+    /// ImageFactory pointer
+    MyImageFactoryFromImage *myImageFactoryFromImage;
     
 private:
 
@@ -221,30 +240,30 @@ private:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class TiledImage
+}; // end of class TiledImageFromImage
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'TiledImage'.
+ * Overloads 'operator<<' for displaying objects of class 'TiledImageFromImage'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'TiledImage' to write.
+ * @param object the object of class 'TiledImageFromImage' to write.
  * @return the output stream after the writing.
  */
 template <typename TImageContainer>
 std::ostream&
-operator<< ( std::ostream & out, const TiledImage<TImageContainer> & object );
+operator<< ( std::ostream & out, const TiledImageFromImage<TImageContainer> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/TiledImage.ih"
+#include "DGtal/images/TiledImageFromImage.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined TiledImage_h
+#endif // !defined TiledImageFromImage_h
 
-#undef TiledImage_RECURSES
-#endif // else defined(TiledImage_RECURSES)
+#undef TiledImageFromImage_RECURSES
+#endif // else defined(TiledImageFromImage_RECURSES)

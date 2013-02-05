@@ -22,7 +22,7 @@
  *
  * @date 2013/01/23
  *
- * Functions for testing class TiledImage.
+ * Functions for testing class TiledImage*.
  *
  * This file is part of the DGtal library.
  */
@@ -35,9 +35,7 @@
 
 //#define DEBUG_VERBOSE
 
-#include "DGtal/images/ImageFactoryFromImage.h"
-#include "DGtal/images/ImageCache.h"
-#include "DGtal/images/TiledImage.h"
+#include "DGtal/images/TiledImageFromImage.h"
 
 #include "ConfigTest.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -46,14 +44,14 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class TiledImage.
+// Functions for testing class TiledImage*.
 ///////////////////////////////////////////////////////////////////////////////
 bool testSimple()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
-    trace.beginBlock("Testing simple TiledImage");
+    trace.beginBlock("Testing simple TiledImage*");
     
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
 
@@ -64,71 +62,37 @@ bool testSimple()
 
     trace.info() << "Original image: " << image << endl;
 
-    // 1) ImageFactoryFromImage
-    typedef ImageFactoryFromImage<VImage > MyImageFactoryFromImage;
-    MyImageFactoryFromImage factImage(image);
-    
-    typedef MyImageFactoryFromImage::OutputImage OutputImage;
-    
-    Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));
-    OutputImage *image1 = factImage.requestImage(domain1);
-    OutputImage::ConstRange r1 = image1->constRange();
-    cout << "image1: "; std::copy( r1.begin(), r1.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-    
-    Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));
-    OutputImage *image2 = factImage.requestImage(domain2);
-    OutputImage::ConstRange r2 = image2->constRange();
-    cout << "image2: "; std::copy( r2.begin(), r2.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-        
-    Z2i::Domain domain3(Z2i::Point(0,2), Z2i::Point(1,3));
-    OutputImage *image3 = factImage.requestImage(domain3);
-    OutputImage::ConstRange r3 = image3->constRange();
-    cout << "image3: "; std::copy( r3.begin(), r3.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
-        
+    Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));    
+    Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));        
+    Z2i::Domain domain3(Z2i::Point(0,2), Z2i::Point(1,3));        
     Z2i::Domain domain4(Z2i::Point(2,2), Z2i::Point(3,3));
-    OutputImage *image4 = factImage.requestImage(domain4);
-    OutputImage::ConstRange r4 = image4->constRange();
-    cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
-    // 2) ImageCache    
-    typedef ImageCache<OutputImage > MyImageCache;
-    MyImageCache imageCache(MyImageCache::LAST);
-    /*VImage*/OutputImage::Value aValue;
-    
-    trace.info() << "Image cache (empty cache): " << imageCache << endl;
-    if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
-    else
-      trace.info() << "Point 2,2 is not in an image from cache." << endl;
-    
-    imageCache.update(image1);
-    
-    trace.info() << "Image cache (not empty but wrong domain): " << imageCache << endl;
-    if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
-    else
-      trace.info() << "Point 2,2 is not in an image from cache." << endl;
-    
-    imageCache.update(image4);
-    
-    trace.info() << "Image cache (not empty but good domain): " << imageCache << endl;
-    if (imageCache.read(Z2i::Point(2,2), aValue)) 
-      trace.info() << "Point 2,2 is in an image from cache, value: " << aValue << endl;
-    else
-      trace.info() << "Point 2,2 is not in an image from cache." << endl;
-    
-    // 3) TiledImage    
     std::vector<Z2i::Domain> domains;
     domains.push_back(domain1);
     domains.push_back(domain2);
     domains.push_back(domain3);
     domains.push_back(domain4);
     
-    typedef TiledImage<VImage > MyTiledImage;
-    MyTiledImage tiledImage(image, domains);
+    typedef TiledImageFromImage<VImage > MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, domains);
     
-    trace.info() << "Value for Point 2,2: " << tiledImage(Z2i::Point(2,2)) << endl;
-    trace.info() << "Value for Point 3,1: " << tiledImage(Z2i::Point(3,1)) << endl;
+    typedef MyTiledImageFromImage::OutputImage OutputImage;
+    /*VImage*/OutputImage::Value aValue;
+    
+    trace.info() << "Read value for Point 2,2: " << tiledImageFromImage(Z2i::Point(2,2)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(2,2)) == 11) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "Read value for Point 3,1: " << tiledImageFromImage(Z2i::Point(3,1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 8) ? 1 : 0; 
+    nb++;
+    
+    aValue = 88; tiledImageFromImage.setValue(Z2i::Point(3,1), aValue);
+    trace.info() << "Write value for Point 3,1: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 88) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     trace.endBlock();
     
@@ -140,7 +104,7 @@ bool testSimple()
 
 int main( int argc, char** argv )
 {
-    trace.beginBlock ( "Testing class TiledImage" );
+    trace.beginBlock ( "Testing class TiledImage*" );
     trace.info() << "Args:";
     for ( int i = 0; i < argc; ++i )
         trace.info() << " " << argv[ i ];

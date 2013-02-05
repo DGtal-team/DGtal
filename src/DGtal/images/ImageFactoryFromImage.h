@@ -138,7 +138,7 @@ namespace DGtal
      * Returns a pointer of an OutputImage created with the Domain aDomain.
      * @return an ImagePtr.
      */
-    OutputImage * requestImage(const Domain &aDomain)
+    OutputImage * request(const Domain &aDomain)
     {
       DefaultFunctor idD;
       DefaultFunctor idV;
@@ -148,17 +148,21 @@ namespace DGtal
         
       return adaptImage;
     }
+    
+    /**
+     * Free an OutputImage
+     */
+    void detachImage(OutputImage* adaptImage)
+    {
+      delete adaptImage;
+    }
 
     // ------------------------- Protected Datas ------------------------------
   private:
     /**
      * Default constructor.
      */
-    ImageFactoryFromImage() {
-#ifdef DEBUG_VERBOSE
-      trace.warning() << "ImageFactoryFromImage Ctor default " << std::endl;
-#endif
-    }
+    ImageFactoryFromImage() {}
     
     // ------------------------- Private Datas --------------------------------
   protected:
