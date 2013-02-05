@@ -46,10 +46,10 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCache<TImageContainer>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageCache<TImageContainer, TImageFactory>::selfDisplay ( std::ostream & out ) const
 {
     //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
     {
@@ -65,11 +65,11 @@ DGtal::ImageCache<TImageContainer>::selfDisplay ( std::ostream & out ) const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactory>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ImageCache<TImageContainer> & object )
+                    const ImageCache<TImageContainer, TImageFactory> & object )
 {
     object.selfDisplay( out );
     return out;

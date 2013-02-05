@@ -45,6 +45,8 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
+
+#include "DGtal/images/ImageFactoryFromImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -55,33 +57,36 @@ namespace DGtal
  * Description of template class 'ImageCache' <p>
  * \brief Aim: todo
  */
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactory>
 class ImageCache
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageCache<TImageContainer> Self; 
+    typedef ImageCache<TImageContainer, TImageFactory> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
-    //typedef typename TImageContainer::Domain Domain;
+    typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
+    typedef TImageFactory ImageFactory;
+    
     ///New types
-    enum ReadPolicy{LAST, FIFO, LRU, NEIGHBORS}; // cache policy
+    enum ReadPolicy{LAST, FIFO, LRU, NEIGHBORS};        // read policy
+    enum WritePolicy{WT, WB};                           // write policy
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
-    ImageCache(ReadPolicy AReadSelector=LAST):
-            myReadPolicy(AReadSelector), myImagePtr(NULL)
+    ImageCache(Alias<ImageFactory> anImageFactory, ReadPolicy AReadSelector=LAST):
+            myImageFactoryPtr(anImageFactory), myReadPolicy(AReadSelector), myImagePtr(NULL)
     {
     }
 
@@ -94,8 +99,9 @@ public:
     {
         if (&other != this)
         {
+            myImageFactoryPtr =  other.myImageFactoryPtr;
+            myReadPolicy = other.myReadPolicy;    
             myImagePtr = other.myImagePtr;
-            myReadPolicy = other.myReadPolicy;            
         }
         return *this;
     }
@@ -139,6 +145,9 @@ public:
      * Get the value of an image from cache at a given position given
      * by aPoint only if aPoint belongs to an image from cache.
      *
+     * @param aPoint the point.
+     * @param aValue the value.
+     * 
      * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
      */
     bool read(const Point & aPoint, Value &aValue) const
@@ -159,14 +168,45 @@ public:
         
         return false;
     }
-
+    
+    /**
+     * Set a value on an Image from cache at a given position given
+     * by aPoint only if aPoint belongs to an image from cache.
+     *
+     * @param aPoint the point.
+     * @param aValue the value.
+     * 
+     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     */
+    bool write(const Point & aPoint, const Value &aValue)
+    {
+        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
+        {
+          if (myImagePtr==NULL)
+              return false;
+          
+          if (myImagePtr->domain().isInside(aPoint))
+          {
+              myImagePtr->setValue(aPoint, aValue);
+              return true;
+          }
+          else
+              return false;
+        }
+        
+        return false;
+    }
+    
     /**
      * Update the cache according to the cache policy
      */
-    void update(Alias<ImageContainer> anImage)
+    void update(const Domain &aDomain)
     {
-      //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        myImagePtr = anImage;
+        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
+        if (myImagePtr)
+          myImageFactoryPtr->detachImage(myImagePtr);
+        
+        myImagePtr = myImageFactoryPtr->request(aDomain);
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -174,7 +214,7 @@ private:
     /**
      * Default constructor.
      */
-    ImageCache() {  }
+    ImageCache() {}
     
     // ------------------------- Private Datas --------------------------------
 protected:
@@ -182,10 +222,13 @@ protected:
     /// Alias on the image container
     ImageContainer * myImagePtr;
     
+    /// Alias on the image factory
+    ImageFactory * myImageFactoryPtr;
+    
 private:
   
     /// Cache policy
-  ReadPolicy myReadPolicy;
+    ReadPolicy myReadPolicy;
 
     // ------------------------- Internals ------------------------------------
 private:
@@ -199,9 +242,9 @@ private:
  * @param object the object of class 'ImageCache' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactory>
 std::ostream&
-operator<< ( std::ostream & out, const ImageCache<TImageContainer> & object );
+operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory> & object );
 
 } // namespace DGtal
 
