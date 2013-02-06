@@ -75,12 +75,7 @@ namespace DGtal
    * and the convolution kernel radius.
    * Experimental results showed a multigrid convergence.
    *
-   * Because this algorithm compute value on adjacent cell, we can optimize this step by uses previous
-   * results and adding/removing subsets kernel corresponding to the deplacement of the kernel.
-   * For example, if __(...)__ is the kernel, and the deplacement is to the right, we want ___[...]_
-   * but some same cell from kernel are used. We have to keep same values (in ..) remove not used values (in -)
-   * and add new values (in +) :  __(-[..)+]_
-   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface.
+   * Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
    *
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
@@ -191,7 +186,7 @@ private:
   /// array of shifting masks.
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support
   Cell myOrigin;
@@ -333,7 +328,7 @@ private:
   /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;
@@ -479,7 +474,7 @@ private:
   /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;

@@ -151,7 +151,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
                                                                                                       Clone< KernelConstIterator > itgend,
                                                                                                       Clone< Cell > kOrigin,
-                                                                                                      Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
+                                                                                                      Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;
@@ -168,7 +168,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( Clone< KernelConstIterator > itgbegin,
                                                                                               Clone< KernelConstIterator > itgend,
                                                                                               Clone< Cell > kOrigin,
-                                                                                              Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
+                                                                                              Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;
@@ -187,7 +187,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( Clone< KernelConstIterator > itgbegin,
                                                                                               Clone< KernelConstIterator > itgend,
                                                                                               Clone< Cell > kOrigin,
-                                                                                              Alias< std::vector< KernelIterators< KernelConstIterator > > > mask )
+                                                                                              Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;

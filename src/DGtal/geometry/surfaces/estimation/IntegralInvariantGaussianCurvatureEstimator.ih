@@ -91,7 +91,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 9 );
-  kernelsIterators = std::vector< KernelIterators< ConstIteratorKernel > > ( 9 );
+  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 9 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
@@ -185,7 +185,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 27 );
-  kernelsIterators = std::vector< KernelIterators< ConstIteratorKernel > > ( 27 );
+  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 27 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
@@ -294,9 +294,6 @@ inline
 typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Quantity
 DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval ( const ConstIteratorOnCells & it )
 {
-  typedef typename Convolver::CovarianceMatrix Matrix3x3;
-  typedef EigenValues3D::Vector3 Vector3;
-
   double k1,k2 = 0.0;
 
   Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it );
@@ -319,6 +316,39 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
   k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
 
   return ( k1 * k2 );
+}
+
+
+
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename ConstIteratorOnCells>
+inline
+typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::CurvInformation
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalComplete ( const ConstIteratorOnCells & it )
+{
+    double k1,k2 = 0.0;
+
+    Matrix3x3 covarianceMatrix = myConvolver.evalCovarianceMatrix( it );
+    Matrix3x3 eigenVectors;
+    Vector3 eigenValues;
+
+    for ( unsigned int i = 0; i < 3; ++i )
+    {
+      for ( unsigned int j = 0; j < 3; ++j )
+      {
+        covarianceMatrix.setComponent ( i, j, covarianceMatrix( i, j ) * dh5 );
+      }
+    }
+
+    EigenValues3D::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
+
+    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
+
+    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+
+    return CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
 }
 
 
@@ -367,9 +397,6 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
                                                                                       const ConstIteratorOnCells & ite,
                                                                                       OutputIterator & result )
 {
-  typedef typename Convolver::CovarianceMatrix Matrix3x3;
-  typedef EigenValues3D::Vector3 Vector3;
-
   Quantity k1,k2;
   k1 = k2 = Quantity(0);
 
@@ -402,6 +429,53 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
     k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
 
     *result = k1 * k2;
+    ++result;
+  }
+}
+
+
+
+
+template <typename TKSpace, typename TShapeFunctor>
+template <typename ConstIteratorOnCells, typename OutputStructIterator>
+inline
+void
+DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::evalComplete ( const ConstIteratorOnCells & itb,
+                                                                                      const ConstIteratorOnCells & ite,
+                                                                                      OutputStructIterator & result )
+{
+  Quantity k1,k2;
+  k1 = k2 = Quantity(0);
+
+  std::vector< Matrix3x3 > vCovarianceMatrix;
+  back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
+  myConvolver.evalCovarianceMatrix ( itb, ite, coMatrixIterator );
+
+  Matrix3x3 currentMatrix;
+  Matrix3x3 eigenVectors;
+  Vector3 eigenValues;
+
+  unsigned int cmsize = vCovarianceMatrix.size();
+
+  for ( unsigned int i = 0; i < cmsize; ++i )
+  {
+    currentMatrix = vCovarianceMatrix[ i ];
+    for (unsigned int j = 0; j < 3; ++j)
+    {
+      for (unsigned int k = 0; k < 3; ++k)
+      {
+        currentMatrix.setComponent ( j, k, currentMatrix ( j, k ) * dh5 );
+      }
+    }
+
+    EigenValues3D::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
+
+    ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
+
+    k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
+    k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
+
+    *result = CurvInformation( Quantity( k1 * k2 ), eigenVectors, eigenValues );
     ++result;
   }
 }
