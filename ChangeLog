@@ -16,6 +16,7 @@
  
  *Base Package*
     - correct concept checks for some range concepts.
+    - Statistic class moved to math package
 
  *Kernel Package*
     - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
