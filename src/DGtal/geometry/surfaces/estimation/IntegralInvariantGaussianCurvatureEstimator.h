@@ -59,6 +59,18 @@
 namespace DGtal
 {
 
+template <typename Quantity, typename EigenVectors, typename EigenValues>
+struct CurvatureInformation
+{
+  Quantity curvature;
+  EigenVectors eigenVectors;
+  EigenValues eigenValues;
+
+  CurvatureInformation( Quantity q, EigenVectors evec, EigenValues eval )
+      :curvature(q), eigenVectors(evec), eigenValues(eval)
+  {}
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // template class IntegralInvariantGaussianCurvatureEstimator
 /**
@@ -77,12 +89,7 @@ namespace DGtal
    * respectively eigenvectors and eigenvalues on it.
    * Experimental results showed a multigrid convergence.
    *
-   * Because this algorithm compute value on adjacent cell, we can optimize this step by uses previous
-   * results and adding/removing subsets kernel corresponding to the deplacement of the kernel.
-   * For example, if __(...)__ is the kernel, and the deplacement is to the right, we want ___[...]_
-   * but some same cell from kernel are used. We have to keep same values (in ..) remove not used values (in -)
-   * and add new values (in +) :  __(-[..)+]_
-   * So we pre-compute each kernel masks (at initialization) to fastly iterate over the shape surface. @todo Change position -> init() || eval()
+   * Some optimization are available when we set a range of 0-adjacent surfels to the estimator.
    *
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TShapeFunctor TFunctor a model of a functor for the shape ( f(x) ).
@@ -154,11 +161,11 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator iterator of a list of Quantity
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of the result of the computation.
+      * @param result iterator of results of the computation.
       */
   template< typename ConstIteratorOnCells, typename OutputIterator >
   void eval ( const ConstIteratorOnCells & itb,
@@ -192,7 +199,7 @@ private:
   /// array of shifting masks.
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support
   Cell myOrigin;
@@ -296,11 +303,11 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator iterator of a list of Quantity
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of the result of the computation.
+      * @param result iterator of results of the computation.
       */
   template< typename ConstIteratorOnCells, typename OutputIterator >
   void eval ( const ConstIteratorOnCells & itb,
@@ -335,7 +342,7 @@ private:
   /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;
@@ -398,6 +405,10 @@ public:
   typedef ConstValueFunctor<Value> KernelCellFunctor;
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
 
+  typedef typename Convolver::CovarianceMatrix Matrix3x3;
+  typedef EigenValues3D::Vector3 Vector3;
+  typedef CurvatureInformation< Quantity, Matrix3x3, Vector3 > CurvInformation;
+
   typedef Ball3D<Z3i::Space> KernelSupport;
 
   // ----------------------- Standard services ------------------------------
@@ -439,20 +450,49 @@ public:
   template<typename ConstIteratorOnCells> Quantity eval ( const ConstIteratorOnCells & it );
 
   /**
+      * Compute the integral invariant Gaussian curvature to cell *it of a shape.
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      *
+      * @param it iterator of a cell (from a shape) we want compute the integral invariant curvature.
+      *
+      * @return a struct with Gaussian curvature value of Integral Invariant estimator at position *it, and eigenVectors
+      * and eigenValues resulting of the PCA (contening principals curvature information)
+      */
+  template<typename ConstIteratorOnCells> CurvInformation evalComplete ( const ConstIteratorOnCells & it );
+
+  /**
       * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator iterator of a list of Quantity
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
-      * @param result iterator of the result of the computation.
+      * @param result iterator of results of the computation.
       */
   template< typename ConstIteratorOnCells, typename OutputIterator >
   void eval ( const ConstIteratorOnCells & itb,
               const ConstIteratorOnCells & ite,
               OutputIterator & result );
+
+  /**
+      * Compute the integral invariant Gaussian curvature from two cells (from *itb to *ite (exclude) ) of a shape.
+      * Return the result on an OutputIterator (param).
+      *
+      * @tparam ConstIteratorOnCells iterator on a Cell
+      * @tparam OutputStructIterator iterator of list of CurvInformation
+      *
+      * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
+      * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
+      * @param result iterator of a structs with Gaussian curvature value of Integral Invariant estimator, and eigenVectors
+      * and eigenValues resulting of the PCA (contening principals curvature information)
+      */
+  template< typename ConstIteratorOnCells, typename OutputStructIterator >
+  void evalComplete ( const ConstIteratorOnCells & itb,
+              const ConstIteratorOnCells & ite,
+              OutputStructIterator & result );
 
   /**
       * @return iterator of the begin spel of the kernel support
@@ -482,7 +522,7 @@ private:
   /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< KernelIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;

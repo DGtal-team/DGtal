@@ -93,7 +93,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>::init 
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet > ( 9 );
-  kernelsIterators = std::vector< KernelIterators< ConstIteratorKernel > > ( 9 );
+  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 9 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
@@ -184,7 +184,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init 
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 27 );
-  kernelsIterators = std::vector< KernelIterators< ConstIteratorKernel > > ( 27 );
+  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 27 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
