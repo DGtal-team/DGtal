@@ -56,25 +56,32 @@ SetPredicate is now deprecated.
       containers so as to emphasize the fact that the ranges are only
       single-pass.
 
+ *Graph Package*
+    - New package gathering graph related structures and algorithms
+      (visitors, graph concepts, ...)
+    - Add concepts for graph visitors
+    - Add boost::graph support for DigitalSurface
+    - Add documentation for graph package.
+
  *Math Package*
     - Exact exponentiation x^p by squaring on O(log p) added
       (BasicMathFunctions::power).
-	
+
  *For developers*
     - new "make dox" target to only build dox file documentation
       ("make doc" for complete documentation build)
- 
+
 
 === DGtal 0.5.1 ===
 Posted on June, 6th, 2012 by David Coeurjolly
 
     - New way to cite package/module authors in the documentation
     - Improvement of DGtal::GridCurve ranges
-    - Improvement of package concepts  in the  documentation	
+    - Improvement of package concepts  in the  documentation
     - new documentation for DGTal build on MSWindows
     - arithmetic is now a main package (previously in math)
     - Specialized classes for classical metric adjacencies
-	
+
 
 === DGtal 0.5 ===
 Posted on May, 9th, 2012 by David Coeurjolly
