@@ -131,6 +131,10 @@ bool testSimple()
     nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0; 
     nb++;
     
+    trace.info() << "AFTER WRITING: Point 2,2 on original image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
+    nb++;
+    
     imageCache.update(domain3); // image3
     
     trace.info() << "WRITING from cache (not empty but wrong domain): " << imageCache << endl;
@@ -140,6 +144,21 @@ bool testSimple()
     else
       trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
     nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
+    nb++;
+
+    imageCache.update(domain1); // image1
+    
+    trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
+    aValue = 7;
+    if (imageCache.write(Z2i::Point(0,0), aValue)) 
+      trace.info() << "WRITE: Point 0,0 is in an image from cache, value: " << aValue << endl;
+    else
+      trace.info() << "WRITE: Point 0,0 is not in an image from cache." << endl; 
+    nbok += ( (imageCache.read(Z2i::Point(0,0), aValue) && (aValue == 7)) == true ) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "AFTER WRITING: Point 0,0 on original image, value: " << image(Z2i::Point(0,0)) << endl;
+    nbok += (image(Z2i::Point(0,0)) == 7) ? 1 : 0;
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;

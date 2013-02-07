@@ -92,6 +92,10 @@ bool testSimple()
     nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 88) ? 1 : 0; 
     nb++;
     
+    trace.info() << "Point 3,1 on original image, value: " << image(Z2i::Point(3,1)) << endl;
+    nbok += (image(Z2i::Point(3,1)) == 88) ? 1 : 0;
+    nb++;
+    
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     trace.endBlock();
