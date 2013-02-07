@@ -90,11 +90,11 @@ bool testSimple()
     cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
     // 2) ImageCache    
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage > MyImageCache;
-    MyImageCache imageCache(factImage, MyImageCache::LAST);
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT > MyImageCache;
+    MyImageCache imageCache(factImage);
     /*VImage*/OutputImage::Value aValue;
     
-    trace.info() << "READING from Image cache (empty cache): " << imageCache << endl;
+    trace.info() << "READING from cache (empty cache): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
@@ -104,7 +104,7 @@ bool testSimple()
     
     imageCache.update(domain1); // image1
     
-    trace.info() << "READING from Image cache (not empty but wrong domain): " << imageCache << endl;
+    trace.info() << "READING from cache (not empty but wrong domain): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
@@ -114,7 +114,7 @@ bool testSimple()
     
     imageCache.update(domain4); // image4
     
-    trace.info() << "READING from Image cache (not empty but good domain): " << imageCache << endl;
+    trace.info() << "READING from cache (not empty but good domain): " << imageCache << endl;
     if (imageCache.read(Z2i::Point(2,2), aValue)) 
       trace.info() << "READ: Point 2,2 is in an image from cache, value: " << aValue << endl;
     else
@@ -122,7 +122,7 @@ bool testSimple()
     nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 11)) == true ) ? 1 : 0; 
     nb++;
     
-    trace.info() << "WRITING from Image cache (not empty but good domain): " << imageCache << endl;
+    trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
     aValue = 22;
     if (imageCache.write(Z2i::Point(2,2), aValue)) 
       trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
@@ -133,7 +133,7 @@ bool testSimple()
     
     imageCache.update(domain3); // image3
     
-    trace.info() << "WRITING from Image cache (not empty but wrong domain): " << imageCache << endl;
+    trace.info() << "WRITING from cache (not empty but wrong domain): " << imageCache << endl;
     aValue = 22;
     if (imageCache.write(Z2i::Point(2,2), aValue)) 
       trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;

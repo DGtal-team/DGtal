@@ -86,20 +86,6 @@ namespace DGtal
     }
 
     /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     */
-    ImageFactoryFromImage & operator= ( const ImageFactoryFromImage & other )
-    {
-      if (&other != this)
-        {
-          myImagePtr = other.myImagePtr;
-        }
-      return *this;
-    }
-
-    /**
      * Destructor.
      * Does nothing
      */
@@ -131,7 +117,7 @@ namespace DGtal
      */
     bool isValid() const
     {
-      return (myImagePtr->isValid() );
+      return (myImagePtr->isValid());
     }
 
     /**

@@ -79,7 +79,7 @@ public:
     typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage > MyImageCache;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT > MyImageCache;
     
     ///New types
 
@@ -88,29 +88,12 @@ public:
 public:
 
     TiledImageFromImage(Alias<ImageContainer> anImage, 
-               Alias<std::vector<Domain> > Di):
+                        Alias<std::vector<Domain> > Di):
       myImagePtr(anImage), myDi(Di)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
         
-        myImageCache = new MyImageCache(myImageFactoryFromImage, MyImageCache::LAST);
-    }
-
-    /**
-    * Assignment.
-    * @param other the object to copy.
-    * @return a reference on 'this'.
-    */
-    TiledImageFromImage & operator= ( const TiledImageFromImage & other )
-    {
-        if (&other != this)
-        {
-            myImagePtr = other.myImagePtr;
-            myDi = other.myDi;
-            myImageFactoryFromImage = other.myImageFactoryFromImage;
-            myImageCache = other.myImageCache;
-        }
-        return *this;
+        myImageCache = new MyImageCache(myImageFactoryFromImage);
     }
 
     /**
@@ -149,7 +132,7 @@ public:
      */
     bool isValid() const
     {
-        return (myImagePtr->isValid() );
+        return (myImagePtr->isValid());
     }
     
     /**
@@ -160,11 +143,13 @@ public:
      */
     const Domain & findSubDomain(const Point & aPoint) const
     {
-      ASSERT( myImagePtr->domain().isInside(aPoint));
+      ASSERT(myImagePtr->domain().isInside(aPoint));
       
-      for(std::size_t i=0; i<myDi.size(); ++i)
-        if (myDi[i].isInside(aPoint))
-          return (myDi[i]);
+      for(std::size_t i=0; i<myDi->size(); ++i)
+      {
+        if ((*myDi)[i].isInside(aPoint))
+          return (*myDi)[i];
+      }
       
       // compiler warning... should never happen
       VERIFY_MSG(true, "Shoud never happen (aPoint must be in one subdomain)");
@@ -226,13 +211,13 @@ protected:
     ImageContainer * myImagePtr;
     
     /// Domains list
-    std::vector<Domain> myDi;
-    
-    /// ImageCache pointer
-    MyImageCache *myImageCache;
+    std::vector<Domain> * myDi;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;
+    
+    /// ImageCache pointer
+    MyImageCache *myImageCache;
     
 private:
 
