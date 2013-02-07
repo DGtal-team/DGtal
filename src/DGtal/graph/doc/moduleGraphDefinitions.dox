@@ -17,7 +17,7 @@ namespace DGtal {
    associated concepts. Relevant digital models of graph are notably
    found in \ref packageTopology.
 
-   The following programs are related to this documentation: \ref graph/graphTraversal.cpp
+   The following programs are related to this documentation: \ref graphTraversal.cpp
 
    @section dgtal_graph_def_1 Graph concepts in DGtal
 
@@ -76,7 +76,7 @@ namespace DGtal {
    dgtal_digsurf_sec3.
 
    Here is a simple example for creating a 2D digital object seen with
-   the (4,8) adjacency (in example \ref graph/graphTraversal.cpp)
+   the (4,8) adjacency (in example \ref graphTraversal.cpp)
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-instanciation
 
