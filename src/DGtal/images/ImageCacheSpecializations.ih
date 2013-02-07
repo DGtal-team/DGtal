@@ -99,6 +99,7 @@ DGtal::ImageCacheSpecializations<TImageCache, TImageContainer, TImageFactory, DG
   if (myCacheImagesPtr->domain().isInside(aPoint))
   {
       myCacheImagesPtr->setValue(aPoint, aValue);
+      myImageCache->getImageFactoryPtr()->flushImage(myCacheImagesPtr); // temp for testing CACHE_WRITE_POLICY_WT
       return true;
   }
   else
@@ -115,7 +116,10 @@ DGtal::ImageCacheSpecializations<TImageCache, TImageContainer, TImageFactory, DG
   trace.info() << " -----> updateSpecializations: CACHE_READ_POLICY_LAST" << std::endl;
   
   if (myCacheImagesPtr)
+  {
+    //myImageCache->getImageFactoryPtr()->flushImage(myCacheImagesPtr); // temp for testing CACHE_WRITE_POLICY_WB
     myImageCache->getImageFactoryPtr()->detachImage(myCacheImagesPtr);
+  }
   
   myCacheImagesPtr = myImageCache->getImageFactoryPtr()->request(aDomain);
 }

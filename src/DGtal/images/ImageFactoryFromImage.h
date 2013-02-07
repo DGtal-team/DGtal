@@ -46,6 +46,7 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/images/ImageAdapter.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -74,7 +75,9 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;
     
     ///New types
-    typedef ImageAdapter<TImageContainer, Domain, DefaultFunctor, Value, DefaultFunctor, DefaultFunctor > OutputImage;
+    typedef ImageAdapter<TImageContainer, Domain, DefaultFunctor, Value, DefaultFunctor, DefaultFunctor > AdaptedImage;
+    typedef ImageContainerBySTLVector<Domain, Value> OutputImage;
+    //typedef ImageAdapter<TImageContainer, Domain, DefaultFunctor, Value, DefaultFunctor, DefaultFunctor > OutputImage;
 
     // ----------------------- Standard services ------------------------------
 
@@ -130,17 +133,38 @@ namespace DGtal
       DefaultFunctor idV;
       DefaultFunctor idVm1;
         
-      OutputImage* adaptImage = new OutputImage(*myImagePtr, aDomain, idD, idV, idVm1);
+      AdaptedImage* adaptImage = new AdaptedImage(*myImagePtr, aDomain, idD, idV, idVm1);
+      typename AdaptedImage::Range rout = adaptImage->range(); 
+      
+      OutputImage* outputImage = new OutputImage(aDomain);
+      typename OutputImage::Range rin = outputImage->range();
+      
+      std::copy(rout.begin(), rout.end(), rin.begin());
+      
+      delete adaptImage;
+      
+      //OutputImage* outputImage = new OutputImage(*myImagePtr, aDomain, idD, idV, idVm1);
         
-      return adaptImage;
+      return outputImage;
+    }
+    
+    /**
+     * Flush an OutputImage
+     */
+    void flushImage(OutputImage* outputImage)
+    {
+      typename OutputImage::Range rout = outputImage->range();
+      typename ImageContainer::Range rin = myImagePtr->range();
+      
+      std::copy(rout.begin(), rout.end(), rin.begin()); // temp
     }
     
     /**
      * Free an OutputImage
      */
-    void detachImage(OutputImage* adaptImage)
+    void detachImage(OutputImage* outputImage)
     {
-      delete adaptImage;
+      delete outputImage;
     }
 
     // ------------------------- Protected Datas ------------------------------
