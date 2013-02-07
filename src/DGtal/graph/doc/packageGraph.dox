@@ -60,7 +60,7 @@ boost::graph.
 @b Related @b documentation @b pages
 
 @b Related @b examples
- - \ref graph/graphTraversal.cpp
+ - \ref graphTraversal.cpp
 
 */
 
