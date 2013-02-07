@@ -49,22 +49,31 @@
 #include "DGtal/images/ImageFactoryFromImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
+
 namespace DGtal
-{
+{   
+
+///New types
+enum ReadPolicy{CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS};    // read policy
+enum WritePolicy{CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB};                                                         // write policy
+
+template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+class ImageCacheSpecializations;
+    
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCache
 /**
  * Description of template class 'ImageCache' <p>
  * \brief Aim: todo
  */
-template <typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory, ReadPolicy AReadPolicy, WritePolicy AWritePolicy>
 class ImageCache
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageCache<TImageContainer, TImageFactory> Self; 
+    typedef ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -76,41 +85,18 @@ public:
     typedef typename TImageContainer::Value Value;
     
     typedef TImageFactory ImageFactory;
-    
-    ///New types
-    enum ReadPolicy{LAST, FIFO, LRU, NEIGHBORS};        // read policy
-    enum WritePolicy{WT, WB};                           // write policy
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
-    ImageCache(Alias<ImageFactory> anImageFactory, ReadPolicy AReadSelector=LAST):
-            myImageFactoryPtr(anImageFactory), myReadPolicy(AReadSelector), myImagePtr(NULL)
-    {
-    }
-
-    /**
-    * Assignment.
-    * @param other the object to copy.
-    * @return a reference on 'this'.
-    */
-    ImageCache & operator= ( const ImageCache & other )
-    {
-        if (&other != this)
-        {
-            myImageFactoryPtr =  other.myImageFactoryPtr;
-            myReadPolicy = other.myReadPolicy;    
-            myImagePtr = other.myImagePtr;
-        }
-        return *this;
-    }
+    ImageCache(Alias<ImageFactory> anImageFactory);
 
     /**
      * Destructor.
      * Does nothing
      */
-    ~ImageCache() {}
+    ~ImageCache();
 
     // ----------------------- Interface --------------------------------------
 public:
@@ -138,37 +124,20 @@ public:
      */
     bool isValid() const
     {
-        return (myImagePtr->isValid() );
+        return (myImageFactoryPtr->isValid());
     }
     
     /**
-     * Get the value of an image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
-     *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
-     */
-    bool read(const Point & aPoint, Value &aValue) const
-    {
-        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        {
-          if (myImagePtr==NULL)
-              return false;
-          
-          if (myImagePtr->domain().isInside(aPoint))
-          {
-              aValue = myImagePtr->operator()(aPoint);
-              return true;
-          }
-          else
-              return false;
-        }
-        
-        return false;
-    }
-    
+    * Get the value of an image from cache at a given position given
+    * by aPoint only if aPoint belongs to an image from cache.
+    *
+    * @param aPoint the point.
+    * @param aValue the value.
+    * 
+    * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+    */
+    bool read(const Point & aPoint, Value &aValue) const;
+
     /**
      * Set a value on an Image from cache at a given position given
      * by aPoint only if aPoint belongs to an image from cache.
@@ -178,35 +147,21 @@ public:
      * 
      * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
      */
-    bool write(const Point & aPoint, const Value &aValue)
-    {
-        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        {
-          if (myImagePtr==NULL)
-              return false;
-          
-          if (myImagePtr->domain().isInside(aPoint))
-          {
-              myImagePtr->setValue(aPoint, aValue);
-              return true;
-          }
-          else
-              return false;
-        }
-        
-        return false;
-    }
+    bool write(const Point & aPoint, const Value &aValue);
     
     /**
      * Update the cache according to the cache policy
      */
-    void update(const Domain &aDomain)
+    void update(const Domain &aDomain);
+    
+    /**
+     * Get the alias on the image factory.
+     *
+     * @return the alias on the image factory.
+     */
+    ImageFactory * getImageFactoryPtr()
     {
-        //if (readSelector == LAST) // TODO : FIFO, LRU, NEIGHBORS
-        if (myImagePtr)
-          myImageFactoryPtr->detachImage(myImagePtr);
-        
-        myImagePtr = myImageFactoryPtr->request(aDomain);
+      return myImageFactoryPtr;
     }
 
     // ------------------------- Protected Datas ------------------------------
@@ -219,16 +174,13 @@ private:
     // ------------------------- Private Datas --------------------------------
 protected:
 
-    /// Alias on the image container
-    ImageContainer * myImagePtr;
-    
     /// Alias on the image factory
     ImageFactory * myImageFactoryPtr;
     
+    /// Alias on the specialized cache
+    ImageCacheSpecializations<Self, TImageContainer, TImageFactory, AReadPolicy> * myImageCacheSpecializations;
+    
 private:
-  
-    /// Cache policy
-    ReadPolicy myReadPolicy;
 
     // ------------------------- Internals ------------------------------------
 private:
@@ -242,15 +194,16 @@ private:
  * @param object the object of class 'ImageCache' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory, ReadPolicy AReadPolicy, WritePolicy AWritePolicy>
 std::ostream&
-operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory> & object );
+operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
+#include "DGtal/images/ImageCacheSpecializations.h"
 #include "DGtal/images/ImageCache.ih"
 
 //                                                                           //
