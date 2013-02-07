@@ -218,19 +218,6 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::visitedVertices() const
       visitedVtx.erase( mark_it );
     }
   return visitedVtx;
-  // JOL: 2012/11/21: Cannot do this since method is const.  
-  // Roll completely the queue so as to remove these vertices from the
-  // set of visited vertices.
-  // Node start = myQueue.top();
-  // do {
-  //   Node node = myQueue.top();
-  //   myQueue.pop();
-  //   typename MarkSet::iterator mark_it = visitedVtx.find( node.first );
-  //   ASSERT( mark_it != visitedVtx.end() );
-  //   visitedVtx.erase( mark_it );
-  //   myQueue.push( node );
-  // } while ( myQueue.top().first != start.first );
-  // return visitedVtx;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
