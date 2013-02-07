@@ -58,7 +58,7 @@ namespace DGtal {
    for instance. The advantage is that it is easy to create new models
    of graph in DGtal. The disadvantage is that you may not be able to
    design the best optimized graph algorithms in some case. @see
-   dgtal_graph_def_3
+   moduleBoostGraphWrapping
 
    @note For now, DGtal does not provide a generic graph model.
 

@@ -399,9 +399,9 @@ bool testDigitalSurfaceBoostGraphInterface()
                      .edge_copy( my_edge_copier<Graph,BGraph>( digSurf, bG ) )
                      .vertex_index_map( propVertexIndexMap )
                      );
-  typedef typename boost::graph_traits< BGraph >::vertex_descriptor vertex_descriptor_2;
-  typedef typename boost::graph_traits< BGraph >::vertex_iterator vertex_iterator_2;
-  typedef typename boost::property_map< BGraph, surfel_position_t>::type GraphSurfelPositionMap;
+  typedef boost::graph_traits< BGraph >::vertex_descriptor vertex_descriptor_2;
+  typedef boost::graph_traits< BGraph >::vertex_iterator vertex_iterator_2;
+  typedef boost::property_map< BGraph, surfel_position_t>::type GraphSurfelPositionMap;
   GraphSurfelPositionMap surfelPos( boost::get( surfel_position_t(), bG) );
   for ( std::pair<vertex_iterator_2, vertex_iterator_2> 
            vp = boost::vertices( bG ); vp.first != vp.second; ++vp.first )

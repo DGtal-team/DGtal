@@ -64,13 +64,14 @@ namespace boost
      DGtal::DigitalSurface as is in BOOST graph algorithms (see
      http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/table_of_contents.html).
 
-     The difficult part is that models of CUndirectedSimpleGraph (like
-     DGtal::DigitalSurface) are only required to provide vertex iterators
-     that are models of SinglePassIterator. Furthermore, no edge
-     iterators are required, only the list of adjacent
-     vertices. Therefore, most of the work is to create iterators over
-     edges that are "persistent", i.e. models of
-     MultiPassInputIterator (very similar to ForwardIterator).
+     The difficult part is that models of
+     DGtal::CUndirectedSimpleGraph (like DGtal::DigitalSurface) are
+     only required to provide vertex iterators that are models of
+     SinglePassIterator. Furthermore, no edge iterators are required,
+     only the list of adjacent vertices. Therefore, most of the work
+     is to create iterators over edges that are "persistent",
+     i.e. models of MultiPassInputIterator (very similar to
+     ForwardIterator).
 
      @remark Note that, for now, vertex iterators are taken as is from
      the DGtal::DigitalSurface container. Hence, they must be models of
@@ -124,8 +125,8 @@ namespace boost
     typedef typename Adapted::ArcRange OutEdgeContainer;
 
 
-     /**
-        @return the invalid vertex for that kind of graph (default Vertex( 0 )).
+    /**
+     *  @return the invalid vertex for that kind of graph (default Vertex( 0 )).
      */
     static
     inline 
