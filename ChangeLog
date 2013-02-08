@@ -1,6 +1,10 @@
 === DGtal 0.6 ===
  
- *General/Documentation*
+ *General*
+    - Multithread capabilities via OpenMP are now detected during DGtal
+      build. Example of usage can be found in the Volumetric module.
+
+ *Documentation*
     - update documentation for boost concepts, so that subconcepts are
       displayed and html reference pages are pointed.
     - package/module documentation files are now in their associated
@@ -12,6 +16,12 @@
  
  *Base Package*
     - correct concept checks for some range concepts.
+    - Statistic class moved to math package
+
+ *Kernel Package*
+    - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
+SetPredicate is now deprecated.
+    - new documentation for module digital sets.
 
  *Arithmetic Package*
     - new class for representing lattice polytopes in 2D (with cut
@@ -34,12 +44,22 @@
       implementation, which uses 2D lattice polytopes.
     - Fréchet segment computer added to compute bounded simplifications of
       digital curves for instance.
+    - Complete rewritting of volumetric tools by separable processes:
+      new generic algorithms (VoronoiMap, PowerMap) and metric
+      concepts hierarchy (l_2, l_p, ...p) to efficiently compute
+      DistanceTransformation, ReverseDistanceTransformation and
+      preliminary medial axis extraction.
+    - Separable volumetric tools are now multithread using OpenMP.
 
  *Topology Package*
     - update documentation for digital surfaces and digital surface
       containers so as to emphasize the fact that the ranges are only
       single-pass.
 
+ *Math Package*
+    - Exact exponentiation x^p by squaring on O(log p) added
+      (BasicMathFunctions::power).
+	
  *For developers*
     - new "make dox" target to only build dox file documentation
       ("make doc" for complete documentation build)

@@ -134,8 +134,6 @@ int main( int argc, char** argv )
   
   int min, max, increment;
   if(! thresholdRange){
-    min=(int)minThreshold;
-    max= (int)maxThreshold;
     increment =  (int)(maxThreshold- minThreshold);
   }else{
     vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
@@ -143,9 +141,7 @@ int main( int argc, char** argv )
       trace.info() << "Incomplete option \"--thresholdRange\""<< endl;
       return 0;
     }
-    min=vectRange.at(0);
     increment=vectRange.at(1);
-    max = vectRange.at(2);
   }
 
 
@@ -154,7 +150,6 @@ int main( int argc, char** argv )
   string imageFileName = vm["image"].as<std::string>();
   Image image = PNMReader<Image>::importPGM( imageFileName ); 
   Z2i::DigitalSet set2d (image.domain());
-  SetPredicate<Z2i::DigitalSet> set2dPredicate( set2d );
 
   for(int i=0; minThreshold+i*increment< maxThreshold; i++){
     min = (int)(minThreshold+i*increment);
@@ -172,7 +167,7 @@ int main( int argc, char** argv )
   
     std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
     Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-                  ks, set2dPredicate, sAdj );  
+                  ks, set2d, sAdj );  
     for(unsigned int k=0; k<vectContoursBdryPointels.size(); k++){
       if(vectContoursBdryPointels.at(k).size()>minSize){
   if(select){

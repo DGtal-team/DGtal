@@ -46,22 +46,21 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // struct CTrivialImage
-  /**
-Description of \b concept '\b CTrivialImage' <p>
-@ingroup Concepts
-
-@brief Aim: Defines the concept describing an image without extra ranges, 
-which is a refinement of CTrivialConstImage. 
-   
-###  Refinement of 
-     CTrivialConstImage
-   
-###  Associated types : the same as CTrivialConstImage
-   
+/**
+ * Description of \b concept '\b CTrivialImage' <p>
+ *
+ * @ingroup Concepts
+ * @brief Aim: Defines the concept describing an image without extra ranges, 
+ * which is a refinement of CTrivialConstImage. 
+ *
+###  Refinement of
+  - CTrivialConstImage
+###  Associated types 
+  
 ###  Notation
-    - \t X : A type that is a model of CTrivialImage
-    - \t x, \t y  : Object of type X
-    - \t p, \t v : Objects of type Point and Value
+ - \e X : A type that is a model of CTrivialImage
+ - \e x, \e y  : Object of type X
+ - \e p, \e v : Objects of type Point and Value
    
 ###  Definitions
    

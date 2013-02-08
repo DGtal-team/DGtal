@@ -127,7 +127,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
     }
   }
 
-  int sx, sy, sz;
+  int sx = 0, sy = 0, sz=0;
 
   getHeaderValueAsInt( "X", &sx, header );
   getHeaderValueAsInt( "Y", &sy, header );

@@ -31,6 +31,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <list>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
@@ -59,8 +60,8 @@ bool testRange(const Range &aRange)
   trace.info() << "Testing Range" << endl;
   
   typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
-  std::vector<Value> v1,v2,v3,v4; 
-  
+  std::vector<Value> v1, v2; 
+  std::list<Value> l3, l4; 
   {
     trace.info() << "Forward" << endl;
     typename Range::ConstIterator i = aRange.begin();
@@ -90,7 +91,7 @@ bool testRange(const Range &aRange)
 	do 
 	  {
 	    cout << *c << " ";
-	    v3.push_back(*c);
+	    l3.push_back(*c);
 	    c++;
 	  } while (c!=cend); 
       }
@@ -106,17 +107,16 @@ bool testRange(const Range &aRange)
 	do 
 	  {
 	    cout << *c << " ";
-	    v4.push_back(*c);
+	    l4.push_back(*c);
 	    c++;
 	  } while (c!=cend); 
       }
     cout << endl; 
   }
 
-  return ( std::equal(v1.begin(),v1.end(),v3.begin())
-	   && std::equal(v2.begin(),v2.end(),v4.begin())
+  return ( std::equal(v1.begin(),v1.end(),l3.begin())
 	   && std::equal(v1.begin(),v1.end(),v2.rbegin())
-	   && std::equal(v3.begin(),v3.end(),v4.rbegin()) );
+	   && (l3.front() == l4.front()) );
 }
 
 

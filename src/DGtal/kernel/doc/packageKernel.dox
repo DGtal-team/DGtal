@@ -35,7 +35,7 @@ namespace DGtal {
 /*!
 @page packageKernel Kernel package
    
-@managers Jacques-Olivier Lachaud, David Coeurjolly, Tristan Roussillon
+@managers David Coeurjolly, Jacques-Olivier Lachaud, Tristan Roussillon
 
 
 @since 0.4
