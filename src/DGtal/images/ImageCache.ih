@@ -64,7 +64,7 @@ template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AR
 DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::ImageCache(Alias<ImageFactory> anImageFactory):
             myImageFactoryPtr(anImageFactory)
 {
-    myImageCacheSpecializations = new ImageCacheSpecializations<Self, TImageContainer, TImageFactory, AReadPolicy>(this); // or *this ???
+    myImageCacheSpecializations = new ImageCacheSpecializations<Self, TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>(this); // or *this ???
 }
 
 template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
