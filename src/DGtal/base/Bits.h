@@ -35,8 +35,6 @@
 
 namespace DGtal
 {
- 
- 
 
   struct Bits
   {

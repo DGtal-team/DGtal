@@ -114,11 +114,10 @@ int main( int argc, char** argv )
     //! [GridCurveFromDigitalSet]
     vector<SCell> contour;                           //contour
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
-    SetPredicate<DigitalSet> predicate( set );       //predicate (from the digital set)
 
     //tracking and init grid curve
-    SCell s = Surfaces<KSpace>::findABel( ks, predicate, 1000 );
-    Surfaces<KSpace>::track2DBoundary( contour, ks, sAdj, predicate, s );
+    SCell s = Surfaces<KSpace>::findABel( ks, set, 1000 );
+    Surfaces<KSpace>::track2DBoundary( contour, ks, sAdj, set, s );
     c2.initFromSCellsVector( contour );
     //! [GridCurveFromDigitalSet]
   }

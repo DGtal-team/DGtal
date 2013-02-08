@@ -34,7 +34,7 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
@@ -84,13 +84,9 @@ bool testDistanceTransformND()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
-  DistanceTransformation<TSpace,Predicate,2> dt(domain,aPredicate);
-  typedef  DistanceTransformation<TSpace,Predicate, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity (  );
-
-  //Distance transformation computation
-  ImageLong result = dt.compute (  );
+  typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
+  L2Metric l2;
+  DistanceTransformation<TSpace,Predicate,L2Metric> dt(&domain,&aPredicate, &l2 );
   
   //We check the result
   bool res=true;
@@ -99,14 +95,16 @@ bool testDistanceTransformND()
     {
       //distance from the point to the seed
       d = (*itDom) - c;
-      ImageLong::Value norm2=0;
+      L2Metric::Promoted norm2=0;
       for(Point::Iterator itd=d.begin(), itdend=d.end(); itd!=itdend; ++itd)
 	norm2+= (*itd)*(*itd);
 
-       if ( result( (*itDom) ) != norm2)
+      if ( dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) ) != norm2)
   {
     trace.error()<<"Error at "<<(*itDom)
-           << ": expected="<<norm2<<" and computed="<<result(*itDom)<<endl;
+                 << ": expected="<<norm2<<" and computed="
+                 <<dt.metric()->exactDistanceRepresentation( (*itDom), dt.getVoronoiVector(*itDom) )
+                 <<endl;
   res=false;
   }
     }

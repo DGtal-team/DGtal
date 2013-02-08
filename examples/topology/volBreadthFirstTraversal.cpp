@@ -17,7 +17,6 @@
 #include <queue>
 #include <QImageReader>
 #include <QtGui/qapplication.h>
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -62,7 +61,6 @@ int main( int argc, char** argv )
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
-  SetPredicate<DigitalSet> set3dPredicate( set3d );
   SetFromImage<DigitalSet>::append<Image>(set3d, image, 
                                           minThreshold, maxThreshold);
   trace.endBlock();
@@ -89,12 +87,12 @@ int main( int argc, char** argv )
 
   //! [volBreadthFirstTraversal-SetUpDigitalSurface]
   trace.beginBlock( "Set up digital surface." );
-  typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> > 
+  typedef LightImplicitDigitalSurface<KSpace, DigitalSet > 
     MyDigitalSurfaceContainer;
   typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
-  SCell bel = Surfaces<KSpace>::findABel( ks, set3dPredicate, 100000 );
+  SCell bel = Surfaces<KSpace>::findABel( ks, set3d, 100000 );
   MyDigitalSurfaceContainer* ptrSurfContainer = 
-    new MyDigitalSurfaceContainer( ks, set3dPredicate, surfAdj, bel );
+    new MyDigitalSurfaceContainer( ks, set3d, surfAdj, bel );
   MyDigitalSurface digSurf( ptrSurfContainer ); // acquired
   trace.endBlock();
   //! [volBreadthFirstTraversal-SetUpDigitalSurface]

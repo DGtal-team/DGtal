@@ -88,6 +88,7 @@ digraph GKERNEL {
     
       CDomain-> CConstSinglePassRange;
 		
+      CDigitalSet -> CPointPredicate;
       CDigitalSet -> CDomain   [label="use",style=dashed] ;
 		
       CSpace -> CInteger  [label="use",style=dashed];
@@ -111,6 +112,7 @@ digraph GKERNEL {
         HyperRectDomain [ label="HyperRectDomain" URL="\ref HyperRectDomain" ] ;
         DigitalSetBySTLSet [ label="DigitalSetBySTLSet" URL="\ref DigitalSetBySTLSet" ] ;
         DigitalSetBySTLVector [ label="DigitalSetBySTLVector" URL="\ref DigitalSetBySTLVector" ] ;
+        DigitalSetFromMap [ label="DigitalSetFromMap" URL="\ref DigitalSetFromMap" ] ;
 	SetPredicate [ label="SetPredicate" URL="\ref SetPredicate" ] ;
 	DomainPredicate [ label="DomainPredicate" URL="\ref DomainPredicate" ] ;
      }
@@ -119,6 +121,7 @@ digraph GKERNEL {
    HyperRectDomain -> CDomain;
    DigitalSetBySTLVector -> CDigitalSet;
    DigitalSetBySTLSet -> CDigitalSet;
+   DigitalSetFromMap -> CDigitalSet;
    SetPredicate -> CDigitalSet [label="use",style=dashed];
    SetPredicate -> CPointPredicate;
    DomainPredicate -> CDomain [label="use",style=dashed];

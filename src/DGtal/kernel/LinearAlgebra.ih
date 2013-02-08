@@ -49,7 +49,7 @@ namespace DGtal{
     if (dimension == 2)
       return a[0]*b[1]-a[1]*b[0];
     
-    ASSERT2(false, "Determinant not yet implemented");
+    VERIFY(!"Determinant not yet implemented");
     
   }
 

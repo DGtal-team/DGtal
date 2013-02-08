@@ -273,7 +273,6 @@ bool testSurfelAdjacency()
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   Domain domain( low, high );
   DigitalSet shape_set( domain );
-  SetPredicate<DigitalSet> shape_set_predicate( shape_set );
   int center[ 4 ] = { 1, 0, 0, 0 }; // pixel
   Point pcenter( center );
   Shapes<Domain>::addNorm1Ball( shape_set, pcenter, 1 );
@@ -288,7 +287,7 @@ bool testSurfelAdjacency()
   // surfel = Surfaces<KSpace>::findABel( K, shape_set );
 
   Surfaces<KSpace>::trackBoundary( bdry,
-           K, SAdj, shape_set_predicate, surfel );
+           K, SAdj, shape_set, surfel );
   trace.info() << "tracking finished, size=" << bdry.size() 
          << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
@@ -298,7 +297,7 @@ bool testSurfelAdjacency()
          << std::endl;
   std::set<SCell> bdry_direct;
   Surfaces<KSpace>::trackClosedBoundary( bdry_direct,
-           K, SAdj, shape_set_predicate, surfel );
+           K, SAdj, shape_set, surfel );
   trace.info() << "fast direct tracking finished, size=" << bdry_direct.size() 
          << ", should be " << 2*K.dimension*(2*K.dimension-1) << endl;
   nbok += bdry_direct.size() == ( 2*K.dimension*(2*K.dimension-1) ) ? 1 : 0; 
@@ -400,13 +399,11 @@ bool testFindABel()
   typedef HyperRectDomain<Space> Domain;
   typedef typename DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
   typedef typename KSpace::SCell SCell;
-  typedef SetPredicate<DigitalSet> PointPredicate;
 
   trace.beginBlock("Test FindABel");
   Point low(-3,-3,-3), high(3,3,3);
   Domain domain( low, high );
   DigitalSet shape_set( domain );
-  PointPredicate pp( shape_set );
   KSpace K;
   K.init( low, high, true );
 
@@ -416,12 +413,12 @@ bool testFindABel()
   shape_set.insert( p000 );
   shape_set.insert( p100 );
 
-  Surfaces<KSpace>::findABel( K, pp , p000 , p011 );
-  Surfaces<KSpace>::findABel( K, pp , p000 , p110 );
-  Surfaces<KSpace>::findABel( K, pp , p000 , p111 );
-  Surfaces<KSpace>::findABel( K, pp , p000 , p101 );
-  SCell s010 = Surfaces<KSpace>::findABel( K, pp , p000 , p010 );
-  SCell s001 = Surfaces<KSpace>::findABel( K, pp , p000 , p001 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p011 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p110 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p111 );
+  Surfaces<KSpace>::findABel( K, shape_set , p000 , p101 );
+  SCell s010 = Surfaces<KSpace>::findABel( K, shape_set , p000 , p010 );
+  SCell s001 = Surfaces<KSpace>::findABel( K, shape_set , p000 , p001 );
 
   trace.endBlock();
   return ( (s010 == SCell( Point(1,2,1), true  ) ) &&

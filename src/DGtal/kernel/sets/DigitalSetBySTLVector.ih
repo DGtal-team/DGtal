@@ -181,7 +181,7 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::insertNew( const Point & p )
 {
   // ASSERT( myDomain.isInside( p ) );
-  ASSERT_ALL_PRE( find( p ) == end() );
+  ASSERT( find( p ) == end() );
   myVector.push_back( p );
 }
 
@@ -393,6 +393,16 @@ DGtal::DigitalSetBySTLVector<Domain>
       myVector.swap( new_vector );
     }
   return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename Domain>
+inline
+bool
+DGtal::DigitalSetBySTLVector<Domain>
+::operator()( const Point & p ) const
+{
+  return find( p ) != end();
 }
 
 
