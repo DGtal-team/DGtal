@@ -45,7 +45,6 @@
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Alias.h"
-#include "DGtal/images/ImageAdapter.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -75,9 +74,7 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;
     
     ///New types
-    typedef ImageAdapter<TImageContainer, Domain, DefaultFunctor, Value, DefaultFunctor, DefaultFunctor > AdaptedImage;
     typedef ImageContainerBySTLVector<Domain, Value> OutputImage;
-    //typedef ImageAdapter<TImageContainer, Domain, DefaultFunctor, Value, DefaultFunctor, DefaultFunctor > OutputImage;
 
     // ----------------------- Standard services ------------------------------
 
@@ -129,21 +126,14 @@ namespace DGtal
      */
     OutputImage * request(const Domain &aDomain)
     {
-      DefaultFunctor idD;
-      DefaultFunctor idV;
-      DefaultFunctor idVm1;
-        
-      AdaptedImage* adaptImage = new AdaptedImage(*myImagePtr, aDomain, idD, idV, idVm1);
-      typename AdaptedImage::Range rout = adaptImage->range(); 
-      
       OutputImage* outputImage = new OutputImage(aDomain);
-      typename OutputImage::Range rin = outputImage->range();
       
-      std::copy(rout.begin(), rout.end(), rin.begin());
-      
-      delete adaptImage;
-      
-      //OutputImage* outputImage = new OutputImage(*myImagePtr, aDomain, idD, idV, idVm1);
+      typename OutputImage::Domain::Iterator it = outputImage->domain().begin();
+      typename OutputImage::Domain::Iterator it_end = outputImage->domain().end();
+      for (; it != it_end; ++it)
+      {
+        outputImage->setValue(*it, (*myImagePtr)(*it));
+      }
         
       return outputImage;
     }
@@ -153,10 +143,12 @@ namespace DGtal
      */
     void flushImage(OutputImage* outputImage)
     {
-      typename OutputImage::Range rout = outputImage->range();
-      typename ImageContainer::Range rin = myImagePtr->range();
-      
-      std::copy(rout.begin(), rout.end(), rin.begin()); // temp
+      typename OutputImage::Domain::Iterator it = outputImage->domain().begin();
+      typename OutputImage::Domain::Iterator it_end = outputImage->domain().end();
+      for (; it != it_end; ++it)
+      {
+        myImagePtr->setValue(*it, (*outputImage)(*it));
+      }
     }
     
     /**

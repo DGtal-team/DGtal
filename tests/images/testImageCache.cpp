@@ -61,7 +61,7 @@ bool testSimple()
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = i++;
 
-    trace.info() << "Original image: " << image << endl;
+    trace.info() << "ORIGINAL image: " << image << endl;
 
     // 1) ImageFactoryFromImage
     typedef ImageFactoryFromImage<VImage > MyImageFactoryFromImage;
@@ -89,7 +89,9 @@ bool testSimple()
     OutputImage::ConstRange r4 = image4->constRange();
     cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
-    // 2) ImageCache    
+    // 2) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT
+    trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT" << endl;
+    
     typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT > MyImageCache;
     MyImageCache imageCache(factImage);
     /*VImage*/OutputImage::Value aValue;
@@ -102,6 +104,8 @@ bool testSimple()
     nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
     nb++;
     
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
     imageCache.update(domain1); // image1
     
     trace.info() << "READING from cache (not empty but wrong domain): " << imageCache << endl;
@@ -111,6 +115,8 @@ bool testSimple()
       trace.info() << "READ: Point 2,2 is not in an image from cache." << endl;
     nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
     nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     imageCache.update(domain4); // image4
     
@@ -122,6 +128,8 @@ bool testSimple()
     nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 11)) == true ) ? 1 : 0; 
     nb++;
     
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
     trace.info() << "WRITING from cache (not empty but good domain): " << imageCache << endl;
     aValue = 22;
     if (imageCache.write(Z2i::Point(2,2), aValue)) 
@@ -131,9 +139,13 @@ bool testSimple()
     nbok += ( (imageCache.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0; 
     nb++;
     
-    trace.info() << "AFTER WRITING: Point 2,2 on original image, value: " << image(Z2i::Point(2,2)) << endl;
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  AFTER WRITING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
     nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
     nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     imageCache.update(domain3); // image3
     
@@ -145,6 +157,8 @@ bool testSimple()
       trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
     nbok += (imageCache.read(Z2i::Point(2,2), aValue) == false) ? 1 : 0; 
     nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
     imageCache.update(domain1); // image1
     
@@ -157,8 +171,47 @@ bool testSimple()
     nbok += ( (imageCache.read(Z2i::Point(0,0), aValue) && (aValue == 7)) == true ) ? 1 : 0; 
     nb++;
     
-    trace.info() << "AFTER WRITING: Point 0,0 on original image, value: " << image(Z2i::Point(0,0)) << endl;
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  AFTER WRITING: Point 0,0 on ORIGINAL image, value: " << image(Z2i::Point(0,0)) << endl;
     nbok += (image(Z2i::Point(0,0)) == 7) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    // 3) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB
+    i = 1; // reinit image
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = i++;
+    
+    trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB" << endl;
+    
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB > MyImageCache2;
+    MyImageCache2 imageCache2(factImage);
+    
+    imageCache2.update(domain4); // image4
+    
+    trace.info() << "WRITING from cache (not empty but good domain): " << imageCache2 << endl;
+    aValue = 22;
+    if (imageCache2.write(Z2i::Point(2,2), aValue)) 
+      trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
+    else
+      trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
+    nbok += ( (imageCache2.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  AFTER WRITING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 11) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    imageCache2.update(domain3); // image3 - so flush domain4 (image4)
+    
+    trace.info() << "  AFTER FLUSHING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;

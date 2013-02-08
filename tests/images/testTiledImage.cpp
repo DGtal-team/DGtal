@@ -60,7 +60,7 @@ bool testSimple()
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = i++;
 
-    trace.info() << "Original image: " << image << endl;
+    trace.info() << "ORIGINAL image: " << image << endl;
 
     Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));    
     Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));        
@@ -83,16 +83,22 @@ bool testSimple()
     nbok += (tiledImageFromImage(Z2i::Point(2,2)) == 11) ? 1 : 0; 
     nb++;
     
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
     trace.info() << "Read value for Point 3,1: " << tiledImageFromImage(Z2i::Point(3,1)) << endl;
     nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 8) ? 1 : 0; 
     nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     aValue = 88; tiledImageFromImage.setValue(Z2i::Point(3,1), aValue);
     trace.info() << "Write value for Point 3,1: " << aValue << endl;
     nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 88) ? 1 : 0; 
     nb++;
     
-    trace.info() << "Point 3,1 on original image, value: " << image(Z2i::Point(3,1)) << endl;
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  Point 3,1 on ORIGINAL image, value: " << image(Z2i::Point(3,1)) << endl;
     nbok += (image(Z2i::Point(3,1)) == 88) ? 1 : 0;
     nb++;
     

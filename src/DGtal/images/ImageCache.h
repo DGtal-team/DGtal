@@ -54,10 +54,10 @@ namespace DGtal
 {   
 
 ///New types
-enum ReadPolicy{CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS};    // read policy
-enum WritePolicy{CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB};                                                         // write policy
+enum ReadPolicy{CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS};    // read policies
+enum WritePolicy{CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB};                                                         // write policies
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector, DGtal::WritePolicy AWriteSelector>
 class ImageCacheSpecializations;
     
 /////////////////////////////////////////////////////////////////////////////
@@ -178,7 +178,7 @@ protected:
     ImageFactory * myImageFactoryPtr;
     
     /// Alias on the specialized cache
-    ImageCacheSpecializations<Self, TImageContainer, TImageFactory, AReadPolicy> * myImageCacheSpecializations;
+    ImageCacheSpecializations<Self, TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> * myImageCacheSpecializations;
     
 private:
 
