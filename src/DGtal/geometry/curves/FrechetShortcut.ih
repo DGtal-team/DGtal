@@ -39,6 +39,8 @@
 // Class backpath
 ////////////////////////////////////////////////////////////////
 
+#define PRECISION 0.00001
+
 
 //creation of a backPath
 // Default constructor
@@ -374,11 +376,12 @@ inline
 DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double angle0, double angle1)
 {
   
-  // angle0 and angle1 are ordered in direct orientation such that the angle between made by the two directions is lower than PI.
+  // angle0 and angle1 are ordered in direct orientation such that the
+  // angle made by the two directions is lower than PI.  
 
   
   // case angle0-angle1 = PI -> infinite cone
-  if(fabs(fabs(angle0-angle1)-M_PI) < 0.00001)
+  if(fabs(fabs(angle0-angle1)-M_PI) < PRECISION)
     {
       // the orientation is supposed to be ok (depends on the points involved)
       myMin = angle0;
@@ -695,7 +698,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
       // define a cone according to the new tangent points
       Cone c;
       // case where there is one single tangent point
-      if(fabs(x0-x1) < 0.00001 && fabs(y0-y1) < 0.00001)
+      if(fabs(x0-x1) < PRECISION && fabs(y0-y1) < PRECISION)
 	{
 	  double angle = Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
 	  assert(angle != -1);
@@ -787,8 +790,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::updateWidth()
       flag = true;
     else
       {
-	double angle = Tools::computeAngle
-(firstP[0], firstP[1], newP[0],
+	double angle = Tools::computeAngle(firstP[0], firstP[1], newP[0],
 						 newP[1]);
 	assert(angle != -1);
 	flag = Tools::isBetween(angle,c.myMin,c.myMax,2*M_PI);
@@ -845,7 +847,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
   
    boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
-  if(contains(intervals,angle))
+   if(boost::icl::contains(intervals,angle))
     return false;
   
   return true;
