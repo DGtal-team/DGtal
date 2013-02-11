@@ -17,7 +17,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleFrechetShortcut Fréchet Shorcuts 
+@page moduleFrechetShortcut Fréchet Shortcuts 
 @writers Isabelle Sivignon
 
 
@@ -40,8 +40,10 @@ Table of contents:
 \section sectOverview Overview
 
 
-The algorithm implemented in the class DGtal::FrechetShortcut is the one presented in the article [1].
-We present here the basic ideas of the algorithm and at the end, give pointers to the relative structures used in the implementation.   
+The algorithm implemented in the class DGtal::FrechetShortcut is the one
+presented in the article @cite sivignon2011.  
+We present here the basic ideas of the algorithm and at the end, give
+pointers to the relative structures used in the implementation.    
 
 Given a polygonal curve, the curve simplification problem consists in
 computing another polygonal curve that (i) approximates the original
@@ -117,7 +119,8 @@ have to:
 -# <b>Minimize the number of vertices of @f$ P' @f$</b>.
    
 
-The following nice local property of the Fréchet distance proved in [3] will be very useful to
+The following nice local property of the Fréchet distance proved in
+@cite DBLP:journals/algorithmica/AgarwalHMW05 will be very useful to
 prove a guarantee on the quality of the result produced by our
 algorithm (see illustration below): 
 
@@ -137,7 +140,7 @@ shortcuts of a @f$ \varepsilon @f$-simplification.
 
 Using the exact Fréchet distance appears to be too expensive to design an
 efficient algorithm. Instead, we use an approximation of the
-Fréchet distance proposed in [2]. More precisely, they show that
+Fréchet distance proposed in @cite Abam1247103. More precisely, they show that
 @f$error(i,j)@f$ can be upper and lower bounded by functions of two values
 namely @f$\omega(i,j)@f$ and @f$b(i,j)@f$. @f$\omega(i,j)@f$ is the width of the points of
 @f$P(i,j)@f$ in the direction @f$\overrightarrow{p_ip_j}@f$. @f$b(i,j)@f$ is the length of the
@@ -150,7 +153,7 @@ longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 @image latex def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
-We have the following property from [2]: 
+We have the following property from @cite Abam1247103: 
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 
@@ -163,7 +166,9 @@ Using this Fréchet distance approximation to greedily compute a shortcut requir
 \subsection subsectWidth Updating the width efficiently
 
 Instead of updating @f$\omega(i,j)@f$, it is enough to consider the maximal
-distance between any point of @f$P(i,j)@f$ and the vector @f$\overrightarrow{p_ip_j}@f$. This is done using the algorithm of Chan and Chin [4] illustrated below: 
+distance between any point of @f$P(i,j)@f$ and the vector
+@f$\overrightarrow{p_ip_j}@f$. This is done using the algorithm of Chan
+and Chin @cite Chan687965 illustrated below: 
 
 Given an origin point @f$p_i"@f$ and a set of points @f$P(i,j)@f$ we 
 construct the set @f$S_{ij}@f$ of straight lines @f$l@f$ going through @f$p_i@f$ such that @f$\max_{p \in P(i,j)}d(p,l) \leq r@f$. As a
@@ -195,7 +200,7 @@ To do so, we consider a set of points named
 @image latex definition_occulter.png ""
 
 
-We can prove easily (see [1]) that the
+We can prove easily (see @cite sivignon2011) that the
 origin of the longest backpath is an occulter.
 
 @image html occulters.png "Occulters for the direction <i>d</i> in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
@@ -307,7 +312,7 @@ solution:
 @image html lemma3.png ""
 @image latex lemma3.png ""
 
-For more details about this proof, please refer to [1].
+For more details about this proof, please refer to @cite sivignon2011.
 
 \subsection subsectComplexity Complexity
 
@@ -341,41 +346,6 @@ The length of the longest backpath is managed in the function DGtal::FrechetShor
 - the list of interval used to memorize the directions for which there exist a too long backpath is implemented through DGtal::FrechetShortcut::Backpath::myForbiddenIntervals using the Boost Interval Container Library (http://www.boost.org/doc/libs/1_52_0/libs/icl). It is updated with the function DGtal::FrechetShortcut::Backpath::updateIntervals().
 
 An output using the DGtal::Board mecanism is provided (see example above to output an eps file).
-
-
-
-
-
-
-
-
-
-
-\par References
-
-
-1. Sivignon, I.: A near-linear time guaranteed algorithm for digital
-curve simplification under the Fréchet distance. In: Discrete Geometry
-for Computer Imagery 2011, Nancy, France. LNCS 6607,
-pp. 33-345. Springer (2011)  http://link.springer.com/chapter/10.1007/978-3-642-19867-0_28
-
-2. Abam, M.A., de Berg, M., Hachenberger, P., Zarei, A.: Streaming
-algorithms for line simplification. In: SCG ’07: Symp. on
-Comput. geometry. pp. 175–183. ACM (2007) 
-
-3. Agarwal, P.K., Har-Peled, S., Mustafa, N.H., Wang, Y.: Near-linear
-time approximation algorithms for curve simplification. Algorithmica
-42(3-4), 203–219 (2005) 
-
-4. Chan, W.S., Chin, F.: Approximation of polygonal curves with minimum
-number of line segments. In: ISAAC ’92: Symp. on Algorithms and
-Computation. pp. 378– 387. Springer-Verlag (1992) 
-
-5. Imai, H., Iri, M.: Polygonal approximations of a curve: formulations
-and algorithms. In: Computational Morphology. pp. 71–86. Elsevier
-Science (1988) 
-
-
 
 */
 
