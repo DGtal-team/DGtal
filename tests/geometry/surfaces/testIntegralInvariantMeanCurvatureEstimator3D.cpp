@@ -36,7 +36,8 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/topology/DepthFirstVisitor.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 #include "DGtal/math/MPolynomial.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
@@ -65,7 +66,8 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
   typedef FunctorOnCells< MyGaussDigitizer, Z3i::KSpace > MyFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-  typedef Visitor::VertexConstIterator SurfelConstIterator;
+  typedef GraphVisitorRange< Visitor > VisitorRange;
+  typedef VisitorRange::ConstIterator SurfelConstIterator;
   typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIMeanEstimator;
   typedef MyIIMeanEstimator::Quantity Quantity;
   typedef MyShape::RealPoint RealPoint;
@@ -124,9 +126,9 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   std::vector< Quantity > resultsIICurvature;
   back_insert_iterator< std::vector< Quantity > > resultsIICurvatureIterator( resultsIICurvature );
 
-  Visitor *depth = new Visitor( digSurfShape, *digSurfShape.begin() );
-  SurfelConstIterator abegin = SurfelConstIterator( depth );
-  SurfelConstIterator aend = SurfelConstIterator( 0 );
+  VisitorRange range( new Visitor( digSurfShape, *digSurfShape.begin() ) );
+  SurfelConstIterator abegin = range.begin();
+  SurfelConstIterator aend = range.end();
 
   trace.endBlock();
   trace.beginBlock ( "Testing integral invariant 3D mean curvature computation ..." );
