@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file packageGeometry.doc
+ * @file packageGeometry.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -60,7 +60,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
  - Digital straight segments --- coming soon ---
  - Digital circular arcs     --- coming soon ---
  - Other 
-   -# \ref moduleFrechetShortcut (Isabelle Sivignon)
+ - \ref moduleFrechetShortcut (Isabelle Sivignon)
 
 - Geometric estimators  ---coming soon---  (Tristan Roussillon, Jacques-Olivier Lachaud, David Coeurjolly)
 	- \ref moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (David Coeurjolly, Jacques-Olivier Lachaud, Jérémy Levallois)
@@ -71,7 +71,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 
 @b Package @b Concepts @b Overview
 
-- \ref geomPackageConcepts
+- \ref packageGeometryConcepts
 
 
 @b Related @b documentation @b pages

@@ -15,51 +15,52 @@
  **/
 
 /**
- * @file packageMath.dox
- * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
- * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ * @file packageGraph.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/04/05
+ * @date 2013/01/20
  *
- * Documentation file for feature packageMath
+ * Documentation file for feature Graph
  *
  * This file is part of the DGtal library.
  */
 
 /*
  * Useful to avoid writing DGtal:: in front of every class.
- * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ * Do not forget to add an entry in src/DGtal/base/doc/mainpage.dox
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageMath Mathematical package
+@page packageGraph  Graph package
 
-@managers Jacques-Olivier Lachaud
+@managers Jacques-Olivier Lachaud, David Coeurjolly
 
-@since 0.5
+@since 0.6
 
 @b LICENSE: LGPL
 
 
 @b Package @b Overview
 
-This package gathers various mathematical subpackages and modules. For
-now, it consists essentially in a module for defining multivariate
-polynomials.
+The aim of this package is to gather concepts and classes related to
+graphs. Simple visitors are provided to traverse the graph. For more
+elaborate graph algorithm, a possible option is to use wrappers to
+boost::graph.
 
-@b Modules 
-- \ref modulePolynomial (Jacques-Olivier Lachaud, Felix Fontein)
+@b Modules
+ - \ref moduleGraphDefinitions (Jacques-Olivier Lachaud, David Coeurjolly)
+ - \ref moduleBoostGraphWrapping (Jacques-Olivier Lachaud)
+
 
 @b Package @b Concepts @b Overview
+ - \ref packageGraphConcepts
 
 @b Related @b documentation @b pages
 
 @b Related @b examples
-
-- polynomial-derivative.cpp, polynomial2-derivative.cpp.
-- trackImplicitPolynomialSurfaceToOFF.cpp
-
+ - \ref graphTraversal.cpp
 
 */
 

@@ -43,6 +43,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CCommutativeRing.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include <utility>
 #include <vector>
 //////////////////////////////////////////////////////////////////////////////
@@ -61,15 +63,16 @@ namespace DGtal
     
     @see testStatistics.cpp
 
-    @tparam TRealNumber
+    @tparam TQuantity any model of CCommutativeRing.
    */
-  template <typename TRealNumber>
+  template <typename TQuantity>
   class Statistic
   {
 
     // ----------------------- Standard services ------------------------------
   public:
-    typedef TRealNumber RealNumber;
+    typedef TQuantity Quantity;
+    BOOST_CONCEPT_ASSERT(( CCommutativeRing<Quantity> ) );
 
     /**
      * Destructor. 
@@ -122,29 +125,29 @@ namespace DGtal
     unsigned int samples() const;
 
     /** 
-     * @return the sample mean.
+     * @return the sample mean (given as double).
      */
-    RealNumber mean() const;
+    double mean() const;
 
     /** 
-     * @return the sample variance.
+     * @return the sample variance (given as double).
      */
-    RealNumber variance() const;
+    double variance() const;
 
     /** 
-     * @return the unbiased sample variance.
+     * @return the unbiased sample variance (given as double).
      */
-    RealNumber unbiasedVariance() const;
+    double unbiasedVariance() const;
 
     /** 
      * @return the maximal value.
      */
-    RealNumber max() const;
+    Quantity max() const;
 
     /** 
      * @return the minimal value.
      */
-    RealNumber min() const;
+    Quantity min() const;
     
 
     /**
@@ -156,7 +159,7 @@ namespace DGtal
      * @see terminate, Statistic 
      */
     
-    RealNumber median() ;
+    Quantity median() ;
 
     
     /** 
@@ -164,7 +167,7 @@ namespace DGtal
      * 
      * @param v the new sample value.
      */
-    void addValue( RealNumber v );
+    void addValue( Quantity v );
   
     /**
      * Adds a sequence of sample values, scanning a container from
@@ -172,7 +175,7 @@ namespace DGtal
      * 
      * Exemple: 
      @code
-     vector<RealNumber> x;
+     vector<Quantity> x;
      Statistic stats;
      stats.addValue( x + 4, x + 10 );
      @endcode
@@ -231,36 +234,36 @@ namespace DGtal
     /**
      * stores the sum of sample values for computing sample mean.
      */
-    RealNumber myExp;
+    Quantity myExp;
 
     /**
      * stores the sum of squared sample values for
      * computing sample variance.
      */
-    RealNumber myExp2;
+    Quantity myExp2;
 
     /**
      * stores the maximal sample value.
      */
-    RealNumber myMax;
+    Quantity myMax;
 
     /**
      * stores the minimal sample value.
      */
-    RealNumber myMin;
+    Quantity myMin;
 
 
     /**
      * stores the median sample value.
      */
-    RealNumber myMedian;
+    Quantity myMedian;
     
     
     /**
      * stores the sample to determine the median value 
      * 
      **/
-    std::vector < RealNumber > myValues;
+    std::vector < Quantity > myValues;
 
 
     /**
@@ -285,10 +288,10 @@ namespace DGtal
    * @param that_object_to_display the object of class 'Statistic' to write.
    * @return the output stream after the writing.
    */
-  template <typename TRealNumber>
+  template <typename TQuantity>
   std::ostream&
   operator<<( std::ostream & thatStream, 
-        const Statistic<TRealNumber> & that_object_to_display );
+        const Statistic<TQuantity> & that_object_to_display );
   
   
 } // namespace DGtal
@@ -296,7 +299,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions/methods if necessary.
-#include "DGtal/base/Statistic.ih"
+#include "DGtal/math/Statistic.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
