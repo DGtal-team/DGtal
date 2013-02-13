@@ -35,6 +35,7 @@
 #include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/CGraphVisitor.h"
 #include "DGtal/graph/DistanceVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -101,6 +102,9 @@ void testDistancePropagation()
   typedef std::binder1st< Distance > DistanceToPoint; 
   typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
+
+  BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
+
 
   VertexEmbedder embedder;
   Distance distance;
