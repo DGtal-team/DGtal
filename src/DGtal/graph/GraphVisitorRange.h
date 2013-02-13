@@ -51,10 +51,21 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class GraphVisitorRange
   /**
-   * Description of template class 'GraphVisitorRange' <p>
-   * \brief Aim: Transforms a graph visitor into a single pass input range.
-   *
-   * @todo Complete boost::range_iterator<> accordingly.
+     Description of template class 'GraphVisitorRange' <p>
+     \brief Aim: Transforms a graph visitor into a single pass input range.
+   
+     @code
+  typedef DepthFirstVisitor<Graph, std::set<Vertex> > DFSVisitor;
+  typedef GraphVisitorRange<DFSVisitor> VisitorRange;
+  VisitorRange range( new DFSVisitor( g, Point( -2, -1 ) ) );
+  for ( VisitorRange::ConstIterator it = range.begin(), itEnd = range.end();
+        it != itEnd; ++it )
+    { // Vertex is *it
+    ...
+    }
+     @endcode
+
+     @todo Complete boost::range_iterator<> accordingly.
    */
   template < typename TGraphVisitor >
   class GraphVisitorRange

@@ -120,6 +120,22 @@ namespace DGtal
    time. You should use then DistanceVisitor::getCurrentLayer,
    DistanceVisitor::expandLayer, and DistanceVisitor::ignoreLayer.
 
+@code
+std::list<Node> layer;
+std::vector<Node> lateLayer;
+while ( ! visitor.finished() )
+  {
+    // Get all vertices at same distance from starting vertex.
+    visitor.getCurrentLayer( layer );
+    // Do something with the layer ...
+    for ( typename std::vector<Node>::const_iterator it = layer.begin(), 
+            itE = layer.end(); it != itE; ++it )
+      { //... 
+      }
+    visitor.expandLayer();
+  }
+@endcode
+ 
    If the bread-first queueing system is not compatible with the
    distance function, then it has two consequences:
 
@@ -141,7 +157,7 @@ namespace DGtal
       // Do something with the layer ...
       for ( typename std::vector<Node>::const_iterator it = layer.begin(), 
               itE = layer.end(); it != itE; ++it )
-	{ //... 
+        { //... 
         }
       // Visit the nodes one at a time to expand or ignore depending
       // on your application. Be careful, the nodes may not be in the
@@ -151,7 +167,7 @@ namespace DGtal
           Node n = visitor.current();
           std::list<Node>::iterator it = layer.begin();
           std::list<Node>::iterator itE = layer.end();
-          while ( ( it != ittE ) && ( (it).first != n.first ) ) ++it;
+          while ( ( it != itE ) && ( (it).first != n.first ) ) ++it;
           if ( it == itE )
             { // Node that is not in the expected order.
               lateLayer.push_back( n );
@@ -244,140 +260,140 @@ namespace DGtal
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
 
-    /**
-       Allows to access the node as the pair (Vertex,distance) when
-       iterating over the graph.
-    */
-    struct NodeAccessor {
-      typedef const Node value;
-      typedef const Node value_type;
-      typedef const Node* pointer;
-      typedef const Node& reference;
-      inline
-      static reference get( const Node & node )
-      { return node; }
-    };
+    // /**
+    //    Allows to access the node as the pair (Vertex,distance) when
+    //    iterating over the graph.
+    // */
+    // struct NodeAccessor {
+    //   typedef const Node value;
+    //   typedef const Node value_type;
+    //   typedef const Node* pointer;
+    //   typedef const Node& reference;
+    //   inline
+    //   static reference get( const Node & node )
+    //   { return node; }
+    // };
 
-    /**
-       Allows to access the node as only the Vertex when iterating
-       over the graph.
-    */
-    struct VertexAccessor {
-      typedef const Vertex value;
-      typedef const Vertex value_type;
-      typedef const Vertex* pointer;
-      typedef const Vertex& reference;
-      inline
-      static reference get( const Node & node )
-      { return node.first; }
-    };
+    // /**
+    //    Allows to access the node as only the Vertex when iterating
+    //    over the graph.
+    // */
+    // struct VertexAccessor {
+    //   typedef const Vertex value;
+    //   typedef const Vertex value_type;
+    //   typedef const Vertex* pointer;
+    //   typedef const Vertex& reference;
+    //   inline
+    //   static reference get( const Node & node )
+    //   { return node.first; }
+    // };
 
-    /**
-       This is the base class for constructing an iterator that has
-       the same behaviour as the traversal made by a
-       DistanceVisitor. More precisely, the iterator visits in the
-       same order as a DistanceTraversal object expands without
-       restriction (no ignore()).
+    // /**
+    //    This is the base class for constructing an iterator that has
+    //    the same behaviour as the traversal made by a
+    //    DistanceVisitor. More precisely, the iterator visits in the
+    //    same order as a DistanceTraversal object expands without
+    //    restriction (no ignore()).
 
-       @tparam TAccessor the type that specifies how to access the
-       visited nodes. Choose VertexAccessor if you only need the
-       vertex, choose NodeAccessor if you need the pair <Vertex,
-       Distance>.
-    */
-    template <typename TAccessor>
-    struct ConstIterator 
-    {
-      typedef ConstIterator<TAccessor> Self;
-      typedef DistanceVisitor<TGraph,TVertexFunctor,TMarkSet> Visitor;
-      typedef TAccessor Accessor;
+    //    @tparam TAccessor the type that specifies how to access the
+    //    visited nodes. Choose VertexAccessor if you only need the
+    //    vertex, choose NodeAccessor if you need the pair <Vertex,
+    //    Distance>.
+    // */
+    // template <typename TAccessor>
+    // struct ConstIterator 
+    // {
+    //   typedef ConstIterator<TAccessor> Self;
+    //   typedef DistanceVisitor<TGraph,TVertexFunctor,TMarkSet> Visitor;
+    //   typedef TAccessor Accessor;
 
-      // stl iterator types.
-      typedef std::input_iterator_tag iterator_category;
-      typedef typename Accessor::value value_type;
-      typedef std::ptrdiff_t difference_type; 
-      typedef typename Accessor::pointer pointer;
-      typedef typename Accessor::reference reference;
+    //   // stl iterator types.
+    //   typedef std::input_iterator_tag iterator_category;
+    //   typedef typename Accessor::value value_type;
+    //   typedef std::ptrdiff_t difference_type; 
+    //   typedef typename Accessor::pointer pointer;
+    //   typedef typename Accessor::reference reference;
 
-      /// Smart pointer to a Visitor.
-      CountedPtr< Visitor > myVisitor;
+    //   /// Smart pointer to a Visitor.
+    //   CountedPtr< Visitor > myVisitor;
 
-      inline
-      ConstIterator() 
-        : myVisitor( 0 ) {}
-      inline
-      ConstIterator( Visitor* ptrV ) 
-        : myVisitor( ptrV ) {}
-      inline
-      ConstIterator( const Self & other ) 
-        : myVisitor( other.myVisitor ) {}
+    //   inline
+    //   ConstIterator() 
+    //     : myVisitor( 0 ) {}
+    //   inline
+    //   ConstIterator( Visitor* ptrV ) 
+    //     : myVisitor( ptrV ) {}
+    //   inline
+    //   ConstIterator( const Self & other ) 
+    //     : myVisitor( other.myVisitor ) {}
 
-      inline
-      Self & operator=( const Self & other )
-      {
-        if ( this != &other )
-          myVisitor = other.myVisitor;
-        return *this;
-      }
+    //   inline
+    //   Self & operator=( const Self & other )
+    //   {
+    //     if ( this != &other )
+    //       myVisitor = other.myVisitor;
+    //     return *this;
+    //   }
 
-      inline
-      reference
-      operator*() const
-      {
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
-        return Accessor::get( myVisitor->current() );
-      }
+    //   inline
+    //   reference
+    //   operator*() const
+    //   {
+    //     ASSERT( ( myVisitor.get() != 0 )
+    //             && "DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
+    //     return Accessor::get( myVisitor->current() );
+    //   }
 
-      inline
-      pointer
-      operator->() const
-      { 
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
-        return & Accessor::get( operator*() );
-      }
+    //   inline
+    //   pointer
+    //   operator->() const
+    //   { 
+    //     ASSERT( ( myVisitor.get() != 0 )
+    //             && "DGtal::DistanceVisitor<TGraph,TVertexFunctor,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
+    //     return & Accessor::get( operator*() );
+    //   }
 
-      inline
-      Self&
-      operator++()
-      {
-        myVisitor->expand();
-	return *this;
-      }
+    //   inline
+    //   Self&
+    //   operator++()
+    //   {
+    //     myVisitor->expand();
+    //     return *this;
+    //   }
 
-      inline
-      Self
-      operator++(int)
-      {
-	Self __tmp = *this;
-        myVisitor->expand();
-	return __tmp;
-      }
+    //   inline
+    //   Self
+    //   operator++(int)
+    //   {
+    //     Self __tmp = *this;
+    //     myVisitor->expand();
+    //     return __tmp;
+    //   }
       
-      inline
-      bool operator==( const Self & other ) const
-      {
-        if ( ( myVisitor.get() == 0 ) || myVisitor->finished() )
-          return ( other.myVisitor.get() == 0 ) || other.myVisitor->finished();
-        else if ( other.myVisitor.get() == 0 )
-          return false;
-        else
-          return &(myVisitor->current()) == &(other.myVisitor->current());
-      }
+    //   inline
+    //   bool operator==( const Self & other ) const
+    //   {
+    //     if ( ( myVisitor.get() == 0 ) || myVisitor->finished() )
+    //       return ( other.myVisitor.get() == 0 ) || other.myVisitor->finished();
+    //     else if ( other.myVisitor.get() == 0 )
+    //       return false;
+    //     else
+    //       return &(myVisitor->current()) == &(other.myVisitor->current());
+    //   }
 
-      inline
-      bool operator!=( const Self & other ) const
-      {
-        return ! ( this->operator==( other ) );
-      }
-    };
+    //   inline
+    //   bool operator!=( const Self & other ) const
+    //   {
+    //     return ! ( this->operator==( other ) );
+    //   }
+    // };
 
-    /// const iterator on Vertex for visiting a graph by following a
-    /// distance ordering traversal.
-    typedef ConstIterator<VertexAccessor> VertexConstIterator;
-    /// const iterator on pair (Vertex,distance) for visiting a graph by
-    /// following a distance ordering traversal.
-    typedef ConstIterator<NodeAccessor> NodeConstIterator;
+    // /// const iterator on Vertex for visiting a graph by following a
+    // /// distance ordering traversal.
+    // typedef ConstIterator<VertexAccessor> VertexConstIterator;
+    // /// const iterator on pair (Vertex,distance) for visiting a graph by
+    // /// following a distance ordering traversal.
+    // typedef ConstIterator<NodeAccessor> NodeConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
