@@ -193,6 +193,7 @@ namespace DGtal
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
     typedef typename VertexFunctor::Value Scalar;
+    typedef Scalar Data;
 
     // Cannot check this since some types using it are incomplete.
     // BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
