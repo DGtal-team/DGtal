@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/CConvolutionWeights.h"
 //////////////////////////////////////////////////////////////////////////////

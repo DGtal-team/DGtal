@@ -17,227 +17,107 @@
 #pragma once
 
 /**
- * @file BreadthFirstVisitor.h
+ * @file DepthFirstVisitor.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2011/11/1
  *
- * Header file for template class BreadthFirstVisitor
+ * Header file for template class DepthFirstVisitor
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(BreadthFirstVisitor_RECURSES)
-#error Recursive header files inclusion detected in BreadthFirstVisitor.h
-#else // defined(BreadthFirstVisitor_RECURSES)
+#if defined(DepthFirstVisitor_RECURSES)
+#error Recursive header files inclusion detected in DepthFirstVisitor.h
+#else // defined(DepthFirstVisitor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define BreadthFirstVisitor_RECURSES
+#define DepthFirstVisitor_RECURSES
 
-#if !defined BreadthFirstVisitor_h
+#if !defined DepthFirstVisitor_h
 /** Prevents repeated inclusion of headers. */
-#define BreadthFirstVisitor_h
+#define DepthFirstVisitor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <queue>
+#include <stack>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
-//#include "DGtal/topology/Object.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class BreadthFirstVisitor
+  // template class DepthFirstVisitor
   /**
-  Description of template class 'BreadthFirstVisitor' <p> \brief
-  Aim: This class is useful to perform a breadth-first exploration
+  Description of template class 'DepthFirstVisitor' <p> \brief
+  Aim: This class is useful to perform a depth-first exploration
   of a graph given a starting point or set (called initial core).
  
-  The expander implements a breadth-first algorithm on the graph of
+  The expander implements a depth-first algorithm on the graph of
   adjacencies. It can be used not only to detect connected
   component but also to identify the layers of the object located
   at a given distance of a starting set.
  
   The \b core of the expander is at the beginning the set of points
-  at distance 0. Each layer is at a different distance from the
-  initial core. The expander move layer by layer but the user is
-  free to navigate on each layer.
+  at distance 0. In this visitor, the distance attached to visited
+  nodes correspond to the depth of the node in the breadth-first
+  traveral.
  
   @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
  
   @code
      Graph g( ... );
      Graph::Vertex p( ... );
-     BreadthFirstVisitor< Graph > visitor( g, p );
+     DepthFirstVisitor< Graph > visitor( g, p );
      while ( ! visitor.finished() )
        {
-         BreadthFirstVisitor<Graph>::Node node = visitor.current();
+         DepthFirstVisitor<Graph>::Node node = visitor.current();
          std::cout << "Vertex " << node.first 
                    << " at distance " << node.second << std::endl;
          visitor.expand();
        }
      @endcode
     
-   @see testBreadthFirstVisitor.cpp
-   @see testObject.cpp
+   @see testDepthFirstVisitor.cpp
    */
   template < typename TGraph, 
              typename TMarkSet = typename TGraph::VertexSet >
-  class BreadthFirstVisitor
+  class DepthFirstVisitor
   {
     // ----------------------- Associated types ------------------------------
   public:
-    typedef BreadthFirstVisitor<TGraph,TMarkSet> Self;
+    typedef DepthFirstVisitor<TGraph,TMarkSet> Self;
     typedef TGraph Graph;
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
+    typedef Size Data; //< Data attached to each Vertex is the depth distance to the seed.
 
-    // Cannot check this since some types using it are incomplete.
     //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
-    // BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
+    // Cannot check this since some types using it are incomplete.
+    //BOOST_CONCEPT_ASSERT(( CSet< MarkSet, Vertex > ));
 
     // ----------------------- defined types ------------------------------
   public:
 
-    /// Type stocking the vertex and its topological distance wrt the
+    /// Type stocking the vertex and its topological depth wrt the
     /// initial point or set.
-    typedef std::pair< Vertex, Size > Node;
-    /// Internal data structure for computing the breadth-first expansion.
-    typedef std::queue< Node > NodeQueue;
+    typedef std::pair< Vertex, Data > Node;
+    /// Internal data structure for computing the depth-first expansion.
+    typedef std::stack< Node > NodeQueue;
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
 
-    /**
-       Allows to access the node as the pair (Vertex,distance) when
-       iterating over the graph.
-    */
-    struct NodeAccessor {
-      typedef const Node value;
-      typedef const Node value_type;
-      typedef const Node* pointer;
-      typedef const Node& reference;
-      inline
-      static reference get( const Node & node )
-      { return node; }
-    };
-
-    /**
-       Allows to access the node as only the Vertex when iterating
-       over the graph.
-    */
-    struct VertexAccessor {
-      typedef const Vertex value;
-      typedef const Vertex value_type;
-      typedef const Vertex* pointer;
-      typedef const Vertex& reference;
-      inline
-      static reference get( const Node & node )
-      { return node.first; }
-    };
-
-    template <typename TAccessor>
-    struct ConstIterator 
-    {
-      typedef ConstIterator<TAccessor> Self;
-      typedef BreadthFirstVisitor<TGraph,TMarkSet> Visitor;
-      typedef TAccessor Accessor;
-
-      // stl iterator types.
-      typedef std::input_iterator_tag iterator_category;
-      typedef typename Accessor::value value_type;
-      typedef std::ptrdiff_t difference_type; 
-      typedef typename Accessor::pointer pointer;
-      typedef typename Accessor::reference reference;
-
-      /// Smart pointer to a Visitor.
-      CountedPtr< Visitor > myVisitor;
-
-      inline
-      ConstIterator() 
-        : myVisitor( 0 ) {}
-      inline
-      ConstIterator( Visitor* ptrV ) 
-        : myVisitor( ptrV ) {}
-      inline
-      ConstIterator( const Self & other ) 
-        : myVisitor( other.myVisitor ) {}
-
-      inline
-      Self & operator=( const Self & other )
-      {
-        if ( this != &other )
-          myVisitor = other.myVisitor;
-        return *this;
-      }
-
-      inline
-      reference
-      operator*() const
-      {
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
-        return Accessor::get( myVisitor->current() );
-      }
-
-      inline
-      pointer
-      operator->() const
-      { 
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
-        return & Accessor::get( operator*() );
-      }
-
-      inline
-      Self&
-      operator++()
-      {
-        myVisitor->expand();
-	return *this;
-      }
-
-      inline
-      Self
-      operator++(int)
-      {
-	Self __tmp = *this;
-        myVisitor->expand();
-	return __tmp;
-      }
-      
-      inline
-      bool operator==( const Self & other ) const
-      {
-        if ( ( myVisitor.get() == 0 ) || myVisitor->finished() )
-          return ( other.myVisitor.get() == 0 ) || other.myVisitor->finished();
-        else if ( other.myVisitor.get() == 0 )
-          return false;
-        else
-          return &(myVisitor->current()) == &(other.myVisitor->current());
-      }
-
-      inline
-      bool operator!=( const Self & other ) const
-      {
-        return ! ( this->operator==( other ) );
-      }
-    };
-
-    /// const iterator on Vertex for visiting a graph by following a
-    /// breadth first traversal.
-    typedef ConstIterator<VertexAccessor> VertexConstIterator;
-    /// const iterator on pair (Vertex,distance) for visiting a graph by
-    /// following a breadth first traversal.
-    typedef ConstIterator<NodeAccessor> NodeConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -245,39 +125,45 @@ namespace DGtal
     /**
      * Destructor.
      */
-    ~BreadthFirstVisitor();
+    ~DepthFirstVisitor();
+
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    DepthFirstVisitor ( const DepthFirstVisitor & other );
 
     /**
      * Constructor from the graph only. The visitor is in the state
      * 'finished()'. Useful to create an equivalent of 'end()' iterator.
      *
-     * @param graph the graph in which the breadth first traversal takes place.
+     * @param graph the graph in which the depth first traversal takes place.
      */
-    BreadthFirstVisitor( const Graph & graph );
+    DepthFirstVisitor( ConstAlias<Graph> graph );
 
     /**
      * Constructor from a point. This point provides the initial core
      * of the visitor.
      *
-     * @param graph the graph in which the breadth first traversal takes place.
+     * @param graph the graph in which the depth first traversal takes place.
      * @param p any vertex of the graph.
      */
-    BreadthFirstVisitor( const Graph & graph, const Vertex & p );
+    DepthFirstVisitor( ConstAlias<Graph> graph, const Vertex & p );
 
     /**
        Constructor from iterators. All vertices visited between the
        iterators should be distinct two by two. The so specified set
-       of vertices provides the initial core of the breadth first
-       traversal. These vertices will all have a topological distance
+       of vertices provides the initial core of the depth first
+       traversal. These vertices will all have a topological depth.
        0.
        
        @tparam VertexIterator any type of single pass iterator on vertices.
-       @param graph the graph in which the breadth first traversal takes place.
+       @param graph the graph in which the depth first traversal takes place.
        @param b the begin iterator in a container of vertices. 
        @param e the end iterator in a container of vertices. 
     */
     template <typename VertexIterator>
-    BreadthFirstVisitor( const Graph & graph, 
+    DepthFirstVisitor( ConstAlias<Graph> graph, 
                          VertexIterator b, VertexIterator e );
 
 
@@ -291,7 +177,7 @@ namespace DGtal
 
     /**
        @return a const reference on the current visited vertex. The
-       node is a pair <Vertex,Size> where the second term is the
+       node is a pair <Vertex,Data> where the second term is the
        topological distance to the start vertex or set.
 
        NB: valid only if not 'finished()'.
@@ -334,7 +220,7 @@ namespace DGtal
     bool finished() const;
 
     /**
-       Force termination of the breadth first traversal. 'finished()'
+       Force termination of the depth first traversal. 'finished()'
        returns 'true' afterwards and 'current()', 'expand()',
        'ignore()' have no more meaning. Furthermore,
        'markedVertices()' and 'visitedVertices()' both represents the
@@ -398,7 +284,7 @@ namespace DGtal
 
     /**
        Queue storing the vertices that are the next visited ones in
-       the breadth-first traversal of the graph.
+       the depth-first traversal of the graph.
      */
     NodeQueue myQueue;
 
@@ -409,16 +295,9 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    BreadthFirstVisitor();
+    DepthFirstVisitor();
 
   private:
-
-    /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
 
     /**
      * Assignment.
@@ -426,36 +305,36 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    BreadthFirstVisitor & operator= ( const BreadthFirstVisitor & other );
+    DepthFirstVisitor & operator= ( const DepthFirstVisitor & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class BreadthFirstVisitor
+  }; // end of class DepthFirstVisitor
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'BreadthFirstVisitor'.
+   * Overloads 'operator<<' for displaying objects of class 'DepthFirstVisitor'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'BreadthFirstVisitor' to write.
+   * @param object the object of class 'DepthFirstVisitor' to write.
    * @return the output stream after the writing.
    */
   template <typename TGraph, typename TMarkSet >
   std::ostream&
   operator<< ( std::ostream & out, 
-               const BreadthFirstVisitor<TGraph, TMarkSet > & object );
+               const DepthFirstVisitor<TGraph, TMarkSet > & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/BreadthFirstVisitor.ih"
+#include "DGtal/graph/DepthFirstVisitor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined BreadthFirstVisitor_h
+#endif // !defined DepthFirstVisitor_h
 
-#undef BreadthFirstVisitor_RECURSES
-#endif // else defined(BreadthFirstVisitor_RECURSES)
+#undef DepthFirstVisitor_RECURSES
+#endif // else defined(DepthFirstVisitor_RECURSES)
