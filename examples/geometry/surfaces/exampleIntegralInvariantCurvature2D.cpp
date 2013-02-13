@@ -37,7 +37,8 @@
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/DepthFirstVisitor.h"
+#include "DGtal/graph/DepthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 
 // Integral Invariant includes
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
@@ -89,11 +90,13 @@ int main( int argc, char** argv )
     LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
-    typedef DepthFirstVisitor<MyDigitalSurface> Visitor;
-    typedef Visitor::VertexConstIterator SurfelConstIterator;
-    Visitor *depth = new Visitor (digSurf, *digSurf.begin());
-    SurfelConstIterator abegin = SurfelConstIterator(depth);
-    SurfelConstIterator aend = SurfelConstIterator(0);
+    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
+    typedef GraphVisitorRange< Visitor > VisitorRange;
+    typedef VisitorRange::ConstIterator SurfelConstIterator;
+
+    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
+    SurfelConstIterator abegin = range.begin();
+    SurfelConstIterator aend = range.end();
 
 
     /// Integral Invariant stuff
@@ -127,8 +130,8 @@ int main( int argc, char** argv )
         }
     }
     Board2D board;
-    Visitor *depth2 = new Visitor (digSurf, *digSurf.begin());
-    abegin = SurfelConstIterator(depth2);
+    VisitorRange range2( new Visitor( digSurf, *digSurf.begin() ) );
+    abegin = range2.begin();
 
     typedef GradientColorMap< Quantity > Gradient;
     Gradient cmap_grad( min, max );
