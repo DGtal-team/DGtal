@@ -88,19 +88,22 @@ namespace DGtal
   vertices. Should be a set of Vertex, hence a model of CSet.
  
   @code
+     #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+...
      Graph g( ... );
      Graph::Vertex p( ... );
      typedef CanonicSCellEmbedder<KSpace> VertexEmbedder;
      typedef VertexEmbedder::Value RealPoint;
      typedef RealPoint::Coordinate Scalar;
-     typedef SquaredEuclideanDistance<RealPoint> SqED;
-     typedef Lambda2To1<SqED, RealPoint, RealPoint, Scalar> SqEDToPoint;
-     typedef Composer<VertexEmbedder, SqEDToPoint, Scalar> VertexFunctor;
+     typedef ExactPredicateLpSeparableMetric<Space,2> ED; // Euclidean distance
+     typedef std::binder1st< Distance > EDToPoint;        // Fix one point
+     typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor; 
+       // Compose the vertex embedding with the distance computation.
      typedef DistanceVisitor< Graph, VertexFunctor > Visitor;
 
      VertexEmbedder embedder;
-     SqED sqed;
-     SqEDToPoint distanceToPoint( sqed, embedder( p ) );
+     ED distance;
+     EDToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
      VertexFunctor vfunctor( embedder, distanceToPoint );
      DistanceVisitor< Graph, VertexFunctor > visitor( g, p, vfunctor );
      while ( ! visitor.finished() )

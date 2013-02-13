@@ -18,23 +18,18 @@
 #include <QImageReader>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/base/Lambda2To1.h"
-#include "DGtal/kernel/EuclideanDistance.h"
-//#include "DGtal/kernel/SquaredEuclideanDistance.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/kernel/CanonicSCellEmbedder.h"
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/graph/DistanceVisitor.h"
+#include "DGtal/topology/DigitalSurface.h"
+#include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
-#include "DGtal/shapes/Shapes.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/topology/DistanceVisitor.h"
 //! [volDistanceTraversal-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -109,10 +104,8 @@ int main( int argc, char** argv )
   typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
   typedef SCellEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
-  // typedef SquaredEuclideanDistance<RealPoint> Distance;
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
 
-  //  typedef Lambda2To1<Distance, RealPoint, RealPoint, Scalar> DistanceToPoint;
   typedef std::binder1st< Distance > DistanceToPoint; 
   typedef Composer<SCellEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceVisitor< MyDigitalSurface, VertexFunctor, std::set<SCell> > 
@@ -122,7 +115,6 @@ int main( int argc, char** argv )
 
   SCellEmbedder embedder;
   Distance distance;
-  //DistanceToPoint distanceToPoint( distance, embedder( bel ) );
   DistanceToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
   VertexFunctor vfunctor( embedder, distanceToPoint );
   MyDistanceVisitor visitor( digSurf, vfunctor, bel );
