@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CConstSinglePassRange.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

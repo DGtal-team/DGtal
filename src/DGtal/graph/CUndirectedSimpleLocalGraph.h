@@ -44,7 +44,9 @@
 #include <boost/concept_archetype.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/topology/CVertexMap.h"
+#include "DGtal/graph/CVertexMap.h"
+#include "DGtal/graph/CVertexPredicate.h"
+#include "DGtal/graph/CVertexPredicateArchetype.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -61,7 +63,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     
  ### Associated types :
      - Size: an integral type to count the number of vertices.
-     - Vertex: the type for the vertices of the graph.
+     - Vertex: the type for the vertices of the graph (a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible).
      - VertexSet: the type for storing a set of vertices.
      - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
     
@@ -86,7 +88,8 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
  ### Invariants###
     
  ### Models###
-        DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface, Object, MetricAdjacency, DomainAdjacency
+     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
+     - Object, MetricAdjacency, DomainAdjacency
 
  ### Notes###
 
@@ -112,6 +115,9 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
  
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
+    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Vertex > ));
+    BOOST_CONCEPT_ASSERT(( boost::Assignable< Vertex > ));
+    BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Vertex > ));
 
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CUndirectedSimpleLocalGraph )
@@ -124,7 +130,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
       ConceptUtils::sameType( mySize, myX.bestCapacity() );
       ConceptUtils::sameType( mySize, myX.degree( myVertex ) );
       myX.writeNeighbors( myOutIt, myVertex );
-      // @todo create VertexPredicate to test the other writeNeighbors method.
+      myX.writeNeighbors( myOutIt, myVertex, myVPred );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -133,7 +139,7 @@ Description of \b concept '\b CUndirectedSimpleLocalGraph' <p>
     Size mySize;
     Vertex myVertex;
     mutable boost::output_iterator_archetype<Vertex> myOutIt;
-    
+    CVertexPredicateArchetype<Vertex> myVPred;
     // ------------------------- Internals ------------------------------------
   private:
     

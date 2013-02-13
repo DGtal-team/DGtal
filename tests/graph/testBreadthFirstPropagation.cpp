@@ -33,10 +33,9 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/topology/CUndirectedSimpleGraph.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/CGraphVisitor.h"
 #include <set>
 #include <iterator>
 ///////////////////////////////////////////////////////////////////////////////
@@ -89,8 +88,9 @@ void testBreadthFirstPropagation()
   
   Image image = ImageFromSet<Image>::create(shape_set, 1);
   
-  
-  BreadthFirstVisitor<Object, set<Point> > bfv (obj, c1);
+  typedef BreadthFirstVisitor<Object, set<Point> > Visitor;
+  BOOST_CONCEPT_ASSERT(( CGraphVisitor< Visitor > ));
+  Visitor bfv (obj, c1);
   
   
   while( !bfv.finished() )
