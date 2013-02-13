@@ -32,18 +32,15 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Lambda2To1.h"
+#include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/DistanceVisitor.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/topology/CUndirectedSimpleGraph.h"
-#include "DGtal/topology/DistanceVisitor.h"
-#include "DGtal/kernel/SquaredEuclideanDistance.h"
-#include "DGtal/kernel/EuclideanDistance.h"
-#include "DGtal/kernel/CanonicEmbedder.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -100,14 +97,14 @@ void testDistancePropagation()
   typedef CanonicEmbedder<Space> VertexEmbedder;
   typedef VertexEmbedder::Value RealPoint;
   typedef RealPoint::Coordinate Scalar;
-  typedef EuclideanDistance<RealPoint> Distance;
-  typedef Lambda2To1<Distance, RealPoint, RealPoint, Scalar> DistanceToPoint;
+  typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
+  typedef std::binder1st< Distance > DistanceToPoint; 
   typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
   typedef DistanceVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
   VertexEmbedder embedder;
   Distance distance;
-  DistanceToPoint distanceToPoint( distance, embedder( c1 ) );
+  DistanceToPoint distanceToPoint = std::bind1st( distance, embedder( c1 ) );
   VertexFunctor vfunctor( embedder, distanceToPoint );
   Visitor visitor( obj, vfunctor, c1 );
   

@@ -3,6 +3,7 @@ SET(DGTAL_TESTS_SRC
    testCellularGridSpaceND
    testDigitalSurface
    testDigitalTopology
+   testDistancePropagation
    testObject
    testObjectBorder
    testSimpleExpander
