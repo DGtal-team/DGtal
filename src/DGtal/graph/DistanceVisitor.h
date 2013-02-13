@@ -44,8 +44,7 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
