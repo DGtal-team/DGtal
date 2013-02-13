@@ -36,6 +36,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/CGraphVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/graph/DistanceVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/boards/Board2D.h"
@@ -53,7 +54,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 typedef ImageSelector < Z2i::Domain, int>::Type Image;
-void testDistancePropagation()
+bool testDistancePropagation()
 {
   typedef Z2i::Space Space;
   typedef Z2i::Point Point;
@@ -62,7 +63,8 @@ void testDistancePropagation()
   typedef Z2i::Object4_8 Object;
   
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
-  
+
+  trace.beginBlock( "Distance propagation in 2D object" );
   Point p1( -50, -50 );
   Point p2( 50, 50 );
   Domain domain( p1, p2 );
@@ -139,14 +141,38 @@ void testDistancePropagation()
                                                 cmap_grad( 0 ) ) );
       board << *it;
     }
-  
+
+  trace.info() << "- Output file testDistancePropagation.eps" << std::endl;
   board.saveEPS("testDistancePropagation.eps");
+  trace.endBlock();
+
+  trace.beginBlock( "Distance visitor as a range." );
+  typedef GraphVisitorRange<Visitor> VisitorRange;
+  VisitorRange range( new Visitor( obj, vfunctor, c1 ) );
+  Scalar d = -1.0;
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  unsigned int nbperfect = 0;
+  for ( VisitorRange::NodeConstIterator it = range.beginNode(), itEnd = range.endNode();
+        it != itEnd; ++it )
+    { // Vertex is *it.first
+      Scalar next_d = (*it).second;
+      ++nb, nbok += (next_d >= d-0.75 ) ? 1 : 0;
+      nbperfect += (next_d >= d ) ? 1 : 0;
+      d = next_d;
+    }
+  trace.info() << "(" << nbok << "/" << nb 
+               << ") number of vertices in approximate Euclidean distance ordering."<< std::endl;
+  trace.info() << "(" << nbperfect << "/" << nb 
+               << ") number of vertices in perfect Euclidean distance ordering."<< std::endl;
+  trace.endBlock();
+  return nb == nbok;
 }
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  testDistancePropagation();
-  return 0;
+  bool res = testDistancePropagation();
+  return res ? 0 : 1;
 }
 
 
