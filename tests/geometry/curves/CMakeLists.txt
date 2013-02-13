@@ -1,18 +1,18 @@
 add_subdirectory(estimation)
 
 SET(DGTAL_TESTS_SRC
-  testArithDSS	
-  testArithDSS3d
-  testFreemanChain
-  testDecomposition  
-  testSegmentation
-  testMaximalSegments
-  testFP
-  testGridCurve
-  testCombinDSS
-  testGeometricalDSS
-  testGeometricalDCA
-  testBinomialConvolver
+  # testArithDSS	
+  # testArithDSS3d
+  # testFreemanChain
+  # testDecomposition  
+  # testSegmentation
+  # testMaximalSegments
+  # testFP
+  # testGridCurve
+  # testCombinDSS
+  # testGeometricalDSS
+  # testGeometricalDCA
+  # testBinomialConvolver
   testFrechetShortcut	
   )
 

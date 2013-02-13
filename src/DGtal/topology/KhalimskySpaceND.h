@@ -75,7 +75,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    KhalimskyCell();
+    KhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
@@ -160,7 +160,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    SignedKhalimskyCell();
+    SignedKhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
