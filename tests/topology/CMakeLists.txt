@@ -1,17 +1,12 @@
 SET(DGTAL_TESTS_SRC
    testAdjacency
-   testBreadthFirstPropagation
-   testDepthFirstPropagation
-   testDistancePropagation
    testCellularGridSpaceND
    testDigitalSurface
    testDigitalTopology
-   testExpander
    testObject
    testObjectBorder
    testSimpleExpander
    testSCellsFunctor
-   testSTLMapToVertexMapAdapter
    testUmbrellaComputer
    )
 
@@ -23,7 +18,6 @@ ENDFOREACH(FILE)
 
 
 SET(DGTAL_BENCH_SRC
-   testExpander-benchmark
    testObject-benchmark
    testImplicitDigitalSurface-benchmark
    testLightImplicitDigitalSurface-benchmark
