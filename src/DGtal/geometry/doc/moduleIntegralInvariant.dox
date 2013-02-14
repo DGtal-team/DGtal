@@ -19,31 +19,23 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page moduleIntegralInvariant Integral invariant curvature estimator 2D/3D
-@writers Jérémy Levallois
 
+[TOC]
 
-Table of contents:
- -# \ref sectOverview
-   -# \ref subsectIntegralInvariant
- -# \ref sectAlgo 
-   -# \ref subsectDef
-   -# \ref subsectDetails
- -# \ref sectImplementation
-
-
+@author Jérémy Levallois
 
 \section sectOverview Overview
 
 
 The algorithm implemented in the class DGtal::IntegralInvariantMeanCurvatureEstimator (resp. DGtal::IntegralInvariantGaussianCurvatureEstimator)
-are presented in the article [1].
+are detailed in the article @cite Coeurjo2013 .
 
 In geometry processing, interesting mathematical tools have been developed to design differential estimators on smooth
-surfaces based on integral invariants.
+surfaces based on integral invariants @cite Pottmann2007 @cite Pottmann2009 .
 The principle is simple: we move a convolution kernel along the shape surface and we compute integrals on the intersection
 between the shape and the convolution kernel, as follow in dimension 3:
 
-@f$ V_r(x) = \int_{B_r(x)}  \chi(p)dp\ @f$
+@f[ V_r(x) = \int_{B_r(x)}  \chi(p)dp\ @f]
 
 where @f$ B_r(x) @f$ is the Euclidean ball of radius @f$ r @f$, centered at @f$ x @f$ and @f$ \chi(p) @f$ the
 characteristic function of @f$ X @f$. In dimension 2, we simply denote @f$ A_r(x) @f$ such quantity (represented in orange
@@ -64,13 +56,13 @@ Indeed, at @f$ x @f$ of the digitized surface @f$ X @f$ and with a fixed radius 
 curvature estimators @f$ \tilde{\kappa}_r(X,x) @f$ and @f$ \tilde{H}_r(X,x) @f$ of quantities @f$ \kappa(X,x) @f$ and
 @f$ H(X,x) @f$ respectively:
 
-@f$
+@f[
   \tilde{\kappa}_r(X,x) = \frac{3\pi}{2r} - \frac{3A_r(x)}{r^3},\quad \tilde{\kappa}_r(X,x) =  \kappa(X,x)+ O(r)
-@f$
+@f]
 
-@f$
+@f[
   \tilde{H}_r(X,x) = \frac{8}{3r} - \frac{4V_r(x)}{\pi r^4},\quad \tilde{H}_r(X,x) = H(X,x) + O(r)
-@f$
+@f]
 
 where @f$ \kappa_r(X,x) @f$ is the 2d curvature of @f$ X @f$ at @f$ x @f$ and @f$ H_r(X,x) @f$ is the 3d mean curvature
 of @f$ X @f$ at @f$ x @f$.
@@ -112,9 +104,9 @@ on the surfel on the digitized shape border. Its objective is to compute @f$ B_{
 At evaluation, it will place the convolution kernel in order to lie his center with the cell to estimate. After, it will
 iterate on all spels of the kernel, and compute the integral:
 
-@f$
+@f[
         V(x) = \sum_{spel \in B_{r/h}(\frac{1}{h} \cdot x ) \cap Z}f(x)g(s-x)
-@f$
+@f]
 
 where @f$ x @f$ is the current spel, @f$ f @f$ is the shape functor (set by user), @f$ g @f$ is the kernel functor (return 1 on all spels
 from the kernel).
@@ -138,12 +130,12 @@ As seen on this illustration, only the green and the red part are
 interesting, the grey part is the same from the previous result. This effect can produce a lot of computations, so we only
 need to remove the green part, and add the red one (by additivity of the convolution).
 
-@f$
+@f[
   \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x + \vec{\delta} ) \cap Z, h) = \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h)
   - \widehat{Area}(B1_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h)
   + \widehat{Area}(B2_{r/h}(\frac{1}{h} \cdot x + \vec{\delta} ) \cap Z, h).
   \label{eq:eqmasks}
-@f$
+@f]
 
 where @f$ \vec{\delta} @f$ is a translation vector in 0-adjacency, @f$ B1_{r/h} @f$ is the mask to remove, and @f$ B2_{r/h} @f$ the mask to
 add (both depending to @f$ \vec{\delta} @f$).
@@ -168,17 +160,6 @@ Note that the methodology is the same with both IntegralInvariantMeanCurvatureEs
 The only change is for "typedef IntegralInvariantXXXXXCurvatureEstimator<...> MyCurvatureEstimator"
 
 @snippet geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp IntegralInvariantUsage
-
-
-
-
-
-
-\par References
-
-1. Coeurjolly, D., Lachaud, J.O., Levallois, J.: Integral based Curvature Estimators in Digital
-Geometry. In: 17th International Conference on Discrete Geometry for Computer Imagery (DGCI 2013),
-Sevilla (Spain). LNCS XXXX, pp. XX-XX. Springer Verlag (2013)
 
 
 */
