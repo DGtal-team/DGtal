@@ -31,7 +31,6 @@
 #include <iostream>
 #include <set>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/Lambda2To1.h"
 #include "DGtal/kernel/CanonicEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
