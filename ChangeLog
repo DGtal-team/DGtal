@@ -54,7 +54,7 @@ SetPredicate is now deprecated.
       to iterate a convolver around the shape surface.
 
  *Shape Package*
-    - New operators available on digital and euclidean shapes (Union,
+    - New operators available on digital and Euclidean shapes (Union,
       Intersection, Minus)
 
  *Topology Package*
