@@ -120,7 +120,6 @@ int main( int argc, char** argv )
   // make shape.
   Domain domain =  image.domain() ;
   DigitalSet shape_set( domain );
-  SetPredicate<DigitalSet> shape_set_predicate( shape_set );
   for ( Domain::ConstIterator it = domain.begin(), itend = domain.end();
   it != itend;   
   ++it )
@@ -154,7 +153,7 @@ int main( int argc, char** argv )
   SCell surfel = K3.sIncident( intvoxel, 0, false );
   std::set<SCell> bdry;
   Surfaces<KSpace>::trackBoundary( bdry,
-           K3, SAdj, shape_set_predicate, surfel );
+           K3, SAdj, shape_set, surfel );
 
   trace.info() << "tracking finished, size=" << bdry.size() << endl; 
 
