@@ -21,6 +21,8 @@
    - the STL main page: http://www.sgi.com/tech/stl/index.html
    - the BOOST concept check main page http://www.boost.org/libs/concept_check/concept_check.htm
    - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html 
+   - the BOOST graph library main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/index.html
+   - the BOOST graph concepts main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/graph_concepts.html
 */
 namespace boost {
   /// Go to http://www.boost.org/doc/html/DefaultConstructible.html
@@ -150,6 +152,25 @@ namespace boost {
   /// Go to http://www.sgi.com/tech/stl/Collection.html
   template <class C>
   struct Collection{};
-  
+
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/Graph.html
+  template <class G>
+  struct GraphConcept {};
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/VertexListGraph.html
+  template <class G>
+  struct VertexListGraphConcept {};
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/AdjacencyGraph.html
+  template <class G>
+  struct AdjacencyGraphConcept {};
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/IncidenceGraph.html
+  template <class G>
+  struct IncidenceGraphConcept {};
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/EdgeListGraph.html
+  template <class G>
+  struct EdgeListGraphConcept {};
+
+  /// Go to http://www.boost.org/doc/libs/1_52_0/libs/utility/MultiPassInputIterator.html
+  template <class G>
+  struct MultiPassInputIterator {};
 }
 
