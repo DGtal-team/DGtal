@@ -52,7 +52,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="image";
 
-		 CImage [ label="CImage" URL="\ref CImage" ];
+		 CConstImage [ label="CConstImage" URL="\ref CConstImage" ];
         }
         subgraph cluster_4 {
                  style=filled;
@@ -148,8 +148,8 @@ digraph GTOPOLOGY {
     FrontierPredicate -> CSurfelPredicate;
     BoundaryPredicate -> CCellularGridSpaceND [label="use",style=dashed];
     FrontierPredicate -> CCellularGridSpaceND [label="use",style=dashed];
-    BoundaryPredicate -> CImage [label="use",style=dashed];
-    FrontierPredicate -> CImage [label="use",style=dashed];
+    BoundaryPredicate -> CConstImage [label="use",style=dashed];
+    FrontierPredicate -> CConstImage [label="use",style=dashed];
 }
 @enddot
 
