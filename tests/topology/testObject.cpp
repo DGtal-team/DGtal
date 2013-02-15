@@ -43,7 +43,7 @@
 #include "DGtal/topology/DomainAdjacency.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"
-#include "DGtal/topology/Expander.h"
+#include "DGtal/graph/Expander.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
