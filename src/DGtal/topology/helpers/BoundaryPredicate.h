@@ -44,6 +44,8 @@
 #include <boost/array.hpp>
 
 #include "DGtal/base/Common.h"
+#include "DGtal/images/CConstImage.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,6 +68,8 @@ namespace DGtal
   {
     // ----------------------- public types ------------------------------
   public:
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< TKSpace > ));
+    BOOST_CONCEPT_ASSERT(( CConstImage< TImage > ));
     typedef TKSpace KSpace;
     typedef TImage Image;
     typedef typename KSpace::Surfel Surfel;
@@ -76,7 +80,7 @@ namespace DGtal
     BOOST_STATIC_ASSERT
     (( ConceptUtils::SameType< typename KSpace::Point,
        typename Image::Point>::value ));
-                                                 
+	      
 
     // ----------------------- Standard services ------------------------------
   public:
