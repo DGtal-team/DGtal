@@ -1,12 +1,12 @@
 
 /**
- * @file packageTopologyConcepts.dox
+ * @file packageTopologyConcepts1.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/03/16
  *
- * Documentation file for feature packageTopologyConcepts
+ * Documentation file for feature packageTopologyConcepts1
  *
  * This file is part of the DGtal library.
  */
@@ -18,7 +18,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageTopologyConcepts Topology Concepts and Models
+@page packageTopologyConcepts1 Topology Concepts and Models (part I, models of graph)
 @writers Jacques-Olivier Lachaud
 
  @dot   
@@ -35,7 +35,6 @@ digraph GTOPOLOGY {
                  label="base";
 
                  CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ]; 
-                 CPredicate [ label="CPredicate" URL="\ref CPredicate" ]; 
         }
         subgraph cluster_2 {
                  style=filled;
@@ -46,14 +45,6 @@ digraph GTOPOLOGY {
 		 CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ];
 		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref CUndirectedSimpleLocalGraph" ];
 
-        }
-        subgraph cluster_3 {
-                 style=filled;
-                 color="#d4ddff";
-                 node [style=filled,color=white];
-                 label="image";
-
-		 CImage [ label="CImage" URL="\ref CImage" ];
         }
         subgraph cluster_4 {
                  style=filled;
@@ -83,7 +74,6 @@ digraph GTOPOLOGY {
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref CDigitalSurfaceTracker" ];
         CDomainAdjacency [ label="CDomainAdjacency" URL="\ref CDomainAdjacency" ];
 	CAdjacency [ label="CAdjacency" URL="\ref CAdjacency" ];
-        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref CSurfelPredicate" ];
         CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref CCellularGridSpaceND" ];
     }
     CDigitalSurfaceContainer -> boost_CopyConstructible;
@@ -94,7 +84,6 @@ digraph GTOPOLOGY {
     CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
     CAdjacency -> CUndirectedSimpleLocalGraph; 
     CDomainAdjacency -> CAdjacency ; 
-    CSurfelPredicate -> CPredicate;
   
     subgraph cluster_models {
         style=filled;
@@ -114,20 +103,6 @@ digraph GTOPOLOGY {
             Object [ label="Object" URL="\ref Object" ];
         }   
 
-        subgraph cluster_models_1 {
-            style=filled;
-            color="#ccffcc";
-            node [style=filled,color=white];
-            label="(main digital surface container models)";
-
-            DigitalSetBoundary [ label="DigitalSetBoundary" URL="\ref DigitalSetBoundary" ];
-            ImplicitDigitalSurface [ label="ImplicitDigitalSurface" URL="\ref ImplicitDigitalSurface" ];
-            LightImplicitDigitalSurface [ label="LightImplicitDigitalSurface" URL="\ref LightImplicitDigitalSurface" ];
-            SetOfSurfels [ label="SetOfSurfels" URL="\ref SetOfSurfels" ];
-            ExplicitDigitalSurface [ label="ExplicitDigitalSurface" URL="\ref ExplicitDigitalSurface" ];
-            LightExplicitDigitalSurface [ label="LightExplicitDigitalSurface" URL="\ref LightExplicitDigitalSurface" ];
-        }
-
         subgraph cluster_models_2 {
             style=filled;
             color="#ccffcc";
@@ -135,9 +110,6 @@ digraph GTOPOLOGY {
             label="(others)";
 
             KhalimskySpaceND [ label="KhalimskySpaceND" URL="\ref KhalimskySpaceND" ];
-            SurfelSetPredicate [ label="SurfelSetPredicate" URL="\ref SurfelSetPredicate" ];
-            BoundaryPredicate [ label="BoundaryPredicate" URL="\ref BoundaryPredicate" ];
-            FrontierPredicate [ label="FrontierPredicate" URL="\ref FrontierPredicate" ];
         }
     }
 
@@ -145,26 +117,10 @@ digraph GTOPOLOGY {
     Object -> CDigitalSet [label="use",style=dashed];
     MetricAdjacency -> CAdjacency;
     DomainAdjacency -> CDomainAdjacency;
-    DigitalSetBoundary -> CDigitalSurfaceContainer;
-    DigitalSetBoundary -> CDigitalSet [label="use",style=dashed];
-    ImplicitDigitalSurface -> CDigitalSurfaceContainer;
-    SetOfSurfels -> CDigitalSurfaceContainer;
-    ExplicitDigitalSurface -> CDigitalSurfaceContainer;
-    LightImplicitDigitalSurface -> CDigitalSurfaceContainer;
-    LightImplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
-    LightExplicitDigitalSurface -> CDigitalSurfaceContainer;
-    LightExplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
     DigitalSurface -> CUndirectedSimpleGraph;
     DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
     KhalimskySpaceND -> CCellularGridSpaceND;
 
-    SurfelSetPredicate -> CSurfelPredicate;
-    BoundaryPredicate -> CSurfelPredicate;
-    FrontierPredicate -> CSurfelPredicate;
-    BoundaryPredicate -> CCellularGridSpaceND [label="use",style=dashed];
-    FrontierPredicate -> CCellularGridSpaceND [label="use",style=dashed];
-    BoundaryPredicate -> CImage [label="use",style=dashed];
-    FrontierPredicate -> CImage [label="use",style=dashed];
 }
 @enddot
 
