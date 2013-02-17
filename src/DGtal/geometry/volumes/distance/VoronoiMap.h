@@ -266,8 +266,7 @@ namespace DGtal
     /** 
      *  Compute the other steps of the separable Voronoi map.
      * 
-     * @param output the output map
-     * @param dim the dimension to process
+     * @param [in] dim the dimension to process
      */    
     void computeOtherSteps(const Dimension dim) const;
     /** 
@@ -276,9 +275,8 @@ namespace DGtal
      * the 1D span starting at @a row along the dimension @a
      * dim.
      * 
-     * @param output the Voronoi map to update.
-     * @param row starting point of the 1D process.
-     * @param dim dimension of the update.
+     * @param [in] row starting point of the 1D process.
+     * @param [in] dim dimension of the update.
      */
     void computeOtherStep1D (const Point &row, 
 			     const Size dim) const;

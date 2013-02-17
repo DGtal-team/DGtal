@@ -280,10 +280,9 @@ namespace DGtal
    * Once the FP is computed, copyFP() is a way of geting its vertices. 
    * In the same way, copyMLP() is a way of getting the vertices of the MLP. 
    * 
-   * @tparam 'TIterator'  type ConstIterator on 2D points, 
-   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
-   * (satisfying CInteger) 
-   * @tparam 'connectivity'  an integer equal to 
+   * @tparam TIterator  type ConstIterator on 2D points, 
+   * @tparam TInteger (satisfying CInteger) 
+   * @tparam connectivity
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *

@@ -37,7 +37,7 @@ struct ShapeList : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name.
    */
   const std::string & name() const;
   
@@ -108,18 +108,18 @@ struct ShapeList : public Shape {
    * or is a compound shape (ShapeList) then it is placed on top of
    * the shapes stack. Otherwise, the shape depth is left unchanged.
    * 
-   * @param shape 
+   * @param shape the shape to add.
    * 
-   * @return 
+   * @return updated shapelist.
    */
   ShapeList & operator<<( const Shape & shape ); 
 
   /** 
    * Adds a shape to the list of shape, always preserving the shape's depth.
    * 
-   * @param shape 
+   * @param shape shape to add.
    * 
-   * @return 
+   * @return updated shapelist.
    */
   ShapeList & operator+=( const Shape & shape ); 
   
@@ -127,10 +127,10 @@ struct ShapeList : public Shape {
    * Insert the shape at a given depth. If the shape is ShapeList or a Board, 
    * then all shapes above it will be shifted.
    * 
-   * @param shape 
-   * @param depth 
+   * @param shape shape
+   * @param depth depth
    * 
-   * @return 
+   * @return shapelist
    */
   ShapeList & insert( const Shape & shape, int depth );
 
@@ -155,9 +155,7 @@ struct ShapeList : public Shape {
   /** 
    * Convenience function that simply calls last(0).
    * 
-   * @param position 
-   * 
-   * @return 
+   * @return top shape.
    */
   Shape & top();
 
@@ -195,7 +193,7 @@ struct Group : public ShapeList {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -222,10 +220,10 @@ struct Group : public ShapeList {
   /** 
    * Define a clipping rectangle for the group.
    * 
-   * @param x 
-   * @param y 
-   * @param width 
-   * @param height 
+   * @param x lower corner of the rectangle
+   * @param y lower corner of the rectangle
+   * @param width width
+   * @param height height
    */
   void setClippingRectangle(  float x, float y, 
             float width, float height );
@@ -240,7 +238,7 @@ struct Group : public ShapeList {
   /** 
    * Define a clipping path for the group.
    * 
-   * @param points A path.
+   * @param path A path.
    */
   void setClippingPath( const Path & path );
 

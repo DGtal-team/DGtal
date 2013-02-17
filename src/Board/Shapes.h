@@ -82,14 +82,14 @@ struct Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   virtual const std::string & name() const;
 
   /** 
    * Return a copy of the shape.
    * 
-   * @return 
+   * @return copye of the shape.
    */
   virtual Shape * clone() const = 0;
   
@@ -140,7 +140,6 @@ struct Shape {
    * Rotate the shape around its center.
    * 
    * @param angle The rotation angle in degree.
-   * @param center The center of rotation.
    * 
    * @return A reference to the shape itself.
    */
@@ -193,14 +192,14 @@ struct Shape {
   /** 
    * Decrement the depth of the shape. (Pull the shape toward the foreground.)
    * 
-   * @return 
+   * @return a shape
    */
   inline Shape & operator--();
 
   /** 
    * Increment the depth of the shape. (Push the shape toward the background.)
    * 
-   * @return 
+   * @return a shape
    */
   inline Shape & operator++();
 
@@ -395,7 +394,7 @@ struct Dot : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
   
@@ -442,10 +441,10 @@ struct Dot : public Shape {
   /** 
    * 
    * 
-   * @param dx 
-   * @param dy 
+   * @param dx dx
+   * @param dy dy
    * 
-   * @return 
+   * @return a Dot
    */
   Dot & translate( double dx, double dy );
 
@@ -543,7 +542,7 @@ struct Line : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -672,7 +671,7 @@ struct Arrow : public Line {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
   
@@ -772,7 +771,7 @@ struct Polyline : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -781,18 +780,18 @@ struct Polyline : public Shape {
   /** 
    * Add a point to the polyline.
    * 
-   * @param p 
+   * @param p point to add
    * 
-   * @return 
+   * @return a polyline
    */
   Polyline & operator<<( const Point & p );
 
   /** 
    * Returns the n-th point of the polyline.
    * 
-   * @param i 
+   * @param n index
    * 
-   * @return 
+   * @return n-th point
    */
   Point & operator[]( const unsigned int n ) {
     return _path[ n ];
@@ -804,10 +803,10 @@ struct Polyline : public Shape {
   /** 
    * 
    * 
-   * @param angle 
-   * @param center 
+   * @param angle angle
+   * @param center center
    * 
-   * @return 
+   * @return a polyline
    */
   Polyline rotated( double angle, const Point & center ) const;
 
@@ -816,9 +815,9 @@ struct Polyline : public Shape {
   /** 
    * 
    * 
-   * @param angle 
+   * @param angle angle
    * 
-   * @return 
+   * @return rotated polyline
    */
   Polyline rotated( double angle ) const;
 
@@ -827,10 +826,10 @@ struct Polyline : public Shape {
   /** 
    * 
    * 
-   * @param dx 
-   * @param dy 
+   * @param dx dx
+   * @param dy dy
    * 
-   * @return 
+   * @return polyline
    */
   Polyline translated( double dx, double dy ) const;
 
@@ -841,10 +840,10 @@ struct Polyline : public Shape {
   /** 
    * 
    * 
-   * @param sx 
-   * @param sy 
+   * @param sx sx
+   * @param sy sy
    * 
-   * @return 
+   * @return polyline
    */
   Polyline scaled( double sx, double sy )  const;
 
@@ -912,7 +911,7 @@ struct Rectangle : public Polyline {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -1014,8 +1013,8 @@ struct Image : public Rectangle {
    * @param y0 Second coordinate of the start point.
    * @param width First coordinate of the end point.
    * @param height Second coordinate of the end point.
-   * @param filename the image filename.
-   * @param depth The depth of the image.
+   * @param fileName the image filename.
+   * @param depthValue The depth of the image.
    * @param alpha The image transparency used for display (works only is cairo is installed).
    */
   
@@ -1024,7 +1023,7 @@ struct Image : public Rectangle {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return objet name
    */
   const std::string & name() const;
 
@@ -1099,7 +1098,7 @@ struct Triangle : public Polyline {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -1159,7 +1158,7 @@ struct GouraudTriangle : public Polyline {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -1207,8 +1206,8 @@ struct GouraudTriangle : public Polyline {
   /** 
    * Sends the triangle to a Postscript document.
    * 
-   * @param stream
-   * @param transform 
+   * @param stream output stream
+   * @param transform transform
    */
   void flushPostscript( std::ostream & stream,
       const TransformEPS & transform ) const;
@@ -1220,10 +1219,9 @@ struct GouraudTriangle : public Polyline {
    * rendering a Gouraud triangle in an XFig file is the same as rendering
    * a simple triangle whose filling color is the average of the vertex colors.
    * 
-   * @param stream 
-   * @param transform 
-   * @param DGtal::Color 
-   * @param colormap 
+   * @param stream output stream
+   * @param transform transform
+   * @param colormap colormap
    */
   void flushFIG( std::ostream & stream,
      const TransformFIG & transform,
@@ -1276,7 +1274,7 @@ struct Ellipse : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -1287,10 +1285,10 @@ struct Ellipse : public Shape {
   /** 
    * 
    * 
-   * @param angle 
-   * @param center 
+   * @param angle angle
+   * @param center center
    * 
-   * @return 
+   * @return an ellipse
    */
   Ellipse rotated( double angle, const Point & center ) const;
 
@@ -1299,9 +1297,9 @@ struct Ellipse : public Shape {
   /** 
    * 
    * 
-   * @param angle 
+   * @param angle angle
    * 
-   * @return 
+   * @return an ellipse
    */
   Ellipse rotated( double angle ) const;
   
@@ -1310,10 +1308,10 @@ struct Ellipse : public Shape {
   /** 
    * 
    * 
-   * @param dx 
-   * @param dy 
+   * @param dx translation along x-axis
+   * @param dy translation along the y-axis
    * 
-   * @return 
+   * @return translated ellipse.
    */
   Ellipse translated( double dx, double dy ) const;
 
@@ -1324,10 +1322,10 @@ struct Ellipse : public Shape {
   /** 
    * 
    * 
-   * @param sx 
-   * @param sy 
+   * @param sx scale factor
+   * @param sy scale factor
    * 
-   * @return 
+   * @return scaled ellipse
    */
   Ellipse scaled( double sx, double sy ) const;
 
@@ -1391,7 +1389,7 @@ struct Circle : public Ellipse {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return generic name as a string
    */
   const std::string & name() const;
 
@@ -1459,7 +1457,7 @@ struct Arc : public Circle {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
   void
@@ -1497,15 +1495,14 @@ struct Text : public Shape {
   /** 
    * Create a Text sctucture.
    * 
-   * @param x 
-   * @param y 
-   * @param text 
-   * @param font
+   * @param x x
+   * @param y  y
+   * @param text  text
+   * @param font font
    * @param size The font size expressed in 1/72 inches.
-   * @param color 
-   * @param depth 
+   * @param color color
+   * @param depthValue depth
    * 
-   * @return 
    */
   Text( double x, double y,
   const std::string & text,
@@ -1522,16 +1519,15 @@ struct Text : public Shape {
   /** 
    * Create a Text sctucture.
    * 
-   * @param x 
-   * @param y 
-   * @param text 
-   * @param font
+   * @param x x
+   * @param y y
+   * @param text  text
+   * @param font font
    * @param svgFont The font family for an SVG file. (E.g. "Verdana, Arial" or "'Time New Roman', Serif" )
    * @param size The font size expressed in 1/72 inches.
-   * @param color 
-   * @param depth 
+   * @param color  color
+   * @param depthValue depth
    * 
-   * @return 
    */
   Text( double x, double y,
   const std::string & text,
@@ -1550,7 +1546,7 @@ struct Text : public Shape {
   /** 
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    * 
-   * @return 
+   * @return object name
    */
   const std::string & name() const;
 
@@ -1626,7 +1622,7 @@ protected:
  * @param s1 A pointer to a first shape.
  * @param s2 A pointer to a second shape.
  * 
- * @return 
+ * @return TODO
  */
 bool shapeGreaterDepth( const Shape *s1, const Shape *s2 );
 

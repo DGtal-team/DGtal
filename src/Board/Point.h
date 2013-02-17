@@ -38,7 +38,7 @@ struct Point {
   /** 
    * Point constructor.
    * 
-   * @param other
+   * @param other point to copy
    */
   Point( const Point & other ):x(other.x),y(other.y) { } 
 

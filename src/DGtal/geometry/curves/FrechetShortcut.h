@@ -521,7 +521,7 @@ namespace DGtal
       
       /**
 	 Angle between two vectors
-	 @param two vectors
+	 @param u and @param v two vectors
 	 @return an angle
       */
       static double angleVectVect(Vector u, Vector v)
@@ -532,7 +532,7 @@ namespace DGtal
 	
       /**
 	 Computes the chain code between two 8-connected pixels
-	 @param two points
+	 @param p and @param q two points
 	 @return an int
       */
       static  int computeChainCode(Point p, Point q)
@@ -570,7 +570,7 @@ namespace DGtal
     
       /**
 	 Computes the octant of the direction pq
-	 @param two points
+	 @param p and @param q two points
 	 @return an int
       */
     static int computeQuadrant(Point p, Point q)

@@ -261,7 +261,7 @@ namespace DGtal
     /**
      * @param classname the name of the class to which the style is associated.
      *
-     * @param style a pointer on a dynamically allocated style, which
+     * @param mode a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
     SetMode( std::string classname, std::string mode )

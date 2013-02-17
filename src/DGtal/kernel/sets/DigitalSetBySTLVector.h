@@ -63,7 +63,7 @@ namespace DGtal
    * It thus describes a modifiable set of points within the given
    * domain [Domain].
    *
-   * @tparam Domain a realization of the concept CDomain.
+   * @tparam TDomain a realization of the concept CDomain.
    * @see CDigitalSet,CDomain
    */
   template <typename TDomain>

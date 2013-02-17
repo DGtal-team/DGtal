@@ -74,8 +74,8 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param aRgb: an unsigned int representing the color.
-     * @param aAlpha: color transparency (default value =255);
+     * @param aRgb an unsigned int representing the color.
+     * @param aAlpha color transparency (default value =255);
      */
     
     Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
@@ -84,8 +84,10 @@ namespace DGtal
     /**
      * Constructor from R, G, B and Alpha parameter.
      *
-     * @param aRedValue, aGreenValue, aBlueValue, aAlphaValue: the three color components.
-     * @param alpha: color transparency.
+     * @param aRedValue  red component
+     * @param aGreenValue green component
+     * @param aBlueValue blue component
+     * @param aAlphaValue color transparency.
      */
     
     
@@ -97,8 +99,8 @@ namespace DGtal
     /**
      * Constructor from gray scale value.
      *
-     * @param aGrayValue: the color gray value.
-     * @param alpha: color transparency (default value =255);.
+     * @param aGrayValue the color gray value.
+     * @param aAlphaValue color transparency (default value =255);.
      */
     
     Color( unsigned char aGrayValue, unsigned char aAlphaValue = 255 )
@@ -107,10 +109,10 @@ namespace DGtal
 
     /**
      * Constructor.
+     * Constructs a Color with can be either valid or not.
      *
-     * @param aRedValue, aGreenValue, aBlueValue: the three color components (set to -1)
-     * @param alpha: color transparency (default value =255);.
-     */
+     * @param [in] aValidColor if true, the constructed color is valid.
+    */
     
     Color( const bool aValidColor = true )
       : myRed(-1),myGreen(-1),myBlue(-1), myAlpha(255)
@@ -177,7 +179,7 @@ namespace DGtal
     /** 
      * Return a an SVG parameter string for the opacity value.
      * 
-     * @param prefix A prefix string to be appended to the returned 
+     * @param aPrefix A prefix string to be appended to the returned 
      * string if not empty.
      * 
      * @return An empty string if alpha == 255, otherwise the string <prefix>-opacity="<alpha-value>".
@@ -257,7 +259,7 @@ namespace DGtal
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'Color' to write.
+   * @param aColor the object of class 'Color' to write.
    * @return the output stream after the writing.
    */
   std::ostream&
