@@ -37,11 +37,11 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/ExplicitDigitalSurface.h"
 #include "DGtal/topology/LightExplicitDigitalSurface.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
-#include "DGtal/topology/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
 
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
@@ -84,7 +84,6 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     Image image = VolReader<Image>::importVol ( filename );
     trace.info() <<image<<std::endl;
     DigitalSet set3d ( image.domain() );
-    SetPredicate<DigitalSet> set3dPredicate ( set3d );
     SetFromImage<DigitalSet>::append<Image> ( set3d, image,
             0,256 );
 
@@ -101,12 +100,12 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     MySurfelAdjacency surfAdj ( true ); // interior in all directions.
 
     trace.beginBlock ( "Set up digital surface." );
-    typedef LightImplicitDigitalSurface<KSpace, SetPredicate<DigitalSet> >
-    MyDigitalSurfaceContainer;
+    typedef LightImplicitDigitalSurface<KSpace, DigitalSet >
+      MyDigitalSurfaceContainer;
     typedef DigitalSurface<MyDigitalSurfaceContainer> MyDigitalSurface;
-    SCell bel = Surfaces<KSpace>::findABel ( ks, set3dPredicate, 100000 );
+    SCell bel = Surfaces<KSpace>::findABel ( ks, set3d, 100000 );
     MyDigitalSurfaceContainer* ptrSurfContainer =
-        new MyDigitalSurfaceContainer ( ks, set3dPredicate, surfAdj, bel );
+        new MyDigitalSurfaceContainer ( ks, set3d, surfAdj, bel );
     MyDigitalSurface digSurf ( ptrSurfContainer ); // acquired
 
     MyDigitalSurface::ConstIterator it = digSurf.begin();

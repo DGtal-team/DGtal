@@ -1,0 +1,274 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file PowerMap.ih
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/08/14
+ *
+ * Implementation of inline methods defined in PowerMap.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <boost/lexical_cast.hpp>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// ----------------------- Standard services ------------------------------
+
+
+
+/**
+ * Destructor.
+ */
+template < typename W, typename Sep, typename Im>
+inline
+DGtal::PowerMap< W,Sep,Im>::~PowerMap()
+{
+} 
+
+
+template < typename W, typename Sep, typename Im>
+inline
+typename DGtal::PowerMap<W, Sep,Im>::Self &  
+DGtal::PowerMap<W, Sep,Im>::operator=(const Self &aOtherPowerMap ) 
+{
+  if (this != &aOtherPowerMap)
+    { 
+      myMetricPtr = aOtherPowerMap.myMetricPtr;
+      myImagePtr = aOtherPowerMap.myImagePtr;
+      myWeightImagePtr = aOtherPowerMap.myWeightImagePtr;
+      myDomainPtr = aOtherPowerMap.myDomainPtr;
+      myInfinity = aOtherPowerMap.myInfinity;
+      myLowerBoundCopy = aOtherPowerMap.myLowerBoundCopy;
+      myUpperBoundCopy = aOtherPowerMap.myUpperBoundCopy;
+    }
+  return *this;
+}
+
+template < typename W, typename Sep, typename Im>
+inline
+void
+DGtal::PowerMap<W, Sep,Im>::compute( )
+{
+  //We copy the image extent
+  myLowerBoundCopy = myDomainPtr->lowerBound();
+  myUpperBoundCopy = myDomainPtr->upperBound();
+ 
+  //Point outside the domain 
+  myInfinity = myDomainPtr->upperBound() + Point::diagonal(1);
+  
+  //Init 
+  for(typename Domain::ConstIterator it = myDomainPtr->begin(),
+	itend = myDomainPtr->end();
+      it != itend;
+      ++it)
+    if (myWeightImagePtr->domain().isInside( *it ) )
+      myImagePtr->setValue ( *it, *it );
+    else
+      myImagePtr->setValue ( *it, myInfinity );
+  
+  //We process the dimensions one by one
+  for ( Dimension dim = 0; dim < W::Domain::Space::dimension ; dim++ )
+    computeOtherSteps ( dim );
+}
+
+template < typename W, typename Sep, typename Im>
+inline
+void
+DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
+{
+  std::string title = "Powermap dimension " +  boost::lexical_cast<std::string>( dim ) ;
+  trace.beginBlock ( title );
+  
+  typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
+  
+  //We setup the subdomain iterator
+  //the iterator will scan dimension using the order:
+  // {n-1, n-2, ... 1} (we skip the '0' dimension).
+  std::vector<Size> subdomain;
+  subdomain.reserve(W::Domain::Space::dimension - 1);
+  for (unsigned int k = 0; k < W::Domain::Space::dimension ; k++)
+    if ( ((int)W::Domain::Space::dimension - 1 - k) != dim)
+      subdomain.push_back( (int)W::Domain::Space::dimension - 1 - k );
+  
+  Domain localDomain(myLowerBoundCopy, myUpperBoundCopy);
+  
+  
+#ifdef WITH_OPENMP
+  //Parallel loop 
+  std::vector<Point> subRangePoints;
+  //Starting point precomputation
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    subRangePoints.push_back( *it );
+  //We run the 1D problems in //
+#pragma omp parallel for schedule(dynamic)
+  for (size_t i = 0; i < subRangePoints.size(); ++i)
+    computeOtherStep1D ( subRangePoints[i], dim);
+
+#else  
+  //We solve the 1D problems sequentially
+  for (ConstDomIt it = localDomain.subRange( subdomain ).begin(),
+	 itend = localDomain.subRange( subdomain ).end();
+       it != itend; ++it)
+    computeOtherStep1D ( *it, dim);
+#endif
+
+  trace.endBlock();
+  
+}
+
+// //////////////////////////////////////////////////////////////////////:
+// ////////////////////////// Other Phases
+template <typename W, typename Sep, typename Im>
+void
+DGtal::PowerMap<W,Sep,Im>::computeOtherStep1D ( const Point &startingPoint,
+                                                const Size dim) const
+{
+  Point point = startingPoint;
+  Point endpoint = startingPoint;
+  Point psite;
+  int nbSites = -1;
+  std::vector<Point> Sites;
+  
+  //Reserve 
+  Sites.reserve( myUpperBoundCopy[dim] - myLowerBoundCopy[dim] +1);
+
+  //endpoint of the 1D row
+  endpoint[dim] = myUpperBoundCopy[dim];
+  
+  //Pruning the list of sites (dim=0 implies no hibben sites)
+  if (dim==0)
+    {
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = myImagePtr->operator()( point );
+	  if ( psite != myInfinity )
+	    {
+	      nbSites++;
+	      Sites.push_back( psite );
+	    }
+	  point[dim] ++;
+	}
+    }
+  else
+    {
+      //Pruning the list of sites
+      for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+	{
+	  psite = myImagePtr->operator()(point);
+	  if ( psite != myInfinity )
+	    {
+	      while ((nbSites >= 1) && 
+		     ( myMetricPtr->hiddenByPower(Sites[nbSites-1], myWeightImagePtr->operator()(Sites[nbSites-1]),
+						  Sites[nbSites] ,  myWeightImagePtr->operator()(Sites[nbSites]),
+						  psite,  myWeightImagePtr->operator()(psite),
+						  startingPoint, endpoint, dim) ))
+		{
+		  nbSites --; 
+                  Sites.pop_back();
+		}
+	      nbSites++;
+	      Sites.push_back( psite );
+	    }
+	  point[dim] ++;
+	}
+    }
+
+  
+  if (startingPoint[0] == 4)
+    {
+      for(typename std::vector<Point>::const_iterator it = Sites.begin(), itend=Sites.end(); it!=itend; ++it)
+        trace.info() << *it;
+      trace.info()<<std::endl;
+    }
+  //No sites found
+  if (nbSites == -1)
+    return;
+
+  int k = 0;
+
+  //Rewriting
+  point[dim] = myLowerBoundCopy[dim];
+  for(Abscissa i = myLowerBoundCopy[dim] ;  i <= myUpperBoundCopy[dim] ;  i++)
+    {
+      while ( (k < nbSites) && 
+	      ( myMetricPtr->closestPower(point, 
+					  Sites[k], myWeightImagePtr->operator()(Sites[k]),
+					  Sites[k+1],myWeightImagePtr->operator()(Sites[k+1]))
+		!= DGtal::ClosestFIRST ))
+        k++;
+      
+      myImagePtr->setValue(point, Sites[k]);
+      point[dim]++;
+    }
+}
+
+
+/**
+ * Constructor.
+ */
+template <typename W,typename TSep,typename Im>
+inline
+DGtal::PowerMap<W,TSep,Im>::PowerMap( ConstAlias<Domain> aDomain,
+                                      ConstAlias<WeightImage> aWeightImage,
+                                      ConstAlias<PowerSeparableMetric> aMetric):
+  myDomainPtr(aDomain), myMetricPtr(aMetric),
+  myWeightImagePtr(aWeightImage)
+  
+{
+  myImagePtr = CountedPtr<OutputImage>(new OutputImage(*aDomain));
+  compute();
+}
+
+template <typename W,typename TSep,typename Im>
+inline
+void
+DGtal::PowerMap<W,TSep,Im>::selfDisplay ( std::ostream & out ) const
+{
+  out << "[PowerMap] power separable metric=" << *myMetricPtr ; 
+}
+
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+
+template <typename W,typename TSep,typename Im>
+inline
+std::ostream&
+DGtal::operator<< ( std::ostream & out, 
+		    const PowerMap<W,TSep,Im> & object )
+{
+  object.selfDisplay( out );
+  return out;
+}
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+
+

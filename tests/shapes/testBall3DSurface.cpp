@@ -28,11 +28,10 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
+#include <iostream>
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
-#include <iostream>
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

@@ -1,5 +1,5 @@
 /**
- * @file DGtalKernel.dox
+ * @file moduleSpacePointVectorDomain.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -115,7 +115,7 @@ Points and Vectors are fundamental objects in the digital space. Indeed, they al
  - last but not least, the interface also provides iterators and accessors.
 
 
-@note For the sake of simplicity, both SpaceND::Point and SpaceND::Vector in a space DGtal::SpaceND<dimension,Integer> are aliases of the specialized type DGtal::PointVector<dimension,Integer>. In other words, these two types can be exchanged without any problem, even if it does not make sense in a  mathematical. For instance, from a vector, we can define its opposite but the opposite does not make sense for a point. 
+@note For the sake of simplicity, both SpaceND::Point and SpaceND::Vector in a space DGtal::SpaceND are aliases of the specialized type DGtal::PointVector. In other words, these two types can be exchanged without any problem, even if it does not make sense in a  mathematical. For instance, from a vector, we can define its opposite but the opposite does not make sense for a point. 
 
 
  An element of a Point has type Coordinate and an element of a Vector has type Component. For instance, the following code is valid in terms of type.
@@ -137,6 +137,13 @@ However, we encourage the use of iterators as follows
 
 
 @note Similarly to the previous note and since Vector and Space are aliases, SpaceND::Point::Coordinate and SpaceND::Vector::Component are aliases of  SpaceND::Integer. It does not lead to a strong typing of Point and Vector but it helps the user to design code as close as possible to a mathematical formulation.
+
+
+@advanced PointVector class is parametrized by the following template parameters:
+- the static dimension of the underlying space; 
+- a model of CEulideanRing to be used as PointVector components/coordinates;
+- a type of container to store the point or vector (default container: boost::array with static size equals to the space dimension).
+
 
 
 \section sectDomain Domains and HyperRectDomains
@@ -284,10 +291,6 @@ Lastly, if your compiler supports C++0X initializer list, there is a custom subR
     trace.info() << "Processing point"<< (*it) << endl;
 #endif  
 @endcode    
-
-
-\section sectImage Image
-
 
 
 */
