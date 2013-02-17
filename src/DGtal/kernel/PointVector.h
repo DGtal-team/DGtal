@@ -143,7 +143,10 @@ namespace DGtal
   public:
     
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
-
+    
+    ///We cannot check the TContainer since boost::array is not a
+    ///model of boost::RandomAccessContainer
+  
     ///Self type
     typedef PointVector<dim, TEuclideanRing, TContainer> Self;
 
