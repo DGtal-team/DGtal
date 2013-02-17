@@ -41,25 +41,25 @@
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-DGtal::SetPredicate<TDigitalSet>
-::SetPredicate( const DigitalSet & aSet )
-  : mySet( &aSet )
+DGtal::deprecated::SetPredicate<TDigitalSet>::
+SetPredicate( ConstAlias<DigitalSet> aSet )
+  : mySet( aSet )
 {
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-DGtal::SetPredicate<TDigitalSet>
-::SetPredicate( const SetPredicate & other )
+DGtal::deprecated::SetPredicate<TDigitalSet>::
+SetPredicate( const SetPredicate & other )
   : mySet( other.mySet )
 {
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-DGtal::SetPredicate<TDigitalSet>&
-
-DGtal::SetPredicate<TDigitalSet>::operator=( const SetPredicate & other )
+DGtal::deprecated::SetPredicate<TDigitalSet>&
+DGtal::deprecated::SetPredicate<TDigitalSet>::
+operator=( const SetPredicate & other )
 {
   if (this != &other)
     {
@@ -71,8 +71,8 @@ DGtal::SetPredicate<TDigitalSet>::operator=( const SetPredicate & other )
 template <typename TDigitalSet>
 inline
 bool
-DGtal::SetPredicate<TDigitalSet>
-::operator()( const Point & p ) const
+DGtal::deprecated::SetPredicate<TDigitalSet>::
+operator()( const Point & p ) const
 {
   return mySet->find( p ) != mySet->end();
 }

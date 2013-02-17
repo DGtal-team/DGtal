@@ -46,7 +46,7 @@
 #include <cmath>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/Statistic.h"
+#include "DGtal/math/Statistic.h"
 
 ///////////////
 namespace DGtal

@@ -15,13 +15,13 @@
  **/
 
 /**
- * @file Mathematics.dox
+ * @file modulePolynomial.dox
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/04/05
  *
- * Documentation file for feature Mathematics
+ * Documentation file for feature modulePolynomial
  *
  * This file is part of the DGtal library.
  */
@@ -123,8 +123,8 @@ MPolynomial<3, double> Pc = 1.0;
 Creation is thus accomplished using the functions mmonomial<K,
 A>(e_0, ..., e_{n-1}), where A again is std::allocator<K> by
 default. This creates a polynomial of type MPolynomial <n, K, A>
-which consists of exactly one monomial X_0^{e_0} * ... *
-X_{n-1}^{e_{n-1}} having coefficient 1.
+which consists of exactly one monomial @f$ X_0^{e_0} * ... *
+X_{n-1}^{e_{n-1}}@f$ having coefficient 1.
 
 Otherwise, polynomials are created through operations, derivations,
 etc.
@@ -220,18 +220,18 @@ for instance useful in some algorithms of the STL.
 
 \subsection dgtal_mpolynomial_sec1_4 How monomials and coefficients are stored ?
 
-The coefficients are stored in a std::vector <K>; while
-MPolynomial <1, K> uses std::vector<K>, MPolynomial <n, K> for n > 1
-uses std::vector <MPolynomial <n-1, K> *>, i.e. pointers to
+The coefficients are stored in a std::vector<K>; while
+MPolynomial<1, K> uses std::vector<K>, MPolynomial<n, K> for n > 1
+uses std::vector <MPolynomial<n-1, K> *>, i.e. pointers to
 coefficients are stored. This is implemented using the "intelligent"
-vector IVector <K> template.
+vector IVector<K> template.
 
 \subsection dgtal_mpolynomial_sec1_5 Computing partial derivatives
 
 The library also offers to compute partial derivatives. Given a
-polynomial f of type MPolynomial <n, K>, one can compute the partial
+polynomial f of type MPolynomial<n, K>, one can compute the partial
 derivative with respect to the j-th variable of f by writing
-derivative <j>(f). Note that K is required to allow multiplication by
+derivative<j>(f). Note that K is required to allow multiplication by
 int's for this to work.
 
 @code
@@ -379,7 +379,7 @@ concrete example.
 
 In input, you may write the variables either simply \c x, \c y, \c z,
 \c t for the first four variables, or more generically \c X_0, \c X_1,
-\ldots, \c X_m, where \c m is an integer number that is smaller than
+..., \c X_m, where \c m is an integer number that is smaller than
 the number of variables of the polynomial.
 
 For instance, you may test polynomial-derivative.cpp and

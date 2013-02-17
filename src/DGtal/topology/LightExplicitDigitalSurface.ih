@@ -30,8 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <iterator>
-#include "DGtal/kernel/sets/SetPredicate.h"
-#include "DGtal/topology/CVertexPredicate.h"
+#include "DGtal/graph/CVertexPredicate.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -222,9 +221,11 @@ inline
 typename DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelConstIterator
 DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::begin() const
 {
-  SelfVisitor* ptrVisitor = new SelfVisitor( *this, mySurfel );
-  ASSERT( ptrVisitor != 0 );
-  return SurfelConstIterator( ptrVisitor );
+  SelfVisitorRange range( new SelfVisitor( *this, mySurfel ) );
+  return range.begin();
+  // SelfVisitor* ptrVisitor = new SelfVisitor( *this, mySurfel );
+  // ASSERT( ptrVisitor != 0 );
+  // return SurfelConstIterator( ptrVisitor );
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
@@ -232,7 +233,7 @@ inline
 typename DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::SurfelConstIterator
 DGtal::LightExplicitDigitalSurface<TKSpace,TSurfelPredicate>::end() const
 {
-  return SurfelConstIterator( 0 );
+  return SurfelConstIterator();
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelPredicate>
