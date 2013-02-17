@@ -58,7 +58,7 @@ namespace DGtal
      * ie. checks if itb != ite
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @tparam any iterator or circulator
+     * @tparam IC iterator or circulator
      */
     template< typename IC > 
     inline
@@ -69,7 +69,7 @@ namespace DGtal
      * ie. checks if the circulators are valid. 
      * @param c1 begin iterator of the range
      * @param c2 end iterator of the range
-     * @tparam any iterator or circulator
+     * @tparam IC iterator or circulator
      */
     template< typename IC > 
     inline
@@ -91,7 +91,7 @@ namespace DGtal
    * Checks if the range [ @a itb , @a ite ) is not empty
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
-   * @tparam any model of iterator or circulator
+   * @tparam IC model of iterator or circulator
    */
   template< typename IC> 
   inline
@@ -104,7 +104,6 @@ namespace DGtal
    * Moves @a ic at position @ it + @a n 
    * @param ic any (circular)iterator
    * @param n any positive distance
-   * @return moved (circular)iterator
    * @tparam IC any model o fiterator or circulator
    */
   template<typename IC>
@@ -119,7 +118,6 @@ namespace DGtal
      * @param ic any (circular)iterator
      * @param n any positive distance
      * @param c any instance of ForwardCategory
-     * @return (circular)iterator @a it incremented @a n times
      * @tparam IC any iterator or circulator
      */
     template<typename IC>
@@ -133,7 +131,6 @@ namespace DGtal
      * @param ic any (circular)iterator
      * @param n any positive distance
      * @param c any instance of RandomAccessCategory
-     * @return  @a it += @a n
      * @tparam IC any iterator or circulator
      */
     template<typename IC>

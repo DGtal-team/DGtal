@@ -39,5 +39,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
   SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Qunused-arguments")
   SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Qunused-arguments")
   message(STATUS "Clang compiler detected")
+  if ( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdocumentation")
+  endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
 endif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 

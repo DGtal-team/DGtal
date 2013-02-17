@@ -124,7 +124,7 @@ namespace DGtal
      * a given file.
      * 
      * 
-     * @param filename  
+     * @param [in] filename input filename 
      * @return a vector containing the vector of polygons.
      **/
   
@@ -150,7 +150,7 @@ namespace DGtal
      * Main method to FreemanChain contours.  Each line of the file
      * should represent a FreemanChain
      * 
-     * @param filename  
+     * @param [in] filename  the input filename
    
      * @return the vector containing the set of FreemanChain.
      **/

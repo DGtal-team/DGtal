@@ -205,7 +205,7 @@ namespace DGtal
      * speed and memory usage is to be done here.
      *
      * @param p1 First point of the image bounding box.
-     * @param p1 Second point of the image bounding box.
+     * @param p2 Second point of the image bounding box.
      * 
      * @param defaultValue In order for the tree to be valid it needs
      * a default value at the root (key = 1)
@@ -433,7 +433,7 @@ namespace DGtal
      * the usual tree representation.
      *
      * @param out output stream.
-     * @param nbBits 
+     * @param nbBits  number of bits
      **/
     void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
 

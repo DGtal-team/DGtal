@@ -92,13 +92,13 @@ namespace DGtal
    duplicate it. Use static method LightSternBrocot::fraction to obtain
    your fractions.
 
-   @param TInteger the integral type chosen for the fractions.
+   @tparam TInteger the integral type chosen for the fractions.
 
-   @param TQuotient the integral type chosen for the
+   @tparam TQuotient the integral type chosen for the
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
 
-   @param TMap the rebinder type for defining an association TQuotient ->
+   @tparam TMap the rebinder type for defining an association TQuotient ->
    LighterSternBrocot::Node*. For instance, StdMapRebinder is fine.
 
   */
@@ -141,7 +141,7 @@ namespace DGtal
          @param q1 the denominator.
          @param u1 the quotient (last coefficient of its continued fraction).
          @param k1 the depth (1+number of coefficients of its continued fraction).
-         @param _ascendant A pointer to the node that is the preceding
+         @param ascendant A pointer to the node that is the preceding
          principal convergent.
        */
       Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 

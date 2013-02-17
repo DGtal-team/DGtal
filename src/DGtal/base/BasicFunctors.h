@@ -180,7 +180,7 @@ namespace DGtal
 
     /** 
      * Constructor.
-     * @param value  the constant value.
+     * @param aValue  the constant value.
      */
     ConstValueFunctor(const Value& aValue = 0)
       :myValue(aValue) {};
@@ -189,7 +189,6 @@ namespace DGtal
      * Operator
      *
      * @tparam TInput type of the input object
-     * @param aInput input object
      *
      * @return the constant value.
      */
@@ -238,7 +237,7 @@ namespace DGtal
    *
    * @tparam TFunctor1 first functor
    * @tparam TFunctor2 second functor
-   * @tparam ReturnType
+   * @tparam ReturnType return type
    */
   template <typename TFunctor1, typename TFunctor2, typename ReturnType >
   class Composer
@@ -330,7 +329,7 @@ class Thresholder {
 
     /** 
      * Constructor. 
-     * @param value  the threshold value (default 0).
+     * @param aT  the threshold value (default 0).
      */
     Thresholder(const Input& aT = 0):myT(aT) {};
     /**
@@ -432,8 +431,8 @@ struct Thresholder<T,true,true> {
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two Predicates given at construction.
    *
-   * @tparam Predicate1 the left predicate type.
-   * @tparam Predicate2 the right predicate type.
+   * @tparam TPredicate1 the left predicate type.
+   * @tparam TPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPredicate1, typename TPredicate2, 

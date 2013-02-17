@@ -265,7 +265,7 @@ namespace DGtal
     /**
      * Assignement Operator
      *
-     * @param other the object to copy.
+     * @param pv the object to copy.
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & pv );
@@ -276,7 +276,7 @@ namespace DGtal
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
      *
-     * @param other the object to copy.
+     * @param pv the object to copy.
      * @param dim the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
@@ -288,7 +288,7 @@ namespace DGtal
      * Inverse partial copy of a given PointVector. Only coordinates not 
      * in dimensions are copied.
      *
-     * @param other the object to copy.
+     * @param pv the object to copy.
      * @param dim the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
@@ -300,8 +300,8 @@ namespace DGtal
      * Partial copy of a given PointVector. Only coordinates in dimensions
      * are copied.
      *
-     * @param other the object to copy.
-     * @param dim the dimensions of v to copy
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */
@@ -312,8 +312,8 @@ namespace DGtal
      * Partial copy of a given PointVector. Only coordinates not 
      * in dimensions are copied.
      *
-     * @param other the object to copy.
-     * @param dim the dimensions of v to copy
+     * @param pv the object to copy.
+     * @param dimensions the dimensions of v to copy
      *        (Size between 0 and N, all differents).
      * @return a reference on 'this'.
      */

@@ -227,7 +227,7 @@ namespace DGtal
        * @param aTopology the digital topology chosen for this set, a copy of
        * which is stored in the object.
        *
-       * @param aDomain any domain related to the given topology.
+       * @param domain any domain related to the given topology.
        */
       Object( const DigitalTopology & aTopology,
           const Domain & domain );
@@ -456,7 +456,7 @@ namespace DGtal
        * Writes the neighbors of a vertex using an output iterator
        * 
        * 
-       * @tparam OutputObjectIterator the type of an output iterator writing
+       * @tparam OutputIterator the type of an output iterator writing
        * in a container of vertices.
        * 
        * @param it the output iterator

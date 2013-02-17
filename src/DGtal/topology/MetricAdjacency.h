@@ -173,7 +173,7 @@ namespace DGtal
      * output iterator
      * 
      * 
-     * @tparam OutputObjectIterator the type of an output iterator writing
+     * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
      * 
      * @tparam VertexPredicate the type of the predicate
