@@ -180,7 +180,7 @@ namespace DGtal
          *
          * Nb: complexity in O(1).
          *
-         * @param chain a Freeman chain,
+         * @param aChain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
@@ -190,7 +190,7 @@ namespace DGtal
 
         /**
          * Copy constructor.
-         * @param other the iterator to clone.
+         * @param aOther the iterator to clone.
          */
         ConstIterator( const ConstIterator & aOther )
           : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
@@ -562,7 +562,7 @@ public:
 
     /**
      * Constructor.
-     * @param vectorPoints the vector containing all the points. 
+     * @param vectPoints the vector containing all the points.
      */
     FreemanChain( const std::vector<Point>& vectPoints);
     
@@ -602,7 +602,7 @@ public:
 
     /**
      * Comparaison operator
-     * @param, other the object to compare to.
+     * @paramother other the object to compare to.
      * @return 'true' both FreemanChain are different, 'false' otherwise.
      */
     bool operator!=( const FreemanChain & other) const
@@ -1016,7 +1016,7 @@ public:
      * @param aInner2outer (output) the mapping associating inner to
      * outer elements as indices in their respective Freeman chain.
      *
-     * @param aOuter_chain the input code of the 4-connected contour.
+     * @param aaOuter_chainthe input code of the 4-connected contour.
      *
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
@@ -1034,7 +1034,7 @@ public:
      * these removals cuts the contour in several loops. Because of
      * that, the mappings are more complex.
 
-     * @param aClean_cs (output) the array of cleaned 4-connected contours.
+     * @param aCleanCs (output) the array of cleaned 4-connected contours.
      *
      * @param aC2clean (output) the mapping associating an element to
      * its clean element as a pair (n,i) where n is the index of the
@@ -1069,7 +1069,7 @@ public:
      * pointel contours should not have any outer spikes, while
      * 4-connected pixel contours should not have any inner spikes.
      *
-     * @param aClean_c (output) the cleaned 4-connected contour.
+     * @param aCleanC (output) the cleaned 4-connected contour.
      *
      * @param aC2clean (output) the mapping associating an element to
      * its clean element.

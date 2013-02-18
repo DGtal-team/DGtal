@@ -101,10 +101,10 @@ Steps:
 [End ArithmeticalDSS]
    * @endcode
    *
-   * @tparam 'TIterator'  type ConstIterator on 2D points, 
-   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
+   * @tparam TIterator  type ConstIterator on 2D points,
+   * @tparam TInteger  type of scalars used for the DSS parameters
    * (satisfying CInteger) 
-   * @tparam 'connectivity'  an integer equal to 
+   * @tparam connectivity  an integer equal to
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *
@@ -328,7 +328,7 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendForward(const ConstIterator & itf);
+    bool extendForward(const ConstIterator & itf) ;
 
     /**
      * @deprecated

@@ -162,7 +162,7 @@ namespace DGtal
     public:
       /**
        * Constructor
-       * @param aDSS
+       * @param aDSS the DSS to decorate
        */
       DSSDecorator4ConvexPart(TDSS& aDSS)
       {
@@ -213,7 +213,7 @@ namespace DGtal
     public:
       /**
        * Constructor
-       * @param aDSS
+       * @param aDSS the DSS to decorate
        */
       DSSDecorator4ConcavePart(TDSS& aDSS)
       {
