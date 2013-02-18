@@ -151,7 +151,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
                                                                                                       Clone< KernelConstIterator > itgend,
                                                                                                       Clone< Cell > kOrigin,
-                                                                                                      Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
+                                                                                                      Alias< std::vector< PairIterators > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;
@@ -168,7 +168,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 2>::init( Clone< KernelConstIterator > itgbegin,
                                                                                               Clone< KernelConstIterator > itgend,
                                                                                               Clone< Cell > kOrigin,
-                                                                                              Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
+                                                                                              Alias< std::vector< PairIterators > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;
@@ -187,7 +187,7 @@ void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, 3>::init( Clone< KernelConstIterator > itgbegin,
                                                                                               Clone< KernelConstIterator > itgend,
                                                                                               Clone< Cell > kOrigin,
-                                                                                              Alias< std::vector< PairIterators< KernelConstIterator > > > mask )
+                                                                                              Alias< std::vector< PairIterators > > mask )
 {
     myItKernelBegin = itgbegin;
     myItKernelEnd = itgend;
@@ -473,7 +473,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
             {
                 maskQuantity = Quantity(0);
 
-                for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                     shiftedPoint += shift2;
@@ -485,7 +485,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
+                for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates;
                     shiftedPoint += shift2;
@@ -550,7 +550,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskQuantity = Quantity(0);
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift;
@@ -563,7 +563,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
+                    for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift;
@@ -613,7 +613,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskQuantity = Quantity(0);
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                         shiftedPoint += shift2;
@@ -626,7 +626,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
+                    for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift2;
@@ -743,7 +743,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
             {
                 maskQuantity = Quantity(0);
 
-                for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                     shiftedPoint += shift2;
@@ -755,7 +755,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
+                for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates;
                     shiftedPoint += shift2;
@@ -822,7 +822,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskQuantity = Quantity(0);
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift;
@@ -835,7 +835,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
+                    for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift;
@@ -887,7 +887,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskQuantity = Quantity(0);
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                         shiftedPoint += shift2;
@@ -900,7 +900,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
+                    for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift2;
@@ -1362,7 +1362,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskSa[ line ] = 0;
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                     shiftedPoint += shift2;
@@ -1389,7 +1389,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates;
                     shiftedPoint += shift2;
@@ -1505,7 +1505,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift;
@@ -1533,7 +1533,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift;
@@ -1618,7 +1618,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift2;
@@ -1647,7 +1647,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[8-offset].itBegin, itgend = myMask[8-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift2;
@@ -1870,7 +1870,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     maskSa[ line ] = 0;
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                     shiftedPoint += shift2;
@@ -1897,7 +1897,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
                 }
 
-                for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates;
                     shiftedPoint += shift2;
@@ -2014,7 +2014,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift;
@@ -2042,7 +2042,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift;
@@ -2129,7 +2129,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to substract from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[offset].itBegin, itgend = myMask[offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
                         shiftedPoint += shift2;
@@ -2157,7 +2157,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
 
                     /// Part to add from previous result.
-                    for ( KernelConstIterator itgcurrent = myMask[26-offset].itBegin, itgend = myMask[26-offset].itEnd; itgcurrent != itgend; ++itgcurrent )
+                    for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
                         shiftedPoint = (*itgcurrent).myCoordinates;
                         shiftedPoint += shift2;
