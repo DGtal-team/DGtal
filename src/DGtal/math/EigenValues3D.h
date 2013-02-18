@@ -54,13 +54,17 @@ namespace DGtal
 
 /**
  * Description of struct 'EigenValues3D' <p>
- * \brief Aim: Computes EigenValues and EigenVectors from 3D Matrix.
+ * Aim: Computes EigenValues and EigenVectors from 3D Matrix.
+ *
+ * @tparam TQuantity Type of the quantity inside the matrix.
  */
+template< typename TQuantity >
 class EigenValues3D
 {
 public:
-  typedef SimpleMatrix< double, 3, 3 > Matrix33;
-  typedef Matrix33::RowVector Vector3;
+  typedef TQuantity Quantity;
+  typedef SimpleMatrix< Quantity, 3, 3 > Matrix33;
+  typedef typename Matrix33::RowVector Vector3;
 
 private:
   /**
@@ -84,22 +88,22 @@ private:
     {
       // Scale to avoid under/overflow.
 
-      double scale = 0.0;
-      double h = 0.0;
+      Quantity scale = Quantity( 0.0 );
+      Quantity h = Quantity( 0.0 );
       for ( int k = 0; k < i; ++k )
       {
-        scale += fabs( d[ k ] );
+        scale += Quantity( std::fabs( d[ k ] ));
       }
 
-      if ( scale == 0.0 )
+      if ( scale == Quantity( 0.0 ))
       {
         e[ i ] = d[ i - 1 ];
 
         for ( int j = 0; j < i; ++j )
         {
           d[ j ] = V(( i - 1 ),  j );
-          V.setComponent ( i, j, 0.0 );
-          V.setComponent ( j, i, 0.0);
+          V.setComponent ( i, j, Quantity( 0.0 ));
+          V.setComponent ( j, i, Quantity( 0.0 ));
         }
       }
       else
@@ -111,8 +115,8 @@ private:
           h += d[ k ] * d[ k ];
         }
 
-        double f = d[ i - 1 ];
-        double g = sqrt( h );
+        Quantity f = d[ i - 1 ];
+        Quantity g = Quantity( std::sqrt( h ));
 
         if ( f > 0.0 )
         {
@@ -125,7 +129,7 @@ private:
 
         for ( int j = 0; j < i; ++j)
         {
-          e[ j ] = 0.0;
+          e[ j ] = Quantity( 0.0 );
         }
 
         // Apply similarity transformation to remaining columns.
@@ -144,7 +148,7 @@ private:
           e[ j ] = g;
         }
 
-        f = 0.0;
+        f = Quantity( 0.0 );
         for ( int j = 0; j < i; ++j )
         {
           e[ j ] /= h;
@@ -169,7 +173,7 @@ private:
           }
 
           d[ j ] = V( i - 1, j );
-          V.setComponent ( i, j, 0.0 );
+          V.setComponent ( i, j, Quantity( 0.0 ));
         }
       }
       d[ i ] = h;
@@ -179,10 +183,10 @@ private:
     for ( int i = 0; i < dimensionMinusOne; ++i )
     {
       V.setComponent ( dimensionMinusOne, i, V ( i, i ));
-      V.setComponent ( i, i, 1.0 );
-      double h = d[ i + 1 ];
+      V.setComponent ( i, i, Quantity( 1.0 ));
+      Quantity h = d[ i + 1 ];
 
-      if ( h != 0.0 )
+      if ( h != Quantity( 0.0 ) )
       {
         for ( int k = 0; k <= i; ++k )
         {
@@ -191,7 +195,7 @@ private:
 
         for ( int j = 0; j <= i; ++j )
         {
-          double g = 0.0;
+          Quantity g = Quantity( 0.0 );
 
           for ( int k = 0; k <= i; ++k )
           {
@@ -206,18 +210,18 @@ private:
       }
       for ( int k = 0; k <= i; ++k )
       {
-        V.setComponent ( k, i + 1, 0.0);
+        V.setComponent ( k, i + 1, Quantity( 0.0 ));
       }
     }
 
     for ( int j = 0; j < dimension; ++j )
     {
       d[ j ] = V ( dimensionMinusOne, j );
-      V.setComponent ( dimensionMinusOne, j, 0.0 );
+      V.setComponent ( dimensionMinusOne, j, Quantity( 0.0 ));
     }
 
-    V.setComponent ( dimensionMinusOne, dimensionMinusOne, 1.0 );
-    e[ 0 ] = 0.0;
+    V.setComponent ( dimensionMinusOne, dimensionMinusOne, Quantity( 1.0 ));
+    e[ 0 ] = Quantity( 0.0 );
   }
 
   /**
@@ -239,17 +243,17 @@ private:
 
     e[ dimensionMinusOne ] = 0.0;
 
-    double f = 0.0;
-    double tst1 = 0.0;
-    double eps = pow ( 2.0, -52.0 );
-    for  (int l = 0; l < dimension; ++l )
+    Quantity f = Quantity( 0.0 );
+    Quantity tst1 = Quantity( 0.0 );
+    Quantity eps = Quantity( std::pow( 2.0, -52.0 ));
+    for( int l = 0; l < dimension; ++l )
     {
       // Find small subdiagonal element
-      tst1 = max ( tst1, fabs ( d[ l ] ) + fabs( e[ l ] ));
+      tst1 = Quantity( std::max( tst1, std::fabs ( d[ l ] ) + std::fabs( e[ l ] )));
       int m = l;
       while ( m < dimension )
       {
-        if ( fabs ( e[ m ] ) <= eps * tst1 )
+        if ( std::fabs ( e[ m ] ) <= eps * tst1 )
         {
           break;
         }
@@ -258,7 +262,7 @@ private:
 
       // If m == l, d[l] is an eigenvalue,
       // otherwise, iterate.
-      if ( m > l )
+      if( m > l )
       {
         int iter = 0;
         do
@@ -267,20 +271,20 @@ private:
 
           // Compute implicit shift
 
-          double g = d[ l ];
-          double p = ( d[ l + 1 ] - g ) / ( 2.0 * e[ l ] );
-          double r = sqrt ( p * p + 1.0 * 1.0 );
+          Quantity g = d[ l ];
+          Quantity p = ( d[ l + 1 ] - g ) / ( Quantity( 2.0 ) * e[ l ] );
+          Quantity r = Quantity( std::sqrt ( p * p + Quantity( 1.0 ) * Quantity( 1.0 )));
 
-          if ( p < 0 )
+          if( p < 0 )
           {
             r = -r;
           }
 
           d[ l ] = e[ l ] / ( p + r );
           d[ l + 1 ] = e[ l ] * ( p + r );
-          double dl1 = d[ l + 1 ];
-          double h = g - d[ l ];
-          for ( int i = l + 2; i < dimension; ++i )
+          Quantity dl1 = d[ l + 1 ];
+          Quantity h = g - d[ l ];
+          for( int i = l + 2; i < dimension; ++i )
           {
             d[ i ] -= h;
           }
@@ -288,12 +292,12 @@ private:
 
           // Implicit QL transformation.
           p = d[ m ];
-          double c = 1.0;
-          double c2 = c;
-          double c3 = c;
-          double el1 = e[ l + 1 ];
-          double s = 0.0;
-          double s2 = 0.0;
+          Quantity c = Quantity( 1.0 );
+          Quantity c2 = c;
+          Quantity c3 = c;
+          Quantity el1 = e[ l + 1 ];
+          Quantity s = Quantity( 0.0 );
+          Quantity s2 = Quantity( 0.0 );
           for ( int i = m - 1; i >= l; --i )
           {
             c3 = c2;
@@ -301,7 +305,7 @@ private:
             s2 = s;
             g = c * e[ i ];
             h = c * p;
-            r = sqrt ( p * p + e[ i ] * e[ i ] );
+            r = Quantity( std::sqrt ( p * p + e[ i ] * e[ i ] ));
             e[ i + 1 ] = s * r;
             s = e[ i ] / r;
             c = p / r;
@@ -309,7 +313,7 @@ private:
             d[ i + 1 ] = h + s * ( c * g + s * d[ i ] );
 
             // Accumulate transformation.
-            for ( int k = 0; k < dimension; ++k )
+            for( int k = 0; k < dimension; ++k )
             {
               h = V ( k, i + 1 );
               V.setComponent ( k, i + 1, ( s * V ( k, i ) + c * h ));
@@ -324,18 +328,18 @@ private:
           // Check for convergence.
 
         }
-        while ( fabs ( e[ l ] ) > eps * tst1 );
+        while ( std::fabs ( e[ l ] ) > eps * tst1 );
       }
 
       d[ l ] = d[ l ] + f;
-      e[ l ] = 0.0;
+      e[ l ] = Quantity( 0.0 );
     }
 
     // Sort eigenvalues and corresponding vectors.
     for ( int i = 0; i < dimensionMinusOne; ++i )
     {
       int k = i;
-      double p = d[ i ];
+      Quantity p = d[ i ];
 
       for ( int j = i + 1; j < dimension; ++j )
       {
@@ -373,7 +377,7 @@ private:
       */
 
 public:
-  static void getEigenDecomposition ( Matrix33 & matrix, Matrix33 & eigenVectors, Vector3 & eigenValues)
+  static void getEigenDecomposition( Matrix33 & matrix, Matrix33 & eigenVectors, Vector3 & eigenValues)
   {
     Vector3 e;
 
@@ -384,8 +388,8 @@ public:
         eigenVectors.setComponent( i, j, matrix( i, j ));
       }
 
-      e[ i ] = 0.0;
-      eigenValues[ i ] = 0.0;
+      e[ i ] = Quantity( 0.0 );
+      eigenValues[ i ] = Quantity( 0.0 );
     }
 
     tred2 ( eigenVectors, eigenValues, e );

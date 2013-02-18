@@ -308,7 +308,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
     }
   }
 
-  EigenValues3D::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
+  EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
 
   ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
@@ -341,7 +341,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
       }
     }
 
-    EigenValues3D::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
+    EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
 
     ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
@@ -421,7 +421,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
       }
     }
 
-    EigenValues3D::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
+    EigenValues3D< Quantity >::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
 
     ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
@@ -468,7 +468,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
       }
     }
 
-    EigenValues3D::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
+    EigenValues3D< Quantity >::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
 
     ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 

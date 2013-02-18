@@ -409,7 +409,7 @@ public:
   typedef typename Convolver::PairIterators PairIterators;
 
   typedef typename Convolver::CovarianceMatrix Matrix3x3;
-  typedef EigenValues3D::Vector3 Vector3;
+  typedef EigenValues3D< Quantity >::Vector3 Vector3;
   typedef CurvatureInformation< Quantity, Matrix3x3, Vector3 > CurvInformation;
 
   typedef Ball3D<Z3i::Space> KernelSupport;
