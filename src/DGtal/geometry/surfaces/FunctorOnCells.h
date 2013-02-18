@@ -84,9 +84,10 @@ namespace DGtal
       */
     FunctorOnCells ( ConstAlias< FunctorOnPoints > functor, ConstAlias< KSpace > space, ConstAlias< Domain > domain, bool reverseIsInside = false)
       : f(functor),
-        kSpace(space),
-        reverse(reverseIsInside),
-        domain(domain)
+        myKSpace(space),
+        myDomain(domain),
+        reverse(reverseIsInside)
+
     {}
 
     /**
@@ -108,17 +109,17 @@ namespace DGtal
     {
       if (!reverse)
       {
-        return f(kSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ONE : NumberTraits<Quantity>::ZERO;
+        return f(myKSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ONE : NumberTraits<Quantity>::ZERO;
       }
       else
       {
-        return f(kSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ZERO : NumberTraits<Quantity>::ONE;
+        return f(myKSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ZERO : NumberTraits<Quantity>::ONE;
       }
     }
 
     bool isInside( const Cell & aCell ) const
     {
-        return domain.isInside(kSpace.sCoords(aCell));
+        return myDomain.isInside(myKSpace.sCoords(aCell));
     }
 
     /**
@@ -141,13 +142,13 @@ namespace DGtal
     const FunctorOnPoints & f;
 
     /// Const ref on Khalimsky Space. Used to convert Cell -> Point
-    const KSpace & kSpace;
+    const KSpace & myKSpace;
+
+    /// Const ref of the domain of the shape.
+    const Domain & myDomain;
 
     /// If true, reverse all value of operator()
     const bool reverse;
-
-    /// Const ref of the domain of the shape.
-    const Domain & domain;
 
     // ------------------------- Hidden services ------------------------------
   protected:

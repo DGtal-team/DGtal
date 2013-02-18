@@ -91,7 +91,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 9 );
-  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 9 );
+  kernelsIterators = std::vector< PairIterators > ( 9 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
@@ -118,8 +118,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
     kernels[ 4 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(11) is 4
   }
 
-  kernelsIterators[ 4 ].itBegin = kernels[ 4 ].begin();
-  kernelsIterators[ 4 ].itEnd = kernels[ 4 ].end();
+  kernelsIterators[ 4 ].first = kernels[ 4 ].begin();
+  kernelsIterators[ 4 ].second = kernels[ 4 ].end();
   /// End of full kernel
 
   /// Computation of masks
@@ -153,15 +153,15 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
           kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
         }
 
-        kernelsIterators[ offset ].itBegin = kernels[ offset ].begin();
-        kernelsIterators[ offset ].itEnd = kernels[ offset ].end();
+        kernelsIterators[ offset ].first = kernels[ offset ].begin();
+        kernelsIterators[ offset ].second = kernels[ offset ].end();
       }
     }
   }
   /// End of computation of masks
 
   myOrigin = KSpaceKernel.sSpel( pOrigin );
-  myConvolver.init ( kernelsIterators[ 4 ].itBegin, kernelsIterators[ 4 ].itEnd, myOrigin );
+  myConvolver.init ( kernelsIterators[ 4 ].first, kernelsIterators[ 4 ].second, myOrigin );
   myConvolver.initMasks ( kernelsIterators );
 }
 
@@ -185,7 +185,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 27 );
-  kernelsIterators = std::vector< PairIterators< ConstIteratorKernel > > ( 27 );
+  kernelsIterators = std::vector< PairIterators > ( 27 );
 
   typedef EuclideanShapesMinus< KernelSupport, KernelSupport > EuclideanShape;
 
@@ -212,8 +212,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
     kernels[ 13 ].insert( KSpaceKernel.sSpel( *it )); /// It's a trit ({0,1,2}) encoded array, and base10(111) is 13
   }
 
-  kernelsIterators[ 13 ].itBegin = kernels[ 13 ].begin();
-  kernelsIterators[ 13 ].itEnd = kernels[ 13 ].end();
+  kernelsIterators[ 13 ].first = kernels[ 13 ].begin();
+  kernelsIterators[ 13 ].second = kernels[ 13 ].end();
   /// End of Full Kernel
 
   /// Computation of masks
@@ -248,8 +248,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
             kernels[ offset ].insert( KSpaceKernel.sSpel( *it ));
           }
 
-          kernelsIterators[ offset ].itBegin = kernels[ offset ].begin();
-          kernelsIterators[ offset ].itEnd = kernels[ offset ].end();
+          kernelsIterators[ offset ].first = kernels[ offset ].begin();
+          kernelsIterators[ offset ].second = kernels[ offset ].end();
         }
       }
     }
@@ -257,7 +257,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   /// End of computation of masks
 
   myOrigin = KSpaceKernel.sSpel( pOrigin );
-  myConvolver.init ( kernelsIterators[ 13 ].itBegin, kernelsIterators[ 13 ].itEnd, myOrigin, kernelsIterators );
+  myConvolver.init ( kernelsIterators[ 13 ].first, kernelsIterators[ 13 ].second, myOrigin, kernelsIterators );
 }
 
 

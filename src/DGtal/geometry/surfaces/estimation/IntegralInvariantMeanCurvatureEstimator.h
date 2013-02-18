@@ -101,6 +101,7 @@ public:
   typedef TShapeFunctor ShapeCellFunctor;
   typedef ConstValueFunctor<Value> KernelCellFunctor;
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
   typedef Ball3D<Z3i::Space> KernelSupport;
 
@@ -186,7 +187,7 @@ private:
   /// array of shifting masks.
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support
   Cell myOrigin;
@@ -243,6 +244,7 @@ public:
   typedef TShapeFunctor ShapeCellFunctor;
   typedef ConstValueFunctor<Value> KernelCellFunctor;
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
   typedef Ball2D<Z2i::Space> KernelSupport;
 
@@ -328,7 +330,7 @@ private:
   /// array of shifting masks. Size = 9 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;
@@ -390,6 +392,7 @@ public:
   typedef TShapeFunctor ShapeCellFunctor;
   typedef ConstValueFunctor<Value> KernelCellFunctor;
   typedef DigitalSurfaceConvolver<ShapeCellFunctor, KernelCellFunctor, KSpace, ConstIteratorKernel> Convolver;
+  typedef typename Convolver::PairIterators PairIterators;
 
   typedef Ball3D<Z3i::Space> KernelSupport;
 
@@ -474,7 +477,7 @@ private:
   /// array of shifting masks. Size = 27 for each shiftings (0-adjacent and full kernel included)
   std::vector< SurfelSet > kernels;
   /// array of begin/end iterator of shifting masks.
-  std::vector< PairIterators< ConstIteratorKernel > > kernelsIterators;
+  std::vector< PairIterators > kernelsIterators;
 
   /// origin spel of the kernel support.
   Cell myOrigin;

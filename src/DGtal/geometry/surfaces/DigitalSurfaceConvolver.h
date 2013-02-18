@@ -55,12 +55,12 @@
 
 namespace DGtal
 {
-template <typename ConstIterator>
+/*template <typename ConstIterator>
 struct PairIterators
 {
   ConstIterator itBegin;
   ConstIterator itEnd;
-};
+};*/
 
 /////////////////////////////////////////////////////////////////////////////
 // template class DigitalSurfaceConvolver
@@ -94,6 +94,8 @@ public:
   typedef typename KSpace::SCell Cell;
   typedef typename KSpace::Space::Point Point;
   typedef TKernelConstIterator KernelConstIterator;
+
+  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
 
   // ----------------------- Standard services ------------------------------
 
@@ -141,7 +143,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators< KernelConstIterator > > > mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
 
   /**
        * Convolve the kernel at a given position.
@@ -213,7 +215,7 @@ private:
   const KSpace & myKSpace;
 
   /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators< KernelConstIterator > > myMask;
+  std::vector< PairIterators > myMask;
 
   /// Copy of the first iterator of the kernel support (Used to iterate over it)
   KernelConstIterator myItKernelBegin;
@@ -277,6 +279,8 @@ public:
   typedef typename KSpace::Space::Point Point;
   typedef TKernelConstIterator KernelConstIterator;
 
+  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+
   // ----------------------- Standard services ------------------------------
 
 public:
@@ -323,7 +327,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators< KernelConstIterator > > > mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
 
   /**
        * Convolve the kernel at a given position.
@@ -397,7 +401,7 @@ private:
   const KSpace & myKSpace;
 
   /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators< KernelConstIterator > > myMask;
+  std::vector< PairIterators > myMask;
 
   /// Copy of the first iterator of the kernel support (Used to iterate over it)
   KernelConstIterator myItKernelBegin;
@@ -461,6 +465,8 @@ public:
   typedef typename KSpace::Space::Point Point;
   typedef TKernelConstIterator KernelConstIterator;
 
+  typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+
   // ----------------------- Standard services ------------------------------
 
 public:
@@ -507,7 +513,7 @@ public:
        * mask[0] : base3(0) = 000 => shifting = {-1,-1,-1}
        * mask[5] : base3(5) = 012 => shifting = { 1, 0,-1}
        */
-  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators< KernelConstIterator > > > mask );
+  void init ( Clone< KernelConstIterator > itgbegin, Clone< KernelConstIterator > itgend, Clone< Cell > kOrigin, Alias< std::vector< PairIterators > > mask );
 
   /**
        * Convolve the kernel at a given position.
@@ -579,7 +585,7 @@ private:
   const KSpace & myKSpace;
 
   /// Copy of vector of iterators for kernel partial masks
-  std::vector< PairIterators< KernelConstIterator > > myMask;
+  std::vector< PairIterators > myMask;
 
   /// Copy of the first iterator of the kernel support (Used to iterate over it)
   KernelConstIterator myItKernelBegin;
