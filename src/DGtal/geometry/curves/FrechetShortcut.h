@@ -194,7 +194,7 @@ namespace DGtal
       
       /**
 	 Constructor 
-	 @param pointer to a shortcut s
+	 @param s to a shortcut s
 	 @param quadrant q
       */
       Backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
@@ -282,7 +282,7 @@ namespace DGtal
     
     /**
        Constructor from two angles
-       @param two angles a0 and a1
+       @param a0 and @param a1 two angles
     */
     Cone(double a0, double a1);
 
