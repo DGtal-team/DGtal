@@ -55,12 +55,6 @@
 
 namespace DGtal
 {
-/*template <typename ConstIterator>
-struct PairIterators
-{
-  ConstIterator itBegin;
-  ConstIterator itEnd;
-};*/
 
 /////////////////////////////////////////////////////////////////////////////
 // template class DigitalSurfaceConvolver
