@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'FunctorOnCells' <p>
    *
-   * Aim: Convert a functor on Digital Point to a Functor on Khalimsky Cell
+   * \brief Aim: Convert a functor on Digital Point to a Functor on Khalimsky Cell
    *
    * @tparam TFunctorOnPoints a model of functor on Digital Points.
    * @tparam TKSpace Khalimsky space in which the shape is defined.
@@ -77,10 +77,10 @@ namespace DGtal
     /**
       * Constructor.
       *
-      * @param functor a functor on digital points.
-      * @param space Khalimsky space in which the shape is defined.
-      * @param domain Domain of the shape (used for isInside() )
-      * @param reverseIsInside in some case, the value return by the functor in inverse depending is dimension (we have this case in 2D and 3D).
+      * @param[in] functor a functor on digital points.
+      * @param[in] space Khalimsky space in which the shape is defined.
+      * @param[in] domain Domain of the shape (used for isInside() )
+      * @param[in] reverseIsInside in some case, the value return by the functor in inverse depending is dimension (we have this case in 2D and 3D).
       */
     FunctorOnCells ( ConstAlias< FunctorOnPoints > functor, ConstAlias< KSpace > space, ConstAlias< Domain > domain, bool reverseIsInside = false)
       : f(functor),
@@ -101,7 +101,7 @@ namespace DGtal
     /**
      * Call the functor on Point by converting the Cell to a Point.
      *
-     * @param aCell any cell in the Khalimsky space.
+     * @param[in] aCell any cell in the Khalimsky space.
      *
      * @return 'ONE' if the point is inside the shape, 'ZERO' if it is strictly outside.
      */

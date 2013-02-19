@@ -26,6 +26,13 @@
  *
  * Header file for module IntegralInvariantGaussianCurvatureEstimator.cpp
  *
+ * @brief Compute Gaussian curvature on border of shapes of n-dimension, based on integral invariant.
+ *
+ * @see related article:
+ *       Coeurjolly, D.; Lachaud, J.O; Levallois, J., (2013). Integral based Curvature
+ *       Estimators in Digital Geometry. DGCI 2013. Retrieved from
+ *       https://liris.cnrs.fr/publis/?id=5866
+ *
  * This file is part of the DGtal library.
  */
 
@@ -97,7 +104,7 @@ struct CurvatureInformation
    *
    * @see exampleIntegralInvariantGaussianCurvature3D.cpp testIntegralInvariantGaussianCurvature3D.cpp
    */
-template <typename TKSpace, typename TShapeFunctor, int dimension = TKSpace::dimension>
+template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpace::dimension>
 class IntegralInvariantGaussianCurvatureEstimator
 {
 public:
@@ -409,7 +416,7 @@ public:
   typedef typename Convolver::PairIterators PairIterators;
 
   typedef typename Convolver::CovarianceMatrix Matrix3x3;
-  typedef EigenValues3D< Quantity >::Vector3 Vector3;
+  typedef EigenValues3D< Quantity >::VectorD Vector3;
   typedef CurvatureInformation< Quantity, Matrix3x3, Vector3 > CurvInformation;
 
   typedef Ball3D<Z3i::Space> KernelSupport;
@@ -579,7 +586,7 @@ private:
    * @param object the object of class 'IntegralInvariantGaussianCurvatureEstimator' to write.
    * @return the output stream after the writing.
    */
-template <typename TKS, typename TSF, int dimension>
+template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
 operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKS, TSF, dimension> & object );
 

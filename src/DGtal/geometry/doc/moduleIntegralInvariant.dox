@@ -155,7 +155,7 @@ with a full 2d kernel support size of 91893, the optimization built 8 supplement
 
 \section sectImplementation Implementation in DGtal
 
-It is important to consider connece range to evaluate with the Integral Invariant Curvature estimators in order to benefite the kernel optimization.
+It is important to consider connected range when evaluating with the Integral Invariant Curvature estimators in order to benefit the kernel optimization.
 Note that the methodology is the same with both IntegralInvariantMeanCurvatureEstimator and IntegralInvariantGaussianCurvatureEstimator.
 The only change is for "typedef IntegralInvariantXXXXXCurvatureEstimator<...> MyCurvatureEstimator"
 

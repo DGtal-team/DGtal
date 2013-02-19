@@ -39,7 +39,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantGaussianCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & shapeFunctor )
   : myKernelFunctor(NumberTraits<Quantity>::ONE),
@@ -65,7 +65,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::I
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
 DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
@@ -265,7 +265,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename ConstIteratorOnCells>
 inline
 typename DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::Quantity
@@ -355,7 +355,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename ConstIteratorOnCells, typename OutputIterator>
 inline
 void
@@ -484,7 +484,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
 DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::selfDisplay ( std::ostream & out ) const
@@ -513,7 +513,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::s
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 bool
 DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::isValid() const
@@ -542,7 +542,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, const IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, dimension> & object )

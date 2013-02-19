@@ -41,7 +41,7 @@
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::IntegralInvariantMeanCurvatureEstimator ( const KSpace & space, const ShapeCellFunctor & shapeFunctor )
   : myKernelFunctor(NumberTraits<Quantity>::ONE),
@@ -67,7 +67,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::Integ
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::init ( const double _h, const double re )
@@ -264,7 +264,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::init 
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename ConstIteratorOnCells>
 inline
 typename DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::Quantity
@@ -304,7 +304,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval 
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 template <typename ConstIteratorOnCells, typename OutputIterator>
 inline
 void
@@ -367,7 +367,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::eval 
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 void
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::selfDisplay ( std::ostream & out ) const
@@ -396,7 +396,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::selfD
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 bool
 DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension>::isValid() const
@@ -425,7 +425,7 @@ DGtal::IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>::isVal
 
 
 
-template <typename TKSpace, typename TShapeFunctor, int dimension>
+template <typename TKSpace, typename TShapeFunctor, DGtal::Dimension dimension>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, dimension> & object )
