@@ -53,13 +53,13 @@ namespace DGtal
 {
   
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageCacheSpecializations
+// Template class ImageCacheSpecializationsRead
 /**
- * Description of template class 'ImageCacheSpecializations' <p>
+ * Description of template class 'ImageCacheSpecializationsRead' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector, DGtal::WritePolicy AWriteSelector>
-class ImageCacheSpecializations
+template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+class ImageCacheSpecializationsRead
 {
 public:
     typedef TImageCache ImageCache;
@@ -69,7 +69,7 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializations(Alias<ImageCache> anImageCache):
+    ImageCacheSpecializationsRead(Alias<ImageCache> anImageCache):
       myImageCache(anImageCache)
     {
     }
@@ -78,50 +78,44 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageCacheSpecializations() {}
+    ~ImageCacheSpecializationsRead() {}
     
     /**
-     * Get the value of an image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
+     * Get the alias on the image that contains the point aPoint
+     * or NULL if no image in the cache contains the point aPoint.
      *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     * @return the alias on the image container or NULL pointer.
      */
-    bool readSpecializations(const Point & aPoint, Value &aValue);
+    TImageContainer * getPage(const Point & aPoint);
     
     /**
-     * Set a value on an Image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
+     * Get the alias on the next image that we have to detach
+     * or NULL if no image have to be detached.
      *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     * @return the alias on the image container or NULL pointer.
      */
-    bool writeSpecializations(const Point & aPoint, const Value &aValue);
+    TImageContainer * getNextPageToDetach();
     
     /**
      * Update the cache according to the cache policy
      */
-    void updateSpecializations(const Domain &aDomain);
+    void updateCache(const Domain &aDomain);
     
 protected:
     
     /// Alias on the cache object (not specialized)
     ImageCache * myImageCache;
     
-}; // end of class ImageCacheSpecializations
+}; // end of class ImageCacheSpecializationsRead
 
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageCacheSpecializations
+// Template class ImageCacheSpecializationsWrite
 /**
- * Description of template class 'ImageCacheSpecializations' <p>
+ * Description of template class 'ImageCacheSpecializationsWrite' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
-class ImageCacheSpecializations<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT>
+template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
+class ImageCacheSpecializationsWrite
 {
 public:
     typedef TImageCache ImageCache;
@@ -131,8 +125,8 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializations(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache), myCacheImagesPtr(NULL)
+    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
+      myImageCache(anImageCache)
     {
     }
 
@@ -140,53 +134,40 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageCacheSpecializations() {}
+    ~ImageCacheSpecializationsWrite() {}
     
     /**
-     * Get the value of an image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
-     *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
-     */
-    bool readSpecializations(const Point & aPoint, Value &aValue);
+    * Set a value on an image at a given position given
+    * by aPoint.
+    *
+    * @param anImageContainer the image.
+    * @param aPoint the point.
+    * @param aValue the value.
+    */
+    void writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
     
     /**
-     * Set a value on an Image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
-     *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
-     */
-    bool writeSpecializations(const Point & aPoint, const Value &aValue);
-    
-    /**
-     * Update the cache according to the cache policy
-     */
-    void updateSpecializations(const Domain &aDomain);
+    * Flush the image on disk according to the cache policy
+    *
+    * @param anImageContainer the image.
+    */
+    void flushPage(TImageContainer * anImageContainer);
     
 protected:
-    
-    /// Alias on the images cache
-    ImageContainer * myCacheImagesPtr;
     
     /// Alias on the cache object (not specialized)
     ImageCache * myImageCache;
     
-}; // end of class ImageCacheSpecializations
+}; // end of class ImageCacheSpecializationsWrite
 
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageCacheSpecializations
+// Template class ImageCacheSpecializationsRead
 /**
- * Description of template class 'ImageCacheSpecializations' <p>
+ * Description of template class 'ImageCacheSpecializationsRead' <p>
  * \brief Aim: todo
  */
 template <typename TImageCache, typename TImageContainer, typename TImageFactory>
-class ImageCacheSpecializations<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB>
+class ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>
 {
 public:
     typedef TImageCache ImageCache;
@@ -196,7 +177,7 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializations(Alias<ImageCache> anImageCache):
+    ImageCacheSpecializationsRead(Alias<ImageCache> anImageCache):
       myImageCache(anImageCache), myCacheImagesPtr(NULL)
     {
     }
@@ -205,34 +186,28 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageCacheSpecializations() {}
+    ~ImageCacheSpecializationsRead() {}
     
     /**
-     * Get the value of an image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
+     * Get the alias on the image that contains the point aPoint
+     * or NULL if no image in the cache contains the point aPoint.
      *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     * @return the alias on the image container or NULL pointer.
      */
-    bool readSpecializations(const Point & aPoint, Value &aValue);
+    TImageContainer * getPage(const Point & aPoint);
     
     /**
-     * Set a value on an Image from cache at a given position given
-     * by aPoint only if aPoint belongs to an image from cache.
+     * Get the alias on the next image that we have to detach
+     * or NULL if no image have to be detached.
      *
-     * @param aPoint the point.
-     * @param aValue the value.
-     * 
-     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
+     * @return the alias on the image container or NULL pointer.
      */
-    bool writeSpecializations(const Point & aPoint, const Value &aValue);
+    TImageContainer * getNextPageToDetach();
     
     /**
      * Update the cache according to the cache policy
      */
-    void updateSpecializations(const Domain &aDomain);
+    void updateCache(const Domain &aDomain);
     
 protected:
     
@@ -242,7 +217,111 @@ protected:
     /// Alias on the cache object (not specialized)
     ImageCache * myImageCache;
     
-}; // end of class ImageCacheSpecializations
+}; // end of class ImageCacheSpecializationsRead
+
+/////////////////////////////////////////////////////////////////////////////
+// Template class ImageCacheSpecializationsWrite
+/**
+ * Description of template class 'ImageCacheSpecializationsWrite' <p>
+ * \brief Aim: todo
+ */
+template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+class ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>
+{
+public:
+    typedef TImageCache ImageCache;
+    
+    typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Domain Domain;
+    typedef typename TImageContainer::Point Point;
+    typedef typename TImageContainer::Value Value;
+    
+    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
+      myImageCache(anImageCache)
+    {
+    }
+
+    /**
+     * Destructor.
+     * Does nothing
+     */
+    ~ImageCacheSpecializationsWrite() {}
+    
+    /**
+    * Set a value on an image at a given position given
+    * by aPoint.
+    *
+    * @param anImageContainer the image.
+    * @param aPoint the point.
+    * @param aValue the value.
+    */
+    void writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    
+    /**
+    * Flush the image on disk according to the cache policy
+    *
+    * @param anImageContainer the image.
+    */
+    void flushPage(TImageContainer * anImageContainer);
+    
+protected:
+    
+    /// Alias on the cache object (not specialized)
+    ImageCache * myImageCache;
+    
+}; // end of class ImageCacheSpecializationsWrite
+
+/////////////////////////////////////////////////////////////////////////////
+// Template class ImageCacheSpecializationsWrite
+/**
+ * Description of template class 'ImageCacheSpecializationsWrite' <p>
+ * \brief Aim: todo
+ */
+template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+class ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>
+{
+public:
+    typedef TImageCache ImageCache;
+    
+    typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Domain Domain;
+    typedef typename TImageContainer::Point Point;
+    typedef typename TImageContainer::Value Value;
+    
+    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
+      myImageCache(anImageCache)
+    {
+    }
+
+    /**
+     * Destructor.
+     * Does nothing
+     */
+    ~ImageCacheSpecializationsWrite() {}
+    
+    /**
+    * Set a value on an image at a given position given
+    * by aPoint.
+    *
+    * @param anImageContainer the image.
+    * @param aPoint the point.
+    * @param aValue the value.
+    */
+    void writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    
+    /**
+    * Flush the image on disk according to the cache policy
+    *
+    * @param anImageContainer the image.
+    */
+    void flushPage(TImageContainer * anImageContainer);
+    
+protected:
+    
+    /// Alias on the cache object (not specialized)
+    ImageCache * myImageCache;
+    
+}; // end of class ImageCacheSpecializationsWrite
 
 } // namespace DGtal
 
