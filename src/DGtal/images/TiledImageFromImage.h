@@ -88,7 +88,7 @@ public:
 public:
 
     TiledImageFromImage(Alias<ImageContainer> anImage, 
-                        Alias<std::vector<Domain> > Di):
+                        ConstAlias<std::vector<Domain> > Di):
       myImagePtr(anImage), myDi(Di)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
@@ -211,7 +211,7 @@ protected:
     ImageContainer * myImagePtr;
     
     /// Domains list
-    std::vector<Domain> * myDi;
+    const std::vector<Domain> * myDi;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;
