@@ -72,7 +72,7 @@ a null vector.
 ### Associated types :
  
  - @e Space: type of space on which the premetric is defined (model of CSpace)
- - @e Value: the value type of the metric (model of CUnsignedNumber) 
+ - @e Value: the value type of the metric (model of CQuantity) 
 
 ### Notation
  - \e X : A type that is a model of CLocalPremetric
