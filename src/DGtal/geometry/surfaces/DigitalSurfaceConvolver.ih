@@ -47,7 +47,7 @@
 /**
  * Constructor.
  */
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 inline
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>
 ::DigitalSurfaceConvolver( ConstAlias< Functor > f,
@@ -94,7 +94,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 inline
 void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
@@ -145,7 +145,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 inline
 void
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::init( Clone< KernelConstIterator > itgbegin,
@@ -206,7 +206,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 template<typename ConstIteratorOnCells>
 inline
 typename DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::Quantity
@@ -369,7 +369,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 template<typename ConstIteratorOnCells, typename OutputIterator>
 inline
 void
@@ -940,7 +940,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 template<typename ConstIteratorOnCells>
 inline
 typename DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::CovarianceMatrix
@@ -1048,7 +1048,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     SCellToMidPoint< KSpace > midpoint( myKSpace );
 
-    int dimension = 2;
+    DGtal::Dimension dimension = 2;
 
     for (int line = 0; line < dimension; ++line)
     {
@@ -1134,7 +1134,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     SCellToMidPoint< KSpace > midpoint( myKSpace );
 
-    int dimension = 3;
+    DGtal::Dimension dimension = 3;
 
     for (int line = 0; line < dimension; ++line)
     {
@@ -1195,7 +1195,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
 
 
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 template<typename ConstIteratorOnCells, typename OutputIterator>
 inline
 void
@@ -1244,7 +1244,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
     dcurrentVa = currentOne_Va = dcurrentJa = 0.0;
     dcurrentVa2 = currentOne_Va2 = dcurrentJa2 = 0.0;
 
-    int dimension = 2;
+    DGtal::Dimension dimension = 2;
 
     CovarianceMatrix Ja;
 
@@ -1750,7 +1750,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
     dcurrentVa = currentOne_Va = dcurrentJa = 0.0;
     dcurrentVa2 = currentOne_Va2 = dcurrentJa2 = 0.0;
 
-    int dimension = 3;
+    DGtal::Dimension dimension = 3;
 
     CovarianceMatrix Ja;
 
@@ -1784,9 +1784,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         ++total;
 #endif
 
-        for (int line = 0; line < dimension; ++line)
+        for( DGtal::Dimension line = 0; line < dimension; ++line )
         {
-            for (int row = 0; row < dimension; ++row)
+            for( DGtal::Dimension row = 0; row < dimension; ++row )
             {
                 currentXXT.setComponent ( line, row, Quantity( 0 ));
                 //        currentXXT2.setComponent ( line, row, Quantity( 0 ));
@@ -1824,9 +1824,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     {
                         currentPoint = midpoint( shiftedCell );
 
-                        for (int line = 0; line < dimension; ++line)
+                        for( DGtal::Dimension line = 0; line < dimension; ++line )
                         {
-                            for (int column = 0; column < dimension; ++column)
+                            for (DGtal::Dimension column = 0; column < dimension; ++column)
                             {
                                 currentXXT.setComponent ( line, column, currentXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                             }
@@ -1861,9 +1861,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
             else
             {
                 maskVa = Quantity( 0 );
-                for (int line = 0; line < dimension; ++line)
+                for (DGtal::Dimension line = 0; line < dimension; ++line)
                 {
-                    for (int row = 0; row < dimension; ++row)
+                    for (DGtal::Dimension row = 0; row < dimension; ++row)
                     {
                         maskXXT.setComponent ( line, row, Quantity( 0 ));
                     }
@@ -1884,9 +1884,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         {
                             currentPoint = midpoint( shiftedCell );
 
-                            for (int line = 0; line < dimension; ++line)
+                            for (DGtal::Dimension line = 0; line < dimension; ++line)
                             {
-                                for (int column = 0; column < dimension; ++column)
+                                for (DGtal::Dimension column = 0; column < dimension; ++column)
                                 {
                                     maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                 }
@@ -1911,9 +1911,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
                             currentPoint = midpoint( shiftedCell );
 
-                            for (int line = 0; line < dimension; ++line)
+                            for (DGtal::Dimension line = 0; line < dimension; ++line)
                             {
-                                for (int column = 0; column < dimension; ++column)
+                                for (DGtal::Dimension column = 0; column < dimension; ++column)
                                 {
                                     maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                 }
@@ -1924,9 +1924,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     }
                 }
 
-                for (int line = 0; line < dimension; ++line)
+                for (DGtal::Dimension line = 0; line < dimension; ++line)
                 {
-                    for (int column = 0; column < dimension; ++column)
+                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                     {
                         currentXXT2.setComponent ( line, column, currentXXT ( line, column ) + maskXXT ( line, column ));
                     }
@@ -1984,9 +1984,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 currentPoint = midpoint( shiftedCell );
 
-                                for (int line = 0; line < dimension; ++line)
+                                for (DGtal::Dimension line = 0; line < dimension; ++line)
                                 {
-                                    for (int column = 0; column < dimension; ++column)
+                                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
                                         currentXXT.setComponent ( line, column, currentXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
@@ -2004,9 +2004,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 else
                 {
                     maskVa = Quantity( 0 );
-                    for (int line = 0; line < dimension; ++line)
+                    for (DGtal::Dimension line = 0; line < dimension; ++line)
                     {
-                        for (int row = 0; row < dimension; ++row)
+                        for (DGtal::Dimension row = 0; row < dimension; ++row)
                         {
                             maskXXT.setComponent ( line, row, Quantity( 0 ));
                         }
@@ -2028,9 +2028,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 currentPoint = midpoint( shiftedCell );
 
-                                for (int line = 0; line < dimension; ++line)
+                                for (DGtal::Dimension line = 0; line < dimension; ++line)
                                 {
-                                    for (int column = 0; column < dimension; ++column)
+                                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
                                         maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
@@ -2056,9 +2056,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 currentPoint = midpoint( shiftedCell );
 
-                                for (int line = 0; line < dimension; ++line)
+                                for (DGtal::Dimension line = 0; line < dimension; ++line)
                                 {
-                                    for (int column = 0; column < dimension; ++column)
+                                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
                                         maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
@@ -2069,9 +2069,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         }
                     }
 
-                    for (int line = 0; line < dimension; ++line)
+                    for (DGtal::Dimension line = 0; line < dimension; ++line)
                     {
-                        for (int column = 0; column < dimension; ++column)
+                        for (DGtal::Dimension column = 0; column < dimension; ++column)
                         {
                             currentXXT.setComponent ( line, column, lastXXT ( line, column ) + maskXXT ( line, column ));
                         }
@@ -2119,9 +2119,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 else
                 {
                     maskVa = Quantity( 0 );
-                    for (int line = 0; line < dimension; ++line)
+                    for (DGtal::Dimension line = 0; line < dimension; ++line)
                     {
-                        for (int row = 0; row < dimension; ++row)
+                        for (DGtal::Dimension row = 0; row < dimension; ++row)
                         {
                             maskXXT.setComponent ( line, row, Quantity( 0 ));
                         }
@@ -2143,9 +2143,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 currentPoint = midpoint( shiftedCell );
 
-                                for (int line = 0; line < dimension; ++line)
+                                for (DGtal::Dimension line = 0; line < dimension; ++line)
                                 {
-                                    for (int column = 0; column < dimension; ++column)
+                                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
                                         maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
@@ -2171,9 +2171,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 currentPoint = midpoint( shiftedCell );
 
-                                for (int line = 0; line < dimension; ++line)
+                                for (DGtal::Dimension line = 0; line < dimension; ++line)
                                 {
-                                    for (int column = 0; column < dimension; ++column)
+                                    for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
                                         maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
@@ -2184,9 +2184,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         }
                     }
 
-                    for (int line = 0; line < dimension; ++line)
+                    for (DGtal::Dimension line = 0; line < dimension; ++line)
                     {
-                        for (int column = 0; column < dimension; ++column)
+                        for (DGtal::Dimension column = 0; column < dimension; ++column)
                         {
                             currentXXT2.setComponent ( line, column, currentXXT ( line, column ) + maskXXT ( line, column ));
                         }
@@ -2202,9 +2202,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         currentOne_Va = 1.0 / dcurrentVa;
         dcurrentVa2 = (double) NumberTraits<Quantity>::castToDouble( currentVa2 );
         currentOne_Va2 = 1.0 / dcurrentVa2;
-        for (int line = 0; line < dimension; ++line)
+        for (DGtal::Dimension line = 0; line < dimension; ++line)
         {
-            for (int column = 0; column < dimension; ++column)
+            for (DGtal::Dimension column = 0; column < dimension; ++column)
             {
                 dcurrentJa = ((double) NumberTraits<Quantity>::castToDouble( currentXXT ( line, column ))) - dcurrentVa * ( currentOne_Va * ((double) NumberTraits<Quantity>::castToDouble( currentSa[ line ] )) ) * ( currentOne_Va * ((double) NumberTraits<Quantity>::castToDouble( currentSa[ column ] )) );
                 dcurrentJa2 = ((double) NumberTraits<Quantity>::castToDouble( currentXXT2 ( line, column ))) - dcurrentVa2 * ( currentOne_Va2 * ((double) NumberTraits<Quantity>::castToDouble( currentSa2[ line ] )) ) * ( currentOne_Va2 * ((double) NumberTraits<Quantity>::castToDouble( currentSa2[ column ] )) );
@@ -2242,7 +2242,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, int dimension>
+template <typename Functor, typename KernelFunctor, typename KSpace, typename KernelConstIterator, DGtal::Dimension dimension>
 inline
 bool
 DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterator, dimension>::isValid() const

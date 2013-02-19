@@ -83,7 +83,7 @@ namespace DGtal
    *
    * @see exampleIntegralInvariantCurvature2D.cpp testIntegralInvariantMeanCurvature3D.cpp testIntegralInvariantCurvature2D.cpp
    */
-template <typename TKSpace, typename TShapeFunctor, int dimension = TKSpace::dimension>
+template <typename TKSpace, typename TShapeFunctor, Dimension dimension = TKSpace::dimension>
 class IntegralInvariantMeanCurvatureEstimator
 {
 public:
@@ -532,7 +532,7 @@ private:
    * @param object the object of class 'IntegralInvariantMeanCurvatureEstimator' to write.
    * @return the output stream after the writing.
    */
-template <typename TKS, typename TSF, int dimension>
+template <typename TKS, typename TSF, Dimension dimension>
 std::ostream&
 operator<< ( std::ostream & out, const IntegralInvariantMeanCurvatureEstimator<TKS, TSF, dimension> & object );
 

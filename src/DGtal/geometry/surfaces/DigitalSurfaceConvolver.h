@@ -69,7 +69,7 @@ namespace DGtal
    * @tparam TKSpace space in which the shape is defined.
    * @tparam TKernelConstIterator iterator of cells inside the convolution kernel.
    */
-template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, int dimension = TKSpace::dimension >
+template< typename TFunctor, typename TKernelFunctor, typename TKSpace, typename TKernelConstIterator, Dimension dimension = TKSpace::dimension >
 class DigitalSurfaceConvolver
 {
   // ----------------------- Types ------------------------------------------
@@ -631,7 +631,7 @@ private:
    * @param object the object of class 'DigitalSurfaceConvolver' to write.
    * @return the output stream after the writing.
    */
-template< typename TF,  typename TKF, typename TKS, typename TKCI, int dimension >
+template< typename TF,  typename TKF, typename TKS, typename TKCI, Dimension dimension >
 std::ostream&
 operator<< ( std::ostream & out, const DGtal::DigitalSurfaceConvolver< TF, TKF, TKS, TKCI, dimension > & object );
 
