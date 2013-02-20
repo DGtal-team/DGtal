@@ -90,8 +90,8 @@ namespace DGtal
     /**
      * Constructor. 
      * @param aPoint the circle center.
-     * @param a1 the half big axis of the ellipse.
-     * @param a2 the half small axis of the ellipse.
+     * @param a0 the half big axis of the ellipse.
+     * @param a1 the half small axis of the ellipse.
      * @param theta the orientation of the ellipse.
      */
     Ellipse2D(const RealPoint2D &aPoint,
@@ -100,8 +100,8 @@ namespace DGtal
     /**
      * Constructor. 
      * @param aPoint the circle center.
-     * @param a1 the half big axis of the ellipse.
-     * @param a2 the half small axis of the ellipse.
+     * @param a0 the half big axis of the ellipse.
+     * @param a1 the half small axis of the ellipse.
      * @param theta the orientation of the ellipse.
      */
     Ellipse2D(const Point &aPoint,

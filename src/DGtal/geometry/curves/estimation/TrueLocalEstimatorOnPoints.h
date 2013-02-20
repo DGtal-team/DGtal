@@ -100,8 +100,8 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param itb begin iterator
+     * @param ite end iterator
      */
     void init(const double h, 
 	      const ConstIterator& itb, 
@@ -121,8 +121,8 @@ namespace DGtal
     
     /**
      * Estimation at each element of [@e itb , @e ite )
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param itb begin iterator
+     * @param ite end iterator
      * @return the estimated quantity
      * from itb till ite (excluded)
      */
