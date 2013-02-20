@@ -86,8 +86,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
   dPI_2 = M_PI / 2.0;
   d1_r2 = 1.0 / ( radius * radius );
 
-  Point pOrigin = Point ( 0.0, 0.0 );
-  KernelSupport kernel( pOrigin, radius );
+  RealPoint pOrigin = RealPoint ( 0.0, 0.0 );
+  KernelSupport kernel( pOrigin, radius + 0.000123 );
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 9 );
@@ -127,8 +127,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
   {
     for ( int x = -1; x <= 1; ++x )
     {
-      Point shiftPoint = pOrigin + Point( x * h , y * h );
-      KernelSupport kernelShifted( shiftPoint, radius );
+      RealPoint shiftPoint = pOrigin + RealPoint( x * h , y * h );
+      KernelSupport kernelShifted( shiftPoint, radius + 0.000123 );
       int offset = ( x + 1 ) + (( y + 1 ) * 3 );
 
       if ( offset == 4 ) // Full kernel, already done
@@ -180,8 +180,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   double h2 = h * h;
   dh5 = h2 * h2 * h;
 
-  Point pOrigin = Point ( 0.0, 0.0, 0.0 );
-  KernelSupport kernel( pOrigin, radius );
+  RealPoint pOrigin = RealPoint ( 0.0, 0.0, 0.0 );
+  KernelSupport kernel( pOrigin, radius + 0.000123 );
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 27 );
@@ -223,8 +223,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
     {
       for ( int x = -1; x <= 1; ++x )
       {
-        Point shiftPoint = pOrigin + Point( x * h, y * h, z * h);
-        KernelSupport kernelShifted( shiftPoint, radius );
+        RealPoint shiftPoint = pOrigin + RealPoint( x * h, y * h, z * h);
+        KernelSupport kernelShifted( shiftPoint, radius + 0.000123 );
         int offset = ( x + 1 ) + (( y + 1 ) * 3 ) + (( z + 1 ) * 9 );
         if ( offset == 13 ) // Full kernel
         {
@@ -300,9 +300,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
   Matrix3x3 eigenVectors;
   Vector3 eigenValues;
 
-  for ( unsigned int i = 0; i < 3; ++i )
+  for ( DGtal::Dimension i = 0; i < 3; ++i )
   {
-    for ( unsigned int j = 0; j < 3; ++j )
+    for ( DGtal::Dimension j = 0; j < 3; ++j )
     {
       covarianceMatrix.setComponent ( i, j, covarianceMatrix( i, j ) * dh5 );
     }
@@ -333,9 +333,9 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
     Matrix3x3 eigenVectors;
     Vector3 eigenValues;
 
-    for ( unsigned int i = 0; i < 3; ++i )
+    for ( DGtal::Dimension i = 0; i < 3; ++i )
     {
-      for ( unsigned int j = 0; j < 3; ++j )
+      for ( DGtal::Dimension j = 0; j < 3; ++j )
       {
         covarianceMatrix.setComponent ( i, j, covarianceMatrix( i, j ) * dh5 );
       }
@@ -410,12 +410,12 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
   unsigned int cmsize = vCovarianceMatrix.size();
 
-  for ( unsigned int i = 0; i < cmsize; ++i )
+  for( unsigned int i = 0; i < cmsize; ++i )
   {
     currentMatrix = vCovarianceMatrix[ i ];
-    for (unsigned int j = 0; j < 3; ++j)
+    for( DGtal::Dimension j = 0; j < 3; ++j )
     {
-      for (unsigned int k = 0; k < 3; ++k)
+      for( DGtal::Dimension k = 0; k < 3; ++k )
       {
         currentMatrix.setComponent ( j, k, currentMatrix ( j, k ) * dh5 );
       }
@@ -429,6 +429,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
     k2 = d6_PIr6 * ( eigenValues[ 2 ] - ( 3.0 * eigenValues[ 1 ] )) + d8_5r;
 
     *result = k1 * k2;
+    *result =
+
     ++result;
   }
 }
@@ -457,12 +459,12 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
   unsigned int cmsize = vCovarianceMatrix.size();
 
-  for ( unsigned int i = 0; i < cmsize; ++i )
+  for( unsigned int i = 0; i < cmsize; ++i )
   {
     currentMatrix = vCovarianceMatrix[ i ];
-    for (unsigned int j = 0; j < 3; ++j)
+    for( DGtal::Dimension j = 0; j < 3; ++j )
     {
-      for (unsigned int k = 0; k < 3; ++k)
+      for( DGtal::Dimension k = 0; k < 3; ++k )
       {
         currentMatrix.setComponent ( j, k, currentMatrix ( j, k ) * dh5 );
       }

@@ -63,8 +63,8 @@ class EigenValues3D
 {
 public:
   typedef TQuantity Quantity;
-  typedef SimpleMatrix< Quantity, 3, 3 > MatrixDD;
-  typedef typename MatrixDD::RowVector VectorD;
+  typedef SimpleMatrix< Quantity, 3, 3 > Matrix33;
+  typedef typename Matrix33::RowVector Vector3;
 
 private:
   /**
@@ -74,7 +74,7 @@ private:
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
       */
-  static void tred2 ( MatrixDD & V, VectorD & d, VectorD & e )
+  static void tred2 ( Matrix33 & V, Vector3 & d, Vector3 & e )
   {
     Dimension dimension = 3;
     Dimension dimensionMinusOne = dimension - 1;
@@ -233,7 +233,7 @@ private:
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
       */
-  static void tql2 ( MatrixDD & V, VectorD & d, VectorD e )
+  static void tql2 ( Matrix33 & V, Vector3 & d, Vector3 e )
   {
     Dimension dimension = 3;
     Dimension dimensionMinusOne = dimension - 1;
@@ -253,7 +253,7 @@ private:
       // Find small subdiagonal element
       tst1 = Quantity( std::max( tst1, std::fabs ( d[ l ] ) + std::fabs( e[ l ] )));
       Dimension m = l;
-      while ( m < dimension )
+      while ( m < dimensionMinusOne )
       {
         if ( std::fabs ( e[ m ] ) <= eps * tst1 )
         {
@@ -374,15 +374,15 @@ private:
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
       *
-      * @param[in]  matrix        input 3D matrix where eigen values/vectors will be computed (size = dimension * dimension).
-      * @param[out] eigenVectors  output matrix of eigenvectors (size = dimension * dimension).
-      * @param[out] eigenValues   output vector of eigenvalues (size = dimension).
+      * @param[out] eigenVectors  matrix of eigenvectors (size = dimension * dimension).
+      * @param[out] eigenValues   vector of eigenvalues (size = dimension).
+      * @param[in]  matrix        3D matrix where eigen values/vectors will be computed (size = dimension * dimension).
       */
 
 public:
-  static void getEigenDecomposition( MatrixDD & matrix, MatrixDD & eigenVectors, VectorD & eigenValues)
+  static void getEigenDecomposition( const Matrix33 & matrix, Matrix33 & eigenVectors, Vector3 & eigenValues)
   {
-    VectorD e;
+    Vector3 e;
     Dimension dimension = 3;
 
     for ( Dimension i = 0; i < dimension; ++i )

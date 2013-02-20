@@ -161,6 +161,18 @@ The only change is for "typedef IntegralInvariantXXXXXCurvatureEstimator<...> My
 
 @snippet geometry/surfaces/exampleIntegralInvariantCurvature2D.cpp IntegralInvariantUsage
 
+\section sectResults Some results
+
+Here is some results on 2D and 3D :
+
+@image html example-integralinvariant2D.png "Curvature mapped on a DGtal::Flower2D"
+@image latex example-integralinvariant2D.png "Curvature mapped on a DGtal::Flower2D" width=5cm
+@image html snapshot-mean-zero.png "Mean curvature mapped on a blobby cube 3D"
+@image latex snapshot-mean-zero.png "Mean curvature mapped on a blobby cube 3D" width=5cm
+@image html snapshot-K-zero.png "Gaussian curvature mapped on a blobby cube 3D"
+@image latex snapshot-K-zero.png "Gaussian curvature mapped on a blobby cube 3D" width=5cm
+@image html AlGuy_Gaussian_re_7_w.png "Gaussian curvature mapped on a Al vol with a Euclidean kernel radius of 7"
+@image latex AlGuy_Gaussian_re_7_w.png "Gaussian curvature mapped on a Al vol with a Euclidean kernel radius of 7" width=5cm
 
 */
 
