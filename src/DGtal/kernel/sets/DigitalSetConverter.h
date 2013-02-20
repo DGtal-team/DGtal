@@ -56,7 +56,7 @@ namespace DGtal
    * Description of class 'DigitalSetConverter' <p>
    * \brief Aim: Utility class to convert between types of sets.
    *
-   * @tparam InputDigitalSet the type of the input DigitalSet (model
+   * @tparam OutputDigitalSet the type of the input DigitalSet (model
    * of CDigitalSet).
    *
    */
@@ -72,7 +72,7 @@ namespace DGtal
      * @param output (modified) the output set.
      * @param input the input set.
      *
-     * @tparam OutputDigitalSet the type of the output DigitalSet  (model
+     * @tparam InputDigitalSet the type of the output DigitalSet  (model
      * of CDigitalSet).
      */
     template<typename InputDigitalSet>

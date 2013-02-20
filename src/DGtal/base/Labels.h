@@ -105,7 +105,7 @@ namespace DGtal
       typedef Label Value;
       typedef const Value* Pointer;
       typedef const Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -116,10 +116,10 @@ namespace DGtal
       typedef std::forward_iterator_tag iterator_category;
 
     private:
-      const Word* myWordAddress;  //< current address of word
-      Label myWordLabel;//< index of first label of the current word.
-      Label myLabel;    //< current label
-      Word myWord;      //< current word (modified until 0).
+      const Word* myWordAddress;  ///< current address of word
+      Label myWordLabel;///< index of first label of the current word.
+      Label myLabel;    ///< current label
+      Word myWord;      ///< current word (modified until 0).
       
     public:
       /**
