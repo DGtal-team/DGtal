@@ -890,8 +890,6 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getFront() const {
   return myL;
 }
 
-
-
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 TIterator

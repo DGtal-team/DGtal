@@ -460,7 +460,6 @@ namespace DGtal
        * in a container of vertices.
        * 
        * @param it the output iterator
-       * 
        * @param v the vertex whose neighbors will be writeNeighbors
        */
       template <typename OutputIterator>

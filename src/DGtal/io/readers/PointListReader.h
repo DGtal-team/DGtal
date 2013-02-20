@@ -106,7 +106,7 @@ namespace DGtal
      * defined in a file where each line defines a point. 
      * 
      * 
-     * @param filename  
+     * @param filename a filename 
      * @param aVectPosition used to specify the position of indices of
      * value points  (optional: default set to 0,..,dimension) 
      * @return a vector containing the set of points.

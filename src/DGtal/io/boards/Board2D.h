@@ -154,18 +154,6 @@ namespace DGtal
     // ------------------------- Public Datas ------------------------------
   public:
     /**
-     * @deprecated @since 2010/11/8
-     * @see myModes
-     */
-    DomainDrawMode myDomainDrawMode;
-
-    /**
-     * @deprecated @since 2010/11/8
-     * @see myModes
-     */
-    bool myDrawObjectAdjacencies;
-
-    /**
      * For instance, may associate a new style object T1 to the class
      * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
      *

@@ -167,7 +167,7 @@ namespace DGtal
          * Constructor.
          * Nb: complexity in O(n).
          *
-         * @param chain a Freeman chain,
+         * @param aChain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          */
         ConstIterator( const FreemanChain & aChain, Index n =0);
@@ -406,7 +406,7 @@ public:
 
   /**
    * Copy constructor.
-   * @param other the iterator to clone.
+   * @param aOther the iterator to clone.
    */
   CodesRange( const CodesRange & aOther )
     : myChain( aOther.myChain ){}
@@ -591,7 +591,7 @@ public:
 
     /**
      * Comparaison operator
-     * @param, other the object to compare to.
+     * @param other the object to compare to.
      * @return 'true' both FreemanChain are equals, 'false' otherwise.
      */
     bool operator==( const FreemanChain & other) const
@@ -976,7 +976,7 @@ public:
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      *
-     * @param aPix_chain (output) the code of the 4-connected inner border.
+     * @param aPixChain (output) the code of the 4-connected inner border.
      *
      * @param aPl2pix (output) the mapping associating pointels to
      * pixels as indices in their respective Freeman chain.
@@ -984,7 +984,7 @@ public:
      * @param aPix2pl (output) the inverse mapping associating pixels to
      * pointels as indices in their respective Freeman chain.
      *
-     * @param pl_chain the input code of the 4-connected pointel contour.
+     * @param aPlChain the input code of the 4-connected pointel contour.
      */
     static void pointel2pixel( FreemanChain & aPixChain,
              std::vector<unsigned int> & aPl2pix,
@@ -1006,7 +1006,7 @@ public:
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      *
-     * @param aInner_chain (output) the code of the 4-connected inner
+     * @param aInnerChain (output) the code of the 4-connected inner
      * border, with starting coordinates that are floored to the closest
      * integer.
      *
@@ -1016,7 +1016,7 @@ public:
      * @param aInner2outer (output) the mapping associating inner to
      * outer elements as indices in their respective Freeman chain.
      *
-     * @param aaOuter_chainthe input code of the 4-connected contour.
+     * @param aOuterChain the input code of the 4-connected contour.
      *
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.

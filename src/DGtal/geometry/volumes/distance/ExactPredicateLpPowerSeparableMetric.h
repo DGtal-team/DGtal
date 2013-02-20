@@ -145,11 +145,11 @@ namespace DGtal
      *  Return the power distance of a point @a aPoint and a weighted
      *  point (@a aQ,@a aWq) 
      * 
-     * @param aPoint 
-     * @param aQ 
-     * @param aWeight 
+     * @param aPoint a point
+     * @param aQ a second point
+     * @param aWq weight of the second point
      * 
-     * @return 
+     * @return the power distance between aPoint and (Q,WQ)
      */
     Weight powerDistance(const Point &aPoint, 
                          const Point &aQ, 
@@ -162,7 +162,6 @@ namespace DGtal
      * comparing distance values.
      * 
      * @param origin the origin
-     * @param wO the origin weight
      * @param first  the first point
      * @param wF the first point weight
      * @param second the second point
@@ -193,9 +192,9 @@ namespace DGtal
      * @param u a site
      * @param wu a weight
      * @param v a site
-     * @param wu a weight
+     * @param wv a weight
      * @param w a site
-     * @param wu a weight
+     * @param ww a weight
      * @param startingPoint starting point of the segment
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
@@ -336,11 +335,11 @@ namespace DGtal
      *  Return the power distance of a point @a aPoint and a weighted
      *  point (@a aQ,@a aWq) 
      * 
-     * @param aPoint 
-     * @param aQ 
-     * @param aWeight 
+     * @param aPoint aPoint
+     * @param aQ another point
+     * @param aWeight wieght of øa aQ
      * 
-     * @return 
+     * @return the power distance
      */
     Weight powerDistance(const Point &aPoint, 
                          const Point &aQ, 

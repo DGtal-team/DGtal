@@ -1594,10 +1594,7 @@ public:
   // ------------------------- monomial services ----------------------------
 
   /**
-     Creates a monomial X_k^e 
-     @param k the index of the variable (X_k)
-     @param e the exponent for X_k
-     @return the 1-variable polynomial X_0^e
+     Creates a monomial X_k^e
      @tparam n the number of indetermionates.
      @tparam Ring the type for the coefficent ring of the polynomial.
      @tparam Alloc the type of allocator.
@@ -1608,6 +1605,11 @@ public:
   public:
     Xe_kComputer() {}
 
+   /** 
+   *  @param k the index of the variable (X_k)
+    * @param e the exponent for X_k
+    *  @return the 1-variable polynomial X_0^e
+        */
     MPolynomial<n, Ring, Alloc> 
     get( unsigned int k, unsigned int e )
     {
