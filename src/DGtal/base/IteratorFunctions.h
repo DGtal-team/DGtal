@@ -81,7 +81,7 @@ namespace DGtal
    * Checks if the range [ @a itb , @a ite ) is empty
    * @param itb begin iterator of the range
    * @param ite end iterator of the range
-   * @tparam any model of iterator or circulator
+   * @tparam IC model of iterator or circulator
    */
   template< typename IC> 
   inline
@@ -117,7 +117,6 @@ namespace DGtal
      * Moves @a ic at position @ it + @a n 
      * @param ic any (circular)iterator
      * @param n any positive distance
-     * @param c any instance of ForwardCategory
      * @tparam IC any iterator or circulator
      */
     template<typename IC>
@@ -130,7 +129,6 @@ namespace DGtal
      * Moves @a ic at position @ it + @a n 
      * @param ic any (circular)iterator
      * @param n any positive distance
-     * @param c any instance of RandomAccessCategory
      * @tparam IC any iterator or circulator
      */
     template<typename IC>
@@ -172,8 +170,6 @@ namespace DGtal
      * Computes the size of a given range [ @a itb , @a ite ) 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @param t any object of IteratorType 
-     * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(ite-itb)
      * @tparam I any iterator
@@ -188,8 +184,6 @@ namespace DGtal
      * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
      * @param cb begin iterator of the range
      * @param ce end iterator of the range
-     * @param t any object of CirculatorType 
-     * @param c any object of ForwardCategory 
      * @return the size 
      * NB: linear in the range size
      * @tparam C any circulator
@@ -203,8 +197,6 @@ namespace DGtal
      * Computes the size of a given range [ @a itb , @a ite ) 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @param t any object of IteratorType 
-     * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(1)
      * @tparam I any iterator
@@ -219,8 +211,6 @@ namespace DGtal
      * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
      * @param cb begin iterator of the range
      * @param ce end iterator of the range
-     * @param t any object of CirculatorType 
-     * @param c any object of ForwardCategory 
      * @return the size 
      * NB: in O(1)
      * @tparam C any circulator
@@ -266,8 +256,6 @@ namespace DGtal
      * Computes the middle of a given range [ @a itb , @a ite ). 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @param t any object of IteratorType 
-     * @param c any object of ForwardCategory 
      * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(ite-itb)
      * @tparam I any iterator
@@ -281,8 +269,6 @@ namespace DGtal
      * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
      * @param cb begin iterator of the range
      * @param ce end iterator of the range
-     * @param t any object of CirculatorType 
-     * @param c any object of ForwardCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: linear in the range size
      * @tparam C any circulator
@@ -295,9 +281,7 @@ namespace DGtal
      * Computes the middle of a given range [ @a itb , @a ite ) 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @param t any object of IteratorType 
-     * @param c any object of BidirectionalCategory 
-     * @return the middle iterator of the range [ @a itb , @a ite ) 
+    * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(ite-itb)
      * @tparam I any iterator
      */
@@ -310,8 +294,6 @@ namespace DGtal
      * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
      * @param cb begin iterator of the range
      * @param ce end iterator of the range
-     * @param t any object of CirculatorType 
-     * @param c any object of BidirectionalCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: linear in the range size
      * @tparam C any circulator
@@ -324,9 +306,7 @@ namespace DGtal
      * Computes the middle of a given range [ @a itb , @a ite ) 
      * @param itb begin iterator of the range
      * @param ite end iterator of the range
-     * @param t any object of IteratorType 
-     * @param c any object of RandomAccessCategory 
-     * @return the middle iterator of the range [ @a itb , @a ite ) 
+    * @return the middle iterator of the range [ @a itb , @a ite ) 
      * NB: in O(1)
      * @tparam I any iterator
      */
@@ -339,8 +319,6 @@ namespace DGtal
      * Note that if @a cb = @a ce then [ @a cb, @a ce ) is assumed to be a whole range.  
      * @param cb begin iterator of the range
      * @param ce end iterator of the range
-     * @param t any object of CirculatorType 
-     * @param c any object of RandomAccessCategory 
      * @return the middle circulator of the range [ @a cb , @a ce ) 
      * NB: in O(1)
      * @tparam C any circulator

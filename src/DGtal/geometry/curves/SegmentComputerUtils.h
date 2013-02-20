@@ -142,9 +142,10 @@ IC getMiddleIterator(const IC& itb, const IC& ite, ForwardCategory)
 /**
  * Computes the middle iterator of a given range, 
  * i.e. itb + (ite-itb)/2)
- * @param itb, ite, begin and end iterators of a range
+ * @param itb begin iterator of a range
+ * @param ite end iterator of a range
  * @return the middle iterator of the range [itb,ite)
- * @tparam any iterator or circulator
+ * @tparam IC iterator or circulator
  */
 template<typename IC>
 IC getMiddleIterator(const IC& itb, const IC& ite) {
@@ -289,7 +290,8 @@ bool maximalSymmetricExtension(SC& s,
  * Calls alternatively s.extendForward() and s.extendBackward() 
  * while it is possible
  * @param s any instance of (bidirectional)segment computer 
- * @param begin, end, begin and end iterator of a range
+ * @param begin begin iterator of a range
+ * @param end end iterator of a range
  * @return 'true' if the extension at the front fails first
  * and 'false' if the extension at the back fails first
  * @tparam SC any model of CBidirectionalSegmentComputer
@@ -766,7 +768,7 @@ void nextMaximalSegment(SC& s,
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, end ConstIterator
+ * @param end end ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
  * @note fistMaximalSegment of s.end()
  */

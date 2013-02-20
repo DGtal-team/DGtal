@@ -355,7 +355,7 @@ namespace DGtal
      * performances strongly depend on wether or not and how much the
      * tree's structure needs to be modified.  For efficiency no check
      * is performed on the coordinates
-     * @param key The point
+     * @param aPoint The point
      * @param object the associated object
      */
     void setValue(const Point& aPoint, const Value object);
