@@ -337,7 +337,7 @@ namespace DGtal
      * 
      * @param aPoint aPoint
      * @param aQ another point
-     * @param aWeight wieght of øa aQ
+     * @param aWq wieght of øa aQ
      * 
      * @return the power distance
      */
