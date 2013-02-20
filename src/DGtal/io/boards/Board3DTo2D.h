@@ -117,8 +117,8 @@ namespace DGtal
   
     /**
      * Set near and far distance.
-     * @param near near distance.
-     * @param far far distance.
+     * @param _near near distance.
+     * @param _far far distance.
      */
     void setNearFar(double _near, double _far) { ZNear = _near; ZFar = _far; }
   
@@ -151,7 +151,7 @@ namespace DGtal
     /**
      * Set the default color for future drawing.
      *
-     * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+     * @param aColor a DGtal::Color (allow to set a trasnparency value).
      *
      **/  
     Board3DTo2D & operator<<(const DGtal::Color & aColor);
@@ -252,8 +252,8 @@ namespace DGtal
     double ZFar;      //!< zfar distance
   
   protected :
-    /*!
-     * \brief init function (should be in Constructor).
+    /**
+     *  init function (should be in Constructor).
      */
     virtual void init();
 

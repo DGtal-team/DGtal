@@ -76,7 +76,7 @@ struct Point {
 
   inline Point & rotate( double angle, const Point & center );
   
-  inline Point & rotated( double angle, const Point & center ) const;
+  inline Point  rotated( double angle, const Point & center ) const;
 
   inline Point & operator+=( const Point & other );
 
@@ -204,11 +204,10 @@ Point::rotate( double angle, const Point & center )
   return *this;
 }
 
-Point &
+Point
 Point::rotated( double angle, const Point & center ) const
 {
-  Point p(*this);
-  return p.rotate( angle, center );
+  return Point(*this).rotate( angle, center );
 }
 
 double
