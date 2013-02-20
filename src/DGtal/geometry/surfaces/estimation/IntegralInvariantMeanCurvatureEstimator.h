@@ -89,7 +89,7 @@ class IntegralInvariantMeanCurvatureEstimator
 public:
   typedef TKSpace KSpace;
   typedef typename Z3i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint Point;
+  typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z3i::DigitalSet DigitalSet;
   typedef typename KSpace::SCell Cell;
   typedef typename KSpace::SurfelSet SurfelSet;
@@ -129,6 +129,8 @@ public:
       *
       * @param h precision of the grid
       * @param re Euclidean radius of the kernel support
+      *
+      * @bug known bug with radius of kernel. Small hack for the moment.
       */
   void init ( const double _h, const double re );
 
@@ -232,7 +234,7 @@ class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 2>
 public:
   typedef TKSpace KSpace;
   typedef typename Z2i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint Point;
+  typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z2i::DigitalSet DigitalSet;
   typedef typename KSpace::SCell Cell;
   typedef typename KSpace::SurfelSet SurfelSet;
@@ -272,6 +274,8 @@ public:
       *
       * @param h precision of the grid
       * @param re Euclidean radius of the kernel support
+      *
+      * @bug known bug with radius of kernel. Small hack for the moment.
       */
   void init ( const double _h, const double re );
 
@@ -380,7 +384,7 @@ class IntegralInvariantMeanCurvatureEstimator<TKSpace, TShapeFunctor, 3>
 public:
   typedef TKSpace KSpace;
   typedef typename Z3i::Domain Domain;
-  typedef typename KSpace::Space::RealPoint Point;
+  typedef typename KSpace::Space::RealPoint RealPoint;
   typedef typename Z3i::DigitalSet DigitalSet;
   typedef typename KSpace::SCell Cell;
   typedef typename KSpace::SurfelSet SurfelSet;

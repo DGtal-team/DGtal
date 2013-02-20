@@ -416,17 +416,13 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     int offset = 0;
 
-#ifdef DEBUG_VERBOSE
-    int total = 0;
-    int recount = 0;
+    unsigned int total = 0;
+#ifdef DEBUG_VERBOSE  
+    unsigned int recount = 0;
 #endif
 
     for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
     {
-#ifdef DEBUG_VERBOSE
-        ++total;
-#endif
-
         currentResult = currentResult2 = Quantity( 0 );
 
         currentCell = myKSpace.sIndirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but inside the shape
@@ -435,7 +431,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
         shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
-        if ( itcurrent == itbegin ) /// Computation on full kernel, we have no previous results
+        if ( total == 0 ) /// Computation on full kernel, we have no previous results
         {
             /// Computation for the cell inside the shape. Using full kernel.
             for ( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
@@ -651,6 +647,8 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         lastResult2 = currentResult2;
         lastCell = currentCell;
         lastCell2 = currentCell2;
+
+        ++total;
     }
 
 #ifdef DEBUG_VERBOSE
@@ -684,17 +682,13 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     int offset = 0;
 
+    unsigned int total = 0;
 #ifdef DEBUG_VERBOSE
-    int total = 0;
-    int recount = 0;
+    unsigned int recount = 0;
 #endif
 
     for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
     {
-#ifdef DEBUG_VERBOSE
-        ++total;
-#endif
-
         currentResult = currentResult2 = Quantity( 0 );
 
         currentCell = myKSpace.sIndirectIncident( *itcurrent, *myKSpace.sOrthDirs( *itcurrent )); /// Cell on the border, but inside the shape
@@ -703,7 +697,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
         shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
-        if ( itcurrent == itbegin ) /// Computation on full kernel, we have no previous results
+        if ( total == 0 ) /// Computation on full kernel, we have no previous results
         {
             /// Computation for the cell inside the shape. Using full kernel.
             for ( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
@@ -926,6 +920,8 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         lastResult2 = currentResult2;
         lastCell = currentCell;
         lastCell2 = currentCell2;
+
+        ++total;
     }
 
 #ifdef DEBUG_VERBOSE
@@ -1267,17 +1263,13 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     SCellToMidPoint< KSpace > midpoint( myKSpace );
 
+    unsigned int total = 0;
 #ifdef DEBUG_VERBOSE
-    int total = 0;
-    int recount = 0;
+    unsigned int recount = 0;
 #endif
 
     for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
     {
-#ifdef DEBUG_VERBOSE
-        ++total;
-#endif
-
         for (int line = 0; line < dimension; ++line)
         {
             for (int row = 0; row < dimension; ++row)
@@ -1301,7 +1293,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
         shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
-        if ( lastVa == Quantity( 0 ) && lastVa2 == Quantity( 0 )) /// Computation on full kernel, we have no previous results
+        if ( total == 0 ) /// Computation on full kernel, we have no previous results
         {
             /// Computation for the cell inside the shape. Using full kernel.
             for ( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
@@ -1364,7 +1356,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
                 for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
+                    shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
@@ -1620,7 +1612,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     /// Part to substract from previous result.
                     for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
-                        shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
+                        shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
@@ -1714,6 +1706,8 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         lastXXT2 = currentXXT2;
         lastCell = currentCell;
         lastCell2 = currentCell2;
+
+        ++total;
     }
 
 #ifdef DEBUG_VERBOSE
@@ -1773,28 +1767,25 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
 
     SCellToMidPoint< KSpace > midpoint( myKSpace );
 
+
+    unsigned int total = 0;
 #ifdef DEBUG_VERBOSE
-    int total = 0;
-    int recount = 0;
+    unsigned int recount = 0;
 #endif
 
     for( ConstIteratorOnCells itcurrent = itbegin; itcurrent != itend; ++itcurrent )
     {
-#ifdef DEBUG_VERBOSE
-        ++total;
-#endif
-
         for( DGtal::Dimension line = 0; line < dimension; ++line )
         {
             for( DGtal::Dimension row = 0; row < dimension; ++row )
             {
                 currentXXT.setComponent ( line, row, Quantity( 0 ));
-                //        currentXXT2.setComponent ( line, row, Quantity( 0 ));
+                currentXXT2.setComponent ( line, row, Quantity( 0 ));
                 Ja.setComponent ( line, row, 0.0 );
             }
 
             currentSa[ line ] = 0;
-            //      currentSa2[ line ] = 0;
+            currentSa2[ line ] = 0;
         }
 
         currentVa = Quantity( 0 );
@@ -1807,7 +1798,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
         shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
-        if ( lastVa == Quantity( 0 ) && lastVa2 == Quantity( 0 )) /// Computation on full kernel, we have no previous results
+        if ( total == 0 ) /// Computation on full kernel, we have no previous results
         {
             /// Computation for the cell inside the shape. Using full kernel.
             for ( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )
@@ -1828,11 +1819,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         {
                             for (DGtal::Dimension column = 0; column < dimension; ++column)
                             {
-                                currentXXT.setComponent ( line, column, currentXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                currentXXT.setComponent ( line, column, currentXXT ( line, column ) + (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                             }
-                            currentSa[ line ] += fShiftedCell * currentPoint[ line ];
+                            currentSa[ line ] += (Quantity)fShiftedCell * currentPoint[ line ];
                         }
-                        currentVa += fShiftedCell * myGFunctor(*itgcurrent);
+                        currentVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                     }
                 }
             }
@@ -1867,12 +1858,13 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     {
                         maskXXT.setComponent ( line, row, Quantity( 0 ));
                     }
-                    maskSa[ line ] = 0;
+                    maskSa[ line ] = Quantity( 0 );
                 }
 
+                /// Part to substract from previous result.
                 for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
-                    shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
+                    shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
@@ -1888,15 +1880,16 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             {
                                 for (DGtal::Dimension column = 0; column < dimension; ++column)
                                 {
-                                    maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                    maskXXT.setComponent ( line, column, maskXXT ( line, column ) - (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                 }
-                                maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                                maskSa[ line ] -= (Quantity)fShiftedCell * currentPoint[ line ];
                             }
-                            maskVa -= fShiftedCell * myGFunctor(*itgcurrent);
+                            maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                         }
                     }
                 }
 
+                /// Part to add from previous result.
                 for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent )
                 {
                     shiftedPoint = (*itgcurrent).myCoordinates;
@@ -1906,20 +1899,20 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     if ( myFFunctor.isInside(shiftedCell) )
                     {
                         fShiftedCell = myFFunctor(shiftedCell);
+
                         if ( fShiftedCell != FQuantity( 0 ) )
                         {
-
                             currentPoint = midpoint( shiftedCell );
 
                             for (DGtal::Dimension line = 0; line < dimension; ++line)
                             {
                                 for (DGtal::Dimension column = 0; column < dimension; ++column)
                                 {
-                                    maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                    maskXXT.setComponent ( line, column, maskXXT ( line, column ) + (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                 }
-                                maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                                maskSa[ line ] += (Quantity)fShiftedCell * currentPoint[ line ];
                             }
-                            maskVa += fShiftedCell * myGFunctor(*itgcurrent);
+                            maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                         }
                     }
                 }
@@ -1988,11 +1981,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 {
                                     for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
-                                        currentXXT.setComponent ( line, column, currentXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                        currentXXT.setComponent ( line, column, currentXXT ( line, column ) + (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
-                                    currentSa[ line ] += fShiftedCell * currentPoint[ line ];
+                                    currentSa[ line ] += (Quantity)fShiftedCell * currentPoint[ line ];
                                 }
-                                currentVa += fShiftedCell * myGFunctor(*itgcurrent);
+                                currentVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
                         }
                     }
@@ -2010,7 +2003,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         {
                             maskXXT.setComponent ( line, row, Quantity( 0 ));
                         }
-                        maskSa[ line ] = 0;
+                        maskSa[ line ] = Quantity( 0 );
                     }
 
                     /// Part to substract from previous result.
@@ -2032,11 +2025,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 {
                                     for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
-                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) - (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
-                                    maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                                    maskSa[ line ] -= (Quantity)fShiftedCell * currentPoint[ line ];
                                 }
-                                maskVa -= fShiftedCell * myGFunctor(*itgcurrent);
+                                maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
                         }
                     }
@@ -2060,11 +2053,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 {
                                     for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
-                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) + (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
-                                    maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                                    maskSa[ line ] += (Quantity)fShiftedCell * currentPoint[ line ];
                                 }
-                                maskVa += fShiftedCell * myGFunctor(*itgcurrent);
+                                maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
                         }
                     }
@@ -2125,13 +2118,13 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         {
                             maskXXT.setComponent ( line, row, Quantity( 0 ));
                         }
-                        maskSa[ line ] = 0;
+                        maskSa[ line ] = Quantity( 0 );
                     }
 
                     /// Part to substract from previous result.
                     for ( KernelConstIterator itgcurrent = myMask[offset].first, itgend = myMask[offset].second; itgcurrent != itgend; ++itgcurrent )
                     {
-                        shiftedPoint = (*itgcurrent).myCoordinates - diffLastCurrentCell;
+                        shiftedPoint = (*itgcurrent).myCoordinates - diffWithCurrentCell;
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
@@ -2147,11 +2140,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 {
                                     for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
-                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) - fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) - (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
-                                    maskSa[ line ] -= fShiftedCell * currentPoint[ line ];
+                                    maskSa[ line ] -= (Quantity)fShiftedCell * currentPoint[ line ];
                                 }
-                                maskVa -= fShiftedCell * myGFunctor(*itgcurrent);
+                                maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
                         }
                     }
@@ -2175,11 +2168,11 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 {
                                     for (DGtal::Dimension column = 0; column < dimension; ++column)
                                     {
-                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) + fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
+                                        maskXXT.setComponent ( line, column, maskXXT ( line, column ) + (Quantity)fShiftedCell * currentPoint[ line ] * currentPoint[ column ]);
                                     }
-                                    maskSa[ line ] += fShiftedCell * currentPoint[ line ];
+                                    maskSa[ line ] += (Quantity)fShiftedCell * currentPoint[ line ];
                                 }
-                                maskVa += fShiftedCell * myGFunctor(*itgcurrent);
+                                maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
                         }
                     }
@@ -2224,6 +2217,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         lastXXT2 = currentXXT2;
         lastCell = currentCell;
         lastCell2 = currentCell2;
+
+        ++total;
+
     }
 
 #ifdef DEBUG_VERBOSE

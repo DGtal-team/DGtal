@@ -409,7 +409,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
+      return myShapeA.isInside( p ) && !myShapeB.orientation(p) != INSIDE;//!myShapeB.isInside( p );
     }
 
     /**
