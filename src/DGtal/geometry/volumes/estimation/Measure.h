@@ -86,7 +86,7 @@ namespace DGtal
      */
     Measure();
   
-    /**
+    /**   
      * Destructor.
      */
     ~Measure();
