@@ -207,7 +207,8 @@ Point::rotate( double angle, const Point & center )
 Point &
 Point::rotated( double angle, const Point & center ) const
 {
-  return Point(*this).rotate( angle, center );
+  Point p(*this);
+  return p.rotate( angle, center );
 }
 
 double

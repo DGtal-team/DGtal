@@ -299,7 +299,7 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendableForward(const ConstIterator & itf) __deprecated;
+    bool isExtendableForward(const ConstIterator & itf) ;
 
     /**
      * Tests whether the current DSS can be extended at the front.
@@ -328,7 +328,7 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendForward(const ConstIterator & itf) __deprecated ;
+    bool extendForward(const ConstIterator & itf)  ;
 
     /**
      * deprecated
@@ -343,7 +343,7 @@ Steps:
      * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendBackward(const ConstIterator & itb) __deprecated;
+    bool extendBackward(const ConstIterator & itb) ;
 
     /**
      * Tests whether the current DSS can be extended at the front.
@@ -419,18 +419,18 @@ Steps:
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.
       */
-    Point getBackPoint() const __deprecated;
+    Point getBackPoint() const ;
     /**
      * deprecated
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
      */
-    Point getFrontPoint() const __deprecated;
+    Point getFrontPoint() const ;
     /**
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.
      */
-    Point getFirstPoint() const __deprecated;
+    Point getFirstPoint() const ;
     /**
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
@@ -443,7 +443,7 @@ Steps:
      * Accessor to the iterator at the back of the DSS
      * @return iterator pointing to the back of the DSS.
      */
-    ConstIterator getBack() const __deprecated;
+    ConstIterator getBack() const ;
     /**
      * deprecated
      * @see begin() end()
@@ -451,7 +451,7 @@ Steps:
      * Accessor to the iterator at the front of the DSS
      * @return iterator pointing to the front of the DSS.
      */
-    ConstIterator getFront() const __deprecated;
+    ConstIterator getFront() const ;
     
     /**
      *  
