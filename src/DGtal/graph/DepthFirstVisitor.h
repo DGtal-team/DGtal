@@ -101,7 +101,7 @@ namespace DGtal
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
-    typedef Size Data; //< Data attached to each Vertex is the depth distance to the seed.
+    typedef Size Data; ///< Data attached to each Vertex is the depth distance to the seed.
 
     //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
     // Cannot check this since some types using it are incomplete.

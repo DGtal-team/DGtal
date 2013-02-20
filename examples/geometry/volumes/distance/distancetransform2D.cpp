@@ -50,7 +50,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /** 
- * Set to a given value a random set of @param nb points.
+ * Set to a given value a random set of @a nb points.
  * 
  * @param image the  image
  * @param nb the number of random points to insert

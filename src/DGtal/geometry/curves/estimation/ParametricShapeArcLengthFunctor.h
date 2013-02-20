@@ -88,7 +88,7 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param sShape the input shape.
+     * @param aShape the input shape.
      */
     ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
     

@@ -669,7 +669,6 @@ namespace DGtal
        the boundary component of [aSpelSet].
        
        @param aKSpace any space.
-       @param aSurfelAdj the surfel adjacency chosen for the tracking.
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
 
@@ -757,8 +756,6 @@ namespace DGtal
        @param out_it any output iterator for writing the signed cells.
        
        @param aKSpace any space.
-
-       @param aSurfelAdj the surfel adjacency chosen for the tracking.
 
        @param pp an instance of a model of CPointPredicate, for
        instance a SetPredicate for a digital set representing a shape.
