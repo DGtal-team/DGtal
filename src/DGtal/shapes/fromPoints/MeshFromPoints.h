@@ -105,7 +105,7 @@ namespace DGtal
      * By default the constructed mesh does not contain nor store color information about the mesh.
      * If you want to include color in the MeshFromPoint object you have to set the constructor parameter saveFaceColor to true. 
      * 
-     * @param saveFaceColor: used to memorize the color of a face (default= false) 
+     * @param saveFaceColor used to memorize the color of a face (default= false) 
      */
     MeshFromPoints(bool saveFaceColor=false);    
 
@@ -113,14 +113,14 @@ namespace DGtal
      * Constructor.
      * The constructed mesh will store an unique default color information about the mesh.
      * 
-     * @param saveFaceColor: used to memorize the color of a face (default= false) 
+     * @param aColor used to memorize the color of a face (default= false) 
      */
     MeshFromPoints(const DGtal::Color &aColor);    
     
     /**
      * Constructor by usung a vertex set as init.
      * The color are not stored in this case.
-     * @param vertexSet: the set of vertex. 
+     * @param vertexSet the set of vertex. 
      */    
     MeshFromPoints(const std::vector<TPoint> &vertexSet);
 
@@ -158,9 +158,9 @@ namespace DGtal
     /**
      * Add a triangle face given from index position.
      *
-     * @param indexVertex1: the index of the first vertex face.
-     * @param indexVertex2: the index of the second vertex face.
-     * @param indexVertex2: the index of the second vertex face.
+     * @param indexVertex1 the index of the first vertex face.
+     * @param indexVertex2 the index of the second vertex face.
+     * @param indexVertex3 the index of the second vertex face.
      * 
      **/    
     void addTriangularFace(unsigned int indexVertex1, unsigned int indexVertex2, unsigned int indexVertex3, 
@@ -170,9 +170,9 @@ namespace DGtal
     /**
      * Add a quad face given from index position.
      *
-     * @param indexVertex1: the index of the first vertex face.
-     * @param indexVertex2: the index of the second vertex face.
-     * @param indexVertex2: the index of the second vertex face.
+     * @param indexVertex1 the index of the first vertex face.
+     * @param indexVertex2 the index of the second vertex face.
+     * @param indexVertex3 the index of the second vertex face.
      * 
      **/    
     void addQuadFace(unsigned int indexVertex1, unsigned int indexVertex2, 
@@ -182,7 +182,6 @@ namespace DGtal
     
    /**
     * Add a quad face given from index position.
-    * @param listIndex: the index of all the face vertex.
     * 
     **/    
     void addFace(const MeshFace &aFace, const DGtal::Color &aColor=DGtal::Color::White);
@@ -191,7 +190,7 @@ namespace DGtal
     
     /**
      * Return a reference to the vertex of index i.
-     * @param i: the index of the vertex.
+     * @param i the index of the vertex.
      * @return the vertex of index i. 
      **/
     const TPoint & getVertex(unsigned int i) const;
@@ -200,7 +199,7 @@ namespace DGtal
     
     /**
      * Return a reference to a face of index i.
-     * @param i: the index of the face.
+     * @param i the index of the face.
      * @return the face of index i. 
      **/
     const MeshFace & getFace(unsigned int i) const;
@@ -209,7 +208,7 @@ namespace DGtal
 
     /**
      * Return a reference to a  face Color of index i.
-     * @param i: the index of the face.
+     * @param i the index of the face.
      * @return the color of the face of index i. 
      **/
     const Color & getFaceColor(unsigned int i) const;

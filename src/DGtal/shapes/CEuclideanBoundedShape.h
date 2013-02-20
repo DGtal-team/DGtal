@@ -71,36 +71,17 @@ namespace DGtal
    * <p> Definitions
    *
    * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   <tr> 
-        <td class=CName> Lower bound        </td> 
-        <td class=CExpression> x.getLowerBound()      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> RealPoint     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> compute and return the lower bound of
-   * the shape bounding box      </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-  <tr> 
-        <td class=CName> Upper bound        </td> 
-        <td class=CExpression> x.getUpperBound()      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType> Point     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> compute and return the upper bound of
-   * the shape bounding box      </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-      </table>
-   *
+  
+   
+   
+   
+   
+   | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+   |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+   | Get Lower bound | \e getLowerBound()|  |  RealPoint     |            |   compute and return the lower bound of the shape bounding box   | | |
+   | Get Upper bound | \e getUpperBound()|  |  RealPoint     |            |   compute and return the upper bound of the shape bounding box   | | |
+   
+    *
    * <p> Invariants###
    *
    * <p> Models###

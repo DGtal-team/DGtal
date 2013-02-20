@@ -305,8 +305,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -328,7 +328,6 @@ namespace DGtal
 
       /**
        * Estimation depending on @e myH 
-       * @param it any iterator (unused) 
        * @return the estimated quantity
        */
       Quantity eval(const ConstIterator& /*it*/) const
@@ -439,9 +438,8 @@ namespace DGtal
 
       /**
        * Initialisation.
-       * @param h grid size (unused)
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double /*h*/, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -611,8 +609,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -764,7 +762,6 @@ namespace DGtal
        * @param aDSS an instance of segment computer
        * devoted to the DSS recognition.
 
-        * @return the y- and x-component of the tangent vector.
        */
       Value operator() (const DSS& aDSS) const 
       {
@@ -1394,8 +1391,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
