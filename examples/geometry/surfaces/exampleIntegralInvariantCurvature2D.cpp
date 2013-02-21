@@ -41,7 +41,7 @@
 #include "DGtal/graph/GraphVisitorRange.h"
 
 // Integral Invariant includes
-#include "DGtal/base/PointPredicateToPointFunctor.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 
@@ -75,6 +75,7 @@ int main( int argc, char** argv )
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
 
     MyShape shape( 0, 0, 20.00000124, 10.0000123, 4, 3.0 );
+
     MyGaussDigitizer digShape;
     digShape.attach( shape );
     digShape.init( shape.getLowerBound(), shape.getUpperBound(), h );
@@ -86,6 +87,11 @@ int main( int argc, char** argv )
         trace.error() << "Error in the Khamisky space construction." << std::endl;
         return 2;
     }
+
+    typedef ImageSelector< Z2i::Domain, unsigned int >::Type Image;
+    Image image( domainShape );
+    DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
+
     SurfelAdjacency<Z2i::KSpace::dimension> SAdj( true );
     Surfel bel = Surfaces<Z2i::KSpace>::findABel( KSpaceShape, digShape, 100000 );
     LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
@@ -99,16 +105,16 @@ int main( int argc, char** argv )
     SurfelConstIterator abegin = range.begin();
     SurfelConstIterator aend = range.end();
 
+    typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
+    MyPointFunctor pointFunctor( &image, &digShape, 1 );
 
     /// Integral Invariant stuff
     //! [IntegralInvariantUsage]
-    double re_convolution_kernel = 3.96850263; // Euclidean radius of the convolution kernel. Set by user.
+    double re_convolution_kernel = 4.5; // Euclidean radius of the convolution kernel. Set by user.
 
-    typedef PointPredicateToPointFunctor< MyGaussDigitizer > MyPointFunctor;
     typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
     typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyCurvatureEstimator; // mean curvature estimator
 
-    MyPointFunctor pointFunctor( digShape );
     MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, re_convolution_kernel ); // Initialisation for a grid step h and a given Euclidean radius of convolution kernel re

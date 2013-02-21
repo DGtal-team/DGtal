@@ -51,6 +51,7 @@
 #include "DGtal/base/ConstAlias.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/Clone.h"
+#include "DGtal/kernel/CCellFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -90,6 +91,9 @@ public:
   typedef TKernelConstIterator KernelConstIterator;
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -274,6 +278,9 @@ public:
   typedef TKernelConstIterator KernelConstIterator;
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 
@@ -460,6 +467,9 @@ public:
   typedef TKernelConstIterator KernelConstIterator;
 
   typedef std::pair< KernelConstIterator, KernelConstIterator > PairIterators;
+
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< Functor > ));
+//  BOOST_CONCEPT_ASSERT (( CCellFunctor< KernelFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 

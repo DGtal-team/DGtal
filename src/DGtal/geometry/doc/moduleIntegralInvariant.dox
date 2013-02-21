@@ -50,7 +50,7 @@ color on the following figure).
 
 \subsection subsectIntegralInvariant Integral Invariants for curvature computation
 
-In [1], we have demonstrated that some digital integral quantities provide curvature information when the kernel size tends
+In @cite Coeurjo2013 , we have demonstrated that some digital integral quantities provide curvature information when the kernel size tends
 to zero for a sufficiently smooth shape.
 Indeed, at @f$ x @f$ of the digitized surface @f$ X @f$ and with a fixed radius @f$ r @f$, we obtain convergent local digital
 curvature estimators @f$ \tilde{\kappa}_r(X,x) @f$ and @f$ \tilde{H}_r(X,x) @f$ of quantities @f$ \kappa(X,x) @f$ and
@@ -67,7 +67,9 @@ curvature estimators @f$ \tilde{\kappa}_r(X,x) @f$ and @f$ \tilde{H}_r(X,x) @f$ 
 where @f$ \kappa_r(X,x) @f$ is the 2d curvature of @f$ X @f$ at @f$ x @f$ and @f$ H_r(X,x) @f$ is the 3d mean curvature
 of @f$ X @f$ at @f$ x @f$.
 
-We have demonstrated in [1] that to prove the multigrid convergence with a convergence speed of @f$ O(h^{\frac{1}{3}}) @f$
+// Explain that @f$ A_r(x) @f$ and @f$ V_r(x) @f$ can be approximated by a convolution.
+
+We have demonstrated in @cite Coeurjo2013 that to prove the multigrid convergence with a convergence speed of @f$ O(h^{\frac{1}{3}}) @f$
 when the Euclidean radius of the kernel follow the rule @f$ r = k_mh^{\alpha_m} @f$ ( @f$ \alpha_m = \frac{1}{3} @f$
 provides better worst-case errors, so we will use this value).
 
@@ -99,7 +101,7 @@ To sum up, we need a convolution kernel which will be integrated along a digitiz
 At initialization, we first create a convolution kernel (DGtal::Ball2D in 2d, DGtal::Ball3D in 3d) of Euclidean radius
 @f$ r_e @f$ and digitized at the grid step @f$ h @f$. DGtal::DigitalSurfaceConvolver is in charge of centering the convolution kernel
 on the surfel on the digitized shape border. Its objective is to compute @f$ B_{r/h}(\frac{1}{h} \cdot x ) \cap Z @f$ and @f$ B_{r/h}
-(\frac{1}{h} \cdot x ) \cap Z' @f$ from Eq. (\ref{eq:def-curvature-estimator2d}) and (\ref{eq:def-curvature-estimator3d}).
+(\frac{1}{h} \cdot x ) \cap Z' @f$ from previous equation.
 
 At evaluation, it will place the convolution kernel in order to lie his center with the cell to estimate. After, it will
 iterate on all spels of the kernel, and compute the integral:
@@ -111,8 +113,7 @@ iterate on all spels of the kernel, and compute the integral:
 where @f$ x @f$ is the current spel, @f$ f @f$ is the shape functor (set by user), @f$ g @f$ is the kernel functor (return 1 on all spels
 from the kernel).
 DGtal::IntegralInvariantMeanCurvatureEstimator uses this result to get @f$ \widehat{Area}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z, h) @f$
-in 2d and @f$ \widehat{Vol}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z', h) @f$ in 3d. With Eq. (\ref{eq:def-curvature-estimator2d}) and
-(\ref{eq:def-curvature-estimator3d}), it finally returns curvature quantities. Using this approach, we obtain a computation
+in 2d and @f$ \widehat{Vol}(B_{r/h}(\frac{1}{h} \cdot x ) \cap Z', h) @f$ in 3d. With equation defined previously, it finally returns curvature quantities. Using this approach, we obtain a computation
 cost in @f$ O((r/h)^d) @f$ per surface element.
 
 For DGtal:IntegralInvariantGaussianCurvatureEstimator, the initialization is the same but at evaluation
@@ -171,8 +172,10 @@ Here is some results on 2D and 3D :
 @image latex snapshot-mean-zero.png "Mean curvature mapped on a blobby cube 3D" width=5cm
 @image html snapshot-K-zero.png "Gaussian curvature mapped on a blobby cube 3D"
 @image latex snapshot-K-zero.png "Gaussian curvature mapped on a blobby cube 3D" width=5cm
-@image html AlGuy_Gaussian_re_7_w.png "Gaussian curvature mapped on a Al vol with a Euclidean kernel radius of 7"
-@image latex AlGuy_Gaussian_re_7_w.png "Gaussian curvature mapped on a Al vol with a Euclidean kernel radius of 7" width=5cm
+@image html AlGuy_Gaussian_re_7.jpg "Gaussian curvature mapped on a Al vol ( http://tc18.org/code_data_set/3D_images.html )  with a Euclidean kernel radius of 7"
+@image latex AlGuy_Gaussian_re_7.jpg "Gaussian curvature mapped on a Al vol ( http://tc18.org/code_data_set/3D_images.html ) with a Euclidean kernel radius of 7" width=5cm
+@image html AlGuy_Gaussian_re_7.jpg "Gaussian curvature mapped on a Al vol ( http://tc18.org/code_data_set/3D_images.html ) with a Euclidean kernel radius of 14"
+@image latex AlGuy_Gaussian_re_14.jpg "Gaussian curvature mapped on a Al vol ( http://tc18.org/code_data_set/3D_images.html ) with a Euclidean kernel radius of 14" width=5cm
 
 */
 

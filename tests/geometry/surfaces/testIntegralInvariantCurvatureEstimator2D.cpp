@@ -37,7 +37,7 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/base/PointPredicateToPointFunctor.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
@@ -63,7 +63,8 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   typedef GaussDigitizer< Z2i::Space, MyShape > MyGaussDigitizer;
   typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
-  typedef PointPredicateToPointFunctor< MyGaussDigitizer > MyPointFunctor;
+  typedef ImageSelector< Z2i::Domain, unsigned int >::Type Image;
+  typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
   typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
@@ -91,12 +92,15 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
     return 2;
   }
 
+  Image image( domainShape );
+  DGtal::imageFromRangeAndValue( domainShape.begin(), domainShape.end(), image );
+
   SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
   Surfel bel = Surfaces< Z2i::KSpace >::findABel( kSpace, gaussDigShape, 100000 );
   MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
   MyDigitalSurface digSurfShape( lightImplDigSurf );
 
-  MyPointFunctor pointFunctor( gaussDigShape );
+  MyPointFunctor pointFunctor( &image, &gaussDigShape, 1 );
   MyCellFunctor functorShape( pointFunctor, kSpace );
   MyIIMeanEstimator estimator( kSpace, functorShape );
 

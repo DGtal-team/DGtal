@@ -36,7 +36,7 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
-#include "DGtal/base/PointPredicateToPointFunctor.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
@@ -65,7 +65,8 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   typedef GaussDigitizer< Z3i::Space, MyShape > MyGaussDigitizer;
   typedef LightImplicitDigitalSurface< Z3i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
-  typedef PointPredicateToPointFunctor< MyGaussDigitizer > MyPointFunctor;
+  typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
+  typedef ImageToConstantFunctor< Image, MyGaussDigitizer > MyPointFunctor;
   typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
@@ -90,7 +91,7 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
     std::cerr << "ERROR: I read only <"
               << poly_str.substr( 0, iter - poly_str.begin() )
               << ">, and I built P=" << poly << std::endl;
-    return 1;
+    return false;
   }
 
   MyShape shape( poly );
@@ -104,15 +105,18 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   if (!space_ok)
   {
     trace.error() << "Error in the Khalimsky space construction."<<std::endl;
-    return 2;
+    return false;
   }
+
+  Image image( domain );
+  DGtal::imageFromRangeAndValue( domain.begin(), domain.end(), image );
 
   SurfelAdjacency< Z3i::KSpace::dimension > SAdj( true );
   Surfel bel = Surfaces< Z3i::KSpace >::findABel( kSpace, gaussDigShape, 100000 );
   MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
   MyDigitalSurface digSurfShape( lightImplDigSurf );
 
-  MyPointFunctor pointFunctor( gaussDigShape, true );
+  MyPointFunctor pointFunctor( &image, &gaussDigShape, 1, true );
   MyCellFunctor functorShape ( pointFunctor, kSpace );
   MyIIMeanEstimator estimator ( kSpace, functorShape );
 

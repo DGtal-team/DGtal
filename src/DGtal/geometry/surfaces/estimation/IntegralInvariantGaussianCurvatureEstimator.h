@@ -126,6 +126,8 @@ public:
 
   typedef Ball2D<Z2i::Space> KernelSupport;
 
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
+
   // ----------------------- Standard services ------------------------------
 public:
   /**
@@ -267,6 +269,8 @@ public:
   typedef typename Convolver::PairIterators PairIterators;
 
   typedef Ball2D<Z2i::Space> KernelSupport;
+
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 public:
@@ -422,6 +426,8 @@ public:
   typedef CurvatureInformation< Quantity, Matrix3x3, Vector3 > CurvInformation;
 
   typedef Ball3D<Z3i::Space> KernelSupport;
+
+  BOOST_CONCEPT_ASSERT (( CCellFunctor< ShapeCellFunctor > ));
 
   // ----------------------- Standard services ------------------------------
 public:
