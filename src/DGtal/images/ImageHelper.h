@@ -326,6 +326,64 @@ namespace DGtal
   bool findAndGetValue(const I& aImg, const S& aSet, 
 		       const typename I::Point& aPoint, 
 		       typename I::Value& aValue ); 
+
+
+
+
+  /**
+   *
+   *
+   */
+  template<typename Image, typename PointPredicate, typename Value=DGtal::int32_t>
+  class ImageToConstantFunctor
+  {
+  public:
+    
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
+    
+    BOOST_CONCEPT_ASSERT(( same_type(Image::Point, PointPredicate::Point)));
+    typedef Image::Point Point;
+    
+    /** 
+     * 
+     * 
+     * @param anImage 
+     * @param aPointPred 
+     * @param aVal 
+     */
+    ImageToConstantFunctor(ConstAlias<Image> anImage,
+			   ConstAlias<PointPredicate> aPointPred,
+			   Value aVal = NumberTraits<Value>::ONE ):
+      myImage(anImage),myPointPred(aPointPred), myVal(aVal) {}
+    
+    /** 
+     * 
+     * 
+     * 
+     * @return 
+     */
+    Value operator()(const Point &aPoint)
+    {
+      if ((myImage->domain().isInside(p)) && myPointPred->operator()(p))
+	return myVal;
+      else
+	return NumberTraits<Value>::ZERO;
+    }:
+
+    private:
+    
+    ///
+    Image *myImage;
+    
+    ///
+    PointPredicate myPointPre
+    
+    ///
+    Value myVal;
+  };
+
  
 } // namespace DGtal
 
