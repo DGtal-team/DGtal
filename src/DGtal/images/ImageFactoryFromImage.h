@@ -54,7 +54,14 @@ namespace DGtal
   // Template class ImageFactoryFromImage
   /**
    * Description of template class 'ImageFactoryFromImage' <p>
-   * \brief Aim: todo
+   * \brief Aim: implements a factory to produce images from a "bigger/original" one according to a given domain.
+   * 
+   * @tparam TImageContainer an image container type (model of CImage).
+   * 
+   * The factory images production (images are copied, so it's a creation process) is done with the function 'requestImage'
+   * so the deletion must be done with the function 'detachImage'.
+   * 
+   * The update of the original image is done with the function 'flushImage'.
    */
   template <typename TImageContainer>
   class ImageFactoryFromImage
@@ -122,9 +129,12 @@ namespace DGtal
 
     /**
      * Returns a pointer of an OutputImage created with the Domain aDomain.
+     * 
+     * @param aDomain the domain.
+     * 
      * @return an ImagePtr.
      */
-    OutputImage * request(const Domain &aDomain)
+    OutputImage * requestImage(const Domain &aDomain)
     {
       OutputImage* outputImage = new OutputImage(aDomain);
       
@@ -139,7 +149,9 @@ namespace DGtal
     }
     
     /**
-     * Flush an OutputImage
+     * Flush an OutputImage.
+     * 
+     * @param outputImage the OutputImage.
      */
     void flushImage(OutputImage* outputImage)
     {
@@ -152,7 +164,9 @@ namespace DGtal
     }
     
     /**
-     * Free an OutputImage
+     * Free an OutputImage.
+     * 
+     * @param outputImage the OutputImage.
      */
     void detachImage(OutputImage* outputImage)
     {
