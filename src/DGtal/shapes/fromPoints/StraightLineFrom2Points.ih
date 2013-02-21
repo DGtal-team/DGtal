@@ -105,7 +105,7 @@ DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
   Vector pr = aP - myP;
   //computation of det(pq, pr) 
   //(= twice the parallelogram area)
-  return ((pq.at(0) * pr.at(1)) - (pq.at(1) * pr.at(0)));
+  return ((pq[0] * pr[1]) - (pq[1] * pr[0]));
 }
 
 
