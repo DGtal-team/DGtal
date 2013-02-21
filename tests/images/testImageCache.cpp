@@ -70,31 +70,31 @@ bool testSimple()
     typedef MyImageFactoryFromImage::OutputImage OutputImage;
     
     Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));
-    OutputImage *image1 = factImage.request(domain1);
+    OutputImage *image1 = factImage.requestImage(domain1);
     OutputImage::ConstRange r1 = image1->constRange();
     cout << "image1: "; std::copy( r1.begin(), r1.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
     Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));
-    OutputImage *image2 = factImage.request(domain2);
+    OutputImage *image2 = factImage.requestImage(domain2);
     OutputImage::ConstRange r2 = image2->constRange();
     cout << "image2: "; std::copy( r2.begin(), r2.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
         
     Z2i::Domain domain3(Z2i::Point(0,2), Z2i::Point(1,3));
-    OutputImage *image3 = factImage.request(domain3);
+    OutputImage *image3 = factImage.requestImage(domain3);
     OutputImage::ConstRange r3 = image3->constRange();
     cout << "image3: "; std::copy( r3.begin(), r3.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
         
     Z2i::Domain domain4(Z2i::Point(2,2), Z2i::Point(3,3));
-    OutputImage *image4 = factImage.request(domain4);
+    OutputImage *image4 = factImage.requestImage(domain4);
     OutputImage::ConstRange r4 = image4->constRange();
     cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
     
     // 2) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT" << endl;
     
-    typedef ImageCacheSpecializationsRead<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST> MyImageCacheSpecializationsReadLast;
-    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WT> MyImageCacheSpecializationsWriteWT;  
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWT > MyImageCache;
+    typedef ImageCacheReadPolicyLast<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyLast;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;  
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWT > MyImageCache;
     MyImageCache imageCache(factImage);
     /*VImage*/OutputImage::Value aValue;
     
@@ -188,8 +188,8 @@ bool testSimple()
     
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB" << endl;
     
-    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WB> MyImageCacheSpecializationsWriteWB;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWB > MyImageCache2;
+    typedef ImageCacheWritePolicyWB<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWB;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWB > MyImageCache2;
     MyImageCache2 imageCache2(factImage);
     
     imageCache2.update(domain4); // image4

@@ -49,25 +49,28 @@
 #include "DGtal/images/ImageFactoryFromImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
-
 namespace DGtal
 {   
 
-///New types
-enum ReadPolicy{CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS};    // read policies
-enum WritePolicy{CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB};                                                         // write policies
-
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
-class ImageCacheSpecializationsRead;
-
-template <typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
-class ImageCacheSpecializationsWrite;
+// CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS   // read policies
+// CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB                                                         // write policies
     
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCache
 /**
  * Description of template class 'ImageCache' <p>
- * \brief Aim: todo
+ * \brief Aim: implements an images cache with 'read and write' policies.
+ * 
+ * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TImageFactory an image factory.
+ * @tparam TReadPolicy a read policy class.
+ * @tparam TWritePolicy a write policy class.
+ * 
+ * The cache provides 3 functions:
+ * 
+ *  - read :    for getting the value of an image from cache at a given position given by a point only if that point belongs to an image from cache
+ *  - write :   for setting a   value on an image from cache at a given position given by a point only if that point belongs to an image from cache
+ *  - update :  for updating the cache according to the read cache policy
  */
 template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 class ImageCache
@@ -138,37 +141,29 @@ public:
     * by aPoint only if aPoint belongs to an image from cache.
     *
     * @param aPoint the point.
-    * @param aValue the value.
+    * @param aValue the value returned.
     * 
     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
     */
     bool read(const Point & aPoint, Value &aValue) const;
 
     /**
-     * Set a value on an Image from cache at a given position given
+     * Set a value on an image from cache at a given position given
      * by aPoint only if aPoint belongs to an image from cache.
      *
      * @param aPoint the point.
-     * @param aValue the value.
+     * @param aValue the value returned.
      * 
      * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
      */
     bool write(const Point & aPoint, const Value &aValue);
     
     /**
-     * Update the cache according to the cache policy
+     * Update the cache according to the read cache policy.
+     * 
+     * @param aDomain the domain.
      */
     void update(const Domain &aDomain);
-    
-    /**
-     * Get the alias on the image factory.
-     *
-     * @return the alias on the image factory.
-     */
-    ImageFactory * getImageFactoryPtr()
-    {
-      return myImageFactoryPtr;
-    }
 
     // ------------------------- Protected Datas ------------------------------
 private:
@@ -183,9 +178,9 @@ protected:
     /// Alias on the image factory
     ImageFactory * myImageFactoryPtr;
     
-    /// Alias on the specialized cache
-    ReadPolicy * myImageCacheSpecializationsRead;
-    WritePolicy  * myImageCacheSpecializationsWrite;
+    /// Alias on the specialized caches
+    ReadPolicy * myReadPolicy;
+    WritePolicy  * myWritePolicy;
     
 private:
 
@@ -210,7 +205,7 @@ operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/images/ImageCacheSpecializations.h"
+#include "DGtal/images/ImageCachePolicies.h"
 #include "DGtal/images/ImageCache.ih"
 
 //                                                                           //

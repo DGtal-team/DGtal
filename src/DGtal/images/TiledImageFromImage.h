@@ -56,7 +56,11 @@ namespace DGtal
 // Template class TiledImageFromImage
 /**
  * Description of template class 'TiledImageFromImage' <p>
- * \brief Aim: todo
+ * \brief Aim: implements a tiled image from a "bigger/original" one.
+ * 
+ * @tparam TImageContainer an image container type (model of CImage).
+ * 
+ * The tiled image is create here from an existing image and with a list of subdomains in order to describe all the tiles.
  */
 template <typename TImageContainer>
 class TiledImageFromImage
@@ -79,9 +83,9 @@ public:
     typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCacheSpecializationsRead<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST> MyImageCacheSpecializationsReadLast;
-    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WT> MyImageCacheSpecializationsWriteWT;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWT > MyImageCache;
+    typedef ImageCacheReadPolicyLast<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyLast;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWT > MyImageCache;
     
     ///New types
 
