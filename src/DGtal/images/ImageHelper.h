@@ -53,11 +53,13 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/base/CQuantity.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/ConstAlias.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -362,9 +364,9 @@ namespace DGtal
      * @param[in] aVal const value when functor answer true.
      * @param[in] reverseValues used to reverse values returned by the predicate. (Some shapes consider inner as > 0, others as < 0)
      */
-    ImageToConstantFunctor( ConstAlias<Image> anImage,
-                            ConstAlias<PointPredicate> aPointPred,
-                            Value aVal = NumberTraits<Value>::ONE,
+    ImageToConstantFunctor( ConstAlias< Image > anImage,
+                            ConstAlias< PointPredicate > aPointPred,
+                            Value aVal = NumberTraits< Value >::ONE,
                             bool reverseValues = false )
       : myImage(anImage),
         myPointPred(aPointPred),
