@@ -17,29 +17,29 @@
 #pragma once
 
 /**
- * @file FunctorOnCells.h
- * @brief Convert a functor on Digital Point to a Functor on Khalimsky Cell
+ * @file PointPredicateToPointFunctor.h
+ * @brief Convert a point predicate to a point functor.
  *
  * @author Jeremy Levallois (\c jeremy.levallois@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  * LAboratoire de MAthématiques - LAMA (CNRS, UMR 5127), Université de Savoie, France
  *
- * @date 2012/05/11
+ * @date 2013/02/20
  *
- * Header file for module FunctorOnCells.cpp
+ * Header file for module PointPredicateToPointFunctor.ih
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(FunctorOnCells_RECURSES)
-#error Recursive header files inclusion detected in FunctorOnCells.h
-#else // defined(FunctorOnCells_RECURSES)
+#if defined(PointPredicateToPointFunctor_RECURSES)
+#error Recursive header files inclusion detected in PointPredicateToPointFunctor.h
+#else // defined(PointPredicateToPointFunctor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define FunctorOnCells_RECURSES
+#define PointPredicateToPointFunctor_RECURSES
 
-#if !defined FunctorOnCells_h
+#if !defined PointPredicateToPointFunctor_h
 /** Prevents repeated inclusion of headers. */
-#define FunctorOnCells_h
+#define PointPredicateToPointFunctor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -47,8 +47,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
 
-#include "DGtal/kernel/CSpace.h"
-#include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/kernel/CPointPredicate.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -57,45 +55,42 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class FunctorOnCells
+  // template class PointPredicateToPointFunctor
   /**
-   * Description of template class 'FunctorOnCells' <p>
+   * Description of template class 'PointPredicateToPointFunctor' <p>
    *
-   * \brief Aim: Convert a functor on Digital Point to a Functor on Khalimsky Cell
+   * \brief Aim: Convert a predicate on Digital Point to a Functor on Digital Point
    *
-   * @tparam TFunctorOnPoints a model of functor on Digital Points.
-   * @tparam TKSpace Khalimsky space in which the shape is defined.
+   * @tparam TPointPredicate a model of predicate on Digital Points.
    */
-  template <typename TFunctorOnPoints, typename TKSpace>
-  class FunctorOnCells
+  template <typename TPointPredicate>
+  class PointPredicateToPointFunctor
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    typedef TFunctorOnPoints FunctorOnPoints;
-    typedef int Quantity;
-    typedef typename FunctorOnPoints::Point Point;
-    typedef TKSpace KSpace;
-    typedef typename KSpace::SCell Cell;
+    typedef TPointPredicate PointPredicate;
+    typedef typename PointPredicate::Point Point;
+    typedef int Value;
 
-    BOOST_CONCEPT_ASSERT(( CPointFunctor< FunctorOnPoints > ));
-    //BOOST_CONCEPT_ASSERT(( CSpace< KSpace > ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate< PointPredicate > ));
 
     /**
       * Constructor.
       *
-      * @param[in] functor a functor on digital points.
-      * @param[in] space Khalimsky space in which the shape is defined.
+      * @param[in] predicate a predicate on digital points.
+      * @param[in] reverseIsInside in some case, the value return by the functor in inverse depending is dimension (we have this case in 2D and 3D).
       */
-    FunctorOnCells ( ConstAlias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
-      : f(functor),
-        myKSpace(space)
+    PointPredicateToPointFunctor ( ConstAlias< PointPredicate > predicate, bool reverseIsInside = false)
+      : myPredicate(predicate),
+        reverse(reverseIsInside)
+
     {}
 
     /**
      * Destructor.
      */
-    ~FunctorOnCells();
+    ~PointPredicateToPointFunctor();
 
 
     // ----------------------- Interface --------------------------------------
@@ -107,10 +102,18 @@ namespace DGtal
      *
      * @return 'ONE' if the point is inside the shape, 'ZERO' if it is strictly outside.
      */
-    Quantity operator()( const Cell & aCell ) const
+    Value operator()( const Point & aPoint ) const
     {
-      return f(myKSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ONE : NumberTraits<Quantity>::ZERO;
+      if (!reverse)
+      {
+        return myPredicate(aPoint) ? NumberTraits<Value>::ONE : NumberTraits<Value>::ZERO;
+      }
+      else
+      {
+        return myPredicate(aPoint) ? NumberTraits<Value>::ZERO : NumberTraits<Value>::ONE;
+      }
     }
+
 
     /**
      * Writes/Displays the object on an output stream.
@@ -124,15 +127,21 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
-  private:
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    PointPredicateToPointFunctor & operator= ( const PointPredicateToPointFunctor & other ){return *this;}
+
     // ------------------------- Private Datas --------------------------------
   private:
-    /// Const ref on Functor on Points. Used on operator() to get the return value
-    const FunctorOnPoints & f;
+    /// Const ref on predicate on Points. Used on operator() to get the return value
+    const PointPredicate & myPredicate;
 
-    /// Const ref on Khalimsky Space. Used to convert Cell -> Point
-    const KSpace & myKSpace;
+    /// If true, reverse all value of operator()
+    const bool reverse;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -141,7 +150,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    FunctorOnCells();
+    PointPredicateToPointFunctor();
 
   private:
 
@@ -150,43 +159,38 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    FunctorOnCells ( const FunctorOnCells & other );
+    PointPredicateToPointFunctor ( const PointPredicateToPointFunctor & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    FunctorOnCells & operator= ( const FunctorOnCells & other );
+
+
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class FunctorOnCells
+  }; // end of class PointPredicateToPointFunctor
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'FunctorOnCells'.
+   * Overloads 'operator<<' for displaying objects of class 'PointPredicateToPointFunctor'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'FunctorOnCells' to write.
+   * @param object the object of class 'PointPredicateToPointFunctor' to write.
    * @return the output stream after the writing.
    */
-  template <typename TF, typename TKS>
+  template <typename TP>
   std::ostream&
-  operator<< ( std::ostream & out, const FunctorOnCells<TF, TKS> & object );
+  operator<< ( std::ostream & out, const PointPredicateToPointFunctor<TP> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/FunctorOnCells.ih"
+#include "DGtal/base/PointPredicateToPointFunctor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined FunctorOnCells_h
+#endif // !defined PointPredicateToPointFunctor_h
 
 #undef FunctorOnCells_RECURSES
-#endif // else defined(FunctorOnCells_RECURSES)
+#endif // else defined(PointPredicateToPointFunctor_RECURSES)
