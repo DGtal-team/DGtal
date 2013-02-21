@@ -39,6 +39,7 @@
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
+#include "DGtal/base/PointPredicateToPointFunctor.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
@@ -64,7 +65,7 @@ int main( int argc, char** argv )
     if ( argc != 3 )
     {
         trace.error() << "Usage: " << argv[0]
-                               << " <fileName.vol> <re_convolution_kernel>" << std::endl;
+                               << " <fileName.vol> <minT> <maxT> <re_convolution_kernel>" << std::endl;
         trace.error() << "Example : "<< argv[0] << " Al.150.vol 7.39247665" << std::endl;
         return 0;
     }
@@ -76,7 +77,9 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
     double h = 1.0;
-    double re_convolution_kernel = atof(argv[2]);
+    unsigned int minThreshold = atoi( argv[ 2 ] );
+    unsigned int maxThreshold = atoi( argv[ 3 ] );
+    double re_convolution_kernel = atof(argv[4]);
 
     /// Construction of the shape from vol file
     typedef ImageSelector< Z3i::Domain, bool>::Type Image;
@@ -113,10 +116,12 @@ int main( int argc, char** argv )
 
 
     /// Integral Invariant stuff
-    typedef FunctorOnCells< Image, Z3i::KSpace > MyFunctor;
-    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
+    typedef PointPredicateToPointFunctor< Image > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
+    typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
-    MyFunctor functor ( image, KSpaceShape, domain ); // Creation of a functor on Cells, returning true if the cell is inside the shape
+    MyPointFunctor pointFunctor( image );
+    MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
     std::vector< double > results;

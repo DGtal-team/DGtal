@@ -36,6 +36,7 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
+#include "DGtal/base/PointPredicateToPointFunctor.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
@@ -64,11 +65,12 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   typedef GaussDigitizer< Z3i::Space, MyShape > MyGaussDigitizer;
   typedef LightImplicitDigitalSurface< Z3i::KSpace, MyGaussDigitizer > MyLightImplicitDigitalSurface;
   typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
-  typedef FunctorOnCells< MyGaussDigitizer, Z3i::KSpace > MyFunctor;
+  typedef PointPredicateToPointFunctor< MyGaussDigitizer > MyPointFunctor;
+  typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator SurfelConstIterator;
-  typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyFunctor > MyIIMeanEstimator;
+  typedef IntegralInvariantMeanCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyIIMeanEstimator;
   typedef MyIIMeanEstimator::Quantity Quantity;
   typedef MyShape::RealPoint RealPoint;
 
@@ -110,7 +112,8 @@ bool testIntegralInvariantMeanCurvatureEstimator3D( double h, double delta )
   MyLightImplicitDigitalSurface lightImplDigSurf( kSpace, gaussDigShape, SAdj, bel );
   MyDigitalSurface digSurfShape( lightImplDigSurf );
 
-  MyFunctor functorShape ( gaussDigShape, kSpace, domain, true );
+  MyPointFunctor pointFunctor( gaussDigShape, true );
+  MyCellFunctor functorShape ( pointFunctor, kSpace );
   MyIIMeanEstimator estimator ( kSpace, functorShape );
 
   try

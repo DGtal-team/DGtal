@@ -440,10 +440,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 shiftedPoint += shift;
                 shiftedCell.myCoordinates = shiftedPoint;
 
-                if ( myFFunctor.isInside( shiftedCell ))
-                {
-                    currentResult += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                }
+                currentResult += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
             }
 
             /// Computation for the cell outside the shape. Using previous result and masks.
@@ -475,10 +472,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
+
                         maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                    }
+
                 }
 
                 for ( KernelConstIterator itgcurrent = myMask[8-offset].first, itgend = myMask[8-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 8 is the size of the array
@@ -487,10 +483,8 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
                         maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                    }
+
                 }
 
                 currentResult2 = currentResult + maskQuantity;
@@ -531,10 +525,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             currentResult += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
                 }
                 else if ( offset == 4 ) /// Full kernel in 2D. Never reached because case already considered before. It's a honeypot.
@@ -552,10 +545,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -565,10 +557,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     currentResult = lastResult + maskQuantity;
@@ -615,10 +606,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -628,10 +618,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     currentResult2 = currentResult + maskQuantity;
@@ -706,10 +695,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 shiftedPoint += shift;
                 shiftedCell.myCoordinates = shiftedPoint;
 
-                if ( myFFunctor.isInside(shiftedCell) )
-                {
+
                     currentResult += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                }
+
             }
 
             /// Computation for the cell outside the shape. Using previous result and masks.
@@ -743,10 +731,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
+
                         maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                    }
+
                 }
 
                 for ( KernelConstIterator itgcurrent = myMask[26-offset].first, itgend = myMask[26-offset].second; itgcurrent != itgend; ++itgcurrent ) /// 26 is the size of the array
@@ -755,10 +742,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
+
                         maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                    }
+
                 }
 
                 currentResult2 = currentResult + maskQuantity;
@@ -801,10 +787,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             currentResult += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
                 }
                 else if ( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
@@ -822,10 +807,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -835,10 +819,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     currentResult = lastResult + maskQuantity;
@@ -887,10 +870,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity -= myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -900,10 +882,9 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             maskQuantity += myFFunctor(shiftedCell) * myGFunctor(*itgcurrent);
-                        }
+
                     }
 
                     currentResult2 = currentResult + maskQuantity;
@@ -1807,8 +1788,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                 shiftedPoint += shift;
                 shiftedCell.myCoordinates = shiftedPoint;
 
-                if ( myFFunctor.isInside(shiftedCell) )
-                {
+
                     fShiftedCell = myFFunctor(shiftedCell);
 
                     if ( fShiftedCell != FQuantity( 0 ) )
@@ -1825,7 +1805,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         }
                         currentVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                     }
-                }
+
             }
 
             /// Computation for the cell outside the shape. Using previous result and masks.
@@ -1868,8 +1848,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
+
                         fShiftedCell = myFFunctor(shiftedCell);
 
                         if ( fShiftedCell != FQuantity( 0 ) )
@@ -1886,7 +1865,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             }
                             maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                         }
-                    }
+
                 }
 
                 /// Part to add from previous result.
@@ -1896,8 +1875,6 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                     shiftedPoint += shift2;
                     shiftedCell.myCoordinates = shiftedPoint;
 
-                    if ( myFFunctor.isInside(shiftedCell) )
-                    {
                         fShiftedCell = myFFunctor(shiftedCell);
 
                         if ( fShiftedCell != FQuantity( 0 ) )
@@ -1914,7 +1891,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                             }
                             maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                         }
-                    }
+
                 }
 
                 for (DGtal::Dimension line = 0; line < dimension; ++line)
@@ -1969,8 +1946,6 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
                             fShiftedCell = myFFunctor(shiftedCell);
 
                             if ( fShiftedCell != FQuantity( 0 ) )
@@ -1987,7 +1962,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 }
                                 currentVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
-                        }
+
                     }
                 }
                 else if ( offset == 13 ) /// Full kernel in 3D. Never reached because case already considered before. It's a honeypot.
@@ -2013,8 +1988,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             fShiftedCell = myFFunctor(shiftedCell);
 
                             if ( fShiftedCell != FQuantity( 0 ) )
@@ -2031,7 +2005,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 }
                                 maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -2041,8 +2015,6 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
                             fShiftedCell = myFFunctor(shiftedCell);
 
                             if ( fShiftedCell != FQuantity( 0 ) )
@@ -2059,7 +2031,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 }
                                 maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
-                        }
+
                     }
 
                     for (DGtal::Dimension line = 0; line < dimension; ++line)
@@ -2128,8 +2100,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             fShiftedCell = myFFunctor(shiftedCell);
 
                             if ( fShiftedCell != FQuantity( 0 ) )
@@ -2146,7 +2117,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 }
                                 maskVa -= (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
-                        }
+
                     }
 
                     /// Part to add from previous result.
@@ -2156,8 +2127,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                         shiftedPoint += shift2;
                         shiftedCell.myCoordinates = shiftedPoint;
 
-                        if ( myFFunctor.isInside(shiftedCell) )
-                        {
+
                             fShiftedCell = myFFunctor(shiftedCell);
 
                             if ( fShiftedCell != FQuantity( 0 ) )
@@ -2174,7 +2144,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
                                 }
                                 maskVa += (Quantity)fShiftedCell * myGFunctor(*itgcurrent);
                             }
-                        }
+
                     }
 
                     for (DGtal::Dimension line = 0; line < dimension; ++line)

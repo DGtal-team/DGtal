@@ -41,6 +41,7 @@
 #include "DGtal/graph/GraphVisitorRange.h"
 
 // Integral Invariant includes
+#include "DGtal/base/PointPredicateToPointFunctor.h"
 #include "DGtal/geometry/surfaces/FunctorOnCells.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantMeanCurvatureEstimator.h"
 
@@ -103,10 +104,12 @@ int main( int argc, char** argv )
     //! [IntegralInvariantUsage]
     double re_convolution_kernel = 3.96850263; // Euclidean radius of the convolution kernel. Set by user.
 
-    typedef FunctorOnCells< MyGaussDigitizer, Z2i::KSpace > MyFunctor;
-    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyFunctor > MyCurvatureEstimator; // mean curvature estimator
+    typedef PointPredicateToPointFunctor< MyGaussDigitizer > MyPointFunctor;
+    typedef FunctorOnCells< MyPointFunctor, Z2i::KSpace > MyCellFunctor;
+    typedef IntegralInvariantMeanCurvatureEstimator< Z2i::KSpace, MyCellFunctor > MyCurvatureEstimator; // mean curvature estimator
 
-    MyFunctor functor ( digShape, KSpaceShape, domainShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
+    MyPointFunctor pointFunctor( digShape );
+    MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, re_convolution_kernel ); // Initialisation for a grid step h and a given Euclidean radius of convolution kernel re
     std::vector< double > results;
