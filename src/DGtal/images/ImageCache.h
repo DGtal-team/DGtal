@@ -57,10 +57,10 @@ namespace DGtal
 enum ReadPolicy{CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS};    // read policies
 enum WritePolicy{CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB};                                                         // write policies
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
 class ImageCacheSpecializationsRead;
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
 class ImageCacheSpecializationsWrite;
     
 /////////////////////////////////////////////////////////////////////////////
@@ -69,14 +69,14 @@ class ImageCacheSpecializationsWrite;
  * Description of template class 'ImageCache' <p>
  * \brief Aim: todo
  */
-template <typename TImageContainer, typename TImageFactory, ReadPolicy AReadPolicy, WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 class ImageCache
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> Self; 
+    typedef ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -88,6 +88,9 @@ public:
     typedef typename TImageContainer::Value Value;
     
     typedef TImageFactory ImageFactory;
+    
+    typedef TReadPolicy ReadPolicy;
+    typedef TWritePolicy WritePolicy;
 
     // ----------------------- Standard services ------------------------------
 
@@ -181,8 +184,8 @@ protected:
     ImageFactory * myImageFactoryPtr;
     
     /// Alias on the specialized cache
-    ImageCacheSpecializationsRead<Self, TImageContainer, TImageFactory, AReadPolicy> * myImageCacheSpecializationsRead;
-    ImageCacheSpecializationsWrite<Self, TImageContainer, TImageFactory, AWritePolicy> * myImageCacheSpecializationsWrite;
+    ReadPolicy * myImageCacheSpecializationsRead;
+    WritePolicy  * myImageCacheSpecializationsWrite;
     
 private:
 
@@ -198,9 +201,9 @@ private:
  * @param object the object of class 'ImageCache' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer, typename TImageFactory, ReadPolicy AReadPolicy, WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 std::ostream&
-operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> & object );
+operator<< ( std::ostream & out, const ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> & object );
 
 } // namespace DGtal
 

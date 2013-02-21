@@ -47,10 +47,10 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 void
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
     /*if (myCacheImagesPtr==NULL)
       out << "[ImageCache] " << "empty";
@@ -60,25 +60,25 @@ DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::se
     out << "[ImageCache] ";
 }
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::ImageCache(Alias<ImageFactory> anImageFactory):
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::ImageCache(Alias<ImageFactory> anImageFactory):
             myImageFactoryPtr(anImageFactory)
 {
-    myImageCacheSpecializationsRead = new ImageCacheSpecializationsRead<Self, TImageContainer, TImageFactory, AReadPolicy>(this);
-    myImageCacheSpecializationsWrite = new ImageCacheSpecializationsWrite<Self, TImageContainer, TImageFactory, AWritePolicy>(this);
+    myImageCacheSpecializationsRead = new ReadPolicy(anImageFactory);
+    myImageCacheSpecializationsWrite = new WritePolicy(anImageFactory);
 }
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::~ImageCache()
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::~ImageCache()
 {
     delete myImageCacheSpecializationsRead;
     delete myImageCacheSpecializationsWrite;
 }
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 bool
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::read(const Point & aPoint, Value &aValue) const
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::read(const Point & aPoint, Value &aValue) const
 {
     ImageContainer *myImagePtr = myImageCacheSpecializationsRead->getPage(aPoint);
     if (myImagePtr)
@@ -90,10 +90,10 @@ DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::re
     return false;
 }
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 bool
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::write(const Point & aPoint, const Value &aValue)
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::write(const Point & aPoint, const Value &aValue)
 {
     ImageContainer *myImagePtr = myImageCacheSpecializationsRead->getPage(aPoint);
     if (myImagePtr)
@@ -105,10 +105,10 @@ DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::wr
     return false;
 }
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 void
-DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::update(const Domain &aDomain)
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
 {
     ImageContainer *myImagePtr = myImageCacheSpecializationsRead->getNextPageToDetach();
     if (myImagePtr)
@@ -123,11 +123,11 @@ DGtal::ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy>::up
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadPolicy, DGtal::WritePolicy AWritePolicy>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ImageCache<TImageContainer, TImageFactory, AReadPolicy, AWritePolicy> & object )
+                    const ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> & object )
 {
     object.selfDisplay( out );
     return out;

@@ -39,54 +39,56 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+#if(0)
+template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
 inline
 TImageContainer *
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, AReadSelector>::getPage(const Point & aPoint)
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, AReadSelector>::getPage(const Point & aPoint)
 {
   trace.info() << " -> getPage: NOT DEFINED !" << std::endl;
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
 inline
 TImageContainer *
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, AReadSelector>::getNextPageToDetach()
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, AReadSelector>::getNextPageToDetach()
 {
   trace.info() << " -> getNextPageToDetach: NOT DEFINED !" << std::endl;
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
 inline
 void
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, AReadSelector>::updateCache(const Domain &aDomain)
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, AReadSelector>::updateCache(const Domain &aDomain)
 {
   trace.info() << " -> updateCache: NOT DEFINED !" << std::endl;
 }
 
 // --------------------------------------------------------------------------------------------------
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, AWriteSelector>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, AWriteSelector>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
 {
   trace.info() << " -> writeOnPage: NOT DEFINED !" << std::endl;
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, AWriteSelector>::flushPage(TImageContainer * anImageContainer)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, AWriteSelector>::flushPage(TImageContainer * anImageContainer)
 {
   trace.info() << " -> flushPage: NOT DEFINED !" << std::endl;
 }
+#endif
 
 // ----------------------- Specialization DGtal::CACHE_READ_POLICY_LAST ------------------------------
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::getPage(const Point & aPoint)
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::getPage(const Point & aPoint)
 {
   if (myCacheImagesPtr==NULL)
     return NULL;
@@ -97,57 +99,57 @@ DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory
   return NULL;
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::getNextPageToDetach()
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::getNextPageToDetach()
 {
   return myCacheImagesPtr;
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::updateCache(const Domain &aDomain)
+DGtal::ImageCacheSpecializationsRead<TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>::updateCache(const Domain &aDomain)
 {
-  myCacheImagesPtr = myImageCache->getImageFactoryPtr()->request(aDomain);
+  myCacheImagesPtr = myImageFactory->request(aDomain);
 }
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WT ------------------------------
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
 {
   anImageContainer->setValue(aPoint, aValue);
   
-  myImageCache->getImageFactoryPtr()->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WT
+  myImageFactory->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WT
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>::flushPage(TImageContainer * anImageContainer)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>::flushPage(TImageContainer * anImageContainer)
 {
 }
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WB ------------------------------
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>::writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
 {
   anImageContainer->setValue(aPoint, aValue);
 }
 
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
+template <typename TImageContainer, typename TImageFactory>
 inline
 void
-DGtal::ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>::flushPage(TImageContainer * anImageContainer)
+DGtal::ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>::flushPage(TImageContainer * anImageContainer)
 {
-  myImageCache->getImageFactoryPtr()->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WB
+  myImageFactory->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WB
 }
 
 //                                                                           //
