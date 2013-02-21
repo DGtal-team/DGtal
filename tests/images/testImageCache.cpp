@@ -92,7 +92,9 @@ bool testSimple()
     // 2) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT" << endl;
     
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT > MyImageCache;
+    typedef ImageCacheSpecializationsRead<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST> MyImageCacheSpecializationsReadLast;
+    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WT> MyImageCacheSpecializationsWriteWT;  
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWT > MyImageCache;
     MyImageCache imageCache(factImage);
     /*VImage*/OutputImage::Value aValue;
     
@@ -186,7 +188,8 @@ bool testSimple()
     
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB" << endl;
     
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB > MyImageCache2;
+    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WB> MyImageCacheSpecializationsWriteWB;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWB > MyImageCache2;
     MyImageCache2 imageCache2(factImage);
     
     imageCache2.update(domain4); // image4

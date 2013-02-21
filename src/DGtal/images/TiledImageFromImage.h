@@ -79,7 +79,9 @@ public:
     typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT > MyImageCache;
+    typedef ImageCacheSpecializationsRead<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_READ_POLICY_LAST> MyImageCacheSpecializationsReadLast;
+    typedef ImageCacheSpecializationsWrite<OutputImage, MyImageFactoryFromImage, DGtal::CACHE_WRITE_POLICY_WT> MyImageCacheSpecializationsWriteWT;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheSpecializationsReadLast, MyImageCacheSpecializationsWriteWT > MyImageCache;
     
     ///New types
 

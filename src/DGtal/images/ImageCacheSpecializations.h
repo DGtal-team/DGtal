@@ -51,26 +51,27 @@
 
 namespace DGtal
 {
-  
+
+#if(0)
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCacheSpecializationsRead
 /**
  * Description of template class 'ImageCacheSpecializationsRead' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::ReadPolicy AReadSelector>
 class ImageCacheSpecializationsRead
 {
 public:
-    typedef TImageCache ImageCache;
+    typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializationsRead(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache)
+    ImageCacheSpecializationsRead(Alias<ImageFactory> anImageFactory):
+      myImageFactory(anImageFactory)
     {
     }
 
@@ -103,8 +104,8 @@ public:
     
 protected:
     
-    /// Alias on the cache object (not specialized)
-    ImageCache * myImageCache;
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
     
 }; // end of class ImageCacheSpecializationsRead
 
@@ -114,19 +115,19 @@ protected:
  * Description of template class 'ImageCacheSpecializationsWrite' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
+template <typename TImageContainer, typename TImageFactory, DGtal::WritePolicy AWriteSelector>
 class ImageCacheSpecializationsWrite
 {
 public:
-    typedef TImageCache ImageCache;
+    typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache)
+    ImageCacheSpecializationsWrite(Alias<ImageFactory> anImageFactory):
+      myImageFactory(anImageFactory)
     {
     }
 
@@ -155,10 +156,11 @@ public:
     
 protected:
     
-    /// Alias on the cache object (not specialized)
-    ImageCache * myImageCache;
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
     
 }; // end of class ImageCacheSpecializationsWrite
+#endif
 
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCacheSpecializationsRead
@@ -166,19 +168,19 @@ protected:
  * Description of template class 'ImageCacheSpecializationsRead' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
-class ImageCacheSpecializationsRead<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>
+template <typename TImageContainer, typename TImageFactory>
+class ImageCacheSpecializationsRead<TImageContainer, TImageFactory, DGtal::CACHE_READ_POLICY_LAST>
 {
 public:
-    typedef TImageCache ImageCache;
+    typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializationsRead(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache), myCacheImagesPtr(NULL)
+    ImageCacheSpecializationsRead(Alias<ImageFactory> anImageFactory):
+      myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
     {
     }
 
@@ -214,8 +216,8 @@ protected:
     /// Alias on the images cache
     ImageContainer * myCacheImagesPtr;
     
-    /// Alias on the cache object (not specialized)
-    ImageCache * myImageCache;
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
     
 }; // end of class ImageCacheSpecializationsRead
 
@@ -225,19 +227,19 @@ protected:
  * Description of template class 'ImageCacheSpecializationsWrite' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
-class ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>
+template <typename TImageContainer, typename TImageFactory>
+class ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WT>
 {
 public:
-    typedef TImageCache ImageCache;
+    typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache)
+    ImageCacheSpecializationsWrite(Alias<ImageFactory> anImageFactory):
+      myImageFactory(anImageFactory)
     {
     }
 
@@ -266,8 +268,8 @@ public:
     
 protected:
     
-    /// Alias on the cache object (not specialized)
-    ImageCache * myImageCache;
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
     
 }; // end of class ImageCacheSpecializationsWrite
 
@@ -277,19 +279,19 @@ protected:
  * Description of template class 'ImageCacheSpecializationsWrite' <p>
  * \brief Aim: todo
  */
-template <typename TImageCache, typename TImageContainer, typename TImageFactory>
-class ImageCacheSpecializationsWrite<TImageCache, TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>
+template <typename TImageContainer, typename TImageFactory>
+class ImageCacheSpecializationsWrite<TImageContainer, TImageFactory, DGtal::CACHE_WRITE_POLICY_WB>
 {
 public:
-    typedef TImageCache ImageCache;
+    typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheSpecializationsWrite(Alias<ImageCache> anImageCache):
-      myImageCache(anImageCache)
+    ImageCacheSpecializationsWrite(Alias<ImageFactory> anImageFactory):
+      myImageFactory(anImageFactory)
     {
     }
 
@@ -318,8 +320,8 @@ public:
     
 protected:
     
-    /// Alias on the cache object (not specialized)
-    ImageCache * myImageCache;
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
     
 }; // end of class ImageCacheSpecializationsWrite
 
