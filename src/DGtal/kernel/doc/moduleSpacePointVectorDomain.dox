@@ -142,7 +142,7 @@ However, we encourage the use of iterators as follows
 PointVector class is parametrized by the following template parameters:
 - the static dimension of the underlying space (of type DGtal::Dimension); 
 - a model of CEuclideanRing to be used as PointVector components/coordinates;
-- a model of bidirectional random access iterator to store the point or vector (default container: boost::array with static size equals to the space dimension). In fact, we consider a weaker concept than boost::RandomAccessIterator since we only need iterators and reverse_iterators (const and non-const) to be defined, default/copy constructors and  operator[]. Models can be boost::array, std::vector or even std::array for C++11 enabled projects).
+- a model of bidirectional random access iterator to store the point or vector (default container: boost::array with static size equals to the space dimension). In fact, we consider a weaker concept than boost::RandomAccessContainer since we only need iterators and reverse_iterators (const and non-const) to be defined, default/copy constructors and  operator[]. Models can be boost::array, std::vector or even std::array (for C++11 enabled projects).
 
 
 \section sectDomain Domains and HyperRectDomains
@@ -178,7 +178,7 @@ MyDomain domain(a,b);
 @endcode
 
 The instance is thus an isothetic domain lying on the space SpaceND<2,DGtal::uint32_t> 
-defined by the bounding box of the points a and b. Note that  type  Z2i::Domain in StdDefs.h excatly corresponds to HyperRectDomain on the Z2i::Space.
+defined by the bounding box of the points a and b. Note that  type  Z2i::Domain in StdDefs.h exactly corresponds to HyperRectDomain on the Z2i::Space.
  We can visualise the domain using the Board2D stream mechanism (see \ref dgtal_dgtalboard).
 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
