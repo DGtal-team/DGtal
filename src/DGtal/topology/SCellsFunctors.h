@@ -117,7 +117,7 @@ namespace DGtal
     /**
      * Returns a point (with integer coordinates) 
      * from a scell (with khalimsky coordinates)
-     * @param s a scell
+     * @param aSCell a scell
      * @return the corresponding point.
      */
     Output operator()(const Input& aSCell) const

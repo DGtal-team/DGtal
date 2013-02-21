@@ -310,9 +310,8 @@ namespace DGtal
     /** 
         External product of a signal by a scalar value.
         
-        @param l the external value.
+        @param val the external value.
         
-        @return the signal where each term has been multiplied by [l].
     */
     void multiply( const TValue & val );
 

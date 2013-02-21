@@ -95,9 +95,9 @@ namespace DGtal
     /**
      * Constructor.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
-     * @param aSegmentComputer
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param aShape a shape 
      * @param isClosed true if the input range is closed.
      */
     TrueGlobalEstimatorOnPoints(const double h, 
@@ -117,9 +117,9 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
-     * @param aSegmentComputer
+     * @param itb begin iterator
+     * @param ite end iterator
+     * @param aShape a shape
      * @param isClosed true if the input range is viewed as closed.
      */
     void init(const double h, 

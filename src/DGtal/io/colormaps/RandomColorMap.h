@@ -75,7 +75,7 @@ public:
 
   /**
    * Assignment.
-   * @param other the object to copy.
+   * @param anOther the object to copy.
      * @return a reference on 'this'.
      * Forbidden by default.
      */
@@ -98,7 +98,7 @@ public:
   /** 
    * Adds a color to the list of color steps.
    * 
-   * @param color A color.
+   * @param aColor A color.
    */
   void addColor( const Color & aColor ) ;
   
@@ -106,7 +106,7 @@ public:
   /** 
    * Computes the color associated with a value in a given range.
    * 
-   * @param value A value within the value range.
+   * @param aValue A value within the value range.
    * @return A random color identified by an unique [aValue] within the current range.
    */
   Color operator()( const unsigned int & aValue ) const;

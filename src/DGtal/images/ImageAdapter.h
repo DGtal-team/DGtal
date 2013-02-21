@@ -77,7 +77,7 @@ namespace DGtal
  * ImageContainer.
  *
  * @tparam TImageContainer an image container type (model of CImage).
- * @tparam TDomain a domain.
+ * @tparam TNewDomain a domain.
  * @tparam TFunctorD the functor g that transforms the domain into another one
  * @tparam TNewValue the type of value return by the functor f.
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
@@ -261,9 +261,6 @@ public:
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    /**
-     * @return the validity of the Image
      */
     bool isValid() const
     {

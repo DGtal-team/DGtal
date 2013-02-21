@@ -96,8 +96,8 @@ public:
   * Main method to import OFF meshes file (Geomview Object File Format) 
   * 
   * @param filename the file name to import.
-  * @param aMesh: (return) the mesh object to be imported.
-  * @param invertVertexOrder: used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @param aMesh (return) the mesh object to be imported.
+  * @param invertVertexOrder used to invert (default value=false) the order of imported points (important for normal orientation). 
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
@@ -111,9 +111,9 @@ public:
   * Main method to import OFS meshes file (an equivalent of OFF format) 
   * 
   * @param filename the file name to import.
-  * @param aMesh: (return) the mesh object to be imported.
-  * @param invertVertexOrder: used to invert (default value=false) the order of imported points (important for normal orientation). 
-  * @param scale: used to avoid to display tiny shapes (since OFS shapes are generally included in a 1x1x1 cube)
+  * @param aMesh (return) the mesh object to be imported.
+  * @param invertVertexOrder used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @param scale used to avoid to display tiny shapes (since OFS shapes are generally included in a 1x1x1 cube)
   * @return an instance of the imported mesh: MeshFromPoint.
   */
   
@@ -134,10 +134,10 @@ public:
 
 
   /**
-   *  'operator<<' for importing objects of class 'MeshFromPoints'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'MeshFromPoints' to write.
-   * @return the output stream after the writing.
+   *  'operator<<' for exporting objects of class 'MeshFromPoints'.
+   * @param mesh a mesh 
+   * @param filename a filename 
+   * @return true if the mesh has been exported correctly.
    */
   template <typename TPoint>
   bool

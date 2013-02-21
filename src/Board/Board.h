@@ -97,9 +97,9 @@ public:
   /** 
    * Clears the board and set the background color from an RGB triple.
    * 
-   * @param red 
-   * @param green 
-   * @param blue 
+   * @param red red
+   * @param green green
+   * @param blue blue
    */
   void clear( unsigned char red, unsigned char green, unsigned char blue );
 
@@ -211,7 +211,7 @@ public:
    * @param radius arc radius.
    * @param angle1 first angle.
    * @param angle2 second angle.
-   * @param neg 
+   * @param neg neg
    * @param depthValue Depth of the arc.
    */
   void drawArc(double x, double y, double radius, double angle1, double angle2, 
@@ -236,12 +236,12 @@ public:
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
    * 
-   * @param p1 
-   * @param color1 
-   * @param p2 
-   * @param color2 
-   * @param p3 
-   * @param color3 
+   * @param p1 p1
+   * @param color1 color1
+   * @param p2 p2
+   * @param color2  color2
+   * @param p3 p3
+   * @param color3 color3 
    * @param divisions number of triangle subdivisions.
    * @param depthValue The depth of the triangle.
    */
@@ -257,17 +257,17 @@ public:
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
    * 
-   * @param x1 
-   * @param y1 
-   * @param color1 
-   * @param x2 
-   * @param y2 
-   * @param color2 
-   * @param x3 
-   * @param y3 
-   * @param color3 
-   * @param divisions 
-   * @param depthValue 
+   * @param x1 x1
+   * @param y1 y1
+   * @param color1 color1
+   * @param x2 x2
+   * @param y2 y2
+   * @param color2 color2
+   * @param x3 x3
+   * @param y3 y3
+   * @param color3 color3
+   * @param divisions number of subdivisions
+   * @param depthValue depth
    */
   void fillGouraudTriangle( const double x1, const double y1,
           const DGtal::Color & color1,
@@ -281,12 +281,12 @@ public:
   /** 
    * Draws a triangle with a Gouraud-like shaded color according to
    * the current fill color and a brightness value given for each vertex. 
-   * @param p1 
-   * @param brightness1
-   * @param p2 
-   * @param brightness2 
-   * @param p3 
-   * @param brightness3
+   * @param p1 p1
+   * @param brightness1 brightness1
+   * @param p2 p2
+   * @param brightness2 brightness2
+   * @param p3 p3
+   * @param brightness3 brightness3
    * @param divisions number of triangle subdivisions.
    * @param depthValue The depth of the triangle.
    */
@@ -303,17 +303,17 @@ public:
    * Draws a triangle with a Gouraud-like shaded color according to
    * the current fill color and a brightness value given for each vertex. 
    * 
-   * @param x1 
-   * @param y1 
-   * @param brightness1
-   * @param x2 
-   * @param y2 
-   * @param brightness2
-   * @param x3 
-   * @param y3 
-   * @param brightness3
-   * @param divisions
-   * @param depthValue 
+   * @param x1 x1
+   * @param y1 y1
+   * @param brightness1 b1
+   * @param x2 x2
+   * @param y2 y2
+   * @param brightness2 b2
+   * @param x3 x3
+   * @param y3 y3
+   * @param brightness3 b3
+   * @param divisions number of sudivisions
+   * @param depthValue depth
    */
   void fillGouraudTriangle( const double x1, const double y1,
           const float brightness1,
@@ -511,9 +511,9 @@ public:
    * Changes the current pen color.
    * 
    * @param red Red
-   * @param green 
-   * @param blue 
-   * @param alpha 
+   * @param green green
+   * @param blue blue
+   * @param alpha alpha
    * @return The board itself.
    */  
   Board & setPenColorRGBf(  float red,
@@ -619,10 +619,10 @@ public:
   /** 
    * Define a clipping rectangle for the whole drawing.
    * 
-   * @param x 
-   * @param y 
-   * @param width 
-   * @param height 
+   * @param x x
+   * @param y y
+   * @param width width
+   * @param height height
    */
   void setClippingRectangle(  double x, double y, 
             double width, double height );
@@ -664,7 +664,6 @@ public:
    * @param dx The x shift.
    * @param dy The y shift.
    * @param scaleX An x scale factor between each copy.
-   * @param scaleY A y scale factor between each copy.
    * @param scaleY A y scale factor between each copy.
    * @param angle An angular increment.
    */

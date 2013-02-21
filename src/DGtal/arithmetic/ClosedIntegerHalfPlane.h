@@ -73,8 +73,8 @@ namespace DGtal
     // ----------------------- public data ------------------------------
   public:
 
-    Vector N; //<! The normal to the half-space.
-    Integer c; //<! The uppermost value N.(x,y) that is in the half-space.
+    Vector N; ///< The normal to the half-space.
+    Integer c; ///<! The uppermost value N.(x,y) that is in the half-space.
 
   protected:
     // mutable Integer _d; //<! used for computation (avoids reallocation when Integer is a BigInteger).
@@ -102,7 +102,6 @@ namespace DGtal
        @param B any point different from A.
        @param inP any point not on the straight line (AB).
        @param ic any compatible integer computer.
-       @return  the corresponding half-space.
      */
     ClosedIntegerHalfPlane( const Point & A, const Point & B, 
                             const Point & inP, IntegerComputer<Integer> & ic );

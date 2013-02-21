@@ -96,7 +96,7 @@ namespace DGtal
        * and one functor.
        * @param itb begin iterator.
        * @param ite end iterator.
-       * @param aFunctor functor used to adapt on-the-fly the elements of the range
+       * @param aDistance functor used to adapt on-the-fly the elements of the range
        *
        */
       SimpleRandomAccessConstRangeFromPoint ( const TConstIterator& itb, const TConstIterator& ite, const DistanceFunctor & aDistance )
