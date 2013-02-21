@@ -47,12 +47,7 @@
 #include <string>
 #include <bitset>
 #include <algorithm>
-
-#ifdef CPP11_ARRAY
-#include <array>
-#else
 #include <boost/array.hpp>
-#endif 
 
 #include <vector>
 
@@ -99,6 +94,11 @@ namespace DGtal
    * operator). This type is used to represent PointVector elements
    * (Coordinate for Point and Component for Vector) and define
    * operations on Point or Vectors.
+   * @tparam TContainer specifies the container to be used to store
+   * the point coordinates. At this point, such container must be a
+   * random access bidirectionnal a-la STL containers (e.g. vector,
+   * boost/array).
+   *
    *
    * If TEuclideanRing is a Integer type (built-in integers,
    * BigIntegers, ...), the "/" operator on Points corresponds to
@@ -122,8 +122,8 @@ namespace DGtal
    * typedef PointVector<5, int> VectorD5;
    * VectorD5 p, q, r;
    *
-   * p.at(1) = 2;  // p = {0, 2, 0, 0, 0}
-   * q.at(3) = -5   // q = {0, 0, 0, -5, 0}
+   * p[1] = 2;  // p = {0, 2, 0, 0, 0}
+   * q[3] = -5   // q = {0, 0, 0, -5, 0}
    * r =  p + q ;   //  r = {0, 2, 0, -5, 0}
    *
    * ...
@@ -134,16 +134,21 @@ namespace DGtal
    * @see testPointVector.cpp
    *
    */
-  template < DGtal::Dimension dim, typename TEuclideanRing >
+  template < DGtal::Dimension dim, 
+	     typename TEuclideanRing,
+	     typename TContainer=boost::array<TEuclideanRing,dim> >
   class PointVector
   {
     // ----------------------- Standard services ------------------------------
   public:
     
     BOOST_CONCEPT_ASSERT(( CEuclideanRing<TEuclideanRing> ) );
-
+    
+    ///We cannot check the TContainer since boost::array is not a
+    ///model of boost::RandomAccessContainer
+  
     ///Self type
-    typedef PointVector<dim, TEuclideanRing> Self;
+    typedef PointVector<dim, TEuclideanRing, TContainer> Self;
 
     ///Type for Vector elements
     typedef TEuclideanRing Component;
@@ -160,21 +165,20 @@ namespace DGtal
     ///Copy of the static dimension of the Point/Vector.
     static const Dimension dimension = dim;
 
+
+    ///Copy of the container type
+    typedef TContainer Container;
+
+
     /**
-     *  Copy of the Boost::array iterator type
+     *  Copy of the Container iterator types
      *
      **/
-#ifdef CPP11_ARRAY
-    typedef typename std::array<Component, dimension>::iterator Iterator;
-    typedef typename std::array<Component, dimension>::const_iterator ConstIterator;
-    typedef typename std::array<Component, dimension>::reverse_iterator ReverseIterator;
-    typedef typename std::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
-#else
-    typedef typename boost::array<Component, dimension>::iterator Iterator;
-    typedef typename boost::array<Component, dimension>::const_iterator ConstIterator;
-    typedef typename boost::array<Component, dimension>::reverse_iterator ReverseIterator;
-    typedef typename boost::array<Component, dimension>::const_reverse_iterator ConstReverseIterator;
-#endif
+    typedef typename Container::iterator Iterator;
+    typedef typename Container::const_iterator ConstIterator;
+    typedef typename Container::reverse_iterator ReverseIterator;
+    typedef typename Container::const_reverse_iterator ConstReverseIterator;
+
     /**
      * Constructor.
      */
@@ -215,7 +219,8 @@ namespace DGtal
      * @param z the third value.
      * @param t the fourth value.
      */
-    PointVector( const Component & x, const Component & y, const Component & z, const Component & t );
+    PointVector( const Component & x, const Component & y, 
+		 const Component & z, const Component & t );
 
 #ifdef CPP11_INITIALIZER_LIST
     /**
@@ -259,8 +264,8 @@ namespace DGtal
      * A static cast is used to cast the values during the copy.
      * @param other the object to clone.
      */
-    template <typename OtherComponent>
-    PointVector( const PointVector<dim,OtherComponent> & other );
+    template <typename OtherComponent, typename OtherCont>
+    PointVector( const PointVector<dim,OtherComponent,OtherCont> & other );
 
     /**
      * Assignement Operator
@@ -406,25 +411,6 @@ namespace DGtal
      * Same as getDimension
      */
     static Dimension size();
-
-    /**
-     * Returns the  @a i-th coefficient of the vector.
-     *
-     * @pre The @a i index must lie between @a 0 and @a size() .
-     *
-     * @param i is the index of the retrieved coefficient.
-     */
-    const Component& at( Dimension i ) const;
-
-    /**
-     * Returns a non-const reference to the @a i-th element of the
-     * vector.
-     *
-     * @pre The @a i index must lie between @a 0 and @a size() .
-     *
-     * @param i is the index of the retrieved coefficient.
-     */
-    Component& at( Dimension i );
 
     /**
      * Returns the  @a i-th coefficient of the vector.
@@ -610,7 +596,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     template<typename AnotherComponent>
-    Self & operator= ( const PointVector<dim,AnotherComponent> & v );
+    Self & operator= ( const PointVector<dim,AnotherComponent, Container> & v );
   
     
     /**
@@ -674,7 +660,7 @@ namespace DGtal
      * 
      * @return an iterator.
      */
-    Iterator maxElement();
+    Iterator maxElement() ;
    
     /** 
      * Return the iterator on the component with minimum value of a
@@ -682,7 +668,7 @@ namespace DGtal
      * 
      * @return an iterator.
      */ 
-    Iterator minElement();
+    Iterator minElement() ;
 
     /**
        Negates this vector.
@@ -729,7 +715,7 @@ namespace DGtal
      * 
      * @return a unitary vector with double as coordiante type. 
      */
-    PointVector<dim, double> getNormalized() const;
+    PointVector<dim, double, Container> getNormalized() const;
     
 
     // ------------------------- Standard vectors ------------------------------
@@ -791,18 +777,14 @@ namespace DGtal
   //protected:
     
     ///Internal data-structure: boost/array with constant size.
-#ifdef CPP11_ARRAY
-    std::array<Component, dimension> myArray;
-#else
-    boost::array<Component, dimension> myArray;
-#endif
+    Container myArray;
 
   }; // end of class PointVector
 
   /// Operator <<
-  template<Dimension dim, typename Component>
+  template<Dimension dim, typename Component, typename TC>
   std::ostream&
-  operator<<( std::ostream & out, const PointVector<dim, Component> & object );
+  operator<<( std::ostream & out, const PointVector<dim, Component, TC> & object );
 
   /**
      External multiplication operator with a scalar number
@@ -813,14 +795,17 @@ namespace DGtal
      @return a new Vector that is the multiplication of \a aVector by
      \a coeff.
   */
-  template<Dimension dim, typename Component>
-  PointVector<dim, Component> 
+  template<Dimension dim, typename Component, typename Container>
+  PointVector<dim, Component,Container> 
   operator*( Component coeff,
-	     const PointVector<dim, Component> & aVector );
+	     const PointVector<dim, Component,Container> & aVector );
 
 
-  template< Dimension dim, typename Component>
-  PointVector<dim, Component>  PointVector<dim, Component>::zero;
+  ///Static const for zero definition
+  template< Dimension dim, typename Component, typename TC>
+  PointVector<dim, Component,TC>  PointVector<dim, Component,TC>::zero;
+
+  
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -990,10 +990,10 @@ void DGtal::CombinatorialDSS<TConstIterator,TInteger>::getArithmeticalDescriptio
   Point pe = *itEnd;
   Point po = *it;
   Vector v = pe - pb;
-  a = v.at(1);
-  b = v.at(0);
-  Integer r1 = a*pb.at(0) - b*pb.at(1);
-  Integer r2 = a*po.at(0) - b*po.at(1);
+  a = v[1];
+  b = v[0];
+  Integer r1 = a*pb[0] - b*pb[1];
+  Integer r2 = a*po[0] - b*po[1];
   mu = min (r1, r2);
   omega = ((a>0) ? a : -a) + ((b>0) ? b : -b );
 }
