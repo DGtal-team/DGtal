@@ -36,10 +36,11 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/base/PointPredicateToPointFunctor.h"
+#include "DGtal/images/ImageHelper.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/graph/DepthFirstVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
@@ -62,11 +63,11 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    if ( argc != 3 )
+    if ( argc != 4 )
     {
         trace.error() << "Usage: " << argv[0]
-                               << " <fileName.vol> <minT> <maxT> <re_convolution_kernel>" << std::endl;
-        trace.error() << "Example : "<< argv[0] << " Al.150.vol 7.39247665" << std::endl;
+                               << " <fileName.vol> <threshold> <re_convolution_kernel>" << std::endl;
+        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7.39247665" << std::endl;
         return 0;
     }
 
@@ -77,18 +78,18 @@ int main( int argc, char** argv )
     trace.info() << endl;
 
     double h = 1.0;
-    unsigned int minThreshold = atoi( argv[ 2 ] );
-    unsigned int maxThreshold = atoi( argv[ 3 ] );
-    double re_convolution_kernel = atof(argv[4]);
+    unsigned int threshold = atoi( argv[ 2 ] );
 
     /// Construction of the shape from vol file
-    typedef ImageSelector< Z3i::Domain, bool>::Type Image;
+    typedef ImageSelector< Z3i::Domain, unsigned int >::Type Image;
+    typedef SimpleThresholdForegroundPredicate< Image > ImagePredicate;
     typedef Z3i::KSpace::Surfel Surfel;
-    typedef LightImplicitDigitalSurface< Z3i::KSpace, Image > MyLightImplicitDigitalSurface;
+    typedef LightImplicitDigitalSurface< Z3i::KSpace, ImagePredicate > MyLightImplicitDigitalSurface;
     typedef DigitalSurface< MyLightImplicitDigitalSurface > MyDigitalSurface;
 
     std::string filename = argv[1];
     Image image = VolReader<Image>::importVol( filename );
+    ImagePredicate predicate = ImagePredicate( image, threshold );
 
     Z3i::Domain domain = image.domain();
 
@@ -102,8 +103,8 @@ int main( int argc, char** argv )
     }
 
     SurfelAdjacency< Z3i::KSpace::dimension > SAdj( true );
-    Surfel bel = Surfaces< Z3i::KSpace >::findABel( KSpaceShape, image, 100000 );
-    MyLightImplicitDigitalSurface LightImplDigSurf( KSpaceShape, image, SAdj, bel );
+    Surfel bel = Surfaces< Z3i::KSpace >::findABel( KSpaceShape, predicate, 100000 );
+    MyLightImplicitDigitalSurface LightImplDigSurf( KSpaceShape, predicate, SAdj, bel );
     MyDigitalSurface digSurf( LightImplDigSurf );
 
     typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
@@ -114,20 +115,23 @@ int main( int argc, char** argv )
     SurfelConstIterator abegin = range.begin();
     SurfelConstIterator aend = range.end();
 
+    typedef ImageToConstantFunctor< Image, ImagePredicate > MyPointFunctor;
+    MyPointFunctor pointFunctor( &image, &predicate, 1 );
 
     /// Integral Invariant stuff
-    typedef PointPredicateToPointFunctor< Image > MyPointFunctor;
+    //! [IntegralInvariantUsage]
+    double re_convolution_kernel = atof(argv[3]);
+
     typedef FunctorOnCells< MyPointFunctor, Z3i::KSpace > MyCellFunctor;
     typedef IntegralInvariantGaussianCurvatureEstimator< Z3i::KSpace, MyCellFunctor > MyCurvatureEstimator; // Gaussian curvature estimator
 
-    MyPointFunctor pointFunctor( image );
     MyCellFunctor functor ( pointFunctor, KSpaceShape ); // Creation of a functor on Cells, returning true if the cell is inside the shape
     MyCurvatureEstimator estimator ( KSpaceShape, functor );
     estimator.init( h, re_convolution_kernel ); // Initialisation for a given Euclidean radius of convolution kernel
     std::vector< double > results;
     back_insert_iterator< std::vector< double > > resultsIterator( results ); // output iterator for results of Integral Invariante curvature computation
     estimator.eval ( abegin, aend, resultsIterator ); // Computation
-
+    //! [IntegralInvariantUsage]
 
     /// Drawing results
     typedef MyCurvatureEstimator::Quantity Quantity;

@@ -45,6 +45,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/kernel/CSpace.h"
@@ -75,6 +76,7 @@ namespace DGtal
     typedef TFunctorOnPoints FunctorOnPoints;
     typedef int Quantity;
     typedef typename FunctorOnPoints::Point Point;
+    typedef typename FunctorOnPoints::Value Value;
     typedef TKSpace KSpace;
     typedef typename KSpace::SCell Cell;
 
@@ -87,7 +89,7 @@ namespace DGtal
       * @param[in] functor a functor on digital points.
       * @param[in] space Khalimsky space in which the shape is defined.
       */
-    FunctorOnCells ( ConstAlias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
+    FunctorOnCells (  Alias< FunctorOnPoints > functor, ConstAlias< KSpace > space )
       : f(functor),
         myKSpace(space)
     {}
@@ -109,7 +111,7 @@ namespace DGtal
      */
     Quantity operator()( const Cell & aCell ) const
     {
-      return f(myKSpace.sCoords(aCell)) ? NumberTraits<Quantity>::ONE : NumberTraits<Quantity>::ZERO;
+      return ( f->operator()( myKSpace->sCoords(aCell) ) == NumberTraits< Value >::ZERO ) ? NumberTraits<Quantity>::ZERO : NumberTraits<Quantity>::ONE;
     }
 
     /**
@@ -124,15 +126,30 @@ namespace DGtal
      */
     bool isValid() const;
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     */
+    FunctorOnCells & operator= ( const FunctorOnCells & other )
+    {
+      if( this != &other )
+        {
+          f = other.f;
+          myKSpace = other.myKSpace;
+        }
+      return *this;
+    }
+
     // ------------------------- Protected Datas ------------------------------
   private:
     // ------------------------- Private Datas --------------------------------
   private:
-    /// Const ref on Functor on Points. Used on operator() to get the return value
-    const FunctorOnPoints & f;
+    /// Const pointor on Functor on Points. Used on operator() to get the return value
+    FunctorOnPoints * f;
 
-    /// Const ref on Khalimsky Space. Used to convert Cell -> Point
-    const KSpace & myKSpace;
+    /// Const pointor on Khalimsky Space. Used to convert Cell -> Point
+    const KSpace * myKSpace;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -152,13 +169,7 @@ namespace DGtal
      */
     FunctorOnCells ( const FunctorOnCells & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    FunctorOnCells & operator= ( const FunctorOnCells & other );
+
 
     // ------------------------- Internals ------------------------------------
   private:
