@@ -115,7 +115,7 @@ namespace DGtal
        @param K any cellular grid space.
        @param f an image
        @param e a digital embedder (like a GaussDigitizer).
-       @param iso the threshold value that defines the linear embedding.
+       @param iso_value the threshold value that defines the linear embedding.
     */
     void init( const KSpace & K, const Image & f, 
                const Embedder & e, ImageValue iso_value );

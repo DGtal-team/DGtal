@@ -59,42 +59,17 @@ Description of \b concept '\b CConstBidirectionalRange'
 
 ###  Provided types :
 
- - ConstReverseIterator: the const reverse iterator type, a model of
+- ConstReverseIterator: the const reverse iterator type, a model of
   const iterator concept.
 
-<table>
-<tr>
-<td class=CName> \b Name </td>
-<td class=CExpression> \b Expression </td>
-<td class=CRequirements> \b Type requirements </td>
-<td class=CReturnType> \b Return type </td>
-<td class=CPrecondition> \b Precondition </td>
-<td class=CSemantics> \b Semantics </td>
-<td class=CPostCondition> \b Postcondition </td>
-<td class=CComplexity> \b Complexity </td>
-</tr>
-<tr>
-<td class=CName>\t rbegin </td>
-<td class=CExpression>\t x.rbegin() const</td>
-<td class=CRequirements> </td>
-<td class=CReturnType>ConstReverseIterator</td>
-<td class=CPrecondition> </td>
-<td class=CSemantics> </td>
-<td class=CPostCondition></td>
-<td class=CComplexity></td>
-</tr>
-<tr>
-<td class=CName>\t rend </td>
-<td class=CExpression>\t x.rend() const</td>
-<td class=CRequirements> </td>
-<td class=CReturnType>ConstReverseIterator</td>
-<td class=CPrecondition> </td>
-<td class=CSemantics> </td>
-<td class=CPostCondition></td>
-<td class=CComplexity></td>
-</tr>
-</table>
-
+ 
+ 
+ | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+ |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+ | rbegin of range| \e x.rbegin()|                    | \e ConstReverseIterator |             | returns a reverse forward iterator on the beginning of the range | | |
+ | rend of range  | \e x.rend()|                      | \e ConstReverseIterator |             | returns a reverse forward iterator after the end of the range | | |
+ 
+ 
 ###  Invariants
 
 ###  Models

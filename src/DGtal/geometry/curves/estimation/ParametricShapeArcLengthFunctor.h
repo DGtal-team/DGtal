@@ -88,7 +88,7 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param sShape the input shape.
+     * @param aShape the input shape.
      */
     ParametricShapeArcLengthFunctor(ParametricShape *aShape): myShape(aShape) {};
     
@@ -118,8 +118,8 @@ namespace DGtal
     /** 
      * Compute the arc length between two points.
      * 
-     * @param aFirstPoint
-     * @param aSecondPoint
+     * @param aFirstPoint the first point
+     * @param aSecondPoint the second point
      * @return the estimated arc length
      */
     Quantity operator()(const RealPoint &aFirstPoint,const RealPoint &aSecondPoint)

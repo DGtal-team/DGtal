@@ -99,7 +99,6 @@ DGtal::Clock::stopClock()
   clock_gettime(CLOCK_REALTIME, &current); //Linux gettime
 #endif
 
-
   return (( current.tv_sec - myTimerStart.tv_sec) *1000 +
 	  ( current.tv_nsec - myTimerStart.tv_nsec)/1000000.0);  
 #endif

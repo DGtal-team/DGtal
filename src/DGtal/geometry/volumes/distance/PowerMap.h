@@ -129,7 +129,7 @@ namespace DGtal
     ///Definition of the underlying domain type.
     typedef typename TImageContainer::Domain Domain;
    
-    ///We construct the type associated to the separable metric @todo
+    ///We construct the type associated to the separable metric 
     typedef TPowerSeparableMetric PowerSeparableMetric;
     
     ///Type of resulting image
@@ -156,7 +156,7 @@ namespace DGtal
      *
      * @param aDomain defines the (hyper-rectangular) domain on which
      * the computation is performed.  
-     * @param WeightImage an image
+     * @param aWeightImage an image
      * returning the weight for some points
      * @param aMetric a power
      * seprable metric instance.
@@ -248,7 +248,6 @@ namespace DGtal
     /** 
      *  Compute the other steps of the separable Power map.
      * 
-     * @param output the output map
      * @param dim the dimension to process
      */    
     void computeOtherSteps(const Dimension dim) const;
@@ -258,7 +257,6 @@ namespace DGtal
      * the 1D span starting at @a row along the dimension @a
      * dim.
      * 
-     * @param output the Power map to update.
      * @param row starting point of the 1D process.
      * @param dim dimension of the update.
      */

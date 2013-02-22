@@ -104,7 +104,7 @@ namespace DGtal
      * Main method to import a Pgm (8bits) into an instance of the 
      * template parameter ImageContainer.
      * 
-     * @param filename the file name to import.  
+     * @param aFilename the file name to import.  
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
@@ -119,7 +119,7 @@ namespace DGtal
      * Main method to import a Pgm3D (8bits) into an instance of the 
      * template parameter ImageContainer.
      * 
-     * @param filename the file name to import.
+     * @param aFilename the file name to import.
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importPGM3D(const std::string & aFilename) throw(DGtal::IOException);

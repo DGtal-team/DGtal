@@ -292,8 +292,6 @@ namespace DGtal
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.
      *
-     * @tparam Domain the HyperRectDomain on which the iterator iterates.
-     * @tparam Value
      */
 
     class SpanIterator
@@ -517,7 +515,7 @@ namespace DGtal
     /**
      *  Linearized a point and return the vector position.
      * @param aPoint the point to convert to an index
-     * @return the index of @param aPoint in the container
+     * @return the index of @a aPoint in the container
      */
     Size linearized ( const Point &aPoint ) const;
 

@@ -322,8 +322,8 @@ namespace DGtal
      * Returns the combination of two distance values 
      * for the second-order accurate difference
      * 
-     * @param aValue1
-     * @param aValue2
+     * @param aValue1 first value
+     * @param aValue2 second value
      *
      * @return the resulting value.
      */

@@ -962,7 +962,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()
 {
 
   //speed values
-  Value num, den = 0; 
+  Value num = 0.0, den = 0; 
 
   //two 1-neighbors for one dimension
   Point neighbor1 = aPoint; 

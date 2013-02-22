@@ -118,8 +118,8 @@ namespace DGtal
     typedef Iterator iterator;
     typedef ConstIterator const_iterator;
     
-    struct FirstBlock; //< Forward declaration
-    struct AnyBlock; //< Forward declaration
+    struct FirstBlock; ///< Forward declaration
+    struct AnyBlock; ///< Forward declaration
 
     union BlockPointer {
       FirstBlock* first;
@@ -337,7 +337,7 @@ namespace DGtal
       typedef TValue Value;
       typedef Value* Pointer;
       typedef Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -350,10 +350,10 @@ namespace DGtal
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myValues of the iterator
-      unsigned int myNbValues; //< number of valid values in array \a myValues
-      Value* myValues;         //< array of \a myNbValues values.
-      AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myValues of the iterator
+      unsigned int myNbValues; ///< number of valid values in array \a myValues
+      Value* myValues;         ///< array of \a myNbValues values.
+      AnyBlock* myNext;        ///< pointer to next block or 0 if last block.
 
       friend class IndexedListWithBlocks;
 
@@ -454,7 +454,7 @@ namespace DGtal
       typedef TValue Value;
       typedef const Value* Pointer;
       typedef const Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -467,10 +467,10 @@ namespace DGtal
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myValues of the iterator
-      unsigned int myNbValues; //< number of valid values in array \a myValues
-      const Value* myValues;   //< array of \a myNbValues values.
-      const AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myValues of the iterator
+      unsigned int myNbValues; ///< number of valid values in array \a myValues
+      const Value* myValues;   ///< array of \a myNbValues values.
+      const AnyBlock* myNext;  ///< pointer to next block or 0 if last block.
 
       friend class IndexedListWithBlocks;
 
