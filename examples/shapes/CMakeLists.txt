@@ -1,6 +1,5 @@
 
 SET(DGTAL_EXAMPLES_SRC
-	exampleDigitalShapesDecorator
 	exampleEuclideanShapesDecorator
 )
 

@@ -90,7 +90,7 @@ Experimental results can be found at https://liris.cnrs.fr/jeremy.levallois/Pape
 
 The user part is rather simple by using only DGtal::IntegralInvariantMeanCurvatureEstimator or DGtal::IntegralInvariantGaussianCurvatureEstimator.
 These classes are parametrized by a Khalimsky space of a digital shape and a functor who return a value for a given
-Khalimsky cell. Indeed, the @f$ \chi(p) @f$ characteristic function is defined as a functor (here with values in
+Khalimsky cell. It must be a model of DGtal::CCellFunctor . Indeed, the @f$ \chi(p) @f$ characteristic function is defined as a functor (here with values in
 @f$ \{0,1\} @f$ for each spel of the Khalimsky space).
 
 At initialization (DGtal::IntegralInvariantMeanCurvatureEstimator::init()), we specify the current grid step @f$ h @f$, and an Euclidean radius @f$ r_e @f$ in
