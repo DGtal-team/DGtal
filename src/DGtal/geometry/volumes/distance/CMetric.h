@@ -71,7 +71,7 @@ For performance purposes, we ask the model to implement a closest() method to de
 Inherited from CLocalPremetric:
  - @e Point: type of points associated with the underlying metric space.
  - @e Vector: type of vectors associated with the underlying metric space.
- - @e Value: the value type of the metric (model of CUnsignedInteger) 
+ - @e Value: the value type of the metric (model of CQuantity)
 
 
 ### Notation

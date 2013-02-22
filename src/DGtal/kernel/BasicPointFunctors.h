@@ -47,6 +47,11 @@
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/base/BasicBoolFunctions.h"
+#ifdef CPP11_ARRAY
+#include <array>
+#else
+#include <boost/array.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
