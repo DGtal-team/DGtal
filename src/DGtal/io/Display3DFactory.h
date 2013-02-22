@@ -72,7 +72,7 @@ namespace DGtal
    */
   struct Display3DFactory
   {
-
+    
     // SphericalAccumulator
     /** 
      * Display an spherical accumulator in 3D. Bin values are mapped
