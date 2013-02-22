@@ -60,7 +60,7 @@ namespace DGtal
      ExplicitDigitalSurface or LightExplicitDigitalSurface so as to
      define a digital surface. Such surfaces may of course be open.
      
-     @tparam KSpace any model of cellular space
+     @tparam TKSpace any model of cellular space
      @tparam TImage any model of Image
   */
   template <typename TKSpace, typename TImage>

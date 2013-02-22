@@ -75,7 +75,7 @@ namespace DGtal
      * Constructor.
      * @param x0 the x-coordinate of the sphere center.
      * @param y0 the y-coordinate of the sphere center.
-     * @param y0 the y-coordinate of the sphere center.
+     * @param z0 the z-coordinate of the sphere center.
      * @param r the radius of the sphere.
      */
     Ball3D( const double x0, const double y0, const double z0, const double r );

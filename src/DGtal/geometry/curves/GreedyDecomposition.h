@@ -206,7 +206,7 @@ namespace DGtal
 
       /**
        * Copy constructor.
-       * @param other the iterator to clone.
+       * @param aOther the iterator to clone.
        */
       SegmentIterator( const SegmentIterator & aOther );
     
@@ -323,9 +323,9 @@ namespace DGtal
     /**
      * Constructor.
      * Nb: The digital curve is decompose as a closed one by default.
-     * @param aBegin, begin iterator on a digital curve
-     * @param aEnd, end iterator on a digital curve
-     * @param aSegment, a segment computer
+     * @param aBegin begin iterator on a digital curve
+     * @param aEnd end iterator on a digital curve
+     * @param aSegment a segment computer
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */
@@ -337,9 +337,9 @@ namespace DGtal
     /**
      * Init.
      * Nb: The digital curve is decompose as a closed one by default.
-     * @param aBegin, begin iterator on a digital curve
-     * @param aEnd, end iterator on a digital curve
-     * @param aSegment, a segment computer
+     * @param aBegin begin iterator on a digital curve
+     * @param aEnd end iterator on a digital curve
+     * @param aSegment a segment computer
      * @param aFlag a boolean equal to TRUE to decompose the digital
      * curve as a closed one, FALSE otherwise
      */

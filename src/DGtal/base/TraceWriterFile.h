@@ -61,7 +61,7 @@ namespace DGtal
     
     /**
      * Constructor.
-     * @param outputStream the current output Stream 
+     * @param aoutputStream the current output Stream 
      *
      */
     TraceWriterFile(std::ostream &aoutputStream) : TraceWriter(aoutputStream) {};

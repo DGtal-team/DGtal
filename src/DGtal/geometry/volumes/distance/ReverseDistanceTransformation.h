@@ -79,7 +79,7 @@ namespace DGtal
    * This class is a model of CConstImage.
    *
    * @tparam TWeightImage model of CConstImage
-   * @tparam TPowerSeparableMetric model of CPowerSeparableMetric
+   * @tparam TPSeparableMetric model of CPowerSeparableMetric
    * @tparam TImageContainer any model of CImage to store the
    * PowerMap (default: ImageContainerBySTLVector). The space of the
    * image container and the TSpace should match. Furthermore the
@@ -207,7 +207,7 @@ namespace DGtal
     /** 
      * Self Display method.
      * 
-     * @param out 
+     * @param out output stream 
      */
     void selfDisplay ( std::ostream & out ) const
     {

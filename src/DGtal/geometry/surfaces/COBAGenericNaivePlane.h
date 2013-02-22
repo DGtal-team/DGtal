@@ -351,7 +351,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current normal vector 
+     * @param [in,out] normal (updates) the current normal vector 
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -360,7 +360,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param (updates) the current unit normal vector 
+     * @param normal (updates) the current unit normal vector 
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;

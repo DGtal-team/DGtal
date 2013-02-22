@@ -154,18 +154,6 @@ namespace DGtal
     // ------------------------- Public Datas ------------------------------
   public:
     /**
-     * @deprecated @since 2010/11/8
-     * @see myModes
-     */
-    DomainDrawMode myDomainDrawMode;
-
-    /**
-     * @deprecated @since 2010/11/8
-     * @see myModes
-     */
-    bool myDrawObjectAdjacencies;
-
-    /**
      * For instance, may associate a new style object T1 to the class
      * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
      *
@@ -261,7 +249,7 @@ namespace DGtal
     /**
      * @param classname the name of the class to which the style is associated.
      *
-     * @param style a pointer on a dynamically allocated style, which
+     * @param mode a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
     SetMode( std::string classname, std::string mode )
