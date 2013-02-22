@@ -68,11 +68,16 @@ public:
 
 private:
   /**
-      * \brief
+      * \brief Reduces a real symmetric matrix to a symmetric tridiagonal matrix using and accumulating
+      * orthogonal similarity transformations
       *
       * This is derived from the Algol procedures tred2 and tql2 by Bowdler, Martin, Reinsch
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
+      *
+      * @param[out] d contains the diagonal elements of the tridiagonal matrix.
+      * @param[out] e contains the subdiagonal elements of the tridiagonal matrix in its last n-1 positions. e[0] is set to 0.
+      * @param[in,out] V input symmetric matrix / output the orthogonal transformation matrix produced in the reduction.
       */
   static void tred2 ( Matrix33 & V, Vector3 & d, Vector3 & e )
   {
@@ -227,11 +232,18 @@ private:
   }
 
   /**
-      * \brief Symmetric tridiagonal QL algorithm.
+      * \brief finds the eigenvalues and eigenvectors of a symmetric tridiagonal matrix by the QL method.
+      * The eigenvectrs of a full symmetric matric can also be found if tred2() has been used to reduce this
+      * full matrix to tridiagonal form.
       *
       * This is derived from the Algol procedures tred2 and tql2 by Bowdler, Martin, Reinsch
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
+      *
+      * @param[out] e contains the subdiagonal elements of the input matrix in its last n-1 positions. e(0) is arbitrary.
+      * @param[in,out] d input the diagonal elements of the input matrix / output orthonormal eigenvalues in ascending order.
+      * @param[in,out] V input transformation matrix produced in the reduction by tred2(), if performed. If the eigenvectors of the tridiagonal matrix
+      * are desired, V must contain the identity matrix / output orthonormal eigenvectors of the symmetric tridiagonal (or full) matrix.
       */
   static void tql2 ( Matrix33 & V, Vector3 & d, Vector3 e )
   {
@@ -253,7 +265,7 @@ private:
       // Find small subdiagonal element
       tst1 = Quantity( std::max( tst1, std::fabs ( d[ l ] ) + std::fabs( e[ l ] )));
       Dimension m = l;
-      while ( m < dimensionMinusOne )
+      while ( m < dimension )
       {
         if ( std::fabs ( e[ m ] ) <= eps * tst1 )
         {
@@ -374,7 +386,7 @@ private:
       * and Wilkinson, Handbook for Auto. Comp., Vol.ii-Linear Algebra, and the corresponding
       * Fortran subroutine in EISPACK.
       *
-      * @param[out] eigenVectors  matrix of eigenvectors (size = dimension * dimension).
+      * @param[out] eigenVectors  matrix of eigenvectors (size = dimension * dimension). Eigenvectors are put in column.
       * @param[out] eigenValues   vector of eigenvalues (size = dimension).
       * @param[in]  matrix        3D matrix where eigen values/vectors will be computed (size = dimension * dimension).
       */
