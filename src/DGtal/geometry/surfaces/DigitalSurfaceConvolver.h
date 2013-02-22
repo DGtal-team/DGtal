@@ -157,8 +157,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
   template< typename ConstIteratorOnCells, typename OutputIterator >
@@ -182,8 +182,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
        * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
@@ -345,8 +345,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
   template< typename ConstIteratorOnCells, typename OutputIterator >
@@ -371,8 +371,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
        * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
@@ -534,8 +534,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the convolution is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the convolution is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the convolution is computed.
        * @param result iterator of an array where estimates quantities are set ( the estimated quantity from *itbegin till *itend (excluded)).
        */
   template< typename ConstIteratorOnCells, typename OutputIterator >
@@ -558,8 +558,8 @@ public:
   /**
        * Iterate the convolver between [itbegin, itend[ and return a covariance matrixfor each position.
        *
-       * @param itb (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
-       * @param ite (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
+       * @param itbegin (iterator of the) first spel on the surface of the shape where the covariance matrix is computed.
+       * @param itend (iterator of the) last (excluded) spel on the surface of the shape where the covariance matrix is computed.
        * @param result iterator of an array where estimates covariance matrix are set ( the covariance matrix from *itbegin till *itend (excluded)).
        *
        * @tparam ConstIteratorOnCells iterator of a spel of the shape
