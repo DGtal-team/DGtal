@@ -56,7 +56,7 @@ namespace DGtal
  * \brief Aim: Union between two models of CDigitalBoundedShape and CDigitalOrientedShape
  *
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
- * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesUnion
@@ -205,7 +205,7 @@ private:
  * \brief Aim: Intersection between two models of CDigitalBoundedShape and CDigitalOrientedShape
  *
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
- * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesIntersection
@@ -365,7 +365,7 @@ private:
  * \brief Aim: Minus between two models of CDigitalBoundedShape and CDigitalOrientedShape
  *
  * @tparam ShapeA type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
- * @tparam ShapeB type of the first shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
+ * @tparam ShapeB type of the second shape. Must be a model of CDigitalBoundedShape and CDigitalOrientedShape
  */
 template <typename ShapeA, typename ShapeB>
 class DigitalShapesMinus
@@ -410,7 +410,7 @@ public:
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) && !myShapeB( p );
+    return myShapeA( p ) && !myShapeB.orientation(p) == INSIDE;
   }
 
   /**
@@ -455,7 +455,7 @@ public:
       }
       else if ( myShapeA.orientation( p ) == ON )
       {
-        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
+        if ( myShapeB.orientation( p ) == INSIDE )
         {
           return OUTSIDE;
         }

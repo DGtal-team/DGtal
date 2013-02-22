@@ -1779,7 +1779,7 @@ DGtal::DigitalSurfaceConvolver<Functor, KernelFunctor, KSpace, KernelConstIterat
         shift = currentCell.myCoordinates - myKernelCellOrigin.myCoordinates;
         shift2 = currentCell2.myCoordinates - myKernelCellOrigin.myCoordinates;
 
-        if ( total == 0 ) /// Computation on full kernel, we have no previous results
+        if ( true )//total == 0 ) /// Computation on full kernel, we have no previous results
         {
             /// Computation for the cell inside the shape. Using full kernel.
             for ( KernelConstIterator itgcurrent = myItKernelBegin; itgcurrent != myItKernelEnd; ++itgcurrent )

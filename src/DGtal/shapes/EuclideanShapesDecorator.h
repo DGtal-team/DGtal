@@ -56,7 +56,7 @@ namespace DGtal
  * \brief Aim: Union between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
  *
  * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
- * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+ * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
  */
 
   template <typename ShapeA, typename ShapeB>
@@ -205,7 +205,7 @@ namespace DGtal
    * \brief Aim: Intersection between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
    *
    * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
-   * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+   * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesIntersection
@@ -365,7 +365,7 @@ namespace DGtal
    * \brief Aim: Minus between two models of CEuclideanBoundedShape and CEuclideanOrientedShape
    *
    * @tparam ShapeA type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
-   * @tparam ShapeB type of the first shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+   * @tparam ShapeB type of the second shape. Must be a model of CEuclideanBoundedShape and CEuclideanOrientedShape
    */
   template <typename ShapeA, typename ShapeB>
   class EuclideanShapesMinus
@@ -409,7 +409,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && !myShapeB.orientation(p) != INSIDE;//!myShapeB.isInside( p );
+      return myShapeA.isInside( p ) && !myShapeB.orientation(p) == INSIDE;
     }
 
     /**
@@ -418,7 +418,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return myLowerBound;
+      return myLowerBound + RealPoint(-1,-1);
     }
 
     /**
@@ -427,7 +427,7 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return myUpperBound;
+      return myUpperBound + RealPoint(1,1);
     }
 
     /**
@@ -454,7 +454,7 @@ namespace DGtal
       }
       else if ( myShapeA.orientation( p ) == ON )
       {
-        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
+        if ( myShapeB.orientation( p ) == INSIDE )
         {
           return OUTSIDE;
         }
