@@ -129,7 +129,7 @@ public:
   /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
-      * @param h precision of the grid
+      * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
       *
       * @bug known bug with radius of kernel. Small hack for the moment.
@@ -152,7 +152,7 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator Output iterator type
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
@@ -276,7 +276,7 @@ public:
   /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
-      * @param h precision of the grid
+      * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
       *
       * @bug known bug with radius of kernel. Small hack for the moment.
@@ -300,7 +300,7 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator output iterator type
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.
@@ -428,7 +428,7 @@ public:
   /**
       * Initialise the IntegralInvariantMeanCurvatureEstimator with a specific Euclidean kernel radius re, and grid step h.
       *
-      * @param h precision of the grid
+      * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
       */
   void init ( const double _h, const double re );
@@ -449,7 +449,7 @@ public:
       * Return the result on an OutputIterator (param).
       *
       * @tparam ConstIteratorOnCells iterator on a Cell
-      * @tparam OutputIterator
+      * @tparam OutputIterator output iterator type
       *
       * @param ite iterator of the begin position on the shape where we compute the integral invariant curvature.
       * @param itb iterator of the end position (excluded) on the shape where we compute the integral invariant curvature.

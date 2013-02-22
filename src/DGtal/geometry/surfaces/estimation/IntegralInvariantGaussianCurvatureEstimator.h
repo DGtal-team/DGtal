@@ -150,7 +150,7 @@ public:
   /**
       * Initialise the IntegralInvariantGaussianCurvatureEstimator with a specific Euclidean kernel re, and grid step h.
       *
-      * @param h precision of the grid
+      * @param _h precision of the grid
       * @param re Euclidean radius of the kernel support
       */
   void init ( const double _h, const double re );

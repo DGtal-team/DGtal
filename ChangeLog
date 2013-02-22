@@ -19,8 +19,10 @@
     - Statistic class moved to math package
 
  *Kernel Package*
-    - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
-SetPredicate is now deprecated.
+    - digital sets are now also point predicates, update of
+      DigitalSetDomain accordingly. As a consequence, SetPredicate is
+      now deprecated.
+
     - new documentation for module digital sets.
 
  *Arithmetic Package*
@@ -50,8 +52,8 @@ SetPredicate is now deprecated.
       DistanceTransformation, ReverseDistanceTransformation and
       preliminary medial axis extraction.
     - Separable volumetric tools are now multithread using OpenMP.
-	- New curvature estimator in 2D/3D based on integral invariants, which uses
-      to iterate a convolver around the shape surface.
+    - New curvature estimator in 2D/3D based on integral invariants
+      (both mean and gaussian curvatures in 3D).
 
  *Shape Package*
     - New operators available on digital and Euclidean shapes (Union,
