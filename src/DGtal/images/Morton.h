@@ -94,7 +94,7 @@ namespace DGtal
     
     /**
      * Interleave the bits of the nbIn inputs.
-     * @param input an array of the nbIn values to mix in.
+     * @param aPoint an array of the nbIn values to mix in.
      * @param output The result
      */ 
     void interleaveBits(const Point  & aPoint, HashKey & output) const;

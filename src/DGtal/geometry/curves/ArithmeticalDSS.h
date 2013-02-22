@@ -101,10 +101,10 @@ Steps:
 [End ArithmeticalDSS]
    * @endcode
    *
-   * @tparam 'TIterator'  type ConstIterator on 2D points, 
-   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
+   * @tparam TIterator  type ConstIterator on 2D points,
+   * @tparam TInteger  type of scalars used for the DSS parameters
    * (satisfying CInteger) 
-   * @tparam 'connectivity'  an integer equal to 
+   * @tparam connectivity  an integer equal to
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *
@@ -289,7 +289,7 @@ Steps:
   public:
      
     /**
-     * @deprecated
+     * deprecated
      * @see isExtendableForward()
      *
      * Tests whether the union between a point 
@@ -299,7 +299,7 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool isExtendableForward(const ConstIterator & itf);
+    bool isExtendableForward(const ConstIterator & itf) ;
 
     /**
      * Tests whether the current DSS can be extended at the front.
@@ -316,7 +316,7 @@ Steps:
     bool isExtendableBackward();
     
     /**
-     * @deprecated
+     * deprecated
      * @see extendForward()
      *
      * Tests whether the union between a point 
@@ -328,10 +328,10 @@ Steps:
      * @param itf an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendForward(const ConstIterator & itf);
+    bool extendForward(const ConstIterator & itf)  ;
 
     /**
-     * @deprecated
+     * deprecated
      * @see extendBackward()
      *
      * Tests whether the union between a point 
@@ -343,7 +343,7 @@ Steps:
      * @param itb an iterator on a sequence of points
      * @return 'true' if the union is a DSS, 'false' otherwise.
      */
-    bool extendBackward(const ConstIterator & itb);
+    bool extendBackward(const ConstIterator & itb) ;
 
     /**
      * Tests whether the current DSS can be extended at the front.
@@ -415,43 +415,44 @@ Steps:
      */
     Point getLl() const;
     /**
-     * @deprecated
+     * deprecated
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.
-     */
-    Point getBackPoint() const;
+      */
+    Point getBackPoint() const ;
     /**
-     * @deprecated
+     * deprecated
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
      */
-    Point getFrontPoint() const;
+    Point getFrontPoint() const ;
     /**
      * Accessor to the first added point to the DSS
      * @return the first point of the DSS.
      */
-    Point getFirstPoint() const;
+    Point getFirstPoint() const ;
     /**
      * Accessor to the last added point to the DSS
      * @return the last point of the DSS.
      */
     Point getLastPoint() const;
     /**
-     * @deprecated
+     * deprecated
      * @see begin() end()
      *
      * Accessor to the iterator at the back of the DSS
      * @return iterator pointing to the back of the DSS.
      */
-    ConstIterator getBack() const;
+    ConstIterator getBack() const ;
     /**
-     * @deprecated
+     * deprecated
      * @see begin() end()
      *
      * Accessor to the iterator at the front of the DSS
      * @return iterator pointing to the front of the DSS.
      */
-    ConstIterator getFront() const;
+    ConstIterator getFront() const ;
+    
     /**
      *  
      * @return begin iterator of the DSS range.

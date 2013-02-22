@@ -56,7 +56,7 @@ namespace DGtal
      \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
 
      @tparam T the type that should be a model of this predicate
-     @tparam TELement the type of an element of the predicate domain.
+     @tparam TElement the type of an element of the predicate domain.
 
      ###  Refinement of 
 

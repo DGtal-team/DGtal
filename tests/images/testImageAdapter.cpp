@@ -112,7 +112,7 @@ bool testSimple()
 
     /** 
      * Constructor.
-     * @param value the 'trans' value.
+     * @param aValue the 'trans' value.
      */
     MyTransValueFunctor(const Value& aValue = 0)
       :myValue(aValue) {};

@@ -56,7 +56,7 @@ namespace DGtal
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
    *
-   * @tparam TImage an model of CImageContainer concept. 
+   * @tparam Image an model of CImageContainer concept. 
    */
   template <typename Image>
   class SimpleThresholdForegroundPredicate

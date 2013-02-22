@@ -369,7 +369,7 @@ namespace boost
   /**
      @param edge an arc (s,t) on \a digSurf.
      @param digSurf a valid digital surface.
-     @param the vertex s.
+     @return the vertex s.
   */
   template < class TDigitalSurfaceContainer >
   inline 
@@ -382,7 +382,7 @@ namespace boost
   /**
      @param edge an arc (s,t) on \a digSurf.
      @param digSurf a valid digital surface.
-     @param the vertex t.
+     @return the vertex t.
   */
   template < class TDigitalSurfaceContainer >
   inline 
@@ -488,9 +488,7 @@ namespace boost
   }
 
   /**
-     @param u a vertex belonging to \a digSurf.
      @param digSurf a valid digital surface.
-
      @return a pair< out_edge_iterator, out_edge_iterator > that
      represents a range to visit the out edges of vertex \a u. Each
      out edge is a tuple (u,t) of vertices, where t != u.

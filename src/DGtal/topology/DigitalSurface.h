@@ -115,7 +115,7 @@ namespace DGtal
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
 
-  @see \ref moduleDigitalSurfaces
+  ee \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
