@@ -1,26 +1,29 @@
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR}/src)
 
-##Recursive calls
-## each subdir can contain a ModuleSRC.txt file 
-## with a set command on the variable ${DGTAL_SRC}
-## 
+
+
+#------------------------------------------------------------------------------
+# Include CPP files to add to the library target
+#
+# each subdir can contain a ModuleSRC.txt file 
+# with a set command on the variable ${DGTAL_SRC}
+# 
+#------------------------------------------------------------------------------
 include(DGtal/arithmetic/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
-
 ## Board dependency
 include(Board/ModuleSRC.txt)
 
 
-
-# Create a library called "DGtal".
-# The extension is already found. Any number of sources could be listed here.
-
+#------------------------------------------------------------------------------
+# DGtal/DGtalIO Targets
+#------------------------------------------------------------------------------
 IF (BUILD_SHARED_LIBS)
-  add_library (DGtal SHARED ${DGTAL_SRC} ${BOARD_SRC})
+  add_library (DGtal SHARED ${DGTAL_SRC} ${BOARD_SRC} )
   target_link_libraries( DGtal ${DGtalLibDependencies} )
 ELSE(BUILD_SHARED_LIBS)
   add_library (DGtal STATIC ${DGTAL_SRC} ${BOARD_SRC})
@@ -60,3 +63,55 @@ IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
 ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
 
 
+
+#------------------------------------------------------------------------------
+#--- Headers for IDE Generators
+#
+# The following lines add fake targets to register the .h and .ih files in the
+# overall project. 
+# For IDE generators (Xcode, ...), all H and IH will be recognized as project 
+# headers and will thus be parsed and analyzed correctly (e.g. follow declaration
+#/implementation, ...)
+# 
+#------------------------------------------------------------------------------
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/base/*.*h")
+add_custom_target(_base SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/math/*.*h")
+add_custom_target(_math SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/kernel/*.*h")
+add_custom_target(_kernel SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/topology/*.*h")
+add_custom_target(_topology SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/geometry/*.*h")
+add_custom_target(_geometry SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+
+## Not Working for io... don't know why (DC)
+##
+# FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/io/*.*h")
+# add_custom_target(_io SOURCES ${DGTAL_MYHEADERS})
+# FOREACH(FILE ${DGTAL_MYHEADERS})
+#   message( ${FILE} )
+# ENDFOREACH(FILE)
+# SET(DGTAL_MYHEADERS "")
+
+
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/images/*.*h")
+add_custom_target(_images SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/shapes/*.*h")
+add_custom_target(_shapes SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/arithmetic/*.*h")
+add_custom_target(_arithmetic SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/graph/*.*h")
+add_custom_target(_graph SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
+FILE(GLOB_RECURSE DGTAL_MYHEADERS "*/helpers/*.*h")
+add_custom_target(_helpers SOURCES ${DGTAL_MYHEADERS})
+SET(DGTAL_MYHEADERS "")
