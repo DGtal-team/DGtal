@@ -347,3 +347,6 @@ DGtal::findAndGetValue(const I& aImg, const S& aSet,
   typedef typename I::Value V; 
   return FindAndGetValue<I,S,D,V>::implementation(aImg, aSet, aPoint, aValue); 
 }
+
+
+
