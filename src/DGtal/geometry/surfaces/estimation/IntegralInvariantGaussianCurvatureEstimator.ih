@@ -180,8 +180,8 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   double h2 = h * h;
   dh5 = h2 * h2 * h;
 
-  RealPoint pOrigin = RealPoint ( 0.0, 0.0, 0.0 + 0.000123 );
-  KernelSupport kernel( pOrigin, radius );
+  RealPoint pOrigin = RealPoint ( 0.0, 0.0, 0.0 );
+  KernelSupport kernel( pOrigin, radius + 0.000123 );
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 27 );
