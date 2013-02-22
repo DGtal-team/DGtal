@@ -44,6 +44,11 @@ INCLUDE(${CMAKE_MODULE_PATH}/CheckDGtalOptionalDependencies.cmake)
 # -----------------------------------------------------------------------------
 INCLUDE(${CMAKE_MODULE_PATH}/CpackCtest.cmake)
 
+# -----------------------------------------------------------------------------
+# Custom command/targets depending on the cmake generator
+# -----------------------------------------------------------------------------
+INCLUDE(${CMAKE_MODULE_PATH}/GeneratorSpecific.cmake)
+
 #------------------------------------------------------------------------------
 # Add subdirectories
 #------------------------------------------------------------------------------
