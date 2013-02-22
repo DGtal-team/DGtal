@@ -182,28 +182,18 @@ parameters which are not specified in the captions).
 
 
 
-\section sectmoduleShape4 Binary Operation on Shapes
+\section sectmoduleShape4 Binary Operations on Shapes
 
-In DGtal, you can also use some binary operation on Euclidean (resp. Digital)
+In DGtal, you can also use some binary operations on Euclidean (resp. Digital)
 Shapes, using EuclideanShapesDecorator (resp. DigitalShapesDecorator). Currently
-available operation are Union, Intersection and Minus.
+available operations are Union, Intersection and Minus.
 
 Example for minus operation on two Euclidean Shapes :
-@code
-    #include "DGtal/shapes/EuclideanShapesDecorator.h"
-    ...
-    EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > s_minus ( shapeA, shapeB );
-@endcode
+@snippet shapes/exampleEuclideanShapesDecorator.cpp EuclideanShapesDecoratorUsage
 
 Of course, MyEuclideanShapeA and MyEuclideanShapeB on this example must be models of
 CEuclideanBoundedShape and CEuclideanOrientedShape (resp. CDigitalBoundedShape and CDigitalOrientedShape).
 
-@note EuclideanShapesDecorator and DigitalShapesDecorator are decorator, so it means that you can
-use binary operation also on it :
-@code
-    typedef EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > MyEuclideanMinusA;
-    EuclideanShapesUnion< MyEuclideanMinusA, MyEuclideanShapeC > s_union ( s_minus, shapeC );
-@endcode
 
 The following images show you binary operations apply on two Ball2D (results are in orange) :
 
@@ -214,7 +204,7 @@ The following images show you binary operations apply on two Ball2D (results are
 @image latex intersection_shapes.png "Intersection operation" width=5cm
 @image latex minus_shapes.png "Minus operation" width=5cm
 
-@see tests/shapes/testEuclideanShapesDecorator.cpp tests/shapes/testDigitalShapesDecorator.cpp
+@snippet shapes/exampleEuclideanShapesDecorator.cpp EuclideanShapesDecoratorUsageFull
 */
 
 

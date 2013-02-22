@@ -334,7 +334,11 @@ namespace DGtal
 
 
   /**
+   * Create a Point Functor from a Point Predicate and an Image.
    *
+   * @tparam Image a model of CImage.
+   * @tparam PointPredicate a model of CPointPredicate.
+   * @tparam TValue a model of CQuantity. Type return by the functor.
    *
    */
   template<typename Image, typename PointPredicate, typename TValue=DGtal::int32_t>

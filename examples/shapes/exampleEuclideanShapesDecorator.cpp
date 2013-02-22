@@ -28,18 +28,20 @@
  * This file is part of the DGtal library.
  */
 
+//! [EuclideanShapesDecoratorUsageFull]
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
 
 // Shape construction
-#include "DGtal/shapes/parametric/Ball2D.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
-#include "DGtal/graph/DepthFirstVisitor.h"
-#include "DGtal/graph/GraphVisitorRange.h"
-
+#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/images/ImageHelper.h"
+#include "DGtal/shapes/Shapes.h"
+#include "DGtal/shapes/parametric/Ball2D.h"
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 // Drawing
@@ -63,50 +65,79 @@ int main( int argc, char** argv )
     /// Construction of the shape + digitalization
     double h = 1.0;
 
-    typedef Ball2D< Z2i::Space > ShapeA;
-    ShapeA shapeA(0.0, 0.0, 5.0);
-    ShapeA shapeB(1.0, 0.0, 5.0);
+    //! [EuclideanShapesDecoratorUsage]
+    typedef Ball2D< Z2i::Space > MyEuclideanShapeA;
+    typedef Ball2D< Z2i::Space > MyEuclideanShapeB;
+    MyEuclideanShapeA shapeA(0.0, 0.0, 14.0000123);
+    MyEuclideanShapeB shapeB(1.0, 0.0, 14.0000123);
 
-    typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
+    typedef EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
     Minus s_minus ( shapeA, shapeB );
-
-    typedef ShapeA::RealPoint RealPoint;
-    typedef GaussDigitizer< Z2i::Space, ShapeA > MyGaussDigitizer;
-    MyGaussDigitizer digShape;
-    digShape.attach( shapeA );
-    digShape.init( shapeA.getLowerBound() + RealPoint(-1,-1), shapeA.getUpperBound(), h );
-
-    Z2i::Domain domainShape = digShape.getDomain();
-    Z2i::KSpace KSpaceShape;
-    bool space_ok = KSpaceShape.init( domainShape.lowerBound(), domainShape.upperBound(), true );
-    if ( !space_ok )
-    {
-        trace.error() << "Error in the Khamisky space construction." << std::endl;
-        return 2;
-    }
+    //! [EuclideanShapesDecoratorUsage]
 
     typedef Z2i::KSpace::Surfel Surfel;
+
+    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeA;
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeA > LightImplDigSurfaceA;
+    typedef DigitalSurface< LightImplDigSurfaceA > MyDigitalSurfaceA;
+    MyGaussDigitizerShapeA digShapeA;
+    digShapeA.attach( shapeA );
+    digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
+    Z2i::Domain domainShapeA = digShapeA.getDomain();
+
+    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSetA( domainShapeA );
+    Shapes<Z2i::Domain>::digitalShaper( aSetA, digShapeA );
+
+
+
+    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeB;
+    typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeB > LightImplDigSurfaceB;
+    typedef DigitalSurface< LightImplDigSurfaceB > MyDigitalSurfaceB;
+    MyGaussDigitizerShapeB digShapeB;
+    digShapeB.attach( shapeB );
+    digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
+    Z2i::Domain domainShapeB = digShapeB.getDomain();
+
+    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSetB( domainShapeB );
+    Shapes<Z2i::Domain>::digitalShaper( aSetB, digShapeB );
+
+
+
+    typedef GaussDigitizer< Z2i::Space, Minus > MyGaussDigitizer;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
-    SurfelAdjacency< Z2i::KSpace::dimension > SAdj( true );
-    Surfel bel = Surfaces< Z2i::KSpace >::findABel( KSpaceShape, digShape, 100000 );
-    LightImplicitDigSurface LightImplDigSurf( KSpaceShape, digShape, SAdj, bel );
-    MyDigitalSurface digSurf( LightImplDigSurf );
+    MyGaussDigitizer digShape;
+    digShape.attach( s_minus );
+    digShape.init( s_minus.getLowerBound(), s_minus.getUpperBound(), h );
+    Z2i::Domain domainShape = digShape.getDomain();
+    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSet( domainShape );
+    Shapes<Z2i::Domain>::digitalShaper( aSet, digShape );
 
-    typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-    typedef GraphVisitorRange< Visitor > VisitorRange;
-    typedef VisitorRange::ConstIterator SurfelConstIterator;
 
-    VisitorRange range( new Visitor( digSurf, *digSurf.begin() ) );
-    SurfelConstIterator abegin = range.begin();
-    SurfelConstIterator aend = range.end();
 
     Board2D board;
-    // export here
+    board << SetMode( domainShape.className(), "Paving" )
+          << domainShape;
+
+    Color dgreen( 0, 192, 0, 50 );
+    Color dred( 192, 0, 0, 50 );
+    Color dorange( 255, 136, 0, 220 );
+
+    board << CustomStyle( aSetA.className(), new CustomFillColor( dgreen ) );
+    board << aSetA;
+
+    board << CustomStyle( aSetB.className(), new CustomFillColor( dred ) );
+    board << aSetB;
+
+    board << CustomStyle( aSet.className(), new CustomFillColor( dorange ) );
+    board << aSet;
+
     board.saveSVG ( "example-EuclideanShapesDecorator.svg" );
 
     trace.endBlock();
     return 0;
 }
+
+//! [EuclideanShapesDecoratorUsageFull]
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

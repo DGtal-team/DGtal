@@ -87,7 +87,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::i
   d1_r2 = 1.0 / ( radius * radius );
 
   RealPoint pOrigin = RealPoint ( 0.0, 0.0 );
-  KernelSupport kernel( pOrigin, radius );
+  KernelSupport kernel( pOrigin, radius + 0.000123 );
   KSpace KSpaceKernel;
 
   kernels = std::vector< SurfelSet >( 9 );
@@ -180,7 +180,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::i
   double h2 = h * h;
   dh5 = h2 * h2 * h;
 
-  RealPoint pOrigin = RealPoint ( 0.0, 0.0, 0.0 );
+  RealPoint pOrigin = RealPoint ( 0.0, 0.0, 0.0 + 0.000123 );
   KernelSupport kernel( pOrigin, radius );
   KSpace KSpaceKernel;
 
@@ -310,6 +310,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
   EigenValues3D< Quantity >::getEigenDecomposition( covarianceMatrix, eigenVectors, eigenValues );
 
+  ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
   ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
   k1 = d6_PIr6 * ( eigenValues[ 1 ] - ( 3.0 * eigenValues[ 2 ] )) + d8_5r;
@@ -423,7 +424,6 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
 
     EigenValues3D< Quantity >::getEigenDecomposition( currentMatrix, eigenVectors, eigenValues );
 
-    std::cout << eigenValues[ 0 ] << std::endl;
     ASSERT ( eigenValues[ 0 ] == eigenValues[ 0 ] ); // NaN
     ASSERT ( (eigenValues[ 0 ] <= eigenValues[ 2 ]) && (eigenValues[ 0 ] <= eigenValues[ 1 ]) && (eigenValues[ 1 ] <= eigenValues[ 2 ]) );
 
