@@ -209,7 +209,7 @@ namespace DGtal
     /** 
      * Self Display method.
      * 
-     * @param out 
+     * @param [out] out output stream
      */
     void selfDisplay ( std::ostream & out ) const
     {

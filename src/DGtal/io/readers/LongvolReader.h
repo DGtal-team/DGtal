@@ -110,7 +110,7 @@ namespace DGtal
      * Generic read word (binary mode) in little-endian mode.
      * 
      * @param fin input FILE.
-     * @param value value to write.
+     * @param aValue value to write.
      * 
      * @return modified stream.
      */

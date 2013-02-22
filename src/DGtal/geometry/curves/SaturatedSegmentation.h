@@ -255,7 +255,7 @@ namespace DGtal
 
       /**
        * Copy constructor.
-       * @param other the iterator to clone.
+       * @param aOther the iterator to clone.
        */
       SegmentComputerIterator( const SegmentComputerIterator & aOther );
     

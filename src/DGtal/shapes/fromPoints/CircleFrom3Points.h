@@ -141,7 +141,7 @@ namespace DGtal
      * Computes the parameters of the circle
      * @param cx  returned x-coordinate of the circle
      * @param cy  returned y-coordinate of the circle
-     * @param r  returned radius of the circle
+     * @param rr  returned radius of the circle
      */
 
     void getParameters(double& cx, double& cy, double& rr) const;

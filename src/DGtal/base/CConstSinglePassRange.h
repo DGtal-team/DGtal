@@ -56,7 +56,7 @@ namespace DGtal
     
      \brief Aim: Defines the concept describing a const single pass range.
      
-     \tparam T: the type that should be a model of CConstSinglePassRange.
+     \tparam T the type that should be a model of CConstSinglePassRange.
 
      ### Refinement of
     
