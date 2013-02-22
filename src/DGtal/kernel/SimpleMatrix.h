@@ -45,6 +45,11 @@
 #include "DGtal/kernel/CEuclideanRing.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
+#ifdef CPP11_ARRAY
+#include <array>
+#else
+#include <boost/array.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal

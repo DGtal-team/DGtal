@@ -69,7 +69,7 @@ namespace DGtal
    * 
    * This class is a wrapper around a power map construction (see
    * PowerMap). More precisely, at a point p, since the PowerMap at p
-   * returns a vector to the closest weighted site, this class adapts
+   * returns a vector to the closest power site, this class adapts
    * the operator() in order to returns the power distance to the
    * closest weighted site for the considered metric.
    *
@@ -118,12 +118,11 @@ namespace DGtal
 
     ///Separable Metric type weight type
     typedef typename PowerSeparableMetric::Weight Weight;
- 
-    //BOOST_STATIC_ASSERT((boost::is_same< typename TWeightImage::Value, 
-    //                    typename PowerSeparableMetric::Point>::value));
-    
+  
     ///Definition of the image.
-    typedef  ReverseDistanceTransformation<TWeightImage,TPSeparableMetric,TImageContainer> Self;
+    typedef  ReverseDistanceTransformation<TWeightImage,
+                                           TPSeparableMetric,
+                                           TImageContainer> Self;
     
     typedef PowerMap<TWeightImage,TPSeparableMetric> Parent;
    
@@ -142,9 +141,9 @@ namespace DGtal
     ReverseDistanceTransformation(ConstAlias<Domain> aDomain,
                                   ConstAlias<WeightImage> aWeightImage,
                                   ConstAlias<PowerSeparableMetric> aMetric):
-      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(static_cast<const Domain&>(aDomain),
-                                                               static_cast<const WeightImage &>(aWeightImage),
-                                                               static_cast<const PowerSeparableMetric &>(aMetric))
+      PowerMap<TWeightImage,TPSeparableMetric,TImageContainer>(aDomain,
+                                                               aWeightImage,
+                                                               aMetric)
     {}
     
     /**

@@ -37,11 +37,11 @@
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/ExplicitDigitalSurface.h"
 #include "DGtal/topology/LightExplicitDigitalSurface.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/topology/helpers/FrontierPredicate.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
-#include "DGtal/topology/CUndirectedSimpleGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleGraph.h"
 
 #include "DGtal/shapes/Shapes.h"
 ///////////////////////////////////////////////////////////////////////////////

@@ -82,8 +82,8 @@ int main()
   
   Point ptInf = img.domain().lowerBound(); 
   Point ptSup = img.domain().upperBound(); 
-  unsigned int width = abs(ptSup.at(0)-ptInf.at(0)+1);
-  unsigned int height = abs(ptSup.at(1)-ptInf.at(1)+1);
+  unsigned int width = abs(ptSup[0]-ptInf[0]+1);
+  unsigned int height = abs(ptSup[1]-ptInf[1]+1);
   
   // Draw the freemanchain and the contour 
   Board2D dgBoard;
