@@ -44,6 +44,9 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/CImageFactory.h"
+#include "DGtal/images/CImageCacheReadPolicy.h"
+#include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
 
 #include "DGtal/images/ImageFactoryFromImage.h"
@@ -83,6 +86,9 @@ public:
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
+    BOOST_CONCEPT_ASSERT(( CImageCacheReadPolicy<TReadPolicy> ));
+    BOOST_CONCEPT_ASSERT(( CImageCacheWritePolicy<TWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

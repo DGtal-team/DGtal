@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/CImageFactory.h"
 #include "DGtal/base/Alias.h"
 
 #include "DGtal/images/ImageCache.h"
@@ -71,6 +72,11 @@ template <typename TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyLast
 {
 public:
+  
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));    
+    
     typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
@@ -97,7 +103,7 @@ public:
      *
      * @return the alias on the image container or NULL pointer.
      */
-    TImageContainer * getPage(const Point & aPoint);
+    ImageContainer * getPage(const Point & aPoint);
     
     /**
      * Get the alias on the next image that we have to detach
@@ -105,7 +111,7 @@ public:
      *
      * @return the alias on the image container or NULL pointer.
      */
-    TImageContainer * getNextPageToDetach();
+    ImageContainer * getNextPageToDetach();
     
     /**
      * Update the cache according to the cache policy.
@@ -142,6 +148,11 @@ template <typename TImageContainer, typename TImageFactory>
 class ImageCacheWritePolicyWT
 {
 public:
+  
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
+  
     typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
@@ -168,14 +179,14 @@ public:
     * @param aPoint the point.
     * @param aValue the value.
     */
-    void writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    void writeOnPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
     
     /**
     * Flush the image on disk according to the cache policy.
     *
     * @param anImageContainer the image.
     */
-    void flushPage(TImageContainer * anImageContainer);
+    void flushPage(ImageContainer * anImageContainer);
     
 protected:
     
@@ -202,6 +213,11 @@ template <typename TImageContainer, typename TImageFactory>
 class ImageCacheWritePolicyWB
 {
 public:
+  
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));
+  
     typedef TImageFactory ImageFactory;
     
     typedef TImageContainer ImageContainer;
@@ -228,14 +244,14 @@ public:
     * @param aPoint the point.
     * @param aValue the value.
     */
-    void writeOnPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    void writeOnPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
     
     /**
     * Flush the image on disk according to the cache policy.
     *
     * @param anImageContainer the image.
     */
-    void flushPage(TImageContainer * anImageContainer);
+    void flushPage(ImageContainer * anImageContainer);
     
 protected:
     
