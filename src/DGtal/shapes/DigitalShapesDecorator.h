@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/shapes/CDigitalBoundedShape.h"
 #include "DGtal/shapes/CDigitalOrientedShape.h"
@@ -74,10 +75,10 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesUnion( const ShapeA & a, const ShapeB & b )
+  DigitalShapesUnion( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
     : myShapeA(a),
       myShapeB(b)
   {
@@ -94,7 +95,7 @@ public:
 
 
   /**
-   * @param p any point in the digital plane.
+   * @param[in] p any point in the digital plane.
    *
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
@@ -125,11 +126,11 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
       if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
       {
@@ -223,10 +224,10 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesIntersection( const ShapeA & a, const ShapeB & b )
+  DigitalShapesIntersection( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
     : myShapeA(a),
       myShapeB(b)
   {
@@ -242,7 +243,7 @@ public:
   }
 
   /**
-   * @param p any point in the digital plane.
+   * @param[in] p any point in the digital plane.
    *
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
@@ -273,32 +274,26 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
-      if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
-      }
-      else if ( myShapeB.orientation( p ) == ON )
-      {
-        if ( myShapeA.orientation( p ) == INSIDE )
-        {
-          return ON;
-        }
-      }
-      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
-      {
-        return INSIDE;
-      }
+    if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) != OUTSIDE)
+    {
+      return ON;
+    }
+    else if ( myShapeB.orientation( p ) == ON && myShapeA.orientation( p ) != OUTSIDE )
+    {
+      return ON;
+    }
+    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+    {
+      return INSIDE;
+    }
 
-      return OUTSIDE;
+    return OUTSIDE;
   }
 
 
@@ -383,10 +378,10 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesMinus( const ShapeA & a, const ShapeB & b )
+  DigitalShapesMinus( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
     : myShapeA(a),
       myShapeB(b)
   {
@@ -403,14 +398,14 @@ public:
 
 
   /**
-   * @param p any point in the digital plane.
+   * @param[in] p any point in the digital plane.
    *
    * @return 'true' if the point is inside the shape, 'false' if it
    * is strictly outside.
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) && !myShapeB.orientation(p) == INSIDE;
+    return myShapeA( p ) && !myShapeB.orientation( p ) == INSIDE;
   }
 
   /**
@@ -434,11 +429,11 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
       if ( myShapeA.orientation( p ) == INSIDE )
       {

@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/shapes/CEuclideanBoundedShape.h"
 #include "DGtal/shapes/CEuclideanOrientedShape.h"
@@ -75,10 +76,10 @@ namespace DGtal
     /**
       * Constructor.
       *
-      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
-      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    EuclideanShapesUnion( const ShapeA & a, const ShapeB & b )
+    EuclideanShapesUnion( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
       : myShapeA(a),
         myShapeB(b)
     {
@@ -94,7 +95,7 @@ namespace DGtal
     }
 
     /**
-     * @param p any point in the plane.
+     * @param[in] p any point in the plane.
      *
      * @return 'true' if the point is inside the shape, 'false' if it
      * is strictly outside.
@@ -125,11 +126,11 @@ namespace DGtal
     /**
      * Return the orientation of a point with respect to a shape.
      *
-     * @param p input point
+     * @param[in] p input point
      *
-     * @return the orientation of the point (<0 means inside, ...)
+     * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
      */
-    Orientation orientation( const RealPoint & p) const
+    Orientation orientation( const RealPoint & p ) const
     {
         if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
         {
@@ -223,10 +224,10 @@ namespace DGtal
     /**
       * Constructor.
       *
-      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
-      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    EuclideanShapesIntersection( const ShapeA & a, const ShapeB & b )
+    EuclideanShapesIntersection( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
       : myShapeA(a),
         myShapeB(b)
     {
@@ -242,7 +243,7 @@ namespace DGtal
     }
 
     /**
-     * @param p any point in the plane.
+     * @param[in] p any point in the plane.
      *
      * @return 'true' if the point is inside the shape, 'false' if it
      * is strictly outside.
@@ -273,25 +274,19 @@ namespace DGtal
     /**
      * Return the orientation of a point with respect to a shape.
      *
-     * @param p input point
+     * @param[in] p input point
      *
-     * @return the orientation of the point (<0 means inside, ...)
+     * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
      */
-    Orientation orientation( const RealPoint & p) const
+    Orientation orientation( const RealPoint & p ) const
     {
-      if ( myShapeA.orientation( p ) == ON )
+      if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) != OUTSIDE)
       {
-        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
+        return ON;
       }
-      else if ( myShapeB.orientation( p ) == ON )
+      else if ( myShapeB.orientation( p ) == ON && myShapeA.orientation( p ) != OUTSIDE )
       {
-        if ( myShapeA.orientation( p ) == INSIDE )
-        {
-          return ON;
-        }
+        return ON;
       }
       else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
       {
@@ -383,10 +378,10 @@ namespace DGtal
     /**
       * Constructor.
       *
-      * @param a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
-      * @param b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] a a model of CEuclideanBoundedShape and CEuclideanOrientedShape
+      * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
-    EuclideanShapesMinus( const ShapeA & a, const ShapeB & b )
+    EuclideanShapesMinus( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
       : myShapeA(a),
         myShapeB(b)
     {
@@ -402,14 +397,14 @@ namespace DGtal
     }
 
     /**
-     * @param p any point in the plane.
+     * @param[in] p any point in the plane.
      *
      * @return 'true' if the point is inside the shape, 'false' if it
      * is strictly outside.
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && !myShapeB.orientation(p) == INSIDE;
+      return myShapeA.isInside( p ) && !myShapeB.orientation( p ) == INSIDE;
     }
 
     /**
@@ -418,7 +413,7 @@ namespace DGtal
      */
     RealPoint getLowerBound() const
     {
-      return myLowerBound + RealPoint(-1,-1);
+      return myLowerBound;
     }
 
     /**
@@ -427,17 +422,17 @@ namespace DGtal
      */
     RealPoint getUpperBound() const
     {
-      return myUpperBound + RealPoint(1,1);
+      return myUpperBound;
     }
 
     /**
-     * Return the orienatation of a point with respect to a shape.
+     * Return the orientation of a point with respect to a shape.
      *
-     * @param p input point
+     * @param[in] p input point
      *
-     * @return the orientation of the point (<0 means inside, ...)
+     * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
      */
-    Orientation orientation( const RealPoint & p) const
+    Orientation orientation( const RealPoint & p ) const
     {
       if ( myShapeA.orientation( p ) == INSIDE )
       {
