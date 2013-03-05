@@ -1,6 +1,9 @@
 
 SET(TESTS_SURFACES_SRC
  testNormalVectorEstimatorEmbedder
+ testIntegralInvariantCurvatureEstimator2D
+ testIntegralInvariantMeanCurvatureEstimator3D
+ testIntegralInvariantGaussianCurvatureEstimator3D
 )
 
 FOREACH(FILE ${TESTS_SURFACES_SRC})
