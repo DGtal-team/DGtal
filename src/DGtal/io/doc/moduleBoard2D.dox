@@ -195,11 +195,11 @@ classes.
   Point p3( 0, 0 );
   Domain domain( p1, p2 );
 
-  Board2D::Color red( 255, 0, 0 );
-  Board2D::Color dred( 192, 0, 0 );
-  Board2D::Color dgreen( 0, 192, 0 );
-  Board2D::Color blue( 0, 0, 255 );
-  Board2D::Color dblue( 0, 0, 192 );
+  Color red( 255, 0, 0 );
+  Color dred( 192, 0, 0 );
+  Color dgreen( 0, 192, 0 );
+  Color blue( 0, 0, 255 );
+  Color dblue( 0, 0, 192 );
   
   Board2D board;
   board << domain 
@@ -239,10 +239,10 @@ custom style class:
  \code
 struct MyDrawStyleCustomColor : public DrawableWithBoard2D
 {
-  Board2D::Color myPenColor;
-  Board2D::Color myFillColor;
-  MyDrawStyleCustomColor( const Board2D::Color & penColor,
-			  const Board2D::Color & fillColor )
+  Color myPenColor;
+  Color myFillColor;
+  MyDrawStyleCustomColor( const Color & penColor,
+                          const Color & fillColor )
   : myPenColor( penColor ), myFillColor( fillColor )
   {}
 
@@ -283,9 +283,9 @@ An interesting point of the exemple below is how we specify a custom style for a
  \code
   // Creating colormap.
   GradientColorMap<int> cmap_grad( 0, 15 );
-  cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
-  cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
-  cmap_grad.addColor( Board2D::Color( 255, 255, 10 ) );
+  cmap_grad.addColor( Color( 50, 50, 255 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
+  cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   // Creating board.
   Board2D board;
@@ -301,7 +301,7 @@ An interesting point of the exemple below is how we specify a custom style for a
   unsigned int d = (unsigned int) ceil( ( *it - c1 ).norm() );
   // specific color depending on the distance to point c1.
   board << CustomStyle( specificStyle,
-			  new CustomColors( Board2D::Color::Black,
+			  new CustomColors( Color::Black,
 					  cmap_grad( d ) ) )
 	  << *it;
   }
