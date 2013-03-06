@@ -404,7 +404,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && !myShapeB.orientation( p ) == INSIDE;
+      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
     }
 
     /**
@@ -434,30 +434,11 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      if ( myShapeA.orientation( p ) == INSIDE )
+      if ( myShapeB.isInside( p ))
       {
-        if ( myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
-        else if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return INSIDE;
+        return OUTSIDE;
       }
-      else if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return ON;
-      }
-
-      return OUTSIDE;
+      return myShapeA.orientation( p );
     }
 
 

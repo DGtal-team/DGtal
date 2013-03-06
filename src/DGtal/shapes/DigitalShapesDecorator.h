@@ -405,7 +405,7 @@ public:
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) && !myShapeB.orientation( p ) == INSIDE;
+    return myShapeA( p ) && !myShapeB( p );
   }
 
   /**
@@ -435,30 +435,11 @@ public:
    */
   Orientation orientation( const Point & p ) const
   {
-      if ( myShapeA.orientation( p ) == INSIDE )
-      {
-        if ( myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
-        else if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return INSIDE;
-      }
-      else if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return ON;
-      }
-
+    if ( myShapeB( p ))
+    {
       return OUTSIDE;
+    }
+    return myShapeA.orientation( p );
   }
 
 
