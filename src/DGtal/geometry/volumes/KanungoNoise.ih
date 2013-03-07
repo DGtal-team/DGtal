@@ -100,7 +100,7 @@ DGtal::KanungoNoise<TP,TD, TS>::operator=( const KanungoNoise<TP,TD,TS> &other)
   
   return *this;
 }
-// -----------------------------------------------------
+// ---------------------------------------------  --------
 template <typename TP, typename TD, typename TS>
 inline
 bool
