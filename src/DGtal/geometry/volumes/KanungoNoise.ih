@@ -86,6 +86,23 @@ DGtal::KanungoNoise<TP,TD, TS>::~KanungoNoise()
 // -----------------------------------------------------
 template <typename TP, typename TD, typename TS>
 inline
+DGtal::KanungoNoise<TP,TD, TS> &
+DGtal::KanungoNoise<TP,TD, TS>::operator=( const KanungoNoise<TP,TD,TS> &other)
+{
+  ASSERT( ( myDomain.lowerBound() <= other.myDomain.lowerBound() )
+    && ( myDomain.upperBound() >= other.myDomain.upperBound() )
+    && "This domain should include the domain of the other set in case of assignment." );
+
+  //We do not copy the predicate
+
+  myAlpha = other.myAlpha;
+  mySet = other.mySet;
+  
+  return *this;
+}
+// -----------------------------------------------------
+template <typename TP, typename TD, typename TS>
+inline
 bool
 DGtal::KanungoNoise<TP,TD, TS>::operator()(const Point &aPoint) const
 {

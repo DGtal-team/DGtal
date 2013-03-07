@@ -34,6 +34,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/kernel/CPointPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -92,6 +93,13 @@ bool testKanungo2D()
   return nbok == nb;
 }
 
+bool CheckingConcept()
+{
+  BOOST_CONCEPT_ASSERT(( CPointPredicate < KanungoNoise<Z2i::DigitalSet, Z2i::Domain> > ));
+  return true;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -103,7 +111,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testKanungo2D(); // && ... other tests
+  bool res = CheckingConcept() && testKanungo2D(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
