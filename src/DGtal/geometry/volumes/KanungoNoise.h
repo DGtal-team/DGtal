@@ -121,6 +121,14 @@ namespace DGtal
      */
     ~KanungoNoise();
 
+    /**
+     * Assignment.
+     * @param other the object to copy.
+     * @return a reference on 'this'.
+     * Forbidden by default.
+     */
+    KanungoNoise & operator= ( const KanungoNoise & other );
+    
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -164,15 +172,7 @@ namespace DGtal
      */
     KanungoNoise ( const KanungoNoise & other );
 
-    /**
-     * Assignment.
-     * @param other the object to copy.
-     * @return a reference on 'this'.
-     * Forbidden by default.
-     */
-    KanungoNoise & operator= ( const KanungoNoise & other );
-
-    // ------------------------- Internals ------------------------------------
+       // ------------------------- Internals ------------------------------------
   private:
     ///Pointeur to the object
     const PointPredicate &myPredicate;
