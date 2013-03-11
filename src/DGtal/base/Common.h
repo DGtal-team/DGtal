@@ -154,8 +154,6 @@ namespace DGtal
   struct DrawableWithDisplay3D {
     /**
      * Operation to override. Does nothing by default.
-     *
-     * @param display3D any object of type Display3D.
      */
     virtual void setStyle( Display3D &  ) const {}
     virtual ~DrawableWithDisplay3D() {}
@@ -170,7 +168,6 @@ namespace DGtal
     /**
      * Operation to override. Does nothing by default.
      *
-     * @param board any object of type Board.
      */
     virtual void setStyle( Board2D &  ) const {}
     virtual ~DrawableWithBoard2D() {}

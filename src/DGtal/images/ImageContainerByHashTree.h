@@ -205,7 +205,7 @@ namespace DGtal
      * speed and memory usage is to be done here.
      *
      * @param p1 First point of the image bounding box.
-     * @param p1 Second point of the image bounding box.
+     * @param p2 Second point of the image bounding box.
      * 
      * @param defaultValue In order for the tree to be valid it needs
      * a default value at the root (key = 1)
@@ -355,7 +355,7 @@ namespace DGtal
      * performances strongly depend on wether or not and how much the
      * tree's structure needs to be modified.  For efficiency no check
      * is performed on the coordinates
-     * @param key The point
+     * @param aPoint The point
      * @param object the associated object
      */
     void setValue(const Point& aPoint, const Value object);
@@ -395,7 +395,7 @@ namespace DGtal
      * valid.  A tree is valid if there's one (and only one) leaf for
      * each position at maximal depth.
      * @param key the key
-     * @param leafAbove  
+     * @param leafAbove  leafAbove (@TODO)
      */
     bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 
@@ -433,7 +433,7 @@ namespace DGtal
      * the usual tree representation.
      *
      * @param out output stream.
-     * @param nbBits 
+     * @param nbBits  number of bits
      **/
     void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
 

@@ -44,11 +44,11 @@
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
+#include "DGtal/base/ConstAlias.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DomainAdjacency.h"
-//#include "DGtal/topology/Object.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -100,6 +100,7 @@ namespace DGtal
     typedef TMarkSet MarkSet;
     typedef typename Graph::Size Size;
     typedef typename Graph::Vertex Vertex;
+    typedef Size Data; ///< Data attached to each Vertex is the topological distance to the seed.
 
     // Cannot check this since some types using it are incomplete.
     //BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
@@ -110,134 +111,12 @@ namespace DGtal
 
     /// Type stocking the vertex and its topological distance wrt the
     /// initial point or set.
-    typedef std::pair< Vertex, Size > Node;
+    typedef std::pair< Vertex, Data > Node;
     /// Internal data structure for computing the breadth-first expansion.
     typedef std::queue< Node > NodeQueue;
     /// Internal data structure for storing vertices.
     typedef std::vector< Vertex > VertexList;
 
-    /**
-       Allows to access the node as the pair (Vertex,distance) when
-       iterating over the graph.
-    */
-    struct NodeAccessor {
-      typedef const Node value;
-      typedef const Node value_type;
-      typedef const Node* pointer;
-      typedef const Node& reference;
-      inline
-      static reference get( const Node & node )
-      { return node; }
-    };
-
-    /**
-       Allows to access the node as only the Vertex when iterating
-       over the graph.
-    */
-    struct VertexAccessor {
-      typedef const Vertex value;
-      typedef const Vertex value_type;
-      typedef const Vertex* pointer;
-      typedef const Vertex& reference;
-      inline
-      static reference get( const Node & node )
-      { return node.first; }
-    };
-
-    template <typename TAccessor>
-    struct ConstIterator 
-    {
-      typedef ConstIterator<TAccessor> Self;
-      typedef BreadthFirstVisitor<TGraph,TMarkSet> Visitor;
-      typedef TAccessor Accessor;
-
-      // stl iterator types.
-      typedef std::input_iterator_tag iterator_category;
-      typedef typename Accessor::value value_type;
-      typedef std::ptrdiff_t difference_type; 
-      typedef typename Accessor::pointer pointer;
-      typedef typename Accessor::reference reference;
-
-      /// Smart pointer to a Visitor.
-      CountedPtr< Visitor > myVisitor;
-
-      inline
-      ConstIterator() 
-        : myVisitor( 0 ) {}
-      inline
-      ConstIterator( Visitor* ptrV ) 
-        : myVisitor( ptrV ) {}
-      inline
-      ConstIterator( const Self & other ) 
-        : myVisitor( other.myVisitor ) {}
-
-      inline
-      Self & operator=( const Self & other )
-      {
-        if ( this != &other )
-          myVisitor = other.myVisitor;
-        return *this;
-      }
-
-      inline
-      reference
-      operator*() const
-      {
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator*(): you cannot dereferenced a null visitor (i.e. end()).");
-        return Accessor::get( myVisitor->current() );
-      }
-
-      inline
-      pointer
-      operator->() const
-      { 
-        ASSERT( ( myVisitor.get() != 0 )
-                && "DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::ConstIterator::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
-        return & Accessor::get( operator*() );
-      }
-
-      inline
-      Self&
-      operator++()
-      {
-        myVisitor->expand();
-	return *this;
-      }
-
-      inline
-      Self
-      operator++(int)
-      {
-	Self __tmp = *this;
-        myVisitor->expand();
-	return __tmp;
-      }
-      
-      inline
-      bool operator==( const Self & other ) const
-      {
-        if ( ( myVisitor.get() == 0 ) || myVisitor->finished() )
-          return ( other.myVisitor.get() == 0 ) || other.myVisitor->finished();
-        else if ( other.myVisitor.get() == 0 )
-          return false;
-        else
-          return &(myVisitor->current()) == &(other.myVisitor->current());
-      }
-
-      inline
-      bool operator!=( const Self & other ) const
-      {
-        return ! ( this->operator==( other ) );
-      }
-    };
-
-    /// const iterator on Vertex for visiting a graph by following a
-    /// breadth first traversal.
-    typedef ConstIterator<VertexAccessor> VertexConstIterator;
-    /// const iterator on pair (Vertex,distance) for visiting a graph by
-    /// following a breadth first traversal.
-    typedef ConstIterator<NodeAccessor> NodeConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -248,12 +127,18 @@ namespace DGtal
     ~BreadthFirstVisitor();
 
     /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
+
+    /**
      * Constructor from the graph only. The visitor is in the state
      * 'finished()'. Useful to create an equivalent of 'end()' iterator.
      *
      * @param graph the graph in which the breadth first traversal takes place.
      */
-    BreadthFirstVisitor( const Graph & graph );
+    BreadthFirstVisitor( ConstAlias<Graph> graph );
 
     /**
      * Constructor from a point. This point provides the initial core
@@ -262,7 +147,7 @@ namespace DGtal
      * @param graph the graph in which the breadth first traversal takes place.
      * @param p any vertex of the graph.
      */
-    BreadthFirstVisitor( const Graph & graph, const Vertex & p );
+    BreadthFirstVisitor( ConstAlias<Graph> graph, const Vertex & p );
 
     /**
        Constructor from iterators. All vertices visited between the
@@ -277,7 +162,7 @@ namespace DGtal
        @param e the end iterator in a container of vertices. 
     */
     template <typename VertexIterator>
-    BreadthFirstVisitor( const Graph & graph, 
+    BreadthFirstVisitor( ConstAlias<Graph> graph, 
                          VertexIterator b, VertexIterator e );
 
 
@@ -291,7 +176,7 @@ namespace DGtal
 
     /**
        @return a const reference on the current visited vertex. The
-       node is a pair <Vertex,Size> where the second term is the
+       node is a pair <Vertex,Data> where the second term is the
        topological distance to the start vertex or set.
 
        NB: valid only if not 'finished()'.
@@ -308,8 +193,8 @@ namespace DGtal
     void ignore();
 
     /**
-       Goes to the next vertex and taked into account the current
-       vertex for determining the future vsited vertices.
+       Goes to the next vertex and take into account the current
+       vertex for determining the future visited vertices.
        NB: valid only if not 'finished()'.
      */
     void expand();
@@ -414,13 +299,6 @@ namespace DGtal
   private:
 
     /**
-     * Copy constructor.
-     * @param other the object to clone.
-     * Forbidden by default.
-     */
-    BreadthFirstVisitor ( const BreadthFirstVisitor & other );
-
-    /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
@@ -450,7 +328,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/BreadthFirstVisitor.ih"
+#include "DGtal/graph/BreadthFirstVisitor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -81,7 +81,7 @@ namespace DGtal
        * @param a an object of type T
        * @param b another object of type T
        *
-       * @return 'true' if a<b but 'false' otherwise
+       * @return true if a < b but false otherwise
        */
       bool operator()(const T& a, const T& b) 
       {

@@ -53,11 +53,11 @@ bool testExactMetricBalls()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(128,128));
+  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(64,64));
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, norm> Metric;
   Z2i::DigitalSet set(domain);
   
-  set.insertNew(Z2i::Point(64,64));
+  set.insertNew(Z2i::Point(32,32));
   typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
   // SetPredicate<Z2i::DigitalSet> setpred(set); 
   NegPred predicate( set );
@@ -72,7 +72,7 @@ bool testExactMetricBalls()
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue> (board, dt,
                                   0.0,
-                                  64*sqrt(2)/2.0);
+                                  32*sqrt(2)/2.0);
   
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
 #ifdef WITH_CAIRO
@@ -86,11 +86,11 @@ bool testInexactMetricBalls(double norm)
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(128,128));
+  Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(64,64));
   typedef InexactPredicateLpSeparableMetric<Z2i::Space> Metric;
   Z2i::DigitalSet set(domain);
   
-  set.insertNew(Z2i::Point(64,64));
+  set.insertNew(Z2i::Point(32,32));
   typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
   // SetPredicate<Z2i::DigitalSet> setpred(set); 
   NegPred predicate( set );
@@ -105,7 +105,7 @@ bool testInexactMetricBalls(double norm)
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue> (board, dt,
                                   0.0,
-                                  64*sqrt(2)/2.0);
+                                  32*sqrt(2)/2.0);
   
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
 #ifdef WITH_CAIRO

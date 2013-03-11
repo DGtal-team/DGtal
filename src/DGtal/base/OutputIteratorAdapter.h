@@ -111,7 +111,6 @@ namespace DGtal
     /**
      * Assignment
      * @param aValue any value
-     * @tparam TInputValue type of the value used for the update
      * @return a reference to *this
      */
     OutputIteratorAdapter& operator=(const TInputValue& aValue) 

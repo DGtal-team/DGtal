@@ -263,8 +263,8 @@ namespace DGtal
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two PointPredicates given at construction.
    *
-   * @tparam PointPredicate1 the left predicate type.
-   * @tparam PointPredicate2 the right predicate type.
+   * @tparam TPointPredicate1 the left predicate type.
+   * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPointPredicate1, typename TPointPredicate2, 

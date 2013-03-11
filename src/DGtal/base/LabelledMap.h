@@ -140,10 +140,10 @@ namespace DGtal
     typedef const Value& ConstReference;
     typedef const Value* ConstPointer;
 
-    //class Iterator;      //< Forward declaration
-    class ConstIterator; //< Forward declaration
-    class KeyCompare;    //< Forward declaration
-    class ValueCompare;  //< Forward declaration
+    //class Iterator;      ///< Forward declaration
+    class ConstIterator; ///< Forward declaration
+    class KeyCompare;    ///< Forward declaration
+    class ValueCompare;  ///< Forward declaration
     // ----------------------- Standard types ------------------------------
     typedef Key key_type;
     typedef Value value_type;
@@ -160,8 +160,8 @@ namespace DGtal
     typedef KeyCompare key_compare;
     typedef ValueCompare value_compare;
 
-    struct __FirstBlock; //< Forward declaration
-    struct __AnyBlock; //< Forward declaration
+    struct __FirstBlock; ///< Forward declaration
+    struct __AnyBlock; ///< Forward declaration
 
     union BlockPointer {
       __FirstBlock* first;
@@ -397,7 +397,7 @@ namespace DGtal
       typedef TData Value;
       typedef Value* Pointer;
       typedef Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -410,10 +410,10 @@ namespace DGtal
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; //< number of valid datas in array \a myDatas
-      Data* myDatas;         //< array of \a myNbDatas datas.
-      __AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myDatas of the iterator
+      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
+      Data* myDatas;         ///< array of \a myNbDatas datas.
+      __AnyBlock* myNext;        ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -514,7 +514,7 @@ namespace DGtal
       typedef TData Value;
       typedef const Value* Pointer;
       typedef const Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -527,10 +527,10 @@ namespace DGtal
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; //< number of valid datas in array \a myDatas
-      const Data* myDatas;   //< array of \a myNbDatas datas.
-      const __AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myDatas of the iterator
+      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
+      const Data* myDatas;   ///< array of \a myNbDatas datas.
+      const __AnyBlock* myNext;  ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -1305,7 +1305,7 @@ namespace DGtal
        memory usage of a LabelledMap, for the distribution specified by
        the parameters.
      
-       @tparam TValue the type of data that will be stored.
+       @tparam TData the type of data that will be stored.
 
        @param L the total number of labels.
 

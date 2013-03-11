@@ -58,7 +58,7 @@ namespace DGtal
    * \brief This class adapts any bidirectional iterator
    * so that operator++ calls operator-- and vice versa
    *
-   * @tparam TIterator the type of the iterator to adapt,
+   * @tparam Iterator the type of the iterator to adapt,
    * a model of bidirectional iterator
    *
    * NB: adapted from boost/iterator/ReverseIterator.hpp

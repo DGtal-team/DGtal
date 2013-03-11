@@ -133,7 +133,7 @@ namespace DGtal
      * iterators should be distinct two by two. The so specified set
      * of points provides the initial core of the expander.
      *
-     * @tparam the type of an InputIterator pointing on a Point.
+     * @tparam PointInputIterator type of an InputIterator pointing on a Point.
      *
      * @param object the digital object in which the expander expands.
      * @param b the begin point in a set.
@@ -316,7 +316,7 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/Expander.ih"
+#include "DGtal/graph/Expander.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

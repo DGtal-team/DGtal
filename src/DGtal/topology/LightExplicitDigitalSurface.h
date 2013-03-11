@@ -47,7 +47,8 @@
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -229,7 +230,8 @@ namespace DGtal
 
     // -------------------- specific types ------------------------------
     typedef BreadthFirstVisitor< Self > SelfVisitor;
-    typedef typename SelfVisitor::VertexConstIterator SurfelConstIterator;
+    typedef GraphVisitorRange< SelfVisitor > SelfVisitorRange;
+    typedef typename SelfVisitorRange::ConstIterator SurfelConstIterator;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Point Point;
     typedef Tracker DigitalSurfaceTracker;

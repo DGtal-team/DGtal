@@ -158,7 +158,7 @@ DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &fil
   while ( infile.good() ){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
       std::istringstream in_str( str );
-      int x0, y0;
+      int x0=0, y0=0;
       std::string fcChain;
       bool isOK = (in_str >> x0) && (in_str >> y0) && (in_str >> fcChain);
       FreemanChain< TInteger> fc(fcChain, x0, y0);

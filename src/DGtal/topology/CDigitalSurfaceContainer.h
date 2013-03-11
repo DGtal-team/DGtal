@@ -83,7 +83,7 @@ namespace DGtal
      Hence CDigitalSurfaceContainer describes how to access the
      data representing the digital surface in common way.
 
-     @see \ref dgtal_digsurf_sec3_2
+     See @ref dgtal_digsurf_sec3_2
      
      ### Refinement of boost::CopyConstructible
     

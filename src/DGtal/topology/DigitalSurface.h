@@ -43,6 +43,9 @@
 #include <iostream>
 #include <vector>
 #include <set>
+// JOL (2013/02/01): required to define internal tags (boost/graph/copy.hpp, l. 251 error ?).
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/properties.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/CWithGradientMap.h"
@@ -52,6 +55,17 @@
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 #include "DGtal/topology/UmbrellaComputer.h"
 //////////////////////////////////////////////////////////////////////////////
+namespace boost
+{
+  /**
+     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimick.
+  */
+  struct DigitalSurface_graph_traversal_category 
+    : public virtual adjacency_graph_tag,
+      public virtual vertex_list_graph_tag,
+      public virtual incidence_graph_tag,
+      public virtual edge_list_graph_tag { };
+}
 
 namespace DGtal
 {
@@ -101,7 +115,7 @@ namespace DGtal
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
 
-  @see \ref moduleDigitalSurfaces
+  ee \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -109,6 +123,17 @@ namespace DGtal
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
+
+    // ----------------------- boost graph tags ------------------------------
+    // JOL (2013/02/01): required to define internal tags (boost/graph/copy.hpp, l. 251 error ?).
+  public:
+    /// the graph is undirected.
+    typedef boost::undirected_tag directed_category;
+    /// the graph satisfies AdjacencyListGraph and VertexListGraph concepts.
+    typedef boost::DigitalSurface_graph_traversal_category traversal_category;
+    /// the graph does not allow parallel edges.
+    typedef boost::disallow_parallel_edge_tag edge_parallel_category;
+
 
     // ----------------------- types ------------------------------
   public:
@@ -195,6 +220,11 @@ namespace DGtal
       Vertex base;  ///< base surfel 
       Dimension k;  ///< direction toward the head surfel
       bool epsilon; ///< orientation toward the head surfel
+      /**
+         Default constructor. The arc is invalid.
+      */
+      inline Arc()
+        : base(), k( 0 ), epsilon( false ) {}
       inline Arc( const Vertex & theTail, Dimension aK, bool aEpsilon )
 	: base( theTail ), k( aK ), epsilon( aEpsilon ) {}
       inline bool operator==( const Arc & other ) const
@@ -209,6 +239,11 @@ namespace DGtal
 	       && ( ( k < other.k ) 
 		    || ( ( k == other.k ) 
 			 && ( epsilon < other.epsilon ) ) ) );
+      }
+      inline bool operator!=( const Arc & other ) const
+      {
+	return ( base != other.base ) 
+	  || ( k != other.k ) || ( epsilon != other.epsilon );
       }
     };
 

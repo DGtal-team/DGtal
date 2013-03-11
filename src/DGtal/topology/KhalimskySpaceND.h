@@ -75,7 +75,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    KhalimskyCell();
+    KhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
@@ -87,7 +87,7 @@ namespace DGtal
     /**
      * constructor from point.
      *
-     * @param other any point.
+     * @param point any point.
      */
     KhalimskyCell( const Point & point );
 
@@ -160,7 +160,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    SignedKhalimskyCell();
+    SignedKhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
@@ -172,8 +172,8 @@ namespace DGtal
     /**
      * constructor from point.
      *
-     * @param other any point.
-     * @param 'true' if cell has positive sign.
+     * @param point any point.
+     * @param positive if cell has positive sign.
      */
     SignedKhalimskyCell( const Point & point, bool positive );
 
@@ -436,8 +436,8 @@ namespace DGtal
      * Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
-     * @param lower_included the lowest point in this space (digital coords)
-     * @param upper_included the upper point in this space (digital coords)
+     * @param lower the lowest point in this space (digital coords)
+     * @param upper the upper point in this space (digital coords)
      * @param closed 'true' if this space is closed, 'false' if open.
      *
      * @return true if the initialization was valid (ie, such bounds
@@ -1040,10 +1040,9 @@ namespace DGtal
        Projects [p] along the [k]th direction toward
        [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
 
-       @param p any cell.
-       @param bound the element acting as bound (same topology as p).
-       @param k the concerned coordinate.
-       @return the projection.
+       @param [in,out] p any cell.
+       @param [in] bound the element acting as bound (same topology as p).
+       @param [in] k the concerned coordinate.
     */
     void uProject( Cell & p, const Cell & bound, Dimension k ) const;
 
@@ -1219,7 +1218,6 @@ namespace DGtal
        @param p any cell.
        @param bound the element acting as bound (same topology as p).
        @param k the concerned coordinate.
-       @return the projection.
     */
     void sProject( SCell & p, const SCell & bound, Dimension k ) const;
 

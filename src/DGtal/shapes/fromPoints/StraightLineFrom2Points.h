@@ -87,15 +87,15 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param firstPoint  a point
-     * @param secondPoint  another point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  another point
      */
     StraightLineFrom2Points(const Point& aFirstPoint, const Point& aSecondPoint);
 
     /**
      * Init.
-     * @param firstPoint  a point
-     * @param secondPoint  another point
+     * @param aFirstPoint  a point
+     * @param aSecondPoint  another point
      */
     void init(const Point& aFirstPoint, const Point& aSecondPoint);
 

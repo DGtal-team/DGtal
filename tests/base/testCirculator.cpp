@@ -84,7 +84,7 @@ bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& gro
 
 /**
  * Test of basic operators required for forward circulators
- * @param c any container
+ * @param cont any container
  * @tparam Container model of iterable and pushable container
  */
 template<typename Container>
@@ -146,7 +146,7 @@ bool basicForwardTest(const Container& cont)
 
 /**
  * Test of basic operators required for bidirectional circulators
- * @param c any container
+ * @param cont any container
  * @tparam Container model of iterable and pushable container
  */
 template<typename Container>
@@ -185,7 +185,7 @@ bool basicBidirectionalTest(const Container& cont)
 
 /**
  * Test of basic operators required for random access circulators
- * @param c any container
+ * @param cont any container
  * @tparam Container model of iterable and pushable container
  */
 template<typename Container>

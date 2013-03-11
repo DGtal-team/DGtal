@@ -257,8 +257,8 @@ namespace DGtal
     /** 
      * Returns true if is bin (posPhi,posTheta) is valid.
      * 
-     * @param posPhi 
-     * @param posTheta 
+     * @param posPhi posPhi index
+     * @param posTheta posTheta index
      * 
      * @return true if (posPhi,posTheta) is valid.
      */
@@ -310,7 +310,7 @@ namespace DGtal
     /** 
      * Given an iterator on the bin container, this method computes the bin coordinates.
      * 
-     * @param aIt an iterator to the bin container.
+     * @param aDir an iterator to the bin container.
      * @param posPhi position according to the first direction.
      * @param posTheta position according to the second direction.
      */

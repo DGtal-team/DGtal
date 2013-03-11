@@ -228,10 +228,65 @@ a colormap to display distance values for the @f$ l_2 @f$ mertic:
 
 @section RDTSec Digital Power Map and Reverse Distance Transformation
 
+Similarly to Voronoi diagram and digital Voronoi maps, digital Power
+maps are defined as the intersection between the integer grid and a
+power diagram. Given a set of weighed points, power diagram can be
+seen as Voronoi diagram where the metric is modified with additive
+weights. For example, considering the @f$ l_2@f$ metric, the power
+distance between a point @f$p@f$ and a weighted point @f$(q,w)@f$ is
+defined by
+@f[ pow(p,q) = \| p - q\|_2^2  - w @f]
+
+Hence, similarly to Voronoi diagram, the power diagram is a
+decomposition of the space ino cells from weighed sites where each
+cell (maybe empty) is associated with a site and each point in the
+cell has got minimal power distance to the cell site (compared to its
+power distance to all other sites) @cite Aurenhammer1987 .
 
 
-@section MASec Digital Medial Axis
+Separable algorithms similar to VoronoiMap/DistanceTransformation can
+be designed to compute respectively PowerMap and
+ReverseDistanceTransformation. The only difference is that the input of
+PowerMap is a weighted set of points instead of a point predicate.
 
+@note for @f$l_p@f$ metrics, the power distance is defined by @f$
+pow(p,q) = \| p - q\|_p^p - w @f$. Hence, both the distance and the weight value type
+capacity must be able to represent d-sums of power p numbers (if d is
+the dimension of the space).
+
+
+Hence such class is parametrized by the following types:
+- a type representing the mapping between points and weights (WeightImage, model of CImage);
+- a type representing the underlying power metric (model of CSeparablePowerMetric, see below)
+- and an optional image container to store the resulting Power map (by default, the type is ImageContainerBySTLVector).
+
+The PowerMap  constructor is parametrized by
+- an instance of Domain (the Domain type associated with the image container);
+- an instance of PowerMap::WeightImage;
+- and an instance of the power separable metric.
+
+Similarly to DistanceTransformation, ReverseDistanceTransformation
+remaps the PowerMap vectors to map the power metric to the closest
+weighted site.
+
+As a consequence, for the Euclidean @f$ l_2 @f$ metric, if we consider
+a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WiehgtImage
+whose domain would be the set of points @f$\{ p_i \}@f$ and with
+values @f$ r_i^2@f$, negative (strictly) values of the
+ReverseDistanceTransformation will correspond to digital points
+belonging to the union @f$ \bigcup \{B_i\}@f$ (see @cite dcoeurjo_pami_RDMA).
+
+ReverseDistanceTransformation can thus be used to reconstructed a
+binary shape from a given Medial Axis or any set of balls. Another
+consequence is that given a binary shape, the pipeline 
+@f[  Shape \rightarrow DT \rightarrow ReverseDT \rightarrow \text{ strictly negative values }@f]
+for the same metric/power metric, returns the input binary shape.
+
+
+
+@note Power separable metrics are formalized in CPowerMetric and
+CSeparablePowerMetric concepts whose main concept is
+ExactLpPowerSeparableMetric.
 
 
 @section metricSec Metric and Separable Metric concepts
@@ -253,7 +308,6 @@ digraph metric_concepts_2_vor {
     CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
     CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
 
-    CPowerMetric -> CMetric;
     CMetric -> CLocalPremetric;
     CSeparableMetric -> CMetric;
     CPowerSeparableMetric -> CPowerMetric;
@@ -264,19 +318,50 @@ digraph metric_concepts_2_vor {
 
 For instance, CLocalPremetric models only requires that a local metric
 is defined (@e i.e. between a point and a neighboring point in a given
-direction). 
+direction). CMetric requires to have a binary operator to compute the
+distance between any two points of the digital space. Furthermore, it
+requires to have a method he @a closest(p,q) which returns the closest
+point from @a p and @a q to the origin. Such closest method can be
+easily implemented from the binary distance operator. However, for
+some metric, more efficient implementation can be obtained to answer
+to @a closest() requests.
+
 
 
 
 @subsection subSepMetrics SeparableMetric models
 
+The Separable metric concept is a refinement of the CMetric
+(resp. CPowerMetric) concept in which we require models to implement a
+method 
+@a  hiddenBy(u,v,w,startingPoint,endPoint,dim): given three digital points 
+@a u, @a v, @a w and an isothetic segment defined by the pair
+[@a startingPoint, @a endPoint] along the dimension @a dim, such method
+returns true if Voronoi cells of @a u and @a w @e hide the Voronoi
+cell if @a v on the segment. Such predicate can be illustrated as
+follows:
 
+
+@image html hiddenBy.png "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
+@image latex hiddenBy.png  "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
+
+This predicate (with the @a closest() one as discussed above) is
+crucial for separable VoronoiMap/DistanceTransformation algorithms. The next section discusses about complexity of such volumetric algorithm with respect to computation costs of the two predicates.
+
+CPowerSeparableMetric concepts is a similar refinement of the CPowerMetric concept. Indeed, CPowerSeparableMetric models must implement an @a  hiddenByPower(u, wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points {(u,wu),(v,wv),(w,ww)}.
+
+
+The class of metrics for which such @a hiddenBy method can be defined and for which the VoronoiMap will be exact is quite large. This class contains 
+
+- all @f$ l_p @f$ metrics (ExactPredicateLpSeparableMetric and InexactPredicateLpSeparableMetric)
+- all local metric inducing a norm (chamfer norms, some of the neighborhood sequences, ...) (see @cite Hirata1996 for more details).
+- ...
 
 @section CostSec Computational Costs 
 
 
 As discussed, both VoronoiMap and PowerMap (and their associated
-subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
+subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
 @f$ corresponds to the cost of the @a closest() or @a
 closestPower() methods for the given metric, and @f$ H @f$ the cost
 of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs

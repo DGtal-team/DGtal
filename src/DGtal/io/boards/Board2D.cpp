@@ -53,8 +53,6 @@ DGtal::Board2D::~Board2D()
  */
 DGtal::Board2D::Board2D( const Color & aBackgroundColor )
   : LibBoard::Board( aBackgroundColor ),
-    myDomainDrawMode( GRID ),
-    myDrawObjectAdjacencies( false ),
     myStyles()
 {
   this->setUnit(LibBoard::Board::UCentimeter);
@@ -67,8 +65,6 @@ DGtal::Board2D::Board2D( const Color & aBackgroundColor )
  */
 DGtal::Board2D::Board2D( const Board2D & other )
   : LibBoard::Board( other ),
-    myDomainDrawMode( other.myDomainDrawMode ),
-    myDrawObjectAdjacencies( other.myDrawObjectAdjacencies ),
     myStyles( other.myStyles )
 {
 }
@@ -84,8 +80,6 @@ DGtal::Board2D::operator= ( const Board2D & other )
   if ( this != &other )
     {
       LibBoard::Board::operator=( other );
-      myDomainDrawMode = other.myDomainDrawMode;
-      myDrawObjectAdjacencies = other.myDrawObjectAdjacencies;
       myStyles = other.myStyles;
     }
   return *this;

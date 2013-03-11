@@ -90,7 +90,7 @@ DGtal::Projector<S>::operator()( const TInputPoint& aPoint ) const
   {
     Dimension l = *it; 
     if (l < TInputPoint::dimension) 
-      res[k] = aPoint.at(l); 
+      res[k] = aPoint[l]; 
     else 
       res[k] = myDefaultInteger; 
   } 

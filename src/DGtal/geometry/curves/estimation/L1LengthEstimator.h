@@ -97,7 +97,6 @@ namespace DGtal
      * @param h grid size (must be >0).
      * @param itb begin iterator
      * @param ite end iterator
-     * @param closed true if the input range is closed.
      */
     void init( const double h, const ConstIterator& itb, const ConstIterator& ite);
     

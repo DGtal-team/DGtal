@@ -467,9 +467,7 @@ namespace DGtal
        @param pointRefC1 and pointRefC3 corresponds to grid point lying on
        the supporting lines of C1 and of C3 resp.
        
-       @param pos corresponds to an iterator in the list of vertices
-       of the polytope, to add the next new vertices
-       
+     
        NB: the method also computes grid point satisfying N1.P<=c1 and
        N3.P>=c3 but not satisfying N2.P<=c2. The algorithm uses
        these points that's why they appear in the code.
