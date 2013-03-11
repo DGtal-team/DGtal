@@ -32,7 +32,7 @@
 #include "DGtal/kernel/sets/DigitalSetDomain.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -800,12 +800,8 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   alpha.writeNeighbors( back_ins_it, p, limitedX.predicate() );
 
   // Construct local domain.
-  Point p1( p );
-  for ( typename Point::Iterator it = p1.begin(); it != p1.end(); ++it )
-    --(*it);
-  Point p2( p );
-  for ( typename Point::Iterator it = p2.begin(); it != p2.end(); ++it )
-    ++(*it);
+  Point p1 = p - Point::diagonal(1);
+  Point p2 = p + Point::diagonal(1);
   LocalDomain aDomain( p1, p2 );
 
   // Construct local X.

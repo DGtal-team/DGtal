@@ -94,7 +94,7 @@ namespace DGtal
      * Constructor from an iterator and a functor
      * 
      * @param iter any iterator
-     * @param functor any functor 
+     * @param func any functor 
      */
     IteratorAdapter( const TIterator& iter, TFunctor func ): Parent(iter,func) {}
     /** 

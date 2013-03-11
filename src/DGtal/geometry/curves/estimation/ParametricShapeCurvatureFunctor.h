@@ -56,7 +56,7 @@ namespace DGtal
    * \brief Aim: implements a functor that computes the curvature
    * at a given point of a parametric shape.
    *
-   * @note @f$\kappa(t) = \frac{x'y''-y'x''}{(x'^2+y'^2)^{3/2}}@f$
+   * @note Curvature is given by @f$\kappa(t) = \frac{x'y''-y'x''}{(x'^2+y'^2)^{3/2}}@f$
    *
    *
    * @tparam TParametricShape a model of parametric shape.

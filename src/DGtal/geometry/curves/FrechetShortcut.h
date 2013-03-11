@@ -194,8 +194,8 @@ namespace DGtal
       
       /**
 	 Constructor 
-	 @param pointer to a shortcut s
-	 @param quadrant q
+	 @param s to a shortcut s
+	 @param q q
       */
       Backpath(const FrechetShortcut<ConstIterator,Integer> *s ,int q);
 
@@ -282,14 +282,20 @@ namespace DGtal
     
     /**
        Constructor from two angles
-       @param two angles a0 and a1
+       @param a0 an angle
+       @param a1 a second angle
     */
     Cone(double a0, double a1);
 
     /**
        Constructor from three points x, x0, x1. The cone is defined by
        the two lines (xx0) and (xx1)
-       @param six doubles
+       @param x x
+     @param y y
+     @param x0 x0
+     @param y0 y0
+     @param x1 x1
+     @param y1 y1
     */
     Cone(double x, double y, double x0, double y0, double x1, double y1);
     
@@ -321,7 +327,6 @@ namespace DGtal
     
     /** 
 	Computes the symmetrical half cone
-	@param c a cone
 	@return a cone
     */
     Cone symmetricalCone();
@@ -343,7 +348,10 @@ namespace DGtal
       /** 
 	  Determines if i is between a and b in the oriented toric space
 	  modulo n
-	  @param four integers
+	  @param i i 
+      @param a a
+       @param b b
+       @param n n
 	  @return true if i is between a anb d, false otherwise
       */
       static  bool isBetween(double i, double a, double b, double n)
@@ -388,7 +396,7 @@ namespace DGtal
       /**
 	 Determine the points where two circles in a common plane
 	 intersect
-	 @param three doubles per circle (center, radius), pointers to
+	 Parameters: three doubles per circle (center, radius), pointers to
 	 the two intersection points
 	 @return 0 if the circles do not intersect each other, 1 otherwise
       */
@@ -464,7 +472,7 @@ namespace DGtal
 	 middle point M between X and X1 is equidistant to X, X1 and
 	 Xi. Thus, Xi belongs to the intersection of the circle (X1,r1)
 	 and the circle of center M and radius ||XX1||/2.   
-	 @param a point (x,y), a circle of center (x1,y1) and a radius
+	 @param x point (x,y), a circle of center (x1,y1) and a radius
 	 r1, pointers to the intersection points
 	 @return result of the call to circle_circle_intersection
       */ 
@@ -486,7 +494,10 @@ namespace DGtal
       /**
 	 Compute the angle of the line passing through two points. Angle in
       [0,2pi]
-      @param two points (x0,y0) and (x1,y1)
+      @param x0 x0
+      @param y0 y0
+      @param x1 x1
+      @param y1 y1
       @return an angle
       */
       static double computeAngle(double x0, double y0, double x1, double y1)
@@ -521,7 +532,7 @@ namespace DGtal
       
       /**
 	 Angle between two vectors
-	 @param two vectors
+	 @param u and @param v two vectors
 	 @return an angle
       */
       static double angleVectVect(Vector u, Vector v)
@@ -532,7 +543,7 @@ namespace DGtal
 	
       /**
 	 Computes the chain code between two 8-connected pixels
-	 @param two points
+	 @param p and @param q two points
 	 @return an int
       */
       static  int computeChainCode(Point p, Point q)
@@ -570,7 +581,7 @@ namespace DGtal
     
       /**
 	 Computes the octant of the direction pq
-	 @param two points
+	 @param p and @param q two points
 	 @return an int
       */
     static int computeQuadrant(Point p, Point q)
@@ -632,7 +643,7 @@ namespace DGtal
       
       /**
 	 Converts a chain code into a vector
-	 @param an int
+	 @param d an int
 	 @return a vector
       */
     static Vector chainCode2Vect(int d)
@@ -698,7 +709,7 @@ namespace DGtal
   
   /**
    * Constructor with initialisation
-   * @param it an iterator on 2D points
+   * @param error an iterator on 2D points
    */
   FrechetShortcut(double error);
 

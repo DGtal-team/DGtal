@@ -86,13 +86,12 @@ namespace DGtal
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
-     * @param saveASCII used to save image with ASCII pixel value and with white space. 
-     *        (default= false since ASCII mode is not efficient).     
-     * 
+     * @param topbottomOrder true if top to bottom order is prefered (default: true)
+     *
      * @return true if no errors occur.
      */
     static bool exportPPM(const std::string & filename, const Image &aImage, 
-			  const Functor & aFunctor = Functor(), bool topbotomOrder=true);
+			  const Functor & aFunctor = Functor(), bool topbottomOrder=true);
   
 
     /** 

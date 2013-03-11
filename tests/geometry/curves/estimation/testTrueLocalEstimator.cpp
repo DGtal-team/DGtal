@@ -174,7 +174,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
   {
     RealPoint x = *it;
     double kappa = curvatureEstimator.eval( it );
-    std::cout << i << " " << x.at( 0 ) << " " << x.at( 1 ) 
+    std::cout << i << " " << x[ 0 ] << " " << x[1] 
         << " " << kappa << std::endl;
   }
     }    

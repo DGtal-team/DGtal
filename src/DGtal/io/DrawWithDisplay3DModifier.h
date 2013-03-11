@@ -181,10 +181,7 @@ namespace DGtal
   
   struct ClippingPlane : public DrawWithDisplay3DModifier {
     /**
-     * @param classname the name of the class to which the style is associated.
      *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
      */
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
@@ -296,8 +293,8 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param near near distance.
-     * @param far far distance.
+     * @param _near near distance.
+     * @param _far far distance.
      */
     CameraZNearFar( const double _near, const double _far )
     {

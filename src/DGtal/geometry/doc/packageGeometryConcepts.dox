@@ -1,11 +1,11 @@
 /**
- * @file GeometryPackageConcepts.dox
+ * @file packageGeometryConcepts.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/03/16
  *
- * Documentation file for feature GeometryPackageConcepts
+ * Documentation file for feature packageGeometryConcepts
  *
  * This file is part of the DGtal library.
  */
@@ -13,7 +13,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page geomPackageConcepts Geometry Concepts
+@page packageGeometryConcepts Geometry Concepts
 @writers David Coeurjolly, Jacques-Olivier Lachaud
 
 @dot

@@ -63,8 +63,10 @@ DGtal::KhalimskySpaceND< dim, TInteger >::NEG = false;
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
-DGtal::KhalimskyCell< dim, TInteger >::KhalimskyCell()
+DGtal::KhalimskyCell< dim, TInteger >::
+KhalimskyCell( Integer )
 {
+  myCoordinates.reset();
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
@@ -150,8 +152,11 @@ className() const
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >
 inline
-DGtal::SignedKhalimskyCell< dim, TInteger >::SignedKhalimskyCell()
+DGtal::SignedKhalimskyCell< dim, TInteger >::
+SignedKhalimskyCell( Integer )
+  : myPositive( true )
 {
+  myCoordinates.reset();
 }
 //-----------------------------------------------------------------------------
 template < DGtal::Dimension dim, typename TInteger >

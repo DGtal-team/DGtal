@@ -31,7 +31,7 @@
 #include <cstdlib>
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/Statistic.h"
+#include "DGtal/math/Statistic.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/geometry/surfaces/COBANaivePlane.h"

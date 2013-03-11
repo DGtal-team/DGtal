@@ -1,26 +1,27 @@
 include_directories(${PROJECT_SOURCE_DIR}/src)
 include_directories(${PROJECT_BINARY_DIR}/src)
 
-##Recursive calls
-## each subdir can contain a ModuleSRC.txt file 
-## with a set command on the variable ${DGTAL_SRC}
-## 
+#------------------------------------------------------------------------------
+# Include CPP files to add to the library target
+#
+# each subdir can contain a ModuleSRC.txt file 
+# with a set command on the variable ${DGTAL_SRC}
+# 
+#------------------------------------------------------------------------------
 include(DGtal/arithmetic/ModuleSRC.txt)
 include(DGtal/kernel/ModuleSRC.txt)
 include(DGtal/base/ModuleSRC.txt)
 include(DGtal/io/ModuleSRC.txt)
 include(DGtal/math/ModuleSRC.txt)
-
 ## Board dependency
 include(Board/ModuleSRC.txt)
 
 
-
-# Create a library called "DGtal".
-# The extension is already found. Any number of sources could be listed here.
-
+#------------------------------------------------------------------------------
+# DGtal Target
+#------------------------------------------------------------------------------
 IF (BUILD_SHARED_LIBS)
-  add_library (DGtal SHARED ${DGTAL_SRC} ${BOARD_SRC})
+  add_library (DGtal SHARED ${DGTAL_SRC} ${BOARD_SRC} )
   target_link_libraries( DGtal ${DGtalLibDependencies} )
 ELSE(BUILD_SHARED_LIBS)
   add_library (DGtal STATIC ${DGTAL_SRC} ${BOARD_SRC})
@@ -36,6 +37,9 @@ install(TARGETS DGtal
  #PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
+#------------------------------------------------------------------------------
+# DGtalIO Target
+#------------------------------------------------------------------------------
 IF (BUILD_SHARED_LIBS)
   add_library ( DGtalIO SHARED ${DGTALIO_SRC})
   target_link_libraries( DGtalIO DGtal ${DGtalLibDependencies} )
@@ -53,10 +57,10 @@ install(TARGETS DGtalIO
   # PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/DGtal"
   COMPONENT dev)
 
-
+#------------------------------------------------------------------------------
+# Misc
+#------------------------------------------------------------------------------
 IF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
   SET_TARGET_PROPERTIES(DGtal PROPERTIES COMPILE_FLAGS "-fPIC")
 #  SET_TARGET_PROPERTIES(DGtalIO PROPERTIES COMPILE_FLAGS "-fPIC")
 ENDIF( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
-
-
