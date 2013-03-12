@@ -75,7 +75,7 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 ### Invariants
 
 ### Models
-ImageCacheReadPolicyLast
+ImageCacheReadPolicyLAST, ImageCacheReadPolicyFIFO
 
 ### Notes
 
@@ -104,7 +104,8 @@ public:
         // non-const method dummy should take parameter myA of type A and return
         // something of type B
         ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
-        ConceptUtils::sameType( myIC, myT.getNextPageToDetach() );
+        ConceptUtils::sameType( myIC, myT.getPageToDetach() );
+        myT.updateCache(myDomain);
         // look at CInteger.h for testing tags.
         // check const methods.
         checkConstConstraints();
@@ -120,6 +121,7 @@ private:
     T myT; // do not require T to be default constructible.
     ImageContainer * myIC;
     typename T::Point myPoint;
+    typename T::Domain myDomain;
 //    A myA;
 //    B myB;
 

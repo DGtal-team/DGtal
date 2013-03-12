@@ -98,7 +98,7 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::wr
     ImageContainer *myImagePtr = myReadPolicy->getPage(aPoint);
     if (myImagePtr)
     {
-      myWritePolicy->writeOnPage(myImagePtr, aPoint, aValue);
+      myWritePolicy->writeInPage(myImagePtr, aPoint, aValue);
       return true;
     }
     
@@ -110,7 +110,7 @@ inline
 void
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
 {
-    ImageContainer *myImagePtr = myReadPolicy->getNextPageToDetach();
+    ImageContainer *myImagePtr = myReadPolicy->getPageToDetach();
     if (myImagePtr)
     {
       myWritePolicy->flushPage(myImagePtr);

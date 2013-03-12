@@ -104,7 +104,7 @@ public:
 //ConceptUtils::sameType( myA, T::staticMember );
         // non-const method dummy should take parameter myA of type A and return
         // something of type B
-        myT.writeOnPage(myIC, myPoint, myValue);
+        myT.writeInPage(myIC, myPoint, myValue);
         myT.flushPage(myIC);
         // look at CInteger.h for testing tags.
         // check const methods.

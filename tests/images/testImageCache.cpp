@@ -92,9 +92,9 @@ bool testSimple()
     // 2) ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WT" << endl;
     
-    typedef ImageCacheReadPolicyLast<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyLast;
+    typedef ImageCacheReadPolicyLAST<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyLAST;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;  
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWT > MyImageCache;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWT > MyImageCache;
     MyImageCache imageCache(factImage);
     /*VImage*/OutputImage::Value aValue;
     
@@ -189,7 +189,7 @@ bool testSimple()
     trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_LAST, DGtal::CACHE_WRITE_POLICY_WB" << endl;
     
     typedef ImageCacheWritePolicyWB<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWB;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWB > MyImageCache2;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLAST, MyImageCacheWritePolicyWB > MyImageCache2;
     MyImageCache2 imageCache2(factImage);
     
     imageCache2.update(domain4); // image4
@@ -212,6 +212,60 @@ bool testSimple()
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     imageCache2.update(domain3); // image3 - so flush domain4 (image4)
+    
+    trace.info() << "  AFTER FLUSHING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    // 4) ImageCache with DGtal::CACHE_READ_POLICY_FIFO, DGtal::CACHE_WRITE_POLICY_WB
+    i = 1; // reinit image
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = i++;
+    
+    trace.info() << endl << "ImageCache with DGtal::CACHE_READ_POLICY_FIFO, DGtal::CACHE_WRITE_POLICY_WB" << endl;
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB > MyImageCache3;
+    MyImageCache3 imageCache3(factImage);
+    
+    imageCache3.update(domain4); // image4
+    
+    trace.info() << "WRITING from cache (not empty but good domain): " << imageCache3 << endl;
+    aValue = 22;
+    if (imageCache3.write(Z2i::Point(2,2), aValue)) 
+      trace.info() << "WRITE: Point 2,2 is in an image from cache, value: " << aValue << endl;
+    else
+      trace.info() << "WRITE: Point 2,2 is not in an image from cache." << endl; 
+    nbok += ( (imageCache3.read(Z2i::Point(2,2), aValue) && (aValue == 22)) == true ) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  AFTER WRITING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 11) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    imageCache3.update(domain3); // image3
+    
+    trace.info() << "  AFTER FLUSHING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 11) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    imageCache3.update(domain2); // image2
+    
+    trace.info() << "  AFTER FLUSHING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
+    nbok += (image(Z2i::Point(2,2)) == 11) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    imageCache3.update(domain1); // image1 - so flush domain4 (image4)
     
     trace.info() << "  AFTER FLUSHING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
     nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
