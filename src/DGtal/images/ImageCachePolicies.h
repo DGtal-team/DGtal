@@ -54,9 +54,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// Template class ImageCacheReadPolicyLast
+// Template class ImageCacheReadPolicyLAST
 /**
- * Description of template class 'ImageCacheReadPolicyLast' <p>
+ * Description of template class 'ImageCacheReadPolicyLAST' <p>
  * \brief Aim: implements a 'LAST' read policy cache.
  * 
  * @tparam TImageContainer an image container type (model of CImage).
@@ -65,11 +65,11 @@ namespace DGtal
  * The policy is done with 3 functions:
  * 
  *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
- *  - getNextPageToDetach :     for getting the alias on the next image that we have to detach or NULL if no image have to be detached
+ *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
  *  - updateCache :             for updating the cache according to the cache policy
  */
 template <typename TImageContainer, typename TImageFactory>
-class ImageCacheReadPolicyLast
+class ImageCacheReadPolicyLAST
 {
 public:
   
@@ -84,7 +84,7 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheReadPolicyLast(Alias<ImageFactory> anImageFactory):
+    ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory):
       myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
     {
     }
@@ -93,7 +93,7 @@ public:
      * Destructor.
      * Does nothing
      */
-    ~ImageCacheReadPolicyLast() {}
+    ~ImageCacheReadPolicyLAST() {}
     
     /**
      * Get the alias on the image that contains the point aPoint
@@ -106,12 +106,12 @@ public:
     ImageContainer * getPage(const Point & aPoint);
     
     /**
-     * Get the alias on the next image that we have to detach
+     * Get the alias on the image that we have to detach
      * or NULL if no image have to be detached.
      *
      * @return the alias on the image container or NULL pointer.
      */
-    ImageContainer * getNextPageToDetach();
+    ImageContainer * getPageToDetach();
     
     /**
      * Update the cache according to the cache policy.
@@ -128,7 +128,86 @@ protected:
     /// Alias on the image factory
     ImageFactory * myImageFactory;
     
-}; // end of class ImageCacheReadPolicyLast
+}; // end of class ImageCacheReadPolicyLAST
+
+/////////////////////////////////////////////////////////////////////////////
+// Template class ImageCacheReadPolicyFIFO
+/**
+ * Description of template class 'ImageCacheReadPolicyFIFO' <p>
+ * \brief Aim: implements a 'FIFO' read policy cache.
+ * 
+ * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TImageFactory an image factory.
+ * 
+ * The policy is done with 3 functions:
+ * 
+ *  - getPage :                 for getting the alias on the image that contains the a point or NULL if no image in the cache contains that point
+ *  - getPageToDetach :         for getting the alias on the image that we have to detach or NULL if no image have to be detached
+ *  - updateCache :             for updating the cache according to the cache policy
+ */
+template <typename TImageContainer, typename TImageFactory>
+class ImageCacheReadPolicyFIFO
+{
+public:
+  
+    ///Checking concepts
+    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactory> ));    
+    
+    typedef TImageFactory ImageFactory;
+    
+    typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Domain Domain;
+    typedef typename TImageContainer::Point Point;
+    typedef typename TImageContainer::Value Value;
+    
+    ImageCacheReadPolicyFIFO(Alias<ImageFactory> anImageFactory, int aFIFOSizeMax=3):
+      myImageFactory(anImageFactory), myFIFOSizeMax(aFIFOSizeMax)
+    {
+    }
+
+    /**
+     * Destructor.
+     * Does nothing
+     */
+    ~ImageCacheReadPolicyFIFO() {}
+    
+    /**
+     * Get the alias on the image that contains the point aPoint
+     * or NULL if no image in the cache contains the point aPoint.
+     * 
+     * @param aPoint the point.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPage(const Point & aPoint);
+    
+    /**
+     * Get the alias on the image that we have to detach
+     * or NULL if no image have to be detached.
+     *
+     * @return the alias on the image container or NULL pointer.
+     */
+    ImageContainer * getPageToDetach();
+    
+    /**
+     * Update the cache according to the cache policy.
+     *
+     * @param aDomain the domain.
+     */
+    void updateCache(const Domain &aDomain);
+    
+protected:
+    
+    /// Alias on the images cache
+    std::deque <ImageContainer *> myFIFOCacheImages;
+    
+    int myFIFOSizeMax;
+    
+    /// Alias on the image factory
+    ImageFactory * myImageFactory;
+    
+}; // end of class ImageCacheReadPolicyFIFO
 
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCacheWritePolicyWT
@@ -141,7 +220,7 @@ protected:
  * 
  * The policy is done with 2 functions:
  * 
- *  - writeOnPage :     for setting a value on an image at a given position given by a point
+ *  - writeInPage :     for setting a value on an image at a given position given by a point
  *  - flushPage :       for flushing the image on disk according to the cache policy
  */
 template <typename TImageContainer, typename TImageFactory>
@@ -179,7 +258,7 @@ public:
     * @param aPoint the point.
     * @param aValue the value.
     */
-    void writeOnPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    void writeInPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
     
     /**
     * Flush the image on disk according to the cache policy.
@@ -206,7 +285,7 @@ protected:
  * 
  * The policy is done with 2 functions:
  * 
- *  - writeOnPage :     for setting a value on an image at a given position given by a point
+ *  - writeInPage :     for setting a value on an image at a given position given by a point
  *  - flushPage :       for flushing the image on disk according to the cache policy
  */
 template <typename TImageContainer, typename TImageFactory>
@@ -244,7 +323,7 @@ public:
     * @param aPoint the point.
     * @param aValue the value.
     */
-    void writeOnPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
+    void writeInPage(ImageContainer * anImageContainer, const Point & aPoint, const Value &aValue);
     
     /**
     * Flush the image on disk according to the cache policy.

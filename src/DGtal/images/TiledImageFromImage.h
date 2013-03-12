@@ -83,9 +83,9 @@ public:
     typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCacheReadPolicyLast<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyLast;
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyLast, MyImageCacheWritePolicyWT > MyImageCache;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT > MyImageCache;
     
     ///New types
 
