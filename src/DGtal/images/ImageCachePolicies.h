@@ -59,6 +59,9 @@ namespace DGtal
  * Description of template class 'ImageCacheReadPolicyLAST' <p>
  * \brief Aim: implements a 'LAST' read policy cache.
  * 
+ * The cache keeps only one page in memory, the last one. 
+ * When the page needs to be replaced, the new page replaces the old one.
+ * 
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
@@ -136,6 +139,9 @@ protected:
  * Description of template class 'ImageCacheReadPolicyFIFO' <p>
  * \brief Aim: implements a 'FIFO' read policy cache.
  * 
+ * The cache keeps track of all the pages in memory in a queue, with the most recent arrival at the back, and the earliest arrival in front. 
+ * When a page needs to be replaced, the page at the front of the queue (the oldest page) is selected.
+ * 
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
  * 
@@ -202,6 +208,7 @@ protected:
     /// Alias on the images cache
     std::deque <ImageContainer *> myFIFOCacheImages;
     
+    /// Size max of the FIFO
     int myFIFOSizeMax;
     
     /// Alias on the image factory
@@ -213,7 +220,9 @@ protected:
 // Template class ImageCacheWritePolicyWT
 /**
  * Description of template class 'ImageCacheWritePolicyWT' <p>
- * \brief Aim: implements a 'WT (direct)' write policy cache.
+ * \brief Aim: implements a 'WT (Write-through)' write policy cache.
+ * 
+ * Write is done synchronously both to the cache and to the disk.
  * 
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.
@@ -278,7 +287,10 @@ protected:
 // Template class ImageCacheWritePolicyWB
 /**
  * Description of template class 'ImageCacheWritePolicyWB' <p>
- * \brief Aim: implements a 'WB (delayed)' write policy cache.
+ * \brief Aim: implements a 'WB (Write-back or Write-behind)' write policy cache.
+ * 
+ * Initially, writing is done only to the cache. The write to the disk is postponed 
+ * until the cache blocks containing the data are about to be modified/replaced by new content.
  * 
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory.

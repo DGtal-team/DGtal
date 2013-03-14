@@ -59,18 +59,23 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 ### Associated types :
  - \e ImageContainer : type of the image in the cache, model of concept CImage
  - \e Point : type of the image point
+ - \e Domain : type of the image domain, model of concept CDomain
 
 ### Notation
  - \e X : A type that is a model of CImageCacheReadPolicy
  - \e x : object of type X
+ - \e p : object of type Point
+ - \e d : object of type Domain
 
 ### Definitions
 
 ### Valid expressions and semantics
 
-| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| Name                | Expression              | Type requirements    | Return type       | Precondition | Semantics | Post condition | Complexity |
+|---------------------|-------------------------|----------------------|-------------------|--------------|-----------|----------------|------------|
+| Get page            | x.getPage(p)            |                      | ImageContainer    |              |           |                |            |
+| Get page to detach  | x.getPageToDetach()     |                      | ImageContainer    |              |           |                |            |
+| Update cache        | x.updateCache(d)        |                      |                   |              |           |                |            |
 
 ### Invariants
 
@@ -83,47 +88,32 @@ ImageCacheReadPolicyLAST, ImageCacheReadPolicyFIFO
  */
 template <typename T>
 struct CImageCacheReadPolicy
-            // Use derivation for coarser concepts, like
-            // : CoarserConcept<T>
-            // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-            // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    // 1. define first provided types (i.e. inner types), like
+
     typedef typename T::ImageContainer ImageContainer;
-    // possibly check these types so as to satisfy a concept with
-//BOOST_CONCEPT_ASSERT(( CConcept< InnerType > ));
-    // To test if two types A and X are equals, use
-//BOOST_STATIC_ASSERT(( ConceptUtils::SameType<A,X>::value ));
-    // 2. then check the presence of data members, operators and methods with
+
     BOOST_CONCEPT_USAGE( CImageCacheReadPolicy )
     {
-        // Static members of type A can be tested with
-//ConceptUtils::sameType( myA, T::staticMember );
-        // non-const method dummy should take parameter myA of type A and return
-        // something of type B
         ConceptUtils::sameType( myIC, myT.getPage(myPoint) );
         ConceptUtils::sameType( myIC, myT.getPageToDetach() );
         myT.updateCache(myDomain);
-        // look at CInteger.h for testing tags.
+
         // check const methods.
         checkConstConstraints();
     }
+    
     void checkConstConstraints() const
     {
-        // const method dummyConst should take parameter myA of type A and return
-        // something of type B
-//ConceptUtils::sameType( myB, myT.dummyConst( myA ) );
     }
+    
     // ------------------------- Private Datas --------------------------------
 private:
     T myT; // do not require T to be default constructible.
     ImageContainer * myIC;
     typename T::Point myPoint;
     typename T::Domain myDomain;
-//    A myA;
-//    B myB;
 
     // ------------------------- Internals ------------------------------------
 private:
