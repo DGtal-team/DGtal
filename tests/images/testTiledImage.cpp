@@ -62,7 +62,7 @@ bool testSimple()
 
     trace.info() << "ORIGINAL image: " << image << endl;
 
-    Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));    
+    /*Z2i::Domain domain1(Z2i::Point(0,0), Z2i::Point(1,1));    
     Z2i::Domain domain2(Z2i::Point(2,0), Z2i::Point(3,1));        
     Z2i::Domain domain3(Z2i::Point(0,2), Z2i::Point(1,3));        
     Z2i::Domain domain4(Z2i::Point(2,2), Z2i::Point(3,3));
@@ -71,10 +71,10 @@ bool testSimple()
     domains.push_back(domain1);
     domains.push_back(domain2);
     domains.push_back(domain3);
-    domains.push_back(domain4);
+    domains.push_back(domain4);*/
     
     typedef TiledImageFromImage<VImage > MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, domains);
+    MyTiledImageFromImage tiledImageFromImage(image, /*domains,*/ 2, 2);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
