@@ -63,14 +63,18 @@ Description of \b concept '\b CImageFactory' <p>
 ### Notation
  - \e X : A type that is a model of CImageFactory
  - \e x : object of type X
+ - \e d : object of type Domain
+ - \e o : object of type OutputImage
 
 ### Definitions
 
 ### Valid expressions and semantics
 
-| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
-|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            |
+| Name                | Expression              | Type requirements    | Return type    | Precondition | Semantics | Post condition | Complexity |
+|---------------------|-------------------------|----------------------|----------------|--------------|-----------|----------------|------------|
+| Request image       | x.requestImage(d)       |                      | OutputImage    |              |           |                |            |
+| Flush image         | x.flushImage(o)         |                      |                |              |           |                |            |
+| Detach image        | x.detachImage(o)        |                      |                |              |           |                |            |
 
 ### Invariants
 
@@ -83,38 +87,25 @@ ImageFactoryFromImage
  */
 template <typename T>
 struct CImageFactory
-            // Use derivation for coarser concepts, like
-            // : CoarserConcept<T>
-            // Think to boost::CopyConstructible<T>, boost::DefaultConstructible<T>, ...
-            // http://www.boost.org/doc/libs/1_49_0/libs/concept_check/reference.htm
 {
     // ----------------------- Concept checks ------------------------------
 public:
-    // 1. define first provided types (i.e. inner types), like
+
     typedef typename T::OutputImage OutputImage;
-    // possibly check these types so as to satisfy a concept with
+
     BOOST_CONCEPT_ASSERT(( CImage< OutputImage > ));
-    // To test if two types A and X are equals, use
-//BOOST_STATIC_ASSERT(( ConceptUtils::SameType<A,X>::value ));
-    // 2. then check the presence of data members, operators and methods with
+
     BOOST_CONCEPT_USAGE( CImageFactory )
     {
-        // Static members of type A can be tested with
-//ConceptUtils::sameType( myA, T::staticMember );
-        // non-const method dummy should take parameter myA of type A and return
-        // something of type B
         ConceptUtils::sameType( myOI, myT.requestImage(myDomain) );
         myT.flushImage(myOI);
         myT.detachImage(myOI);
-        // look at CInteger.h for testing tags.
+
         // check const methods.
         checkConstConstraints();
     }
     void checkConstConstraints() const
     {
-        // const method dummyConst should take parameter myA of type A and return
-        // something of type B
-//ConceptUtils::sameType( myB, myT.dummyConst( myA ) );
     }
 
     // ------------------------- Private Datas --------------------------------
@@ -122,8 +113,6 @@ private:
     T myT; // do not require T to be default constructible.
     OutputImage * myOI;
     typename T::Domain myDomain;
-//    A myA;
-//    B myB;
 
     // ------------------------- Internals ------------------------------------
 private:

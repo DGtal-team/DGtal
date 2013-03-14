@@ -1,0 +1,138 @@
+/**
+ * @file moduleBigImages.dox
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2013/03/12
+ * 
+ * @brief Documentation file about big images in DGtal
+ *
+ * This file is part of the DGtal library.
+ */
+namespace DGtal {
+
+//----------------------------------------
+/*!
+
+
+@page moduleBigImages Big Images
+@authors Martial Tola
+@date 2013/03/12
+
+[TOC]
+
+\section dgtalBigImagesAbstract Overview
+
+Big images like tiled images, HDF5 images, ... can be handled in DGtal.
+
+For this, we provide two important mechanisms: an image factory mechanism and an image cache mechanism with read and write policies.
+These mechanisms are DGtal concepts detailed just below.
+
+\section dgtalBigImagesConcepts Concepts
+
+\subsection dgtalBigImagesFactoryConcepts CImageFactory
+
+Any model of the concept CImageFactory must have this nested type:
+ 
+  - OutputImage, which specifies the type of the images created by the factory.
+
+Moreover, it must have the following methods:
+
+  - `requestImage`, which takes a domain as input parameter
+and returns an OutputImage pointer on the created image.
+
+  - `flushImage`, which takes an OutputImage pointer as input parameter
+in order to flush/synchronize it on disk.
+
+  - `detachImage`, which takes an OutputImage pointer as input parameter
+in order to delete/release it.
+
+\subsection dgtalBigImagesCachePoliciesConcepts Cache policies concepts
+
+Cache policies concepts are divided in two concepts: read and write policies.
+
+\subsubsection dgtalBigImagesCacheReadPolicyConcepts CImageCacheReadPolicy
+
+Any model of the concept CImageCacheReadPolicy must have this nested type:
+ 
+  - ImageContainer, which specifies the type of the images stored in the cache.
+
+Moreover, it must have the following methods:
+
+  - `getPage`, which takes a point as input parameter
+and returns an ImageContainer pointer on the image that contains the point or NULL if no image in the cache contains that point.
+
+  - `getPageToDetach`, which returns an ImageContainer pointer on the image that we have to detach or NULL if no image have to be detached.
+
+  - `updateCache`, which takes a domain as input parameter
+in order to update the cache according to the defined cache policy.
+
+\subsubsection dgtalBigImagesCacheWritePolicyConcepts CImageCacheWritePolicy
+
+Any model of the concept CImageCacheWritePolicy must have this nested type:
+ 
+  - ImageContainer, which specifies the type of the images stored in the cache.
+
+Moreover, it must have the following methods:
+
+  - `writeInPage`, which takes an ImageContainer pointer, a point and a value for that point as input parameters
+in order to set the value on the image at the position given by the point.
+
+  - `flushPage`, which takes an ImageContainer pointer as input parameter
+in order to flush the image on disk according to the defined cache policy.
+
+\section dgtalBigImagesModels Models
+
+\subsection dgtalBigImagesFactoryModels ImageFactoryFromImage
+
+The ImageFactoryFromImage model is a rather simple one. It implements a factory to produce images from a "bigger/original" one according to a given domain.
+
+\subsection dgtalBigImagesCachePoliciesModels Cache policies models
+
+Cache policies models are like concepts also divided in two models: read and write policies.
+
+\subsubsection dgtalBigImagesCacheReadPolicyLASTModel ImageCacheReadPolicyLAST
+
+The ImageCacheReadPolicyLAST model is a rather simple one. It implements a 'LAST' read policy cache.
+
+The cache keeps only one page in memory, the last one.
+When the page needs to be replaced, the new page replaces the old one.
+
+\subsubsection dgtalBigImagesCacheReadPolicyFIFOModel ImageCacheReadPolicyFIFO
+
+The ImageCacheReadPolicyFIFO model is a rather simple one. It implements a 'FIFO' read policy cache.
+
+The cache keeps track of all the pages in memory in a queue, with the most recent arrival at the back, and the earliest arrival in front. 
+When a page needs to be replaced, the page at the front of the queue (the oldest page) is selected.
+
+\subsubsection dgtalBigImagesCacheWritePolicyWTModel ImageCacheWritePolicyWT
+
+The ImageCacheWritePolicyWT model is a rather simple one. It implements a 'WT (Write-through)' write policy cache.
+
+Write is done synchronously both to the cache and to the disk.
+
+\subsubsection dgtalBigImagesCacheWritePolicyWBModel ImageCacheWritePolicyWB
+
+The ImageCacheWritePolicyWB model is a rather simple one. It implements a 'WB (Write-back or Write-behind)' write policy cache.
+
+Initially, writing is done only to the cache. The write to the disk is postponed 
+until the cache blocks containing the data are about to be modified/replaced by new content.
+
+\section dgtalBigImagesSamples Sample classes
+
+\subsection dgtalBigImagesTiledImageFromImageSample TiledImageFromImage
+
+The TiledImageFromImage is just a proof of concept sample. The class implements a tiled image from a "bigger/original" one.
+
+The tiled image is create from an existing image and with a list of subdomains in order to describe all the tiles.
+
+\subsection dgtalBigImagesHDF5ImageSample HDF5Image
+
+Forthcoming...
+
+*/
+
+}
+
+
+
