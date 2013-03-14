@@ -94,12 +94,32 @@ public:
 public:
 
     TiledImageFromImage(Alias<ImageContainer> anImage, 
-                        ConstAlias<std::vector<Domain> > Di):
-      myImagePtr(anImage), myDi(Di)
+                        /*ConstAlias<std::vector<Domain> > Di,*/ int nX, int nY):
+      myImagePtr(anImage)//, myDi(Di)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
         
         myImageCache = new MyImageCache(myImageFactoryFromImage);
+        
+        myDi = new std::vector<Domain>;
+        
+        int sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX; //trace.info() << "sizeX: " << sizeX << std::endl;
+        int sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY; //trace.info() << "sizeY: " << sizeY << std::endl;
+        
+        int x0, y0;
+        int x1, y1;
+        Domain di;
+        
+        for(int j=0; j<nY; ++j)
+          for(int i=0; i<nX; ++i)
+          {
+            x0 = myImagePtr->domain().lowerBound()[0]+(sizeX*i);
+            y0 = myImagePtr->domain().lowerBound()[1]+(sizeY*j);
+            x1 = myImagePtr->domain().lowerBound()[0]+(sizeX*i)+(sizeX-1);
+            y1 = myImagePtr->domain().lowerBound()[1]+(sizeY*j)+(sizeY-1);
+            di = Domain(Point(x0, y0),Point(x1, y1)); //trace.info() << "di: " << di << std::endl;
+            myDi->push_back(di);
+          }
     }
 
     /**
@@ -110,6 +130,8 @@ public:
     {
       delete myImageCache;
       delete myImageFactoryFromImage;
+      
+      delete myDi;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -217,7 +239,7 @@ protected:
     ImageContainer * myImagePtr;
     
     /// Domains list
-    const std::vector<Domain> * myDi;
+    /*const*/ std::vector<Domain> * myDi;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;
