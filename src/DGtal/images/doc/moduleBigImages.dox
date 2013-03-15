@@ -122,9 +122,9 @@ until the cache blocks containing the data are about to be modified/replaced by 
 
 \subsection dgtalBigImagesTiledImageFromImageSample TiledImageFromImage
 
-The TiledImageFromImage is just a proof of concept sample. The class implements a tiled image from a "bigger/original" one.
+The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
 
-The tiled image is create from an existing image and with a list of subdomains in order to describe all the tiles.
+The tiled image is create from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
 
 \subsection dgtalBigImagesHDF5ImageSample HDF5Image
 

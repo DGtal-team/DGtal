@@ -52,11 +52,6 @@ inline
 void
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
-    /*if (myCacheImagesPtr==NULL)
-      out << "[ImageCache] " << "empty";
-    else
-      out << "[ImageCache] " << (*myCacheImagesPtr);*/
-    
     out << "[ImageCache] ";
 }
 

@@ -60,7 +60,7 @@ namespace DGtal
  * 
  * @tparam TImageContainer an image container type (model of CImage).
  * 
- * The tiled image is create here from an existing image and with a list of subdomains in order to describe all the tiles.
+ * The tiled image is create here from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
  */
 template <typename TImageContainer>
 class TiledImageFromImage
@@ -93,9 +93,8 @@ public:
 
 public:
 
-    TiledImageFromImage(Alias<ImageContainer> anImage, 
-                        /*ConstAlias<std::vector<Domain> > Di,*/ int nX, int nY):
-      myImagePtr(anImage)//, myDi(Di)
+    TiledImageFromImage(Alias<ImageContainer> anImage, int nX, int nY):
+      myImagePtr(anImage)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
         
@@ -239,7 +238,7 @@ protected:
     ImageContainer * myImagePtr;
     
     /// Domains list
-    /*const*/ std::vector<Domain> * myDi;
+    std::vector<Domain> * myDi;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;
