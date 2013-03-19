@@ -109,7 +109,8 @@ namespace DGtal {
    graph by adjacencies. In some sense, they trace a tree from the
    initial seed. A vertex is visited at most once. Data may be
    associated to each visited vertex, like its distance to the initial
-   seed. Two (classical) models of visitors are provided:
+   seed. Three models of visitors are provided, two of them implement
+   the classical breadth-first and depth-first traversal:
 
    - model BreadthFirstVisitor performs the traversal of a \b
      connected graph by breadth-first search. If the graph is not
@@ -123,6 +124,15 @@ namespace DGtal {
      the connected component(s) containing the initial seed(s) are
      visited. This visitor also computes the distance to the initial
      seed(s) as the number of ancestors in the depth search.
+
+   - model DistanceBreadthFirstVisitor performs the traversal of a \b
+     connected graph by a modified breadth-first search: it is based
+     on a priority queue, the priority of which is given by a distance
+     object (and not by the topological distance as in classical
+     breadth-first traversal). If the graph is not connected, only the
+     connected component(s) containing the initial seed(s) are
+     visited. This visitor also gives the distance given by the
+     distance object.
 
    The snippet below shows how to use a visitor to color vertices
    according to the topological distance to the initial seed (the
