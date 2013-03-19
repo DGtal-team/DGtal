@@ -80,10 +80,12 @@ namespace DGtal
   CUndirectedSimpleLocalGraph. It must have an inner type Vertex.
 
   @tparam TVertexFunctor the type of distance object: any mapping from
-  a Vertex toward a scalar value. The neighboring relations of the
-  graph should be consistent with the distance function, in the sense
-  that the closest points to the current set of already visited
-  vertices should be found in the neighbors.
+  a Vertex toward a scalar value. Requires an inner type Value which
+  is the returned scalar value and an operator()( Vertex ) returning a
+  Value. The neighboring relations of the graph should be consistent
+  with the distance function, in the sense that the closest points to
+  the current set of already visited vertices should be found in the
+  neighbors.
 
   @tparam TMarkSet the type that is used to store marked
   vertices. Should be a set of Vertex, hence a model of CSet.
