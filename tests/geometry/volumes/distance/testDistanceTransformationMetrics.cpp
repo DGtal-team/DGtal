@@ -183,13 +183,13 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testCompareExactBruteForce<Z2i::Space, 2>(32, 8)
-  && testCompareExactBruteForce<Z2i::Space, 1>(32, 8)
+  bool res = testCompareExactBruteForce<Z2i::Space, 2>(16, 8)
+  && testCompareExactBruteForce<Z2i::Space, 1>(16, 8)
   && testCompareExactBruteForce<Z3i::Space, 2>(16, 8)
-  && testCompareExactBruteForce<Z2i::Space, 4>(32, 8)
-  && testCompareInexactBruteForce<Z2i::Space>(2.0,32, 8) 
-  && testCompareInexactBruteForce<Z2i::Space>(1.33,32, 8)
-  && testCompareInexactBruteForce<Z2i::Space>(2.6,32, 8) 
+  && testCompareExactBruteForce<Z2i::Space, 4>(16, 8)
+  && testCompareInexactBruteForce<Z2i::Space>(2.0,16, 8) 
+  && testCompareInexactBruteForce<Z2i::Space>(1.33,16, 8)
+  && testCompareInexactBruteForce<Z2i::Space>(2.6,16, 8) 
   && testCompareInexactBruteForce<Z3i::Space>(2.44,10, 5)
   && testCompareInexactBruteForce<Z3i::Space>(12.3,10, 5); 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

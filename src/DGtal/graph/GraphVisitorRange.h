@@ -109,7 +109,7 @@ namespace DGtal
     /**
        A single-pass input iterator that adapts a visitor to explore vertices. The default iterator is equivalent to an end().
 
-       @tparam the type of accessor for the iterator, either NodeAccessor or VertexAccessor.
+       @tparam TAccessor  type of accessor for the iterator, either NodeAccessor or VertexAccessor.
 
        @todo Complete boost::iterator_traversal<> accordingly.
      */

@@ -45,6 +45,11 @@
 #include "DGtal/kernel/CEuclideanRing.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/NumberTraits.h"
+#ifdef CPP11_ARRAY
+#include <array>
+#else
+#include <boost/array.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -166,7 +171,7 @@ namespace DGtal
     /** 
      * SimpleMatrix comparison.
      * 
-     * @param another matrix.
+     * @param aMatrix another matrix.
      * @return true if aMatrix equals this
      */
     bool operator==(const Self & aMatrix) const;
@@ -178,7 +183,7 @@ namespace DGtal
      * @tparam TComponentOther another Component type.
      * @param aMatrix the matrix to copy.
      * 
-     * @return 
+     * @return reference on the matrix
      */
     template<typename TComponentOther>
     Self & operator=(const SimpleMatrix<TComponentOther, M, N>& aMatrix);
@@ -272,7 +277,7 @@ namespace DGtal
      * Product between the matrix and a Column vector.
      * @note the product is O(N^3) for NxN matrices.
      *
-     * @param aMatrix the NxM matrix to multiply
+     * @param aVector the vector to multiply
      * 
      * @return the product MxM matrix 
      */

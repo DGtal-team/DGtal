@@ -54,7 +54,7 @@ namespace DGtal
    * \brief Aim: Define a simple Foreground predicate thresholding
    * image values  between two constant values.
    *
-   * @tparam TImage an model of CImageContainer concept. 
+   * @tparam Image an model of CImageContainer concept. 
    */
   template <typename Image>
   class IntervalForegroundPredicate

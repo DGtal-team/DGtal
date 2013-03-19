@@ -67,7 +67,7 @@ namespace DGtal
   {
     /**
      * Draw the DSS on a board
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
@@ -86,7 +86,7 @@ namespace DGtal
   {
     /**
      * Draw the DSS on a board
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
@@ -149,7 +149,7 @@ namespace DGtal
   {
     /**
      * Drawing method.
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
@@ -192,7 +192,7 @@ namespace DGtal
   {
     /**
      * Draw the GeometricalDSS on a board
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
@@ -212,7 +212,7 @@ namespace DGtal
   {
     /**
      * Draw the GeometricalDCA on a board
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
@@ -233,7 +233,7 @@ namespace DGtal
   {
     /**
      * Draw the FrechetShortcut on a board
-     * @param board the output board where the object is drawn.
+     * @param aBoard the output board where the object is drawn.
      */
     virtual void setStyle(Board2D & aBoard) const
     {
