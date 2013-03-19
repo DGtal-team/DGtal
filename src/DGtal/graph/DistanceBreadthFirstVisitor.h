@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file DistanceVisitor.h
+ * @file DistanceBreadthFirstVisitor.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
  * @date 2012/11/2
  *
- * Header file for template class DistanceVisitor
+ * Header file for template class DistanceBreadthFirstVisitor
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(DistanceVisitor_RECURSES)
-#error Recursive header files inclusion detected in DistanceVisitor.h
-#else // defined(DistanceVisitor_RECURSES)
+#if defined(DistanceBreadthFirstVisitor_RECURSES)
+#error Recursive header files inclusion detected in DistanceBreadthFirstVisitor.h
+#else // defined(DistanceBreadthFirstVisitor_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define DistanceVisitor_RECURSES
+#define DistanceBreadthFirstVisitor_RECURSES
 
-#if !defined DistanceVisitor_h
+#if !defined DistanceBreadthFirstVisitor_h
 /** Prevents repeated inclusion of headers. */
-#define DistanceVisitor_h
+#define DistanceBreadthFirstVisitor_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -51,18 +51,19 @@ namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class DistanceVisitor
+  // template class DistanceBreadthFirstVisitor
   /**
-  Description of template class 'DistanceVisitor' <p> \brief Aim: This
+  Description of template class 'DistanceBreadthFirstVisitor' <p> \brief Aim: This
   class is useful to perform an exploration of a graph given a
   starting point or set (called initial core) and a distance
   criterion.
  
-  The visitor implements a mix of breadth-first algorithm on the
-  graph of adjacencies based on a priority queue whose priority is
-  given by the distance object. It can be used not only to detect
-  connected component but also to identify the layers of the object
-  located at a given distance of a starting set.
+  The visitor implements a modified breadth-first algorithm on the
+  graph of adjacencies that is based on a priority queue, the priority
+  of which is given by the distance object (and not by the topological
+  distance as in classical breadth-first traversal). It can be used
+  not only to detect connected component but also to identify the
+  layers of the object located at a given distance of a starting set.
  
   The \b core of the visitor is by definition at the beginning the set
   of points at the lowest distances. A layer is a set of vertices at
@@ -70,7 +71,7 @@ namespace DGtal
   layer at a time. Each layer is at a different distance from the
   initial core, layers having increasing distances.
 
-  The object guarantees that vertices are visited in an non-decreasing
+  The object guarantees that vertices are visited in a non-decreasing
   ordering with respect to the distance object, as long as the
   breadth-first traversal order can be consistent with the given
   distance ordering.
@@ -99,16 +100,16 @@ namespace DGtal
      typedef std::binder1st< Distance > EDToPoint;        // Fix one point
      typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor; 
        // Compose the vertex embedding with the distance computation.
-     typedef DistanceVisitor< Graph, VertexFunctor > Visitor;
+     typedef DistanceBreadthFirstVisitor< Graph, VertexFunctor > Visitor;
 
      VertexEmbedder embedder;
      ED distance;
      EDToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
      VertexFunctor vfunctor( embedder, distanceToPoint );
-     DistanceVisitor< Graph, VertexFunctor > visitor( g, p, vfunctor );
+     DistanceBreadthFirstVisitor< Graph, VertexFunctor > visitor( g, p, vfunctor );
      while ( ! visitor.finished() )
        {
-         DistanceVisitor<Graph>::Node node = visitor.current();
+         DistanceBreadthFirstVisitor<Graph>::Node node = visitor.current();
          std::cout << "Vertex " << node.first 
                    << " at distance " << node.second << std::endl;
          visitor.expand();
@@ -117,8 +118,8 @@ namespace DGtal
 
    You may also visit vertices layer by layer, meaning that you wish
    to consider all the vertices at the same distance at the same
-   time. You should use then DistanceVisitor::getCurrentLayer,
-   DistanceVisitor::expandLayer, and DistanceVisitor::ignoreLayer.
+   time. You should use then DistanceBreadthFirstVisitor::getCurrentLayer,
+   DistanceBreadthFirstVisitor::expandLayer, and DistanceBreadthFirstVisitor::ignoreLayer.
 
 @code
 std::list<Node> layer;
@@ -192,17 +193,17 @@ while ( ! visitor.finished() )
     }
    @endcode
 
-   @see testDistanceVisitor.cpp
+   @see testDistanceBreadthFirstVisitor.cpp
    @see testObject.cpp
    */
   template < typename TGraph, 
              typename TVertexFunctor,
              typename TMarkSet = typename TGraph::VertexSet >
-  class DistanceVisitor
+  class DistanceBreadthFirstVisitor
   {
     // ----------------------- Associated types ------------------------------
   public:
-    typedef DistanceVisitor<TGraph,TVertexFunctor,TMarkSet> Self;
+    typedef DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet> Self;
     typedef TGraph Graph;
     typedef TVertexFunctor VertexFunctor;
     typedef TMarkSet MarkSet;
@@ -266,13 +267,13 @@ while ( ! visitor.finished() )
     /**
      * Destructor.
      */
-    ~DistanceVisitor();
+    ~DistanceBreadthFirstVisitor();
 
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
-    DistanceVisitor ( const DistanceVisitor & other );
+    DistanceBreadthFirstVisitor ( const DistanceBreadthFirstVisitor & other );
 
 
     /**
@@ -283,7 +284,7 @@ while ( ! visitor.finished() )
      * @param distance the distance object, a functor Vertex -> Scalar (cloned).
      * @param p any vertex of the graph.
      */
-    DistanceVisitor( const Graph & graph, 
+    DistanceBreadthFirstVisitor( const Graph & graph, 
                      const VertexFunctor & distance,
                      const Vertex & p );
 
@@ -301,7 +302,7 @@ while ( ! visitor.finished() )
        @param e the end iterator in a container of vertices. 
     */
     template <typename VertexIterator>
-    DistanceVisitor( const Graph & graph, 
+    DistanceBreadthFirstVisitor( const Graph & graph, 
                      const VertexFunctor & distance,
                      VertexIterator b, VertexIterator e );
 
@@ -448,7 +449,7 @@ while ( ! visitor.finished() )
        containers are swapped (if the VertexFunctor is assignable in O(1)).
        @param other the other instance.
     */
-    void swap( DistanceVisitor & other );
+    void swap( DistanceBreadthFirstVisitor & other );
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -500,7 +501,7 @@ while ( ! visitor.finished() )
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    DistanceVisitor();
+    DistanceBreadthFirstVisitor();
 
   private:
 
@@ -510,36 +511,36 @@ while ( ! visitor.finished() )
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    DistanceVisitor & operator= ( const DistanceVisitor & other );
+    DistanceBreadthFirstVisitor & operator= ( const DistanceBreadthFirstVisitor & other );
 
     // ------------------------- Internals ------------------------------------
   private:
 
-  }; // end of class DistanceVisitor
+  }; // end of class DistanceBreadthFirstVisitor
 
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'DistanceVisitor'.
+   * Overloads 'operator<<' for displaying objects of class 'DistanceBreadthFirstVisitor'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'DistanceVisitor' to write.
+   * @param object the object of class 'DistanceBreadthFirstVisitor' to write.
    * @return the output stream after the writing.
    */
   template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
   std::ostream&
   operator<< ( std::ostream & out, 
-               const DistanceVisitor<TGraph,TVertexFunctor,TMarkSet> & object );
+               const DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/topology/DistanceVisitor.ih"
+#include "DGtal/graph/DistanceBreadthFirstVisitor.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined DistanceVisitor_h
+#endif // !defined DistanceBreadthFirstVisitor_h
 
-#undef DistanceVisitor_RECURSES
-#endif // else defined(DistanceVisitor_RECURSES)
+#undef DistanceBreadthFirstVisitor_RECURSES
+#endif // else defined(DistanceBreadthFirstVisitor_RECURSES)

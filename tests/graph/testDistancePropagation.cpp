@@ -36,7 +36,7 @@
 #include "DGtal/graph/CUndirectedSimpleGraph.h"
 #include "DGtal/graph/CGraphVisitor.h"
 #include "DGtal/graph/GraphVisitorRange.h"
-#include "DGtal/graph/DistanceVisitor.h"
+#include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
@@ -102,7 +102,7 @@ bool testDistancePropagation()
   typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
   typedef std::binder1st< Distance > DistanceToPoint; 
   typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
-  typedef DistanceVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
+  typedef DistanceBreadthFirstVisitor< Object, VertexFunctor, std::set<Point> > Visitor;
 
   BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
 
