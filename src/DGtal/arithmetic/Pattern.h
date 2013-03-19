@@ -62,7 +62,7 @@ namespace DGtal
      here is to use SternBrocot::Fraction so as to compute efficiently
      subpatterns.
 
-     @param TFraction the type chosen to represent fractions, a model
+     @tparam TFraction the type chosen to represent fractions, a model
      of CPositiveIrreducibleFraction. You may use
      SternBrocot::Fraction or LighterSternBrocot::Fraction for
      instance.

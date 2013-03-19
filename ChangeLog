@@ -19,8 +19,10 @@
     - Statistic class moved to math package
 
  *Kernel Package*
-    - digital sets are now also point predicates, update of DigitalSetDomain accordingly. As a consequence,
-SetPredicate is now deprecated.
+    - digital sets are now also point predicates, update of
+      DigitalSetDomain accordingly. As a consequence, SetPredicate is
+      now deprecated.
+
     - new documentation for module digital sets.
 
  *Arithmetic Package*
@@ -38,7 +40,7 @@ SetPredicate is now deprecated.
       container models
 
  *Geometry Package*
-    - new primitives for digital plane recognition. Naive planes, and
+    - New primitives for digital plane recognition. Naive planes, and
       more generally planes with arbitrary axis-width can be detected
       and recognized incrementally. Based on a COBA algorithm
       implementation, which uses 2D lattice polytopes.
@@ -50,6 +52,12 @@ SetPredicate is now deprecated.
       DistanceTransformation, ReverseDistanceTransformation and
       preliminary medial axis extraction.
     - Separable volumetric tools are now multithread using OpenMP.
+    - New curvature estimator in 2D/3D based on integral invariants
+      (both mean and gaussian curvatures in 3D).
+
+ *Shape Package*
+    - New operators available on digital and Euclidean shapes (Union,
+      Intersection, Minus)
 
  *Topology Package*
     - update documentation for digital surfaces and digital surface

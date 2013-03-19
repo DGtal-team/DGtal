@@ -636,10 +636,10 @@ int main ( int argc, char** argv ){
     && testDistanceTransformation3D()
     && testChessboard()
     && testDTFromSet()
-    && testCompareExactInexact<Z2i::Space, 2>(500, 1000)
-    && testCompareExactInexact<Z3i::Space, 2>(100, 100)
-    && testCompareExactInexact<Z2i::Space, 4>(500, 1000)
-    && testCompareExactInexact<Z3i::Space, 4>(100, 100)
+    && testCompareExactInexact<Z2i::Space, 2>(50, 50)
+    && testCompareExactInexact<Z3i::Space, 2>(50, 50)
+    && testCompareExactInexact<Z2i::Space, 4>(50, 50)
+    && testCompareExactInexact<Z3i::Space, 4>(50, 50)
     ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

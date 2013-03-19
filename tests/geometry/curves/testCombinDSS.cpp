@@ -267,8 +267,8 @@ bool showGreedySegmantation()
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string className = "ArithmeticalDSS/BoundingBox";
   Point p;
-  p.at(0) = 31;
-  p.at(1) = 16;
+  p[0] = 31;
+  p[1] = 16;
   for ( Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {

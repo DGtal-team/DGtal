@@ -240,14 +240,11 @@ namespace DGtal
     typedef typename std::map<Point,Value>::reverse_iterator ReverseIterator;
     typedef typename std::map<Point,Value>::const_reverse_iterator ConstReverseIterator;
     
-    /** 
-     * Construct a Iterator on the image at a position specified
-     * by @c aPoint
+    /**
+     * Construct a Iterator on the image 
+     *
      * 
-     * @param aPoint a point to construct a Iterator on. 
-     * 
-     * @return a Iterator on @c aPoint
-     */
+     * @return a Iterator      */
     OutputIterator outputIterator();
 
         

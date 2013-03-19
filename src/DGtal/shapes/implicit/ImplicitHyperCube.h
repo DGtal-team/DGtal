@@ -92,7 +92,7 @@ namespace DGtal
      * the function value at p. In Shapes, positive values are used to
      * construct a set.
      * 
-     * @param aRealPoint the point to evalute the function at.
+     * @param aPoint the point to evalute the function at.
      * @return the distance of aPoint to the ball center.
      */
     inline

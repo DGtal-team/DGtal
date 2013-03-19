@@ -41,9 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
-#include <boost/array.hpp>
-
 #include "DGtal/base/Common.h"
+#include "DGtal/images/CConstImage.h"
+#include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,7 +58,7 @@ namespace DGtal
      or LightExplicitDigitalSurface so as to define a digital
      surface. Such surfaces may of course be open.
      
-     @tparam KSpace any model of cellular space
+     @tparam TKSpace any model of cellular space
      @tparam TImage any model of Image
   */
   template <typename TKSpace, typename TImage>
@@ -66,6 +66,8 @@ namespace DGtal
   {
     // ----------------------- public types ------------------------------
   public:
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND< TKSpace > ));
+    BOOST_CONCEPT_ASSERT(( CConstImage< TImage > ));
     typedef TKSpace KSpace;
     typedef TImage Image;
     typedef typename KSpace::Surfel Surfel;

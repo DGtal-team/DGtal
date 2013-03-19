@@ -64,7 +64,7 @@ public:
   /**
    * Compute the barycenter of the 2D contour.  
    * 
-   * @param contour: the vector containing the 2D contour coordinates
+   * @param contour the vector containing the 2D contour coordinates
    *
    **/
   

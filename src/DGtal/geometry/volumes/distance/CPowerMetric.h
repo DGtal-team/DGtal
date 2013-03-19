@@ -42,7 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/volumes/distance/CLocalPremetric.h"
+#include "DGtal/kernel/CSpace.h"
+#include "DGtal/base/CQuantity.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,14 +57,16 @@ Description of \b concept '\b CPowerMetric' <p>
 @brief Aim: defines the concept of special weighted metrics, so called
 power metrics. 
 
-@todo DETIALS
 
-### Refinement of CMetric
+### Refinement of 
+
+  boost::CopyConstructible<T>, boost::Assignable<T>
 
 ### Associated types :
-
-Inherited from CMetric;
- - @e Weight: type for weights associated to the power metric.
+ - @e Space: type of space on which the premetric is defined (model of CSpace)
+ - @e Weight: type for weights associated to the power metric (model
+ of CQuantity)
+ - @e Value: type for power distance value (model of CQuantity)
 
 ### Notation
  - \e X : A type that is a model of CPowerMetric
@@ -90,13 +93,19 @@ Inherited from CMetric;
 @tparam T the type that should be a model of CPowerMetric.
  */
 template <typename T>
-struct CPowerMetric
+struct CPowerMetric: boost::CopyConstructible<T>, boost::Assignable<T>
 {
     // ----------------------- Concept checks ------------------------------
 public:
+  typedef typename T::Space Space;
   typedef typename T::Weight Weight;
   typedef typename T::Value Value;
   typedef typename T::Point Point;
+  
+  BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
+  BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
+  BOOST_CONCEPT_ASSERT(( CQuantity< Weight > ));
+
 
   BOOST_CONCEPT_USAGE( CPowerMetric )
   {

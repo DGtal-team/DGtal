@@ -144,9 +144,9 @@ namespace DGtal
     DistanceTransformation(ConstAlias<Domain> aDomain,
                            ConstAlias<PointPredicate> predicate,
                            ConstAlias<SeparableMetric> aMetric):
-      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(static_cast<const Domain&>(aDomain),
-                                                                          static_cast<const PointPredicate&>(predicate),
-                                                                          static_cast<const SeparableMetric&>(aMetric))
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,
+                                                                          predicate,
+                                                                          aMetric)
     {}
     
     /**
@@ -209,7 +209,7 @@ namespace DGtal
     /** 
      * Self Display method.
      * 
-     * @param out 
+     * @param [out] out output stream
      */
     void selfDisplay ( std::ostream & out ) const
     {

@@ -78,6 +78,9 @@ operator=( const ImplicitPolynomial3Shape & other )
     myFzx= other.myFzx;
     myFzy= other.myFzy;
     myFzz= other.myFzz;
+
+    myUpPolynome = other.myUpPolynome;	
+    myLowPolynome = other.myLowPolynome;
   }
   return *this;
 }
@@ -226,6 +229,8 @@ gaussianCurvature( const RealPoint &aPoint ) const
   double C = vFz*(-vFx*vFyz+vFxy*vFz-vFxz*vFy)+vFx*vFy*vFzz;
 
   double D = vFz*(vFx*vFx+vFy*vFy+vFz*vFz);
+
+  //ASSERT ( D != 0.0 );
 
   double G= (A*B-C*C)/(D*D);
 

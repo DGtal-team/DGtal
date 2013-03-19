@@ -263,9 +263,6 @@ trace.warning() << "Image copy Ctor  "<<std::endl;
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    /**
-     * @return the validity of the Image
-     */
     bool isValid() const
     {
       return (myImagePointer->isValid() );

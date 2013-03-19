@@ -107,8 +107,8 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aSegmentComputer
-     * @param aSCEstimator
+     * @param aSegmentComputer a segment computer
+     * @param aSCEstimator an estimator
      */
     MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
                                         const SCEstimator& aSCEstimator);
@@ -124,8 +124,8 @@ namespace DGtal
     /**
      * Initialisation.
      * @param h grid size (must be >0).
-     * @param itb, begin iterator
-     * @param ite, end iterator
+     * @param itb begin iterator
+     * @param ite end iterator
      */
     void init(const double h, const ConstIterator& itb, const ConstIterator& ite);
 
