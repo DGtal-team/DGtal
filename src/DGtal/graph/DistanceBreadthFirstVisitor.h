@@ -193,7 +193,7 @@ while ( ! visitor.finished() )
     }
    @endcode
 
-   @see testDistanceBreadthFirstVisitor.cpp
+   @see testDistancePropagation.cpp
    @see testObject.cpp
    */
   template < typename TGraph, 
