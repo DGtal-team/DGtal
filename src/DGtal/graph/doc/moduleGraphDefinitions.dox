@@ -155,8 +155,8 @@ namespace DGtal {
 
    @snippet graph/graphTraversal.cpp graphTraversal-graph-dfs-range
 
-   @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)."
-   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)." width=0.5\textwidth
+   @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
+   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal." width=0.5\textwidth
 
 
 */
@@ -174,7 +174,7 @@ $ ./examples/graph/graphTraversal
 
 @image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
 @image html graphTraversal-bfs.png "Coloring vertices of an object graph according to the topological distance to a seed (breadth-first traversal)."
-@image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to the depth (depth-first traversal)."
+@image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
 
 \example graph/graphTraversal.cpp
 */

@@ -64,8 +64,8 @@ bool testDistancePropagation()
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
 
   trace.beginBlock( "Distance propagation in 2D object" );
-  Point p1( -50, -50 );
-  Point p2( 50, 50 );
+  Point p1( -41, -36 );
+  Point p2( 18, 18 );
   Domain domain( p1, p2 );
   Point c1( -2, -1 );
   Point c2( -14, 5 );
