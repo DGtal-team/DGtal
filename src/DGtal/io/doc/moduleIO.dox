@@ -237,8 +237,8 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 \subsection exportMesh3D Export 3D mesh in OFF and OBJ format
 
 The following example display3DToOFF.cpp   shows in few lines how to export in OFF format a
-MeshFromPoints object. This object will be exported from a Display3D
-object (see. display3DToOFF). 
+DigitalSet object. This object will be exported with a Display3D
+object (see. display3DToOFF.cpp). 
 
 
 
