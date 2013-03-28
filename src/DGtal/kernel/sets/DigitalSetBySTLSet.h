@@ -48,6 +48,7 @@
 #include <set>
 #include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 //#include "DGtal/io/Display3D.h"
@@ -74,6 +75,10 @@ namespace DGtal
   class DigitalSetBySTLSet
   {
   public:
+ 
+    ///Concept checks
+    BOOST_CONCEPT_ASSERT(( CDomain< TDomain > ));
+    
     typedef TDomain Domain;
     typedef DigitalSetBySTLSet<Domain> Self;
     typedef typename Domain::Space Space;
