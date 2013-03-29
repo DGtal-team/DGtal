@@ -99,7 +99,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
 
 int main()
 {
-  typedef Labels<80, uint32_t> MyLabels;
+  typedef Labels<80, DGtal::uint32_t> MyLabels;
   typedef MyLabels::ConstIterator LabelsConstIterator;
   typedef bitset<80> MyBitset;
 
