@@ -38,7 +38,7 @@
 #include "DGtal/base/Labels.h"
 
 using namespace DGtal;
-using namespace std;
+
 
 template <typename Container1, typename Container2>
 bool
@@ -99,9 +99,9 @@ checkErase( VContainer1 & v, LContainer2 & l,
 
 int main()
 {
-  typedef Labels<80, uint32_t> MyLabels;
+  typedef Labels<80, DGtal::uint32_t> MyLabels;
   typedef MyLabels::ConstIterator LabelsConstIterator;
-  typedef bitset<80> MyBitset;
+  typedef std::bitset<80> MyBitset;
 
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< LabelsConstIterator > ));
 
