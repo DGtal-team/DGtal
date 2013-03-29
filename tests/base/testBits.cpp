@@ -35,7 +35,7 @@
 #include "DGtal/base/Bits.h"
 
 using namespace DGtal;
-using namespace std;
+
 
 // Set bits are numbered from 1 to x when reading the word from the
 // least significant to the most significant bit. This number is the
