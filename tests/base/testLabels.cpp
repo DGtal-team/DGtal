@@ -101,7 +101,7 @@ int main()
 {
   typedef Labels<80, DGtal::uint32_t> MyLabels;
   typedef MyLabels::ConstIterator LabelsConstIterator;
-  typedef bitset<80> MyBitset;
+  typedef std::bitset<80> MyBitset;
 
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator< LabelsConstIterator > ));
 
