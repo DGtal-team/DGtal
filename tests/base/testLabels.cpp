@@ -38,7 +38,7 @@
 #include "DGtal/base/Labels.h"
 
 using namespace DGtal;
-using namespace std;
+
 
 template <typename Container1, typename Container2>
 bool
