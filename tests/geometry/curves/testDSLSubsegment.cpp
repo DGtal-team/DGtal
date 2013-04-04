@@ -50,12 +50,14 @@ using namespace DGtal;
 // Functions for testing class DSLSubsegment.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CHECK_RES
+//#define CHECK_RES
 
 
-template <typename Integer>
-bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Integer modx)
+template <typename Fraction>
+bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, typename Fraction::Integer modb, typename Fraction::Integer modx)
 {
+  typedef typename Fraction::Integer Integer;
+  
   typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
   typedef typename DSLSubseg::Point Point;
   
@@ -63,6 +65,15 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
   typedef ArithDSSIterator<Integer,8> DSSIterator;
   typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
   
+  
+  typedef StandardDSLQ0<Fraction> DSL;
+  typedef typename Fraction::Quotient Quotient;
+  typedef typename DSL::Point PointDSL;
+  typedef typename DSL::ConstIterator ConstIterator;
+  typedef typename DSL::Point2I Point2I;
+  typedef typename DSL::Vector2I Vector2I;
+
+
   
   DGtal::IntegerComputer<Integer> ic;
   
@@ -75,8 +86,14 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
   
   // std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   
-  clock_t timeBegin, timeEnd;
-  timeBegin = clock();
+  long double timeTotalSubseg=0,timeTotalDSS=0,timeTotalSmartDSS=0,timeTotalReversedSmartDSS=0;
+  
+  clock_t timeBeginSubseg, timeEndSubseg;
+  clock_t timeBeginSmartDSS, timeEndSmartDSS;
+  clock_t timeBeginReversedSmartDSS, timeEndReversedSmartDSS;
+  clock_t timeBeginDSS, timeEndDSS;
+  
+  int nb = 0;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       Integer b( random() % modb + 1 );
@@ -84,10 +101,11 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
       
       if ( ic.gcd( a, b ) == 1 )
         {
+	  nb ++;
           for ( unsigned int j = 0; j < 5; ++j )
             {
               Integer mu = random() % (moda+modb);
-              //DSL D( a, b, mu );
+              DSL D( a, b, mu );
               
               for (Integer x = 0; x < 10; ++x )
                 {
@@ -95,23 +113,50 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
                   Integer x2 = x1 + 1 + ( random() % modx );
                   
                   //std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;
-                  
+		  
                   Integer y1 = ic.floorDiv(a*x1+mu,b);
                   Integer y2 = ic.floorDiv(a*x2+mu,b);
                   Point A = Point(x1,y1);
                   Point B = Point(x2,y2);
-                  DSLSubseg DD(a,b,mu,A,B);
-                  
-                  //std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
+		  
+		  timeBeginSubseg = clock();
+		  DSLSubseg DD(a,b,mu,A,B);
+		  timeEndSubseg = clock();
+		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
+		  
+		  
+		  PointDSL AA = D.lowestY( x1 );
+		  PointDSL BB = D.lowestY( x2 );
+		  
+		  timeBeginSmartDSS = clock();
+		  D.smartDSS(AA,BB);
+		  timeEndSmartDSS = clock();
+		  timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  
+		  timeBeginReversedSmartDSS = clock();
+		  D.reversedSmartDSS(AA,BB);
+		  timeEndReversedSmartDSS = clock();
+		  timeTotalReversedSmartDSS += ((double)timeEndReversedSmartDSS-(double)timeBeginReversedSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  
+		  
+		  
+		  /// std::cout << ((double)timeEndSubseg-(double)timeBeginSubseg) << " " << ((double)CLOCKS_PER_SEC)/1000 << " " << std::endl;
+	  
+		  
+                  //Std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
                   
 #ifdef CHECK_RES
-                  DSSIterator  it(a,b,-mu,A);
+                  
+		  DSSIterator  it(a,b,-mu,A);
                   ArithDSS myDSS(it);
                   
+		  
 
+		  timeBeginDSS = clock();
                   while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
                     {}
-                  
+		  timeEndDSS = clock();
+
                   //std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
                   if(DD.aa != myDSS.getA() || DD.bb != myDSS.getB() || DD.Nu != - myDSS.getMu())
 		    {
@@ -119,21 +164,34 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
 		      std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;    
 		      std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
 		      std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
+		      break;
 		    }
-		  #endif CHECK_RES
-
+		  timeTotalDSS += ((double)timeEndDSS-(double)timeBeginDSS)/((double)CLOCKS_PER_SEC)*1000;
+#endif CHECK_RES
+		  
+		  
+		  
+		 
 		  
 		}
             }
         }
+      
     }
   
-  timeEnd = clock();
-  long double CPUTime;
-  CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC)*1000;  
+  // timeEnd = clock();
+  // long double CPUTime;
+  // CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC)*1000;  
   
-  std::cout << " " << (long double) CPUTime/(nbtries*5*10) ;
- 
+  //std::cout << " " << (long double) CPUTime/(nb*5*10) ;
+  
+  std::cout << " " << (long double) timeTotalSubseg/(nb*5*10);
+  std::cout << " " << (long double) timeTotalSmartDSS/(nb*5*10);
+  std::cout << " " << (long double) timeTotalReversedSmartDSS/(nb*5*10);
+  
+#ifdef CHECK_RES
+  std::cout << "\t time DSS = " << (long double) timeTotalDSS/(nb*5*10);
+#endif
 
   return true;
 }
@@ -149,20 +207,68 @@ bool testDSLSubsegment( unsigned int nbtries, Integer moda, Integer modb, Intege
 int main( int argc, char** argv )
 {
   typedef DGtal::int64_t Integer;
+  //typedef DGtal::BigInteger Integer;
+  
+  // typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
+  // typedef DSLSubseg::Point Point;
+  
+  // DGtal::IntegerComputer<Integer> ic;
+
+
+  // Integer a = 139;
+  // Integer b = 7919;
+  // Integer mu = -5258;
+  // Integer x1 = 2829;
+  // Integer x2 = 5800;
+  
+  // Integer y1 = ic.floorDiv(a*x1+mu,b);
+  // Integer y2 = ic.floorDiv(a*x2+mu,b);
+  // Point A = Point(x1,y1);
+  // Point B = Point(x2,y2);
+  
+  // clock_t timeBegin, timeEnd;
+  // timeBegin = clock();
+
+  // DSLSubseg DD(a,b,mu,A,B);
+
+  // timeEnd = clock();
+  // long double CPUTime;
+  // CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC);  
   
   
-  Integer modb = 10000000;
+  // std::cout << DD.aa << " " << DD.bb << " " << DD.Nu << "time = " << CPUTime << std::endl;
+  
+  // typedef ArithDSSIterator<Integer,8> DSSIterator;
+  // typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+
+  // DSSIterator  it(a,b,-mu,A);
+  // ArithDSS myDSS(it);
+  
+  
+  // while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
+  //   {}
+  
+  // std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
+		     
+  
+  typedef LightSternBrocot<DGtal::int64_t, DGtal::int32_t, DGtal::StdMapRebinder> SB;
+  
+  //typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
+  typedef SB::Fraction Fraction;
+  
+
+  Integer modb = 100000;
   Integer moda = modb;
   
   unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :100;
-
- 
-  for(Integer modx = 10; modx <=  modb;modx*=2)
+  
+  
+  for(Integer modx = 10; modx <=  modb;modx+=modx/2)
     //Integer  modx = 1000;
-  {
+    {
   	  moda = modb;
   	  std::cout << modb << " " << modx << " ";
-    	  testDSLSubsegment<Integer>( nbtries, moda, modb, modx);
+    	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx);
   	  std::cout << std::endl;
   	}
     return 1;

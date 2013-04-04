@@ -98,8 +98,11 @@ typename DGtal::DSLSubsegment<TInteger>::Integer DGtal::DSLSubsegment<TInteger>:
       return (Integer) floor((FloatType) num/denom);
     }
   else
-    return (Integer) floor((FloatType) (aL[1]*P[0] - aL[0]*P[1])/(v[1]*aL[1]));
+    {
+      return (Integer) floor((FloatType) (aL[1]*P[0] - aL[0]*P[1])/(v[1]*aL[1]));
+    }
 }
+
 
 
 template <typename TInteger>
@@ -134,23 +137,30 @@ void DGtal::DSLSubsegment<TInteger>::convexHullApprox(Vector l, Integer n, Point
 	
   Point A = Point(0,1);
   Point B = Point(1,0);
+  //Point B = Point(0,0);
   
   Vector u = Vector(1,-1);
   Vector v = Vector(1,0);
+  //Vector u = Vector(0,-1);
+  //Vector v = Vector(1,0);
 
   Vector normal = Vector(-l[1],l[0]);
-
   
+  //std::cout << "normal vector " << normal << std::endl;
+  //std::cout << "n = " << n << std::endl;
   Integer alpha;
 
   bool ok = true;
-
+  
   while(ok)
     {
       
       if(v[0]*normal[0]+v[1]*normal[1] <0)
 	{
+	  //	  std::cout << "dot product neg " <<  v << std::endl;
+	  //std::cout << "A " << A << std::endl;
 	  alpha = min(intersection(A,v,l), intersectionVertical(A,v,n));
+	  //std::cout << "alpha = " << alpha << std::endl;
 	  if(alpha >= 1)
 	    {
 	      Vector vv  = v;
@@ -183,8 +193,12 @@ void DGtal::DSLSubsegment<TInteger>::convexHullApprox(Vector l, Integer n, Point
     }
   
   *sup = A;
+  //if(B != Point(0,0))
   *inf = B;
+  //else
+  //*inf = Point(1,0);
   assert(A[0] != B[0] || A[1] != B[1]);
+  //std::cout << "end convex hull approx" << A << " " << B << std::endl;
       }
   
 }
