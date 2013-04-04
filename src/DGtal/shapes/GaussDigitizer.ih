@@ -165,7 +165,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::operator()( const Point & p ) const
 {
   ASSERT( myEShape != 0 );
-  return (myEShape->orientation( embed( p ) ) == INSIDE);
+  return (myEShape->orientation( embed( p ) ) <= ON);
 }
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>

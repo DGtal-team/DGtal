@@ -54,16 +54,16 @@ struct Path {
   
   /** 
    * Barycenter of the path
-   * @return 
+   * @return a point 
    */
   Point center() const;
 
   /** 
    * Add a point at the end of the path.
    * 
-   * @param p 
+   * @param p the point to add
    * 
-   * @return 
+   * @return a path 
    */
   Path & operator<<( const Point & p );
 
@@ -71,16 +71,16 @@ struct Path {
    * 
    * 
    * 
-   * @return 
+   * @return path
    */
   Path & pop_back();
 
   /** 
    * Returns the n-th point of the polyline.
    * 
-   * @param i 
+   * @param n n
    * 
-   * @return 
+   * @return a point
    */
   Point & operator[]( const unsigned int n ) {
     return _points[ n ];
@@ -89,9 +89,9 @@ struct Path {
   /** 
    * Returns the n-th point of the polyline.
    * 
-   * @param i 
+   * @param n n
    * 
-   * @return 
+   * @return a point
    */
   const Point & operator[]( const unsigned int n ) const {
     return _points[ n ];
@@ -100,87 +100,87 @@ struct Path {
   /** 
    * 
    * 
-   * @param angle 
-   * @param center 
+   * @param angle angle
+   * @param center center
    * 
-   * @return 
+   * @return a path
    */
   Path & rotate( double angle, const Point & center );
 
   /** 
    * 
    * 
-   * @param angle 
-   * @param center 
+   * @param angle angle
+   * @param center center
    * 
-   * @return 
+   * @return a Path 
    */
   Path rotated( double angle, const Point & center ) const;
 
   /** 
    * 
    * 
-   * @param angle 
+   * @param angle angle
    * 
-   * @return 
+   * @return a Path
    */
   Path & rotate( double angle );
   
   /** 
    * 
    * 
-   * @param angle 
+   * @param angle angle
    * 
-   * @return 
+   * @return rotated path
    */
   Path rotated( double angle ) const;
 
   /** 
    * 
    * 
-   * @param dx 
-   * @param dy 
+   * @param dx translation vector
+   * @param dy translation vector
    * 
-   * @return 
+   * @return translated path
    */
   Path & translate( double dx, double dy );
  
   /** 
    * 
    * 
-   * @param dx 
-   * @param dy 
+   * @param dx translation vector 
+   * @param dy translation vector
    * 
-   * @return 
+   * @return a Path
    */
   Path translated( double dx, double dy ) const;
 
   /** 
    * 
    * 
-   * @param sx 
-   * @param sy 
+   * @param sx scale factor
+   * @param sy scale factor
    * 
-   * @return 
+   * @return scaled path
    */
   Path & scale( double sx, double sy );
 
   /** 
    * 
    * 
-   * @param s 
+   * @param s scale factor 
    * 
-   * @return 
+   * @return scaled path
    */
   Path & scale( double s );
   
   /** 
    * 
    * 
-   * @param sx 
-   * @param sy 
+   * @param sx scale factor
+   * @param sy scale factor
    * 
-   * @return 
+   * @return a Path
    */
   Path scaled( double sx, double sy )  const;
 

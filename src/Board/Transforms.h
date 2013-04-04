@@ -26,7 +26,7 @@ struct ShapeList;
 
 /**
  * The base class for transforms.
- * @brief 
+ * @brief base class for transforms.
  */
 struct Transform {
 public:

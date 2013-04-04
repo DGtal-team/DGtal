@@ -117,8 +117,8 @@ namespace DGtal
   
     /**
      * Set near and far distance.
-     * @param near near distance.
-     * @param far far distance.
+     * @param _near near distance.
+     * @param _far far distance.
      */
     void setNearFar(double _near, double _far) { ZNear = _near; ZFar = _far; }
   
@@ -151,7 +151,7 @@ namespace DGtal
     /**
      * Set the default color for future drawing.
      *
-     * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+     * @param aColor a DGtal::Color (allow to set a trasnparency value).
      *
      **/  
     Board3DTo2D & operator<<(const DGtal::Color & aColor);
@@ -189,8 +189,43 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
  
+    /**
+     * Transpose a 4x4 matrix.
+     * @param tmat destination matrix.
+     * @param mat source matrix.
+     */
+    static 
+    void TransposeMt(double tmat[16], double mat[16]);
+
+    /**
+     * Multiply a 3d vector by a 4x4 matrix.
+     * @param v destination vector.
+     * @param mat source matrix.
+     * @param b source vector.
+     */
+    static 
+    void MulMt(double v[4], double mat[16], double b[4]);
+
+    /**
+     * Compute 4x4 LookAt matrix.
+     * @param mat destination matrix.
+     * @param eyex x position of eye.
+     * @param eyey y position of eye.
+     * @param eyez z position of eye.
+     * @param dirx x direction of eye.
+     * @param diry y direction of eye.
+     * @param dirz z director of eye.
+     * @param upx x coordinate of up-vector.
+     * @param upy y coordinate of up-vector.
+     * @param upz z coordinate of up-vector.
+     */
+    static 
+    void LookAtMt(double mat[16],
+                  double eyex, double eyey, double eyez,
+                  double dirx, double diry, double dirz,
+                  double upx, double upy, double upz);
   
-  
+ 
     /**
      * Precompute 4x4 projection matrix for 3D->2D projection.
      */
@@ -217,8 +252,8 @@ namespace DGtal
     double ZFar;      //!< zfar distance
   
   protected :
-    /*!
-     * \brief init function (should be in Constructor).
+    /**
+     *  init function (should be in Constructor).
      */
     virtual void init();
 

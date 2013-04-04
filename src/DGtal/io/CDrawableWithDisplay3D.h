@@ -43,7 +43,7 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
-#include "DGtal/io/Display3D.h"
+//#include "DGtal/io/Display3D.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -51,62 +51,53 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // class CDrawableWithDisplay3D
- 
-/////////////////////////////////////////////////////////////////////////////
-  // class CDrawableWithBoard3DTo2D
   /**
-   * DescriptionDescription of \b concept '\b CDrawableWithDisplay3D' <p>
-   * @ingroup Concepts
-   * Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
-   * that admit an export with Display3D.
-   * An object x satisfying this concept may then be used as:
-   * 
+Description of \b concept '\b CDrawableWithDisplay3D' <p>
+@ingroup Concepts
+
+@brief Aim:  The concept CDrawableWithDisplay3D specifies what are the classes
+that admit an export with Display3D.
+    
+An object x satisfying this concept may then be used as:
+    
    \code
    Display3D display;
    display << CustomStyle( x.className(), x.defaultStyle() )
          << x;
    \endcode 
-   *
-   * <p> Refinement of
-   *
-   * <p> Associated types :
-   *
-   * <p> Notation
-   * - \t X : A type that is a model of CDrawableWithDisplay3DD
-   * - \t x, \t y  : Object of type X
-   * - \t m  : a string of characters
-   *
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td>
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr>
-   * <td> the default draw style</td> <td> x.defaultStyle( m = "" ) </td> <td> \t mode : \c std::string</td><td> CDrawableWithDisplay3D * </td> <td> </td> <td> returns a dynamic allocation of the default style for the model \t X in mode \t m</td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * <tr>
-   * <td> the name of the model X</td> <td> x.className() </td> <td></td><td> std::string </td> <td> </td> <td> returns a string telling the name of the model X </td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * <tr>
-   * <td> the way the object \t x is drawn</td> <td> x.setStyle(CDrawableWithDisplay3D &display) </td> <td></td> <td> </td> <td> </td> <td> draws on the \c display stream the object \c x </td><td> </td>
-   *  <td> </td>
-   * </tr>
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   * ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
-   *
-   * <p> Notes###
-   * @todo ImageContainerByHashTree does not implement setStyle(display &).
-   * @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
-   */  template <typename T>
+   
+### Refinement of
+   
+### Associated types :
+   
+### Notation
+    - \t X : A type that is a model of CDrawableWithDisplay3DD
+    - \t x, \t y  : Object of type X
+    - \t m  : a string of characters
+   
+### Definitions
+   
+### Valid expressions and semantics
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|the default draw style | x.defaultStyle( m = "") | mode \t m: \c std::string | CDrawableWithDisplay3D | | returns a dynamic allocation of the default style for the model \t X in mode \t m | | |
+|the name of the model X | x.className() | | std::string | | returns a string telling the name of the model X | | |
+|the way the object \t x is drawn | x.setStyle(CDrawableWithDisplay3D &display) | | | |draws the object \c x on the \c display stream | | |  
+
+### Invariants
+   
+### Models
+    ArimeticalDSS, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
+   
+### Notes
+    @todo ImageContainerByHashTree does not implement setStyle(display &).
+    @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
+   */  
+  
+  class Display3D;
+  
+  template <typename T>
   struct CDrawableWithDisplay3D
   {
 

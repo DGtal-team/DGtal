@@ -38,6 +38,8 @@
 
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/boards/Board3DTo2D.h"
+
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/CDrawableWithDisplay3D.h"
@@ -76,30 +78,57 @@ int main( int argc, char** argv )
   ///////////////////////////////////
   //display  
   bool flag = true;    
-  #ifdef WITH_VISU3D_QGLVIEWER
+  Point p;
+
+#ifdef WITH_VISU3D_QGLVIEWER
 
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show();
-
-  Point p;
   viewer  << SetMode3D(p.className(), "Grid");
 
-    unsigned int c = 0;
-    Decomposition::SegmentComputerIterator i = theDecomposition.begin();
-    for ( ; i != theDecomposition.end(); ++i) {
-      SegmentComputer currentSegmentComputer(*i);
+#endif
+#ifdef WITH_CAIRO
+  Board3DTo2D boardViewer;
+  boardViewer  << SetMode3D(p.className(), "Grid"); 
+  boardViewer << CameraPosition(-23.500000, 12.500000, 42.078199)
+       << CameraDirection(0.7200000, -0.280000, -0.620000)
+       << CameraUpVector(0.1900000, 0.950000, -0.200000);
+  boardViewer << CameraZNearFar(21.578200, 105.578199);
+#endif
+
+
+
+  unsigned int c = 0;
+  Decomposition::SegmentComputerIterator i = theDecomposition.begin();
+  for ( ; i != theDecomposition.end(); ++i) {
+    SegmentComputer currentSegmentComputer(*i);
+     #ifdef WITH_VISU3D_QGLVIEWER
        viewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
-      viewer << currentSegmentComputer;  
+       viewer << currentSegmentComputer;  
        viewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
-      viewer << currentSegmentComputer;  
-      //cerr << currentSegmentComputer << endl;
-      c++;
-    } 
- 
-  viewer << Viewer3D::updateDisplay;
-  flag = application.exec();
-   #endif
+       viewer << currentSegmentComputer;  
+    #endif
+    #ifdef WITH_CAIRO   
+       boardViewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
+       boardViewer << currentSegmentComputer;  
+       boardViewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
+       boardViewer << currentSegmentComputer;  
+    #endif
+    c++;
+  } 
+  
+  
+  #ifdef WITH_VISU3D_QGLVIEWER
+    viewer << Viewer3D::updateDisplay;
+    flag = application.exec();
+  #endif
+
+  #ifdef WITH_CAIRO
+    boardViewer.saveCairo("exampleArithDSS3d.pdf", Board3DTo2D::CairoPDF, 600*2, 400*2);
+
+  #endif
+
   return flag;
 }
 

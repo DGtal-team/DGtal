@@ -43,6 +43,9 @@
 #include <iostream>
 #include <vector>
 #include <set>
+// JOL (2013/02/01): required to define internal tags (boost/graph/copy.hpp, l. 251 error ?).
+#include <boost/graph/graph_traits.hpp>
+#include <boost/graph/properties.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/CWithGradientMap.h"
@@ -52,6 +55,17 @@
 #include "DGtal/topology/CDigitalSurfaceTracker.h"
 #include "DGtal/topology/UmbrellaComputer.h"
 //////////////////////////////////////////////////////////////////////////////
+namespace boost
+{
+  /**
+     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimick.
+  */
+  struct DigitalSurface_graph_traversal_category 
+    : public virtual adjacency_graph_tag,
+      public virtual vertex_list_graph_tag,
+      public virtual incidence_graph_tag,
+      public virtual edge_list_graph_tag { };
+}
 
 namespace DGtal
 {
@@ -92,7 +106,7 @@ namespace DGtal
   Proxy class to a DigitalSurfaceContainer.
 
   DigitalSurface is a model of the concept CUndirectedSimpleGraph,
-  CUndirectedSimpleLocalGraph, CSinglePassConstRange,
+  CUndirectedSimpleLocalGraph, CConstSinglePassRange,
   boost::CopyConstructible, boost::Assignable.
 
   @todo Should be a model of CCubicalComplex
@@ -100,6 +114,8 @@ namespace DGtal
   @tparam TDigitalSurfaceContainer any model of
   CDigitalSurfaceContainer: the concrete representation chosen for
   the digital surface.
+
+  ee \ref moduleDigitalSurfaces
    */
   template <typename TDigitalSurfaceContainer>
   class DigitalSurface
@@ -107,6 +123,17 @@ namespace DGtal
   public:
     typedef TDigitalSurfaceContainer DigitalSurfaceContainer;
     BOOST_CONCEPT_ASSERT(( CDigitalSurfaceContainer<DigitalSurfaceContainer> ));
+
+    // ----------------------- boost graph tags ------------------------------
+    // JOL (2013/02/01): required to define internal tags (boost/graph/copy.hpp, l. 251 error ?).
+  public:
+    /// the graph is undirected.
+    typedef boost::undirected_tag directed_category;
+    /// the graph satisfies AdjacencyListGraph and VertexListGraph concepts.
+    typedef boost::DigitalSurface_graph_traversal_category traversal_category;
+    /// the graph does not allow parallel edges.
+    typedef boost::disallow_parallel_edge_tag edge_parallel_category;
+
 
     // ----------------------- types ------------------------------
   public:
@@ -193,6 +220,11 @@ namespace DGtal
       Vertex base;  ///< base surfel 
       Dimension k;  ///< direction toward the head surfel
       bool epsilon; ///< orientation toward the head surfel
+      /**
+         Default constructor. The arc is invalid.
+      */
+      inline Arc()
+        : base(), k( 0 ), epsilon( false ) {}
       inline Arc( const Vertex & theTail, Dimension aK, bool aEpsilon )
 	: base( theTail ), k( aK ), epsilon( aEpsilon ) {}
       inline bool operator==( const Arc & other ) const
@@ -207,6 +239,11 @@ namespace DGtal
 	       && ( ( k < other.k ) 
 		    || ( ( k == other.k ) 
 			 && ( epsilon < other.epsilon ) ) ) );
+      }
+      inline bool operator!=( const Arc & other ) const
+      {
+	return ( base != other.base ) 
+	  || ( k != other.k ) || ( epsilon != other.epsilon );
       }
     };
 
@@ -303,6 +340,45 @@ namespace DGtal
     
     /**
        @return a ConstIterator on the first surfel in the container.
+
+     @remark The digital surface delegates operations to some model of
+     CDigitalSurfaceContainer. Therefore, ranges have only the
+     guarantee to be a model CConstSinglePassRange, but \b not
+     necessarily a model of CConstBidirectionalRange. For instance, if
+     you wish to do an algorithm like: for all vertex x, for all
+     vertex y, compute something, then the following code may not
+     work depending on the container:
+
+     @code
+     // This snippet may NOT work.
+     const ConstIterator itb = mySurface.begin(); 
+     const ConstIterator ite = mySurface.end();
+     for ( ConstIterator itX = itb; itX != ite; ++itX ) 
+     { 
+       for ( ConstIterator itY = itb; itY != ite; ++itY ) 
+       { // compute something with *itX and *itY.
+         // But itX == itY at each step ! }
+       // now itX == itY == ite !
+       }
+     @endcode
+     
+     You may use this range only once ! This is because the iterators
+     are only single pass. If you wish to visit twice the range, you
+     must indeed creates two ranges by calling begin() twice (end() is
+     not compulsory here, but advised).
+
+     @code
+     // This snippet does ALWAYS work.
+     for ( ConstIterator itX = mySurface.begin(), 
+                         itXEnd = mySurface.end();
+           itX != itXEnd; ++itX ) 
+     {
+       for ( ConstIterator itY = mySurface.begin(), 
+                           itYEnd = mySurface.end();
+             itY != itYEnd; ++itY ) 
+         { // compute something with *itX and *itY. }
+     }
+     @endcode
     */
     ConstIterator begin() const;
 

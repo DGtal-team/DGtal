@@ -103,7 +103,7 @@ namespace DGtal
    * }
    * @endcode
    *
-   * @tparam Value The type of the range values.
+   * @tparam PValue The type of the range values.
    * @tparam PDefaultPreset The default gradient preset (e.g. CMAP_GRAYSCALE,
    *         CMAP_HOT, or CMAP_CUSTOM
    * @tparam PDefaultFirstColor If DefaultPreset is CMAP_CUSTOM, this is the

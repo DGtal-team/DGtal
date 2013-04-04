@@ -170,7 +170,7 @@ namespace DGtal
     {
       out << "[ConstRangeAdapter]" << std::endl; 
       out << "\t"; 
-      std::copy( this->begin(), this->end(), ostream_iterator<TReturnType>(out, ", ") ); 
+      std::copy( this->begin(), this->end(), std::ostream_iterator<TReturnType>(out, ", ") ); 
       out << std::endl; 
     }
 
@@ -248,19 +248,29 @@ namespace DGtal
     }
 
     /**
-     * Circulator service.
+     * Circulator service. 
+     * Prodives a circulator 
+     * such that *c() == *begin()
      * @return a circulator
+     * @see rc method
      */
     ConstCirculator c() const {
       return ConstCirculator( this->begin(), this->begin(), this->end() );
     }
 
     /**
-     * Circulator service.
+     * Circulator service. 
+     * Provides a reverse circulator
+     * such that *rc() == *c() == *begin()
      * @return a reverse circulator
+     * @see c method
+     * @see begin method
      */
     ConstReverseCirculator rc() const {
-      return ConstReverseCirculator( this->c() );
+      //implemented so that *rc() == *c()
+      ConstCirculator tmp = this->c();
+      ++tmp; 
+      return ConstReverseCirculator( tmp );
     }
 
   private: 

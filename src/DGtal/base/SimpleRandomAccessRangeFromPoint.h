@@ -102,7 +102,7 @@ namespace DGtal
        * and one functor.
        * @param itb begin iterator.
        * @param ite end iterator.
-       * @param aFunctor functor used to adapt on-the-fly the elements of the range
+       * @param aDistance functor used to adapt on-the-fly the elements of the range
        *
        */
       SimpleRandomAccessRangeFromPoint ( const TIterator& itb,
@@ -159,7 +159,7 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<Iterator>::Value Value;
         out << "[SimpleRandomAccessRangeFromPoint]" << std::endl;
         out << "\t";
-        std::copy ( myBegin, myEnd, ostream_iterator<Value> ( out, ", " ) );
+        std::copy ( myBegin, myEnd, std::ostream_iterator<Value> ( out, ", " ) );
         out << std::endl;
       }
 

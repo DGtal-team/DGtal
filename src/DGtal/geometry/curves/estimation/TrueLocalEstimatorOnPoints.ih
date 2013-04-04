@@ -119,7 +119,7 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
       ConstIterator it = itb; 
       do
 	{
-	  *result++ = eval( *it );
+	  *result++ = eval( it );
 	  ++it; 
 	} while (it != ite);
     }

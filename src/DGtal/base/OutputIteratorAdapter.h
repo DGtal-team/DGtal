@@ -81,7 +81,7 @@ namespace DGtal
     typedef TIterator Iterator; 
     BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Iterator> )); 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, 
-  typename iterator_traits<Iterator>::value_type&, TInputValue& > )); 
+                           typename std::iterator_traits<Iterator>::value_type&, TInputValue& > )); 
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -111,7 +111,6 @@ namespace DGtal
     /**
      * Assignment
      * @param aValue any value
-     * @tparam TInputValue type of the value used for the update
      * @return a reference to *this
      */
     OutputIteratorAdapter& operator=(const TInputValue& aValue) 

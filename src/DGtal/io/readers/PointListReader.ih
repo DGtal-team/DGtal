@@ -49,8 +49,8 @@ inline
 std::vector<TPoint> 
 DGtal::PointListReader<TPoint>::getPointsFromFile (const std::string &filename,  std::vector<unsigned int> aVectPosition)
 {
-  ifstream infile;
-  infile.open (filename.c_str(), ifstream::in);
+  std::ifstream infile;
+  infile.open (filename.c_str(), std::ifstream::in);
   return PointListReader<TPoint>::getPointsFromInputStream(infile, aVectPosition);
 }
 
@@ -66,12 +66,12 @@ DGtal::PointListReader<TPoint>::getPointsFromInputStream (std::istream &in,  std
       aVectPosition.push_back(i);
     }
   }
-  vector<TPoint> vectResult;
-  string str;
+  std::vector<TPoint> vectResult;
+  std::string str;
   getline(in, str );
   while ( in.good() ){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
-      istringstream in_str( str );
+      std::istringstream in_str( str );
       unsigned int idx = 0;
       typename TPoint::Component val;
       unsigned int nbFound=0;
@@ -103,8 +103,8 @@ template<typename TPoint>
 inline
 std::vector< std::vector<TPoint> > 
 DGtal::PointListReader<TPoint>::getPolygonsFromFile(const std::string &filename){
-  ifstream infile;
-  infile.open (filename.c_str(), ifstream::in);
+  std::ifstream infile;
+  infile.open (filename.c_str(), std::ifstream::in);
   return PointListReader<TPoint>::getPolygonsFromInputStream(infile);
 }
 
@@ -113,13 +113,13 @@ template<typename TPoint>
 inline
 std::vector< std::vector<TPoint> > 
 DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
-  vector< vector< TPoint > > vectResult;
-  string str;
+  std::vector< std::vector< TPoint > > vectResult;
+  std::string str;
   getline(in, str );
   while ( in.good() ){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
-      vector <TPoint> aContour;
-      istringstream in_str( str );
+      std::vector <TPoint> aContour;
+      std::istringstream in_str( str );
       double x=0.0, y=0.0;
       while ( in_str.good()){
   bool isOK = (in_str >> x);
@@ -148,34 +148,33 @@ DGtal::PointListReader<TPoint>::getPolygonsFromInputStream(std::istream & in){
 template<typename TPoint>
 template<typename TInteger>
 inline
-std::vector<  FreemanChain< TInteger>  >
+std::vector<  DGtal::FreemanChain< TInteger>  >
 DGtal::PointListReader<TPoint>::getFreemanChainsFromFile (const std::string &filename){
   std::vector< FreemanChain<  TInteger> >   vectResult;
-  ifstream infile;
-  infile.open (filename.c_str(), ifstream::in);
-  string str;
+  std::ifstream infile;
+  infile.open (filename.c_str(), std::ifstream::in);
+  std::string str;
   getline(infile, str );
   while ( infile.good() ){
     if ( ( str != "" ) && ( str[ 0 ] != '#' ) ){
-      istringstream in_str( str );
-      int x0, y0;
-      string fcChain;
+      std::istringstream in_str( str );
+      int x0=0, y0=0;
+      std::string fcChain;
       bool isOK = (in_str >> x0) && (in_str >> y0) && (in_str >> fcChain);
       FreemanChain< TInteger> fc(fcChain, x0, y0);
-      if(isOK){
-  vectResult.push_back(fc);
-      }else{
-  cerr << "Ignoring entry invalid FreemanChain" << endl;
-      }
+      if(isOK)
+        {
+          vectResult.push_back(fc);
+        }
+      else
+        {
+          std::cerr << "Ignoring entry invalid FreemanChain" << std::endl;
+        }
     }
     getline(infile, str );
   }  
   return vectResult;
 }
-  
-  
-
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

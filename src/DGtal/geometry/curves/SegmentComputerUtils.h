@@ -142,9 +142,10 @@ IC getMiddleIterator(const IC& itb, const IC& ite, ForwardCategory)
 /**
  * Computes the middle iterator of a given range, 
  * i.e. itb + (ite-itb)/2)
- * @param itb, ite, begin and end iterators of a range
+ * @param itb begin iterator of a range
+ * @param ite end iterator of a range
  * @return the middle iterator of the range [itb,ite)
- * @tparam any iterator or circulator
+ * @tparam IC iterator or circulator
  */
 template<typename IC>
 IC getMiddleIterator(const IC& itb, const IC& ite) {
@@ -289,7 +290,8 @@ bool maximalSymmetricExtension(SC& s,
  * Calls alternatively s.extendForward() and s.extendBackward() 
  * while it is possible
  * @param s any instance of (bidirectional)segment computer 
- * @param begin, end, begin and end iterator of a range
+ * @param begin begin iterator of a range
+ * @param end end iterator of a range
  * @return 'true' if the extension at the front fails first
  * and 'false' if the extension at the back fails first
  * @tparam SC any model of CBidirectionalSegmentComputer
@@ -376,8 +378,8 @@ void longestSegment(SC& s,
 /**
  * Computes the longest possible segment from [i]
  * @param s any instance of segment computer 
- * @param i, a given ConstIterator
- * @param end, any end ConstIterator
+ * @param i a given ConstIterator
+ * @param end any end ConstIterator
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
@@ -396,7 +398,7 @@ void longestSegment(SC& s,
 /**
  * Computes the first maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CForwardSegmentComputer
  */
 template <typename SC>
@@ -431,7 +433,7 @@ void firstMaximalSegment(SC& s,
 /**
  * Computes the first maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CBidirectionalSegmentComputer
  */
 template <typename SC>
@@ -450,7 +452,7 @@ void firstMaximalSegment(SC& s,
 /**
  * Computes the first maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
@@ -467,7 +469,7 @@ void firstMaximalSegment(SC& s,
 /**
  * Computes the first maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
@@ -484,7 +486,7 @@ void firstMaximalSegment(SC& s,
 /**
  * Computes the first maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
@@ -503,7 +505,7 @@ typename DGtal::SegmentComputerTraits<SC>::Category() );
 /**
  * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CForwardSegmentComputer
  */
 template <typename SC>
@@ -559,7 +561,7 @@ void mostCenteredMaximalSegment(SC& s,
 /**
  * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CBidirectionalSegmentComputer
  */
 template <typename SC>
@@ -592,7 +594,7 @@ void mostCenteredMaximalSegment(SC& s,
 /**
  * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
@@ -609,7 +611,7 @@ void mostCenteredMaximalSegment(SC& s,
 /**
  * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
@@ -626,7 +628,7 @@ void mostCenteredMaximalSegment(SC& s,
 /**
  * Computes the most centered maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
@@ -645,7 +647,7 @@ typename DGtal::SegmentComputerTraits<SC>::Category() );
 /**
  * Computes the last maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CForwardSegmentComputer
  */
 template <typename SC>
@@ -679,7 +681,7 @@ void lastMaximalSegment(SC& s,
 /**
  * Computes the last maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CBidirectionalSegmentComputer
  */
 template <typename SC>
@@ -698,7 +700,7 @@ void lastMaximalSegment(SC& s,
 /**
  * Computes the last maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
@@ -715,7 +717,7 @@ void lastMaximalSegment(SC& s,
 /**
  * Computes the last maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
@@ -732,7 +734,7 @@ void lastMaximalSegment(SC& s,
 /**
  * Computes the last maximal segment passing through i
  * @param i any ConstIterator
- * @param begin, end, any pair of ConstIterators bounding a range
+ * @param begin end, any pair of ConstIterators bounding a range
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
@@ -751,7 +753,7 @@ typename DGtal::SegmentComputerTraits<SC>::Category() );
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, any end ConstIterator
+ * @param end any end ConstIterator
  * @tparam SC any model of CForwardSegmentComputer
  * @note fistMaximalSegment of s.end()
  */
@@ -766,7 +768,7 @@ void nextMaximalSegment(SC& s,
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, end ConstIterator
+ * @param end end ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
  * @note fistMaximalSegment of s.end()
  */
@@ -781,7 +783,7 @@ void nextMaximalSegment(SC& s,
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, end ConstIterator
+ * @param end end ConstIterator
  * @tparam SC any model of CDynamicSegmentComputer
  */
 template <typename SC>
@@ -812,7 +814,7 @@ void nextMaximalSegment(SC& s,
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, end ConstIterator
+ * @param end end ConstIterator
  * @tparam SC any model of CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to DynamicSegmentComputer
  */
@@ -827,7 +829,7 @@ void nextMaximalSegment(SC& s,
 /**
  * Computes the next maximal segment of s
  * (s is assumed to be maximal)
- * @param end, any end ConstIterator
+ * @param end any end ConstIterator
  * @tparam SC any model of segment computer 
  */
 template <typename SC>
@@ -844,7 +846,7 @@ typename DGtal::SegmentComputerTraits<SC>::Category() );
 /**
  * Computes the previous maximal segment of s
  * (s is assumed to be maximal)
- * @param begin, any begin ConstIterator
+ * @param begin any begin ConstIterator
  * @tparam SC any model of CForwardSegmentComputer
  * @note lastMaximalSegment of --s.begin()
  */
@@ -860,7 +862,7 @@ void previousMaximalSegment(SC& s,
 /**
  * Computes the previous maximal segment of s
  * (s is assumed to be maximal)
- * @param begin, any begin ConstIterator
+ * @param begin any begin ConstIterator
  * @tparam SC any model of CBidirectionalSegmentComputer
  * @note lastMaximalSegment of --s.begin()
  */
@@ -876,7 +878,7 @@ void previousMaximalSegment(SC& s,
 /**
  * Computes the previous maximal segment of s
  * (s is assumed to be maximal)
- * @param begin, any begin ConstIterator
+ * @param begin any begin ConstIterator
  * @tparam SC any model of CDynamicSegmentComputer
  */
 template <typename SC>
@@ -909,7 +911,7 @@ void previousMaximalSegment(SC& s,
 /**
  * Computes the previous maximal segment of s
  * (s is assumed to be maximal)
- * @param end, end ConstIterator
+ * @param end end ConstIterator
  * @tparam SC any model of CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to DynamicSegmentComputer
  */
@@ -924,7 +926,7 @@ void previousMaximalSegment(SC& s,
 /**
  * Computes the previous maximal segment of s
  * (s is assumed to be maximal)
- * @param begin, any begin ConstIterator
+ * @param begin any begin ConstIterator
  * @tparam SC any model of segment computer 
  */
 template <typename SC>

@@ -46,57 +46,37 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // struct CTrivialImage
-  /**
-   * Description of \b concept '\b CTrivialImage' <p>
-   *
-   * @ingroup Concepts
-   * Aim: Defines the concept describing an image without extra ranges, 
-   * which is a refinement of CTrivialConstImage. 
-   *
-###  Refinement of CTrivialConstImage
-   *
-###  Associated types : the same as CTrivialConstImage
-   *
+/**
+ * Description of \b concept '\b CTrivialImage' <p>
+ *
+ * @ingroup Concepts
+ * @brief Aim: Defines the concept describing an image without extra ranges, 
+ * which is a refinement of CTrivialConstImage. 
+ *
+###  Refinement of
+  - CTrivialConstImage
+###  Associated types 
+  
 ###  Notation
-   * - \t X : A type that is a model of CTrivialImage
-   * - \t x, \t y  : Object of type X
-   * - \t p, \t v : Objects of type Point and Value
-   *
+ - \e X : A type that is a model of CTrivialImage
+ - \e x, \e y  : Object of type X
+ - \e p, \e v : Objects of type Point and Value
+   
 ###  Definitions
-   *
-###  Valid expressions and 
-      <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
+   
+###  Valid expressions and semantics
+   
 
-	<tr> 
-        <td class=CName> set value           </td> 
-        <td class=CExpression>  x.setValue(p,v)   </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>  set a given value v to a given point p     </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Set value | x.setValue(p,v) | | | | set a given value v to a given point p | | |   
 
-
-    </table>   
-
-   *
+   
 ###  Invariants
-   *
+   
 ###  Models
-   * ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
-   *
+ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
+   
    */
 
   template <typename I>

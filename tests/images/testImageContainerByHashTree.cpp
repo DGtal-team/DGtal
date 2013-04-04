@@ -37,8 +37,8 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-#define dim ImageContainerByHashTree<Domain , T, DGtal::uint64_t >::dim
-#define defHashKey typename ImageContainerByHashTree<Domain , int,  DGtal::uint64_t >::HashKey
+#define dim experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >::dim
+#define defHashKey typename experimental::ImageContainerByHashTree<Domain , int,  DGtal::uint64_t >::HashKey
 
 using namespace DGtal;
 
@@ -49,7 +49,7 @@ int iRand ( int iMin, int iMax )
 }
 
 template<typename Domain, typename T >
-bool test_setVal (ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& container, bool checkAfterEachSet )
+bool test_setVal (experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& container, bool checkAfterEachSet )
 {
   srand ( (unsigned int)time ( NULL ) );
 
@@ -117,7 +117,7 @@ bool test_setVal (ImageContainerByHashTree<Domain , T, DGtal::uint64_t >& contai
 
 
 template<typename Domain, typename T >
-bool test_get ( ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool  )
+bool test_get ( experimental::ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container, bool  )
 {
   srand ( (unsigned int)time ( NULL ) );
   unsigned count = 0;
@@ -138,7 +138,7 @@ bool test_get ( ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container
       container.setValue ( key, val );
 
 
-      typename ImageContainerByHashTree<Domain , T, DGtal::uint64_t >::HashKey key2 = key;
+      typename experimental::ImageContainerByHashTree<Domain , T, DGtal::uint64_t >::HashKey key2 = key;
       while ( container.isKeyValid ( key2 ) )
         {
           key2 = key2 << dim;
@@ -150,7 +150,7 @@ bool test_get ( ImageContainerByHashTree<Domain, T, DGtal::uint64_t >& container
             }
           //cerr << "check " << Bits::bitString(key2) << " ok." << endl;
         }
-      key2 <<=dim;
+      //key2 <<=dim;
     }
   cerr << "test_get: success !" << endl
        << "tested with " << count << " keys" << endl;
@@ -170,7 +170,7 @@ int main ( int argc, char** argv )
   typedef SpaceND<5> Space;
   typedef Space::Point Point;
   typedef HyperRectDomain<Space> Dom;
-  typedef DGtal::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
+  typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> Tree;
   Tree tree ( 12,5,1 );
   // Do not pass concept.
   //BOOST_CONCEPT_ASSERT((CDrawableWithBoard2D<Tree>));
@@ -196,7 +196,7 @@ int main ( int argc, char** argv )
   p3[3] = 1;
   p3[4] = 1;
   cerr << "azertyuiop" << endl;
-  DGtal::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree2 ( 12,p1, p2,1 );
+  DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t> tree2 ( 12,p1, p2,1 );
   cerr << "azertyuiop" << endl;
   cerr << "coord get " << tree2.get ( p1 ) << endl;
   cerr << "_-_-_-_-_-_-_-_-_-_-_-_-" << endl;
@@ -207,7 +207,7 @@ int main ( int argc, char** argv )
   cerr << "coord get " << tree2.get ( p1+=p3 ) << endl;
 
   // check that the iterator stuff compiles as it should
-  typedef DGtal::ImageContainerByHashTree<Dom, int, DGtal::uint64_t>::Iterator HashTreeIterator;
+  typedef DGtal::experimental::ImageContainerByHashTree<Dom, int, DGtal::uint64_t>::Iterator HashTreeIterator;
   HashTreeIterator it = tree.begin();
   for ( it = tree.begin(); it != tree.end(); ++it )
     tree ( *it );

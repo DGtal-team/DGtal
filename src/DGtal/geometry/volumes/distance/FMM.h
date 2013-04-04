@@ -52,7 +52,6 @@
 #include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/CPointFunctor.h"
 #include "DGtal/geometry/volumes/distance/FMMPointFunctors.h"
@@ -82,7 +81,7 @@ namespace DGtal
        * @param a an object of type T
        * @param b another object of type T
        *
-       * @return 'true' if a<b but 'false' otherwise
+       * @return true if a < b but false otherwise
        */
       bool operator()(const T& a, const T& b) 
       {

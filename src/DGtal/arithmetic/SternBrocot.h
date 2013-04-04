@@ -47,7 +47,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/InputIteratorWithRankOnSequence.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -68,9 +67,9 @@ namespace DGtal
    duplicate it. Use static method SternBrocot::fraction to obtain
    your fractions.
 
-   @param TInteger the integral type chosen for the fractions.
+   @tparam TInteger the integral type chosen for the fractions.
 
-   @param TQuotient the integral type chosen for the
+   @tparam TQuotient the integral type chosen for the
    quotients/coefficients or depth (may be "smaller" than TInteger,
    since they are generally much smaller than the fraction itself).
   */
@@ -83,7 +82,6 @@ namespace DGtal
     typedef SternBrocot<Integer,Quotient> Self;
     
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CSignedInteger< Quotient > ));
 
   public:
 
@@ -178,7 +176,7 @@ namespace DGtal
           @param ancestor (optional) any ancestor of aP/aQ in the tree
           (for speed-up).
           
-          @return the corresponding fraction in the Stern-Brocot tree.
+          Construct the corresponding fraction in the Stern-Brocot tree.
           
           NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
           are the partial quotients of aP/aQ.

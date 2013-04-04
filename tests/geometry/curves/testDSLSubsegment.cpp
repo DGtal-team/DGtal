@@ -119,6 +119,8 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
                   Point A = Point(x1,y1);
                   Point B = Point(x2,y2);
 		  
+		  // DSLSubsegment algorithm
+
 		  timeBeginSubseg = clock();
 		  DSLSubseg DD(a,b,mu,A,B);
 		  timeEndSubseg = clock();
@@ -128,10 +130,14 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  PointDSL AA = D.lowestY( x1 );
 		  PointDSL BB = D.lowestY( x2 );
 		  
+		  // SmartDSS algorithm
+		  
 		  timeBeginSmartDSS = clock();
 		  D.smartDSS(AA,BB);
 		  timeEndSmartDSS = clock();
 		  timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  
+		  // ReversedSmartDSS algorithm
 		  
 		  timeBeginReversedSmartDSS = clock();
 		  D.reversedSmartDSS(AA,BB);
@@ -145,13 +151,12 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  
                   //Std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
                   
+		  
 #ifdef CHECK_RES
-                  
+		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
 		  DSSIterator  it(a,b,-mu,A);
                   ArithDSS myDSS(it);
                   
-		  
-
 		  timeBeginDSS = clock();
                   while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
                     {}

@@ -167,7 +167,7 @@ namespace DGtal
          * Constructor.
          * Nb: complexity in O(n).
          *
-         * @param chain a Freeman chain,
+         * @param aChain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          */
         ConstIterator( const FreemanChain & aChain, Index n =0);
@@ -180,7 +180,7 @@ namespace DGtal
          *
          * Nb: complexity in O(1).
          *
-         * @param chain a Freeman chain,
+         * @param aChain a Freeman chain,
          * @param n the position in [chain] (within 0 and chain.size()).
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
@@ -190,7 +190,7 @@ namespace DGtal
 
         /**
          * Copy constructor.
-         * @param other the iterator to clone.
+         * @param aOther the iterator to clone.
          */
         ConstIterator( const ConstIterator & aOther )
           : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
@@ -406,7 +406,7 @@ public:
 
   /**
    * Copy constructor.
-   * @param other the iterator to clone.
+   * @param aOther the iterator to clone.
    */
   CodesRange( const CodesRange & aOther )
     : myChain( aOther.myChain ){}
@@ -454,7 +454,7 @@ public:
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
     out << "[FreemanChainCodes]" << std::endl;
     out << "\t"; 
-    std::copy( this->begin(), this->end(), ostream_iterator<Value>(out, "") );
+    std::copy( this->begin(), this->end(), std::ostream_iterator<Value>(out, "") );
     out << std::endl;
   }
   
@@ -464,7 +464,7 @@ public:
    * @param object the object of class 'CodesRange' to write.
    * @return the output stream after the writing.
    */
-    friend ostream& operator <<(ostream & out, const CodesRange & object)
+  friend std::ostream& operator <<(std::ostream & out, const CodesRange & object)
     {
       object.selfDisplay( out );
       return out;
@@ -562,7 +562,7 @@ public:
 
     /**
      * Constructor.
-     * @param vectorPoints the vector containing all the points. 
+     * @param vectPoints the vector containing all the points.
      */
     FreemanChain( const std::vector<Point>& vectPoints);
     
@@ -591,7 +591,7 @@ public:
 
     /**
      * Comparaison operator
-     * @param, other the object to compare to.
+     * @param other the object to compare to.
      * @return 'true' both FreemanChain are equals, 'false' otherwise.
      */
     bool operator==( const FreemanChain & other) const
@@ -602,7 +602,7 @@ public:
 
     /**
      * Comparaison operator
-     * @param, other the object to compare to.
+     * @paramother other the object to compare to.
      * @return 'true' both FreemanChain are different, 'false' otherwise.
      */
     bool operator!=( const FreemanChain & other) const
@@ -845,7 +845,7 @@ public:
      */
     static void write( std::ostream & out, const FreemanChain & c )
     {
-      out << c.x0 << " " << c.y0 << " " << c.chain << endl;
+      out << c.x0 << " " << c.y0 << " " << c.chain << std::endl;
     }
 
 
@@ -976,7 +976,7 @@ public:
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      *
-     * @param aPix_chain (output) the code of the 4-connected inner border.
+     * @param aPixChain (output) the code of the 4-connected inner border.
      *
      * @param aPl2pix (output) the mapping associating pointels to
      * pixels as indices in their respective Freeman chain.
@@ -984,7 +984,7 @@ public:
      * @param aPix2pl (output) the inverse mapping associating pixels to
      * pointels as indices in their respective Freeman chain.
      *
-     * @param pl_chain the input code of the 4-connected pointel contour.
+     * @param aPlChain the input code of the 4-connected pointel contour.
      */
     static void pointel2pixel( FreemanChain & aPixChain,
              std::vector<unsigned int> & aPl2pix,
@@ -1006,7 +1006,7 @@ public:
      * interior to the left (ccw) or right (cw) even at configurations
      * "02", "13", "20", "31".
      *
-     * @param aInner_chain (output) the code of the 4-connected inner
+     * @param aInnerChain (output) the code of the 4-connected inner
      * border, with starting coordinates that are floored to the closest
      * integer.
      *
@@ -1016,7 +1016,7 @@ public:
      * @param aInner2outer (output) the mapping associating inner to
      * outer elements as indices in their respective Freeman chain.
      *
-     * @param aOuter_chain the input code of the 4-connected contour.
+     * @param aOuterChain the input code of the 4-connected contour.
      *
      * @param ccw 'true' if the contour is seen counterclockwise with
      * its inside to the left.
@@ -1034,7 +1034,7 @@ public:
      * these removals cuts the contour in several loops. Because of
      * that, the mappings are more complex.
 
-     * @param aClean_cs (output) the array of cleaned 4-connected contours.
+     * @param aCleanCs (output) the array of cleaned 4-connected contours.
      *
      * @param aC2clean (output) the mapping associating an element to
      * its clean element as a pair (n,i) where n is the index of the
@@ -1069,7 +1069,7 @@ public:
      * pointel contours should not have any outer spikes, while
      * 4-connected pixel contours should not have any inner spikes.
      *
-     * @param aClean_c (output) the cleaned 4-connected contour.
+     * @param aCleanC (output) the cleaned 4-connected contour.
      *
      * @param aC2clean (output) the mapping associating an element to
      * its clean element.

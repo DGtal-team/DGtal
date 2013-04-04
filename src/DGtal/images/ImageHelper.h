@@ -53,10 +53,13 @@
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/base/CQuantity.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/kernel/sets/DigitalSetFromMap.h"
 #include "DGtal/kernel/sets/CDigitalSet.h"
+#include "DGtal/kernel/NumberTraits.h"
+#include "DGtal/base/ConstAlias.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -326,9 +329,111 @@ namespace DGtal
   bool findAndGetValue(const I& aImg, const S& aSet, 
 		       const typename I::Point& aPoint, 
 		       typename I::Value& aValue ); 
+
+
+
+
+  /**
+   * Create a Point Functor from a Point Predicate and an Image.
+   *
+   * @tparam Image a model of CImage.
+   * @tparam PointPredicate a model of CPointPredicate.
+   * @tparam TValue a model of CQuantity. Type return by the functor.
+   *
+   */
+  template<typename Image, typename PointPredicate, typename TValue=DGtal::int32_t>
+  class ImageToConstantFunctor
+  {
+  public:
+
+    typedef typename Image::Point Point;
+    typedef TValue Value;
+    
+    BOOST_CONCEPT_ASSERT(( CImage<Image> ));
+    BOOST_CONCEPT_ASSERT(( CPointPredicate<PointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( CQuantity<Value> ));
+    
+    /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
+    {
+        Point p1;
+        typename PointPredicate::Point p2;
+        ConceptUtils::sameType( p1, p2 );
+    }*/
+    
+    /** 
+     * 
+     * 
+     * @param[in] anImage image
+     * @param[in] aPointPred predicate on points
+     * @param[in] aVal const value when functor answer true.
+     * @param[in] reverseValues used to reverse values returned by the predicate. (Some shapes consider inner as > 0, others as < 0)
+     */
+    ImageToConstantFunctor( ConstAlias< Image > anImage,
+                            ConstAlias< PointPredicate > aPointPred,
+                            Value aVal = NumberTraits< Value >::ONE,
+                            bool reverseValues = false )
+      : myImage(anImage),
+        myPointPred(aPointPred),
+        myVal(aVal),
+        reverse(reverseValues)
+    {}
+    
+    /** 
+     * 
+     * @param[in] aPoint point to evaluate.
+     * 
+     * @return val between _ZERO_ or aVal
+     */
+    Value operator()( const Point &aPoint )
+    {
+      if ((myImage->domain().isInside(aPoint)))
+      {
+          if( reverse )
+          {
+              if( !myPointPred->operator()(aPoint) )
+              {
+                  return myVal;
+              }
+              else
+              {
+                  return NumberTraits<Value>::ZERO;
+              }
+          }
+          else
+          {
+              if( myPointPred->operator()(aPoint) )
+              {
+                  return myVal;
+              }
+              else
+              {
+                  return NumberTraits<Value>::ZERO;
+              }
+          }
+      }
+      else
+      {
+        return NumberTraits<Value>::ZERO;
+      }
+    }
+
+    private:
+    
+    /// const pointor to an image
+    const Image *myImage;
+    
+    /// const pointor to a predicate on points
+    const PointPredicate *myPointPred;
+
+    /// constant value when functor answer true.
+    Value myVal;
+
+    /// reverse values returned by the predicate. (Some shapes consider inner as > 0, others as < 0)
+    bool reverse;
+  };
+
  
 } // namespace DGtal
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions

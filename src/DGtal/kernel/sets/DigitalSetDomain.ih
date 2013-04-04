@@ -48,10 +48,10 @@ DGtal::DigitalSetDomain<TDigitalSet>
 template <typename TDigitalSet>
 inline
 DGtal::DigitalSetDomain<TDigitalSet>
-::DigitalSetDomain ( const DigitalSet & aSet )
-  : mySet( aSet ), myPredicate( aSet )
+::DigitalSetDomain ( ConstAlias<DigitalSet> aSet )
+  : mySet( aSet )
 {
-  mySet.computeBoundingBox( myLowerBound, myUpperBound );
+  mySet->computeBoundingBox( myLowerBound, myUpperBound );
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -59,9 +59,8 @@ inline
 DGtal::DigitalSetDomain<TDigitalSet>
 ::DigitalSetDomain ( const DigitalSetDomain & other )
   : mySet( other.mySet ),
-    myLowerBound( other.myLowerBound ), 
     myUpperBound( other.myUpperBound ),
-    myPredicate( other.mySet )
+    myLowerBound( other.myLowerBound )
 {}
 
 // ----------------------- Domain services --------------------------------
@@ -72,7 +71,7 @@ typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::begin(const Point &aPoint) const
 {
-  return mySet.find(aPoint);
+  return mySet->find(aPoint);
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -81,7 +80,7 @@ typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::begin() const
 {
-  return mySet.begin();
+  return mySet->begin();
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -90,7 +89,7 @@ typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::end() const
 {
-  return mySet.end();
+  return mySet->end();
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -117,7 +116,7 @@ typename DGtal::DigitalSetDomain<TDigitalSet>::Size
 DGtal::DigitalSetDomain<TDigitalSet>
 ::size() const
 {
-  return mySet.size();
+  return mySet->size();
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -126,15 +125,9 @@ bool
 DGtal::DigitalSetDomain<TDigitalSet>
 ::isInside( const Point & p ) const
 {
-  // std::cerr << "isInside: p=" << p
-  //       << " lower=" << myLowerBound
-  //       << " islower=" << p.isLower( myUpperBound )
-  //       << " upper=" << myUpperBound
-  //       << " isupper=" << p.isUpper( myLowerBound )
-  //       << std::endl;
   return p.isLower( myUpperBound )
     && p.isUpper( myLowerBound )
-    && myPredicate( p ); // mySet.find( p ) != end();
+    && (*mySet)( p );
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
@@ -143,7 +136,7 @@ const typename DGtal::DigitalSetDomain<TDigitalSet>::Predicate &
 DGtal::DigitalSetDomain<TDigitalSet>
 ::predicate() const
 {
-  return myPredicate;
+  return *mySet;
 }
 
 //------------------------------------------------------------------------------
@@ -152,7 +145,7 @@ inline
 void
 DGtal::DigitalSetDomain<TDigitalSet>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[DigitalSetDomain set=" << mySet << "]";
+  out << "[DigitalSetDomain set=" << *mySet << "]";
 }
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>

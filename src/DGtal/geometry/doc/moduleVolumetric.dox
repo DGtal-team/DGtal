@@ -1,0 +1,414 @@
+/**
+ * @file moduleVolumetric.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2011/03/19
+ *
+ * Documentation file for feature volpackage
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleVolumetric nD Volumetric Analysis using Separable Processes
+
+[TOC]
+
+@author David Coeurjolly
+
+This part of the manual describes the DGtal volumetric module. We
+focus here on separable process based volumetric analysis such as
+distance transformation, reverse distance transformation and medial
+axis extraction.
+
+
+\section introVol Introduction
+
+For decades, distance transformation (DT) and geometrical skeleton
+extraction have been classic tools for shape analysis
+@cite Rosenfeld1966 
+@cite Rosenfeld1968 . The DT of a shape consists in
+labelling object grid points with the distance to the closest
+background pixel. From the DT values, we thus have information on the
+shape geometry.  Beside its applications in shape description, DT has
+been used in many situations such as shape analysis, shape matching,
+shape-based interpolation, motion planning, image registration, or
+differential measurement estimation.
+
+
+In the literature, many techniques have been proposed to compute the
+DT given a metric with a trade-off between algorithmic performances
+and the @e accuracy of the metric compared to the Euclidean one.
+Hence, many papers have considered distances based on chamfer masks
+@cite Rosenfeld1966   @cite Rosenfeld1968  @cite Borgefors1986CVGIP , or sequences of chamfer
+distances; the vector displacement based Euclidean distance
+@cite Danielsson1980  @cite Ragnemalm1993 the Voronoi diagram based Euclidean distance
+@cite Breu1995   @cite Maurer2003PAMI  or the square of the Euclidean distance
+@cite Saito1994-DT   @cite Hirata1996  .  From a computational point of view, several of
+these methods lead to time optimal algorithms to compute the
+error-free Euclidean Distance Transformation (EDT) for @e n-
+dimensional binary images: the extension of these algorithms is
+straightforward since they use separable techniques to compute the DT;
+@e n one-dimensional operations -one per direction of the coordinate
+axis- are performed.
+
+In @cite dcoeurjo_pami_RDMA, it has been demonstrated that a similar decomposition
+can be used to compute both the reverse distance transformation and a
+discrete medial axis of the binary shape.
+
+In fact, the separable decomposition and the associated algorithmic
+tools can be used on a wider class of metrics (see  @cite Hirata1996  or
+@cite Maurer2003PAMI). For instance, all weighted \f$l_p\f$ metrics defined in
+@f$R^n@f$ by
+ \f[  d_{L_p} (u,v) = \left ( \sum_{i=0}^n w_i|u_i-v_i |^p \right )^{\frac{1}{p}}\f]
+can be considered. 
+
+In DGtal, we have chosen to implement such volumetric tools such
+that the underlying metric could be specified independently.
+
+\section voronoiSect Digital Voronoi Diagram Computation
+
+The generic distance transformation is based on a prior Voronoi map
+consturction. Indeed, if we compute the Voronoi diagram of background
+points, the distance transformation at an object point is exactly its
+distance to the site associated with the Voronoi cell it belongs to.
+
+The core of the implementation is based on a separable approach: For
+example, in dimension 2, partial digital Voronoi maps of dimension one are
+first computed in each row independently. Then such partial Voronoi
+maps are updated using independent processes along the columns,
+leading to a valid Voronoi map of dimension 2. In an algorithmic point
+of view, the 1D processes used for both columns and rows are exactly
+the same. In higher dimensions, the other dimensions are processed
+similarly.
+
+@note We say digital Voronoi map instead of Voronoi diagram since the
+output of the result is the intersection between the Voronoi diagram
+of exterior points with @f$ \mathbb{Z}^d @f$. Furthermore, along
+Voronoi faces (@e e.i. when two sites are equidistant), only one sites
+is considered when intersection with  @f$ \mathbb{Z}^d @f$.
+
+
+In DGtal, the class VoronoiMap implements such digital Vornoi map
+extraction. Such class is parametrized by the following types:
+- a type representing the underlying digital space (model of CSpace);
+- a type representing the object @f$ X @f$ as a point predicate (model
+ of CPointPredicate)  ;
+- a type representing the underlying metric (model of
+CSeparableMetric, see below)
+- and an optional image container to store the resulting Voronoi map
+(by default, the type is
+ImageContainerBySTLVector<HyperRectDomain<TSpace>,typename
+TSpace::Vector>).
+
+The VoronoiMap  constructor is parametrized by
+- an instance of Domain (the Domain type associated with the image
+container);
+- an instance of the PointPredicate ;
+- and an instance of the separable metric.
+
+The VoronoiMap will be computed on the specified and will use the
+point predicate to decide if a point of such domain is in the object
+or note.
+
+@warning The point predicate must be valid for each point in the
+specified domain. Basically, the domain can a sub-domain of the point
+predicate definition domain.
+
+
+Once the VoronoiMap object is created, the voronoi map is computed and
+the class itself is a model of CConstImage. In other words, you can
+access to the VoronoiMap value at a point @a p and iterate of values
+using image ranges (see @ref moduleImages). For example 
+
+@code
+  VoronoiMap<....> myVoronoiMap( .... ); //object construction
+  VoronoiMap<....>::Point p(12,34);
+
+  VoronoiMap<....>::Value vectorToClosestSiteAtP = myVoronoiMap( p );
+  for(VoronoiMap<....>::Domain::ConstIterator it  = myVoronoiMap.domain().begin() , itend = myVoronoiMap.domain().end();
+  it != itend ; ++it)
+       //do something on myVoronoiMap(it)
+@endcode
+
+Since we are constructing a VoronoiMap, the value type of the map is a
+vector (pointing to the closest site) of type Space::Vector (if Space
+was the underlying digital space type used when specifying VoronoiMap
+template parameters).
+
+Let us illustrate the construction in dimension 2 (see
+voronoimap2D.cpp). Other examples can be found in distancetransform2D.cpp and distancetransform3D.cpp.
+
+ First of all, we need couple of includes:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-header
+
+We will discuss later about the metric definition but let us consider
+a classical Euclidean @f$ l_2 @f$ metric:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-Metric
+
+We now consider an object in a [0,0]x[16,16] domain with three
+background points. To construct such point predicate, we first define
+a set containing the three points, then we consider the point
+predicate defined on this set (which returns true at a point if the
+point is inside the set) and we consider the negation of such predicate
+in order to return true for object points. Here you have the
+construction:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-SmallImage
+
+and the resulting set:
+
+@image html voronoimap-inputset.png "Input set."
+@image latex voronoimap-inputset.png "Input set."
+
+
+The voronoi map is simply given by:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-Voro
+
+At each point of the object, we thus have a vector to the closest
+background point. We can display this information as follows:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-trace
+
+To obtain:
+
+@image html voronoimap-voro.png "Voronoi map."
+@image latex voronoimap-voro.png "Voronoi map."
+
+Changing the board output, we can see the Voronoi cells accordingly:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-traceCell
+
+To get:
+
+@image html voronoimap-cells.png "Voronoi map cells."
+@image latex voronoimap-cells.png "Voronoi map cells."
+
+We could easily change the metric (here to the @f$ l_8 @f$) and get a
+new Voronoi map:
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-l8Metric
+
+@image html voronoimap-vorol8.png "Voronoi map for the l_8 metric."
+@image latex voronoimap-vorol8.png "Voronoi map for the l_8 metric."
+
+@section DTsec Distance Transformation
+
+As discussed earlier, the distance transformation is given by
+computing distances once the Voronoi map is obtained. In DGtal, the
+class DistanceTransformation simply adapts the VoronoiMap class in
+order to override output image getters to return the distance for the
+given metric to the closest site instead of the vector. 
+
+As a consequence, the DistanceTransformation class simply  inherits from  the
+VoronoiMap class and overrides  methods required by
+the CConstImage concept. Note that the DistanceTransfomation::Value
+type is double. If you want to get the underlying vector instead of
+the distance to perform exact computations, you can use the
+DistanceTransformation::getVoronoiVector method.
+
+In the following example, we consider the previous small image and use
+a colormap to display distance values for the @f$ l_2 @f$ mertic:
+
+@snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-DT
+
+@image html voronoimap-dt.png "Distance transformation for  the l_2 metric."
+@image latex voronoimap-dt.png  "Distance transformation for  the l_2 metric."
+
+
+
+@section RDTSec Digital Power Map and Reverse Distance Transformation
+
+Similarly to Voronoi diagram and digital Voronoi maps, digital Power
+maps are defined as the intersection between the integer grid and a
+power diagram. Given a set of weighed points, power diagram can be
+seen as Voronoi diagram where the metric is modified with additive
+weights. For example, considering the @f$ l_2@f$ metric, the power
+distance between a point @f$p@f$ and a weighted point @f$(q,w)@f$ is
+defined by
+@f[ pow(p,q) = \| p - q\|_2^2  - w @f]
+
+Hence, similarly to Voronoi diagram, the power diagram is a
+decomposition of the space ino cells from weighed sites where each
+cell (maybe empty) is associated with a site and each point in the
+cell has got minimal power distance to the cell site (compared to its
+power distance to all other sites) @cite Aurenhammer1987 .
+
+
+Separable algorithms similar to VoronoiMap/DistanceTransformation can
+be designed to compute respectively PowerMap and
+ReverseDistanceTransformation. The only difference is that the input of
+PowerMap is a weighted set of points instead of a point predicate.
+
+@note for @f$l_p@f$ metrics, the power distance is defined by @f$
+pow(p,q) = \| p - q\|_p^p - w @f$. Hence, both the distance and the weight value type
+capacity must be able to represent d-sums of power p numbers (if d is
+the dimension of the space).
+
+
+Hence such class is parametrized by the following types:
+- a type representing the mapping between points and weights (WeightImage, model of CImage);
+- a type representing the underlying power metric (model of CSeparablePowerMetric, see below)
+- and an optional image container to store the resulting Power map (by default, the type is ImageContainerBySTLVector).
+
+The PowerMap  constructor is parametrized by
+- an instance of Domain (the Domain type associated with the image container);
+- an instance of PowerMap::WeightImage;
+- and an instance of the power separable metric.
+
+Similarly to DistanceTransformation, ReverseDistanceTransformation
+remaps the PowerMap vectors to map the power metric to the closest
+weighted site.
+
+As a consequence, for the Euclidean @f$ l_2 @f$ metric, if we consider
+a set of balls @f$ B_i(p_i,r_i) @f$ and if we create an WiehgtImage
+whose domain would be the set of points @f$\{ p_i \}@f$ and with
+values @f$ r_i^2@f$, negative (strictly) values of the
+ReverseDistanceTransformation will correspond to digital points
+belonging to the union @f$ \bigcup \{B_i\}@f$ (see @cite dcoeurjo_pami_RDMA).
+
+ReverseDistanceTransformation can thus be used to reconstructed a
+binary shape from a given Medial Axis or any set of balls. Another
+consequence is that given a binary shape, the pipeline 
+@f[  Shape \rightarrow DT \rightarrow ReverseDT \rightarrow \text{ strictly negative values }@f]
+for the same metric/power metric, returns the input binary shape.
+
+
+
+@note Power separable metrics are formalized in CPowerMetric and
+CSeparablePowerMetric concepts whose main concept is
+ExactLpPowerSeparableMetric.
+
+
+@section metricSec Metric and Separable Metric concepts
+
+As discussed, several models of metrics can be used in the separable
+algorithms such as the VoronoiMap. In this section, we discuss about
+these concepts.
+
+@subsection subConcepts Main concepts
+
+Beside separable algorithms, metrics in DGtal have been structured in
+terms of concepts:
+
+@dot
+digraph metric_concepts_2_vor {
+    CLocalPremetric [ label="CLocalPremetric"  URL="\ref CLocalPremetric" ];
+    CMetric [label="CMetric" URL="@ref CMetric"];
+    CSeparableMetric [label="CSeparableMetric" URL="@ref CSeparableMetric"];
+    CPowerMetric [label="CPowerMetric" URL="@ref CPowerMetric"];
+    CPowerSeparableMetric [label="CPowerSeparableMetric" URL="@ref CPowerSeparableMetric"];
+
+    CMetric -> CLocalPremetric;
+    CSeparableMetric -> CMetric;
+    CPowerSeparableMetric -> CPowerMetric;
+
+    label="Main metric concepts";
+  }
+@enddot
+
+For instance, CLocalPremetric models only requires that a local metric
+is defined (@e i.e. between a point and a neighboring point in a given
+direction). CMetric requires to have a binary operator to compute the
+distance between any two points of the digital space. Furthermore, it
+requires to have a method he @a closest(p,q) which returns the closest
+point from @a p and @a q to the origin. Such closest method can be
+easily implemented from the binary distance operator. However, for
+some metric, more efficient implementation can be obtained to answer
+to @a closest() requests.
+
+
+
+
+@subsection subSepMetrics SeparableMetric models
+
+The Separable metric concept is a refinement of the CMetric
+(resp. CPowerMetric) concept in which we require models to implement a
+method 
+@a  hiddenBy(u,v,w,startingPoint,endPoint,dim): given three digital points 
+@a u, @a v, @a w and an isothetic segment defined by the pair
+[@a startingPoint, @a endPoint] along the dimension @a dim, such method
+returns true if Voronoi cells of @a u and @a w @e hide the Voronoi
+cell if @a v on the segment. Such predicate can be illustrated as
+follows:
+
+
+@image html hiddenBy.png "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
+@image latex hiddenBy.png  "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
+
+This predicate (with the @a closest() one as discussed above) is
+crucial for separable VoronoiMap/DistanceTransformation algorithms. The next section discusses about complexity of such volumetric algorithm with respect to computation costs of the two predicates.
+
+CPowerSeparableMetric concepts is a similar refinement of the CPowerMetric concept. Indeed, CPowerSeparableMetric models must implement an @a  hiddenByPower(u, wu,v,wv,w,ww,startingPoint,endPoint,dim) on triplet of weighted points {(u,wu),(v,wv),(w,ww)}.
+
+
+The class of metrics for which such @a hiddenBy method can be defined and for which the VoronoiMap will be exact is quite large. This class contains 
+
+- all @f$ l_p @f$ metrics (ExactPredicateLpSeparableMetric and InexactPredicateLpSeparableMetric)
+- all local metric inducing a norm (chamfer norms, some of the neighborhood sequences, ...) (see @cite Hirata1996 for more details).
+- ...
+
+@section CostSec Computational Costs 
+
+
+As discussed, both VoronoiMap and PowerMap (and their associated
+subclasses) are parametrized by a generic separable metric (model of CSeparableMetric or CPowerSeparableMetric). If @f$ C
+@f$ corresponds to the cost of the @a closest() or @a
+closestPower() methods for the given metric, and @f$ H @f$ the cost
+of the @a hiddenBy() or @a hiddenByWeigthed(), the computational costs
+of the separable metrics can be summarized as follows:
+
+| Models of CSeparableMetric/CPowerSeparableMetric| C | H | Note |
+|-------------------------------------------------|---|---|------|
+| ExactPredicateLpSeparableMetric<p>              | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+| ExactPredicateLpSeparableMetric specialized for p=1 | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Exact computations|
+| InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
+| ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
+| ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+
+
+Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
+
+ \f[  O(d\cdot n^d\cdot (C+H))  \f]
+
+For example, for the @f$ l_2 @f$ metric, all algorithms are in @f$ \Theta(dn^d)@f$.
+
+*/
+
+/**
+   Example of a Voronoi map construction in dimension 2 for the
+   Eucldiean metric.
+
+@see \ref voronoiSect
+
+\example geometry/volumes/distance/voronoimap2D.cpp
+*/
+
+/**
+   Example of distance transformation in dimension 2.
+
+@see \ref moduleVolumetric
+
+\example geometry/volumes/distance/distancetransform2D.cpp
+*/
+
+/**
+   Example of distance transformation in dimension 3 with DGtal Viewer3D.
+
+@see \ref moduleVolumetric
+
+\example geometry/volumes/distance/distancetransform3D.cpp
+*/
+
+
+}

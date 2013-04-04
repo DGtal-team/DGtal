@@ -64,11 +64,11 @@ public:
   /**
    * Compute the barycenter of the 2D contour.  
    * 
-   * @param contour: the vector containing the 2D contour coordinates
+   * @param contour the vector containing the 2D contour coordinates
    *
    **/
   
-  static Z2i::Point getMeanPoint(vector<Z2i::Point> contour);
+  static Z2i::Point getMeanPoint(std::vector<Z2i::Point> contour);
   
 
 

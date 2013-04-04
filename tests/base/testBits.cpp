@@ -35,7 +35,7 @@
 #include "DGtal/base/Bits.h"
 
 using namespace DGtal;
-using namespace std;
+
 
 // Set bits are numbered from 1 to x when reading the word from the
 // least significant to the most significant bit. This number is the
@@ -57,22 +57,22 @@ int main()
 {
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  ++nb, nbok += Bits::nbSetBits( (uint8_t)-1) == 8 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint16_t)-1) == 16 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint32_t)-1) == 32 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint64_t)-1) == 64 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint8_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint16_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint32_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint64_t)1) == 1 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint8_t)-2) == 7 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint16_t)-2) == 15 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint32_t)-2) == 31 ? 1 : 0;
-  ++nb, nbok += Bits::nbSetBits( (uint64_t)-2) == 63 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)-1) == 8 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)-1) == 16 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)-1) == 32 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)-1) == 64 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)1) == 1 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)1) == 1 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)1) == 1 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)1) == 1 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint8_t)-2) == 7 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint16_t)-2) == 15 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint32_t)-2) == 31 ? 1 : 0;
+  ++nb, nbok += Bits::nbSetBits( (DGtal::uint64_t)-2) == 63 ? 1 : 0;
 
   for ( unsigned int i = 0; i < 100; ++i )
     {
-      uint16_t n = (uint16_t) ( random() % 65536 ); 
+      DGtal::uint16_t n = (DGtal::uint16_t) ( random() % 65536 ); 
       for ( unsigned int b = 0; b < 16; ++b )
 	++nb, nbok += Bits::indexInSetBits( n, b ) == index( n, b ) ? 1 : 0;
     }
@@ -80,11 +80,11 @@ int main()
   std::cerr << "(" << nbok << "/" << nb << ")" << " tests." << std::endl;
 
   trace.beginBlock ( "Testing speed of loop version of indexInSetBits" );
-  srand( 0 );
+  srandom( 0 );
   unsigned int val = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
-      uint32_t n = (uint32_t) random();
+      DGtal::uint32_t n = (DGtal::uint32_t) random();
       for ( unsigned int b = 0; b < 32; ++b )
 	val += index( n, b );
     }
@@ -92,11 +92,11 @@ int main()
   trace.endBlock();
 
   trace.beginBlock ( "Testing speed of look-up table version of indexInSetBits" );
-  srand( 0 );
+  srandom( 0 );
   unsigned int val2 = 0;
   for ( unsigned int i = 0; i < 100000; ++i )
     {
-      uint32_t n = (uint32_t) random();
+      DGtal::uint32_t n = (DGtal::uint32_t) random();
       for ( unsigned int b = 0; b < 32; ++b )
 	val2 += Bits::indexInSetBits( n, b );
     }

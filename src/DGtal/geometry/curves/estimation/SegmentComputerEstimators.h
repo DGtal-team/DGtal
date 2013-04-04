@@ -133,9 +133,9 @@ namespace DGtal
 
       /**
        * Initialisation.
-       * @param h grid size (unused)
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * (h grid size unused)
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double /*h*/, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -154,7 +154,6 @@ namespace DGtal
 
       /**
        * Unique estimation 
-       * @param it any iterator (unused) 
        * @return the estimated quantity
        */
       Quantity eval(const ConstIterator& /*it*/) const
@@ -306,8 +305,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -329,7 +328,6 @@ namespace DGtal
 
       /**
        * Estimation depending on @e myH 
-       * @param it any iterator (unused) 
        * @return the estimated quantity
        */
       Quantity eval(const ConstIterator& /*it*/) const
@@ -440,9 +438,8 @@ namespace DGtal
 
       /**
        * Initialisation.
-       * @param h grid size (unused)
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double /*h*/, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -612,8 +609,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -705,9 +702,9 @@ namespace DGtal
       Value operator() (const DSS& aDSS) const 
       {
 	Value a = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToInt64_t(aDSS.getA());      
+	  ::castToDouble(aDSS.getA());      
 	Value b = (Value) NumberTraits<typename DSS::Integer>
-	  ::castToInt64_t(aDSS.getB());      
+	  ::castToDouble(aDSS.getB());      
 
 	return std::atan2(a,b);
       }
@@ -765,9 +762,6 @@ namespace DGtal
        * @param aDSS an instance of segment computer
        * devoted to the DSS recognition.
 
-       * @tparam DSS a model of segment computer,
-       * which must have methods getA() and getB()
-       * returning the y- and x-component of the tangent vector.
        */
       Value operator() (const DSS& aDSS) const 
       {
@@ -1397,8 +1391,8 @@ namespace DGtal
       /**
        * Initialisation.
        * @param h grid size
-       * @param itb, begin iterator
-       * @param ite, end iterator
+       * @param itb begin iterator
+       * @param ite end iterator
        */
       void init(const double h, const ConstIterator& itb, const ConstIterator& ite)
       {
@@ -1431,9 +1425,9 @@ namespace DGtal
 	ConstIterator back = mySCPtr->begin();  
 	ConstIterator front = mySCPtr->end();
 	bool isConnectedAtBack = isNotEmpty(myBegin, back)
-	  &&((*boost::prior(back)-*back).norm(Vector::L1) <= NumberTraits<Integer>::ONE);  
+	  &&((*boost::prior(back)-*back).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
 	bool isConnectedAtFront = isNotEmpty(front, myEnd)
-	  &&((*boost::prior(front)-*front).norm(Vector::L1) <= NumberTraits<Integer>::ONE);  
+	  &&((*boost::prior(front)-*front).norm(Vector::L_1) <= NumberTraits<Integer>::ONE);  
   
 
 	if (isConnectedAtBack) {

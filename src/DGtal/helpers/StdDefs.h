@@ -43,15 +43,16 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/MetricAdjacency.h"
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpPowerSeparableMetric.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -106,6 +107,17 @@ namespace DGtal
     static const DT8_4 dt8_4 = DT8_4( adj8, adj4, JORDAN_DT );
 
     typedef GridCurve<K2> Curve;
+
+    typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
+    typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,1> L1PowerMetric;
+ 
+    static const L2Metric l2Metric;
+    static const L1Metric l1Metric;
+    static const L2PowerMetric l2PowerMetric;
+    static const L1PowerMetric l1PowerMetric;
+
   } // namespace Z2i
 
   /**
@@ -172,6 +184,17 @@ namespace DGtal
     static const DT26_6 dt26_6 = DT26_6( adj26, adj6, JORDAN_DT );
 
     typedef GridCurve<K3> Curve; 
+
+    typedef ExactPredicateLpSeparableMetric<Space,2> L2Metric;
+    typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
+    typedef ExactPredicateLpPowerSeparableMetric<Space,1> L1PowerMetric;
+
+    static const L2Metric l2Metric;
+    static const L1Metric l1Metric;
+    static const L2PowerMetric l2PowerMetric;
+    static const L1PowerMetric l1PowerMetric;
+
   } // namespace Z3i
 
   

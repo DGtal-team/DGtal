@@ -30,9 +30,15 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <vector>
+#include <list>
+#ifdef CPP11_FORWARD_LIST 
+#include <forward_list>
+#endif
+
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
 ///////////////////////////////////////////////////////////////////////////////
+
 
 using namespace std;
 using namespace DGtal;
@@ -44,7 +50,6 @@ using namespace DGtal;
 
 /**
  * Iteration accross the end of a range
- *
  */
 template<typename Iterator>
 bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
@@ -54,9 +59,8 @@ bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& gro
   BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Circulator<Iterator> > ));
 
   //list
-  cout << endl;
-  copy(itb,ite,ostream_iterator<int>(cout, " ")); 
-  cout << " => ";
+  copy(itb,ite,ostream_iterator<int>(trace.info(), " ")); 
+  trace.info() << " => ";
 
   //use of Circulators
   vector<int> v; 
@@ -68,69 +72,183 @@ bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& gro
   } while (c != cb);
 
   //offset list
-  copy(v.begin(),v.end(),ostream_iterator<int>(cout, " ")); 
+  copy(v.begin(),v.end(),ostream_iterator<int>(trace.info(), " ")); 
 
   //ground truth
-  cout << " ( == ";
-  copy(groundTruth.begin(),groundTruth.end(),ostream_iterator<int>(cout, " ")); 
-  cout << ")" << endl;
+  trace.info() << " ( == ";
+  copy(groundTruth.begin(),groundTruth.end(),ostream_iterator<int>(trace.info(), " ")); 
+  trace.info() << ")" << std::endl;
 
   return equal( v.begin(),v.end(),groundTruth.begin() );
 }
 
 /**
- * Comparison tests
- *
+ * Test of basic operators required for forward circulators
+ * @param cont any container
+ * @tparam Container model of iterable and pushable container
  */
-template<typename Type1, typename Type2>
-bool 
-testComparison(const Type1& a, const Type2& b) {
-  return (a == b);
+template<typename Container>
+bool basicForwardTest(const Container& cont)
+{
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Operators of forward circulator" );
+  typedef typename Container::const_iterator I;
+
+  //default construction
+  Circulator<I> circ0;
+  if ( !(circ0.isValid()) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  //construction 
+  Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
+  if ( circ1.isValid() )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  //copy 
+  Circulator<I> circ2 = circ1; 
+  //assignement
+  circ0 = circ1;
+  //pre/post-incrementation 
+  circ1++; 
+  ++circ2;   
+  //equality
+  if ( (circ0 != circ1) && (circ0 != circ2) && (circ1 == circ2) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  //base, begin, end
+  if ( (circ0.base() != circ1.base()) 
+       && (circ0.base() != circ2.base()) 
+       && (circ1.base() == circ2.base()) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  if ( (circ0.begin() == circ1.begin()) 
+       && (circ0.end() == circ1.end()) 
+       && (circ1.begin() == circ2.begin()) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  //operator *, ->
+  if ( (*circ1 == *circ2) && (circ1.operator->() == &(*circ1)) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.endBlock();
+  
+  return (nbok == nb);
 }
 
 /**
- * validity of the range
- *
+ * Test of basic operators required for bidirectional circulators
+ * @param cont any container
+ * @tparam Container model of iterable and pushable container
  */
-template<typename Iterator>
-bool testIsNotEmpty(const Iterator& itb, const Iterator& ite, const bool& aFlagIsNotEmpty)
+template<typename Container>
+bool basicBidirectionalTest(const Container& cont)
 {
-  return (isNotEmpty(itb,ite) == aFlagIsNotEmpty ); 
+  ASSERT( cont.size() >= 1 ); 
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Operators of bidirectional circulator" );
+  typedef typename Container::const_iterator I;
+
+  //construction/copy 
+  Circulator<I> res(cont.begin(), cont.begin(), cont.end());
+  Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
+  Circulator<I> circ2 = circ1; 
+  //pre/post-incrementation 
+  circ1++; 
+  ++circ2;   
+  if (circ1 == circ2)
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+  //pre/post-decrementation 
+  circ1--; 
+  --circ2;   
+  if ( (circ1 == circ2) && (circ1 == res) && (circ2 == res) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.endBlock();
+  
+  return (nbok == nb);
 }
 
-template< typename IC> 
-inline
-bool getGeneralTag( const IC& /*ic*/){
-  cout << typeid( typename IteratorCirculatorTraits<IC>::Category() ).name() << endl; 
-  return true; 
-}
+/**
+ * Test of basic operators required for random access circulators
+ * @param cont any container
+ * @tparam Container model of iterable and pushable container
+ */
+template<typename Container>
+bool basicRandomAccessTest(const Container& cont)
+{
+  ASSERT( cont.size() == 5 ); 
 
-template< typename IC> 
-inline
-bool getSpecificTag( const IC& /*ic*/){
-  cout << typeid( typename IC::iterator_category() ).name() << endl; 
-  return true; 
-}
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  
+  trace.beginBlock ( "Operators of random access circulator" );
+  typedef typename Container::const_iterator I;
 
+  //construction/copy 
+  Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
+  Circulator<I> circ2 = circ1; 
 
-template< typename IC > 
-inline
-bool getType( const IC& , IteratorType ) {
-  cout << "IteratorType" << endl;
-  return true;
-}
+  trace.info() << "arithmetic operators" << std::endl;
+  circ2 += 4;
+  if ( (circ2) == (circ1+4) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-template< typename IC > 
-inline
-bool getType( const IC& , CirculatorType ) {
-  cout << "CirculatorType" << endl;
-  return true;
-}
+  circ2 -= 5;
+  circ2++;   
+  if ( circ1 == circ2 )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-template< typename IC> 
-inline
-bool getType( const IC& ic){
-  return getType<IC>( ic, typename IteratorCirculatorTraits<IC>::Type() );
+  if ( (circ1+3) == (3+circ1) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  circ2 += 7; 
+  if ( (circ1+2) == circ2 )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  if ( ((circ1-circ2) + (circ2-circ1)) == (cont.end()-cont.begin()) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.info() << "comparison operators" << std::endl;
+  if ( (circ1 < circ2) && (circ1 <= circ2) 
+       && (circ2 < circ1) && (circ2 <= circ1) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  if ( !( (circ1 > circ2) && (circ1 >= circ2) 
+	  && (circ2 > circ1) && (circ2 >= circ1) ) )
+    nbok++; 
+  nb++; 
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+  trace.endBlock();
+  
+  return (nbok == nb);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -138,7 +256,7 @@ bool getType( const IC& ic){
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class BasicBoolFunctions" );
+  trace.beginBlock ( "Testing class Circulator" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
@@ -165,67 +283,54 @@ int main( int argc, char** argv )
   v3.push_back(1);
   v3.push_back(5);
 
-//incrementation / decrementation
-  trace.info() << endl;
-  trace.info() << "Iterate" << endl;
-  bool res = testOffset<vector<int>::iterator>(v.begin(),v.end(), v2)
-  && testOffset<vector<int>::reverse_iterator>(v.rbegin(),v.rend(), v3)
-  && testOffset<vector<int>::const_iterator>(v.begin(),v.end(), v2)
-  && testOffset<vector<int>::const_reverse_iterator>(v.rbegin(),v.rend(), v3);
+  //incrementation
+  trace.beginBlock ( "Iteration" );
+  bool res = testOffset(v.begin(),v.end(), v2)
+  && testOffset(v.rbegin(),v.rend(), v3)
+  && testOffset(v.begin(),v.end(), v2)
+  && testOffset(v.rbegin(),v.rend(), v3);
+  trace.endBlock();
 
-//comparisons
-  trace.info() << endl;
-  trace.info() << "Compare" << endl;
+  //comparisons
+  trace.beginBlock ( "Comparison" );
   trace.info() << "(const / not const)" << endl;
   Circulator<vector<int>::iterator> c1( v.begin(), v.begin(), v.end() );
   Circulator<vector<int>::iterator> c2( c1 );
   Circulator<vector<int>::const_iterator> c3( c2 );
-  res = res && testComparison<Circulator<vector<int>::iterator>,Circulator<vector<int>::iterator> >(c1,c2)
-  && testComparison<Circulator<vector<int>::iterator>,Circulator<vector<int>::const_iterator> >(c1,c3);
+  res = res && (c1 == c2) && (c1 == c3);
 
   trace.info() << "(reverse_iterator<Circulator> / Circulator<reverse_iterator>)" << endl;
   std::reverse_iterator<Circulator<vector<int>::iterator> > rc1( c1 );
   Circulator <vector<int>::reverse_iterator> c4(  v.rend(), v.rbegin(), v.rend() );
-  res = res && testComparison<vector<int>::iterator,vector<int>::iterator>(rc1.base().base(), c4.base().base());
+  res = res && (rc1.base().base() == c4.base().base());
   trace.info() << "first element: (" << *--rc1 << " == " << *--c4 << ")" << endl;
-  res = res && testComparison<int,int>(*rc1, *c4);
+  res = res && ((*rc1) == (*c4));
+  trace.endBlock();
 
-//tags
-  trace.info() << endl;
-  trace.info() << "Tags for classic iterators" << endl;
-  getGeneralTag< vector<int>::iterator > ( v.begin() ); 
-  getSpecificTag< vector<int>::iterator > ( v.begin() ); 
-  getGeneralTag< Circulator<vector<int>::iterator> > ( c2 ); 
-  getSpecificTag< Circulator<vector<int>::iterator> > ( c2 ); 
-  getType< vector<int>::iterator > ( v.begin() ); 
-  getType< Circulator<vector<int>::iterator> > ( c2 ); 
+#ifdef CPP11_FORWARD_LIST 
+  std::forward_list<int> fl;
+  fl.push_front(1);
+  fl.push_front(2);
+  fl.push_front(3);
+  fl.push_front(4);
+  fl.push_front(5);
+#endif 
+  std::list<int> bl; 
+  bl.push_back(1);
+  bl.push_back(2);
+  bl.push_back(3);
+  bl.push_back(4);
+  bl.push_back(5);
 
-
-
-  trace.info() << "Tags for pointers" << endl;
-  int t[5] = {1, 2, 3, 4, 5};
-  getGeneralTag< int* > ( t ); 
-  getType< int* > ( t ); 
-
-  Circulator<int*> tc(t, t, t+5); 
-  trace.info() << *tc++  << *tc++ << *tc++ <<  *tc++ <<  *tc++ <<  *tc++ <<  *tc++ << *tc++ << endl;
-
-  getSpecificTag< Circulator<int*> > ( tc ); 
-  getGeneralTag< Circulator<int*> > ( tc ); 
-  getType< Circulator<int*> > ( tc ); 
-
-//range validity
-  trace.info() << endl;
-  trace.info() << "Function isNotEmpty" << endl;
-  res = res && testIsNotEmpty<vector<int>::iterator>(v.begin(),v.end(),true)
- && testIsNotEmpty<vector<int>::iterator>(v.end(),v.end(),false); 
-  Circulator<vector<int>::iterator> validC( v.begin(), v.begin(), v.end() );
-  Circulator<vector<int>::iterator> validC2( v.end(), v.begin(), v.end() );
-  Circulator<vector<int>::iterator> notValidC( v.begin(), v.begin(), v.begin() );
-  res = res && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,validC,true)
- && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,notValidC,false)
- && testIsNotEmpty<Circulator<vector<int>::iterator> >(validC,validC2,true)
-; 
+  res = res && 
+#ifdef CPP11_FORWARD_LIST 
+    basicForwardTest(fl) && 
+#endif
+    basicForwardTest(bl) && 
+    basicForwardTest(v) &&
+    basicBidirectionalTest(bl) && 
+    basicBidirectionalTest(v) &&
+    basicRandomAccessTest(v);
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

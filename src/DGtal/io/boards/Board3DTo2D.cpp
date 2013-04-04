@@ -87,7 +87,8 @@ DGtal::Board3DTo2D::isValid() const
  * @param tmat destination matrix.
  * @param mat source matrix.
  */
-static void TransposeMt(double tmat[16], double mat[16])
+void 
+DGtal::Board3DTo2D::TransposeMt(double tmat[16], double mat[16])
 {
     tmat[0] = mat[0]; tmat[1] = mat[4]; tmat[2] = mat[8]; tmat[3] = mat[12];
     tmat[4] = mat[1]; tmat[5] = mat[5]; tmat[6] = mat[9]; tmat[7] = mat[13];
@@ -101,7 +102,8 @@ static void TransposeMt(double tmat[16], double mat[16])
  * @param mat source matrix.
  * @param b source vector.
  */
-static void MulMt(double v[4], double mat[16], double b[4])
+void  
+DGtal::Board3DTo2D::MulMt(double v[4], double mat[16], double b[4])
 {
     v[0] = mat[0] * b[0] + mat[1] * b[1] + mat[2] * b[2] + mat[3] * b[3];
     v[1] = mat[4] * b[0] + mat[5] * b[1] + mat[6] * b[2] + mat[7] * b[3];
@@ -122,10 +124,11 @@ static void MulMt(double v[4], double mat[16], double b[4])
  * @param upy y coordinate of up-vector.
  * @param upz z coordinate of up-vector.
  */
-static void LookAtMt(double mat[16],
-         double eyex, double eyey, double eyez,
-          double dirx, double diry, double dirz,
-          double upx, double upy, double upz)
+void  
+DGtal::Board3DTo2D::LookAtMt(double mat[16],
+                             double eyex, double eyey, double eyez,
+                             double dirx, double diry, double dirz,
+                             double upx, double upy, double upz)
 {
     double up[3]; up[0]= upx; up[1]= upy; up[2]= upz;
     

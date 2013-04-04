@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -50,76 +51,50 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CPredicate
   /**
-Description of \b concept '\b CPredicate'
+     Description of \b concept '\b CPredicate'
      @ingroup Concepts
      \brief Aim: Defines a predicate function, ie. a functor mapping a domain into the set of booleans.
 
-@tparam T the type that should be a model of this predicate
-@tparam TELement the type of an element of the predicate domain.
+     @tparam T the type that should be a model of this predicate
+     @tparam TElement the type of an element of the predicate domain.
 
-###  Refinement of  boost::Assignable<T>
+     ###  Refinement of 
 
-###  Associated types :
+  - CUnaryFunctor
 
-###  Notation
-     - \t X : A type that is a model of CPredicate
-     - \t x : Object of type \t X
-     - \t p : Object of type TElement
+     ###  Associated types :
 
-###  Definitions
+     ###  Notation
+     - \e X : A type that is a model of CPredicate
+     - \e x : Object of type \e X
+     - \e p : Object of type TElement
 
-###  Valid expressions and semantics
-     <table>
-     <tr>
-     <td class=CName> \b Name </td>
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td>
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td>
-     <td class=CSemantics> \b Semantics </td>
-     <td class=CPostCondition> \b Postcondition </td>
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr>
-     <td class=CName>            Apply predicate </td>
-     <td class=CExpression>      \t x( \t p ) </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c bool</td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       the value of the predicate \t x at element \t p</td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+     ###  Definitions
 
-###  Invariants
+     ###  Valid expressions and semantics
 
-###  Models
+     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+     | Apply predicate| \e x.( \e p )|                  | \e bool     |                  | the value of the predicate \e x at element \e p | | |
+
+     ###  Invariants
+
+     ###  Models
 
      - specializations: CPointPredicate, CVertexPredicate
 
-###  Notes
+     ###  Notes
 
      CPredicate allows to factor codes when writing concepts for new
      kinds of predicates.
    */
   template <typename T, typename TElement>
-    struct CPredicate : boost::Assignable<T>
+  struct CPredicate :  CUnaryFunctor<T,TElement,bool>
   {
     // ----------------------- Concept checks ------------------------------
   public:
     typedef TElement Element;
 
-    BOOST_CONCEPT_USAGE( CPredicate )
-    {
-      checkConstConstraints();
-    }
-
-    void checkConstConstraints() const
-    {
-      // x( p ) returns bool.
-      ConceptUtils::sameType( myBool, myPred.operator() ( myElement ) );
-    }
     // ------------------------- Private Datas --------------------------------
   private:
     T myPred;

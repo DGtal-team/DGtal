@@ -43,9 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
-#include "DGtal/helpers/StdDefs.h"
-
-
+#include "DGtal/topology/KhalimskySpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -183,10 +181,7 @@ namespace DGtal
   
   struct ClippingPlane : public DrawWithDisplay3DModifier {
     /**
-     * @param classname the name of the class to which the style is associated.
      *
-     * @param style a pointer on a dynamically allocated style, which
-     * is acquired by the class.
      */
     ClippingPlane( double a, double b, double c, double d, bool drawPlane=true )
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
@@ -298,8 +293,8 @@ namespace DGtal
     /**
      * Constructor.
      *
-     * @param near near distance.
-     * @param far far distance.
+     * @param _near near distance.
+     * @param _far far distance.
      */
     CameraZNearFar( const double _near, const double _far )
     {
@@ -329,7 +324,8 @@ namespace DGtal
      * @param aShift the shift distance (positive or negative).
      * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
      */
-    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, double aShift, double aSizeFactor=1.0 )
+    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel, 
+                         double aShift, double aSizeFactor=1.0 )
     {
       mySurfel= aSurfel;
       myShift = aShift;
@@ -344,7 +340,8 @@ namespace DGtal
      * @param aShift the shift distance (positive or negative (default 0.05)).
      * @param aSizeFactor use to change the KSSurfel size (default 0.75).
      */
-    TransformedKSSurfel( const DGtal::Z3i::SCell  & aSurfel, const DGtal::Z3i::SCell  & aVoxel, 
+    TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel, 
+                         const DGtal::KhalimskySpaceND< 3, int >::SCell  & aVoxel, 
 			 double aShift=0.05, double aSizeFactor=0.75  )
     {      
       mySurfel= aSurfel;
@@ -362,7 +359,8 @@ namespace DGtal
       }
     }
     
-    DGtal::Z3i::SCell mySurfel;
+    ///@todo FIX this member
+    DGtal::KhalimskySpaceND< 3, int >::SCell mySurfel;
     double myShift;
     double mySizeFactor;
   };

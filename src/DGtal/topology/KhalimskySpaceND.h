@@ -45,27 +45,8 @@
 #include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CCommutativeRing.h"
-#include "DGtal/kernel/CSignedInteger.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/SpaceND.h"
-//#include "DGtal/io/boards/Board2D.h"
-
-
-//#include "DGtal/io/Display3D.h"
-
-#ifdef _MSC_VER
-#if defined( max )
-#undef max 
-#define _HAS_MSVC_MAX_ true
-#endif
-#if defined( min )
-#undef min 
-#define _HAS_MSVC_MIN_ true
-#endif
-#endif
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -82,8 +63,6 @@ namespace DGtal
 
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
     
   public:
     typedef TInteger Integer;
@@ -96,7 +75,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    KhalimskyCell();
+    KhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
@@ -108,7 +87,7 @@ namespace DGtal
     /**
      * constructor from point.
      *
-     * @param other any point.
+     * @param point any point.
      */
     KhalimskyCell( const Point & point );
 
@@ -169,9 +148,7 @@ namespace DGtal
   {
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
-    //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<TInteger> ) );
- 
+  
   public:
     typedef TInteger Integer;
     typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
@@ -183,7 +160,7 @@ namespace DGtal
     /**
      * Constructor.
      */
-    SignedKhalimskyCell();
+    SignedKhalimskyCell( Integer dummy = 0 );
     
     /**
      * Copy constructor.
@@ -195,8 +172,8 @@ namespace DGtal
     /**
      * constructor from point.
      *
-     * @param other any point.
-     * @param 'true' if cell has positive sign.
+     * @param point any point.
+     * @param positive if cell has positive sign.
      */
     SignedKhalimskyCell( const Point & point, bool positive );
 
@@ -358,7 +335,7 @@ namespace DGtal
   class KhalimskySpaceND
   {
     //Integer must be signed to characterize a ring.
-    BOOST_CONCEPT_ASSERT(( CCommutativeRing<TInteger> ) );
+    BOOST_CONCEPT_ASSERT(( CInteger<TInteger> ) );
 
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
@@ -459,8 +436,8 @@ namespace DGtal
      * Specifies the upper and lower bounds for the maximal cells in
      * this space.
      *
-     * @param lower_included the lowest point in this space (digital coords)
-     * @param upper_included the upper point in this space (digital coords)
+     * @param lower the lowest point in this space (digital coords)
+     * @param upper the upper point in this space (digital coords)
      * @param closed 'true' if this space is closed, 'false' if open.
      *
      * @return true if the initialization was valid (ie, such bounds
@@ -1063,10 +1040,9 @@ namespace DGtal
        Projects [p] along the [k]th direction toward
        [bound]. Otherwise said, p[ k ] == bound[ k ] afterwards.
 
-       @param p any cell.
-       @param bound the element acting as bound (same topology as p).
-       @param k the concerned coordinate.
-       @return the projection.
+       @param [in,out] p any cell.
+       @param [in] bound the element acting as bound (same topology as p).
+       @param [in] k the concerned coordinate.
     */
     void uProject( Cell & p, const Cell & bound, Dimension k ) const;
 
@@ -1242,7 +1218,6 @@ namespace DGtal
        @param p any cell.
        @param bound the element acting as bound (same topology as p).
        @param k the concerned coordinate.
-       @return the projection.
     */
     void sProject( SCell & p, const SCell & bound, Dimension k ) const;
 
