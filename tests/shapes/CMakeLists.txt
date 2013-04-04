@@ -26,6 +26,8 @@ SET(DGTAL_TESTS_SRC
   testShapesFromPoints
   testMeshFromPoints
   testBall3DSurface
+  testEuclideanShapesDecorator
+  testDigitalShapesDecorator
   )
 
 FOREACH(FILE ${DGTAL_TESTS_SRC})

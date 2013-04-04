@@ -1,0 +1,65 @@
+/**
+ * @file packageBaseConcepts.dox
+ * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature packageBaseConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page packageBaseConcepts Base Concepts
+@writers David Coeurjolly
+
+
+@dot
+digraph GBASE {
+  rankdir=BT;
+
+  subgraph cluster_0 {
+    style=filled;
+    color=lightgrey;
+    node [style=filled,color=white];
+
+    CSinglePassRange-> CConstSinglePassRange ;
+    CSinglePassRangeFromPoint -> CConstSinglePassRangeFromPoint;
+    CSinglePassRangeFromPoint -> CSinglePassRange;
+    CConstSinglePassRangeFromPoint -> CConstSinglePassRange;
+
+    CBidirectionalRange -> CSinglePassRange;
+    CBidirectionalRange -> CConstBidirectionalRange;
+    CBidirectionalRangeFromPoint -> CConstBidirectionalRange;
+    CBidirectionalRangeFromPoint -> CConstBidirectionalRangeFromPoint;
+    CConstBidirectionalRangeFromPoint -> CConstBidirectionalRange;
+
+    CBidirectionalOutputRange -> CSinglePassOutputRange;
+    CBidirectionalOutputRangeFromPoint -> CBidirectionalOutputRange;
+
+    CQuantity -> CLabel;
+    CPredicate;
+    label = "Base";
+  }
+
+  "CSinglePassOutputRange" -> boost_OutputIterator [label="use", style=dashed];
+  "CConstSinglePassRange" -> boost_SingePassIteratorConcept [label="use",style=dashed];
+  "CSinglePassRange"->  boost_SingePassIteratorConcept [label="use",style=dashed] ;
+  CPredicate -> boost_Assignable;
+  CQuantity -> boost_LessThanComparable;
+  CLabel -> boost_DefaultConstructible;
+  CLabel -> boost_Assignable;
+  CLabel -> boost_EqualityComparable;
+  }
+ @enddot
+
+*/
+
+}

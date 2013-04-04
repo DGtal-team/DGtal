@@ -158,6 +158,8 @@ namespace DGtal
      */
     Reverse getReverse() const;
 
+    
+
     /**
      * Equality operator.
      * @param other the object to compare with.
@@ -207,9 +209,9 @@ namespace DGtal
      * Computes the parameters 
      * (direction, intercept, thickness)
      * of the DSS
-     * @param direction
-     * @param intercept
-     * @param thickness
+     * @param direction direction
+     * @param intercept intercept
+     * @param thickness thickness
      */
     void getParameters(Vector3d& direction, PointD3d& intercept, PointD3d& thickness) const;
 

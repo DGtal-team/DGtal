@@ -45,7 +45,6 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/Display3D.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLSet.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -73,7 +72,7 @@ namespace DGtal
    */
   struct Display3DFactory
   {
-
+    
     // SphericalAccumulator
     /** 
      * Display an spherical accumulator in 3D. Bin values are mapped
@@ -84,7 +83,7 @@ namespace DGtal
      * @param shift translate vector for display purposes (default:
      * zero vector)
      * @param radius scale factor for the unit sphere radius (default:1)
-     * @tparam Vector a vector model
+     * @tparam TVector a vector model
      */
     template <typename TVector>
     static void draw( Display3D & display, const  DGtal::SphericalAccumulator<TVector> & accumulator,

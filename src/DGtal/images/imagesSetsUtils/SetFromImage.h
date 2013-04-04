@@ -57,7 +57,7 @@ namespace DGtal
     * \brief Aim: Define utilities to convert a digital set into an
    * image.
    *
-   * @tparam TImage an model of CImageContainer concept.
+   * @tparam TSet an model of CImageContainer concept.
    */
   template <typename TSet>
   struct SetFromImage

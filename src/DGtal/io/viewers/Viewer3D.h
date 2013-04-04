@@ -72,47 +72,46 @@ namespace DGtal
 
 
 
-/////////////////////////////////////////////////////////////////////////////
-// class Viewer3D
-/**
- * Description of class 'Viewer3D' <p>
- * \brief Aim: Display 3D
- * primitive (like PointVector, DigitalSetBySTLSet, Object ...). This
- * class uses the libQGLViewer library (<a
- * href="http://www.libqglviewer.com">http://www.libqglviewer.com </a>). It inherits of the
- * class Display3D and permits to display object using a simple
- * stream mechanism of "<<".
- *
- * For instance you can display objects as follows:
- *
- * @code
- * #include <QtGui/qapplication.h>
- * #include "DGtal/helpers/StdDefs.h"
- * #include "DGtal/io/viewers/Viewer3D.h"
- * ...
- * using namespace Z3i;
- * ...
- *
- * Point p1( 0, 0, 0 );
- * Point p2( 5, 5 ,5 );
- * Point p3( 2, 3, 4 );
- * Domain domain( p1, p2 );
- * Viewer3D viewer;
- * viewer.show();
- * viewer << domain;
- * viewer << p1 << p2 << p3;
- * viewer<< Viewer3D::updateDisplay;
- * return application.exec();
- *
- * @endcode
- *
- *
- * @see Display3D, Board3DTo2D
- */
-class Viewer3D : public QGLViewer, public Display3D
-{
+  /////////////////////////////////////////////////////////////////////////////
+  // class Viewer3D
+  /**
+   * Description of class 'Viewer3D' <p>
+   * \brief Aim: Display 3D
+   * primitive (like PointVector, DigitalSetBySTLSet, Object ...). This
+   * class uses the libQGLViewer library (@see http://www.libqglviewer.com ). It inherits of the
+   * class Display3D and permits to display object using a simple
+   * stream mechanism of "<<".
+   *
+   * For instance you can display objects as follows:
+   *
+   * @code
+   * #include <QtGui/qapplication.h>
+   * #include "DGtal/helpers/StdDefs.h"
+   * #include "DGtal/io/viewers/Viewer3D.h"
+   * ...
+   * using namespace Z3i;
+   * ...
+   *
+   * Point p1( 0, 0, 0 );
+   * Point p2( 5, 5 ,5 );
+   * Point p3( 2, 3, 4 );
+   * Domain domain( p1, p2 );
+   * Viewer3D viewer;
+   * viewer.show();
+   * viewer << domain;
+   * viewer << p1 << p2 << p3;
+   * viewer<< Viewer3D::updateDisplay;
+   * return application.exec();
+   *
+   * @endcode
+   *
+   *
+   * @see Display3D, Board3DTo2D
+   */
+  class Viewer3D : public QGLViewer, public Display3D
+  {
     // ----------------------- Standard services ------------------------------
-public:
+  public:
 
     /**
      * Constructor
@@ -129,13 +128,13 @@ public:
     DGtal::Color myDefaultBackgroundColor;
     DGtal::Color myDefaultColor;
     bool myIsBackgroundDefault;
-  bool myViewWire;
+    bool myViewWire;
   
   
     /**
      * Set the default color for future drawing.
      *
-     * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+     * @param aColor a DGtal::Color (allow to set a trasnparency value).
      *
      **/
 
@@ -146,7 +145,7 @@ public:
     /**
      * Set the default color for future drawing.
      *
-     * @param aColor: a DGtal::Color (allow to set a trasnparency value).
+     * @param key a stream key
      *
      **/
 
@@ -164,28 +163,28 @@ public:
 
     void sortSurfelFromCamera();
 
-  /**
-   *  Sort all triangle from the camera.
-   *
-   *
-   **/
+    /**
+     *  Sort all triangle from the camera.
+     *
+     *
+     **/
   
-  void sortTriangleFromCamera();
-  /**
-   *  Sort all triangle from the camera.
-   *
-   *
-   **/
+    void sortTriangleFromCamera();
+    /**
+     *  Sort all triangle from the camera.
+     *
+     *
+     **/
   
-  void sortQuadFromCamera();
+    void sortQuadFromCamera();
 
 
-  /**
-   *  Sort all polygons from the camera.
-   *
-   *
-   **/
-  void sortPolygonFromCamera();
+    /**
+     *  Sort all polygons from the camera.
+     *
+     *
+     **/
+    void sortPolygonFromCamera();
     
 
     /**
@@ -202,7 +201,7 @@ public:
 
 
     // ----------------------- Interface --------------------------------------
-public:
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
@@ -220,27 +219,27 @@ public:
 
 
     // ------------------------- Protected Datas ------------------------------
-private:
+  private:
 
 
 
-public:
+  public:
 
 
 
     // ------------------------- Private Datas --------------------------------
-private:
+  private:
 
 
-  GLuint myListToAff;
-  unsigned int myNbListe;
-  qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
-  QPoint myPosSelector;
+    GLuint myListToAff;
+    unsigned int myNbListe;
+    qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
+    QPoint myPosSelector;
   
-public:
+  public:
 
     // ------------------------- Hidden services ------------------------------
-protected:
+  protected:
   
 
     /**
@@ -282,11 +281,11 @@ protected:
      * code in the init() method:
 
      @code
-       setKeyDescription(Qt::Key_NEW, "Description of the new Key.");
+     setKeyDescription(Qt::Key_NEW, "Description of the new Key.");
      @endcode
 
      *
-     * @param e: the QKeyEvent
+     * @param e the QKeyEvent
      **/
 
     virtual void keyPressEvent ( QKeyEvent *e );
@@ -298,15 +297,15 @@ protected:
 
     struct compFarthestVoxelFromCamera
     {
-        qglviewer::Vec posCam;
-        bool operator() ( voxelD3D s1, voxelD3D s2 )
-        {
-            double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
-            double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
-            return dist1>dist2;
-        }
+      qglviewer::Vec posCam;
+      bool operator() ( voxelD3D s1, voxelD3D s2 )
+      {
+        double dist1= sqrt ( ( posCam.x-s1.x ) * ( posCam.x-s1.x ) + ( posCam.y-s1.y ) * ( posCam.y-s1.y ) + ( posCam.z-s1.z ) * ( posCam.z-s1.z ) );
+        double dist2= sqrt ( ( posCam.x-s2.x ) * ( posCam.x-s2.x ) + ( posCam.y-s2.y ) * ( posCam.y-s2.y ) + ( posCam.z-s2.z ) * ( posCam.z-s2.z ) );
+        return dist1>dist2;
+      }
     }
-    ;
+      ;
 
 
     struct compFarthestTriangleFromCamera
@@ -314,10 +313,10 @@ protected:
       qglviewer::Vec posCam;
       bool operator() ( triangleD3D t1, triangleD3D t2 )
       {
-            qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
-            qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
-	    double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
-            double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
+        qglviewer::Vec center1 ( ( t1.x1+t1.x2+t1.x3 ) /3.0, ( t1.y1+t1.y2+t1.y3 ) /3.0, ( t1.z1+t1.z2+t1.z3 ) /3.0 );
+        qglviewer::Vec center2 ( ( t2.x1+t2.x2+t2.x3 ) /3.0, ( t2.y1+t2.y2+t2.y3 ) /3.0, ( t2.z1+t2.z2+t2.z3 ) /3.0 );
+        double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
+        double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
      
 	return dist1>dist2;
       }
@@ -325,23 +324,23 @@ protected:
 
     struct compFarthestSurfelFromCamera
     {
-        qglviewer::Vec posCam;
-        bool operator() ( quadD3D q1, quadD3D q2 )
-        {
+      qglviewer::Vec posCam;
+      bool operator() ( quadD3D q1, quadD3D q2 )
+      {
 
 	qglviewer::Vec center1 ( ( q1.x1+q1.x2+q1.x3+q1.x4 ) /4.0, ( q1.y1+q1.y2+q1.y3+q1.y4 ) /4.0, ( q1.z1+q1.z2+q1.z3+q1.z4 ) /4.0 );
 	qglviewer::Vec center2 ( ( q2.x1+q2.x2+q2.x3+q2.x4 ) /4.0, ( q2.y1+q2.y2+q2.y3+q2.y4 ) /4.0, ( q2.z1+q2.z2+q2.z3+q2.z4 ) /4.0 );
 
-            double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
-            double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
-            return dist1>dist2;
-        }
+        double dist1= sqrt ( ( posCam.x-center1.x ) * ( posCam.x-center1.x ) + ( posCam.y-center1.y ) * ( posCam.y-center1.y ) + ( posCam.z-center1.z ) * ( posCam.z-center1.z ) );
+        double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
+        return dist1>dist2;
+      }
     };
 
 
 
 
-  struct compFarthestPolygonFromCamera
+    struct compFarthestPolygonFromCamera
     {
       qglviewer::Vec posCam;
       bool operator() ( polygonD3D q1, polygonD3D q2 )
@@ -366,7 +365,7 @@ protected:
 	double dist2= sqrt ( ( posCam.x-center2.x ) * ( posCam.x-center2.x ) + ( posCam.y-center2.y ) * ( posCam.y-center2.y ) + ( posCam.z-center2.z ) * ( posCam.z-center2.z ) );
 	return dist1>dist2;
       }
-  };
+    };
 
 
 
@@ -374,7 +373,7 @@ protected:
 
 
 
-protected :
+  protected :
     virtual void drawWithNames();
     virtual void draw();
     virtual void init();
@@ -384,14 +383,14 @@ protected :
 
 
     // ------------------------- Internals ------------------------------------
-private:
+  private:
 
 
 
 
 
 
-}; // end of class Viewer3D
+  }; // end of class Viewer3D
 
 
 
@@ -400,14 +399,14 @@ private:
 
 
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Viewer3D'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Viewer3D' to write.
- * @return the output stream after the writing.
- */
-std::ostream&
-operator<< ( std::ostream & out, const Viewer3D & object );
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Viewer3D'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Viewer3D' to write.
+   * @return the output stream after the writing.
+   */
+  std::ostream&
+  operator<< ( std::ostream & out, const Viewer3D & object );
 
 
 } // namespace DGtal

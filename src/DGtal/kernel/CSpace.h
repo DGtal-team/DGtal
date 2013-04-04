@@ -47,7 +47,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -57,30 +58,30 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CSpace
   /**
- Description of \b concept '\b CSpace' <p>
- @ingroup Concepts
+Description of \b concept '\b CSpace' <p>
+@ingroup Concepts
     
- \brief Aim: Defines the concept describing a digital space, ie a
+@brief Aim: Defines the concept describing a digital space, ie a
  cartesian product of integer lines.
      
  ### Refinement of
     
  ### Provided types :
 
-     - Space: the type itself.
-     - Integer: the type for the components or coordinates of the
-       space. Must be a model of CInteger.
-     - Point: the type for a point in this space.
-     - Vector: the type for a vector in this space.
-     - Dimension: the type for the dimension in this space. Must be a
-       model of CUnsignedInteger
-     - Size: the type for measuring distances or counting elements in
-       this space. Must be a model of CUnsignedInteger
-     - RealPoint: the type for a point in the real vector space of same dimension.
-     - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
-
+ - Space: the type itself.
+ - Integer: the type for the components or coordinates of the
+ space. Must be a model of CInteger. 
+ - Point: the type for a point in this space.
+ - Vector: the type for a vector in this space.
+ - Dimension: the type for the dimension in this space. Must be a
+ model of CUnsignedNumber and CIntegralNumber
+ - Size: the type for measuring distances or counting elements in
+ this space. Must be a model of  CUnsignedNumber and CIntegralNumber
+ - RealPoint: the type for a point in the real vector space of same dimension.
+ - RealVector: the type for a Euclidean vector in the real vector space of same dimension.
+ 
  ### Notation
-     - \t X : A type that is a model of CSpace
+  - \t X : A type that is a model of CSpace
     
  ### Definitions
     
@@ -91,13 +92,12 @@ namespace DGtal
 | dimension     | \e X::dimension  |                   |               |              | X should have a static member \c dimension of type \c Dimension. | | |
 
     
- ### Invariants###
+ ### Invariants
     
- ### Models###
-
- - SpaceND is the usual model of CSpace.
+ ### Models
+     SpaceND is the usual model of CSpace.
     
- ### Notes###
+ ### Notes
 
  @tparam T the type that is checked. T should be a model of CSpace.
 
@@ -115,9 +115,11 @@ namespace DGtal
     typedef typename T::Size Size;
     typedef typename T::RealPoint RealPoint;
     typedef typename T::RealVector RealVector;
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Dimension > ));
+    BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Dimension > ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber< Dimension > ));
     BOOST_CONCEPT_ASSERT(( CInteger< Integer > ));
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger< Size > ));
+    BOOST_CONCEPT_ASSERT(( CUnsignedNumber< Size > ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
 
     BOOST_CONCEPT_USAGE( CSpace )
     {

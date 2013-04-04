@@ -42,10 +42,9 @@
 // Inclusions
 #include <iostream>
 #include <vector>
-#include "boost/concept_check.hpp"
-#include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/Common.h"
-#include "DGtal/topology/CUndirectedSimpleLocalGraph.h"
+#include "DGtal/base/ConceptUtils.h"
+#include "DGtal/graph/CUndirectedSimpleLocalGraph.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,87 +53,49 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CAdjacency
   /**
-   * DescriptionDescription of \b concept '\b CAdjacency' <p>
-   * @ingroup Concepts
-   *
-   * \brief Aim: The concept CAdjacency defines an elementary
-   * adjacency relation between points of a digital space.
-   * 
-   * It thus distinguishes which points are close and which points are
-   * further away in this space. Adjacency relations are used to
-   * define a digital topology, in the sense of Rosenfeld or in the
-   * sense of Herman. In other words, and adjacency relation define a
-   * neighborhood graph on the points of a digital domain.
-   *
-   * <p> Refinement of CUndirectedSimpleLocalGraph
-   *
-   * <p> Associated types (must be defined in the model):
-   *
-   * - \c Space: the space of the adjacency.
-   * - \c Point: the digital point type.
-   * - \c Adjacency: the type of the adjacency itself.
-   *
-   * <p> Notations
-   * - \c Adj : A type that is a model of CAdjacency
-   * - \c adj  : Object of type Adj.
-   * - \c p1, \c p2 : an object of type \ref Point.
-   * <p> Definitions
-   *
-   * <p> Valid expressions and 
-   * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
-   * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
-   * <td> \b Postcondition </td> <td> \b Complexity </td>
-   * </tr>
-   * <tr> 
-   * <td> adjacency test </td> 
-   * <td> adj.isAdjacentTo( p1, p2 ) </td> <td> \c p1 and \c p2 of same type Point. </td> <td> \c bool </td>
-   * <td> </td> <td> Return 'true' when the two points are adjacent according to the adjacency relation \c adj </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * <tr> 
-   * <td> proper adjacency test </td> 
-   * <td> adj.isProperlyAdjacentTo( p1, p2 ) </td> <td> \c p1 and \c p2 of same type Point. </td> <td> \c bool </td>
-   * <td> </td> <td> Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * <tr> 
-   * <td> write neighborhood </td> 
-   * <td> adj.writeNeighborhood( p, out_it ) </td> <td> \c p of type Point, \c out_it any output iterator. </td> <td> </td>
-   * <td> </td> <td> writes the whole neighborhood of \c p with the given output iterator \c out_it </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * <tr> 
-   * <td> write proper neighborhood </td> 
-   * <td> adj.writeProperNeighborhood( p, out_it ) </td> <td> \c p of type Point, \c out_it any output iterator. </td> <td> </td>
-   * <td> </td> <td> writes the whole neighborhood of \c p (except \c p itself), with the given output iterator \c out_it </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * <tr> 
-   * <td> write neighborhood satisfying a predicate </td> 
-   * <td> adj.writeNeighborhood( p, out_it,pred ) </td> <td> \c p of type Point, \c out_it any output iterator, \c pred any point predicate. </td> <td> </td>
-   * <td> </td> <td> writes the points of the neighborhood of \c p that satisfy the predicate \c pred, with the given output iterator \c out_it </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * <tr> 
-   * <td> write proper neighborhood satisfying a predicate </td> 
-   * <td> adj.writeProperNeighborhood( p, out_it,pred ) </td> <td> \c p of type Point, \c out_it any output iterator, \c pred any point predicate. </td> <td> </td>
-   * <td> </td> <td> writes the points of the neighborhood of \c p (except \c p itself) that satisfy the predicate \c pred, with the given output iterator \c out_it </td> <td> </td> <td> </td>
-   * </tr>
-   *
-   * </table>
-   *
-   * <p> Invariants###
-   *
-   * <p> Models###
-   *
-   * - MetricAdjacency, DomainAdjacency
-   *
-   * <p> Notes###
+DescriptionDescription of \b concept '\b CAdjacency' <p>
+@ingroup Concepts
+   
+@brief Aim: The concept CAdjacency defines an elementary
+    adjacency relation between points of a digital space.
+    
+It thus distinguishes which points are close and which points are
+further away in this space. Adjacency relations are used to
+define a digital topology, in the sense of Rosenfeld or in the
+sense of Herman. In other words, and adjacency relation define a
+neighborhood graph on the points of a digital domain.
+   
+### Refinement of 
+     CUndirectedSimpleLocalGraph
+   
+### Associated types (must be defined in the model):
+    - \c Space: the space of the adjacency.
+    - \c Point: the digital point type.
+    - \c Adjacency: the type of the adjacency itself.
+   
+###  Notations
+    - \c Adj : A type that is a model of CAdjacency
+    - \c adj  : Object of type Adj.
+    - \c p1, \c p2 : an object of type \ref Point.
+    
+### Definitions
+   
+### Valid expressions and semantics
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
+| proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
+    
+### Invariants
+   
+### Models
+    MetricAdjacency, DomainAdjacency
+   
+### Notes
    */
   template <typename Adj>
-  struct CAdjacency : 
-    CUndirectedSimpleLocalGraph<Adj>
+  struct CAdjacency : CUndirectedSimpleLocalGraph<Adj>
   {
     // ----------------------- Concept checks ------------------------------
   public:

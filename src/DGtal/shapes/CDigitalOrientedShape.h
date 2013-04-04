@@ -53,7 +53,8 @@ namespace DGtal
   /**
 Description of \b concept '\b CDigitalOrientedShape' <p>
      @ingroup Concepts
-     @brief Aim: characterizes models of digital oriented shapes. For example,
+
+@brief Aim: characterizes models of digital oriented shapes. For example,
      models should provide an orientation method  for  points on a
      SpaceND.  Returned value type corresponds to  DGtal::Orientation.
 
@@ -69,37 +70,15 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName> Orientation method           </td> 
-        <td class=CExpression>  x.orientation( aPoint)    </td>
-        <td class=CRequirements> aPoint of type const Point &   </td> 
-        <td class=CReturnType> Orientation     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> return the orientation of a point @c
-     aPoint according to the shape.  Orientation values can be {INSIDE,
-     ON, OUTSIDE}.   </Td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+ ### Valid expressions and semantics 
     
-     </table>
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Orientation method | x.orientation( aPoint) |aPoint of type const Point & | Orientation | | return the orientation of a point @c aPoint according to the shape. Orientation values can be {INSIDE,ON,OUTSIDE} | | |
     
- ### Invariants###
+ ### Invariants
     
- ### Models###
-
+ ### Models
       Parametric and implicit shapes in the DGtal shape factory, 
 
  ### Notes###

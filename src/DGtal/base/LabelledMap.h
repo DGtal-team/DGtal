@@ -67,27 +67,27 @@ namespace DGtal
      boost::ForwardContainer and boost::Container.  It is also a model
      of boost::Assignable, boost::CopyConstructible.
 
-@verbatim
-V[ 0 ] is the data of the first set label.
-V[ 1 ] is the data of the second set label.
-...
+     @verbatim
+     V[ 0 ] is the data of the first set label.
+     V[ 1 ] is the data of the second set label.
+     ...
 
-if less than 3 datas and N = 2
-+------+------+------+------+------+
-|labels| V[0] | V[1] | ...  |  0   |
-+------+------+------+------+------+
+     if less than 3 datas and N = 2
+     +------+------+------+------+------+
+     |labels| V[0] | V[1] | ...  |  0   |
+     +------+------+------+------+------+
 
-if only 3 datas and N = 2
-+------+------+------+------+------+
-|labels| V[0] | V[1] | V[2] | V[3] |
-+------+------+------+------+------+
+     if only 3 datas and N = 2
+     +------+------+------+------+------+
+     |labels| V[0] | V[1] | V[2] | V[3] |
+     +------+------+------+------+------+
 
-if more than 3 datas and N = 2, M = 4
-+------+------+------+------+------+        +------+------+------+------+------+
-|labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
-+------+------+------+------+------+        +------+------+------+------+------+
+     if more than 3 datas and N = 2, M = 4
+     +------+------+------+------+------+        +------+------+------+------+------+
+     |labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
+     +------+------+------+------+------+        +------+------+------+------+------+
 
-@endverbatim
+     @endverbatim
 
      This structure is related to the IndexedListWithBlocks, except
      that it stores the mapping label -> index. The (maximum) number
@@ -113,7 +113,7 @@ if more than 3 datas and N = 2, M = 4
      NB: In the following, we use the notations
      - n is the size of the container
      - b is the number of blocks ( b = 1 + (size()-N) / M ).
-   */
+  */
   template <typename TData, unsigned int L, typename TWord,
             unsigned int N, unsigned int M>
   class LabelledMap
@@ -140,10 +140,10 @@ if more than 3 datas and N = 2, M = 4
     typedef const Value& ConstReference;
     typedef const Value* ConstPointer;
 
-    //class Iterator;      //< Forward declaration
-    class ConstIterator; //< Forward declaration
-    class KeyCompare;    //< Forward declaration
-    class ValueCompare;  //< Forward declaration
+    //class Iterator;      ///< Forward declaration
+    class ConstIterator; ///< Forward declaration
+    class KeyCompare;    ///< Forward declaration
+    class ValueCompare;  ///< Forward declaration
     // ----------------------- Standard types ------------------------------
     typedef Key key_type;
     typedef Value value_type;
@@ -160,8 +160,8 @@ if more than 3 datas and N = 2, M = 4
     typedef KeyCompare key_compare;
     typedef ValueCompare value_compare;
 
-    struct __FirstBlock; //< Forward declaration
-    struct __AnyBlock; //< Forward declaration
+    struct __FirstBlock; ///< Forward declaration
+    struct __AnyBlock; ///< Forward declaration
 
     union BlockPointer {
       __FirstBlock* first;
@@ -397,7 +397,7 @@ if more than 3 datas and N = 2, M = 4
       typedef TData Value;
       typedef Value* Pointer;
       typedef Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -410,10 +410,10 @@ if more than 3 datas and N = 2, M = 4
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; //< number of valid datas in array \a myDatas
-      Data* myDatas;         //< array of \a myNbDatas datas.
-      __AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myDatas of the iterator
+      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
+      Data* myDatas;         ///< array of \a myNbDatas datas.
+      __AnyBlock* myNext;        ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -514,7 +514,7 @@ if more than 3 datas and N = 2, M = 4
       typedef TData Value;
       typedef const Value* Pointer;
       typedef const Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -527,10 +527,10 @@ if more than 3 datas and N = 2, M = 4
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; //< number of valid datas in array \a myDatas
-      const Data* myDatas;   //< array of \a myNbDatas datas.
-      const __AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myDatas of the iterator
+      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
+      const Data* myDatas;   ///< array of \a myNbDatas datas.
+      const __AnyBlock* myNext;  ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
 
@@ -1305,7 +1305,7 @@ if more than 3 datas and N = 2, M = 4
        memory usage of a LabelledMap, for the distribution specified by
        the parameters.
      
-       @tparam TValue the type of data that will be stored.
+       @tparam TData the type of data that will be stored.
 
        @param L the total number of labels.
 

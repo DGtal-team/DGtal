@@ -97,9 +97,9 @@ public:
   /** 
    * Clears the board and set the background color from an RGB triple.
    * 
-   * @param red 
-   * @param green 
-   * @param blue 
+   * @param red red
+   * @param green green
+   * @param blue blue
    */
   void clear( unsigned char red, unsigned char green, unsigned char blue );
 
@@ -179,7 +179,7 @@ public:
    * @param x1 First coordinate of the first vertex.
    * @param y1 Second coordinate of the first vertex.
    * @param x2 First coordinate of the second vertex.
-   * @param y3 Second coordinate of the second vertex.
+   * @param y2 Second coordinate of the second vertex.
    * @param x3 First coordinate of the third vertex.
    * @param y3 Second coordinate of the third vertex.
    * @param depthValue Depth of the triangle.
@@ -211,7 +211,7 @@ public:
    * @param radius arc radius.
    * @param angle1 first angle.
    * @param angle2 second angle.
-   * @param neg 
+   * @param neg neg
    * @param depthValue Depth of the arc.
    */
   void drawArc(double x, double y, double radius, double angle1, double angle2, 
@@ -223,7 +223,7 @@ public:
    * @param x1 First coordinate of the first vertex.
    * @param y1 Second coordinate of the first vertex.
    * @param x2 First coordinate of the second vertex.
-   * @param y3 Second coordinate of the second vertex.
+   * @param y2 Second coordinate of the second vertex.
    * @param x3 First coordinate of the third vertex.
    * @param y3 Second coordinate of the third vertex.
    * @param depthValue Depth of the triangle.
@@ -236,12 +236,12 @@ public:
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
    * 
-   * @param p1 
-   * @param color1 
-   * @param p2 
-   * @param color2 
-   * @param p3 
-   * @param color3 
+   * @param p1 p1
+   * @param color1 color1
+   * @param p2 p2
+   * @param color2  color2
+   * @param p3 p3
+   * @param color3 color3 
    * @param divisions number of triangle subdivisions.
    * @param depthValue The depth of the triangle.
    */
@@ -257,17 +257,17 @@ public:
   /** 
    * Draws a triangle with Gouraud-like shaded colors. 
    * 
-   * @param x1 
-   * @param y1 
-   * @param color1 
-   * @param x2 
-   * @param y2 
-   * @param color2 
-   * @param x3 
-   * @param y3 
-   * @param color3 
-   * @param divisions 
-   * @param depthValue 
+   * @param x1 x1
+   * @param y1 y1
+   * @param color1 color1
+   * @param x2 x2
+   * @param y2 y2
+   * @param color2 color2
+   * @param x3 x3
+   * @param y3 y3
+   * @param color3 color3
+   * @param divisions number of subdivisions
+   * @param depthValue depth
    */
   void fillGouraudTriangle( const double x1, const double y1,
           const DGtal::Color & color1,
@@ -281,12 +281,12 @@ public:
   /** 
    * Draws a triangle with a Gouraud-like shaded color according to
    * the current fill color and a brightness value given for each vertex. 
-   * @param p1 
-   * @param brightness1
-   * @param p2 
-   * @param brightness2 
-   * @param p3 
-   * @param brightness3
+   * @param p1 p1
+   * @param brightness1 brightness1
+   * @param p2 p2
+   * @param brightness2 brightness2
+   * @param p3 p3
+   * @param brightness3 brightness3
    * @param divisions number of triangle subdivisions.
    * @param depthValue The depth of the triangle.
    */
@@ -303,17 +303,17 @@ public:
    * Draws a triangle with a Gouraud-like shaded color according to
    * the current fill color and a brightness value given for each vertex. 
    * 
-   * @param x1 
-   * @param y1 
-   * @param brightness1
-   * @param x2 
-   * @param y2 
-   * @param brightness2
-   * @param x3 
-   * @param y3 
-   * @param brightness3
-   * @param divisions
-   * @param depthValue 
+   * @param x1 x1
+   * @param y1 y1
+   * @param brightness1 b1
+   * @param x2 x2
+   * @param y2 y2
+   * @param brightness2 b2
+   * @param x3 x3
+   * @param y3 y3
+   * @param brightness3 b3
+   * @param divisions number of sudivisions
+   * @param depthValue depth
    */
   void fillGouraudTriangle( const double x1, const double y1,
           const float brightness1,
@@ -353,6 +353,7 @@ public:
   /** 
    * Draws an image.
    * 
+   * @param filename filename
    * @param x First coordinate of the upper left corner.
    * @param y Second coordinate of the upper left corner.
    * @param width Width of the rectangle.
@@ -404,7 +405,8 @@ public:
    * 
    * @param x First coordinate of the circle's center.
    * @param y Second coordinate of the circle's center.
-   * @param radius Radius of the circle.
+   * @param xRadius Radius of the circle.
+   * @param yRadius Radius of the circle.
    * @param depthValue Depth of the circle.
    */
   void drawEllipse( double x, double y, 
@@ -467,10 +469,11 @@ public:
    * 
    * @param x The first coordinates of the lower left corner.
    * @param y The second coordinates of the lower left corner.
-   * @param text The text. 
+   * @param str The text. 
    * @param depthValue The depth of the text.
    */
-  void drawText( double x, double y, const std::string & str, 
+  void drawText( double x, double y, 
+                 const std::string & str, 
      int depthValue = -1 );
 
   /** 
@@ -496,6 +499,7 @@ public:
    * @param red Red component.
    * @param green Green component.
    * @param blue Blue component.
+   * @param alpha alpha component.
    * @return The board itself.
    */
   Board & setPenColorRGBi( unsigned char red,
@@ -507,9 +511,9 @@ public:
    * Changes the current pen color.
    * 
    * @param red Red
-   * @param green 
-   * @param blue 
-   * @param alpha 
+   * @param green green
+   * @param blue blue
+   * @param alpha alpha
    * @return The board itself.
    */  
   Board & setPenColorRGBf(  float red,
@@ -590,7 +594,7 @@ public:
   /** 
    * Set the line joine style. 
    * 
-   * @param cap The join-style which can be Shape::MiterJoin, 
+   * @param join The join-style which can be Shape::MiterJoin, 
    * Shape::RoundJoin or Shape::BevelJoin.
    * 
    * @return The board itself.
@@ -615,10 +619,10 @@ public:
   /** 
    * Define a clipping rectangle for the whole drawing.
    * 
-   * @param x 
-   * @param y 
-   * @param width 
-   * @param height 
+   * @param x x
+   * @param y y
+   * @param width width
+   * @param height height
    */
   void setClippingRectangle(  double x, double y, 
             double width, double height );
@@ -633,7 +637,7 @@ public:
   /** 
    * Define a clipping path for the whole drawing.
    * 
-   * @param points A path.
+   * @param path A path.
    */
   void setClippingPath( const Path & path );
 
@@ -660,7 +664,6 @@ public:
    * @param dx The x shift.
    * @param dy The y shift.
    * @param scaleX An x scale factor between each copy.
-   * @param scaleY A y scale factor between each copy.
    * @param scaleY A y scale factor between each copy.
    * @param angle An angular increment.
    */
@@ -705,16 +708,39 @@ public:
   void saveEPS( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const ;
 
   /** 
+   * Saves the drawing in EPS format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveEPS(std::ostream &out , PageSize size = Board::BoundingBox, double margin = 10.0 ) const ;
+
+
+  /** 
    * Saves the drawing in an EPS file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
    * @param filename The EPS file name.
-   * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveEPS( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+
+
+  /** 
+   * Saves the drawing in an EPS format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out  The output stream.
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveEPS( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0) const ;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
@@ -723,20 +749,50 @@ public:
    * @param filename The name of the FIG file.
    * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the exported file. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  void saveFIG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0,
+		bool includeFIGHeader=true) const;
+
+  /** 
+   * Saves the drawing in XFig format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
+   */
+  void saveFIG( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0,
+		bool includeFIGHeader=true) const;
 
   /** 
    * Saves the drawing in an XFig file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
    * @param filename The XFig file name.
-   * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
    */
-  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+  void saveFIG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true) const ;
+
+ /** 
+   * Saves the drawing in an XFig format through an output
+   * stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while
+   * keeping its aspect ratio.
+   * 
+   * @param out  out The output stream.
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   * @param includeFIGHeader Indicates if the header is included in the output stream. Useful to merge several XFIG figures (default true)
+   */
+  void saveFIG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
+		bool includeFIGHeader=true ) const ;
 
   /** 
    * Save the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
@@ -749,16 +805,42 @@ public:
   void saveSVG( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
+   * Save the drawing in an SVG format through an output stream. When
+   * a size is given (not BoundingBox), the drawing is scaled (up or
+   * down) so that it fits within the dimension while keeping its
+   * aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveSVG( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+
+  /** 
    * Saves the drawing in an SVG file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
    * @param filename The SVG file name.
-   * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveSVG( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+ /** 
+   * Saves the drawing in an SVG format through an output stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in
+   * millimeters.
+   * @param filename default filename
+   */
+  void saveSVG( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0,
+		std::string filename="output.svg") const ;
+  
 
 #ifdef WITH_CAIRO
   // cairo
@@ -768,11 +850,11 @@ public:
    * 
    * @param filename The name of the file.
    * @param type Output type: CairoPDF, CairoPNG, CairoPS, CairoSVG.
-   * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
-  void saveCairo( const char * filename, CairoType type = CairoPNG, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
-  
+  void saveCairo( const char * filename, CairoType type = CairoPNG, 
+                  PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+
   /** 
    * Save the drawing with cairo. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
@@ -784,6 +866,8 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveCairo( const char * filename, CairoType type, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+ 
 #endif
 
   /** 
@@ -795,18 +879,41 @@ public:
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveTikZ( const char * filename, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
+  /** 
+   * Save the drawing in an TikZ file format through an output
+   * stream. When a size is given (not BoundingBox), the drawing is
+   * scaled (up or down) so that it fits within the dimension while
+   * keeping its aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param size Page size (Either BoundingBox (default), A4 or Letter).
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( std::ostream &out, PageSize size = Board::BoundingBox, double margin = 10.0 ) const;
 
   /** 
    * Save the drawing in an TikZ file. When a size is given (not BoundingBox), the drawing is
    * scaled (up or down) so that it fits within the dimension while keeping its aspect ratio.
    * 
    * @param filename The name of the file.
-   * @param size Page size (Either BoundingBox (default), A4 or Letter).
    * @param pageWidth Width of the page in millimeters.
    * @param pageHeight Height of the page in millimeters.
    * @param margin Minimal margin around the figure in the page, in millimeters.
    */
   void saveTikZ( const char * filename, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
+
+  /** 
+   * Save the drawing in an TikZ format through an output stream. When
+   * a size is given (not BoundingBox), the drawing is scaled (up or
+   * down) so that it fits within the dimension while keeping its
+   * aspect ratio.
+   * 
+   * @param out The output stream.
+   * @param pageWidth Width of the page in millimeters.
+   * @param pageHeight Height of the page in millimeters.
+   * @param margin Minimal margin around the figure in the page, in millimeters.
+   */
+  void saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double margin = 10.0 ) const ;
 
  protected:
 

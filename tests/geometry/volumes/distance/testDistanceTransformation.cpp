@@ -36,13 +36,15 @@
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/InexactPredicateLpSeparableMetric.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/ShapeFactory.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/kernel/sets/SetPredicate.h"
 #include "DGtal/images/imagesSetsUtils/SimpleThresholdForegroundPredicate.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -81,9 +83,8 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
  */
 bool testDistanceTransformation()
 {
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
+  bool allfine;
+  
   trace.beginBlock ( "Testing the whole DT computation" );
 
   typedef SpaceND<2> TSpace;
@@ -107,11 +108,12 @@ bool testDistanceTransformation()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
-  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b),aPredicate);
-  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
-  
-  dt.checkTypesValidity ( );
-  
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
+  Domain dom(a,b);
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(&dom,&aPredicate,&l2);
+  VoronoiMap<Z2i::Space, Predicate, L2Metric> voro(&dom,&aPredicate,&l2);
+
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)255);
@@ -121,30 +123,76 @@ bool testDistanceTransformation()
 	      image.end(),
 	      std::ostream_iterator<unsigned int> ( std::cout, " " ) );
   
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        trace.info()<< image(Point(i,j))<<" ";
+      trace.info()<<std::endl;
+    }
   
+    
+  trace.warning() << dt << endl;
+  trace.info() <<std::endl;
+
+  DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
+  DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator itend = dt.constRange().end();
   
-  ImageLong result = dt.compute (  );
-  
-  trace.warning() << result << endl;
-  //We just iterate on the Domain points and print out the point coordinates.
-  ImageLong::ConstIterator it = result.begin();
-  ImageLong::ConstIterator itend = result.end();
   for (; it != itend; ++it)
     {
       std::cout << (*it) << " ";
     }
   std::cout << std::endl;
+  
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        trace.info()<< dt(Point(i,j))<<" ";
+      trace.info()<<std::endl;
+    }
+  
+
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        {
+          Point p= dt.getVoronoiVector(Point(i,j));
+          if (p==Point(i,j))
+            trace.info()<<"-,- ";
+          else
+            trace.info()<< p[0]<<","<<p[1]<<" ";
+        }
+      trace.info()<<std::endl;
+    }
+
+
+  allfine = true;
+  
+  trace.info()<<std::endl;
+  for(int i=2;i<=15;++i)
+    {
+      for(int j=2;j<=15;++j)
+        {
+          Point p= voro(Point(i,j));
+          if (p != dt.getVoronoiVector(Point(i,j)))
+            allfine = false;
+          if (p==Point(i,j))
+            trace.info()<<"-,- ";
+          else
+            trace.info()<< p[0]<<","<<p[1]<<" ";
+        }
+      trace.info()<<std::endl;
+    }
 
   board.clear();
-  Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)16);
+  Display2DFactory::drawImage<Gray>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)16);
   board.saveSVG ( "image-postDT.svg" );
-
-
-  trace.info() << result << endl;
-
+  trace.info() << dt << endl;
   trace.endBlock();
 
-  return nbok == nb;
+  return allfine;
 }
 /**
  * Example of a test. To be completed.
@@ -157,9 +205,9 @@ bool testDistanceTransformationNeg()
 
   trace.beginBlock ( "Testing the Neg DT computation" );
 
-  typedef SpaceND<2> TSpace;
+  typedef Z2i::Space TSpace;
   typedef TSpace::Point Point;
-  typedef HyperRectDomain<TSpace> Domain;
+  typedef Z2i::Domain Domain;
   typedef HueShadeColorMap<unsigned char, 2> HueTwice;
   typedef GrayscaleColorMap<unsigned char> Gray;
   Point a ( -10, -10 );
@@ -179,12 +227,8 @@ bool testDistanceTransformationNeg()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
- 
-  DistanceTransformation<TSpace, Predicate , 2> dt(Domain(a,b), aPredicate);
-  typedef DistanceTransformation<TSpace,Predicate, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity (  );
-
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Gray>(board, image, (unsigned int)0, (unsigned int)1);
@@ -199,12 +243,14 @@ bool testDistanceTransformationNeg()
 	}
       std::cout<<std::endl;
     }
-  
-
-  ImageLong result = dt.compute (  );
-  
-  DGtal::int64_t maxv=0;
-  for(ImageLong::Iterator it = result.begin(), itend = result.end();
+ 
+  trace.info()<<"Domain "<<Domain(a,b)<<std::endl;
+  Domain dom(a,b);
+  DistanceTransformation<TSpace, Predicate , L2Metric> dt(&dom, &aPredicate, &l2);
+   
+  DistanceTransformation<TSpace, Predicate , L2Metric>::Value maxv=0.0;
+  for(DistanceTransformation<TSpace, Predicate , L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), 
+        itend = dt.constRange().end();
       it != itend ; ++it)
     if ((*it) > maxv)
       maxv = (*it);
@@ -213,21 +259,25 @@ bool testDistanceTransformationNeg()
     {
       for(int x=-10; x<=10;x++)
 	{
-	  std::cout<<result(Point(x,y))<<"  ";
+	  std::cout<<dt(Point(x,y))<<"  ";
 	}
       std::cout<<std::endl;
     }
   
 
 
-  trace.warning() << result << endl;
+  trace.warning() << dt << endl;
+  trace.warning() << dt.domain() << endl;
 
+
+  trace.info() << "Exporting..." << endl;
   board.clear();
-  Display2DFactory::drawImage<Gray>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv);
+  Display2DFactory::drawImage<Gray>(board, dt, 0, maxv);
   board.saveSVG ( "image-postDT-neg.svg" );
 
-
-  trace.info() << result << endl;
+  trace.info() << "Done..." << endl;
+ 
+  trace.info() << dt << endl;
 
   trace.endBlock();
 
@@ -257,50 +307,34 @@ bool testDTFromSet()
   
   Shapes<Z2i::Domain>::euclideanShaper(aSet, flower);
 
-  SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
-
-
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 2> dt(domain,aPredicate);
-  typedef DistanceTransformation<TSpace,SetPredicate<Z2i::DigitalSet>, 2>::OutputImage ImageLong;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0> dt0(domain,aPredicate);
-  typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 0>::OutputImage ImageLong0;
-  DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>, 1> dt1(domain,aPredicate);
-  typedef DistanceTransformation<TSpace, SetPredicate<Z2i::DigitalSet>,1>::OutputImage ImageLong1;
-  
-
-  ImageLong result = dt.compute (  );
-  ImageLong0 result0 = dt0.compute (  );
-  ImageLong1 result1 = dt1.compute (  );
-  
-  trace.warning() << result << endl;
+  // Since 0.6, models of CDigitalSet are models of CPointPredicate.
+  // SetPredicate<Z2i::DigitalSet> aPredicate(aSet);
+  typedef ExactPredicateLpSeparableMetric<Z2i::Space,2> L2Metric;
+  typedef DistanceTransformation<TSpace, Z2i::DigitalSet, L2Metric> L2DT;
+  L2Metric l2;
+  L2DT dt(&domain,&aSet, &l2);
+  typedef ExactPredicateLpSeparableMetric<Z2i::Space,1> L1Metric;
+  typedef DistanceTransformation<TSpace, Z2i::DigitalSet, L1Metric> L1DT;
+  L1Metric l1;
+  L1DT dt1(&domain,&aSet, &l1);
  
-  DGtal::int64_t maxv = 0;
-  for ( ImageLong::Iterator it = result.begin(), itend = result.end();
+  L2DT::Value maxv = 0;
+  for ( L2DT::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, dt, 0, maxv+1);
   board.saveSVG ( "image-DTSet.svg" );
   
   board.clear();
   maxv = 0;
-  for ( ImageLong::Iterator it = result0.begin(), itend = result0.end();
+  for ( L1DT::ConstRange::ConstIterator it = dt1.constRange().begin(), itend = dt1.constRange().end();
 	it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
   trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, result0, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
-  board.saveSVG ( "image-DTSet-linfty.svg" );
-  
-  board.clear();
-  maxv = 0;
-  for ( ImageLong::Iterator it = result1.begin(), itend = result1.end();
-	it != itend; ++it)
-    if ( (*it) > maxv)
-      maxv = (*it);
-  trace.error() << "MaxV="<<maxv<<std::endl;
-  Display2DFactory::drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, dt1, 0, maxv+1);
   board.saveSVG ( "image-DTSet-l1.svg" );
   trace.endBlock();
 
@@ -339,25 +373,22 @@ bool testDistanceTransformationBorder()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
 
-  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
-  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity (  );
+  typedef ExactPredicateLpSeparableMetric<TSpace, 2> L2Metric;
+  L2Metric l2;
+  Domain dom(a,b);
+  DistanceTransformation<TSpace, Predicate, L2Metric> dt(&dom, &aPredicate, &l2);
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue>(board, image, (unsigned int)0, (unsigned int)150);
   board.saveSVG ( "image-preDT-border.svg" );
 
-
-  ImageLong result = dt.compute (  );
-
-  DGtal::int64_t maxv = 0;
-  for ( ImageLong::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
+  DistanceTransformation<TSpace, Predicate, L2Metric>::Value maxv = 0;
+  for ( DistanceTransformation<TSpace, Predicate, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin(), itend = dt.constRange().end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
 
-  ImageLong::ConstIterator it = result.begin();
+  DistanceTransformation<TSpace, Predicate, L2Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
   for (unsigned int y = 0; y < 33; y++)
     {
       for (unsigned int x = 0; x < 33; x++)
@@ -368,15 +399,15 @@ bool testDistanceTransformationBorder()
       std::cout << std::endl;
     }
 
-  trace.warning() << result << "MaxV = " << maxv << endl;
+  trace.warning() << dt << "MaxV = " << maxv << endl;
 
 
   board.clear();
-  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1); 
+  Display2DFactory::drawImage<Hue>(board, dt, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1); 
   board.saveSVG ( "image-postDT-border.svg" );
 
 
-  trace.info() << result << endl;
+  trace.info() << dt << endl;
 
   trace.endBlock();
 
@@ -417,13 +448,9 @@ bool testDistanceTransformation3D()
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
   
-
-  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
-  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
-
-  dt.checkTypesValidity (  );
-
-  ImageLong result = dt.compute (  );
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
+  DistanceTransformation<TSpace, Predicate, L2Metric> dt(&dom, &aPredicate,&l2);
 
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
@@ -431,55 +458,16 @@ bool testDistanceTransformation3D()
       for (unsigned int x = 0; x < 16; x++)
 	{
 	  Point p(x, y, 8);
-	  std::cout << result(p) << "   ";
+	  std::cout << dt(p) << "   ";
 	}
       std::cout << std::endl;
     }
 
 
-  trace.warning() << result << endl;
+  trace.warning() << dt << endl;
 
   trace.endBlock();
 
-  return nbok == nb;
-}
-
-/**
- * Example of a test. To be completed.
- *
- */
-bool testTypeValidity()
-{
-  unsigned int nbok = 0;
-  unsigned int nb = 0;
-
-  trace.beginBlock ( "Testing type checker" );
-
-  typedef SpaceND<2> TSpace;
-  typedef TSpace::Point Point;
-  typedef HyperRectDomain<TSpace> Domain;
-
-  Point a ( 0, 0 );
-  Point b ( 15, 15 );
-  typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( Domain(a, b ));
-
-  typedef SimpleThresholdForegroundPredicate<Image> Predicate;
-  Predicate aPredicate(image,0);
-  
-  
-  DistanceTransformation<TSpace, Predicate, 2> dt(Domain(a,b), aPredicate);
-  typedef DistanceTransformation<TSpace, Predicate, 2>::OutputImage ImageLong;
-  
-  //No problem should be reported on the std:cerr.
-  dt.checkTypesValidity (  );
-
-  DistanceTransformation<TSpace, Predicate, 34> dt34(Domain(a,b), aPredicate);
-
-  //Type problem should be reported.
-  dt34.checkTypesValidity (  );
-
-  trace.endBlock();
   return nbok == nb;
 }
 
@@ -499,9 +487,10 @@ bool testChessboard()
 
   Point a (0, 0 );
   Point b ( 128, 128 );
+  Domain dom(a,b);
 
   typedef ImageSelector<Domain, unsigned int>::Type Image;
-  Image image ( Domain( a, b ));
+  Image image (  dom );
 
   for ( Image::Iterator it = image.begin(), itend = image.end();it != itend; ++it)
     (*it) = 128;
@@ -510,42 +499,39 @@ bool testChessboard()
   randomSeeds(image, 19, 0);
 
   typedef ImageSelector<Domain, long int>::Type ImageLong;
-
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
   
   
   //L_euc metric
-  typedef DistanceTransformation<TSpace,Predicate, 2> DT2;
-  DT2 dt2(Domain(a,b), aPredicate);
+  typedef ExactPredicateLpSeparableMetric<TSpace,2> L2Metric;
+  L2Metric l2;
+  typedef DistanceTransformation<TSpace,Predicate, L2Metric> DT2;
+  DT2 dt2(&dom, &aPredicate, &l2);
   
   //L_infinity metric
-  typedef DistanceTransformation<TSpace,Predicate, 0> DT;
-  DT dt(Domain(a,b), aPredicate);;
+  //typedef DistanceTransformation<TSpace,Predicate, 0> DT;
+  //DT dt(Domain(a,b), aPredicate);;
   
   //L_1 metric
-  typedef DistanceTransformation<TSpace,Predicate, 1> DT1;
-  DT1 dt1(Domain(a,b), aPredicate);;
-  
-  DT::OutputImage result = dt.compute (  );
-  DT1::OutputImage result1 = dt1.compute (  );
-  DT2::OutputImage result2 = dt2.compute ();
+  typedef ExactPredicateLpSeparableMetric<TSpace,1> L1Metric;
+  L1Metric l1;
+  typedef DistanceTransformation<TSpace,Predicate, L1Metric> DT1;
+  DT1 dt1(&dom,&aPredicate,&l1);
 
   DGtal::int64_t maxv = 0;
-  for ( DT::OutputImage::Iterator it = result.begin(), itend = result.end();it != itend; ++it)
+  for ( DistanceTransformation<TSpace,Predicate, L2Metric>::ConstRange::ConstIterator it = dt2.constRange().begin(), itend = dt2.constRange().end();it != itend; ++it)
     if ( (*it) > maxv)
       maxv = (*it);
 
-  //DT::OutputImage::ConstIterator it = result.begin();
-
-  trace.warning() << result << "MaxV = " << maxv << endl;
+  trace.warning() << dt2 << "MaxV = " << maxv << endl;
   //We display the values on a 2D slice
   for (unsigned int y = 0; y < 16; y++)
     {
       for (unsigned int x = 0; x < 16; x++)
 	{
 	  Point p(x, y);
-	  std::cout << std::setw(4) << result(p) << " ";
+	  std::cout << std::setw(4) << dt2(p) << " ";
 	}
       std::cout << std::endl;
     }
@@ -554,16 +540,16 @@ bool testChessboard()
 
   Board2D board;
   board.setUnit ( LibBoard::Board::UCentimeter );
-  Display2DFactory::drawImage<Hue>(board, result, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
-  board.saveSVG ( "image-DT-linfty.svg" );
+  Display2DFactory::drawImage<Hue>(board, dt2, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  board.saveSVG ( "image-DT-l2.svg" );
   trace.info()<< "done"<<endl;
 
 
 
   trace.info()<< "max  L1"<<endl;
   maxv = 0;
-  for ( DT1::OutputImage::Iterator it2 = result1.begin(), 
-	  itend = result1.end();
+  for ( DistanceTransformation<TSpace,Predicate, L1Metric>::ConstRange::ConstIterator it2 = dt1.constRange().begin(), 
+	  itend = dt1.constRange().end();
 	it2 != itend; ++it2)
     {
       if ( *it2 > maxv)
@@ -572,48 +558,89 @@ bool testChessboard()
   
   trace.info()<< "Exporting to SVG L1"<<endl;
   board.clear();
-  Display2DFactory::drawImage<Hue>(board, result1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
+  Display2DFactory::drawImage<Hue>(board, dt1, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
   board.saveSVG ( "image-DT-l1.svg" );
   trace.info()<< "done"<<endl;
   
-  trace.info()<< "max  Leuc"<<endl;
-  maxv = 0;
-  for ( DT2::OutputImage::Iterator it = result2.begin(), itend = result2.end();
-	it != itend; ++it)
-    {
-      if ( (*it) > maxv)
-	maxv = (*it);
-    }
-  
-  trace.info()<< "Exporting to SVG L2"<<endl;
-  board.clear();
-  Display2DFactory::drawImage<Hue>(board, result2, (DGtal::int64_t)0, (DGtal::int64_t)maxv+1);
-  board.saveSVG ( "image-DT-l2.svg" );
-  trace.info()<< "done"<<endl;
-  trace.info() << result << endl;
-
+ 
   trace.endBlock();
 
   return nbok == nb;
 }
 
+template <typename Space, int norm>
+bool testCompareExactInexact(unsigned int size, unsigned int nb)
+{
+  trace.beginBlock("Checking Exact/Inexct predicate metrics");
+  typedef ExactPredicateLpSeparableMetric<Space, norm> MetricEx;
+  typedef InexactPredicateLpSeparableMetric<Space> MetricInex;
+  typedef HyperRectDomain<Space> Domain;
+  typedef typename Space::Point Point;
+  typedef DigitalSetBySTLSet<Domain> Set;
+  // typedef NotPointPredicate<SetPredicate<Set> > NegPredicate;
+  typedef NotPointPredicate<Set> NegPredicate;
+
+  Point low=Point::diagonal(0),
+    up=Point::diagonal(size);
+  
+  Domain domain(low,up);
+  Set set(domain);
+
+  for(unsigned int i = 0; i<nb; ++i)
+    {
+      Point p;
+      for(unsigned int dim=0;  dim<Space::dimension;++dim)
+        p[dim]  = rand() % size;
+      set.insert(p);
+    }  
+
+  trace.info()<< "Testing metrics "<<MetricEx()<<" "<<MetricInex(norm)<<std::endl;
+  trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
+  trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
+
+  // SetPredicate<Set> setPred(set);
+  NegPredicate negPred(set);
+  
+  typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
+  typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
+  MetricEx metricEx;
+  MetricInex metricInex(norm);
+  DTEx dtex(&domain, &negPred, &metricEx);
+  DTIn dtinex(&domain, &negPred, &metricInex);
+  
+  double MSE=0.0;
+  typename DTEx::ConstRange::ConstIterator it=dtex.constRange().begin(), itend=dtex.constRange().end();
+  typename DTIn::ConstRange::ConstIterator it2 = dtinex.constRange().begin();
+  for( ; it != itend; ++it, ++it2)
+    MSE += ((*it) - (*it2))*((*it) - (*it2));
+  
+  trace.warning()<<"Resulting MSE= "<<MSE;
+  trace.endBlock();
+  return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main ( int argc, char** argv )
-{
+int main ( int argc, char** argv ){
+
   trace.beginBlock ( "Testing class DistanceTransformation" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testTypeValidity() && testDistanceTransformation() && testDistanceTransformationNeg() 
+  bool res =  testDistanceTransformation() && testDistanceTransformationNeg() 
     && testDTFromSet()  
     && testDistanceTransformationBorder() 
     && testDistanceTransformation3D()
     && testChessboard()
-    && testDTFromSet();
+    && testDTFromSet()
+    && testCompareExactInexact<Z2i::Space, 2>(50, 50)
+    && testCompareExactInexact<Z3i::Space, 2>(50, 50)
+    && testCompareExactInexact<Z2i::Space, 4>(50, 50)
+    && testCompareExactInexact<Z3i::Space, 4>(50, 50)
+    ;
   //&& ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

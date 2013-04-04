@@ -22,7 +22,7 @@
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2010/09/30
+ * @date 2012/11/09
  *
  * Header file for module DistanceTransformation.cpp
  *
@@ -47,13 +47,12 @@
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/CSignedInteger.h"
-#include "DGtal/images/CImage.h"
 #include "DGtal/kernel/CPointPredicate.h"
-#include "DGtal/images/imagesSetsUtils/ImageFromSet.h"
-
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
+#include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+#include "DGtal/images/DefaultConstImageRange.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,153 +65,159 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time distance
    * transformation for separable metrics.
    *  
-   * Given a point predicate and a domain, the compute() method
-   * returns for each point of the domain, the closest distance to a
-   * point in the domain for which the predicate is false. The result
-   * is given as a map point<->values implemented as an image
-   * model OutputImage.
+   * This class is a wrapper around a Voronoi map construction (see
+   * VoronoiMap). More precisely, at a point p, since the VoronoiMap
+   * at p returns a vector to the closest site, this class adapts the
+   * operator() in order to returns the distance to the closest site
+   * for the considered metric.
    *
-   * The point predicate could be:
-   *  - the result of the thresholding of an image (for example using SimpleThresholdForegroundPredicate)
-   *  - a predicate constructed from a digital set (for example using SetPredicate)
-   *  - ...
+   * Please refer to VoronoiMap documentation for details on the
+   * computational cost and parameter description.
+   *
+   * This class is a model of CConstImage.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
-   * @tparam TPointPredicate point predicate returning true for points
+   * @tparam TPointPredicate point predicate returning false for points
    * from which we compute the distance (model of CPointPredicate)
-   * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
-   *
+   * @tparam TSeparableMetric a model of CSeparableMetric
+   * @tparam TImageContainer any model of CImage to store the
+   * VoronoiMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector.
+    *
    * @see distancetransform2D.cpp
    * @see distancetransform3D.cpp
    */
   template < typename TSpace,
              typename TPointPredicate,
-             DGtal::uint32_t p, 
-             typename IntegerLong = DGtal::int64_t>
-  class DistanceTransformation
+             typename TSeparableMetric,
+	     typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<TSpace>,
+                                       typename TSpace::Vector>
+           >
+  class DistanceTransformation: public VoronoiMap<TSpace,TPointPredicate,
+						  TSeparableMetric, TImageContainer>
   {
-
-  public:
     
-    BOOST_CONCEPT_ASSERT(( CSignedInteger<IntegerLong> ));
+  public:
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
-  
-    
-    ///Copy of the space type.
-    typedef TSpace Space;
-
-    ///Copy of the point predicate type.
-    typedef TPointPredicate PointPredicate;
-
-    ///Definition of the underlying domain type.
-    typedef HyperRectDomain<Space> Domain;
-
-    ///Type of resulting image
-    typedef ImageContainerBySTLVector<  Domain,
-                                        IntegerLong > OutputImage;
-
-    typedef typename Space::Vector Vector;
-    typedef typename Space::Point Point;
-    typedef typename Space::Dimension Dimension;
-    typedef typename Space::Size Size;
-    typedef typename Space::Point::Coordinate Abscissa;
+    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
  
-    ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
-  
+    ///Separable Metric type
+    typedef TSeparableMetric SeparableMetric;
 
+    ///Separable Metric type
+    typedef TSpace  Space;
+  
+    ///Separable Metric type
+    typedef typename TSpace::Vector  Vector;
+  
+    ///Point Predicate  type
+    typedef TPointPredicate PointPredicate;
+  
+    ///Definition of the image value type.
+    typedef  typename SeparableMetric::Value Value;
+    
+    ///Definition of the image value type.
+    typedef  typename SeparableMetric::Point Point;
+    BOOST_STATIC_ASSERT((boost::is_same< typename Space::Point, 
+                         typename SeparableMetric::Point>::value));
+    
+    ///Definition of the image.
+    typedef  DistanceTransformation<TSpace,TPointPredicate,TSeparableMetric> Self;
+    
+    typedef VoronoiMap<TSpace,TPointPredicate,TSeparableMetric> Parent;
+   
+    ///Definition of the image constRange
+    typedef  DefaultConstImageRange<Self> ConstRange;
+
+
+    ///Definition of the image value type.
+    typedef typename VoronoiMap<TSpace,TPointPredicate,
+				TSeparableMetric,TImageContainer>::Domain  Domain;
+    
     /**
      *  Constructor
+     * See documentation of VoronoiMap constructor.
      */
-    DistanceTransformation(const Domain & aDomain,
-                           const PointPredicate & predicate);
-
+    DistanceTransformation(ConstAlias<Domain> aDomain,
+                           ConstAlias<PointPredicate> predicate,
+                           ConstAlias<SeparableMetric> aMetric):
+      VoronoiMap<TSpace,TPointPredicate,TSeparableMetric,TImageContainer>(aDomain,
+                                                                          predicate,
+                                                                          aMetric)
+    {}
+    
     /**
      * Default destructor
      */
-    ~DistanceTransformation();
-
-  public:
-
-    /**
-     * Compute the Distance Transformation of a set of point using a 
-     * SeparableMetric metric.  The method associates to each point
-     * with value satisfying the foreground predicate, its distance to
-     * the closest background point.  This algorithm is
-     * O(d.|domain size|).
-     *
-     * @pre the foreground point predicate @a predicate must be defined on the
-     * domain @a aDomain
-     *
-     * @return the distance transformation image.
-     */
-    OutputImage compute( ) ;
-
-
-    /**
-     * Check the validity of the transformation. For instance, we
-     * check that the output image pixel range is ok with respect to
-     * the domain extent and the SeparableMetric.
-     *
-     * Warning and advices are printed in the trace system.
-     *
-     * @return true if a warning has been raised. 
-     */
-    bool checkTypesValidity () const;
-    
-    
+    ~DistanceTransformation() {};
+        
     // ------------------- Private functions ------------------------
-  private:
+  public:
     
-    
-    /** 
-     * Compute the first step of the separable distance transformation.
-     * 
-     * @param output the output image with the first step DT values
+     /**
+     * Returns a const range on the DistanceMap values.
+     *  @return a const range
      */
-    void computeFirstStep(OutputImage & output) const;
+    const Domain & domain() const
+    {
+      return Parent::domain();
+    }
+    
+     /**
+     * Returns a const range on the DistanceMap values.
+     *  @return a const range
+     */
+    ConstRange constRange() const
+    {
+      return ConstRange(*this);
+    }
+        
+    /**
+     * Access to a DistanceMap value (a.k.a. the norm of the
+     * associated Voronoi vector) at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Value operator()(const Point &aPoint) const
+    {
+      return this->myMetricPtr->operator()(aPoint, 
+					   this->myImagePtr->operator()(aPoint));
+    }    
+          
+    /**
+     * Access to a DistanceMap value (a.k.a. the norm of the
+     * associated Voronoi vector) at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Vector getVoronoiVector(const Point &aPoint) const
+    {
+      return this->myImagePtr->operator()(aPoint);
+    }    
+     
+    /** 
+     * @return  Returns the underlying metric.
+     */
+    const SeparableMetric* metric() const
+    {
+      return Parent::metric();
+    }
 
     /** 
-     * Compute the 1D DT associated to the first step.
+     * Self Display method.
      * 
-     * @param output the output image  with the first step DT values
-     * @param startingPoint a point to specify the starting point of the 1D row
+     * @param [out] out output stream
      */
-    void computeFirstStep1D (OutputImage & output, 
-			     const Point &startingPoint) const;
+    void selfDisplay ( std::ostream & out ) const
+    {
+      out << "[DistanceTransformation] underlying VoronoiMap={";
+      Parent::selfDisplay(out);
+      out << "}";
+    }
     
-    /** 
-     *  Compute the other steps of the separable distance transformation.
-     * 
-     * @param inputImage the image resulting of the first (or
-     * intermediate) step 
-     * @param output the output image 
-     * @param dim the dimension to process
-     */    
-    void computeOtherSteps(const OutputImage & inputImage,
-                           OutputImage & output,
-                           const Dimension dim) const;
-
-    /** 
-     * Compute the 1D DT associated to the steps except the first one.
-     * 
-     * @param aImage the input image
-     * @param output the output image  with the  DT values
-     * @param row a point to specify the starting point of the 1D row
-     * @param dim the dimension to process
-     * @param predicate  the predicate to characterize the foreground
-     * (e.g. !=0, see DefaultForegroundPredicate)
-     */
-    void computeOtherStep1D (const OutputImage & input, 
-                             OutputImage & output, 
-                             const Point &row, 
-                             const Size dim, 
-                             Abscissa s[], Abscissa t[]) const;
-    
-
     // ------------------- protected methods ------------------------
   protected:
 
@@ -226,39 +231,25 @@ namespace DGtal
     // ------------------- Private members ------------------------
   private:
 
-    ///The separable metric instance
-    SeparableMetric myMetric;
-
-    ///Copy of the computation domain
-    const Domain & myDomain;
-    
-    ///Copy of the computation domain
-    const PointPredicate  & myPointPredicate;
-    
-    ///Copy of the image lower bound
-    Point myLowerBoundCopy;
-    
-    ///Copy of the image lower bound
-    Point myUpperBoundCopy;
-    
-    ///Displacement vector to translate temporary images.
-    Vector myDisplacementVector;
-
-    ///Copy of the domain extent
-    Point myExtent;
-
-    ///Value to act as a +infinity value
-    IntegerLong myInfinity;
-
-
   }; // end of class DistanceTransformation
 
+
+// //                                                                           //
+// ///////////////////////////////////////////////////////////////////////////////
+  
+  template <typename S,typename P,typename TSep>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, 
+               const DistanceTransformation<S,P,TSep> & object )
+  {
+    object.selfDisplay( out );
+    return out;
+  }
+  
+
+  
 } // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/geometry/volumes/distance/DistanceTransformation.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

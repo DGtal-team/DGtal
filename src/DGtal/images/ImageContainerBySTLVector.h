@@ -62,73 +62,73 @@ namespace DGtal
 {
 
 
-     /**
-     *  Distance Functor used to create the ranges.
-     *  Such functor returns the distance between the image
-     *  "begin" and a given point.
-     *
-     * @tparam TImage Image type
-     */
-    template<typename TImage>
-    class DistanceFunctorFromPoint
+  /**
+   *  Distance Functor used to create the ranges.
+   *  Such functor returns the distance between the image
+   *  "begin" and a given point.
+   *
+   * @tparam TImage Image type
+   */
+  template<typename TImage>
+  class DistanceFunctorFromPoint
+  {
+
+  public:
+
+    typedef typename TImage::Point Point;
+    typedef typename TImage::Difference Difference;
+
+  public:
+
+    DistanceFunctorFromPoint( const TImage *aImagePtr): myImagePtr(aImagePtr)
+    {};
+
+    Difference operator() ( const Point &aPoint ) const
     {
+      return Difference ( myImagePtr->linearized ( aPoint ) );
+    }
+  private:
+    const TImage *myImagePtr;
 
-    public:
+  };
 
-        typedef typename TImage::Point Point;
-        typedef typename TImage::Difference Difference;
+  /////////////////////////////////////////////////////////////////////////////
+  // class ImageContainerBySTLVector
 
-    public:
+  /**
+   * Description of class 'ImageContainerBySTLVector' <p>
+   *
+   * Aim: Model of CImage implementing the association Point<->Value
+   * using a STL vector as container. A linearization of domain points
+   * is used to build the STL vector index.
+   *
+   * As a model of CImage, this class provides two ways of accessing values:
+   * - through the range of points returned by the domain() method
+   * combined with the operator() that takes a point and returns its associated value.
+   * - through the range of values returned by the range() method,
+   * which can be used to directly iterate over the values of the image
+   *
+   * This class also provides a setValue() method and an output iterator,
+   * which is returned by the outputIterator() method for writing purposes.
+   *
+   * Lastly, built-in iterators and a fast span iterator to perform 1D scans
+   * are also provided.
+   *
+   * @tparam TDomain a HyperRectDomain.
+   * @tparam TValue at least a model of CLabel.
+   *
+   * @see testImage.cpp
+   * @see testImageContainerBenchmark.cpp
+   */
 
-        DistanceFunctorFromPoint( const TImage *aImagePtr): myImagePtr(aImagePtr)
-        {};
+  template <typename TDomain, typename TValue>
 
-        Difference operator() ( const Point &aPoint ) const
-        {
-            return Difference ( myImagePtr->linearized ( aPoint ) );
-        }
-    private:
-        const TImage *myImagePtr;
+  class ImageContainerBySTLVector: public std::vector<TValue>
+  {
 
-    };
+  public:
 
-/////////////////////////////////////////////////////////////////////////////
-// class ImageContainerBySTLVector
-
-/**
- * Description of class 'ImageContainerBySTLVector' <p>
- *
- * Aim: Model of CImage implementing the association Point<->Value
- * using a STL vector as container. A linearization of domain points
- * is used to build the STL vector index.
- *
- * As a model of CImage, this class provides two ways of accessing values:
- * - through the range of points returned by the domain() method
- * combined with the operator() that takes a point and returns its associated value.
- * - through the range of values returned by the range() method,
- * which can be used to directly iterate over the values of the image
- *
- * This class also provides a setValue() method and an output iterator,
- * which is returned by the outputIterator() method for writing purposes.
- *
- * Lastly, built-in iterators and a fast span iterator to perform 1D scans
- * are also provided.
- *
- * @tparam TDomain a HyperRectDomain.
- * @tparam TValue at least a model of CLabel.
- *
- * @see testImage.cpp
- * @see testImageContainerBenchmark.cpp
- */
-
-template <typename TDomain, typename TValue>
-
-class ImageContainerBySTLVector: public std::vector<TValue>
-{
-
-public:
-
-   typedef ImageContainerBySTLVector<TDomain, TValue> Self;
+    typedef ImageContainerBySTLVector<TDomain, TValue> Self;
 
     /// domain
     BOOST_CONCEPT_ASSERT ( ( CDomain<TDomain> ) );
@@ -155,7 +155,7 @@ public:
 
     /////////////////// Data members //////////////////
 
-private:
+  private:
 
     ///Image domain
     Domain myDomain;
@@ -165,7 +165,7 @@ private:
 
     /////////////////// standard services //////////////////
 
-public:
+  public:
 
     /**
      * Constructor from a Domain
@@ -195,7 +195,7 @@ public:
     /**
      * Destructor.
      *
-    */
+     */
     ~ImageContainerBySTLVector();
 
 
@@ -224,8 +224,8 @@ public:
     void setValue ( const Point &aPoint, const Value &aValue );
 
     /**
-    * @return the domain associated to the image.
-    */
+     * @return the domain associated to the image.
+     */
     const Domain &domain() const;
 
 
@@ -262,29 +262,29 @@ public:
 
     /////////////////////////// Iterators ////////////////////
     // built-in iterators
-    typedef typename vector<Value>::iterator Iterator;
-    typedef typename vector<Value>::const_iterator ConstIterator;
-    typedef typename vector<Value>::reverse_iterator ReverseIterator;
-    typedef typename vector<Value>::const_reverse_iterator ConstReverseIterator;
-    typedef typename vector<Value>::difference_type Difference;
+    typedef typename std::vector<Value>::iterator Iterator;
+    typedef typename std::vector<Value>::const_iterator ConstIterator;
+    typedef typename std::vector<Value>::reverse_iterator ReverseIterator;
+    typedef typename std::vector<Value>::const_reverse_iterator ConstReverseIterator;
+    typedef typename std::vector<Value>::difference_type Difference;
 
-    typedef typename vector<Value>::iterator OutputIterator;
-    typedef typename vector<Value>::reverse_iterator ReverseOutputIterator;
+    typedef typename std::vector<Value>::iterator OutputIterator;
+    typedef typename std::vector<Value>::reverse_iterator ReverseOutputIterator;
 
     /////////////////////////// Ranges  /////////////////////
     typedef SimpleRandomAccessConstRangeFromPoint<ConstIterator,DistanceFunctorFromPoint<Self> > ConstRange;
     typedef SimpleRandomAccessRangeFromPoint<ConstIterator,Iterator,DistanceFunctorFromPoint<Self> > Range;
 
     /**
-    * @return the range providing begin and end
-    * iterators to scan the values of image.
-    */
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
+     */
     ConstRange constRange() const;
 
     /**
-    * @return the range providing begin and end
-    * iterators to scan the values of image.
-    */
+     * @return the range providing begin and end
+     * iterators to scan the values of image.
+     */
     Range range();
 
 
@@ -292,168 +292,166 @@ public:
     /**
      * Specific SpanIterator on ImageContainerBySTLVector.
      *
-     * @tparam Domain the HyperRectDomain on which the iterator iterates.
-     * @tparam Value
      */
 
     class SpanIterator
     {
 
-        friend class ImageContainerBySTLVector<Domain, Value>;
+      friend class ImageContainerBySTLVector<Domain, Value>;
 
     public:
 
-        ///\todo construct a RANDOM-ACCESS iterator
-        typedef std::bidirectional_iterator_tag iterator_category;
-        typedef Value value_type;
-        typedef ptrdiff_t difference_type;
-        typedef Value* pointer;
-        typedef Value& reference;
+      ///\todo construct a RANDOM-ACCESS iterator
+      typedef std::bidirectional_iterator_tag iterator_category;
+      typedef Value value_type;
+      typedef ptrdiff_t difference_type;
+      typedef Value* pointer;
+      typedef Value& reference;
 
-        /**
-         * Constructor.
-         *
-         * @param p starting point of the SpanIterator
-         * @param aDim specifies the dimension along which the iterator will iterate
-         * @param aMap pointer to the imageContainer
-         */
-        SpanIterator ( const Point & p ,
-                       const Dimension aDim ,
-                       ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
-        {
-            myPos = aMap->linearized ( p );
+      /**
+       * Constructor.
+       *
+       * @param p starting point of the SpanIterator
+       * @param aDim specifies the dimension along which the iterator will iterate
+       * @param aMap pointer to the imageContainer
+       */
+      SpanIterator ( const Point & p ,
+                     const Dimension aDim ,
+                     ImageContainerBySTLVector<Domain, Value> *aMap ) :  myMap ( aMap ), myDimension ( aDim )
+      {
+        myPos = aMap->linearized ( p );
 
-            //We compute the myShift quantity
-            myShift = 1;
+        //We compute the myShift quantity
+        myShift = 1;
 
-            for ( Dimension k = 0; k < myDimension  ; k++ )
-                myShift *= aMap->myExtent[k];
-        }
+        for ( Dimension k = 0; k < myDimension  ; k++ )
+          myShift *= aMap->myExtent[k];
+      }
 
 
-        /**
-         * Set a value at a SpanIterator position.
-         *
-         * @param aVal the value to set.
-         */
-        inline
-        void setValue ( const Value aVal )
-        {
-            ( *myMap ) [ myPos ] = aVal;
-        }
+      /**
+       * Set a value at a SpanIterator position.
+       *
+       * @param aVal the value to set.
+       */
+      inline
+      void setValue ( const Value aVal )
+      {
+        ( *myMap ) [ myPos ] = aVal;
+      }
 
-        /**
-         * operator* on SpanIterators.
-         *
-         * @return the value associated to the current position.
-         */
-        inline
-        const Value & operator*()
-        {
-            return ( *myMap ) [ myPos ];
-        }
+      /**
+       * operator* on SpanIterators.
+       *
+       * @return the value associated to the current position.
+       */
+      inline
+      const Value & operator*()
+      {
+        return ( *myMap ) [ myPos ];
+      }
 
-        /**
-         * Operator ==.
-         *
-         * @return true if this and it are equals.
-         */
-        inline
-        bool operator== ( const SpanIterator &it ) const
-        {
-            return ( myPos == it.myPos );
-        }
+      /**
+       * Operator ==.
+       *
+       * @return true if this and it are equals.
+       */
+      inline
+      bool operator== ( const SpanIterator &it ) const
+      {
+        return ( myPos == it.myPos );
+      }
 
-        /**
-         * Operator !=
-         *
-         * @return true if this and it are different.
-         */
-        inline
-        bool operator!= ( const SpanIterator &it ) const
-        {
-            return ( myPos != it.myPos );
-        }
+      /**
+       * Operator !=
+       *
+       * @return true if this and it are different.
+       */
+      inline
+      bool operator!= ( const SpanIterator &it ) const
+      {
+        return ( myPos != it.myPos );
+      }
 
-        /**
-         * Implements the next() method: we move on step forward.
-         *
-         **/
-        inline
-        void next()
-        {
-            myPos += myShift;
-        }
+      /**
+       * Implements the next() method: we move on step forward.
+       *
+       **/
+      inline
+      void next()
+      {
+        myPos += myShift;
+      }
 
-        /**
-         * Implements the prev() method: we move on step backward.
-         *
-         **/
-        inline
-        void prev()
-        {
-            ASSERT ( ( long int ) myPos - myShift > 0 );
-            myPos -= myShift;
-        }
+      /**
+       * Implements the prev() method: we move on step backward.
+       *
+       **/
+      inline
+      void prev()
+      {
+        ASSERT ( ( long int ) myPos - myShift > 0 );
+        myPos -= myShift;
+      }
 
-        /**
-         * Operator ++ (++it)
-         *
-         */
-        inline
-        SpanIterator &operator++()
-        {
-            this->next();
-            return *this;
-        }
+      /**
+       * Operator ++ (++it)
+       *
+       */
+      inline
+      SpanIterator &operator++()
+      {
+        this->next();
+        return *this;
+      }
 
-        /**
-         * Operator ++ (it++)
-         *
-         */
-        inline
-        SpanIterator &operator++ ( int )
-        {
-            SpanIterator tmp = *this;
-            ++*this;
-            return tmp;
-        }
+      /**
+       * Operator ++ (it++)
+       *
+       */
+      inline
+      SpanIterator &operator++ ( int )
+      {
+        SpanIterator tmp = *this;
+        ++*this;
+        return tmp;
+      }
 
-        /**
-         * Operator -- (--it)
-         *
-         */
-        inline
-        SpanIterator &operator--()
-        {
-            this->prev();
-            return *this;
-        }
+      /**
+       * Operator -- (--it)
+       *
+       */
+      inline
+      SpanIterator &operator--()
+      {
+        this->prev();
+        return *this;
+      }
 
-        /**
-         * Operator -- (it--)
-         *
-         */
-        inline
-        SpanIterator &operator-- ( int )
-        {
-            SpanIterator tmp = *this;
-            --*this;
-            return tmp;
-        }
+      /**
+       * Operator -- (it--)
+       *
+       */
+      inline
+      SpanIterator &operator-- ( int )
+      {
+        SpanIterator tmp = *this;
+        --*this;
+        return tmp;
+      }
 
     private:
-        ///Current Point in the domain
-        Size myPos;
+      ///Current Point in the domain
+      Size myPos;
 
-        /// Copy of the underlying images
-        ImageContainerBySTLVector<Domain, Value> *myMap;
+      /// Copy of the underlying images
+      ImageContainerBySTLVector<Domain, Value> *myMap;
 
-        ///Dimension on which the iterator must iterate
-        Dimension  myDimension;
+      ///Dimension on which the iterator must iterate
+      Dimension  myDimension;
 
-        ///Padding variable
-        Size myShift;
+      ///Padding variable
+      Size myShift;
 
     };
 
@@ -465,7 +463,7 @@ public:
      */
     void setValue ( SpanIterator &it, const Value &aValue )
     {
-        it.setValue ( aValue );
+      it.setValue ( aValue );
     }
 
 
@@ -480,7 +478,7 @@ public:
      */
     SpanIterator spanBegin ( const Point &aPoint, const Dimension aDimension )
     {
-        return SpanIterator ( aPoint, aDimension, this );
+      return SpanIterator ( aPoint, aDimension, this );
     }
 
     /**
@@ -495,9 +493,9 @@ public:
      */
     SpanIterator spanEnd ( const Point &aPoint, const Dimension aDimension )
     {
-        Point tmp = aPoint;
-        tmp[ aDimension ] = myDomain.upperBound() [ aDimension ] + 1;
-        return SpanIterator ( tmp, aDimension, this );
+      Point tmp = aPoint;
+      tmp[ aDimension ] = myDomain.upperBound() [ aDimension ] + 1;
+      return SpanIterator ( tmp, aDimension, this );
     }
 
     /**
@@ -508,7 +506,7 @@ public:
      */
     Value getValue ( SpanIterator &it )
     {
-        return ( *it );
+      return ( *it );
     };
 
 
@@ -517,28 +515,28 @@ public:
     /**
      *  Linearized a point and return the vector position.
      * @param aPoint the point to convert to an index
-     * @return the index of @param aPoint in the container
+     * @return the index of @a aPoint in the container
      */
     Size linearized ( const Point &aPoint ) const;
 
 
 
-};
+  };
 
-/**
- * Overloads 'operator<<' for displaying objects of class 'Image'.
- * @param out the output stream where the object is written.
- * @param object the object of class 'Image' to write.
- * @return the output stream after the writing.
- */
-template <typename Domain, typename V>
-inline
-std::ostream&
-operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain, V> & object )
-{
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'Image'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'Image' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename Domain, typename V>
+  inline
+  std::ostream&
+  operator<< ( std::ostream & out, const ImageContainerBySTLVector<Domain, V> & object )
+  {
     object.selfDisplay ( out );
     return out;
-}
+  }
 
 } // namespace DGtal
 

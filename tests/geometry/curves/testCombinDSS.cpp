@@ -42,7 +42,7 @@
 #include "DGtal/geometry/curves/CombinatorialDSS.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 #include "ConfigTest.h"
-#include "DGtal/geometry/curves/CBidirectionalSegmentComputer.h"
+#include "DGtal/geometry/curves/CDynamicBidirectionalSegmentComputer.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,8 +71,8 @@ bool testCombinatorialDSS()
   typedef CombinatorialDSS< list<char>::iterator, int> CombinatorialDSS_list;
   typedef CombinatorialDSS<codeIterator, int> CombinatorialDSS_string;
 
-  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_list> ));
-  BOOST_CONCEPT_ASSERT(( CBidirectionalSegmentComputer<CombinatorialDSS_string> ));
+  BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<CombinatorialDSS_list> ));
+  BOOST_CONCEPT_ASSERT(( CDynamicBidirectionalSegmentComputer<CombinatorialDSS_string> ));
 
   trace.beginBlock ( "Test different initialization methods" );
 
@@ -267,8 +267,8 @@ bool showGreedySegmantation()
   aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" );
   string className = "ArithmeticalDSS/BoundingBox";
   Point p;
-  p.at(0) = 31;
-  p.at(1) = 16;
+  p[0] = 31;
+  p[1] = 16;
   for ( Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   i != theDecomposition.end(); ++i ) 
     {

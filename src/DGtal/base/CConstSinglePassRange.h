@@ -51,54 +51,39 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class CConstSinglePassRange
   /**
-Description of \b concept '\b CConstSinglePassRange' <p>
+     Description of \b concept '\b CConstSinglePassRange' <p>
      @ingroup Concepts
     
-     \brief Aim: Defines the concept describing a const range.
+     \brief Aim: Defines the concept describing a const single pass range.
      
- ### Refinement of
-    
- ### Provided types :
+     \tparam T the type that should be a model of CConstSinglePassRange.
 
-     - ConstIterator: the const iterator type, a model of const iterator
-          concept (see boost concept SinglePassIteratorConcept).
+     ### Refinement of
+    
+     ### Associated types :
 
-     <table>
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t begin </td>
-     <td class=CExpression>      \t x.begin() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     <tr> 
-     <td class=CName>            \t end </td>
-     <td class=CExpression>      \t x.end() </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      ConstIterator</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+     - \e ConstIterator: the const iterator type, a model of const iterator
+     concept (see boost_concepts::SinglePassIteratorConcept).
+
+     ### Notation
+     - \e T : A type that is a model of CConstSinglePassRange
+     - \e x : object of type \e T
+
+     ### Valid expressions and semantics
+
+     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+     | begin of range| \e x.begin()|                    | \e ConstIterator |             | returns a forward iterator on the beginning of the range | | |
+     | end of range  | \e x.end()|                      | \e ConstIterator |             | returns a forward iterator after the end of the range | | |
     
- ### Invariants###
+     ### Invariants
     
- ### Models###    
+     - Valid range. For any Range x, [\e x.begin(), \e x.end()) is a
+       valid range, that is, \e x.end() is reachable from \e x.begin()
+       in a finite number of increments.
+     - Completeness. An algorithm that iterates through the range [\e x.begin(), \e x.end()) will pass through every element of \e x.
+
+     ### Models
 
    */
   template <typename T>

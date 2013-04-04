@@ -47,7 +47,8 @@
 #include "DGtal/topology/Topology.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/SurfelNeighborhood.h"
-#include "DGtal/topology/BreadthFirstVisitor.h"
+#include "DGtal/graph/BreadthFirstVisitor.h"
+#include "DGtal/graph/GraphVisitorRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -66,13 +67,51 @@ namespace DGtal
      It is also a model of CUndirectedSimpleLocalGraph, so as to be able
      to visit itself with a BreadthFirstVisitor. The "Light" or
      lazyness is implemented this way.
-     
+
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
      
      @tparam TSurfelPredicate a model of CSurfelPredicate: this
      functor defines the digital surface as a characteristic function
      returning true iff the surfel belongs to it.
+
+     @remark Being a CDigitalSurfaceContainer, it is a model of
+     CConstSinglePassRange, but it is \b not a model of
+     CConstBidirectionalRange. For instance, if you wish to do an
+     algorithm like: for all vertex x, for all vertex y, compute something,
+     then the following code will not work:
+
+     @code
+     // This snippet does NOT work.
+     const SurfelConstIterator itb = mySurface.begin(); 
+     const SurfelConstIterator ite = mySurface.end();
+     for ( SurfelConstIterator itX = itb; itX != ite; ++itX ) 
+     { 
+       for ( SurfelConstIterator itY = itb; itY != ite; ++itY ) 
+       { // compute something with *itX and *itY.
+         // But itX == itY at each step ! }
+       // now itX == itY == ite !
+       }
+     @endcode
+     
+     You may use this range only once ! This is because the iterators
+     are only single pass. If you wish to visit twice the range, you
+     must indeed creates two ranges by calling begin() twice (end() is
+     not compulsory here, but advised).
+
+     @code
+     // This snippet does ALWAYS work.
+     for ( SurfelConstIterator itX = mySurface.begin(), 
+                               itXEnd = mySurface.end();
+           itX != itXEnd; ++itX ) 
+     {
+       for ( SurfelConstIterator itY = mySurface.begin(), 
+                                 itYEnd = mySurface.end();
+             itY != itYEnd; ++itY ) 
+         { // compute something with *itX and *itY. }
+     }
+     @endcode
+     
    */
   template <typename TKSpace, typename TSurfelPredicate>
   class LightExplicitDigitalSurface
@@ -191,7 +230,8 @@ namespace DGtal
 
     // -------------------- specific types ------------------------------
     typedef BreadthFirstVisitor< Self > SelfVisitor;
-    typedef typename SelfVisitor::VertexConstIterator SurfelConstIterator;
+    typedef GraphVisitorRange< SelfVisitor > SelfVisitorRange;
+    typedef typename SelfVisitorRange::ConstIterator SurfelConstIterator;
     typedef typename KSpace::Space Space;
     typedef typename KSpace::Point Point;
     typedef Tracker DigitalSurfaceTracker;

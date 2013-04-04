@@ -214,13 +214,17 @@ namespace DGtal
     NotPointPredicate( const PointPredicate & pred );
 
     /**
+     * Assignment operator.
+     */
+    NotPointPredicate &operator=( const NotPointPredicate & pred );
+   /**
      * @param p any point.
      * @return the value of the predicate at this point.
      */
     bool operator()( const Point & p ) const;
 
-    /// the PointPredicate that is inversed.
-    const PointPredicate & myPred;
+    /// An alias to the  PointPredicate that is inversed.
+    const PointPredicate * myPredPtr;
   };
 
   /////////////////////////////////////////////////////////////////////////////
@@ -259,8 +263,8 @@ namespace DGtal
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two PointPredicates given at construction.
    *
-   * @tparam PointPredicate1 the left predicate type.
-   * @tparam PointPredicate2 the right predicate type.
+   * @tparam TPointPredicate1 the left predicate type.
+   * @tparam TPointPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPointPredicate1, typename TPointPredicate2, 

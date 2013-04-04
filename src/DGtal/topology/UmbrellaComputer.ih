@@ -175,7 +175,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::pivot() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
 inline
-Dimension
+DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::orthDir() const
 {
   ASSERT( myTracker != 0 );
@@ -184,7 +184,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::orthDir() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
 inline
-Dimension
+DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackDir() const
 {
   return myState.j;
@@ -200,7 +200,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::trackOrientation() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
 inline
-Dimension
+DGtal::Dimension
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::separatorDir() const
 {
   return myState.k;
@@ -223,14 +223,14 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::next()
 {
   ASSERT( myTracker != 0 );
   
-  Dimension j = trackDir();
+  DGtal::Dimension j = trackDir();
   // Delta^mu_t = +p
   bool mu = trackOrientation(); // m_space->sdirect( separator(), j );
   SCell sp;
   unsigned int code = myTracker->adjacent( sp, j, mu );
   if ( code != 0 )
     { // Then the face has a successor.
-      Dimension i = orthDir();
+      DGtal::Dimension i = orthDir();
       SCell s = myTracker->current();
       myState.j = myState.k; // m_track_dir = m_separator_dir;
       myTracker->move( sp );
@@ -271,9 +271,9 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::previous()
 //        << ",E=" << separatorOrientation() 
 //        << ")";
 //   cerr << endl;
-  Dimension j = trackDir();
+  DGtal::Dimension j = trackDir();
   // Delta^mu_t = +p
-  Dimension i = orthDir();
+  DGtal::Dimension i = orthDir();
   bool mu = trackOrientation(); // m_space->sdirect( separator(), j );
   SCell sp;
   unsigned int code = myTracker->adjacent( sp, separatorDir(), 
@@ -282,7 +282,7 @@ DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::previous()
   //  cerr << "(" << face() << "," << sp << ")";
   if ( code != 0 )
     { // Then the face has a successor.
-      Dimension k = separatorDir();
+      DGtal::Dimension k = separatorDir();
       myTracker->move( sp );
       myState.surfel = sp;
       myState.k = j; 
@@ -312,7 +312,7 @@ bool
 DGtal::UmbrellaComputer<TDigitalSurfaceTracker>::adjacent()
 {
   ASSERT( myTracker != 0 );
-  Dimension old_j = trackDir(); // uint old_j = m_track_dir;
+  DGtal::Dimension old_j = trackDir(); // uint old_j = m_track_dir;
   if ( previous() == 0 ) return false;
   bool mu = trackOrientation(); // m_space->sdirect( separator(), m_track_dir );
   myState.k = myState.j; //  m_separator_dir = m_track_dir;

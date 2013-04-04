@@ -54,124 +54,195 @@
 namespace DGtal
 {
 
-  /////////////////////////////////////////////////////////////////////////////
-  /**
-   * \brief Aim: abstract adapter for ArithmeticalDSS.
-   * Has 2 virtual methods: 
-   * - firstLeaningPoint()
-   * - lastLeaningPoint()
-   *
-   * @see Adapter4ConvexPart Adapter4ConcavePart
-   * 
-   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
-   * Must have a nested type Point and have four accessors: 
-   *  getUf(), getUl(), getLf(), getLl()
-   *
-   */
-   template <typename ArithmeticalDSS>
-  class Adapter 
+  namespace details 
   {
+    /////////////////////////////////////////////////////////////////////////////
+    /**
+     * \brief Aim: Abstract DSSDecorator for ArithmeticalDSS.
+     * Has 2 virtual methods returning the first and last leaning point: 
+     * - firstLeaningPoint()
+     * - lastLeaningPoint()
+     *
+     * @see DSSDecorator4ConvexPart DSSDecorator4ConcavePart
+     * 
+     * @tparam TDSS type devoted to DSS recognition
+     * Must have a nested type 'Point' and four accessors: 
+     *  getUf(), getUl(), getLf(), getLl()
+     *
+     */
+    template <typename TDSS>
+    class DSSDecorator 
+    {
+    public: 
+      /**
+       * Type of the underlying DSS
+       */
+      typedef TDSS DSS; 
     protected:
       /**
-       *  A pointer to an instance of ArithmeticalDSS
+       *  Aliasing pointer to an instance of TDSS
        */
-      ArithmeticalDSS* myDSS;
+      TDSS* myDSS;
     public:
       /**
-       *  @return the first upper or lower leaning point
+       * Tells whether the underlying segment can be extended or not
+       * @return 'true' if extendable, 'false' otherwise
        */
-      virtual typename ArithmeticalDSS::Point firstLeaningPoint() const = 0;
-      /**
-       *  @return the last upper or lower leaning point
-       */
-      virtual typename ArithmeticalDSS::Point lastLeaningPoint() const = 0;
-  };
-
-  /**
-   * \brief Aim: adapter for ArithmeticalDSS used by FP in convex parts.
-   * Has 2 methods: 
-   * - firstLeaningPoint()
-   * - lastLeaningPoint()
-   *
-   * that respectively return the first and last upper leaning point 
-   * of the underlying instance of ArithmeticalDSS. 
-   * 
-   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
-   * Must have a nested type Point and have four accessors: 
-   *  getUf(), getUl(), getLf(), getLl()
-   *
-   * @see Adapter FP
-   */
-  template <typename ArithmeticalDSS>
-  class Adapter4ConvexPart : public Adapter<ArithmeticalDSS> 
-  {
-    public:
-      /**
-       *  Constructor
-       * @param aDSS
-       */
-      Adapter4ConvexPart(ArithmeticalDSS& aDSS)
-    {
-      this->myDSS = &aDSS;
+      bool isExtendableForward() const
+      {
+        return myDSS->isExtendableForward(); 
       }
       /**
-       *  @return the first upper leaning point
+       * Extends the underlying segment (if possible)
+       * @return 'true' if the segment has been extended,
+       * 'false' otherwise
        */
-    typename ArithmeticalDSS::Point firstLeaningPoint() const 
+      bool extendForward()
+      {
+        return myDSS->extendForward(); 
+      }
+      /**
+       * Retracts the underlying segment (if possible)
+       * @return 'true' if the segment has been retracted,
+       * 'false' otherwise
+       */
+      bool retractForward()
+      {
+        return myDSS->retractForward(); 
+      }
+      /**
+       * End of the underlying segment
+       * @return end iterator of the underlying segment
+       */
+      typename DSS::ConstIterator end()
+      {
+        return myDSS->end(); 
+      }
+
+      /**
+       * Destructor 
+       * ( virtual to disable warnings [-Wdelete-non-virtual-dtor] )
+       */
+      virtual ~DSSDecorator() {}
+      /**
+       * First leaning point accessor 
+       * @return the first upper or lower leaning point
+       */
+      virtual typename TDSS::Point firstLeaningPoint() const = 0;
+      /**
+       * Last leaning point accessor 
+       * @return the last upper or lower leaning point
+       */
+      virtual typename TDSS::Point lastLeaningPoint() const = 0;
+      /**
+       * Tells whether it adapts a DSS computer for convex parts or not
+       * @return 'true' for convex parts, 'false' for concave parts
+       */
+      virtual bool isInConvexPart() const = 0;
+    };
+
+    /**
+     * \brief Aim: adapter for TDSS used by FP in CONVEX parts.
+     * Has 2 methods: 
+     * - firstLeaningPoint()
+     * - lastLeaningPoint()
+     *
+     * They respectively return the first and last UPPER leaning point 
+     * of the underlying instance of TDSS. 
+     * 
+     * @tparam TDSS type devoted to DSS recognition
+     * Must have a nested type 'Point' and four accessors: 
+     *  getUf(), getUl(), getLf(), getLl()
+     *
+     * @see DSSDecorator FP
+     */
+    template <typename TDSS>
+    class DSSDecorator4ConvexPart : public DSSDecorator<TDSS> 
+    {
+    public:
+      /**
+       * Constructor
+       * @param aDSS the DSS to decorate
+       */
+      DSSDecorator4ConvexPart(TDSS& aDSS)
+      {
+	this->myDSS = &aDSS;
+      }
+      /**
+       * First leaning point accessor 
+       * @return the first upper leaning point
+       */
+      typename TDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getUf();
       }
       /**
-       *  @return the last upper leaning point
+       * Last leaning point accessor 
+       * @return the last upper leaning point
        */
-    typename ArithmeticalDSS::Point lastLeaningPoint() const
+      typename TDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getUl();
       }
-  };
+      /**
+       * Tells whether it adapts a DSS computer for convex parts or not
+       * @return 'true'
+       */
+      bool isInConvexPart() const { return true; }
 
-  /**
-   * \brief Aim: adapter for ArithmeticalDSS used by FP in concave parts.
-   * Has 2 methods: 
-   * - firstLeaningPoint()
-   * - lastLeaningPoint()
-   *
-   * that respectively return the first and last lower leaning point 
-   * of the underlying instance of ArithmeticalDSS. 
-   * 
-   * @tparam 'ArithmeticalDSS'  type for arithmetical recognition algorithm of DSS. 
-   * Must have a nested type Point and have four accessors: 
-   *  getUf(), getUl(), getLf(), getLl()
-   *
-   * @see Adapter FP
-   */
-  template <typename ArithmeticalDSS>
-  class Adapter4ConcavePart : public Adapter<ArithmeticalDSS> 
-  {
+    };
+
+    /**
+     * \brief Aim: adapter for TDSS used by FP in CONCAVE parts.
+     * Has 2 methods: 
+     * - firstLeaningPoint()
+     * - lastLeaningPoint()
+     *
+     * They respectively return the first and last LOWER leaning point 
+     * of the underlying instance of TDSS. 
+     * 
+     * @tparam TDSS type devoted to DSS recognition
+     * Must have a nested type 'Point' and four accessors: 
+     *  getUf(), getUl(), getLf(), getLl()
+     *
+     * @see DSSDecorator FP
+     */
+    template <typename TDSS>
+    class DSSDecorator4ConcavePart : public DSSDecorator<TDSS> 
+    {
     public:
       /**
-       *  Constructor
-       * @param aDSS
+       * Constructor
+       * @param aDSS the DSS to decorate
        */
-      Adapter4ConcavePart(ArithmeticalDSS& aDSS)
+      DSSDecorator4ConcavePart(TDSS& aDSS)
       {
         this->myDSS = &aDSS;
       }
       /**
-       *  @return the first lower leaning point
+       * First leaning point accessor 
+       * @return the first lower leaning point
        */
-    typename ArithmeticalDSS::Point firstLeaningPoint() const 
+      typename TDSS::Point firstLeaningPoint() const 
       {
         return this->myDSS->getLf();
       }
       /**
-       *  @return the last lower leaning point
+       * Last leaning point accessor 
+       * @return the last lower leaning point
        */
-    typename ArithmeticalDSS::Point lastLeaningPoint() const
+      typename TDSS::Point lastLeaningPoint() const
       {
         return this->myDSS->getLl();
       }
-  };
+      /**
+       * Tells whether it adapts a DSS computer for convex parts or not
+       * @return 'false'
+       */
+      bool isInConvexPart() const { return false; }
+    };
+
+  } //end namespace details
   /////////////////////////////////////////////////////////////////////////////
 
 
@@ -194,7 +265,7 @@ namespace DGtal
    * leaning points of segments that are maximal at the front or at the back are also
    * vertices of the FP.
    * 
-   * @see ArithmeticalDSS Adapter Adapter4ConvexPart Adapter4ConcavePart
+   * @see ArithmeticalDSS DSSDecorator DSSDecorator4ConvexPart DSSDecorator4ConcavePart
    *
    * @note T. ROUSSILLON and I. SIVIGNON, 
    * Faithful polygonal representation of the convex and concave parts of a digital curve, 
@@ -209,10 +280,9 @@ namespace DGtal
    * Once the FP is computed, copyFP() is a way of geting its vertices. 
    * In the same way, copyMLP() is a way of getting the vertices of the MLP. 
    * 
-   * @tparam 'TIterator'  type ConstIterator on 2D points, 
-   * @tparam 'TInteger'  type of scalars used for the DSS parameters 
-   * (satisfying CInteger) 
-   * @tparam 'connectivity'  an integer equal to 
+   * @tparam TIterator  type ConstIterator on 2D points, 
+   * @tparam TInteger (satisfying CInteger) 
+   * @tparam connectivity
    * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
    * (Any other integers act as 8). 
    *
@@ -235,7 +305,6 @@ namespace DGtal
     typedef DGtal::PointVector<2, double> RealVector;
     
     typedef DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity> DSSComputer;
-    typedef DGtal::ArithmeticalDSS<DGtal::Circulator<TIterator>,TInteger,connectivity> DSSComputerInLoop;
     
     typedef std::list<Point> Polygon;
     
@@ -252,15 +321,6 @@ namespace DGtal
     FP(const TIterator& itb, const TIterator& ite) throw( InputException ) ;
   
     /**
-     * Constructor.
-     * @param itb  begin iterator
-     * @param ite  end iterator
-     * @param isClosed 'true' if the range has to be considered as circular, 
-     * 'false' otherwise. 
-     */
-    FP(const TIterator& itb, const TIterator& ite, const bool& isClosed) throw( InputException ) ;
-
-    /**
      * Destructor.
      */
     ~FP();
@@ -271,18 +331,12 @@ namespace DGtal
     /**
      * @return the list where each vertex of the FP is stored.
      */
-    const Polygon & polygon() const
-    {
-      return myPolygon;
-    };
+    const Polygon& polygon() const;
     
     /**
      * @return true if the list has to be consider as circular.
      */
-    bool flagIsClosed() const
-    {
-      return myFlagIsClosed;
-    };
+    bool isClosed() const;
 
 
     /**
@@ -290,6 +344,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
+
 
     /**
      * @return number of FP vertices
@@ -323,46 +378,105 @@ namespace DGtal
     */
     Polygon myPolygon;
 
-    /*
-    * bool equal to 'true' if the list has to be consider as circular
-    * 'false' otherwise
-    */
-    bool myFlagIsClosed;
-
-    // ------------------------- Hidden services ------------------------------
   protected:
 
 
 
+    // ------------------------- Hidden services ------------------------------
   private:
 
     /**
-     * A DSS adapter is chosen according to the local convexity/concavity
+     * A DSS adapter is returned according to the local convexity/concavity
      * @param aDSS a DSS lying on the range to process
-     * @param anAdapter an Adapter to @a aDSS for convex part
-     * when 'true' is returned, for concave part otherwise
-     * @param i an iterator pointing after the front of @a aDSS 
-     * @return 'true' if @a aDSS begins a convex part, 'false' otherwise
+     * @return an adapter to @a aDSS for convex or concave part
+     *
+     * @tparam Adapter type that adapts a DSS computer 
+     * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
      */
-    template<typename DSS, typename Adapter>
-    bool initConvexityConcavity( DSS &aDSS,  
-                                 Adapter* &anAdapter,
-                                 const typename DSS::ConstIterator& i );
+    template<typename Adapter>
+    Adapter* initConvexityConcavity( typename Adapter::DSS &aDSS );
+
+    /**
+     * Removing step
+     * @param adapter an Adapter to the current DSS
+     * @return 'false' if the underlying digital curve 
+     * is detected as disconnected and 'true' otherwise
+     *
+     * @tparam Adapter type that adapts a DSS computer 
+     * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
+     */
+    template<typename Adapter>
+    bool removingStep( Adapter* adapter );
+
+    /**
+     * Adding step in the open case
+     * @param adapter an Adapter to the current DSS
+     * @param itEnd end iterator used to stop the algorithm 
+     * (when @a currentDSS.end() == @a itEnd )
+     * @return 'false' if the algorithm has to stop
+     * and 'true' otherwise
+     *
+     * @tparam Adapter type that adapts a DSS computer 
+     * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
+     */
+    template<typename Adapter>
+    bool addingStep( Adapter* adapter, 
+		     const typename Adapter::DSS::ConstIterator& itEnd );
+
+    /**
+     * Adding step in the closed case
+     * @param adapter an Adapter to the current DSS
+     *
+     * @tparam Adapter type that adapts a DSS computer 
+     * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
+     */
+    template<typename Adapter>
+    void addingStep( Adapter* adapter );
+
 
     /**
      * Main algorithm
-     * @param currentDSS a DSS lying on the range to process
-     * @param adapter an Adapter to @a currentDSS
-     * @param isConvex, 'true' if @a currentDSS is in a convex part, 'false' otherwise
-     * @param i an iterator pointing after the front of @a currentDSS 
-     * @param end iterator used to stop the algorithm (when @a i == @a end )
+     * @param itb  begin iterator
+     * @param ite  end iterator
      */
-    template<typename DSS, typename Adapter>
-    void mainAlgorithm( DSS &currentDSS, Adapter* adapter, 
-                        bool isConvex, 
-                        typename DSS::ConstIterator i, 
-                        const typename DSS::ConstIterator& end )  throw( InputException ) ;
+    void algorithm(const TIterator& itb, const TIterator& ite)  throw( InputException );
 
+    /**
+     * Main algorithm overloading for classic iterator types
+     * (process as open)
+     * @param itb  begin iterator
+     * @param ite  end iterator
+     */
+    void algorithm(const TIterator& itb, const TIterator& ite, IteratorType )  throw( InputException );
+
+    /**
+     * Main algorithm overloading for circular iterator types
+     * (process as closed)
+     * @param itb  begin iterator
+     * @param ite  end iterator
+     */
+    void algorithm(const TIterator& itb, const TIterator& ite, CirculatorType )  throw( InputException );
+
+
+
+    // ------------------------- Hidden helpers ------------------------------
+
+    /**
+     * Checks if a turn defined by three consecutive vertices of the FP is valid or not
+     * @param a previous vertex of the FP
+     * @param b current vertex of the FP
+     * @param c next vertex of the FP
+     * @return 'true' if valid, 'false' otherwise.
+     */
+    bool isValid(const Point& a,const Point& b, const Point& c) const;
+
+    /**
+     * Returns the quadrant number of a vector
+     * @param v any vector
+     * @param q a quandrant number (0,1,2 or 3)
+     * @return 'true' if @a v lies in quadrant number @a q, 'false' otherwise
+     */
+    bool quadrant (const Vector& v, const int& q) const;
 
     /**
      * Gets a MLP vertex from three consecutive vertices of the FP.
@@ -374,15 +488,8 @@ namespace DGtal
      */
     RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
 
-    /**
-     * Returns the quadrant number of a vector
-     * @param v any ector
-     * @param q a quandrant number (0,1,2 or 3)
-     * @return 'true' if @a v lies in quadrant number @a q, 'false' otherwise
-     */
 
-    bool quadrant (const Vector& v, const int& q) const;
-
+    // ----------------------------------------------------------------------
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -410,14 +517,7 @@ namespace DGtal
     
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
-    
-    /**
-     * Default drawing style object.
-     * @param mode the drawing mode.
-     * @return the dyn. alloc. default style for this object.
-     */
-    //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */

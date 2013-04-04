@@ -54,7 +54,7 @@ namespace DGtal
    * \brief Aim: Define a simple Foreground predicate thresholding
    * image values  between two constant values.
    *
-   * @tparam TImage an model of CImageContainer concept. 
+   * @tparam Image an model of CImageContainer concept. 
    */
   template <typename Image>
   class IntervalForegroundPredicate
@@ -88,27 +88,19 @@ namespace DGtal
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const typename Image::Iterator &it) const
+    bool operator()(const typename Image::ConstRange::ConstIterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
-    
-    /** 
+
+    /**
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const typename Image::ConstIterator &it) const
+    bool operator()(const typename Image::Range::Iterator &it) const
     {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
+      return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
-    
-    /** 
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::SpanIterator &it) const
-    {
-      return ((*myImage)(it) > myMinVal) && ((*myImage)(it) <= myMaxVal);
-    }
-    
+
   private:
     CountedPtr<Image> myImage;
     Value myMaxVal;

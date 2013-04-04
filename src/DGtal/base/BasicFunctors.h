@@ -63,7 +63,7 @@ namespace DGtal
   {
     inline
     T operator() (const T&a, const T&b) const
-    { return /*std::*/min(a,b); }
+    { return std::min(a,b); }
   };
   
   template<typename T>
@@ -71,14 +71,14 @@ namespace DGtal
   {
     inline
     T operator() (const T&a, const T&b) const
-    { return /*std::*/max(a,b); }
+    { return std::max(a,b); }
   };
 
  /**
    * Copy of the std::minus binary operator (not implemented on MS-VS)
    */
   template <class T> 
-  struct MinusFunctor : binary_function <T,T,T>
+  struct MinusFunctor : std::binary_function <T,T,T>
   {
     T operator() (const T& x, const T& y) const
     {return x-y;}
@@ -88,16 +88,57 @@ namespace DGtal
    * Abs functor. 
    */
   template <class T>
-  struct AbsFunctor : unary_function<T,T>
+  struct AbsFunctor : std::unary_function<T,T>
   { 
-   inline
-   T operator() (const T &x) const
+    inline
+    T operator() (const T &x) const
     {
       if (x < 0)
-  return -x;
+	return -x;
       else 
-  return x;
+	return x;
     }
+  };
+
+  /**
+   * Unary minus functor. 
+   */
+  template <class T>
+  struct UnaryMinusFunctor : std::unary_function<T,T>
+  { 
+    /**
+       @param x any value.
+       @return the opposite of \a x, i.e. -x.
+    */
+    inline
+    T operator() (const T &x) const
+    {
+      return -x;
+    }
+  };
+
+  /**
+   * Unary minus functor. 
+   */
+  template <class T>
+  struct MultiplicationByScalarFunctor : std::unary_function<T,T>
+  {
+    inline
+    MultiplicationByScalarFunctor( const T & aValue )
+      : myValue( aValue )
+    {}
+
+    /**
+       @param x any value.
+       @return the value myValue * \a x.
+    */
+    inline
+    T operator() (const T &x) const
+    {
+      return myValue * x;
+    }
+
+    T myValue;
   };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -139,7 +180,7 @@ namespace DGtal
 
     /** 
      * Constructor.
-     * @param value  the constant value.
+     * @param aValue  the constant value.
      */
     ConstValueFunctor(const Value& aValue = 0)
       :myValue(aValue) {};
@@ -148,7 +189,6 @@ namespace DGtal
      * Operator
      *
      * @tparam TInput type of the input object
-     * @param aInput input object
      *
      * @return the constant value.
      */
@@ -197,7 +237,7 @@ namespace DGtal
    *
    * @tparam TFunctor1 first functor
    * @tparam TFunctor2 second functor
-   * @tparam ReturnType
+   * @tparam ReturnType return type
    */
   template <typename TFunctor1, typename TFunctor2, typename ReturnType >
   class Composer
@@ -289,7 +329,7 @@ class Thresholder {
 
     /** 
      * Constructor. 
-     * @param value  the threshold value (default 0).
+     * @param aT  the threshold value (default 0).
      */
     Thresholder(const Input& aT = 0):myT(aT) {};
     /**
@@ -391,8 +431,8 @@ struct Thresholder<T,true,true> {
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two Predicates given at construction.
    *
-   * @tparam Predicate1 the left predicate type.
-   * @tparam Predicate2 the right predicate type.
+   * @tparam TPredicate1 the left predicate type.
+   * @tparam TPredicate2 the right predicate type.
    * @tparam TBinaryFunctor binary functor used for comparison
    */
   template <typename TPredicate1, typename TPredicate2, 
@@ -468,7 +508,7 @@ struct Thresholder<T,true,true> {
   };
 
 /**
- * // template class IntervalThresholder
+ * template class IntervalThresholder
  * \brief Aim: A small functor with an operator ()
  * that compares one value to an interval.
  *

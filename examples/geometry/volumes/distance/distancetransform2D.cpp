@@ -50,7 +50,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /** 
- * Set to a given value a random set of @param nb points.
+ * Set to a given value a random set of @a nb points.
  * 
  * @param image the  image
  * @param nb the number of random points to insert
@@ -112,58 +112,41 @@ int main()
   //! [DTPredicate]  
 
   //! [DTCompute]
-  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 2> DTL2;
-  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 0> DTLInf;
-  typedef  DistanceTransformation<Z2i::Space, PointPredicate, 1> DTL1;
+  typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L2Metric> DTL2;
+  typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
  
  
-  DTL2 dtL2( image.domain(), predicate );
-  DTLInf dtLinf(image.domain(), predicate );
-  DTL1 dtL1(image.domain(),  predicate );
-  
-  DTL2::OutputImage resultL2 = dtL2.compute (  );
-  DTLInf::OutputImage resultLinf = dtLinf.compute (  );
-  DTL1::OutputImage resultL1 = dtL1.compute (  );
+  DTL2 dtL2(image.domain(), predicate, Z2i::l2Metric);
+  DTL1 dtL1(image.domain(), predicate, Z2i::l1Metric);
   //! [DTCompute]
 
 
-  DGtal::int64_t maxv=0;
-  //We compute the maximum DT value on the Linf map
-  for ( DTLInf::OutputImage::ConstIterator it = resultLinf.begin(), itend = resultLinf.end();it != itend; ++it)
-    if ( (*it) > maxv)  maxv = (DGtal::int64_t)(*it);
-
-  DGtal::int64_t maxv2=0;
+  DTL2::Value maxv2=0;
   //We compute the maximum DT value on the L2 map
-  for ( DTL2::OutputImage::ConstIterator it = resultL2.begin(), itend = resultL2.end();it != itend; ++it)
-    if ( (*it) > maxv2)  maxv2 = (DGtal::int64_t)(*it);
-  DGtal::int64_t maxv1=0;
+  for ( DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(), itend = dtL2.constRange().end();it != itend; ++it)
+    if ( (*it) > maxv2)  maxv2 = (*it);
  
+  DTL1::Value maxv1=0;
   //We compute the maximum DT value on the L1 map
-  for ( DTL1::OutputImage::ConstIterator it = resultL1.begin(), itend = resultL1.end();it != itend; ++it)
-    if ( (*it) > maxv1)  maxv1 = (DGtal::int64_t)(*it);
+  for ( DTL1::ConstRange::ConstIterator it = dtL1.constRange().begin(), itend = dtL1.constRange().end();it != itend; ++it)
+    if ( (*it) > maxv1)  maxv1 = (*it);
   
   
-  trace.warning() << resultL2 << " maxValue= "<<maxv2<< endl;
+  trace.warning() << dtL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultL2, (DGtal::int64_t)0, maxv2 + 1);
+  Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxv2 + 1);
   board.saveSVG ( "example-DT-L2.svg" );
 
-  trace.warning() << resultL1 << " maxValue= "<<maxv1<< endl;
+  trace.warning() << dtL1 << " maxValue= "<<maxv1<< endl;
   board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultL1, (DGtal::int64_t)0, maxv1 + 1);
+  Display2DFactory::drawImage<HueTwice>(board, dtL1, 0.0, maxv1 + 1);
   board.saveSVG ( "example-DT-L1.svg" );
-
-  trace.warning() << resultLinf << " maxValue= "<<maxv<< endl;
-  board.clear();
-  Display2DFactory::drawImage<HueTwice>(board, resultLinf, (DGtal::int64_t)0, maxv + 1);
-  board.saveSVG ( "example-DT-Linf.svg" );
-
 
   //We compute the maximum DT value on the L2 map
   for ( unsigned int j=0;j<33;j++)
     {
       for(unsigned int i=0; i<33; i++)
-        trace.info()<< resultL2(Z2i::Point(i,j)) << " ";
+        trace.info()<< dtL2(Z2i::Point(i,j)) << " ";
       trace.info()<<std::endl;
     }
 

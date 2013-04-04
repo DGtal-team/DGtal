@@ -461,12 +461,12 @@ DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::update(const Point& aP
   Point neighbor = aPoint; 
   for (Dimension k = 0; k < dimension; ++k)
     {
-      typename Point::Coordinate c = neighbor.at(k); 
-      neighbor.at(k) = (c+1); 
+      typename Point::Coordinate c = neighbor[k]; 
+      neighbor[k] = (c+1); 
       addNewCandidate(neighbor); 
-      neighbor.at(k) = (c-1); 
+      neighbor[k] = (c-1); 
       addNewCandidate(neighbor); 
-      neighbor.at(k) = c; 
+      neighbor[k] = c; 
     }
 }
 

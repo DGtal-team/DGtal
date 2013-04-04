@@ -1,0 +1,173 @@
+
+/**
+ * @file packageTopologyConcepts.dox
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2012/03/16
+ *
+ * Documentation file for feature packageTopologyConcepts
+ *
+ * This file is part of the DGtal library.
+ */
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page packageTopologyConcepts Topology Concepts and Models
+@writers Jacques-Olivier Lachaud
+
+ @dot   
+digraph GTOPOLOGY {
+    rankdir= BT
+
+    subgraph cluster_ext {
+	rank = same;
+        style=invis;
+        subgraph cluster_1 {
+                 style=filled;
+                 color="#eeeeff";
+                 node [style=filled,color=white];
+                 label="base";
+
+                 CConstSinglePassRange [ label="CConstSinglePassRange" URL="\ref CConstSinglePassRange" ]; 
+                 CPredicate [ label="CPredicate" URL="\ref CPredicate" ]; 
+        }
+        subgraph cluster_2 {
+                 style=filled;
+                 color="#ddddff";
+                 node [style=filled,color=white];
+                 label="graph";
+
+		 CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref CUndirectedSimpleGraph" ];
+		 CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref CUndirectedSimpleLocalGraph" ];
+
+        }
+        subgraph cluster_3 {
+                 style=filled;
+                 color="#d4ddff";
+                 node [style=filled,color=white];
+                 label="image";
+
+		 CImage [ label="CImage" URL="\ref CImage" ];
+        }
+        subgraph cluster_4 {
+                 style=filled;
+                 color="#e0eeff";
+                 node [style=filled,color=white];
+                 label="kernel";
+
+                 CDigitalSet [ label="CDigitalSet" URL="\ref CDigitalSet" ]; 
+        }
+        subgraph cluster_5 {
+                 style=filled;
+                 color=white;
+                 node [style=filled,color=orange];
+                 label="boost";
+
+                 boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
+        }
+    }
+  
+    subgraph cluster_0 {
+        style=filled;
+        color=lightgrey;
+        node [style=filled,color=white];
+        label="topology (main concepts)";
+
+        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref CDigitalSurfaceContainer" ]; 
+        CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref CDigitalSurfaceTracker" ];
+        CDomainAdjacency [ label="CDomainAdjacency" URL="\ref CDomainAdjacency" ];
+	CAdjacency [ label="CAdjacency" URL="\ref CAdjacency" ];
+        CSurfelPredicate [ label="CSurfelPredicate" URL="\ref CSurfelPredicate" ];
+        CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref CCellularGridSpaceND" ];
+    }
+    CDigitalSurfaceContainer -> boost_CopyConstructible;
+    CDigitalSurfaceTracker -> boost_CopyConstructible;
+    CDigitalSurfaceContainer -> CDigitalSurfaceTracker [label="use",style=dashed];
+    CDigitalSurfaceContainer -> CCellularGridSpaceND [label="use",style=dashed];
+    CUndirectedSimpleLocalGraph -> CConstSinglePassRange;
+    CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
+    CAdjacency -> CUndirectedSimpleLocalGraph; 
+    CDomainAdjacency -> CAdjacency ; 
+    CSurfelPredicate -> CPredicate;
+  
+    subgraph cluster_models {
+        style=filled;
+        color="#ccffcc";
+        node [style=filled,color=white];
+        label="topology (main models)";
+
+        subgraph cluster_models_0 {
+            style=filled;
+            color="#ccffcc";
+            node [style=filled,color=white];
+            label="(main graph models)";
+
+            MetricAdjacency [ label="MetricAdjacency" URL="\ref MetricAdjacency" ];
+            DomainAdjacency [ label="DomainAdjacency" URL="\ref DomainAdjacency" ];
+            DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ];
+            Object [ label="Object" URL="\ref Object" ];
+        }   
+
+        subgraph cluster_models_1 {
+            style=filled;
+            color="#ccffcc";
+            node [style=filled,color=white];
+            label="(main digital surface container models)";
+
+            DigitalSetBoundary [ label="DigitalSetBoundary" URL="\ref DigitalSetBoundary" ];
+            ImplicitDigitalSurface [ label="ImplicitDigitalSurface" URL="\ref ImplicitDigitalSurface" ];
+            LightImplicitDigitalSurface [ label="LightImplicitDigitalSurface" URL="\ref LightImplicitDigitalSurface" ];
+            SetOfSurfels [ label="SetOfSurfels" URL="\ref SetOfSurfels" ];
+            ExplicitDigitalSurface [ label="ExplicitDigitalSurface" URL="\ref ExplicitDigitalSurface" ];
+            LightExplicitDigitalSurface [ label="LightExplicitDigitalSurface" URL="\ref LightExplicitDigitalSurface" ];
+        }
+
+        subgraph cluster_models_2 {
+            style=filled;
+            color="#ccffcc";
+            node [style=filled,color=white];
+            label="(others)";
+
+            KhalimskySpaceND [ label="KhalimskySpaceND" URL="\ref KhalimskySpaceND" ];
+            SurfelSetPredicate [ label="SurfelSetPredicate" URL="\ref SurfelSetPredicate" ];
+            BoundaryPredicate [ label="BoundaryPredicate" URL="\ref BoundaryPredicate" ];
+            FrontierPredicate [ label="FrontierPredicate" URL="\ref FrontierPredicate" ];
+        }
+    }
+
+    Object -> CUndirectedSimpleGraph;
+    Object -> CDigitalSet [label="use",style=dashed];
+    MetricAdjacency -> CAdjacency;
+    DomainAdjacency -> CDomainAdjacency;
+    DigitalSetBoundary -> CDigitalSurfaceContainer;
+    DigitalSetBoundary -> CDigitalSet [label="use",style=dashed];
+    ImplicitDigitalSurface -> CDigitalSurfaceContainer;
+    SetOfSurfels -> CDigitalSurfaceContainer;
+    ExplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightImplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightImplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
+    LightExplicitDigitalSurface -> CDigitalSurfaceContainer;
+    LightExplicitDigitalSurface -> CUndirectedSimpleLocalGraph;
+    DigitalSurface -> CUndirectedSimpleGraph;
+    DigitalSurface -> CDigitalSurfaceContainer [label="use",style=dashed];
+    KhalimskySpaceND -> CCellularGridSpaceND;
+
+    SurfelSetPredicate -> CSurfelPredicate;
+    BoundaryPredicate -> CSurfelPredicate;
+    FrontierPredicate -> CSurfelPredicate;
+    BoundaryPredicate -> CCellularGridSpaceND [label="use",style=dashed];
+    FrontierPredicate -> CCellularGridSpaceND [label="use",style=dashed];
+    BoundaryPredicate -> CImage [label="use",style=dashed];
+    FrontierPredicate -> CImage [label="use",style=dashed];
+}
+@enddot
+
+*/
+
+}

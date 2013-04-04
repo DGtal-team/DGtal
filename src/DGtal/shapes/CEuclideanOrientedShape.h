@@ -69,32 +69,13 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
  ### Definitions
     
  ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName> Orientation method           </td> 
-        <td class=CExpression>  x.orientation( aPoint)    </td>
-        <td class=CRequirements> aPoint of type const RealPoint &   </td> 
-        <td class=CReturnType> DGtal::Orientation     </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics> return the orientation of a point @c
-     aPoint according to the shape. Orientation values can be {DGtal::INSIDE,
-     DGtal::ON or DGtal::OUTSIDE}.      </Td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
-    
-     </table>
-    
+   
+   
+| Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
+|-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+| Orientation method | \e x.orientation( \e aPoint )|  aPoint of type const RealPoint &              |  DGtal::Orientation    |        | return the orientation of a point @c aPoint according to the shape. Orientation values can be {DGtal::INSIDE, DGtal::ON or DGtal::OUTSIDE}.| | |
+   
+   
  ### Invariants###
     
  ### Models###

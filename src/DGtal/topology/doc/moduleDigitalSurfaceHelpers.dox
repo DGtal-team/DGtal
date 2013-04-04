@@ -1,0 +1,263 @@
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+   @page moduleDigitalSurfaceHelpers Helpers for digital surfaces
+   
+   @writers Bertrand Kerautret and Jacques-Olivier
+   Lachaud.
+
+  Part of the \ref packageTopology.
+  
+   This part of the manual describes how to use the helper class
+   Surfaces to build digital surfaces, closed or open, or contours
+   within digital surfaces. A lot of the ideas, concepts, algorithms,
+   documentation and code is a backport from <a
+   href="https://gforge.liris.cnrs.fr/projects/imagene">ImaGene</a>.
+
+[TOC]
+
+  All the code presented here require:
+ @code
+      #include "DGtal/topology/helpers/Surfaces.h"
+@endcode
+
+   @note This class is useful if you wish only to obtain the set of
+   surfels of a given digital surface or if you wish to obtain 2D
+   contours (in 2D or 3D). If you require more advanced operations on
+   surfaces (for instance using afterwards the topology defined on the
+   surface), it is better to wrap a DigitalSurface object around your
+   surface of interest, see \ref dgtal_digital_surface.
+
+   @section dgtal_helpsurf_sec1  The 2D case: the boundary is a sequence of cells
+
+   The surfaces classes offers the possibility to extract an open or
+   closed contour as a sequence of surfels obtained from a DigitalSet
+   and a starting surfel. The full code of this example is available
+   in file <a href="topology_2ctopo-2_8cpp-example.html">ctopo-2.cpp </a>.
+   
+
+   The first step to extract the surfel boudary of a 2D digital set is
+   to obtain an initial boundary surfel:
+   @code 
+      aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);	
+   @endcode
+
+   The first surfel can also be displayed in red with Board2D:      
+   @code  
+       Board2D board;
+       board << image.domain() << set2d; // display domain and set
+       board << CustomStyle( aCell.className(), new CustomColors(  Board2D::Color( 255, 0, 0 ),
+       							           Board2D::Color( 192, 0, 0 ) ));
+       board << aCell;
+    @endcode  
+
+   @image html ctopo2a.png "Start surfel before a tracking (in red)."
+   @image latex ctopo2a.png "Start surfel before a tracking (in red)." width=0.5\textwidth
+
+    
+    Then you can extract the sequence of consecutive surfels:
+    @code 
+     std::vector<Z2i::SCell> vectBdrySCell;
+     SurfelAdjacency<2> SAdj( true );
+     Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
+	   				     ks, SAdj, set2d, aCell );
+    @endcode
+    and display it:
+    @code
+     GradientColorMap<int> cmap_grad( 0, vectBdrySCell.size() );
+     cmap_grad.addColor( Board2D::Color( 50, 50, 255 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 0, 0 ) );
+     cmap_grad.addColor( Board2D::Color( 255, 255, 10 ) );
+   
+     unsigned int d=0;
+     std::vector<Z2i::SCell>::iterator it;
+     for ( it=vectBdrySCell.begin() ; it != vectBdrySCell.end(); it++ ){
+     	  board<< CustomStyle((*it).className() ,
+	           	      new CustomColors( Board2D::Color::Black,
+				                cmap_grad( d )))<< *it;
+          d++;
+    }
+   @endcode	
+   You will obtain the following ordered sequence of surfels: 
+
+   @image html ctopo2b.png "Tracking of a closed 2D contour."
+   @image latex ctopo2b.png "Tracking of a closed 2D contour." width=0.5\textwidth
+
+
+   The resulting sequence of surfels does not necessary present an
+   open contour (try for instance image "samples/circleR10modif.pgm"):
+
+   @image html ctopo2c.png  "Tracking of an open 2D contour."
+   @image latex ctopo2c.png  "Tracking of an open 2D contour." width=0.5\textwidth
+   
+   @section dgtal_helpsurf_sec2 Tracking a 3D boundary to build a surface.
+
+   With only few modifications we can apply the same extraction on 3D
+   surfel set. The file <a
+   href="topology_2ctopo-2-3d_8cpp-example.html">ctopo-2-3d.cpp </a> shows the
+   same previous example adapted in 3D.
+  
+   with the same code we can get a surfel boundary:
+   @code
+   Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
+   @endcode
+   
+   From this SCell all the surfel connected sets can be extracted:
+   @code
+   // Extracting all boundary surfels which are connected to the initial boundary Cell.
+   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
+                                         ks,SAdj, set3d, aCell );
+   @endcode
+
+   To see both initial surfel and the surfel set, we can use the transparent mode:
+
+   @code
+   viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
+   @endcode
+   	
+   To avoid surfel superposition we need to increase with a small
+   shift the surfel size, for this purpose you can add the following key:
+   @code 
+   viewer << Viewer3D::shiftSurfelVisu; 
+   @endcode
+   or use the special mode "Highlighted" which increase automaticly the surfel size.
+
+   You can obtain for instance the following visualisation:
+   
+   @image html ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)."
+   @image latex ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)." width=0.5\textwidth
+   
+   Since in 3D there are several choice for the direction used to
+   exctract surfel boundary, we can specify the constant direction
+   need to drive the surfel extraction:
+
+   @code
+   // Extract the boundary contour associated to the initial surfel in its first direction
+    Surfaces<Z3i::KSpace>::track2DBoundary( vectBdrySCell,
+ 	    				    ks, *(ks.sDirs( aCell )),SAdj, set3d, aCell );
+   @endcode  					    
+   
+   After extracting the two surfels cut you may obtain the following visualisation:
+   
+   @image html ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)."
+   @image latex ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)." width=0.5\textwidth
+   
+
+
+
+
+
+   @section dgtal_helpsurf_sec3 Extracting surface connected components
+
+   The class \ref Surfaces provides other useful function to extract
+   connected boundary surfels from a digital set and given a surfel
+   adjacency definition. The example  <a
+   href="topology_23dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> shows an example of such an extraction.
+
+   From a domain we construct a DigitalSet inserting points under given conditions (see.  <a
+   href="topology_23dKSSurfaceExtraction_8cpp-example.html" >
+   3dKSSurfaceExtraction.cpp </a> for more details)
+
+@code
+#include "DGtal/helpers/Surfaces.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+...
+Domain domain( p1, p2);
+DigitalSet diamond_set( domain );
+...
+  diamond_set.insertNew( *it );
+....
+@endcode 
+   
+With this domain bounding points (p1, p2), a KhalimskySpace is
+  constructed and a SurfelAdjacency definition is introduced.
+
+@code 
+ KSpace K;
+ K.init(p1, p2, true);
+ SurfelAdjacency<3> SAdj( true );
+@endcode 
+
+
+
+Then we can extract all connected surfels from the digitalSet surface :
+
+@code 
+  SetPredicate<DigitalSet> shape_set_predicate( diamond_set );
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate);
+@endcode
+
+
+After processing a simple display of each resulting connecting component you can obtain such a visualisation:
+
+
+
+@image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND"
+@image latex KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND" width=0.5\textwidth
+
+
+
+Here since the last argument is set to true, the resulting
+SignedKhalimskySpaceND are signed in order to indicate the direction
+of exterior. You can also get the SignefKhalimskySpaceND with default
+sign:
+
+
+@code 
+  Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, shape_set_predicate, false);
+@endcode
+
+
+and you will get the resulting cell display:
+
+
+
+
+@image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND."
+@image latex KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND." width=0.5\textwidth
+
+*/
+
+/**
+   A simple example illustrating the extraction of the sequence of
+   surfels boudary. This program outputs this image.
+
+   @see \ref dgtal_helpsurf_sec1
+
+   @image html ctopo2c.png 
+
+   \example topology/ctopo-2.cpp
+
+*/
+
+
+
+/**
+   A simple example illustrating the extraction of the sequence of
+   surfels boudary. This program outputs this image.
+
+   @see \ref dgtal_helpsurf_sec2
+
+   @image html ctopo3dSurfelCut.png 
+
+   \example topology/ctopo-2-3d.cpp
+
+*/
+
+
+/**
+   A simple example illustrating the extraction of 3d connected set of
+   KhalimskyCell. This program outputs these images:
+
+   @see \ref dgtal_helpsurf_sec3
+   
+   @image html KSurfelsConnectedOrientExt.png 
+   \example  topology/3dKSSurfaceExtraction.cpp
+*/
+
+}

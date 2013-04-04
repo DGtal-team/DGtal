@@ -169,7 +169,7 @@ namespace DGtal
      * Writes the neighbors of a vertex using an output iterator
      * 
      * 
-     * @tparam OutputObjectIterator the type of an output iterator writing
+     * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
      * 
      * @param it the output iterator
@@ -186,7 +186,7 @@ namespace DGtal
      * output iterator
      * 
      * 
-     * @tparam OutputObjectIterator the type of an output iterator writing
+     * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
      * 
      * @tparam VertexPredicate the type of the predicate

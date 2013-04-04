@@ -45,11 +45,13 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CLabel.h"
 #include "DGtal/base/ConstRangeAdapter.h"
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
+
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/base/Bits.h"
-//#include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/Morton.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "DGtal/io/Color.h"
@@ -58,6 +60,8 @@
 
 namespace DGtal
 {
+  namespace experimental
+  {
   /////////////////////////////////////////////////////////////////////////////
   // template class ImageContainerByHashTree
   /**
@@ -158,7 +162,9 @@ namespace DGtal
     /// values range
     BOOST_CONCEPT_ASSERT(( CLabel<TValue> ));
     typedef TValue Value;
-    typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange; 
+    //typedef ConstRangeAdapter<typename Domain::ConstIterator, Self, Value > ConstRange;
+    typedef DefaultConstImageRange<Self> ConstRange;
+    typedef DefaultImageRange<Self> Range;
 
     /// output iterator
     typedef SetValueIterator<Self> OutputIterator; 
@@ -199,7 +205,7 @@ namespace DGtal
      * speed and memory usage is to be done here.
      *
      * @param p1 First point of the image bounding box.
-     * @param p1 Second point of the image bounding box.
+     * @param p2 Second point of the image bounding box.
      * 
      * @param defaultValue In order for the tree to be valid it needs
      * a default value at the root (key = 1)
@@ -261,12 +267,13 @@ namespace DGtal
      * @return an instance of ConstRange 
      * used to iterate over the values.
      */      
-    ConstRange range() const;
+    ConstRange constRange() const;
 
-    /** 
-     * @return an output iterator used to write values.
-     */      
-    OutputIterator outputIterator();
+    /**
+     * @return an instance of ConstRange
+     * used to iterate over the values.
+     */
+    Range range() ;
 
 
     /**
@@ -348,7 +355,7 @@ namespace DGtal
      * performances strongly depend on wether or not and how much the
      * tree's structure needs to be modified.  For efficiency no check
      * is performed on the coordinates
-     * @param key The point
+     * @param aPoint The point
      * @param object the associated object
      */
     void setValue(const Point& aPoint, const Value object);
@@ -388,7 +395,7 @@ namespace DGtal
      * valid.  A tree is valid if there's one (and only one) leaf for
      * each position at maximal depth.
      * @param key the key
-     * @param leafAbove  
+     * @param leafAbove  leafAbove (@TODO)
      */
     bool checkIntegrity(HashKey key = ROOT_KEY, bool leafAbove = false) const;
 
@@ -426,7 +433,7 @@ namespace DGtal
      * the usual tree representation.
      *
      * @param out output stream.
-     * @param nbBits 
+     * @param nbBits  number of bits
      **/
     void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
 
@@ -803,7 +810,7 @@ namespace DGtal
   }
 
  
-
+}
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -40,7 +40,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
-typedef pair<double,double> AngularCoordinates;
+typedef std::pair<double,double> AngularCoordinates;
 /**
  * Destructor.
  */

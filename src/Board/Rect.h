@@ -33,12 +33,11 @@ struct Rect {
   /** 
    * Rect constructor.
    * 
-   * @param left 
-   * @param top 
-   * @param width 
-   * @param height 
-   * 
-   * @return 
+   * @param leftX left X
+   * @param topY  top Y
+   * @param rectWidth width
+   * @param rectHeight height
+   *
    */
   Rect( double leftX = 0.0f, double topY = 0.0f, double rectWidth = 0.0f, double rectHeight = 0.0f )
     :left( leftX ), top( topY ), width( rectWidth ), height( rectHeight ) { } 

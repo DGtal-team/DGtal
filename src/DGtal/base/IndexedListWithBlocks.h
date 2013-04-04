@@ -55,24 +55,23 @@ namespace DGtal
      Aim: Represents a mixed list/array structure which is useful in
      some context. It is essentially a list of blocks.
 
-@verbatim
-if less than 3 values and N = 2
-+------+------+------+------+------+
-| size | V[0] | V[1] | ...  |  0   |
-+------+------+------+------+------+
+     @verbatim
+     if less than 3 values and N = 2
+     +------+------+------+------+------+
+     | size | V[0] | V[1] | ...  |  0   |
+     +------+------+------+------+------+
 
-if only 3 values and N = 2
-+------+------+------+------+------+
-| size | V[0] | V[1] | V[2] | V[3] |
-+------+------+------+------+------+
+     if only 3 values and N = 2
+     +------+------+------+------+------+
+     | size | V[0] | V[1] | V[2] | V[3] |
+     +------+------+------+------+------+
 
-if more than 3 values and N = 2, M = 4
-+------+------+------+------+------+        +------+------+------+------+------+
-| size | V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
-+------+------+------+------+------+        +------+------+------+------+------+
+     if more than 3 values and N = 2, M = 4
+     +------+------+------+------+------+        +------+------+------+------+------+
+     | size | V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
+     +------+------+------+------+------+        +------+------+------+------+------+
 
-@endverbatim
-
+     @endverbatim
 
      Such a structure is useful when:
      - the user knows at which position/index lies its value.
@@ -119,8 +118,8 @@ if more than 3 values and N = 2, M = 4
     typedef Iterator iterator;
     typedef ConstIterator const_iterator;
     
-    struct FirstBlock; //< Forward declaration
-    struct AnyBlock; //< Forward declaration
+    struct FirstBlock; ///< Forward declaration
+    struct AnyBlock; ///< Forward declaration
 
     union BlockPointer {
       FirstBlock* first;
@@ -338,7 +337,7 @@ if more than 3 values and N = 2, M = 4
       typedef TValue Value;
       typedef Value* Pointer;
       typedef Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -351,10 +350,10 @@ if more than 3 values and N = 2, M = 4
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myValues of the iterator
-      unsigned int myNbValues; //< number of valid values in array \a myValues
-      Value* myValues;         //< array of \a myNbValues values.
-      AnyBlock* myNext;        //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myValues of the iterator
+      unsigned int myNbValues; ///< number of valid values in array \a myValues
+      Value* myValues;         ///< array of \a myNbValues values.
+      AnyBlock* myNext;        ///< pointer to next block or 0 if last block.
 
       friend class IndexedListWithBlocks;
 
@@ -455,7 +454,7 @@ if more than 3 values and N = 2, M = 4
       typedef TValue Value;
       typedef const Value* Pointer;
       typedef const Value& Reference;
-      typedef std::ptrdiff_t DifferenceType; //< only positive offsets allowed.
+      typedef std::ptrdiff_t DifferenceType; ///< only positive offsets allowed.
 
       // ----------------------- std types ----------------------------------
       typedef Value value_type;
@@ -468,10 +467,10 @@ if more than 3 values and N = 2, M = 4
 
 
     protected:
-      unsigned int myIdx;      //< current index in \a myValues of the iterator
-      unsigned int myNbValues; //< number of valid values in array \a myValues
-      const Value* myValues;   //< array of \a myNbValues values.
-      const AnyBlock* myNext;  //< pointer to next block or 0 if last block.
+      unsigned int myIdx;      ///< current index in \a myValues of the iterator
+      unsigned int myNbValues; ///< number of valid values in array \a myValues
+      const Value* myValues;   ///< array of \a myNbValues values.
+      const AnyBlock* myNext;  ///< pointer to next block or 0 if last block.
 
       friend class IndexedListWithBlocks;
 

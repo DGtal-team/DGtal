@@ -45,7 +45,6 @@
 
 namespace DGtal
 {
-
   /////////////////////////////////////////////////////////////////////////////
   // class CEuclideanRing
   /**
@@ -59,39 +58,24 @@ Description of \b concept '\b CEuclideanRing' <p>
  ### Associated types :
     
  ### Notation
-     - \t X : A type that is a model of CEuclideanRing
-     - \t x, \t y  : Object of type Integer
+     - \a X : A type that is a model of CEuclideanRing
+     - \a x, \a y  : Object of type Integer
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-     <tr> 
-     <td class=CName> \b Name </td> 
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td> 
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td> 
-     <td class=CSemantics> \b Semantics </td> 
-     <td class=CPostCondition> \b Postcondition </td> 
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr> 
-     <td class=CName>            Division </td>
-     <td class=CExpression>      \t x / \t y </td> 
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \t X</td>
-     <td class=CPrecondition>    </td> 
-     <td class=CSemantics>       Euclidean division of two numbers </td> 
-     <td class=CPostCondition>   </td> 
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
-    
+ ### Valid expressions and semantics
+
+
+
+|Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity| 
+-----|------------|--------------------|------------|--------------|-----------|---------------|-----------
+| Division|   \a x / \a y   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
+
+
  ### Invariants###
     
  ### Models###
-       DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
+DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
     
  ### Notes###
    

@@ -57,7 +57,10 @@ Description of \b concept '\b CLabel' <p>
      @brief Aim: Define the concept of DGtal labels.
      Models of CLabel can be default-constructible, assignable and equality comparable.
 
- ### Refinement of boost::DefaultConstructible boost::Assignable and boost::EqualityComparable
+ ### Refinement of 
+   - boost::DefaultConstructible
+   - boost::Assignable 
+   - boost::EqualityComparable
 
  ### Associated types :
 
@@ -67,21 +70,12 @@ Description of \b concept '\b CLabel' <p>
 
  ### Definitions
 
- ### Valid expressions and
-     <table>
-      <tr>
-        <td class=CName> \b Name </td>
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td>
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td>
-        <td class=CSemantics> \b Semantics </td>
-        <td class=CPostCondition> \b Postcondition </td>
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
+ ### Valid expressions and semantics
 
-     </table>
 
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+|               |            |                     |             |                  |           |                |            |     
  ### Invariants###
 
  ### Models###

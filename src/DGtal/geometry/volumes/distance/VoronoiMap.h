@@ -46,11 +46,13 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CountedPtr.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/kernel/CPointPredicate.h"
-
-#include "DGtal/geometry/volumes/distance/SeparableMetricHelper.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/geometry/volumes/distance/CSeparableMetric.h"
+#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -63,59 +65,74 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a sperable process to construct
-   * partial Voronoi maps which has been described in:
+   * The algorithm uses a sperable process to construct Voronoi maps
+   * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these
    *
-   *     ﻿Maurer, C., Qi, R., & Raghavan, V. (2003). A Linear Time Algorithm
-   *      for Computing Exact Euclidean Distance Transforms of Binary Images in
-   *      Arbitrary Dimensions. IEEE Trans. Pattern Analysis and Machine
-   *      Intelligence, 25pp265-270.
-   *
-   * and 
-   *   
-   *      Coeurjolly, D. (2002). Algorithmique et géométrie discrète pour
-   *      la caractérisation des courbes et des surfaces. PhD Thesis,
-   *      Université Lumière Lyon 2.
-   *
-   *
-   * Given a domain and a point predicate, the compute() method
-   * returns, for each point in the domain, the closest point for
-   * which the predicate if false. Following Computational Geometry
+   * Given a domain and a point predicate, an instance returns, for
+   * each point in the domain, the closest point for which the
+   * predicate if false. Following Computational Geometry
    * terminoliogy, points for which the predicate is false are "sites"
-   * for the Voronoi map construction.
+   * for the Voronoi map construction. If a point is equi-distant to
+   * two sites (e.g. if the digital point belong to a Voronoi cell
+   * boundary in the Euclidean space), this Voronoi map construction
+   * will only keep one of them.
    *
-   * The metric is specified by the @a p template parameter which
-   * defines a l_p separable metric.
+   * The metric is specified by a model of CSeparableMetric (for
+   * instance, any instance of ExactPredicateLpSeparableMetric or
+   * InexactPredicateLpSeparableMetric).  If the separable metric has
+   * a complexity of O(h) for its "hiddenBy" predicate, the overall
+   * Voronoi construction algorithm is in @f$ O(h.d.n^d)@f$ for @f$
+   * n^d@f$ domains (see class constructor). For Euclidean the @f$
+   * l_2@f$ metric, the overall computation is in @f$ O(d.n^d)@f$,
+   * which is optimal.
    *
-   * If a point is equi-distant to two sites (e.g. if the digital
-   * point belong to a Voronoi cell boundary in the Euclidean space),
-   * this Voronoi map construction will only keep one of them.
+   * If DGtal has been built with OpenMP support (WITH_OPENMP flag set
+   * to "true"), the computation is done in parallel (multithreaded)
+   * in an optimal way: on @a p processors, expected runtime is in
+   * @f$ O(h.d.n^d / p)@f$.
    *
-   * Hence, the result is given as a map (point from the domain,
-   * closest site) implemented using an ImageContainerBySTLVector
-   * whose value type is the type of Point of the predicate.
+   * This class is a model of CConstImage.
    *
    * @tparam TSpace type of Digital Space (model of CSpace).
    * @tparam TPointPredicate point predicate returning true for points
    * from which we compute the distance (model of CPointPredicate)
-   * @tparam p the static integer value to define the l_p metric.
-   * @tparam IntegerLong (optional) type used to represent exact
-   * distance value according to p (default: DGtal::uint64_t)
-   *
+   * @tparam TSeparableMetric a model of CSeparableMetric
+   * @tparam TImageContainer any model of CImage to store the
+   * VoronoiMap (default: ImageContainerBySTLVector). The space of the
+   * image container and the TSpace should match. Furthermore the
+   * container value type must be TSpace::Vector. Lastly, the domain
+   * of the container must be HyperRectDomain.
    */
   template < typename TSpace,
              typename TPointPredicate,
-             DGtal::uint32_t p>
+             typename TSeparableMetric,
+             typename TImageContainer = 
+             ImageContainerBySTLVector<HyperRectDomain<TSpace>,
+                                       typename TSpace::Vector>
+             >
   class VoronoiMap
   {
 
   public:
     BOOST_CONCEPT_ASSERT(( CSpace< TSpace > ));
     BOOST_CONCEPT_ASSERT(( CPointPredicate<TPointPredicate> ));
+    BOOST_CONCEPT_ASSERT(( CSeparableMetric<TSeparableMetric> ));
 
     ///Both Space points and PointPredicate points must be the same.
     BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Point,
-					  typename TPointPredicate::Point >::value )); 
+                          typename TPointPredicate::Point >::value )); 
+ 
+    //ImageContainer::Domain::Space must match with TSpace
+    BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
+                          typename TImageContainer::Domain::Space >::value )); 
+   
+    //ImageContainer value type must be  TSpace::Vector
+    BOOST_STATIC_ASSERT ((boost::is_same< typename TSpace::Vector,
+                          typename TImageContainer::Value >::value )); 
+ 
+    //ImageContainer domain type must be  HyperRectangular
+    BOOST_STATIC_ASSERT ((boost::is_same< HyperRectDomain<TSpace>,
+					  typename TImageContainer::Domain >::value )); 
     
     ///Copy of the space type.
     typedef TSpace Space;
@@ -124,8 +141,11 @@ namespace DGtal
     typedef TPointPredicate PointPredicate;
 
     ///Definition of the underlying domain type.
-    typedef HyperRectDomain<Space> Domain;
-   
+    typedef typename TImageContainer::Domain Domain;
+
+    ///Definition of the separable metric type
+    typedef TSeparableMetric SeparableMetric;
+
     ///Large integer type for SeparableMetricHelper construction.
     typedef DGtal::int64_t IntegerLong;
 
@@ -135,18 +155,40 @@ namespace DGtal
     typedef typename Space::Size Size;
     typedef typename Space::Point::Coordinate Abscissa;
  
-    ///We construct the type associated to the separable metric
-    typedef SeparableMetricHelper<  Point ,  IntegerLong , p > SeparableMetric;
-  
     ///Type of resulting image
-    typedef ImageContainerBySTLVector<  Domain,
-                                        Point > OutputImage;
+    typedef TImageContainer OutputImage;
+     ///Definition of the image value type.
+    typedef Vector Value;
+    
+    ///Definition of the image value type.
+    typedef typename OutputImage::ConstRange  ConstRange;
+
+    ///Self type
+    typedef VoronoiMap<TSpace, TPointPredicate, 
+		       TSeparableMetric,TImageContainer> Self;
+    
 
     /**
-     *  Constructor
+     * Constructor.
+     * 
+     * This constructor computes the Voronoi Map of a set of point
+     * sites using a SeparableMetric metric.  The method associates to
+     * each point satisfying the foreground predicate, the closest
+     * site for which the predicate is false. This algorithm is
+     * @f$ O(h.d.|domain size|)@f$ if the separable metric "hiddenBy"
+     * predicate is in @f$ O(h)$@f$.
+     *
+     * @param aDomain a pointer to the (hyper-rectangular) domain on
+     * which the computation is performed.
+     *
+     * @param predicate a pointer to the point predicate to define the
+     * Voronoi sites (false points).
+     * 
+     *@param aMetric a pointer to the separable metric instance.
      */
-    VoronoiMap(const Domain & aDomain,
-               const PointPredicate & predicate);
+    VoronoiMap(ConstAlias<Domain> aDomain,
+               ConstAlias<PointPredicate> predicate,
+               ConstAlias<SeparableMetric> aMetric);
 
     /**
      * Default destructor
@@ -154,45 +196,90 @@ namespace DGtal
     ~VoronoiMap();
 
   public:
+    // ------------------- ConstImage model ------------------------
 
-     /**
-     * Compute the Voronoi Map of a set of point sites using a
-     * SeparableMetric metric.  The method associates to each point
-     * satisfying the foreground predicate, the closest site for which
-     * the predicate is false. This algorithm is O(d.|domain size|).
+    /**
+     * Assignment operator from another Voronoi map.
      *
-     * @return the Voronoi map image.
+     *  @param aOtherVoronoiMap another instance of Self
+     *  @return a reference to Self
      */
-    OutputImage compute ( ) ;
+    Self &  operator=(const Self &aOtherVoronoiMap );
+    
+    /**
+     * Returns a reference (const) to the Voronoi map domain.
+     * @return a domain
+     */
+    const Domain &  domain() const
+    {
+      return *myDomainPtr;
+    }
 
     
+    /**
+     * Returns a const range on the Voronoi map values.
+     *  @return a const range
+     */
+    ConstRange constRange() const
+    {
+      return myImagePtr->constRange();
+    }
+        
+    /**
+     * Access to a Voronoi value (a.k.a. vector to the closest site)
+     * at a point.
+     *
+     * @param aPoint the point to probe.
+     */
+    Value operator()(const Point &aPoint) const
+    {
+      return myImagePtr->operator()(aPoint);
+    }    
+     
+    /** 
+     * @return Returns an alias to the underlying metric.
+     */
+    const SeparableMetric* metric() const
+    {
+      return myMetricPtr;
+    }
+
+    /**
+     * Self Display method.
+     * 
+     * @param out output stream
+     */
+    void selfDisplay ( std::ostream & out ) const;    
+   
     // ------------------- Private functions ------------------------
   private:    
     
+    /**
+     * Compute the Voronoi Map of a set of point sites using a
+     * SeparableMetric metric.  The method associates to each point
+     * satisfying the foreground predicate, the closest site for which
+     * the predicate is false. This algorithm is O(h.d.|domain size|).
+     */
+    void compute ( ) ;
+
+
     /** 
      *  Compute the other steps of the separable Voronoi map.
      * 
-     * @param output the output map
-     * @param dim the dimension to process
+     * @param [in] dim the dimension to process
      */    
-    void computeOtherSteps(OutputImage & output,
-                           const Dimension dim) const;
+    void computeOtherSteps(const Dimension dim) const;
     /** 
      * Given  a voronoi map valid at dimension @a dim-1, this method
      * updates the map to make it consistent at dimension @a dim along
      * the 1D span starting at @a row along the dimension @a
      * dim.
      * 
-     * @param output the Voronoi map to update.
-     * @param row starting point of the 1D process.
-     * @param dim dimension of the update.
-     * @param Sites stack of sites (pass as an argument for
-     * performance purposes).
+     * @param [in] row starting point of the 1D process.
+     * @param [in] dim dimension of the update.
      */
-    void computeOtherStep1D (OutputImage & output, 
-			     const Point &row, 
-			     const Size dim,
-			     std::vector<Point> &Sites) const;
+    void computeOtherStep1D (const Point &row, 
+			     const Size dim) const;
     
     // ------------------- protected methods ------------------------
   protected:
@@ -207,14 +294,11 @@ namespace DGtal
     // ------------------- Private members ------------------------
   private:
 
-    ///The separable metric instance
-    SeparableMetric myMetric;
-
-    ///Copy of the computation domain
-    const Domain & myDomain;
+    ///Pointer to the computation domain
+    const Domain * myDomainPtr;
     
-    ///Copy of the computation domain
-    const PointPredicate  & myPointPredicate;
+    ///Pointer to the point predicate
+    const PointPredicate * myPointPredicatePtr;
     
     ///Copy of the image lower bound
     Point myLowerBoundCopy;
@@ -225,8 +309,27 @@ namespace DGtal
     ///Value to act as a +infinity value
     Point myInfinity;
 
+  protected:
+
+    ///Pointer to the separable metric instance
+    const SeparableMetric * myMetricPtr;
+
+    ///Voronoi map image
+    CountedPtr<OutputImage> myImagePtr;
 
   }; // end of class VoronoiMap
+
+  /**
+   * Overloads 'operator<<' for displaying objects of class 'ExactPredicateLpSeparableMetric'.
+   * @param out the output stream where the object is written.
+   * @param object the object of class 'ExactPredicateLpSeparableMetric' to write.
+   * @return the output stream after the writing.
+   */
+  template <typename S, typename P,
+            typename Sep, typename TI>
+  std::ostream&
+  operator<< ( std::ostream & out, const VoronoiMap<S,P,Sep,TI> & object );
+
 
 } // namespace DGtal
 

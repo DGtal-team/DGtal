@@ -185,18 +185,18 @@ struct InsertAndSetValue
 //Partial specialization
 template<typename D, typename V>
 struct InsertAndSetValue<
-  ImageContainerBySTLMap<D,V>, 
-  DigitalSetFromMap<ImageContainerBySTLMap<D,V> >,
+  DGtal::ImageContainerBySTLMap<D,V>, 
+  DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >,
   D, V >
 { 
   static bool implementation
-  (ImageContainerBySTLMap<D,V>& aImg, 
-   DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
+  (DGtal::ImageContainerBySTLMap<D,V>& aImg, 
+   DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >& /*aSet*/, 
    const typename D::Point& aPoint, 
    const V& aValue)
   {
     typedef typename D::Point P; 
-    typedef typename ImageContainerBySTLMap<D,V>::iterator Iterator; 
+    typedef typename DGtal::ImageContainerBySTLMap<D,V>::iterator Iterator; 
 
     std::pair<P, V> 
       pair( aPoint, aValue );  
@@ -231,12 +231,6 @@ struct InsertAndAlwaysSetValue
 			     const typename D::Point& aPoint, 
 			     const V& aValue)
   {
-
-    // std::pair<typename S::Iterator, bool> res 
-    //   = aSet.insert( aPoint ); 
-    // aImg.setValue( aPoint, aValue ); 
-    // return res.second;  
-
     bool found = false; 
     if ( aSet.find( aPoint ) != aSet.end() )
       found = true;       
@@ -250,18 +244,18 @@ struct InsertAndAlwaysSetValue
 //Partial specialization
 template<typename D, typename V>
 struct InsertAndAlwaysSetValue<
-  ImageContainerBySTLMap<D,V>, 
-  DigitalSetFromMap<ImageContainerBySTLMap<D,V> >,
+  DGtal::ImageContainerBySTLMap<D,V>, 
+  DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >,
   D, V >
 { 
   static bool implementation
-  (ImageContainerBySTLMap<D,V>& aImg, 
-   DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
+  (DGtal::ImageContainerBySTLMap<D,V>& aImg, 
+   DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >& /*aSet*/, 
    const typename D::Point& aPoint, 
    const V& aValue)
   {
     typedef typename D::Point P; 
-    typedef typename ImageContainerBySTLMap<D,V>::iterator Iterator; 
+    typedef typename DGtal::ImageContainerBySTLMap<D,V>::iterator Iterator; 
 
     std::pair<P, V> 
       pair( aPoint, aValue );  
@@ -313,18 +307,18 @@ struct FindAndGetValue
 //Partial specialization
 template<typename D, typename V>
 struct FindAndGetValue<
-  ImageContainerBySTLMap<D,V>, 
-  DigitalSetFromMap<ImageContainerBySTLMap<D,V> >,
+  DGtal::ImageContainerBySTLMap<D,V>, 
+  DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >,
   D, V >
 { 
   static bool implementation
-  (const ImageContainerBySTLMap<D,V>& aImg, 
-   const DigitalSetFromMap<ImageContainerBySTLMap<D,V> >& /*aSet*/, 
+  (const DGtal::ImageContainerBySTLMap<D,V>& aImg, 
+   const DGtal::DigitalSetFromMap<DGtal::ImageContainerBySTLMap<D,V> >& /*aSet*/, 
    const typename D::Point& aPoint, 
    V& aValue)
   {
     typedef typename D::Point P; 
-    typedef typename ImageContainerBySTLMap<D,V>::const_iterator ConstIterator; 
+    typedef typename DGtal::ImageContainerBySTLMap<D,V>::const_iterator ConstIterator; 
 
     ConstIterator it = aImg.find( aPoint ); 
     if ( it != aImg.end() )
@@ -353,3 +347,6 @@ DGtal::findAndGetValue(const I& aImg, const S& aSet,
   typedef typename I::Value V; 
   return FindAndGetValue<I,S,D,V>::implementation(aImg, aSet, aPoint, aValue); 
 }
+
+
+

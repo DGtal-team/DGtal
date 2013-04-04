@@ -44,7 +44,8 @@
 #include <boost/array.hpp>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
-#include "DGtal/kernel/CUnsignedInteger.h"
+#include "DGtal/kernel/CUnsignedNumber.h"
+#include "DGtal/kernel/CIntegralNumber.h"
 #include "DGtal/kernel/CInteger.h"
 
 #include "DGtal/base/Bits.h"
@@ -81,7 +82,8 @@ namespace DGtal
     typedef typename Point::Coordinate Coordinate;
     static const Dimension dimension = Point::dimension;    
 
-    BOOST_CONCEPT_ASSERT(( CUnsignedInteger<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( CUnsignedNumber<THashKey> ));
+    BOOST_CONCEPT_ASSERT(( CIntegralNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( CInteger<Coordinate> ));
 
     /**
@@ -92,7 +94,7 @@ namespace DGtal
     
     /**
      * Interleave the bits of the nbIn inputs.
-     * @param input an array of the nbIn values to mix in.
+     * @param aPoint an array of the nbIn values to mix in.
      * @param output The result
      */ 
     void interleaveBits(const Point  & aPoint, HashKey & output) const;

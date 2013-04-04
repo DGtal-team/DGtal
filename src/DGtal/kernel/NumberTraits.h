@@ -46,8 +46,6 @@
 #include <boost/integer_traits.hpp>
 #include <boost/call_traits.hpp>
 #include "DGtal/base/Common.h"
-
-
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -74,6 +72,7 @@ namespace DGtal
     typedef TagUnknown IsBounded;
     typedef TagUnknown IsUnsigned;
     typedef TagUnknown IsSigned;
+    typedef TagUnknown IsIntegral;
     typedef TagFalse IsSpecialized;
     typedef T SignedVersion;
     typedef T UnsignedVersion;
@@ -181,6 +180,7 @@ namespace DGtal
   template <>
   struct NumberTraits<uint16_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagFalse IsSigned;
@@ -256,6 +256,7 @@ namespace DGtal
   template <>
   struct NumberTraits<int16_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -331,6 +332,7 @@ namespace DGtal
   template <>
   struct NumberTraits<uint8_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagFalse IsSigned;
@@ -406,6 +408,7 @@ namespace DGtal
   template <>
   struct NumberTraits<int8_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -480,6 +483,7 @@ namespace DGtal
   template <>
   struct NumberTraits<uint32_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagFalse IsSigned;
@@ -550,6 +554,7 @@ namespace DGtal
   template <>
   struct NumberTraits<int32_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -624,6 +629,7 @@ namespace DGtal
   template <>
   struct NumberTraits<uint64_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagFalse IsSigned;
@@ -698,6 +704,7 @@ namespace DGtal
   template <>
   struct NumberTraits<int64_t>
   {
+    typedef TagTrue IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -768,6 +775,7 @@ namespace DGtal
   template <>
   struct NumberTraits<float>
   {
+    typedef TagFalse IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -823,6 +831,7 @@ namespace DGtal
   template <>
   struct NumberTraits<double>
   {
+    typedef TagFalse IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -878,6 +887,7 @@ namespace DGtal
   template <>
   struct NumberTraits<long double>
   {
+    typedef TagFalse IsIntegral;
     typedef TagTrue IsBounded;
     typedef TagFalse IsUnsigned;
     typedef TagTrue IsSigned;
@@ -938,6 +948,7 @@ namespace DGtal
   template <>
   struct NumberTraits<DGtal::BigInteger>
   {
+    typedef TagTrue IsIntegral;
     typedef TagFalse IsBounded;
     typedef TagTrue IsUnsigned;
     typedef TagTrue IsSigned;
@@ -958,18 +969,18 @@ namespace DGtal
     }
     static ReturnType min()
     {
-      ASSERT2(false, "UnBounded interger type does not support min() function");
+      VERIFY(!"UnBounded interger type does not support min() function");
       return ZERO;
     }
     static ReturnType max()
     {
-      ASSERT2(false, "UnBounded interger type does not support max() function");
+      VERIFY(!"UnBounded interger type does not support max() function");
       return ZERO;
     }
 
     static unsigned int digits()
     {
-      ASSERT2(false, "UnBounded interger type does not support digits() function");
+      VERIFY(!"UnBounded interger type does not support digits() function");
       return 0;
     }
     static BoundEnum isBounded()

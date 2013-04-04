@@ -58,7 +58,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
   err = fopen_s( &fin, filename.c_str() , "r" );
   if ( err )
   {
-    trace.error() << "VolReader : can't open " << filename << endl;
+    trace.error() << "VolReader : can't open " << filename << std::endl;
     throw dgtalexception;
   }
 #else
@@ -67,7 +67,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   if ( fin == NULL )
   {
-    trace.error() << "VolReader : can't open " << filename << endl;
+    trace.error() << "VolReader : can't open " << filename << std::endl;
     throw dgtalexception;
   }
 
@@ -141,7 +141,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     }
   }
 
-  int sx, sy, sz;
+  int sx = 0, sy= 0, sz= 0;
 
   getHeaderValueAsInt( "X", &sx, header );
   getHeaderValueAsInt( "Y", &sy, header );
@@ -149,7 +149,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
 
   if ( getHeaderValue( "Version", header ) == NULL )
   {
-    int rawsx, rawsy, rawsz;
+    int rawsx=0, rawsy=0, rawsz=0;
     long int count = 0;
     // Size of the volume
     count += (long)fread( &rawsx, sizeof( int ), 1, fin );
@@ -163,7 +163,7 @@ DGtal::VolReader<T>::importVol( const std::string & filename )   throw( DGtal::I
     }
 
 
-    if ( sx != rawsx || sy != rawsy || sz != rawsz )
+    if ( (sx != rawsx) || (sy != rawsy) || (sz != rawsz) )
     {
       trace.warning() << "VolReader: Warning : Incoherent vol header with raw header !\n";
     }

@@ -47,6 +47,8 @@
 #include <iostream>
 #include "boost/concept_check.hpp"
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/CPointPredicate.h"
+#include "DGtal/kernel/domains/CDomain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -56,63 +58,83 @@ namespace DGtal
   // class CDigitalSet
   /////////////////////////////////////////////////////////////////////////////
   // class CDigitalSet
-  /**
-Description of \b concept '\b CDigitalSet' <p>
-     @ingroup Concepts
-
-     @brief Aim: Represents a set of points within the given
-     domain. This set of points is modifiable by the user.
+/**
+   Description of \b concept '\b CDigitalSet' <p>
+   @ingroup Concepts
+   @brief Aim: Represents a set of points within the given
+   domain. This set of points is modifiable by the user. It is thus
+   very close to the STL concept of simple associative container
+   (like set std::set<Point>), except that there is a notion of
+   maximal set of points (the whole domain).
      
- ### Refinement of boost::CopyConstructible, boost::Assignable
+ ### Refinement of 
+   - boost::CopyConstructible
+   - CPointPredicate
 
-     @todo add boost::Container ? Not for now, since coding style do
-     not match with STL (e.g. Iterator instead of iterator).
+@todo add boost::Container ? Not for now, since coding style do not
+ match with STL (e.g. Iterator instead of iterator).
+
+@note It is also a refinement of boost::Assignable from CPointPredicate.
     
  ### Associated types :
+
+   - \c Domain: the domain in which points are defined, a model of concept CDomain.
+   - \c Size: the type for couting elements of the set.
+   - \c Iterator: the iterator type for visiting elements of the set, as
+     well as modify the set. The iterator should be readable (model of
+     boost_concepts::ReadableIteratorConcept) and allow bidirectional
+     traversal (model of
+     boost_concepts::BidirectionalTraversalConcept). Its value has
+     type \c Point (defined in CPointPredicate).
+   - \c ConstIterator: the type for visiting elements of the set. Note
+     that types for Iterator and ConstIterator should be the same,
+     similarly to STL simple associative containers.
     
  ### Notation
-     - \t X : A type that is a model of CDigitalSet
-     - \t x, \t y : object of type X
+     - \c X : A type that is a model of CDigitalSet
+     - \a x, \a y : objects of type \c X
+     - \a p, \a p1, \a p2 : objects of type \c Point
+     - \a it : object of type \c Iterator
     
  ### Definitions
     
- ### Valid expressions and 
-     <table> 
-      <tr> 
-        <td class=CName> \b Name </td> 
-        <td class=CExpression> \b Expression </td>
-        <td class=CRequirements> \b Type requirements </td> 
-        <td class=CReturnType> \b Return type </td>
-        <td class=CPrecondition> \b Precondition </td> 
-        <td class=CSemantics> \b Semantics </td> 
-        <td class=CPostCondition> \b Postcondition </td> 
-        <td class=CComplexity> \b Complexity </td>
-      </tr>
-      <tr> 
-        <td class=CName>            </td> 
-        <td class=CExpression>      </td>
-        <td class=CRequirements>    </td> 
-        <td class=CReturnType>      </td>
-        <td class=CPrecondition>    </td> 
-        <td class=CSemantics>       </td> 
-        <td class=CPostCondition>   </td> 
-        <td class=CComplexity>      </td>
-      </tr>
+ ### Valid expressions and semantics
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Get domain    | \a x.domain() |                  | \c Domain   |                  | returns the domain of this set | | O(1), should be returned by reference |         
+| Number of elements | \a x.size() |                 | \c Size     |                  | returns the number of elements of this set. | | at most linear in the number of elements |         
+| Empty container test | \a x.empty() |            | \c bool     |                  | returns true iff the number of elements is zero, always faster than \c x.size() == 0 | | amortized constant time |         
+| Insert point  | \a x.insert( p ) |               |             |                  | Inserts point \a p in the set | | |         
+| Insert new point | \a x.insertNew( p ) |         |             | \a p is not already in \a x | Inserts point \a p in the set, assuming it is not already inside | | faster than \a insert |         
+| Erase point   | \a x.erase( p ) |                | \c Size     |                  | Erase point \a p from the set \a x, returns the number of points effectively removed from the set (thus either 0 or 1) | | |         
+| Erase point from iterator   | \a x.erase( it ) | |             | \a it != \a x.end() | Erase the point pointed by valid iterator \a it from the set \a x | | |         
+| Removes all points | \a x.clear() |              |             |                  | Removes all the points from the set \a x, \a x.empty() is true afterwards | | |         
+| Get iterator on first element | \a x.begin() |   | \c Iterator |                  | Returns the iterator on the first element of the set | | Constant time. |         
+| Get iterator after the last element | \a x.end() | | \c Iterator |                | Returns the iterator after the last element of the set | | Constant time. |         
+| Get iterator on first element | \a x.begin() |   | \c ConstIterator |             | Returns the const iterator on the first element of the set | | Constant time. |         
+| Get iterator after the last element | \a x.end() | | \c ConstIterator |           | Returns the const iterator after the last element of the set | | Constant time. |         
+| Set union to left | \a x += \a y |               | \c X &      | Elements of \a y should be included in the domain of \a x | Adds all elements of \a y to \a x. Returns a reference to itself. | | |         
+| Complement of set | \a x.computeComplement(\a outIt) | \a outIt is an output iterator on \c Point | | | Outputs the complement set of \a x in the given output iterator. | | |         
+| Complement of set | \a x.assignFromComplement(\a y) | |      | Domain of \a x should contain the domain of \a y | The set \a x is the complement of set \a y afterwards. | | |         
+| Bounding box   | \a x.computeBoundingBox(\a p1,\a p2) | |   |                  | Points \a p1 and \a p2 define respectively the lower and upper bound of the bounding box of all points of \a x. | | Linear in \a x.size() |         
+| Search point  | \a x.find( p ) |                 | \c Iterator |                  | Returns an iterator pointing on point \a p if it was found in the set \a x, or \a x.end() otherwise. | | |         
+| Search point  | \a x.find( p ) |                 | \c ConstIterator |             | Returns a const iterator pointing on point \a p if it was found in the set \a x, or \a x.end() otherwise. | | |         
     
-     </table>
+ ### Invariants
     
- ### Invariants###
+ ### Models
+
+- DigitalSetBySTLVector, DigitalSetBySTLSet, DigitalSetFromMap
     
- ### Models###
-    
- ### Notes###
+ ### Notes
 
 @tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
   struct CDigitalSet :
     boost::CopyConstructible< T >, 
-    boost::Assignable< T >
+    CPointPredicate< T >
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -123,16 +145,12 @@ Description of \b concept '\b CDigitalSet' <p>
     typedef typename T::Iterator Iterator;
     typedef typename T::ConstIterator ConstIterator;
 
-    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Iterator > ));
-    //    BOOST_CONCEPT_ASSERT(( boost_concepts::LvalueIteratorConcept<Iterator > ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<Iterator > ));
-//DigitalSetFromMap cannot be a model of CDigitalSet if lvalue is required because 
-//in STL maps, in pairs <const key, value>, key is const... 
-    BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<Iterator > ));
-
-    //BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator<ConstIterator > ));
+    BOOST_CONCEPT_ASSERT(( CDomain<Domain> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<ConstIterator > ));
+    //following the STL concept of simple associative container 
+    //the nested types Iterator and ConstIterator should be the same type
+    BOOST_STATIC_ASSERT(( boost::is_same<Iterator,ConstIterator>::value ));  
 
     // To test if two types A and Y are equals, use
     // BOOST_STATIC_ASSERT( ConceptUtils::sameType<A,X>::value );    
@@ -154,8 +172,6 @@ Description of \b concept '\b CDigitalSet' <p>
       myX.erase( myIterator );
       myX.erase( myIterator, myIterator );
       myX.clear();
-      ConceptUtils::sameType( myIterator, myX.begin() );
-      ConceptUtils::sameType( myIterator, myX.end() );
       ConceptUtils::sameType( myX, myX.operator+=( myX ) );
       myX.computeComplement( myOutputIt );
       myX.assignFromComplement( myX );

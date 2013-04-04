@@ -80,7 +80,7 @@ namespace DGtal
      * @param x0 the x-coordinate of the flower center.
      * @param y0 the y-coordinate of the flower center.
      * @param r the radius of the flower.
-     * @param varRadius the variable small radius of the flower.
+     * @param smallr the variable small radius of the flower.
      * @param k the number of flower extremeties.
      * @param phi the phase of the flower (in radian).
      */

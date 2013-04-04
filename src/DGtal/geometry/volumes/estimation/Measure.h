@@ -64,7 +64,7 @@ namespace DGtal
    * 
    * Model of @href CGlobalGeometricEstimator 
    *
-   * @tparam Set type of set on which the geometrical moments is
+   * @tparam TSet type of set on which the geometrical moments is
    * computed.
    */
   template< typename TSet >
@@ -86,7 +86,7 @@ namespace DGtal
      */
     Measure();
   
-    /**
+    /**   
      * Destructor.
      */
     ~Measure();
@@ -95,7 +95,7 @@ namespace DGtal
      * Initialize the measure computation.
      * 
      * @param h grid size (must be >0).
-     * @param aSetPointerx a pointer to an input set.
+     * @param aSetPointer a pointer to an input set.
      */
     void init(const double h, const Set &aSetPointer);
    

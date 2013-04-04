@@ -54,7 +54,9 @@ Description of \b concept '\b CUnaryFunctor' <p>
      \brief Aim: Defines a unary functor, which
      associates arguments to results
 
-### Refinement of Assignable
+### Refinement of 
+
+ - boost::Assignable
 
 ### Associated types :
 
@@ -69,28 +71,11 @@ Description of \b concept '\b CUnaryFunctor' <p>
 ### Definitions
 
 ### Valid expressions and semantics
-     <table>
-     <tr>
-     <td class=CName> \b Name </td>
-     <td class=CExpression> \b Expression </td>
-     <td class=CRequirements> \b Type requirements </td>
-     <td class=CReturnType> \b Return type </td>
-     <td class=CPrecondition> \b Precondition </td>
-     <td class=CSemantics> \b Semantics </td>
-     <td class=CPostCondition> \b Postcondition </td>
-     <td class=CComplexity> \b Complexity </td>
-     </tr>
-     <tr>
-     <td class=CName>            Apply function </td>
-     <td class=CExpression>      \t r = x( \t a ) </td>
-     <td class=CRequirements>    </td>
-     <td class=CReturnType>      \c R </td>
-     <td class=CPrecondition>    </td>
-     <td class=CSemantics>       return the value of the function \t x on argument \t a</td>
-     <td class=CPostCondition>   </td>
-     <td class=CComplexity>      </td>
-     </tr>
-     </table>
+
+| Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
+|---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
+| Apply function | r = x(\t a) |                   | \c R        |                  | returns the value of the function \t x on argument \t a | | |         
+
 
 ### Invariants
 
@@ -101,12 +86,13 @@ Description of \b concept '\b CUnaryFunctor' <p>
   template <typename X, typename A, typename R>
   struct CUnaryFunctor : boost::Assignable<X>
   {
+
     // ----------------------- Concept checks ------------------------------
   public:
 
     BOOST_CONCEPT_USAGE( CUnaryFunctor )
     {
-      // x( p ) returns myV.
+      // x( a ) returns r.
       ConceptUtils::sameType( r, x.operator() ( a ) );
     }
     // ------------------------- Private Datas --------------------------------
@@ -116,6 +102,33 @@ Description of \b concept '\b CUnaryFunctor' <p>
     R r;
     // ------------------------- Internals ------------------------------------
   private:
+
+  }; // end of concept CUnaryFunctor
+
+  //specialization for references
+  template <typename X, typename A, typename R>
+  struct CUnaryFunctor<X, A&, R&> : boost::Assignable<X>
+  {
+
+    // ----------------------- Concept checks ------------------------------
+  public:
+
+    BOOST_CONCEPT_USAGE( CUnaryFunctor )
+    {
+      ConceptUtils::sameType( getRef(r), x.operator() ( getRef(a) ) );
+    }
+    // ------------------------- Private Datas --------------------------------
+  private:
+    X x;
+    A a;
+    R r;
+    // ------------------------- Internals ------------------------------------
+  private:
+    template<typename T>
+    T& getRef(T& t) 
+    {
+      return t; 
+    }
 
   }; // end of concept CUnaryFunctor
 

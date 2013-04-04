@@ -56,7 +56,7 @@ namespace DGtal
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
    *
-   * @tparam TImage an model of CImageContainer concept. 
+   * @tparam Image an model of CImageContainer concept. 
    */
   template <typename Image>
   class SimpleThresholdForegroundPredicate
@@ -85,30 +85,31 @@ namespace DGtal
       return ((*myImage)(aPoint) > myVal);
     }
     
+    /**
+     * @return True if the point belongs to the value interval.
+     */
+    bool operator()(const typename Image::Domain::ConstIterator &it) const
+    {
+      return ( (*myImage)(*it) > myVal);
+    }
+
+    /**
+     * @return True if the point belongs to the value interval.
+     */
+    bool operator()(const typename Image::Range::Iterator &it) const
+    {
+      return ( (*it) > myVal);
+    }
+
     /** 
      * @return True if the point belongs to the value interval.
      */
-    bool operator()(const typename Image::Iterator &it) const
+    bool operator()(const typename Image::ConstRange::ConstIterator &it) const
     {
-      return ((*myImage)(it) > myVal);
+      return ((*it) > myVal);
     }
     
-    /** 
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::ConstIterator &it) const
-    {
-      return ((*myImage)(it) > myVal);
-    }
-    
-    /** 
-     * @return True if the point belongs to the value interval.
-     */
-    bool operator()(const typename Image::SpanIterator &it) const
-    {
-      return ((*myImage)(it) > myVal);
-    }
-    
+
   private:
     CountedPtr<Image> myImage;
     Value myVal;

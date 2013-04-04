@@ -2,7 +2,9 @@ SET(DGTAL_TESTS_SRC_MATH
        testMeasure
        testSignal 
        testMPolynomial
-       testAngleLinearMinimizer)
+       testAngleLinearMinimizer
+       testBasicMathFunctions)
+
 
 FOREACH(FILE ${DGTAL_TESTS_SRC_MATH})
   add_executable(${FILE} ${FILE})

@@ -64,7 +64,7 @@ namespace DGtal
    display 3d primitive (like PointVector, DigitalSetBySTLSet, Object
    ...). The class Viewer3D and Board3DTo2D implement two different
    ways to display 3D objects. The first one (Viewer3D), permits an
-   interactive visualisation (based on @i OpenGL ) and the second one
+   interactive visualisation (based on @a  OpenGL ) and the second one
    (Board3DTo2D) provides 3D visualisation from 2D vectorial display
    (based on the CAIRO library)
  
@@ -206,7 +206,7 @@ namespace DGtal
      **/ 
     
     struct  polygonD3D{
-      vector<pointD3D> vectPoints;
+      std::vector<pointD3D> vectPoints;
       double nx, ny, nz;
       unsigned int R,G,B,T;
     };
@@ -226,6 +226,8 @@ namespace DGtal
       myScaleX=1.0;
       myScaleY=1.0;
       myScaleZ=1.0;
+      myBoundingPtEmptyTag = true;
+      
     };
 
     // ----------------------- Interface --------------------------------------
@@ -268,7 +270,10 @@ namespace DGtal
      * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
      * A maximal of five clipping plane can be added.
      *
-     * @param a, b, c, d : plane equation.
+     * @param a a
+     * @param b b
+     * @param c c
+     * @param d d  plane equation.
      **/
   
     virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
@@ -280,7 +285,7 @@ namespace DGtal
      * @param y y coordinate of up-vector.
      * @param z z coordinate of up-vector.
      */
-    virtual void setCameraUpVector(double , double , double ){}; 
+    virtual void setCameraUpVector(double x, double y, double z ){};
   
     /**
      * Set camera position.
@@ -288,14 +293,14 @@ namespace DGtal
      * @param y y position.
      * @param z z position.
      */
-    virtual void setCameraPosition(double , double , double ) {  };
+    virtual void setCameraPosition(double x, double y , double z) {  };
   
     /**
      * Set near and far distance.
      * @param near near distance.
      * @param far far distance.
      */
-    virtual void setNearFar(double , double ){};
+    virtual void setNearFar(double near , double far){};
   
 
     
@@ -305,7 +310,7 @@ namespace DGtal
      * @param y y direction.
      * @param z z direction.
      */
-    virtual void setCameraDirection(double , double , double ) { };
+    virtual void setCameraDirection(double x , double y, double z) { };
 
   
   
@@ -347,7 +352,7 @@ namespace DGtal
   
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4 the four coordinates of the quad.
+     * x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4 the four coordinates of the quad.
      * @param aColor the quad color.
      */
     
@@ -357,7 +362,7 @@ namespace DGtal
 
     /**
      * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param x1, y1, z1, x2, y2, z2, x3, y3, z3  the four coordinates of the triangle.
+     * x1, y1, z1, x2, y2, z2, x3, y3, z3  the four coordinates of the triangle.
      * @param aColor the quad color.
      */
     
@@ -369,7 +374,7 @@ namespace DGtal
 
     /**
      * Method to add a specific polygon.
-     * @param vectPointsPolygon: a vector containing the polygon vertex.
+     * @param vectPointsPolygon a vector containing the polygon vertex.
      */
     
     virtual void addPolygon(std::vector<pointD3D> vectPointsPolygon, DGtal::Color aColor);
@@ -379,9 +384,9 @@ namespace DGtal
 
     /**
      * Method to add a line to the current display.
-     * @param x1, y1, z1, x2, y2, z2  the two extremty line points.
+     *  x1, y1, z1, x2, y2, z2  the two extremty line points.
      * @param color the line color.
-     * @param with the line width
+     * @param width the line width
      *
      */
     
@@ -393,10 +398,12 @@ namespace DGtal
      * Method to add specific voxel. It includes several modes to
      * display the voxel with and without the wire visualisation.
      *
-     * @param x, y, z  the voxel center.
+     * @param x voxel center x
+     * @param y voxel center y
+     * @param z voxel center z.
      * @param color the voxel color.
      * @param width the voxel width.
-     * @param widthWire if true add the wire representation.
+     * @param withWire if true add the wire representation.
      */
 
     virtual void addVoxel(DGtal::int64_t x, DGtal::int64_t y, DGtal::int64_t z, 
@@ -406,9 +413,11 @@ namespace DGtal
 
     /**
      * Method to add a point to the current display.
-     * @param x, y, z  the point.
+     * @param x x
+     * @param y y
+     * @param z z  the point.
      * @param color the point color.
-     * @param with the point width
+     * @param size the point width
      *
      */
     
@@ -421,15 +430,15 @@ namespace DGtal
      * Specific to display a KSSurfel from Kahlimsky space. The display can
      * take into accounts the sign of the cell.
      *
-     * @param x,y,z the surfel center.
-     * @param xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
+     *  x,y,z the surfel center.
+     *  xSurfel, ySurfel , zSurfel  specify if the surfel has its main face in the direction of
      *                                     the x-axis, y-axis or z-axis.
      * @param sizeShiftFactor set the distance between the display of the surfel and potential KSVoxel.
-     * @param translateShift translate the KSsurfel from the asso 
+     * @param positionShift translate the KSsurfel from the asso 
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
      *                             according this boolean  parameter 
-     *                              (if @param aSign=true oriented in the direct axis orientation).
+     *                              (if @a aSign=true oriented in the direct axis orientation).
      * @param basicMode if true, a basic mode to display KSSurfel are used (i.e just a simple surfel face).  
      * 
      */
@@ -445,7 +454,7 @@ namespace DGtal
     /**
      * Add a KSVoxel from the Kahlimsky space.
      * 
-     * @param x, y, z the center of the KSVoxel.
+     *  x, y, z the center of the KSVoxel.
      * 
      */
     
@@ -455,12 +464,12 @@ namespace DGtal
     /**
      * Add a KSPoint from the Kahlimsky space.
      * 
-     * @param x, y, z the center of the KSVoxel.
+     *  x, y, z the center of the KSVoxel.
      * @param size the point size (default= 0.1)
      * @param isSigned to specify if we want to display an signed or unsigned Cell point.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
      *                             according this boolean  parameter 
-     *                              (if @param aSign=true display a cross else, display a small cylinder.).     
+     *                              (if @a aSign=true display a cross else, display a small cylinder.).     
      */
     
     virtual void addKSPointel(double x, double y, double z, double size=0.1,
@@ -473,8 +482,8 @@ namespace DGtal
      * signed its display will difffers acoording its sign (display as
      * a cone) else it will be displayed as simple cylinder.
      * 
-     * @param x1, y1, z1 first point of the extremity point of the KSLinel.
-     * @param x2, y2, z2 second point of the extremity point of the KSLinel.
+     *  x1, y1, z1 first point of the extremity point of the KSLinel.
+     *  x2, y2, z2 second point of the extremity point of the KSLinel.
 
      * @param width the width of the KSLinel representation (of its associated cylinder (default= 0.02))
      * @param isSigned to specify if we want to display an signed or unsigned Cell Linel.
@@ -491,7 +500,7 @@ namespace DGtal
     /**
      * Used to update the scene bounding box when objects are added. 
      *
-     * @param x, y, z the coordinates to be taken into accounts. 
+     *  x, y, z the coordinates to be taken into accounts. 
      *
      **/
   
@@ -547,9 +556,9 @@ namespace DGtal
      * data with variable scales, as for instance from medical imagery
      * scanner)
      *
-     * @param sx: scale factor for the x axis (scale increased if >1, decreased if <1, reflected if -1).
-     * @param sy: scale factor for the y axis (scale increased if >1, decreased if <1, reflected if -1).
-     * @param sz: scale factor for the z axis (scale increased if >1, decreased if <1, reflected if -1).
+     * @param sx scale factor for the x axis (scale increased if >1, decreased if <1, reflected if -1).
+     * @param sy scale factor for the y axis (scale increased if >1, decreased if <1, reflected if -1).
+     * @param sz scale factor for the z axis (scale increased if >1, decreased if <1, reflected if -1).
      *
      **/
     void setScale(float sx, float sy, float sz);
@@ -592,7 +601,9 @@ namespace DGtal
     StyleMapping myStyles;
   
   
-  
+    
+    /// True if the bounding box is empty (no objects added)
+    bool myBoundingPtEmptyTag;
     double  myBoundingPtUp [3];
     double  myBoundingPtLow [3];
 
@@ -740,8 +751,8 @@ namespace DGtal
   /**
    * Operator ">>" to export a Display3D into a MeshFromPoints
    * 
-   * @param aDisplay3D: the Display3D to be exported.
-   * @param aMesh: (return) the resulting mesh.
+   * @param aDisplay3D the Display3D to be exported.
+   * @param aMesh (return) the resulting mesh.
    *
    **/
   
@@ -754,13 +765,13 @@ namespace DGtal
   /**
    * Operator ">>" to export a Display3D directly a file
    * 
-   * @param aDisplay3D: the Display3D to be exported.
-   * @param aMesh: (return) the resulting mesh.
+   * @param aDisplay3D the Display3D to be exported.
+   * @param aFilename (return) the resulting mesh.
    *
    **/
   
   void
-  operator>> ( const Display3D &aDisplay3D,  string aFilename);
+  operator>> ( const Display3D &aDisplay3D,  std::string aFilename);
   
   
 

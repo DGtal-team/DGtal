@@ -134,7 +134,7 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
-typename ArithmeticalDSS<TIterator,TInteger,connectivity>::Reverse
+typename DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::Reverse
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>
 ::getReverse() const {
   return Reverse(); 
@@ -178,6 +178,8 @@ DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::operator!=(
 								    const ArithmeticalDSS<TIterator,TInteger,connectivity> & other ) const {
   return (!(*this == other));
 }
+
+
 
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -728,8 +730,8 @@ inline
 TInteger
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::getPosition(const Point & aPoint) const
 {
-  return myA * static_cast<Integer>(aPoint[0])
-    + myB * static_cast<Integer>(aPoint[1]);
+  return myB * static_cast<Integer>(aPoint[0])
+    + myA * static_cast<Integer>(aPoint[1]);
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -765,10 +767,18 @@ inline
 bool
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::isInDSS(const Point & aPoint) const
 {
-  Integer s = getPosition(aPoint);
-  Integer smin = getPosition(myF);
-  Integer smax = getPosition(myL);
-  return (isInDSL(aPoint) && ( (s >= smin)&&(s <= smax) ) );
+  if (isInDSL(aPoint))
+    {
+      Integer s = getPosition(aPoint);
+      Integer s1 = getPosition(myF);
+      Integer s2 = getPosition(myL);
+      if (s1 < s2)
+	return ( (s >= s1)&&(s <= s2) );
+      else 
+	return ( (s >= s2)&&(s <= s1) );
+    }
+  else 
+    return false; 
 }
 
 
@@ -1014,21 +1024,21 @@ void
 DGtal::ArithmeticalDSS<TIterator,TInteger,connectivity>::selfDisplay ( std::ostream & out)
 {
   
-  out << "[ArithmeticalDSS]" <<  endl;
+  out << "[ArithmeticalDSS]" <<  std::endl;
   out << "Parameters (a,b,mu,omega)=";
   out << "("<< myA << ", " << myB << ", ";
-  out << myMu << ", " << myOmega << ")" <<  endl;
-  out << "Number of upper patterns: " << myNbUpPat << endl;
-  out << "Number of lower patterns: " << myNbLowPat << endl;
-  out << "First point " << Point(*myF) << " Last point " << Point(*myL) <<  endl;
-  out << "Leaning points:" <<  endl;
-  out << "   Uf " << myUf << endl << "   Ul " << myUl << endl;
-  out << "   Lf " << myLf << endl << "   Ll " << myLl <<  endl;
-  out << "Steps:" <<  endl;
+  out << myMu << ", " << myOmega << ")" <<  std::endl;
+  out << "Number of upper patterns: " << myNbUpPat << std::endl;
+  out << "Number of lower patterns: " << myNbLowPat << std::endl;
+  out << "First point " << Point(*myF) << " Last point " << Point(*myL) <<  std::endl;
+  out << "Leaning points:" <<  std::endl;
+  out << "   Uf " << myUf << std::endl << "   Ul " << myUl << std::endl;
+  out << "   Lf " << myLf << std::endl << "   Ll " << myLl <<  std::endl;
+  out << "Steps:" <<  std::endl;
   for (unsigned int i = 0; i < mySteps.size(); i++) {
-    out << "   " << mySteps.at(i) << endl;
+    out << "   " << mySteps.at(i) << std::endl;
   }
-  out << "[End ArithmeticalDSS]" <<  endl;
+  out << "[End ArithmeticalDSS]" <<  std::endl;
   
 }
 
