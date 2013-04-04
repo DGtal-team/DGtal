@@ -75,34 +75,37 @@ int main( int argc, char** argv )
     }
   trace.warning() << "  [Done]";
   
-
-  Object6_26 shape( dt6_26, shape_set );
-  int nb_simple=0; 
   int layer = 0;
+  
+  Object6_26 shape( dt6_26,  shape_set );
+  int nb_simple=0; 
   do 
     {
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
-      for ( DigitalSet::Iterator it = S.begin(); it != S.end(); ++it )
-  if ( shape.isSimple( *it ) )
-    Q.push( it );
+      for ( DigitalSet::Iterator it = S.begin(); 
+	    it != S.end(); ++it )
+	if ( shape.isSimple( *it ) )
+	  Q.push( it );
       nb_simple = 0;
       while ( ! Q.empty() )
-  {
-    DigitalSet::Iterator it = Q.front();
-    Q.pop();
-    if ( shape.isSimple( *it ) )
-      {
-        cerr << "point simple " << (*it) << endl; 
-        S.erase( *it );
-        ++nb_simple;
-      }
-  }
-      ++layer;
+	{
+	  DigitalSet::Iterator it = Q.front();
+	  Q.pop();
+	  if ( shape.isSimple( *it ) )
+	    {
+	      S.erase( *it );
+	      ++nb_simple;
+	    }
+	}
     }
   while ( nb_simple != 0 );
-
   DigitalSet & S = shape.pointSet();
+  
+
+
+  ++layer;// avant dernier{ avant while
+  cerr << "point simple " << (*it) << endl; // avant S.erase
 
   // Display by using two different list to manage OpenGL transparency.
 
