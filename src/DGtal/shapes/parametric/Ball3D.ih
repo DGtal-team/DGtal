@@ -78,28 +78,15 @@ inline
 AngularCoordinates
 DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
 {
-  RealPoint l( pp );
-  l -= myCenter;
-  AngularCoordinates angle ;
+  RealPoint p( pp );
+  p -= myCenter;
+  AngularCoordinates angle;
   
+  angle.first = atan2( p[1], p[0] );
+  angle.second = acos( sqrt(p[2] * p[2]) / p.norm() );
+  angle.first = ( angle.first < 0.0 ) ? angle.first + 2*M_PI : angle.first;
+  angle.second = ( angle.second < 0.0 ) ? angle.second + M_PI : angle.second;
   
-  
-  if((fabs(l[0])<0.0001)&&(fabs(l[1])<0.0001))
-    {
-      angle.first=0;
-      if(l[2]>=0)
-        angle.second=0;
-      if(l[2]<0)
-        angle.second=M_PI;
-    }
-  else
-    {
-      if(l[1]>0)
-        angle.first=atan2(l[1],l[0]);
-      else 
-	angle.first=atan2(l[1],l[0])+M_PI*2.0;
-      angle.second=acos(sqrt(l[2]*l[2])/sqrt(l[0]*l[0]+l[1]*l[1]+l[2]*l[2]));
-    }
   return angle;
 }
 
