@@ -95,17 +95,6 @@ namespace DGtal
     }
 
     /**
-     * @param[in] p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const RealPoint & p ) const
-    {
-      return (( myShapeA.isInside( p )) || ( myShapeB.isInside( p )));
-    }
-
-    /**
      * @return the lower bound of the shape bounding box.
      *
      */
@@ -242,16 +231,6 @@ namespace DGtal
       }
     }
 
-    /**
-     * @param[in] p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const RealPoint & p ) const
-    {
-      return (( myShapeA.isInside( p )) && ( myShapeB.isInside( p )));
-    }
 
     /**
      * @return the lower bound of the shape bounding box.
@@ -397,17 +376,6 @@ namespace DGtal
     }
 
     /**
-     * @param[in] p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    bool isInside( const RealPoint & p ) const
-    {
-      return (( myShapeA.isInside( p )) && ( !myShapeB.isInside( p )));
-    }
-
-    /**
      * @return the lower bound of the shape bounding box.
      *
      */
@@ -434,7 +402,7 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      if ( myShapeB.isInside( p ))
+      if (( myShapeB.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == ON ))
       {
         return OUTSIDE;
       }
