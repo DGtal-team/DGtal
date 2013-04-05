@@ -95,17 +95,6 @@ public:
 
 
   /**
-   * @param[in] p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return (( myShapeA( p )) || ( myShapeB( p )));
-  }
-
-  /**
    * @return the lower bound of the shape bounding box.
    *
    */
@@ -242,16 +231,6 @@ public:
     }
   }
 
-  /**
-   * @param[in] p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return (( myShapeA( p )) && ( myShapeB( p )));
-  }
 
   /**
    * @return the lower bound of the shape bounding box.
@@ -398,17 +377,6 @@ public:
 
 
   /**
-   * @param[in] p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return (( myShapeA( p )) && ( !myShapeB( p )));
-  }
-
-  /**
    * @return the lower bound of the shape bounding box.
    *
    */
@@ -435,7 +403,7 @@ public:
    */
   Orientation orientation( const Point & p ) const
   {
-    if ( myShapeB( p ))
+    if (( myShapeB.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == ON ))
     {
       return OUTSIDE;
     }
