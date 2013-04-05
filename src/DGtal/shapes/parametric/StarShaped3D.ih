@@ -44,37 +44,6 @@ typedef std::pair<double,double> AngularCoordinates;
 // ------------------------- star-shaped services -------------------------
 
 
-
-
-/**
- * @param p any point in the plane.
- *
- * @return 'true' if the point is inside or on the shape, 'false' if it
- * is strictly outside.
- */
-template<typename TSpace>
-inline
-bool
-DGtal::StarShaped3D<TSpace>::isInside( const RealPoint & p ) const
-{
-    RealPoint x_rel = x( parameter( p ));
-    x_rel -= center();
-    RealPoint p_rel( p );
-    p_rel -= center();
-
-    double d_x = x_rel.norm();
-    double d_p = p_rel.norm();
-
-    return (( d_p - d_x ) <= 0.0 );
-}
-
-
-
-
-
-
-
-
 /**
  * @param p any point in the plane.
  *

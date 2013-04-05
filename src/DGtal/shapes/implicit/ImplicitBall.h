@@ -99,12 +99,6 @@ namespace DGtal
     }
     
     inline
-    bool isInside(const RealPoint &aPoint) const
-    {
-      return (this->operator()(aPoint) >= 0.0);
-    }
-    
-    inline
     Orientation orientation(const RealPoint &aPoint) const
     {
       if (this->operator()(aPoint) > 0.0)
