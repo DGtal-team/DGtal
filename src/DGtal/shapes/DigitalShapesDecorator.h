@@ -79,8 +79,8 @@ public:
     * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
   DigitalShapesUnion( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-    : myShapeA(a),
-      myShapeB(b)
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -88,8 +88,8 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
@@ -102,7 +102,7 @@ public:
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) || myShapeB( p );
+    return (( myShapeA( p )) || ( myShapeB( p )));
   }
 
   /**
@@ -132,11 +132,11 @@ public:
    */
   Orientation orientation( const Point & p ) const
   {
-      if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
+    if (( myShapeA.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == INSIDE ))
       {
           return INSIDE;
       }
-      else if ( myShapeA.orientation( p ) == ON ||  myShapeB.orientation( p ) == ON )
+    else if (( myShapeA.orientation( p ) == ON ) || ( myShapeB.orientation( p ) == ON ))
       {
           return ON;
       }
@@ -228,8 +228,8 @@ public:
     * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
   DigitalShapesIntersection( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-    : myShapeA(a),
-      myShapeB(b)
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -237,8 +237,8 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
@@ -250,7 +250,7 @@ public:
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) && myShapeB( p );
+    return (( myShapeA( p )) && ( myShapeB( p )));
   }
 
   /**
@@ -280,15 +280,15 @@ public:
    */
   Orientation orientation( const Point & p ) const
   {
-    if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) != OUTSIDE)
+    if (( myShapeA.orientation( p ) == ON ) && ( myShapeB.orientation( p ) != OUTSIDE ))
     {
       return ON;
     }
-    else if ( myShapeB.orientation( p ) == ON && myShapeA.orientation( p ) != OUTSIDE )
+    else if (( myShapeB.orientation( p ) == ON ) && ( myShapeA.orientation( p ) != OUTSIDE ))
     {
       return ON;
     }
-    else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+    else if (( myShapeA.orientation( p ) == INSIDE ) && ( myShapeB.orientation( p ) == INSIDE ))
     {
       return INSIDE;
     }
@@ -382,8 +382,8 @@ public:
     * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
   DigitalShapesMinus( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-    : myShapeA(a),
-      myShapeB(b)
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -391,8 +391,8 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
@@ -405,7 +405,7 @@ public:
    */
   bool operator()( const Point & p ) const
   {
-    return myShapeA( p ) && !myShapeB( p );
+    return (( myShapeA( p )) && ( !myShapeB( p )));
   }
 
   /**

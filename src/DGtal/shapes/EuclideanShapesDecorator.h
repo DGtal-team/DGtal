@@ -80,8 +80,8 @@ namespace DGtal
       * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     EuclideanShapesUnion( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-      : myShapeA(a),
-        myShapeB(b)
+      : myShapeA( a ),
+        myShapeB( b )
     {
       RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
       RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -89,8 +89,8 @@ namespace DGtal
       RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
       for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
       {
-        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+        myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+        myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
       }
     }
 
@@ -102,7 +102,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) || myShapeB.isInside( p );
+      return (( myShapeA.isInside( p )) || ( myShapeB.isInside( p )));
     }
 
     /**
@@ -132,11 +132,11 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-        if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
+      if (( myShapeA.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == INSIDE ))
         {
             return INSIDE;
         }
-        else if ( myShapeA.orientation( p ) == ON ||  myShapeB.orientation( p ) == ON )
+      else if (( myShapeA.orientation( p ) == ON ) || ( myShapeB.orientation( p ) == ON ))
         {
             return ON;
         }
@@ -228,8 +228,8 @@ namespace DGtal
       * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     EuclideanShapesIntersection( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-      : myShapeA(a),
-        myShapeB(b)
+      : myShapeA( a ),
+        myShapeB( b )
     {
       RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
       RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -237,8 +237,8 @@ namespace DGtal
       RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
       for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
       {
-        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+        myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+        myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
       }
     }
 
@@ -250,7 +250,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && myShapeB.isInside( p );
+      return (( myShapeA.isInside( p )) && ( myShapeB.isInside( p )));
     }
 
     /**
@@ -280,15 +280,15 @@ namespace DGtal
      */
     Orientation orientation( const RealPoint & p ) const
     {
-      if ( myShapeA.orientation( p ) == ON && myShapeB.orientation( p ) != OUTSIDE)
+      if (( myShapeA.orientation( p ) == ON ) && ( myShapeB.orientation( p ) != OUTSIDE ))
       {
         return ON;
       }
-      else if ( myShapeB.orientation( p ) == ON && myShapeA.orientation( p ) != OUTSIDE )
+      else if (( myShapeB.orientation( p ) == ON ) && ( myShapeA.orientation( p ) != OUTSIDE ))
       {
         return ON;
       }
-      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
+      else if (( myShapeA.orientation( p ) == INSIDE ) && ( myShapeB.orientation( p ) == INSIDE ))
       {
         return INSIDE;
       }
@@ -382,8 +382,8 @@ namespace DGtal
       * @param[in] b a model of CEuclideanBoundedShape and CEuclideanOrientedShape
       */
     EuclideanShapesMinus( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
-      : myShapeA(a),
-        myShapeB(b)
+      : myShapeA( a ),
+        myShapeB( b )
     {
       RealPoint shapeALowerBoundary = myShapeA.getLowerBound();
       RealPoint shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -391,8 +391,8 @@ namespace DGtal
       RealPoint shapeBUpperBoundary = myShapeB.getUpperBound();
       for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
       {
-        myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-        myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+        myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+        myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
       }
     }
 
@@ -404,7 +404,7 @@ namespace DGtal
      */
     bool isInside( const RealPoint & p ) const
     {
-      return myShapeA.isInside( p ) && !myShapeB.isInside( p );
+      return (( myShapeA.isInside( p )) && ( !myShapeB.isInside( p )));
     }
 
     /**
