@@ -213,7 +213,7 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
         it != implicitDomain.end(); 
         ++it )
     {
-      if ( aFunctor.orientation( *it ) == INSIDE)
+      if ( aFunctor.orientation( *it ) == INSIDE || aFunctor.orientation( *it ) == ON )
         aSet.insert( *it );
     }
 }

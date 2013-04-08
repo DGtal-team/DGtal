@@ -41,7 +41,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/shapes/parametric/Ball2D.h"
+#include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/shapes/EuclideanShapesDecorator.h"
 
 // Drawing
@@ -66,10 +66,10 @@ int main( int argc, char** argv )
     double h = 1.0;
 
     //! [EuclideanShapesDecoratorUsage]
-    typedef Ball2D< Z2i::Space > MyEuclideanShapeA;
-    typedef Ball2D< Z2i::Space > MyEuclideanShapeB;
-    MyEuclideanShapeA shapeA(0.0, 0.0, 14.0000123);
-    MyEuclideanShapeB shapeB(1.0, 0.0, 14.0000123);
+    typedef ImplicitBall< Z2i::Space > MyEuclideanShapeA;
+    typedef ImplicitBall< Z2i::Space > MyEuclideanShapeB;
+    MyEuclideanShapeA shapeA( Z2i::RealPoint( 0.0, 0.0 ), 14 );
+    MyEuclideanShapeB shapeB( Z2i::RealPoint( 1.0, 0.0 ), 14 );
 
     typedef EuclideanShapesMinus< MyEuclideanShapeA, MyEuclideanShapeB > Minus;
     Minus s_minus ( shapeA, shapeB );
@@ -85,7 +85,7 @@ int main( int argc, char** argv )
     digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
     Z2i::Domain domainShapeA = digShapeA.getDomain();
 
-    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSetA( domainShapeA );
+    Z2i::DigitalSet aSetA( domainShapeA );
     Shapes<Z2i::Domain>::digitalShaper( aSetA, digShapeA );
 
 
@@ -98,7 +98,7 @@ int main( int argc, char** argv )
     digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
     Z2i::Domain domainShapeB = digShapeB.getDomain();
 
-    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSetB( domainShapeB );
+    Z2i::DigitalSet aSetB( domainShapeB );
     Shapes<Z2i::Domain>::digitalShaper( aSetB, digShapeB );
 
 
@@ -110,7 +110,7 @@ int main( int argc, char** argv )
     digShape.attach( s_minus );
     digShape.init( s_minus.getLowerBound(), s_minus.getUpperBound(), h );
     Z2i::Domain domainShape = digShape.getDomain();
-    DigitalSetSelector< Z2i::Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type aSet( domainShape );
+    Z2i::DigitalSet aSet( domainShape );
     Shapes<Z2i::Domain>::digitalShaper( aSet, digShape );
 
 
@@ -119,17 +119,17 @@ int main( int argc, char** argv )
     board << SetMode( domainShape.className(), "Paving" )
           << domainShape;
 
-    Color dgreen( 0, 192, 0, 50 );
-    Color dred( 192, 0, 0, 50 );
-    Color dorange( 255, 136, 0, 220 );
+    Color dgreen  ( 0,    192,  0,  50  );
+    Color dred    ( 192,  0,    0,  50  );
+    Color dorange ( 255,  136,  0,  220 );
 
-    board << CustomStyle( aSetA.className(), new CustomFillColor( dgreen ) );
+    board << CustomStyle( aSetA.className(), new CustomFillColor( dgreen ));
     board << aSetA;
 
-    board << CustomStyle( aSetB.className(), new CustomFillColor( dred ) );
+    board << CustomStyle( aSetB.className(), new CustomFillColor( dred ));
     board << aSetB;
 
-    board << CustomStyle( aSet.className(), new CustomFillColor( dorange ) );
+    board << CustomStyle( aSet.className(), new CustomFillColor( dorange ));
     board << aSet;
 
     board.saveSVG ( "example-EuclideanShapesDecorator.svg" );
