@@ -61,7 +61,6 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::Im
 {
     myReadPolicy = new ReadPolicy(anImageFactory, sizeCache);
     myWritePolicy = new WritePolicy(anImageFactory);
-    cpt=1;
 }
 
 template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>

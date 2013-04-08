@@ -188,9 +188,6 @@ protected:
     ReadPolicy * myReadPolicy;
     WritePolicy  * myWritePolicy;
     
-public:
-    int cpt;
-    
 private:
 
     // ------------------------- Internals ------------------------------------
