@@ -87,9 +87,10 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory):
+    ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory, int dummySizeCache=1):
       myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
     {
+       // dummySizeCache is not used, normal, just here for compatibility
     }
 
     /**
@@ -167,7 +168,7 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheReadPolicyFIFO(Alias<ImageFactory> anImageFactory, int aFIFOSizeMax=3):
+    ImageCacheReadPolicyFIFO(Alias<ImageFactory> anImageFactory, int aFIFOSizeMax=10):
       myImageFactory(anImageFactory), myFIFOSizeMax(aFIFOSizeMax)
     {
     }

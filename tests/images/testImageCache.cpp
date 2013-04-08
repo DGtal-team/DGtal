@@ -228,7 +228,7 @@ bool testSimple()
     
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWB > MyImageCache3;
-    MyImageCache3 imageCache3(factImage);
+    MyImageCache3 imageCache3(factImage, 3);
     
     imageCache3.update(domain4); // image4
     

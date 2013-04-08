@@ -35,7 +35,13 @@
 
 //#define DEBUG_VERBOSE
 
+#include "DGtal/io/boards/Board2D.h"
+
+//! [include]
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+
 #include "DGtal/images/TiledImageFromImage.h"
+//! [include]
 
 #include "ConfigTest.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,7 +50,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class TiledImage*.
+// Functions for testing class TiledImage.
 ///////////////////////////////////////////////////////////////////////////////
 bool testSimple()
 {
@@ -53,45 +59,90 @@ bool testSimple()
 
     trace.beginBlock("Testing simple TiledImage*");
     
+    Board2D aBoard;
+    
+//! [def]
+    typedef HueShadeColorMap<int> HueShade;     // a simple HueShadeColorMap varying on 'int' values
+//! [def]
+    
+//! [image_creation]
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
-
-    VImage image(Z2i::Domain(Z2i::Point(0,0), Z2i::Point(3,3)));
+    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,8)));
+//! [image_creation]
+    
+//! [image_filling]
     int i = 1;
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = i++;
+//! [image_filling]
+        
+    aBoard.clear();
+    Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
+    aBoard.saveSVG("testTiledImage-image.svg");
+#ifdef WITH_CAIRO
+    aBoard.saveCairo("testTiledImage-image.png", Board2D::CairoPNG);
+#endif
 
     trace.info() << "ORIGINAL image: " << image << endl;
     
-    typedef TiledImageFromImage<VImage > MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, /*domains,*/ 2, 2);
+//! [TiledImageFromImage_creation]
+    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, 4, 2, 2);
+//! [TiledImageFromImage_creation]
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
     
-    trace.info() << "Read value for Point 2,2: " << tiledImageFromImage(Z2i::Point(2,2)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(2,2)) == 11) ? 1 : 0; 
+    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(4,2)) == 20) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "Read value for Point 3,1: " << tiledImageFromImage(Z2i::Point(3,1)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 8) ? 1 : 0; 
+    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(10,6)) == 90) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 88; tiledImageFromImage.setValue(Z2i::Point(3,1), aValue);
-    trace.info() << "Write value for Point 3,1: " << aValue << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(3,1)) == 88) ? 1 : 0; 
+    aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11,7), aValue);
+    trace.info() << "Write value for Point 11,7: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(11,7)) == 1) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "  Point 3,1 on ORIGINAL image, value: " << image(Z2i::Point(3,1)) << endl;
-    nbok += (image(Z2i::Point(3,1)) == 88) ? 1 : 0;
+    trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2,3)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(2,3)) == 34) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 16,1: " << tiledImageFromImage(Z2i::Point(16,1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 16) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
+    trace.info() << "Write value for Point 16,1: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 128) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
+    nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aBoard.clear();
+    Display2DFactory::drawImage<HueShade>(aBoard, image, (int)0, (int)255);
+    aBoard.saveSVG("testTiledImage-image2.svg");
+#ifdef WITH_CAIRO
+    aBoard.saveCairo("testTiledImage-image2.png", Board2D::CairoPNG);
+#endif
     
     trace.endBlock();
     
