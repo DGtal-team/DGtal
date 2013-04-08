@@ -105,7 +105,7 @@ public:
 
 public:
 
-    ImageCache(Alias<ImageFactory> anImageFactory);
+    ImageCache(Alias<ImageFactory> anImageFactory, int sizeCache=10);
 
     /**
      * Destructor.
@@ -187,6 +187,9 @@ protected:
     /// Alias on the specialized caches
     ReadPolicy * myReadPolicy;
     WritePolicy  * myWritePolicy;
+    
+public:
+    int cpt;
     
 private:
 

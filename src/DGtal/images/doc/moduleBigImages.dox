@@ -15,7 +15,7 @@ namespace DGtal {
 /*!
 
 
-@page moduleBigImages Big Images
+@page moduleBigImages Handle large images in DGtal
 @authors Martial Tola
 @date 2013/03/12
 
@@ -23,10 +23,27 @@ namespace DGtal {
 
 \section dgtalBigImagesAbstract Overview
 
-Big images like tiled images, HDF5 images, ... can be handled in DGtal.
+Large images like tiled images, HDF5 images, ... can be handled in DGtal.
 
 For this, we provide two important mechanisms: an image factory mechanism and an image cache mechanism with read and write policies.
-These mechanisms are DGtal concepts detailed just below.
+
+The image factory is necessary to keep control on the created images. As its responsability is to create images according to a domain,
+it is obvious that the factory can update (flush) the image on disk and also can free the image from memory.
+It is thanks to that that we can work with specific image formats like for example HDF5.
+This mechanism is a DGtal concept called CImageFactory which is detailed just after.
+
+As we want to take also into account the large images effectively we also need a cache mechanism to access subparts of tiled images.
+The cache has the responsability to store tiles and giving us read and write access to them. The reading, writing and updating mechanisms of the cache
+are controlled with two policies: the read and the write policies.
+These policies are DGtal concepts called respectively CImageCacheReadPolicy and CImageCacheWritePolicy which are detailed just below.
+
+The cache mechanism is rather simple. It consists of three important functions that are detailed here:
+
+ - the `read` function return true and get the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else return false.
+
+ - the `write` function return true and set the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else return false.
+
+ - the `update` function update the cache according to the read policy.
 
 \section dgtalBigImagesConcepts Concepts
 
@@ -125,6 +142,74 @@ until the cache blocks containing the data are about to be modified/replaced by 
 The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
 
 The tiled image is create from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
+The last parameter is the size of the cache (in that case, a FIFO cache).
+
+Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write
+for the TiledImageFromImage class.
+
+For the proof, here a the code of the two functions (in this code snippets, `findSubDomain` is just a function that get the first domain containing a point).
+
+\code
+Value operator()(const Point & aPoint) const
+{
+  ASSERT(myImagePtr->domain().isInside(aPoint));
+
+  typename OutputImage::Value aValue;
+    
+  if (myImageCache->read(aPoint, aValue))
+    return aValue;
+  else
+    {
+      myImageCache->update(findSubDomain(aPoint));
+      myImageCache->read(aPoint, aValue);
+      return aValue;
+    }
+}
+\endcode
+
+\code
+void setValue(const Point &aPoint, const Value &aValue)
+{
+    ASSERT(myImagePtr->domain().isInside(aPoint));
+      
+    if (myImageCache->write(aPoint, aValue))
+      return;
+    else
+    {
+      myImageCache->update(findSubDomain(aPoint));
+      myImageCache->write(aPoint, aValue);
+    }
+}
+\endcode
+
+Here is the result (todo, explain):
+
+\image html testTiledImage-image.png " (1) source image." 
+\image latex testTiledImage-image.png " (1) source image."  width=5cm </TD>
+
+\image html testTiledImage-8domains.png " (2) 8 domains." 
+\image latex testTiledImage-8domains.png " (2) 8 domains."  width=5cm </TD>
+
+\image html testTiledImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1." 
+\image latex testTiledImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1."  width=5cm </TD>
+
+\image html testTiledImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7." 
+\image latex testTiledImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7."  width=5cm </TD>
+
+\image html testTiledImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7." 
+\image latex testTiledImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7."  width=5cm </TD>
+
+\image html testTiledImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1." 
+\image latex testTiledImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1."  width=5cm </TD>
+
+\image html testTiledImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4." 
+\image latex testTiledImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4."  width=5cm </TD>
+
+\image html testTiledImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4" 
+\image latex testTiledImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4"  width=5cm </TD>
+
+\image html testTiledImage-image2.png " (9) result image." 
+\image latex testTiledImage-image2.png " (9) result image."  width=5cm </TD>
 
 \subsection dgtalBigImagesHDF5ImageSample HDF5Image
 

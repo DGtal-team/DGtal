@@ -61,6 +61,7 @@ namespace DGtal
  * @tparam TImageContainer an image container type (model of CImage).
  * 
  * The tiled image is create here from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
+ * The last parameter is the size of the cache (in that case, a FIFO cache).
  */
 template <typename TImageContainer>
 class TiledImageFromImage
@@ -93,12 +94,12 @@ public:
 
 public:
 
-    TiledImageFromImage(Alias<ImageContainer> anImage, int nX, int nY):
+    TiledImageFromImage(Alias<ImageContainer> anImage, int nX, int nY, int sizeCache=10):
       myImagePtr(anImage)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
         
-        myImageCache = new MyImageCache(myImageFactoryFromImage);
+        myImageCache = new MyImageCache(myImageFactoryFromImage, sizeCache);
         
         myDi = new std::vector<Domain>;
         
@@ -175,7 +176,10 @@ public:
       for(std::size_t i=0; i<myDi->size(); ++i)
       {
         if ((*myDi)[i].isInside(aPoint))
+        {
+          //trace.info() << "domain:" <<  (*myDi)[i] << std::endl;
           return (*myDi)[i];
+        }
       }
       
       // compiler warning... should never happen
@@ -189,6 +193,7 @@ public:
      * @param aPoint the point.
      * @return the value at aPoint.
      */
+    //! [accessor]
     Value operator()(const Point & aPoint) const
     {
       ASSERT(myImagePtr->domain().isInside(aPoint));
@@ -196,14 +201,19 @@ public:
       typename OutputImage::Value aValue;
         
       if (myImageCache->read(aPoint, aValue))
+      {
+        //trace.info() << "read: inside" << std::endl;
         return aValue;
+      }
       else
         {
+          //trace.info() << "read: not inside so update" << std::endl;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->read(aPoint, aValue);
           return aValue;
         }
     }
+    //! [accessor]
     
     /**
      * Set a value on an image (from cache) at a position specified by a aPoint.
@@ -211,18 +221,24 @@ public:
      * @param aPoint the point.
      * @param aValue the value.
      */
+    //! [setter]
     void setValue(const Point &aPoint, const Value &aValue)
     {
         ASSERT(myImagePtr->domain().isInside(aPoint));
           
         if (myImageCache->write(aPoint, aValue))
+        {
+          //trace.info() << "write: inside" << std::endl;
           return;
+        }
         else
         {
+          //trace.info() << "write: not inside so update" << std::endl;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->write(aPoint, aValue);
         }
     }
+    //! [setter]
 
     // ------------------------- Protected Datas ------------------------------
 private:

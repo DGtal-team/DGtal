@@ -72,10 +72,10 @@ Description of \b concept '\b CImageCacheWritePolicy' <p>
 
 ### Valid expressions and semantics
 
-| Name                | Expression              | Type requirements    | Return type       | Precondition | Semantics | Post condition | Complexity |
-|---------------------|-------------------------|----------------------|-------------------|--------------|-----------|----------------|------------|
-| Write in page       | x.writeInPage(i,p,v)    |                      |                   |              |           |                |            |
-| Flush page          | x.flushPage(i)          |                      |                   |              |           |                |            |
+| Name                | Expression              | Type requirements    | Return type       | Precondition | Semantics                                                   | Post condition | Complexity |
+|---------------------|-------------------------|----------------------|-------------------|--------------|-------------------------------------------------------------|----------------|------------|
+| Write in page       | x.writeInPage(i,p,v)    |                      |                   |              | set a value v on an image i at a given position p           |                |            |
+| Flush page          | x.flushPage(i)          |                      |                   |              | flush the image i on disk according to the cache policy     |                |            |
 
 ### Invariants
 
