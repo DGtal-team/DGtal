@@ -22,7 +22,7 @@
  *
  * @date 2013/01/23
  *
- * Functions for testing class ImageCache.
+ * @brief A test file for ImageCache.
  *
  * This file is part of the DGtal library.
  */
