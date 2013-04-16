@@ -54,35 +54,7 @@ namespace DGtal
 // class HDF5Reader
 /**
  * Description of class 'HDF5Reader' <p>
- * \brief Aim: Import a 2D or 3D using the Netpbm formats (ASCII mode).
- * - PPM: RGB 
- *  - PGM: grayscale
- *  - PPM3D: 3D variant of PPM
- *  - PGM3D: 3D variant of PGM
- * 
- *
- *  Simple example: (extract from test file testHDF5Reader.cpp)
- * 
- *  @code
- *  #include "DGtal/helpers/StdDefs.h"
- *  #include "DGtal/io/readers/HDF5Reader.h"
- *  #include "DGtal/kernel/images/ImageSelector.h"
- *  ...
- *  string filename = "test.pgm";
- *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
- *  Image image = HDF5Reader<Image>::importPGMImage( filename ); 
- *   @endcode
- *  You can then for instance display a threshold part of the image:
- *  @code 
- *  #include "DGtal/kernel/imagesSetsUtils/SetFromImage.h"  
- *  ...
- *  Z2i::DigitalSet set2d (image.domain());
- *  // Threshold all pixel in ]0, 255] in a DigitalSet   
- *  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
- *  Board2D board;
- *  board << image.domain() << set2d; // display domain and set   
- *  @endcode
- *
+ * \brief Aim: Import a HDF5 image file.
  *
  */
  template <typename TImageContainer>
@@ -94,13 +66,10 @@ namespace DGtal
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
     
-    enum MagicNumber {P1,P2,P3,P4,P5,P6};
-    
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
-                         (ImageContainer::Domain::dimension == 3));
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) );
 
     /** 
-     * Main method to import a Pgm (8bits) into an instance of the 
+     * Main method to import a HDF5 image file into an instance of the 
      * template parameter ImageContainer.
      * 
      * @param aFilename the file name to import.  
@@ -110,24 +79,10 @@ namespace DGtal
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importPGM(const std::string & aFilename, 
+    static  ImageContainer importHDF5(const std::string & aFilename, 
                                      bool topbotomOrder = true) throw(DGtal::IOException);
-
-
-    /** 
-     * Main method to import a Pgm3D (8bits) into an instance of the 
-     * template parameter ImageContainer.
-     * 
-     * @param aFilename the file name to import.
-     * @return an instance of the ImageContainer.
-     */
-    static ImageContainer importPGM3D(const std::string & aFilename) throw(DGtal::IOException);
-    
-    
     
  }; // end of class  HDF5Reader
-
-
 
 } // namespace DGtal
 
