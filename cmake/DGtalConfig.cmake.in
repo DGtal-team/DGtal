@@ -29,6 +29,7 @@ if (APPLE)
   add_definitions(-DAPPLE)
 endif (APPLE)
 
+
 #------------------------------------------------------------------------------
 # -- Removing some strange warnings when compiling with VS Express
 #------------------------------------------------------------------------------
@@ -56,6 +57,15 @@ ENDIF(MSVC)
 #---- according to dependencies detected during 
 #---- the build.
 #------------------------------------------------
+IF(@DEBUG_VERBOSE@)
+  ADD_DEFINITIONS(-DDEBUG_VERBOSE)
+  MESSAGE(STATUS "Debug verbose mode activated")
+ENDIF(@DEBUG_VERBOSE@)
+IF (@VERBOSE@)
+  ADD_DEFINITIONS(-DVERBOSE)
+  MESSAGE(STATUS "Verbose mode activated")
+ENDIF(@VERBOSE@)
+
 IF(@C11_FOUND_DGTAL@)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
   ADD_DEFINITIONS("-DWITH_C11 ")
