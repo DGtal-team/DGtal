@@ -103,19 +103,31 @@ int main( int argc, char** argv )
 
     trace.beginBlock("read and write on MyTiledImageFromImage");
     
+//! [TiledImageFromImage_read42]
     trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
+//! [TiledImageFromImage_read42]    
     
+//! [TiledImageFromImage_read106]
     trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
+//! [TiledImageFromImage_read106]
     
+//! [TiledImageFromImage_write117]
     aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11,7), aValue);
     trace.info() << "Write value for Point 11,7: " << aValue << endl;
+//! [TiledImageFromImage_write117]
     
+//! [TiledImageFromImage_read23]
     trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2,3)) << endl;
+//! [TiledImageFromImage_read23]
     
+//! [TiledImageFromImage_read161]
     trace.info() << "Read value for Point 16,1: " << tiledImageFromImage(Z2i::Point(16,1)) << endl;
+//! [TiledImageFromImage_read161]
     
+//! [TiledImageFromImage_write161]
     aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
     trace.info() << "Write value for Point 16,1: " << aValue << endl;
+//! [TiledImageFromImage_write161]
     
     trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
     
