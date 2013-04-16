@@ -33,7 +33,7 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/HDF5Reader.h"
 #include "DGtal/images/ImageSelector.h"
-#include "DGtal/images/imagesSetsUtils/SetFromImage.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
 #include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,34 +44,37 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class HDF5Reader.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
 bool testHDF5Reader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;  
-  trace.beginBlock ( "Testing pgm reader ..." );
+  
+  trace.beginBlock ( "Testing hdf5 reader ..." );
   nbok += true ? 1 : 0; 
   nb++;
-  std::string filename = testPath + "samples/circleR10.pgm";
+  std::string filename = testPath + "samples/ex_image2.h5";
 
-  trace.info() << "Loading filename: "<< filename<<std::endl;
+  trace.info() << "Loading filename: " << filename << std::endl;
 
-  typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image image = HDF5Reader<Image>::importPGM( filename ); 
+  typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
+  Image image = HDF5Reader<Image>::importHDF5( filename ); 
   
-  Z2i::DigitalSet set2d (image.domain());
-  SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
-   
-  Board2D board;
-  board << image.domain() << set2d; // display domain and set
+  trace.info() << "imageFromHDF5image image: " << image << endl;
   
-  board.saveEPS( "testHDF5Reader.eps");
+  Board2D aBoard;
+  typedef GrayscaleColorMap<unsigned char> Gray;        // a simple GrayscaleColorMap varying on 'unsigned char' values
+
+  aBoard.clear();
+  Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
+  //aBoard.saveSVG("imageFromHDF5image.svg");
+#ifdef WITH_CAIRO
+  aBoard.saveCairo("imageFromHDF5image.png", Board2D::CairoPNG);
+#endif
+  
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();  
+  
   return nbok == nb;
 }
 
@@ -91,5 +94,6 @@ int main( int argc, char** argv )
   trace.endBlock();
   return res ? 0 : 1;
 }
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
