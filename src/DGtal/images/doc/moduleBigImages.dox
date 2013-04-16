@@ -187,7 +187,7 @@ In order to illustrate the next TiledImageFromImage usage sample,
 
 @snippet ../examples/images/exampleTiledImageFromImage.cpp include
 
-b) then define these types and variables:
+b) then define these type and variable:
 
 @snippet ../examples/images/exampleTiledImageFromImage.cpp def 
 
@@ -205,47 +205,72 @@ which looks like that with a simple HueShadeColorMap varying from 1 to 128 and w
 \image latex TiledImageFromImage-image.png " (1) simple 16x8 source image: (1,1) to (16,8) drawn with a simple HueShadeColorMap varying from 1 to 128." width=5cm 
 
 Here is now the construction of a simple 4x2 tiled image with therefore 8 subdomains
- of the initial image domain to: 
+ of the initial image domain. The last parameter is here the size of the FIFO cache (see ImageCacheReadPolicyFIFO): 
 
 @snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_creation 
 
-and here is the result:
+and here is the result (with domain1 the first bottom-left subdomain and domain8 the last top-right subdomain):
+
 \image html TiledImageFromImage-8domains.png " (2) 4x2 tiled image with 8 subdomains of the initial image domain." 
 \image latex TiledImageFromImage-8domains.png " (2) 4x2 tiled image with 8 subdomains of the initial image domain." width=5cm
 
 At the beginning the cache is empty.
 
-First we want to read the point 4,2 (which is in domain 1), so after that the cache is (domain1,empty). Here is the domain1:
+First we want to read the point 4,2 (which is in domain 1),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read42 
+
+so after that the cache is (domain1,empty). Here is the domain1:
 
 \image html TiledImageFromImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1." 
 \image latex TiledImageFromImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1."  width=5cm </TD>
 
-Then we want to read the point 10,6 (which is in domain 7), so after that the cache is (domain1,domain7). Here is the domain7:
+Then we want to read the point 10,6 (which is in domain 7),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read106
+
+so after that the cache is (domain1,domain7). Here is the domain7:
 
 \image html TiledImageFromImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7." 
 \image latex TiledImageFromImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7."  width=5cm </TD>
 
-Then we want to write the value of the point 11,7 (which is in domain 7), so after that the cache is always (domain1,domain7). Here is the new domain7 after writing:
+Then we want to set the value of the point 11,7 to 1 (which is in domain 7),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_write117
+
+so after that the cache is always (domain1,domain7). Here is the new domain7 after writing:
 
 \image html TiledImageFromImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7." 
 \image latex TiledImageFromImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7."  width=5cm </TD>
 
-Then we want to read the point 2,3 (which is in domain 1), so after that the cache is always (domain1,domain7). Here is the domain1:
+Then we want to read the point 2,3 (which is in domain 1),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read23
+
+so after that the cache is always (domain1,domain7). Here is the domain1:
 
 \image html TiledImageFromImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1." 
 \image latex TiledImageFromImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1."  width=5cm </TD>
 
-Then we want to read the point 16,1 (which is in domain 4), so after that the cache is (domain7,domain4). Here is the domain4:
+Then we want to read the point 16,1 (which is in domain 4),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_read161
+
+so after that the cache is (domain7,domain4). Here is the domain4:
 
 \image html TiledImageFromImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4." 
 \image latex TiledImageFromImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4."  width=5cm </TD>
 
-Then we want to write the value of the point 16,1 (which is in domain 4), so after that the cache is always (domain7,domain4). Here is the new domain4 after writing:
+Then we want to set the value of the point 16,1 to 128 (which is in domain 4),
+
+@snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_write161
+
+so after that the cache is always (domain7,domain4). Here is the new domain4 after writing:
 
 \image html TiledImageFromImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4" 
 \image latex TiledImageFromImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4"  width=5cm </TD>
 
-And finally, here is the original image after the two writings.
+And finally, here is the modified original image after the two writings.
 
 \image html TiledImageFromImage-image2.png " (9) result image." 
 \image latex TiledImageFromImage-image2.png " (9) result image."  width=5cm </TD>
