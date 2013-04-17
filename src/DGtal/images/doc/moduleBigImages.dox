@@ -141,46 +141,17 @@ until the cache blocks containing the data are about to be modified/replaced by 
 
 The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
 
-The tiled image is created from an existing image and with two parameters (nX and nY) in order to build the list of subdomains which describe all the tiles.
+The tiled image is created from an existing image and with two parameters (nX and nY) to set how many tiles we want (by width and by height).
 The last parameter is the size of the cache (in that case, a FIFO cache).
 
 Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write
-for the TiledImageFromImage class.
+for the TiledImageFromImage class:
 
-For the proof, here a the code of the two functions (in this code snippets, `findSubDomain` is just a function that get the first domain containing a point).
+- the getter just returns the value of an image (from cache) at a given position given by a point if the image is in the cache.
+If not, the cache is first update with the image that contains that point.
 
-\code
-Value operator()(const Point & aPoint) const
-{
-  ASSERT(myImagePtr->domain().isInside(aPoint));
-
-  typename OutputImage::Value aValue;
-    
-  if (myImageCache->read(aPoint, aValue))
-    return aValue;
-  else
-    {
-      myImageCache->update(findSubDomain(aPoint));
-      myImageCache->read(aPoint, aValue);
-      return aValue;
-    }
-}
-\endcode
-
-\code
-void setValue(const Point &aPoint, const Value &aValue)
-{
-    ASSERT(myImagePtr->domain().isInside(aPoint));
-      
-    if (myImageCache->write(aPoint, aValue))
-      return;
-    else
-    {
-      myImageCache->update(findSubDomain(aPoint));
-      myImageCache->write(aPoint, aValue);
-    }
-}
-\endcode
+- in the same manner, the setter just write the value of an image (in cache) at a given position given by a point if the image is in the cache.
+If not, the cache is first update with the image that contains that point.
 
 In order to illustrate the next TiledImageFromImage usage sample,
  we are going a) to use these includes:
