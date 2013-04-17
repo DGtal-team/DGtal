@@ -71,11 +71,11 @@ Description of \b concept '\b CImageCacheReadPolicy' <p>
 
 ### Valid expressions and semantics
 
-| Name                | Expression              | Type requirements    | Return type       | Precondition | Semantics                                            | Post condition | Complexity |
-|---------------------|-------------------------|----------------------|-------------------|--------------|------------------------------------------------------|----------------|------------|
-| Get page            | x.getPage(p)            |                      | ImageContainer    |              | get the alias on the image that contains the point p |                |            |
-| Get page to detach  | x.getPageToDetach()     |                      | ImageContainer    |              | get the alias on the image that we have to detach    |                |            |
-| Update cache        | x.updateCache(d)        |                      |                   |              | update the cache, add the Domain d                   |                |            |
+| Name                | Expression              | Type requirements    | Return type       | Precondition                         | Semantics                                            | Post condition | Complexity |
+|---------------------|-------------------------|----------------------|-------------------|--------------------------------------|------------------------------------------------------|----------------|------------|
+| Get page            | x.getPage(p)            | p of type Point      | ImageContainer    | p should be in a domain of the cache | get the alias on the image that contains the point p |                |            |
+| Get page to detach  | x.getPageToDetach()     |                      | ImageContainer    |                                      | get the alias on the image that we have to detach    |                |            |
+| Update cache        | x.updateCache(d)        | d of type Domain     |                   |                                      | update the cache with a new Domain d                 |                |            |
 
 ### Invariants
 

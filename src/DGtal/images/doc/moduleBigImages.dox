@@ -39,9 +39,9 @@ These policies are DGtal concepts called respectively CImageCacheReadPolicy and 
 
 The cache mechanism is rather simple. It consists of three important functions that are detailed here:
 
- - the `read` function return true and get the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else return false.
+ - the `read` function returns true and get the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else returns false.
 
- - the `write` function return true and set the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else return false.
+ - the `write` function returns true and set the value of an image from cache at a given position given by a point only if that point belongs to an image from cache, else returns false.
 
  - the `update` function update the cache according to the read policy.
 
@@ -141,7 +141,7 @@ until the cache blocks containing the data are about to be modified/replaced by 
 
 The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
 
-The tiled image is create from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
+The tiled image is created from an existing image and with two parameters (nX and nY) in order to build the list of subdomains which describe all the tiles.
 The last parameter is the size of the cache (in that case, a FIFO cache).
 
 Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write

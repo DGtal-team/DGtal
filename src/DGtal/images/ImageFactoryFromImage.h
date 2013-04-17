@@ -119,9 +119,6 @@ namespace DGtal
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    /**
-     * @return the validity of the Image
-     */
     bool isValid() const
     {
       return (myImagePtr->isValid());
@@ -149,7 +146,7 @@ namespace DGtal
     }
     
     /**
-     * Flush an OutputImage.
+     * Flush (i.e. write/synchronize) an OutputImage.
      * 
      * @param outputImage the OutputImage.
      */
@@ -164,7 +161,7 @@ namespace DGtal
     }
     
     /**
-     * Free an OutputImage.
+     * Free (i.e. delete) an OutputImage.
      * 
      * @param outputImage the OutputImage.
      */

@@ -94,7 +94,7 @@ public:
 
 public:
 
-    TiledImageFromImage(Alias<ImageContainer> anImage, int nX, int nY, int sizeCache=10):
+    TiledImageFromImage(Alias<ImageContainer> anImage, typename ImageContainer::Domain::Integer nX, typename ImageContainer::Domain::Integer nY, int sizeCache=10):
       myImagePtr(anImage)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
@@ -103,21 +103,21 @@ public:
         
         myDi = new std::vector<Domain>;
         
-        int sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX; //trace.info() << "sizeX: " << sizeX << std::endl;
-        int sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY; //trace.info() << "sizeY: " << sizeY << std::endl;
+        typename ImageContainer::Domain::Size sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX;
+        typename ImageContainer::Domain::Size sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY;
         
-        int x0, y0;
-        int x1, y1;
+        typename ImageContainer::Domain::Integer x0, y0;
+        typename ImageContainer::Domain::Integer x1, y1;
         Domain di;
         
-        for(int j=0; j<nY; ++j)
-          for(int i=0; i<nX; ++i)
+        for(typename ImageContainer::Domain::Integer j=0; j<nY; ++j)
+          for(typename ImageContainer::Domain::Integer i=0; i<nX; ++i)
           {
             x0 = myImagePtr->domain().lowerBound()[0]+(sizeX*i);
             y0 = myImagePtr->domain().lowerBound()[1]+(sizeY*j);
             x1 = myImagePtr->domain().lowerBound()[0]+(sizeX*i)+(sizeX-1);
             y1 = myImagePtr->domain().lowerBound()[1]+(sizeY*j)+(sizeY-1);
-            di = Domain(Point(x0, y0),Point(x1, y1)); //trace.info() << "di: " << di << std::endl;
+            di = Domain(Point(x0, y0),Point(x1, y1));
             myDi->push_back(di);
           }
     }
@@ -176,10 +176,7 @@ public:
       for(std::size_t i=0; i<myDi->size(); ++i)
       {
         if ((*myDi)[i].isInside(aPoint))
-        {
-          //trace.info() << "domain:" <<  (*myDi)[i] << std::endl;
           return (*myDi)[i];
-        }
       }
       
       // compiler warning... should never happen
@@ -193,7 +190,6 @@ public:
      * @param aPoint the point.
      * @return the value at aPoint.
      */
-    //! [accessor]
     Value operator()(const Point & aPoint) const
     {
       ASSERT(myImagePtr->domain().isInside(aPoint));
@@ -201,19 +197,14 @@ public:
       typename OutputImage::Value aValue;
         
       if (myImageCache->read(aPoint, aValue))
-      {
-        //trace.info() << "read: inside" << std::endl;
         return aValue;
-      }
       else
         {
-          //trace.info() << "read: not inside so update" << std::endl;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->read(aPoint, aValue);
           return aValue;
         }
     }
-    //! [accessor]
     
     /**
      * Set a value on an image (from cache) at a position specified by a aPoint.
@@ -221,24 +212,18 @@ public:
      * @param aPoint the point.
      * @param aValue the value.
      */
-    //! [setter]
     void setValue(const Point &aPoint, const Value &aValue)
     {
         ASSERT(myImagePtr->domain().isInside(aPoint));
           
         if (myImageCache->write(aPoint, aValue))
-        {
-          //trace.info() << "write: inside" << std::endl;
           return;
-        }
         else
         {
-          //trace.info() << "write: not inside so update" << std::endl;
           myImageCache->update(findSubDomain(aPoint));
           myImageCache->write(aPoint, aValue);
         }
     }
-    //! [setter]
 
     // ------------------------- Protected Datas ------------------------------
 private:
