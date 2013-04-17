@@ -101,10 +101,10 @@ public:
         
         myImageCache = new MyImageCache(myImageFactoryFromImage, sizeCache);
         
-        myDi = new std::vector<Domain>;
+        _sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX;
+        _sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY;
         
-        typename ImageContainer::Domain::Size sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX;
-        typename ImageContainer::Domain::Size sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY;
+        myDi = new std::vector<Domain>;
         
         typename ImageContainer::Domain::Integer x0, y0;
         typename ImageContainer::Domain::Integer x1, y1;
@@ -113,11 +113,11 @@ public:
         for(typename ImageContainer::Domain::Integer j=0; j<nY; ++j)
           for(typename ImageContainer::Domain::Integer i=0; i<nX; ++i)
           {
-            x0 = myImagePtr->domain().lowerBound()[0]+(sizeX*i);
-            y0 = myImagePtr->domain().lowerBound()[1]+(sizeY*j);
-            x1 = myImagePtr->domain().lowerBound()[0]+(sizeX*i)+(sizeX-1);
-            y1 = myImagePtr->domain().lowerBound()[1]+(sizeY*j)+(sizeY-1);
-            di = Domain(Point(x0, y0),Point(x1, y1));
+            x0 = myImagePtr->domain().lowerBound()[0]+(_sizeX*i);
+            y0 = myImagePtr->domain().lowerBound()[1]+(_sizeY*j);
+            x1 = myImagePtr->domain().lowerBound()[0]+(_sizeX*i)+(_sizeX-1);
+            y1 = myImagePtr->domain().lowerBound()[1]+(_sizeY*j)+(_sizeY-1);
+            di = Domain(Point(x0, y0),Point(x1, y1)); trace.info() << "di: " << di << std::endl;
             myDi->push_back(di);
           }
     }
@@ -164,19 +164,35 @@ public:
     }
     
     /**
-     * Get the first domain containing aPoint.
+     * Get the domain containing aPoint.
      *
      * @param aPoint the point.
      * @return the domain containing aPoint.
      */
-    const Domain & findSubDomain(const Point & aPoint) const
+    const Domain findSubDomain(const Point & aPoint) const
     {
       ASSERT(myImagePtr->domain().isInside(aPoint));
+      
+      typename ImageContainer::Domain::Integer xP, yP;
+      typename ImageContainer::Domain::Integer xLow, yLow;
+      
+      xP = aPoint[0];
+      yP = aPoint[1];
+      
+      xLow = xP/_sizeX; if (!(xP%_sizeX)) xLow--;
+      yLow = yP/_sizeY; if (!(yP%_sizeY)) yLow--;
+      
+      Domain di = Domain(Point((xLow*_sizeX)+1, (yLow*_sizeY)+1),Point((xLow*_sizeX)+_sizeX, (yLow*_sizeY)+_sizeY));
+      trace.info() << "di_findSubDomain_NEW: " << di << std::endl;
+      //return di;
       
       for(std::size_t i=0; i<myDi->size(); ++i)
       {
         if ((*myDi)[i].isInside(aPoint))
+        {
+          trace.info() << "di_findSubDomain_OLD: " << (*myDi)[i] << std::endl;
           return (*myDi)[i];
+        }
       }
       
       // compiler warning... should never happen
@@ -240,6 +256,12 @@ protected:
     
     /// Domains list
     std::vector<Domain> * myDi;
+    
+    /// Width of a tile
+    typename ImageContainer::Domain::Size _sizeX;
+    
+    /// Height of a tile
+    typename ImageContainer::Domain::Size _sizeY;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;
