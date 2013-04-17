@@ -70,11 +70,11 @@ Description of \b concept '\b CImageFactory' <p>
 
 ### Valid expressions and semantics
 
-| Name                | Expression              | Type requirements    | Return type    | Precondition | Semantics                                                      | Post condition | Complexity |
-|---------------------|-------------------------|----------------------|----------------|--------------|----------------------------------------------------------------|----------------|------------|
-| Request image       | x.requestImage(d)       |                      | OutputImage    |              | returns a pointer of an OutputImage created with the Domain d  |                |            |
-| Flush image         | x.flushImage(o)         |                      |                |              | flush an OutputImage o                                         |                |            |
-| Detach image        | x.detachImage(o)        |                      |                |              | free an OutputImage o                                          |                |            |
+| Name                | Expression              | Type requirements     | Return type    | Precondition | Semantics                                                      | Post condition | Complexity |
+|---------------------|-------------------------|-----------------------|----------------|--------------|----------------------------------------------------------------|----------------|------------|
+| Request image       | x.requestImage(d)       | d of type Domain      | OutputImage    |              | returns a pointer of an OutputImage created with the Domain d  |                |            |
+| Flush image         | x.flushImage(o)         | o of type OutputImage |                |              | flush (i.e. write/synchronize) an OutputImage o                |                |            |
+| Detach image        | x.detachImage(o)        | o of type OutputImage |                |              | free (i.e. delete) an OutputImage o                            |                |            |
 
 ### Invariants
 
