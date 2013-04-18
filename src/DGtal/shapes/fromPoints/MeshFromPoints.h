@@ -82,9 +82,7 @@ namespace DGtal
    */
   template <typename TPoint >
   class MeshFromPoints
-  {
-    
-    
+  {   
     
     
     // ----------------------- associated types ------------------------------
@@ -95,6 +93,13 @@ namespace DGtal
 
     typedef std::vector<unsigned int> MeshFace;
     
+
+    
+    
+    typedef  std::vector<TPoint> VertexStorage; 
+    typedef  std::vector<MeshFace> FaceStorage; 
+    typedef  std::vector<DGtal::Color> ColorStorage; 
+     
 
 
 
@@ -215,9 +220,41 @@ namespace DGtal
     
 
 
+    /**
+     * Return an iterator pointing to the first vertex of the mesh.  
+     *
+     **/
+    
+    typename VertexStorage::const_iterator VertexBegin() const;
+
+
+
+    /**
+     * Return an iterator pointing after the end of the last vertex of the mesh.
+     *
+     **/
+    
+    typename VertexStorage::const_iterator  VertexEnd() const;
     
     
+    /**
+     * Return an iterator pointing to the first face of the mesh.  
+     *
+     **/
     
+    typename FaceStorage::const_iterator FaceBegin() const;
+
+
+
+    /**
+     * Return an iterator pointing after the end of the last face of the mesh.
+     *
+     **/
+    
+    typename FaceStorage::const_iterator  FaceEnd() const;
+    
+    
+
     /**
      * Return the number of faces contained on the mesh object.
      * @return the number of faces.
@@ -261,9 +298,11 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    std::vector<MeshFace>  myFaceList;
-    std::vector<TPoint>  myVertexList;
-    std::vector<DGtal::Color> myFaceColorList;
+    FaceStorage  myFaceList;
+    VertexStorage myVertexList;
+
+    
+    ColorStorage myFaceColorList;
     bool mySaveFaceColor;
     DGtal::Color myDefaultColor;
     

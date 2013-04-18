@@ -111,7 +111,7 @@ DGtal::MeshFromPoints<TPoint>::isValid() const
 
 template<typename TPoint>
 inline
-DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const std::vector<TPoint> &vertexSet)
+DGtal::MeshFromPoints<TPoint>::MeshFromPoints(const DGtal::MeshFromPoints<TPoint>::VertexStorage &vertexSet)
 {
   mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++){
@@ -229,6 +229,45 @@ DGtal::MeshFromPoints<TPoint>::getFaceColor(unsigned int i) const{
     return myDefaultColor;
   }
 }
+
+
+
+
+template<typename TPoint>
+inline
+typename  DGtal::MeshFromPoints<TPoint>::VertexStorage::const_iterator 
+DGtal::MeshFromPoints<TPoint>::VertexBegin() const{
+  return myVertexList.begin();
+}
+
+
+
+template<typename TPoint>
+inline
+typename  DGtal::MeshFromPoints<TPoint>::VertexStorage::const_iterator 
+DGtal::MeshFromPoints<TPoint>::VertexEnd() const{
+  return myVertexList.end();
+}
+
+
+
+
+template<typename TPoint>
+inline
+typename  DGtal::MeshFromPoints<TPoint>::FaceStorage::const_iterator 
+DGtal::MeshFromPoints<TPoint>::FaceBegin() const{
+  return myFaceList.begin();
+}
+
+
+
+template<typename TPoint>
+inline
+typename  DGtal::MeshFromPoints<TPoint>::FaceStorage::const_iterator 
+DGtal::MeshFromPoints<TPoint>::FaceEnd() const{
+  return myFaceList.end();
+}
+
 
 
 
