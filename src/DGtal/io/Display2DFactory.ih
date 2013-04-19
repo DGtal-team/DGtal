@@ -1246,14 +1246,6 @@ DGtal::Display2DFactory::draw
                                  NumberTraits<Integer>::castToDouble( p[ 1 ] ) ) );
     }
   aBoard.drawClosedPolyline( pts );
-  // if ( mode == "Transparent"  || ( mode == "" )  )
-  //   {
-  //     aBoard.drawClosedPolyline( pts );
-  //   }
-  // else
-  //   {
-  //     aBoard.fillPolyline( pts );
-  //   }
 }
 
 
