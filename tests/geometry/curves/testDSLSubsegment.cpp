@@ -132,10 +132,10 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  
 		  // SmartDSS algorithm
 		  
-		  timeBeginSmartDSS = clock();
-		  D.smartDSS(AA,BB);
-		  timeEndSmartDSS = clock();
-		  timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  // timeBeginSmartDSS = clock();
+		  // D.smartDSS(AA,BB);
+		  // timeEndSmartDSS = clock();
+		  // timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
 		  
 		  // ReversedSmartDSS algorithm
 		  
@@ -191,11 +191,11 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
   //std::cout << " " << (long double) CPUTime/(nb*5*10) ;
   
   std::cout << " " << (long double) timeTotalSubseg/(nb*5*10);
-  std::cout << " " << (long double) timeTotalSmartDSS/(nb*5*10);
+  //std::cout << " " << (long double) timeTotalSmartDSS/(nb*5*10);
   std::cout << " " << (long double) timeTotalReversedSmartDSS/(nb*5*10);
   
 #ifdef CHECK_RES
-  std::cout << "\t time DSS = " << (long double) timeTotalDSS/(nb*5*10);
+  std::cout << " " << (long double) timeTotalDSS/(nb*5*10);
 #endif
 
   return true;
@@ -211,7 +211,7 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 
 int main( int argc, char** argv )
 {
-  typedef DGtal::int64_t Integer;
+  //typedef DGtal::int64_t Integer;
   //typedef DGtal::BigInteger Integer;
   
   // typedef DGtal::DSLSubsegment<Integer> DSLSubseg;
@@ -256,16 +256,20 @@ int main( int argc, char** argv )
   // std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
 		     
   
-  typedef LightSternBrocot<DGtal::int64_t, DGtal::int32_t, DGtal::StdMapRebinder> SB;
+  typedef LighterSternBrocot<DGtal::int64_t,DGtal::int64_t, StdMapRebinder> LrSB;
+  typedef LightSternBrocot<DGtal::int64_t,DGtal::int64_t> LSB;
+  typedef SternBrocot<DGtal::int64_t,DGtal::int64_t> SB;
+  
   
   //typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
-  typedef SB::Fraction Fraction;
-  
+  typedef LrSB::Fraction Fraction;
+  typedef Fraction::Integer Integer;
 
-  Integer modb = 100000;
+  
+  Integer modb = 1000;
   Integer moda = modb;
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :100;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :5000;
   
   
   for(Integer modx = 10; modx <=  modb;modx+=modx/2)
