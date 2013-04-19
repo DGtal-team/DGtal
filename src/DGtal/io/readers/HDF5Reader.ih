@@ -36,6 +36,7 @@
 #include <sstream>
 
 #include <hdf5.h>
+#include <hdf5_hl.h>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -50,29 +51,72 @@
 template <typename TImageContainer>
 inline
 TImageContainer 
-DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, bool topbotomOrder ) throw(DGtal::IOException)
+DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, const std::string & aDataset, bool topbotomOrder) throw(DGtal::IOException)
 {
-  unsigned int h, w;
-  h=400; w=300;
-  
-  hid_t         file_id, dataset_id;    // identifiers
-  herr_t        status;
-  unsigned char dset_data[h][w];
+  DGtal::IOException dgtalio;
+    
+  hid_t         fileID;
+  herr_t        hErrVal;
+  hsize_t       width;
+  hsize_t       height;
+  hsize_t       planes;
+  char          interlace[16];
+  hssize_t      npals;
+  int           i, j;
+  unsigned char *imgBuf; // 'unsigned char' is mandated by the HDF5 library
+
+  // Load the library -- not required on most platforms
+  hErrVal = H5open();
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
 
   // Open an existing file
-  file_id = H5Fopen(aFilename.c_str(), H5F_ACC_RDWR, H5P_DEFAULT);
+  fileID = H5Fopen(aFilename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
+  if (fileID < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
 
-  // Open an existing dataset
-  dataset_id = H5Dopen(file_id, "/image8bit", H5P_DEFAULT);
+  // Figure out if the data is an image or not
+  hErrVal = H5IMis_image(fileID, aDataset.c_str());
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if(hErrVal != 1) {
+    printf("The data is NOT an image\n");
+    throw dgtalio;
+  }
 
-  // Read the dataset
-  status = H5Dread(dataset_id, /*H5T_NATIVE_INT*/H5T_NATIVE_UCHAR, H5S_ALL, H5S_ALL, H5P_DEFAULT, dset_data);
+  // Get info about the image
+  interlace[0] = 0;
+  hErrVal = H5IMget_image_info (fileID, aDataset.c_str(), &width, &height, &planes, interlace, &npals); 
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
 
-  // Close the dataset
-  status = H5Dclose(dataset_id);
+  /*printf("Image Meta-Data:\n");
+  printf("  Width:     %d\n", (int)width);
+  printf("  Height:    %d\n", (int)height);
+  printf("  Planes:    %d\n", (int)planes);
+  printf("  NPals:     %d\n", (int)npals);
+  printf("  Interlace: %s\n", interlace);*/
 
+  // If the image is the wrong type, then throw exception
+  if( !( ((planes==1) && (npals==1)) || ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) ) ) {
+    printf("ERROR: Image is not 8-bit with palette or image is not 24-bit truecolor with INTERLACE_PIXEL pixel layout\n");
+    throw dgtalio;
+  }
+
+  // Allocate space for the image
+  imgBuf = (unsigned char*) malloc (width * height * planes * sizeof( unsigned char ));
+  if (imgBuf == NULL) {
+    printf("ERROR: Could not allocate space for image.\n");
+    throw dgtalio;
+  }
+
+  // Read the data from the file
+  hErrVal = H5IMread_image (fileID, aDataset.c_str(), imgBuf);
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  
   // Close the file
-  status = H5Fclose(file_id);
+  hErrVal = H5Fclose(fileID);
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+
+  // Unload the library and free any remaining resources
+  hErrVal = H5close();
+  if (hErrVal < 0) { fprintf(stderr, "HDF5 ERROR: \n"); H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
   
   // --
   
@@ -80,29 +124,27 @@ DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, bo
   typename TImageContainer::Point lastPoint;
       
   firstPoint = TImageContainer::Point::zero;
-  lastPoint[0] = w-1;
-  lastPoint[1] = h-1;
+  lastPoint[0] = width-1;
+  lastPoint[1] = height-1;
   
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
   
-  unsigned int nb_read = 0;
-  
-  for(unsigned int y=0; y <h; y++)
-    for(unsigned int x=0; x <w; x++)
+  for(hsize_t y=0; y<height; y++)
+    for(hsize_t x=0; x<width; x++)
       {
           typename TImageContainer::Point pt;
           if (topbotomOrder){
-            pt[0]=x; pt[1]=h-1-y;
+            pt[0]=x; pt[1]=height-1-y;
           }else{
             pt[0]=x; pt[1]=y;
           }
           
-          ++nb_read;
-          image.setValue(pt, dset_data[y][x]);
+          if( ((planes==1) && (npals==1)) )
+            image.setValue(pt, imgBuf[ y*width+x ]);
+          else if( ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) )
+            image.setValue(pt, imgBuf[ ( (y*planes*width+x*planes)+(y*planes*width+x*planes+1)+(y*planes*width+x*planes+2) )/3 ]);
       }
-      
-  trace.info() << "# nbread=" << nb_read << std::endl;
   
   return image;
 }

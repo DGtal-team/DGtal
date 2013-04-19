@@ -30,7 +30,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/boards/Board2D.h"
+#include "DGtal/io/writers/PPMWriter.h"
 #include "DGtal/io/readers/HDF5Reader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
@@ -55,24 +55,19 @@ bool testHDF5Reader()
   std::string filename = testPath + "samples/ex_image2.h5";
 
   trace.info() << "Loading filename: " << filename << std::endl;
-
+  
+  typedef GrayscaleColorMap<unsigned char> Gray; // a simple GrayscaleColorMap varying on 'unsigned char' values
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
-  Image image = HDF5Reader<Image>::importHDF5( filename ); 
   
-  trace.info() << "imageFromHDF5image image: " << image << endl;
+  Image image = HDF5Reader<Image>::importHDF5( filename, "/image8bit" ); 
+  trace.info() << "image8bitFromHDF5image image: " << image << endl;
+  PPMWriter<Image,Gray>::exportPPM("image8bitFromHDF5image.ppm", image, Gray(0,255));
   
-  Board2D aBoard;
-  typedef GrayscaleColorMap<unsigned char> Gray;        // a simple GrayscaleColorMap varying on 'unsigned char' values
-
-  aBoard.clear();
-  Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
-  //aBoard.saveSVG("imageFromHDF5image.svg");
-#ifdef WITH_CAIRO
-  aBoard.saveCairo("imageFromHDF5image.png", Board2D::CairoPNG);
-#endif
+  image = HDF5Reader<Image>::importHDF5( filename, "/image24bitpixel" ); 
+  trace.info() << "image24bitFromHDF5image image: " << image << endl;
+  PPMWriter<Image,Gray>::exportPPM("image24bitFromHDF5image.ppm", image, Gray(0,255));
   
-  trace.info() << "(" << nbok << "/" << nb << ") "
-         << "true == true" << std::endl;
+  trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
   trace.endBlock();  
   
   return nbok == nb;

@@ -54,7 +54,7 @@ namespace DGtal
 // class HDF5Reader
 /**
  * Description of class 'HDF5Reader' <p>
- * \brief Aim: Import a HDF5 image file.
+ * \brief Aim: Import a HDF5 file with image dataset(s).
  *
  */
  template <typename TImageContainer>
@@ -72,14 +72,15 @@ namespace DGtal
      * Main method to import a HDF5 image file into an instance of the 
      * template parameter ImageContainer.
      * 
-     * @param aFilename the file name to import.  
+     * @param aFilename the file name to import.
+     * @param aFilename the dataset name to import.
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importHDF5(const std::string & aFilename, 
+    static  ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
                                      bool topbotomOrder = true) throw(DGtal::IOException);
     
  }; // end of class  HDF5Reader
