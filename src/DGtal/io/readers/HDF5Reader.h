@@ -41,11 +41,9 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-//////////////////////////////////////////////////////////////////////////////
 
-#ifdef _MSC_VER
-#pragma warning(disable : 4290)
-#endif
+#include "DGtal/images/CImage.h"
+//////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
@@ -54,7 +52,7 @@ namespace DGtal
 // class HDF5Reader
 /**
  * Description of class 'HDF5Reader' <p>
- * \brief Aim: Import a HDF5 file with image dataset(s).
+ * \brief Aim: Import a HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
  *
  */
  template <typename TImageContainer>
@@ -65,6 +63,8 @@ namespace DGtal
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
+    
+    BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) );
 
