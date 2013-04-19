@@ -60,8 +60,9 @@ namespace DGtal
  * 
  * @tparam TImageContainer an image container type (model of CImage).
  * 
- * The tiled image is create here from an existing image and with two parameters (nX and nY) in order to create the list of subdomains which describe all the tiles.
- * The last parameter is the size of the cache (in that case, a FIFO cache).
+ * The tiled image is create here from an existing image and with two parameters.
+ * The first parameter is to set how many tiles we want for each dimension.
+ * The second parameter is the size of the cache (in that case, a FIFO cache).
  */
 template <typename TImageContainer>
 class TiledImageFromImage
@@ -94,15 +95,15 @@ public:
 
 public:
 
-    TiledImageFromImage(Alias<ImageContainer> anImage, typename ImageContainer::Domain::Integer nX, typename ImageContainer::Domain::Integer nY, int sizeCache=10):
-      myImagePtr(anImage)
+    TiledImageFromImage(Alias<ImageContainer> anImage, typename ImageContainer::Domain::Integer N, int sizeCache=10):
+      myImagePtr(anImage), myN(N)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
         
         myImageCache = new MyImageCache(myImageFactoryFromImage, sizeCache);
         
-        _sizeX = (myImagePtr->domain().upperBound()[0]-myImagePtr->domain().lowerBound()[0]+1)/nX;
-        _sizeY = (myImagePtr->domain().upperBound()[1]-myImagePtr->domain().lowerBound()[1]+1)/nY;
+        for(typename ImageContainer::Domain::Integer i=0; i<ImageContainer::Domain::dimension; i++)
+          mySize[i] = (myImagePtr->domain().upperBound()[i]-myImagePtr->domain().lowerBound()[i]+1)/myN;
     }
 
     /**
@@ -154,16 +155,23 @@ public:
     {
       ASSERT(myImagePtr->domain().isInside(aPoint));
       
-      typename ImageContainer::Domain::Integer xP, yP;
-      typename ImageContainer::Domain::Integer xLow, yLow;
+      typename ImageContainer::Domain::Integer i;
       
-      xP = aPoint[0];
-      yP = aPoint[1];
+      Point low;
+      for(i=0; i<ImageContainer::Domain::dimension; i++)
+      {
+        low[i] = aPoint[i]/mySize[i];
+        if (!(aPoint[i]%mySize[i])) low[i]--;
+      }
       
-      xLow = xP/_sizeX; if (!(xP%_sizeX)) xLow--;
-      yLow = yP/_sizeY; if (!(yP%_sizeY)) yLow--;
+      Point dMin, dMax;
+      for(i=0; i<ImageContainer::Domain::dimension; i++)
+      {
+        dMin[i] = (low[i]*mySize[i])+1;
+        dMax[i] = (low[i]*mySize[i])+mySize[i];
+      }
       
-      Domain di = Domain(Point((xLow*_sizeX)+1, (yLow*_sizeY)+1),Point((xLow*_sizeX)+_sizeX, (yLow*_sizeY)+_sizeY));
+      Domain di = Domain(dMin, dMax);
       return di;
       
       // compiler warning... should never happen
@@ -225,11 +233,11 @@ protected:
     /// Alias on the image container
     ImageContainer * myImagePtr;
     
-    /// Width of a tile
-    typename ImageContainer::Domain::Size _sizeX;
+    /// Number of tiles per dimension
+    typename ImageContainer::Domain::Integer myN;
     
-    /// Height of a tile
-    typename ImageContainer::Domain::Size _sizeY;
+    /// Width of a tile (for each dimension)
+    Point mySize;
     
     /// ImageFactory pointer
     MyImageFactoryFromImage *myImageFactoryFromImage;

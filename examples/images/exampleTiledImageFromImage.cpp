@@ -63,7 +63,7 @@ int main( int argc, char** argv )
     
 //! [image_creation]
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
-    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,8)));
+    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,16)));
 //! [image_creation]
     
 //! [image_filling]
@@ -89,7 +89,7 @@ int main( int argc, char** argv )
     
 //! [TiledImageFromImage_creation]
     typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2, 2);
+    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
 //! [TiledImageFromImage_creation]
     
     trace.info() << "tiledImageFromImage image: " << tiledImageFromImage << endl;

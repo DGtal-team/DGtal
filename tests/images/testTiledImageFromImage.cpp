@@ -52,7 +52,7 @@ bool testSimple()
     trace.beginBlock("Testing simple TiledImageFromImage");
     
     typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
-    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,8)));
+    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,16)));
     
     int i = 1;
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
@@ -61,7 +61,7 @@ bool testSimple()
     trace.info() << "ORIGINAL image: " << image << endl;
     
     typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2, 2);
+    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
