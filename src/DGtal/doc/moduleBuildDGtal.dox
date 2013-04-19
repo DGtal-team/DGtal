@@ -59,6 +59,7 @@ sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
 sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
 libgraphicsmagick++1-dev libinsighttoolkit3-dev doxygen graphviz
 @endcode
+\warning Note that on the actual Debian linux distribution (version 6)  you need to install the boost library from the main official site (http://www.boost.org/users/download/) since the full debian boost package is actually not given. 
 
 To build DGtal from the source archive, we use the CMake tool to
 generate a Makefile or a project file for various IDE (KDevelop,
