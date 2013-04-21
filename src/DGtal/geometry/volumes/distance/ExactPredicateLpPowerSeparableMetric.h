@@ -126,14 +126,14 @@ namespace DGtal
      * Copy constructor.
      * @param other the object to clone.
      */
-    ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
+      ExactPredicateLpPowerSeparableMetric ( const ExactPredicateLpPowerSeparableMetric & other ) {}
     
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) { return *this;}
+      ExactPredicateLpPowerSeparableMetric & operator= ( const ExactPredicateLpPowerSeparableMetric & other ) { return *this;}
 
     // ----------------------- Interface --------------------------------------
   public:
