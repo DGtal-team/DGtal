@@ -187,8 +187,6 @@ namespace DGtal
     void sortPolygonFromCamera();
   
 
-    //void initiateTexture();
-      
   
 
     /**
