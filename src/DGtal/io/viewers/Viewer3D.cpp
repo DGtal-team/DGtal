@@ -245,13 +245,13 @@ DGtal::Viewer3D::draw()
     
     glNormal3d(0, 0, 1);
     glTexCoord2f(0, 0);
-    glVertex3f(0.0,0.0,0.0);
+    glVertex3f(myGSImage.x1, myGSImage.y1, myGSImage.z1);
     glTexCoord2f(myTextureFitX, 0.0);
-    glVertex3f(myGSImage.width, 0.0, 0.0);
+    glVertex3f(myGSImage.x2, myGSImage.y2, myGSImage.z2);
     glTexCoord2f(myTextureFitX, myTextureFitY);
-    glVertex3f(myGSImage.width, myGSImage.height, 0.0);
+    glVertex3f(myGSImage.x3, myGSImage.y3, myGSImage.z3);
     glTexCoord2f(0.0, myTextureFitY);
-    glVertex3f(0.0, myGSImage.height, 0.0);  
+    glVertex3f(myGSImage.x4, myGSImage.y4, myGSImage.z4);
 
     glEnd();
     glDisable(GL_TEXTURE_2D);
