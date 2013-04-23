@@ -85,15 +85,14 @@ int main( int argc, char** argv )
  
  Point p1( 0, 0, 0 );
  Point p2( 125, 188, 0 );
- 
+ Point p3( 30, 30, 30 );
  
  std::string filename =  testPath + "samples/church-small.pgm";
  imageNG image = DGtal::PNMReader<imageNG>::importPGM(filename); 
-
- Display3D::GrayScaleImage gsImage;
- gsImage.fillImageData<imageNG>(image);
  
- viewer << p1 << p2;
+ Display3D::GrayScaleImage gsImage;
+ gsImage.fillImageDataAndParam<imageNG>(image, Display3D::yDirection, 30, 30, 30 );
+  viewer << p1 << p2 << p3;
  viewer << gsImage;
  viewer << Display3D::updateDisplay;
  

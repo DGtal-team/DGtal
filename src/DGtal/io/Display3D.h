@@ -170,6 +170,10 @@ namespace DGtal
 
 
   public:
+
+    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+    enum ImageDirection {xDirection, yDirection, zDirection };
+
     /// Structure used to display KSPoint in 3D and MeshFromPoints
     /// @see addKSPointel 
     ///
@@ -219,20 +223,38 @@ namespace DGtal
      *
      **/
     struct GrayScaleImage{
-      // The quad coordinates
+      // The quad coordinates should be given in counter clockwise order
       double x1, y1, z1;
       double x2, y2, z2;
       double x3, y3, z3;
-      double x4, y4, z4;          
+      double x4, y4, z4;
+      
       unsigned int width;
       unsigned int height;;
       
       char * tabImage;
       template <typename ImageType>
-      void fillImageData(const  ImageType & image){
+      void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection dir=zDirection, 
+				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	width = (image.extent())[0];
 	height = (image.extent())[1];
 	tabImage = new  char [width*height];
+	if(dir==zDirection){
+	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
+	  x2 = xBottomLeft+width; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft+width; y3 = yBottomLeft+height; z3 = zBottomLeft; 
+	  x4 = xBottomLeft; y4 = yBottomLeft+height; z4 = zBottomLeft; 
+	}else if(dir==yDirection){
+	  x1 = xBottomLeft+width; y1 = yBottomLeft; z1 = zBottomLeft;
+	  x2 = xBottomLeft; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft; y3 = yBottomLeft; z3 = zBottomLeft+height; 
+	  x4 = xBottomLeft+width; y4 = yBottomLeft; z4 = zBottomLeft+height; 
+	}else if(dir==xDirection){
+	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
+	  x2 = xBottomLeft; y2 = yBottomLeft+width; z2 = zBottomLeft; 
+	  x3 = xBottomLeft; y3 = yBottomLeft+width; z3 = zBottomLeft+height; 
+	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+height; 
+	}
 	unsigned int pos=0;
 	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	     it!=itend;
@@ -270,8 +292,6 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
-  
  
 
     /**
