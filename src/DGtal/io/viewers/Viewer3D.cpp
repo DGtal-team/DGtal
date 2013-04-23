@@ -100,6 +100,8 @@ DGtal::Viewer3D::drawWithNames()
     {
       glCallList ( GLuint ( myListToAff+myVoxelSetList.size() +myLineSetList.size() +i ) );
     }
+
+
 }
 
 
@@ -236,6 +238,8 @@ DGtal::Viewer3D::draw()
 
   for(unsigned int i=0; i< myVectTextureImage.size(); i++){
     GLTextureImage textureImg =  myVectTextureImage.at(i);
+    glPushName (  textureImg.myTextureName );
+	  
     glEnable ( GL_LIGHTING );  
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
