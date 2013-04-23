@@ -330,41 +330,6 @@ DGtal::Viewer3D::init()
 #endif
 
 
-// void
-// DGtal::Viewer3D::initiateTexture(){
-//   if(myGSImage.width!=0){
-//     // Adjust the tab to dimensions power of 2 (needed by openGL)
-//     myTextureName = new GLuint[1];
-    
-//     unsigned int widthAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.width);
-//     unsigned int heightAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.height);
-//     myTextureImageTab = new unsigned char [widthAdj*heightAdj];
-//     unsigned int pos=0;
-//     for (unsigned int i=0; i<heightAdj; i++){
-//           for (unsigned int j=0; j<widthAdj; j++){
-// 	    if(i<myGSImage.height && j< myGSImage.width){
-// 	      myTextureImageTab[pos]= myGSImage.tabImage[i*myGSImage.width+j];
-// 	    }else{
-// 	      myTextureImageTab[pos]=0;
-// 	    }
-// 	    pos++;
-// 	  }
-//     }    
-//     myTextureFitX = 1.0-((widthAdj-myGSImage.width)/(double)widthAdj);
-//     myTextureFitY = 1.0-((heightAdj-myGSImage.height)/(double)heightAdj);
-//     glGenTextures(1,myTextureName);
-//     glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-//     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, widthAdj, heightAdj, 0,
-// 		 GL_LUMINANCE, GL_UNSIGNED_BYTE, myTextureImageTab);
-//     myTextureInitiated=true;
-//   }
-  
-// }
-
 
 void
 DGtal::Viewer3D::sortSurfelFromCamera()
