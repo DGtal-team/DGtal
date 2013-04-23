@@ -92,8 +92,15 @@ int main( int argc, char** argv )
  
  Display3D::GrayScaleImage gsImage;
  gsImage.fillImageDataAndParam<imageNG>(image, Display3D::yDirection, 30, 30, 30 );
-  viewer << p1 << p2 << p3;
- viewer << gsImage;
+ 
+ for(unsigned int i= 0; i< 1000; i+=30){
+   Display3D::GrayScaleImage gsImage2;
+   gsImage2.fillImageDataAndParam<imageNG>(image, Display3D::zDirection, i, i, i );
+   viewer << gsImage2;
+ }
+ viewer << p1 << p2 << p3;
+ viewer << gsImage ;
+
  viewer << Display3D::updateDisplay;
  
  bool res = application.exec();
