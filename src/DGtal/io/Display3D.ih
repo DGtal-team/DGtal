@@ -626,7 +626,7 @@ void
 DGtal::Display3D::addKSLinel(double x1, double y1, double z1,
 			     double x2, double y2, double z2,
 			     double width,  bool isSigned, bool signPos)
-{
+ {
   updateBoundingBox(x1, y1, z1);
   updateBoundingBox(x2, y2, z2);
   lineD3D l;
@@ -892,6 +892,26 @@ DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
   updateBoundingBox(image.x3, image.y3, image.z3);
   updateBoundingBox(image.x4, image.y4, image.z4);
 }
+
+
+
+
+template <typename ImageType>
+inline
+void 
+DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex, const  ImageType & image, 
+				       double xTranslation, double yTranslation, double zTranslation){
+  assert ( imageIndex< myGSImageList.size());
+  Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 
+  updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
+  updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
+  updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
+  updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
+  anImage.updateImageDataAndParam<ImageType>(image, xTranslation, yTranslation, zTranslation);
+  
+}
+    
+
 
 
 

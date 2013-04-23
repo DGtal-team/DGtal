@@ -233,17 +233,16 @@ namespace DGtal
       unsigned int height;
       
       char * tabImage;
-      template <typename ImageType>
 
       /** 
-       *  automatic fill image parameters from std image (image buffer, dimensions, vertex coordinates) 
+       *  Automatic fill image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
        *  @param image: the source image.
        *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
        *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
        *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
-      
+      template <typename ImageType>
       void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	width = (image.extent())[0];
@@ -273,6 +272,39 @@ namespace DGtal
 	  pos++;
 	}  
       };	 
+
+      /** 
+       *  Update the  image parameters from std image (image buffer, vertex coordinates) 
+       *  The new image should be with same dimension than the original.
+       *  @param image: the source image.
+       *  @param xTranslation: the image translation in the  x direction (default 0).
+       *  @param yTranslation: the image translation in the  y direction (default 0).
+       *  @param zTranslation: the image translation in the  z direction (default 0).
+       **/
+      template <typename ImageType>
+      void updateImageDataAndParam(const  ImageType & image, 
+				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
+	assert (  (image.extent())[0]== width && (image.extent())[1]== height );
+
+	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
+	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
+	x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
+	x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
+	
+	unsigned int pos=0;
+	 for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	    it!=itend;
+	    ++it){
+	  tabImage[pos]= image(*it);
+	  pos++;
+	}  
+      };	 
+
+
+
+
+
+      
 
     std::string className() const
       {
@@ -589,10 +621,27 @@ namespace DGtal
 
     
     /**
-     * To comment
+     * Add a GrayScaleImage in the list of image to be displayed.
+     * @param image: a GrayScaleImage including image data buffer and position, orientation.
+     *
      **/
     void addGrayScaleImage(const GrayScaleImage &image);
     
+
+    /**
+     * Update the  image parameters from std image (image buffer, vertex coordinates) 
+     * The new image should be with same dimension than the original.
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param image: the new image containing the new buffer (with same dimensions than the other image).
+     * @param xTranslation: the image translation in the  x direction (default 0).
+     * @param yTranslation: the image translation in the  y direction (default 0).
+     * @param zTranslation: the image translation in the  z direction (default 0).
+     **/
+    template <typename ImageType>
+    void updateGrayScaleImage(unsigned int imageIndex, const  ImageType & image, 
+			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+    
+
     
     
     /**
