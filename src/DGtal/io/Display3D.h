@@ -74,7 +74,7 @@ namespace DGtal
   class Display3D
   {
 
- 
+        
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -131,7 +131,9 @@ namespace DGtal
       double a,b,c,d;
     };
 
-  
+    
+   
+
     /**
      * This structure is used to display clipping planes and the
      * components of the myKSSurfelList (allowing to set normal and
@@ -209,6 +211,42 @@ namespace DGtal
       std::vector<pointD3D> vectPoints;
       double nx, ny, nz;
       unsigned int R,G,B,T;
+    };
+
+    
+    /**
+     * Used to display a grayscale image as a textured quad image.
+     *
+     **/
+    struct GrayScaleImage{
+      // The quad coordinates
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;          
+      unsigned int width;
+      unsigned int height;;
+      
+      char * tabImage;
+      template <typename ImageType>
+      void fillImageData(const  ImageType & image){
+	width = (image.extent())[0];
+	height = (image.extent())[1];
+	tabImage = new  char [width*height];
+	unsigned int pos=0;
+	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	     it!=itend;
+	    ++it){
+	  tabImage[pos]= image(*it);
+	  pos++;
+	}  
+      };	 
+
+    std::string className() const
+      {
+	return "GrayScaleImage";
+      }
+      
     };
 
     // ----------------------- Standard services ------------------------------
@@ -518,6 +556,9 @@ namespace DGtal
     
     void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
     
+
+
+    void setImageVisu(const GrayScaleImage &image);
     
     
     /**
@@ -686,7 +727,8 @@ namespace DGtal
 
     float myMeshDefaultLineWidth;
     
-    
+    GrayScaleImage myGSImage;
+
     // ------------------------- Hidden services ------------------------------
 
     /**

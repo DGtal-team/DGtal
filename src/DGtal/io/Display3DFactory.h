@@ -316,6 +316,10 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::CameraUpVector & );
     static void draw( Display3D & display, const DGtal::CameraZNearFar & );
 
+    static void draw( Display3D & display, 
+		      const DGtal::Display3D::GrayScaleImage & image );
+
+
     static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);
 
   }; // end of struct Display3DFactory

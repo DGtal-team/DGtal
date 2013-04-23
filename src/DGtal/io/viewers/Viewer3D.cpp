@@ -35,6 +35,8 @@
 #endif
 
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/math/BasicMathFunctions.h"
+
 #include <limits>
 #include <QColor>
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,6 +112,8 @@ DGtal::Viewer3D::draw()
   glPushMatrix();
   glScalef(myScaleX, myScaleY, myScaleZ);    
 
+
+  
   for ( unsigned int i =0; i< myClippingPlaneList.size(); i++ )
     {
       clippingPlaneD3D cp = myClippingPlaneList.at ( i );
@@ -228,9 +232,33 @@ DGtal::Viewer3D::draw()
     {
       glDrawGLLinel ( myKSLinelList.at ( i ) );
     }
+ 
+  if(!myTextureInitiated  && myGSImage.width!=0){
+    initiateTexture();
+  } 
+  if(myTextureInitiated){
+    glEnable ( GL_LIGHTING );  
+    glEnable(GL_TEXTURE_2D);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
+    glBegin(GL_QUADS);
+    
+    glNormal3d(0, 0, 1);
+    glTexCoord2f(0, 0);
+    glVertex3f(0.0,0.0,0.0);
+    glTexCoord2f(myTextureFitX, 0.0);
+    glVertex3f(myGSImage.width, 0.0, 0.0);
+    glTexCoord2f(myTextureFitX, myTextureFitY);
+    glVertex3f(myGSImage.width, myGSImage.height, 0.0);
+    glTexCoord2f(0.0, myTextureFitY);
+    glVertex3f(0.0, myGSImage.height, 0.0);  
 
+    glEnd();
+    glDisable(GL_TEXTURE_2D);
+  }
+  
+  
   glPopMatrix();
-
   glPopMatrix();  
 }
 
@@ -280,7 +308,9 @@ DGtal::Viewer3D::init()
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
-
+  
+  myTextureInitiated=false;
+  
 
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
   setManipulatedFrame ( new ManipulatedFrame() );
@@ -294,6 +324,43 @@ DGtal::Viewer3D::init()
 #if defined( _HAS_MSVC_MIN_ )
 #define min(A,B) ((A)<(B)?(A):(B))
 #endif
+
+
+void
+DGtal::Viewer3D::initiateTexture(){
+  if(myGSImage.width!=0){
+    // Adjust the tab to dimensions power of 2 (needed by openGL)
+    myTextureName = new GLuint[1];
+    
+    unsigned int widthAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.width);
+    unsigned int heightAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.height);
+    myTextureImageTab = new unsigned char [widthAdj*heightAdj];
+    unsigned int pos=0;
+    for (unsigned int i=0; i<heightAdj; i++){
+          for (unsigned int j=0; j<widthAdj; j++){
+	    if(i<myGSImage.height && j< myGSImage.width){
+	      myTextureImageTab[pos]= myGSImage.tabImage[i*myGSImage.width+j];
+	    }else{
+	      myTextureImageTab[pos]=0;
+	    }
+	    pos++;
+	  }
+    }    
+    myTextureFitX = 1.0-((widthAdj-myGSImage.width)/(double)widthAdj);
+    myTextureFitY = 1.0-((heightAdj-myGSImage.height)/(double)heightAdj);
+    glGenTextures(1,myTextureName);
+    glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, widthAdj, heightAdj, 0,
+		 GL_LUMINANCE, GL_UNSIGNED_BYTE, myTextureImageTab);
+    myTextureInitiated=true;
+  }
+  
+}
+
 
 void
 DGtal::Viewer3D::sortSurfelFromCamera()
@@ -434,7 +501,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
 	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
 	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
+      	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
 	  //z-
 	  glNormal3f ( 0.0, 0.0, -1.0 );
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );

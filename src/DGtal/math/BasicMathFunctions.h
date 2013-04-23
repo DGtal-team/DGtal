@@ -90,6 +90,30 @@ namespace DGtal
 	}
       return result;
     }
+
+
+    /**
+     * Compute the next higher integer power of two of the given argument n. 
+     * 
+     * @param n: an unsigned integer (can be represented on 32 or 64 bits)
+     **/
+
+    
+    unsigned int roundToUpperPowerOfTwo( unsigned int n)
+    {
+       n--;
+       n |= n >> 1;
+       n |= n >> 2;
+       n |= n >> 4;
+       n |= n >> 8;
+       n |= n >> 16;
+       if(sizeof(unsigned int)==8){
+	 n |= n >> 32;
+       }
+       n++;
+       return n;
+    }
+
     
     
     /** 
