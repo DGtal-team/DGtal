@@ -233,29 +233,29 @@ DGtal::Viewer3D::draw()
       glDrawGLLinel ( myKSLinelList.at ( i ) );
     }
  
-  if(!myTextureInitiated  && myGSImage.width!=0){
-    initiateTexture();
-  } 
-  if(myTextureInitiated){
+
+  for(unsigned int i=0; i< myVectTextureImage.size(); i++){
+    GLTextureImage textureImg =  myVectTextureImage.at(i);
     glEnable ( GL_LIGHTING );  
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
+    glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
     
     glNormal3d(0, 0, 1);
     glTexCoord2f(0, 0);
-    glVertex3f(myGSImage.x1, myGSImage.y1, myGSImage.z1);
-    glTexCoord2f(myTextureFitX, 0.0);
-    glVertex3f(myGSImage.x2, myGSImage.y2, myGSImage.z2);
-    glTexCoord2f(myTextureFitX, myTextureFitY);
-    glVertex3f(myGSImage.x3, myGSImage.y3, myGSImage.z3);
-    glTexCoord2f(0.0, myTextureFitY);
-    glVertex3f(myGSImage.x4, myGSImage.y4, myGSImage.z4);
-
+    glVertex3f(textureImg.x1, textureImg.y1, textureImg.z1);
+    glTexCoord2f(textureImg.myTextureFitX, 0.0);
+    glVertex3f(textureImg.x2, textureImg.y2, textureImg.z2);
+    glTexCoord2f(textureImg.myTextureFitX, textureImg.myTextureFitY);
+    glVertex3f(textureImg.x3, textureImg.y3, textureImg.z3);
+    glTexCoord2f(0.0, textureImg.myTextureFitY);
+    glVertex3f(textureImg.x4, textureImg.y4, textureImg.z4);
+    
     glEnd();
     glDisable(GL_TEXTURE_2D);
   }
+  
   
   
   glPopMatrix();
@@ -326,40 +326,40 @@ DGtal::Viewer3D::init()
 #endif
 
 
-void
-DGtal::Viewer3D::initiateTexture(){
-  if(myGSImage.width!=0){
-    // Adjust the tab to dimensions power of 2 (needed by openGL)
-    myTextureName = new GLuint[1];
+// void
+// DGtal::Viewer3D::initiateTexture(){
+//   if(myGSImage.width!=0){
+//     // Adjust the tab to dimensions power of 2 (needed by openGL)
+//     myTextureName = new GLuint[1];
     
-    unsigned int widthAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.width);
-    unsigned int heightAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.height);
-    myTextureImageTab = new unsigned char [widthAdj*heightAdj];
-    unsigned int pos=0;
-    for (unsigned int i=0; i<heightAdj; i++){
-          for (unsigned int j=0; j<widthAdj; j++){
-	    if(i<myGSImage.height && j< myGSImage.width){
-	      myTextureImageTab[pos]= myGSImage.tabImage[i*myGSImage.width+j];
-	    }else{
-	      myTextureImageTab[pos]=0;
-	    }
-	    pos++;
-	  }
-    }    
-    myTextureFitX = 1.0-((widthAdj-myGSImage.width)/(double)widthAdj);
-    myTextureFitY = 1.0-((heightAdj-myGSImage.height)/(double)heightAdj);
-    glGenTextures(1,myTextureName);
-    glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, widthAdj, heightAdj, 0,
-		 GL_LUMINANCE, GL_UNSIGNED_BYTE, myTextureImageTab);
-    myTextureInitiated=true;
-  }
+//     unsigned int widthAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.width);
+//     unsigned int heightAdj = BasicMathFunctions::roundToUpperPowerOfTwo(myGSImage.height);
+//     myTextureImageTab = new unsigned char [widthAdj*heightAdj];
+//     unsigned int pos=0;
+//     for (unsigned int i=0; i<heightAdj; i++){
+//           for (unsigned int j=0; j<widthAdj; j++){
+// 	    if(i<myGSImage.height && j< myGSImage.width){
+// 	      myTextureImageTab[pos]= myGSImage.tabImage[i*myGSImage.width+j];
+// 	    }else{
+// 	      myTextureImageTab[pos]=0;
+// 	    }
+// 	    pos++;
+// 	  }
+//     }    
+//     myTextureFitX = 1.0-((widthAdj-myGSImage.width)/(double)widthAdj);
+//     myTextureFitY = 1.0-((heightAdj-myGSImage.height)/(double)heightAdj);
+//     glGenTextures(1,myTextureName);
+//     glBindTexture(GL_TEXTURE_2D, myTextureName[0]);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, widthAdj, heightAdj, 0,
+// 		 GL_LUMINANCE, GL_UNSIGNED_BYTE, myTextureImageTab);
+//     myTextureInitiated=true;
+//   }
   
-}
+// }
 
 
 void
@@ -750,7 +750,56 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     }
   glEnd();
   glEndList();
+
+
+
+  //Delete potential old texture  buffer
+  for(unsigned int i=0; i< myVectTextureImage.size(); i++){
+    GLTextureImage textureImg =  myVectTextureImage.at(i);
+    delete [] textureImg.myTextureImageBuffer;
+  }
   
+  myVectTextureImage.clear();
+  
+  //Filling new image texture from myGSImageList
+  
+  for(unsigned int i=0; i<myGSImageList.size(); i++){
+    GrayScaleImage aGSImage = myGSImageList.at(i);
+    GLTextureImage textureImg; 
+    textureImg.x1 = aGSImage.x1; textureImg.y1 = aGSImage.y1; textureImg.z1 = aGSImage.z1; 
+    textureImg.x2 = aGSImage.x2; textureImg.y2 = aGSImage.y2; textureImg.z2 = aGSImage.z2; 
+    textureImg.x3 = aGSImage.x3; textureImg.y3 = aGSImage.y3; textureImg.z3 = aGSImage.z3; 
+    textureImg.x4 = aGSImage.x4; textureImg.y4 = aGSImage.y4; textureImg.z4 = aGSImage.z4; 
+    textureImg.myImageWidth = aGSImage.width;
+    textureImg.myImageHeight = aGSImage.height;
+    textureImg.myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(aGSImage.width);
+    textureImg.myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(aGSImage.height); 
+
+    textureImg.myTextureImageBuffer = new unsigned char [textureImg.myBufferHeight * textureImg.myBufferWidth];
+    unsigned int pos=0;
+    for (unsigned int i=0; i<textureImg.myBufferHeight; i++){
+      for (unsigned int j=0; j<textureImg.myBufferWidth; j++){
+	if(i<aGSImage.height && j< aGSImage.width){
+	  textureImg.myTextureImageBuffer[pos]= aGSImage.tabImage[i*aGSImage.width+j];
+	    }else{
+	      textureImg.myTextureImageBuffer[pos]=0;
+	    }
+	    pos++;
+      }
+    }
+    textureImg.myTextureFitX = 1.0-((textureImg.myBufferWidth-textureImg.myImageWidth)/(double)textureImg.myBufferWidth);
+    textureImg.myTextureFitY = 1.0-((textureImg.myBufferHeight-textureImg.myImageHeight)/(double)textureImg.myBufferHeight);
+    glGenTextures(1, &textureImg.myTextureName);
+    glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myImageWidth, textureImg.myImageHeight, 0,
+		 GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBuffer);
+    
+    myVectTextureImage.push_back(textureImg);  
+  }
 
   if ( needToUpdateBoundingBox )
     {

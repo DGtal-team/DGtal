@@ -230,26 +230,36 @@ namespace DGtal
       double x4, y4, z4;
       
       unsigned int width;
-      unsigned int height;;
+      unsigned int height;
       
       char * tabImage;
       template <typename ImageType>
-      void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection dir=zDirection, 
+
+      /** 
+       *  automatic fill image parameters from std image (image buffer, dimensions, vertex coordinates) 
+       *  @param image: the source image.
+       *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
+       *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
+       *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
+       *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
+       **/
+      
+      void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	width = (image.extent())[0];
 	height = (image.extent())[1];
 	tabImage = new  char [width*height];
-	if(dir==zDirection){
+	if(normalDir==zDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
 	  x2 = xBottomLeft+width; y2 = yBottomLeft; z2 = zBottomLeft; 
 	  x3 = xBottomLeft+width; y3 = yBottomLeft+height; z3 = zBottomLeft; 
 	  x4 = xBottomLeft; y4 = yBottomLeft+height; z4 = zBottomLeft; 
-	}else if(dir==yDirection){
+	}else if(normalDir==yDirection){
 	  x1 = xBottomLeft+width; y1 = yBottomLeft; z1 = zBottomLeft;
 	  x2 = xBottomLeft; y2 = yBottomLeft; z2 = zBottomLeft; 
 	  x3 = xBottomLeft; y3 = yBottomLeft; z3 = zBottomLeft+height; 
 	  x4 = xBottomLeft+width; y4 = yBottomLeft; z4 = zBottomLeft+height; 
-	}else if(dir==xDirection){
+	}else if(normalDir==xDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
 	  x2 = xBottomLeft; y2 = yBottomLeft+width; z2 = zBottomLeft; 
 	  x3 = xBottomLeft; y3 = yBottomLeft+width; z3 = zBottomLeft+height; 
@@ -577,8 +587,12 @@ namespace DGtal
     void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
     
 
-
-    void setImageVisu(const GrayScaleImage &image);
+    
+    /**
+     * To comment
+     **/
+    void addGrayScaleImage(const GrayScaleImage &image);
+    
     
     
     /**
@@ -747,8 +761,11 @@ namespace DGtal
 
     float myMeshDefaultLineWidth;
     
-    GrayScaleImage myGSImage;
+    // Used to store all displayed images
+    std::vector<GrayScaleImage> myGSImageList;
 
+
+    
     // ------------------------- Hidden services ------------------------------
 
     /**
