@@ -1220,6 +1220,13 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 //
 
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, 
+				    const DGtal::Display3D::GrayScaleImage & image )
+{
+  display.setImageVisu(image);
+}
+
 
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 

@@ -129,7 +129,7 @@ namespace DGtal
     DGtal::Color myDefaultColor;
     bool myIsBackgroundDefault;
     bool myViewWire;
-  
+    bool myTextureInitiated;
   
     /**
      * Set the default color for future drawing.
@@ -185,7 +185,11 @@ namespace DGtal
      *
      **/
     void sortPolygonFromCamera();
-    
+  
+
+    void initiateTexture();
+      
+  
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -235,7 +239,14 @@ namespace DGtal
     unsigned int myNbListe;
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     QPoint myPosSelector;
-  
+    GLuint *myTextureName;
+    unsigned char *myTextureImageTab;
+    
+    // By definition in OpenGL the image size of texture should power of 2  
+    double myTextureFitX;
+    double myTextureFitY;
+    
+
   public:
 
     // ------------------------- Hidden services ------------------------------

@@ -884,7 +884,22 @@ DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const {
 
 
 
-
+inline
+void 
+DGtal::Display3D::setImageVisu(const Display3D::GrayScaleImage &image){
+  std::cerr << "Settign image Visu ...";
+  myGSImage.x1= image.x1; myGSImage.y1= image.y1; myGSImage.z1= image.z1;
+  myGSImage.x2= image.x2; myGSImage.y2= image.y2; myGSImage.z2= image.z2;
+  myGSImage.x3= image.x3; myGSImage.y3= image.y3; myGSImage.z3= image.z3;
+  myGSImage.x4= image.x4; myGSImage.y4= image.y4; myGSImage.z4= image.z4;
+  myGSImage.width = image.width;
+  myGSImage.height = image.height;
+  myGSImage.tabImage = new  char [myGSImage.width*myGSImage.height];
+  for (unsigned int  i=0; i< image.width*image.height; i++){
+    myGSImage.tabImage[i] = image.tabImage[i];
+  }
+  std::cerr << "[Done]"<< std::endl;
+}
 
 
 template <typename TDrawableWithDisplay3D>
