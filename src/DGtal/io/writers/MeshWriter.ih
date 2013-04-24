@@ -45,7 +45,7 @@ template<typename TPoint>
 inline
 bool 
 DGtal::MeshWriter<TPoint>::export2OFF(std::ostream & out, 
-                                      const  DGtal::MeshFromPoints<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
+                                      const  DGtal::Mesh<TPoint> & aMesh, bool exportColor) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   try
     {
@@ -86,7 +86,7 @@ template<typename TPoint>
 inline
 bool 
 DGtal::MeshWriter<TPoint>::export2OBJ(std::ostream &out, 
-                                      const  DGtal::MeshFromPoints<TPoint> & aMesh) throw(DGtal::IOException){
+                                      const  DGtal::Mesh<TPoint> & aMesh) throw(DGtal::IOException){
   DGtal::IOException dgtalio;
   try
     {
@@ -127,7 +127,7 @@ DGtal::MeshWriter<TPoint>::export2OBJ(std::ostream &out,
 template <typename TPoint>
 inline
 bool
-DGtal::operator>> (   MeshFromPoints<TPoint> & aMesh, const std::string & aFilename ){
+DGtal::operator>> (   Mesh<TPoint> & aMesh, const std::string & aFilename ){
   std::string extension = aFilename.substr(aFilename.find_last_of(".") + 1);
   std::ofstream out;
   out.open(aFilename.c_str());
