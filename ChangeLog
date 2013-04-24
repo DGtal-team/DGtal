@@ -1,3 +1,35 @@
+=== DGtal 0.7 ===
+
+ *General*
+
+ *Documentation*
+
+ *Base Package*
+
+ *Kernel Package*
+
+ *Arithmetic Package*
+
+ *Image Package*
+
+ *Geometry Package*
+
+ *Shape Package*
+	- The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
+	- Iterator in mesh points and mesh face.
+
+
+ *Topology Package*
+
+ *Graph Package*
+
+ *Math Package*
+
+ *For developers*
+
+
+
+
 === DGtal 0.6 ===
  
  *General*
