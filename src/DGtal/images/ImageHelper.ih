@@ -358,7 +358,7 @@ DGtal::extractLowerDimImage(const TImageTypeDimN & aImg, unsigned int dimRemoved
   BOOST_CONCEPT_ASSERT(( CImage<TImageTypeDimN> )); 
   BOOST_CONCEPT_ASSERT(( CImage<TImageTypeDimNInf> )); 
   ASSERT(TImageTypeDimN::dimension >= dimRemoved);
-  ASSERT(TImageTypeDimN::dimension == TImageTypeDimNInf::dimension -1);
+  ASSERT(TImageTypeDimN::dimension == TImageTypeDimNInf::dimension +1);
   
   typedef typename TImageTypeDimN::Domain DomainND; 
   typedef typename TImageTypeDimN::Value ValueND; 
