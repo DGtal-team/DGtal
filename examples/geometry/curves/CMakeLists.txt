@@ -35,6 +35,7 @@ if (  WITH_VISU3D_QGLVIEWER )
      exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
+     exampleTangentialCover3d
    )
   FOREACH(FILE ${DGTAL_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
