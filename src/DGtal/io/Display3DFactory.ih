@@ -88,11 +88,11 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 
 
-// MeshFromPoints    
+// Mesh    
 template <typename TPoint>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-				    const DGtal::MeshFromPoints<TPoint> & aMesh )
+				    const DGtal::Mesh<TPoint> & aMesh )
 {
   std::string mode = display.getMode( aMesh.className() );
   if ( mode == "Faces"  || mode=="")
@@ -101,11 +101,11 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 
 template <typename TPoint>
 inline
-void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::MeshFromPoints<TPoint> & aMesh )
+void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::Mesh<TPoint> & aMesh )
 {
 
   for(unsigned int i=0; i< aMesh.nbFaces(); i++){
-     typename MeshFromPoints<TPoint>::MeshFace aFace = aMesh.getFace(i);
+     typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
      unsigned int aNum = aFace.size();
      if(aNum==4){
        TPoint  p1 = aMesh.getVertex(aFace.at(0));
@@ -146,7 +146,7 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 
 
 
-// MeshFromPoints
+// Mesh
 
 
 // ArithmeticalDSS3d
