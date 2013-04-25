@@ -82,7 +82,7 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
   LibBoard::Point bottomRightBoard(bottomRight[0],bottomRight[1]);
   LibBoard::Point topRightBoard(topRight[0],topRight[1]);
   
-  vector<LibBoard::Point> bb;
+  std::vector<LibBoard::Point> bb;
   bb.push_back(topLeftBoard);
   bb.push_back(bottomLeftBoard);
   bb.push_back(bottomRightBoard);
@@ -104,7 +104,7 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
   // Draw a linking polygonal line if the pixels are drawn as points. 
   if(aBoard.getMode("PointVector")=="Grid" || aBoard.getMode("PointVector")=="")
     {
-      vector<LibBoard::Point> contour;
+      std::vector<LibBoard::Point> contour;
       for (ConstIterator i = a.myF; i != itend; ++i) {
         Point p = *i;
         double xp = NumberTraits<TInteger>::castToDouble(p[0]);
@@ -371,7 +371,7 @@ void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard,
   typedef typename Polygon::const_iterator ConstIterator;
   
   //polyline to draw
-  vector<LibBoard::Point> polyline;
+  std::vector<LibBoard::Point> polyline;
 
   // now with accessor
   ConstIterator i = fp.polygon().begin();
@@ -422,12 +422,12 @@ void DGtal::Display2DFactory::drawAsGrid( DGtal::Board2D & aBoard,
   typedef TInteger Integer;
   typedef PointVector<2, Integer> Point;
   
-  vector<Point> aVContour;
+  std::vector<Point> aVContour;
   FreemanChain<TInteger>::getContourPoints(f, aVContour);
   TInteger minX, minY, maxX, maxY;
   f.computeBoundingBox(minX, minY, maxX, maxY);
   
-  vector<LibBoard::Point> contour;
+  std::vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
     contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToDouble(aVContour[i][0]),
               NumberTraits<TInteger>::castToDouble(aVContour[i][1])));
@@ -443,12 +443,12 @@ void DGtal::Display2DFactory::drawAsInterGrid( DGtal::Board2D & aBoard,
   typedef TInteger Integer;
   typedef PointVector<2, Integer> Point;
   
-  vector<Point> aVContour;
+  std::vector<Point> aVContour;
   FreemanChain<TInteger>::getContourPoints(f, aVContour);
   TInteger minX, minY, maxX, maxY;
   f.computeBoundingBox(minX, minY, maxX, maxY);
   
-  vector<LibBoard::Point> contour;
+  std::vector<LibBoard::Point> contour;
   for(unsigned int i=0; i< aVContour.size(); i++){
     contour.push_back(LibBoard::Point(NumberTraits<TInteger>::castToInt64_t(aVContour[i][0])-0.5,
               NumberTraits<TInteger>::castToInt64_t(aVContour[i][1])+0.5));
