@@ -764,7 +764,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myImageWidth, textureImg.myImageHeight, 0,
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
 		 GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBuffer);
     
     myVectTextureImage.push_back(textureImg);  
