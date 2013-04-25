@@ -12,6 +12,10 @@
 
  *Image Package*
 
+* Package IO
+	- A new display of 2D image in Display3D class (implemented in Viewer3D only).
+
+
  *Geometry Package*
 
  *Shape Package*
@@ -24,6 +28,7 @@
  *Graph Package*
 
  *Math Package*
+	- Add a function to compute the next power of 2 (roundToUpperPowerOfTwo) given in math/BasicMathFunctions.h (and new  inline file math/BasicMathFunctions.ih)
 
  *For developers*
 
