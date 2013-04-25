@@ -98,21 +98,7 @@ namespace DGtal
      * @param n: an unsigned integer (can be represented on 32 or 64 bits)
      **/
 
-    
-    unsigned int roundToUpperPowerOfTwo( unsigned int n)
-    {
-       n--;
-       n |= n >> 1;
-       n |= n >> 2;
-       n |= n >> 4;
-       n |= n >> 8;
-       n |= n >> 16;
-       if(sizeof(unsigned int)==8){
-	 n |= n >> 32;
-       }
-       n++;
-       return n;
-    }
+    unsigned int roundToUpperPowerOfTwo( unsigned int n);
 
     
     
@@ -134,9 +120,18 @@ namespace DGtal
       else
 	return a;
     }
-  }
-  
-}
+
+  }  // namespace BasicMathFunctions
+} // namespace DGTal
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions/methods if necessary.
+#include "DGtal/math/BasicMathFunctions.ih"
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 #endif // !defined BasicMathFunctions_h
