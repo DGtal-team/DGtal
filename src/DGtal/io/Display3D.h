@@ -232,7 +232,7 @@ namespace DGtal
       unsigned int width;
       unsigned int height;
       
-      char * tabImage;
+      unsigned char * tabImage;
 
       /** 
        *  Automatic fill image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
@@ -247,7 +247,7 @@ namespace DGtal
 				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	width = (image.extent())[0];
 	height = (image.extent())[1];
-	tabImage = new  char [width*height];
+	tabImage = new  unsigned char [width*height];
 	if(normalDir==zDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
 	  x2 = xBottomLeft+width; y2 = yBottomLeft; z2 = zBottomLeft; 
