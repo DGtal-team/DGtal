@@ -43,25 +43,31 @@
 #include <iostream>
 #include <cmath>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/BasicMathFunctions.h"
-#include "DGtal/kernel/CInteger.h"
-#include "DGtal/kernel/CSpace.h"
-#include "DGtal/kernel/CInteger.h"
+#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/base/ConstAlias.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
   
-/////////////////////////////////////////////////////////////////////////////
-// template class SeparableMetricAdapter
-/**
- * Description of template class 'SeparableMetricAdapter' <p>
-   * \brief Aim: Adapts any model of CMetric to construct a separable metric 
+  /////////////////////////////////////////////////////////////////////////////
+  // template class SeparableMetricAdapter
+  /**
+   * Description of template class 'SeparableMetricAdapter' <p>
+   * \brief Aim: Adapts any model of CMetric to construct a separable metric
    * (model of CSeparableMetric).
    *
-   *  The adapted metric can thus be used in separable algorithms such as 
+   *  The adapted metric can thus be used in separable algorithms such as
    * VoronoiMap or PowerMap. The adapted metric makes sense only if the input
    * metric as the @e monotinicity propertery.
+   *  In dimension 2, consider two points @f$ p(x,y)@f$,
+   * @f$q(x',y')@f$ with @f$x<x@f$. Let @f$r( x'',0)@f$ be a point on the
+   * x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another
+   * point on the x-axis. A metric @f$ d@f$ is @e monotonic if
+   *
+   * @f[     u < x'' \implies d(p,s) \leq d(q,s) @f]
+   * and
+   * @f[    u > x'' \implies d(p,s) \geq d(q,s) @f]
    *
    * If the metric distance evaluation is in @f$O(m)@f$, the hiddenBy()
    * method is in @f$O(m\log n)@f$.
@@ -75,17 +81,21 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
     
-
+    
     ///Copy the space type
     typedef TMetric Metric;
     BOOST_CONCEPT_ASSERT(( CMetric<TMetric> ));
-
+    
     ///Type for points
     typedef typename Metric::Point Point;
     ///Type for point abscissa
     typedef typename Point::Coordinate Abscissa;
-    ///Type for vectors
+    ///Type for values
     typedef typename Metric::Value Value;
+    ///Type for vectors
+    typedef typename Metric::Vector Vector;
+    ///Type for Space
+    typedef typename Metric::Space Space;
     
     /**
      * Constructor from a CMetric model instance.
@@ -93,17 +103,17 @@ namespace DGtal
      */
     SeparableMetricAdapter(ConstAlias<Metric> aMetric): myMetric(aMetric)
     {}
-   
+    
     /**
      * Destructor.
      */
-    ~SeparableMetricAdapter();
-
-     /**
+    ~SeparableMetricAdapter() {};
+    
+    /**
      * Copy constructor. (CopyConstruticle concept)
      * @param other the object to clone.
      */
-    SeparableMetricAdapter ( const SeparableMetricAdapter & other ) {}
+    SeparableMetricAdapter ( const SeparableMetricAdapter & other ) : myMetric(other.myMetric) {}
     
     /**
      * Assignment. (Assignable concept)
@@ -111,33 +121,33 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     SeparableMetricAdapter & operator= ( const SeparableMetricAdapter & other ) { return *this;}
-
+    
     // ----------------------- Interface --------------------------------------
   public:
-
+    
     // ----------------------- CLocalMetric --------------------------------------
-    /** 
+    /**
      * Compute the local distance between @a aP and its displacement
-     * along the direction @a aDir. 
-     * 
+     * along the direction @a aDir.
+     *
      * @param aP a point.
      * @param aDir a direction.
-     * 
-     * @return the distance between @a aP and @a aP+@a aDir. 
+     *
+     * @return the distance between @a aP and @a aP+@a aDir.
      */
     Value local(const Point & aP, const Vector &aDir) const
     {
       return myMetric.local(aP,aDir);
     };
-
-   
+    
+    
     // ----------------------- CMetric --------------------------------------
-    /** 
+    /**
      * Compute the distance between @a aP and @a aQ.
-     * 
+     *
      * @param aP a first point.
      * @param aQ a second point.
-     * 
+     *
      * @return the distance between aP and aQ.
      */
     Value operator()(const Point & aP, const Point &aQ) const
@@ -145,60 +155,59 @@ namespace DGtal
       return myMetric.operator()(aP,aQ);
     }
     
-    /** 
+    /**
      * Given an origin and two points, this method decides which one
      * is closest to the origin. This method should be faster than
      * comparing distance values.
-     * 
+     *
      * @param origin the origin
      * @param first  the first point
      * @param second the second point
-     * 
+     *
      * @return a Closest enum: ClosestFIRST, ClosestSECOND or ClosestBOTH.
-     */  
-    Closest closest(const Point &origin, 
+     */
+    Closest closest(const Point &origin,
                     const Point &first,
                     const Point &second) const
     {
       return myMetric.closest(origin,first,second);
     }
     
-      // ----------------------- CSeparableMetric --------------------------------------
-    /** 
+    // ----------------------- CSeparableMetric --------------------------------------
+    /**
      * Given three sites (u,v,w) and a straight segment
      * [startingPoint,endPoint] along dimension dim, we detect if the
      * voronoi cells of @a u and @a w strictly hide the voronoi cell of @a v on the
      * straight line.
      *
-     * This method is in @f$ O(log(n))@f$ if @a n is the size of the
-     * straight segment. For @f$ l_2@f$ metric (p=2), the method is in
-     * @f$ O(1)@f$. 
+     * If operator()(p,q) of the underlying metric is in @f$ O(m)@f$, the cost of this
+     * method is @f$ O(mlog(n))@f$ (b being the number of points in [startingPoint,endPoint]).
      *
      * @pre u,v and w must be such that u[dim] < v[dim] < w[dim]
-     * 
+     *
      * @param u a site
      * @param v a site
      * @param w a site
      * @param startingPoint starting point of the segment
      * @param endPoint end point of the segment
      * @param dim direction of the straight line
-     * 
+     *
      * @return true if (u,w) hides v (strictly).
-     */ 
-    bool hiddenBy(const Point &u, 
+     */
+    bool hiddenBy(const Point &u,
                   const Point &v,
-                  const Point &w, 
+                  const Point &w,
                   const Point &startingPoint,
                   const Point &endPoint,
                   const typename Point::UnsignedComponent dim) const;
-
-
+    
+    
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
-     */    
+     */
     void selfDisplay ( std::ostream & out ) const;
-
+    
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -207,44 +216,38 @@ namespace DGtal
     {
       return myMetric.isValid();
     }
-
+    
     
     /**
      * Perform a binary search on the interval [lower,upper] to
-     * detect the mid-point between u and v according to the l_p
-     * distance. It returns the abscissa @a q such that q belongs to
-     * the power cell of u (strictly) but not @a q-1.
+     * detect the mid-point between u and v .
      *
      * @pre udim < vdim
      *
-     * @param udim coordinate of u along dimension dim
-     * @param vdim coordinate of v along dimension dim
-     * @param nu  partial distance of u (sum of |xj-x_i|^p) discarding
-     * the term along the dimension dim
-     * @param nv partial distance of v (sum of |xj-x_i|^p) discarding
-     * the term along the dimension dim
-     * @param lower interval lower bound
-     * @param upper interval upper bound
+     * @param u a point
+     * @param v a point
+     * @param dim direction of the straight line
+     * @param lower starting point of the segment
+     * @param upper end point of the segment
      *
      * @return the u Voronoi cell greatest point coordinates along dimension dim.
      */
-    Abscissa binarySearchHidden(const Abscissa &udim,
-                                const Abscissa &vdim,
-                                const Promoted &nu,
-                                const Promoted &nv,
-                                const Abscissa &lower,
-                                const Abscissa &upper) const;
+    Abscissa binarySearchHidden(const Point &u,
+                                const Point &v,
+                                const typename Point::UnsignedComponent dim,
+                                const Point &lower,
+                                const Point &upper) const;
     
     // ------------------------- Private methods ------------------------------
   private:
-  
+    
     // ------------------------- Private members ------------------------------
   private:
     const Metric &myMetric;
     
   }; // end of class SeparableMetricAdapter
-
-
+  
+  
   
   /**
    * Overloads 'operator<<' for displaying objects of class 'SeparableMetricAdapter'.
@@ -255,7 +258,7 @@ namespace DGtal
   template <typename TM>
   std::ostream&
   operator<< ( std::ostream & out, const SeparableMetricAdapter<TM> & object );
-
+  
 } // namespace DGtal
 
 
