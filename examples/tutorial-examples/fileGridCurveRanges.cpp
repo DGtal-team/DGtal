@@ -56,12 +56,12 @@ int main()
   //! [fileGridCurveRanges-declaration]
 
   //! [fileGridCurveRanges-ex]
-  string square = examplesPath + "samples/smallSquare.dat";  
+  std::string square = examplesPath + "samples/smallSquare.dat";  
   //! [fileGridCurveRanges-ex]
 
   //! [fileGridCurveRanges-read]
-  fstream inputStream;
-  inputStream.open (square.c_str(), ios::in);
+  std::fstream inputStream;
+  inputStream.open (square.c_str(), std::ios::in);
   c.initFromVectorStream(inputStream);
   inputStream.close();  
   //! [fileGridCurveRanges-read]
