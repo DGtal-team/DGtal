@@ -284,7 +284,7 @@ namespace DGtal
       template <typename ImageType>
       void updateImageDataAndParam(const  ImageType & image, 
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
-	assert (  (image.extent())[0]== width && (image.extent())[1]== height );
+	assert ( (image.extent())[0]== width && (image.extent())[1]== height);
 
 	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
 	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;

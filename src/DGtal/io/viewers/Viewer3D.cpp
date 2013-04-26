@@ -245,6 +245,7 @@ DGtal::Viewer3D::draw()
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
+    glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
     
     glNormal3d(0, 0, 1);
     glTexCoord2f(0, 0);
