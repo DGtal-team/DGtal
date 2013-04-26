@@ -1346,6 +1346,17 @@ void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Transform
   display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, aTransformedKSSurfel.myShift, aTransformedKSSurfel.mySizeFactor, 
 		      true, aTransformedKSSurfel.mySurfel.myPositive,  basicMode );   
   display.setFillColor(fillColorSave);
+
+}
+template<typename TImageType>
+inline
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImage<TImageType> & anUpdate ){
+  if(!anUpdate.myChangeOrientation){
+    display.updateGrayScaleImage(anUpdate.myIndex, anUpdate.myImage, anUpdate.myTranslateX, 
+				 anUpdate.myTranslateY, anUpdate.myTranslateZ);
+  }
+  
 }
 
 

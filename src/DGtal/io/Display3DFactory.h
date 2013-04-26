@@ -316,11 +316,13 @@ namespace DGtal
     // ImageContainerBySTLVector
 
     
-
-
-
     
     
+    
+    
+
+  
+
     static void draw( Display3D & display, const DGtal::SetMode3D & );
     static void draw( Display3D & display, const DGtal::CustomStyle3D & );
     static void draw( Display3D & display, const DGtal::CustomColors3D & );
@@ -331,7 +333,8 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::CameraDirection & );
     static void draw( Display3D & display, const DGtal::CameraUpVector & );
     static void draw( Display3D & display, const DGtal::CameraZNearFar & );
-
+    template<typename TImageType>
+    static void draw( Display3D & display, const DGtal::UpdateImage<TImageType> & );
     static void draw( Display3D & display, 
 		      const DGtal::Display3D::GrayScaleImage & image );
 

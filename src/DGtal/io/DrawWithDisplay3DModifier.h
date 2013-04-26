@@ -365,10 +365,59 @@ namespace DGtal
     double mySizeFactor;
   };
 
- 
+  
+
+
+  
+
+ /**
+   * @brief class to modify the position and orientation of the last added image.
+   * 
+   */
+  template<typename TImageType>
+  struct UpdateImage : public DrawWithDisplay3DModifier
+  {
+     /**
+     * Constructor.
+     *
+     * 
+     */
+    UpdateImage(unsigned int anIndex, TImageType anImage, double translateX,
+		double translateY, double translateZ ): myIndex(anIndex),
+							myImage(anImage),
+							myTranslateX (translateX), 
+							myTranslateY (translateY),
+							myTranslateZ (translateZ), 
+							myNewDirection(0),
+							myChangeOrientation(false)
+    {
+      
+    }
+    /**
+     * Constructor.
+     *
+     * 
+     */
+    UpdateImage(unsigned int newDir ): myTranslateX (0), 
+				       myTranslateY (0),
+				       myTranslateZ (0), 
+				       myNewDirection(newDir), 
+				       myChangeOrientation(true)
+    {
+
+    }
+    unsigned int myIndex;
+    unsigned int myTranslateX; 
+    unsigned int myTranslateY;
+    unsigned int myTranslateZ;
+    unsigned int myNewDirection;
+    bool myChangeOrientation;
+    TImageType myImage;
+  };
 
 
 
+  
 } // namespace DGtal
 
 
