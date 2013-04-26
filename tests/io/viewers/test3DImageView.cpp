@@ -96,9 +96,12 @@ int main( int argc, char** argv )
  //viewer << gsImage ;
  viewer << image;
  for(unsigned int i= 0; i< 10; i++){
-   Display3D::GrayScaleImage gsImage2;
-   gsImage2.fillImageDataAndParam<imageNG>(image, Display3D::zDirection, i*50, i*50, i*50 );
+   //  Display3D::GrayScaleImage gsImage2;
+   //gsImage2.fillImageDataAndParam<imageNG>(image, Display3D::zDirection, i*50, i*50, i*50 );
    // viewer << gsImage2;
+   viewer << image;
+   viewer << DGtal::UpdateImage<imageNG>(i, image,  i*50, i*50, i*50);
+
  }
 
  viewer << p1 << p2 << p3;
