@@ -1218,6 +1218,36 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 }
 // IncidentPointsRange
 
+
+
+
+// ImageContainerBySTLMap  (2D)
+template <typename TDomain, typename TValue>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ImageContainerBySTLMap<TDomain, TValue> anImage){
+  ASSERT(TDomain::Space::dimension == 2);
+  DGtal::Display3D::GrayScaleImage aGSImage; 
+  aGSImage.fillImageDataAndParam(anImage, DGtal::Display3D::zDirection);
+  display.addGrayScaleImage(aGSImage);
+}
+// ImageContainerBySTLMap 
+
+
+// ImageContainerBySTLVector  (2D)
+template <typename TDomain, typename TValue>
+inline
+void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ImageContainerBySTLVector<TDomain, TValue> anImage){
+  ASSERT(TDomain::Space::dimension == 2);
+  DGtal::Display3D::GrayScaleImage aGSImage; 
+  aGSImage.fillImageDataAndParam(anImage, DGtal::Display3D::zDirection);
+  display.addGrayScaleImage(aGSImage);
+}
+// ImageContainerBySTLVector
+
+    
+
+
+
 //
 
 inline
