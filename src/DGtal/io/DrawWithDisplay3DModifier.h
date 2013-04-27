@@ -357,9 +357,9 @@ namespace DGtal
       
     }
     unsigned int myIndex;
-    unsigned int myTranslateX; 
-    unsigned int myTranslateY;
-    unsigned int myTranslateZ;
+    int myTranslateX; 
+    int myTranslateY;
+    int myTranslateZ;
     const TImageType *myImage;
   };
 
