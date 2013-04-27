@@ -65,8 +65,8 @@ int main()
 {
 
   std::string filename = testPath + "samples/DSS.dat";
-  ifstream instream; // input stream
-  instream.open (filename.c_str(), ifstream::in);
+  std::ifstream instream; // input stream
+  instream.open (filename.c_str(), std::ifstream::in);
   
   typedef KhalimskySpaceND<2,int> KSpace; 
   GridCurve<KSpace> c; //grid curve
@@ -89,7 +89,7 @@ int main()
   while ( (it != itEnd) &&
               (thePreimage.addBack(it->first, it->second)) )
   {
-  trace.info() << (it - r.rbegin()) << endl << thePreimage << endl;
+    trace.info() << (it - r.rbegin()) << std::endl << thePreimage << std::endl;
     ++it;
   }
 
