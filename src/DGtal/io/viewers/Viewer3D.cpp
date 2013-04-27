@@ -238,16 +238,16 @@ DGtal::Viewer3D::draw()
 
   for(unsigned int i=0; i< myVectTextureImage.size(); i++){
     GLGrayScaleTextureImage textureImg =  myVectTextureImage.at(i);
-    glPushName (  textureImg.myTextureName );
-	  
+    glPushName (  textureImg.myTextureName );  
     glEnable ( GL_LIGHTING );  
+    GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE,ambientLight);
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
     glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
-    
-    glNormal3d(0, 0, 1);
+    glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
     glTexCoord2f(0, 0);
     glVertex3f(textureImg.x1, textureImg.y1, textureImg.z1);
     glTexCoord2f(textureImg.myTextureFitX, 0.0);

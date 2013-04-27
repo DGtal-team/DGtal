@@ -391,7 +391,8 @@ namespace DGtal
       unsigned int myBufferHeight;
       GLuint  myTextureName;
       unsigned char *  myTextureImageBuffer;
-      
+      double vectNormal[3];
+
       // By definition in OpenGL the image size of texture should power of 2  
       double myTextureFitX;
       double myTextureFitY;
@@ -404,7 +405,11 @@ namespace DGtal
 	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
 	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
 	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
-      	
+	myDirection = aGSImage.myDirection;
+	vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
+	vectNormal[1]= (myDirection == Display3D::yDirection)? 1.0: 0.0;
+	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;
+	
 	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
 	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
 	
