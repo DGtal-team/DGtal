@@ -1348,15 +1348,22 @@ void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Transform
   display.setFillColor(fillColorSave);
 
 }
+
+
+
 template<typename TImageType>
 inline
 void 
-DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImage<TImageType> & anUpdate ){
-  if(!anUpdate.myChangeOrientation){
-    display.updateGrayScaleImage(anUpdate.myIndex, anUpdate.myImage, anUpdate.myTranslateX, 
-				 anUpdate.myTranslateY, anUpdate.myTranslateZ);
-  }
-  
+DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & anUpdate ){
+  display.updateGrayScaleImage(anUpdate.myIndex, *(anUpdate.myImage), anUpdate.myTranslateX, 
+			       anUpdate.myTranslateY, anUpdate.myTranslateZ);
+}
+
+
+void 
+inline
+DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImagePosition & anUpdate ){
+    display.updateOrientationGrayScaleImage(anUpdate.myIndex, anUpdate.myPosX, anUpdate.myPosY, anUpdate.myPosZ, anUpdate.myNewDirection);
 }
 
 
