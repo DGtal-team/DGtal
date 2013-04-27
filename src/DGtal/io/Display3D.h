@@ -223,15 +223,15 @@ namespace DGtal
      *
      **/
     struct GrayScaleImage{
+    public:
       // The quad coordinates should be given in counter clockwise order
       double x1, y1, z1;
       double x2, y2, z2;
       double x3, y3, z3;
       double x4, y4, z4;
       ImageDirection myDirection;
-      unsigned int width;
-      unsigned int height;
-      
+      unsigned int myImageWidth;
+      unsigned int myImageHeight;
       unsigned char * tabImage;
 
       /** 
@@ -245,9 +245,9 @@ namespace DGtal
       template <typename ImageType>
       void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
-	width = (image.extent())[0];
-	height = (image.extent())[1];
-	tabImage = new  unsigned char [width*height];
+	myImageWidth = (image.extent())[0];
+	myImageHeight = (image.extent())[1];
+	tabImage = new  unsigned char [myImageWidth*myImageHeight];
 	updateDir(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
 	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
@@ -261,19 +261,19 @@ namespace DGtal
       void updateDir( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft){
 	if(normalDir==zDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
-	  x2 = xBottomLeft+width; y2 = yBottomLeft; z2 = zBottomLeft; 
-	  x3 = xBottomLeft+width; y3 = yBottomLeft+height; z3 = zBottomLeft; 
-	  x4 = xBottomLeft; y4 = yBottomLeft+height; z4 = zBottomLeft; 
+	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft+myImageHeight; z3 = zBottomLeft; 
+	  x4 = xBottomLeft; y4 = yBottomLeft+myImageHeight; z4 = zBottomLeft; 
 	}else if(normalDir==yDirection){
-	  x1 = xBottomLeft+width; y1 = yBottomLeft; z1 = zBottomLeft;
+	  x1 = xBottomLeft+myImageWidth; y1 = yBottomLeft; z1 = zBottomLeft;
 	  x2 = xBottomLeft; y2 = yBottomLeft; z2 = zBottomLeft; 
-	  x3 = xBottomLeft; y3 = yBottomLeft; z3 = zBottomLeft+height; 
-	  x4 = xBottomLeft+width; y4 = yBottomLeft; z4 = zBottomLeft+height; 
+	  x3 = xBottomLeft; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight; 
+	  x4 = xBottomLeft+myImageWidth; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
 	}else if(normalDir==xDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
-	  x2 = xBottomLeft; y2 = yBottomLeft+width; z2 = zBottomLeft; 
-	  x3 = xBottomLeft; y3 = yBottomLeft+width; z3 = zBottomLeft+height; 
-	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+height; 
+	  x2 = xBottomLeft; y2 = yBottomLeft+myImageWidth; z2 = zBottomLeft; 
+	  x3 = xBottomLeft; y3 = yBottomLeft+myImageWidth; z3 = zBottomLeft+myImageHeight; 
+	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
 	}
       };
 
@@ -290,7 +290,7 @@ namespace DGtal
       template <typename ImageType>
       void updateImageDataAndParam(const  ImageType & image, 
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
-	assert ( (image.extent())[0]== width && (image.extent())[1]== height);
+	assert ( (image.extent())[0]== myImageWidth && (image.extent())[1]== myImageHeight);
 
 	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
 	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
@@ -319,11 +319,6 @@ namespace DGtal
 	updateDir(newDirection, xPosition, yPosition, zPosition);
       };	 
 
-
-
-
-
-      
 
     std::string className() const
       {

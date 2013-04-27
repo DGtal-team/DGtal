@@ -60,7 +60,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Display3D.h"
-
+#include "DGtal/math/BasicMathFunctions.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -382,20 +382,11 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
- /**
+    /**
      * Used to display in OPENGL a grayscale image as a textured quad image.
      *
      **/
-    struct GLTextureImage{
-      // The quad coordinates should be given in counter clockwise order
-      double x1, y1, z1;
-      double x2, y2, z2;
-      double x3, y3, z3;
-      double x4, y4, z4;
-      
-      unsigned int myImageWidth;
-      unsigned int myImageHeight;
-
+    struct GLGrayScaleTextureImage:  Display3D::GrayScaleImage {      
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
@@ -404,6 +395,34 @@ namespace DGtal
       // By definition in OpenGL the image size of texture should power of 2  
       double myTextureFitX;
       double myTextureFitY;
+
+      //Constructor from an GrayScaleImage
+      GLGrayScaleTextureImage(GrayScaleImage aGSImage)
+      {
+	x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
+	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
+	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
+	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
+      	
+	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
+	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
+	
+	myTextureImageBuffer = new unsigned char [myBufferHeight * myBufferWidth];
+	unsigned int pos=0;
+	for (unsigned int i=0; i<myBufferHeight; i++){
+	  for (unsigned int j=0; j<myBufferWidth; j++){
+	    if(i<myImageHeight && j<  myImageWidth){
+	      myTextureImageBuffer[pos]= aGSImage.tabImage[i*myImageWidth+j];
+	    }else{
+	      myTextureImageBuffer[pos]=0;
+	    }
+	    pos++;
+	  }
+	}
+	myTextureFitX = 1.0-((myBufferWidth-myImageWidth)/(double)myBufferWidth);
+	myTextureFitY = 1.0-((myBufferHeight-myImageHeight)/(double)myBufferHeight);
+      }
 
     };
 
@@ -415,7 +434,7 @@ namespace DGtal
     unsigned int myNbListe;
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     QPoint myPosSelector;
-    std::vector<GLTextureImage> myVectTextureImage;
+    std::vector<GLGrayScaleTextureImage> myVectTextureImage;
       
 
 
