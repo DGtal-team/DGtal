@@ -228,7 +228,7 @@ namespace DGtal
       double x2, y2, z2;
       double x3, y3, z3;
       double x4, y4, z4;
-      
+      ImageDirection myDirection;
       unsigned int width;
       unsigned int height;
       
@@ -248,6 +248,17 @@ namespace DGtal
 	width = (image.extent())[0];
 	height = (image.extent())[1];
 	tabImage = new  unsigned char [width*height];
+	updateDir(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
+	unsigned int pos=0;
+	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	     it!=itend;
+	    ++it){
+	  tabImage[pos]= image(*it);
+	  pos++;
+	}  
+      };
+      
+      void updateDir( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft){
 	if(normalDir==zDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
 	  x2 = xBottomLeft+width; y2 = yBottomLeft; z2 = zBottomLeft; 
@@ -264,14 +275,9 @@ namespace DGtal
 	  x3 = xBottomLeft; y3 = yBottomLeft+width; z3 = zBottomLeft+height; 
 	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+height; 
 	}
-	unsigned int pos=0;
-	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
-	     it!=itend;
-	    ++it){
-	  tabImage[pos]= image(*it);
-	  pos++;
-	}  
-      };	 
+      };
+
+      
 
       /** 
        *  Update the  image parameters from std image (image buffer, vertex coordinates) 
@@ -298,6 +304,19 @@ namespace DGtal
 	  tabImage[pos]= image(*it);
 	  pos++;
 	}  
+      };
+
+      /** 
+       *  Update the  image parameters from std image (image buffer, vertex coordinates) 
+       *  The new image should be with same dimension than the original.
+       *  @param image: the source image.
+       *  @param xTranslation: the image translation in the  x direction (default 0).
+       *  @param yTranslation: the image translation in the  y direction (default 0).
+       *  @param zTranslation: the image translation in the  z direction (default 0).
+       **/
+
+      void updateAxisOrientation(ImageDirection newDirection,  double xPosition, double yPosition, double zPosition){
+	updateDir(newDirection, xPosition, yPosition, zPosition);
       };	 
 
 
@@ -641,6 +660,24 @@ namespace DGtal
     void updateGrayScaleImage(unsigned int imageIndex, const  ImageType & image, 
 			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
     
+
+
+
+    /**
+     * Update the  image parameters from std image (image buffer, vertex coordinates) 
+     * The new image should be with same dimension than the original.
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param image: the new image containing the new buffer (with same dimensions than the other image).
+     * @param xTranslation: the image translation in the  x direction (default 0).
+     * @param yTranslation: the image translation in the  y direction (default 0).
+     * @param zTranslation: the image translation in the  z direction (default 0).
+     **/
+
+    void updateOrientationGrayScaleImage(unsigned int imageIndex, 
+					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+    
+
+
 
     
     

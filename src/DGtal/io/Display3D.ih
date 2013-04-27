@@ -913,6 +913,22 @@ DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex, const  ImageType
     
 
 
+inline 
+void 
+DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex, 
+						  double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
+    assert ( imageIndex< myGSImageList.size());
+    Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 
+    updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
+    updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
+    updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
+    updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
+    anImage.updateAxisOrientation(newDirection, xPosition, yPosition, zPosition);
+}
+    
+
+
+
 
 
 template <typename TDrawableWithDisplay3D>

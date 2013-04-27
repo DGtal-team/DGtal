@@ -49,31 +49,17 @@
 namespace DGtal
 {
 
- /**
+  /**
    *@brief Base class specifying the methods for classes which intend to
    * modify a Viewer3D stream.
    * 
    */
   struct DrawWithDisplay3DModifier {
-    std::string className() const
-    {
-      return "DrawWithDisplay3DModifier";
-    }
-
-    /*DrawableWithDisplay3D* defaultStyleDisplay3D( std::string = "" ) const
-    {
-      return 0;
-    }*/
-
-    /*virtual void setStyleDisplay3D( Display3D &  ) const 
-    {}*/
+    std::string className() const;
   };
-
-
-
-
-
-
+  
+  
+  
   /**
    * @brief Modifier class in a Display3D stream. Useful to choose your
    * own mode for a given class. Realizes the concept
@@ -90,18 +76,13 @@ namespace DGtal
       : myClassname( classname ), myMode( mode )
     {}
     
-    /*void setStyleDisplay3D( Display3D & display ) const
-    {
-      display.myModes[ myClassname ] = myMode;
-    }*/
-    
     std::string myClassname;
     std::string myMode;
   };
+  
 
 
-
-
+  
   /**
    * @brief Modifier class in a Display3D stream. Useful to choose your own
    * style for a given class. Realizes the concept
@@ -114,19 +95,10 @@ namespace DGtal
      * @param style a pointer on a dynamically allocated style, which
      * is acquired by the class.
      */
-    CustomStyle3D( std::string classname, DrawableWithDisplay3D* style )
-      : myClassname( classname ), myStyle( style )
+    CustomStyle3D( std::string aClassname, DrawableWithDisplay3D* style ): myClassname( aClassname ), myStyle( style )
     {}
 
-    std::string className() const
-    {
-      return "CustomStyle3D";
-    }
-
-    /*void setStyleDisplay3D( Display3D & display ) const
-    {
-      display.myStyles[ myClassname ] = myStyle;
-    }*/
+    std::string className() const;
 
     std::string myClassname;
     CountedPtr<DrawableWithDisplay3D> myStyle;
@@ -164,11 +136,7 @@ namespace DGtal
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
     
-    /*virtual void setStyleDisplay3D( Display3D & display) const
-    {
-      display.setFillColor(myFillColor);
-      display.setLineColor(myPenColor);
-    }*/
+  
   };
 
 
@@ -187,21 +155,7 @@ namespace DGtal
       : myA( a ), myB( b ), myC( c ), myD ( d ), myDrawPlane(drawPlane)  
     {}
     
-    // MT: why setStyleViewer3D here and not setStyleDisplay3D ???
-    /*void setStyleViewer3D( Display3D & display ) const
-    {
-      display.addClippingPlane(myA, myB, myC, myD, myDrawPlane);
-    }*/
-    
-    double * getEquation(){
-      double *r = new double[4];
-      r[0] = myA;
-      r[1] = myB;
-      r[2] = myC;
-      r[3] = myD;
-      return r;
-    } 
-    
+    double * getEquation();
     double myA;
     double myB;
     double myC;
@@ -222,19 +176,14 @@ namespace DGtal
      * @param y y position.
      * @param z z position.
      */
-    CameraPosition( const double x, const double y, const double z )
+    CameraPosition( const double x, const double y, const double z ):eyex(x), eyey(y), eyez(z)
     {
-      eyex=x; eyey=y; eyez=z;
     }
-    
-    /*void setStyleDisplay3D( Display3D & display) const
-    {
-      display.setCameraPosition(eyex, eyey, eyez);
-    }*/
-    
+        
       double eyex, eyey, eyez;
   };
   
+
   /**
    * @brief CameraDirection class to set camera direction.
    */
@@ -247,19 +196,14 @@ namespace DGtal
      * @param y y direction.
      * @param z z direction.
      */
-    CameraDirection( const double x, const double y, const double z )
+    CameraDirection( const double x, const double y, const double z ): dirx(x), diry(y), dirz(z)
     {
-      dirx=x; diry=y; dirz=z;
     }
-    
-    /*virtual void setStyleDisplay3D( Display3D & display) const
-    {
-      display.setCameraDirection(dirx, diry, dirz);
-    }*/
-    
-      double dirx, diry, dirz;
+        
+    double dirx, diry, dirz;
   };
   
+
   /**
    * @brief CameraUpVector class to set camera up-vector.
    */
@@ -272,18 +216,15 @@ namespace DGtal
      * @param y y coordinate of up-vector.
      * @param z z coordinate of up-vector.
      */
-    CameraUpVector( const double x, const double y, const double z )
+    CameraUpVector( const double x, const double y, const double z ): upx(x), upy(y), upz(z) 
     {
       upx=x; upy=y; upz=z;
     }
     
-    /*virtual void setStyleDisplay3D( Display3D & viewer) const
-    {
-      viewer.setCameraUpVector(upx, upy, upz);
-    }*/
-    
-      double upx, upy, upz;
+    double upx, upy, upz;
   };
+
+
   
   /**
    * @brief CameraZNearFar class to set near and far distance.
@@ -296,17 +237,10 @@ namespace DGtal
      * @param _near near distance.
      * @param _far far distance.
      */
-    CameraZNearFar( const double _near, const double _far )
+    CameraZNearFar( const double near, const double far ): ZNear(near), ZFar(far) 
     {
-      ZNear=_near; ZFar=_far;
-    }
-    
-    /*virtual void setStyleDisplay3D( Display3D & viewer) const
-    {
-      viewer.setNearFar(ZNear, ZFar);
-    }*/
-    
-      double ZNear, ZFar;
+    }        
+    double ZNear, ZFar;
   };
 
  
@@ -325,12 +259,10 @@ namespace DGtal
      * @param aSizeFactor use to change the KSSurfel size (1.0 initial size).
      */
     TransformedKSSurfel( const DGtal::KhalimskySpaceND< 3, int >::SCell  & aSurfel, 
-                         double aShift, double aSizeFactor=1.0 )
+                         double aShift, double aSizeFactor=1.0 ):mySurfel(aSurfel), myShift(aShift), mySizeFactor(aSizeFactor)
     {
-      mySurfel= aSurfel;
-      myShift = aShift;
-      mySizeFactor=aSizeFactor;
     }
+
 
     /**
      * Constructor.
@@ -374,53 +306,71 @@ namespace DGtal
    * @brief class to modify the position and orientation of the last added image.
    * 
    */
-  template<typename TImageType>
-  struct UpdateImage : public DrawWithDisplay3DModifier
+  struct UpdateImagePosition : public DrawWithDisplay3DModifier
   {
-     /**
-     * Constructor.
-     *
-     * 
-     */
-    UpdateImage(unsigned int anIndex, TImageType anImage, double translateX,
-		double translateY, double translateZ ): myIndex(anIndex),
-							myImage(anImage),
-							myTranslateX (translateX), 
-							myTranslateY (translateY),
-							myTranslateZ (translateZ), 
-							myNewDirection(0),
-							myChangeOrientation(false)
-    {
-      
-    }
+   
     /**
      * Constructor.
      *
      * 
      */
-    UpdateImage(unsigned int newDir ): myTranslateX (0), 
-				       myTranslateY (0),
-				       myTranslateZ (0), 
-				       myNewDirection(newDir), 
-				       myChangeOrientation(true)
+    UpdateImagePosition(unsigned int anIndex, Display3D::ImageDirection newDir, 
+		double posX, double posY, double posZ ):  myIndex(anIndex), myPosX(posX),
+							  myPosY(posY),
+							  myPosZ(posZ),
+							  myNewDirection(newDir) 
+							  
     {
 
     }
     unsigned int myIndex;
-    unsigned int myTranslateX; 
-    unsigned int myTranslateY;
-    unsigned int myTranslateZ;
-    unsigned int myNewDirection;
-    bool myChangeOrientation;
-    TImageType myImage;
+    unsigned int myPosX;
+    unsigned int myPosY;
+    unsigned int myPosZ;    
+    Display3D::ImageDirection myNewDirection;
   };
 
 
 
   
+
+ /**
+   * @brief class to modify the position and orientation of the last added image.
+   * 
+   */
+  template<typename TImageType>
+  struct UpdateImageData : public DrawWithDisplay3DModifier
+  {
+   
+  /**
+     * Constructor.
+     *
+     * 
+     */
+    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX,
+		    double translateY, double translateZ ): myIndex(anIndex),
+							myImage(&anImage),
+							myTranslateX (translateX), 
+							myTranslateY (translateY),
+							myTranslateZ (translateZ)
+    {
+      
+    }
+    unsigned int myIndex;
+    unsigned int myTranslateX; 
+    unsigned int myTranslateY;
+    unsigned int myTranslateZ;
+    const TImageType *myImage;
+  };
+
 } // namespace DGtal
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Includes inline functions.
+#include "DGtal/io/DrawWithDisplay3DModifier.ih"
 
 
 //                                                                           //

@@ -334,7 +334,8 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::CameraUpVector & );
     static void draw( Display3D & display, const DGtal::CameraZNearFar & );
     template<typename TImageType>
-    static void draw( Display3D & display, const DGtal::UpdateImage<TImageType> & );
+    static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & );
+    static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
     static void draw( Display3D & display, 
 		      const DGtal::Display3D::GrayScaleImage & image );
 
