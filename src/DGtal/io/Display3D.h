@@ -245,6 +245,7 @@ namespace DGtal
       template <typename ImageType>
       void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+	myDirection=normalDir;
 	myImageWidth = (image.extent())[0];
 	myImageHeight = (image.extent())[1];
 	tabImage = new  unsigned char [myImageWidth*myImageHeight];
@@ -275,6 +276,7 @@ namespace DGtal
 	  x3 = xBottomLeft; y3 = yBottomLeft+myImageWidth; z3 = zBottomLeft+myImageHeight; 
 	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
 	}
+	myDirection=normalDir;
       };
 
       
