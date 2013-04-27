@@ -53,7 +53,7 @@ DGtal::MagickReader<TImageContainer>::importImage(const std::string & filename, 
     }
   catch( ... )
     {
-      std::cout << "MagickReader : can't open " << filename << endl;
+      std::cout << "MagickReader : can't open " << filename << std::endl;
       throw dgtalio;
     }
   

@@ -77,9 +77,9 @@ int main( int argc, char** argv )
     ("max,M", po::value<int>(), "max image threshold value (default 255)")
     
     ("minSize,s", po::value<int>(), "minSize of the extracted freeman chain (default 0)")
-    ("contourSelect,s", po::value<vector <int> >()->multitoken(), 
+    ("contourSelect,s", po::value<std::vector <int> >()->multitoken(), 
      "Select contour according reference point and maximal distance:  ex. --contourSelect X Y distanceMax")
-    ("thresholdRange,R", po::value<vector <int> >()->multitoken(), 
+    ("thresholdRange,R", po::value<std::vector <int> >()->multitoken(), 
      "use a range interval as threshold : --thresholdRange min increment max : for each possible i, it define a digital sets [min+(i*increment),min+((i+1)*increment)] and extract their boundary. ");
   
   
@@ -107,7 +107,7 @@ int main( int argc, char** argv )
   
   //Parse options
   if (!(vm.count("image"))){
-    trace.info() << "Image file name needed"<< endl;
+    trace.info() << "Image file name needed"<< std::endl;
     return 0;
   } 
   
@@ -122,9 +122,9 @@ int main( int argc, char** argv )
   } 
   if(vm.count("contourSelect")){
     select=true;
-    vector<int> cntConstraints= vm["contourSelect"].as<vector <int> >();
+    std::vector<int> cntConstraints= vm["contourSelect"].as<std::vector <int> >();
     if(cntConstraints.size()!=3){
-      trace.info() << "Incomplete option \"--contourSelect\""<< endl;
+      trace.info() << "Incomplete option \"--contourSelect\""<< std::endl;
       return 0;
     }
     selectCenter[0]= cntConstraints.at(0);
@@ -136,9 +136,9 @@ int main( int argc, char** argv )
   if(! thresholdRange){
     increment =  (int)(maxThreshold- minThreshold);
   }else{
-    vector<int> vectRange= vm["thresholdRange"].as<vector <int> >();
+    std::vector<int> vectRange= vm["thresholdRange"].as<std::vector <int> >();
     if(vectRange.size()!=3){
-      trace.info() << "Incomplete option \"--thresholdRange\""<< endl;
+      trace.info() << "Incomplete option \"--thresholdRange\""<< std::endl;
       return 0;
     }
     increment=vectRange.at(1);
@@ -147,7 +147,7 @@ int main( int argc, char** argv )
 
 
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
-  string imageFileName = vm["image"].as<std::string>();
+  std::string imageFileName = vm["image"].as<std::string>();
   Image image = PNMReader<Image>::importPGM( imageFileName ); 
   Z2i::DigitalSet set2d (image.domain());
 
@@ -157,11 +157,11 @@ int main( int argc, char** argv )
     
     
     SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, min, max);
-    trace.info() << "DGtal set imported from thresholds ["<<  min << "," << max << "]" << endl;
+    trace.info() << "DGtal set imported from thresholds ["<<  min << "," << max << "]" << std::endl;
     Z2i::KSpace ks;
     if(! ks.init( image.domain().lowerBound(), 
       image.domain().upperBound(), true )){
-      trace.error() << "Problem in KSpace initialisation"<< endl;
+      trace.error() << "Problem in KSpace initialisation"<< std::endl;
     }
     SurfelAdjacency<2> sAdj( true );
   
@@ -176,11 +176,11 @@ int main( int argc, char** argv )
             (ptMean[1]-selectCenter[1])*(ptMean[1]-selectCenter[1])));
     if(distance<=selectDistanceMax){
       FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(k));    
-      cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+      std::cout << fc.x0 << " " << fc.y0   << " " << fc.chain << std::endl; 
     }
   }else{
     FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(k));    
-    cout << fc.x0 << " " << fc.y0   << " " << fc.chain << endl; 
+    std::cout << fc.x0 << " " << fc.y0   << " " << fc.chain << std::endl; 
   }
       }
 
