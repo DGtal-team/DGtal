@@ -240,12 +240,16 @@ DGtal::Viewer3D::draw()
     GLGrayScaleTextureImage textureImg =  myVectTextureImage.at(i);
     glPushName (  textureImg.myTextureName );  
     glEnable ( GL_LIGHTING );  
-    GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE,ambientLight);
+    
+    //GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    //glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE,ambientLight);
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
+    float mat_ambient [4] = {0.7f, 0.7f, 0.7f, 1.0f};
+    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+
     glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
     glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
     glTexCoord2f(0, 0);
@@ -256,9 +260,10 @@ DGtal::Viewer3D::draw()
     glVertex3f(textureImg.x3, textureImg.y3, textureImg.z3);
     glTexCoord2f(0.0, textureImg.myTextureFitY);
     glVertex3f(textureImg.x4, textureImg.y4, textureImg.z4);
-    
     glEnd();
     glDisable(GL_TEXTURE_2D);
+    glDisable ( GL_LIGHTING );  
+
   }
   
   
@@ -315,10 +320,10 @@ DGtal::Viewer3D::init()
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
   
   myTextureInitiated=false;
-  
-
+ 
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
   setManipulatedFrame ( new ManipulatedFrame() );
+
 
 }
 
