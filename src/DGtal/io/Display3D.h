@@ -267,9 +267,9 @@ namespace DGtal
 	  x4 = xBottomLeft; y4 = yBottomLeft+myImageHeight; z4 = zBottomLeft; 
 	}else if(normalDir==yDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
-	  x2 = xBottomLeft; y2 = yBottomLeft; z2 = zBottomLeft+myImageHeight; 
-	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight; 
-	  x4 = xBottomLeft+myImageWidth; y4 = yBottomLeft; z4 = zBottomLeft; 
+	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight;
+	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
 	}else if(normalDir==xDirection){
 	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
 	  x2 = xBottomLeft; y2 = yBottomLeft+myImageWidth; z2 = zBottomLeft; 

@@ -241,14 +241,16 @@ DGtal::Viewer3D::draw()
     glPushName (  textureImg.myTextureName );  
     glEnable ( GL_LIGHTING );  
     
-    //GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-    //glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE,ambientLight);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    
     
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
+      glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, 50.0);
+    GLfloat specular_color[4] = { 0.8f, 0.8f, 0.8f, 1.0 };
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR,  specular_color);
+
     //    float mat_ambient [4] = {0.7f, 0.7f, 0.7f, 1.0f};
     //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 
@@ -323,6 +325,14 @@ DGtal::Viewer3D::init()
   
   myTextureInitiated=false;
  
+  GLfloat lightpos[] = {.5, 1., 1., 0.};
+  glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+  
+  GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+  glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
+  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+
+  
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
   setManipulatedFrame ( new ManipulatedFrame() );
 
