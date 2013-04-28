@@ -407,7 +407,7 @@ namespace DGtal
 	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
 	myDirection = aGSImage.myDirection;
 	vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
-	vectNormal[1]= (myDirection == Display3D::yDirection)? 1.0: 0.0;
+	vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
 	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;
 	
 	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);

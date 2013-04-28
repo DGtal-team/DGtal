@@ -243,12 +243,14 @@ DGtal::Viewer3D::draw()
     
     //GLfloat ambientLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
     //glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE,ambientLight);
+    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
     glBegin(GL_QUADS);
-    float mat_ambient [4] = {0.7f, 0.7f, 0.7f, 1.0f};
-    glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
+    //    float mat_ambient [4] = {0.7f, 0.7f, 0.7f, 1.0f};
+    //glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
 
     glColor4ub ( 255.0, 255.0, 255.0, 255.0 );
     glNormal3d(textureImg.vectNormal[0], textureImg.vectNormal[1], textureImg.vectNormal[2]);
