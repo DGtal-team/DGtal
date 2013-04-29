@@ -26,6 +26,9 @@
  * This file is part of the DGtal library.
  */
 
+
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/images/ImageHelper.h"
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
@@ -1225,9 +1228,12 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TDomain, typename TValue>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ImageContainerBySTLMap<TDomain, TValue> anImage){
-  ASSERT(TDomain::Space::dimension == 2);
-  DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
-  display.addGrayScaleImage(aGSImage);
+  ASSERT(TDomain::Space::dimension == 2 || TDomain::Space::dimension == 3);
+  if(TDomain::Space::dimension == 2){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImage);
+  }
+
 }
 // ImageContainerBySTLMap 
 
@@ -1236,9 +1242,39 @@ void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ImageConta
 template <typename TDomain, typename TValue>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, const DGtal::ImageContainerBySTLVector<TDomain, TValue> anImage){
-  ASSERT(TDomain::Space::dimension == 2);
-  DGtal::Display3D::GrayScaleImage aGSImage (anImage, DGtal::Display3D::zDirection);
-  display.addGrayScaleImage(aGSImage);
+  ASSERT(TDomain::Space::dimension == 2 || TDomain::Space::dimension == 3);
+  if(TDomain::Space::dimension == 2){
+    DGtal::Display3D::GrayScaleImage aGSImage (anImage, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImage);
+  }else if(TDomain::Space::dimension == 3){
+    typedef DGtal::ImageContainerBySTLVector<TDomain, TValue> Image3D;
+    typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, TValue>  Image2D;
+    
+    Image2D sliceImageY = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 1, 0);
+    DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, DGtal::Display3D::yDirection);
+    display.addGrayScaleImage(aGSImageYf);
+    Image2D sliceImageX = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 0, 0);
+    DGtal::Display3D::GrayScaleImage aGSImageXf (sliceImageX, DGtal::Display3D::xDirection);
+    display.addGrayScaleImage(aGSImageXf);
+    Image2D sliceImageZ = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 2, 0);
+    DGtal::Display3D::GrayScaleImage aGSImageZf (sliceImageZ, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImageZf);
+ 
+
+    Image2D sliceImageYl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 1, (int)(anImage.extent()[1])-1);
+    DGtal::Display3D::GrayScaleImage aGSImageYl (sliceImageYl, DGtal::Display3D::yDirection, 0.0, (int)(anImage.extent()[1])-1, 0.0);
+    display.addGrayScaleImage(aGSImageYl);
+
+    Image2D sliceImageXl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 0, (int)(anImage.extent()[0])-1);
+    DGtal::Display3D::GrayScaleImage aGSImageXl (sliceImageXl, DGtal::Display3D::xDirection, (int)(anImage.extent()[0])-1, 0.0, 0.0);
+    display.addGrayScaleImage(aGSImageXl);
+    
+    Image2D sliceImageZl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 2, (int)(anImage.extent()[2])-1);    
+    DGtal::Display3D::GrayScaleImage aGSImageZl (sliceImageZl, DGtal::Display3D::zDirection, 0.0, 0.0, (int)(anImage.extent()[2])-1);
+    display.addGrayScaleImage(aGSImageZl);
+    
+    
+  }
 }
 // ImageContainerBySTLVector
 
