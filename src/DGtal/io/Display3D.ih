@@ -923,9 +923,38 @@ DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex,
     updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
     updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
     updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
-    anImage.updateAxisOrientation(newDirection, xPosition, yPosition, zPosition);
+    anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
 }
     
+
+inline      
+void
+DGtal::Display3D::GrayScaleImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir, 
+							  double xBottomLeft, double yBottomLeft, double zBottomLeft){
+	if(normalDir==zDirection){
+	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
+	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft+myImageHeight; z3 = zBottomLeft; 
+	  x4 = xBottomLeft; y4 = yBottomLeft+myImageHeight; z4 = zBottomLeft; 
+	}else if(normalDir==yDirection){
+	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
+	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
+	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight;
+	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
+	}else if(normalDir==xDirection){
+	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
+	  x2 = xBottomLeft; y2 = yBottomLeft+myImageWidth; z2 = zBottomLeft; 
+	  x3 = xBottomLeft; y3 = yBottomLeft+myImageWidth; z3 = zBottomLeft+myImageHeight; 
+	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
+	}
+	myDirection=normalDir;
+}
+inline
+std::string 
+DGtal::Display3D::GrayScaleImage::className() const
+{
+  return "GrayScaleImage";
+}
 
 
 

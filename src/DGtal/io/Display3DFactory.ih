@@ -1363,7 +1363,8 @@ DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImageData
 void 
 inline
 DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImagePosition & anUpdate ){
-    display.updateOrientationGrayScaleImage(anUpdate.myIndex, anUpdate.myPosX, anUpdate.myPosY, anUpdate.myPosZ, anUpdate.myNewDirection);
+    display.updateOrientationGrayScaleImage(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+					    anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
 }
 
 
