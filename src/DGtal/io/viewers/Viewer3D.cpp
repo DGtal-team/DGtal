@@ -755,7 +755,8 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
 		 GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBuffer);
     
-    myVectTextureImage.push_back(textureImg);  
+    
+myVectTextureImage.push_back(textureImg);  
   }
 
   if ( needToUpdateBoundingBox )

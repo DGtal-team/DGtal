@@ -6,6 +6,7 @@ SET(DGTAL_TESTS_SRC
    viewer3D-5-custom
    viewer3D-4bis-illustrationMode
    viewer3D-6-clipping
+   viewer3D-8-2Dimages
    demo-kernel-2
 )
 
