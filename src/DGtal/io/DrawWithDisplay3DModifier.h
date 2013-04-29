@@ -302,31 +302,38 @@ namespace DGtal
 
   
 
- /**
-   * @brief class to modify the position and orientation of the last added image.
+  /**
+   * 
+   * @brief class to modify the position and orientation of an textured 2D image.
    * 
    */
   struct UpdateImagePosition : public DrawWithDisplay3DModifier
   {
    
     /**
-     * Constructor.
-     *
+     * Constructor given from an specific image index, a new direction
+     * (associated to the normal of the image plane), and and a new
+     * position of the bottom-left point.
+     * @param anIndex: the index of the image to be modified (should be less than the number of image added in the current Display3D).
+     * @param newDir: give the new direction of the image normal vector.
+     * @param posXbottomLeft: the x position of the bottom left point. 
+     * @param posYbottomLeft: the y position of the bottom left point. 
+     * @param posZbottomLeft: the z position of the bottom left point. 
      * 
      */
     UpdateImagePosition(unsigned int anIndex, Display3D::ImageDirection newDir, 
-		double posX, double posY, double posZ ):  myIndex(anIndex), myPosX(posX),
-							  myPosY(posY),
-							  myPosZ(posZ),
-							  myNewDirection(newDir) 
-							  
+			double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex), 
+												myNewDirection(newDir), 
+												myPosXBottomLeft(posXbottomLeft),
+												myPosYBottomLeft(posYbottomLeft),
+												myPosZBottomLeft(posZbottomLeft)
     {
 
     }
     unsigned int myIndex;
-    unsigned int myPosX;
-    unsigned int myPosY;
-    unsigned int myPosZ;    
+    unsigned int myPosXBottomLeft;
+    unsigned int myPosYBottomLeft;
+    unsigned int myPosZBottomLeft;    
     Display3D::ImageDirection myNewDirection;
   };
 
@@ -334,25 +341,33 @@ namespace DGtal
 
   
 
- /**
-   * @brief class to modify the position and orientation of the last added image.
+  /**
+   * @brief class to modify the data of an given image and also the
+   * possibility to translate it (optional).
    * 
    */
   template<typename TImageType>
   struct UpdateImageData : public DrawWithDisplay3DModifier
   {
    
-  /**
-     * Constructor.
-     *
+    /**
+     * Constructor given from an specific image index, a new image
+     * (should be of dimension 2 and with the same size than the
+     * orginal), and a possible (optional translation).
      * 
+     * @param anIndex: the index of the image to be modified (should be less than the number of image added in the current Display3D).
+     * @param anImage: the new image which will be used to update the source image  data.
+     * @param translateX: the x translation value.
+     * @param translateY: the y translation value.
+     * @param translateZ: the y translation value.
+     *
      */
-    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX,
-		    double translateY, double translateZ ): myIndex(anIndex),
-							myImage(&anImage),
-							myTranslateX (translateX), 
-							myTranslateY (translateY),
-							myTranslateZ (translateZ)
+    UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
+		    double translateY=0, double translateZ=0 ): myIndex(anIndex),
+								myImage(&anImage),
+								myTranslateX (translateX), 
+								myTranslateY (translateY),
+								myTranslateZ (translateZ)
     {
       
     }

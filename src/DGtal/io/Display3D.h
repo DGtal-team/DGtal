@@ -206,7 +206,7 @@ namespace DGtal
 
 
 
-  /**
+    /**
      * This structure is used to display polygonal faces.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/ 
@@ -233,9 +233,12 @@ namespace DGtal
       unsigned int myImageWidth;
       unsigned int myImageHeight;
       unsigned char * tabImage;
-
+      
+      ~GrayScaleImage(){
+	delete [] tabImage;
+      }
       /** 
-       *  Automatic fill image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
+       *  Fill image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
        *  @param image: the source image.
        *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
        *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
@@ -249,7 +252,7 @@ namespace DGtal
 	myImageWidth = (image.extent())[0];
 	myImageHeight = (image.extent())[1];
 	tabImage = new  unsigned char [myImageWidth*myImageHeight];
-	updateDir(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
+	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
 	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	     it!=itend;
@@ -259,28 +262,19 @@ namespace DGtal
 	}  
       };
       
-      void updateDir( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft){
-	if(normalDir==zDirection){
-	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
-	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
-	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft+myImageHeight; z3 = zBottomLeft; 
-	  x4 = xBottomLeft; y4 = yBottomLeft+myImageHeight; z4 = zBottomLeft; 
-	}else if(normalDir==yDirection){
-	  x1 = xBottomLeft; y1 = yBottomLeft; z1 = zBottomLeft;
-	  x2 = xBottomLeft+myImageWidth; y2 = yBottomLeft; z2 = zBottomLeft; 
-	  x3 = xBottomLeft+myImageWidth; y3 = yBottomLeft; z3 = zBottomLeft+myImageHeight;
-	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
-	}else if(normalDir==xDirection){
-	  x1 = xBottomLeft; y1 = yBottomLeft; z1= zBottomLeft;
-	  x2 = xBottomLeft; y2 = yBottomLeft+myImageWidth; z2 = zBottomLeft; 
-	  x3 = xBottomLeft; y3 = yBottomLeft+myImageWidth; z3 = zBottomLeft+myImageHeight; 
-	  x4 = xBottomLeft; y4 = yBottomLeft; z4 = zBottomLeft+myImageHeight; 
-	}
-	myDirection=normalDir;
-      };
-
+      /**
+       * Update the image direction from a specific normal direction
+       * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
+       * from the botton left point.
+       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
+       *  @param xBottomLeft: the x coordinate of bottom left image point.
+       *  @param yBottomLeft: the x coordinate of bottom left image point.
+       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       **/
       
+      void updateImageOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
 
+     
       /** 
        *  Update the  image parameters from std image (image buffer, vertex coordinates) 
        *  The new image should be with same dimension than the original.
@@ -308,24 +302,10 @@ namespace DGtal
 	}  
       };
 
-      /** 
-       *  Update the  image parameters from std image (image buffer, vertex coordinates) 
-       *  The new image should be with same dimension than the original.
-       *  @param image: the source image.
-       *  @param xTranslation: the image translation in the  x direction (default 0).
-       *  @param yTranslation: the image translation in the  y direction (default 0).
-       *  @param zTranslation: the image translation in the  z direction (default 0).
+      /**
+       * return the class name to implment the CDrawableWithDisplay3D concept.
        **/
-
-      void updateAxisOrientation(ImageDirection newDirection,  double xPosition, double yPosition, double zPosition){
-	updateDir(newDirection, xPosition, yPosition, zPosition);
-      };	 
-
-
-    std::string className() const
-      {
-	return "GrayScaleImage";
-      }
+      std::string className() const;
       
     };
 
