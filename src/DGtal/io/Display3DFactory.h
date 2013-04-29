@@ -304,22 +304,11 @@ namespace DGtal
     // IncidentPointsRange
 
 
-    // ImageContainerBySTLMap 
-    template <typename TDomain, typename TValue>
-    static void draw( Display3D & display, const DGtal::ImageContainerBySTLMap<TDomain, TValue> anImage);
-    // ImageContainerBySTLMap 
+    // ImageContainer  (2D and 3D)
+    template <typename ImageType >
+    static void draw( Display3D & display, const ImageType &anImage);
+    // ImageContainer  (2D and 3D)
 
-
-    // ImageContainerBySTLVector 
-    template <typename TDomain, typename TValue>
-    static void draw( Display3D & display, const DGtal::ImageContainerBySTLVector<TDomain, TValue> anImage);
-    // ImageContainerBySTLVector
-
-    
-    
-    
-    
-    
 
   
 
@@ -338,9 +327,8 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
     static void draw( Display3D & display, 
 		      const DGtal::Display3D::GrayScaleImage & image );
-
-
     static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);
+
 
   }; // end of struct Display3DFactory
 
