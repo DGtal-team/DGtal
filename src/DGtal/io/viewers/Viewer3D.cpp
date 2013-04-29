@@ -239,7 +239,7 @@ DGtal::Viewer3D::draw()
  
 
   for(unsigned int i=0; i< myVectTextureImage.size(); i++){
-    GLGrayScaleTextureImage textureImg =  myVectTextureImage.at(i);
+    GLGrayScaleTextureImage &textureImg =  myVectTextureImage.at(i);
     glPushName (  textureImg.myTextureName );  
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -737,18 +737,13 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 
 
 
-  //Delete potential old texture  buffer
-  for(unsigned int i=0; i< myVectTextureImage.size(); i++){
-    GLGrayScaleTextureImage textureImg =  myVectTextureImage.at(i);
-    delete [] textureImg.myTextureImageBuffer;
-  }
   
   myVectTextureImage.clear();
   
   //Filling new image texture from myGSImageList
   
   for(unsigned int i=0; i<myGSImageList.size(); i++){
-    GrayScaleImage aGSImage = myGSImageList.at(i);
+    GrayScaleImage & aGSImage = myGSImageList.at(i);
     GLGrayScaleTextureImage textureImg(aGSImage); 
     
     glGenTextures(1, &textureImg.myTextureName);
