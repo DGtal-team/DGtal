@@ -1267,13 +1267,6 @@ void DGtal::Display3DFactory::draw( Display3D & display, const ImageType  &anIma
 
 //
 
-inline
-void DGtal::Display3DFactory::draw( Display3D & display, 
-				    const DGtal::Display3D::GrayScaleImage & image )
-{
-  display.addGrayScaleImage(image);
-}
-
 
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 

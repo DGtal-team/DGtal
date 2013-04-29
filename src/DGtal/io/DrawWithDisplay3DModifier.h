@@ -331,9 +331,9 @@ namespace DGtal
 
     }
     unsigned int myIndex;
-    unsigned int myPosXBottomLeft;
-    unsigned int myPosYBottomLeft;
-    unsigned int myPosZBottomLeft;    
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;    
     Display3D::ImageDirection myNewDirection;
   };
 
