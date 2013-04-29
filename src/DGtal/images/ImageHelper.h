@@ -432,6 +432,23 @@ namespace DGtal
     bool reverse;
   };
 
+
+  /**
+   * Extract an n-1 dimension image contained in the given n dimension image.
+   *
+   * @param aImg: the n dimension image.
+   * @param dimRemoved: the removed dimension.
+   * @param index: the index of the image to be extracted in the considered dimension. 
+   * @return an n-1 dimensional image 
+   */
+  template<typename TImageTypeDimN, typename TImageTypeDimNInf>
+  TImageTypeDimNInf
+  extractLowerDimImage(const TImageTypeDimN & aImg, unsigned int dimRemoved, unsigned int index);
+
+
+  
+
+
  
 } // namespace DGtal
 
