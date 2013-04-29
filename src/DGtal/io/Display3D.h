@@ -232,13 +232,41 @@ namespace DGtal
       ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
-      unsigned char * tabImage;
-      
+      unsigned char * myTabImage;
+     
       ~GrayScaleImage(){
-	delete [] tabImage;
-      }
+	delete [] myTabImage;  
+      };
+      
+      /**
+       * Copy constructor (needed due to myTabImage)
+       **/
+      GrayScaleImage(const GrayScaleImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
+						 x2(img.x2), y2(img.y2), z2(img.z2),
+						 x3(img.x3), y3(img.y3), z3(img.z3),
+						 x4(img.x4), y4(img.y4), z4(img.z4),
+						 myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+						 myImageHeight(img.myImageHeight),
+						 myTabImage(img.myTabImage){
+	if(img.myImageHeight>0 && img.myImageWidth>0){
+	  myTabImage = new  unsigned char [img.myImageWidth*img.myImageHeight];
+	  for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
+	    myTabImage[i] = img.myTabImage[i];
+	  }
+	}else{
+	  myTabImage=img.myTabImage;
+	} 
+
+	
+      };				       
+
+      
+      GrayScaleImage(){
+
+      };
+      
       /** 
-       *  Fill image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
+       *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
        *  @param image: the source image.
        *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
        *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
@@ -246,20 +274,15 @@ namespace DGtal
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
       template <typename ImageType>
-      void fillImageDataAndParam(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
-				 double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+      GrayScaleImage(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
+		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	myDirection=normalDir;
 	myImageWidth = (image.extent())[0];
 	myImageHeight = (image.extent())[1];
-	tabImage = new  unsigned char [myImageWidth*myImageHeight];
+	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
-	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
-	     it!=itend;
-	    ++it){
-	  tabImage[pos]= image(*it);
-	  pos++;
-	}  
+	updateImageDataAndParam(image);
       };
       
       /**
@@ -297,7 +320,7 @@ namespace DGtal
 	 for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	    it!=itend;
 	    ++it){
-	  tabImage[pos]= image(*it);
+	  myTabImage[pos]= image(*it);
 	  pos++;
 	}  
       };

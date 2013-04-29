@@ -396,8 +396,40 @@ namespace DGtal
       double myTextureFitX;
       double myTextureFitY;
 
-      //Constructor from an GrayScaleImage
-      GLGrayScaleTextureImage(GrayScaleImage aGSImage)
+
+      // Destructor
+      ~GLGrayScaleTextureImage(){
+	if(myTextureImageBuffer!=0)
+	  delete [] myTextureImageBuffer;
+      }
+
+      //Copy constructor from a GLGrayScaleTextureImage
+      GLGrayScaleTextureImage(const GLGrayScaleTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
+								      myBufferWidth(aGLImg.myBufferWidth),
+								      myTextureName(aGLImg.myTextureName),
+								      myTextureFitX(aGLImg.myTextureFitX),
+								      myTextureFitY(aGLImg.myTextureFitY)
+								      
+      {
+	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
+	x2=aGLImg.x2; y2=aGLImg.y2; z2=aGLImg.z2;
+	x3=aGLImg.x3; y3=aGLImg.y3; z3=aGLImg.z3;
+	x4=aGLImg.x4; y4=aGLImg.y4; z4=aGLImg.z4;
+	myImageWidth=aGLImg.myImageWidth; myImageHeight=aGLImg.myImageHeight;
+	myDirection = aGLImg.myDirection;
+	vectNormal[0]=aGLImg.vectNormal[0];
+	vectNormal[1]=aGLImg.vectNormal[1];
+	vectNormal[2]=aGLImg.vectNormal[2];
+	myTabImage = NULL;
+	myTextureImageBuffer = new unsigned char [myBufferHeight*myBufferWidth];
+	for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
+	  myTextureImageBuffer[i]=aGLImg.myTextureImageBuffer[i];
+	}
+	
+      }
+      
+      //Copy constructor from a GrayScaleImage
+      GLGrayScaleTextureImage(const GrayScaleImage &aGSImage)
       {
 	x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
 	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
@@ -411,13 +443,13 @@ namespace DGtal
 	
 	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
 	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
-	
 	myTextureImageBuffer = new unsigned char [myBufferHeight * myBufferWidth];
+	myTabImage = NULL;
 	unsigned int pos=0;
 	for (unsigned int i=0; i<myBufferHeight; i++){
 	  for (unsigned int j=0; j<myBufferWidth; j++){
 	    if(i<myImageHeight && j<  myImageWidth){
-	      myTextureImageBuffer[pos]= aGSImage.tabImage[i*myImageWidth+j];
+	      myTextureImageBuffer[pos]= aGSImage.myTabImage[i*myImageWidth+j];
 	    }else{
 	      myTextureImageBuffer[pos]=0;
 	    }
