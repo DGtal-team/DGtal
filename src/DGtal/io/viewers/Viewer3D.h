@@ -129,7 +129,6 @@ namespace DGtal
     DGtal::Color myDefaultColor;
     bool myIsBackgroundDefault;
     bool myViewWire;
-    bool myTextureInitiated;
   
     /**
      * Set the default color for future drawing.
