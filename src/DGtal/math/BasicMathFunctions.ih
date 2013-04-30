@@ -46,7 +46,8 @@ DGtal::BasicMathFunctions::roundToUpperPowerOfTwo( unsigned int n)
        n |= n >> 8;
        n |= n >> 16;
        if(sizeof(unsigned int)==8){
-	 n |= n >> 32;
+	 unsigned int tmp = n;
+	 n |= n >> 16 >> 16;
        }
        n++;
        return n;
