@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -51,45 +52,83 @@ namespace DGtal
   // template class GenericReader
   /**
    * Description of template class 'GenericReader' <p>
-   * \brief Aim: Provide a mechanism to load with the bestloader according to an image filename (by parsing the extension).
+   * \brief Aim: Provide a mechanism to load with the bestloader according to an image (2D or 3D) filename (by parsing the extension).
    *  
    * The typical use is very simple:
-   * 
-   *
-   *
-   */
-template <typename TContainer, typename TPoint = typename TContainer::Point, int Tdim=TPoint::dimension >
+   * - First include the header of the generic reader (and StdDefs) and define image type:
+   @code 
+   #include "DGTal/io/readers/GenericReader.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+   @endcode
+   - Use the same import function for both 2D or 3D images:
+   @code
+   Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
+   Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
+   @endcode
+  
+  */
+
+
+
+  template <typename TContainer, int Tdim=TContainer::Point::dimension >
   struct GenericReader
   {
-    static TContainer import(const std::string &filename)  throw(DGtal::IOException);
-
+    static TContainer import(const std::string &filenamen, 
+			     std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
   };
 
-
-template <typename TContainer, typename TPoint>
-struct GenericReader<TContainer, TPoint, 3 >
+  /**
+   * GenericReader
+   * Template partial specialisation for volume images of dimension 3
+   **/
+  template <typename TContainer>
+  struct GenericReader<TContainer, 3 >
   {
+
+    /**
+     * Import a volume image file.  For the special format of raw
+     * image, the default parameter x,y, z need to be updated
+     * according to the dimension if the image.
+     * @param x the size in the x direction. 
+     * @param y the size in the y direction. 
+     * @param z the size in the z direction. 
+     *
+     **/
+
     static TContainer import(const std::string &filename,  unsigned int x=0, 
 			     unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
 
   };
 
-template <typename TContainer, typename TPoint>
-struct GenericReader<TContainer,  TPoint, 2>
+  /**
+   * GenericReader
+   * Template partial specialisation for volume images of dimension 2
+   **/
+  template <typename TContainer>
+  struct GenericReader<TContainer, 2>
   {
+
+    /**
+     * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
+     *  the default parameter datasetName needs to be updated
+     * according to the dimension if the image.
+     * @param datasetName  the name of the dataset contained in the image. 
+     *
+     **/
+
     static TContainer import(const std::string &filename,  const std::string &datasetName="empty")  throw(DGtal::IOException);
 
   };
 
 
-// @todo when a MeshFromPoints(Mesh) will contain a type Point
-/*
-template <typename TPoint>
-struct GenericReader<MeshFromPoints<TPoint>,  TPoint, 2>
-{
-  static MeshFromPoints<TPoint> import(const std::string &filename)  throw(DGtal::IOException);
-};
-*/
+
+
+
+
+
+
 
 
 } // namespace DGtal

@@ -36,6 +36,9 @@
 #include "ConfigTest.h"
 
 
+
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,16 +86,6 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[1]:  " << size1Img3     << std::endl;;
   nbok += (size0Img3==185 && size1Img3==85 ) ? 1 : 0; 
   nb++;
-
-// @todo when a MeshFromPoints(Mesh) will contain a type Point
-/*  std::string filenameMesh = testPath + "samples/box.off";    
-  DGtal::MeshFromPoints<Point> aMesh= DGtal::GenericReader<DGtal::MeshFromPoints <Point> >::import(filenameMesh);
-  bool isWellImported = (aMesh.nbVertex()==8) &&  (aMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
-  nbok += isWellImported ? 1 : 0; 
-  nb++;
-*/
-
-
 
 
 
