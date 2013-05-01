@@ -45,30 +45,36 @@
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
 
-// template <typename TImageContainer, int d>
-// inline
-// TImageContainer 
-// DGtal::GenericReader<TImageContainer, d>::import(const std::string &filename, 
-// 						   unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
 
 
-// }
 
 
-template <typename TContainer, typename TPoint, int TDim>
+template <typename TContainer, int TDim>
 inline
 TContainer 
-DGtal::GenericReader<TContainer, TPoint, TDim>::import(const std::string &filename)  throw(DGtal::IOException){
-
-
+DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std::vector<unsigned int> dimSpace)  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+  if(extension!="raw"){
+    trace.error() << "Extension " << extension<< " not yet implemented in n dimension (only raw images are actually implemented in Nd." << std::endl;
+    throw dgtalio;
+  }else{
+    typename TContainer::Point aPointDim;
+    for(unsigned int i=0; i< dimSpace.size(); i++){
+      aPointDim[i]= dimSpace[i];
+    }
+    return RawReader< TContainer >::importRaw8 ( filename, aPointDim  );	
+  }
 }
 
-template <typename TContainer, typename TPoint>
+
+
+template <typename TContainer>
 inline
 TContainer 
-DGtal::GenericReader<TContainer, TPoint, 3>::import(const std::string &filename,
+DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 					    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
-  //Getting image extension
+
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   
   if(extension=="vol"){
@@ -84,11 +90,12 @@ DGtal::GenericReader<TContainer, TPoint, 3>::import(const std::string &filename,
 }
 
 
-template <typename TContainer, typename TPoint>
+
+template <typename TContainer>
 inline
 TContainer 
-DGtal::GenericReader<TContainer, TPoint, 2>::import(const std::string &filename, const std::string & datasetName)  throw(DGtal::IOException){
-    DGtal::IOException dgtalio;
+DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const std::string & datasetName)  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
   //Getting image extension
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
@@ -96,11 +103,11 @@ DGtal::GenericReader<TContainer, TPoint, 2>::import(const std::string &filename,
     return PNMReader<TContainer>::importPGM(filename);
   }
 #ifdef WITH_HDF5
- else if (extension=="h5"){
+  else if (extension=="h5"){
     return HDF5Reader::importHDF5(filename, datasetName); 
-}
+  }
 #endif
- else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
+  else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
 #ifdef WITH_MAGICK
     MagickReader<TContainer> reader;
     Image img = reader.importImage( filename );  
@@ -117,25 +124,6 @@ DGtal::GenericReader<TContainer, TPoint, 2>::import(const std::string &filename,
 }
 
 
-
-
-// @todo when a MeshFromPoints(Mesh) will contain a type Point
-/**   
-template<typename TPoint>
-  inline
-  DGtal::MeshFromPoints<TPoint>
-  DGtal::GenericReader<DGtal::MeshFromPoints<TPoint>, TPoint, 2>::import(const std::string &filename)  throw(DGtal::IOException){
-   DGtal::IOException dgtalio;
-     
-   MeshFromPoints<TPoint> a3DMesh;
-   bool importOK = a3DMesh << filename;
-   if(!importOK){
-       trace.error() << "Generic reader error." << std::endl;
-       throw dgtalio;
-   }
-   return a3DMesh;
-}
-**/
 
 
 //                                                                           //
