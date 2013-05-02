@@ -55,7 +55,7 @@ DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std:
   DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   if(extension!="raw"){
-    trace.error() << "Extension " << extension<< " not yet implemented in n dimension (only raw images are actually implemented in Nd." << std::endl;
+    trace.error() << "Extension " << extension<< " not yet implemented in n dimension for DGtal GenericReader (only raw images are actually implemented in Nd." << std::endl;
     throw dgtalio;
   }else{
     typename TContainer::Point aPointDim;
@@ -64,6 +64,7 @@ DGtal::GenericReader<TContainer, TDim>::import(const std::string &filename, std:
     }
     return RawReader< TContainer >::importRaw8 ( filename, aPointDim  );	
   }
+
 }
 
 
@@ -73,19 +74,21 @@ inline
 TContainer 
 DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
 					    unsigned int x, unsigned int y, unsigned int z)  throw(DGtal::IOException){
-
+  DGtal::IOException dgtalio;
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
   
   if(extension=="vol"){
     return  VolReader<TContainer>::importVol( filename );
   }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
     return PNMReader<TContainer>::importPGM3D(filename);
-  } else  if(extension=="raw" && TContainer::Domain::dimension==3){
+  } else if(extension=="raw"){
     ASSERT(x!=0 && y!=0 && z!=0); 
     typename TContainer::Point pt (x,y,z);
     return RawReader< TContainer >::importRaw8 ( filename, pt  );
+  }else{
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
+    throw dgtalio;
   }
-  
 }
 
 
@@ -116,10 +119,9 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
 #endif
 
   }else{
-    trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
     throw dgtalio;
   }
-
 }
 
 
