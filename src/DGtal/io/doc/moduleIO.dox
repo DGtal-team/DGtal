@@ -92,6 +92,22 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not scpecify any functor. 
 
 
+
+The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to automatically export any image (2d, 3d, nd) from its filename:
+  @code 
+   #include "DGTal/io/writers/GenericWriter.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int> Image3D;
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D;
+   @endcode
+ - After contructing and filling an image (anImage2D or anImage3D), just save it with:
+  @code
+   anImage3D >> "aFilename.pgm3d";
+   anImage3D >> "aFilename.vol";
+   anImage2D >> "aFilename.pgm";
+   @endcode
+  
+
 \subsection imagereaders Image Readers
 
 | Dimension | Name              | Description                                   | Class name    | Comment                                                        |
@@ -116,6 +132,8 @@ The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automaticall
    Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
    @endcode 
+
+
 
 
 \section fileformat Other geometrical formats

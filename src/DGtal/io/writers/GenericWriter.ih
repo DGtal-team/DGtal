@@ -47,22 +47,18 @@ template <typename TContainer, int TDim, typename TFunctor >
 inline
 bool 
 DGtal::GenericWriter<TContainer, TDim, TFunctor>::exporT(const std::string &filename, 
-							   const TContainer &anImage,
-							   const TFunctor & aFunctor)  throw(DGtal::IOException){
-  // DGtal::IOException dgtalio;
-  // std::string extension = filename.substr(filename.find_last_of(".") + 1);
-  // if(extension!="raw"){
-  //   trace.error() << "Extension " << extension<< " not yet implemented in n dimension (only raw images are actually implemented in Nd." << std::endl;
-  //   throw dgtalio;
-  // }else{
-  //   typename TContainer::Point aPointDim;
-  //   for(unsigned int i=0; i< dimSpace.size(); i++){
-  //     aPointDim[i]= dimSpace[i];
-  //   }
-  //   return RawReader< TContainer >::importRaw8 ( filename, aPointDim  );	
-  // }
+							 const TContainer &anImage,
+							 const TFunctor & aFunctor)  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+  if(extension!="raw"){
+    trace.error() << "Extension " << extension<< " not yet implemented in n dimension (only raw images are actually implemented in Nd." << std::endl;
+    throw dgtalio;
+  }else{
+    return RawWriter< TContainer >::exportRaw8 ( filename, anImage, aFunctor  );	
+  }
 
-return true;
+  return true;
 }
 
 
@@ -71,22 +67,22 @@ template <typename TContainer, typename TFunctor>
 inline
 bool
 DGtal::GenericWriter<TContainer, 3, TFunctor>::exporT(const std::string &filename, 
-							const TContainer &anImage, 
-							const TFunctor & aFunctor )  throw(DGtal::IOException){
-   DGtal::IOException dgtalio;
-   std::string extension = filename.substr(filename.find_last_of(".") + 1);
+						      const TContainer &anImage, 
+						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
-if(extension=="vol"){
-  return  VolWriter<TContainer,TFunctor>::exportVol( filename, anImage ,aFunctor);
+  if(extension=="vol"){
+    return  VolWriter<TContainer,TFunctor>::exportVol( filename, anImage ,aFunctor);
   }else if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
-  return   PGMWriter<TContainer, TFunctor>::exportPGM3D(filename, anImage, aFunctor);
-} else  if(extension=="raw"){
-return RawWriter< TContainer, TFunctor >::exportRaw8 ( filename, anImage,  aFunctor  );
-}else{
-trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
-throw dgtalio;
-}
-return false;
+    return   PGMWriter<TContainer, TFunctor>::exportPGM3D(filename, anImage, aFunctor);
+  } else  if(extension=="raw"){
+    return RawWriter< TContainer, TFunctor >::exportRaw8 ( filename, anImage,  aFunctor  );
+  }else{
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
+    throw dgtalio;
+  }
+  return false;
 }
 
 
@@ -95,21 +91,21 @@ template <typename TContainer, typename TFunctor >
 inline
 bool
 DGtal::GenericWriter<TContainer, 2, TFunctor>::exporT(const std::string &filename,
-							const TContainer &anImage,
-							const TFunctor & aFunctor )  throw(DGtal::IOException){
+						      const TContainer &anImage,
+						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
-   //Getting image extension
-   std::string extension = filename.substr(filename.find_last_of(".") + 1);
-   if(extension=="pgm"){
-       return PGMWriter<TContainer, TFunctor>::exportPGM(filename, anImage, aFunctor);
-    } if(extension=="raw"){
-      return RawWriter<TContainer, TFunctor>::exportRaw8(filename, anImage, aFunctor);
-    } else{
-     trace.error() << "Extension " << extension<< " not yet implemented in generic writer." << std::endl;
-     throw dgtalio;
-    }
+  //Getting image extension
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+  if(extension=="pgm"){
+    return PGMWriter<TContainer, TFunctor>::exportPGM(filename, anImage, aFunctor);
+  } if(extension=="raw"){
+    return RawWriter<TContainer, TFunctor>::exportRaw8(filename, anImage, aFunctor);
+  } else{
+    trace.error() << "Extension " << extension<< " not yet implemented in generic writer." << std::endl;
+    throw dgtalio;
+  }
 
-   return true;
+  return true;
 }
 
 
@@ -117,7 +113,7 @@ DGtal::GenericWriter<TContainer, 2, TFunctor>::exporT(const std::string &filenam
 template <typename TDomain, typename TValue >
 inline
 bool
-DGtal::operator>> (   ImageContainerBySTLVector<TDomain, TValue> & aContainer, const std::string & aFilename ) throw (DGtal::IOException){
+DGtal::operator>> ( const  ImageContainerBySTLVector<TDomain, TValue> & aContainer, const std::string & aFilename ) throw (DGtal::IOException){
   return DGtal::GenericWriter<ImageContainerBySTLVector<TDomain, TValue> >::exporT(aFilename, aContainer);   
 } 
 

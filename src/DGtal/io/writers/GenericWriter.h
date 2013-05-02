@@ -45,6 +45,7 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/images/ImageContainerBySTLMap.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,13 +54,39 @@ namespace DGtal
 
   /////////////////////////////////////////////////////////////////////////////
   // template class GenericWriter
-
+  /**
+   * Description of template class 'GenericWriter' <p>
+   * \brief Aim: Provide a mechanism to save image (2D or 3D) into file  with the best saver loader according to an filename (by parsing the extension).
+   *  
+   * The typical use is very simple:
+   * - First include the header of the generic reader (and StdDefs) and define image type:
+   @code 
+   #include "DGTal/io/readers/GenericWriter.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+   @endcode
+   - After contructing and filling an image (anImage2D or anImage3D), just save it with:
+   @code
+   anImage3D >> "aFilename.pgm3d";
+   anImage3D >> "aFilename.vol";
+   anImage2D >> "aFilename.pgm";
+   @endcode
+  
+  */
 
   template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TFunctor = DefaultFunctor >
   struct GenericWriter
   {
+    /**
+     * Export an  image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved. 
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
     static bool exporT(const std::string &filename, const TContainer &anImage,  
-			const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
   };
 
   /**
@@ -71,7 +98,10 @@ namespace DGtal
   {
 
     /**
-     * Export a volume image file. 
+     * Export a volume image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved. 
+     * @param aFunctor to apply image transformation before saving. 
      *
      **/
     static bool exporT(const std::string &filename,  const TContainer &anImage,
@@ -93,24 +123,42 @@ namespace DGtal
      **/
 
     static bool exporT(const std::string &filename, const TContainer &anImage,
-		        const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   }; 
 
 
   /**
-   *  'operator>>' for exporting an ImageContained.
+   *  'operator>>' for exporting an ImageContainerBySTLVector.
    *  This operator automatically selects the good method according to
    *  the filename extension (pgm, pgm3D, raw, vol).
    *  
-   * @param aContainer the mesh to be exported.
+   * @param aContainer the ImageContainerBySTLVector to be exported.
    * @param aFilename the filename of the file to be exported. 
    * @return true, if the export was successful. 
    */
   template <typename TDomain, typename TValue >
   bool
-  operator >> (  ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  operator >> ( const ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
   
+
+
+  /**
+   *  'operator>>' for exporting an ImageContainerBySTLMap.
+   *  This operator automatically selects the good method according to
+   *  the filename extension (pgm, pgm3D, raw, vol).
+   *  
+   * @param aContainer the ImageContainerBySTLMap to be exported.
+   * @param aFilename the filename of the file to be exported. 
+   * @return true, if the export was successful. 
+   */
+  template <typename TDomain, typename TValue >
+  bool
+  operator >> ( const ImageContainerBySTLMap<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  
+
+
+
 
 
 } // namespace DGtal

@@ -60,24 +60,25 @@ bool testGenericWriter()
   Image3D anImportedImage1 = DGtal::GenericReader<Image3D>::import(filenameImage1);  
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing PGM3D ... ";  
-  bool ok1 = DGtal::GenericWriter<Image3D>::exporT("testGenericWriter.pgm3d", anImportedImage1);
+  bool ok1 = anImportedImage1>> "testGenericWriter.pgm3d";
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing vol ... ";  
-  bool ok2 = DGtal::GenericWriter<Image3D>::exporT("testGenericWriter.vol", anImportedImage1);
+  bool ok2 = anImportedImage1 >> "testGenericWriter.vol";
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing raw ... ";  
-  bool ok3 = DGtal::GenericWriter<Image3D>::exporT("testGenericWriter.raw", anImportedImage1);
+  bool ok3 = anImportedImage1 >>"testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
 
   std::string filenameImage2 = testPath + "samples/contourS.pgm";    
 
   trace.info() << "Reading 2D image  ... ";  
   Image2D anImportedImage2 = DGtal::GenericReader<Image2D>::import(filenameImage2);  
+  trace.info() <<"[done]"  << std::endl; 
   trace.info() << "Testing writing pgm ... ";  
-  bool ok4 = DGtal::GenericWriter<Image2D>::exporT("testGenericWriter.pgm", anImportedImage2);
+  bool ok4 = anImportedImage2 >> "testGenericWriter.pgm";
   trace.info() <<"[done]"  << std::endl;
   trace.info() << "Testing writing raw ... ";  
-  bool ok5 = DGtal::GenericWriter<Image2D>::exporT("testGenericWriter.raw", anImportedImage2);
+  bool ok5 = anImportedImage2 >> "testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
 
 

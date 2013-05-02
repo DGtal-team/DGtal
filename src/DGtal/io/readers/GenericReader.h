@@ -74,9 +74,17 @@ namespace DGtal
   template <typename TContainer, int Tdim=TContainer::Point::dimension >
   struct GenericReader
   {
-    static TContainer import(const std::string &filenamen, 
+    /**
+     * Import a volume nd image file.  For the special format of raw
+     * image, the default parameter of the image size must be given in the optional function vector parameter (dimSpace) .
+     * @param filename the image filename to imported.
+     * @param dimSpace a vector containing the n dimensional image size. 
+     *
+     **/
+    static TContainer import(const std::string &filename, 
 			     std::vector<unsigned int> dimSpace= std::vector<unsigned int > () )  throw(DGtal::IOException);
   };
+
 
   /**
    * GenericReader
