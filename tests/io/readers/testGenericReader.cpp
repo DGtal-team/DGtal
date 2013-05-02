@@ -61,9 +61,10 @@ bool testGenericReader()
 
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
-  unsigned int size0Img1= anImportedImage1.domain().extent()[0];
-  unsigned int size1Img1= anImportedImage1.domain().extent()[1];
-  unsigned int size2Img1= anImportedImage1.domain().extent()[2];
+  DGtal::Z3i::Domain domain1 = anImportedImage1.domain(); 
+  unsigned int size0Img1= domain1.upperBound()[0]-domain1.lowerBound()[0]+1;
+  unsigned int size1Img1= domain1.upperBound()[1]-domain1.lowerBound()[1]+1;
+  unsigned int size2Img1= domain1.upperBound()[2]-domain1.lowerBound()[2]+1;
   DGtal::trace.info()<<"Vol image read: size[0]:" << size0Img1  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img1;
   DGtal::trace.info()<<"size[2]:  " << size2Img1 << std::endl;
@@ -71,9 +72,10 @@ bool testGenericReader()
   nb++;
   std::string filenameImage0 = testPath + "samples/test.longvol";    
   Image3D anImportedImage0= DGtal::GenericReader<Image3D>::import(filenameImage0);
-  unsigned int size0Img0= anImportedImage0.domain().extent()[0];
-  unsigned int size1Img0= anImportedImage0.domain().extent()[1];
-  unsigned int size2Img0= anImportedImage0.domain().extent()[2];
+  DGtal::Z3i::Domain domain0 = anImportedImage0.domain(); 
+  unsigned int size0Img0= domain0.upperBound()[0]-domain0.lowerBound()[0]+1;
+  unsigned int size1Img0= domain0.upperBound()[1]-domain0.lowerBound()[1]+1;
+  unsigned int size2Img0= domain0.upperBound()[2]-domain0.lowerBound()[2]+1;
   DGtal::trace.info()<<"Longvol image read: size[0]:" << size0Img0  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img0;
   DGtal::trace.info()<<"size[2]:  " << size2Img0 << std::endl;
@@ -81,9 +83,10 @@ bool testGenericReader()
   nb++;
   std::string filenameImage2 = testPath + "samples/cat10.pgm3d";    
   Image3D anImportedImage2= DGtal::GenericReader<Image3D>::import(filenameImage2);
-  unsigned int size0Img2= anImportedImage2.domain().extent()[0];
-  unsigned int size1Img2= anImportedImage2.domain().extent()[1];
-  unsigned int size2Img2= anImportedImage2.domain().extent()[2];
+  DGtal::Z3i::Domain domain2 = anImportedImage2.domain(); 
+  unsigned int size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
+  unsigned int size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
+  unsigned int size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
   DGtal::trace.info()<<"Pgm3D image read: size[0]:" << size0Img1  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img1;
   DGtal::trace.info()<<"size[2]:  " << size2Img1 << std::endl;;
@@ -92,8 +95,10 @@ bool testGenericReader()
 
   std::string filenameImage3 = testPath + "samples/contourS.pgm";    
   Image2D anImportedImage3= DGtal::GenericReader<Image2D>::import(filenameImage3);
-  unsigned int size0Img3= anImportedImage3.domain().extent()[0];
-  unsigned int size1Img3= anImportedImage3.domain().extent()[1];
+  DGtal::Z2i::Domain domain3 = anImportedImage3.domain(); 
+  unsigned int size0Img3= domain3.upperBound()[0]-domain3.lowerBound()[0]+1;
+  unsigned int size1Img3= domain3.upperBound()[1]-domain3.lowerBound()[1]+1;
+  
   DGtal::trace.info()<<"Pgm image read: size[0]:" << size0Img3  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img3     << std::endl;;
   nbok += (size0Img3==185 && size1Img3==85 ) ? 1 : 0; 
