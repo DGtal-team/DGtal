@@ -66,8 +66,13 @@ namespace DGtal
    Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
    @endcode
-  
-  */
+   *
+   * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
+   * @tparam Tdim the dimension of the container (by default given by the container).
+   *
+   *
+   *
+   */
 
 
 
