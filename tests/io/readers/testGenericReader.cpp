@@ -57,6 +57,8 @@ bool testGenericReader()
    
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,DGtal::uint64_t> Image3Dlong;
+
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
   unsigned int size0Img1= anImportedImage1.domain().extent()[0];
@@ -66,6 +68,16 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[1]:  " << size1Img1;
   DGtal::trace.info()<<"size[2]:  " << size2Img1 << std::endl;
   nbok += (size0Img1==40 && size1Img1==40 && size2Img1==40) ? 1 : 0; 
+  nb++;
+  std::string filenameImage0 = testPath + "samples/test.longvol";    
+  Image3D anImportedImage0= DGtal::GenericReader<Image3D>::import(filenameImage0);
+  unsigned int size0Img0= anImportedImage0.domain().extent()[0];
+  unsigned int size1Img0= anImportedImage0.domain().extent()[1];
+  unsigned int size2Img0= anImportedImage0.domain().extent()[2];
+  DGtal::trace.info()<<"Longvol image read: size[0]:" << size0Img0  ;
+  DGtal::trace.info()<<"size[1]:  " << size1Img0;
+  DGtal::trace.info()<<"size[2]:  " << size2Img0 << std::endl;
+  nbok += (size0Img0==16 && size1Img0==16 && size2Img0==16) ? 1 : 0; 
   nb++;
   std::string filenameImage2 = testPath + "samples/cat10.pgm3d";    
   Image3D anImportedImage2= DGtal::GenericReader<Image3D>::import(filenameImage2);

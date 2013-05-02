@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/readers/LongvolReader.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/readers/RawReader.h"
 #ifdef WITH_HDF5
@@ -79,6 +80,8 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
   
   if(extension=="vol"){
     return  VolReader<TContainer>::importVol( filename );
+  }else  if(extension=="longvol"){
+    return  LongvolReader<TContainer>::importLongvol( filename );
   }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
     return PNMReader<TContainer>::importPGM3D(filename);
   } else if(extension=="raw"){
