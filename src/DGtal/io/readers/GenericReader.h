@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
