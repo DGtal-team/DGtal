@@ -31,7 +31,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-#include "DGTal/io/readers/GenericReader.h"
+#include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigTest.h"
 

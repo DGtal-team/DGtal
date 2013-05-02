@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -97,6 +98,19 @@ namespace DGtal
   }; 
 
 
+  /**
+   *  'operator>>' for exporting an ImageContained.
+   *  This operator automatically selects the good method according to
+   *  the filename extension (pgm, pgm3D, raw, vol).
+   *  
+   * @param aContainer the mesh to be exported.
+   * @param aFilename the filename of the file to be exported. 
+   * @return true, if the export was successful. 
+   */
+  template <typename TDomain, typename TValue >
+  bool
+  operator >> (  ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  
 
 
 } // namespace DGtal
