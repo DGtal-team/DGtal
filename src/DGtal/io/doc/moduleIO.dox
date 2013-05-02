@@ -106,6 +106,14 @@ The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to automaticall
    anImage3D >> "aFilename.vol";
    anImage2D >> "aFilename.pgm";
    @endcode
+
+If the user want to use a less generic writer you can also use the exporT function:
+
+@code
+   GenericWriter<Image3D, TFunctor>::exporT("aFilename.pgm3d", anImage3D, aFunctor);
+   GenericWriter<Image2D, TFunctor>::exporT("aFilename.pgm", anImage2D, aFunctor);
+@endcode
+
   
 
 \subsection imagereaders Image Readers
