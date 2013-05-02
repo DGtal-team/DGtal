@@ -72,8 +72,13 @@ namespace DGtal
    anImage3D >> "aFilename.vol";
    anImage2D >> "aFilename.pgm";
    @endcode
-  
-  */
+
+   * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
+   * @tparam Tdim the dimension of the container (by default given by the container).
+   * @tparam TFunctor a functor type to apply image transformation before saving the image.
+   *
+   *
+   */
 
   template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TFunctor = DefaultFunctor >
   struct GenericWriter
