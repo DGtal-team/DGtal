@@ -18,7 +18,6 @@ ENDFOREACH(FILE)
 if (  WITH_VISU3D_QGLVIEWER )
    SET(DGTAL_TUTO_EXAMPLES_QGL_SRC
    shapeDTViewer
-   3dVolViewer	
    )
   FOREACH(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC}) 
    add_executable(${FILE} ${FILE})
