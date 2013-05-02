@@ -189,7 +189,7 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
     trace.error() << "PNMReader : can't read " << aFilename << std::endl;
     throw dgtalio;
   }
-  if ( str != "P3d" &&  str != "P3D"){
+  if ( str != "P3d" &&  str != "P3D"&&  str != "P2-3D" ){
     trace.error() << "PNMReader : No P3d format in " << aFilename << std::endl;
     throw dgtalio;
   }

@@ -47,7 +47,7 @@ namespace DGtal {
     DGtal::IOException dgtalio;
   
     std::ofstream out;
-    typename I::Domain::Vector ext = aImage.extent();
+    typename I::Domain::Vector ext = aImage.domain().extent();
     typename I::Domain domain = aImage.domain();
     typename I::Value val;
     

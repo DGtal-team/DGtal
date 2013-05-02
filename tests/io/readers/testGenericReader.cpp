@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/images/ImageContainerBySTLMap.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGTal/io/readers/GenericReader.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigTest.h"
@@ -53,10 +53,10 @@ bool testGenericReader()
   unsigned int nbok = 0;
   unsigned int nb = 0;
   
-  DGtal::trace.beginBlock ( "Testing 3D Image Reader" );
+  DGtal::trace.beginBlock ( "Testing 2D/3D Image Reader" );
    
-  typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
-  typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
+  typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
   std::string filenameImage1 = testPath + "samples/cat10.vol";    
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
   unsigned int size0Img1= anImportedImage1.domain().extent()[0];

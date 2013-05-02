@@ -45,7 +45,7 @@ RawWriter<I,C>::exportRaw8(const std::string & filename, const I & aImage,
 			   const Functor & aFunctor)
 {
   std::ofstream out;
-  typename I::Domain::Vector ext = aImage.extent();
+  typename I::Domain::Vector ext = aImage.domain().extent();
   typename I::Domain domain = aImage.domain();
   typename I::Value val;
   

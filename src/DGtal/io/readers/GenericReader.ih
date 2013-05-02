@@ -42,8 +42,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// IMPLEMENTATION of inline methods.
-///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline functions.
 
 
 
@@ -110,7 +109,7 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
   else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
 #ifdef WITH_MAGICK
     MagickReader<TContainer> reader;
-    Image img = reader.importImage( filename );  
+    TContainer img = reader.importImage( filename );  
 #else 
     trace.error() << "Extension " << extension<< " not yet implemented in DGtal but you can add Magick option to deal with this image type." << std::endl;
     throw dgtalio;
