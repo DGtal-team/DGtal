@@ -45,31 +45,31 @@ DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
                                                       const typename Point::UnsignedComponent dim,
                                                       const Point &lower,
                                                       const Point &upper) const
-{   
-  //Recurrence stop 
+{
+  //Recurrence stop
   if ( (upper[dim] - lower[dim]) <= NumberTraits<Abscissa>::ONE)
-    {
-      //testing upper
-      Value du = myMetric.operator()(u, upper); // )nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - upper )), p);
-      Value dv = myMetric.operator()(v, upper); // BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - upper )), p);
-      if (du < dv)
-        return upper[dim];
-      else
-        return lower[dim];
-    }
+  {
+    //testing upper
+    Value du = myMetric.operator()(u, upper);
+    Value dv = myMetric.operator()(v, upper);
+    if (du < dv)
+      return upper[dim];
+    else
+      return lower[dim];
+  }
   
   Point mid = lower;
   mid[dim] = (lower[dim] + upper[dim])/2;
   
-  Value duUpdated = myMetric.operator()(u, mid);//nu +  BasicMathFunctions::power( static_cast<Promoted>(abs( udim - mid )), p);
-  Value dvUpdated = myMetric.operator()(v, mid);//nv +  BasicMathFunctions::power( static_cast<Promoted>(abs( vdim - mid )), p);
-      
+  Value duUpdated = myMetric.operator()(u, mid);
+  Value dvUpdated = myMetric.operator()(v, mid);
+  
   //Recursive call
   if ( duUpdated < dvUpdated)
     return binarySearchHidden(u,v,dim,mid,upper);
   else
     return binarySearchHidden(u,v,dim,lower,mid);
-      
+  
 }
 //------------------------------------------------------------------------------
 template <typename TM>
@@ -112,8 +112,9 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
           //distances at uv+1
           Point p = startingPoint;
           p[dim] = uv + 1;
-          ddv = myMetric.operator()(v, p);//   )nv + BasicMathFunctions::power( static_cast<Promoted>(abs( v[dim] - uv -1)), p);
-          ddw = myMetric.operator()(w, p);//nw + BasicMathFunctions::power( static_cast<Promoted>(abs( w[dim] - uv -1)), p);
+          ddv = myMetric.operator()(v, p);
+          ddw = myMetric.operator()(w, p);
+          
           if (ddw < ddv)
             return true;
           else
