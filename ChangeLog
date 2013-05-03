@@ -1,3 +1,11 @@
+=== DGtal 0.7 ===
+
+ *Geometry Package*
+    - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
+      properties to a separable metric (model of CSeparableMetric)
+      which can be used in VoronoiMap/DistanceTransformation algorithms.
+
+
 === DGtal 0.6 ===
  
  *General*
