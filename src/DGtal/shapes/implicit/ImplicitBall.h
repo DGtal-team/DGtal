@@ -95,13 +95,7 @@ namespace DGtal
     inline
     Value operator()(const RealPoint &aPoint) const
     {
-		return NumberTraits<Integer>::castToDouble((const DGtal::int32_t)myRadius) - (aPoint - myCenter ).norm();
-    }
-    
-    inline
-    bool isInside(const RealPoint &aPoint) const
-    {
-      return (this->operator()(aPoint) > 0.0);
+        return myRadius - (aPoint - myCenter ).norm();
     }
     
     inline

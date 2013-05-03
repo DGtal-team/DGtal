@@ -71,25 +71,38 @@ bool testEuclideanShapesDecorator()
   typedef EuclideanShapesMinus< ShapeA, ShapeA > Minus;
   Minus s_minus ( shapeA, shapeC );
 
-  nbok += s_union.isInside( RealPoint( -5.1, 0.0 )) ? 0 : 1;
-  nbok += s_union.isInside( RealPoint( 0.0, 0.0 )) ? 1 : 0;
-  nbok += s_union.isInside( RealPoint( 4.6, 0.0 )) ? 0 : 1;
-  nbok += s_union.isInside( RealPoint( 4.5, 0.0 )) ? 1 : 0;
-  nbok += s_union.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
+
+  nbok += (( s_union.orientation( RealPoint( -5.1, 0.0 )) == INSIDE )
+          || ( s_union.orientation( RealPoint( -5.1, 0.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_union.orientation( RealPoint( 0.0, 0.0 )) == INSIDE )
+          || ( s_union.orientation( RealPoint( 0.0, 0.0 )) == ON  ))? 1 : 0;
+  nbok += (( s_union.orientation( RealPoint( 4.6, 0.0 )) == INSIDE )
+          || ( s_union.orientation( RealPoint( 4.6, 0.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_union.orientation( RealPoint( 4.5, 0.0 )) == INSIDE )
+          || ( s_union.orientation( RealPoint( 4.5, 0.0 )) == ON  ))? 1 : 0;
+  nbok += (( s_union.orientation( RealPoint( -5.0, 0.0 )) == INSIDE )
+          || ( s_union.orientation( RealPoint( -5.0, 0.0 )) == ON  ))? 1 : 0;
 
 
+  nbok += (( s_intersec.orientation( RealPoint( -2.6, 0.0 )) == INSIDE )
+          || ( s_intersec.orientation( RealPoint( -2.6, 0.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_intersec.orientation( RealPoint( 2.5, 0.0 )) == INSIDE )
+          || ( s_intersec.orientation( RealPoint( 2.5, 0.0 )) == ON  ))? 1 : 0;
+  nbok += (( s_intersec.orientation( RealPoint( 2.6, 0.0 )) == INSIDE )
+          || ( s_intersec.orientation( RealPoint( 2.6, 0.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_intersec.orientation( RealPoint( 0.0, 2.5 )) == INSIDE )
+          || ( s_intersec.orientation( RealPoint( 0.0, 2.5 )) == ON  ))? 0 : 1;
 
-  nbok += s_intersec.isInside( RealPoint( -2.6, 0.0 )) ? 0 : 1;
-  nbok += s_intersec.isInside( RealPoint( 2.5, 0.0 )) ? 1 : 0;
-  nbok += s_intersec.isInside( RealPoint( 2.6, 0.0 )) ? 0 : 1;
-  nbok += s_intersec.isInside( RealPoint( 0.0, 2.5 )) ? 0 : 1;
 
+  nbok += (( s_minus.orientation( RealPoint( -5.0, 0.0 )) == INSIDE )
+          || ( s_minus.orientation( RealPoint( -5.0, 0.0 )) == ON  ))? 1 : 0;
+  nbok += (( s_minus.orientation( RealPoint( -1.0, 0.0 )) == INSIDE )
+          || ( s_minus.orientation( RealPoint( -1.0, 0.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_minus.orientation( RealPoint( 0.0, 2.0 )) == INSIDE )
+          || ( s_minus.orientation( RealPoint( 0.0, 2.0 )) == ON  ))? 0 : 1;
+  nbok += (( s_minus.orientation( RealPoint( -2.6, 0.0 )) == INSIDE )
+          || ( s_minus.orientation( RealPoint( -2.6, 0.0 )) == ON  ))? 1 : 0;
 
-
-  nbok += s_minus.isInside( RealPoint( -5.0, 0.0 )) ? 1 : 0;
-  nbok += s_minus.isInside( RealPoint( -1.0, 0.0 )) ? 0 : 1;
-  nbok += s_minus.isInside( RealPoint( 0.0, 2.0 )) ? 0 : 1;
-  nbok += s_minus.isInside( RealPoint( -2.6, 0.0 )) ? 1 : 0;
 
   nb = 13;
 
