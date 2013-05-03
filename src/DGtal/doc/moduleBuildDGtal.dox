@@ -46,19 +46,25 @@ To build DGtal in is full configuration, you need these dependencies too:
 - \e insighttoolkit (ITK).
 
 If you want to generate the documentation, you would need:
-- \e doxygen >= 1.8.0,
+- \e doxygen >= 1.8.0, 
 - \e graphviz.
 
 
 \subsection linux Build on Linux-based distributions
 
-From a clean Ubuntu installation, you can download and install all
-dependencies using:
+From a clean Ubuntu installation, if you want to build DGtal with all
+dependencies, you may have to  download and install the following packages:
 @code
 sudo apt-get install cmake g++  libboost-dev libboost-program-options-dev
 sudo apt-get install libgmp-dev libcairo2-dev libqglviewer-qt4-dev
 libgraphicsmagick++1-dev libinsighttoolkit3-dev doxygen graphviz
 @endcode
+\warning Note that on the actual Debian linux distribution (version 6)  you need to install the boost library from the main official site (http://www.boost.org/users/download/) since the full debian boost package is actually not given. 
+
+To build DGtal from the source archive, we use the CMake tool to
+generate a Makefile or a project file for various IDE (KDevelop,
+Xcode, Codeblock...) 
+
 
 An important feature of cmake is the "out-of-source" build
 process. Let us suppose that DGtal sources are in the DGTALSOURCES
@@ -89,43 +95,20 @@ sudo make install
 
 \subsection macos Build on Mac OS X
 
-First of all,
-
-- \e download and install Xcode : <a href="https://developer.apple.com/xcode/">https://developer.apple.com/xcode/</a>
-- \e with recent version of Xcode (for example 4.3.x) you need then to install the 'Command Line Tools' for Xcode. You can install them from inside Xcode's Download preferences. Finally, you also need to do that command:
-@code
-sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer
-@endcode
-
-To install DGtal dependencies, we can use any of the available package managers (MacPorts,
-Fink, Homebrew). However, for DGtal, we recommend to use Homebrew (simpler, faster, ...):
-
-- \e download and install <a href="http://mxcl.github.com/homebrew/">Homebrew</a> and then update it:
-@code
-/usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
-brew update
-@endcode
-
-From a clean Mac OS X Lion (10.7) installation, you first need to do that to install all the dependencies:
-@code
-brew install cmake doxygen graphviz boost
-brew install gmp cairo libqglviewer graphicsmagick
-@endcode
-
-Finally, for now, ITK is not available via Homebrew so you have to download <a href="http://www.itk.org/ITK/resources/software.html">this package</a> and then do:
-@code
-tar zxvf InsightToolkit-4.1.0.tar.gz
-cd InsightToolkit-4.1.0
-mkdir build
-cd build
-cmake ..
-make
-sudo make install
-@endcode
-\b here \b 4.1.0 is an example but you may need to adjust the version number...
-
 Then, since recent Mac OS systems are unix-like operating systems, the
-easiest way to compile DGtal with cmake/make is to follow Linux-based instructions.
+easiest way to compile DGtal with cmake/make is to follow Linux-based
+instructions from source code archive. 
+
+If you use  <a href="http://mxcl.github.com/homebrew/">Homebrew</a>
+package manager on Mac, DGtal is available in the package repository:
+@code
+brew install dgtal
+@endcode
+and to get build options:
+@code
+brew options dgtal
+@endcode
+
 
 
 \subsection win Build on Windows / Visual Studio
@@ -260,9 +243,14 @@ Beside these options, user can also specify these options:
 - \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: ON)
 - \e BUILD_TESTING (ON/OFF): to build the test suite (default: ON)
 
+- \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
+ (default: OFF). If set to ON, verbose
+ messages are traced out.
+
 - \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
- (default: OFF). If set to ON and in \b Debug build type, verbose
+ (default: OFF). If set to ON, verbose
 debug messages are traced out.
+
 
 - \e \b BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: ON) but \b must be \b OFF actually on \b Windows!
 */

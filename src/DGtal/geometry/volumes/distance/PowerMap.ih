@@ -29,7 +29,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#ifdef VERBOSE
 #include <boost/lexical_cast.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,9 +103,11 @@ inline
 void
 DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 {
+#ifdef VERBOSE
   std::string title = "Powermap dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
-  
+#endif
+
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
   
   //We setup the subdomain iterator
@@ -139,8 +143,9 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
     computeOtherStep1D ( *it, dim);
 #endif
 
+#ifdef VERBOSE
   trace.endBlock();
-  
+#endif
 }
 
 // //////////////////////////////////////////////////////////////////////:

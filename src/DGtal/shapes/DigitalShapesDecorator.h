@@ -41,6 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/ConstAlias.h"
 
 #include "DGtal/shapes/CDigitalBoundedShape.h"
 #include "DGtal/shapes/CDigitalOrientedShape.h"
@@ -74,12 +75,12 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesUnion( const ShapeA & a, const ShapeB & b )
-    : myShapeA(a),
-      myShapeB(b)
+  DigitalShapesUnion( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -87,22 +88,11 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
-
-  /**
-   * @param p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return myShapeA( p ) || myShapeB( p );
-  }
 
   /**
    * @return the lower bound of the shape bounding box.
@@ -125,17 +115,17 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
-      if (  myShapeA.orientation( p ) == INSIDE ||  myShapeB.orientation( p ) == INSIDE )
+    if (( myShapeA.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == INSIDE ))
       {
           return INSIDE;
       }
-      else if ( myShapeA.orientation( p ) == ON ||  myShapeB.orientation( p ) == ON )
+    else if (( myShapeA.orientation( p ) == ON ) || ( myShapeB.orientation( p ) == ON ))
       {
           return ON;
       }
@@ -223,12 +213,12 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesIntersection( const ShapeA & a, const ShapeB & b )
-    : myShapeA(a),
-      myShapeB(b)
+  DigitalShapesIntersection( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -236,21 +226,11 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
-  /**
-   * @param p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return myShapeA( p ) && myShapeB( p );
-  }
 
   /**
    * @return the lower bound of the shape bounding box.
@@ -273,32 +253,26 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
-      if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == INSIDE || myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
-      }
-      else if ( myShapeB.orientation( p ) == ON )
-      {
-        if ( myShapeA.orientation( p ) == INSIDE )
-        {
-          return ON;
-        }
-      }
-      else if ( myShapeA.orientation( p ) == INSIDE && myShapeB.orientation( p ) == INSIDE )
-      {
-        return INSIDE;
-      }
+    if (( myShapeA.orientation( p ) == ON ) && ( myShapeB.orientation( p ) != OUTSIDE ))
+    {
+      return ON;
+    }
+    else if (( myShapeB.orientation( p ) == ON ) && ( myShapeA.orientation( p ) != OUTSIDE ))
+    {
+      return ON;
+    }
+    else if (( myShapeA.orientation( p ) == INSIDE ) && ( myShapeB.orientation( p ) == INSIDE ))
+    {
+      return INSIDE;
+    }
 
-      return OUTSIDE;
+    return OUTSIDE;
   }
 
 
@@ -383,12 +357,12 @@ public:
   /**
     * Constructor.
     *
-    * @param a a model of CDigitalBoundedShape and CDigitalOrientedShape
-    * @param b a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] a a model of CDigitalBoundedShape and CDigitalOrientedShape
+    * @param[in] b a model of CDigitalBoundedShape and CDigitalOrientedShape
     */
-  DigitalShapesMinus( const ShapeA & a, const ShapeB & b )
-    : myShapeA(a),
-      myShapeB(b)
+  DigitalShapesMinus( ConstAlias< ShapeA > a, ConstAlias< ShapeB > b )
+    : myShapeA( a ),
+      myShapeB( b )
   {
     Point shapeALowerBoundary = myShapeA.getLowerBound();
     Point shapeBLowerBoundary = myShapeB.getLowerBound();
@@ -396,22 +370,11 @@ public:
     Point shapeBUpperBoundary = myShapeB.getUpperBound();
     for ( unsigned int i = 0; i < myLowerBound.size(); ++i )
     {
-      myLowerBound[i] = std::min( shapeALowerBoundary[i], shapeBLowerBoundary[i] );
-      myUpperBound[i] = std::max( shapeAUpperBoundary[i], shapeBUpperBoundary[i] );
+      myLowerBound[ i ] = std::min( shapeALowerBoundary[ i ], shapeBLowerBoundary[ i ] );
+      myUpperBound[ i ] = std::max( shapeAUpperBoundary[ i ], shapeBUpperBoundary[ i ] );
     }
   }
 
-
-  /**
-   * @param p any point in the digital plane.
-   *
-   * @return 'true' if the point is inside the shape, 'false' if it
-   * is strictly outside.
-   */
-  bool operator()( const Point & p ) const
-  {
-    return myShapeA( p ) && !myShapeB.orientation(p) == INSIDE;
-  }
 
   /**
    * @return the lower bound of the shape bounding box.
@@ -434,36 +397,17 @@ public:
   /**
    * Return the orientation of a point with respect to a shape.
    *
-   * @param p input point
+   * @param[in] p input point
    *
-   * @return the orientation of the point (<0 means inside, ...)
+   * @return the orientation of the point (0 = INSIDE, 1 = ON, 2 = OUTSIDE)
    */
-  Orientation orientation( const Point & p) const
+  Orientation orientation( const Point & p ) const
   {
-      if ( myShapeA.orientation( p ) == INSIDE )
-      {
-        if ( myShapeB.orientation( p ) == ON )
-        {
-          return ON;
-        }
-        else if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return INSIDE;
-      }
-      else if ( myShapeA.orientation( p ) == ON )
-      {
-        if ( myShapeB.orientation( p ) == INSIDE )
-        {
-          return OUTSIDE;
-        }
-
-        return ON;
-      }
-
+    if (( myShapeB.orientation( p ) == INSIDE ) || ( myShapeB.orientation( p ) == ON ))
+    {
       return OUTSIDE;
+    }
+    return myShapeA.orientation( p );
   }
 
 

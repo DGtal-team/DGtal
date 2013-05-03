@@ -115,7 +115,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   }
 
   std::vector< Quantity > resultsIICurvature;
-  back_insert_iterator< std::vector< Quantity > > resultsIICurvatureIterator( resultsIICurvature );
+  std::back_insert_iterator< std::vector< Quantity > > resultsIICurvatureIterator( resultsIICurvature );
 
   VisitorRange range( new Visitor( digSurfShape, *digSurfShape.begin() ) );
   SurfelConstIterator abegin = range.begin();
@@ -151,7 +151,7 @@ bool testIntegralInvariantCurvatureEstimator2D ( double h, double delta )
   trueCurvatureEstimator.attach ( &shape );
   trueCurvatureEstimator.init( h, r.begin(), r.end() );
   std::vector< MyTrueLocalEstimator::Quantity > resultsTrueCurvature;
-  back_insert_iterator< std::vector< MyTrueLocalEstimator::Quantity > > resultsTrueCurvatureIterator( resultsTrueCurvature );
+  std::back_insert_iterator< std::vector< MyTrueLocalEstimator::Quantity > > resultsTrueCurvatureIterator( resultsTrueCurvature );
   trueCurvatureEstimator.eval( r.begin(), r.end(), resultsTrueCurvatureIterator );
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature and true local 2D curvature ..." );
@@ -184,10 +184,10 @@ int main( int argc, char** argv )
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
-  trace.info() << endl;
+  trace.info() << std::endl;
 
   bool res = testIntegralInvariantCurvatureEstimator2D( 0.05, 0.00334 ); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();
   return res ? 0 : 1;
 }

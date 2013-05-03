@@ -95,7 +95,7 @@ int main()
   //searching for one boundary element
   Z2i::SCell bel = Surfaces<Z2i::KSpace>::findABel( ks, dig, 1000 );
   //tracking
-  vector<Z2i::Point> boundaryPoints;
+  std::vector<Z2i::Point> boundaryPoints;
   Surfaces<Z2i::KSpace>
     ::track2DBoundaryPoints( boundaryPoints, ks, sAdj, dig, bel );
   //! [shapeGridCurveEstimator-tracking]
@@ -120,7 +120,7 @@ int main()
   DSSLengthEstimator< Range::ConstIterator > DSSlength;
   DSSlength.init( h, r.begin(), r.end(), c.isClosed() );
   double length1 = DSSlength.eval();
-  trace.info() << "Length (h=" << h << "): " << length1 << endl; 
+  trace.info() << "Length (h=" << h << "): " << length1 << std::endl; 
   //! [shapeGridCurveEstimator-lengthEstimation]
 
 //@TODO correct init method of trueLengthEstimator (remove &flower)
@@ -132,7 +132,7 @@ int main()
     Length  >  trueLengthEstimator;
   trueLengthEstimator.init( h, r.begin(), r.end(), &flower, c.isClosed());
   double trueLength = trueLengthEstimator.eval(); 
-  trace.info() << "ground truth: " << trueLength << endl; 
+  trace.info() << "ground truth: " << trueLength << std::endl; 
   //! [shapeGridCurveEstimator-trueLengthEstimation]
 
   //! [shapeGridCurveEstimator-higher]
@@ -153,7 +153,7 @@ int main()
   //estimate length
   DSSlength.init( h, r2.begin(), r2.end(), c.isClosed() );
   double length2 = DSSlength.eval();
-  trace.info() << "Length (h=" << h << "): " << length2 << endl;  
+  trace.info() << "Length (h=" << h << "): " << length2 << std::endl;  
   //! [shapeGridCurveEstimator-higher]
   
   aBoard.clear(); 
