@@ -447,7 +447,7 @@ namespace DGtal
    *
    */
 template <typename TPointDimN>
-  class AddOneDimensionDomainFunctor
+class AddOneDimensionDomainFunctor
   {
   public:
     typedef TPointDimN PointDimN;

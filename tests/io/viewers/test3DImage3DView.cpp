@@ -89,10 +89,10 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
  
 std::string filename =  testPath + "samples/cat10.vol";
-
+ 
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
 
-viewer << image3d;
+  viewer << image3d;
 
 
  viewer << p1 << p2 << p3;
