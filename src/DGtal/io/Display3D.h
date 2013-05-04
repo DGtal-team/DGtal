@@ -274,7 +274,7 @@ namespace DGtal
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
       template <typename ImageType>
-      GrayScaleImage(  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
+      GrayScaleImage( const ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]+1;
@@ -307,7 +307,7 @@ namespace DGtal
        *  @param zTranslation: the image translation in the  z direction (default 0).
        **/
       template <typename ImageType>
-      void updateImageDataAndParam( ImageType & image, 
+      void updateImageDataAndParam(const ImageType & image, 
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
 	assert ( (image.domain().upperBound())[0]+1== myImageWidth && (image.domain().upperBound())[1]+1== myImageHeight);
 

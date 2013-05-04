@@ -41,7 +41,7 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 
-
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
@@ -304,9 +304,27 @@ namespace DGtal
     // IncidentPointsRange
 
 
-    // ImageContainer  (2D and 3D)
-    template <typename ImageType >
-    static void draw( Display3D & display,   ImageType &anImage);
+    // ImageContainer  (2D)
+    template <typename TValue>
+    static void draw( Display3D & display, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  &anImage);
+
+    template <typename TValue>
+    static void draw( Display3D & display, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  &anImage);
+
+
+    // ImageContainer  (3D)
+    template <typename TValue  >
+    static void draw( Display3D & display, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  &anImage);
+
+    template <typename TValue  >
+    static void draw( Display3D & display, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  &anImage);
+
+    template < typename TImageType3D > 
+    static void
+    drawImage3D( Display3D & display, const TImageType3D anImage3D);
+
+
+    
 
     //    template <typename ImageType >
     //static void draw( Display3D & display,   ImageType &anImage);
