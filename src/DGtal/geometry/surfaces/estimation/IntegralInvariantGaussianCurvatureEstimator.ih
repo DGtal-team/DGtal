@@ -376,7 +376,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 2>::e
                                                                                       OutputIterator & result )
 {
   std::vector<Quantity> quantities;
-  back_insert_iterator< std::vector< double > > quantitiesIterator( quantities );
+  std::back_insert_iterator< std::vector< double > > quantitiesIterator( quantities );
   myConvolver.eval ( itb, ite, quantitiesIterator );
 
   Quantity measure(0);
@@ -402,7 +402,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
   k1 = k2 = Quantity(0);
 
   std::vector< Matrix3x3 > vCovarianceMatrix;
-  back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
+  std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
   myConvolver.evalCovarianceMatrix ( itb, ite, coMatrixIterator );
 
   Matrix3x3 currentMatrix;
@@ -452,7 +452,7 @@ DGtal::IntegralInvariantGaussianCurvatureEstimator<TKSpace, TShapeFunctor, 3>::e
   k1 = k2 = Quantity(0);
 
   std::vector< Matrix3x3 > vCovarianceMatrix;
-  back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
+  std::back_insert_iterator< std::vector< Matrix3x3 > > coMatrixIterator( vCovarianceMatrix );
   myConvolver.evalCovarianceMatrix ( itb, ite, coMatrixIterator );
 
   Matrix3x3 currentMatrix;

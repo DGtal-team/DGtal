@@ -36,6 +36,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/ConstImageAdapter.h"
 #include "ConfigExamples.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -46,25 +47,32 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
-  typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
+   typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
+   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
+   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+   				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+   DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(2);
+   // Importing a 3D image 
+   std::string filename = examplesPath + "samples/lobster.vol";
+   Image3D image = VolReader<Image3D>::importVol( filename ); 
     
-  trace.beginBlock ( "Example extract2DImagesFrom3D" );
-
-  // Importing a 3D image 
-  std::string filename = examplesPath + "samples/lobster.vol";
-  Image3D image = VolReader<Image3D>::importVol( filename ); 
-
-  // Extracting 2D slices ... and export them in the pgm format.
-  for (unsigned int i=0; i<55; i+=10){
-    std::stringstream name;
-    name << "lobsterSliceZ_"  << i << ".pgm";
-    Image2D slice2D_Z = DGtal::extractLowerDimImage<Image3D, Image2D> (image, 2, i);
-    PGMWriter<Image2D>::exportPGM(name.str(), slice2D_Z);
-  }
-
-  trace.endBlock();
-  return 0;
+   DGtal::Z2i::Domain domain((invFunctor.operator()(image.domain().lowerBound())), 
+			     (invFunctor.operator()(image.domain().upperBound())));
+   DGtal::DefaultFunctor idV;
+    
+   trace.beginBlock ( "Example extract2DImagesFrom3D" );
+   
+   // Extracting 2D slices ... and export them in the pgm format.
+   for (unsigned int i=0; i<30; i+=10){
+     std::stringstream name;
+     name << "lobsterSliceZ_"  << i << ".pgm";
+     DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor(2, i);
+     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
+     PGMWriter<SliceImageAdapter>::exportPGM(name.str(), sliceImageZ);
+   }
+   
+   // trace.endBlock();
+   return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
