@@ -60,6 +60,15 @@ DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFun
 }
 
 
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+inline
+std::string
+DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>:: className() const
+{
+  return "ConstImageAdapter";  
+}
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //

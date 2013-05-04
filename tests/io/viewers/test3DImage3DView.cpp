@@ -88,13 +88,26 @@ int main( int argc, char** argv )
  Point p2( 125, 188, 0 );
  Point p3( 30, 30, 30 );
  
-std::string filename =  testPath + "samples/cat10.vol";
+ std::string filename =  testPath + "samples/cat10.vol";
  
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
+ 
+ viewer << image3d;
 
-  viewer << image3d;
-
-
+ // Extract some slice images:
+ // Get the 2D domain of the slice:
+  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(2);
+  DGtal::Z2i::Domain domain2D((invFunctor.operator()(image3d.domain().lowerBound())),
+			    (invFunctor.operator()(image3d.domain().upperBound())));
+  
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+				    Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+  DGtal::DefaultFunctor idV;
+  const DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorY(2, 5);
+  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorY, idV);
+  viewer << sliceImageZ;
+  
+ 
  viewer << p1 << p2 << p3;
  viewer << Display3D::updateDisplay;
 
