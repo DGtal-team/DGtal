@@ -53,12 +53,18 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Mesh
   /**
-   * Description of template class 'Mesh' <p> \brief Aim:
-   * This class is defined to represent a surface mesh through a set a
-   * vertex and a set of faces represented by its vertex index. By
-   * default it does not memorize the color Face and all faces will
-   * have the white color. 
+   * Description of template class 'Mesh' <p> \brief Aim: This class
+   * is defined to represent a surface mesh through a set a vertex and
+   * a set of faces represented by its vertex index.  By using the
+   * default constructor, the mesh does not store color information
+   * (can be done by setting the default constructor parameter
+   * saveFaceColor to true).
    *
+   * The mesh object store explicitly each vertex and each face are represented with the list of point index.   
+   *
+   * @note This class is a preliminary version of a mesh strucuture
+   * (the method to access neigborhing facets or to a given facet are
+   * not yet given)
    *
    * This class was defined to import and display a mesh from different formats like OFF file format. 
    * Since it realized the concept of CDrawableWithDisplay3D we can display an Mesh with a Display3D object:
@@ -77,7 +83,7 @@ namespace DGtal
    *
    * 
    *
-   * @see  MeshReader MeshWriter meshFromOFF.
+   * @see  MeshReader MeshWriter  .
    *
    */
   template <typename TPoint >
@@ -93,11 +99,20 @@ namespace DGtal
 
     typedef std::vector<unsigned int> MeshFace;
     
-
     
-    
+    /**
+     * Define the type to store each mesh vertex. 
+     **/
     typedef  std::vector<TPoint> VertexStorage; 
+    
+    /**
+     * Define the type to store the faces of the mesh. 
+     **/
     typedef  std::vector<MeshFace> FaceStorage; 
+
+    /**
+     * Define the type to store the color associated to each face
+     **/
     typedef  std::vector<DGtal::Color> ColorStorage; 
      
 
@@ -107,9 +122,9 @@ namespace DGtal
   public:
     /**
      * Constructor.
-     * By default the constructed mesh does not contain nor store color information about the mesh.
+     * By default the constructed mesh does not store color information about the mesh.
      * If you want to include color in the Mesh object you have to set the constructor parameter saveFaceColor to true. 
-     * 
+     *
      * @param saveFaceColor used to memorize the color of a face (default= false) 
      */
     Mesh(bool saveFaceColor=false);    
@@ -221,8 +236,8 @@ namespace DGtal
 
 
     /**
-     * Return an iterator pointing to the first vertex of the mesh.  
-     *
+     * @return an iterator pointing to the first vertex of the mesh.  
+     * 
      **/
     
     typename VertexStorage::const_iterator VertexBegin() const;
@@ -230,7 +245,7 @@ namespace DGtal
 
 
     /**
-     * Return an iterator pointing after the end of the last vertex of the mesh.
+     * @return an iterator pointing after the end of the last vertex of the mesh.
      *
      **/
     
@@ -238,7 +253,7 @@ namespace DGtal
     
     
     /**
-     * Return an iterator pointing to the first face of the mesh.  
+     * @return an iterator pointing to the first face of the mesh.  
      *
      **/
     
@@ -247,7 +262,7 @@ namespace DGtal
 
 
     /**
-     * Return an iterator pointing after the end of the last face of the mesh.
+     * @return an iterator pointing after the end of the last face of the mesh.
      *
      **/
     
