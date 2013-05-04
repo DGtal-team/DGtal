@@ -14,9 +14,6 @@ FIND_PACKAGE(Boost 1.46.0)
 if ( Boost_FOUND )
   message(STATUS "Boost  found.")
   include_directories( ${Boost_INCLUDE_DIRS} )
-  SET(DGtalLibDependencies ${DGtalLibDependencies} 
-     ${Boost_LIBRAIRIES} )
-   SET(DGtalLibInc ${Boost_INCLUDE_DIRS})
 endif( Boost_FOUND )
 
 # -----------------------------------------------------------------------------
