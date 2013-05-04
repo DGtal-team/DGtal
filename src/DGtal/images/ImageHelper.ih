@@ -30,6 +30,8 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 #include <vector>
+#include <iostream>
+#include "DGtal/kernel/PointVector.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -350,57 +352,8 @@ DGtal::findAndGetValue(const I& aImg, const S& aSet,
 }
 
 
-//------------------------------------------------------------------------------
-template<typename TImageTypeDimN, typename TImageTypeDimNInf>
-inline
-TImageTypeDimNInf 
-DGtal::extractLowerDimImage(const TImageTypeDimN & aImg, unsigned int dimRemoved, unsigned int index){
-  BOOST_CONCEPT_ASSERT(( CImage<TImageTypeDimN> )); 
-  BOOST_CONCEPT_ASSERT(( CImage<TImageTypeDimNInf> )); 
-  ASSERT(TImageTypeDimN::dimension >= dimRemoved);
-  ASSERT(TImageTypeDimN::dimension == TImageTypeDimNInf::dimension +1);
-  
-  typedef typename TImageTypeDimN::Domain DomainND; 
-  typedef typename TImageTypeDimN::Value ValueND; 
-  typedef typename TImageTypeDimN::Point PointND;
 
-  typedef typename TImageTypeDimNInf::Domain DomainNInfD; 
-  typedef typename TImageTypeDimNInf::Value ValueNInfD; 
-  typedef typename TImageTypeDimNInf::Point PointNInfD;
 
-  typename TImageTypeDimN::Domain::Vector ext = aImg.extent();
-  DomainND imageSrcDomain = aImg.domain();
-
-  // Creation of the new domain of N-1 dimension: 
-  typename TImageTypeDimN::Point upperPoint = imageSrcDomain.upperBound();
-  typename TImageTypeDimN::Point lowerPoint = imageSrcDomain.lowerBound();
-  typename TImageTypeDimN::Point startPoint = imageSrcDomain.lowerBound();
-  startPoint[dimRemoved]= index;
-  unsigned int dimension = upperPoint.size();
-  PointNInfD upperPointNinfD; 
-  PointNInfD lowerPointNinfD; 
-  unsigned int pos=0;
-  std::vector<unsigned int > vectDims;
-  for(unsigned int i=0; i<dimension; i++){
-    if(i!=dimRemoved){
-      vectDims.push_back(i);
-      upperPointNinfD[pos]= upperPoint[i];
-      lowerPointNinfD[pos]= lowerPoint[i];
-      pos++;
-    }
-  }
-  
-  DomainNInfD domainInf(lowerPointNinfD, upperPointNinfD) ; 
-  TImageTypeDimNInf extractedImage(domainInf);
-  typename TImageTypeDimNInf::Domain::ConstIterator itRes = extractedImage.domain().begin();
-  for(typename DomainND::ConstSubRange::ConstIterator it = aImg.domain().subRange(vectDims, startPoint).begin(); 
-      it!= aImg.domain().subRange(vectDims, startPoint).end(); it++){
-    extractedImage.setValue( *itRes, aImg(*it));
-    itRes++;
-  }
-  
-  return extractedImage;
-}
 
 
 
