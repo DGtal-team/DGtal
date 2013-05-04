@@ -306,7 +306,10 @@ namespace DGtal
 
     // ImageContainer  (2D and 3D)
     template <typename ImageType >
-    static void draw( Display3D & display, const ImageType &anImage);
+    static void draw( Display3D & display,   ImageType &anImage);
+
+    //    template <typename ImageType >
+    //static void draw( Display3D & display,   ImageType &anImage);
     // ImageContainer  (2D and 3D)
 
 
