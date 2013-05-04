@@ -110,7 +110,7 @@ namespace DGtal
      */
     static bool exportPGM(const std::string & filename, const Image &aImage, 
 			  const Functor & aFunctor = Functor(),  
-			  bool saveASCII=false, bool topbotomOrder=false);
+			  bool saveASCII=false, bool topbotomOrder=true);
   
 
     /** 
