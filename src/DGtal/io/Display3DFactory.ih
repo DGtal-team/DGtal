@@ -29,7 +29,7 @@
 
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"
-#include "DGtal/images/ConstImageAdapter.h"
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
@@ -1245,6 +1245,15 @@ DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLMap
 }
 
 
+template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,TNewDomain, TFunctorD, 
+			       TNewValue, TFunctorValue>  &anImage){
+   DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+   display.addGrayScaleImage(aGSImage);
+}
+
+
 
 template <typename TValue  >
 inline
@@ -1273,18 +1282,19 @@ void
 DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D anImage3D){
 
   typedef  TImageType3D Image3D;
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(1);
 
+  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(1);
   DGtal::Z2i::Domain domain((invFunctor.operator()(anImage3D.domain().lowerBound())),
 			    (invFunctor.operator()(anImage3D.domain().upperBound())));
   
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
 				   typename Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
-
   DGtal::DefaultFunctor idV;
-  
   const DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorY(1, 0);
   SliceImageAdapter sliceImageY(anImage3D, domain, aSliceFunctorY, idV);
+
+
+
   DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, DGtal::Display3D::yDirection);
   display.addGrayScaleImage(aGSImageYf);
   

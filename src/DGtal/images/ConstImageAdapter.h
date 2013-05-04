@@ -229,6 +229,12 @@ public:
         return (myImagePtr->isValid() );
     }
 
+  
+    /**
+     * @return the style name used for drawing this object.
+     */
+    std::string className() const;
+
 
     /**
      * Returns the pointer on the Image container data.

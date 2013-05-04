@@ -59,7 +59,7 @@
 #include "DGtal/io/colormaps/CColorMap.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
-
+#include "DGtal/images/ConstImageAdapter.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -304,31 +304,39 @@ namespace DGtal
     // IncidentPointsRange
 
 
-    // ImageContainer  (2D)
+    // ImageContainerBySTLVector  (2D)
     template <typename TValue>
     static void draw( Display3D & display, const  ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  &anImage);
+    // ImageContainerBySTLVector  (2D)
 
+    // ImageContainerBySTLMap  (2D)
     template <typename TValue>
     static void draw( Display3D & display, const  ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  &anImage);
+    // ImageContainerBySTLMap  (2D)
+
+    // ConstImageAdapter  (2D)
+    template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+    static void draw( Display3D & display, const  ConstImageAdapter<TImageContainer, TNewDomain,  TFunctorD,
+		      TNewValue,  TFunctorValue>  &anImage);
+    // ConstImageAdapter  (2D)
 
 
-    // ImageContainer  (3D)
+    // ImageContainerBySTLVector  (3D)
     template <typename TValue  >
     static void draw( Display3D & display, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  &anImage);
+    // ImageContainerBySTLVector (3D)
 
+    // ImageContainerBySTLMap  (3D)
     template <typename TValue  >
     static void draw( Display3D & display, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  &anImage);
+    // ImageContainerBySTLMap  (3D)
 
-    template < typename TImageType3D > 
-    static void
-    drawImage3D( Display3D & display, const TImageType3D anImage3D);
 
 
     
-
-    //    template <typename ImageType >
-    //static void draw( Display3D & display,   ImageType &anImage);
-    // ImageContainer  (2D and 3D)
+    template < typename TImageType3D > 
+    static void
+    drawImage3D( Display3D & display, const TImageType3D anImage3D);
 
 
   
