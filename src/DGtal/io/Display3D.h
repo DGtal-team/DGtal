@@ -188,7 +188,7 @@ namespace DGtal
 	}
 	return x;
       };
-       double & operator[]( unsigned int i ) {
+      double & operator[]( unsigned int i ) {
 	assert(i<3);
 	switch (i){
 	case 0: {return x;}
@@ -275,7 +275,7 @@ namespace DGtal
        **/
       template <typename ImageType>
       GrayScaleImage( const ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
-		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]+1;
 	myImageHeight = (image.domain().upperBound())[1]+1;
@@ -317,7 +317,7 @@ namespace DGtal
 	x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
 	
 	unsigned int pos=0;
-	 for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	    it!=itend;
 	    ++it){
 	  myTabImage[pos]= image(*it);
@@ -556,8 +556,7 @@ namespace DGtal
      * @param positionShift translate the KSsurfel from the asso 
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
-     *                             according this boolean  parameter 
-     *                              (if @a aSign=true oriented in the direct axis orientation).
+     *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation).
      * @param basicMode if true, a basic mode to display KSSurfel are used (i.e just a simple surfel face).  
      * 
      */
@@ -838,7 +837,7 @@ namespace DGtal
     std::vector< triangleD3D > myTriangleList;
     
 
-   // Represents all the polygon drawn in the Display3D
+    // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
     
     

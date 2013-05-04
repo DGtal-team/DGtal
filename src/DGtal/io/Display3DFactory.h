@@ -105,9 +105,9 @@ namespace DGtal
     
     // ArithmeticalDSS3d
     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
     template <typename TIterator, typename TInteger, int connectivity>
     static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::ArithmeticalDSS3d<TIterator,TInteger,connectivity> & );
     
@@ -193,9 +193,9 @@ namespace DGtal
     
     // KhalimskyCell
     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
     template < Dimension dim, typename TInteger >
     static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::KhalimskyCell<dim, TInteger> & );
     
@@ -243,9 +243,9 @@ namespace DGtal
     
     // SignedKhalimskyCell
     /**
-      * Default drawing style object.
-      * @return the dyn. alloc. default style for this object.
-      */
+     * Default drawing style object.
+     * @return the dyn. alloc. default style for this object.
+     */
     template< Dimension dim, typename TInteger >
     static DGtal::DrawableWithDisplay3D * defaultStyle( std::string, const DGtal::SignedKhalimskyCell<dim, TInteger> & );
     
@@ -261,46 +261,46 @@ namespace DGtal
     // SCellsRange
     template < typename TIterator, typename TSCell >
     static void draw( DGtal::Display3D & display, 
-          const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & );
+		      const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & );
     // SCellsRange
 
     // PointsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & );
     // PointsRange
 
     // MidPointsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
-               typename TKSpace::Space::RealPoint> & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+		      typename TKSpace::Space::RealPoint> & );
     // MidPointsRange
 
     // ArrowsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
-               std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+		      std::pair<typename TKSpace::Point, typename TKSpace::Vector > > & );
     // ArrowsRange
 
     // InnerPointsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & );
     // InnerPointsRange
 
     // OuterPointsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & );
     // OuterPointsRange
 
     // IncidentPointsRange
     template <typename TIterator, typename TKSpace>
     static void draw( Display3D & display, 
-               const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
-               std::pair<typename TKSpace::Point, typename TKSpace::Point > > & );
+		      const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+		      std::pair<typename TKSpace::Point, typename TKSpace::Point > > & );
     // IncidentPointsRange
 
 
@@ -325,6 +325,7 @@ namespace DGtal
     template <typename TValue  >
     static void draw( Display3D & display, const   ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  &anImage);
     // ImageContainerBySTLVector (3D)
+
 
     // ImageContainerBySTLMap  (3D)
     template <typename TValue  >
