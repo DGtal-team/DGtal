@@ -52,6 +52,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
@@ -433,17 +434,108 @@ namespace DGtal
   };
 
 
+
+
+
   /**
-   * Extract an n-1 dimension image contained in the given n dimension image.
+   * Create a Domain Functor that add one dimension to the domain.The
+   * new dimension will be inserted to a position given in the
+   * constructor (posDimAdded) and each N-1 point will then be located
+   * at the a constant sliceIndex position.
    *
-   * @param aImg: the n dimension image.
-   * @param dimRemoved: the removed dimension.
-   * @param index: the index of the image to be extracted in the considered dimension. 
-   * @return an n-1 dimensional image 
+   * @tparam TPointDimN a model of CPointPredicate.
+   *
    */
-  template<typename TImageTypeDimN, typename TImageTypeDimNInf>
-  TImageTypeDimNInf
-  extractLowerDimImage(const TImageTypeDimN & aImg, unsigned int dimRemoved, unsigned int index);
+template <typename TPointDimN>
+  class AddOneDimensionDomainFunctor
+  {
+  public:
+    typedef TPointDimN PointDimN;
+
+    /** 
+     * Constructor.
+     * @param  posDimAdded  position of insertion of the new dimension.
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     */
+    AddOneDimensionDomainFunctor( unsigned int posDimAdded,  unsigned int sliceIndex):
+      myPosDimAdded(posDimAdded), mySliceIndex(sliceIndex) {};
+    
+    /** 
+     * The operator just recover the ND Point associated to the slice parameter.
+     * @param[in] aPoint point of the input domain (of dimension N-1).
+     * 
+     * @return the point of dimension N.
+     */
+    template <typename TPointDimMinus>
+    inline
+    TPointDimN  operator()(const TPointDimMinus& aPoint) const
+    {
+      PointDimN pt;
+      unsigned int pos=0;
+      for( int i=0; i<pt.size(); i++){
+         if(i!=myPosDimAdded){
+            pt[i]= aPoint[pos];
+	    pos++; 
+	 }else{
+            pt[i]=mySliceIndex;
+          }
+      }
+      return pt;
+    }
+  private:
+    // position of insertion of the new dimension
+     unsigned int myPosDimAdded;
+    // the index of the slice associated to the new domain.
+    unsigned int mySliceIndex;
+};
+
+
+
+  /**
+   * Create a Domain Functor that transform a domain by projection from  dimension N to
+   * a domain of dimension N-1.  The removed dimension is given as argument to the constructor.
+   *
+   * @tparam TPointDimNminus a model of CPointPredicate of dimension N-1.
+   *
+   */
+template <typename TPointDimNminus>
+class MinusOneDimensionDomainFunctor
+  {
+  public:
+    typedef TPointDimNminus PointDimNminus ;
+
+    /** 
+     * Constructor.
+     * @param dimRemoved the dimension to be removed for the transformation to N-1 dimension.
+     */
+    MinusOneDimensionDomainFunctor( int dimRemoved=0):
+      myDimRemoved(dimRemoved) {};
+    
+    /** 
+     * The operator to recover the projected N-1 D Point.
+     * @param[in] aPoint point of the input domain (of dimension N).
+     * 
+     * @return the projected point of dimension N-1.
+     */
+    template <typename TPointDimN>
+    inline
+    PointDimNminus  operator()(const TPointDimN& aPoint) const
+    {
+      PointDimNminus ptRes;
+      unsigned int pos=0;
+      for(unsigned int i=0; i< aPoint.size() ; i++){
+	if(i!=myDimRemoved){
+	  ptRes[pos]= aPoint[i];
+	  pos++;
+	}
+      }
+      return ptRes;
+    }
+  private:
+    // the dimension to be removed
+    int myDimRemoved;
+};
+
 
 
   
