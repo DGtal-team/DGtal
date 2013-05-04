@@ -34,7 +34,8 @@
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/PGMWriter.h"
-#include "DGtal/images/ImageSelector.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+
 
 #include "ConfigTest.h"
 
@@ -51,23 +52,38 @@ using namespace DGtal;
  * Test of the function extractLowerDimImage for the extraction of 2D images from 3D image.
  *
  */
+
 bool testImageHelper()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   std::string filename = testPath + "samples/cat10.vol";
-
   trace.beginBlock ( "Testing block ..." );
-  typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
-  typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-  Image3D image = VolReader<Image3D>::importVol( filename ); 
-  Image2D slice2D_X = DGtal::extractLowerDimImage<Image3D, Image2D> (image, 0, 20);
-  Image2D slice2D_Y = DGtal::extractLowerDimImage<Image3D, Image2D> (image, 1, 20);
-  Image2D slice2D_Z = DGtal::extractLowerDimImage<Image3D, Image2D> (image, 2, 20);  
+  typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
+  typedef  DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char>  Image2D;
+
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::AddOneDimensionDomainFunctor< DGtal::Z3i::Point>,
+				   Image3D::Value,  DGtal::DefaultFunctor >  MySliceImageAdapter;
+  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(0);
+
   bool res= true;
-  res &= PGMWriter<Image2D>::exportPGM("exportedSlice2DDimX.pgm",slice2D_X);
-  res &= PGMWriter<Image2D>::exportPGM("exportedSlice2DDimY.pgm",slice2D_Y);
-  res &= PGMWriter<Image2D>::exportPGM("exportedSlice2DDimZ.pgm",slice2D_Z);
+  Image3D image = VolReader<Image3D>::importVol( filename ); 
+  DGtal::Z2i::Domain domain((invFunctor.operator()(image.domain().lowerBound())), 
+			    (invFunctor.operator()(image.domain().upperBound())));
+  DGtal::DefaultFunctor idV;
+ 
+  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor(0, 20);
+  MySliceImageAdapter sliceImageX(image, domain, aSliceFunctor, idV);
+  res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimX.pgm",sliceImageX);
+
+  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor2(1, 20);
+  MySliceImageAdapter sliceImageY(image, domain, aSliceFunctor2, idV);
+  res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimY.pgm",sliceImageX);
+
+  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor3(2, 20);
+  MySliceImageAdapter sliceImageZ(image, domain, aSliceFunctor3, idV);
+  res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimZ.pgm",sliceImageX);
+
   nbok += res ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
