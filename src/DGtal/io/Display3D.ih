@@ -899,7 +899,7 @@ DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
 template <typename ImageType>
 inline
 void 
-DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex, const  ImageType & image, 
+DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,   ImageType & image, 
 				       double xTranslation, double yTranslation, double zTranslation){
   assert ( imageIndex< myGSImageList.size());
   Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 

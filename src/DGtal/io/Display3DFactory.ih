@@ -29,6 +29,8 @@
 
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"
+#include "DGtal/images/ConstImageAdapter.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
@@ -1227,7 +1229,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 // ImageContainer (2D and 3D)
 template <typename ImageType >
 inline
-void DGtal::Display3DFactory::draw( Display3D & display, const ImageType  &anImage){
+void DGtal::Display3DFactory::draw( Display3D & display,  ImageType  &anImage){
   
   ASSERT(ImageType::Domain::Space::dimension == 2 || ImageType::Domain::Space::dimension == 3);
   if(ImageType::Domain::Space::dimension == 2){
@@ -1236,27 +1238,47 @@ void DGtal::Display3DFactory::draw( Display3D & display, const ImageType  &anIma
   }else if(ImageType::Domain::Space::dimension == 3){
     typedef ImageType Image3D;
     typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, typename ImageType::Value >  Image2D;
-    
-    Image2D sliceImageY = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 1, 0);
+    typedef DGtal::ConstImageAdapter<ImageType, typename Image2D::Domain, DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+    				     typename ImageType::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+    DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(1);
+    DGtal::Z2i::Domain domain((invFunctor.operator()(anImage.domain().lowerBound())), 
+    			      (invFunctor.operator()(anImage.domain().upperBound())));
+    DGtal::DefaultFunctor idV;
+
+    DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorY(1, 0);
+    SliceImageAdapter sliceImageY(anImage, domain, aSliceFunctorY, idV);
     DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, DGtal::Display3D::yDirection);
     display.addGrayScaleImage(aGSImageYf);
-    Image2D sliceImageX = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 0, 0);
-    DGtal::Display3D::GrayScaleImage aGSImageXf (sliceImageX, DGtal::Display3D::xDirection);
-    display.addGrayScaleImage(aGSImageXf);
-    Image2D sliceImageZ = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 2, 0);
-    DGtal::Display3D::GrayScaleImage aGSImageZf (sliceImageZ, DGtal::Display3D::zDirection);
-    display.addGrayScaleImage(aGSImageZf);
- 
+    
+    // DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorX(0, 0);
+    // SliceImageAdapter sliceImageX(anImage, domain, aSliceFunctorX, idV);
+    // DGtal::Display3D::GrayScaleImage aGSImageXf (sliceImageX, DGtal::Display3D::xDirection);
+    // display.addGrayScaleImage(aGSImageXf);    
 
-    Image2D sliceImageYl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 1, (int)(anImage.extent()[1])-1);
-    DGtal::Display3D::GrayScaleImage aGSImageYl (sliceImageYl, DGtal::Display3D::yDirection, 0.0, (int)(anImage.extent()[1])-1, 0.0);
-    display.addGrayScaleImage(aGSImageYl);
-    Image2D sliceImageXl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 0, (int)(anImage.extent()[0])-1);
-    DGtal::Display3D::GrayScaleImage aGSImageXl (sliceImageXl, DGtal::Display3D::xDirection, (int)(anImage.extent()[0])-1, 0.0, 0.0);
-    display.addGrayScaleImage(aGSImageXl);
-    Image2D sliceImageZl = DGtal::extractLowerDimImage<Image3D, Image2D>(anImage, 2, (int)(anImage.extent()[2])-1);    
-    DGtal::Display3D::GrayScaleImage aGSImageZl (sliceImageZl, DGtal::Display3D::zDirection, 0.0, 0.0, (int)(anImage.extent()[2])-1);
-    display.addGrayScaleImage(aGSImageZl);
+    // DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZ(2, 0);
+    // SliceImageAdapter sliceImageZ(anImage, domain, aSliceFunctorZ, idV);
+    // DGtal::Display3D::GrayScaleImage aGSImageZf (sliceImageZ, DGtal::Display3D::xDirection);
+    // display.addGrayScaleImage(aGSImageZf);    
+
+
+    // // other symetrics faces
+
+    // DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorYl(1, (int)(anImage.extent()[1])-1);
+    // SliceImageAdapter sliceImageYl(anImage, domain, aSliceFunctorYl, idV);
+    // DGtal::Display3D::GrayScaleImage aGSImageYfl (sliceImageYl, DGtal::Display3D::yDirection, 0.0, (int)(anImage.extent()[1])-1, 0.0);
+    // display.addGrayScaleImage(aGSImageYfl);
+    
+    // DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorXl(0, (int)(anImage.extent()[0])-1);
+    // SliceImageAdapter sliceImageXl(anImage, domain, aSliceFunctorXl, idV);
+    // DGtal::Display3D::GrayScaleImage aGSImageXfl (sliceImageXl, DGtal::Display3D::xDirection, (int)(anImage.extent()[0])-1, 0.0, 0.0);
+    // display.addGrayScaleImage(aGSImageXfl);    
+
+    // DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZl(2, (int)(anImage.extent()[2])-1);
+    // SliceImageAdapter sliceImageZl(anImage, domain, aSliceFunctorZl, idV);
+    // DGtal::Display3D::GrayScaleImage aGSImageZfl (sliceImageZl, DGtal::Display3D::zDirection, 0.0, 0.0, (int)(anImage.extent()[2])-1);
+    // display.addGrayScaleImage(aGSImageZfl);    
+
+
   }
 }
 // ImageContainer  (2D and 3D)
@@ -1364,7 +1386,7 @@ void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Transform
 template<typename TImageType>
 inline
 void 
-DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & anUpdate ){
+DGtal::Display3DFactory::draw( Display3D & display,  DGtal::UpdateImageData<TImageType> & anUpdate ){
   display.updateGrayScaleImage(anUpdate.myIndex, *(anUpdate.myImage), anUpdate.myTranslateX, 
 			       anUpdate.myTranslateY, anUpdate.myTranslateZ);
 }
@@ -1372,7 +1394,7 @@ DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImageData
 
 void 
 inline
-DGtal::Display3DFactory::draw( Display3D & display, const DGtal::UpdateImagePosition & anUpdate ){
+DGtal::Display3DFactory::draw( Display3D & display,  DGtal::UpdateImagePosition & anUpdate ){
     display.updateOrientationGrayScaleImage(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
 					    anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
 }

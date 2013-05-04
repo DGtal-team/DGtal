@@ -223,7 +223,7 @@ namespace DGtal
      *
      **/
     struct GrayScaleImage{
-    public:
+
       // The quad coordinates should be given in counter clockwise order
       double x1, y1, z1;
       double x2, y2, z2;
@@ -274,11 +274,11 @@ namespace DGtal
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
       template <typename ImageType>
-      GrayScaleImage(const  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
+      GrayScaleImage(  ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	myDirection=normalDir;
-	myImageWidth = (image.extent())[0];
-	myImageHeight = (image.extent())[1];
+	myImageWidth = (image.domain().upperBound())[0]+1;
+	myImageHeight = (image.domain().upperBound())[1]+1;
 	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
@@ -307,9 +307,9 @@ namespace DGtal
        *  @param zTranslation: the image translation in the  z direction (default 0).
        **/
       template <typename ImageType>
-      void updateImageDataAndParam(const  ImageType & image, 
+      void updateImageDataAndParam( ImageType & image, 
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
-	assert ( (image.extent())[0]== myImageWidth && (image.extent())[1]== myImageHeight);
+	assert ( (image.domain().upperBound())[0]+1== myImageWidth && (image.domain().upperBound())[1]+1== myImageHeight);
 
 	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
 	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
@@ -657,7 +657,7 @@ namespace DGtal
      * @param zTranslation: the image translation in the  z direction (default 0).
      **/
     template <typename ImageType>
-    void updateGrayScaleImage(unsigned int imageIndex, const  ImageType & image, 
+    void updateGrayScaleImage(unsigned int imageIndex,   ImageType & image, 
 			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
     
 

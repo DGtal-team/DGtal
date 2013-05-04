@@ -56,26 +56,26 @@ int main( int argc, char** argv )
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
   
 
-  //! [ExampleViewer3D2DImagesExtractImages]
-  // Extracting the 2D images from the 3D one and from a given dimension.
-  // here the teenth Z slice (dim=2) 
-  Image2D sliceImageZ = DGtal::extractLowerDimImage<Image3D, Image2D>(imageVol, 2, 10 );
-  // here the fiftueth X slice (dim=0) 
-  Image2D sliceImageX = DGtal::extractLowerDimImage<Image3D, Image2D>(imageVol, 0, 50 );
-  //! [ExampleViewer3D2DImagesExtractImages]
+ //  //! [ExampleViewer3D2DImagesExtractImages]
+ //  // Extracting the 2D images from the 3D one and from a given dimension.
+ //  // here the teenth Z slice (dim=2) 
+ //  Image2D sliceImageZ = DGtal::extractLowerDimImage<Image3D, Image2D>(imageVol, 2, 10 );
+ //  // here the fiftueth X slice (dim=0) 
+ //  Image2D sliceImageX = DGtal::extractLowerDimImage<Image3D, Image2D>(imageVol, 0, 50 );
+ //  //! [ExampleViewer3D2DImagesExtractImages]
 
-  //! [ExampleViewer3D2DImagesDisplayImages]
-  viewer <<  sliceImageZ;
-  viewer <<  sliceImageX;
-  //! [ExampleViewer3D2DImagesDisplayImages]
+ //  //! [ExampleViewer3D2DImagesDisplayImages]
+ //  viewer <<  sliceImageZ;
+ //  viewer <<  sliceImageX;
+ //  //! [ExampleViewer3D2DImagesDisplayImages]
 
-  //! [ExampleViewer3D2DModifImages]
-  viewer <<  DGtal::UpdateImagePosition(1, DGtal::Display3D::xDirection, 50.0, 0.0, 0.0);
-  viewer << DGtal::UpdateImageData<Image2D>(0, sliceImageZ, 0, 0, 10);
-  viewer << Viewer3D::updateDisplay;
- //! [ExampleViewer3D2DModifImages]
+ //  //! [ExampleViewer3D2DModifImages]
+ //  viewer <<  DGtal::UpdateImagePosition(1, DGtal::Display3D::xDirection, 50.0, 0.0, 0.0);
+ //  viewer << DGtal::UpdateImageData<Image2D>(0, sliceImageZ, 0, 0, 10);
+ //  viewer << Viewer3D::updateDisplay;
+ // //! [ExampleViewer3D2DModifImages]
 
-
+  
   
 return application.exec();
 
