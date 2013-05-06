@@ -40,7 +40,6 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -76,9 +75,9 @@ namespace DGtal
     unsigned int acceptedDepth = ( ( sizeof ( HashKey ) * 8 - 1 ) / dim );
     if ( depth > acceptedDepth )
       {
-	trace.error() << "ImageContainerByHashTree::Constructor: error !" << endl;
-	trace.error() << "requested depth too high for the key type" << endl;
-	trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << endl;
+	trace.error() << "ImageContainerByHashTree::Constructor: error !" << std::endl;
+	trace.error() << "requested depth too high for the key type" << std::endl;
+	trace.error() << "accepted: " << acceptedDepth << " Requested: " << depth << std::endl;
 
 	setDepth ( acceptedDepth );
       }
@@ -122,9 +121,9 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
-                      << " requested depth too high for the key type" << endl;
+                      << " requested depth too high for the key type" << std::endl;
         trace.error() << "accepted: " << acceptedDepth 
-                      << " Requested: " << depth << endl;
+                      << " Requested: " << depth << std::endl;
         setDepth ( acceptedDepth );
       }
     else
@@ -165,9 +164,9 @@ namespace DGtal
     if ( depth > acceptedDepth )
       {
         trace.error() << "ImageContainerByHashTree::Constructor: error !"
-                      << " requested depth too high for the key type" << endl;
+                      << " requested depth too high for the key type" << std::endl;
         trace.error() << "accepted: " << acceptedDepth 
-                      << " Requested: " << depth << endl;
+                      << " Requested: " << depth << std::endl;
         setDepth ( acceptedDepth );
       }
     else
@@ -270,7 +269,7 @@ namespace DGtal
     std::list< HashKey > nodeList;
     while ( iterKey != 0 )
       {
-        //  cerr << "while(iter)..." << endl;
+        //  cerr << "while(iter)..." << std::endl;
         n = getNode ( iterKey );
         if ( n )
           {
@@ -282,16 +281,16 @@ namespace DGtal
                   it != nodeList.end();
                   it++ )
               {
-                //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << endl;
+                //  cerr << "adding a node ("<< bits::bitString(*it, 8)<<")" << std::endl;
                 addNode ( tempVal, *it );
               }
             addNode ( value, key );
-            //cerr << "return " << endl;
+            //cerr << "return " << std::endl;
             return;
           }
         else
           {
-            //cerr << " + " << endl;
+            //cerr << " + " << std::endl;
             HashKey brothersH[myN-1];
             myMorton.brotherKeys ( iterKey, brothersH );
             for ( unsigned int i = 0; i < myN - 1; ++i )
@@ -385,7 +384,7 @@ namespace DGtal
   Value
   ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
   {
-    //cerr << "ImageContainerByHashTree::upWardGet" << endl;
+    //cerr << "ImageContainerByHashTree::upWardGet" << std::endl;
     HashKey aKey = key;
 
     while ( aKey )
@@ -602,18 +601,18 @@ namespace DGtal
   template <typename Domain, typename Value , typename HashKey >
   inline
   void
-  ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( ostream& out, bool displayKeys ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printState ( std::ostream& out, bool displayKeys ) const
   {
-    out << "ImageContainerByHashTree::printState" << endl;
-    out << "depth: " << myTreeDepth << " (" << Bits::bitString ( myDepthMask ) << ")" << endl;
-    out << "dim: " << dim << "myN: " << myN << endl;
+    out << "ImageContainerByHashTree::printState" << std::endl;
+    out << "depth: " << myTreeDepth << " (" << Bits::bitString ( myDepthMask ) << ")" << std::endl;
+    out << "dim: " << dim << "myN: " << myN << std::endl;
     printTree ( ROOT_KEY, out, displayKeys );
   }
 
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, ostream& out, bool displayKeys ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printTree ( HashKey key, std::ostream& out, bool displayKeys ) const
   {
     unsigned int level = getKeyDepth ( key );
     for ( unsigned int i = 0; i < level; ++i )
@@ -624,14 +623,14 @@ namespace DGtal
         out << " < " << n->getObject() << " > ";
         if ( displayKeys )
           out << Bits::bitString ( key, 8 );
-        out << endl;
+        out << std::endl;
       }
     else
       {
         out << " < x > ";
         if ( displayKeys )
           out << Bits::bitString ( key, 8 );
-        out << endl;
+        out << std::endl;
       }
 
     if ( level < myTreeDepth )
@@ -646,11 +645,11 @@ namespace DGtal
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( ostream& out, unsigned int nbBits ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printInternalState ( std::ostream& out, unsigned int nbBits ) const
   {
-    out << "ImageContainerByHashTree::printInternalState ----------------------------------" << endl;
-    out << "| <template> dim = " << dim << " myN = " << myN << endl;
-    out << "| tree depth = " << myTreeDepth << " mask = " << Bits::bitString ( myDepthMask ) << endl;
+    out << "ImageContainerByHashTree::printInternalState ----------------------------------" << std::endl;
+    out << "| <template> dim = " << dim << " myN = " << myN << std::endl;
+    out << "| tree depth = " << myTreeDepth << " mask = " << Bits::bitString ( myDepthMask ) << std::endl;
 
     for ( unsigned int i = 0; i < ( 1 << myKeySize ); ++i )
       {
@@ -670,25 +669,25 @@ namespace DGtal
                 out << iter->getObject() << ")";
                 iter = iter->getNext();
               }
-            out << endl;
+            out << std::endl;
           }
         else
           {
-            cout << "x]" << endl;
+	    std::cout << "x]" << std::endl;
           }
       }
 
-    out << "| image size: " << getSpanSize() << "^" << dim << " (" << std::pow ( getSpanSize(), dim ) *sizeof ( Value ) << " bytes)" << endl;
-    out << "| " << getNbNodes() << " nodes - Empty lists: " << getNbEmptyLists() << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << endl;
-    out << "| Average collisions: " << getAverageCollisions() << " - Max collisions " << getMaxCollisions() << endl;
-    out << "----------------------------------------------------------------" << endl;
+    out << "| image size: " << getSpanSize() << "^" << dim << " (" << std::pow ( getSpanSize(), dim ) *sizeof ( Value ) << " bytes)" << std::endl;
+    out << "| " << getNbNodes() << " nodes - Empty lists: " << getNbEmptyLists() << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << std::endl;
+    out << "| Average collisions: " << getAverageCollisions() << " - Max collisions " << getMaxCollisions() << std::endl;
+    out << "----------------------------------------------------------------" << std::endl;
   }
 
 
   template <typename Domain, typename Value, typename HashKey  >
   inline
   void
-  ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( ostream& out ) const
+  ImageContainerByHashTree<Domain, Value, HashKey  >::printInfo ( std::ostream& out ) const
   {
     unsigned int nbNodes = getNbNodes();
     unsigned int totalSize = sizeof ( *this ) + ( 1 << myKeySize ) * sizeof ( Node* ) + nbNodes * sizeof ( Node );
@@ -699,7 +698,7 @@ namespace DGtal
         << " bytes)" << ", " << nbNodes << " nodes" << ", Empty lists=" << getNbEmptyLists()
         << " (" << getNbEmptyLists() *sizeof ( Node* ) << " bytes)" << ", Average collisions=" << getAverageCollisions()
         << ", Max collisions " << getMaxCollisions()
-        << ", total memory usage=" << totalSize << " bytes" << endl;
+        << ", total memory usage=" << totalSize << " bytes" << std::endl;
   }
 
 
@@ -777,8 +776,8 @@ namespace DGtal
       }
     if ( nbLists == 0 )
       {
-        trace.error() << "ImageContainerByHashTree::getAverageCollision() - error" << endl
-                      << "the container is empty !" << endl;
+        trace.error() << "ImageContainerByHashTree::getAverageCollision() - error" << std::endl
+                      << "the container is empty !" << std::endl;
         return 0;
       }
     return count / nbLists;
@@ -843,11 +842,11 @@ namespace DGtal
   bool
   ImageContainerByHashTree<Domain, Value, HashKey >::checkIntegrity ( HashKey key, bool leafAbove ) const
   {
-    trace.info() << "Checking key=" << key << endl;
+    trace.info() << "Checking key=" << key << std::endl;
     if ( !isKeyValid ( key ) )
       {
         trace.error() << "checkIntegrity->invalid key " << Bits::bitString ( key );
-        trace.info() << endl;
+        trace.info() << std::endl;
         ASSERT ( 1 == 0 );
       }
 
@@ -855,9 +854,9 @@ namespace DGtal
 
     if ( ( n != 0 ) && ( leafAbove ) )
       {
-        trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << endl
-                      << "at key " << Bits::bitString ( key ) << endl
-                      << "several leafs found" << endl;
+        trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << std::endl
+                      << "at key " << Bits::bitString ( key ) << std::endl
+                      << "several leafs found" << std::endl;
         return false;
       }
 
@@ -869,9 +868,9 @@ namespace DGtal
           }
         else
           {
-            trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << endl
-                          << "at key " << Bits::bitString ( key ) << endl
-                          << "no leaf found" << endl;
+            trace.error() << "ImageContainerByHashTree::checkIntegrity - error:" << std::endl
+                          << "at key " << Bits::bitString ( key ) << std::endl
+                          << "no leaf found" << std::endl;
             return false;
           }
       }
