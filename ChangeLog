@@ -1,3 +1,10 @@
+=== DGtal 0.7 ===
+
+*General*
+	- the "boost option"  dependency was removed.
+
+
+
 === DGtal 0.6 ===
  
  *General*
