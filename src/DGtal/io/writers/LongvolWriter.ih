@@ -50,7 +50,6 @@ namespace DGtal {
     typename I::Domain domain = aImage.domain();    
     typename I::Domain::Point p = I::Domain::Point::diagonal(1);
     typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
-
     typename I::Value val;
  
     try
