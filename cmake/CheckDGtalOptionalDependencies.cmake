@@ -18,6 +18,7 @@ OPTION(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt required)." OF
 OPTION(WITH_MAGICK "With GraphicsMagick++." OFF)
 OPTION(WITH_ITK "With Insight Toolkit ITK." OFF)
 OPTION(WITH_CAIRO "With CairoGraphics." OFF)
+OPTION(WITH_HDF5 "With HDF5." OFF)
 OPTION(WITH_COIN3D-SOQT "With COIN3D & SOQT for 3D visualization (Qt required)." OFF)
 OPTION(WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
 
@@ -49,6 +50,13 @@ message(STATUS "      WITH_CAIRO        true")
 ELSE(WITH_CAIRO)
 message(STATUS "      WITH_CAIRO        false")
 ENDIF(WITH_CAIRO)
+
+IF(WITH_HDF5)
+SET (LIST_OPTION ${LIST_OPTION} [HDF5]\ )
+message(STATUS "      WITH_HDF5         true")
+ELSE(WITH_HDF5)
+message(STATUS "      WITH_HDF5         false")
+ENDIF(WITH_HDF5)
 
 IF(WITH_COIN3D-SOQT)
 SET (LIST_OPTION ${LIST_OPTION} [COIN3D-SOQT]\ )
@@ -233,6 +241,27 @@ ELSE(WITH_CAIRO)
   unset(CAIRO_LIBRAIRIES)
 ENDIF(WITH_CAIRO)
 
+# -----------------------------------------------------------------------------
+# Look for HDF5 (data model and file format for storing and managing data)
+# (They are not compulsory).
+# -----------------------------------------------------------------------------
+SET(HDF5_FOUND_DGTAL 0)
+IF(WITH_HDF5)
+  FIND_PACKAGE (HDF5 REQUIRED HL C)
+  IF(HDF5_FOUND)
+    INCLUDE_DIRECTORIES(${HDF5_INCLUDE_DIRS})
+    SET(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES})
+    message(STATUS "HDF5 found")
+    SET(HDF5_FOUND_DGTAL 1)
+    SET(DGtalLibInc ${DGtalLibInc} ${HDF5_INCLUDE_DIRS})
+    ADD_DEFINITIONS("-DWITH_HDF5 ")
+  ELSE(HDF5_FOUND)
+    message(FATAL_ERROR "HDF5 not found. Check the cmake variables associated to this package or disable it." )
+  ENDIF(HDF5_FOUND)
+ELSE(WITH_HDF5)
+  unset(HDF5_INCLUDE_DIRS)
+  unset(HDF5_LIBRARIES)
+ENDIF(WITH_HDF5)
 
 # -----------------------------------------------------------------------------
 # Look for Coin3D, SoQt for 3D display.

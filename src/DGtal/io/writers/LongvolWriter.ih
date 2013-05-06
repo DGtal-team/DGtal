@@ -46,7 +46,7 @@ namespace DGtal {
   {
     DGtal::IOException dgtalio;
   
-    ofstream out;
+    std::ofstream out;
     typename I::Domain::Vector ext = aImage.extent();
     typename I::Domain domain = aImage.domain();
     typename I::Value val;
@@ -56,18 +56,18 @@ namespace DGtal {
 	out.open(filename.c_str());
 
 	//Longvol format
-	out << "X: "<< ext[0]<<endl;
-	out << "Y: "<< ext[1]<<endl;
-	out << "Z: "<< ext[2]<<endl;
-	out << "Lvoxel-Size: 4"<<endl; //not used in liblongvol but required
-	out << "Alpha-Color: 0"<<endl;
-	out << "Lvoxel-Endian: 0"<<endl;//not used in liblongvol but required
-	out << "Int-Endian: 0123"<<endl;
-	out << "Version: 2"<<endl;
-	out << "."<<endl;
+	out << "X: "<< ext[0]<<std::endl;
+	out << "Y: "<< ext[1]<<std::endl;
+	out << "Z: "<< ext[2]<<std::endl;
+	out << "Lvoxel-Size: 4"<<std::endl; //not used in liblongvol but required
+	out << "Alpha-Color: 0"<<std::endl;
+	out << "Lvoxel-Endian: 0"<<std::endl;//not used in liblongvol but required
+	out << "Int-Endian: 0123"<<std::endl;
+	out << "Version: 2"<<std::endl;
+	out << "."<<std::endl;
       
 	out.close(); 
-	out.open(filename.c_str(),ios_base::binary | ios_base::app);
+	out.open(filename.c_str(),std::ios_base::binary | std::ios_base::app);
 	//We scan the domain instead of the image because we cannot
 	//trust the image container Iterator
 	for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
@@ -83,7 +83,7 @@ namespace DGtal {
       }
     catch( ... )
       {
-	std::cout << "LongVol writer IO error on export " << filename << endl;
+	std::cout << "LongVol writer IO error on export " << filename << std::endl;
 	throw dgtalio;
       }
     
