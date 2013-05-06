@@ -53,12 +53,7 @@
 
 #include "ConfigExamples.h"
 
-/////////////////////
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 
-namespace po = boost::program_options;
 
 ///////////////////////////////////////////////////////////////////////////////
 using namespace std;
@@ -68,30 +63,9 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-
-  //////////////////////////////////////////////////////////////////////////////////
-  // parse command line 
-  po::options_description general_opt("Allowed options are");
-  general_opt.add_options()
-    ("help,h", "display this message")
-    ("range,r",  po::value<string>()->default_value("gridcurve"), 
-     " Either <gridcurve> (default), <inner>, <outer>, <incident> " ); 
+  trace.info() <<  "exampleGridCurve3d: the type can be changed in example source code with  <gridcurve>, <inner>, <outer>, <incident> " << std::endl; 
   
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  po::notify(vm);    
-  if(vm.count("help"))
-    {
-      trace.info()<< "exampleGridCurve3d" << std::endl
-		  << "Basic usage: "<<std::endl
-		  << argv[0] << " " << std::endl
-		  << general_opt << "\n";
-      return 0;
-    }
-  
-  //Parse options
-  string type = vm["range"].as<string>(); 
-
+  string type = "gridcurve"; 
   
   //vol reading and digital set construction
   trace.beginBlock( "Reading vol file into an image." );
