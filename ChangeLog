@@ -1,11 +1,14 @@
-	=== DGtal 0.7 ===
+=== DGtal 0.7 ===
+
+*General*
+	- the "boost option"  dependency was removed.
 
 * Package IO
 	- New GenericReader and Generic Writer for both 2D, 3D and ND images.
 	
 
 
-	=== DGtal 0.6 ===
+=== DGtal 0.6 ===
  
  *General*
     - Multithread capabilities via OpenMP are now detected during DGtal

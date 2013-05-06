@@ -43,9 +43,6 @@
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/geometric_distribution.hpp>
 #include <boost/random/variate_generator.hpp>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 
 
 #include "DGtal/base/Common.h"
@@ -840,44 +837,28 @@ void generateStatsMultiMapXY( const string & name,
 
 
 ///////////////////////////////////////////////////////////////////////////////
-namespace po = boost::program_options;
+
 
 int main( int argc, char** argv )
 {
   typedef double Value;
   static const unsigned int L = 16;
+  trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "With parameter: "<<std::endl
+	      << "\t tested image size: 1000  1000"<<std::endl
+	      <<"Probability that there is no data at all at an image position (Bernouilli distribution): 0.5"
+	      << "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2 :0.5"<< std::endl;
+  
+  
 
-  // parse command line ----------------------------------------------
-  po::options_description general_opt("Allowed options are: ");
-  general_opt.add_options()
-    ("help,h", "display this message")
-    ("xsize,x", po::value<int>(), "x-size of tested image map")
-    ("ysize,y", po::value<int>(), "y-size of tested image map")
-    ("prob_no_data,q", po::value<double>(), "Probability that there is no data at all at an image position (Bernouilli distribution).")
-    ("prob_one_data,p", po::value<double>(), "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2.");
-  
-  
-  
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  po::notify(vm);    
-  if(vm.count("help")||argc<=1)
-    {
-      trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "Basic usage: "<<std::endl
-      << "\t testMultiMap-benchmark -x 1000 -y 1000"<<std::endl
-      << general_opt << "\n";
-      return 0;
-    }
-
-  unsigned int X = vm.count("xsize") ? vm["xsize"].as<int>() : 1000;
-  unsigned int Y = vm.count("ysize") ? vm["ysize"].as<int>() : 1000;
+  unsigned int X =  1000;
+  unsigned int Y =  1000;
   /// Probability that there is no data at this location.
-  double PROB_NO_DATA = vm.count("prob_no_data") ? vm["prob_no_data"].as<double>() : 0.5;
+  double PROB_NO_DATA =  0.5;
   /// If there is a possibility to have a data, this probability is
   /// used to define a geometric distribution that defines the number
   /// of data (ie valid labels) at this place. The smaller, the higher
   /// is the expectation. 0.5 means E(X) = 1.
-  double PROB_ONE_DATA = vm.count("prob_one_data") ? vm["prob_one_data"].as<double>() : 0.5;
+  double PROB_ONE_DATA = 0.5;
 
   typedef DynArrayLXY<Value> MyArrayLXY;
   MyArrayLXY* anArrayLXY = new MyArrayLXY( L, X, Y, -1.0 );
