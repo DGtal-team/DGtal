@@ -40,18 +40,13 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#include "ConfigExamples.h"
 
+ 
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-
-/////////////////////
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
-
-namespace po = boost::program_options;
 
 //image
 #include "DGtal/io/readers/VolReader.h"
@@ -73,32 +68,12 @@ namespace po = boost::program_options;
 int main( int argc, char** argv )
 {
 
-  //////////////////////////////////////////////////////////////////////////////////
-  // parse command line 
-  po::options_description general_opt("Allowed options are");
-  general_opt.add_options()
-    ("help,h", "display this message")
-    ("inputImage,i",  po::value<string>(), "Grey-level image (vol format)" )
-    ("threshold,t",  po::value<int>()->default_value(1), "Set defined by the voxels whose value is below t" )
-    ("width,w",  po::value<double>()->default_value(3.0), "Band width where DT is computed" ); 
-  
-  po::variables_map vm;
-  po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  po::notify(vm);    
-  if(vm.count("help")||argc<=1)
-    {
-      trace.info()<< "3d incremental DT transform" << std::endl
-		  << "Basic usage: "<<std::endl
-		  << argv[0] << " [other options] -i <vol file> -t <threshold> " << std::endl
-		  << general_opt << "\n";
-      return 0;
-    }
-  
+ 
   //Parse options
   //threshold
-  int t = vm["threshold"].as<int>(); 
+  int t =0;
   //width
-  double maximalWidth = vm["width"].as<double>(); 
+  double maximalWidth = 3.0; 
 
 
   //////////////////////////////////////////////////////////////////////////////////
@@ -110,14 +85,10 @@ int main( int argc, char** argv )
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   typedef Frontier::SurfelConstIterator SurfelIterator;
 
-  if (!(vm.count("inputImage"))) 
-    {
-      trace.emphase() << "you should use option -i" << std::endl; 
-      return 0; 
-    }
-
+  
   //reading image
-  string imageFileName = vm["inputImage"].as<std::string>();
+  std::string imageFileName = examplesPath + "samples/Al.100.vol"; 
+
   trace.emphase() << imageFileName <<std::endl; 
   DGtal::trace.beginBlock("image reading..."); 
   LabelImage labelImage = VolReader<LabelImage>::importVol( imageFileName);
