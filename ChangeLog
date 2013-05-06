@@ -1,8 +1,12 @@
+
 === DGtal 0.7 ===
 
 *General*
-	- the "boost option"  dependency was removed.
+	- the "boost option library"  dependency was removed.
 
+*Shape Package*
+	- The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
+	- Iterator in mesh points and mesh face.
 
 
 === DGtal 0.6 ===
