@@ -50,9 +50,9 @@ namespace DGtal {
     typename I::Domain::Vector size;
     const typename I::Domain::Point &upBound = aImage.domain().upperBound();
     const typename I::Domain::Point &lowBound = aImage.domain().lowerBound();
-    size[0]=upBound[0]-lowBound[0];
-    size[1]=upBound[1]-lowBound[1];
-    size[2]=upBound[2]-lowBound[2];
+    size[0]=upBound[0]-lowBound[0]+1;
+    size[1]=upBound[1]-lowBound[1]+1;
+    size[2]=upBound[2]-lowBound[2]+1;
 
     typename I::Domain domain = aImage.domain();
     typename I::Value val;
