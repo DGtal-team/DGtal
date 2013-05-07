@@ -60,12 +60,74 @@ using namespace std;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class ArithmeticalDSS3d.
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename KSpace, typename ArithmeticalDSS3d>
+void displayDSS3d( DGtal::Viewer3D & viewer, 
+		   const KSpace & ks, const ArithmeticalDSS3d & dss3d,
+		   const DGtal::Color & color3d, 
+		   const DGtal::Color & color2d )
+{
+  typedef typename ArithmeticalDSS3d::ConstIterator ConstIterator3d;
+  typedef typename ArithmeticalDSS3d::ArithmeticalDSS2d ArithmeticalDSS2d;
+  typedef typename ArithmeticalDSS2d::ConstIterator ConstIterator2d;
+  typedef typename ArithmeticalDSS2d::Point Point2d;
+  typedef typename KSpace::Cell Cell;
+  typedef typename KSpace::Point Point3d;
+  typedef DGtal::PointVector<2,double> PointD2d;
+  typedef Display3D::pointD3D PointD3d;  
+  Point3d b = ks.lowerBound();
+  viewer << CustomColors3D( color3d, color3d ) << dss3d;
+  for ( DGtal::Dimension i = 0; i < 3; ++i )
+    {
+      const ArithmeticalDSS2d & dss2d = dss3d.arithmeticalDSS2d( i );
+      for ( ConstIterator2d itP = dss2d.begin(), itPEnd = dss2d.end(); itP != itPEnd; ++itP )
+	{
+	  Point2d p = *itP;
+	  Point3d q;
+	  switch (i) {
+	  case 0: q = Point3d( 2*b[ i ]  , 2*p[ 0 ]+1, 2*p[ 1 ]+1 ); break;
+	  case 1: q = Point3d( 2*p[ 0 ]+1, 2*b[ i ]  , 2*p[ 1 ]+1 ); break;
+	  case 2: q = Point3d( 2*p[ 0 ]+1, 2*p[ 1 ]+1, 2*b[ i ]   ); break;
+	  }
+	  Cell c = ks.uCell( q );
+	  viewer << CustomColors3D( color2d, color2d ) << c; 
+	}
+
+      //draw bounding box
+      std::vector<PointD2d> pts2d;
+      pts2d.push_back( dss2d.project(*dss2d.myF, dss2d.myUf) );
+      pts2d.push_back( dss2d.project(*dss2d.myF, dss2d.myLf) );
+      pts2d.push_back( dss2d.project(*dss2d.myL, dss2d.myLf) );
+      pts2d.push_back( dss2d.project(*dss2d.myL, dss2d.myUf) );
+      std::vector<PointD3d> bb;
+      PointD3d p3;
+      p3.R = color2d.red();
+      p3.G = color2d.green();
+      p3.B = color2d.blue();
+      p3.T = color2d.alpha();
+      p3.isSigned = false;
+      p3.signPos = false;
+      p3.size = 1;
+      for ( unsigned int j = 0; j < pts2d.size(); ++j )
+	{
+	  switch (i) {
+	  case 0: p3.x = b[ i ]; p3.y = pts2d[ j ][ 0 ]; p3.z = pts2d[ j ][ 1 ]; break;
+	  case 1: p3.x = pts2d[ j ][ 0 ]; p3.y = b[ i ]; p3.z = pts2d[ j ][ 1 ]; break;
+	  case 2: p3.x = pts2d[ j ][ 0 ]; p3.y = pts2d[ j ][ 1 ]; p3.z = b[ i ]; break;
+	  }
+	  bb.push_back( p3 );
+	}
+      viewer.addPolygon( bb, color2d );
+    } // for ( DGtal::Dimension i = 0; i < 3; ++i )
+}
+
 /**
  * segmentation test
  *
  */
-template <typename PointIterator>
-bool displayCover( Viewer3D & viewer, PointIterator b, PointIterator e )
+template <typename KSpace, typename PointIterator>
+bool displayCover( Viewer3D & viewer, 
+		   const KSpace & ks, PointIterator b, PointIterator e )
 {
   typedef typename PointIterator::value_type Point;
   // typedef PointVector<3,int> Point;
@@ -86,7 +148,8 @@ bool displayCover( Viewer3D & viewer, PointIterator b, PointIterator e )
     SegmentComputer currentSegmentComputer(*i);
     trace.info() << currentSegmentComputer << std::endl;  //standard output
     c++;
-    viewer << currentSegmentComputer;
+    displayDSS3d( viewer, ks, currentSegmentComputer, Color( 200, 200, 200 ), Color( 0, 0, 255 ) );
+    // viewer << currentSegmentComputer;
   } 
   
   trace.endBlock();
@@ -132,7 +195,7 @@ int main(int argc, char **argv)
   sequence.push_back(Point(12,8,5));
 
   // domain
-  Point lowerBound = Point::diagonal( 0 );
+  Point lowerBound = Point::diagonal( -3 );
   Point upperBound = Point::diagonal( 15 ); 
 
   //! [GridCurveDeclaration]
@@ -141,7 +204,7 @@ int main(int argc, char **argv)
   gc.initFromPointsVector( sequence );
 
   viewer.show();
-  bool res = displayCover( viewer, sequence.begin(), sequence.end() );
+  bool res = displayCover( viewer, ks, sequence.begin(), sequence.end() );
   Point p;
   viewer << gc.getPointsRange();
   // viewer << SetMode3D( p.className(), "Paving" );
