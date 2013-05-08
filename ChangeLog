@@ -1,11 +1,15 @@
+
 === DGtal 0.7 ===
 
 *General*
-	- the "boost option"  dependency was removed.
+	- the "boost option library"  dependency was removed.
 
 * Package IO
 	- New GenericReader and Generic Writer for both 2D, 3D and ND images.
-	
+
+*Shape Package*
+	- The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
+	- Iterator in mesh points and mesh face.
 
 
 === DGtal 0.6 ===
