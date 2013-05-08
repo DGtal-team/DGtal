@@ -1,0 +1,150 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file HDF5Reader.ih
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
+ *
+ * @date 2013/04/16
+ *
+ * Implementation of inline methods defined in HDF5Reader.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <sstream>
+
+#include <hdf5.h>
+#include <hdf5_hl.h>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions and external operators                 //
+
+template <typename TImageContainer>
+inline
+TImageContainer 
+DGtal::HDF5Reader<TImageContainer>::importHDF5(const std::string & aFilename, const std::string & aDataset, bool topbotomOrder) throw(DGtal::IOException)
+{
+  DGtal::IOException dgtalio;
+    
+  hid_t         fileID;
+  herr_t        hErrVal;
+  hsize_t       width;
+  hsize_t       height;
+  hsize_t       planes;
+  char          interlace[16];
+  hssize_t      npals;
+  int           i, j;
+  unsigned char *imgBuf; // 'unsigned char' is mandated by the HDF5 library
+
+  // Load the library -- not required on most platforms
+  hErrVal = H5open();
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+
+  // Open an existing file
+  fileID = H5Fopen(aFilename.c_str(), H5F_ACC_RDONLY, H5P_DEFAULT);
+  if (fileID < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+
+  // Figure out if the data is an image or not
+  hErrVal = H5IMis_image(fileID, aDataset.c_str());
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  if(hErrVal != 1) {
+    trace.error() << "The data is NOT an image" << std::endl;
+    throw dgtalio;
+  }
+
+  // Get info about the image
+  interlace[0] = 0;
+  hErrVal = H5IMget_image_info (fileID, aDataset.c_str(), &width, &height, &planes, interlace, &npals); 
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+
+  // If the image is the wrong type, then throw exception
+  if( !( ((planes==1) && (npals==1)) || ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) ) ) {
+    trace.error() << "ERROR: Image is not 8-bit with palette or image is not 24-bit truecolor with INTERLACE_PIXEL pixel layout" << std::endl;
+    throw dgtalio;
+  }
+
+  // Allocate space for the image
+  imgBuf = (unsigned char*) malloc (width * height * planes * sizeof( unsigned char ));
+  if (imgBuf == NULL) {
+    trace.error() << "ERROR: Could not allocate space for image" << std::endl;
+    throw dgtalio;
+  }
+
+  // Read the data from the file
+  hErrVal = H5IMread_image (fileID, aDataset.c_str(), imgBuf);
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  
+  // Close the file
+  hErrVal = H5Fclose(fileID);
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+
+  // Unload the library and free any remaining resources
+  hErrVal = H5close();
+  if (hErrVal < 0) { trace.error() << "HDF5 ERROR: " << std::endl; H5Eprint(H5E_DEFAULT, stderr); throw dgtalio; }
+  
+  // --
+  
+  typename TImageContainer::Point firstPoint;
+  typename TImageContainer::Point lastPoint;
+      
+  firstPoint = TImageContainer::Point::zero;
+  lastPoint[0] = width-1;
+  lastPoint[1] = height-1;
+  
+  typename TImageContainer::Domain domain(firstPoint,lastPoint);
+  TImageContainer image(domain);
+  
+  for(hsize_t y=0; y<height; y++)
+    for(hsize_t x=0; x<width; x++)
+      {
+          typename TImageContainer::Point pt;
+          if (topbotomOrder){
+            pt[0]=x; pt[1]=height-1-y;
+          }else{
+            pt[0]=x; pt[1]=y;
+          }
+          
+          if( ((planes==1) && (npals==1)) )
+            image.setValue(pt, imgBuf[ y*width+x ]);
+          else if( ((planes==3) && (npals==0) && (strcmp(interlace, "INTERLACE_PIXEL")==0)) )
+            image.setValue(pt, imgBuf[ ( (y*planes*width+x*planes)+(y*planes*width+x*planes+1)+(y*planes*width+x*planes+2) )/3 ]);
+      }
+      
+  free(imgBuf);
+  
+  return image;
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+

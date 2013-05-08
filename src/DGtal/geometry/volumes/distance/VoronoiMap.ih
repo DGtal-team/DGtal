@@ -29,7 +29,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#ifdef VERBOSE
 #include <boost/lexical_cast.hpp>
+#endif
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -100,8 +102,10 @@ inline
 void
 DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
+#ifdef VERBOSE
   std::string title = "Voro dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
+#endif
     
   typedef typename Domain::ConstSubRange::ConstIterator ConstDomIt;
     
@@ -137,8 +141,9 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
     computeOtherStep1D ( *it, dim);
 #endif
 
+#ifdef VERBOSE
   trace.endBlock();
-
+#endif
 }
 
 // //////////////////////////////////////////////////////////////////////:

@@ -15,14 +15,13 @@
  **/
 
 /**
- * @file testMeshWriter.cpp
+ * @file testHDF5Reader.cpp
  * @ingroup Tests
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  *
- * @date 2012/07/08
+ * @date 2013/04/16
  *
- * Functions for testing class MeshWriter.
+ * Functions for testing class HDF5Reader.
  *
  * This file is part of the DGtal library.
  */
@@ -30,62 +29,47 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/helpers/StdDefs.h" 
-//! [MeshWriterUseIncludes]
-#include "DGtal/shapes/Mesh.h"
-#include "DGtal/io/writers/MeshWriter.h"
-//! [MeshWriterUseIncludes]
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/writers/PPMWriter.h"
+#include "DGtal/io/readers/HDF5Reader.h"
+#include "DGtal/images/ImageSelector.h"
+#include "DGtal/io/colormaps/GrayscaleColorMap.h"
+#include "ConfigTest.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class MeshWriter.
+// Functions for testing class HDF5Reader.
 ///////////////////////////////////////////////////////////////////////////////
-
-
-/**
- * Example of a test. To be completed.
- *
- */
-bool testMeshWriter()
+bool testHDF5Reader()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;
-  //! [MeshWriterUseMeshCreation]
-  // Constructing the mesh to export in OFF format
-  Mesh<Point> aMesh(true);  
-  vector<Point> vectVertex;
-  Point p1(0, 0, 0);
-  Point p2(1, 0, 0);
-  Point p3(1, 1, 0);
-  Point p4(0, 1, 0);  
-  aMesh.addVertex(p1);
-  aMesh.addVertex(p2);
-  aMesh.addVertex(p3);
-  aMesh.addVertex(p4);  
-
-  vector<DGtal::Color> vectColor;
-  DGtal::Color col (250,0,0, 200);
-  aMesh.addQuadFace(0,1,2,3, col);
-  //! [MeshWriterUseMeshCreation]
-  //! [MeshWriterUseMeshExport]
-  bool isOK = aMesh >> "test.off";
-  //! [MeshWriterUseMeshExport]
-  nb++;
-  bool isOK2 = aMesh >> "test.obj";
-  nb++;
+  unsigned int nb = 0;  
   
-  trace.beginBlock ( "Testing block ..." );
-  nbok += isOK ? 1 : 0; 
-  nbok += isOK2 ? 1 : 0; 
+  trace.beginBlock ( "Testing hdf5 reader ..." );
+  nbok += true ? 1 : 0; 
+  nb++;
+  std::string filename = testPath + "samples/ex_image2.h5";
 
- 
-  trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "true == true" << std::endl;
-  trace.endBlock();
+  trace.info() << "Loading filename: " << filename << std::endl;
+  
+  typedef GrayscaleColorMap<unsigned char> Gray; // a simple GrayscaleColorMap varying on 'unsigned char' values
+  typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
+  
+  Image image = HDF5Reader<Image>::importHDF5( filename, "/image8bit" ); 
+  trace.info() << "image8bitFromHDF5image image: " << image << endl;
+  PPMWriter<Image,Gray>::exportPPM("image8bitFromHDF5image.ppm", image, Gray(0,255));
+  
+  image = HDF5Reader<Image>::importHDF5( filename, "/image24bitpixel" ); 
+  trace.info() << "image24bitFromHDF5image image: " << image << endl;
+  PPMWriter<Image,Gray>::exportPPM("image24bitFromHDF5image.ppm", image, Gray(0,255));
+  
+  trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
+  trace.endBlock();  
+  
   return nbok == nb;
 }
 
@@ -94,18 +78,17 @@ bool testMeshWriter()
 
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class MeshWriter" );
+  trace.beginBlock ( "Testing class HDF5Reader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testMeshWriter(); // && ... other tests
+  bool res = testHDF5Reader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
 }
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
