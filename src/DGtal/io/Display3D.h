@@ -48,7 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -168,7 +168,7 @@ namespace DGtal
 
 
   public:
-    /// Structure used to display KSPoint in 3D and MeshFromPoints
+    /// Structure used to display KSPoint in 3D and Mesh
     /// @see addKSPointel 
     ///
     
@@ -510,13 +510,13 @@ namespace DGtal
     
     
     /**
-     * Export as MeshFromPoints the current displayed elements.
+     * Export as Mesh the current displayed elements.
      * 
      * @param aMesh : (return)  the mesh containing the elements of the display.
      *
      **/
     
-    void exportToMesh(MeshFromPoints<Display3D::pointD3D> & aMesh ) const;
+    void exportToMesh(Mesh<Display3D::pointD3D> & aMesh ) const;
     
     
     
@@ -749,7 +749,7 @@ namespace DGtal
 
 
   /**
-   * Operator ">>" to export a Display3D into a MeshFromPoints
+   * Operator ">>" to export a Display3D into a Mesh
    * 
    * @param aDisplay3D the Display3D to be exported.
    * @param aMesh (return) the resulting mesh.
@@ -757,7 +757,7 @@ namespace DGtal
    **/
   
   void
-  operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh);
+  operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::pointD3D> &aMesh);
   
   
 
