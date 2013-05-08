@@ -51,22 +51,22 @@ ADD_CUSTOM_TARGET(uninstall
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 OPTION(BUILD_SHARED_LIBS "Build shared libraries." ON)
-OPTION(DEBUG_VERBOSE "Verbose messages in debug mode." OFF)
+OPTION(DEBUG_VERBOSE "Verbose debug messages." OFF)
+OPTION(VERBOSE "Verbose messages." OFF)
 
-if ( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
-  IF (DEBUG_VERBOSE)
-    ADD_DEFINITIONS(-DDEBUG_VERBOSE)
-    MESSAGE(STATUS "Debug verbose mode activated")
-  ENDIF(DEBUG_VERBOSE)
-endif( ${CMAKE_BUILD_TYPE} MATCHES "Debug" )
+SET(VERBOSE_DGTAL 0)
+SET(DEBUG_VERBOSE_DGTAL 0)
 
-# Functions are INLINE only in Release mode
-if ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
-    ADD_DEFINITIONS(-DINLINE=inline)
-    ADD_DEFINITIONS(-DBUILD_INLINE=)
-else ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
-    ADD_DEFINITIONS(-DINLINE=)
-endif ( ${CMAKE_BUILD_TYPE} MATCHES "Release" )
+IF (DEBUG_VERBOSE)
+  SET(DEBUG_VERBOSE_DGTAL 1)
+  ADD_DEFINITIONS(-DDEBUG_VERBOSE)
+  MESSAGE(STATUS "Debug verbose mode activated")
+ENDIF(DEBUG_VERBOSE)
+IF (VERBOSE)
+  SET(VERBOSE_DGTAL 1)
+  ADD_DEFINITIONS(-DVERBOSE)
+  MESSAGE(STATUS "Verbose mode activated")
+ENDIF(VERBOSE)
 
 # -----------------------------------------------------------------------------
 # Benchmark target

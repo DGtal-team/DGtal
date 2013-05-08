@@ -28,3 +28,18 @@ IF(MAGICK++_FOUND)
 
 ENDIF(MAGICK++_FOUND)
 
+
+IF(HDF5_FOUND)
+
+  SET(DGTAL_TESTS_SRC_IO_READERS_HDF5
+    testHDF5Reader
+    )
+
+  FOREACH(FILE ${DGTAL_TESTS_SRC_IO_READERS_HDF5})
+    add_executable(${FILE} ${FILE})
+    target_link_libraries (${FILE} DGtal DGtalIO ${DGtalLibDependencies})
+    add_test(${FILE} ${FILE})
+  ENDFOREACH(FILE)
+
+ENDIF(HDF5_FOUND)
+
