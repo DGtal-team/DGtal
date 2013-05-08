@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h" 
 //! [MeshWriterUseIncludes]
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/writers/MeshWriter.h"
 //! [MeshWriterUseIncludes]
 ///////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ bool testMeshWriter()
   unsigned int nb = 0;
   //! [MeshWriterUseMeshCreation]
   // Constructing the mesh to export in OFF format
-  MeshFromPoints<Point> aMesh(true);  
+  Mesh<Point> aMesh(true);  
   vector<Point> vectVertex;
   Point p1(0, 0, 0);
   Point p2(1, 0, 0);

@@ -15,98 +15,90 @@
  **/
 
 /**
- * @file test3DMeshFromPoints.cpp
+ * @file testMeshDisplay.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2012/07/02
+ * @date 2012/07/07
  *
- * Functions for testing class 3DMeshFromPoints.
+ * Functions for testing class MeshDisplay.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
+//! [MeshUseInclude]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
+#include "DGtal/io/viewers/Viewer3D.h"
+#include <QtGui/qapplication.h>
+//! [MeshUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
-using namespace DGtal::Z2i;
-
-
+using namespace DGtal::Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class MeshFromPoints.
+// Functions for testing class Mesh Display.
 ///////////////////////////////////////////////////////////////////////////////
-/**
- * Example of a test. To be completed.
- *
- */
-bool testMeshFromPoints()
-{
-  
-  trace.beginBlock ( "Testing MeshFromPoints ..." );
-
-  MeshFromPoints<Point> aMesh;
-  Point p0=Point(0,0);
-  Point p1=Point(0,1);
-  Point p2=Point(1,2);
-  Point p3=Point(3,2);
-  Point p4=Point(3,3);
-  Point p5=Point(3,4);
-  Point p6=Point(4,6);
-  
-  aMesh.addVertex(p0);
-  aMesh.addVertex(p1);
-  aMesh.addVertex(p2);
-  aMesh.addVertex(p3);
-  aMesh.addVertex(p4);
-  aMesh.addVertex(p5);
-  
-  aMesh.addTriangularFace(0,1,2);
-  aMesh.addTriangularFace(3,4,5);
-  
-  MeshFromPoints<Point>::MeshFace tface0 = aMesh.getFace(0);
-  MeshFromPoints<Point>::MeshFace tface1 = aMesh.getFace(1);
-  Point p0f0 = aMesh.getVertex(tface0.at(0));
-  Point p1f0 = aMesh.getVertex(tface0.at(1));
-  Point p2f0 = aMesh.getVertex(tface0.at(2));
-
-  Point p0f1 = aMesh.getVertex(tface1.at(0));
-  Point p1f1 = aMesh.getVertex(tface1.at(1));
-  Point p2f1 = aMesh.getVertex(tface1.at(2));
-  trace.info() << "Set of points" << endl;
-  trace.info() << p0 << p1 << p2 << endl;
-  trace.info() << p3 << p4 << p5 << endl;
-  
-  trace.info() << "Face1 points " << endl;
-  trace.info() << p0f0 << p1f0 << p2f0<< endl;
-
-  trace.info() << "Face2 points " << endl;
-  trace.info() << p0f1 << p1f1 << p2f1<< endl;
-  
-  
-  return (p0==p0f0) && (p1==p1f0) && (p2==p2f0) && 
-    (p3==p0f1) && (p4==p1f1) && (p5==p2f1) ;
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
+
 int main( int argc, char** argv )
 {
-  trace.beginBlock ( "Testing class MeshFromPoints" );
+  trace.beginBlock ( "Testing class MeshDisplay" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
+  //! [MeshUseInitDisplay]
+  QApplication application(argc,argv);
+  Viewer3D viewer;
+  viewer.show();     
+  //! [MeshUseInitDisplay]
 
-  bool res = testMeshFromPoints(); // && ... other tests
+  //! [MeshUseMeshCreation]
+  Mesh<Point> aMesh(true);
+  aMesh.addVertex(Point(0,0,0));
+  aMesh.addVertex(Point(1,0,0));
+  aMesh.addVertex(Point(1,1,0));
+
+  aMesh.addVertex(Point(0,0,1));
+  aMesh.addVertex(Point(1,0,1));
+  aMesh.addVertex(Point(1,1,1));
+  aMesh.addVertex(Point(0,1,1));
+
+  aMesh.addVertex(Point(0,1,0));
+  aMesh.addVertex(Point(0,2,0));
+  aMesh.addVertex(Point(0,3,1));
+  aMesh.addVertex(Point(0,2,2));
+  aMesh.addVertex(Point(0,1,2));
+  aMesh.addVertex(Point(0,0,1));
+  
+  aMesh.addTriangularFace(0, 1, 2, Color(150,0,150,104));
+  aMesh.addQuadFace(6,5,4,3, Color::Blue);
+  
+  vector<unsigned int> listIndex;
+  listIndex.push_back(7);
+  listIndex.push_back(8);
+  listIndex.push_back(9);
+  listIndex.push_back(10);
+  listIndex.push_back(11);  
+  listIndex.push_back(12);  
+
+  aMesh.addFace(listIndex, Color(150,150,0,54));
+  //! [MeshUseMeshCreation]
+  //! [MeshUseDisplay]
+  viewer.setLineColor(Color(150,0,0,254));
+  viewer << aMesh;
+  viewer << Viewer3D::updateDisplay;
+  bool res = application.exec();
+  //! [MeshUseDisplay]
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
