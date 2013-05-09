@@ -16,12 +16,12 @@
 
 /**
  * @file exampleTangentialCover3d.cpp
- * @ingroup Tests
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ * @ingroup Examples
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  *
- * @date 2011/06/01
+ * @date 2013/05/09
  *
  * This file is part of the DGtal library
  */
@@ -50,6 +50,7 @@
 #include "DGtal/geometry/curves/ArithmeticalDSS3d.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 #include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/readers/PointListReader.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 
 
@@ -65,8 +66,9 @@ const Color  CURVE3D_COLOR( 100, 100, 140, 128 );
 const Color  CURVE2D_COLOR( 200, 200, 200, 100 );
 const double MS3D_LINESIZE = 3.0;
 const int    MS3D_NBCOLORS = 3;
+
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ArithmeticalDSS3d.
+// Functions for displaying the tangential cover of a 3D curve.
 ///////////////////////////////////////////////////////////////////////////////
 template <typename Point, typename RealPoint>
 void displayAxes( Viewer3D & viewer, 
@@ -253,7 +255,22 @@ int main(int argc, char **argv)
 
   // Create curve 3D.
   vector<Point> sequence;
-  makeExampleCurve3D( sequence );
+  if ( argc <= 1 )
+    // from scratch
+    makeExampleCurve3D( sequence );
+  else
+    { // From a file, e.g. "DGtal/examples/samples/sinus.dat".
+      fstream inputStream;
+      inputStream.open ( argv[ 1 ], ios::in);
+      try {
+        sequence = PointListReader<Point>::getPointsFromInputStream( inputStream );
+        if ( sequence.size() == 0) throw IOException(); 
+      }
+      catch (DGtal::IOException & ioe) {
+        trace.error() << "Size is null." << std::endl;
+      }
+      inputStream.close();
+    }
 
   // Create domain
   Point lowerBound = sequence[ 0 ];
@@ -267,7 +284,12 @@ int main(int argc, char **argv)
   upperBound += Point::diagonal( 2 );
   K3 ks; ks.init( lowerBound, upperBound, true ); 
   GridCurve<K3> gc( ks ); 
-  gc.initFromPointsVector( sequence );
+  try {
+    gc.initFromPointsVector( sequence );
+  } catch (DGtal::ConnectivityException& /*ce*/) {
+    throw ConnectivityException();
+    return false;
+  }
 
   // Displays everything.
   viewer.show();
@@ -287,5 +309,4 @@ int main(int argc, char **argv)
   trace.endBlock();
 
   return res ? 0 : 1;
-
 }
