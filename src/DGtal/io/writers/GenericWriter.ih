@@ -43,10 +43,10 @@
 // Implementation of inline functions                                        //
 
 
-template <typename TContainer, int TDim, typename TFunctor >
+template <typename TContainer, int TDim, typename TValue, typename TFunctor >
 inline
 bool 
-DGtal::GenericWriter<TContainer, TDim, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exporT(const std::string &filename, 
 							 const TContainer &anImage,
 							 const TFunctor & aFunctor)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -63,10 +63,54 @@ DGtal::GenericWriter<TContainer, TDim, TFunctor>::exporT(const std::string &file
 
 
 
+
+
+template <typename TContainer, typename TValue, typename TFunctor>
+inline
+bool
+DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exporT(const std::string &filename, 
+						      const TContainer &anImage, 
+						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+
+  if(extension=="vol" || extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d" || extension=="raw"){
+    trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
+    throw dgtalio;   
+  }else{
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
+    throw dgtalio;
+  }
+  return false;
+}
+
+
+
+
 template <typename TContainer, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exporT(const std::string &filename, 
+								       const TContainer &anImage, 
+								       const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+
+  if(extension=="longvol"){
+    return  VolWriter<TContainer,TFunctor>::exportLongvol( filename, anImage ,aFunctor);
+  }else{
+    trace.error() << "Extension " << extension<< " with DGtal::uint64_t , not yet implemented in DGtal." << std::endl;
+    throw dgtalio;
+  }
+  return false;
+}
+
+
+
+template <typename TContainer, typename TFunctor>
+inline
+bool
+DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exporT(const std::string &filename, 
 						      const TContainer &anImage, 
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -87,10 +131,30 @@ DGtal::GenericWriter<TContainer, 3, TFunctor>::exporT(const std::string &filenam
 
 
 
+template <typename TContainer, typename TValue, typename TFunctor>
+inline
+bool
+DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exporT(const std::string &filename, 
+						      const TContainer &anImage, 
+						      const TFunctor & aFunctor )  throw(DGtal::IOException){
+  DGtal::IOException dgtalio;
+  std::string extension = filename.substr(filename.find_last_of(".") + 1);
+
+  if(extension=="pgm"|| extension=="ppm" ||extension=="pbm"){
+    trace.error() << "Value type of " << extension<< "  file extension should be unsigned char." << std::endl;
+    throw dgtalio;   
+  }else{
+    trace.error() << "Extension " << extension<< " not yet implemented in DGtal." << std::endl;
+    throw dgtalio;
+  }
+  return false;
+}
+
+
 template <typename TContainer, typename TFunctor >
 inline
 bool
-DGtal::GenericWriter<TContainer, 2, TFunctor>::exporT(const std::string &filename,
+DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exporT(const std::string &filename,
 						      const TContainer &anImage,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;

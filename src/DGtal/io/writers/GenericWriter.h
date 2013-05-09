@@ -63,8 +63,8 @@ namespace DGtal
    @code 
    #include "DGTal/io/readers/GenericWriter.h"
    #include "DGtal/helpers/StdDefs.h"
-   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
-   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned char> Image3D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned char> Image2D;
    @endcode
    - After contructing and filling an image (anImage2D or anImage3D), just save it with:
    @code
@@ -75,12 +75,13 @@ namespace DGtal
 
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
-   * @tparam TFunctor a functor type to apply image transformation before saving the image.
+   * @tparam TValue the value type of data contained in the image (by default given by the container) 
+   * @tparam TFunctor a functor type to apply image transformation before saving the image (by default set to DefaultFunctor).
    *
    *
    */
 
-  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TFunctor = DefaultFunctor >
+  template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = DefaultFunctor >
   struct GenericWriter
   {
     /**
@@ -96,10 +97,51 @@ namespace DGtal
 
   /**
    * GenericWriter
-   * Template partial specialisation for volume images of dimension 3
+   * Template partial specialisation for volume images of dimension 3 and unsigned char value type (which allows to export vol, pgm3D and raw file format).
    **/
   template <typename TContainer, typename TFunctor>
-  struct GenericWriter<TContainer, 3 , TFunctor>
+  struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
+  {
+
+    /**
+     * Export a volume image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved. 
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exporT(const std::string &filename,  const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  };
+  
+  /**
+   * GenericWriter
+   * Template partial specialisation for volume images of dimension 3 and DGtal::uint64_t value type (which allows to export longvol file format).
+   **/
+  template <typename TContainer, typename TFunctor>
+  struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
+  {
+
+    /**
+     * Export a volume image.
+     * @param filename the filename of the saved image (with a extension name). 
+     * @param anImage the image to be saved. 
+     * @param aFunctor to apply image transformation before saving. 
+     *
+     **/
+    static bool exporT(const std::string &filename,  const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  };
+
+
+  /**
+   * GenericWriter
+   * Template partial specialisation for volume images of dimension 3
+   **/
+  template <typename TContainer, typename TValue, typename TFunctor>
+  struct GenericWriter<TContainer, 3 , TValue, TFunctor>
   {
 
     /**
@@ -116,10 +158,28 @@ namespace DGtal
 
   /**
    * GenericWriter
-   * Template partial specialisation for volume images of dimension 2
+   * Template partial specialisation for images of dimension 2
    **/
-  template <typename TContainer, typename TFunctor>
-  struct GenericWriter<TContainer, 2, TFunctor>
+  template <typename TContainer, typename TValue,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, TValue, TFunctor>
+  {
+
+    /**
+     * Write a volume image file.  
+     *
+     **/
+
+    static bool exporT(const std::string &filename, const TContainer &anImage,
+		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
+
+  }; 
+  
+  /**
+   * GenericWriter
+   * Template partial specialisation for images of dimension 2 and unsigned char value type (which allows to export pgm, ppm file format ).
+   **/
+  template <typename TContainer,  typename TFunctor>
+  struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
   {
 
     /**
