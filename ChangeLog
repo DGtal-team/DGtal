@@ -1,37 +1,24 @@
 === DGtal 0.7 ===
 
- *General*
+*General*
+    - The "boost program option library" dependency was removed.
+    - DGtal needs boost >= 1.46	
 
- *Documentation*
-
- *Base Package*
-
- *Kernel Package*
-
- *Arithmetic Package*
-
- *Image Package*
+	
+*Geometry Package*
+    - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
+      properties to a separable metric (model of CSeparableMetric)
+      which can be used in VoronoiMap/DistanceTransformation algorithms.
 
 * Package IO
 	- A new display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
 
 
- *Geometry Package*
 
- *Shape Package*
-	- The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
-	- Iterator in mesh points and mesh face.
-
-
- *Topology Package*
-
- *Graph Package*
-
- *Math Package*
-	- Add a function to compute the next power of 2 (roundToUpperPowerOfTwo) given in math/BasicMathFunctions.h (and new  inline file math/BasicMathFunctions.ih)
-
- *For developers*
-
+	
+*Shape Package*
+    - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
+    - Iterator in mesh points and mesh face.
 
 
 
