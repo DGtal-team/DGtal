@@ -90,7 +90,7 @@ void displayDSS3d( DGtal::Viewer3D & viewer,
 	  case 2: q = Point3d( 2*p[ 0 ]+1, 2*p[ 1 ]+1, 2*b[ i ]   ); break;
 	  }
 	  Cell c = ks.uCell( q );
-	  viewer << CustomColors3D( color2d, color2d ) << c; 
+	  viewer << CustomColors3D( Color( 200, 200, 200, 100 ), Color( 200, 200, 200, 100 ) ) << c; 
 	}
 
       //draw bounding box
@@ -107,17 +107,22 @@ void displayDSS3d( DGtal::Viewer3D & viewer,
       p3.T = color2d.alpha();
       p3.isSigned = false;
       p3.signPos = false;
-      p3.size = 1;
+      p3.size = 3;
       for ( unsigned int j = 0; j < pts2d.size(); ++j )
 	{
 	  switch (i) {
-	  case 0: p3.x = b[ i ]; p3.y = pts2d[ j ][ 0 ]; p3.z = pts2d[ j ][ 1 ]; break;
-	  case 1: p3.x = pts2d[ j ][ 0 ]; p3.y = b[ i ]; p3.z = pts2d[ j ][ 1 ]; break;
-	  case 2: p3.x = pts2d[ j ][ 0 ]; p3.y = pts2d[ j ][ 1 ]; p3.z = b[ i ]; break;
+	  case 0: p3.x = (double) b[ i ]-0.5; p3.y = pts2d[ j ][ 0 ];     p3.z = pts2d[ j ][ 1 ];     break;
+	  case 1: p3.x = pts2d[ j ][ 0 ];     p3.y = (double) b[ i ]-0.5; p3.z = pts2d[ j ][ 1 ];     break;
+	  case 2: p3.x = pts2d[ j ][ 0 ];     p3.y = pts2d[ j ][ 1 ];     p3.z = (double) b[ i ]-0.5; break;
 	  }
 	  bb.push_back( p3 );
 	}
-      viewer.addPolygon( bb, color2d );
+      viewer << CustomColors3D( color2d, color2d );
+      for ( unsigned int j = 0; j < pts2d.size(); ++j )
+        viewer.addLine( bb[ j ].x, bb[ j ].y, bb[ j ].z,
+                        bb[ (j+1)%4 ].x, bb[ (j+1)%4 ].y, bb[ (j+1)%4 ].z,
+                        color2d, 2.0 );
+      // viewer.addPolygon( bb, Color(255,255,255,0) );
     } // for ( DGtal::Dimension i = 0; i < 3; ++i )
 }
 
@@ -137,19 +142,22 @@ bool displayCover( Viewer3D & viewer,
   typedef typename Decomposition::SegmentComputerIterator SegmentComputerIterator;
   //Segmentation
   trace.beginBlock("Segmentation test");
-    
   SegmentComputer algo;
   Decomposition theDecomposition(b, e, algo);
+
+  viewer << SetMode3D( algo.className(), "BoundingBox" );
+  HueShadeColorMap<int> cmap_hue( 0, 8, 1 );
            
   unsigned int c = 0;
-  SegmentComputerIterator i = theDecomposition.begin();
-  viewer << SetMode3D( algo.className(), "BoundingBox" );
-  for ( ; i != theDecomposition.end(); ++i) {
+  for ( SegmentComputerIterator i = theDecomposition.begin();
+        i != theDecomposition.end(); ++i) {
     SegmentComputer currentSegmentComputer(*i);
     trace.info() << currentSegmentComputer << std::endl;  //standard output
-    c++;
-    displayDSS3d( viewer, ks, currentSegmentComputer, Color( 200, 200, 200 ), Color( 0, 0, 255 ) );
+    //Color color( random() % 256, random() % 256, random() % 256, 255 );
+    Color color = cmap_hue( c );
+    displayDSS3d( viewer, ks, currentSegmentComputer, color, color );
     // viewer << currentSegmentComputer;
+    c++;
   } 
   
   trace.endBlock();
@@ -195,8 +203,8 @@ int main(int argc, char **argv)
   sequence.push_back(Point(12,8,5));
 
   // domain
-  Point lowerBound = Point::diagonal( -3 );
-  Point upperBound = Point::diagonal( 15 ); 
+  Point lowerBound = Point::diagonal( -1 );
+  Point upperBound = Point::diagonal( 14 ); 
 
   //! [GridCurveDeclaration]
   K3 ks; ks.init( lowerBound, upperBound, true ); 
@@ -206,7 +214,9 @@ int main(int argc, char **argv)
   viewer.show();
   bool res = displayCover( viewer, ks, sequence.begin(), sequence.end() );
   Point p;
+  viewer << CustomColors3D( Color( 100, 100, 140, 128 ), Color( 100, 100, 140, 128 ) );
   viewer << gc.getPointsRange();
+  viewer << sequence.back();
   // viewer << SetMode3D( p.className(), "Paving" );
   // for ( vector<Point>::const_iterator it = sequence.begin(), itE = sequence.end();
   // 	it != itE; ++it )
