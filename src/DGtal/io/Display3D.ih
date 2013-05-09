@@ -499,9 +499,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       qFaceDown.ny=  -normaleUp[1];
       qFaceDown.nz=  -normaleUp[2];
       qFaceDown.x1=x5; qFaceDown.y1=y5; qFaceDown.z1= z5;
-      qFaceDown.x2=x6; qFaceDown.y2=y6; qFaceDown.z2= z6;
+      qFaceDown.x2=x8; qFaceDown.y2=y8; qFaceDown.z2= z8;
       qFaceDown.x3=x7; qFaceDown.y3=y7; qFaceDown.z3= z7;
-      qFaceDown.x4=x8; qFaceDown.y4=y8; qFaceDown.z4= z8;
+      qFaceDown.x4=x6; qFaceDown.y4=y6; qFaceDown.z4= z6;
       qFaceDown.R=myCurrentFillColor.red();qFaceDown.G=myCurrentFillColor.green(); qFaceDown.B=myCurrentFillColor.blue();
       qFaceDown.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFaceDown);  
@@ -516,9 +516,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       normalize(n1);
       qFace1.nx=n1[0]; qFace1.ny=n1[1]; qFace1.nz=n1[2];
       qFace1.x1= x1; qFace1.y1 =y1; qFace1.z1=z1;
-      qFace1.x2= x2; qFace1.y2 =y2; qFace1.z2=z2;
+      qFace1.x2= x5; qFace1.y2 =y5; qFace1.z2=z5;
       qFace1.x3= x6; qFace1.y3 =y6; qFace1.z3=z6;
-      qFace1.x4= x5; qFace1.y4 =y5; qFace1.z4=z5;
+      qFace1.x4= x2; qFace1.y4 =y2; qFace1.z4=z2;
       qFace1.R=myCurrentFillColor.red();qFace1.G=myCurrentFillColor.green(); qFace1.B=myCurrentFillColor.blue();
       qFace1.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace1);    
@@ -533,9 +533,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
     
       qFace2.nx=n2[0]; qFace2.ny=n2[1]; qFace2.nz=n2[2];
       qFace2.x1= x2; qFace2.y1 =y2; qFace2.z1=z2;
-      qFace2.x2= x3; qFace2.y2 =y3; qFace2.z2=z3;
+      qFace2.x2= x6; qFace2.y2 =y6; qFace2.z2=z6;
       qFace2.x3= x7; qFace2.y3 =y7; qFace2.z3=z7;
-      qFace2.x4= x6; qFace2.y4 =y6; qFace2.z4=z6;
+      qFace2.x4= x3; qFace2.y4 =y3; qFace2.z4=z3;
       qFace2.R=myCurrentFillColor.red();qFace2.G=myCurrentFillColor.green(); qFace2.B=myCurrentFillColor.blue();
       qFace2.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace2);  
@@ -550,9 +550,9 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       normalize(n3);    
       qFace3.nx=n3[0]; qFace3.ny=n3[1]; qFace3.nz=n3[2];
       qFace3.x1= x3; qFace3.y1 =y3; qFace3.z1=z3;
-      qFace3.x2= x4; qFace3.y2 =y4; qFace3.z2=z4;
+      qFace3.x2= x7; qFace3.y2 =y7; qFace3.z2=z7;
       qFace3.x3= x8; qFace3.y3 =y8; qFace3.z3=z8;
-      qFace3.x4= x7; qFace3.y4 =y7; qFace3.z4=z7;
+      qFace3.x4= x4; qFace3.y4 =y4; qFace3.z4=z4;
       qFace3.R=myCurrentFillColor.red();qFace3.G=myCurrentFillColor.green(); qFace3.B=myCurrentFillColor.blue();
       qFace3.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace3);  
@@ -561,14 +561,14 @@ DGtal::Display3D::addKSSurfel(double x, double y, double z,
       quadD3D qFace4;
       double vF4[3]; double v4 [3]; double n4[3];
       vF4[0]= x1-x4; vF4[1]=y1-y4; vF4[2]= z1-z4;
-      v4[0]= x5-x4; v4[1]= y5-y4; v4[2]=z5-z4;
+      v4[0]= x8-x4; v4[1]= y8-y4; v4[2]=z8-z4;
       cross(n4, v4, vF4);
       normalize(n4);    
       qFace4.nx=n4[0]; qFace4.ny=n4[1]; qFace4.nz=n4[2];
       qFace4.x1= x4; qFace4.y1 =y4; qFace4.z1=z4;
-      qFace4.x2= x1; qFace4.y2 =y1; qFace4.z2=z1;
+      qFace4.x2= x8; qFace4.y2 =y8; qFace4.z2=z8;
       qFace4.x3= x5; qFace4.y3 =y5; qFace4.z3=z5;
-      qFace4.x4= x8; qFace4.y4 =y8; qFace4.z4=z8;
+      qFace4.x4= x1; qFace4.y4 =y1; qFace4.z4=z1;
       qFace4.R=myCurrentFillColor.red();qFace4.G=myCurrentFillColor.green(); qFace4.B=myCurrentFillColor.blue();
       qFace4.T=myCurrentFillColor.alpha();
       myKSSurfelList.push_back(qFace4);  
