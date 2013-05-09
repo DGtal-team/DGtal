@@ -122,7 +122,6 @@ namespace DGtal
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
-
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
