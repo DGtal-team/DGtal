@@ -110,6 +110,7 @@ DGtal::Viewer3D::draw()
 {
 
 
+      
   glPushMatrix();
   glMultMatrixd ( manipulatedFrame()->matrix() );
   
@@ -264,6 +265,8 @@ DGtal::Viewer3D::draw()
   
   glPopMatrix();
   glPopMatrix();  
+  drawLight(GL_LIGHT1);
+
 }
 
 #if defined( max )
@@ -292,13 +295,13 @@ DGtal::Viewer3D::init()
   myDefaultBackgroundColor = Color ( backgroundColor().red(), backgroundColor().green(),
 				     backgroundColor().blue() );
   myIsBackgroundDefault=true;
-  myBoundingPtLow[0]=numeric_limits<double>::max( );
-  myBoundingPtLow[1]=numeric_limits<double>::max( );
-  myBoundingPtLow[2]=numeric_limits<double>::max( );
+  myBoundingPtLow[0]=-10.0;//numeric_limits<double>::max( );
+  myBoundingPtLow[1]=-10.0;//numeric_limits<double>::max( );
+  myBoundingPtLow[2]=-10.0;//numeric_limits<double>::max( );
 
-  myBoundingPtUp[0]=numeric_limits<double>::min( );
-  myBoundingPtUp[1]=numeric_limits<double>::min( );
-  myBoundingPtUp[2]=numeric_limits<double>::min( );
+  myBoundingPtUp[0]=-10.0;//numeric_limits<double>::min( );
+  myBoundingPtUp[1]=-10.0;//numeric_limits<double>::min( );
+  myBoundingPtUp[2]=-10.0;//numeric_limits<double>::min( );
   createNewVoxelList ( true );
   std::vector<voxelD3D>  aKSVoxelList;
 
@@ -314,13 +317,15 @@ DGtal::Viewer3D::init()
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
     
  
+    
+
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
   
   
   setMouseBindingDescription ( Qt::ShiftModifier+Qt::RightButton, "Delete the mouse selected list." );
   setManipulatedFrame ( new ManipulatedFrame() );
   
-
+  
 }
 
 #if defined( _HAS_MSVC_MAX_ )
@@ -478,9 +483,11 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 	  //z-
 	  glNormal3f ( 0.0, 0.0, -1.0 );
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
 	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
+	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y-_width, ( *s_it ).z-_width );	  
+	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
+
+	  
 
 
 	  //x+
@@ -494,17 +501,22 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 	  //x-
 	  glNormal3f ( -1.0, 0.0, 0.0 );
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z+_width );
-	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
-	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
+	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
+	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y-_width, ( *s_it ).z-_width );
+
+	  
 
 
 	  //y+
 	  glNormal3f ( 0.0, 1.0, 0.0 );
 	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
-	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
-	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
 	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z+_width );
+	  glVertex3f ( ( *s_it ).x+_width, ( *s_it ).y+_width, ( *s_it ).z-_width );	  
+	  glVertex3f ( ( *s_it ).x-_width, ( *s_it ).y+_width, ( *s_it ).z-_width );
+
+ 
+	  
 
 
 	  //y-
