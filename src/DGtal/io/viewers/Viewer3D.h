@@ -465,7 +465,6 @@ namespace DGtal
     // ------------------------- Private Datas --------------------------------
   private:
 
-
     GLuint myListToAff;
     unsigned int myNbListe;
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
