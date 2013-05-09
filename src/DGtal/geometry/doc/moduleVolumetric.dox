@@ -357,6 +357,23 @@ The class of metrics for which such @a hiddenBy method can be defined and for wh
 - all local metric inducing a norm (chamfer norms, some of the neighborhood sequences, ...) (see @cite Hirata1996 for more details).
 - ...
 
+More formally, any @e monotonic metric can lead to such an @a hiddenBy
+predicate definition with exact VoronoiMap/DistanceTransformation
+algorithms. In dimension 2, consider two points @f$ p(x,y)@f$,
+@f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a point on the
+x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another
+point on the x-axis. A metric @f$ d@f$ is @e monotonic if
+    
+@f[     u < x'' \implies d(p,s) \leq d(q,s) @f]
+and
+@f[    u > x'' \implies d(p,s) \geq d(q,s) @f]
+
+
+The class SeparableMetricAdapter adapts any model of CMetic which is
+monotonic to a model of CSeparableMetric. Please refer to the
+following table for computational costs.
+
+
 @section CostSec Computational Costs 
 
 
@@ -375,6 +392,7 @@ of the separable metrics can be summarized as follows:
 | InexactPredicateLpSeparableMetric with p at construction | @f$ O(1) @f$ | @f$ O(log(n)) @f$ | Inexact computations since std::pow on double is used (supposed to be @f$ O(1) @f$)|
 | ExactPredicateLpPowerSeparableMetric<p> | @f$ O(log(p)) @f$ | @f$ O(log(p)log(n)) @f$ | Exact computations|
 | ExactPredicateLpPowerSeparableMetric specialized for p=2 | @f$ O(1) @f$ | @f$ O(1) @f$ | Exact computations|
+| SeparableMetricAdapter of a metric aMetric  | @f$ O(m) @f$ | @f$ O(mlog(n)) @f$ | relies on aMetric(p,q) computations |
 
 
 Following this table, VoronoiMap, DistanceTransformation, PowerMap, ReverseDistanceTransformation have the following computational cost:
