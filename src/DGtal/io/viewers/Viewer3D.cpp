@@ -285,6 +285,7 @@ DGtal::Viewer3D::init()
   myMeshDefaultLineWidth=10.0;
   myNbListe=0;
   myViewWire=true;
+  myIsDoubleFaceRendering=true;
   createNewVoxelList ( true );
   vector<lineD3D> listeLine;
   myLineSetList.push_back ( listeLine );
@@ -315,10 +316,10 @@ DGtal::Viewer3D::init()
   setKeyDescription ( Qt::Key_B, "Switch background color with White/Black colors." );
   setKeyDescription ( Qt::Key_C, "Show camera informations." );
   setKeyDescription ( Qt::Key_R, "Reset default scale for 3 axes to 1.0f." );
+  setKeyDescription ( Qt::Key_D, "Enable/Disable the two side face rendering." );
     
  
     
-
   glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
   
   
@@ -634,7 +635,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   for ( unsigned int i=0; i<myQuadList.size(); i++ )
     {        
       glColor4ub ( myQuadList.at ( i ).R, myQuadList.at ( i ).G, myQuadList.at ( i ).B, myQuadList.at ( i ).T );
-      glNormal3f ( -myQuadList.at ( i ).nx, -myQuadList.at ( i ).ny ,-myQuadList.at ( i ).nz );
+      glNormal3f ( myQuadList.at ( i ).nx, myQuadList.at ( i ).ny ,myQuadList.at ( i ).nz );
       glVertex3f ( myQuadList.at ( i ).x1, myQuadList.at ( i ).y1, myQuadList.at ( i ).z1 );
       glVertex3f ( myQuadList.at ( i ).x2, myQuadList.at ( i ).y2, myQuadList.at ( i ).z2 );
       glVertex3f ( myQuadList.at ( i ).x3, myQuadList.at ( i ).y3, myQuadList.at ( i ).z3 );
@@ -679,7 +680,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   for ( unsigned int i=0; i<myTriangleList.size(); i++ )
     {
       glColor4ub ( myTriangleList.at ( i ).R, myTriangleList.at ( i ).G, myTriangleList.at ( i ).B, myTriangleList.at ( i ).T );  
-      glNormal3f ( -myTriangleList.at ( i ).nx, -myTriangleList.at ( i ).ny ,-myTriangleList.at ( i ).nz );
+      glNormal3f ( myTriangleList.at ( i ).nx, myTriangleList.at ( i ).ny ,myTriangleList.at ( i ).nz );
       glVertex3f ( myTriangleList.at ( i ).x1, myTriangleList.at ( i ).y1, myTriangleList.at ( i ).z1 );
       glVertex3f ( myTriangleList.at ( i ).x2, myTriangleList.at ( i ).y2, myTriangleList.at ( i ).z2 );        
       glVertex3f ( myTriangleList.at ( i ).x3, myTriangleList.at ( i ).y3, myTriangleList.at ( i ).z3 );
@@ -719,7 +720,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     {
       glBegin ( GL_POLYGON );
       glColor4ub ( myPolygonList.at ( i ).R, myPolygonList.at ( i ).G, myPolygonList.at ( i ).B, myPolygonList.at ( i ).T );
-      glNormal3f ( -myPolygonList.at ( i ).nx, -myPolygonList.at ( i ).ny ,-myPolygonList.at ( i ).nz );
+      glNormal3f ( myPolygonList.at ( i ).nx, myPolygonList.at ( i ).ny ,myPolygonList.at ( i ).nz );
       vector<pointD3D> vectVertex = myPolygonList.at ( i ).vectPoints;
       for(unsigned int j=0;j < vectVertex.size();j++){
 	glVertex3f ( vectVertex.at(j).x, vectVertex.at(j).y, vectVertex.at ( j ).z );
@@ -866,6 +867,15 @@ DGtal::Viewer3D::keyPressEvent ( QKeyEvent *e )
 {
   bool handled = false;
 
+  if( e->key() == Qt::Key_D){
+    myIsDoubleFaceRendering = !myIsDoubleFaceRendering;
+    if(myIsDoubleFaceRendering)
+      glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
+    else
+      glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+    updateGL();
+
+  }
   if( e->key() == Qt::Key_E){
     trace.info() << "Exporting mesh..." ;
     (*this) >> "exportedMesh.off";
