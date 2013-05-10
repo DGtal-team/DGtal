@@ -160,7 +160,6 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
   
   // Draw points
   display << CustomColors3D( display.getLineColor(), display.getFillColor() );
-  //display << CustomColors3D(Color(250,250,250,100),Color(250,250,250,100));
   for (ConstIterator i = a.begin(); i != a.end(); ++i) 
     {
       display << *i;
