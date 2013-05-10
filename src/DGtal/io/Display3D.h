@@ -44,7 +44,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
@@ -219,6 +219,67 @@ namespace DGtal
 
     
     /**
+     *  Used to display the 2D domain of an image.
+     *
+     **/
+    
+    struct Image2DDomainD3D{
+      // The image domain coordinates 
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;
+      
+      unsigned int myDomainWidth;
+      unsigned int myDomainHeight;      
+      ImageDirection myDirection;      
+      
+      bool myIsBoundingBoxMode;
+      
+      unsigned int myLineSetIndex;
+      
+      /**
+       * Constructor
+       *
+       **/
+
+      template<typename TSpace>
+      Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=xDirection, 
+		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, bool isBoundingBoxMode= true){
+	myIsBoundingBoxMode = isBoundingBoxMode;
+	myDirection=normalDir;
+	myDomainWidth = (aDomain.upperBound())[0]+1;
+	myDomainHeight = (aDomain.upperBound())[1]+1;
+	updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);	
+      }
+      
+      /**
+       * Update the domain direction from a specific normal direction
+       * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
+       * from the botton left point.
+       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
+       *  @param xBottomLeft: the x coordinate of bottom left image point.
+       *  @param yBottomLeft: the x coordinate of bottom left image point.
+       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       **/
+      
+      void updateDomainOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
+
+     
+      /** 
+       *  Translate domain postion. 
+       *  @param xTranslation: the image translation in the  x direction (default 0).
+       *  @param yTranslation: the image translation in the  y direction (default 0).
+       *  @param zTranslation: the image translation in the  z direction (default 0).
+       **/
+      void translateDomain(double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+
+    };
+
+    
+
+
+    /**
      * Used to display a grayscale image as a textured quad image.
      *
      **/
@@ -260,7 +321,7 @@ namespace DGtal
 	
       };				       
 
-      
+     
       GrayScaleImage(){
 
       };
@@ -676,7 +737,16 @@ namespace DGtal
 					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
 
+    
+    /**
+     *
+     */
 
+    template<typename TSpace>
+    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true );
+    
+    
+    
 
     
     
@@ -850,6 +920,9 @@ namespace DGtal
     std::vector<GrayScaleImage> myGSImageList;
 
 
+    // Used to store all the domain
+    std::vector<Image2DDomainD3D> myImageDomainList;
+    
     
     // ------------------------- Hidden services ------------------------------
 
