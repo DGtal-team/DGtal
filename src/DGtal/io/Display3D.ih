@@ -989,12 +989,17 @@ DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
 
 template<typename TSpace>
 void 
-DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, bool boundingBoxMode){
+DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, bool boundingBoxMode, const DGtal::Color &aColor){
   DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain, yDirection);
   anImageDomain.myIsBoundingBoxMode =  boundingBoxMode;
   std::vector<DGtal::Display3D::lineD3D> aLineSet;
+  lineD3D aLine;
+  aLine.R = aColor.red();
+  aLine.G = aColor.green();
+  aLine.B = aColor.blue();
+  aLine.T = aColor.alpha();
+  
   if(boundingBoxMode){
-    lineD3D aLine;
     aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1; 
     aLine.x2=anImageDomain.x2; aLine.y2=anImageDomain.y2; aLine.z2=anImageDomain.z2;
     aLineSet.push_back(aLine);
@@ -1008,7 +1013,6 @@ DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDom
     aLine.x2=anImageDomain.x1; aLine.y2=anImageDomain.y1; aLine.z2=anImageDomain.z1;
     aLineSet.push_back(aLine);
   }else{
-    lineD3D aLine;
     aLine.width=0.3;
     if(anImageDomain.myDirection==zDirection){
       //lines align to the x direction 

@@ -626,7 +626,7 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
 		      colDef);
     
   }else if(TSpace::dimension==2){
-    display.addImage2DDomainD3D(h, false);
+    display.addImage2DDomainD3D(h, true);
     
   }
   
@@ -730,7 +730,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 {
   typedef typename TSpace::Integer Integer;
   
-  ASSERT(TSpace::dimension == 3 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(TSpace::dimension == 3 ||TSpace::dimension == 2 || "drawAsPaving-NOT-YET-IMPLEMENTED-in-ND");
   
   if (TSpace::dimension == 3)
     {
@@ -747,7 +747,11 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 	  }
 	}
       } 
-    }
+    }else if(TSpace::dimension == 2){
+      display.addImage2DDomainD3D(h, false);
+      
+    
+  }
 }
 
 template<typename TSpace>
@@ -764,8 +768,13 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     display.createNewLineList();
     drawAsBoundingBox( display, h );
   }else if( ( mode == "" ) ||  (mode == "Grid")){
+
     display.createNewLineList();
-    drawAsGrid( display, h );
+    if(TSpace::dimension == 3){
+      drawAsGrid( display, h );
+    }else if(TSpace::dimension == 2){
+      drawAsPaving(display, h);
+    }
   }
   else if ( mode == "Paving" ){
     display.createNewVoxelList(false);
@@ -1318,34 +1327,34 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D an
   DGtal::DefaultFunctor idV;
   const DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorY(1, 0);
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, DGtal::Display3D::yDirection, -0.5, -0.5, -0.5);
+  DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, DGtal::Display3D::yDirection);
   display.addGrayScaleImage(aGSImageYf);
   
   DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorX(0, 0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageXf (sliceImageX, DGtal::Display3D::xDirection, -0.5, -0.5, -0.5);
+  DGtal::Display3D::GrayScaleImage aGSImageXf (sliceImageX, DGtal::Display3D::xDirection);
   display.addGrayScaleImage(aGSImageXf);    
   
   DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZ(2, 0);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageZf (sliceImageZ, DGtal::Display3D::zDirection, -0.5, -0.5, -0.5);
+  DGtal::Display3D::GrayScaleImage aGSImageZf (sliceImageZ, DGtal::Display3D::zDirection);
   display.addGrayScaleImage(aGSImageZf);    
   
 
   // other symetrics faces
   DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorYl(1, (int)(anImage3D.domain().upperBound()[1]));
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageYfl (sliceImageYl, DGtal::Display3D::yDirection, -0.5, 0.5+anImage3D.domain().upperBound()[1], -0.5);
+  DGtal::Display3D::GrayScaleImage aGSImageYfl (sliceImageYl, DGtal::Display3D::yDirection, 0.0, 0.5+anImage3D.domain().upperBound()[1], 0.0);
   display.addGrayScaleImage(aGSImageYfl);
   
   DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorXl(0, (int)(anImage3D.domain().upperBound()[0]));
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageXfl (sliceImageXl, DGtal::Display3D::xDirection,0.5+anImage3D.domain().upperBound()[0], -0.5, -0.5);
+  DGtal::Display3D::GrayScaleImage aGSImageXfl (sliceImageXl, DGtal::Display3D::xDirection,0.5+anImage3D.domain().upperBound()[0], 0.0, 0.0);
   display.addGrayScaleImage(aGSImageXfl);    
   
   DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZl(2, (int)(anImage3D.domain().upperBound()[2]));
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
-  DGtal::Display3D::GrayScaleImage aGSImageZfl (sliceImageZl, DGtal::Display3D::zDirection, -0.5, -0.5, 0.5+ anImage3D.domain().upperBound()[2]);
+  DGtal::Display3D::GrayScaleImage aGSImageZfl (sliceImageZl, DGtal::Display3D::zDirection, 0.0, 0.0, 0.5+ anImage3D.domain().upperBound()[2]);
   display.addGrayScaleImage(aGSImageZfl);    
   
 }

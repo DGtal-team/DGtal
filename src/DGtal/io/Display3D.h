@@ -743,7 +743,8 @@ namespace DGtal
      */
 
     template<typename TSpace>
-    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true );
+    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true,  
+			     const DGtal::Color &aColor=DGtal::Color::Red );
     
     
     
