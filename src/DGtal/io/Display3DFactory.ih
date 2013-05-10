@@ -182,7 +182,6 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
         display.addLine(xprevp,yprevp,zprevp,
 			xp,yp,zp,
 			display.getLineColor() );
-        //			Color(0,250,0));
         xprevp = xp;
         yprevp = yp;
         zprevp = zp;
