@@ -1479,6 +1479,13 @@ DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Update2DDomainPos
 				      anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
 }
 
+inline
+void
+DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Translate2DDomain &anTranslation){
+  display.translateAn2DDomain(anTranslation.myIndex, anTranslation.myTranslateX, anTranslation.myTranslateY, 
+				      anTranslation.myTranslateZ);
+}
+
 
 
 
