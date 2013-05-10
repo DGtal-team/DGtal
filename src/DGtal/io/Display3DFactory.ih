@@ -529,15 +529,14 @@ inline
 void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, 
                                                  const DGtal::HyperRectDomain<TSpace> & h )
 {
-  ASSERT(TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(TSpace::dimension == 2 || TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
   
   typename TSpace::RealPoint upperBound ( h.myUpperBound);
   typename TSpace::RealPoint lowerBound ( h.myLowerBound);
 
   DGtal::Color colDef(250,250,250,10);
   double shiftSize=0.01;
-  if (TSpace::dimension == 3)
-    {
+  if (TSpace::dimension == 3){
       //Z upper face
       display.addQuad(upperBound[0]+(0.5+shiftSize), 
                       upperBound[1]+(0.5+shiftSize), 
@@ -625,7 +624,13 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                       lowerBound[1]-(0.5+shiftSize),
                       upperBound[2]+(0.5+shiftSize),
 		      colDef);
-    }  
+    
+  }else if(TSpace::dimension==2){
+    display.addImage2DDomainD3D(h, false);
+    
+  }
+  
+
 }
 
 template<typename TSpace>

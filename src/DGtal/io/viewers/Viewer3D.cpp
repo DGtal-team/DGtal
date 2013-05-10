@@ -558,6 +558,8 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     }
   glEnd();
   glEndList();
+ 
+  
 
 
   for ( unsigned int i=0; i<myLineSetList.size(); i++ )
@@ -754,23 +756,24 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   myVectTextureImage.clear();
   
   //Filling new image texture from myGSImageList
-  
   for(unsigned int i=0; i<myGSImageList.size(); i++){
     GrayScaleImage & aGSImage = myGSImageList.at(i);
     GLGrayScaleTextureImage textureImg(aGSImage); 
     
     glGenTextures(1, &textureImg.myTextureName);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
+    
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
 		 GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBuffer);
     
     
-myVectTextureImage.push_back(textureImg);  
+    myVectTextureImage.push_back(textureImg);  
   }
+
 
   if ( needToUpdateBoundingBox )
     {
