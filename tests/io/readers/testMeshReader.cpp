@@ -30,10 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-//! [MeshReaderUseIncludes]
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/readers/MeshReader.h"
-//! [MeshReaderUseIncludes]
 #include "DGtal/helpers/StdDefs.h"
 
 #include "ConfigTest.h"
@@ -92,16 +90,14 @@ bool testMeshReader()
   unsigned int nb = 0;
   trace.beginBlock ( "Testing block ..." );  
   nb++;
-//! [MeshReaderUseImport]
   std::string filenameOFF = testPath + "samples/box.off";  
-  MeshFromPoints<Point> a3DMesh;
+  Mesh<Point> a3DMesh;
   bool importOK = a3DMesh << filenameOFF;
-//! [MeshReaderUseImport]
   nbok += importOK ? 1 : 0; 
   
   
   nb++;
-  MeshFromPoints<Point>::MeshFace aFace = a3DMesh.getFace(0);
+  Mesh<Point>::MeshFace aFace = a3DMesh.getFace(0);
   bool isWellImported = (a3DMesh.nbVertex()==8) &&  (a3DMesh.nbFaces()==6) && (aFace.size()==4) && (aFace.at(0)==0);
   nbok+=isWellImported? 1: 0; 
   
@@ -112,12 +108,12 @@ bool testMeshReader()
 
   nb++;
   std::string filenameOFS = testPath + "samples/testMesh.ofs";  
-  MeshFromPoints<Point> a3DMesh2;
+  Mesh<Point> a3DMesh2;
   bool importOK2=  a3DMesh2 << filenameOFS;
   nbok += importOK2 ? 1 : 0; 
   
   nb++;
-  MeshFromPoints<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
+  Mesh<Point>::MeshFace aFace2 = a3DMesh2.getFace(0);
   bool isWellImported2 = (a3DMesh2.nbVertex()==32) &&  (a3DMesh2.nbFaces()==60) && (aFace2.size()==3) && (aFace2.at(0)==0);
   nbok+=isWellImported2? 1: 0;
 

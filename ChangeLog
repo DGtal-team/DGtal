@@ -1,3 +1,22 @@
+=== DGtal 0.7 ===
+
+*General*
+    - The "boost program option library" dependency was removed.
+    - DGtal needs boost >= 1.46	
+
+	
+*Geometry Package*
+    - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
+      properties to a separable metric (model of CSeparableMetric)
+      which can be used in VoronoiMap/DistanceTransformation algorithms.
+
+	
+*Shape Package*
+    - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
+    - Iterator in mesh points and mesh face.
+
+
+
 === DGtal 0.6 ===
  
  *General*

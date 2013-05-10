@@ -33,9 +33,6 @@
 #include <set>
 #include <map>
 #include <queue>
-#include <boost/program_options/options_description.hpp>
-#include <boost/program_options/parsers.hpp>
-#include <boost/program_options/variables_map.hpp>
 
 #include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
@@ -57,7 +54,6 @@
 
 using namespace std;
 using namespace DGtal;
-namespace po = boost::program_options;
 
 //! [greedy-plane-segmentation-ex2-typedefs]
 using namespace Z3i;
@@ -100,36 +96,20 @@ bool operator<( const VertexSize & vs1, const VertexSize & vs2 )
 int main( int argc, char** argv )
 {
   //! [greedy-plane-segmentation-ex2-parseCommandLine]
-  // parse command line ----------------------------------------------
-  po::options_description general_opt("Allowed options are: ");
-  general_opt.add_options()
-    ("help,h", "display this message")
-    ("input-file,i", po::value<std::string>()->default_value( examplesPath + "samples/Al.100.vol" ), "the volume file (.vol)" )
-    ("threshold,t",  po::value<unsigned int>()->default_value(1), "the value that defines the isosurface in the image (an integer between 0 and 255)." )
-    ("width-num,w",  po::value<unsigned int>()->default_value(1), "the numerator of the rational width (a non-null integer)." )
-    ("width-den,d",  po::value<unsigned int>()->default_value(1), "the denominator of the rational width (a non-null integer)." );
-  
-  bool parseOK = true;
-  po::variables_map vm;
-  try {
-    po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-  } catch ( const std::exception & ex ) {
-    parseOK = false;
-    trace.info() << "Error checking program options: "<< ex.what()<< endl;
-  }
-  po::notify(vm);
-  if ( ! parseOK || vm.count("help") || ( argc <= 1 ) )
-    {
-      std::cout << "Usage: " << argv[0]
-                << " [-i <fileName.vol>] [-t <threshold>] [-w <num>] [-d <den>]" << std::endl
-                << "Segments the surface at given threshold within given volume into digital planes of rational width num/den." << std::endl
-                << general_opt << std::endl;
-      return 0;
-    }
-  string inputFilename = vm["input-file"].as<std::string>();
-  unsigned int threshold = vm["threshold"].as<unsigned int>();
-  unsigned int widthNum = vm["width-num"].as<unsigned int>();
-  unsigned int widthDen = vm["width-den"].as<unsigned int>();
+   trace.info() << "Segments the surface at given threshold within given volume into digital planes of rational width num/den." << std::endl;
+  // Setting default options: ----------------------------------------------
+  // input file used: 
+   string inputFilename =   examplesPath + "samples/Al.100.vol" ;
+    trace.info() << "input file used " << inputFilename << std::endl;
+  // parameter threshold
+    unsigned int threshold = 1;
+    trace.info() << "the value that defines the isosurface in the image (an integer between 0 and 255)= " << threshold<< std::endl;
+   // parameter widthNum
+   unsigned int widthNum = 1;
+   trace.info() << "the numerator of the rational width (a non-null integer) =" << widthNum<< std::endl;
+   // parameter widthDen
+   unsigned int widthDen = 1;   
+   trace.info() << "the denominator of the rational width (a non-null integer)= " << widthDen<< std::endl;      
   //! [greedy-plane-segmentation-ex2-parseCommandLine]
 
   //! [greedy-plane-segmentation-ex2-loadVolume]
