@@ -229,7 +229,8 @@ namespace DGtal
       double x2, y2, z2;
       double x3, y3, z3;
       double x4, y4, z4;
-      
+      unsigned int R,G,B,T;
+
       unsigned int myDomainWidth;
       unsigned int myDomainHeight;      
       ImageDirection myDirection;      
@@ -746,9 +747,14 @@ namespace DGtal
     void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true,  
 			     const DGtal::Color &aColor=DGtal::Color::Red );
     
+
     
+    void updateAn2DDomainOrientation(unsigned int imageIndex, 
+				     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
 
+    
+    void addImage2DDomain( Image2DDomainD3D &anImageDomain );
     
     
     /**

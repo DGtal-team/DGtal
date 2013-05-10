@@ -1472,6 +1472,17 @@ DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImagePos
 }
 
 
+inline
+void
+DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Update2DDomainPosition &anUpdate){
+  display.updateAn2DDomainOrientation(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+				      anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
+}
+
+
+
+
+
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 

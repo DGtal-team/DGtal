@@ -92,9 +92,9 @@ int main( int argc, char** argv )
  
  viewer << image;
  viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  0, 0, 0 );
- viewer << SetMode3D( image.domain().className(), "BoundingBox" );
+ // viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
-
+ viewer << DGtal::Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
  for(unsigned int i= 0; i< 10; i++){
    viewer << image;
    viewer << DGtal::UpdateImageData<imageNG>(i+1, image,  i*50, i*50, i*50);

@@ -355,6 +355,7 @@ namespace DGtal
     template<typename TImageType>
     static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & );
     static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
+    static void draw( Display3D &display, const DGtal::Update2DDomainPosition &anUpdate);
     static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);
 
 

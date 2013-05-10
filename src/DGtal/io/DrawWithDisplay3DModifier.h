@@ -338,7 +338,6 @@ namespace DGtal
   };
 
 
-
   
 
   /**
@@ -377,6 +376,85 @@ namespace DGtal
     int myTranslateZ;
     const TImageType *myImage;
   };
+
+
+
+
+ /**
+   * @brief class to modify the data of an given image and also the
+   * possibility to translate it (optional).
+   * 
+   */
+  template<typename TImageType>
+  struct TranslateDomain : public DrawWithDisplay3DModifier
+  {
+   
+    /**
+     * Constructor given from an specific image index, a new image
+     * (should be of dimension 2 and with the same size than the
+     * orginal), and a possible (optional translation).
+     * 
+     * @param anIndex: the index of the image to be modified (should be less than the number of image added in the current Display3D).
+     * @param anImage: the new image which will be used to update the source image  data.
+     * @param translateX: the x translation value.
+     * @param translateY: the y translation value.
+     * @param translateZ: the y translation value.
+     *
+     */
+    TranslateDomain(unsigned int anIndex, double translateX=0,
+		    double translateY=0, double translateZ=0 ): myIndex(anIndex),
+								myTranslateX (translateX), 
+								myTranslateY (translateY),
+								myTranslateZ (translateZ)
+    {
+      
+    }
+    unsigned int myIndex;
+    int myTranslateX; 
+    int myTranslateY;
+    int myTranslateZ;
+  };
+
+
+
+
+
+
+  /**
+   * 
+   * @brief class to modify the position and orientation of an 2D domain.
+   * 
+   */
+  struct Update2DDomainPosition : public DrawWithDisplay3DModifier
+  {
+   
+    /**
+     * Constructor given from an specific 2D domain index, a new direction
+     * (associated to the normal of the 2D domain plane), and and a new
+     * position of the bottom-left point.
+     * @param anIndex: the index of the 2D domain to be modified (should be less than the number of domain added in the current Display3D).
+     * @param newDir: give the new direction of the domain normal vector.
+     * @param posXbottomLeft: the x position of the bottom left point. 
+     * @param posYbottomLeft: the y position of the bottom left point. 
+     * @param posZbottomLeft: the z position of the bottom left point. 
+     * 
+     */
+    Update2DDomainPosition(unsigned int anIndex, Display3D::ImageDirection newDir, 
+			   double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ):  myIndex(anIndex), 
+												   myNewDirection(newDir), 
+												   myPosXBottomLeft(posXbottomLeft),
+												   myPosYBottomLeft(posYbottomLeft),
+												   myPosZBottomLeft(posZbottomLeft)
+    {
+
+    }
+    unsigned int myIndex;
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;    
+    Display3D::ImageDirection myNewDirection;
+  };
+
 
 } // namespace DGtal
 

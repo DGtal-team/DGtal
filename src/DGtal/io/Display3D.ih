@@ -926,6 +926,9 @@ DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex,
 }
     
 
+
+
+
 inline      
 void
 DGtal::Display3D::GrayScaleImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir, 
@@ -991,15 +994,31 @@ template<typename TSpace>
 void 
 DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, bool boundingBoxMode, const DGtal::Color &aColor){
   DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain, yDirection);
+  anImageDomain.R = aColor.red();
+  anImageDomain.G =aColor.green();
+  anImageDomain.B =aColor.blue();
+  anImageDomain.T =aColor.alpha();
+  
   anImageDomain.myIsBoundingBoxMode =  boundingBoxMode;
+  addImage2DDomain(anImageDomain);
+  
+}
+
+
+
+
+
+inline
+void
+DGtal::Display3D::addImage2DDomain( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
   std::vector<DGtal::Display3D::lineD3D> aLineSet;
   lineD3D aLine;
-  aLine.R = aColor.red();
-  aLine.G = aColor.green();
-  aLine.B = aColor.blue();
-  aLine.T = aColor.alpha();
+  aLine.R = anImageDomain.R;
+  aLine.G = anImageDomain.G;
+  aLine.B = anImageDomain.B;
+  aLine.T = anImageDomain.T;
   
-  if(boundingBoxMode){
+  if( anImageDomain.myIsBoundingBoxMode){
     aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1; 
     aLine.x2=anImageDomain.x2; aLine.y2=anImageDomain.y2; aLine.z2=anImageDomain.z2;
     aLineSet.push_back(aLine);
@@ -1066,14 +1085,27 @@ DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDom
   anImageDomain.myLineSetIndex=myLineSetList.size();
   myLineSetList.push_back(aLineSet);
   
-  
 }
 
 
 
 
+inline 
+void 
+DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex, 
+					      double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
+  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex); 
+  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+  anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
+  myLineSetList.erase(myLineSetList.begin()+anDomain.myLineSetIndex);
+  addImage2DDomain(anDomain);  
+}
+    
 
-
+   
 inline
 std::string 
 DGtal::Display3D::GrayScaleImage::className() const
