@@ -245,7 +245,7 @@ namespace DGtal
        **/
 
       template<typename TSpace>
-      Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=xDirection, 
+      Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=zDirection, 
 		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, bool isBoundingBoxMode= true){
 	myIsBoundingBoxMode = isBoundingBoxMode;
 	myDirection=normalDir;
@@ -747,14 +747,16 @@ namespace DGtal
     void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true,  
 			     const DGtal::Color &aColor=DGtal::Color::Red );
     
-
+    
     
     void updateAn2DDomainOrientation(unsigned int imageIndex, 
 				     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
-
     
-    void addImage2DDomain( Image2DDomainD3D &anImageDomain );
+    void translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation);
+    
+    
+    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain );
     
     
     /**

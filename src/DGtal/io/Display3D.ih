@@ -993,14 +993,23 @@ DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
 template<typename TSpace>
 void 
 DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, bool boundingBoxMode, const DGtal::Color &aColor){
-  DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain, yDirection);
+  DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
   anImageDomain.R = aColor.red();
   anImageDomain.G =aColor.green();
   anImageDomain.B =aColor.blue();
   anImageDomain.T =aColor.alpha();
   
   anImageDomain.myIsBoundingBoxMode =  boundingBoxMode;
-  addImage2DDomain(anImageDomain);
+  anImageDomain.myLineSetIndex=myLineSetList.size();
+  
+  myImageDomainList.push_back(anImageDomain);
+  updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
+  updateBoundingBox(anImageDomain.x2, anImageDomain.y2, anImageDomain.z2);
+  updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
+  updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
+  
+  std::vector<DGtal::Display3D::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
+  myLineSetList.push_back(vectLines);
   
 }
 
@@ -1009,8 +1018,8 @@ DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDom
 
 
 inline
-void
-DGtal::Display3D::addImage2DDomain( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
+std::vector<DGtal::Display3D::lineD3D> 
+DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
   std::vector<DGtal::Display3D::lineD3D> aLineSet;
   lineD3D aLine;
   aLine.R = anImageDomain.R;
@@ -1077,14 +1086,8 @@ DGtal::Display3D::addImage2DDomain( DGtal::Display3D::Image2DDomainD3D &anImageD
     }
     
   }
-  myImageDomainList.push_back(anImageDomain);
-  updateBoundingBox(anImageDomain.x1, anImageDomain.y1, anImageDomain.z1);
-  updateBoundingBox(anImageDomain.x2, anImageDomain.y2, anImageDomain.z2);
-  updateBoundingBox(anImageDomain.x3, anImageDomain.y3, anImageDomain.z3);
-  updateBoundingBox(anImageDomain.x4, anImageDomain.y4, anImageDomain.z4);
-  anImageDomain.myLineSetIndex=myLineSetList.size();
-  myLineSetList.push_back(aLineSet);
-  
+ 
+  return aLineSet;
 }
 
 
@@ -1100,9 +1103,36 @@ DGtal::Display3D::updateAn2DDomainOrientation(unsigned int domainIndex,
   updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
   updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
   anDomain.updateDomainOrientation(newDirection, xPosition, yPosition, zPosition);
-  myLineSetList.erase(myLineSetList.begin()+anDomain.myLineSetIndex);
-  addImage2DDomain(anDomain);  
+
+  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);  
+   std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex); 
+  vectLines.clear();
+  for(unsigned int i=0; i<vectNewLines.size(); i++){
+    vectLines.push_back(vectNewLines.at(i));
+  }
+  
 }
+
+inline
+void
+DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation){
+  Display3D::Image2DDomainD3D &anDomain = myImageDomainList.at(domainIndex); 
+  anDomain.translateDomain(xTranslation, yTranslation, zTranslation);
+  
+  updateBoundingBox(anDomain.x1, anDomain.y1, anDomain.z1);
+  updateBoundingBox(anDomain.x2, anDomain.y2, anDomain.z2);
+  updateBoundingBox(anDomain.x3, anDomain.y3, anDomain.z3);
+  updateBoundingBox(anDomain.x4, anDomain.y4, anDomain.z4);
+
+  std::vector<DGtal::Display3D::lineD3D> vectNewLines= compute2DDomainLineRepresentation(anDomain);  
+  std::vector<DGtal::Display3D::lineD3D> &vectLines = myLineSetList.at(anDomain.myLineSetIndex); 
+  
+  vectLines.clear();
+  for(unsigned int i=0; i<vectNewLines.size(); i++){
+    vectLines.push_back(vectNewLines.at(i));
+  }
+}
+
     
 
    

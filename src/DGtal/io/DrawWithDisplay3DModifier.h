@@ -385,8 +385,7 @@ namespace DGtal
    * possibility to translate it (optional).
    * 
    */
-  template<typename TImageType>
-  struct TranslateDomain : public DrawWithDisplay3DModifier
+  struct Translate2DDomain : public DrawWithDisplay3DModifier
   {
    
     /**
@@ -401,7 +400,7 @@ namespace DGtal
      * @param translateZ: the y translation value.
      *
      */
-    TranslateDomain(unsigned int anIndex, double translateX=0,
+    Translate2DDomain(unsigned int anIndex, double translateX=0,
 		    double translateY=0, double translateZ=0 ): myIndex(anIndex),
 								myTranslateX (translateX), 
 								myTranslateY (translateY),
