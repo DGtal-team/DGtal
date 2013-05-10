@@ -192,7 +192,7 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
   - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
-  - class MeshFromPoints, modes:  "" (default) /  "Faces *".
+  - class Mesh, modes:  "" (default) /  "Faces *".
 
 Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
 (with CustomColors3D objects) can be changed only with the empty mode

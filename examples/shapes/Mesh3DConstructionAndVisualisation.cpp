@@ -22,19 +22,19 @@
  *
  * @date 2013/01/10
  *
- * Example of MeshFromPoints construction and visualisation.
+ * Example of Mesh construction and visualisation.
  *
  * This file is part of the DGtal library.
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-//! [MeshFromPointsUseInclude]
+//! [MeshUseInclude]
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 #include "DGtal/io/viewers/Viewer3D.h"
 #include <QtGui/qapplication.h>
-//! [MeshFromPointsUseInclude]
+//! [MeshUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,16 +45,16 @@ using namespace DGtal::Z3i;
 int main( int argc, char** argv )
 {
 
-  //! [MeshFromPointsUseInitDisplay]
+  //! [MeshUseInitDisplay]
   QApplication application(argc,argv);
   Viewer3D viewer;
   viewer.show();     
-  //! [MeshFromPointsUseInitDisplay]
+  //! [MeshUseInitDisplay]
 
 
-  //! [MeshFromPointsUseMeshCreation]
+  //! [MeshUseMeshCreation]
   // A mesh is constructed and faces are added from the vertex set. 
-  MeshFromPoints<Point> aMesh(true);
+  Mesh<Point> aMesh(true);
   aMesh.addVertex(Point(0,0,0));
   aMesh.addVertex(Point(1,0,0));
   aMesh.addVertex(Point(1,1,0));
@@ -83,13 +83,13 @@ int main( int argc, char** argv )
   listIndex.push_back(12);  
 
   aMesh.addFace(listIndex, Color(150,150,0,54));
-  //! [MeshFromPointsUseMeshCreation]
-  //! [MeshFromPointsUseDisplay]
+  //! [MeshUseMeshCreation]
+  //! [MeshUseDisplay]
   viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
   viewer << Viewer3D::updateDisplay;
   bool res = application.exec();
-  //! [MeshFromPointsUseDisplay]
+  //! [MeshUseDisplay]
   return true;
 }
 //                                                                           //

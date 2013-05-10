@@ -69,7 +69,7 @@ int main()
   //! [ImageSetDT-image]
   std::string filename =  examplesPath + "samples/contourS.pgm";
   Image image = DGtal::PNMReader<Image>::importPGM(filename); 
-  DGtal::trace.info() << "Imported image: "<<image<<endl;
+  DGtal::trace.info() << "Imported image: "<<image<<std::endl;
   //! [ImageSetDT-image]
 
 

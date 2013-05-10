@@ -678,7 +678,7 @@ template <typename PointPredicate>
 void 
 DGtal::Surfaces<TKSpace>::orientSCellExterior(std::vector<SCell> & aVectOfSCell,
                                               const KSpace & aKSpace,   const PointPredicate & pp  ){
-  for( typename vector<SCell>::iterator it = aVectOfSCell.begin();
+  for( typename std::vector<SCell>::iterator it = aVectOfSCell.begin();
        it!=aVectOfSCell.end(); it++){
     SCell incidUpperDim = aKSpace.sDirectIncident(*it, aKSpace.sOrthDir(*it)); 
     if( pp( aKSpace.sCoords(incidUpperDim) )){
@@ -704,18 +704,18 @@ extractAllConnectedSCell
   const PointPredicate & pp,
   bool forceOrientCellExterior ) 
 {
-  set<SCell> bdry;
+  std::set<SCell> bdry;
 
   sMakeBoundary( bdry, aKSpace, pp,
                  aKSpace.lowerBound(), aKSpace.upperBound() );
   aVectConnectedSCell.clear();
   while(!bdry.empty()){
-    set<SCell>  aConnectedSCellSet;
+    std::set<SCell>  aConnectedSCellSet;
     SCell aCell = *(bdry.begin()); 
     trackBoundary(aConnectedSCellSet, aKSpace, aSurfelAdj, pp, aCell );
     //transform into vector<SCell>
-    vector<SCell> vCS;
-    for(typename set<SCell>::iterator it = aConnectedSCellSet.begin(); it!= aConnectedSCellSet.end(); ++it){
+    std::vector<SCell> vCS;
+    for(typename std::set<SCell>::iterator it = aConnectedSCellSet.begin(); it!= aConnectedSCellSet.end(); ++it){
       vCS.push_back(*it); 
       // removing cells from boundary;      
       bdry.erase(*it);
