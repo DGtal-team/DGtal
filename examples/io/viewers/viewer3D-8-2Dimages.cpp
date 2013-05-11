@@ -87,6 +87,7 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesExtractImages]
 
   //! [ExampleViewer3D2DImagesDisplayImages]
+  viewer << SetMode3D(aSliceImageZ.className(), "BoundingBox");
   viewer <<  aSliceImageZ;
   viewer <<  aSliceImageY;
   //! [ExampleViewer3D2DImagesDisplayImages]

@@ -456,7 +456,7 @@ namespace DGtal
 
     virtual unsigned int getCurrentDomainNumber();
 
-
+    virtual unsigned int getCurrentGLImageNumber();
   
     /**
      * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
@@ -767,8 +767,8 @@ namespace DGtal
     void translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation);
     
     
-    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain );
-    
+    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
+    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
     /**
      * Draws the drawable [object] in this board. It should satisfy

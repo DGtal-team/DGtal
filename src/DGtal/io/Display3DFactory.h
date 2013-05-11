@@ -337,7 +337,7 @@ namespace DGtal
     
     template < typename TImageType3D > 
     static void
-    drawImage3D( Display3D & display, const TImageType3D anImage3D);
+    drawImage3D( Display3D & display, const TImageType3D anImage3D, std::string mode="");
 
 
   
@@ -355,6 +355,8 @@ namespace DGtal
     template<typename TImageType>
     static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & );
     static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
+    static void draw( Display3D & display,  const DGtal::UpdateLastImagePosition & anUpdate );
+
     static void draw( Display3D &display, const DGtal::Update2DDomainPosition &anUpdate);
     static void draw(Display3D &display, const DGtal::Translate2DDomain &anTranslation);
     static void draw( Display3D & display, const DGtal::TransformedKSSurfel & aTransformedKSSurfel);

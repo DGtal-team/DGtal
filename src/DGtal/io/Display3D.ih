@@ -124,6 +124,12 @@ DGtal::Display3D::getCurrentDomainNumber(){
 }
 
 
+inline 
+unsigned int 
+DGtal::Display3D::getCurrentGLImageNumber(){
+  return myGSImageList.size();
+}
+
 inline
 void
 DGtal::Display3D::createNewVoxelList(bool depthTest)
@@ -1025,15 +1031,24 @@ DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDom
   std::vector<DGtal::Display3D::lineD3D> vectLines= compute2DDomainLineRepresentation(anImageDomain);
   myLineSetList.push_back(vectLines);
   
+  
 }
-
-
-
-
 
 inline
 std::vector<DGtal::Display3D::lineD3D> 
 DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain ){
+  std::vector<DGtal::Display3D::lineD3D> vectLinesResu= compute2DDomainLineRepresentation(anImageDomain, 0.05);
+  std::vector<DGtal::Display3D::lineD3D> vectLinesVerso= compute2DDomainLineRepresentation(anImageDomain, -0.05);
+  for(unsigned int i=0; i<vectLinesVerso.size(); i++){
+    vectLinesResu.push_back(vectLinesVerso.at(i));
+  }
+  return vectLinesResu;
+}
+
+
+inline
+std::vector<DGtal::Display3D::lineD3D> 
+DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDomainD3D &anImageDomain, double delta ){
   std::vector<DGtal::Display3D::lineD3D> aLineSet;
   lineD3D aLine;
   aLine.R = anImageDomain.R;
@@ -1059,42 +1074,42 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
     if(anImageDomain.myDirection==zDirection){
       //lines align to the x direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1+0.1; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z1+0.1; 
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z1+delta; 
 	aLineSet.push_back(aLine);
       }
       //lines align to the y direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+0.1; 
-	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+0.1; 
+	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==xDirection){
       //lines align to the y direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i; 
-	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i; 
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i; 
 	aLineSet.push_back(aLine);
       }
       
       //lines align to the z direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1; 
-	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z4; 
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i; aLine.z2 = anImageDomain.z4; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==yDirection){
       //lines align to the x direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1+i; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z1+i; 
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i; 
 	aLineSet.push_back(aLine);
       }
       
       //lines align to the z direction 
       for(unsigned int i=0; i <= anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1; 
-	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z4; 
+	aLine.x1 = anImageDomain.x1+i; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+i; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4; 
 	aLineSet.push_back(aLine);
       }
     }
@@ -1104,42 +1119,42 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
     if(anImageDomain.myDirection==zDirection){
       //lines align to the x direction 
       for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+0.1; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+0.1; 
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+delta; 
 	aLineSet.push_back(aLine);
       }
       //lines align to the y direction 
       for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+0.1; 
-	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+0.1; 
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+delta; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+delta; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==xDirection){
       //lines align to the y direction 
       for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i+0.5; 
-	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i+0.5; 
 	aLineSet.push_back(aLine);
       }
       
       //lines align to the z direction 
       for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1; 
-	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z4; 
+	aLine.x1 = anImageDomain.x1+delta; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+delta; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z4; 
 	aLineSet.push_back(aLine);
       }
     }else  if(anImageDomain.myDirection==yDirection){
       //lines align to the x direction 
       for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
-	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1+i+0.5; 
-	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z1+i+0.5; 
 	aLineSet.push_back(aLine);
       }
       
       //lines align to the z direction 
       for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
-	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1; 
-	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z4; 
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1+delta; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y1+delta; aLine.z2 = anImageDomain.z4; 
 	aLineSet.push_back(aLine);
       }
     }
