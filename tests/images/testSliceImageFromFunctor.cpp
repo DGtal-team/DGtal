@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testImageHelper.cpp
+ * @file testSliceImageFromFunctor.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -31,11 +31,11 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/images/ImageHelper.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
-
+#include "DGtal/images/ConstImageAdapter.h"
 
 #include "ConfigTest.h"
 
@@ -53,7 +53,7 @@ using namespace DGtal;
  *
  */
 
-bool testImageHelper()
+bool testSliceImageFromFunctor()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -62,26 +62,25 @@ bool testImageHelper()
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char>  Image3D;
   typedef  DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char>  Image2D;
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::AddOneDimensionDomainFunctor< DGtal::Z3i::Point>,
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain, DGtal::AddOneDimensionPointFunctor< DGtal::Z3i::Space>,
 				   Image3D::Value,  DGtal::DefaultFunctor >  MySliceImageAdapter;
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(0);
+  DGtal::Projector<DGtal::Z2i::Space>  proj(0);
 
   bool res= true;
   Image3D image = VolReader<Image3D>::importVol( filename ); 
-  DGtal::Z2i::Domain domain((invFunctor.operator()(image.domain().lowerBound())), 
-			    (invFunctor.operator()(image.domain().upperBound())));
-  DGtal::DefaultFunctor idV;
+  DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()), 
+			    proj(image.domain().upperBound()));
  
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor(0, 20);
-  MySliceImageAdapter sliceImageX(image, domain, aSliceFunctor, idV);
+  DGtal::AddOneDimensionPointFunctor<DGtal::Z3i::Space> aSliceFunctor(0, 20);
+  MySliceImageAdapter sliceImageX(image, domain, aSliceFunctor, DGtal::DefaultFunctor());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimX.pgm",sliceImageX);
 
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor2(1, 20);
-  MySliceImageAdapter sliceImageY(image, domain, aSliceFunctor2, idV);
+  DGtal::AddOneDimensionPointFunctor<DGtal::Z3i::Space> aSliceFunctor2(1, 20);
+  MySliceImageAdapter sliceImageY(image, domain, aSliceFunctor2, DGtal::DefaultFunctor());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimY.pgm",sliceImageX);
 
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor3(2, 20);
-  MySliceImageAdapter sliceImageZ(image, domain, aSliceFunctor3, idV);
+  DGtal::AddOneDimensionPointFunctor<DGtal::Z3i::Space> aSliceFunctor3(2, 20);
+  MySliceImageAdapter sliceImageZ(image, domain, aSliceFunctor3, DGtal::DefaultFunctor());
   res &= PGMWriter<MySliceImageAdapter>::exportPGM("exportedSlice2DDimZ.pgm",sliceImageX);
 
   nbok += res ? 1 : 0; 
@@ -104,7 +103,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testImageHelper(); // && ... other tests
+  bool res = testSliceImageFromFunctor(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
