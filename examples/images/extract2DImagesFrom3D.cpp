@@ -33,7 +33,6 @@
 #include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/images/ImageHelper.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/images/ImageSelector.h"
@@ -50,7 +49,7 @@ int main( int argc, char** argv )
 {
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionPointFunctor<Z3i::Space>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
 
    DGtal::Projector<Z2i::Space >  proj(2);
@@ -58,7 +57,6 @@ int main( int argc, char** argv )
    // Importing a 3D image 
    std::string filename = examplesPath + "samples/lobster.vol";
    Image3D image = VolReader<Image3D>::importVol( filename ); 
-  
    DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()),
 			     proj(image.domain().upperBound()));
    DGtal::DefaultFunctor idV;
@@ -69,7 +67,7 @@ int main( int argc, char** argv )
    for (unsigned int i=0; i<30; i+=10){
      std::stringstream name;
      name << "lobsterSliceZ_"  << i << ".pgm";
-     DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor(2, i);
+     DGtal::AddOneDimensionPointFunctor<Z3i::Space> aSliceFunctor(2, i);
      SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
      PGMWriter<SliceImageAdapter>::exportPGM(name.str(), sliceImageZ);
    }
