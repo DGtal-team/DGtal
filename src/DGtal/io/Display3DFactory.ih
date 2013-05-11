@@ -625,9 +625,6 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                       upperBound[2]+(0.5+shiftSize),
 		      colDef);
     
-  }else if(TSpace::dimension==2){
-    display.addImage2DDomainD3D(h, true);
-    
   }
   
 
@@ -747,11 +744,7 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 	  }
 	}
       } 
-    }else if(TSpace::dimension == 2){
-      display.addImage2DDomainD3D(h, false);
-      
-    
-  }
+    }
 }
 
 template<typename TSpace>
@@ -760,23 +753,24 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = display.getMode( h.className() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
-	  mode=="BoundingBox")||
+  ASSERT((TSpace::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+					     mode=="BoundingBox")||
 	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
-   
-  if (  mode == "BoundingBox"  ){
+  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="InterGrid"|| mode=="Grid") ||
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
+  
+  
+  if(TSpace::dimension == 2){
+    if (mode=="")
+      mode="BoundingBox";
+    display.addImage2DDomainD3D(h, mode);
+  }else if (  mode == "BoundingBox"  ){
     display.createNewLineList();
     drawAsBoundingBox( display, h );
-  }else if( ( mode == "" ) ||  (mode == "Grid")){
-
+  }else if(( mode == "" ) ||  (mode == "Grid")){
     display.createNewLineList();
-    if(TSpace::dimension == 3){
-      drawAsGrid( display, h );
-    }else if(TSpace::dimension == 2){
-      drawAsPaving(display, h);
-    }
-  }
-  else if ( mode == "Paving" ){
+    drawAsGrid( display, h );
+  } else if ( mode == "Paving" ){
     display.createNewVoxelList(false);
     drawAsPaving( display, h );
 
@@ -790,6 +784,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     drawAsGrid( display, h );
     drawAsPaving( display, h );
   }
+  
+
+  
 }
 // HyperRectDomain
 
@@ -1247,8 +1244,20 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TValue>
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  &anImage){
-  DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
-  display.addGrayScaleImage(aGSImage);
+  std::string mode = display.getMode( anImage.className() );
+  ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
+	  	 ("DGtal::Display3DFactory::draw( Display3D & display,const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue> & anImage ): Unknown mode "+mode)=="");
+  if(mode==""){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImage);
+  }else if( mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    aGSImage.myDrawDomain = true;
+    display << SetMode3D( anImage.domain().className(), mode );
+    display << anImage.domain();
+    aGSImage.myIndexDomain = display.getCurrentDomainNumber()-1;        
+    display.addGrayScaleImage(aGSImage);
+  } 
 }
 // ImageContainerBySTLVector  (2D)
 
@@ -1257,8 +1266,21 @@ DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLVec
 template <typename TValue>
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  &anImage){
-  DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
-  display.addGrayScaleImage(aGSImage);
+  std::string mode = display.getMode( anImage.className() );
+  ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
+	  	 ("DGtal::Display3DFactory::draw( Display3D & display,const ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue> & anImage ): Unknown mode "+mode)=="");
+
+  if(mode==""){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImage);
+  }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    aGSImage.myDrawDomain = true;
+    display << SetMode3D( anImage.domain().className(), mode );
+    display << anImage.domain();
+    aGSImage.myIndexDomain = display.getCurrentDomainNumber()-1;        
+    display.addGrayScaleImage(aGSImage);
+  } 
 }
 // ImageContainerBySTLMap  (2D)
 
@@ -1268,8 +1290,22 @@ template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typ
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,TNewDomain, TFunctorD, 
 			       TNewValue, TFunctorValue>  &anImage){
-  DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
-  display.addGrayScaleImage(aGSImage);
+  std::string mode = display.getMode( anImage.className() );
+
+ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
+	("DGtal::Display3DFactory::draw( Display3D & display,const ConstImageAdapter<TContainer, TNewDomain, TFunctorD, TNewValue, TFunctorValue> & anImage ): Unknown mode "+mode)=="");
+
+  if(mode==""){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    display.addGrayScaleImage(aGSImage);
+  }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
+    DGtal::Display3D::GrayScaleImage aGSImage(anImage, DGtal::Display3D::zDirection);
+    aGSImage.myDrawDomain = true;
+    display << SetMode3D( anImage.domain().className(), mode );
+    display << anImage.domain();
+    aGSImage.myIndexDomain = display.getCurrentDomainNumber()-1;        
+    display.addGrayScaleImage(aGSImage);
+  } 
 }
 // ConstImageAdapter  (2D)
 
@@ -1295,7 +1331,6 @@ void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainer
 
 
 
-// ImageContainer  (2D and 3D)
 
 
 
@@ -1461,6 +1496,7 @@ void
 DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImageData<TImageType> & anUpdate ){
   display.updateGrayScaleImage(anUpdate.myIndex, *(anUpdate.myImage), anUpdate.myTranslateX, 
 			       anUpdate.myTranslateY, anUpdate.myTranslateZ);
+  
 }
 
 
@@ -1483,7 +1519,7 @@ inline
 void
 DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Translate2DDomain &anTranslation){
   display.translateAn2DDomain(anTranslation.myIndex, anTranslation.myTranslateX, anTranslation.myTranslateY, 
-				      anTranslation.myTranslateZ);
+			      anTranslation.myTranslateZ);
 }
 
 
