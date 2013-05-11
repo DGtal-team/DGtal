@@ -68,6 +68,12 @@ namespace DGtal
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
    @endcode
    *
+   * @advanced the file format value type will be cast to
+   * TContainer::Value.  For instance, VOL file format deals with
+   * "unsigned char" and if the TContainer::Value type is different, you
+   * could have type conversion issues.
+   *
+   *
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    *
@@ -134,15 +140,6 @@ namespace DGtal
     static TContainer import(const std::string &filename,  const std::string &datasetName="empty")  throw(DGtal::IOException);
 
   };
-
-
-
-
-
-
-
-
-
 
 } // namespace DGtal
 

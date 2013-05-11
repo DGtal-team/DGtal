@@ -44,6 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/images/CImage.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
@@ -72,7 +73,9 @@ namespace DGtal
    anImage3D >> "aFilename.vol";
    anImage2D >> "aFilename.pgm";
    @endcode
-
+   @note the stream operator hide a default functor (c++ cast to a
+   given type) and if the user want to control the cast he can used the
+   exporT function (see below).
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    * @tparam TValue the value type of data contained in the image (by default given by the container) 
@@ -84,6 +87,7 @@ namespace DGtal
   template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = DefaultFunctor >
   struct GenericWriter
   {
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Export an  image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -102,7 +106,9 @@ namespace DGtal
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
-
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, TContainer::Value, unsigned char> )) ;    
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -112,7 +118,7 @@ namespace DGtal
      **/
     static bool exporT(const std::string &filename,  const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
-
+    
   };
   
   /**
@@ -122,6 +128,11 @@ namespace DGtal
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
+
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, TContainer::Value, DGtal::uint64_t > )) ;    
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+   
+
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -142,7 +153,7 @@ namespace DGtal
   template <typename TContainer, typename TValue, typename TFunctor>
   struct GenericWriter<TContainer, 3 , TValue, TFunctor>
   {
-
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -162,7 +173,8 @@ namespace DGtal
   template <typename TContainer, typename TValue,  typename TFunctor>
   struct GenericWriter<TContainer, 2, TValue, TFunctor>
   {
-
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    
     /**
      * Write a volume image file.  
      *
@@ -180,7 +192,7 @@ namespace DGtal
   template <typename TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
   {
-
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Write a volume image file.  
      *
@@ -194,7 +206,7 @@ namespace DGtal
 
   /**
    *  'operator>>' for exporting an ImageContainerBySTLVector.
-   *  This operator automatically selects the good method according to
+   *  This operator automatically selects the best method according to
    *  the filename extension (pgm, pgm3D, raw, vol).
    *  
    * @param aContainer the ImageContainerBySTLVector to be exported.
