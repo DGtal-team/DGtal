@@ -106,7 +106,7 @@ namespace DGtal
   template <typename TContainer, typename TFunctor>
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, TContainer::Value, unsigned char> )) ;    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char> )) ;    
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     
     /**
@@ -129,7 +129,7 @@ namespace DGtal
   struct GenericWriter<TContainer, 3 , DGtal::uint64_t,  TFunctor>
   {
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, TContainer::Value, DGtal::uint64_t > )) ;    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t > )) ;    
     BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
    
 
