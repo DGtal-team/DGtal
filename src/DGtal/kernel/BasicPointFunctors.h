@@ -113,6 +113,12 @@ namespace DGtal
     Projector(const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
 
     /**
+     *  Constructor and initialisation by removing a given dimension.
+     *  @param dimRemoved the removed dimension.
+     */
+    Projector(Dimension  dimRemoved, const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
+
+    /**
      * Initialization of the array of relevant dimensions 
      * @param itb begin iterator on dimensions.
      * @param ite end iterator on dimensions.

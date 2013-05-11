@@ -491,52 +491,6 @@ template <typename TPointDimN>
 
 
 
-  /**
-   * Create a Domain Functor that transform a domain by projection from  dimension N to
-   * a domain of dimension N-1.  The removed dimension is given as argument to the constructor.
-   *
-   * @tparam TPointDimNminus a model of CPointPredicate of dimension N-1.
-   *
-   */
-template <typename TPointDimNminus>
-class MinusOneDimensionDomainFunctor
-  {
-  public:
-    typedef TPointDimNminus PointDimNminus ;
-
-    /** 
-     * Constructor.
-     * @param dimRemoved the dimension to be removed for the transformation to N-1 dimension.
-     */
-    MinusOneDimensionDomainFunctor( int dimRemoved=0):
-      myDimRemoved(dimRemoved) {};
-    
-    /** 
-     * The operator to recover the projected N-1 D Point.
-     * @param[in] aPoint point of the input domain (of dimension N).
-     * 
-     * @return the projected point of dimension N-1.
-     */
-    template <typename TPointDimN>
-    inline
-    PointDimNminus  operator()(const TPointDimN& aPoint) const
-    {
-      PointDimNminus ptRes;
-      unsigned int pos=0;
-      for(unsigned int i=0; i< aPoint.size() ; i++){
-	if(i!=myDimRemoved){
-	  ptRes[pos]= aPoint[i];
-	  pos++;
-	}
-      }
-      return ptRes;
-    }
-  private:
-    // the dimension to be removed
-    int myDimRemoved;
-};
-
-
 
   
 

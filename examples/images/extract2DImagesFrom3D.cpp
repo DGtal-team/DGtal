@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <sstream>
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageHelper.h"
@@ -51,13 +52,15 @@ int main( int argc, char** argv )
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
    typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
-   DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(2);
+
+   DGtal::Projector<Z2i::Space >  proj(2);
+
    // Importing a 3D image 
    std::string filename = examplesPath + "samples/lobster.vol";
    Image3D image = VolReader<Image3D>::importVol( filename ); 
-    
-   DGtal::Z2i::Domain domain((invFunctor.operator()(image.domain().lowerBound())), 
-			     (invFunctor.operator()(image.domain().upperBound())));
+  
+   DGtal::Z2i::Domain domain(proj(image.domain().lowerBound()),
+			     proj(image.domain().upperBound()));
    DGtal::DefaultFunctor idV;
     
    trace.beginBlock ( "Example extract2DImagesFrom3D" );
