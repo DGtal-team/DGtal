@@ -1,5 +1,10 @@
 === DGtal 0.7 ===
 
+ *Kernel Package*
+   - New functor in BasicPointFunctors to extract slice images
+	(AddOneDimensionPointFunctor) with example ans test of 2D slice
+	image extraction from 3D volume file.
+
 *General*
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
