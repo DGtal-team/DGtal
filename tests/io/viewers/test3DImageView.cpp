@@ -96,14 +96,17 @@ int main( int argc, char** argv )
  viewer << image.domain();
  viewer << DGtal::Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
  for(unsigned int i= 0; i< 10; i++){
-   viewer << image;
-   viewer << image.domain();
-   if(i%2==0)
-     viewer << SetMode3D( image.domain().className(), "BoundingBox" );
-   else
-     viewer << SetMode3D( image.domain().className(), "" );
+   if(i%4==0){
+     viewer << SetMode3D( image.className(), "" );
+   }else if(i%4==1){
+     viewer << SetMode3D( image.className(), "BoundingBox" );
+   }else if(i%4==2){
+     viewer << SetMode3D( image.className(), "Grid" );
+   }else if(i%4==3){
+     viewer << SetMode3D( image.className(), "InterGrid" );
+   }
+   viewer << image; 
    viewer << DGtal::UpdateImageData<imageNG>(i+1, image,  i*50, i*50, i*50);
-   viewer << DGtal::Translate2DDomain(i+1, i*50, i*50, i*50); 
  }
 
  viewer << p1 << p2 << p3;

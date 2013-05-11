@@ -118,6 +118,13 @@ DGtal::Display3D::getMode( const std::string & objectName ) const
 
 
 inline
+unsigned int 
+DGtal::Display3D::getCurrentDomainNumber(){
+  return myImageDomainList.size();
+}
+
+
+inline
 void
 DGtal::Display3D::createNewVoxelList(bool depthTest)
 {
@@ -907,7 +914,9 @@ DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,   ImageType & im
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
   updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
   anImage.updateImageDataAndParam<ImageType>(image, xTranslation, yTranslation, zTranslation);
-  
+  if(anImage.myDrawDomain){
+    *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
+  }
 }
     
 
@@ -923,6 +932,10 @@ DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex,
   updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
   updateBoundingBox(anImage.x4, anImage.y4, anImage.z4);
   anImage.updateImageOrientation(newDirection, xPosition, yPosition, zPosition);
+  if(anImage.myDrawDomain){
+    *this << DGtal::Update2DDomainPosition(anImage.myIndexDomain,newDirection, xPosition, yPosition, zPosition);
+  }
+  
 }
     
 
@@ -981,7 +994,7 @@ DGtal::Display3D::Image2DDomainD3D::updateDomainOrientation( Display3D::ImageDir
 inline 
 void 
 DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation, 
-						   double yTranslation, double zTranslation){    
+						     double yTranslation, double zTranslation){    
   x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
   x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
   x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
@@ -992,14 +1005,15 @@ DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
 
 template<typename TSpace>
 void 
-DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, bool boundingBoxMode, const DGtal::Color &aColor){
+DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, 
+				      std::string mode, const DGtal::Color &aColor){
   DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
   anImageDomain.R = aColor.red();
   anImageDomain.G =aColor.green();
   anImageDomain.B =aColor.blue();
   anImageDomain.T =aColor.alpha();
   
-  anImageDomain.myIsBoundingBoxMode =  boundingBoxMode;
+  anImageDomain.myMode =  mode;
   anImageDomain.myLineSetIndex=myLineSetList.size();
   
   myImageDomainList.push_back(anImageDomain);
@@ -1027,7 +1041,7 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
   aLine.B = anImageDomain.B;
   aLine.T = anImageDomain.T;
   
-  if( anImageDomain.myIsBoundingBoxMode){
+  if( anImageDomain.myMode=="BoundingBox"){
     aLine.x1=anImageDomain.x1; aLine.y1=anImageDomain.y1; aLine.z1=anImageDomain.z1; 
     aLine.x2=anImageDomain.x2; aLine.y2=anImageDomain.y2; aLine.z2=anImageDomain.z2;
     aLineSet.push_back(aLine);
@@ -1040,7 +1054,7 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
     aLine.x1=anImageDomain.x4; aLine.y1=anImageDomain.y4; aLine.z1=anImageDomain.z4;
     aLine.x2=anImageDomain.x1; aLine.y2=anImageDomain.y1; aLine.z2=anImageDomain.z1;
     aLineSet.push_back(aLine);
-  }else{
+  }else if(anImageDomain.myMode=="InterGrid"){
     aLine.width=0.3;
     if(anImageDomain.myDirection==zDirection){
       //lines align to the x direction 
@@ -1085,7 +1099,53 @@ DGtal::Display3D::compute2DDomainLineRepresentation( DGtal::Display3D::Image2DDo
       }
     }
     
+  }else if(anImageDomain.myMode=="Grid"){
+    aLine.width=0.3;
+    if(anImageDomain.myDirection==zDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1+0.1; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z1+0.1; 
+	aLineSet.push_back(aLine);
+      }
+      //lines align to the y direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+0.1; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y4; aLine.z2 = anImageDomain.z1+0.1; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==xDirection){
+      //lines align to the y direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y2; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+0.1; aLine.y1 = anImageDomain.y1+i+0.5; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+0.1; aLine.y2 = anImageDomain.y1+i+0.5; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }else  if(anImageDomain.myDirection==yDirection){
+      //lines align to the x direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainHeight; i++){
+	aLine.x1 = anImageDomain.x1; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1+i+0.5; 
+	aLine.x2 = anImageDomain.x2; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z1+i+0.5; 
+	aLineSet.push_back(aLine);
+      }
+      
+      //lines align to the z direction 
+      for(unsigned int i=0; i < anImageDomain.myDomainWidth; i++){
+	aLine.x1 = anImageDomain.x1+i+0.5; aLine.y1 = anImageDomain.y1+0.1; aLine.z1 = anImageDomain.z1; 
+	aLine.x2 = anImageDomain.x1+i+0.5; aLine.y2 = anImageDomain.y1+0.1; aLine.z2 = anImageDomain.z4; 
+	aLineSet.push_back(aLine);
+      }
+    }
+    
   }
+
  
   return aLineSet;
 }

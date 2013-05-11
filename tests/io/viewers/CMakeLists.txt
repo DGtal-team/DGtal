@@ -6,6 +6,7 @@ SET(QGLVIEWER_TESTS_SRC
   test3DImageView
   test3DImage3DView
   testDisplayKSCell
+  test3DDomain2DView
   )
 
 if (  WITH_VISU3D_QGLVIEWER )

@@ -235,7 +235,7 @@ namespace DGtal
       unsigned int myDomainHeight;      
       ImageDirection myDirection;      
       
-      bool myIsBoundingBoxMode;
+      std::string myMode;
       
       unsigned int myLineSetIndex;
       
@@ -246,8 +246,8 @@ namespace DGtal
 
       template<typename TSpace>
       Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=zDirection, 
-		     double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, bool isBoundingBoxMode= true){
-	myIsBoundingBoxMode = isBoundingBoxMode;
+		       double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
+	myMode = mode;
 	myDirection=normalDir;
 	myDomainWidth = (aDomain.upperBound())[0]+1;
 	myDomainHeight = (aDomain.upperBound())[1]+1;
@@ -295,7 +295,11 @@ namespace DGtal
       unsigned int myImageWidth;
       unsigned int myImageHeight;
       unsigned char * myTabImage;
-     
+      
+      bool myDrawDomain;
+      unsigned int myIndexDomain;
+      
+      
       ~GrayScaleImage(){
 	delete [] myTabImage;  
       };
@@ -309,7 +313,9 @@ namespace DGtal
 						 x4(img.x4), y4(img.y4), z4(img.z4),
 						 myDirection(img.myDirection), myImageWidth(img.myImageWidth),
 						 myImageHeight(img.myImageHeight),
-						 myTabImage(img.myTabImage){
+						 myTabImage(img.myTabImage),
+						 myDrawDomain(img.myDrawDomain),
+						 myIndexDomain(img.myIndexDomain){
 	if(img.myImageHeight>0 && img.myImageWidth>0){
 	  myTabImage = new  unsigned char [img.myImageWidth*img.myImageHeight];
 	  for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
@@ -338,6 +344,7 @@ namespace DGtal
       template <typename ImageType>
       GrayScaleImage( const ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
 		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+	myDrawDomain=false;
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]+1;
 	myImageHeight = (image.domain().upperBound())[1]+1;
@@ -445,7 +452,11 @@ namespace DGtal
     
     virtual DGtal::Color getLineColor();
 
-   
+
+
+    virtual unsigned int getCurrentDomainNumber();
+
+
   
     /**
      * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
@@ -744,7 +755,7 @@ namespace DGtal
      */
 
     template<typename TSpace>
-    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, bool boundingBoxMode=true,  
+    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, std::string mode,  
 			     const DGtal::Color &aColor=DGtal::Color::Red );
     
     
