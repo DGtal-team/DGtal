@@ -97,8 +97,8 @@ The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to automaticall
   @code 
    #include "DGTal/io/writers/GenericWriter.h"
    #include "DGtal/helpers/StdDefs.h"
-   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned int> Image3D;
-   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D;
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
    @endcode
  - After contructing and filling an image (anImage2D or anImage3D), just save it with:
   @code
@@ -107,7 +107,11 @@ The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to automaticall
    anImage2D >> "aFilename.pgm";
    @endcode
 
-If the user want to use a less generic writer you can also use the exporT function:
+@note the stream operator hide a default functor (c++ cast to a
+given type) and if the user want to control the cast he can used the
+exporT function (see below).
+
+If the user want to use a more generic writer you can also use the exporT function:
 
 @code
    GenericWriter<Image3D, TFunctor>::exporT("aFilename.pgm3d", anImage3D, aFunctor);
