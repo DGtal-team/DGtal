@@ -84,7 +84,7 @@ namespace DGtal
    *
    * @code
 
-  PointVector<2,int> p(3,1,5): 
+  PointVector<3,int> p(3,1,5): 
 
   Projector<SpaceND<2,int> > proj; 
   proj( p ) //== (3,1)
