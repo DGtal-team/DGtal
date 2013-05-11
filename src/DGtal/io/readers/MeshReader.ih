@@ -50,7 +50,7 @@ template <typename TPoint>
 inline
 bool
 DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename, 
-					 DGtal::MeshFromPoints<TPoint> & aMesh, 
+					 DGtal::Mesh<TPoint> & aMesh, 
 					 bool invertVertexOrder) throw(DGtal::IOException)
 {
   std::ifstream infile;
@@ -180,7 +180,7 @@ template <typename TPoint>
 inline
 bool
 DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename, 
-					 DGtal::MeshFromPoints<TPoint> & aMesh, 
+					 DGtal::Mesh<TPoint> & aMesh, 
 					 bool invertVertexOrder, double scale) throw(DGtal::IOException)
 {
   std::ifstream infile;
@@ -273,7 +273,7 @@ DGtal::MeshReader<TPoint>::importOFSFile(const std::string & aFilename,
 
   template <typename TPoint>
   bool
-  DGtal::operator<< (   MeshFromPoints<TPoint> & mesh, const std::string &filename ){
+  DGtal::operator<< (   Mesh<TPoint> & mesh, const std::string &filename ){
     std::string extension = filename.substr(filename.find_last_of(".") + 1);
     if(extension== "off") {
       DGtal::MeshReader<TPoint>::importOFFFile(filename, mesh);
