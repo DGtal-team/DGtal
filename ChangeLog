@@ -2,18 +2,18 @@
 
 *General*
     - The "boost program option library" dependency was removed.
-    - DGtal needs boost >= 1.46	
+    - DGtal needs boost >= 1.46
 
 * Package IO
 	- New GenericReader and Generic Writer for both 2D, 3D and ND images.
-
 
 *Geometry Package*
     - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
       properties to a separable metric (model of CSeparableMetric)
       which can be used in VoronoiMap/DistanceTransformation algorithms.
+    - New possibility to access the 3 2D ArithmeticDSS object within an ArithmeticDSS3d.
 
-	
+
 *Shape Package*
     - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
     - Iterator in mesh points and mesh face.

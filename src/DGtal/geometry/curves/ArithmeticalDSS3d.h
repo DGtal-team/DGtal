@@ -232,6 +232,31 @@ namespace DGtal
      */
     ConstIterator end() const;
 
+    /**
+       @return a const-reference on the arithmetical DSS recognition
+       algorithm along the XY plane.
+    */
+    const ArithmeticalDSS2d & arithmeticalDSS2dXY() const;
+
+    /**
+       @return a const-reference on the arithmetical DSS recognition
+       algorithm along the XZ plane.
+    */
+    const ArithmeticalDSS2d & arithmeticalDSS2dXZ() const;
+
+    /**
+       @return a const-reference on the arithmetical DSS recognition
+       algorithm along the YZ plane.
+    */
+    const ArithmeticalDSS2d & arithmeticalDSS2dYZ() const;
+
+    /**
+       @param i the axis orthogonal to the plane
+       @return a const-reference on the arithmetical DSS recognition
+       algorithm along the plane orthogonal to the \a i-th axis.
+    */
+    const ArithmeticalDSS2d & arithmeticalDSS2d( Dimension i ) const;
+
 
     // ------------------ Display ------------------------------------------
 
