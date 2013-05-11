@@ -436,65 +436,6 @@ namespace DGtal
 
 
 
-
-  /**
-   * Create a Domain Functor that add one dimension to the domain.The
-   * new dimension will be inserted to a position given in the
-   * constructor (posDimAdded) and each N-1 point will then be located
-   * at the a constant sliceIndex position.
-   *
-   * @tparam TPointDimN a model of CPointPredicate.
-   *
-   */
-template <typename TPointDimN>
-  class AddOneDimensionDomainFunctor
-  {
-  public:
-    typedef TPointDimN PointDimN;
-
-    /** 
-     * Constructor.
-     * @param  posDimAdded  position of insertion of the new dimension.
-     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
-     */
-    AddOneDimensionDomainFunctor( unsigned int posDimAdded,  unsigned int sliceIndex):
-      myPosDimAdded(posDimAdded), mySliceIndex(sliceIndex) {};
-    
-    /** 
-     * The operator just recover the ND Point associated to the slice parameter.
-     * @param[in] aPoint point of the input domain (of dimension N-1).
-     * 
-     * @return the point of dimension N.
-     */
-    template <typename TPointDimMinus>
-    inline
-    TPointDimN  operator()(const TPointDimMinus& aPoint) const
-    {
-      PointDimN pt;
-      unsigned int pos=0;
-      for( int i=0; i<pt.size(); i++){
-         if(i!=myPosDimAdded){
-            pt[i]= aPoint[pos];
-	    pos++; 
-	 }else{
-            pt[i]=mySliceIndex;
-          }
-      }
-      return pt;
-    }
-  private:
-    // position of insertion of the new dimension
-     unsigned int myPosDimAdded;
-    // the index of the slice associated to the new domain.
-    unsigned int mySliceIndex;
-};
-
-
-
-
-  
-
-
  
 } // namespace DGtal
 
