@@ -45,6 +45,7 @@
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/Image.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 
@@ -204,36 +205,39 @@ namespace DGtal
   }; 
 
 
-  /**
-   *  'operator>>' for exporting an ImageContainerBySTLVector.
-   *  This operator automatically selects the best method according to
-   *  the filename extension (pgm, pgm3D, raw, vol).
-   *  
-   * @param aContainer the ImageContainerBySTLVector to be exported.
-   * @param aFilename the filename of the file to be exported. 
-   * @return true, if the export was successful. 
-   */
-  template <typename TDomain, typename TValue >
-  bool
-  operator >> ( const ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  // /**
+  //  *  'operator>>' for exporting an ImageContainerBySTLVector.
+  //  *  This operator automatically selects the best method according to
+  //  *  the filename extension (pgm, pgm3D, raw, vol).
+  //  *  
+  //  * @param aContainer the ImageContainerBySTLVector to be exported.
+  //  * @param aFilename the filename of the file to be exported. 
+  //  * @return true, if the export was successful. 
+  //  */
+  // template <typename TDomain, typename TValue >
+  // bool
+  // operator >> ( const ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
   
 
 
-  /**
-   *  'operator>>' for exporting an ImageContainerBySTLMap.
-   *  This operator automatically selects the good method according to
-   *  the filename extension (pgm, pgm3D, raw, vol).
-   *  
-   * @param aContainer the ImageContainerBySTLMap to be exported.
-   * @param aFilename the filename of the file to be exported. 
-   * @return true, if the export was successful. 
-   */
-  template <typename TDomain, typename TValue >
-  bool
-  operator >> ( const ImageContainerBySTLMap<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  // /**
+  //  *  'operator>>' for exporting an ImageContainerBySTLMap.
+  //  *  This operator automatically selects the good method according to
+  //  *  the filename extension (pgm, pgm3D, raw, vol).
+  //  *  
+  //  * @param aContainer the ImageContainerBySTLMap to be exported.
+  //  * @param aFilename the filename of the file to be exported. 
+  //  * @return true, if the export was successful. 
+  //  */
+  // template <typename TDomain, typename TValue >
+  // bool
+  // operator >> ( const ImageContainerBySTLMap<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
   
 
-
+  template <typename TImageContainer >
+  bool
+  operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
+  
 
 
 

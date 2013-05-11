@@ -174,12 +174,13 @@ DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exporT(const std::
 
 
 
-template <typename TDomain, typename TValue >
+
+template <typename TImageContainer >
 inline
 bool
-DGtal::operator>> ( const  ImageContainerBySTLVector<TDomain, TValue> & aContainer, const std::string & aFilename ) throw (DGtal::IOException){
-  return DGtal::GenericWriter<ImageContainerBySTLVector<TDomain, TValue> >::exporT(aFilename, aContainer);   
-} 
+DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException){
+  return DGtal::GenericWriter<TImageContainer>::exporT(aFilename, aContainer);   
+}
 
 
 
