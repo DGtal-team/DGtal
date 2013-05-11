@@ -338,6 +338,42 @@ namespace DGtal
   };
 
 
+
+
+  /**
+   * 
+   * @brief class to modify the position and orientation of an textured 2D image.
+   * 
+   */
+  struct UpdateLastImagePosition : public DrawWithDisplay3DModifier
+  {
+   
+    /**
+     * Constructor given from an specific image index, a new direction
+     * (associated to the normal of the image plane), and and a new
+     * position of the bottom-left point.
+     * @param anIndex: the index of the image to be modified (should be less than the number of image added in the current Display3D).
+     * @param newDir: give the new direction of the image normal vector.
+     * @param posXbottomLeft: the x position of the bottom left point. 
+     * @param posYbottomLeft: the y position of the bottom left point. 
+     * @param posZbottomLeft: the z position of the bottom left point. 
+     * 
+     */
+    UpdateLastImagePosition( Display3D::ImageDirection newDir, 
+			     double posXbottomLeft, double posYbottomLeft, double posZbottomLeft ): myNewDirection(newDir), 
+												    myPosXBottomLeft(posXbottomLeft),
+												    myPosYBottomLeft(posYbottomLeft),
+												    myPosZBottomLeft(posZbottomLeft)
+    {
+      
+    }
+    double  myPosXBottomLeft;
+    double  myPosYBottomLeft;
+    double  myPosZBottomLeft;    
+    Display3D::ImageDirection myNewDirection;
+  };
+
+
   
 
   /**

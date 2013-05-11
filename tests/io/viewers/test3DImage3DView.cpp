@@ -91,7 +91,8 @@ int main( int argc, char** argv )
  std::string filename =  testPath + "samples/lobsterCroped.vol";
  
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
-  viewer << image3d;
+ viewer << SetMode3D(image3d.className(), "BoundingBox");
+ viewer << image3d;
 
  // Extract some slice images:
  // Get the 2D domain of the slice:
