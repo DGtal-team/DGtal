@@ -46,7 +46,7 @@
 template <typename TContainer, int TDim, typename TValue, typename TFunctor >
 inline
 bool 
-DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exportFile(const std::string &filename, 
 							 const TContainer &anImage,
 							 const TFunctor & aFunctor)  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -68,7 +68,7 @@ DGtal::GenericWriter<TContainer, TDim, TValue, TFunctor>::exporT(const std::stri
 template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exportFile(const std::string &filename, 
 						      const TContainer &anImage, 
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -90,7 +90,7 @@ DGtal::GenericWriter<TContainer, 3, TValue, TFunctor>::exporT(const std::string 
 template <typename TContainer, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exportFile(const std::string &filename, 
 								       const TContainer &anImage, 
 								       const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -110,7 +110,7 @@ DGtal::GenericWriter<TContainer, 3, DGtal::uint64_t, TFunctor>::exporT(const std
 template <typename TContainer, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exportFile(const std::string &filename, 
 						      const TContainer &anImage, 
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -134,7 +134,7 @@ DGtal::GenericWriter<TContainer, 3, unsigned char, TFunctor>::exporT(const std::
 template <typename TContainer, typename TValue, typename TFunctor>
 inline
 bool
-DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exporT(const std::string &filename, 
+DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exportFile(const std::string &filename, 
 						      const TContainer &anImage, 
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -154,7 +154,7 @@ DGtal::GenericWriter<TContainer, 2, TValue, TFunctor>::exporT(const std::string 
 template <typename TContainer, typename TFunctor >
 inline
 bool
-DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exporT(const std::string &filename,
+DGtal::GenericWriter<TContainer, 2, unsigned char, TFunctor>::exportFile(const std::string &filename,
 						      const TContainer &anImage,
 						      const TFunctor & aFunctor )  throw(DGtal::IOException){
   DGtal::IOException dgtalio;
@@ -179,7 +179,7 @@ template <typename TImageContainer >
 inline
 bool
 DGtal::operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException){
-  return DGtal::GenericWriter<TImageContainer>::exporT(aFilename, aContainer);   
+  return DGtal::GenericWriter<TImageContainer>::exportFile(aFilename, aContainer);   
 }
 
 
