@@ -76,7 +76,7 @@ namespace DGtal
    @endcode
    @note the stream operator hide a default functor (c++ cast to a
    given type) and if the user want to control the cast he can used the
-   exporT function (see below).
+   exportFile function (see below).
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    * @tparam TValue the value type of data contained in the image (by default given by the container) 
@@ -96,7 +96,7 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exporT(const std::string &filename, const TContainer &anImage,  
+    static bool exportFile(const std::string &filename, const TContainer &anImage,  
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
   };
 
@@ -117,7 +117,7 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exporT(const std::string &filename,  const TContainer &anImage,
+    static bool exportFile(const std::string &filename,  const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
     
   };
@@ -141,7 +141,7 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exporT(const std::string &filename,  const TContainer &anImage,
+    static bool exportFile(const std::string &filename,  const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   };
@@ -162,7 +162,7 @@ namespace DGtal
      * @param aFunctor to apply image transformation before saving. 
      *
      **/
-    static bool exporT(const std::string &filename,  const TContainer &anImage,
+    static bool exportFile(const std::string &filename,  const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   };
@@ -181,7 +181,7 @@ namespace DGtal
      *
      **/
 
-    static bool exporT(const std::string &filename, const TContainer &anImage,
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   }; 
@@ -199,41 +199,21 @@ namespace DGtal
      *
      **/
 
-    static bool exporT(const std::string &filename, const TContainer &anImage,
+    static bool exportFile(const std::string &filename, const TContainer &anImage,
 		       const TFunctor & aFunctor = TFunctor() )  throw(DGtal::IOException);
 
   }; 
 
 
   // /**
-  //  *  'operator>>' for exporting an ImageContainerBySTLVector.
+  //  *  'operator>>' for exporting an ImageContainer.
   //  *  This operator automatically selects the best method according to
   //  *  the filename extension (pgm, pgm3D, raw, vol).
   //  *  
-  //  * @param aContainer the ImageContainerBySTLVector to be exported.
+  //  * @param aContainer the container to be exported.
   //  * @param aFilename the filename of the file to be exported. 
   //  * @return true, if the export was successful. 
   //  */
-  // template <typename TDomain, typename TValue >
-  // bool
-  // operator >> ( const ImageContainerBySTLVector<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
-  
-
-
-  // /**
-  //  *  'operator>>' for exporting an ImageContainerBySTLMap.
-  //  *  This operator automatically selects the good method according to
-  //  *  the filename extension (pgm, pgm3D, raw, vol).
-  //  *  
-  //  * @param aContainer the ImageContainerBySTLMap to be exported.
-  //  * @param aFilename the filename of the file to be exported. 
-  //  * @return true, if the export was successful. 
-  //  */
-  // template <typename TDomain, typename TValue >
-  // bool
-  // operator >> ( const ImageContainerBySTLMap<TDomain, TValue> & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
-  
-
   template <typename TImageContainer >
   bool
   operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
