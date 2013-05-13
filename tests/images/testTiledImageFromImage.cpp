@@ -135,7 +135,6 @@ bool test3d()
     MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
-    /*VImage*/OutputImage::Value aValue;
     
     trace.info() << "Read value for Point 1,1,1: " << tiledImageFromImage(Z3i::Point(1,1,1)) << endl;
     nbok += (tiledImageFromImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0; 
