@@ -18,7 +18,7 @@
 
 /**
  * @file ConstImageAdapter.h
- * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/07
