@@ -115,6 +115,51 @@ bool testSimple()
     return nbok == nb;
 }
 
+bool test3d()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing 3d TiledImageFromImage");
+    
+    typedef ImageContainerBySTLVector<Z3i::Domain, int> VImage;
+    VImage image(Z3i::Domain(Z3i::Point(1,1,1), Z3i::Point(4,4,4)));
+    
+    int i = 1;
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = i++;
+
+    trace.info() << "ORIGINAL image: " << image << endl;
+    
+    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
+    
+    typedef MyTiledImageFromImage::OutputImage OutputImage;
+    /*VImage*/OutputImage::Value aValue;
+    
+    trace.info() << "Read value for Point 1,1,1: " << tiledImageFromImage(Z3i::Point(1,1,1)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 4,4,4: " << tiledImageFromImage(Z3i::Point(4,4,4)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(4,4,4)) == 64) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 4,3,2: " << tiledImageFromImage(Z3i::Point(4,3,2)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(4,3,2)) == 28) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -126,7 +171,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple(); // && ... other tests
+    bool res = testSimple() && test3d(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
