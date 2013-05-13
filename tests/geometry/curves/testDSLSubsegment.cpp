@@ -110,7 +110,8 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
               for (Integer x = 0; x < 10; ++x )
                 {
                   Integer x1 = random() % modx;
-                  Integer x2 = x1 + 1 + ( random() % modx );
+                  Integer x2 = x1 + 1+ modx;
+		  //Integer x2 = x1 + 1 + ( random() % modx );
                   
                   //std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;
 		  
@@ -135,16 +136,33 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  // timeBeginSmartDSS = clock();
 		  // D.smartDSS(AA,BB);
 		  // timeEndSmartDSS = clock();
-		  // timeTotalSmartDSS += ((double)timeEndSmartDSS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
+		  // timeTotalSmartDSS += ((double)timeEndSmartDSSDS-(double)timeBeginSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
 		  
 		  // ReversedSmartDSS algorithm
 		  
 		  timeBeginReversedSmartDSS = clock();
-		  D.reversedSmartDSS(AA,BB);
+		  DSL S = D.reversedSmartDSS(AA,BB);
 		  timeEndReversedSmartDSS = clock();
 		  timeTotalReversedSmartDSS += ((double)timeEndReversedSmartDSS-(double)timeBeginReversedSmartDSS)/(((double)CLOCKS_PER_SEC)/1000);
 		  
+		  // DSLSubsegment algorithm for 4-connected DSL
 		  
+		  // Application of an horizontal shear transform
+		  Point A2 = AA;
+		  A2[0] += A2[1];
+		  Point B2 = BB;
+		  B2[0] += B2[1];
+		  
+		  // std::cout << "A2 " << A2 << " B2 " << B2 << std::endl;
+		  
+		  // std::cout << "AA " << AA << " BB " << BB << std::endl;
+		  
+		  DSLSubseg D2(a,a+b,-mu,A2,B2);
+		  // The result is (aa,bb-aa, nu)
+		  // std::cout << "DSLSubseg : a2=" << D2.aa << " b2=" << D2.bb-D2.aa << " Nu=" << D2.Nu << std::endl;
+		  // std::cout << "Reversed  : a =" << S.a() << " b =" << S.b() << " Mu =" << S.mu() << std::endl;
+	
+		  assert(D2.aa==S.a() && (D2.bb-D2.aa)==S.b() && D2.Nu==-S.mu());
 		  
 		  /// std::cout << ((double)timeEndSubseg-(double)timeBeginSubseg) << " " << ((double)CLOCKS_PER_SEC)/1000 << " " << std::endl;
 	  
@@ -264,23 +282,23 @@ int main( int argc, char** argv )
   //typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB;
   typedef LrSB::Fraction Fraction;
   typedef Fraction::Integer Integer;
-
   
-  Integer modb = 1000;
+  
+  Integer modb = 1000000;
   Integer moda = modb;
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :5000;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :500;
   
   
-  for(Integer modx = 10; modx <=  modb;modx+=modx/2)
+  for(Integer modx = 10; modx <=  modb;modx+=modx/4)
     //Integer  modx = 1000;
     {
-  	  moda = modb;
-  	  std::cout << modb << " " << modx << " ";
-    	  testDSLSubsegment<Fraction>( nbtries, moda, modb, modx);
-  	  std::cout << std::endl;
-  	}
-    return 1;
+      moda = modb;
+      std::cout << modb << " " << modx << " ";
+      testDSLSubsegment<Fraction>( nbtries, moda, modb, modx);
+      std::cout << std::endl;
+    }
+  return 1;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
