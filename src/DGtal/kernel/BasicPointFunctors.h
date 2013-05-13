@@ -84,7 +84,7 @@ namespace DGtal
    *
    * @code
 
-  PointVector<2,int> p(3,1,5): 
+  PointVector<3,int> p(3,1,5): 
 
   Projector<SpaceND<2,int> > proj; 
   proj( p ) //== (3,1)
@@ -111,6 +111,12 @@ namespace DGtal
      * Default constructor
      */
     Projector(const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
+
+    /**
+     *  Constructor and initialisation by removing a given dimension.
+     *  @param dimRemoved the removed dimension.
+     */
+    Projector(Dimension  dimRemoved, const Integer& aDefaultInteger = NumberTraits<Integer>::zero());
 
     /**
      * Initialization of the array of relevant dimensions 
@@ -145,6 +151,66 @@ namespace DGtal
      Integer myDefaultInteger; 
 
   }; // end of class ConstantPointFunctors
+
+
+
+
+
+  /**
+   * Create a Point Functor that add one dimension to the point. The
+   * new dimension will be inserted to a position given in the
+   * constructor (posDimAdded) and each N-1 point will then be located
+   * at the a constant sliceIndex position.
+   *
+   * @tparam TSpace type for the space where must lie the projected point
+   *
+   */
+  template <typename TSpace = SpaceND< 2, DGtal::int32_t > >
+  class AddOneDimensionPointFunctor
+  {
+  public:
+        
+    typedef  TSpace Space;
+    typedef typename Space::Dimension Dimension; 
+    typedef typename Space::Point Point; 
+    typedef typename Space::Integer Integer; 
+    
+    /** 
+     * Constructor.
+     * @param  posDimAdded  position of insertion of the new dimension.
+     * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).  
+     */
+    AddOneDimensionPointFunctor( Dimension posDimAdded,  Integer sliceIndex):
+      myPosDimAdded(posDimAdded), mySliceIndex(sliceIndex) {};
+    
+    /** 
+     * The operator just recover the ND Point associated to the slice parameter.
+     * @param[in] aPoint point of the input domain (of dimension N-1).
+     * 
+     * @return the point of dimension N.
+     */
+    template <typename TPointDimMinus>
+    inline
+    Point  operator()(const TPointDimMinus& aPoint) const
+    {
+      Point pt;
+      Integer pos=0;
+      for( int i=0; i<pt.size(); i++){
+         if(i!=myPosDimAdded){
+            pt[i]= aPoint[pos];
+	    pos++; 
+	 }else{
+            pt[i]=mySliceIndex;
+          }
+      }
+      return pt;
+    }
+  private:
+    // position of insertion of the new dimension
+     Dimension myPosDimAdded;
+    // the index of the slice associated to the new domain.
+    Integer mySliceIndex;
+};
 
 
 } // namespace DGtal

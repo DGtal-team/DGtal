@@ -46,6 +46,19 @@ DGtal::Projector<S>::Projector(const Integer& aDefaultInteger)
 }
 
 template <typename S>
+inline
+DGtal::Projector<S>::Projector(Dimension dimRemoved, const Integer& aDefaultInteger)
+ : myDims(), myDefaultInteger(aDefaultInteger)
+{ //default projection
+  Dimension k = 0; 
+  for ( ; k < dimension; ++k)
+  {
+    myDims[k] = k; 
+  }
+  myDims[dimRemoved] = dimension;
+}
+
+template <typename S>
 template <typename TIterator>
 inline
 void

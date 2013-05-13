@@ -9,7 +9,7 @@ SET(DGTAL_TESTS_SRC
   testCheckImageConcept
   testMorton
   testHashTree
-  testImageHelper
+  testSliceImageFromFunctor
   )
 
 SET(DGTAL_BENCH_SRC
