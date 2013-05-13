@@ -88,10 +88,10 @@ namespace DGtal {
    viewer << Viewer3D::updateDisplay;
    @endcode
 
-   By executing the following command line from the build directory:
+   By executing the following command line from the build directory of DGtalTools:
    
    @code
-   /tools/volumetric/3dVolViewer -i ../examples/samples/lobster.vol  -m 30 -M 255 -t 10
+   ./visualisation/3dVolViewer -i ../examples/samples/lobster.vol  -m 30 -M 255 -t 10
    @endcode
    You will get the following visualisation:
 

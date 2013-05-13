@@ -196,16 +196,6 @@ namespace DGtal
     // ------------------------- star-shaped services -------------------------
   public:
 
-
-    /**
-     * @param p any point in the plane.
-     *
-     * @return 'true' if the point is inside the shape, 'false' if it
-     * is strictly outside.
-     */
-    virtual bool isInside( const RealPoint & p ) const;
-
-
     /**
      * Return the orienatation of a point with respect to a shape.
      *

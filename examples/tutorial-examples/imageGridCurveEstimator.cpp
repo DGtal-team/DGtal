@@ -112,7 +112,7 @@ int main()
     DSSLengthEstimator< Range::ConstIterator > DSSlength;
     DSSlength.init(1, r.begin(), r.end(), c.isClosed());
     double length = DSSlength.eval();
-    trace.info() << "Length: " << length << endl; 
+    trace.info() << "Length: " << length << std::endl; 
     //! [imageGridCurveEstimator-lengthEstimation]
     
     //DSS segmentation display
@@ -132,7 +132,7 @@ int main()
     } 
     aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
   
-  } else trace.info() << "no contour" << endl; 
+  } else trace.info() << "no contour" << std::endl; 
   
   return 0;
 
