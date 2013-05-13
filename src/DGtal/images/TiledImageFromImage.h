@@ -58,11 +58,13 @@ namespace DGtal
  * Description of template class 'TiledImageFromImage' <p>
  * \brief Aim: implements a tiled image from a "bigger/original" one.
  * 
- * @tparam TImageContainer an image container type (model of CImage).
- * 
+ *
  * The tiled image is create here from an existing image and with two parameters.
  * The first parameter is to set how many tiles we want for each dimension.
  * The second parameter is the size of the cache (in that case, a FIFO cache).
+ * 
+ *
+ * @tparam TImageContainer an image container type (model of CImage).
  */
 template <typename TImageContainer>
 class TiledImageFromImage
@@ -95,7 +97,9 @@ public:
 
 public:
 
-    TiledImageFromImage(Alias<ImageContainer> anImage, typename ImageContainer::Domain::Integer N, int sizeCache=10):
+    TiledImageFromImage(Alias<ImageContainer> anImage,
+                        typename ImageContainer::Domain::Integer N,
+                        int sizeCache=10):
       myImagePtr(anImage), myN(N)
     {
         myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
@@ -108,7 +112,6 @@ public:
 
     /**
      * Destructor.
-     * Does nothing
      */
     ~TiledImageFromImage()
     {
@@ -137,10 +140,7 @@ public:
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    /**
-     * @return the validity of the Image
-     */
-    bool isValid() const
+     bool isValid() const
     {
         return (myImagePtr->isValid());
     }
@@ -195,6 +195,9 @@ public:
           myImageCache->read(aPoint, aValue);
           return aValue;
         }
+      
+      //Unspecified behavior, returning the default constructed value.
+      return aValue;
     }
     
     /**

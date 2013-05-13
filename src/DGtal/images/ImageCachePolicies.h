@@ -169,7 +169,7 @@ public:
     typedef typename TImageContainer::Value Value;
     
     ImageCacheReadPolicyFIFO(Alias<ImageFactory> anImageFactory, int aFIFOSizeMax=10):
-      myImageFactory(anImageFactory), myFIFOSizeMax(aFIFOSizeMax)
+       myFIFOSizeMax(aFIFOSizeMax), myImageFactory(anImageFactory)
     {
     }
 
