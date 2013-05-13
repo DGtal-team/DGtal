@@ -122,10 +122,10 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  
 		  // DSLSubsegment algorithm
 
-		  timeBeginSubseg = clock();
-		  DSLSubseg DD(a,b,mu,A,B);
-		  timeEndSubseg = clock();
-		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
+		  // timeBeginSubseg = clock();
+		  // DSLSubseg DD(a,b,mu,A,B);
+		  // timeEndSubseg = clock();
+		  // timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		  
 		  
 		  PointDSL AA = D.lowestY( x1 );
@@ -153,11 +153,12 @@ bool testDSLSubsegment( unsigned int nbtries, typename Fraction::Integer moda, t
 		  Point B2 = BB;
 		  B2[0] += B2[1];
 		  
-		  // std::cout << "A2 " << A2 << " B2 " << B2 << std::endl;
+	  
+		  timeBeginSubseg = clock();
+		  DSLSubseg D2(a,a+b,-mu,A2,B2); // DSL algorithm works with the definition 0 <= ab -by + mu < b whereas reversedSmartDSS uses mu <= ab-by < mu + b => -mu is introduced in order to compare the results
+		  timeEndSubseg = clock();
+		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		  
-		  // std::cout << "AA " << AA << " BB " << BB << std::endl;
-		  
-		  DSLSubseg D2(a,a+b,-mu,A2,B2);
 		  // The result is (aa,bb-aa, nu)
 		  // std::cout << "DSLSubseg : a2=" << D2.aa << " b2=" << D2.bb-D2.aa << " Nu=" << D2.Nu << std::endl;
 		  // std::cout << "Reversed  : a =" << S.a() << " b =" << S.b() << " Mu =" << S.mu() << std::endl;
