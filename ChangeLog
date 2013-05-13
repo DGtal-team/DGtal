@@ -22,6 +22,10 @@
     - Iterator in mesh points and mesh face.
 
 
+*IO Package*
+    - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
+
+
 
 === DGtal 0.6 ===
  
