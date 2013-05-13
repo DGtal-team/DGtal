@@ -211,10 +211,10 @@ namespace DGtal
   // AB. AB is part of the lower boundary of exactly one cell of the
   // FareyFan. This cell represents a DSS. findSolution computes the
   // vertex of the cell that represents the minimal parameters of the DSS. 
-  // Complexity of nearestFractionsInFareySeries
+  // Complexity of nextTermInFareySeriesEuclid
   void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
 
-  
+  // Corresponds to the algorithm of paper "Walking in the Farey Fan to compute the characteristics of  discrete straight line subsegment" (Isabelle Sivignon, DGCI 2013, Springer LNCS 7749)
   void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
   
 
