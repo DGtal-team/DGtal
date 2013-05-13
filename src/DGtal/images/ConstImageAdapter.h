@@ -118,8 +118,9 @@ public:
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, typename TImageContainer::Point, Point> )); 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
+  
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> )); 
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value,Value  > ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
