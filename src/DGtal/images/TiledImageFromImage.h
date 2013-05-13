@@ -172,11 +172,7 @@ public:
       }
       
       Domain di = Domain(dMin, dMax);
-      return di;
-      
-      // compiler warning... should never happen
-      VERIFY_MSG(true, "Shoud never happen (aPoint must be in one subdomain)");
-      return myImagePtr->domain();        
+      return di;      
     }
     
     /**
