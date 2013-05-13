@@ -164,7 +164,7 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point3d;
   
   // Draw points
-  display << CustomColors3D(Color(250,250,250,100),Color(250,250,250,100));
+  display << CustomColors3D( display.getLineColor(), display.getFillColor() );
   for (ConstIterator i = a.begin(); i != a.end(); ++i) 
     {
       display << *i;
@@ -186,7 +186,7 @@ void DGtal::Display3DFactory::drawAsPoints( Display3D & display,
         double zp = NumberTraits<TInteger>::castToDouble(p[2]);
         display.addLine(xprevp,yprevp,zprevp,
 			xp,yp,zp,
-			Color(0,250,0));
+			display.getLineColor() );
         xprevp = xp;
         yprevp = yp;
         zprevp = zp;
@@ -270,7 +270,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                             mu[2] - ( (m1+dl)*u[2] )/n ); 
 
     display.addLine(pf[0], pf[1], pf[2], pl[0], pl[1], pl[2],
-		    Color(250,0,0));
+                    display.getLineColor() );
 
     PointD3d pf2 = PointD3d((mu[0]+omega1[0]) - ( (m2+df)*u[0] )/n, 
                             (mu[1]+omega1[1]) - ( (m2+df)*u[1] )/n, 
@@ -282,7 +282,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                             (mu[2]+omega1[2]) - ( (m2+dl)*u[2] )/n ); 
 
     display.addLine(pf2[0], pf2[1], pf2[2], pl2[0], pl2[1], pl2[2],
-		    Color(250,0,0));
+                    display.getLineColor() );
 
     PointD3d pf3 = PointD3d((mu[0]+omega2[0]) - ( (m3+df)*u[0] )/n, 
                             (mu[1]+omega2[1]) - ( (m3+df)*u[1] )/n, 
@@ -293,7 +293,7 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                             (mu[2]+omega2[2]) - ( (m3+dl)*u[2] )/n ); 
 
     display.addLine(pf3[0], pf3[1], pf3[2], pl3[0], pl3[1], pl3[2],
-		    Color(250,0,0));
+                    display.getLineColor() );
 
     PointD3d pf4 = PointD3d((mu[0]+omega[0]) - ( (m4+df)*u[0] )/n, 
                             (mu[1]+omega[1]) - ( (m4+df)*u[1] )/n, 
@@ -304,20 +304,19 @@ DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                             (mu[2]+omega[2]) - ( (m4+dl)*u[2] )/n ); 
 
     display.addLine(pf4[0], pf4[1], pf4[2], pl4[0], pl4[1], pl4[2],
-		    Color(250,0,0));
+                    display.getLineColor() );
 
     //two end facets
     display.addQuad(pf[0],pf[1],pf[2],
-		    pf2[0],pf2[1],pf2[2],
-		    pf4[0],pf4[1],pf4[2],
-		    pf3[0],pf3[1],pf3[2],
-		    Color(250,0,0));
+                    pf2[0],pf2[1],pf2[2],
+                    pf4[0],pf4[1],pf4[2],
+                    pf3[0],pf3[1],pf3[2],
+                    display.getFillColor() );
     display.addQuad(pl[0],pl[1],pl[2],
-		    pl2[0],pl2[1],pl2[2],
-		    pl4[0],pl4[1],pl4[2],
-		    pl3[0],pl3[1],pl3[2],
-		    Color(250,0,0));
-
+                    pl2[0],pl2[1],pl2[2],
+                    pl4[0],pl4[1],pl4[2],
+                    pl3[0],pl3[1],pl3[2],
+                    display.getFillColor() );
   }
 }
     
@@ -623,11 +622,8 @@ void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display,
                       lowerBound[0]-(0.5+shiftSize), 
                       lowerBound[1]-(0.5+shiftSize),
                       upperBound[2]+(0.5+shiftSize),
-		      colDef);
-    
-  }
-  
-
+         colDef);
+    }  
 }
 
 template<typename TSpace>
@@ -643,54 +639,54 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
   ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 3)
-    {
-      // Face XY
-      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
-	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
-	{
-	  for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-	       x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-	    display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
-			    (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor() );
-	  }
-	  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-	       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-	    display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
-			    NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
-	  }
-	}
-    
-      // Faces XZ
-      for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-	   y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-	  display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
-			  (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5, display.getLineColor());
-	}
-	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-	  display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
-			  NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
-	}
+  {
+    // Face XY
+    for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
+         z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++)
+      {
+        for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+             x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+          display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                          (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor() );
+        }
+        for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+             y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+          display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                          NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
+        }
       }
     
-      // Faces YZ
+    // Faces XZ
+    for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
+         y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
       for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-	   x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
-      
-	for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
-	     y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-	  display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
-			  (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5, display.getLineColor());
-	}
-	for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
-	     z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-	  display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
-			  (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor());
-	}
+           x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])+0.5, display.getLineColor());
+      }
+      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+           z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+        display.addLine(NumberTraits<Integer>::castToDouble(h.myLowerBound[0])-0.5, (double)y, (double)z,
+                        NumberTraits<Integer>::castToDouble(h.myUpperBound[0])+0.5, (double)y, (double)z, display.getLineColor());
       }
     }
+    
+    // Faces YZ
+    for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+         x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+      
+      for (int64_t y = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]); 
+           y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+        display.addLine((double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myLowerBound[2])-0.5,
+                        (double)x, (double)y, NumberTraits<Integer>::castToDouble(h.myUpperBound[2])+0.5, display.getLineColor());
+      }
+      for (int64_t z =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]);
+           z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+        display.addLine((double)x, NumberTraits<Integer>::castToDouble(h.myLowerBound[1])-0.5, (double)z,
+                        (double)x, NumberTraits<Integer>::castToDouble(h.myUpperBound[1])+0.5, (double)z, display.getLineColor());
+      }
+    }
+  }
 }
 
 template<typename TSpace>
@@ -703,21 +699,21 @@ void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display,
   ASSERT(TSpace::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 3)
-    {
-      // Face XY
-      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
-	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+  {
+    // Face XY
+    for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
+   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
       
-	  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-	       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-	    display.addPoint((double)x, (double)y , (double)z, DGtal::Color(255, 0 ,0));
+  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+    display.addPoint((double)x, (double)y , (double)z, DGtal::Color(255, 0 ,0));
 
-	  }
-	}
+  }
       }
     }
+  }
 }
 
 template<typename TSpace>
