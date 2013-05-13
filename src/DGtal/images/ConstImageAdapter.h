@@ -87,10 +87,10 @@ namespace DGtal
  * operator() calls f(img(g(aPoint))), instead of calling directly 
  * operator() of the underlying image img.
  * 
- * Here is the construction of a simple image adapter that 
+ * Here is the construction of a simple ConstImageAdapter that 
  * is a thresholded view of the initial scalar image: 
  *
- * @snippet images/testConstImageAdapter.cpp ConstImageAdapterConstruction
+ * @snippet ../examples/images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 2 functors
  * are stored in the adapter as aliasing pointer
@@ -120,7 +120,7 @@ public:
 
   
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorD, Point, typename TImageContainer::Point> )); 
-    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value,Value  > ));
+    BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctorV, typename TImageContainer::Value, Value> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
