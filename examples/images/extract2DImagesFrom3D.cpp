@@ -49,7 +49,7 @@ int main( int argc, char** argv )
 {
    typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionPointFunctor<Z3i::Space>,
+   typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector<Z3i::Space>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
 
    DGtal::Projector<Z2i::Space >  proj(2);
@@ -67,7 +67,7 @@ int main( int argc, char** argv )
    for (unsigned int i=0; i<30; i+=10){
      std::stringstream name;
      name << "lobsterSliceZ_"  << i << ".pgm";
-     DGtal::AddOneDimensionPointFunctor<Z3i::Space> aSliceFunctor(2, i);
+     DGtal::Projector<Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
      SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
      PGMWriter<SliceImageAdapter>::exportPGM(name.str(), sliceImageZ);
    }
