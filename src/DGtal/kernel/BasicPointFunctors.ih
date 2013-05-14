@@ -30,6 +30,11 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+
+
+template <typename S> 
+const typename S::Dimension DGtal::Projector<S>::dimension = S::dimension;
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
@@ -44,6 +49,7 @@ DGtal::Projector<S>::Projector(const Integer& aDefaultInteger)
     myDims[k] = k; 
   } 
 }
+
 
 template <typename S>
 template <typename TIterator>
@@ -65,6 +71,50 @@ DGtal::Projector<S>::init( const TIterator& itb, const TIterator& ite )
     myDims[k] = dimension; 
   } 
 }
+
+
+template <typename S>
+inline
+void
+DGtal::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
+{ 
+  std::vector<Dimension> vectDims;
+  Dimension aCurrentPos = 0;
+  Dimension k=0;
+  for ( ; k < dimension; ++k)
+  {
+    if(k!=dimRemoved){
+      vectDims.push_back(aCurrentPos);
+    }
+    aCurrentPos++;
+  }  
+  init(vectDims.begin(), vectDims.end());
+}
+
+
+
+
+template <typename S>
+inline
+void
+DGtal::Projector<S>::initAddOneDim( const Dimension &newDim)
+{ 
+  std::vector<Dimension> vectDims;
+  Dimension aCurrentPos = 0;
+  Dimension k=0;
+  for ( ; k < dimension; ++k)
+  {
+    if(k==newDim){
+      vectDims.push_back(dimension);
+    }else{
+      vectDims.push_back(aCurrentPos);
+      aCurrentPos++;
+    }
+  }  
+  init(vectDims.begin(), vectDims.end());  
+}
+
+
 
 template <typename S>
 template <typename TInputPoint>
