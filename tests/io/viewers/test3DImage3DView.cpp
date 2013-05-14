@@ -96,15 +96,15 @@ int main( int argc, char** argv )
 
  // Extract some slice images:
  // Get the 2D domain of the slice:
-  DGtal::Projector<DGtal::Z2i::Space>  invFunctor(2);
-  DGtal::Z2i::Domain domain2D((invFunctor.operator()(image3d.domain().lowerBound())),
-			      (invFunctor.operator()(image3d.domain().upperBound())));
+ DGtal::Projector<DGtal::Z2i::Space>  invFunctor; invFunctor.initRemoveOneDim(2);
+ DGtal::Z2i::Domain domain2D(invFunctor(image3d.domain().lowerBound()),
+			     invFunctor(image3d.domain().upperBound()));
   
   typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::Projector< Z3i::Space>,
 				    Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
   DGtal::DefaultFunctor idV;
-  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorY(5); aSliceFunctorY.initAddOneDim(1);
-  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorY, idV);
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
+  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
   viewer << sliceImageZ;
   viewer <<  DGtal::UpdateImagePosition(6, DGtal::Display3D::zDirection, 0.0, 0.0, -10.0);  
