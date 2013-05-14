@@ -413,7 +413,7 @@ imageFromRangeAndValue assigns a given value in an image to each point of a give
 3. Some functions are available to fastly fill images 
 from point functors or other images: imageFromFunctor and imageFromImage.
 
-4. Lastly, some functor  AddOneDimensionDomainFunctor or MinusOneDimensionDomainFunctor can be useful to manipulate domains and  permits to extract N-1 images from ND images (see example \ref extract2DImagesFrom3D.cpp and \ref extract2DImagesFrom3DandVisu.cpp).  
+4. Lastly, some functor like the Projector from BasicPointFunctors can be useful to manipulate domain points and permits to extract N-1 images from ND images (see example \ref extract2DImagesFrom3D.cpp).  
 
 
 */
