@@ -28,8 +28,6 @@
  * This file is part of the DGtal library.
  */
 
-//! [EuclideanShapesDecoratorUsageFull]
-
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
@@ -49,7 +47,6 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 
-using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -60,12 +57,14 @@ int main( int argc, char** argv )
     trace.info() << "Args:";
     for ( int i = 0; i < argc; ++i )
         trace.info() << " " << argv[ i ];
-    trace.info() << endl;
+    trace.info() << std::endl;
 
+    //! [EuclideanShapesDecoratorUsageFull1]
     /// Construction of the shape + digitalization
     double h = 1.0;
 
     //! [EuclideanShapesDecoratorUsage]
+    //! [EuclideanShapesDecoratorUsageFull1]
     typedef ImplicitBall< Z2i::Space > MyEuclideanShapeA;
     typedef ImplicitBall< Z2i::Space > MyEuclideanShapeB;
     MyEuclideanShapeA shapeA( Z2i::RealPoint( 0.0, 0.0 ), 14 );
@@ -82,7 +81,9 @@ int main( int argc, char** argv )
     typedef DigitalSurface< LightImplDigSurfaceA > MyDigitalSurfaceA;
     MyGaussDigitizerShapeA digShapeA;
     digShapeA.attach( shapeA );
-    digShapeA.init( shapeA.getLowerBound(), shapeA.getUpperBound(), h );
+    digShapeA.init( shapeA.getLowerBound() + Z2i::RealPoint( -1.0, -1.0 ),
+                    shapeA.getUpperBound() + Z2i::RealPoint( 1.0, 1.0 ),
+                    h );
     Z2i::Domain domainShapeA = digShapeA.getDomain();
 
     Z2i::DigitalSet aSetA( domainShapeA );
@@ -90,12 +91,14 @@ int main( int argc, char** argv )
 
 
 
-    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeA > MyGaussDigitizerShapeB;
+    typedef GaussDigitizer< Z2i::Space, MyEuclideanShapeB > MyGaussDigitizerShapeB;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizerShapeB > LightImplDigSurfaceB;
     typedef DigitalSurface< LightImplDigSurfaceB > MyDigitalSurfaceB;
     MyGaussDigitizerShapeB digShapeB;
     digShapeB.attach( shapeB );
-    digShapeB.init( shapeB.getLowerBound(), shapeB.getUpperBound(), h );
+    digShapeB.init( shapeB.getLowerBound() + Z2i::RealPoint( -1.0, -1.0 ),
+                    shapeB.getUpperBound() + Z2i::RealPoint( 1.0, 1.0 ),
+                    h );
     Z2i::Domain domainShapeB = digShapeB.getDomain();
 
     Z2i::DigitalSet aSetB( domainShapeB );
@@ -103,25 +106,31 @@ int main( int argc, char** argv )
 
 
 
+    //! [EuclideanShapesDecoratorUsageFull2]
     typedef GaussDigitizer< Z2i::Space, Minus > MyGaussDigitizer;
     typedef LightImplicitDigitalSurface< Z2i::KSpace, MyGaussDigitizer > LightImplicitDigSurface;
     typedef DigitalSurface< LightImplicitDigSurface > MyDigitalSurface;
     MyGaussDigitizer digShape;
     digShape.attach( s_minus );
-    digShape.init( s_minus.getLowerBound(), s_minus.getUpperBound(), h );
+    digShape.init( s_minus.getLowerBound() + Z2i::RealPoint( -1.0, -1.0 ),
+                   s_minus.getUpperBound() + Z2i::RealPoint( 1.0, 1.0 ),
+                   h );
     Z2i::Domain domainShape = digShape.getDomain();
     Z2i::DigitalSet aSet( domainShape );
     Shapes<Z2i::Domain>::digitalShaper( aSet, digShape );
-
+    //! [EuclideanShapesDecoratorUsageFull2]
 
 
     Board2D board;
     board << SetMode( domainShape.className(), "Paving" )
           << domainShape;
 
+    Color dblack  ( 0,    0,    0,  50  );
     Color dgreen  ( 0,    192,  0,  50  );
     Color dred    ( 192,  0,    0,  50  );
+    //! [EuclideanShapesDecoratorUsageFull3]
     Color dorange ( 255,  136,  0,  220 );
+    //! [EuclideanShapesDecoratorUsageFull3]
 
     board << CustomStyle( aSetA.className(), new CustomFillColor( dgreen ));
     board << aSetA;
@@ -129,8 +138,13 @@ int main( int argc, char** argv )
     board << CustomStyle( aSetB.className(), new CustomFillColor( dred ));
     board << aSetB;
 
+    //! [EuclideanShapesDecoratorUsageFull4]
     board << CustomStyle( aSet.className(), new CustomFillColor( dorange ));
     board << aSet;
+    //! [EuclideanShapesDecoratorUsageFull4]
+
+    board << CustomStyle( aSetA.className(), new CustomFillColor( dblack ) );
+    board << Z2i::Domain::Point( 0.0, 0.0 );
 
     board.saveSVG ( "example-EuclideanShapesDecorator.svg" );
 
@@ -138,6 +152,5 @@ int main( int argc, char** argv )
     return 0;
 }
 
-//! [EuclideanShapesDecoratorUsageFull]
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
