@@ -46,10 +46,10 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCache>
+template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 inline
 void
-DGtal::TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCache>::selfDisplay ( std::ostream & out ) const
+DGtal::TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
     out << "[TiledImageFromImage] " << (*myImagePtr);
 }
@@ -59,11 +59,11 @@ DGtal::TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCache>
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCache>
+template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCache> & object )
+                    const TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCacheReadPolicy, TImageCacheWritePolicy> & object )
 {
     object.selfDisplay( out );
     return out;
