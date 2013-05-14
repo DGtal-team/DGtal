@@ -59,21 +59,22 @@ namespace DGtal
  * \brief Aim: implements a tiled image from a "bigger/original" one.
  * 
  *
- * The tiled image is create here from an existing image and with two parameters.
- * The first parameter is to set how many tiles we want for each dimension.
- * The second parameter is the size of the cache (in that case, a FIFO cache).
+ * The tiled image is create here from an existing image and with three parameters.
+ * The first parameter is an alias on the image factory (see ImageFactoryFromImage).
+ * The second parameter is an alias on the image cache (see ImageCache).
+ * The third parameter is to set how many tiles we want for each dimension.
  * 
  *
  * @tparam TImageContainer an image container type (model of CImage).
  */
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCache>
 class TiledImageFromImage
 {
 
     // ----------------------- Types ------------------------------
 
 public:
-    typedef TiledImageFromImage<TImageContainer> Self; 
+    typedef TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCache> Self; 
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
@@ -84,12 +85,10 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    typedef ImageFactoryFromImage<TImageContainer > MyImageFactoryFromImage;
-    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    typedef TImageFactoryFromImage ImageFactoryFromImage;
+    typedef typename ImageFactoryFromImage::OutputImage OutputImage;
     
-    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
-    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT > MyImageCache;
+    typedef TImageCache ImageCache;
     
     ///New types
 
@@ -98,14 +97,11 @@ public:
 public:
 
     TiledImageFromImage(Alias<ImageContainer> anImage,
-                        typename ImageContainer::Domain::Integer N,
-                        int sizeCache=10):
-      myImagePtr(anImage), myN(N)
+                        Alias<ImageFactoryFromImage> anImageFactoryFromImage,
+                        Alias<ImageCache> anImageCache,
+                        typename ImageContainer::Domain::Integer N):
+      myImagePtr(anImage), myImageFactoryFromImage(anImageFactoryFromImage), myImageCache(anImageCache), myN(N)
     {
-        myImageFactoryFromImage = new MyImageFactoryFromImage(myImagePtr);
-        
-        myImageCache = new MyImageCache(myImageFactoryFromImage, sizeCache);
-        
         for(typename ImageContainer::Domain::Integer i=0; i<ImageContainer::Domain::dimension; i++)
           mySize[i] = (myImagePtr->domain().upperBound()[i]-myImagePtr->domain().lowerBound()[i]+1)/myN;
     }
@@ -115,8 +111,6 @@ public:
      */
     ~TiledImageFromImage()
     {
-      delete myImageCache;
-      delete myImageFactoryFromImage;
     }
 
     // ----------------------- Interface --------------------------------------
@@ -196,7 +190,7 @@ public:
           return aValue;
         }
       
-      //Unspecified behavior, returning the default constructed value.
+      // Unspecified behavior, returning the default constructed value.
       return aValue;
     }
     
@@ -239,10 +233,10 @@ protected:
     Point mySize;
     
     /// ImageFactory pointer
-    MyImageFactoryFromImage *myImageFactoryFromImage;
+    ImageFactoryFromImage *myImageFactoryFromImage;
     
     /// ImageCache pointer
-    MyImageCache *myImageCache;
+    ImageCache *myImageCache;
     
 private:
 
@@ -259,9 +253,9 @@ private:
  * @param object the object of class 'TiledImageFromImage' to write.
  * @return the output stream after the writing.
  */
-template <typename TImageContainer>
+template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCache>
 std::ostream&
-operator<< ( std::ostream & out, const TiledImageFromImage<TImageContainer> & object );
+operator<< ( std::ostream & out, const TiledImageFromImage<TImageContainer, TImageFactoryFromImage, TImageCache> & object );
 
 } // namespace DGtal
 

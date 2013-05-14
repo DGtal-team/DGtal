@@ -141,9 +141,10 @@ until the cache blocks containing the data are about to be modified/replaced by 
 
 The TiledImageFromImage is a simple class that implements a tiled image from a "bigger/original" one.
 
-The tiled image is created from an existing image and with two parameters.
-The first parameter is to set how many tiles we want for each dimension.
-The second parameter is the size of the cache (in that case, a FIFO cache).
+The tiled image is created from an existing image and with three parameters.
+The first parameter is an alias on the image factory (see ImageFactoryFromImage).
+The second parameter is an alias on the image cache (see ImageCache).
+The third parameter is to set how many tiles we want for each dimension.
 
 Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write
 for the TiledImageFromImage class:
@@ -177,8 +178,10 @@ which looks like that with a simple HueShadeColorMap varying from 1 to 256 and w
 \image latex tiledImageFromImage-image.png " (1) simple 16x16 source image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 1 to 256." width=5cm 
 
 Here is now the construction of a simple 4x4 tiled image with therefore 16 subdomains of the initial image domain.
-The first parameter is to set how many tiles we want for each dimension.
-The second parameter is the size of the FIFO cache (see ImageCacheReadPolicyFIFO): 
+The tiled image is created from an existing image and with three parameters.
+The first parameter is an alias on an image factory (see ImageFactoryFromImage).
+The second parameter is an alias on an image cache (see ImageCache).
+The third parameter is to set how many tiles we want for each dimension: 
 
 @snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_creation 
 

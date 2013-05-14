@@ -86,10 +86,23 @@ int main( int argc, char** argv )
     // ---
     
     trace.beginBlock("tiledImageFromImage");
-    
+ 
 //! [TiledImageFromImage_creation]
-    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
+    // here we create an image factory
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+    
+    // here we create an image cache with read and write policies
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyImageCache;
+    MyImageCache imageCache(imageFactoryFromImage, 2);
+    
+    
+    // here we create the TiledImageFromImage
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCache> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCache, 4);
 //! [TiledImageFromImage_creation]
     
     trace.info() << "tiledImageFromImage image: " << tiledImageFromImage << endl;
