@@ -1347,22 +1347,22 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D an
 
   typedef  TImageType3D Image3D;
 
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctorY(1);
-  DGtal::Z2i::Domain domainY((invFunctorY.operator()(anImage3D.domain().lowerBound())),
-			    (invFunctorY.operator()(anImage3D.domain().upperBound())));
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctorZ(2);
-  DGtal::Z2i::Domain domainZ((invFunctorZ.operator()(anImage3D.domain().lowerBound())),
-			    (invFunctorZ.operator()(anImage3D.domain().upperBound())));
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctorX(0);
-  DGtal::Z2i::Domain domainX((invFunctorX.operator()(anImage3D.domain().lowerBound())),
-			    (invFunctorX.operator()(anImage3D.domain().upperBound())));
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorY; invFunctorY.initRemoveOneDim(1);
+  DGtal::Z2i::Domain domainY(invFunctorY(anImage3D.domain().lowerBound()),
+			     invFunctorY(anImage3D.domain().upperBound()));
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorZ; invFunctorZ.initRemoveOneDim(2);
+  DGtal::Z2i::Domain domainZ(invFunctorZ(anImage3D.domain().lowerBound()),
+			     invFunctorZ(anImage3D.domain().upperBound()));
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorX; invFunctorX.initRemoveOneDim(0);
+  DGtal::Z2i::Domain domainX(invFunctorX(anImage3D.domain().lowerBound()),
+			     invFunctorX(anImage3D.domain().upperBound()));
 
 
 
-  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::Projector< Z3i::Space>,
 				   typename Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
   DGtal::DefaultFunctor idV;
-  const DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorY(1, 0);
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorY(0); aSliceFunctorY.initAddOneDim(1);
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
 
   display<< SetMode3D( sliceImageY.className(), mode );
@@ -1370,30 +1370,33 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D an
   display << sliceImageY;
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 0, -0.5, 0);
   
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorX(0, 0);
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorX(0); aSliceFunctorX.initAddOneDim(0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
   display << sliceImageX;
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection, -0.5, 0, 0);
   
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZ(2, 0);
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ(0); aSliceFunctorZ.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
   display << sliceImageZ;
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection, 0, 0, -0.5);
     
 
   // other symetrics faces
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorYl(1, (int)(anImage3D.domain().upperBound()[1]));
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
+  aSliceFunctorYl.initAddOneDim(1);
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
   display << sliceImageYl;
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 0.0, 0.5+anImage3D.domain().upperBound()[1], 0.0);
   
   
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorXl(0, (int)(anImage3D.domain().upperBound()[0]));
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
+  aSliceFunctorXl.initAddOneDim(0);
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
   display << sliceImageXl;
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection,0.5+anImage3D.domain().upperBound()[0], 0.0, 0.0 );
   
-  DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctorZl(2, (int)(anImage3D.domain().upperBound()[2]));
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
+  aSliceFunctorZl.initAddOneDim(2);
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
   display << sliceImageZl;  
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection,0.0, 0.0, 0.5+ anImage3D.domain().upperBound()[2] );

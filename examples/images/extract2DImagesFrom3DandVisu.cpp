@@ -62,15 +62,15 @@ int main( int argc, char** argv )
 
   typedef ImageSelector < Z3i::Domain, unsigned char>::Type Image3D;
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
-  typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::AddOneDimensionDomainFunctor< Z3i::Point>,
+  typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::Projector< Z3i::Space>,
    				   Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
-  DGtal::MinusOneDimensionDomainFunctor<DGtal::Z2i::Point>  invFunctor(2);
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctor(2);
   // Importing a 3D image 
   std::string filename = examplesPath + "samples/lobster.vol";
   Image3D image = VolReader<Image3D>::importVol( filename ); 
     
-  DGtal::Z2i::Domain domain((invFunctor.operator()(image.domain().lowerBound())), 
-			    (invFunctor.operator()(image.domain().upperBound())));
+  DGtal::Z2i::Domain domain(invFunctor(image.domain().lowerBound()), 
+			    invFunctor(image.domain().upperBound()));
   DGtal::DefaultFunctor idV;
     
   trace.beginBlock ( "Example extract2DImagesFrom3D" );
@@ -78,7 +78,7 @@ int main( int argc, char** argv )
   // Extracting 2D slices ... and visualisation on 3DViewer
   unsigned int pos=0;
   for (unsigned int i=0; i<30; i+=5){
-    DGtal::AddOneDimensionDomainFunctor<DGtal::Z3i::Point> aSliceFunctor(2, i);
+    DGtal::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
     viewer << sliceImageZ; 
     viewer << DGtal::UpdateImagePosition(pos, Display3D::zDirection,  i*20, i*20, i*20 );
