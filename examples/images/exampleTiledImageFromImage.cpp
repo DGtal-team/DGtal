@@ -93,14 +93,16 @@ int main( int argc, char** argv )
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
     
-    // here we define read and write policies
+    // here we create read and write policies
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     
     // here we create the TiledImageFromImage
     typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, 4, 2);
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImageFromImage_creation]
     
     trace.info() << "tiledImageFromImage image: " << tiledImageFromImage << endl;

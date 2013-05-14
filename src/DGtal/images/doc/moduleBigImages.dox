@@ -143,8 +143,9 @@ The TiledImageFromImage is a simple class that implements a tiled image from a "
 
 The tiled image is created from an existing image and with three parameters.
 The first parameter is an alias on the image factory (see ImageFactoryFromImage).
-The second parameter is to set how many tiles we want for each dimension.
-The third parameter is the size of the cache.
+The second parameter is an alias on a read policy.
+The third parameter is an alias on a write policy.
+The fourth parameter is to set how many tiles we want for each dimension.
 
 Concerning the cache mechanism explained at the top of this document, the accessor `operator()` (i.e. the getter) and the setter `setValue` are therefore really simple to write
 for the TiledImageFromImage class:
@@ -180,8 +181,9 @@ which looks like that with a simple HueShadeColorMap varying from 1 to 256 and w
 Here is now the construction of a simple 4x4 tiled image with therefore 16 subdomains of the initial image domain.
 The tiled image is created from an existing image and with three parameters.
 The first parameter is an alias on an image factory (see ImageFactoryFromImage).
-The second parameter is to set how many tiles we want for each dimension.
-The third parameter is the size of the cache: 
+The second parameter is an alias on a read policy.
+The third parameter is an alias on a write policy.
+The fourth parameter is to set how many tiles we want for each dimension: 
 
 @snippet ../examples/images/exampleTiledImageFromImage.cpp TiledImageFromImage_creation 
 

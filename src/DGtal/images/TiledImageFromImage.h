@@ -61,11 +61,15 @@ namespace DGtal
  *
  * The tiled image is create here from an existing image and with three parameters.
  * The first parameter is an alias on the image factory (see ImageFactoryFromImage).
- * The second parameter is to set how many tiles we want for each dimension.
- * The third parameter is the size of the cache.
+ * The second parameter is an alias on a read policy.
+ * The third parameter is an alias on a write policy.
+ * The fourth parameter is to set how many tiles we want for each dimension.
  * 
  *
  * @tparam TImageContainer an image container type (model of CImage).
+ * @tparam TImageFactoryFromImage an image factory type (model of CImageFactory).
+ * @tparam TImageCacheReadPolicy an image cache read policy type (model of CImageCacheReadPolicy).
+ * @tparam TImageCacheWritePolicy an image cache write policy type (model of CImageCacheWritePolicy).
  */
 template <typename TImageContainer, typename TImageFactoryFromImage, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
 class TiledImageFromImage
@@ -102,16 +106,18 @@ public:
      * Constructor.
      * @param anImage alias on the underlying image container.
      * @param anImageFactoryFromImage alias on the image factory (see ImageFactoryFromImage).
+     * @param aReadPolicy alias on a read policy.
+     * @param aWritePolicy alias on a write policy.
      * @param N how many tiles we want for each dimension.
-     * @param sizeCache the size of the cache.
      */
     TiledImageFromImage(Alias<ImageContainer> anImage,
                         Alias<ImageFactoryFromImage> anImageFactoryFromImage,
-                        typename ImageContainer::Domain::Integer N,
-                        int sizeCache=10):
+                        Alias<ImageCacheReadPolicy> aReadPolicy,
+                        Alias<ImageCacheWritePolicy> aWritePolicy,
+                        typename ImageContainer::Domain::Integer N):
       myImagePtr(anImage), myImageFactoryFromImage(anImageFactoryFromImage), myN(N)
     {
-        myImageCache = new MyImageCache(myImageFactoryFromImage, sizeCache);
+        myImageCache = new MyImageCache(myImageFactoryFromImage, aReadPolicy, aWritePolicy);
         
         for(typename ImageContainer::Domain::Integer i=0; i<ImageContainer::Domain::dimension; i++)
           mySize[i] = (myImagePtr->domain().upperBound()[i]-myImagePtr->domain().lowerBound()[i]+1)/myN;

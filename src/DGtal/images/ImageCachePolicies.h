@@ -87,10 +87,9 @@ public:
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
     
-    ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory, int dummySizeCache=1):
+    ImageCacheReadPolicyLAST(Alias<ImageFactory> anImageFactory):
       myImageFactory(anImageFactory), myCacheImagesPtr(NULL)
     {
-       // dummySizeCache is not used, normal, just here for compatibility
     }
 
     /**

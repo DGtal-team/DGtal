@@ -56,21 +56,6 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::se
 }
 
 template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
-DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::ImageCache(Alias<ImageFactory> anImageFactory, int sizeCache):
-            myImageFactoryPtr(anImageFactory)
-{
-    myReadPolicy = new ReadPolicy(anImageFactory, sizeCache);
-    myWritePolicy = new WritePolicy(anImageFactory);
-}
-
-template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
-DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::~ImageCache()
-{
-    delete myReadPolicy;
-    delete myWritePolicy;
-}
-
-template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 bool
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::read(const Point & aPoint, Value &aValue) const
