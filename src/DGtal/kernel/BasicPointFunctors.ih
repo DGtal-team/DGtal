@@ -51,9 +51,13 @@ DGtal::Projector<S>::Projector(Dimension dimRemoved, const Integer& aDefaultInte
  : myDims(), myDefaultInteger(aDefaultInteger)
 { //default projection
   Dimension k = 0; 
+  Dimension aCurrentPos=0;
   for ( ; k < dimension; ++k)
   {
-    myDims[k] = k; 
+    if(k!=dimRemoved){
+      myDims[aCurentPos] = k; 
+      aCurrentPos++;
+    }
   }
   myDims[dimRemoved] = dimension;
 }
