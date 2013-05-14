@@ -66,11 +66,9 @@ bool testSimple()
     
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyImageCache;
-    MyImageCache imageCache(imageFactoryFromImage, 2);
     
-    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCache> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCache, 4);
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, 4, 2);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -146,11 +144,9 @@ bool test3d()
     
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
     typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
-    typedef ImageCache<OutputImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyImageCache;
-    MyImageCache imageCache(imageFactoryFromImage, 2);
     
-    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCache> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCache, 4);
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, 4, 2);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     
