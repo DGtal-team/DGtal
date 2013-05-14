@@ -141,7 +141,7 @@ namespace DGtal
     void initRemoveOneDim ( const Dimension  &dimRemoved );
 
     /**
-     *  Initialisation by removing a given dimension.
+     *  Initialisation by adding a given dimension.
      *  @param newDim the new dimension.
      */
     void initAddOneDim ( const Dimension & newDim );
