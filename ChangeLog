@@ -11,22 +11,25 @@
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
-
 *Geometry Package*
     - Generic adapter to transform a metric (model of CMetric) with monotonic (see doc)
       properties to a separable metric (model of CSeparableMetric)
       which can be used in VoronoiMap/DistanceTransformation algorithms.
     - New possibility to access the 3 2D ArithmeticDSS object within an ArithmeticDSS3d.
 
-
 *Shape Package*
     - The class MeshFromPoints was transformed into Mesh (more from shapes/fromPoints to shapes/ directory).
     - Iterator in mesh points and mesh face.
 
-
 *IO Package*
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
 
+*Image Package*
+    - New concepts : CImageFactory to define the concept describing an image factory and
+      CImageCacheReadPolicy/CImageCacheWritePolicy to define the concept describing cache read/write policies.
+    - New classes : ImageFactoryFromImage to implement a factory to produce images from a "bigger/original" one
+      according to a given domain, ImageCache to implement an images cache with 'read and write' policies,
+      TiledImageFromImage to implement a tiled image from a "bigger/original" one.
 
 
 === DGtal 0.6 ===

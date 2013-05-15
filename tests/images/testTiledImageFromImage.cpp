@@ -60,8 +60,17 @@ bool testSimple()
 
     trace.info() << "ORIGINAL image: " << image << endl;
     
-    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
@@ -131,8 +140,17 @@ bool test3d()
 
     trace.info() << "ORIGINAL image: " << image << endl;
     
-    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     
