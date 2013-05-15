@@ -50,9 +50,6 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
-
     trace.beginBlock("ORIGINAL image");
     
     Board2D aBoard;
@@ -86,10 +83,23 @@ int main( int argc, char** argv )
     // ---
     
     trace.beginBlock("tiledImageFromImage");
-    
+ 
 //! [TiledImageFromImage_creation]
-    typedef TiledImageFromImage<VImage> MyTiledImageFromImage;
-    MyTiledImageFromImage tiledImageFromImage(image, 4, 2);
+    // here we create an image factory
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+    
+    // here we create read and write policies
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    
+    
+    // here we create the TiledImageFromImage
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
 //! [TiledImageFromImage_creation]
     
     trace.info() << "tiledImageFromImage image: " << tiledImageFromImage << endl;
