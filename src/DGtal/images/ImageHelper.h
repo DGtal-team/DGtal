@@ -52,6 +52,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/images/CConstImage.h"
+#include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/CQuantity.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
@@ -431,6 +432,9 @@ namespace DGtal
     /// reverse values returned by the predicate. (Some shapes consider inner as > 0, others as < 0)
     bool reverse;
   };
+
+
+
 
  
 } // namespace DGtal
