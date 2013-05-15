@@ -44,7 +44,7 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-
+#include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
@@ -74,7 +74,7 @@ namespace DGtal
   class Display3D
   {
 
- 
+        
     // ------------------------- Private Datas --------------------------------
   private:
     
@@ -131,7 +131,9 @@ namespace DGtal
       double a,b,c,d;
     };
 
-  
+    
+   
+
     /**
      * This structure is used to display clipping planes and the
      * components of the myKSSurfelList (allowing to set normal and
@@ -168,7 +170,11 @@ namespace DGtal
 
 
   public:
-    /// Structure used to display KSPoint in 3D and Mesh
+
+    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
+    enum ImageDirection {xDirection, yDirection, zDirection };
+
+    /// Structure used to display KSPoint in 3D and MeshFromPoints
     /// @see addKSPointel 
     ///
     
@@ -182,7 +188,7 @@ namespace DGtal
 	}
 	return x;
       };
-       double & operator[]( unsigned int i ) {
+      double & operator[]( unsigned int i ) {
 	assert(i<3);
 	switch (i){
 	case 0: {return x;}
@@ -200,7 +206,7 @@ namespace DGtal
 
 
 
-  /**
+    /**
      * This structure is used to display polygonal faces.
      * @see Display3D, Viewer3D, Board3DTo2D
      **/ 
@@ -209,6 +215,190 @@ namespace DGtal
       std::vector<pointD3D> vectPoints;
       double nx, ny, nz;
       unsigned int R,G,B,T;
+    };
+
+    
+    /**
+     *  Used to display the 2D domain of an image.
+     *
+     **/
+    
+    struct Image2DDomainD3D{
+      // The image domain coordinates 
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;
+      unsigned int R,G,B,T;
+
+      unsigned int myDomainWidth;
+      unsigned int myDomainHeight;      
+      ImageDirection myDirection;      
+      
+      std::string myMode;
+      
+      unsigned int myLineSetIndex;
+      
+      /**
+       * Constructor
+       *
+       **/
+
+      template<typename TSpace>
+      Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=zDirection, 
+		       double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
+	myMode = mode;
+	myDirection=normalDir;
+	myDomainWidth = (aDomain.upperBound())[0]+1;
+	myDomainHeight = (aDomain.upperBound())[1]+1;
+	updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);	
+      }
+      
+      /**
+       * Update the domain direction from a specific normal direction
+       * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
+       * from the botton left point.
+       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
+       *  @param xBottomLeft: the x coordinate of bottom left image point.
+       *  @param yBottomLeft: the x coordinate of bottom left image point.
+       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       **/
+      
+      void updateDomainOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
+
+     
+      /** 
+       *  Translate domain postion. 
+       *  @param xTranslation: the image translation in the  x direction (default 0).
+       *  @param yTranslation: the image translation in the  y direction (default 0).
+       *  @param zTranslation: the image translation in the  z direction (default 0).
+       **/
+      void translateDomain(double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+
+    };
+
+    
+
+
+    /**
+     * Used to display a grayscale image as a textured quad image.
+     *
+     **/
+    struct GrayScaleImage{
+
+      // The quad coordinates should be given in counter clockwise order
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;
+      ImageDirection myDirection;
+      unsigned int myImageWidth;
+      unsigned int myImageHeight;
+      unsigned char * myTabImage;
+      
+      bool myDrawDomain;
+      unsigned int myIndexDomain;
+      
+      
+      ~GrayScaleImage(){
+	delete [] myTabImage;  
+      };
+      
+      /**
+       * Copy constructor (needed due to myTabImage)
+       **/
+      GrayScaleImage(const GrayScaleImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
+						 x2(img.x2), y2(img.y2), z2(img.z2),
+						 x3(img.x3), y3(img.y3), z3(img.z3),
+						 x4(img.x4), y4(img.y4), z4(img.z4),
+						 myDirection(img.myDirection), myImageWidth(img.myImageWidth),
+						 myImageHeight(img.myImageHeight),
+						 myTabImage(img.myTabImage),
+						 myDrawDomain(img.myDrawDomain),
+						 myIndexDomain(img.myIndexDomain){
+	if(img.myImageHeight>0 && img.myImageWidth>0){
+	  myTabImage = new  unsigned char [img.myImageWidth*img.myImageHeight];
+	  for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
+	    myTabImage[i] = img.myTabImage[i];
+	  }
+	}else{
+	  myTabImage=img.myTabImage;
+	} 
+
+	
+      };				       
+
+     
+      GrayScaleImage(){
+
+      };
+      
+      /** 
+       *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
+       *  @param image: the source image.
+       *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
+       *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
+       *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
+       *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
+       **/
+      template <typename ImageType>
+      GrayScaleImage( const ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
+		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+	myDrawDomain=false;
+	myDirection=normalDir;
+	myImageWidth = (image.domain().upperBound())[0]+1;
+	myImageHeight = (image.domain().upperBound())[1]+1;
+	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
+	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
+	unsigned int pos=0;
+	updateImageDataAndParam(image);
+      };
+      
+      /**
+       * Update the image direction from a specific normal direction
+       * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
+       * from the botton left point.
+       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
+       *  @param xBottomLeft: the x coordinate of bottom left image point.
+       *  @param yBottomLeft: the x coordinate of bottom left image point.
+       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       **/
+      
+      void updateImageOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
+
+     
+      /** 
+       *  Update the  image parameters from std image (image buffer, vertex coordinates) 
+       *  The new image should be with same dimension than the original.
+       *  @param image: the source image.
+       *  @param xTranslation: the image translation in the  x direction (default 0).
+       *  @param yTranslation: the image translation in the  y direction (default 0).
+       *  @param zTranslation: the image translation in the  z direction (default 0).
+       **/
+      template <typename ImageType>
+      void updateImageDataAndParam(const ImageType & image, 
+				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
+	assert ( (image.domain().upperBound())[0]+1== myImageWidth && (image.domain().upperBound())[1]+1== myImageHeight);
+
+	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
+	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
+	x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
+	x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
+	
+	unsigned int pos=0;
+	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	    it!=itend;
+	    ++it){
+	  myTabImage[pos]= image(*it);
+	  pos++;
+	}  
+      };
+
+      /**
+       * return the class name to implment the CDrawableWithDisplay3D concept.
+       **/
+      std::string className() const;
+      
     };
 
     // ----------------------- Standard services ------------------------------
@@ -232,8 +422,6 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
-  
  
 
     /**
@@ -264,7 +452,11 @@ namespace DGtal
     
     virtual DGtal::Color getLineColor();
 
-   
+
+
+    virtual unsigned int getCurrentDomainNumber();
+
+    virtual unsigned int getCurrentGLImageNumber();
   
     /**
      * Add a new 3D Clipping plane represented by ax+by+cz+d = 0 
@@ -437,8 +629,7 @@ namespace DGtal
      * @param positionShift translate the KSsurfel from the asso 
      * @param isSigned to specify if we want to display an signed or unsigned Cell.
      * @param aSign if @ref isSigned is true it will be used to apply a different displays 
-     *                             according this boolean  parameter 
-     *                              (if @a aSign=true oriented in the direct axis orientation).
+     *  according this boolean  parameter  (if @a aSign=true oriented in the direct axis orientation).
      * @param basicMode if true, a basic mode to display KSSurfel are used (i.e just a simple surfel face).  
      * 
      */
@@ -518,7 +709,66 @@ namespace DGtal
     
     void exportToMesh(Mesh<Display3D::pointD3D> & aMesh ) const;
     
+
     
+    /**
+     * Add a GrayScaleImage in the list of image to be displayed.
+     * @param image: a GrayScaleImage including image data buffer and position, orientation.
+     *
+     **/
+    void addGrayScaleImage(const GrayScaleImage &image);
+    
+
+    /**
+     * Update the  image parameters from std image (image buffer, vertex coordinates) 
+     * The new image should be with same dimension than the original.
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param image: the new image containing the new buffer (with same dimensions than the other image).
+     * @param xTranslation: the image translation in the  x direction (default 0).
+     * @param yTranslation: the image translation in the  y direction (default 0).
+     * @param zTranslation: the image translation in the  z direction (default 0).
+     **/
+    template <typename ImageType>
+    void updateGrayScaleImage(unsigned int imageIndex,   ImageType & image, 
+			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
+    
+
+
+
+    /**
+     * Update the  image parameters from std image (image buffer, vertex coordinates) 
+     * The new image should be with same dimension than the original.
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param image: the new image containing the new buffer (with same dimensions than the other image).
+     * @param xTranslation: the image translation in the  x direction (default 0).
+     * @param yTranslation: the image translation in the  y direction (default 0).
+     * @param zTranslation: the image translation in the  z direction (default 0).
+     **/
+
+    void updateOrientationGrayScaleImage(unsigned int imageIndex, 
+					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+    
+
+    
+    /**
+     *
+     */
+
+    template<typename TSpace>
+    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, std::string mode,  
+			     const DGtal::Color &aColor=DGtal::Color::Red );
+    
+    
+    
+    void updateAn2DDomainOrientation(unsigned int imageIndex, 
+				     double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
+    
+    
+    void translateAn2DDomain(unsigned int domainIndex, double xTranslation, double yTranslation, double zTranslation);
+    
+    
+    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain, double delta );
+    std::vector<DGtal::Display3D::lineD3D>  compute2DDomainLineRepresentation( Image2DDomainD3D &anImageDomain);
     
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -677,7 +927,7 @@ namespace DGtal
     std::vector< triangleD3D > myTriangleList;
     
 
-   // Represents all the polygon drawn in the Display3D
+    // Represents all the polygon drawn in the Display3D
     std::vector<polygonD3D> myPolygonList;
     
     
@@ -685,6 +935,13 @@ namespace DGtal
     std::vector<bool> myListVoxelDepthTest;
 
     float myMeshDefaultLineWidth;
+    
+    // Used to store all displayed images
+    std::vector<GrayScaleImage> myGSImageList;
+
+
+    // Used to store all the domain
+    std::vector<Image2DDomainD3D> myImageDomainList;
     
     
     // ------------------------- Hidden services ------------------------------

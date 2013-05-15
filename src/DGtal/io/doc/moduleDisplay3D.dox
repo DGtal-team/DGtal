@@ -193,12 +193,14 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
   - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
   - class Mesh, modes:  "" (default) /  "Faces *".
+  - class ImageContainer, modes:  "" (default). **
 
 Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
 (with CustomColors3D objects) can be changed only with the empty mode
 ("") and the "IllustrationCustomColor" mode.
 
 "*": partially for (Board3DTo2D), see issue <a href="https://github.com/DGtal-team/DGtal/issues/582"> 582</a>. 
+"**":  only for Viewer3D.
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
@@ -356,14 +358,36 @@ we can add for instance two differents clipping planes:
  \image html  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." 
 \image latex  visuClipping2.png "(c) Visualisation after adding a second clipping plane (1,0,0,-4.9) ." width=5cm 
 
-*/
+
 It also possible to remove the visualisation of the transparent clipping plane by adding boolean option:
 
 @code
  viewer << ClippingPlane(0,1,0.3,-10, false);
 @endcode
 
+\section DGtalGLV_Images Adding 2D slice image visualisation
 
+With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2Dimages.cpp) :
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImages
+
+And the display them using the classic stream operator:
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImages
+
+Finally you can adjust the image setting with the Display3DModifier UpdateImagePosition and UpdateImageData object:
+
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
+
+You will obtain such visualisation:
+ \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation." width=5cm 
+ \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualisation." 
+
+  \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode". 
+
+See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualisation/3dImageViewer.cpp viewer. 
+
+*/
 
 
 /**
@@ -444,6 +468,12 @@ It also possible to remove the visualisation of the transparent clipping plane b
 /**
    \image html  view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
 \example io/viewers/viewer3D-4bis-illustrationMode.cpp
+
+*
+*/
+/**
+   \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation."
+   \example io/viewers/viewer3D-8-2Dimages.cpp
 
 *
 */

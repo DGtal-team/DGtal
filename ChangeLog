@@ -26,7 +26,7 @@
 
 *IO Package*
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
-
+    - A new display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
 
 
 === DGtal 0.6 ===
