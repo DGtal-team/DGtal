@@ -1,5 +1,12 @@
 === DGtal 0.7 ===
 
+ *Kernel Package*
+    - Two initialisation methods (initRemoveOneDim and initAddOneDim)
+      for the Projector Functor from the BasicPointFunctors class in
+      order to simplify the slice images (with example and test in 2D
+      slice image extraction from 3D volume file).
+
+
 *General*
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
