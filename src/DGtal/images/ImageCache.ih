@@ -15,18 +15,13 @@
  **/
 
 /**
- * @file ConstImageAdapter.ih
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
- * @date 2012/02/07
- *
+ * @file ImageCache.ih
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/10/12
+ * @date 2013/01/24
  *
- * Implementation of inline methods defined in ConstImageAdapter.h
+ * Implementation of inline methods defined in ImageCache.h
  *
  * This file is part of the DGtal library.
  */
@@ -34,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -51,24 +47,67 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 void
-DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ConstImageAdapter] " << (*myImagePtr);
+    out << "[ImageCache] ";
 }
 
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+inline
+bool
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::read(const Point & aPoint, Value &aValue) const
+{
+    ImageContainer *myImagePtr = myReadPolicy->getPage(aPoint);
+    if (myImagePtr)
+    {
+      aValue = myImagePtr->operator()(aPoint);
+      return true;
+    }
+    
+    return false;
+}
 
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+inline
+bool
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::write(const Point & aPoint, const Value &aValue)
+{
+    ImageContainer *myImagePtr = myReadPolicy->getPage(aPoint);
+    if (myImagePtr)
+    {
+      myWritePolicy->writeInPage(myImagePtr, aPoint, aValue);
+      return true;
+    }
+    
+    return false;
+}
+
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
+inline
+void
+DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
+{
+    ImageContainer *myImagePtr = myReadPolicy->getPageToDetach();
+    if (myImagePtr)
+    {
+      myWritePolicy->flushPage(myImagePtr);
+      myImageFactoryPtr->detachImage(myImagePtr);
+    }
+    
+    myReadPolicy->updateCache(aDomain);
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> & object )
+                    const ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> & object )
 {
     object.selfDisplay( out );
     return out;

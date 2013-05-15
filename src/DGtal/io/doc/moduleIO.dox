@@ -70,7 +70,7 @@ concepts. First of all:
 
  - Image @b readers are  classes templated by an image container type.
 
- -  Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
+ - Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
 
 Hence, for image writers,  some  functors may return a DGtal::Color or a scalar value depending on the writer. 
 
@@ -130,6 +130,7 @@ If the user want to use a more generic writer you can also use the exporT functi
 |            | Vol               | Volumetric file format                        | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | Longvol           | Volumetric file format (long)                 | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |         nD | Raw8              | raw binary file format on 8bits               | RawReader     |                                                                |
+|         2D | HDF5              | HDF5 file with 2D image dataset(s)            | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
 
 
 The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automatically import any image (2d, 3d, nd) from its filename:
