@@ -15,18 +15,13 @@
  **/
 
 /**
- * @file ConstImageAdapter.ih
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
- * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
- *
- * @date 2012/02/07
- *
+ * @file ImageFactoryFromImage.ih
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
- * @date 2012/10/12
+ * @date 2013/01/23
  *
- * Implementation of inline methods defined in ConstImageAdapter.h
+ * Implementation of inline methods defined in ImageFactoryFromImage.h
  *
  * This file is part of the DGtal library.
  */
@@ -51,12 +46,12 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer>
 inline
 void
-DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>::selfDisplay ( std::ostream & out ) const
+DGtal::ImageFactoryFromImage<TImageContainer>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ConstImageAdapter] " << (*myImagePtr);
+    out << "[ImageFactoryFromImage] " << (*myImagePtr);
 }
 
 
@@ -64,11 +59,11 @@ DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFun
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorV>
+template <typename TImageContainer>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-                    const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV> & object )
+                    const ImageFactoryFromImage<TImageContainer> & object )
 {
     object.selfDisplay( out );
     return out;
