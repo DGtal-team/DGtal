@@ -50,9 +50,6 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-    unsigned int nbok = 0;
-    unsigned int nb = 0;
-
     trace.beginBlock("ORIGINAL image");
     
     Board2D aBoard;
