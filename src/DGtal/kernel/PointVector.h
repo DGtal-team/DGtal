@@ -163,7 +163,7 @@ namespace DGtal
     typedef DGtal::Dimension Dimension;
 
     ///Copy of the static dimension of the Point/Vector.
-    static const Dimension dimension = dim;
+    static const Dimension dimension;
 
 
     ///Copy of the container type

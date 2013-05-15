@@ -169,7 +169,7 @@ namespace DGtal
 
 
     //! Maximum number of fields in a .longvol file header
-    static const int MAX_HEADERNUMLINES = 64;
+    static const int MAX_HEADERNUMLINES;
     
     
     //! Internal method which returns the index of a field or -1 if not found.

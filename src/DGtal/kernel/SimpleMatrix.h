@@ -79,8 +79,8 @@ namespace DGtal
 
   public:
     typedef TComponent Component;
-    static const DGtal::Dimension M = TM;
-    static const DGtal::Dimension N = TN;
+    static const DGtal::Dimension M;
+    static const DGtal::Dimension N;
     
     typedef PointVector<N,Component> RowVector;
     typedef PointVector<M,Component> ColumnVector;
