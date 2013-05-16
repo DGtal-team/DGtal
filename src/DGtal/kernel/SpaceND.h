@@ -129,7 +129,7 @@ Point4Int a= {2, 3 , -5 , 6};
     typedef DGtal::Dimension Dimension;
     
     ///static constants to store the dimension.
-    static const Dimension dimension;
+    static const Dimension dimension=dim;
 
     ///Define the type of a sub co-Space
     template <Dimension codimension>
@@ -188,13 +188,14 @@ Point4Int a= {2, 3 , -5 , 6};
 
   }; // end of class SpaceND
 
+  // ///static constants to store the dimension.
+  // template < Dimension dim,
+  // 	     typename TInteger >
+  // const Dimension SpaceND<dim, TInteger>::dimension = dim;
+
 
 } // namespace DGtal
 
-  ///static constants to store the dimension.
-template < DGtal::Dimension dim,
-	     typename TInteger >
-const DGtal::Dimension DGtal::SpaceND<dim, TInteger>::dimension = dim;
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
