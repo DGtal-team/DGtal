@@ -154,14 +154,20 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
   Integer alpha;
 
   bool ok = true;
+  bool found = false;
   
   while(ok)
     {
-      
-      if(v[0]*normal[0]+v[1]*normal[1] <0)
+      if(v[0]*normal[0]+v[1]*normal[1] ==0)
+	{
+	  ok = false;
+	  found = true;
+	}
+      else
+	if(v[0]*normal[0]+v[1]*normal[1] < 0)
 	{
 	  //	  std::cout << "dot product neg " <<  v << std::endl;
-	  //std::cout << "A " << A << std::endl;
+	  std::cout << "A " << A << " B " << B  << std::endl;
 	  alpha = min(intersection(A,v,l), intersectionVertical(A,v,n));
 	  std::cout << "alpha = " << alpha << std::endl;
 	  if(alpha >= 1)
@@ -171,6 +177,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	      A += vv;
 	      u = B - A;
 	      update(u,A,l,&v);
+	      std::cout << "A " << A << " B " << B  << std::endl;
 	    }
 	  else
 	    ok = false;
@@ -178,6 +185,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
       else
 	if(v[0]*normal[0]+v[1]*normal[1] > 0)
 	  {
+	    std::cout << "A " << A <<  " B " << B << std::endl;
 	    alpha = min(intersection(B,v,l),intersectionVertical(B,v,n));
 	    if(alpha >= 1)
 	      {
@@ -190,20 +198,27 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	    else
 	      ok = false;
 	  }
-	else
-	  ok = false;
+      //else
+      //  ok = false;
       
     }
   
-  *sup = A;
-  //if(B != Point(0,0))
-  *inf = B;
-  //else
-  //*inf = Point(1,0);
-  assert(A[0] != B[0] || A[1] != B[1]);
-  //std::cout << "end convex hull approx" << A << " " << B << std::endl;
-  //      }
-  
+  if(found)
+    {
+      *sup = l;
+      *inf = l;
+    }
+  else
+    {
+      *sup = A;
+      //if(B != Point(0,0))
+      *inf = B;
+      //else
+      //*inf = Point(1,0);
+      assert(A[0] != B[0] || A[1] != B[1]);
+      //std::cout << "end convex hull approx" << A << " " << B << std::endl;
+      //      }
+    }
 }
 
 
@@ -951,6 +966,8 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
       mu += a*A[0] - A[1]*b;
       Point inf, sup;
       Integer fp,fq,gp,gq;
+
+      std::cout << "mu = " << mu << std::endl;
 
       //if(b>n)
       //{
