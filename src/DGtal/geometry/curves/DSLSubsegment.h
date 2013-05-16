@@ -65,7 +65,7 @@ namespace DGtal
 ///////////////////////////////////////////////////////////////////////////////
   
 
-  template <typename TInteger>
+  template <typename TInteger, typename TNumber>
     class DSLSubsegment
     {
       // ----------------------- Standard services ------------------------------
@@ -92,11 +92,14 @@ namespace DGtal
       bool isValid() const;
       
       
+      typedef TNumber Number;
       typedef TInteger Integer;
       typedef long double FloatType;
       typedef DGtal::PointVector<2,Integer> Ray;
       typedef DGtal::PointVector<2,Integer> Point;
-      typedef DGtal::PointVector<2,Integer> Vector;
+      
+      //typedef DGtal::PointVector<2,Integer> Vector;
+      typedef DGtal::PointVector<2,Number> Vector;
       
       // Minimal characteristics of the subsegment AB of the DSL(a,b,mu)
       Integer aa;
@@ -109,114 +112,135 @@ namespace DGtal
      * Forbidden by default (protected to avoid g++ warnings).
      */
       DSLSubsegment();
-      
+
+      static const double myPrecision = 1e-10;
       
       // Constructor
-      // Given the parameters of a DSL, and two points A and B of this DSL,
+      // Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
       // compute the parameters of the DSS [AB].
-      DSLSubsegment(Integer a, Integer b, Integer mu, Point A, Point B);
+      //DSLSubsegment(Integer a, Integer b, Integer mu, Point A, Point B);
+      DSLSubsegment(Number a, Number b, Number mu, Point A, Point B);
 
-
-  
+      // Constructor
+      // Given a straight line of equation y = alpha x + beta, and two
+      // points A and B of the OBQ digitization of this line, compute
+      // the parameters of the DSS [AB]  
+      DSLSubsegment(Number alpha, Number beta, Point A, Point B);
+      
     protected:
-  
-  class RayC
-  {
-  public :
-    Integer x;
-    Integer y;
-    
-    /**
-     * Default constructor.
-     * not valid
-     */
-    RayC();
-    
-    /**
-     * Constructor with initialisation
-     * @param it an iterator on 2D points
-     * @see init
-     */
-    RayC(const Integer x0, const Integer y0);
-    
-    RayC(const Integer p, const Integer q, const Integer r, const Integer slope);
-    
-    ~RayC();
+      
+      class RayC
+      {
+      public :
+	Integer x;
+	Integer y;
+	
+	/**
+	 * Default constructor.
+	 * not valid
+	 */
+	RayC();
+	
+	/**
+	 * Constructor with initialisation
+	 * @param it an iterator on 2D points
+	 * @see init
+	 */
+	RayC(const Integer x0, const Integer y0);
+	
+	RayC(const Integer p, const Integer q, const Integer r, const Integer slope);
+	
+	~RayC();
+	
+      };
+      
+      typedef enum Position
+      {
+	ABOVE,
+	BELOW,
+	ONTO
+      } Position;
+      
+      
+      Integer min (Integer a, Integer b);
+      
+      
+      // Compute the intersection between the line of direction v passing through P and the vertical line x = n.
+      // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
+      Integer intersectionVertical(Point P, Vector v, Integer n);
+      
+      
+      // Compute the intersection between the line of direction v passing through P and the line y = (aL[1]/aL[0])*x
+      // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
+      Integer intersection(Point P, Vector v, Vector aL);
+      
 
-  };
-  
-  typedef enum Position
-  {
-    ABOVE,
-    BELOW,
-    ONTO
-  } Position;
-
-  
-  Integer min (Integer a, Integer b);
-  
-  
-  // Compute the intersection between the line of direction v passing through P and the vertical line x = n.
-  // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
-  Integer intersectionVertical(Point P, Vector v, Integer n);
-  
-  
-  // Compute the intersection between the line of direction v passing through P and the line y = (aL[1]/aL[0])*x
-  // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
-  Integer intersection(Point P, Vector v, Vector aL);
-  
-
-  void update(Vector u, Point A, Vector l, Vector *v);
-
-  
-  void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
-
-  
-  
-  Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
+      void update(Vector u, Point A, Vector l, Vector *v);
+      
+      
+      void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
+      
+      
+      
+      Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
+      
 
 
+      // Compute the ray of highest slope in O(1) knowing the ray of smallest
+      // slope and the order of the Farey fan
+      RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
+      
+      // Compute the ceil of the slope of the line through (f=p/q,r/q) and point (a/b,mu/b)- O(1)
+      //Integer slope(Integer p, Integer q, Integer r, Integer a, Integer b, Integer mu);
+      Number slope(Integer p, Integer q, Integer r, Number a, Number b, Number mu);
+      Number slope(Integer p, Integer q, Integer r, Number alpha, Number beta);
 
-  // Compute the ray of highest slope in O(1) knowing the ray of smallest
-  // slope and the order of the Farey fan
-  RayC rayOfHighestSlope(Integer p, Integer q, Integer r, Integer smallestSlope, Integer n);
-    
-  // Compute the ceil of the slope of the line through (f=p/q,r/q) and point (a/b,mu/b)- O(1)
-  Integer slope(Integer p, Integer q, Integer r, Integer a, Integer b, Integer mu);
-  
+      
+      // Compute the position of point with respect to a ray
+      // Return BELOW, ABOVE or ONTO
+      //Position positionWrtRay(RayC r, Integer a, Integer b, Integer mu);
+      Position positionWrtRay(RayC r, Number a, Number b, Number mu);
+      
+      Position positionWrtRay(RayC r, Number alpha, Number beta);
+      
+      // Computes the ray of smallest slope emanating from the point (f=p/q,
+      // r/q) using the knowledge of the next fraction g in the Farey Series.
+      // Complexity O(1) 
+      RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r); 
+      
+      //Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Integer a, Integer b, Integer mu, Integer n, bool *flagRayFound);
+      
+      
+      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number a, Number b, Number mu, Integer n, bool *flagRayFound);
+      
+      Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Number alpha, Number beta, Integer n, bool *flagRayFound);
+      
+      
+      
+      // Fraction f=p/q, r, slope x0 of the ray of smallest slope passing
+      // through (p/q, r/q), a point P(alpha,beta) to localize -> closest ray
+      // below P passing through (p/q,r/q)
+      //RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Integer a, Integer b, Integer mu,  Integer n);
 
-  // Compute the position of point with respect to a ray
-  // Return BELOW, ABOVE or ONTO
-  Position positionWrtRay(RayC r, Integer a, Integer b, Integer mu);
+      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n);
+      RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number alpha, Number beta, Integer n);
+      
+      
+      // Compute the ray emenating from (f=p/q,h/q) just above r
+      // Complexity O(1)
+      RayC raySup(Integer fp, Integer fq, RayC r);
+      
   
-  
-  // Computes the ray of smallest slope emanating from the point (f=p/q,
-  // r/q) using the knowledge of the next fraction g in the Farey Series.
-  // Complexity O(1) 
-  RayC smartRayOfSmallestSlope(Integer fp, Integer fq, Integer gp, Integer gq, Integer r); 
-  
-  Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq, Integer a, Integer b, Integer mu, Integer n, bool *flagRayFound);
-
-  // Fraction f=p/q, r, slope x0 of the ray of smallest slope passing
-  // through (p/q, r/q), a point P(alpha,beta) to localize -> closest ray
-  // below P passing through (p/q,r/q)
-  RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Integer a, Integer b, Integer mu,  Integer n);
-    
-  // Compute the ray emenating from (f=p/q,h/q) just above r
-  // Complexity O(1)
-  RayC raySup(Integer fp, Integer fq, RayC r);
-  
-  
-  // The two fractions f and g together with the ray r define a segment
-  // AB. AB is part of the lower boundary of exactly one cell of the
-  // FareyFan. This cell represents a DSS. findSolution computes the
-  // vertex of the cell that represents the minimal parameters of the DSS. 
-  // Complexity of nextTermInFareySeriesEuclid
-  void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
-
-  // Corresponds to the algorithm of paper "Walking in the Farey Fan to compute the characteristics of  discrete straight line subsegment" (Isabelle Sivignon, DGCI 2013, Springer LNCS 7749)
-  void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
-  
+      // The two fractions f and g together with the ray r define a segment
+      // AB. AB is part of the lower boundary of exactly one cell of the
+      // FareyFan. This cell represents a DSS. findSolution computes the
+      // vertex of the cell that represents the minimal parameters of the DSS. 
+      // Complexity of nextTermInFareySeriesEuclid
+      void findSolutionWithoutFractions(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
+      
+      // Corresponds to the algorithm of paper "Walking in the Farey Fan to compute the characteristics of  discrete straight line subsegment" (Isabelle Sivignon, DGCI 2013, Springer LNCS 7749)
+      void shortFindSolution(Integer fp, Integer fq, Integer gp, Integer gq, RayC r, Integer n, Integer *resAlphaP, Integer *resAlphaQ, Integer *resBetaP, bool found);  // resBetaQ = resAlphaQ  
+      
 
     };
   
