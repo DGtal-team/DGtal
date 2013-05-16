@@ -103,14 +103,8 @@ DGtal::HyperRectDomain<TSpace>::operator=
   return *this;
 }
 //-----------------------------------------------------------------------------
-/*
-template<typename TSpace>
-inline
-std::size_t
-DGtal::HyperRectDomain<TSpace>::extent() const
-{
-  return extent(myLowerBound, myUpperBound);
-  }*/
+
+
 //-----------------------------------------------------------------------------
 template<typename TSpace>
 inline

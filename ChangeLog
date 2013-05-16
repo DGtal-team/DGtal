@@ -22,6 +22,7 @@
 
 *IO Package*
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
+	- New GenericReader and Generic Writer for both 2D, 3D and ND images.
 
 *Image Package*
     - New concepts : CImageFactory to define the concept describing an image factory and
