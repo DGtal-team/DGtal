@@ -68,6 +68,9 @@ bool testGenericWriter()
   trace.info() << "Testing writing raw ... ";  
   bool ok3 = anImportedImage1 >>"testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
+  trace.info() << "Testing writing raw (bis) ... ";  
+  bool ok3bis = DGtal::GenericWriter<Image3D>::exportFile( "testGenericWriter.raw", anImportedImage1);
+  trace.info() <<"[done]"  << std::endl;
 
   std::string filenameImage2 = testPath + "samples/contourS.pgm";    
 
@@ -83,7 +86,7 @@ bool testGenericWriter()
 
 
 
-  nbok += ok1 && ok2 && ok3 && ok4 & ok5  ? 1 : 0; 
+  nbok += ok1 && ok2 && ok3 && ok3bis && ok4 & ok5  ? 1 : 0; 
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
