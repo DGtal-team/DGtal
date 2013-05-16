@@ -189,10 +189,15 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
     trace.error() << "PNMReader : can't read " << aFilename << std::endl;
     throw dgtalio;
   }
-  if ( str != "P3d" &&  str != "P3D"){
+  if ( str != "P3d" &&  str != "P3D"&&  str != "P2-3D" &&  str != "P5-3D" ){
     trace.error() << "PNMReader : No P3d format in " << aFilename << std::endl;
     throw dgtalio;
   }
+  bool isASCIImode = (str=="p2-3D");
+  if(!isASCIImode)
+    infile >> std::noskipws;
+  else
+    infile >> std::skipws;
   
   do
     {
@@ -236,12 +241,27 @@ DGtal::PNMReader<TImageContainer>::importPGM3D(const std::string & aFilename ) t
       for(unsigned int x=0; x <w; x++){
 	typename TImageContainer::Point pt;
 	pt[0]=x; pt[1]=y; pt[2]=z;
-	char c; 
-	infile >> c;
-	if ( infile.good() ){ 
-	  ++nb_read;
-	  image.setValue( pt, c);
-	}
+
+  if(!isASCIImode)
+	    {
+	      unsigned char c; 
+	      infile >> c;
+	      if ( infile.good() )
+		{ 
+		  ++nb_read;
+		  image.setValue( pt, c);
+		}
+	    }
+	  else
+	    {
+	      int c; 
+	      infile >> c;
+	      if ( infile.good() )
+		{
+		  ++nb_read;
+		  image.setValue( pt, c);
+		}
+	    }
       }
     }
   }

@@ -61,7 +61,7 @@ bool testSimple()
     trace.info() << "ORIGINAL image: " << image << endl;
     
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
-    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    typedef MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
     
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
@@ -141,7 +141,7 @@ bool test3d()
     trace.info() << "ORIGINAL image: " << image << endl;
     
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
-    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    typedef MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
     
     typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;

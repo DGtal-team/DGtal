@@ -176,8 +176,8 @@ int main( int argc, char** argv )
       viewer << CustomColors3D( colorMap(it->second), colorMap(it->second) ) ;
       viewer << p;
     }
-
-  Vector extent = d.extent(); 
+  Point p = Point::diagonal(1);
+  Vector extent =  (d.upperBound() - d.lowerBound()) + p;
   double a = -extent[0]/2, b = extent[1]/2;
   double c = 0, mu = (a+b);  
   trace.info() << "clipping plane (" 
