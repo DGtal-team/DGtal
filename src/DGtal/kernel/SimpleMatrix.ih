@@ -38,11 +38,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename T, DGtal::Dimension TM, DGtal::Dimension TN>
-const DGtal::Dimension DGtal::SimpleMatrix<T, TM, TN>::M = TM;
-
-template <typename T, DGtal::Dimension TM, DGtal::Dimension TN>
-const DGtal::Dimension DGtal::SimpleMatrix<T, TM, TN>::N = TN;
 
 
 /**
