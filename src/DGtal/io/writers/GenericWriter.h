@@ -68,15 +68,15 @@ namespace DGtal
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned char> Image3D;
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned char> Image2D;
    @endcode
-   - After contructing and filling an image (anImage2D or anImage3D), just save it with:
+   * - After contructing and filling an image (anImage2D or anImage3D), just save it with:
    @code
    anImage3D >> "aFilename.pgm3d";
    anImage3D >> "aFilename.vol";
    anImage2D >> "aFilename.pgm";
    @endcode
-   @note the stream operator hide a default functor (c++ cast to a
-   given type) and if the user want to control the cast he can used the
-   exportFile function (see below).
+   * @note the stream operator hide a default functor (c++ cast to a
+   *  given type) and if the user want to control the cast he can used the
+   *  exportFile function (see below).
    * @tparam TContainer the container (mainly an ImageContainer like ImageContainerBySTLVector or ImageContainerBySTLMap).
    * @tparam Tdim the dimension of the container (by default given by the container).
    * @tparam TValue the value type of data contained in the image (by default given by the container) 
@@ -205,15 +205,15 @@ namespace DGtal
   }; 
 
 
-  // /**
-  //  *  'operator>>' for exporting an ImageContainer.
-  //  *  This operator automatically selects the best method according to
-  //  *  the filename extension (pgm, pgm3D, raw, vol).
-  //  *  
-  //  * @param aContainer the container to be exported.
-  //  * @param aFilename the filename of the file to be exported. 
-  //  * @return true, if the export was successful. 
-  //  */
+  /**
+   *  'operator>>' for exporting an ImageContainer.
+   *  This operator automatically selects the best method according to
+   *  the filename extension (pgm, pgm3D, raw, vol).
+   *  
+   * @param aContainer the container to be exported.
+   * @param aFilename the filename of the file to be exported. 
+   * @return true, if the export was successful. 
+   */
   template <typename TImageContainer >
   bool
   operator >> ( const TImageContainer & aContainer,  const std::string & aFilename  ) throw (DGtal::IOException);
