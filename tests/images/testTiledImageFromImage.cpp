@@ -22,7 +22,7 @@
  *
  * @date 2013/01/23
  *
- * @brief A test file for tiledImageFromImage.
+ * @brief A test file for TiledImageFromImage.
  *
  * This file is part of the DGtal library.
  */
