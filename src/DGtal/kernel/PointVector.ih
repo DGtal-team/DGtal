@@ -68,9 +68,6 @@ std::bitset<dim> DGtal::setDimensionsNotIn( const Container &dimensions )
 }
 //------------------------------------------------------------------------------
 
-template<DGtal::Dimension dim, typename TComponent, typename TContainer>
-DGtal::Dimension 
-const DGtal::PointVector<dim, TComponent, TContainer>::dimension = dim;
 
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
