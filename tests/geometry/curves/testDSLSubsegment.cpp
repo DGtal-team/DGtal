@@ -50,7 +50,7 @@ using namespace DGtal;
 // Functions for testing class DSLSubsegment.
 ///////////////////////////////////////////////////////////////////////////////
 
-//#define CHECK_RES
+#define CHECK_RES
 
 template <typename Integer>
 bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
@@ -59,6 +59,11 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
   typedef DGtal::DSLSubsegment<Integer,double> DSLSubsegD;
   
+
+  typedef ArithDSSIterator<Integer,8> DSSIterator;
+  typedef ArithmeticalDSS<DSSIterator,Integer,8> ArithDSS;
+  
+
   typedef typename DSLSubseg::Point Point;
   
   DGtal::IntegerComputer<Integer> ic;
@@ -141,8 +146,33 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
 		  
 		  // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
 		 
+#ifdef CHECK_RES
+		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
+		  DSSIterator  it(a,b,-mu,A);
+                  ArithDSS myDSS(it);
+                  
+		  //  timeBeginDSS = clock();
+                  while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
+                    {}
+		  //timeEndDSS = clock();
 		  
- 
+                  //std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
+		  
+		  		  
+                  if(D.aa != myDSS.getA() || D.bb != myDSS.getB() || D.Nu != - myDSS.getMu())
+		    {
+		      std::cout << "ERROR " << std::endl;
+		      std::cout << a << " " << b << " " << mu << " " << x1 << " " << x2 << std::endl;    
+		      std::cout << "aa=" << D.aa << " bb=" << D.bb << " Nu=" << D.Nu << std::endl;
+		      std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
+		      assert(D.aa == myDSS.getA() && D.bb == myDSS.getB() && D.Nu == - myDSS.getMu());
+		    }
+		  
+		  //timeTotalDSS += ((double)timeEndDSS-(double)timeBeginDSS)/((double)CLOCKS_PER_SEC)*1000;
+#endif CHECK_RES
+		  
+		  
+
 		  
 		}
 	      
@@ -150,6 +180,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
 	}
     }
   
+
   std::cout << " " << (long double) timeTotalSubseg/(nb*5*10);
   std::cout << " " << (long double) timeTotalSubsegD/(nb*5*10);
   
