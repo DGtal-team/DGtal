@@ -134,7 +134,7 @@ namespace DGtal
    * @see testPointVector.cpp
    *
    */
-  template < DGtal::Dimension im, 
+  template < DGtal::Dimension dim, 
 	     typename TEuclideanRing,
 	     typename TContainer=boost::array<TEuclideanRing,dim> >
   class PointVector
