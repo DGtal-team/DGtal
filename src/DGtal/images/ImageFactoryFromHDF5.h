@@ -96,37 +96,7 @@ namespace DGtal
     ImageFactoryFromHDF5(Alias<ImageContainer> anImage, const std::string & aFilename, const std::string & aDataset):
       myImagePtr(anImage), myFilename(aFilename), myDataset(aDataset)
     {
-        H5T_class_t t_class;                  // data type class
-        H5T_order_t order;                    // data order
-        size_t      size;                     // size of the data element stored in file
-        hsize_t     dims_out[2];              // dataset dimensions
-        int         status_n, rank;
-          
-        // Open the file and the dataset.
-        file = H5Fopen(aFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
-        dataset = H5Dopen2(file, aDataset.c_str(), H5P_DEFAULT);
-
-        // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
-        datatype = H5Dget_type(dataset); // datatype handle
-        t_class = H5Tget_class(datatype);
-        if (t_class == H5T_INTEGER)
-          trace.info() << "Data set has INTEGER type" << std::endl;
-        
-        order = H5Tget_order(datatype);
-        if (order == H5T_ORDER_LE)
-          trace.info() << "Little endian order" << std::endl;
-
-        size  = H5Tget_size(datatype);
-        trace.info() << "Data size is " << (int)size << std::endl;
-
-        dataspace = H5Dget_space(dataset); // dataspace handle
-        rank = H5Sget_simple_extent_ndims(dataspace);
-        status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
-        trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
-        
-        // --
-        
-        typename ImageContainer::Point firstPoint;
+        /*typename ImageContainer::Point firstPoint;
         typename ImageContainer::Point lastPoint;
 
         firstPoint = ImageContainer::Point::zero;
@@ -134,7 +104,7 @@ namespace DGtal
         lastPoint[1] = dims_out[0]-1;
 
         typename ImageContainer::Domain domain(firstPoint,lastPoint);
-        myImagePtr->resize(domain.size()); // TODO problème car size OK mais toujours [[PointVector] {0, 0}]x[[PointVector] {0, 0}]
+        myImagePtr->resize(domain.size()); // TODO problème car size OK mais toujours [[PointVector] {0, 0}]x[[PointVector] {0, 0}]*/
     }
 
     /**
@@ -142,11 +112,6 @@ namespace DGtal
      */
     ~ImageFactoryFromHDF5()
     {
-        // Close/release resources.
-        H5Tclose(datatype);
-        H5Dclose(dataset);
-        H5Sclose(dataspace);
-        H5Fclose(file);
     }
 
     // ----------------------- Interface --------------------------------------
@@ -184,7 +149,40 @@ namespace DGtal
      */
     OutputImage * requestImage(const Domain &aDomain)
     {
-      // TODO OPEN - xxx - CLOSE
+      // HDF5 handles
+      hid_t file, dataset;
+      hid_t datatype, dataspace;
+    
+      H5T_class_t t_class;                  // data type class
+      H5T_order_t order;                    // data order
+      size_t      size;                     // size of the data element stored in file
+      hsize_t     dims_out[2];              // dataset dimensions
+      int         status_n, rank;
+        
+      // Open the file and the dataset.
+      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+      dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
+
+      // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
+      datatype = H5Dget_type(dataset); // datatype handle
+      t_class = H5Tget_class(datatype);
+      /*if (t_class == H5T_INTEGER)
+        trace.info() << "Data set has INTEGER type" << std::endl;*/
+      
+      order = H5Tget_order(datatype);
+      /*if (order == H5T_ORDER_LE)
+        trace.info() << "Little endian order" << std::endl;*/
+
+      size  = H5Tget_size(datatype);
+      //trace.info() << "Data size is " << (int)size << std::endl;
+
+      dataspace = H5Dget_space(dataset); // dataspace handle
+      rank = H5Sget_simple_extent_ndims(dataspace);
+      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+      
+      // --
+      
       hsize_t offset[2];        // hyperslab offset in the file
       hsize_t count[2];         // size of the hyperslab in the file
       
@@ -203,8 +201,8 @@ namespace DGtal
       int data_out[_NX_SUB][_NY_SUB];   // output buffer        // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
-      offset[0] = aDomain.lowerBound()[1];
-      offset[1] = aDomain.lowerBound()[0];
+      offset[0] = aDomain.lowerBound()[1];//-myImagePtr->domain().lowerBound()[1];
+      offset[1] = aDomain.lowerBound()[0];//-myImagePtr->domain().lowerBound()[0];
       count[0] = _NX_SUB;
       count[1] = _NY_SUB;
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -243,6 +241,14 @@ namespace DGtal
       
       // Reset the selection for the file dataspace.
       //status = H5Sselect_none(dataspace); // TODO -> utile ?
+      
+      // --
+
+      // Close/release resources.
+      H5Tclose(datatype);
+      H5Dclose(dataset);
+      H5Sclose(dataspace);
+      H5Fclose(file);
         
       return outputImage;
     }
@@ -254,7 +260,40 @@ namespace DGtal
      */
     void flushImage(OutputImage* outputImage)
     {
-      // TODO OPEN - xxx - CLOSE
+      // HDF5 handles
+      hid_t file, dataset;
+      hid_t datatype, dataspace;
+    
+      H5T_class_t t_class;                  // data type class
+      H5T_order_t order;                    // data order
+      size_t      size;                     // size of the data element stored in file
+      hsize_t     dims_out[2];              // dataset dimensions
+      int         status_n, rank;
+        
+      // Open the file and the dataset.
+      file = H5Fopen(myFilename.c_str(), /*H5F_ACC_RDONLY*/H5F_ACC_RDWR, H5P_DEFAULT);
+      dataset = H5Dopen2(file, myDataset.c_str(), H5P_DEFAULT);
+
+      // Get datatype and dataspace handles and then query dataset class, order, size, rank and dimensions.
+      datatype = H5Dget_type(dataset); // datatype handle
+      t_class = H5Tget_class(datatype);
+      /*if (t_class == H5T_INTEGER)
+        trace.info() << "Data set has INTEGER type" << std::endl;*/
+      
+      order = H5Tget_order(datatype);
+      /*if (order == H5T_ORDER_LE)
+        trace.info() << "Little endian order" << std::endl;*/
+
+      size  = H5Tget_size(datatype);
+      //trace.info() << "Data size is " << (int)size << std::endl;
+
+      dataspace = H5Dget_space(dataset); // dataspace handle
+      rank = H5Sget_simple_extent_ndims(dataspace);
+      status_n = H5Sget_simple_extent_dims(dataspace, dims_out, NULL);
+      //trace.info() << "Rank: " << rank << ", dimensions: " << (unsigned long)(dims_out[0]) << " x " << (unsigned long)(dims_out[1]) << std::endl;
+      
+      // --
+      
       hsize_t offset[2];        // hyperslab offset in the file
       hsize_t count[2];         // size of the hyperslab in the file
       
@@ -273,8 +312,8 @@ namespace DGtal
       int data_in[_NX_SUB][_NY_SUB];    // input buffer         // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
-      offset[0] = outputImage->domain().lowerBound()[1];
-      offset[1] = outputImage->domain().lowerBound()[0];
+      offset[0] = outputImage->domain().lowerBound()[1];//-myImagePtr->domain().lowerBound()[1];
+      offset[1] = outputImage->domain().lowerBound()[0];//-myImagePtr->domain().lowerBound()[0];
       count[0] = _NX_SUB;
       count[1] = _NY_SUB;
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -317,6 +356,14 @@ namespace DGtal
       
       // Reset the selection for the file dataspace.
       //status = H5Sselect_none(dataspace); // TODO -> utile ?
+      
+      // --
+
+      // Close/release resources.
+      H5Tclose(datatype);
+      H5Dclose(dataset);
+      H5Sclose(dataspace);
+      H5Fclose(file);
     }
     
     /**
@@ -343,12 +390,8 @@ namespace DGtal
     ImageContainer * myImagePtr;
     
     /// HDF5 filename and datasetname
-    const std::string & myFilename;
-    const std::string & myDataset;
-    
-    /// HDF5 handles
-    hid_t file, dataset;
-    hid_t datatype, dataspace;
+    const std::string myFilename;
+    const std::string myDataset;
 
   private:
 

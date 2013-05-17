@@ -190,14 +190,14 @@ bool test2D()
   
   typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
   
-  Z2i::Domain empty_domain(Z2i::Point::zero, Z2i::Point::zero);
-  Image image(empty_domain);
+  //Z2i::Domain empty_domain(Z2i::Point::zero, Z2i::Point::zero);
+  //Image image(empty_domain);
+  Image image(Z2i::Domain(Z2i::Point(0,0), Z2i::Point(5,4)));
   trace.info() << "image: " << image << endl;
   
   // 1) ImageFactoryFromHDF5
   typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
   MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME, DATASETNAME_2D);
-  trace.info() << "image after factImage creation: " << image << endl;
   
   typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -340,13 +340,12 @@ bool testTiledImage2D()
     
     typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
 
-    Z2i::Domain empty_domain(Z2i::Point::zero, Z2i::Point::zero);
-    Image image(empty_domain);
+    //Image image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,16))); // TODO
+    Image image(Z2i::Domain(Z2i::Point(0,0), Z2i::Point(15,15)));
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
     MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_TILED, DATASETNAME_2D_TILED);
-    trace.info() << "image after factImage creation: " << image << endl;
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -361,51 +360,51 @@ bool testTiledImage2D()
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
     
-    trace.endBlock(); return nbok == nb; // TODO suite
+    //trace.endBlock(); return nbok == nb; // TODO suite
     
-    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(4,2)) == 20) ? 1 : 0; 
+    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4-1,2-1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(4-1,2-1)) == 20) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(10,6)) == 90) ? 1 : 0; 
+    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10-1,6-1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(10-1,6-1)) == 90) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11,7), aValue);
+    aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11-1,7-1), aValue);
     trace.info() << "Write value for Point 11,7: " << aValue << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(11,7)) == 1) ? 1 : 0; 
+    nbok += (tiledImageFromImage(Z2i::Point(11-1,7-1)) == 1) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2,3)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(2,3)) == 34) ? 1 : 0; 
+    trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2-1,3-1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(2-1,3-1)) == 34) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "Read value for Point 16,1: " << tiledImageFromImage(Z2i::Point(16,1)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 16) ? 1 : 0; 
+    /*trace.info() << "Read value for Point 16,1: " << tiledImageFromImage(Z2i::Point(16-1,1-1)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(16-1,1-1)) == 16) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
+    aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16-1,1-1), aValue);
     trace.info() << "Write value for Point 16,1: " << aValue << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 128) ? 1 : 0; 
+    nbok += (tiledImageFromImage(Z2i::Point(16-1,1-1)) == 128) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
-    nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
+    trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16-1,1-1)) << endl;
+    nbok += (image(Z2i::Point(16-1,1-1)) == 128) ? 1 : 0;
     nb++;
     
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
     
     trace.endBlock();
     
