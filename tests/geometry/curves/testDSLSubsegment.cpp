@@ -50,10 +50,10 @@ using namespace DGtal;
 // Functions for testing class DSLSubsegment.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CHECK_RES
+//#define CHECK_RES
 
-template <typename Integer>
-bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
+template <typename Integer,typename SmallInteger>
+bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 {
   typedef double Number;
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
@@ -73,7 +73,8 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
   // DSLSubseg DD(2,3,15,A,B);
 
   // std::cout << "aa=" << DD.aa << " bb=" << DD.bb << " Nu=" << DD.Nu << std::endl;
-
+  
+  Integer b;
   
   // std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   
@@ -83,23 +84,29 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
   clock_t timeBeginSubsegD, timeEndSubsegD;
   
   int nb = 0;
+  int nbone = 0;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       // generate b as a power of 10
       // the parameters of the DSL can be expressed as (a,b,mu) with a,b,mu integers or (a/b,mu/b) as decimal numbers 
-      Integer p(random() % m);
+      // SmallInteger p(random() % m);
       
-      Integer b = pow(10.0,p);
+      // Integer b = pow(10.0,p);
       
-      Integer a( random() % b);
+      Integer a( random() % bb);
       
-      std::cout << "p= " << p << " a=" <<  a << " b=" << b << std::endl; 
-
-      Number alpha = (Number) a/(Number) b;
+      //std::cout << " a=" <<  a << " b=" << b << std::endl; 
       
-      Integer g = ic.gcd(a,b);
+      //Number alpha = (Number) a/(Number) bb;
+      
+      Integer g = ic.gcd(a,bb);
       a = a/g;
-      b = b/g;
+      b = bb/g;
+
+      if(b==1)
+	nbone++;
+
+      Number alpha = (Number) a/ (Number) b;
       
       if ( ic.gcd( a, b ) == 1 )
         {
@@ -135,17 +142,19 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
 		  timeEndSubseg = clock();
 		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		  
-		  std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
+		  //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
 		  // // DSLSubsegment algorithm using floating points
 		  
-		  // timeBeginSubsegD = clock();
-		  // DSLSubsegD DD(alpha,beta,A,B);
-		  // timeEndSubsegD = clock();
-		  // timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
-		  // std::cout << "res float = " << "(" << DD.aa << "," << DD.bb << "," << DD.Nu << ")" << std::endl;
+		  timeBeginSubsegD = clock();
+		  DSLSubsegD DD(alpha,beta,A,B,(Number)1/(10*b));
+		  timeEndSubsegD = clock();
+		  timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
+		  //std::cout << "res float = " << "(" << DD.aa << "," << DD.bb << "," << DD.Nu << ")" << std::endl;
 		  
-		  // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
-		 
+		  // Compare both results
+		  assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		  
+
 #ifdef CHECK_RES
 		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
 		  DSSIterator  it(a,b,-mu,A);
@@ -180,7 +189,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
 	}
     }
   
-
+  std::cout << nb << " " << nbone ;
   std::cout << " " << (long double) timeTotalSubseg/(nb*5*10);
   std::cout << " " << (long double) timeTotalSubsegD/(nb*5*10);
   
@@ -198,20 +207,28 @@ bool testDSLSubsegment( unsigned int nbtries, Integer m, Integer modx)
 
 int main( int argc, char** argv )
 {
-  typedef DGtal::int32_t Integer;
-  Integer m = 2; // b = 10^p with p <= m
+  typedef DGtal::int64_t Integer;
+  typedef DGtal::int32_t SmallInteger;
+  SmallInteger m = 10; // b = 10^p with p <= m
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :500;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :100;
+  
+  SmallInteger p = 1;
+  Integer b;
   
   
-  // for(Integer modx = 10; modx <=  modb;modx+=modx/4)
-  //   //Integer  modx = 1000;
-  //   {
-  Integer modx = 10;
-  std::cout << m << " " << modx << " ";
-  testDSLSubsegment<Integer>( nbtries, m, modx);
-  std::cout << std::endl;
-  // }
+  for(p=6;p<=m;p++)
+    {
+      b = (Integer) pow(10.0,p);
+      std::cout << b << std::endl;
+      for(Integer modx = 125000; modx <= b;modx+=modx/4)
+	{
+	  std::setprecision(15);
+	  std::cout << b << " " << modx << " ";
+	  testDSLSubsegment<Integer,SmallInteger>( nbtries, b, modx);
+	  std::cout << std::endl;
+	}
+    }
   return 1;
 }
 //                                                                           //
