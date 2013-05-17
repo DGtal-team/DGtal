@@ -104,14 +104,23 @@ public:
     // ----------------------- Standard services ------------------------------
 
 public:
-
-    ImageCache(Alias<ImageFactory> anImageFactory, int sizeCache=10);
+  
+    /**
+     * Constructor.
+     * @param anImageFactory alias on the image factory (see ImageFactoryFromImage).
+     * @param aReadPolicy alias on a read policy.
+     * @param aWritePolicy alias on a write policy.
+     */
+    ImageCache(Alias<ImageFactory> anImageFactory, Alias<ReadPolicy> aReadPolicy, Alias<WritePolicy> aWritePolicy):
+      myImageFactoryPtr(anImageFactory), myReadPolicy(aReadPolicy), myWritePolicy(aWritePolicy)
+    {
+    }
 
     /**
      * Destructor.
      * Does nothing
      */
-    ~ImageCache();
+    ~ImageCache() {}
 
     // ----------------------- Interface --------------------------------------
 public:
