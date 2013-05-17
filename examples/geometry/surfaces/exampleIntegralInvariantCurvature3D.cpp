@@ -67,7 +67,7 @@ int main( int argc, char** argv )
     {
         trace.error() << "Usage: " << argv[0]
                                << " <fileName.vol> <threshold> <re_convolution_kernel>" << std::endl;
-        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7.39247665" << std::endl;
+        trace.error() << "Example : "<< argv[0] << " Al.150.vol 0 7" << std::endl;
         return 0;
     }
 

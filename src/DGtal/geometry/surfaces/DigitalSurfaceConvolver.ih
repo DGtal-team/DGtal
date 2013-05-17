@@ -1953,6 +1953,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
 
 
         dcurrentVa = (double) NumberTraits< Quantity >::castToDouble( currentVa );
+        ASSERT (dcurrentVa != 0.0 ); // Maybe the input shape is too small, check your grid step ?
         currentOne_Va = 1.0 / dcurrentVa;
         dcurrentVa2 = (double) NumberTraits< Quantity >::castToDouble( currentVa2 );
         currentOne_Va2 = 1.0 / dcurrentVa2;
@@ -1980,7 +1981,6 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, KernelConstItera
         lastCell2 = currentCell2;
 
         ++total;
-
     }
 
 #ifdef DEBUG_VERBOSE
