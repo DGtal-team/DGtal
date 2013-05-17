@@ -45,7 +45,7 @@
 #include "DGtal/kernel/CPointPredicate.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 
-
+#include <iomanip> 
 
 namespace DGtal
 {
@@ -99,21 +99,22 @@ namespace DGtal
       typedef DGtal::PointVector<2,Integer> Point;
       
       //typedef DGtal::PointVector<2,Integer> Vector;
-      typedef DGtal::PointVector<2,Number> Vector;
+      typedef DGtal::PointVector<2,Integer> Vector;
+      typedef DGtal::PointVector<2,Number> VectorF;
       
       // Minimal characteristics of the subsegment AB of the DSL(a,b,mu)
       Integer aa;
       Integer bb;
       Integer Nu;
-
       
-    /**
-     * Constructor.
-     * Forbidden by default (protected to avoid g++ warnings).
-     */
+      
+      /**
+       * Constructor.
+       * Forbidden by default (protected to avoid g++ warnings).
+       */
       DSLSubsegment();
-
-      static const double myPrecision = 1e-10;
+      
+      double myPrecision;
       
       // Constructor
       // Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
@@ -125,7 +126,7 @@ namespace DGtal
       // Given a straight line of equation y = alpha x + beta, and two
       // points A and B of the OBQ digitization of this line, compute
       // the parameters of the DSS [AB]  
-      DSLSubsegment(Number alpha, Number beta, Point A, Point B);
+      DSLSubsegment(Number alpha, Number beta, Point A, Point B, Number precision = 1e-10);
       
     protected:
       
@@ -173,12 +174,15 @@ namespace DGtal
       // Compute the intersection between the line of direction v passing through P and the line y = (aL[1]/aL[0])*x
       // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
       Integer intersection(Point P, Vector v, Vector aL);
+      Integer intersection(Point P, Vector v, Number s);
       
-
+      
       void update(Vector u, Point A, Vector l, Vector *v);
+      void update(Vector u, Point A, Number s, Vector *v);
       
       
       void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
+      void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
       
       
       
