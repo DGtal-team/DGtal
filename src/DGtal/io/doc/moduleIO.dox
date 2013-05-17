@@ -12,7 +12,7 @@ This part of the manual describes how to import and export images and main DGtal
 
 [TOC]
 
-\section introio Introductrion
+\section introio Introduction
 
 In DGtal, file readers and writers are located in the "io/readers/"
 and "io/writers/" folders respectively. Most of them are dedicated to
@@ -70,7 +70,7 @@ concepts. First of all:
 
  - Image @b readers are  classes templated by an image container type.
 
- -  Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
+ - Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
 
 Hence, for image writers,  some  functors may return a DGtal::Color or a scalar value depending on the writer. 
 
@@ -89,8 +89,51 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |         nD | Raw8    | raw binary file format on 8bits | the functor should return an unsigned char  | RawWriter     |                                                          |
 
-For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not scpecify any functor. 
+For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not specify any functor. 
 
+
+
+The class GenericWriter (DGtal/io/reader/GenericWriter.h) allows to
+automatically export any image (2d, 3d, nd) from its filename. The
+class is templated with a image container type, a dimension value (given by
+default by the image container dimension), a value type, (also given
+by default by the image container) and a functor type (by default set to
+the DefaultFunctor type).
+
+- To use it you need first to include the following header:
+  @code 
+   #include "DGTal/io/writers/GenericWriter.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
+   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
+   @endcode
+
+- After constructing and filling an image (anImage2D or anImage3D), by default you can  save it with:
+@code
+   GenericWriter<Image3D>::exporFile("aFilename.pgm3d", anImage3D);
+   GenericWriter<Image2D>::exporFile("aFilename.pgm", anImage2D);
+@endcode
+
+As the other export functions, a functor can be used as optional argument (as given in the previous example):
+@code
+   GenericWriter<Image2D, redFunctor>::exporFile("aFilename.pgm", anImage2D, redFunctor);
+@endcode
+
+
+If you don't need to specify special functor and if don't need to change default
+image type, you can use a less generic writer with the stream operator and the string filename:
+
+  @code
+   anImage3D >> "aFilename.pgm3d";
+   anImage3D >> "aFilename.vol";
+   anImage2D >> "aFilename.pgm";
+   @endcode
+
+@note Naturally, the stream operator hide a default functor (c++ cast to a
+given type).
+
+
+  
 
 \subsection imagereaders Image Readers
 
@@ -102,6 +145,22 @@ For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template c
 |            | Vol               | Volumetric file format                        | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | Longvol           | Volumetric file format (long)                 | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |         nD | Raw8              | raw binary file format on 8bits               | RawReader     |                                                                |
+|         2D | HDF5              | HDF5 file with 2D image dataset(s)            | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+
+
+The class GenericReader (DGtal/io/reader/GenericReader.h) allows to automatically import any image (2d, 3d, nd) from its filename:
+  @code 
+   #include "DGTal/io/readers/GenericReader.h"
+   #include "DGtal/helpers/StdDefs.h"
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
+   typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned int> Image2D;
+   @endcode
+   - Use the same import function for both 2D or 3D images:
+   @code
+   Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
+   Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
+   @endcode 
+
 
 
 
@@ -117,17 +176,17 @@ single point.
 
 
 \subsection mesh3D 3D Surface Mesh
-The static class \c MeshReader allows to import MeshFromPoints from OFF or OFS file format.
-Actually this class can import surface mesh (MeshFromPoints) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that MeshFromPoints can be directly displayed with Viewer3D.
+The static class \c MeshReader allows to import Mesh from OFF or OFS file format.
+Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with Viewer3D.
 
 The mesh importation can be done automatically from the extension file name by using the "<<" operator. For instance (see. \ref importMesh3D ):
 
 
 @snippet io/meshFromOFF.cpp ImportOFFfile
 
-You can also export a MeshFromPoints object by using the operator
+You can also export a Mesh object by using the operator
 (">>"). Notes that the class Display3D permits also to generate a
-MeshFromPoints which can be exported (see. \ref exportMesh3D).
+Mesh which can be exported (see. \ref exportMesh3D).
 
 
 
@@ -237,8 +296,8 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 \subsection exportMesh3D Export 3D mesh in OFF and OBJ format
 
 The following example display3DToOFF.cpp   shows in few lines how to export in OFF format a
-MeshFromPoints object. This object will be exported from a Display3D
-object (see. display3DToOFF). 
+DigitalSet object. This object will be exported with a Display3D
+object (see. display3DToOFF.cpp). 
 
 
 
@@ -252,7 +311,7 @@ Notes that the export can also be done in two steps:
 
 @code 
 // The parameter true is used to specify that we store the face colors.
-MeshFromPoints aMesh(true);
+Mesh aMesh(true);
 viewer >> aMesh;
 aMesh >> "exporMeshToOFF.off"
 @endcode

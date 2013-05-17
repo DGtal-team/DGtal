@@ -44,7 +44,7 @@
 #include <string>
 #include <boost/static_assert.hpp>
 #include "DGtal/base/Common.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -54,7 +54,7 @@ namespace DGtal
   // template class MeshWriter
   /**
    * Description of template struct 'MeshWriter' <p>
-   * \brief Aim: Export a Mesh (MeshFromPoints object) in different format as OFF and OBJ).
+   * \brief Aim: Export a Mesh (Mesh object) in different format as OFF and OBJ).
    * 
    * The exportation can be done automatically according the input file
    * extension with the ">>" operator  
@@ -62,13 +62,13 @@ namespace DGtal
    * Example of typical use: 
    * First you have to add the following include files:
    * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseIncludes
-   * Then you create a simple MeshFromPoints object:
+   * Then you create a simple Mesh object:
    * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshCreation
-   * Finally you can export directly the MeshFromPoints object: 
+   * Finally you can export directly the Mesh object: 
    * @snippet tests/io/readers/testMeshWriter.cpp MeshWriterUseMeshExport
    *
    *
-   * @see MeshFromPoints MeshWriter
+   * @see Mesh MeshWriter
    *
    *
    */
@@ -81,29 +81,29 @@ namespace DGtal
 
 
     /** 
-     * Export MeshFromPoints towards a OFF format.
+     * Export Mesh towards a OFF format.
      * 
      * @param out the output stream of the exported OFF object.
-     * @param aMesh the MeshFromPoints object to be exported.
+     * @param aMesh the Mesh object to be exported.
      * @param exportColor true to export colors (default false). 
      * @return true if no errors occur.
      */
     
-    static bool export2OFF(std::ostream &out, const  MeshFromPoints<TPoint>  &aMesh, 
+    static bool export2OFF(std::ostream &out, const  Mesh<TPoint>  &aMesh, 
       bool exportColor=false) throw(DGtal::IOException);
   
   
 
 
     /** 
-     * Export a MeshFromPoints towards a OBJ format.
+     * Export a Mesh towards a OBJ format.
      * 
      * @param out the output stream of the exported OBJ object.
-     * @param aMesh the MeshFromPoints object to be exported.
+     * @param aMesh the Mesh object to be exported.
      * @return true if no errors occur.
      */
     
-    static bool export2OBJ(std::ostream &out, const  MeshFromPoints<TPoint>  &aMesh) throw(DGtal::IOException);
+    static bool export2OBJ(std::ostream &out, const  Mesh<TPoint>  &aMesh) throw(DGtal::IOException);
        
     
   };
@@ -113,7 +113,7 @@ namespace DGtal
 
 
   /**
-   *  'operator>>' for exporting objects of class 'MeshFromPoints'.
+   *  'operator>>' for exporting objects of class 'Mesh'.
    *  This operator automatically selects the good method according to
    *  the filename extension (off, obj).
    *  
@@ -123,14 +123,14 @@ namespace DGtal
    */
   template <typename TPoint>
   bool
-  operator >> (  MeshFromPoints<TPoint> & aMesh,  const std::string & aFilename  );
+  operator >> (  Mesh<TPoint> & aMesh,  const std::string & aFilename  );
   
 
 
 
 
   /**
-   *  'operator>>' for exporting objects of class 'MeshFromPoints' in OFF format.
+   *  'operator>>' for exporting objects of class 'Mesh' in OFF format.
    *  
    * @param aMesh the mesh to be exported.
    * @param out the output of the OFF exportation. 
@@ -138,7 +138,7 @@ namespace DGtal
    */
   template <typename TPoint>
   bool
-  operator >> (  MeshFromPoints<TPoint> & aMesh, std::ostream &out );
+  operator >> (  Mesh<TPoint> & aMesh, std::ostream &out );
   
 
 

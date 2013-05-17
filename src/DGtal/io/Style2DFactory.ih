@@ -99,15 +99,7 @@ namespace DGtal
   };
   // ArithmeticalDSS
 
-  
-  // CircleFrom2Points
-  // CircleFrom2Points
-
-
-  // CircleFrom3Points
-  // CircleFrom3Points
-  
-  
+ 
   // DigitalSetBySTLSet
   /** 
    * Default style.

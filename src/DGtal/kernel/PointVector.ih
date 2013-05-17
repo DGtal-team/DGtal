@@ -556,7 +556,7 @@ void
 DGtal::PointVector<dim, TComponent, TContainer>::reset()
 {
   for ( DGtal::Dimension i = 0; i < myArray.size(); ++i )
-    myArray[ i ] = 0;
+    myArray[ i ] = NumberTraits< Component >::ZERO;
 }
 //------------------------------------------------------------------------------
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
