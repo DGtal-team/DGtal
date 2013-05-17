@@ -91,8 +91,9 @@ namespace DGtal
 
     /** 
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
-     * an instance of ShapeFunctor. The shape functor must be a model
-     * of CDigitalOrientedShape and CDigitalBoundedShape.
+     * an instance of ShapeFunctor. Add Points where orientation is inside.
+     * The shape functor must be a model of CDigitalOrientedShape and
+     * CDigitalBoundedShape.
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
@@ -106,10 +107,10 @@ namespace DGtal
 
     /** 
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
-     * an instance of ShapeFunctor.The shape functor must be a model
-     * of CEuclideanOrientedShape and CEuclideanBoundedShape. The
-     * underlying digitization process is a Gauss Digitizer with grid
-     * step h.
+     * an instance of ShapeFunctor. Add Points where orientation is inside.
+     * The shape functor must be a model of CEuclideanOrientedShape
+     * and CEuclideanBoundedShape. The underlying digitization process is
+     * a Gauss Digitizer with grid step h.
      * 
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.

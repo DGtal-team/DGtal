@@ -45,8 +45,11 @@ template <typename Domain, typename T>
 inline
 DGtal::ImageContainerBySTLVector<Domain, T>::
 ImageContainerBySTLVector(const Domain &aDomain ) :
-  myDomain(aDomain), myExtent(aDomain.extent())
+  myDomain(aDomain)
 {
+  Point p = Point::diagonal(1);
+  Vector e =  (aDomain.upperBound() - aDomain.lowerBound()) + p;
+  myExtent=e;
   this->resize( myDomain.size() );
 }
 

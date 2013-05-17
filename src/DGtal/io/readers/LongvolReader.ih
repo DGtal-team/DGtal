@@ -53,7 +53,7 @@ DGtal::LongvolReader<T>::importLongvol( const std::string & filename )   throw( 
 
   if ( fin == NULL )
   {
-    trace.error() << "LongvolReader : can't open " << filename << endl;
+    trace.error() << "LongvolReader : can't open " << filename << std::endl;
     throw dgtalexception;
   }
 
