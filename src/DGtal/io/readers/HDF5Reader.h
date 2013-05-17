@@ -73,14 +73,14 @@ namespace DGtal
      * template parameter ImageContainer.
      * 
      * @param aFilename the file name to import.
-     * @param aFilename the dataset name to import.
+     * @param aDataset the dataset name to import.
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
+    static ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
                                      bool topbotomOrder = true) throw(DGtal::IOException);
     
  }; // end of class  HDF5Reader
