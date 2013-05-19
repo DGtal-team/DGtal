@@ -86,20 +86,23 @@ int main( int argc, char** argv )
   MySliceImageAdapter aSliceImageY(imageVol, domain2DY, aSliceFunctorY, DGtal::DefaultFunctor() );
   //! [ExampleViewer3D2DImagesExtractImages]
 
-  //! [ExampleViewer3D2DImagesDisplayImages]
+ //! [ExampleViewer3D2DChangeMode]
   viewer << SetMode3D(aSliceImageZ.className(), "BoundingBox");
+  viewer << Viewer3D::updateDisplay;
+  //! [ExampleViewer3D2DChangeMode]
+
+  //! [ExampleViewer3D2DImagesDisplayImages]
   viewer <<  aSliceImageZ;
   viewer <<  aSliceImageY;
   //! [ExampleViewer3D2DImagesDisplayImages]
 
   //! [ExampleViewer3D2DModifImages]
-  viewer <<  DGtal::UpdateImagePosition(1, DGtal::Display3D::yDirection, 0.0,  50.0, 0.0);
+  viewer << DGtal::UpdateImagePosition(1, DGtal::Display3D::yDirection, 0.0,  50.0, 0.0);
   viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ, 0, 0, 10);
   viewer << Viewer3D::updateDisplay;
  //! [ExampleViewer3D2DModifImages]
 
-  
-  
+ 
 return application.exec();
 
   trace.endBlock();

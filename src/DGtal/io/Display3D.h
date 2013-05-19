@@ -249,8 +249,8 @@ namespace DGtal
 		       double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
 	myMode = mode;
 	myDirection=normalDir;
-	myDomainWidth = (aDomain.upperBound())[0]+1;
-	myDomainHeight = (aDomain.upperBound())[1]+1;
+	myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;
+	myDomainHeight = (aDomain.upperBound())[1]-(aDomain.lowerBound())[1]+1;
 	updateDomainOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);	
       }
       
@@ -346,8 +346,8 @@ namespace DGtal
 		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
 	myDrawDomain=false;
 	myDirection=normalDir;
-	myImageWidth = (image.domain().upperBound())[0]+1;
-	myImageHeight = (image.domain().upperBound())[1]+1;
+	myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
+	myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
 	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
@@ -378,7 +378,8 @@ namespace DGtal
       template <typename ImageType>
       void updateImageDataAndParam(const ImageType & image, 
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
-	assert ( (image.domain().upperBound())[0]+1== myImageWidth && (image.domain().upperBound())[1]+1== myImageHeight);
+	assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth && 
+		 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
 
 	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
 	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;

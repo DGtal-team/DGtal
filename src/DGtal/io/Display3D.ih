@@ -378,7 +378,7 @@ DGtal::Display3D::addPolygon(std::vector<Display3D::pointD3D> vectPointsPolygon,
     trace.error()<< "Warning polygin not added due to identical vertex... "<<std::endl;
     return;
   }
-
+  
   aPolygon.nx= n[0];
   aPolygon.ny= n[1];
   aPolygon.nz= n[2];
