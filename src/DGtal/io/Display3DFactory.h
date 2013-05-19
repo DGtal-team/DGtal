@@ -60,6 +60,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
 #include "DGtal/images/ConstImageAdapter.h"
+#include "DGtal/images/ImageAdapter.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -315,10 +316,16 @@ namespace DGtal
     // ImageContainerBySTLMap  (2D)
 
     // ConstImageAdapter  (2D)
-    template <typename TImageContainer, typename TNewDomain, typename TFunctorD, typename TNewValue, typename TFunctorValue>
-    static void draw( Display3D & display, const  ConstImageAdapter<TImageContainer, TNewDomain,  TFunctorD,
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+    static void draw( Display3D & display, const  ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain,  TFunctorD,
 		      TNewValue,  TFunctorValue>  &anImage);
     // ConstImageAdapter  (2D)
+
+    // ImageAdapter  (2D)
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
+    static void draw( Display3D & display, const  ImageAdapter<TImageContainer, DGtal::Z2i::Domain,  TFunctorD,
+		      TNewValue,  TFunctorValue, TFunctorValueVm1>  &anImage);
+    // ImageAdapter  (2D)
 
 
     // ImageContainerBySTLVector  (3D)
@@ -331,13 +338,30 @@ namespace DGtal
     template <typename TValue  >
     static void draw( Display3D & display, const   ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  &anImage);
     // ImageContainerBySTLMap  (3D)
+    
+    // ConstImageAdapter  (3D)
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+    static void draw( Display3D & display, const  ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain,  TFunctorD,
+		      TNewValue,  TFunctorValue>  &anImage);
+    // ConstImageAdapter  (3D)
+    
+    // ImageAdapter  (3D)
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
+    static void draw( Display3D & display, const  ImageAdapter<TImageContainer, DGtal::Z3i::Domain,  TFunctorD,
+		      TNewValue,  TFunctorValue,  TFunctorValueVm1>  &anImage);
+    // ImageAdapter  (3D)
 
 
+
+
+    template < typename TImageType2D > 
+    static void
+    drawImage2D( Display3D & display, const TImageType2D &anImage);
 
     
     template < typename TImageType3D > 
     static void
-    drawImage3D( Display3D & display, const TImageType3D anImage3D, std::string mode="");
+    drawImage3D( Display3D & display, const TImageType3D &anImage3D);
 
 
   

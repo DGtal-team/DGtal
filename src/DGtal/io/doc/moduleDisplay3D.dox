@@ -193,7 +193,9 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
   - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
   - class Mesh, modes:  "" (default) /  "Faces *".
-  - class ImageContainer, modes:  "" (default). **
+  - class ImageContainerBySTLVector, ImageContainerBySTLMap 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
+  - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
+
 
 Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
 (with CustomColors3D objects) can be changed only with the empty mode
