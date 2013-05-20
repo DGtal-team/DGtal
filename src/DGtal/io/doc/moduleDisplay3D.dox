@@ -188,7 +188,8 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
   - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
   - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
-  - class HyperRectDomain, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class HyperRectDomain 3D, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
+  - class HyperRectDomain 2D, modes: "" / "BoundingBox"  (default), "Grid", "InterGrid" **.
   - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
   - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
   - class ArithmeticalDSS3d  ,  modes: "" (default) /  "Points", "BoundingBox *".
@@ -197,7 +198,7 @@ As for \c Board2D the object can be displayed with different possible mode:
   - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
 
 
-Note that for KhalimskyCell and SignedKhalimskyCell the defaul colors
+Note that for KhalimskyCell and SignedKhalimskyCell the default colors
 (with CustomColors3D objects) can be changed only with the empty mode
 ("") and the "IllustrationCustomColor" mode.
 
@@ -385,9 +386,24 @@ You will obtain such visualisation:
  \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation." width=5cm 
  \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualisation." 
 
-  \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode". 
+You can also change the default mode by using:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
+and you will obtain the following visualisation:
+ \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation with InterGrid mode." width=5cm 
+ \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation." 
+
+
 
 See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the DGtalTools repository with DGtalTools/visualisation/3dImageViewer.cpp viewer. 
+
+
+\section DGtalGLV_Images3D Adding 3D  image visualisation
+
+In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
+\image html  viewer3D-9.png  "Example of 3D image visualisation with also digital sets." width=5cm 
+\image latex  viewer3D-9.png  "Example of 3D image visualisation with also digital sets."  
+
+See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp 
 
 */
 
@@ -477,6 +493,11 @@ See more details on this example io/viewers/viewer3D-8-2Dimages.cpp or from the 
    \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation."
    \example io/viewers/viewer3D-8-2Dimages.cpp
 
+*
+*/
+/**
+   \image html  viewer3D-9.png  "Illustration of the 3D image visualisation."
+   \example io/viewers/viewer3D-9-3Dimages.cpp
 *
 */
 

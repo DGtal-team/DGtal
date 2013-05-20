@@ -87,7 +87,7 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesExtractImages]
 
  //! [ExampleViewer3D2DChangeMode]
-  viewer << SetMode3D(aSliceImageZ.className(), "BoundingBox");
+  viewer << SetMode3D(aSliceImageZ.className(), "InterGrid");
   viewer << Viewer3D::updateDisplay;
   //! [ExampleViewer3D2DChangeMode]
 
