@@ -161,9 +161,9 @@ namespace DGtal
      * the input point to its projection (order matters)
      */
 #ifdef CPP11_ARRAY
-    std::array<Dimension, dimension> myDims; 
+    std::array<Dimension, Space::dimension> myDims; 
 #else
-    boost::array<Dimension, dimension> myDims; 
+    boost::array<Dimension, Space::dimension> myDims; 
 #endif
     /**
      * Default integer set to coordinates of the projected point
