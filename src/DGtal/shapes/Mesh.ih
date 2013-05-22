@@ -233,41 +233,6 @@ DGtal::Mesh<TPoint>::getFaceColor(unsigned int i) const{
 
 
 
-template<typename TPoint>
-inline
-typename  DGtal::Mesh<TPoint>::VertexStorage::const_iterator 
-DGtal::Mesh<TPoint>::VertexBegin() const{
-  return myVertexList.begin();
-}
-
-
-
-template<typename TPoint>
-inline
-typename  DGtal::Mesh<TPoint>::VertexStorage::const_iterator 
-DGtal::Mesh<TPoint>::VertexEnd() const{
-  return myVertexList.end();
-}
-
-
-
-
-template<typename TPoint>
-inline
-typename  DGtal::Mesh<TPoint>::FaceStorage::const_iterator 
-DGtal::Mesh<TPoint>::FaceBegin() const{
-  return myFaceList.begin();
-}
-
-
-
-template<typename TPoint>
-inline
-typename  DGtal::Mesh<TPoint>::FaceStorage::const_iterator 
-DGtal::Mesh<TPoint>::FaceEnd() const{
-  return myFaceList.end();
-}
-
 
 
 
