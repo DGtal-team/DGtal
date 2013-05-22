@@ -87,7 +87,7 @@ int main( int argc, char** argv )
 //! [TiledImageFromImage_creation]
     // here we create an image factory
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
-    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    typedef MyImageFactoryFromImage::OutputImage OutputImage;
     MyImageFactoryFromImage imageFactoryFromImage(image);
     
     // here we create read and write policies
