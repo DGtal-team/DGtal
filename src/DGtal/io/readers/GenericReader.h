@@ -42,6 +42,7 @@
 // Inclusions
 #include <iostream>
 #include <vector>
+#include "DGtal/images/CImage.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -86,6 +87,8 @@ namespace DGtal
   template <typename TContainer, int Tdim=TContainer::Point::dimension >
   struct GenericReader
   {
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    
     /**
      * Import a volume nd image file.  For the special format of raw
      * image, the default parameter of the image size must be given in the optional function vector parameter (dimSpace) .
@@ -105,7 +108,7 @@ namespace DGtal
   template <typename TContainer>
   struct GenericReader<TContainer, 3 >
   {
-
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Import a volume image file.  For the special format of raw
      * image, the default parameter x,y, z need to be updated
@@ -128,7 +131,7 @@ namespace DGtal
   template <typename TContainer>
   struct GenericReader<TContainer, 2>
   {
-
+    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
     /**
      * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated
