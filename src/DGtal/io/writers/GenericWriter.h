@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/base/CUnaryFunctor.h"
-#include "DGtal/images/CImage.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/images/Image.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerBySTLMap.h"
@@ -88,7 +88,7 @@ namespace DGtal
   template <typename TContainer, int Tdim=TContainer::Point::dimension, typename TValue = typename TContainer::Value, typename TFunctor = DefaultFunctor >
   struct GenericWriter
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     /**
      * Export an  image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -108,7 +108,7 @@ namespace DGtal
   struct GenericWriter<TContainer, 3 , unsigned char,  TFunctor>
   {
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, unsigned char> )) ;    
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     
     /**
      * Export a volume image.
@@ -131,7 +131,7 @@ namespace DGtal
   {
 
     BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, typename TContainer::Value, DGtal::uint64_t > )) ;    
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
    
 
     /**
@@ -154,7 +154,7 @@ namespace DGtal
   template <typename TContainer, typename TValue, typename TFunctor>
   struct GenericWriter<TContainer, 3 , TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     /**
      * Export a volume image.
      * @param filename the filename of the saved image (with a extension name). 
@@ -174,7 +174,7 @@ namespace DGtal
   template <typename TContainer, typename TValue,  typename TFunctor>
   struct GenericWriter<TContainer, 2, TValue, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     
     /**
      * Write a volume image file.  
@@ -193,7 +193,7 @@ namespace DGtal
   template <typename TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, unsigned char, TFunctor>
   {
-    BOOST_CONCEPT_ASSERT((  CImage<TContainer> )) ;    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TContainer> )) ;    
     /**
      * Write a volume image file.  
      *
