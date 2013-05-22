@@ -43,7 +43,7 @@
 #include <iostream>
 #include <DGtal/kernel/SpaceND.h>
 #include "DGtal/base/Common.h"
-#include "DGtal/shapes/fromPoints/MeshFromPoints.h"
+#include "DGtal/shapes/Mesh.h"
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -53,11 +53,11 @@ namespace DGtal
 
 
 /////////////////////////////////////////////////////////////////////////////
-// class OFFMesh
+// class MeshReader
 /**
  * Description of class 'MeshReader' <p> 
  * \brief Aim: Defined to import
- * OFF and OFS surface mesh. It allows to import a MeshFromPoints object and takes
+ * OFF and OFS surface mesh. It allows to import a Mesh object and takes
  * into accouts the optional color faces.
  * 
  * The importation can be done automatically according the input file
@@ -65,11 +65,18 @@ namespace DGtal
  * 
  * Example of typical use: 
  Add these include files:
- @snippet tests/io/readers/testMeshReader.cpp MeshReaderUseIncludes
-
- And automatic import the MeshFromPoints through the filename extension:
+ @code
+ #include "DGtal/shapes/Mesh.h"
+ #include "DGtal/io/readers/MeshReader.h"
+ @endcode
  
- @snippet tests/io/readers/testMeshReader.cpp MeshReaderUseImport
+
+ And automatic import the Mesh through the filename extension: 
+ @code 
+  std::string filenameOFF = testPath + "samples/box.off";  
+  Mesh<Point> a3DMesh;
+  bool importOK = a3DMesh << filenameOFF;
+@endcode
  
  Then you can also display the resulting with a Viewer3D:
  @code
@@ -79,7 +86,7 @@ namespace DGtal
  @endcode
  *
  *
- * @see MeshFromPoints MeshWriter
+ * @see Mesh MeshWriter
  */
 
 
@@ -102,7 +109,7 @@ public:
   */
   
   static  bool  importOFFFile(const std::string & filename, 
-			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
+			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false) throw(DGtal::IOException);
   
 
   
@@ -118,7 +125,7 @@ public:
   */
   
   static  bool  importOFSFile(const std::string & filename, 
-			      DGtal::MeshFromPoints<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0) throw(DGtal::IOException);
+			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0) throw(DGtal::IOException);
   
   
   
@@ -134,14 +141,14 @@ public:
 
 
   /**
-   *  'operator<<' for exporting objects of class 'MeshFromPoints'.
+   *  'operator<<' for exporting objects of class 'Mesh'.
    * @param mesh a mesh 
    * @param filename a filename 
    * @return true if the mesh has been exported correctly.
    */
   template <typename TPoint>
   bool
-  operator<< (  MeshFromPoints<TPoint> & mesh, const std::string &filename );
+  operator<< (  Mesh<TPoint> & mesh, const std::string &filename );
   
   
 

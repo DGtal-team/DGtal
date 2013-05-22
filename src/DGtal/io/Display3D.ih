@@ -766,7 +766,7 @@ DGtal::Display3D::setScale(float sx, float sy, float sz){
 
 inline
 void 
-DGtal::Display3D::exportToMesh(DGtal::MeshFromPoints<pointD3D> &aMesh) const { 			       
+DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const { 			       
 
   unsigned int vertexIndex=0;
   
@@ -916,7 +916,7 @@ DGtal::operator<< ( std::ostream & out,
 
 inline
 void
-DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::MeshFromPoints<Display3D::pointD3D> &aMesh)
+DGtal::operator>> ( const Display3D &aDisplay3D, DGtal::Mesh<Display3D::pointD3D> &aMesh)
 {
   aDisplay3D.exportToMesh(aMesh);
 }
@@ -928,7 +928,7 @@ void
 DGtal::operator>> ( const Display3D &aDisplay3D,  std::string aFilename)
 {
   // exporting with a mesh containing color (parameter constructor to true):
-  DGtal::MeshFromPoints<Display3D::pointD3D> mesh(true);
+  DGtal::Mesh<Display3D::pointD3D> mesh(true);
   aDisplay3D >> mesh;
   trace.info() << "generating faces done." << std::endl;
   mesh >> aFilename;
