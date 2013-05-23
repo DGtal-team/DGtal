@@ -141,7 +141,7 @@ namespace DGtal
     typedef Point Vertex;
 
     /// static constants
-    static const typename Domain::Dimension dimension = Domain::dimension;
+    static const typename Domain::Dimension dimension;
 
     /// domain should be rectangular
     BOOST_STATIC_ASSERT ( ( boost::is_same< Domain,

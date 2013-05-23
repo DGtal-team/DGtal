@@ -37,6 +37,8 @@
 #include <DGtal/base/BasicFunctors.h>
 #include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
+
+
 template<DGtal::Dimension dim, typename Container>
 inline
 std::bitset<dim> DGtal::setDimensionsIn( const Container &dimensions )
@@ -65,6 +67,8 @@ std::bitset<dim> DGtal::setDimensionsNotIn( const Container &dimensions )
   return t1;
 }
 //------------------------------------------------------------------------------
+
+
 template<DGtal::Dimension dim, typename TComponent, typename TContainer>
 inline
 DGtal::PointVector<dim, TComponent, TContainer>::PointVector()
