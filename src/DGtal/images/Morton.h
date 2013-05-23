@@ -80,7 +80,7 @@ namespace DGtal
     typedef THashKey HashKey;
     typedef TPoint Point;
     typedef typename Point::Coordinate Coordinate;
-    static const Dimension dimension = Point::dimension;    
+    static const Dimension dimension ;    
 
     BOOST_CONCEPT_ASSERT(( CUnsignedNumber<THashKey> ));
     BOOST_CONCEPT_ASSERT(( CIntegralNumber<THashKey> ));
