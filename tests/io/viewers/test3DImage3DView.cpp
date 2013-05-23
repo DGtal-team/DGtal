@@ -15,12 +15,12 @@
  **/
 
 /**
- * @file test3dViewer.cpp
+ * @file test3DImage3DView.cpp
  * @ingroup Tests
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
- * @date 2011/01/03
+ * @date 2013/04/29
  *
  * Functions for testing class Viewer3D.
  *
@@ -33,14 +33,22 @@
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/math/BasicMathFunctions.h"
+#include "ConfigTest.h"
+
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class Viewer3D.
@@ -68,70 +76,42 @@ bool testViewer3D()
 
 int main( int argc, char** argv )
 {
+  typedef DGtal::ImageContainerBySTLVector< DGtal::Z3i::Domain, unsigned char>  Image3D;
 
  QApplication application(argc,argv);
  Viewer3D viewer;
  viewer.setWindowTitle("simpleViewer");
  viewer.show();
  
-
-
-
-
- Point p1( 14, 14, 14 );
- Point p2( 27, 27, 27 );
- Domain domain( p1, p2 );
  
- viewer << CustomColors3D(Color(20, 20, 20, 50),Color(20, 0,250,30));
- viewer << SetMode3D(domain.className(), "Grid");
- viewer << domain;  
+ Point p1( 0, 0, 0 );
+ Point p2( 125, 188, 0 );
+ Point p3( 30, 30, 30 );
  
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 13, 23, 13 ), 7 );
-   viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 50));
+ std::string filename =  testPath + "samples/lobsterCroped.vol";
  
- viewer << shape_set ;
- DigitalSet shape_set2( domain ); 
- Shapes<Domain>::addNorm1Ball( shape_set2, Point( 24, 15, 12 ), 12 );
- viewer << shape_set2 ;
- 
- DigitalSet shape_set3( domain ); 
- Shapes<Domain>::addNorm2Ball( shape_set3, Point( 11, 15, 12 ), 12 );
- viewer << CustomColors3D(Color(250, 20,0, 190),Color(220, 20,20, 250));
- viewer << shape_set3 ;
+ Image3D image3d =  VolReader<Image3D>::importVol(filename); 
+ viewer << SetMode3D(image3d.className(), "BoundingBox");
+ viewer << image3d;
 
-
- 
- 
-  Point pp1( -1, -1, -2 );
-  Point pp2( 2, 2, 3 );
-
-
-  Domain domain2( pp1, pp2 );
-  Point pp3( 1, 1, 1 );
-  Point pp4( 2, -1, 5 );
-  Point pp5( -1, 2, 3 );
-  Point pp6( 0, 0, 0 );
-  Point pp0( 0, 2, 1 );
+ // Extract some slice images:
+ // Get the 2D domain of the slice:
+ DGtal::Projector<DGtal::Z2i::Space>  invFunctor; invFunctor.initRemoveOneDim(2);
+ DGtal::Z2i::Domain domain2D(invFunctor(image3d.domain().lowerBound()),
+			     invFunctor(image3d.domain().upperBound()));
   
-  //viewer<< m;
-  viewer <<  SetMode3D( pp1.className(), "Paving" );
-  viewer << pp1 << pp2 << pp3;
-  
-  //viewer <<  SetMode3D( pp1.className(), "Grid" );
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
-  viewer <<  SetMode3D( pp1.className(), "PavingWired" );
-  viewer << pp4 << pp5 ;
-  viewer <<  SetMode3D( pp1.className(), "Both" );
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
-  viewer << pp6;
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
-  viewer << pp0;
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::Projector< Z3i::Space>,
+				    Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+  DGtal::DefaultFunctor idV;
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ(5); aSliceFunctorZ.initAddOneDim(2);
+  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
-
-  viewer << SetMode3D(domain.className(), "Paving");
-  viewer << domain2 << Display3D::updateDisplay;
+  viewer << sliceImageZ;
+  viewer <<  DGtal::UpdateImagePosition(6, DGtal::Display3D::zDirection, 0.0, 0.0, -10.0);  
  
+ viewer << p1 << p2 << p3;
+ viewer << Display3D::updateDisplay;
+
 
  bool res = application.exec();
  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

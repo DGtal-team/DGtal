@@ -23,6 +23,7 @@
 *IO Package*
     - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
 	- New GenericReader and Generic Writer for both 2D, 3D and ND images.
+    - A new display of 2D and 3D image in Display3D class (implemented in Viewer3D only).
 
 *Image Package*
     - New concepts : CImageFactory to define the concept describing an image factory and
@@ -30,7 +31,6 @@
     - New classes : ImageFactoryFromImage to implement a factory to produce images from a "bigger/original" one
       according to a given domain, ImageCache to implement an images cache with 'read and write' policies,
       TiledImageFromImage to implement a tiled image from a "bigger/original" one.
-
 
 === DGtal 0.6 ===
  
