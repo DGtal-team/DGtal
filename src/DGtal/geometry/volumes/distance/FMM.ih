@@ -36,6 +36,10 @@
 
 #include "DGtal/topology/SCellsFunctors.h"
 
+template <typename TImage, typename TSet, typename TPointPredicate, typename TPointFunctor >
+const typename DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::Dimension DGtal::FMM<TImage, TSet, TPointPredicate, TPointFunctor>::dimension = Point::dimension;
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline methods.
 ///////////////////////////////////////////////////////////////////////////////
