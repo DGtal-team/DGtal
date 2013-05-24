@@ -40,6 +40,10 @@
 #include <cstdlib>
 //////////////////////////////////////////////////////////////////////////////
 
+template <typename Domain, typename T>
+const typename Domain::Dimension 
+DGtal::ImageContainerBySTLVector<Domain, T>::dimension = Domain::dimension;
+
 //------------------------------------------------------------------------------
 template <typename Domain, typename T>
 inline

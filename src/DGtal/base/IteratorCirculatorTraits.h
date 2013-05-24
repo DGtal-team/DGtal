@@ -82,8 +82,11 @@ namespace detail
     template <typename C>
     static no& test(...);
 
-    static const bool value = sizeof(test<IC>(0)) == sizeof(yes); 
+    static const bool value; 
   };
+  
+  template <typename IC> 
+  const bool HasNestedTypeType<IC>::value = sizeof(test<IC>(0)) == sizeof(yes); 
 
 /////////////////////////////////////////////////////////////////////////////
 /**
@@ -97,8 +100,11 @@ namespace detail
   template <typename IC, bool flagHasNestedTypeType = false> 
   struct IsCirculator 
   {
-    static const bool value = false; 
+    static const bool value; 
   };
+  template <typename IC, bool flagHasNestedTypeType> 
+  const bool IsCirculator<IC, flagHasNestedTypeType>::value = false; 
+
 
   template <typename IC> 
   struct IsCirculator<IC,true> 
@@ -111,9 +117,11 @@ namespace detail
 
     static no& test(IteratorType);
 
-    static const bool value = ( sizeof(test(typename IC::Type())) == sizeof(yes) ); 
+    static const bool value; 
   };
 
+  template <typename IC> 
+  const bool IsCirculator<IC, true>::value = ( sizeof(test(typename IC::Type())) == sizeof(yes) ); 
 } //namespace detail
 
 /////////////////////////////////////////////////////////////////////////////
@@ -129,8 +137,10 @@ namespace detail
 template <typename IC> 
 struct IsCirculator 
 {
-  static const bool value = detail::IsCirculator<IC, detail::HasNestedTypeType<IC>::value >::value; 
+  static const bool value; 
 };
+  template <typename IC> 
+  const bool IsCirculator<IC>::value = detail::IsCirculator<IC, detail::HasNestedTypeType<IC>::value >::value; 
 
 namespace detail
 {

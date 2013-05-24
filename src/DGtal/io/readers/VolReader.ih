@@ -36,6 +36,9 @@
 // Interface - public :
 
 
+template <typename TImageContainer>
+const int DGtal::VolReader<TImageContainer>::MAX_HEADERNUMLINES = 64;
+
 
 
 template <typename T>
