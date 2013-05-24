@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testAdjacency.cpp
+ * @file testBreadthFirstPropagation.cpp
  * @ingroup Tests
  * @author Jérémy Gaillard (\c jeremy.gaillard@insa-lyon.fr )
  *
@@ -58,8 +58,8 @@ void testBreadthFirstPropagation()
   
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
   
-  Point p1( -50, -50 );
-  Point p2( 50, 50 );
+  Point p1( -41, -36 );
+  Point p2( 18, 18 );
   Domain domain( p1, p2 );
   Point c1( -2, -1 );
   Point c2( -14, 5 );
@@ -78,8 +78,9 @@ void testBreadthFirstPropagation()
   
   
   GradientColorMap<int> cmap_grad( 0, 52);
-  cmap_grad.addColor( Color( 0, 0, 200 ) );
-  cmap_grad.addColor( Color( 0, 0, 50 ) );
+  cmap_grad.addColor( Color( 0, 0, 255 ) );
+  cmap_grad.addColor( Color( 0, 255, 0 ) );
+  cmap_grad.addColor( Color( 255, 0, 0 ) );
   
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
