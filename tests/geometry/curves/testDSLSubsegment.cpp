@@ -43,6 +43,8 @@
 #include "DGtal/geometry/curves/ArithDSSIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
 
+//#include <gmpxx.h>
+
 using namespace std;
 using namespace DGtal;
 
@@ -55,9 +57,10 @@ using namespace DGtal;
 template <typename Integer,typename SmallInteger>
 bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 {
-  typedef double Number;
+  //typedef mpf_class Number;
+  typedef long double Number;
   typedef DGtal::DSLSubsegment<Integer,Integer> DSLSubseg;
-  typedef DGtal::DSLSubsegment<Integer,double> DSLSubsegD;
+  typedef DGtal::DSLSubsegment<Integer,Number> DSLSubsegD;
   
 
   typedef ArithDSSIterator<Integer,8> DSSIterator;
@@ -84,7 +87,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
   clock_t timeBeginSubsegD, timeEndSubsegD;
   
   int nb = 0;
-  int nbone = 0;
+  int nberrors = 0;
   for ( unsigned int i = 0; i < nbtries; ++i )
     {
       // generate b as a power of 10
@@ -103,14 +106,13 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
       a = a/g;
       b = bb/g;
 
-      if(b==1)
-	nbone++;
-
-      Number alpha = (Number) a/ (Number) b;
       
+      Number alpha = (Number) a/b;
+      //Number alpha((double) a/b,500);
+
       if ( ic.gcd( a, b ) == 1 )
         {
-	  nb ++;
+	  
           for ( unsigned int j = 0; j < 5; ++j )
             {
               //Integer mu = random() % (2*(Integer) pow(10.0,m));
@@ -118,22 +120,23 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 	      Integer mu = random() % (2*b);
 	      
 	      Number beta = (Number) mu/(Number) b;
-	      
+	      //Number beta((double) mu/b,500);
 	      
               for (Integer x = 0; x < 10; ++x )
                 {
-                  Integer x1 = random() % modx;
+                  nb ++;
+		  Integer x1 = random() % modx;
                   Integer x2 = x1 + 1+ random()%modx;
 		  //Integer x2 = x1 + 1 + ( random() % modx );
                   
-                  std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << ")" << std::endl;
+                  //std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << ")" << std::endl;
 		  
                   Integer y1 = ic.floorDiv(a*x1+mu,b);
                   Integer y2 = ic.floorDiv(a*x2+mu,b);
                   Point A = Point(x1,y1);
                   Point B = Point(x2,y2);
 		  
-		  trace.info() << A << " " << B << std::endl;
+		  //trace.info() << A << " " << B << std::endl;
 		  
 		  // DSLSubsegment algorithm
 		  
@@ -146,15 +149,20 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 		  // // DSLSubsegment algorithm using floating points
 		  
 		  timeBeginSubsegD = clock();
-		  DSLSubsegD DD(alpha,beta,A,B,(Number)1/(10*b));
+		  //Number precision((double) 1/(5*b),500);
+		  Number precision = (double) 1/(2*b);
+		  DSLSubsegD DD(alpha,beta,A,B,precision);
 		  timeEndSubsegD = clock();
-		  timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
+		  //timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
 		  //std::cout << "res float = " << "(" << DD.aa << "," << DD.bb << "," << DD.Nu << ")" << std::endl;
 		  
 		  // Compare both results
 		  assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		  if(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu)
+		    timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
+		  else
+		    nberrors++;
 		  
-
 #ifdef CHECK_RES
 		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
 		  DSSIterator  it(a,b,-mu,A);
@@ -181,7 +189,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 #endif CHECK_RES
 		  
 		  
-
+		  
 		  
 		}
 	      
@@ -189,9 +197,9 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 	}
     }
   
-  std::cout << nb << " " << nbone ;
-  std::cout << " " << (long double) timeTotalSubseg/(nb*5*10);
-  std::cout << " " << (long double) timeTotalSubsegD/(nb*5*10);
+  std::cout << nb << " " << nberrors ;
+  std::cout << " " << (long double) timeTotalSubseg/(nb);
+  std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
   
   
   return true;
@@ -211,17 +219,17 @@ int main( int argc, char** argv )
   typedef DGtal::int32_t SmallInteger;
   SmallInteger m = 10; // b = 10^p with p <= m
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :100;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :1000;
   
   SmallInteger p = 1;
   Integer b;
   
   
-  for(p=6;p<=m;p++)
+  for(p=2;p<=m;p++)
     {
       b = (Integer) pow(10.0,p);
-      std::cout << b << std::endl;
-      for(Integer modx = 125000; modx <= b;modx+=modx/4)
+      //std::cout << b << std::endl;
+      for(Integer modx = 10; modx <= b;modx+=modx/8)
 	{
 	  std::setprecision(15);
 	  std::cout << b << " " << modx << " ";

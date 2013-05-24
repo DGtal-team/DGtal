@@ -97,7 +97,8 @@ namespace DGtal
       typedef long double FloatType;
       typedef DGtal::PointVector<2,Integer> Ray;
       typedef DGtal::PointVector<2,Integer> Point;
-      
+      typedef DGtal::PointVector<2,Number> PointF;
+
       //typedef DGtal::PointVector<2,Integer> Vector;
       typedef DGtal::PointVector<2,Integer> Vector;
       typedef DGtal::PointVector<2,Number> VectorF;
@@ -114,7 +115,7 @@ namespace DGtal
        */
       DSLSubsegment();
       
-      double myPrecision;
+      Number myPrecision;
       
       // Constructor
       // Given the parameters of a DSL 0 <= ax -by + mu < b, and two points A and B of this DSL,
