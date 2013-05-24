@@ -81,10 +81,12 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
   
   // std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
   
-  long double timeTotalSubseg=0,timeTotalSubsegD=0;
+  long double timeTotalSubseg=0,timeTotalSubsegD=0, timeTotalDSS = 0, timeTotalCH = 0;
   
   clock_t timeBeginSubseg, timeEndSubseg;
   clock_t timeBeginSubsegD, timeEndSubsegD;
+  clock_t timeBeginDSS, timeEndDSS;
+  clock_t timeBeginCH, timeEndCH;
   
   int nb = 0;
   int nberrors = 0;
@@ -126,7 +128,8 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
                 {
                   nb ++;
 		  Integer x1 = random() % modx;
-                  Integer x2 = x1 + 1+ random()%modx;
+                  //Integer x2 = x1 + 1+ random()%modx;
+		  Integer x2 = x1 + 1+ modx;
 		  //Integer x2 = x1 + 1 + ( random() % modx );
                   
                   //std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << ")" << std::endl;
@@ -146,32 +149,41 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
 		  
 		  //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
+
 		  // // DSLSubsegment algorithm using floating points
-		  
-		  timeBeginSubsegD = clock();
-		  //Number precision((double) 1/(5*b),500);
-		  Number precision = (double) 1/(2*b);
-		  DSLSubsegD DD(alpha,beta,A,B,precision);
-		  timeEndSubsegD = clock();
+		  // timeBeginSubsegD = clock();
+		  // Number precision = (double) 1/(2*b);
+		  // DSLSubsegD DD(alpha,beta,A,B,precision);
+		  // timeEndSubsegD = clock();
 		  //timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
 		  //std::cout << "res float = " << "(" << DD.aa << "," << DD.bb << "," << DD.Nu << ")" << std::endl;
 		  
 		  // Compare both results
-		  assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
-		  if(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu)
-		    timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
-		  else
-		    nberrors++;
+		  
+		  // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		  // if(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu)
+		  //   timeTotalSubsegD += ((double)timeEndSubsegD-(double)timeBeginSubsegD)/(((double)CLOCKS_PER_SEC)/1000);
+		  // else
+		  //   nberrors++;
+		  
+
+		  // Computation of the reduced parameters of Charrier & Buzer
+		  
+		  timeBeginCH = clock();
+		  DSLSubseg DD(a,b,mu,A,B,1);
+		  // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		  timeEndCH = clock();
+		  timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
 		  
 #ifdef CHECK_RES
 		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
 		  DSSIterator  it(a,b,-mu,A);
                   ArithDSS myDSS(it);
                   
-		  //  timeBeginDSS = clock();
+		  timeBeginDSS = clock();
                   while ( (*(myDSS.end()))[0] <=x2 && myDSS.extendForward())
                     {}
-		  //timeEndDSS = clock();
+		  timeEndDSS = clock();
 		  
                   //std::cout << "a =" << myDSS.getA() << " b =" << myDSS.getB() << " mu =" << myDSS.getMu() << std::endl << std::endl;
 		  
@@ -185,7 +197,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 		      assert(D.aa == myDSS.getA() && D.bb == myDSS.getB() && D.Nu == - myDSS.getMu());
 		    }
 		  
-		  //timeTotalDSS += ((double)timeEndDSS-(double)timeBeginDSS)/((double)CLOCKS_PER_SEC)*1000;
+		  timeTotalDSS += ((double)timeEndDSS-(double)timeBeginDSS)/((double)CLOCKS_PER_SEC)*1000;
 #endif CHECK_RES
 		  
 		  
@@ -199,7 +211,8 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
   
   std::cout << nb << " " << nberrors ;
   std::cout << " " << (long double) timeTotalSubseg/(nb);
-  std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
+  std::cout << " " << (long double) timeTotalCH/(nb);
+  //std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
   
   
   return true;
@@ -219,7 +232,7 @@ int main( int argc, char** argv )
   typedef DGtal::int32_t SmallInteger;
   SmallInteger m = 10; // b = 10^p with p <= m
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :1000;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :500;
   
   SmallInteger p = 1;
   Integer b;
@@ -231,8 +244,8 @@ int main( int argc, char** argv )
       //std::cout << b << std::endl;
       for(Integer modx = 10; modx <= b;modx+=modx/8)
 	{
-	  std::setprecision(15);
-	  std::cout << b << " " << modx << " ";
+	  // std::setprecision(15);
+	  //std::cout << b << " " << modx << " ";
 	  testDSLSubsegment<Integer,SmallInteger>( nbtries, b, modx);
 	  std::cout << std::endl;
 	}
