@@ -112,12 +112,13 @@ current() const
 }
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
-template < typename TBackInsertable >
+template < typename TBackInsertionSequence >
 inline
 void
 DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::
-getCurrentLayer( TBackInsertable & layer )
+getCurrentLayer( TBackInsertionSequence & layer )
 {
+  BOOST_CONCEPT_ASSERT(( boost::BackInsertionSequence< TBackInsertionSequence > ));
   ASSERT( ! finished() );
   layer.clear();
   Node node = current();
@@ -127,7 +128,7 @@ getCurrentLayer( TBackInsertable & layer )
       myQueue.pop();
     } 
   while ( ( ! finished() ) && ( node.second == current().second ) );
-  for ( typename TBackInsertable::const_iterator it = layer.begin(),
+  for ( typename TBackInsertionSequence::const_iterator it = layer.begin(),
           itE = layer.end();
         it != itE; ++it )
     {

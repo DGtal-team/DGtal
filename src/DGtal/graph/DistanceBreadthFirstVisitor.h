@@ -327,19 +327,22 @@ while ( ! visitor.finished() )
     const Node & current() const; 
 
     /**
-       @return a const reference on the current visited vertex. The
-       node is a pair <Vertex,Scalar> where the second term is the
-       distance to the initial vertex or set.
+       Returns all nodes at same current distance in the given
+       container \a layer. The node is a pair <Vertex,Scalar> where
+       the second term is the distance to the initial vertex or set.
 
-       @tparam TBackInsertable a container of Node that is any model
-       of boost::BackInsertable which has also a clear() method.
+       @tparam TBackInsertionSequence a container of Node that is any model
+       of boost::BackInsertionSequence.
+
+       @param[out] layer a container object that will contain all the nodes
+       at the same current distance.
 
        NB: Complexity is in O(k log n ), where k is the size of the
        layer and n the number of elements currently in the priority
        queue (some O(k)).
      */
-    template <typename TBackInsertable>
-    void getCurrentLayer( TBackInsertable & layer );
+    template <typename TBackInsertionSequence>
+    void getCurrentLayer( TBackInsertionSequence & layer );
 
     /**
        Goes to the next vertex but ignores the current vertex for
