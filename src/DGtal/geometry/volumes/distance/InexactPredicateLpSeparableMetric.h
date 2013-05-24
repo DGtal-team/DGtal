@@ -76,6 +76,7 @@ namespace DGtal
  */
   template <typename TSpace>
   class InexactPredicateLpSeparableMetric
+    : public std::binary_function< typename TSpace::Point, typename TSpace::Point, double >
   {
     // ----------------------- Standard services ------------------------------
   public:

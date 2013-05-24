@@ -108,6 +108,7 @@ digraph GGraph {
         STLMapToVertexMapAdapter [ label="STLMapToVertexMapAdapter" URL="\ref STLMapToVertexMapAdapter" ] ;
         BreadthFirstVisitor [ label="BreadthFirstVisitor" URL="\ref BreadthFirstVisitor" ] ;
         DepthFirstVisitor [ label="DepthFirstVisitor" URL="\ref DepthFirstVisitor" ] ;
+        DistanceBreadthFirstVisitor [ label="DistanceBreadthFirstVisitor" URL="\ref DistanceBreadthFirstVisitor" ] ;
         GraphVisitorRange [ label="GraphVisitorRange" URL="\ref GraphVisitorRange" ] ;
         }
 
@@ -133,6 +134,8 @@ digraph GGraph {
     BreadthFirstVisitor -> CGraphVisitor ;
     DepthFirstVisitor -> CUndirectedSimpleLocalGraph  [label="use",style=dashed] ;
     DepthFirstVisitor -> CGraphVisitor ;
+    DistanceBreadthFirstVisitor -> CUndirectedSimpleLocalGraph  [label="use",style=dashed] ;
+    DistanceBreadthFirstVisitor -> CGraphVisitor ;
     GraphVisitorRange -> CGraphVisitor  [label="use",style=dashed] ;
     }
 }
