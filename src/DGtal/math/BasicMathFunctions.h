@@ -45,6 +45,7 @@
 #include <algorithm>
 #include <functional>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Bits.h"
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -93,12 +94,27 @@ namespace DGtal
 
 
     /**
+     * Compute the next higher power of two of the given argument n of type T. 
+     * 
+     * @tparam T the type of the element T
+     * @param n: an element of type T (casted to unsigned integer).
+     * @return the next higher power of two.
+     **/
+    template<typename T> 
+    T roundToUpperPowerOfTwo(const  T &n){
+      return (T) roundToUpperPowerOfTwo((unsigned int) n);
+    };
+
+    /**
      * Compute the next higher integer power of two of the given argument n. 
      * 
-     * @param n: an unsigned integer (can be represented on 32 or 64 bits)
+     * @param n: an unsigned integer.
+     * @return the next higher unsigned integer power of two.     
      **/
-
-    unsigned int roundToUpperPowerOfTwo( unsigned int n);
+    template<> 
+    unsigned int roundToUpperPowerOfTwo<unsigned int>(const  unsigned int &n){
+      return 1 << (1+DGtal::Bits::mostSignificantBit( n-1 ) );
+    }
 
     
     
@@ -123,12 +139,6 @@ namespace DGtal
 
   }  // namespace BasicMathFunctions
 } // namespace DGTal
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions/methods if necessary.
-#include "DGtal/math/BasicMathFunctions.ih"
 
 
 
