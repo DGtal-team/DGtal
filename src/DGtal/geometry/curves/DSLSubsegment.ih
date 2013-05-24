@@ -93,22 +93,37 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 
 
+// template <typename TInteger, typename TNumber>
+// inline
+// typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point P, Vector v, Vector aL)
+// {
+//   if(v[0]==0)
+//     {
+//       return (Integer) floor((FloatType) (aL[1]*P[0] - aL[0]*P[1])/(v[1]*aL[1]));
+//     }
+//   else
+//     //if(v[0] != 0)
+//     {
+//       Number num = -P[1]*aL[0]*v[0] - P[0]*(v[1]*aL[0] - aL[1]*v[0]) + aL[0]*v[1]*P[0];
+//       Number denom = v[0]*(v[1]*aL[0] - aL[1]*v[0]);
+//       return (Integer) floor((FloatType) num/denom);
+//     }
+// }
+
+
 template <typename TInteger, typename TNumber>
 inline
-typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point P, Vector v, Vector aL)
+typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TInteger,TNumber>::intersection(Point P, Vector v, Vector aL, Integer r)
 {
-  if(v[0]==0)
-    {
-      return (Integer) floor((FloatType) (aL[1]*P[0] - aL[0]*P[1])/(v[1]*aL[1]));
-    }
-  else
-    //if(v[0] != 0)
-    {
-      Number num = -P[1]*aL[0]*v[0] - P[0]*(v[1]*aL[0] - aL[1]*v[0]) + aL[0]*v[1]*P[0];
-      Number denom = v[0]*(v[1]*aL[0] - aL[1]*v[0]);
-      return (Integer) floor((FloatType) num/denom);
-    }
+  Number num = P[1]*aL[0]-aL[1]*P[0]-r;
+  Number denom = aL[1]*v[0]-v[1]*aL[0];
+  // using parametric definition of lines and solving for t -> not more precise than the other computation...
+  
+  return (Integer) floor((FloatType) num/denom);
+  
 }
+
+
 
 
 template <typename TInteger, typename TNumber>
@@ -172,17 +187,31 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 
 
 
+// template <typename TInteger, typename TNumber>
+// inline
+// void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l, Vector *v)
+// {
+//   Point AA = A;
+//   AA +=(*v);
+//   Integer alpha = intersection(AA,u,l);
+  
+//   u *= alpha;
+//    (*v) += u;
+// }
+
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l, Vector *v)
+void DGtal::DSLSubsegment<TInteger,TNumber>::update(Vector u, Point A, Vector l, Integer r, Vector *v)
 {
   Point AA = A;
   AA +=(*v);
-  Integer alpha = intersection(AA,u,l);
+  Integer alpha = intersection(AA,u,l,r);
   
   u *= alpha;
    (*v) += u;
 }
+
+
 
 template <typename TInteger, typename TNumber>
 inline
@@ -198,9 +227,116 @@ u *= alpha;
 
 
 
+// template <typename TInteger, typename TNumber>
+// inline
+// void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer n, Point *inf, Point *sup)
+// {
+  
+//   //std::cout << "In Convex hull approx" << std::endl;
+  
+//   if(n >= l[0])
+//     {
+//       *inf = l;
+//       *sup = l;
+//     }
+//   else
+//     if(l[1] == 0)
+//       {
+//   	*inf = l;
+//   	*sup = Point(n,1);
+//       }
+//     else
+//       {
+	
+// 	//std::cout << "main part convexHullApprox" << std::endl;
+// 	Point A = Point(0,1);
+// 	Point B = Point(1,0);
+// 	//Point B = Point(0,0);
+	
+// 	Vector u = Vector(1,-1);
+// 	Vector v = Vector(1,0);
+// 	//Vector u = Vector(0,-1);
+// 	//Vector v = Vector(1,0);
+	
+// 	Vector normal = Vector(-l[1],l[0]);
+	
+// 	//std::cout << "normal vector " << normal << std::endl;
+// 	//std::cout << "n = " << n << std::endl;
+// 	Integer alpha;
+	
+// 	bool ok = true;
+// 	bool found = false;
+	
+// 	while(ok)
+// 	  {
+// 	    if(v[0]*normal[0]+v[1]*normal[1] ==0) // should never happen
+// 	      {
+// 		ok = false;
+// 		found = true;
+// 	      }
+// 	    else
+// 	      if(v[0]*normal[0]+v[1]*normal[1] < 0)
+// 		{
+// 		  //	  std::cout << "dot product neg " <<  v << std::endl;
+// 		  //std::cout << "A " << A << " B " << B  << std::endl;
+// 		  alpha = min(intersection(A,v,l), intersectionVertical(A,v,n));
+// 		  //std::cout << "alpha = " << alpha << std::endl;
+// 		  if(alpha >= 1)
+// 		    {
+// 		      Vector vv  = v;
+// 		      vv *= alpha;
+// 		      A += vv;
+// 		      u = B - A;
+// 		      update(u,A,l,&v);
+// 		      //std::cout << "A " << A << " B " << B  << std::endl;
+// 		    }
+// 		  else
+// 		    ok = false;
+// 		}
+// 	      else
+// 		if(v[0]*normal[0]+v[1]*normal[1] > 0)
+// 		  {
+// 		    //std::cout << "A " << A <<  " B " << B << std::endl;
+// 		    alpha = min(intersection(B,v,l),intersectionVertical(B,v,n));
+// 		    if(alpha >= 1)
+// 		      {
+// 			Vector vv = v;
+// 			vv *= alpha;
+// 			B += vv;
+// 			u = B - A;
+// 			update(u,A,l,&v);
+// 		      }
+// 		    else
+// 		      ok = false;
+// 		  }
+// 	    //else
+// 	    //  ok = false;
+	    
+// 	  }
+	
+// 	if(found)
+// 	  {
+// 	    *sup = v;
+// 	    *inf = v;
+// 	  }
+// 	else
+// 	  {
+// 	    *sup = A;
+// 	    //if(B != Point(0,0))
+// 	    *inf = B;
+// 	    //else
+// 	    //*inf = Point(1,0);
+// 	    assert(A[0] != B[0] || A[1] != B[1]);
+// 	    ////std::cout << "end convex hull approx" << A << " " << B << std::endl;
+// 	    //      }
+// 	  }
+//       }
+// }
+
+
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer n, Point *inf, Point *sup)
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup)
 {
   
   //std::cout << "In Convex hull approx" << std::endl;
@@ -250,7 +386,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 		{
 		  //	  std::cout << "dot product neg " <<  v << std::endl;
 		  //std::cout << "A " << A << " B " << B  << std::endl;
-		  alpha = min(intersection(A,v,l), intersectionVertical(A,v,n));
+		  alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
 		  //std::cout << "alpha = " << alpha << std::endl;
 		  if(alpha >= 1)
 		    {
@@ -258,24 +394,25 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 		      vv *= alpha;
 		      A += vv;
 		      u = B - A;
-		      update(u,A,l,&v);
+		      update(u,A,l,r,&v);
 		      //std::cout << "A " << A << " B " << B  << std::endl;
 		    }
 		  else
 		    ok = false;
+		  
 		}
 	      else
 		if(v[0]*normal[0]+v[1]*normal[1] > 0)
 		  {
 		    //std::cout << "A " << A <<  " B " << B << std::endl;
-		    alpha = min(intersection(B,v,l),intersectionVertical(B,v,n));
+		    alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
 		    if(alpha >= 1)
 		      {
 			Vector vv = v;
 			vv *= alpha;
 			B += vv;
 			u = B - A;
-			update(u,A,l,&v);
+			update(u,A,l,r,&v);
 		      }
 		    else
 		      ok = false;
@@ -303,6 +440,96 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 	  }
       }
 }
+
+template <typename TInteger, typename TNumber>
+inline
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup)
+{
+  
+  if(n >= l[0])
+    {
+      *inf = l;
+      *sup = l;
+    }
+  if(l[1] == 0)
+    {
+      *inf = l;
+      *sup = Point(n,1);
+    }
+  else
+    {
+      
+      Point A = Point(0,1);
+      Point B = Point(0,0);
+      
+      Point Aold = A;
+      Point Bold = B;
+
+      Vector u = Vector(0,-1);
+      Vector v = Vector(1,0);
+      
+      Vector normal = Vector(-l[1],l[0]);
+      
+      Integer alpha;
+      
+      bool ok = true;
+      bool  first = true;
+
+      while(ok)
+	{
+	  
+	  //std::cout << "A = (" << A[0] << "," << A[1] << ") B=(" << B[0] << "," << B[1] << ")" << std::endl;
+	  //std::cout << "u = (" << u[0] << "," << u[1] << ") v=(" << v[0] << "," << v[1] << ")" << std::endl;
+	  if(v[0]*normal[0]+v[1]*normal[1]< 0)
+	    {
+	      alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
+	      
+	      if(alpha >= 1 || first)
+		{
+		  Aold = A;
+		  Vector vv  = v;
+		  vv *= alpha;
+		  A += vv;
+		  u = B - A;
+		  update(u,A,l,r,&v);
+		}
+	      else
+		ok = false;
+	      first = false;
+	    }
+	  else
+	    if(v[0]*normal[0]+v[1]*normal[1]> 0)
+	      {
+		alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
+		
+		if(alpha >= 1)
+		  {
+		    Bold = B;
+		    Vector vv = v;
+		    vv *= alpha;
+		    B += vv;
+		    u = B - A;
+		    update(u,A,l,r,&v);
+		  }
+		else
+		  ok = false;
+	      }
+	    else
+	      ok = false;
+	  
+	}
+      
+      *sup = A;
+      *inf = B;
+      *prevInf = Bold;
+      *prevSup = Aold;
+    }
+  
+}
+
+
+
+
   
 template <typename TInteger, typename TNumber>
 inline
@@ -925,14 +1152,14 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
 template <typename TInteger, typename TNumber>
 inline
 typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInteger,TNumber>::localizeRay(Integer fp, Integer fq, Integer gp, Integer gq, Integer r, Number a, Number b, Number mu,  Integer n)
- {
-   BOOST_CONCEPT_ASSERT((CInteger<Number>));
-   //std::cout << "fp/fq = " << fp << "/" << fq << " r= " << r <<std::endl;
-   //std::cout << "a = " << a << " b= " << b << " mu = " << mu << std::endl;
-   Number alpha = slope(fp, fq,r,a,b,mu);
-   //std::cout << "slope = " << alpha << std::endl;
-   
-   Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x; // le
+{
+  BOOST_CONCEPT_ASSERT((CInteger<Number>));
+  //std::cout << "fp/fq = " << fp << "/" << fq << " r= " << r <<std::endl;
+  //std::cout << "a = " << a << " b= " << b << " mu = " << mu << std::endl;
+  Number alpha = slope(fp, fq,r,a,b,mu);
+  //std::cout << "slope = " << alpha << std::endl;
+  
+  Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x; // le
    // récupérer
    // car on
    // l'a déjà calculé
@@ -1085,7 +1312,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       inf[1] = fp;
     }
   else
-    convexHullApprox(Vector(fq,fp),max(r.x,n-r.x),&inf,&tmpsup);
+    convexHullApprox(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&tmpsup);
 
   if(gq <= max(r.x,n-r.x))
     {
@@ -1093,7 +1320,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::shortFindSolution(Integer fp, Integ
       sup[1] = gp;
     }
   else
-    convexHullApprox(Vector(gq,gp),max(r.x,n-r.x),&tmpinf,&sup);
+    convexHullApprox(Vector(gq,gp),0,max(r.x,n-r.x),&tmpinf,&sup);
   
   
   if(r.x-inf[0] < 0) // R is the ray of smallest slope in inf
@@ -1208,7 +1435,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	       else
 		 {
 		   //std::cout << "Neither A nor B is the solution " << std::endl;
-		   convexHullApprox(Vector(fq,fp),max(r.x,n-r.x),&inf,&sup);
+		   convexHullApprox(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&sup);
 		   // Let C be the point on r with abscissa equal to inf. 
 		   RayC rr = raySup(inf[1],inf[0],r); // ray above r passing through C
 		   if(rr.x == r.x) // r is the highest ray passing through C
@@ -1261,6 +1488,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
        }
     }
 
+
 template <typename TInteger, typename TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point A, Point B)
@@ -1288,7 +1516,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 
       if(b>n)
 	{
-	  convexHullApprox(Vector(b,a),n,&inf,&sup);
+	  convexHullApprox(Vector(b,a),0,n,&inf,&sup);
 	  fp = inf[1];
 	  fq = inf[0];
 	  gp = sup[1];
@@ -1494,9 +1722,153 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 
 
 
+// Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
+template <typename TInteger, typename TNumber>
+inline
+DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool flag)
+{
+  Integer n = B[0] - A[0];
+  
+  //std::cout << a << " " << b << " " << mu << " " << A << " " << B << std::endl;
+
+  Integer rA = a*A[0]-b*A[1] + mu;
+  Integer rB = a*B[0]-b*B[1] + mu;
+  
+  Vector l(b,a);
+  
+  Point infL,supL,infR,supR,prevInfL,prevSupL,prevInfR,prevSupR;
+  
+  
+  convexHullApproxTwoPoints(l,rA,B[0]-A[0],&infL,&supL,&prevInfL,&prevSupL); // computation of the left part of the convex hulls
+  
+  
+  //std::cout << "inf1 = " << inf1[0] << " " << inf1[1] << "   sup1 = " << sup1[0] << " " << sup1[1] << std::endl; 
+  
+  infL += A;
+  supL += A;
+  
+  prevInfL +=A;
+  prevSupL +=A;
+
+  //std::cout << "prevInfL = " << prevInfL << "   prevSupL = " << prevSupL << std::endl; 
+  //std::cout << "infL = " << infL << "   supL = " << supL << std::endl; 
+  
+  
+  convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR);
+  
+  Point B1 = B + Point(0,1);
+  
+  infR = B1 - infR;
+  supR = B1 - supR;
+  
+  Point tmp;
+  tmp = infR;
+  infR = supR;
+  supR = tmp;
+  
+  
+  prevInfR = B1 - prevInfR;
+  prevSupR = B1 - prevSupR;
+  
+  tmp = prevInfR;
+  prevInfR = prevSupR;
+  prevSupR = tmp;
+  
+  
+  //std::cout << "prevInfR = " << prevInfR << "   prevSupR = " << prevSupR << std::endl;
+  //std::cout << "infR = " << infR << "   supR = " << supR << std::endl; 
+  
+  DGtal::IntegerComputer<Integer> ic;
+
+  aa=0, bb=0, Nu=0;
+  
+  // if(infL != infR)
+  //   {
+      
+      
+  
+  //     bb = infR[0] - infL[0];
+  //     aa = infR[1] - infL[1];
+  //     //std::cout << bb << " " << aa ;
+  //     Integer g = ic.gcd(bb,aa);
+  //     bb = bb/g;
+  //     aa = aa/g;
+  //     Nu = -aa*infL[0] + bb*infL[1];
+  //   }
+  // else
+  //   if(supL != supR)
+  //     { // the slope is given by the upper point
+  // 	bb = supR[0] - supL[0];
+  // 	aa = supR[1] - supL[1];
+  // 	//std::cout << bb << " " << aa ;
+  // 	Integer g = ic.gcd(bb,aa);
+  // 	bb = bb/g;
+  // 	aa = aa/g;
+  // 	Nu = -aa*infL[0] + bb*infL[1]; // but the solution line goes through the lower point
+  //     }
+  //   else
+  //     {
+  // 	// we are left with four possible lines given by the couples (prevInfL, infL=infR) (infL = infR,prevInfR)
+  // 	// (prevSupL, supL = supR) (supL = supR, prevSupR)
+  // 	// the solution is given by the slope with bigger b
+		
+  // 	Point inf[3];
+
+  // 	inf[0] = prevInfL;
+  // 	inf[1] = infL; //=infR
+  // 	inf[2] = prevInfR;
+	
+  // 	Integer atmp, btmp;
+  // 	for(int i=0;i<2;i++)
+  // 	  {
+  // 	    btmp = inf[i+1][0] - inf[i][0];
+  // 	    atmp = inf[i+1][1] - inf[i][1];
+  // 	    Integer g = 1;
+  // 	    if(btmp != 0 || atmp !=0)
+  // 	      g = ic.gcd(btmp,atmp);
+  // 	    btmp = btmp/g;
+  // 	    atmp = atmp/g;
+  // 	    if(btmp > bb)
+  // 	      {
+  // 		bb =btmp;
+  // 		aa =atmp;
+  // 	      }
+  // 	  }
+	
+  // 	Point sup[3];
+
+  // 	sup[0] = prevSupL;
+  // 	sup[1] = supL; //=supR
+  // 	sup[2] = prevSupR;
+	
+  // 	for(int i=0;i<2;i++)
+  // 	  {
+  // 	    btmp = sup[i+1][0] - sup[i][0];
+  // 	    atmp = sup[i+1][1] - sup[i][1];
+  // 	    Integer g = 1;
+  // 	    if(btmp != 0 || atmp !=0)
+  // 	      g = ic.gcd(btmp,atmp);
+  // 	    btmp = btmp/g;
+  // 	    atmp = atmp/g;
+  // 	    if(btmp > bb)
+  // 	      {
+  // 		bb =btmp;
+  // 		aa =atmp;
+  // 	      }
+  // 	  }
+	
+  // 	Nu = -aa*infL[0] + bb*infL[1];
+	
+  //     }
+  
+  
+  
+  //std::cout << "a = " << aa << " b = " << bb << " mu = " << Nu << std::endl << std::endl;
 
 
 
+
+}
 
 
 

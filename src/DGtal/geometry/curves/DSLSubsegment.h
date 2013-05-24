@@ -129,6 +129,9 @@ namespace DGtal
       // the parameters of the DSS [AB]  
       DSLSubsegment(Number alpha, Number beta, Point A, Point B, Number precision = 1e-10);
       
+
+      DSLSubsegment(Number a, Number b, Number mu, Point A, Point B, bool flag);
+
     protected:
       
       class RayC
@@ -174,17 +177,20 @@ namespace DGtal
       
       // Compute the intersection between the line of direction v passing through P and the line y = (aL[1]/aL[0])*x
       // The intersection point is of the form P + \alpha*v and the function returns the value floor(alpha).
-      Integer intersection(Point P, Vector v, Vector aL);
+      //Integer intersection(Point P, Vector v, Vector aL);
+      Integer intersection(Point P, Vector v, Vector aL, Integer r);
       Integer intersection(Point P, Vector v, Number s);
       
       
-      void update(Vector u, Point A, Vector l, Vector *v);
+      //void update(Vector u, Point A, Vector l, Vector *v);
+      void update(Vector u, Point A, Vector l, Integer r, Vector *v);
       void update(Vector u, Point A, Number s, Vector *v);
       
       
-      void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
+      //void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
+      void convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup);
       void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
-      
+      void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup);
       
       
       Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
