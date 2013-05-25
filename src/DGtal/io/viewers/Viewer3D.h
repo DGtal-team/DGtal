@@ -385,7 +385,15 @@ namespace DGtal
      * Used to display in OPENGL a grayscale image as a textured quad image.
      *
      **/
-    struct GLGrayScaleTextureImage:  Display3D::GrayScaleImage {      
+    struct GLGrayScaleTextureImage {      
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;
+      ImageDirection myDirection;
+      unsigned int myImageWidth;
+      unsigned int myImageHeight;
+      
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
@@ -420,7 +428,7 @@ namespace DGtal
 	vectNormal[0]=aGLImg.vectNormal[0];
 	vectNormal[1]=aGLImg.vectNormal[1];
 	vectNormal[2]=aGLImg.vectNormal[2];
-	myTabImage = NULL;
+	
 	myTextureImageBuffer = new unsigned char [myBufferHeight*myBufferWidth];
 	for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
 	  myTextureImageBuffer[i]=aGLImg.myTextureImageBuffer[i];
@@ -444,7 +452,7 @@ namespace DGtal
 	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
 	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
 	myTextureImageBuffer = new unsigned char [myBufferHeight * myBufferWidth];
-	myTabImage = NULL;
+
 	unsigned int pos=0;
 	for (unsigned int i=0; i<myBufferHeight; i++){
 	  for (unsigned int j=0; j<myBufferWidth; j++){

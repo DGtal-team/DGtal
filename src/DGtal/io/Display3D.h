@@ -328,10 +328,7 @@ namespace DGtal
 	
       };				       
 
-     
-      GrayScaleImage(){
-
-      };
+      
       
       /** 
        *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
@@ -400,6 +397,10 @@ namespace DGtal
        **/
       std::string className() const;
       
+    private:
+      GrayScaleImage(){
+	
+      };
     };
 
     // ----------------------- Standard services ------------------------------
