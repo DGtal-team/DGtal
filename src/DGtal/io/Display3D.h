@@ -44,10 +44,12 @@
 #include <vector>
 #include <algorithm>
 #include <map>
-#include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Color.h"
+#include "DGtal/images/CImage.h"
+#include "DGtal/images/CConstImage.h"
 #include "DGtal/shapes/Mesh.h"
 
 
@@ -244,9 +246,10 @@ namespace DGtal
        *
        **/
 
-      template<typename TSpace>
-      Image2DDomainD3D(DGtal::HyperRectDomain<TSpace>  aDomain, Display3D::ImageDirection normalDir=zDirection, 
-		       double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
+      template<typename TDomain>
+      Image2DDomainD3D( TDomain aDomain, Display3D::ImageDirection normalDir=zDirection, 
+			double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, std::string mode= "BoundingBox"){
+	BOOST_CONCEPT_ASSERT(( CDomain < TDomain >));
 	myMode = mode;
 	myDirection=normalDir;
 	myDomainWidth = (aDomain.upperBound())[0]-(aDomain.lowerBound())[0]+1;
@@ -338,9 +341,11 @@ namespace DGtal
        *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
-      template <typename ImageType>
-      GrayScaleImage( const ImageType & image, Display3D::ImageDirection normalDir=zDirection, 
-		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+      template <typename TImageType, typename TFunctor >
+      GrayScaleImage( const TImageType & image, Display3D::ImageDirection normalDir=zDirection, 
+		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, 
+		      TFunctor aFunctor= CastFunctor<unsigned char>()){
+       	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	myDrawDomain=false;
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -348,7 +353,7 @@ namespace DGtal
 	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
-	updateImageDataAndParam(image);
+	updateImageDataAndParam(image, aFunctor);
       };
       
       /**
@@ -372,19 +377,20 @@ namespace DGtal
        *  @param yTranslation: the image translation in the  y direction (default 0).
        *  @param zTranslation: the image translation in the  z direction (default 0).
        **/
-      template <typename ImageType>
-      void updateImageDataAndParam(const ImageType & image, 
+      template <typename TImageType, typename TFunctor>
+      void updateImageDataAndParam(const TImageType & image, TFunctor aFunctor,
 				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
+	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth && 
 		 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
-
+	
 	x1 += xTranslation; y1 += yTranslation; z1 += zTranslation;
 	x2 += xTranslation; y2 += yTranslation; z2 += zTranslation;
 	x3 += xTranslation; y3 += yTranslation; z3 += zTranslation;
 	x4 += xTranslation; y4 += yTranslation; z4 += zTranslation;
 	
 	unsigned int pos=0;
-	for(typename ImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
+	for(typename TImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	    it!=itend;
 	    ++it){
 	  myTabImage[pos]= image(*it);
@@ -730,8 +736,8 @@ namespace DGtal
      * @param yTranslation: the image translation in the  y direction (default 0).
      * @param zTranslation: the image translation in the  z direction (default 0).
      **/
-    template <typename ImageType>
-    void updateGrayScaleImage(unsigned int imageIndex,   ImageType & image, 
+    template <typename TImageType>
+    void updateGrayScaleImage(unsigned int imageIndex, const  TImageType & image, 
 			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
     
 
@@ -756,8 +762,8 @@ namespace DGtal
      *
      */
 
-    template<typename TSpace>
-    void addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &anImageDomain, std::string mode,  
+    template<typename TDomain>
+    void addImage2DDomainD3D(const TDomain &anImageDomain, std::string mode,  
 			     const DGtal::Color &aColor=DGtal::Color::Red );
     
     

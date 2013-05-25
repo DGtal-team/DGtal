@@ -908,18 +908,19 @@ DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
 
 
 
-template <typename ImageType>
+template <typename TImageType>
 inline
 void 
-DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,   ImageType & image, 
+DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageType & image, 
 				       double xTranslation, double yTranslation, double zTranslation){
+  BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
   Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 
   updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
   updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
   updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
-  anImage.updateImageDataAndParam<ImageType>(image, xTranslation, yTranslation, zTranslation);
+  anImage.updateImageDataAndParam(image, xTranslation, yTranslation, zTranslation);
   if(anImage.myDrawDomain){
     *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
   }
@@ -1009,9 +1010,9 @@ DGtal::Display3D::Image2DDomainD3D::translateDomain (double xTranslation,
 
 
 
-template<typename TSpace>
+template<typename TDomain>
 void 
-DGtal::Display3D::addImage2DDomainD3D(const DGtal::HyperRectDomain<TSpace> &aDomain, 
+DGtal::Display3D::addImage2DDomainD3D(const TDomain &aDomain, 
 				      std::string mode, const DGtal::Color &aColor){
   DGtal::Display3D::Image2DDomainD3D anImageDomain(aDomain);
   anImageDomain.R = aColor.red();
