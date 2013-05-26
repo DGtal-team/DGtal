@@ -382,10 +382,10 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
     /**
-     * Used to display in OPENGL a grayscale image as a textured quad image.
+     * Used to display in OPENGL an image as a textured quad image.
      *
      **/
-    struct GLGrayScaleTextureImage {      
+    struct GLTextureImage {      
       double x1, y1, z1;
       double x2, y2, z2;
       double x3, y3, z3;
@@ -397,7 +397,9 @@ namespace DGtal
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint  myTextureName;
-      unsigned char *  myTextureImageBuffer;
+      Display3D::TextureMode myMode;
+      unsigned char *  myTextureImageBufferGS;
+      unsigned int *  myTextureImageBufferRGB;
       double vectNormal[3];
 
       // By definition in OpenGL the image size of texture should power of 2  
@@ -406,17 +408,25 @@ namespace DGtal
 
 
       // Destructor
-      ~GLGrayScaleTextureImage(){
-	if(myTextureImageBuffer!=0)
-	  delete [] myTextureImageBuffer;
+      ~GLTextureImage(){
+	if(myMode==Display3D::GrayScaleMode){
+	  if(myTextureImageBufferGS!=0)
+	    delete [] myTextureImageBufferGS;
+	}	     
+	if(myMode==Display3D::RGBMode){
+	  if(myTextureImageBufferRGB!=0)
+	    delete [] myTextureImageBufferRGB;
+	}
+	
       }
-
-      //Copy constructor from a GLGrayScaleTextureImage
-      GLGrayScaleTextureImage(const GLGrayScaleTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
-								      myBufferWidth(aGLImg.myBufferWidth),
-								      myTextureName(aGLImg.myTextureName),
-								      myTextureFitX(aGLImg.myTextureFitX),
-								      myTextureFitY(aGLImg.myTextureFitY)
+    
+      //Copy constructor from a GLTextureImage
+      GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
+						    myBufferWidth(aGLImg.myBufferWidth),
+						    myTextureName(aGLImg.myTextureName),
+						    myTextureFitX(aGLImg.myTextureFitX),
+						    myTextureFitY(aGLImg.myTextureFitY),
+						    myMode(aGLImg.myMode)
 								      
       {
 	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
@@ -428,16 +438,24 @@ namespace DGtal
 	vectNormal[0]=aGLImg.vectNormal[0];
 	vectNormal[1]=aGLImg.vectNormal[1];
 	vectNormal[2]=aGLImg.vectNormal[2];
+	if(myMode==Display3D::GrayScaleMode){
+	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned int [myBufferHeight*myBufferWidth];
+	}
 	
-	myTextureImageBuffer = new unsigned char [myBufferHeight*myBufferWidth];
 	for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
-	  myTextureImageBuffer[i]=aGLImg.myTextureImageBuffer[i];
+	  if(myMode==Display3D::GrayScaleMode){
+	    myTextureImageBufferGS[i]=aGLImg.myTextureImageBufferGS[i];
+	  }else  if(myMode==Display3D::RGBMode){
+	    myTextureImageBufferRGB[i]=aGLImg.myTextureImageBufferRGB[i];
+	  }
 	}
 	
       }
       
-      //Copy constructor from a GrayScaleImage
-      GLGrayScaleTextureImage(const GrayScaleImage &aGSImage)
+      //Copy constructor from a TextureImage
+      GLTextureImage(const TextureImage &aGSImage)
       {
 	x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
 	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
@@ -445,21 +463,34 @@ namespace DGtal
 	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
 	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
 	myDirection = aGSImage.myDirection;
+	myMode= aGSImage.myMode;
 	vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
 	vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
-	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;
-	
+	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;	
 	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
 	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
-	myTextureImageBuffer = new unsigned char [myBufferHeight * myBufferWidth];
+
+	if(myMode==Display3D::GrayScaleMode){
+	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned int [myBufferHeight*myBufferWidth];
+	}
 
 	unsigned int pos=0;
 	for (unsigned int i=0; i<myBufferHeight; i++){
 	  for (unsigned int j=0; j<myBufferWidth; j++){
 	    if(i<myImageHeight && j<  myImageWidth){
-	      myTextureImageBuffer[pos]= aGSImage.myTabImage[i*myImageWidth+j];
+	      if(myMode==Display3D::GrayScaleMode){
+		myTextureImageBufferGS[pos]= aGSImage.myTabImage[i*myImageWidth+j];
+	      }else if (myMode==Display3D::RGBMode){
+		myTextureImageBufferRGB[pos]= aGSImage.myTabImage[i*myImageWidth+j];
+	      }
 	    }else{
-	      myTextureImageBuffer[pos]=0;
+	      if(myMode==Display3D::GrayScaleMode){
+		myTextureImageBufferGS[pos]=0;
+	      }else if (myMode==Display3D::RGBMode){
+		myTextureImageBufferRGB[pos]=0;
+	      }
 	    }
 	    pos++;
 	  }
@@ -477,7 +508,7 @@ namespace DGtal
     unsigned int myNbListe;
     qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
     QPoint myPosSelector;
-    std::vector<GLGrayScaleTextureImage> myVectTextureImage;
+    std::vector<GLTextureImage> myVectTextureImage;
     bool myIsDoubleFaceRendering;
 
 

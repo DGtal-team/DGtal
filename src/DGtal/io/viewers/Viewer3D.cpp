@@ -240,7 +240,7 @@ DGtal::Viewer3D::draw()
  
 
   for(unsigned int i=0; i< myVectTextureImage.size(); i++){
-    GLGrayScaleTextureImage &textureImg =  myVectTextureImage.at(i);
+    GLTextureImage &textureImg =  myVectTextureImage.at(i);
     glPushName (  textureImg.myTextureName );  
     glEnable(GL_TEXTURE_2D);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -757,8 +757,8 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
   
   //Filling new image texture from myGSImageList
   for(unsigned int i=0; i<myGSImageList.size(); i++){
-    GrayScaleImage & aGSImage = myGSImageList.at(i);
-    GLGrayScaleTextureImage textureImg(aGSImage); 
+    TextureImage & aGSImage = myGSImageList.at(i);
+    GLTextureImage textureImg(aGSImage); 
     
     glGenTextures(1, &textureImg.myTextureName);
     glBindTexture(GL_TEXTURE_2D, textureImg.myTextureName);
@@ -767,9 +767,13 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
-		 GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBuffer);
-    
+    if(textureImg.myMode==Display3D::GrayScaleMode){
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
+		   GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBufferGS);
+    }else if(textureImg.myMode==Display3D::RGBMode){
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
+		   GL_RGB, GL_UNSIGNED_INT, textureImg.myTextureImageBufferRGB);
+    }
     
     myVectTextureImage.push_back(textureImg);  
   }

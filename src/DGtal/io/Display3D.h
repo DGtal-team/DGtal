@@ -175,7 +175,8 @@ namespace DGtal
 
     enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
     enum ImageDirection {xDirection, yDirection, zDirection };
-
+    enum TextureMode {RGBMode, GrayScaleMode };
+    
     /// Structure used to display KSPoint in 3D and MeshFromPoints
     /// @see addKSPointel 
     ///
@@ -284,10 +285,10 @@ namespace DGtal
 
 
     /**
-     * Used to display a grayscale image as a textured quad image.
+     * Used to display an image as a textured quad image.
      *
      **/
-    struct GrayScaleImage{
+    struct TextureImage{
 
       // The quad coordinates should be given in counter clockwise order
       double x1, y1, z1;
@@ -297,20 +298,20 @@ namespace DGtal
       ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
-      unsigned char * myTabImage;
+      unsigned int * myTabImage;
       
       bool myDrawDomain;
       unsigned int myIndexDomain;
+      TextureMode myMode;
       
-      
-      ~GrayScaleImage(){
+      ~TextureImage(){
 	delete [] myTabImage;  
       };
       
       /**
        * Copy constructor (needed due to myTabImage)
        **/
-      GrayScaleImage(const GrayScaleImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
+      TextureImage(const TextureImage & img):x1(img.x1), y1(img.y1), z1(img.z1),
 						 x2(img.x2), y2(img.y2), z2(img.z2),
 						 x3(img.x3), y3(img.y3), z3(img.z3),
 						 x4(img.x4), y4(img.y4), z4(img.z4),
@@ -318,9 +319,11 @@ namespace DGtal
 						 myImageHeight(img.myImageHeight),
 						 myTabImage(img.myTabImage),
 						 myDrawDomain(img.myDrawDomain),
-						 myIndexDomain(img.myIndexDomain){
+					         myIndexDomain(img.myIndexDomain),
+					         myMode(img.myMode){
+	
 	if(img.myImageHeight>0 && img.myImageWidth>0){
-	  myTabImage = new  unsigned char [img.myImageWidth*img.myImageHeight];
+	  myTabImage = new  unsigned int [img.myImageWidth*img.myImageHeight];
 	  for(unsigned int i=0; i<img.myImageWidth*img.myImageHeight; i++){
 	    myTabImage[i] = img.myTabImage[i];
 	  }
@@ -342,17 +345,19 @@ namespace DGtal
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
       template <typename TImageType, typename TFunctor>
-      GrayScaleImage( const TImageType & image, const TFunctor &aFunctor, 
-		      Display3D::ImageDirection normalDir=zDirection, 
-		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
+      TextureImage( const TImageType & image, const TFunctor &aFunctor, 
+		    Display3D::ImageDirection normalDir=zDirection, 
+		    double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
+		    TextureMode aMode= Display3D::GrayScaleMode){
        	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	myDrawDomain=false;
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
 	myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
-	myTabImage = new  unsigned char [myImageWidth*myImageHeight];
+	myTabImage = new  unsigned int [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
 	unsigned int pos=0;
+	myMode=aMode;
 	updateImageDataAndParam(image, aFunctor);
       };
       
@@ -404,7 +409,7 @@ namespace DGtal
       std::string className() const;
       
     private:
-      GrayScaleImage(){
+      TextureImage(){
 	
       };
     };
@@ -720,24 +725,24 @@ namespace DGtal
 
     
     /**
-     * Add a GrayScaleImage in the list of image to be displayed.
-     * @param image: a GrayScaleImage including image data buffer and position, orientation.
+     * Add a TextureImage in the list of image to be displayed.
+     * @param image: a TextureImage including image data buffer and position, orientation.
      *
      **/
-    void addGrayScaleImage(const GrayScaleImage &image);
+    void addTextureImage(const TextureImage &image);
     
 
     /**
      * Update the  image parameters from std image (image buffer, vertex coordinates) 
      * The new image should be with same dimension than the original.
-     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addTextureImage).
      * @param image: the new image containing the new buffer (with same dimensions than the other image).
      * @param xTranslation: the image translation in the  x direction (default 0).
      * @param yTranslation: the image translation in the  y direction (default 0).
      * @param zTranslation: the image translation in the  z direction (default 0).
      **/
     template <typename TImageType, typename TFunctor>
-    void updateGrayScaleImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
+    void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
 			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
     
 
@@ -746,14 +751,14 @@ namespace DGtal
     /**
      * Update the  image parameters from std image (image buffer, vertex coordinates) 
      * The new image should be with same dimension than the original.
-     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addGrayScaleImage).
+     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addTextureImage).
      * @param image: the new image containing the new buffer (with same dimensions than the other image).
      * @param xTranslation: the image translation in the  x direction (default 0).
      * @param yTranslation: the image translation in the  y direction (default 0).
      * @param zTranslation: the image translation in the  z direction (default 0).
      **/
 
-    void updateOrientationGrayScaleImage(unsigned int imageIndex, 
+    void updateOrientationTextureImage(unsigned int imageIndex, 
 					 double xPosition, double yPosition, double zPosition, ImageDirection newDirection);
     
 
@@ -945,7 +950,7 @@ namespace DGtal
     float myMeshDefaultLineWidth;
     
     // Used to store all displayed images
-    std::vector<GrayScaleImage> myGSImageList;
+    std::vector<TextureImage> myGSImageList;
 
 
     // Used to store all the domain

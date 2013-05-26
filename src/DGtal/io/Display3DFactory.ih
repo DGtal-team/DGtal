@@ -1237,7 +1237,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TValue >
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  &anImage){  
-  drawImage2D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ImageContainerBySTLVector  (2D)
 
@@ -1246,7 +1246,7 @@ DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLVec
 template <typename TValue>
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  &anImage){
-  drawImage2D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ImageContainerBySTLMap  (2D)
 
@@ -1256,7 +1256,7 @@ template <typename TImageContainer, typename TFunctorD, typename TNewValue, type
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const  ImageAdapter< TImageContainer,DGtal::Z2i::Domain, TFunctorD, 
 			       TNewValue, TFunctorValue, TFunctorValueVm1>  &anImage){
-  drawImage2D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ImageAdapter  (2D)
 
@@ -1265,7 +1265,7 @@ template <typename TImageContainer,  typename TFunctorD, typename TNewValue, typ
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,DGtal::Z2i::Domain, TFunctorD, 
 			       TNewValue, TFunctorValue>  &anImage){
-  drawImage2D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ConstImageAdapter  (2D)
 
@@ -1275,7 +1275,7 @@ DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TI
 template <typename TValue  >
 inline
 void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  &anImage3D){ 
-  drawImage3D(display, anImage3D, CastFunctor<unsigned char> ());
+  drawImage3D(display, anImage3D, CastFunctor<unsigned int> ());
 } 
 // ImageContainerBySTLVector  (3D)
 
@@ -1285,7 +1285,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainer
 template <typename TValue  >
 inline
 void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  &anImage3D){
-  drawImage3D(display, anImage3D, CastFunctor<unsigned char> ());
+  drawImage3D(display, anImage3D, CastFunctor<unsigned int> ());
 }
 // ImageContainerBySTLMap  (3D)
 
@@ -1299,7 +1299,7 @@ template <typename TImageContainer, typename TFunctorD, typename TNewValue, type
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const  ImageAdapter< TImageContainer,DGtal::Z3i::Domain, TFunctorD, 
 			       TNewValue, TFunctorValue, TFunctorValueVm1>  &anImage){
-  drawImage3D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage3D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ImageAdapter  (3D)
 
@@ -1308,29 +1308,29 @@ template <typename TImageContainer,  typename TFunctorD, typename TNewValue, typ
 void 
 DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,DGtal::Z3i::Domain, TFunctorD, 
 			       TNewValue, TFunctorValue>  &anImage){
-  drawImage3D(display, anImage, CastFunctor<unsigned char> ());
+  drawImage3D(display, anImage, CastFunctor<unsigned int> ());
 }
 // ConstImageAdapter  (3D)
 
 
 
-// AddGrayScaleImage3DWithFunctor  
+// AddTextureImage3DWithFunctor  
 template <typename TValue, typename TFunctor >
 inline
-void DGtal::Display3DFactory::draw( Display3D & display,   const  AddGrayScaleImage3DWithFunctor<TValue, TFunctor>  &anAddGS3D){
+void DGtal::Display3DFactory::draw( Display3D & display,   const  AddTextureImage3DWithFunctor<TValue, TFunctor>  &anAddGS3D){
   drawImage3D(display, *anAddGS3D.my3DImage, anAddGS3D.myFunctor);
 }
-// AddGrayScaleImage3DWithFunctor 
+// AddTextureImage3DWithFunctor 
 
 
 
-// AddGrayScaleImage2DWithFunctor  
+// AddTextureImage2DWithFunctor  
 template <typename TValue, typename TFunctor >
 inline
-void DGtal::Display3DFactory::draw( Display3D & display,   const  AddGrayScaleImage2DWithFunctor<TValue, TFunctor>  &anAddGS2D){
+void DGtal::Display3DFactory::draw( Display3D & display,   const  AddTextureImage2DWithFunctor<TValue, TFunctor>  &anAddGS2D){
   drawImage2D(display, *anAddGS2D.my2DImage, anAddGS2D.myFunctor);
 }
-// AddGrayScaleImage2DWithFunctor 
+// AddTextureImage2DWithFunctor 
 
 
 
@@ -1348,15 +1348,15 @@ DGtal::Display3DFactory::drawImage2D( Display3D & display, const TImageType2D &a
 	    ("DGtal::Display3DFactory::draw( Display3D & display,const TImageType2D & anImage ): Unknown mode "+mode)=="");
 
   if(mode==""){
-    DGtal::Display3D::GrayScaleImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection);
-    display.addGrayScaleImage(aGSImage);
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection);
+    display.addTextureImage(aGSImage);
   }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
-    DGtal::Display3D::GrayScaleImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection);
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection);
     aGSImage.myDrawDomain = true;
     display << SetMode3D( anImage.domain().className(), mode );
     display << anImage.domain();
     aGSImage.myIndexDomain = display.getCurrentDomainNumber()-1;        
-    display.addGrayScaleImage(aGSImage);
+    display.addTextureImage(aGSImage);
   }   
 }
 
@@ -1393,7 +1393,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
 
   display<< SetMode3D( sliceImageY.className(), mode );
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageY, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageY, aFunctor );
 
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
 					    anImage3D.domain().lowerBound()[0], 
@@ -1403,7 +1403,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorX((int)(anImage3D.domain().lowerBound()[0])); 
   aSliceFunctorX.initAddOneDim(0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageX, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageX, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
 					    anImage3D.domain().lowerBound()[0] -0.5,
 					    anImage3D.domain().lowerBound()[1], 
@@ -1412,7 +1412,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ((int)(anImage3D.domain().lowerBound()[2])); 
   aSliceFunctorZ.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZ, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZ, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
 					    anImage3D.domain().lowerBound()[0], 
 					    anImage3D.domain().lowerBound()[1],
@@ -1423,7 +1423,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
   aSliceFunctorYl.initAddOneDim(1);
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageYl, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageYl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
 					    anImage3D.domain().lowerBound()[0],
 					    0.5+anImage3D.domain().upperBound()[1],
@@ -1433,7 +1433,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
   aSliceFunctorXl.initAddOneDim(0);
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageXl, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageXl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
 					    0.5+anImage3D.domain().upperBound()[0], 
 					    anImage3D.domain().lowerBound()[1],
@@ -1442,7 +1442,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
   aSliceFunctorZl.initAddOneDim(2);
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
-  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZl, aFunctor );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
 					    anImage3D.domain().lowerBound()[0],
 					    anImage3D.domain().lowerBound()[1],
@@ -1550,7 +1550,7 @@ template<typename TImageType, typename TFunctor>
 inline
 void 
 DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate ){
-  display.updateGrayScaleImage(anUpdate.myIndex, *(anUpdate.myImage),  anUpdate.myFunctor, anUpdate.myTranslateX, 
+  display.updateTextureImage(anUpdate.myIndex, *(anUpdate.myImage),  anUpdate.myFunctor, anUpdate.myTranslateX, 
 			       anUpdate.myTranslateY, anUpdate.myTranslateZ);
   
 }
@@ -1559,7 +1559,7 @@ DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImageDat
 void 
 inline
 DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImagePosition & anUpdate ){
-  display.updateOrientationGrayScaleImage(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+  display.updateOrientationTextureImage(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
 					  anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
 }
 
@@ -1567,7 +1567,7 @@ void
 inline
 DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateLastImagePosition & anUpdate ){
   unsigned int index = display.getCurrentGLImageNumber()-1;
-  display.updateOrientationGrayScaleImage(index, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+  display.updateOrientationTextureImage(index, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
 					  anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
 }
 
