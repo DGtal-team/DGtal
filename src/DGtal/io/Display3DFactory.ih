@@ -1393,8 +1393,8 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
 
   display<< SetMode3D( sliceImageY.className(), mode );
-  DGtal::Display3D::GrayScaleImage aGSImageYf (sliceImageY, aFunctor, DGtal::Display3D::yDirection);
-  display << sliceImageY;
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageY, aFunctor );
+
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
 					    anImage3D.domain().lowerBound()[0], 
 					    anImage3D.domain().lowerBound()[1]-0.5,
@@ -1403,7 +1403,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorX((int)(anImage3D.domain().lowerBound()[0])); 
   aSliceFunctorX.initAddOneDim(0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
-  display << sliceImageX;
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageX, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
 					    anImage3D.domain().lowerBound()[0] -0.5,
 					    anImage3D.domain().lowerBound()[1], 
@@ -1412,7 +1412,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ((int)(anImage3D.domain().lowerBound()[2])); 
   aSliceFunctorZ.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
-  display << sliceImageZ;
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZ, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
 					    anImage3D.domain().lowerBound()[0], 
 					    anImage3D.domain().lowerBound()[1],
@@ -1423,7 +1423,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
   aSliceFunctorYl.initAddOneDim(1);
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
-  display << sliceImageYl;
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageYl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
 					    anImage3D.domain().lowerBound()[0],
 					    0.5+anImage3D.domain().upperBound()[1],
@@ -1433,7 +1433,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
   aSliceFunctorXl.initAddOneDim(0);
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
-  display << sliceImageXl;
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageXl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
 					    0.5+anImage3D.domain().upperBound()[0], 
 					    anImage3D.domain().lowerBound()[1],
@@ -1442,7 +1442,7 @@ DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &a
   DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
   aSliceFunctorZl.initAddOneDim(2);
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
-  display << sliceImageZl;  
+  display << DGtal::AddGrayScaleImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZl, aFunctor );
   display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
 					    anImage3D.domain().lowerBound()[0],
 					    anImage3D.domain().lowerBound()[1],

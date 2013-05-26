@@ -380,7 +380,7 @@ namespace DGtal
      */
 
     AddGrayScaleImage3DWithFunctor(ConstAlias<TImageType> anImage, 
-				   ConstAlias<TFunctor> aFunctor ): my3DImage(&anImage), myFunctor(aFunctor)
+				   ConstAlias<TFunctor> aFunctor ): my3DImage(anImage), myFunctor(aFunctor)
     {
       
     }
