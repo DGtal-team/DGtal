@@ -40,6 +40,7 @@
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/math/BasicMathFunctions.h"
 #include "ConfigTest.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,13 +72,19 @@ bool testViewer3D()
   return nbok == nb;
 }
 
-struct treshFct{
+struct hueFct{
 
  inline
- unsigned char operator() (unsigned char aVal) const
- {
-   return aVal< 80 ? aVal: 255;
- }
+ unsigned int operator() (unsigned int aVal) const
+  {
+    HueShadeColorMap<unsigned int>  hueShade(0,255);
+    Color col = hueShade((unsigned int)aVal);
+    unsigned int valR = ((unsigned int) col.red()) <<  16; 
+    unsigned int valG = ((unsigned int) col.green()) << 8; 
+    unsigned int valB = ((unsigned int) col.blue()) ; 
+    unsigned int ret= valR | valG  | valB;
+    return ret;
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,8 +108,7 @@ int main( int argc, char** argv )
  
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
  viewer << SetMode3D(image3d.className(), "BoundingBox");
- // viewer << image3d;
- viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  treshFct >(image3d, treshFct() );
+ viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct >(image3d, hueFct(), Display3D::RGBMode );
 
  // Extract some slice images:
  // Get the 2D domain of the slice:

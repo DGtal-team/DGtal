@@ -356,12 +356,14 @@ namespace DGtal
 
     template < typename TImageType2D, typename TFunctor > 
     static void
-    drawImage2D( Display3D & display, const TImageType2D &anImage, const TFunctor &aFunctor);
+    drawImage2D( Display3D & display, const TImageType2D &anImage, const TFunctor &aFunctor, 
+		 Display3D::TextureMode aTextureMode=Display3D::GrayScaleMode);
 
     
     template < typename TImageType3D, typename TFunctor > 
     static void
-    drawImage3D( Display3D & display, const TImageType3D &anImage3D, const TFunctor &aFunctor);
+    drawImage3D( Display3D & display, const TImageType3D &anImage3D, const TFunctor &aFunctor,
+		 Display3D::TextureMode aTextureMode=Display3D::GrayScaleMode);
 
 
   

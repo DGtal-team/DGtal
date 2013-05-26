@@ -356,12 +356,16 @@ namespace DGtal
      */
 
     AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage, 
-				   ConstAlias<TFunctor> aFunctor ): my2DImage(anImage), myFunctor(aFunctor)
+				 ConstAlias<TFunctor> aFunctor, 
+				 Display3D::TextureMode aMode=Display3D::GrayScaleMode ): my2DImage(anImage),
+											  myFunctor(aFunctor),
+											  myMode(aMode)
     {
       
     }
     const TImageType *my2DImage;
     const TFunctor &myFunctor;
+    Display3D::TextureMode myMode;
   };
 
 
@@ -380,12 +384,16 @@ namespace DGtal
      */
 
     AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage, 
-				   ConstAlias<TFunctor> aFunctor ): my3DImage(anImage), myFunctor(aFunctor)
+				 ConstAlias<TFunctor> aFunctor,
+				 Display3D::TextureMode aMode=Display3D::GrayScaleMode): my3DImage(anImage), 
+											 myFunctor(aFunctor),
+											 myMode(aMode)
     {
       
     }
     const TImageType *my3DImage;
     const TFunctor &myFunctor;
+    Display3D::TextureMode myMode;
   };
 
 

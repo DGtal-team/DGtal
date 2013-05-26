@@ -41,6 +41,8 @@
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 #include "DGtal/math/BasicMathFunctions.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+
 #include "ConfigTest.h"
 
 #include <limits> 
@@ -73,14 +75,18 @@ bool testViewer3D()
   return nbok == nb;
 }
 
-
-struct treshFct{
-
+struct hueFct{
  inline
- unsigned char operator() (unsigned int aVal) const
- {
-   return aVal>128? aVal: 0;
- }
+ unsigned int operator() (unsigned int aVal) const
+  {
+    HueShadeColorMap<unsigned int>  hueShade(0,255);
+    Color col = hueShade((unsigned int)aVal);
+    unsigned int valR = ((unsigned int) col.red()) <<  16; 
+    unsigned int valG = ((unsigned int) col.green()) << 8; 
+    unsigned int valB = ((unsigned int) col.blue()) ; 
+    unsigned int ret= valR | valG  | valB;
+    return ret;
+  }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,12 +107,11 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
 
  std::string filename =  testPath + "samples/church-small.pgm";
-
+ 
  imageNG image = DGtal::PNMReader<imageNG>::importPGM(filename); 
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
 
-
- viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  treshFct >(image2, treshFct() );
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct >(image2, hueFct(), Display3D::RGBMode );
  viewer << image;
  viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  500, 500, 500 );
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );

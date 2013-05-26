@@ -399,7 +399,7 @@ namespace DGtal
       GLuint  myTextureName;
       Display3D::TextureMode myMode;
       unsigned char *  myTextureImageBufferGS;
-      unsigned int *  myTextureImageBufferRGB;
+      unsigned char *  myTextureImageBufferRGB;
       double vectNormal[3];
 
       // By definition in OpenGL the image size of texture should power of 2  
@@ -438,21 +438,25 @@ namespace DGtal
 	vectNormal[0]=aGLImg.vectNormal[0];
 	vectNormal[1]=aGLImg.vectNormal[1];
 	vectNormal[2]=aGLImg.vectNormal[2];
+	
 	if(myMode==Display3D::GrayScaleMode){
 	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
-	}else if(myMode==Display3D::RGBMode){
-	  myTextureImageBufferRGB = new unsigned int [myBufferHeight*myBufferWidth];
-	}
-	
-	for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
-	  if(myMode==Display3D::GrayScaleMode){
+	  for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
 	    myTextureImageBufferGS[i]=aGLImg.myTextureImageBufferGS[i];
-	  }else  if(myMode==Display3D::RGBMode){
+	  }
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
+	  for(unsigned int i=0; i<3*myBufferHeight*myBufferWidth;i+=3){
 	    myTextureImageBufferRGB[i]=aGLImg.myTextureImageBufferRGB[i];
+	    myTextureImageBufferRGB[i+1]=aGLImg.myTextureImageBufferRGB[i+1];
+	    myTextureImageBufferRGB[i+2]=aGLImg.myTextureImageBufferRGB[i+2];
 	  }
 	}
 	
+	
+	
       }
+      
       
       //Copy constructor from a TextureImage
       GLTextureImage(const TextureImage &aGSImage)
@@ -472,29 +476,36 @@ namespace DGtal
 
 	if(myMode==Display3D::GrayScaleMode){
 	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
-	}else if(myMode==Display3D::RGBMode){
-	  myTextureImageBufferRGB = new unsigned int [myBufferHeight*myBufferWidth];
-	}
-
-	unsigned int pos=0;
-	for (unsigned int i=0; i<myBufferHeight; i++){
-	  for (unsigned int j=0; j<myBufferWidth; j++){
-	    if(i<myImageHeight && j<  myImageWidth){
-	      if(myMode==Display3D::GrayScaleMode){
+	  unsigned int pos=0;
+	  for (unsigned int i=0; i<myBufferHeight; i++){
+	    for (unsigned int j=0; j<myBufferWidth; j++){
+	      if(i<myImageHeight && j<  myImageWidth){
 		myTextureImageBufferGS[pos]= aGSImage.myTabImage[i*myImageWidth+j];
-	      }else if (myMode==Display3D::RGBMode){
-		myTextureImageBufferRGB[pos]= aGSImage.myTabImage[i*myImageWidth+j];
-	      }
-	    }else{
-	      if(myMode==Display3D::GrayScaleMode){
+	      }else{
 		myTextureImageBufferGS[pos]=0;
-	      }else if (myMode==Display3D::RGBMode){
-		myTextureImageBufferRGB[pos]=0;
 	      }
+	      pos++;
 	    }
-	    pos++;
+	  }
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
+	  unsigned int pos=0;
+	  for (unsigned int i=0; i<myBufferHeight; i++){
+	    for (unsigned int j=0; j<myBufferWidth; j++){
+	      if(i<myImageHeight && j<  myImageWidth){
+		myTextureImageBufferRGB[pos]= (unsigned char)((aGSImage.myTabImage[i*myImageWidth+j]   & 0xff0000)>>16);
+		myTextureImageBufferRGB[pos+1]= (unsigned char)((aGSImage.myTabImage[i*myImageWidth+j] & 0x00ff00)>>8);
+		myTextureImageBufferRGB[pos+2]= (unsigned char)(aGSImage.myTabImage[i*myImageWidth+j]  & 0x0000ff);
+	      }else{
+		myTextureImageBufferRGB[pos]=0;
+		myTextureImageBufferRGB[pos+1]=0;
+		myTextureImageBufferRGB[pos+2]=0;
+	      }
+	      pos+=3;
+	    }
 	  }
 	}
+
 	myTextureFitX = 1.0-((myBufferWidth-myImageWidth)/(double)myBufferWidth);
 	myTextureFitY = 1.0-((myBufferHeight-myImageHeight)/(double)myBufferHeight);
       }
