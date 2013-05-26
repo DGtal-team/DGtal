@@ -341,10 +341,10 @@ namespace DGtal
        *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
        *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
        **/
-      template <typename TImageType, typename TFunctor >
-      GrayScaleImage( const TImageType & image, Display3D::ImageDirection normalDir=zDirection, 
-		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0, 
-		      TFunctor aFunctor= CastFunctor<unsigned char>()){
+      template <typename TImageType, typename TFunctor>
+      GrayScaleImage( const TImageType & image, const TFunctor &aFunctor, 
+		      Display3D::ImageDirection normalDir=zDirection, 
+		      double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0){
        	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	myDrawDomain=false;
 	myDirection=normalDir;
@@ -378,8 +378,8 @@ namespace DGtal
        *  @param zTranslation: the image translation in the  z direction (default 0).
        **/
       template <typename TImageType, typename TFunctor>
-      void updateImageDataAndParam(const TImageType & image, TFunctor aFunctor,
-				   double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0){
+      void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0, 
+				   double yTranslation=0.0, double zTranslation=0.0){
 	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
 	assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth && 
 		 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
@@ -393,7 +393,7 @@ namespace DGtal
 	for(typename TImageType::Domain::ConstIterator it = image.domain().begin(), itend=image.domain().end();
 	    it!=itend;
 	    ++it){
-	  myTabImage[pos]= image(*it);
+	  myTabImage[pos]= aFunctor(image(*it));
 	  pos++;
 	}  
       };
@@ -736,8 +736,8 @@ namespace DGtal
      * @param yTranslation: the image translation in the  y direction (default 0).
      * @param zTranslation: the image translation in the  z direction (default 0).
      **/
-    template <typename TImageType>
-    void updateGrayScaleImage(unsigned int imageIndex, const  TImageType & image, 
+    template <typename TImageType, typename TFunctor>
+    void updateGrayScaleImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
 			      double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
     
 

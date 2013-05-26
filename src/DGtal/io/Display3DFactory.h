@@ -354,14 +354,14 @@ namespace DGtal
 
 
 
-    template < typename TImageType2D > 
+    template < typename TImageType2D, typename TFunctor > 
     static void
-    drawImage2D( Display3D & display, const TImageType2D &anImage);
+    drawImage2D( Display3D & display, const TImageType2D &anImage, const TFunctor &aFunctor);
 
     
-    template < typename TImageType3D > 
+    template < typename TImageType3D, typename TFunctor > 
     static void
-    drawImage3D( Display3D & display, const TImageType3D &anImage3D);
+    drawImage3D( Display3D & display, const TImageType3D &anImage3D, const TFunctor &aFunctor);
 
 
   
@@ -376,8 +376,15 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::CameraDirection & );
     static void draw( Display3D & display, const DGtal::CameraUpVector & );
     static void draw( Display3D & display, const DGtal::CameraZNearFar & );
-    template<typename TImageType>
-    static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType> & );
+    template<typename TImageType, typename TFunctor>
+    static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType, TFunctor> & );
+    
+    template<typename TImageType, typename TFunctor>
+    static void draw( Display3D & display, const DGtal::AddGrayScaleImage3DWithFunctor<TImageType, TFunctor> & );
+    
+    template<typename TImageType, typename TFunctor>
+    static void draw( Display3D & display, const DGtal::AddGrayScaleImage2DWithFunctor<TImageType, TFunctor> & );
+    
     static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
     static void draw( Display3D & display,  const DGtal::UpdateLastImagePosition & anUpdate );
 

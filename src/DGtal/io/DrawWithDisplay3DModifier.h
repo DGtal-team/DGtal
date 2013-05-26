@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Alias.h"
+
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -339,6 +341,54 @@ namespace DGtal
 
 
 
+  /**
+   * 
+   * @brief class to insert an image 2D Textured image by using a conversion functor.
+   * 
+   */
+  template <typename TImageType, typename TFunctor>
+  struct AddGrayScaleImage2DWithFunctor : public DrawWithDisplay3DModifier
+  {
+    
+    /**
+     * Constructor given from an 2D image and a Functor to apply specific conversion. 
+     * 
+     */
+
+    AddGrayScaleImage2DWithFunctor(ConstAlias<TImageType> anImage, 
+				   ConstAlias<TFunctor> aFunctor ): my2DImage(anImage), myFunctor(aFunctor)
+    {
+      
+    }
+    const TImageType *my2DImage;
+    const TFunctor &myFunctor;
+  };
+
+
+  /**
+   * 
+   * @brief class to insert an image 3D Textured image by using a conversion functor.
+   * 
+   */
+  template <typename TImageType, typename TFunctor>
+  struct AddGrayScaleImage3DWithFunctor : public DrawWithDisplay3DModifier
+  {
+    
+    /**
+     * Constructor given from an 2D image and a Functor to apply specific conversion. 
+     * 
+     */
+
+    AddGrayScaleImage3DWithFunctor(ConstAlias<TImageType> anImage, 
+				   ConstAlias<TFunctor> aFunctor ): my3DImage(&anImage), myFunctor(aFunctor)
+    {
+      
+    }
+    const TImageType *my3DImage;
+    const TFunctor &myFunctor;
+  };
+
+
 
   /**
    * 
@@ -381,7 +431,7 @@ namespace DGtal
    * possibility to translate it (optional).
    * 
    */
-  template<typename TImageType>
+  template<typename TImageType, typename TFunctor= CastFunctor<unsigned char> >
   struct UpdateImageData : public DrawWithDisplay3DModifier
   {
    
@@ -398,11 +448,12 @@ namespace DGtal
      *
      */
     UpdateImageData(unsigned int anIndex, const  TImageType &anImage, double translateX=0,
-		    double translateY=0, double translateZ=0 ): myIndex(anIndex),
+		    double translateY=0, double translateZ=0, const TFunctor &aFunctor=TFunctor() ): myIndex(anIndex),
 								myImage(&anImage),
 								myTranslateX (translateX), 
 								myTranslateY (translateY),
-								myTranslateZ (translateZ)
+								myTranslateZ (translateZ),
+								myFunctor(aFunctor)
     {
       
     }
@@ -411,6 +462,7 @@ namespace DGtal
     int myTranslateY;
     int myTranslateZ;
     const TImageType *myImage;
+    const TFunctor &myFunctor;
   };
 
 
