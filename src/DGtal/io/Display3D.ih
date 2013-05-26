@@ -908,10 +908,10 @@ DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
 
 
 
-template <typename TImageType>
+template <typename TImageType, typename TFunctor>
 inline
 void 
-DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageType & image, 
+DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor, 
 				       double xTranslation, double yTranslation, double zTranslation){
   BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
@@ -920,7 +920,7 @@ DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageTyp
   updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
   updateBoundingBox(anImage.x4+xTranslation, anImage.y4+yTranslation, anImage.z4+zTranslation);
-  anImage.updateImageDataAndParam(image, xTranslation, yTranslation, zTranslation);
+  anImage.updateImageDataAndParam(image, aFunctor, xTranslation, yTranslation, zTranslation);
   if(anImage.myDrawDomain){
     *this << DGtal::Translate2DDomain(anImage.myIndexDomain, xTranslation, yTranslation, zTranslation); 
   }

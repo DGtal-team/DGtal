@@ -37,6 +37,8 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 #include "DGtal/math/BasicMathFunctions.h"
 #include "ConfigTest.h"
 
@@ -70,6 +72,18 @@ bool testViewer3D()
   return nbok == nb;
 }
 
+
+struct convertToGS{
+
+ inline
+ unsigned char operator() (unsigned char aColInt) const
+ {
+   Color col(aColInt);
+   DGtal::BasicColorToScalarFunctors::MeanChannels aMeanFct;
+  return aMeanFct(col);
+ }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -86,12 +100,17 @@ int main( int argc, char** argv )
  Point p1( 0, 0, 0 );
  Point p2( 125, 188, 0 );
  Point p3( 30, 30, 30 );
- 
+
  std::string filename =  testPath + "samples/church-small.pgm";
+ std::string filename2 =  testPath + "samples/color64.png";
+
  imageNG image = DGtal::PNMReader<imageNG>::importPGM(filename); 
+ imageNG image2 = DGtal::GenericReader<imageNG>::import(filename2); 
  
+
+ viewer << DGtal::AddGrayScaleImage2DWithFunctor<imageNG,  convertToGS >(image2, convertToGS() );
  viewer << image;
- viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  0, 0, 0 );
+ viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  500, 500, 500 );
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
  viewer << DGtal::Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
@@ -105,9 +124,11 @@ int main( int argc, char** argv )
    }else if(i%4==3){
      viewer << SetMode3D( image.className(), "InterGrid" );
    }
-   viewer << image; 
-   viewer << DGtal::UpdateImageData<imageNG>(i+1, image,  i*50, i*50, i*50);
+ viewer << image; 
+ viewer << DGtal::UpdateImageData<imageNG>(i+1, image,  i*50, i*50, i*50);
  }
+
+
 
  viewer << p1 << p2 << p3;
  viewer << Display3D::updateDisplay;
