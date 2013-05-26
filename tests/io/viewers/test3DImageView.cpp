@@ -38,11 +38,12 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 #include "DGtal/math/BasicMathFunctions.h"
 #include "ConfigTest.h"
 
-
+#include <limits> 
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -73,14 +74,12 @@ bool testViewer3D()
 }
 
 
-struct convertToGS{
+struct treshFct{
 
  inline
- unsigned char operator() (unsigned char aColInt) const
+ unsigned char operator() (unsigned int aVal) const
  {
-   Color col(aColInt);
-   DGtal::BasicColorToScalarFunctors::MeanChannels aMeanFct;
-  return aMeanFct(col);
+   return aVal>128? aVal: 0;
  }
 };
 
@@ -102,13 +101,12 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
 
  std::string filename =  testPath + "samples/church-small.pgm";
- std::string filename2 =  testPath + "samples/color64.png";
 
  imageNG image = DGtal::PNMReader<imageNG>::importPGM(filename); 
- imageNG image2 = DGtal::GenericReader<imageNG>::import(filename2); 
- 
+ imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
 
- viewer << DGtal::AddGrayScaleImage2DWithFunctor<imageNG,  convertToGS >(image2, convertToGS() );
+
+ viewer << DGtal::AddGrayScaleImage2DWithFunctor<imageNG,  treshFct >(image2, treshFct() );
  viewer << image;
  viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  500, 500, 500 );
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );

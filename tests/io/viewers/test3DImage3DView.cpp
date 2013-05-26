@@ -71,6 +71,15 @@ bool testViewer3D()
   return nbok == nb;
 }
 
+struct treshFct{
+
+ inline
+ unsigned char operator() (unsigned char aVal) const
+ {
+   return aVal< 80 ? aVal: 255;
+ }
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -92,7 +101,8 @@ int main( int argc, char** argv )
  
  Image3D image3d =  VolReader<Image3D>::importVol(filename); 
  viewer << SetMode3D(image3d.className(), "BoundingBox");
- viewer << image3d;
+ // viewer << image3d;
+ viewer << DGtal::AddGrayScaleImage3DWithFunctor<Image3D,  treshFct >(image3d, treshFct() );
 
  // Extract some slice images:
  // Get the 2D domain of the slice:
