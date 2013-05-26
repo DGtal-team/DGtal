@@ -772,7 +772,7 @@ DGtal::Viewer3D::updateList ( bool needToUpdateBoundingBox )
 		   GL_LUMINANCE, GL_UNSIGNED_BYTE, textureImg.myTextureImageBufferGS);
     }else if(textureImg.myMode==Display3D::RGBMode){
       glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, textureImg.myBufferWidth, textureImg.myBufferHeight, 0,
-		   GL_RGB, GL_UNSIGNED_INT, textureImg.myTextureImageBufferRGB);
+		   GL_RGB, GL_UNSIGNED_BYTE, textureImg.myTextureImageBufferRGB);
     }
     
     myVectTextureImage.push_back(textureImg);  
