@@ -347,7 +347,7 @@ namespace DGtal
    * 
    */
   template <typename TImageType, typename TFunctor>
-  struct AddGrayScaleImage2DWithFunctor : public DrawWithDisplay3DModifier
+  struct AddTextureImage2DWithFunctor : public DrawWithDisplay3DModifier
   {
     
     /**
@@ -355,7 +355,7 @@ namespace DGtal
      * 
      */
 
-    AddGrayScaleImage2DWithFunctor(ConstAlias<TImageType> anImage, 
+    AddTextureImage2DWithFunctor(ConstAlias<TImageType> anImage, 
 				   ConstAlias<TFunctor> aFunctor ): my2DImage(anImage), myFunctor(aFunctor)
     {
       
@@ -371,7 +371,7 @@ namespace DGtal
    * 
    */
   template <typename TImageType, typename TFunctor>
-  struct AddGrayScaleImage3DWithFunctor : public DrawWithDisplay3DModifier
+  struct AddTextureImage3DWithFunctor : public DrawWithDisplay3DModifier
   {
     
     /**
@@ -379,7 +379,7 @@ namespace DGtal
      * 
      */
 
-    AddGrayScaleImage3DWithFunctor(ConstAlias<TImageType> anImage, 
+    AddTextureImage3DWithFunctor(ConstAlias<TImageType> anImage, 
 				   ConstAlias<TFunctor> aFunctor ): my3DImage(anImage), myFunctor(aFunctor)
     {
       

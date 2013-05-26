@@ -380,10 +380,10 @@ namespace DGtal
     static void draw( Display3D & display, const DGtal::UpdateImageData<TImageType, TFunctor> & );
     
     template<typename TImageType, typename TFunctor>
-    static void draw( Display3D & display, const DGtal::AddGrayScaleImage3DWithFunctor<TImageType, TFunctor> & );
+    static void draw( Display3D & display, const DGtal::AddTextureImage3DWithFunctor<TImageType, TFunctor> & );
     
     template<typename TImageType, typename TFunctor>
-    static void draw( Display3D & display, const DGtal::AddGrayScaleImage2DWithFunctor<TImageType, TFunctor> & );
+    static void draw( Display3D & display, const DGtal::AddTextureImage2DWithFunctor<TImageType, TFunctor> & );
     
     static void draw( Display3D & display, const DGtal::UpdateImagePosition & );
     static void draw( Display3D & display,  const DGtal::UpdateLastImagePosition & anUpdate );

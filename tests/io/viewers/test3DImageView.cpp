@@ -106,7 +106,7 @@ int main( int argc, char** argv )
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
 
 
- viewer << DGtal::AddGrayScaleImage2DWithFunctor<imageNG,  treshFct >(image2, treshFct() );
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  treshFct >(image2, treshFct() );
  viewer << image;
  viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  500, 500, 500 );
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );

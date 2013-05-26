@@ -897,7 +897,7 @@ DGtal::Display3D::exportToMesh(DGtal::Mesh<pointD3D> &aMesh) const {
 
 inline
 void 
-DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
+DGtal::Display3D::addTextureImage(const Display3D::TextureImage &image){
   myGSImageList.push_back(image);
   updateBoundingBox(image.x1, image.y1, image.z1);
   updateBoundingBox(image.x2, image.y2, image.z2);
@@ -911,11 +911,11 @@ DGtal::Display3D::addGrayScaleImage(const Display3D::GrayScaleImage &image){
 template <typename TImageType, typename TFunctor>
 inline
 void 
-DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor, 
+DGtal::Display3D::updateTextureImage(unsigned int imageIndex,  const TImageType & image, const  TFunctor & aFunctor, 
 				       double xTranslation, double yTranslation, double zTranslation){
   BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
   assert ( imageIndex< myGSImageList.size());
-  Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 
+  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex); 
   updateBoundingBox(anImage.x1+xTranslation, anImage.y1+yTranslation, anImage.z1+zTranslation);
   updateBoundingBox(anImage.x2+xTranslation, anImage.y2+yTranslation, anImage.z2+zTranslation);
   updateBoundingBox(anImage.x3+xTranslation, anImage.y3+yTranslation, anImage.z3+zTranslation);
@@ -930,10 +930,10 @@ DGtal::Display3D::updateGrayScaleImage(unsigned int imageIndex,  const TImageTyp
 
 inline 
 void 
-DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex, 
+DGtal::Display3D::updateOrientationTextureImage(unsigned int imageIndex, 
 						  double xPosition, double yPosition, double zPosition, ImageDirection newDirection){
   assert ( imageIndex< myGSImageList.size());
-  Display3D::GrayScaleImage &anImage = myGSImageList.at(imageIndex); 
+  Display3D::TextureImage &anImage = myGSImageList.at(imageIndex); 
   updateBoundingBox(anImage.x1, anImage.y1, anImage.z1);
   updateBoundingBox(anImage.x2, anImage.y2, anImage.z2);
   updateBoundingBox(anImage.x3, anImage.y3, anImage.z3);
@@ -951,7 +951,7 @@ DGtal::Display3D::updateOrientationGrayScaleImage(unsigned int imageIndex,
 
 inline      
 void
-DGtal::Display3D::GrayScaleImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir, 
+DGtal::Display3D::TextureImage::updateImageOrientation( DGtal::Display3D::ImageDirection normalDir, 
 							  double xBottomLeft, double yBottomLeft, double zBottomLeft){
   if(normalDir==zDirection){
     x1 = xBottomLeft-0.5; y1 = yBottomLeft-0.5; z1 = zBottomLeft;
@@ -1214,9 +1214,9 @@ DGtal::Display3D::translateAn2DDomain(unsigned int domainIndex, double xTranslat
    
 inline
 std::string 
-DGtal::Display3D::GrayScaleImage::className() const
+DGtal::Display3D::TextureImage::className() const
 {
-  return "GrayScaleImage";
+  return "TextureImage";
 }
 
 
