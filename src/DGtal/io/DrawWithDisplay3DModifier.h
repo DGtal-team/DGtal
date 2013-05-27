@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
+#include "DGtal/images/CConstImage.h"
 
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
@@ -343,13 +344,33 @@ namespace DGtal
 
   /**
    * 
-   * @brief class to insert an image 2D Textured image by using a conversion functor.
+   * @brief class to insert a custom 2D textured image by using a
+   * conversion functor and allows to change the default mode
+   * (GrayScale mode) to color mode.
    * 
+   * @tparam TImageType the type of the used as texture (should follow the concept of CConstImage).
+   * @tparam TFunctor  the functor type to transform source image scalar value into the one of the image being displayed.
+   *
+   * A typical use can be illustrated by displaying a grayscale source
+   * image with artificial color defined from a colormap (see
+   * viewer3D-8-2Dimages.cpp ):
+   * We can first add a functor to convert grayscale value into RGB int:
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorfct
+   * 
+   * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer: 
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+   * 
+   * @note If you change the image date don't forget to specify again.
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+   *
+   * @see AddTextureImage3DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor>
   struct AddTextureImage2DWithFunctor : public DrawWithDisplay3DModifier
   {
-    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;    
+
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion. 
      * 
@@ -368,16 +389,34 @@ namespace DGtal
     Display3D::TextureMode myMode;
   };
 
-
   /**
    * 
-   * @brief class to insert an image 3D Textured image by using a conversion functor.
+   * @brief class to insert a custom 3D textured image by using a
+   * conversion functor and allows to change the default mode
+   * (GrayScale mode) to color mode.
    * 
+   * @tparam TImageType the type of the used as texture (should follow the concept of CConstImage).
+   * @tparam TFunctor  the functor type to transform source image scalar value into the one of the image being displayed.
+   *
+   * A typical use can be illustrated by displaying a grayscale source
+   * image with artificial color defined from a colormap (see
+   * viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp):
+   * We can first add a functor to convert grayscale value into RGB int:
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+   * @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorfct
+   * 
+   * Then you can define and add the object AddTextureImage2DWithFunctor in a viewer: 
+   * @snippet io/viewers/viewer3D-9-3Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+   * 
+   * @note If you change the image date don't forget to specify again the functor with the UpdateImageData object.
+   *
+   * @see AddTextureImage2DWithFunctor viewer3D-8-2Dimages.cpp viewer3D-9-3Dimages.cpp
    */
   template <typename TImageType, typename TFunctor>
   struct AddTextureImage3DWithFunctor : public DrawWithDisplay3DModifier
   {
-    
+    BOOST_CONCEPT_ASSERT((  CConstImage<TImageType> )) ;    
+
     /**
      * Constructor given from an 2D image and a Functor to apply specific conversion. 
      * 

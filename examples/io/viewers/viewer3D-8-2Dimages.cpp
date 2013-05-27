@@ -37,11 +37,28 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 
+//! [ExampleViewer3D2DImagesExtractImagesColorHeader]
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/Color.h"
+//! [ExampleViewer3D2DImagesExtractImagesColorHeader]
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
+//! [ExampleViewer3D2DImagesExtractImagesColorFct]
+struct hueFct{
+ inline
+ unsigned int operator() (unsigned char aVal) const
+  {
+    HueShadeColorMap<unsigned char>  hueShade(0,255);
+    Color col = hueShade((unsigned char)aVal);
+    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue()); 
+  }
+};
+//! [ExampleViewer3D2DImagesExtractImagesColorFct]
 ///////////////////////////////////////////////////////////////////////////////
 
 int main( int argc, char** argv )
@@ -87,7 +104,7 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesExtractImages]
 
  //! [ExampleViewer3D2DChangeMode]
-  viewer << SetMode3D(aSliceImageZ.className(), "InterGrid");
+  viewer << SetMode3D(aSliceImageZ.className(), "BoundingBox");
   viewer << Viewer3D::updateDisplay;
   //! [ExampleViewer3D2DChangeMode]
 
@@ -95,14 +112,32 @@ int main( int argc, char** argv )
   viewer <<  aSliceImageZ;
   viewer <<  aSliceImageY;
   //! [ExampleViewer3D2DImagesDisplayImages]
+  
+  viewer << SetMode3D(aSliceImageZ.className(), "");
+  //! [ExampleViewer3D2DImagesDisplayImagesColor]
+  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct> (aSliceImageZ, hueFct(), Display3D::RGBMode);
+  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct> (aSliceImageY, hueFct(), Display3D::RGBMode);
+  //! [ExampleViewer3D2DImagesDisplayImagesColor]
+
+
+
+
 
   //! [ExampleViewer3D2DModifImages]
   viewer << DGtal::UpdateImagePosition(1, DGtal::Display3D::yDirection, 0.0,  50.0, 0.0);
-  viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ, 0, 0, 10);
+  viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ,  0, 0, 10);
   viewer << Viewer3D::updateDisplay;
  //! [ExampleViewer3D2DModifImages]
 
+  //! [ExampleViewer3D2DModifImagesColor]
+  viewer << DGtal::UpdateImagePosition(3, DGtal::Display3D::yDirection, 500.0,  50.0, 0.0);
+  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, hueFct());
+  viewer << Viewer3D::updateDisplay;
+  //! [ExampleViewer3D2DModifImagesColor]
+
  
+
+  
 return application.exec();
 
   trace.endBlock();

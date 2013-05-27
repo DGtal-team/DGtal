@@ -38,10 +38,28 @@
 #include <QtGui/qapplication.h>
 #include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/Color.h"
+
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+
+
+
+struct hueFct{
+ inline
+ unsigned int operator() (unsigned int aVal) const
+  {
+    HueShadeColorMap<unsigned int>  hueShade(0,255);
+    Color col = hueShade((unsigned int)aVal);
+    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue()); 
+  }
+};
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -83,7 +101,8 @@ int main( int argc, char** argv )
   } 
   viewer << imageCrop;  
   viewer << SetMode3D(imageCrop.className(), "BoundingBox");
-  viewer << imageCrop2;  
+  
+  viewer << AddTextureImage3DWithFunctor<Image3D, hueFct> (imageCrop2, hueFct(), Display3D::RGBMode); 
   viewer << Display3D::updateDisplay;
   return application.exec();
 }
