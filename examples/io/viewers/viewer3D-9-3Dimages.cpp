@@ -101,9 +101,11 @@ int main( int argc, char** argv )
   } 
   viewer << imageCrop;  
   viewer << SetMode3D(imageCrop.className(), "BoundingBox");
-  
+    //! [ExampleViewer3D3DImagesDisplayImagesColor]
   viewer << AddTextureImage3DWithFunctor<Image3D, hueFct> (imageCrop2, hueFct(), Display3D::RGBMode); 
   viewer << Display3D::updateDisplay;
+  //! [ExampleViewer3D3DImagesDisplayImagesColor]
+
   return application.exec();
 }
 //                                                                           //
