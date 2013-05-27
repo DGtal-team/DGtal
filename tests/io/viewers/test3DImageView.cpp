@@ -81,11 +81,7 @@ struct hueFct{
   {
     HueShadeColorMap<unsigned int>  hueShade(0,255);
     Color col = hueShade((unsigned int)aVal);
-    unsigned int valR = ((unsigned int) col.red()) <<  16; 
-    unsigned int valG = ((unsigned int) col.green()) << 8; 
-    unsigned int valB = ((unsigned int) col.blue()) ; 
-    unsigned int ret= valR | valG  | valB;
-    return ret;
+    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue()); 
   }
 };
 

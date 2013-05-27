@@ -382,13 +382,13 @@ Finally you can adjust the image setting with the Display3DModifier UpdateImageP
 
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImages
 
-You will obtain such visualisation:
+You will obtain such a visualisation:
  \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation." width=5cm 
  \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualisation." 
 
 You can also change the default mode by using:
 @snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DChangeMode
-and you will obtain the following visualisation:
+and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualisation:
  \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation with InterGrid mode." width=5cm 
  \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualisation." 
 
@@ -404,6 +404,40 @@ In the same way a 3D image can be displayed. By following the same stream operat
 \image latex  viewer3D-9.png  "Example of 3D image visualisation with also digital sets."  
 
 See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp 
+
+
+
+\section DGtalGLV_Images3D Adding Custom  Image visualisation in 3D
+
+By default an image is displayed in gray scale levels from its scalar
+values. However it is possible to display color texture image by using
+the object AddTextureImage2DWithFunctor or AddTextureImage3DWithFunctor (of the
+DrawWithDisplay3DModifier class) with the RGBmode which allows to
+interpret the scalar as a color value. A color functor can also be
+specified to generate a given color.
+
+For instance the previous examples can easily displayed with color map:
+
+
+First we generate a color functor to generate unsigned integer interpreted as RGB color:
+- Adding the header to use  hueShadeMap:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+
+with a functor to transform integer representing grayscale to integer representing color:
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+
+ 
+- Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object: 
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+
+
+- Note that also can update the image position image data as in the previous example and we need to recall the functor function if we want to keep the same data interpretation :
+@snippet io/viewers/viewer3D-8-2Dimages.cpp ExampleViewer3D2DModifImagesColor
+
+You will obtain such a visualisation:
+ \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." width=5cm 
+ \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualisation." 
+
 
 */
 
@@ -490,7 +524,7 @@ See more details in  the example: io/viewers/viewer3D-8-2Dimages.cpp
 *
 */
 /**
-   \image html  viewer3D-8.png  "Illustration of the 2D image slice visualisation."
+   \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualisation."
    \example io/viewers/viewer3D-8-2Dimages.cpp
 
 *
