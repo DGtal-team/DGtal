@@ -54,8 +54,8 @@ using namespace DGtal;
 
 //#define CHECK_RES
 
-template <typename Integer,typename SmallInteger>
-bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
+template <typename Integer>
+bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 {
   //typedef mpf_class Number;
   typedef long double Number;
@@ -98,57 +98,52 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
       
       // Integer b = pow(10.0,p);
       
-      Integer a( random() % bb);
-      
-      //std::cout << " a=" <<  a << " b=" << b << std::endl; 
-      
-      //Number alpha = (Number) a/(Number) bb;
-      
-      Integer g = ic.gcd(a,bb);
-      a = a/g;
-      b = bb/g;
-
-      
-      Number alpha = (Number) a/b;
-      //Number alpha((double) a/b,500);
-
-      if ( ic.gcd( a, b ) == 1 )
+       Integer b( random() % modb + 1 );
+       Integer a( random() % b +1);
+       
+       
+       if ( ic.gcd( a, b ) == 1 )
         {
 	  
           for ( unsigned int j = 0; j < 5; ++j )
             {
               //Integer mu = random() % (2*(Integer) pow(10.0,m));
 
-	      Integer mu = random() % (2*b);
+	      Integer mu = random() % (2*modb);
 	      
 	      Number beta = (Number) mu/(Number) b;
 	      //Number beta((double) mu/b,500);
 	      
               for (Integer x = 0; x < 10; ++x )
                 {
-                  nb ++;
+                  //nb ++;
 		  Integer x1 = random() % modx;
                   //Integer x2 = x1 + 1+ random()%modx;
 		  Integer x2 = x1 + 1+ modx;
 		  //Integer x2 = x1 + 1 + ( random() % modx );
                   
-                  //std::cout << "(" << a << "," << b << "," << mu << ") (" << alpha << "," << beta << ")" << std::endl;
+		  // std::cout << "(" << a << "," << b << "," << mu << ")\n" ; //(" << alpha << "," << beta << ")" << std::endl;
 		  
                   Integer y1 = ic.floorDiv(a*x1+mu,b);
                   Integer y2 = ic.floorDiv(a*x2+mu,b);
                   Point A = Point(x1,y1);
                   Point B = Point(x2,y2);
 		  
-		  //trace.info() << A << " " << B << std::endl;
+		  //trace.info() << "Points " << A << " " << B << std::endl;
 		  
 		  // DSLSubsegment algorithm
 		  
-		  timeBeginSubseg = clock();
-		  DSLSubseg D(a,b,mu,A,B);
-		  timeEndSubseg = clock();
-		  timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
-		  
-		  //std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
+		  if(B[0]-A[0] < 2*b) // reject easy cases when the segment contains a period of the DSL
+		    {
+		      std::cout << "(" << a << "," << b << "," << mu << ")\n" ; //(" << alpha << "," << beta << ")" << std::endl;
+		      trace.info() << "Points " << A << " " << B << std::endl;
+		      nb++;
+		      timeBeginSubseg = clock();
+		      DSLSubseg D(a,b,mu,A,B);
+		      timeEndSubseg = clock();
+		      timeTotalSubseg += ((double)timeEndSubseg-(double)timeBeginSubseg)/(((double)CLOCKS_PER_SEC)/1000);
+		      
+		      std::cout << "res = " << "(" << D.aa << "," << D.bb << "," << D.Nu << ")" << std::endl;
 
 		  // // DSLSubsegment algorithm using floating points
 		  // timeBeginSubsegD = clock();
@@ -168,12 +163,13 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 		  
 
 		  // Computation of the reduced parameters of Charrier & Buzer
-		  
-		  timeBeginCH = clock();
-		  DSLSubseg DD(a,b,mu,A,B,1);
-		  // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
-		  timeEndCH = clock();
-		  timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
+		      
+		      timeBeginCH = clock();
+		      DSLSubseg DD(a,b,mu,A,B,1);
+		      assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		      timeEndCH = clock();
+		      timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
+		    }
 		  
 #ifdef CHECK_RES
 		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
@@ -209,7 +205,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 	}
     }
   
-  std::cout << nb << " " << nberrors ;
+  std::cout << nb ;
   std::cout << " " << (long double) timeTotalSubseg/(nb);
   std::cout << " " << (long double) timeTotalCH/(nb);
   //std::cout << " " << (long double) timeTotalSubsegD/((nb-nberrors));
@@ -229,27 +225,22 @@ bool testDSLSubsegment( unsigned int nbtries, Integer bb, Integer modx)
 int main( int argc, char** argv )
 {
   typedef DGtal::int64_t Integer;
-  typedef DGtal::int32_t SmallInteger;
-  SmallInteger m = 10; // b = 10^p with p <= m
   
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :500;
-  
-  SmallInteger p = 1;
-  Integer b;
+
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :200;
   
   
-  for(p=2;p<=m;p++)
-    {
-      b = (Integer) pow(10.0,p);
-      //std::cout << b << std::endl;
-      for(Integer modx = 10; modx <= b;modx+=modx/8)
-	{
-	  // std::setprecision(15);
-	  //std::cout << b << " " << modx << " ";
-	  testDSLSubsegment<Integer,SmallInteger>( nbtries, b, modx);
-	  std::cout << std::endl;
-	}
-    }
+  Integer modb = 10000000000;
+  
+  for(Integer i = 10; i<modb ;i*=10) 
+    for(Integer modx = 10; modx <=  i;modx+=modx/5)
+      //Integer  modx = 1000;
+      {
+	std::cout << i << " " << modx << " ";
+	testDSLSubsegment<Integer>( nbtries,  i, modx);
+	std::cout << std::endl;
+      }
+  
   return 1;
 }
 //                                                                           //
