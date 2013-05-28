@@ -354,6 +354,7 @@ bool testTiledImage2D()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
     
     typedef TiledImageFromImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
     MyTiledImageFromImage tiledImageFromImage(image, factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;

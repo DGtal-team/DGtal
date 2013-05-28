@@ -44,10 +44,16 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/images/CImage.h"
+#include "DGtal/images/CImageFactory.h"
+#include "DGtal/images/CImageCacheReadPolicy.h"
+#include "DGtal/images/CImageCacheWritePolicy.h"
 #include "DGtal/base/Alias.h"
 
 #include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/ImageCache.h"
+
+#include "DGtal/images/DefaultConstImageRange.h"
+#include "DGtal/images/DefaultImageRange.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -82,12 +88,17 @@ public:
     
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT(( CImageFactory<TImageFactoryFromImage> ));
+    BOOST_CONCEPT_ASSERT(( CImageCacheReadPolicy<TImageCacheReadPolicy> ));
+    BOOST_CONCEPT_ASSERT(( CImageCacheWritePolicy<TImageCacheWritePolicy> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Point Point;
     typedef typename TImageContainer::Value Value;
+    typedef typename TImageContainer::ConstRange ConstRange;
+    typedef typename TImageContainer::Range Range;
     
     typedef TImageFactoryFromImage ImageFactoryFromImage;
     typedef typename ImageFactoryFromImage::OutputImage OutputImage;
@@ -135,7 +146,38 @@ public:
 public:
 
     /////////////////// Domains //////////////////
+    
+    /**
+     * Returns a reference to the underlying image domain.
+     *
+     * @return a reference to the domain.
+     */
+    const Domain & domain() const
+    {
+        return myImagePtr->domain();
+    }
 
+    /**
+     * Returns the range of the underlying image
+     * to iterate over its values
+     *
+     * @return a range.
+     */
+    ConstRange constRange() const
+    {
+        return myImagePtr->constRange();
+    }
+
+    /**
+     * Returns the range of the underlying image
+     * to iterate over its values
+     *
+     * @return a range.
+     */
+    Range range()
+    {
+        return myImagePtr->range();
+    }
 
     /////////////////// Accessors //////////////////
 
