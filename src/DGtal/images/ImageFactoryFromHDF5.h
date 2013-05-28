@@ -201,8 +201,8 @@ namespace DGtal
       int data_out[_NX_SUB][_NY_SUB];   // output buffer        // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
-      offset[0] = aDomain.lowerBound()[1];//-myImagePtr->domain().lowerBound()[1];
-      offset[1] = aDomain.lowerBound()[0];//-myImagePtr->domain().lowerBound()[0];
+      offset[0] = aDomain.lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
+      offset[1] = aDomain.lowerBound()[0]-myImagePtr->domain().lowerBound()[0];
       count[0] = _NX_SUB;
       count[1] = _NY_SUB;
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -229,7 +229,7 @@ namespace DGtal
         for (i = 0; i < _NY_SUB; i++)
         {
           typename OutputImage::Point pt;
-          pt[0]=offset[1]+i; pt[1]=offset[0]+j;
+          pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
           outputImage->setValue(pt, data_out[j][i]);
           //trace.info() << data_out[j][i];
@@ -312,8 +312,8 @@ namespace DGtal
       int data_in[_NX_SUB][_NY_SUB];    // input buffer         // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
-      offset[0] = outputImage->domain().lowerBound()[1];//-myImagePtr->domain().lowerBound()[1];
-      offset[1] = outputImage->domain().lowerBound()[0];//-myImagePtr->domain().lowerBound()[0];
+      offset[0] = outputImage->domain().lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
+      offset[1] = outputImage->domain().lowerBound()[0]-myImagePtr->domain().lowerBound()[0];
       count[0] = _NX_SUB;
       count[1] = _NY_SUB;
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
@@ -341,7 +341,7 @@ namespace DGtal
         for (i = 0; i < _NY_SUB; i++)
         {
           typename OutputImage::Point pt;
-          pt[0]=offset[1]+i; pt[1]=offset[0]+j;
+          pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
           data_in[j][i] = outputImage->operator()(pt);
           //trace.info() << data_in[j][i];
