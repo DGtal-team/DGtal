@@ -53,7 +53,7 @@ namespace DGtal
 /**
    Description of class 'CanonicCellEmbedder' <p>
 
-   \brief Aim: A trivial embedder for unsigned cell, which
+   \brief Aim: A trivial embedder for signed and unsigned cell, which
    corresponds to the canonic injection of cell centroids into Rn.
 
    Model of CCellEmbedder.
@@ -69,6 +69,7 @@ namespace DGtal
 
     typedef TKSpace KSpace;
     typedef typename KSpace::Cell Cell;
+    typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;
     typedef Cell Argument;
@@ -130,7 +131,25 @@ namespace DGtal
     */
     RealPoint operator()( const Cell & cell ) const;
 
-    // ----------------------- Interface --------------------------------------
+    /**
+       Map a signed cell to its corresponding point in the Euclidean
+       space.
+     
+       @param scell any signed cell in the digital space.
+       @return its canconical embedding in the Euclidean space.
+     */
+    RealPoint embed( const SCell & scell ) const;
+    
+    /**
+       Map a signed cell to its corresponding point in the Euclidean
+       space.
+     
+       @param scell any signed cell in the digital space.
+       @return its canconical embedding in the Euclidean space.
+     */
+    RealPoint operator()( const SCell & scell ) const;
+    
+   // ----------------------- Interface --------------------------------------
 public:
 
     /**
