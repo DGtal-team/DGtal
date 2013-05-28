@@ -105,7 +105,7 @@ namespace DGtal
       inline
       unsigned char operator() (const Color &aCol) const
       {
-	return static_cast<unsigned char>(  (int)aCol.green() + (int)aCol.blue() + (int)aCol.red() / 3); 
+	return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3); 
       }
     };
   } //namespace BasicColorToScalarFunctors  

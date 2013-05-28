@@ -4,7 +4,7 @@
     - The "boost program option library" dependency was removed.
     - DGtal needs boost >= 1.46
 
- *Kernel Package*
+*Kernel Package*
     - Two initialisation methods (initRemoveOneDim and initAddOneDim)
       for the Projector Functor from the BasicPointFunctors class in
       order to simplify the slice images (with example and test in 2D
@@ -31,7 +31,11 @@
       according to a given domain, ImageCache to implement an images cache with 'read and write' policies,
       TiledImageFromImage to implement a tiled image from a "bigger/original" one.
 
+*Graph Package*
+    - New graph visitor, which allows to visit a graph according to
+      any distance object (like the Euclidean distance to some point).
 
+	
 === DGtal 0.6 ===
  
  *General*

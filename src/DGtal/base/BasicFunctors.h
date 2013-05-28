@@ -48,8 +48,8 @@
 #include <algorithm>
 #include <functional>
 #include <cmath>
-
-#include "BasicBoolFunctions.h"
+#include "DGtal/base/Common.h"
+#include "DGtal/base/BasicBoolFunctions.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -59,7 +59,7 @@ namespace DGtal
 /// Duplicated STL functors
 /////////////////////////////////////////////////////////////////////////////
   template<typename T>
-  struct MinFunctor
+  struct MinFunctor : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -67,7 +67,7 @@ namespace DGtal
   };
   
   template<typename T>
-  struct MaxFunctor
+  struct MaxFunctor : std::binary_function <T,T,T>
   {
     inline
     T operator() (const T&a, const T&b) const
@@ -173,7 +173,7 @@ namespace DGtal
    * @tparam TValue type of the value
    */
   template <typename TValue>
-  class ConstValueFunctor
+  class ConstValueFunctor : std::unary_function <TValue,TValue>
   {
   public:
     typedef TValue Value;
@@ -243,6 +243,9 @@ namespace DGtal
   class Composer
   {
   public:
+    /// Necessary for DistanceVisitor.
+    typedef ReturnType Value;
+
     /** 
      * Default constructor
      */
@@ -320,7 +323,9 @@ namespace DGtal
  *
  */
 template <typename T, bool isLower = true, bool isEqual = true >
-class Thresholder {
+class Thresholder
+   : public std::unary_function <T,bool>
+ {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
     BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
@@ -350,7 +355,9 @@ class Thresholder {
 
 //specializations
 template <typename T>
-struct Thresholder<T,false,false> {
+struct Thresholder<T,false,false> 
+   : public std::unary_function <T,bool>
+{
 
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
@@ -369,7 +376,9 @@ struct Thresholder<T,false,false> {
     Input myT;
 };
 template <typename T>
-struct Thresholder<T,false,true> {
+struct Thresholder<T,false,true>
+  : public std::unary_function <T,bool>
+ {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
     BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
@@ -387,7 +396,9 @@ struct Thresholder<T,false,true> {
 };
 
 template <typename T>
-struct Thresholder<T,true,false> {
+struct Thresholder<T,true,false>
+  : public std::unary_function <T,bool>
+  {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
     BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
@@ -406,7 +417,9 @@ struct Thresholder<T,true,false> {
 };
 
 template <typename T>
-struct Thresholder<T,true,true> {
+struct Thresholder<T,true,true>
+   : public std::unary_function <T,bool>
+ {
   public:
     BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));
     BOOST_CONCEPT_ASSERT(( boost::LessThanComparable<T> ));
@@ -516,6 +529,7 @@ struct Thresholder<T,true,true> {
  */
 template <typename T>
 class IntervalThresholder 
+   : public std::unary_function <T,bool>
 {
 public:
   BOOST_CONCEPT_ASSERT(( boost::EqualityComparable<T> ));

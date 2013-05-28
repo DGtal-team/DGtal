@@ -41,6 +41,9 @@
 // ----------------------- Standard services ------------------------------
 namespace DGtal{
 
+  template<typename Space>  
+  const typename Space::Dimension LinearAlgebra<Space>::dimension = Space::dimension;
+
   template<typename Space>
   inline
   typename LinearAlgebra<Space>::Integer 
