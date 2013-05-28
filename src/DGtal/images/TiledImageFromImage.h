@@ -173,7 +173,11 @@ public:
       for(i=0; i<ImageContainer::Domain::dimension; i++)
       {
         low[i] = aPoint[i]/mySize[i];
-        if (!(aPoint[i]%mySize[i])) low[i]--;
+        if (low[i]!=0)
+        {
+          if (!(aPoint[i]%mySize[i]))
+            low[i]--;
+        }
       }
       
       Point dMin, dMax;
