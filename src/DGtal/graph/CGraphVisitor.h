@@ -73,7 +73,7 @@ the traversal with a given predicate.
 - \c Size: the type used for counting vertices in the graph, must be Graph::Size.
 - \c MarkSet: the type used for representing a set of marked vertices, a model of boost::SimpleAssociativeContainer and boost::UniqueAssociativeContainer, whose key type / value type is Vertex.
 - \c Data: the type is associated to the current node and may be used for several purposes (like measuring the distance between the current element and the starting point/set), a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible.
-- \c Node: the pair<Vertex,Data>, where Vertex is the current node, Data is the attached data.
+- \c Node: either the pair<Vertex,Data> or a type convertible to the pair<Vertex,Data>, where Vertex is the current node, Data is the attached data.
  
 ### Notation
  - \e X : A type that is a model of CGraphVisitor
@@ -99,7 +99,7 @@ the traversal with a given predicate.
 
 ### Models
 
-- BreadthFirstVisitor, DepthFirstVisitor
+- BreadthFirstVisitor, DepthFirstVisitor, DistanceVisitor
 
 ### Notes
 
@@ -128,8 +128,8 @@ public:
   BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Data > ));
   BOOST_CONCEPT_ASSERT(( boost::Assignable< Data > ));
   BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Data > ));
-  BOOST_STATIC_ASSERT(( ConceptUtils::SameType<Node, std::pair<Vertex,Data> >::value ));
-
+  BOOST_STATIC_ASSERT(( boost::is_convertible<Node, std::pair<Vertex,Data> >::value ));
+  
   // To test if two types A and Y are equals, use
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CGraphVisitor )
