@@ -186,9 +186,12 @@ namespace DGtal
       void update(Vector u, Point A, Vector l, Integer r, Vector *v);
       void update(Vector u, Point A, Number s, Vector *v);
       
-      
+      void filterUpperCH(Vector l, Number mu, Point sup[4]);
+
+
       //void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
       void convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup);
+      void convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup);
       void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
       void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup);
       

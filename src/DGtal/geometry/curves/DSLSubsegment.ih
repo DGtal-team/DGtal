@@ -365,6 +365,66 @@ u *= alpha;
 // }
 
 
+
+template <typename TInteger, typename TNumber>
+inline
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup)
+{
+   if(n >= l[0])
+     {
+       *inf = l;
+       *sup = l;
+     }
+   
+   if(l[1] == 0)
+     {
+       *inf = l;
+       *sup = Point(n,1);
+     }
+   else
+     {
+       
+       Point A = Point(0,1);
+       Point B = Point(1,0);
+       
+       int i=0;
+       bool ok = true;
+       Integer alpha1, alpha2, alpha;
+       
+       while(ok)
+	 {
+	   if(i%2==0)
+	     {
+	       alpha1 = intersection(A,B,l,0);
+	       alpha2 = intersectionVertical(A,B,n);
+	       alpha = min(alpha1,alpha2); 
+	       A = A + alpha*B;
+	       if(A[0]*l[1]-A[1]*l[0]==0 || alpha == alpha2)
+		 ok = false;
+	     }
+	   if(i%2==1)
+	     {
+	       alpha1 = intersection(B,A,l,0);
+	       alpha2 = intersectionVertical(B,A,n);
+	       alpha = min(alpha1,alpha2);
+	       B = B + alpha*A;
+	       if(B[0]*l[1]-B[1]*l[0]==0 || alpha == alpha2)
+		 ok = false;
+	     }
+	   i++;
+	 }
+       
+       
+   
+       *inf = B;
+       *sup = A;
+     }
+}
+
+
+
+
+
 template <typename TInteger, typename TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup)
@@ -486,7 +546,9 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
   if(r==0)
     {
       *inf = Point(0,0);
-      *sup = Point(0,0);
+      *sup = Point(0,1);
+      *prevInf = *inf;
+      *prevSup = *sup;
     }
   else
   // if(n >= l[0])
@@ -512,7 +574,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 
       Vector u = Vector(0,-1);
       Vector v = Vector(1,0);
-      
+      Vector vv;
       Vector normal = Vector(-l[1],l[0]);
       
       Integer alpha;
@@ -537,14 +599,14 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 		if(alpha >= 1 || first)
 		  {
 		    Aold = A;
-		    Vector vv  = v;
+		    vv  = v;
 		    vv *= alpha;
 		    A += vv;
 		    // test if A is on the slope
 		    if(A[0]*l[1]-A[1]*l[0]+r ==0)
 		      {
 			ok = false;
-			v = A;
+			//	v = A;
 		      }
 		    else
 		      {
@@ -564,14 +626,14 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 		  if(alpha >= 1)
 		    {
 		      Bold = B;
-		      Vector vv = v;
+		      vv = v;
 		      vv *= alpha;
 		      B += vv;
 		      // test if B is on the slope
 		      if(B[0]*l[1]-B[1]*l[0] +r==0 )
 			{
 			  ok = false;
-			  v = B;
+			  //v = B;
 			  
 			}
 		      else
@@ -589,16 +651,15 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 	  
 	}
       
-      
       if(A[0]*l[1]-A[1]*l[0]+r ==0)
-	{ //if A is on the line, A is a point of both convex hulls
+	{
 	  *sup = A;
 	  *inf = A;
-	  *prevInf = B; // A is the new inf point, and B is now the previous one
 	  *prevSup = Aold;
+	  *prevInf = B;
 	}
       else
-	if(B[0]*l[1]-B[1]*l[0] +r==0 )
+	if(B[0]*l[1]-B[1]*l[0]+r ==0)
 	  {
 	    *inf = B;
 	    *sup = B;
@@ -612,7 +673,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
 	    *prevInf = Bold;
 	    *prevSup = Aold;
 	  }
-
+  
       }
   
 }
@@ -887,7 +948,8 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
    if(r == fq)
      rr = gq;
    else
-     rr = (Integer) floor((FloatType) (r*gq)/fq);
+     //rr = (Integer) floor((FloatType) (r*gq)/fq);
+     rr = (r*gq)/fq;
    
    // Version 2: performing a dichotomy. Integer only version but slightly less performant
    // We look for r'/q' such that r'/q' <= r/q <= (r'+1)/q', which is equilavent to -q <= r'q-rq' <= 0 
@@ -1525,7 +1587,8 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::findSolutionWithoutFractions(Intege
 	       else
 		 {
 		   //std::cout << "Neither A nor B is the solution " << std::endl;
-		   convexHullApprox(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&sup);
+		   //convexHullApprox(Vector(fq,fp),0,max(r.x,n-r.x),&inf,&sup);
+		   convexHullHarPeled(Vector(fq,fp),max(r.x,n-r.x),&inf,&sup);
 		   // Let C be the point on r with abscissa equal to inf. 
 		   RayC rr = raySup(inf[1],inf[0],r); // ray above r passing through C
 		   if(rr.x == r.x) // r is the highest ray passing through C
@@ -1600,17 +1663,22 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
       // A becomes the origin // mu must be between 0 and b
       mu += a*A[0] - A[1]*b;
       Point inf, sup;
+      
+      Point inf2, sup2;
+      
       Integer fp,fq,gp,gq;
       //std::cout << " " << a << " " << b << " " << mu << std::endl; 
       ////std::cout << "mu = " << mu << std::endl;
 
       if(b>n)
 	{
-	  convexHullApprox(Vector(b,a),0,n,&inf,&sup);
+	  //convexHullApprox(Vector(b,a),0,n,&inf,&sup);
+	  convexHullHarPeled(Vector(b,a),n,&inf,&sup);
 	  fp = inf[1];
 	  fq = inf[0];
 	  gp = sup[1];
 	  gq = sup[0];  
+	  // assert(inf==inf2 && sup==sup2);
 	  } 
       else
       	{
@@ -1811,6 +1879,40 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number alpha, Number beta,
 }
 
 
+template <typename TInteger, typename TNumber>
+inline
+void DGtal::DSLSubsegment<TInteger,TNumber>::filterUpperCH(Vector l, Number mu, Point sup[4])
+{
+  DGtal::IntegerComputer<Integer> ic;
+
+  Point P = sup[1];
+  //check if sup[0] == sup[1] ?
+  if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+    {
+      Vector v = sup[2] - sup[0];
+      Integer g;
+      if(v[0]==0 || v[1]==0)
+	g = 1;
+      else
+	g = ic.gcd(v[0],v[1]);
+      std::cout << v << " " << g << std::endl;
+      sup[1] = sup[0]+(g-1)*(v/g);
+    }
+  
+  P = sup[2];
+  if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+    {
+      Vector v = sup[3] - sup[1];
+      Integer g;
+      if(v[0]==0 || v[1]==0)
+	g = 1;
+      else
+	g = ic.gcd(v[0],v[1]);
+      std::cout << v << " " << g << std::endl;
+      sup[2] = sup[1]+(v/g);
+    }
+  
+}
 
 // Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
 template <typename TInteger, typename TNumber>
@@ -1894,92 +1996,146 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
   
   aa=0, bb=0, Nu=0;
   
-  if(infL != infR)
-    {
-      
-      
+  // we are left with four possible lines given by the couples (prevInfL, infL=infR) (infL = infR,prevInfR)
+  // (prevSupL, supL = supR) (supL = supR, prevSupR)
+  // the solution is given by the slope with bigger b
   
-      bb = infR[0] - infL[0];
-      aa = infR[1] - infL[1];
-      //std::cout << bb << " " << aa ;
-      Integer g = ic.gcd(bb,aa);
-      bb = bb/g;
-      aa = aa/g;
-      Nu = -aa*infL[0] + bb*infL[1];
-    }
-  else
-    if(supL != supR)
-      { // the slope is given by the upper point
-  	bb = supR[0] - supL[0];
-  	aa = supR[1] - supL[1];
-  	//std::cout << bb << " " << aa ;
-  	Integer g = ic.gcd(bb,aa);
-  	bb = bb/g;
-  	aa = aa/g;
-  	Nu = -aa*infL[0] + bb*infL[1]; // but the solution line goes through the lower point
-      }
-    else
-      {
-  	// we are left with four possible lines given by the couples (prevInfL, infL=infR) (infL = infR,prevInfR)
-  	// (prevSupL, supL = supR) (supL = supR, prevSupR)
-  	// the solution is given by the slope with bigger b
+  
+	Point inf[4];
+	
+	inf[0] = prevInfL;
+	inf[1] = infL; 
+	inf[2] = infR;
+	inf[3] = prevInfR;
+
+	Point sup[4];
+	
+	sup[0] = prevSupL;
+	sup[1] = supL; 
+	sup[2] = supR;
+	sup[3] = prevSupR;
+
+	
+	for(int i=0;i<4;i++)
+	  std::cout << sup[i] << std::endl;
+	
+	
+	filterUpperCH(l,mu,sup);
+	
+	for(int i=0;i<4;i++)
+	  std::cout << sup[i] << std::endl;
 		
-  	Point inf[3];
 
-  	inf[0] = prevInfL;
-  	inf[1] = infL; //=infR
-  	inf[2] = prevInfR;
+	Integer atmp, btmp;
+	for(int i=0;i<3;i++)
+	  {
+	    btmp = inf[i+1][0] - inf[i][0];
+	    atmp = inf[i+1][1] - inf[i][1];
+	    Integer g;
+	    if(atmp==0 || btmp==0)
+	      g = 1;
+	    else
+	      g = ic.gcd(btmp,atmp);
+	    btmp = btmp/g;
+	    atmp = atmp/g;
+	    if(btmp > bb)
+	      {
+		bb =btmp;
+		aa =atmp;
+	      }
+	  }
 	
-  	Integer atmp, btmp;
-  	for(int i=0;i<2;i++)
-  	  {
-  	    btmp = inf[i+1][0] - inf[i][0];
-  	    atmp = inf[i+1][1] - inf[i][1];
-  	    Integer g = 1;
-  	    if(btmp != 0 || atmp !=0)
-  	      g = ic.gcd(btmp,atmp);
-  	    btmp = btmp/g;
-  	    atmp = atmp/g;
-  	    if(btmp > bb)
-  	      {
-  		bb =btmp;
-  		aa =atmp;
-  	      }
-  	  }
 	
-  	Point sup[3];
-
-  	sup[0] = prevSupL;
-  	sup[1] = supL; //=supR
-  	sup[2] = prevSupR;
+	for(int i=0;i<3;i++)
+	  {
+	    btmp = sup[i+1][0] - sup[i][0];
+	    atmp = sup[i+1][1] - sup[i][1];
+	    Integer g;
+	    if(atmp==0 || btmp==0)
+	      g = 1;
+	    else
+	      g = ic.gcd(btmp,atmp);
+	    std::cout << btmp << " " << atmp << std::endl;
+	    std::cout << g << std::endl;
+	    btmp = btmp/g;
+	    atmp = atmp/g;
+	    if(btmp > b)
+	      {
+		bb =btmp;
+		aa =atmp;
+	      }
+	  }
 	
-  	for(int i=0;i<2;i++)
-  	  {
-  	    btmp = sup[i+1][0] - sup[i][0];
-  	    atmp = sup[i+1][1] - sup[i][1];
-  	    Integer g = 1;
-  	    if(btmp != 0 || atmp !=0)
-  	      g = ic.gcd(btmp,atmp);
-  	    btmp = btmp/g;
-  	    atmp = atmp/g;
-  	    if(btmp > bb)
-  	      {
-  		bb =btmp;
-  		aa =atmp;
-  	      }
-  	  }
 	
-  	Nu = -aa*infL[0] + bb*infL[1];
 	
-      }
+	// Point inf[4];
+  
+  // inf[0] = prevInfL;
+  // inf[1] = infL; 
+  // inf[2] = infR;
+  // inf[3] = prevInfR;
+  
+  // Integer atmp, btmp;
+  // for(int i=0;i<3;i++)
+  //   {
+  //     btmp = inf[i+1][0] - inf[i][0];
+  //     atmp = inf[i+1][1] - inf[i][1];
+  //     Integer g;
+  //     if(atmp==0 || btmp==0)
+  // 	g = 1;
+  //     else
+  // 	g = ic.gcd(btmp,atmp);
+  //     btmp = btmp/g;
+  //     atmp = atmp/g;
+  //     if(btmp > bb)
+  // 	{
+  // 	  bb =btmp;
+  // 	  aa =atmp;
+  // 	}
+  //   }
+  // std::cout << "after inf " << std::endl;
+  // Point sup[4];
+  
+  // sup[0] = prevSupL;
+  // sup[1] = supL; 
+  // sup[2] = supR;
+  // sup[3] = prevSupR;
+  
+  // for(int i=0;i<3;i++)
+  //   {
+  //     btmp = sup[i+1][0] - sup[i][0];
+  //     atmp = sup[i+1][1] - sup[i][1];
+  //     Integer g;
+  //     if(atmp==0 || btmp==0)
+  // 	g = 1;
+  //     else
+  // 	g = ic.gcd(btmp,atmp);
+  //     std::cout << btmp << " " << atmp << std::endl;
+  //     std::cout << g << std::endl;
+  //     btmp = btmp/g;
+  //     atmp = atmp/g;
+  //     if(btmp > b)
+  // 	{
+  // 	  bb =btmp;
+  // 	  aa =atmp;
+  // 	}
+  //   }
   
   
   
-  std::cout << "a = " << aa << " b = " << bb << " mu = " << Nu << std::endl << std::endl;
-
-
-
-
+	
+	
+	Nu = -aa*infL[0] + bb*infL[1];
+	
+	
+	
+	
+	
+	std::cout << "a = " << aa << " b = " << bb << " mu = " << Nu << std::endl << std::endl;
+	
+	
+	
+	
 }
 
 
