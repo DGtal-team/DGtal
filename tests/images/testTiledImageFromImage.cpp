@@ -70,6 +70,7 @@ bool testSimple()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
     MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
@@ -150,6 +151,7 @@ bool test3d()
     MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
     
     typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
     MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
     
     typedef MyTiledImageFromImage::OutputImage OutputImage;
@@ -177,6 +179,68 @@ bool test3d()
     return nbok == nb;
 }
 
+bool test_range_constRange()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing range/constRange with TiledImageFromImage");
+    
+    typedef ImageContainerBySTLVector<Z2i::Domain, int> VImage;
+
+    VImage image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(10,10)));
+    for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
+        *it = 10;
+
+    trace.info() << "Original image: " << image << endl;
+
+    typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
+    typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
+    MyImageFactoryFromImage imageFactoryFromImage(image);
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromImage> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromImage> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(imageFactoryFromImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(imageFactoryFromImage);
+    
+    typedef TiledImageFromImage<VImage, MyImageFactoryFromImage, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
+    MyTiledImageFromImage tiledImageFromImage(image, imageFactoryFromImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+
+    // writing values
+    const int maximalValue = tiledImageFromImage.domain().size(); 
+    MyTiledImageFromImage::Range::OutputIterator it = tiledImageFromImage.range().outputIterator(); 
+    for (int i = 0; i < maximalValue; ++i)
+      *it++ = i;
+
+    // reading values 
+    MyTiledImageFromImage::ConstRange r = tiledImageFromImage.constRange(); 
+    std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
+    cout << endl;
+    
+    std::vector<int> to_vector(100);
+    std::copy(r.begin(), r.end(), to_vector.begin());
+    for (int i = 0; i < 100; i++)
+    {
+      if (to_vector[i]==i)
+      {
+        cout << "ok, ";
+        nbok += true ? 1 : 0; nb++;
+      }
+      else
+      {
+        cout << "!ok, ";
+        nbok += false ? 1 : 0; nb++;
+      }
+    }
+    
+    cout << endl;
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -188,7 +252,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testSimple() && test3d(); // && ... other tests
+    bool res = testSimple() && test3d() && test_range_constRange(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
