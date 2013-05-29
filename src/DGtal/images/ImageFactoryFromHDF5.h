@@ -198,7 +198,7 @@ namespace DGtal
       int _NX_SUB = (aDomain.upperBound()[1]-aDomain.lowerBound()[1])+1;
       int _NY_SUB = (aDomain.upperBound()[0]-aDomain.lowerBound()[0])+1;
       
-      int data_out[_NX_SUB][_NY_SUB];   // output buffer        // TODO -> int <-> H5T_INTEGER et new
+      int *data_out = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(int)); // output buffer  // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
       offset[0] = aDomain.lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
@@ -231,10 +231,8 @@ namespace DGtal
           typename OutputImage::Point pt;
           pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
-          outputImage->setValue(pt, data_out[j][i]);
-          //trace.info() << data_out[j][i];
+          outputImage->setValue(pt, data_out[j * _NX_SUB + i]);
         }
-        //trace.info() << std::endl;
       }
       
       H5Sclose(memspace);
@@ -249,6 +247,8 @@ namespace DGtal
       H5Dclose(dataset);
       H5Sclose(dataspace);
       H5Fclose(file);
+      
+      free(data_out);
         
       return outputImage;
     }
@@ -309,7 +309,7 @@ namespace DGtal
       int _NX_SUB = (outputImage->domain().upperBound()[1]-outputImage->domain().lowerBound()[1])+1;
       int _NY_SUB = (outputImage->domain().upperBound()[0]-outputImage->domain().lowerBound()[0])+1;
       
-      int data_in[_NX_SUB][_NY_SUB];    // input buffer         // TODO -> int <-> H5T_INTEGER et new
+      int *data_in = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(int)); // input buffer  // TODO -> int <-> H5T_INTEGER et new
       
       // Define hyperslab in the dataset.
       offset[0] = outputImage->domain().lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
@@ -330,12 +330,6 @@ namespace DGtal
       count_in[1] = _NY_SUB;
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
       
-      /*typename OutputImage::Domain::Iterator it = outputImage->domain().begin();
-      typename OutputImage::Domain::Iterator it_end = outputImage->domain().end();
-      for (; it != it_end; ++it)
-      {
-        myImagePtr->setValue(*it, (*outputImage)(*it));
-      }*/
       for (j = 0; j < _NX_SUB; j++)
       {
         for (i = 0; i < _NY_SUB; i++)
@@ -343,10 +337,8 @@ namespace DGtal
           typename OutputImage::Point pt;
           pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
-          data_in[j][i] = outputImage->operator()(pt);
-          //trace.info() << data_in[j][i];
+          data_in[j * _NX_SUB + i] = outputImage->operator()(pt);
         }
-        //trace.info() << std::endl;
       }
       
       // Write data from hyperslab in memory into the hyperslab in the file.
@@ -364,6 +356,8 @@ namespace DGtal
       H5Dclose(dataset);
       H5Sclose(dataspace);
       H5Fclose(file);
+      
+      free(data_in);
     }
     
     /**

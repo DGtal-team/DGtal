@@ -409,6 +409,84 @@ bool testTiledImage2D()
     return nbok == nb;
 }
 
+bool testTiledImage2Dbis()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D)");
+    
+    typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
+
+    Image image(Z2i::Domain(Z2i::Point(3,2), Z2i::Point(18,17)));
+    trace.info() << "image: " << image << endl;
+
+    typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
+    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_TILED, DATASETNAME_2D_TILED);
+
+    typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
+    
+    typedef TiledImageFromImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
+    MyTiledImageFromImage tiledImageFromImage(image, factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 4);
+    
+    typedef MyTiledImageFromImage::OutputImage OutputImage;
+    /*VImage*/OutputImage::Value aValue;
+    
+    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(4,2)) == 2) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(10,6)) == 72) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aValue = 1; tiledImageFromImage.setValue(Z2i::Point(11,7), aValue);
+    trace.info() << "Write value for Point 11,7: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(11,7)) == 1) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 3,3: " << tiledImageFromImage(Z2i::Point(3,3)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(3,3)) == 17) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 16,9: " << tiledImageFromImage(Z2i::Point(16,9)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(16,9)) == 126) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aValue = 256; tiledImageFromImage.setValue(Z2i::Point(16,9), aValue);
+    trace.info() << "Write value for Point 16,9: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(16,9)) == 256) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    /*trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
+    nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -420,7 +498,7 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = writeHDF5_2D() && test2D() && writeHDF5_2D_TILED() && testTiledImage2D(); // && ... other tests
+    bool res = writeHDF5_2D() && test2D() && writeHDF5_2D_TILED() && testTiledImage2D() && writeHDF5_2D_TILED() && testTiledImage2Dbis(); // && ... other tests
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();

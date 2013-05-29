@@ -214,19 +214,17 @@ public:
       Point low;
       for(i=0; i<ImageContainer::Domain::dimension; i++)
       {
-        low[i] = aPoint[i]/mySize[i];
-        if (low[i]!=0)
-        {
-          if (!(aPoint[i]%mySize[i]))
-            low[i]--;
-        }
+        if ( (aPoint[i]-myImagePtr->domain().lowerBound()[i]) < mySize[i] )
+          low[i] = 0;
+        else
+          low[i] = (aPoint[i]-myImagePtr->domain().lowerBound()[i])/mySize[i];
       }
       
       Point dMin, dMax;
       for(i=0; i<ImageContainer::Domain::dimension; i++)
       {
-        dMin[i] = (low[i]*mySize[i])+1;
-        dMax[i] = (low[i]*mySize[i])+mySize[i];
+        dMin[i] = (low[i]*mySize[i])+myImagePtr->domain().lowerBound()[i];
+        dMax[i] = (low[i]*mySize[i])+myImagePtr->domain().lowerBound()[i]+(mySize[i]-1);
       }
       
       Domain di = Domain(dMin, dMax);
