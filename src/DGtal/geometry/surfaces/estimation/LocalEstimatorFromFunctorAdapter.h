@@ -43,6 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/ConstAlias.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -58,7 +59,7 @@ namespace DGtal
    *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
    *  @tparam TFunctorOnSurfel a functor on TDigitalSurface surfel
    */
-  template <typename TDigitalSurface, typename TFunctorOnSurfel>
+  template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel>
   class LocalEstimatorFromFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
@@ -67,21 +68,34 @@ namespace DGtal
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;
     
-    ///Functor type
-    typedef TFunctorOnSurfel FunctorOnSurfel;
+    ///Metric type
+    typedef TMetric Metric;
     
+    ///Functor on surfels type
+    typedef TFunctorOnSurfel FunctorOnSurfel;
+        
     ///Quantity type
     typedef typename TFunctorOnSurfel::Value Quantity;
     
     ///Surfel const iterator
     typedef typename DigitalSurface::ConstIterator ConstIterator;
     
-          
+    
+  private:
+    
+    ///Embedder
+    typedef CanonicalSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
+    typedef Embedder::Value RealPoint;
+    typedef RealPoint::Coordinate Scalar;
+    typedef std::binder1st<Embedder,
+    
     /**
-     *
-     *
+     * Constructor.
+     * @param aSurface a digital surface
+     * @param aFunctor a functor on digital surface elements.
      */
     LocalEstimatorFromFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
+                                     ConstAlias<TMetric> aMetric,
                                      ConstAlias<FunctorOnSurfel>  aFunctor);
     
     /**
@@ -163,8 +177,14 @@ namespace DGtal
     ///Functor member
     const FunctorOnSurfel * myFunctor;
     
+    ///Distance functor
+    const Metric * myMetric;
+    
     ///Grid step
     double myH;
+    
+    ///Has init been done before eval
+    bool myInit;
     
   }; // end of class LocalEstimatorFromFunctorAdapter
 
@@ -175,9 +195,9 @@ namespace DGtal
    * @param object the object of class 'LocalEstimatorFromFunctorAdapter' to write.
    * @return the output stream after the writing.
    */
-  template <typename TD, typename TF>
+  template <typename TD, typename TV, typename TF>
   std::ostream&
-  operator<< ( std::ostream & out, const LocalEstimatorFromFunctorAdapter<TD,TF> & object );
+  operator<< ( std::ostream & out, const LocalEstimatorFromFunctorAdapter<TD,TV,TF> & object );
 
 } // namespace DGtal
 

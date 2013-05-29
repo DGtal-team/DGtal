@@ -69,7 +69,6 @@ namespace DGtal
 
     typedef TKSpace KSpace;
     typedef typename KSpace::Cell Cell;
-    typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;
     typedef Cell Argument;
@@ -131,24 +130,6 @@ namespace DGtal
     */
     RealPoint operator()( const Cell & cell ) const;
 
-    /**
-       Map a signed cell to its corresponding point in the Euclidean
-       space.
-     
-       @param scell any signed cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
-     */
-    RealPoint embed( const SCell & scell ) const;
-    
-    /**
-       Map a signed cell to its corresponding point in the Euclidean
-       space.
-     
-       @param scell any signed cell in the digital space.
-       @return its canconical embedding in the Euclidean space.
-     */
-    RealPoint operator()( const SCell & scell ) const;
-    
    // ----------------------- Interface --------------------------------------
 public:
 

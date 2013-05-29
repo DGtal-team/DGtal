@@ -39,6 +39,7 @@ DGtal::LocalEstimatorFromFunctorAdapter<DigitalSurf,Functor>::LocalEstimatorFrom
                                                                                                ConstAlias<Functor> afunctor):
 mySurface(aSurf),myFunctor(afunctor)
 {
+  myInit = false;
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf, typename Functor>
@@ -61,7 +62,17 @@ inline
 bool
 DGtal::LocalEstimatorFromFunctorAdapter<DigitalSurf,Functor>::isValid() const
 {
-  return true;
+  return myInit;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename DigitalSurf, typename Functor>
+inline
+void
+DGtal::LocalEstimatorFromFunctorAdapter<DigitalSurf,Functor>::init(const double h)
+{
+  myH = h;
+  myFunctor->attach(mySurface);
+  myInit = true;
 }
 ///////////////////////////////////////////////////////////////////////////////
 template <typename DigitalSurf,  typename Functor>
@@ -69,6 +80,7 @@ inline
 typename DGtal::LocalEstimatorFromFunctorAdapter<DigitalSurf,Functor>::Quantity
 DGtal::LocalEstimatorFromFunctorAdapter<DigitalSurf,Functor>::eval ( const ConstIterator& it ) const
 {
+  ASSERT_MSG( isValid(), "Missing init() before evaluation" );
   return myFunctor->operator()( *it );
 }
 ///////////////////////////////////////////////////////////////////////////////
