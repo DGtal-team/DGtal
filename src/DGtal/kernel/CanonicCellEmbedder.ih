@@ -110,22 +110,6 @@ DGtal::CanonicCellEmbedder<TKSpace>::operator()( const Cell & cell ) const
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 inline
-typename DGtal::CanonicCellEmbedder<TKSpace>::RealPoint
-DGtal::CanonicCellEmbedder<TKSpace>::embed( const SCell & scell ) const
-{
-  return this->operator()( myKSpace->unsigns(scell) );
-}
-//-----------------------------------------------------------------------------
-template <typename TKSpace>
-inline
-typename DGtal::CanonicCellEmbedder<TKSpace>::RealPoint
-DGtal::CanonicCellEmbedder<TKSpace>::operator()( const SCell & scell ) const
-{
-   return this->operator()( myKSpace->unsigns(scell) );
-}
-//-----------------------------------------------------------------------------
-template <typename TKSpace>
-inline
 bool
 DGtal::CanonicCellEmbedder<TKSpace>::isValid( ) const
 {
