@@ -125,7 +125,25 @@ DGtal::Color::alpha() const
   return myAlpha; 
 } 
 
+inline
+DGtal::uint32_t 
+DGtal::Color::getRGB() const
+{
+  return (((DGtal::uint32_t) myRed) <<  16) 
+    |  (((DGtal::uint32_t) myGreen) << 8)
+    |  ((DGtal::uint32_t) myBlue); 
+}
 
+inline
+DGtal::uint32_t 
+DGtal::Color::getRGBA() const
+{
+  return (((DGtal::uint32_t) myRed) <<  24) 
+    |  (((DGtal::uint32_t) myGreen) << 16)
+    |  (((DGtal::uint32_t) myBlue)<< 16) 
+    |  ((DGtal::uint32_t) myAlpha); 
+}
+ 
 inline 
 bool 
 DGtal::Color::valid() const 
