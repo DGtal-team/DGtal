@@ -69,10 +69,32 @@ bool testPNMReader()
   Board2D board;
   board << image.domain() << set2d; // display domain and set
   
-  board.saveEPS( "testPNMReader.eps");
+  board.saveEPS( "testPNMReaderPGM.eps");
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();  
+
+  trace.beginBlock ( "Testing ppm reader ..." );
+  nbok += true ? 1 : 0; 
+  nb++;
+  std::string filenamePPM = testPath + "samples/color64ascii.ppm";
+
+  trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
+
+  typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
+  Image imagePPM = PNMReader<Image>::importPPM( filenamePPM ); 
+  
+  Z2i::DigitalSet set2dPPM (imagePPM.domain());
+  SetFromImage<Z2i::DigitalSet>::append<Image>(set2dPPM, imagePPM, 0, 0xFFFFFEu);
+   
+  Board2D boardPPM;
+  boardPPM << imagePPM.domain() << set2dPPM; // display domain and set
+  
+  boardPPM.saveEPS( "testPNMReaderPPM.eps");
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.endBlock();  
+
   return nbok == nb;
 }
 /**
