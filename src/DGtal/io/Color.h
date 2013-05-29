@@ -157,14 +157,14 @@ namespace DGtal
 
 
     /**
-     * return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B canal on 8 bits starting from least significant bit.
      **/
     
     DGtal::uint32_t getRGB() const;
 
     /**
-     * return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B, A canal on 8 bits starting from least significant bit.
      **/
         
