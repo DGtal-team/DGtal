@@ -115,6 +115,21 @@ namespace DGtal
                                      bool topbotomOrder = true) throw(DGtal::IOException);
 
 
+     /** 
+     * Main method to import a PPM (24bit, 8bits per channel) into an instance of the 
+     * template parameter ImageContainer.
+     * 
+     * @param aFilename the file name to import.  
+     * @param topbotomOrder
+     * if true, the point of coordinate (0,0) will be the bottom left
+     * corner image point (default) else the center of image
+     * coordinate will be the top left of the image (not usual).
+     * @return an instance of the ImageContainer.
+     */
+    static  ImageContainer importPPM(const std::string & aFilename, 
+                                     bool topbotomOrder = true) throw(DGtal::IOException);
+
+
     /** 
      * Main method to import a Pgm3D (8bits) into an instance of the 
      * template parameter ImageContainer.
