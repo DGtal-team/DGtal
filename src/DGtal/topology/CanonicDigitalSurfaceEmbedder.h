@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file CanonicSCellEmbedder.h
+ * @file CanonicDigitalSurfaceEmbedder.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2012/02/28
  *
- * Header file for module CanonicSCellEmbedder.cpp
+ * Header file for module CanonicDigitalSurfaceEmbedder.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(CanonicSCellEmbedder_RECURSES)
-#error Recursive header files inclusion detected in CanonicSCellEmbedder.h
-#else // defined(CanonicSCellEmbedder_RECURSES)
+#if defined(CanonicDigitalSurfaceEmbedder_RECURSES)
+#error Recursive header files inclusion detected in CanonicDigitalSurfaceEmbedder.h
+#else // defined(CanonicDigitalSurfaceEmbedder_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define CanonicSCellEmbedder_RECURSES
+#define CanonicDigitalSurfaceEmbedder_RECURSES
 
-#if !defined CanonicSCellEmbedder_h
+#if !defined CanonicDigitalSurfaceEmbedder_h
 /** Prevents repeated inclusion of headers. */
-#define CanonicSCellEmbedder_h
+#define CanonicDigitalSurfaceEmbedder_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -49,25 +49,26 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class CanonicSCellEmbedder
+// class CanonicDigitalSurfaceEmbedder
 /**
-   Description of class 'CanonicSCellEmbedder' <p>
+   Description of class 'CanonicDigitalSurfaceEmbedder' <p>
 
-   \brief Aim: A trivial embedder for signed cell, which
+   \brief Aim: A trivial embedder for digital surfaces, which
    corresponds to the canonic injection of cell centroids into Rn.
 
-   Model of CSCellEmbedder.
+   Model of CCanonicDigitalSurfaceEmbedder (and thus of CSCellEmbedder).
 
-   @tparam TKSpace the type of cellular grid space where the embedder works, a model of CCellularGridSpaceND.
+   @tparam TDigitalSurface the type of digital surface where the embedder works.
  */
-  template <typename TKSpace>
-  struct CanonicSCellEmbedder
+  template <typename TDigitalSurface>
+  struct CanonicDigitalSurfaceEmbedder
   {
   public:
-    typedef CanonicSCellEmbedder<TKSpace> Self;
-    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<TKSpace> ));
+    typedef CanonicDigitalSurfaceEmbedder<TDigitalSurface> Self;
 
-    typedef TKSpace KSpace;
+    typedef TDigitalSurface Surface;
+    typedef typename Surface::KSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( CCellularGridSpaceND<KSpace> ));
     typedef typename KSpace::SCell SCell;
     typedef typename KSpace::Space Space;
     typedef typename Space::RealPoint RealPoint;
@@ -82,23 +83,23 @@ namespace DGtal
     /**
        Destructor. Nothing special.
     */
-    ~CanonicSCellEmbedder();
+    ~CanonicDigitalSurfaceEmbedder();
 
     /**
        Default constructor. The object is not valid.
     */
-    CanonicSCellEmbedder();
+    CanonicDigitalSurfaceEmbedder();
 
     /**
-       Constructor from space. 
+       Constructor from surface. 
     */
-    CanonicSCellEmbedder( const KSpace & aKSpace );
+    CanonicDigitalSurfaceEmbedder( const Surface & aSurface );
 
     /**
        Copy constructor.
        @param other the object to clone.
     */
-    CanonicSCellEmbedder( const Self & other );
+    CanonicDigitalSurfaceEmbedder( const Self & other );
 
     /**
        Assignment.
@@ -108,9 +109,9 @@ namespace DGtal
     Self & operator=( const Self & other );
 
     /**
-       @return the cellular grid space.
+       @return the digital surface.
     */
-    const KSpace & space() const;
+    const Surface & surface() const;
 
     /**
        Map a signed cell to its corresponding point in the Euclidean
@@ -147,7 +148,7 @@ public:
 
     // ------------------------- Protected Datas ------------------------------
   protected:
-    const KSpace* myKSpace;
+    const Surface* mySurface;
 
     // ------------------------- Private Datas --------------------------------
 private:
@@ -159,18 +160,18 @@ protected:
     // ------------------------- Internals ------------------------------------
 private:
 
-}; // end of class CanonicSCellEmbedder
+}; // end of class CanonicDigitalSurfaceEmbedder
 
 
 /**
- * Overloads 'operator<<' for displaying objects of class 'CanonicSCellEmbedder'.
+ * Overloads 'operator<<' for displaying objects of class 'CanonicDigitalSurfaceEmbedder'.
  * @param out the output stream where the object is written.
- * @param object the object of class 'CanonicSCellEmbedder' to write.
+ * @param object the object of class 'CanonicDigitalSurfaceEmbedder' to write.
  * @return the output stream after the writing.
  */
-  template <typename TKSpace>
+  template <typename TDigitalSurface>
   std::ostream&
-  operator<< ( std::ostream & out, const CanonicSCellEmbedder<TKSpace> & object );
+  operator<< ( std::ostream & out, const CanonicDigitalSurfaceEmbedder<TDigitalSurface> & object );
 
 
 } // namespace DGtal
@@ -178,13 +179,13 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CanonicSCellEmbedder.ih"
+#include "DGtal/topology/CanonicDigitalSurfaceEmbedder.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined CanonicSCellEmbedder_h
+#endif // !defined CanonicDigitalSurfaceEmbedder_h
 
-#undef CanonicSCellEmbedder_RECURSES
-#endif // else defined(CanonicSCellEmbedder_RECURSES)
+#undef CanonicDigitalSurfaceEmbedder_RECURSES
+#endif // else defined(CanonicDigitalSurfaceEmbedder_RECURSES)
