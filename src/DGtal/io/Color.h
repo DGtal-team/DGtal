@@ -154,9 +154,20 @@ namespace DGtal
     unsigned char blue() const ;
 
     unsigned char alpha() const ;
+
+
+    /**
+     * return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * R, G, B canal on 8 bits starting from least significant bit.
+     **/
     
     DGtal::uint32_t getRGB() const;
-    
+
+    /**
+     * return the unsigned integer ( DGtal::uint32_t ) coding  each
+     * R, G, B, A canal on 8 bits starting from least significant bit.
+     **/
+        
     DGtal::uint32_t getRGBA() const;
 
 
