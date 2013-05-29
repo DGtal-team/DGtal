@@ -198,7 +198,7 @@ namespace DGtal
       int _NX_SUB = (aDomain.upperBound()[1]-aDomain.lowerBound()[1])+1;
       int _NY_SUB = (aDomain.upperBound()[0]-aDomain.lowerBound()[0])+1;
       
-      int *data_out = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(int)); // output buffer  // TODO -> int <-> H5T_INTEGER et new
+      Value *data_out = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // output buffer
       
       // Define hyperslab in the dataset.
       offset[0] = aDomain.lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
@@ -236,9 +236,6 @@ namespace DGtal
       }
       
       H5Sclose(memspace);
-      
-      // Reset the selection for the file dataspace.
-      //status = H5Sselect_none(dataspace); // TODO -> utile ?
       
       // --
 
@@ -309,7 +306,7 @@ namespace DGtal
       int _NX_SUB = (outputImage->domain().upperBound()[1]-outputImage->domain().lowerBound()[1])+1;
       int _NY_SUB = (outputImage->domain().upperBound()[0]-outputImage->domain().lowerBound()[0])+1;
       
-      int *data_in = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(int)); // input buffer  // TODO -> int <-> H5T_INTEGER et new
+      Value *data_in = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // input buffer
       
       // Define hyperslab in the dataset.
       offset[0] = outputImage->domain().lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
@@ -345,9 +342,6 @@ namespace DGtal
       status = H5Dwrite(dataset, H5T_NATIVE_INT, memspace, dataspace, H5P_DEFAULT, data_in);
       
       H5Sclose(memspace);
-      
-      // Reset the selection for the file dataspace.
-      //status = H5Sselect_none(dataspace); // TODO -> utile ?
       
       // --
 

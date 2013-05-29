@@ -188,7 +188,7 @@ bool test2D()
   
   trace.beginBlock("Testing ImageFactoryFromHDF5 (2D)");
   
-  typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
+  typedef ImageSelector<Z2i::Domain, int>::Type Image;
   
   //Z2i::Domain empty_domain(Z2i::Point::zero, Z2i::Point::zero);
   //Image image(empty_domain);
@@ -338,7 +338,7 @@ bool testTiledImage2D()
 
     trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D)");
     
-    typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
+    typedef ImageSelector<Z2i::Domain, int>::Type Image;
 
     Image image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(16,16)));
     trace.info() << "image: " << image << endl;
@@ -416,7 +416,7 @@ bool testTiledImage2Dbis()
 
     trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D)");
     
-    typedef ImageSelector<Z2i::Domain, int>::Type Image; // TODO -> int <-> H5T_INTEGER
+    typedef ImageSelector<Z2i::Domain, int>::Type Image;
 
     Image image(Z2i::Domain(Z2i::Point(3,2), Z2i::Point(18,17)));
     trace.info() << "image: " << image << endl;
