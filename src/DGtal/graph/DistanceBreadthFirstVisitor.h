@@ -98,7 +98,7 @@ namespace DGtal
      typedef CanonicSCellEmbedder<KSpace> VertexEmbedder;
      typedef VertexEmbedder::Value RealPoint;
      typedef RealPoint::Coordinate Scalar;
-     typedef ExactPredicateLpSeparableMetric<Space,2> ED; // Euclidean distance
+     typedef ExactPredicateLpSeparableMetric<Space,2> Distance; // Euclidean distance
      typedef std::binder1st< Distance > EDToPoint;        // Fix one point
      typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor; 
        // Compose the vertex embedding with the distance computation.
@@ -106,9 +106,9 @@ namespace DGtal
 
      VertexEmbedder embedder;
      ED distance;
-     EDToPoint distanceToPoint = std::bind1st( distance, embedder( bel ) );
+     EDToPoint distanceToPoint = std::bind1st( distance, embedder( p ) );
      VertexFunctor vfunctor( embedder, distanceToPoint );
-     DistanceBreadthFirstVisitor< Graph, VertexFunctor > visitor( g, p, vfunctor );
+     DistanceBreadthFirstVisitor< Graph, VertexFunctor > visitor( g, vfunctor, p );
      while ( ! visitor.finished() )
        {
          DistanceBreadthFirstVisitor<Graph>::Node node = visitor.current();
