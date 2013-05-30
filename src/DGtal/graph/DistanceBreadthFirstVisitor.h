@@ -104,7 +104,7 @@ namespace DGtal
        // Compose the vertex embedding with the distance computation.
      typedef DistanceBreadthFirstVisitor< Graph, VertexFunctor > Visitor;
 
-     VertexEmbedder embedder;
+     VertexEmbedder embedder( g.space() );  //We assume the graph to be a DigitalSurface
      ED distance;
      EDToPoint distanceToPoint = std::bind1st( distance, embedder( p ) );
      VertexFunctor vfunctor( embedder, distanceToPoint );
