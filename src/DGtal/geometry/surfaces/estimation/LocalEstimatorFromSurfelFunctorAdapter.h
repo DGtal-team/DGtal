@@ -17,91 +17,110 @@
 #pragma once
 
 /**
- * @file LocalEstimatorFromFunctorAdapter.h
+ * @file LocalEstimatorFromSurfelFunctorAdapter.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2013/05/28
  *
- * Header file for module LocalEstimatorFromFunctorAdapter.cpp
+ * Header file for module LocalEstimatorFromSurfelFunctorAdapter.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(LocalEstimatorFromFunctorAdapter_RECURSES)
-#error Recursive header files inclusion detected in LocalEstimatorFromFunctorAdapter.h
-#else // defined(LocalEstimatorFromFunctorAdapter_RECURSES)
+#if defined(LocalEstimatorFromSurfelFunctorAdapter_RECURSES)
+#error Recursive header files inclusion detected in LocalEstimatorFromSurfelFunctorAdapter.h
+#else // defined(LocalEstimatorFromSurfelFunctorAdapter_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define LocalEstimatorFromFunctorAdapter_RECURSES
+#define LocalEstimatorFromSurfelFunctorAdapter_RECURSES
 
-#if !defined LocalEstimatorFromFunctorAdapter_h
+#if !defined LocalEstimatorFromSurfelFunctorAdapter_h
 /** Prevents repeated inclusion of headers. */
-#define LocalEstimatorFromFunctorAdapter_h
+#define LocalEstimatorFromSurfelFunctorAdapter_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/topology/CanonicSCellEmbedder.h"
+#include "DGtal/kernel/CanonicSCellEmbedder.h"
+#include "DGtal/graph/DistanceBreadthFirstVisitor.h"
+#include "DGtal/geometry/volumes/distance/CMetric.h"
+#include "DGtal/base/BasicFunctors.h"
+#include "DGtal/geometry/surfaces/estimation/CLocalEstimatorFromSurfelFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
 
   /////////////////////////////////////////////////////////////////////////////
-  // template class LocalEstimatorFromFunctorAdapter
+  // template class LocalEstimatorFromSurfelFunctorAdapter
   /**
-   * Description of template class 'LocalEstimatorFromFunctorAdapter' <p>
-   * \brief Aim: this class adapts any functor on digital surface element to define
+   * Description of template class 'LocalEstimatorFromSurfelFunctorAdapter' <p>
+   * \brief Aim: this class adapts any local functor on digital surface element to define
    * a local estimator.
    *
+   * 
+   *
+   *
    *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
-   *  @tparam TFunctorOnSurfel a functor on TDigitalSurface surfel
+   *  @tparam TMetric any model of CMetric to be used in the neighborhood constructipon.
+   *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    */
   template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel>
-  class LocalEstimatorFromFunctorAdapter
+  class LocalEstimatorFromSurfelFunctorAdapter
   {
     // ----------------------- Standard services ------------------------------
   public:
 
+    ///Concept Checks
+    BOOST_CONCEPT_ASSERT(( CMetric<TMetric>));
+    BOOST_CONCEPT_ASSERT(( CLocalEstimatorFromSurfelFunctor<TFunctorOnSurfel>));
+    
     ///Digital surface type
     typedef TDigitalSurface DigitalSurface;
     
     ///Metric type
     typedef TMetric Metric;
+   
+    ///Metric value type
+    typedef typename TMetric::Value Value;
     
     ///Functor on surfels type
     typedef TFunctorOnSurfel FunctorOnSurfel;
         
     ///Quantity type
-    typedef typename TFunctorOnSurfel::Value Quantity;
+    typedef typename TFunctorOnSurfel::Quantity Quantity;
     
     ///Surfel const iterator
-    typedef typename DigitalSurface::ConstIterator ConstIterator;
+    typedef typename DigitalSurface::SurfelConstIterator SurfelConstIterator;
     
-    
+     
   private:
     
-    ///Embedder
-    typedef CanonicalSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
-    typedef Embedder::Value RealPoint;
-    typedef RealPoint::Coordinate Scalar;
-    typedef std::binder1st<Embedder,
+    ///Embedded and type defintions
+    typedef CanonicSCellEmbedder<typename DigitalSurface::KSpace> Embedder;
+    typedef std::binder1st<Metric> MetricToPoint;
+    typedef Composer<Embedder, MetricToPoint, Value> VertexFunctor;
+    typedef DistanceBreadthFirstVisitor<DigitalSurface, VertexFunctor> Visitor;
+    
+    
+  public:
     
     /**
      * Constructor.
      * @param aSurface a digital surface
      * @param aFunctor a functor on digital surface elements.
      */
-    LocalEstimatorFromFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
+    LocalEstimatorFromSurfelFunctorAdapter(ConstAlias<DigitalSurface>  aSurface,
                                      ConstAlias<TMetric> aMetric,
-                                     ConstAlias<FunctorOnSurfel>  aFunctor);
+                                     Alias<FunctorOnSurfel>  aFunctor);
     
     /**
      * Destructor.
      */
-    ~LocalEstimatorFromFunctorAdapter();
+    ~LocalEstimatorFromSurfelFunctorAdapter();
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -109,24 +128,26 @@ namespace DGtal
     
     /**
      * Initialisation.
-     * @param h grid size (must be >0).
-     * the convolution.
+     * @param [in] h grid size (must be >0).
+     * @param [in] radius radius of the ball kernel.
+     * 
      */
-    void init(const double h);
+    void init(const double h,
+              const Value radius);
     
   
     /**
      * @return the estimated quantity at *it
      */
-    Quantity eval(const ConstIterator& it) const;
+    Quantity eval(const SurfelConstIterator& it) const;
     
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb,
-                        const ConstIterator& ite,
+    OutputIterator eval(const SurfelConstIterator& itb,
+                        const SurfelConstIterator& ite,
                         OutputIterator result) const;
     
         
@@ -149,7 +170,7 @@ namespace DGtal
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
-    LocalEstimatorFromFunctorAdapter();
+    LocalEstimatorFromSurfelFunctorAdapter();
 
   private:
 
@@ -158,7 +179,7 @@ namespace DGtal
      * @param other the object to clone.
      * Forbidden by default.
      */
-    LocalEstimatorFromFunctorAdapter ( const LocalEstimatorFromFunctorAdapter & other );
+    LocalEstimatorFromSurfelFunctorAdapter ( const LocalEstimatorFromSurfelFunctorAdapter & other );
 
     /**
      * Assignment.
@@ -166,7 +187,7 @@ namespace DGtal
      * @return a reference on 'this'.
      * Forbidden by default.
      */
-    LocalEstimatorFromFunctorAdapter & operator= ( const LocalEstimatorFromFunctorAdapter & other );
+    LocalEstimatorFromSurfelFunctorAdapter & operator= ( const LocalEstimatorFromSurfelFunctorAdapter & other );
 
     // ------------------------- Internals ------------------------------------
   private:
@@ -175,7 +196,7 @@ namespace DGtal
     const DigitalSurface * mySurface;
 
     ///Functor member
-    const FunctorOnSurfel * myFunctor;
+    FunctorOnSurfel * myFunctor;
     
     ///Distance functor
     const Metric * myMetric;
@@ -186,30 +207,35 @@ namespace DGtal
     ///Has init been done before eval
     bool myInit;
     
-  }; // end of class LocalEstimatorFromFunctorAdapter
-
+    ///Embedder object
+    const Embedder myEmbedder;
+    
+    ///Ball radius
+    Value myRadius;
+    
+  }; // end of class LocalEstimatorFromSurfelFunctorAdapter
 
   /**
-   * Overloads 'operator<<' for displaying objects of class 'LocalEstimatorFromFunctorAdapter'.
+   * Overloads 'operator<<' for displaying objects of class 'LocalEstimatorFromSurfelFunctorAdapter'.
    * @param out the output stream where the object is written.
-   * @param object the object of class 'LocalEstimatorFromFunctorAdapter' to write.
+   * @param object the object of class 'LocalEstimatorFromSurfelFunctorAdapter' to write.
    * @return the output stream after the writing.
    */
   template <typename TD, typename TV, typename TF>
   std::ostream&
-  operator<< ( std::ostream & out, const LocalEstimatorFromFunctorAdapter<TD,TV,TF> & object );
+  operator<< ( std::ostream & out, const LocalEstimatorFromSurfelFunctorAdapter<TD,TV,TF> & object );
 
 } // namespace DGtal
 
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/geometry/surfaces/estimation//LocalEstimatorFromFunctorAdapter.ih"
+#include "DGtal/geometry/surfaces/estimation//LocalEstimatorFromSurfelFunctorAdapter.ih"
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined LocalEstimatorFromFunctorAdapter_h
+#endif // !defined LocalEstimatorFromSurfelFunctorAdapter_h
 
-#undef LocalEstimatorFromFunctorAdapter_RECURSES
-#endif // else defined(LocalEstimatorFromFunctorAdapter_RECURSES)
+#undef LocalEstimatorFromSurfelFunctorAdapter_RECURSES
+#endif // else defined(LocalEstimatorFromSurfelFunctorAdapter_RECURSES)
