@@ -50,13 +50,14 @@ DGtal::Color::Color( const unsigned int rgb, unsigned char aAlphaValue )
 }
 
 
-
-DGtal::Color::Color( const DGtal::uint32_t aRGBA )
+DGtal::Color &
+DGtal::Color::setRGBA( const DGtal::uint32_t aRGBA )
 {
   myRed = ( aRGBA & 0xFF000000u ) >> 24; 
   myGreen = ( aRGBA & 0xFF0000u ) >> 16;
   myBlue = ( aRGBA & 0xFF00u ) >> 8;
   myAlpha = aRGBA & 0xFF;
+  return *this;
 }
 
 
