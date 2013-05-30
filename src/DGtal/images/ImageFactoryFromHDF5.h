@@ -140,6 +140,8 @@ namespace DGtal
      */
     OutputImage * requestImage(const Domain &aDomain)
     {
+      int ddim = Domain::dimension;
+      
       // HDF5 handles
       hid_t file, dataset;
       hid_t datatype, dataspace;
@@ -147,7 +149,7 @@ namespace DGtal
       H5T_class_t t_class;                  // data type class
       H5T_order_t order;                    // data order
       size_t      size;                     // size of the data element stored in file
-      hsize_t     dims_out[2];              // dataset dimensions
+      hsize_t     dims_out[ddim];              // dataset dimensions
       int         status_n, rank;
         
       // Open the file and the dataset.
@@ -174,40 +176,42 @@ namespace DGtal
       
       // --
       
-      hsize_t offset[2];        // hyperslab offset in the file
-      hsize_t count[2];         // size of the hyperslab in the file
+      hsize_t offset[ddim];        // hyperslab offset in the file
+      hsize_t count[ddim];         // size of the hyperslab in the file
       
       herr_t status;
-      hsize_t dimsm[2];         // memory space dimensions
+      hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
       
-      hsize_t offset_out[2];    // hyperslab offset in memory
-      hsize_t count_out[2];     // size of the hyperslab in memory
+      hsize_t offset_out[ddim];    // hyperslab offset in memory
+      hsize_t count_out[ddim];     // size of the hyperslab in memory
       
       int i, j;
+      int N_SUB[ddim];
+      typename Domain::Integer d;
       
-      int _NX_SUB = (aDomain.upperBound()[1]-aDomain.lowerBound()[1])+1;
-      int _NY_SUB = (aDomain.upperBound()[0]-aDomain.lowerBound()[0])+1;
+      for(d=0; d<ddim; d++)
+        N_SUB[d] = (aDomain.upperBound()[ddim-d-1]-aDomain.lowerBound()[ddim-d-1])+1;
       
-      Value *data_out = (Value*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // output buffer
+      Value *data_out = (Value*) malloc (N_SUB[0] * N_SUB[1] * sizeof(Value)); // output buffer
       
       // Define hyperslab in the dataset.
-      offset[0] = aDomain.lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
-      offset[1] = aDomain.lowerBound()[0]-myImagePtr->domain().lowerBound()[0];
-      count[0] = _NX_SUB;
-      count[1] = _NY_SUB;
+      for(d=0; d<ddim; d++)
+        offset[d] = aDomain.lowerBound()[ddim-d-1]-myImagePtr->domain().lowerBound()[ddim-d-1];
+      for(d=0; d<ddim; d++)
+        count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
 
       // Define the memory dataspace.
-      dimsm[0] = _NX_SUB;
-      dimsm[1] = _NY_SUB;
-      memspace = H5Screate_simple(2,dimsm,NULL);
+      for(d=0; d<ddim; d++)
+        dimsm[d] = N_SUB[d];
+      memspace = H5Screate_simple(ddim,dimsm,NULL);
 
       // Define memory hyperslab.
-      offset_out[0] = 0;
-      offset_out[1] = 0;
-      count_out[0] = _NX_SUB;
-      count_out[1] = _NY_SUB;
+      for(d=0; d<ddim; d++)
+        offset_out[d] = 0;
+      for(d=0; d<ddim; d++)
+        count_out[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_out, NULL, count_out, NULL);
 
       // Read data from hyperslab in the file into the hyperslab in memory.
@@ -215,14 +219,14 @@ namespace DGtal
     
       OutputImage* outputImage = new OutputImage(aDomain);
 
-      for (j = 0; j < _NX_SUB; j++)
+      for (j = 0; j < N_SUB[0]; j++)
       {
-        for (i = 0; i < _NY_SUB; i++)
+        for (i = 0; i < N_SUB[1]; i++)
         {
           typename OutputImage::Point pt;
           pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
-          outputImage->setValue(pt, data_out[j * _NX_SUB + i]);
+          outputImage->setValue(pt, data_out[j * N_SUB[0] + i]);
         }
       }
       
@@ -248,6 +252,8 @@ namespace DGtal
      */
     void flushImage(OutputImage* outputImage)
     {
+      int ddim = Domain::dimension;
+      
       // HDF5 handles
       hid_t file, dataset;
       hid_t datatype, dataspace;
@@ -255,7 +261,7 @@ namespace DGtal
       H5T_class_t t_class;                  // data type class
       H5T_order_t order;                    // data order
       size_t      size;                     // size of the data element stored in file
-      hsize_t     dims_out[2];              // dataset dimensions
+      hsize_t     dims_out[ddim];              // dataset dimensions
       int         status_n, rank;
         
       // Open the file and the dataset.
@@ -282,50 +288,52 @@ namespace DGtal
       
       // --
       
-      hsize_t offset[2];        // hyperslab offset in the file
-      hsize_t count[2];         // size of the hyperslab in the file
+      hsize_t offset[ddim];        // hyperslab offset in the file
+      hsize_t count[ddim];         // size of the hyperslab in the file
       
       herr_t status;
-      hsize_t dimsm[2];         // memory space dimensions
+      hsize_t dimsm[ddim];         // memory space dimensions
       hid_t memspace;
       
-      hsize_t offset_in[2];    // hyperslab offset in memory
-      hsize_t count_in[2];     // size of the hyperslab in memory
+      hsize_t offset_in[ddim];    // hyperslab offset in memory
+      hsize_t count_in[ddim];     // size of the hyperslab in memory
       
       int i, j;
+      int N_SUB[ddim];
+      typename Domain::Integer d;
       
-      int _NX_SUB = (outputImage->domain().upperBound()[1]-outputImage->domain().lowerBound()[1])+1;
-      int _NY_SUB = (outputImage->domain().upperBound()[0]-outputImage->domain().lowerBound()[0])+1;
+      for(d=0; d<ddim; d++)
+        N_SUB[d] = (outputImage->domain().upperBound()[ddim-d-1]-outputImage->domain().lowerBound()[ddim-d-1])+1;
       
-      Value *data_in = (Value*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // input buffer
+      Value *data_in = (Value*) malloc (N_SUB[0] * N_SUB[1] * sizeof(Value)); // input buffer
       
       // Define hyperslab in the dataset.
-      offset[0] = outputImage->domain().lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
-      offset[1] = outputImage->domain().lowerBound()[0]-myImagePtr->domain().lowerBound()[0];
-      count[0] = _NX_SUB;
-      count[1] = _NY_SUB;
+      for(d=0; d<ddim; d++)
+        offset[d] = outputImage->domain().lowerBound()[ddim-d-1]-myImagePtr->domain().lowerBound()[ddim-d-1];
+      for(d=0; d<ddim; d++)
+        count[d] = N_SUB[d];
       status = H5Sselect_hyperslab(dataspace, H5S_SELECT_SET, offset, NULL, count, NULL);
       
       // Define the memory dataspace.
-      dimsm[0] = _NX_SUB;
-      dimsm[1] = _NY_SUB;
-      memspace = H5Screate_simple(2,dimsm,NULL);
+      for(d=0; d<ddim; d++)
+        dimsm[d] = N_SUB[d];
+      memspace = H5Screate_simple(ddim,dimsm,NULL);
 
       // Define memory hyperslab.
-      offset_in[0] = 0;
-      offset_in[1] = 0;
-      count_in[0] = _NX_SUB;
-      count_in[1] = _NY_SUB;
+      for(d=0; d<ddim; d++)
+        offset_in[d] = 0;
+      for(d=0; d<ddim; d++)
+        count_in[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
       
-      for (j = 0; j < _NX_SUB; j++)
+      for (j = 0; j < N_SUB[0]; j++)
       {
-        for (i = 0; i < _NY_SUB; i++)
+        for (i = 0; i < N_SUB[1]; i++)
         {
           typename OutputImage::Point pt;
           pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
           
-          data_in[j * _NX_SUB + i] = outputImage->operator()(pt);
+          data_in[j * N_SUB[0] + i] = outputImage->operator()(pt);
         }
       }
       
