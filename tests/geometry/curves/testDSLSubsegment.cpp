@@ -52,7 +52,7 @@ using namespace DGtal;
 // Functions for testing class DSLSubsegment.
 ///////////////////////////////////////////////////////////////////////////////
 
-#define CHECK_RES
+//#define CHECK_RES
 
 template <typename Integer>
 bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
@@ -164,13 +164,13 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 
 		  // Computation of the reduced parameters of Charrier & Buzer
 		      
-		      // timeBeginCH = clock();
-		      // DSLSubseg DD(a,b,mu,A,B,1);
-		      // assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
-		      // timeEndCH = clock();
-		      // timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
+		      timeBeginCH = clock();
+		      DSLSubseg DD(a,b,mu,A,B,1);
+		      //assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		      timeEndCH = clock();
+		      timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
 		      
-		  
+		      
 #ifdef CHECK_RES
 		  // Check if the result is ok comparing with ArithmeticalDSS recognition algorithm
 		  DSSIterator  it(a,b,-mu,A);
@@ -227,7 +227,7 @@ int main( int argc, char** argv )
   typedef DGtal::int64_t Integer;
   
 
-  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :100;
+  unsigned int nbtries = ( argc > 1 ) ? atoi( argv[ 1 ] ) :500;
   
   
   Integer modb = 10000000000;

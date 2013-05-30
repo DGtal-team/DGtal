@@ -187,13 +187,14 @@ namespace DGtal
       void update(Vector u, Point A, Number s, Vector *v);
       
       void filterUpperCH(Vector l, Number mu, Point sup[4]);
-
+      void lowerConvexHull(Vector l, Integer mu, Point A, Point B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR);
+      
 
       //void convexHullApprox(Vector l, Integer n, Point *inf, Point *sup);
       void convexHullApprox(Vector l, Integer r, Integer n, Point *inf, Point *sup);
       void convexHullHarPeled(Vector l, Integer n, Point *inf, Point *sup);
       void convexHullApprox(Number s, Integer n, Point *inf, Point *sup);
-      void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup);
+      void convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv);
       
       
       Point nextTermInFareySeriesEuclid(Integer fp, Integer fq, Integer n);
