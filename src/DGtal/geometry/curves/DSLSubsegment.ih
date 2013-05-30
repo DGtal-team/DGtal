@@ -539,18 +539,18 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApprox(Vector l, Integer 
 
 template <typename TInteger, typename TNumber>
 inline
-void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup)
+void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l, Integer r, Integer n, Point *inf, Point *sup, Point *prevInf, Point *prevSup, bool inv)
 {
   //std::cout << "convex hull approx l = " << l << " r =" << r <<  std::endl;
   
-  if(r==0)
-    {
-      *inf = Point(0,0);
-      *sup = Point(0,1);
-      *prevInf = *inf;
-      *prevSup = *sup;
-    }
-  else
+  // if(r==0)
+  //   {
+  //     *inf = Point(0,0);
+  //     *sup = Point(0,1);
+  //     *prevInf = *inf;
+  //     *prevSup = *sup;
+  //   }
+  // else
   // if(n >= l[0])
   //   {
   //     *inf = l;
@@ -564,118 +564,351 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::convexHullApproxTwoPoints(Vector l,
   //     *sup = Point(n,1);
   //     }
   //   else
-      {
-	
-	Point A = Point(0,1);
-      Point B = Point(0,0);
-      
-      Point Aold = A;
-      Point Bold = B;
 
-      Vector u = Vector(0,-1);
-      Vector v = Vector(1,0);
+  // std::cout << l << " " << r << std::endl;
+      
+      Point A,B,Aold,Bold;
+      Vector u,v;
+      if(inv && r==0)
+	{
+	  A = Point(0,0);
+	  B = Point(1,0);
+	  u = Vector(1,0);
+	  v = Vector(0,1);
+	  Aold = Point(0,0);
+	  Bold = B;
+	}
+      else
+	{
+	  A = Point(0,1);
+	  B = Point(0,0);
+	  u = Vector(0,-1);
+	  v = Vector(1,0);
+	  Aold = A;
+	  Bold = B;
+	}
+      
       Vector vv;
       Vector normal = Vector(-l[1],l[0]);
       
       Integer alpha;
       
       bool ok = true;
-      bool  first = true;
-
+      bool first = true;
       while(ok)
 	{
 	  
-	  //std::cout << "A = (" << A[0] << "," << A[1] << ") B=(" << B[0] << "," << B[1] << ")" << std::endl;
-	  //std::cout << "u = (" << u[0] << "," << u[1] << ") v=(" << v[0] << "," << v[1] << ")" << std::endl;
-	  if(v[0]*normal[0]+v[1]*normal[1] == 0)
+	  // std::cout << "A = (" << A[0] << "," << A[1] << ") B=(" << B[0] << "," << B[1] << ")" << std::endl;
+	  // std::cout << "u = (" << u[0] << "," << u[1] << ") v=(" << v[0] << "," << v[1] << ")" << std::endl;
+	  if(v[0]*normal[0]+v[1]*normal[1]< 0)
 	    {
-	      ok = false;
+	      alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
+	      //std::cout << "alpha1 = " << alpha  << std::endl;
+	      if(alpha >= 1 || first)
+		{
+		  Aold = A;
+		  vv  = v;
+		  vv *= alpha;
+		  A += vv;
+		  //test if A is on the slope
+		  if(A[0]*l[1]-A[1]*l[0]+r ==0)
+		    {
+		      ok = false;
+		      // v = A;
+		    }
+		  else
+		    {
+		      u = B - A;
+		      update(u,A,l,r,&v);
+		    }
+		      
+		  
+		}
+	      else
+		ok = false;
+	      first = false;
 	    }
 	  else
-	    if(v[0]*normal[0]+v[1]*normal[1]< 0)
+	    if(v[0]*normal[0]+v[1]*normal[1]> 0)
 	      {
-		alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
-		
-		if(alpha >= 1 || first)
+		alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
+		//std::cout << " alpha2 = " << alpha  << std::endl;
+		if(alpha >= 1)
 		  {
-		    Aold = A;
-		    vv  = v;
+		    Bold = B;
+		    vv = v;
 		    vv *= alpha;
-		    A += vv;
-		    // test if A is on the slope
-		    if(A[0]*l[1]-A[1]*l[0]+r ==0)
+		    B += vv;
+		    // test if B is on the slope
+		    if(B[0]*l[1]-B[1]*l[0] +r==0 )
 		      {
-			ok = false;
-			//	v = A;
+		    	ok = false;
+			//	    	v = B;
+			
 		      }
 		    else
 		      {
+			
 			u = B - A;
 			update(u,A,l,r,&v);
 		      }
 		  }
 		else
 		  ok = false;
-		first = false;
 	      }
 	    else
-	      if(v[0]*normal[0]+v[1]*normal[1]> 0)
-		{
-		  alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
-		  
-		  if(alpha >= 1)
-		    {
-		      Bold = B;
-		      vv = v;
-		      vv *= alpha;
-		      B += vv;
-		      // test if B is on the slope
-		      if(B[0]*l[1]-B[1]*l[0] +r==0 )
-			{
-			  ok = false;
-			  //v = B;
-			  
-			}
-		      else
-			{
-			  
-			  u = B - A;
-			  update(u,A,l,r,&v);
-			}
-		    }
-		  else
-		    ok = false;
-		}
-	      else
-		ok = false;
-	  
+	      ok = false;	  
 	}
       
-      if(A[0]*l[1]-A[1]*l[0]+r ==0)
+      if(!inv)
 	{
-	  *sup = A;
-	  *inf = A;
-	  *prevSup = Aold;
-	  *prevInf = B;
+	  if(A[0]*l[1]-A[1]*l[0]+r ==0)
+	    {
+	      *sup = A;
+	      *inf = A;
+	      *prevSup = Aold;
+	      *prevInf = B;
+	    }
+	  else
+	    if(B[0]*l[1]-B[1]*l[0]+r ==0)
+	      {
+		*inf = B;
+		*prevInf = Bold;
+		if(B[0]>A[0])
+		  {
+		    *sup = B;
+		    *prevSup = A;
+		  }
+		else
+		  {
+		    *sup = A;
+		    //*prevSup = B;
+		    *prevSup = Aold;
+		  }
+	      }
+	    else
+	      {
+		*sup = A;
+		*inf = B;
+		*prevInf = Bold;
+		*prevSup = Aold;
+	      }
 	}
       else
-	if(B[0]*l[1]-B[1]*l[0]+r ==0)
-	  {
-	    *inf = B;
-	    *sup = B;
-	    *prevInf = Bold;
-	    *prevSup = A;
-	  }
-	else
-	  {
-	    *sup = A;
-	    *inf = B;
-	    *prevInf = Bold;
-	    *prevSup = Aold;
-	  }
-  
-      }
-  
+	{
+	  if(B[0]*l[1]-B[1]*l[0]+r ==0)
+	    {
+	      *sup = B;
+	      *inf = B;
+	      *prevSup = A;
+	      *prevInf = Bold;
+	    }
+	  else
+	    if(A[0]*l[1]-A[1]*l[0]+r ==0)
+	      {
+		*sup = A;
+		*prevSup = Aold;
+		if(A[0]>B[0])
+		  {
+		    *inf = A;
+		    *prevInf = B;
+		  }
+		else
+		  {
+		    *inf = B;
+		    //*prevSup = B;
+		    *prevInf = Bold;
+		  }
+	      }
+	    else
+	      {
+		*sup = A;
+		*inf = B;
+		*prevInf = Bold;
+		*prevSup = Aold;
+	      }
+
+
+	}
+
+
+
+      // {
+    
+  //   Point A,B,Aold,Bold;
+  //   Vector u,v;
+  //   if(inv && r==0)
+  //     {
+  // 	A = Point(0,0);
+  // 	B = Point(1,0);
+  // 	u = Vector(1,0);
+  // 	v = Vector(0,1);
+  // 	Aold = Point(0,0);
+  // 	Bold = B;
+  // 	}
+  //   else
+  //     {
+  // 	A = Point(0,1);
+  // 	B = Point(0,0);
+  // 	u = Vector(0,-1);
+  // 	v = Vector(1,0);
+  // 	Aold = A;
+  // 	Bold = B;
+  //     }
+    
+
+  //     Vector vv;
+  //     Vector normal = Vector(-l[1],l[0]);
+      
+  //     Integer alpha;
+      
+  //     bool ok = true;
+  //     bool  first = true;
+
+  //     while(ok)
+  // 	{
+	  
+  // 	  //std::cout << "A = (" << A[0] << "," << A[1] << ") B=(" << B[0] << "," << B[1] << ")" << std::endl;
+  // 	  //std::cout << "u = (" << u[0] << "," << u[1] << ") v=(" << v[0] << "," << v[1] << ")" << std::endl;
+  // 	  if(v[0]*normal[0]+v[1]*normal[1] == 0)
+  // 	    {
+  // 	      ok = false;
+  // 	    }
+  // 	  else
+  // 	    if(v[0]*normal[0]+v[1]*normal[1]< 0)
+  // 	      {
+  // 		alpha = min(intersection(A,v,l,r), intersectionVertical(A,v,n));
+		
+  // 		if(alpha >= 1 || first)
+  // 		  {
+  // 		    Aold = A;
+  // 		    vv  = v;
+  // 		    vv *= alpha;
+  // 		    A += vv;
+  // 		    // test if A is on the slope
+  // 		    if(A[0]*l[1]-A[1]*l[0]+r ==0)
+  // 		      {
+  // 			ok = false;
+  // 			//	v = A;
+  // 		      }
+  // 		    else
+  // 		      {
+  // 			u = B - A;
+  // 			update(u,A,l,r,&v);
+  // 		      }
+  // 		  }
+  // 		else
+  // 		  ok = false;
+  // 		first = false;
+  // 	      }
+  // 	    else
+  // 	      if(v[0]*normal[0]+v[1]*normal[1]> 0)
+  // 		{
+  // 		  alpha = min(intersection(B,v,l,r),intersectionVertical(B,v,n));
+		  
+  // 		  if(alpha >= 1)
+  // 		    {
+  // 		      Bold = B;
+  // 		      vv = v;
+  // 		      vv *= alpha;
+  // 		      B += vv;
+  // 		      // test if B is on the slope
+  // 		      if(B[0]*l[1]-B[1]*l[0] +r==0 )
+  // 			{
+  // 			  ok = false;
+  // 			  //v = B;
+			  
+  // 			}
+  // 		      else
+  // 			{
+			  
+  // 			  u = B - A;
+  // 			  update(u,A,l,r,&v);
+  // 			}
+  // 		    }
+  // 		  else
+  // 		    ok = false;
+  // 		}
+  // 	      else
+  // 		ok = false;
+	  
+  // 	}
+      
+  //     if(!inv)
+  // 	{
+  // 	  if(A[0]*l[1]-A[1]*l[0]+r ==0)
+  // 	    {
+  // 	      *sup = A;
+  // 	      *inf = A;
+  // 	      *prevSup = Aold;
+  // 	      *prevInf = B;
+  // 	    }
+  // 	  else
+  // 	    if(B[0]*l[1]-B[1]*l[0]+r ==0)
+  // 	      {
+  // 		*inf = B;
+  // 		*prevInf = Bold;
+  // 		if(B[0]>A[0])
+  // 		  {
+  // 		    *sup = B;
+  // 		    *prevSup = A;
+  // 		  }
+  // 		else
+  // 		  {
+  // 		    *sup = A;
+  // 		    //*prevSup = B;
+  // 		    *prevSup = Aold;
+  // 		  }
+  // 	      }
+  // 	    else
+  // 	      {
+  // 		*sup = A;
+  // 		*inf = B;
+  // 		*prevInf = Bold;
+  // 		*prevSup = Aold;
+  // 	      }
+  // 	}
+  //     else
+  // 	{
+  // 	  if(B[0]*l[1]-B[1]*l[0]+r ==0)
+  // 	    {
+  // 	      *sup = B;
+  // 	      *inf = B;
+  // 	      *prevSup = A;
+  // 	      *prevInf = Bold;
+  // 	    }
+  // 	  else
+  // 	    if(A[0]*l[1]-A[1]*l[0]+r ==0)
+  // 	      {
+  // 		*sup = A;
+  // 		*prevSup = Aold;
+  // 		if(A[0]>B[0])
+  // 		  {
+  // 		    *inf = A;
+  // 		    *prevInf = B;
+  // 		  }
+  // 		else
+  // 		  {
+  // 		    *inf = B;
+  // 		    //*prevSup = B;
+  // 		    *prevInf = Bold;
+  // 		  }
+  // 	      }
+  // 	    else
+  // 	      {
+  // 		*sup = A;
+  // 		*inf = B;
+  // 		*prevInf = Bold;
+  // 		*prevSup = Aold;
+  // 	      }
+
+
+  // 	}
+      
+      
+      
+  //     }
+      
 }
 
 
@@ -1885,34 +2118,192 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::filterUpperCH(Vector l, Number mu, 
 {
   DGtal::IntegerComputer<Integer> ic;
 
-  Point P = sup[1];
-  //check if sup[0] == sup[1] ?
-  if(P[0]*l[1] - P[1]*l[0] + mu==0 )
-    {
-      Vector v = sup[2] - sup[0];
-      Integer g;
-      if(v[0]==0 || v[1]==0)
-	g = 1;
-      else
-	g = ic.gcd(v[0],v[1]);
-      std::cout << v << " " << g << std::endl;
-      sup[1] = sup[0]+(g-1)*(v/g);
-    }
+
+    Integer g;
   
-  P = sup[2];
-  if(P[0]*l[1] - P[1]*l[0] + mu==0 )
-    {
-      Vector v = sup[3] - sup[1];
-      Integer g;
-      if(v[0]==0 || v[1]==0)
-	g = 1;
+    Point P = sup[1];
+    //check if sup[0] == sup[1] ?
+    if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+      {
+	Vector v1 = sup[2] - sup[0];
+	Vector v2 = sup[1] - sup[0];
+	
+	if(v1[0]*v2[1]-v1[1]*v2[0] ==1) // if the vectors are unimodular
+	  {
+	    if(v1[0]==0 || v1[1]==0)
+	      g = max((Integer) 1,max(v1[0],v1[1]));
+	    else
+	      g = ic.gcd(v1[0],v1[1]);
+	    std::cout << v1 << " " << g << std::endl;
+	    sup[1] = sup[0]+(g-1)*(v1/g);
+	  }
       else
-	g = ic.gcd(v[0],v[1]);
-      std::cout << v << " " << g << std::endl;
-      sup[2] = sup[1]+(v/g);
+	{
+	  Vector v3 = sup[2] - sup[1];
+	  if(v3[0]==0 || v3[1]==0)
+	    g = max((Integer) 1,max(v3[0],v3[1]));
+	  else
+	    g = ic.gcd(v3[0],v3[1]);
+	  sup[2] = sup[1] + (v3/g);
+	  
+	  
+	  if(v2[0]==0 || v2[1]==0)
+	    g = max((Integer) 1,max(v2[0],v2[1]));
+	  else
+	    g = ic.gcd(v2[0],v2[1]);
+	  std::cout << "v2 = " <<  v2 << " " << g << std::endl;
+	  sup[1] = sup[0]+(g-1)*(v2/g);
+	}
+      }
+    
+    P = sup[2];
+    if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+      {
+      Vector v1 = sup[3] - sup[1];
+      Vector v2 = sup[2] - sup[1];
+
+      
+      if(v1[0]*v2[1]-v1[1]*v2[0] ==1) // if the vectors are unimodular
+	{
+	  if(v1[0]==0 || v1[1]==0)
+	    g = max((Integer) 1,max(v1[0],v1[1]));
+	  else
+	    g = ic.gcd(v1[0],v1[1]);
+	  std::cout << v1 << " " << g << std::endl;
+	  sup[2] = sup[1]+(g-1)*(v1/g);
+	}
+      else
+	{
+	  Vector v3 = sup[3] - sup[2];
+	  if(v3[0]==0 || v3[1]==0)
+	    g = max((Integer) 1,max(v3[0],v3[1]));
+	  else 
+	    g = ic.gcd(v3[0],v3[1]);
+	  sup[3] = sup[2] + (v3/g);
+	  
+	  if(v2[0]==0 || v2[1]==0)
+	    g = max((Integer) 1,max(v2[0],v2[1]));
+	  else
+	    g = ic.gcd(v2[0],v2[1]);
+	  sup[2] = sup[1]+(g-1)*(v2/g);
+	}
+
+
     }
+
+
+
+
+  // Point P = sup[1];
+  // //check if sup[0] == sup[1] ?
+  // if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+  //   {
+  //     Vector v = sup[2] - sup[0];
+  //     Integer g;
+  //     if(v[0]==0 || v[1]==0)
+  // 	g = 1;
+  //     else
+  // 	g = ic.gcd(v[0],v[1]);
+  //     std::cout << v << " " << g << std::endl;
+  //     sup[1] = sup[0]+(g-1)*(v/g);
+  //   }
+  
+  // P = sup[2];
+  // if(P[0]*l[1] - P[1]*l[0] + mu==0 )
+  //   {
+  //     Vector v = sup[3] - sup[1];
+  //     Integer g;
+  //     if(v[0]==0 || v[1]==0)
+  // 	g = 1;
+  //     else
+  // 	g = ic.gcd(v[0],v[1]);
+  //     std::cout << v << " " << g << std::endl;
+  //     sup[2] = sup[1]+(v/g);
+  //   }
   
 }
+
+
+template <typename TInteger, typename TNumber>
+inline
+void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector l, Integer mu, Point A, Point B, Point *prevInfL, Point *infL, Point *infR, Point *prevInfR)
+{
+  // std::cout << "lower convex hull" << std::endl;
+  // std::cout << l << " " << mu << " " << A << " " << B << std::endl;
+  
+  Integer rA = l[1]*A[0]-l[0]*A[1] + mu;
+  Integer rB = l[1]*B[0]-l[0]*B[1] + mu;
+  
+  Point prevSupL,supL,supR,prevSupR;
+
+  // from left to right
+  convexHullApproxTwoPoints(l,rA,B[0]-A[0],infL,&supL,prevInfL,&prevSupL,0); // computation of the left part of the convex hulls
+  
+  
+  *infL += A;
+  supL += A;
+  
+  *prevInfL +=A;
+  prevSupL +=A;
+
+  // std::cout << "prevInfL = " << *prevInfL << "   prevSupL = " << prevSupL << std::endl; 
+  // std::cout << "infL = " << *infL << "   supL = " << supL << std::endl; 
+  
+  // from right to left
+  // if(rB !=0)
+  //   {
+  //     convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
+      
+  //     Point B1 = B + Point(0,1);
+  
+  //     *infR = B1 - *infR;
+  //     supR = B1 - supR;
+      
+  //     Point tmp;
+  //     tmp = *infR;
+  //     *infR = supR;
+  //     supR = tmp;
+      
+      
+  //     *prevInfR = B1 - *prevInfR;
+  //     prevSupR = B1 - prevSupR;
+      
+  //     tmp = *prevInfR;
+  //     *prevInfR = prevSupR;
+  //     prevSupR = tmp;
+  //   }
+  // else
+  //   {
+  //     convexHullApproxTwoPoints(l,0,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
+      
+  //     *infR = B - *infR;
+  //     supR = B - supR;
+      
+  //     Point tmp;
+  //     tmp = *infR;
+  //     *infR = supR;
+  //     supR = tmp;
+      
+      
+  //     *prevInfR = B - *prevInfR;
+  //     prevSupR = B - prevSupR;
+      
+  //     tmp = *prevInfR;
+  //     *prevInfR = prevSupR;
+  //     prevSupR = tmp;
+
+  //   }
+  
+  
+  // std::cout << "prevInfR = " << *prevInfR << "   prevSupR = " << prevSupR << std::endl;
+  // std::cout << "infR = " << *infR << "   supR = " << supR << std::endl; 
+  
+
+
+}
+
+
+
 
 // Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
 template <typename TInteger, typename TNumber>
@@ -1928,69 +2319,91 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
   Vector l(b,a);
   
   Point infL,supL,infR,supR,prevInfL,prevSupL,prevInfR,prevSupR;
-  
-  
-  convexHullApproxTwoPoints(l,rA,B[0]-A[0],&infL,&supL,&prevInfL,&prevSupL); // computation of the left part of the convex hulls
-  
-  
-  //std::cout << "inf1 = " << inf1[0] << " " << inf1[1] << "   sup1 = " << sup1[0] << " " << sup1[1] << std::endl; 
-  
-  infL += A;
-  supL += A;
-  
-  prevInfL +=A;
-  prevSupL +=A;
 
-  std::cout << "prevInfL = " << prevInfL << "   prevSupL = " << prevSupL << std::endl; 
-  std::cout << "infL = " << infL << "   supL = " << supL << std::endl; 
+  lowerConvexHull(l,mu,A,B,&prevInfL,&infL,&infR,&prevInfR);
   
-  if(rB !=0)
-    {
-      convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR); // computation of the right part of the convex hull
+  // std::cout << "Final \n";
+  // std::cout << "prevInfL = " << prevInfL << "   infL = " << infL << std::endl;
+  // std::cout << "infR = " << infR << "   prevInfR = " << prevInfR << std::endl; 
+  
+
+  
+  // lowerConvexHull(l,l[0]-rB-1,Point(0,0),B-A,&prevSupR, &supR, &supL, &prevSupL);
+    
+  //  prevSupR = B+Point(0,1)-prevSupR;
+  //  supR = B+Point(0,1)-supR;
+  //  prevSupL = B+Point(0,1)-prevSupL;
+  //  supL = B+Point(0,1)-supL;
+  
+
+  // std::cout << "Final \n";
+  
+  // std::cout << "prevSupL = " << prevSupL << "   supL = " << supL << std::endl;
+  // std::cout << "supR = " << supR << "   prevSupR = " << prevSupR << std::endl; 
+  
+  
+  
+  // convexHullApproxTwoPoints(l,rA,B[0]-A[0],&infL,&supL,&prevInfL,&prevSupL,0); // computation of the left part of the convex hulls
+  
+  
+  // //std::cout << "inf1 = " << inf1[0] << " " << inf1[1] << "   sup1 = " << sup1[0] << " " << sup1[1] << std::endl; 
+  
+  // infL += A;
+  // supL += A;
+  
+  // prevInfL +=A;
+  // prevSupL +=A;
+
+  // std::cout << "prevInfL = " << prevInfL << "   prevSupL = " << prevSupL << std::endl; 
+  // std::cout << "infL = " << infL << "   supL = " << supL << std::endl; 
+  
+  // if(rB !=0)
+  //   {
+  //     convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR,1); // computation of the right part of the convex hull
       
-      Point B1 = B + Point(0,1);
+  //     Point B1 = B + Point(0,1);
       
-      infR = B1 - infR;
-      supR = B1 - supR;
+  //     infR = B1 - infR;
+  //     supR = B1 - supR;
       
-      Point tmp;
-      tmp = infR;
-      infR = supR;
-      supR = tmp;
+  //     Point tmp;
+  //     tmp = infR;
+  //     infR = supR;
+  //     supR = tmp;
       
       
-      prevInfR = B1 - prevInfR;
-      prevSupR = B1 - prevSupR;
+  //     prevInfR = B1 - prevInfR;
+  //     prevSupR = B1 - prevSupR;
       
-      tmp = prevInfR;
-      prevInfR = prevSupR;
-      prevSupR = tmp;
-    }
-  else
-    {
-      convexHullApproxTwoPoints(l,0,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR); // computation of the right part of the convex hull
+  //     tmp = prevInfR;
+  //     prevInfR = prevSupR;
+  //     prevSupR = tmp;
+  //   }
+  // else
+  //   {
+  //     convexHullApproxTwoPoints(l,0,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR,1); // computation of the right part of the convex hull
        
-      infR = B - infR;
-      supR = B - supR;
+  //     infR = B - infR;
+  //     supR = B - supR;
       
-      Point tmp;
-      tmp = infR;
-      infR = supR;
-      supR = tmp;
+  //     Point tmp;
+  //     tmp = infR;
+  //     infR = supR;
+  //     supR = tmp;
       
       
-      prevInfR = B - prevInfR;
-      prevSupR = B - prevSupR;
+  //     prevInfR = B - prevInfR;
+  //     prevSupR = B - prevSupR;
       
-      tmp = prevInfR;
-      prevInfR = prevSupR;
-      prevSupR = tmp;
+  //     tmp = prevInfR;
+  //     prevInfR = prevSupR;
+  //     prevSupR = tmp;
 
-    }
+  //   }
   
   
-  std::cout << "prevInfR = " << prevInfR << "   prevSupR = " << prevSupR << std::endl;
-  std::cout << "infR = " << infR << "   supR = " << supR << std::endl; 
+  // std::cout << "prevInfR = " << prevInfR << "   prevSupR = " << prevSupR << std::endl;
+  // std::cout << "infR = " << infR << "   supR = " << supR << std::endl; 
   
   DGtal::IntegerComputer<Integer> ic;
   
@@ -2016,14 +2429,14 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	sup[3] = prevSupR;
 
 	
-	for(int i=0;i<4;i++)
-	  std::cout << sup[i] << std::endl;
+	// for(int i=0;i<4;i++)
+	//   std::cout << sup[i] << std::endl;
 	
 	
-	filterUpperCH(l,mu,sup);
+	// //	filterUpperCH(l,mu,sup);
 	
-	for(int i=0;i<4;i++)
-	  std::cout << sup[i] << std::endl;
+	// for(int i=0;i<4;i++)
+	//   std::cout << sup[i] << std::endl;
 		
 
 	Integer atmp, btmp;
@@ -2033,7 +2446,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	    atmp = inf[i+1][1] - inf[i][1];
 	    Integer g;
 	    if(atmp==0 || btmp==0)
-	      g = 1;
+	      g = max((Integer) 1,max(atmp,btmp));
 	    else
 	      g = ic.gcd(btmp,atmp);
 	    btmp = btmp/g;
@@ -2052,14 +2465,12 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	    atmp = sup[i+1][1] - sup[i][1];
 	    Integer g;
 	    if(atmp==0 || btmp==0)
-	      g = 1;
+	      g = max((Integer) 1,max(atmp,btmp));
 	    else
 	      g = ic.gcd(btmp,atmp);
-	    std::cout << btmp << " " << atmp << std::endl;
-	    std::cout << g << std::endl;
 	    btmp = btmp/g;
 	    atmp = atmp/g;
-	    if(btmp > b)
+	    if(btmp > bb)
 	      {
 		bb =btmp;
 		aa =atmp;
@@ -2068,70 +2479,11 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	
 	
 	
-	// Point inf[4];
-  
-  // inf[0] = prevInfL;
-  // inf[1] = infL; 
-  // inf[2] = infR;
-  // inf[3] = prevInfR;
-  
-  // Integer atmp, btmp;
-  // for(int i=0;i<3;i++)
-  //   {
-  //     btmp = inf[i+1][0] - inf[i][0];
-  //     atmp = inf[i+1][1] - inf[i][1];
-  //     Integer g;
-  //     if(atmp==0 || btmp==0)
-  // 	g = 1;
-  //     else
-  // 	g = ic.gcd(btmp,atmp);
-  //     btmp = btmp/g;
-  //     atmp = atmp/g;
-  //     if(btmp > bb)
-  // 	{
-  // 	  bb =btmp;
-  // 	  aa =atmp;
-  // 	}
-  //   }
-  // std::cout << "after inf " << std::endl;
-  // Point sup[4];
-  
-  // sup[0] = prevSupL;
-  // sup[1] = supL; 
-  // sup[2] = supR;
-  // sup[3] = prevSupR;
-  
-  // for(int i=0;i<3;i++)
-  //   {
-  //     btmp = sup[i+1][0] - sup[i][0];
-  //     atmp = sup[i+1][1] - sup[i][1];
-  //     Integer g;
-  //     if(atmp==0 || btmp==0)
-  // 	g = 1;
-  //     else
-  // 	g = ic.gcd(btmp,atmp);
-  //     std::cout << btmp << " " << atmp << std::endl;
-  //     std::cout << g << std::endl;
-  //     btmp = btmp/g;
-  //     atmp = atmp/g;
-  //     if(btmp > b)
-  // 	{
-  // 	  bb =btmp;
-  // 	  aa =atmp;
-  // 	}
-  //   }
-  
-  
-  
-	
-	
 	Nu = -aa*infL[0] + bb*infL[1];
 	
 	
 	
-	
-	
-	std::cout << "a = " << aa << " b = " << bb << " mu = " << Nu << std::endl << std::endl;
+	//	std::cout << "a = " << aa << " b = " << bb << " mu = " << Nu << std::endl << std::endl;
 	
 	
 	
