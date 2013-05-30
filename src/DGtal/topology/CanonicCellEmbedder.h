@@ -178,7 +178,7 @@ private:
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/kernel/CanonicCellEmbedder.ih"
+#include "DGtal/topology/CanonicCellEmbedder.ih"
 
 
 //                                                                           //
