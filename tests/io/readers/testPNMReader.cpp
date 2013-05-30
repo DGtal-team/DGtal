@@ -77,7 +77,7 @@ bool testPNMReader()
   trace.beginBlock ( "Testing ppm reader ..." );
   nbok += true ? 1 : 0; 
   nb++;
-  std::string filenamePPM = testPath + "samples/color64ascii.ppm";
+  std::string filenamePPM = testPath + "samples/color64.ppm";
 
   trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
 
