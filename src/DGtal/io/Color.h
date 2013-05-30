@@ -80,17 +80,8 @@ namespace DGtal
     
     Color( const unsigned int aRgb, unsigned char aAlpha = 255 );
 
-    
-    /**
-     * Constructor.
-     *
-     * @param aRGBA an unsigned integer on 32 bits(DGtal::unit32_t)
-     * representing the color coded with 4 bits on each components R, G, B
-     * and Alpha value.
-     */
-    
-    Color( const DGtal::uint32_t aRGBA );
-
+  
+  
 
     /**
      * Constructor from R, G, B and Alpha parameter.
@@ -138,6 +129,17 @@ namespace DGtal
 		    const unsigned char aBlueValue,
 		    const unsigned char aAlphaValue );
 
+    /**
+     * Set the color parameter from an unsigned integer coding each canal.
+     *
+     * @param aRGBA an unsigned integer on 32 bits(DGtal::unit32_t)
+     * representing the color coded with 4 bits on each components R, G, B
+     * and Alpha value.
+     * @return a reference on the itself.
+     *
+     */
+    
+    Color& setRGBA( DGtal::uint32_t aRGBA );
     
     void red( const unsigned char aRedValue );
 
@@ -186,7 +188,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-
+    
 
     Color & setRGBf( float red, 
 		     float green,
