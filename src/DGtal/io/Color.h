@@ -140,14 +140,6 @@ namespace DGtal
      */
     
     Color& setRGBA( DGtal::uint32_t aRGBA );
-
-
-
-    Color& setRGBA( const unsigned char aRedValue,
-		    const unsigned char aGreenValue,
-		    const unsigned char aBlueValue,
-		    const unsigned char aAlphaValue );
-
     
     void red( const unsigned char aRedValue );
 
