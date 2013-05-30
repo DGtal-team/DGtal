@@ -77,8 +77,9 @@ LocalEstimatorFromSurfelFunctorAdapter.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
+| Constructor from Embedder      | X(anEmbedder)  | anEmbedder of type @e SCellEmbedder   |               |              | construct an instance from an SCEll embedder  |                |            |
 | push a surfel      | x.pushSurfel(aSurfel)  | aSurfel of type @e Surfel   |       void        |              | push a surfel to the estimator  |                |            |
-| evaluate the estimation      | v = x.eval()  |  |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
+| evaluate the estimator      | v = x.eval()  |  |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
 | reset       |  x.eval()  |  |  void  |              | reset the estimator  |                |            |
 
 ### Invariants
@@ -118,6 +119,7 @@ private:
   T myX; // do not require T to be default constructible.
   Surfel myA;
   Quantity myQ;
+  SCellEmbedder myEmb;
 
     // ------------------------- Internals ------------------------------------
 private:
