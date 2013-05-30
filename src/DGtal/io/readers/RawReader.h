@@ -78,19 +78,27 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
+   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value> .
+   *
    * @see testRawReader.cpp
    */
-  template <typename TImageContainer>
+  template <typename TImageContainer,
+	    typename TFunctor = CastFunctor< typename TImageContainer::Value > >
   struct RawReader
   {
     // ----------------------- Standard services ------------------------------
   public:
 
     typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Value Value;    
     typedef typename TImageContainer::Domain::Vector Vector;
+    typedef TFunctor Functor;
 
+
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;        
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
        (ImageContainer::Domain::dimension == 3));
+
 
 
     /** 
@@ -102,7 +110,8 @@ namespace DGtal
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw8(const std::string & filename,
-             const Vector & extent) throw(DGtal::IOException);
+				     const Vector & extent,
+				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
   }; // end of class RawReader
 
