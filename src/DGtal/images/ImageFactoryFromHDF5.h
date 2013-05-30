@@ -186,14 +186,14 @@ namespace DGtal
       hsize_t offset_out[ddim];    // hyperslab offset in memory
       hsize_t count_out[ddim];     // size of the hyperslab in memory
       
-      int i, j;
+      int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
       
       for(d=0; d<ddim; d++)
         N_SUB[d] = (aDomain.upperBound()[ddim-d-1]-aDomain.lowerBound()[ddim-d-1])+1;
       
-      Value *data_out = (Value*) malloc (N_SUB[0] * N_SUB[1] * sizeof(Value)); // output buffer
+      Value *data_out = (Value*) malloc (N_SUB[0] * N_SUB[1] /** N_SUB[2]*/ * sizeof(Value)); // output buffer
       
       // Define hyperslab in the dataset.
       for(d=0; d<ddim; d++)
@@ -219,16 +219,18 @@ namespace DGtal
     
       OutputImage* outputImage = new OutputImage(aDomain);
 
-      for (j = 0; j < N_SUB[0]; j++)
-      {
-        for (i = 0; i < N_SUB[1]; i++)
-        {
-          typename OutputImage::Point pt;
-          pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
-          
-          outputImage->setValue(pt, data_out[j * N_SUB[0] + i]);
-        }
-      }
+      for (i[0] = 0; i[0] < N_SUB[0]; i[0]++)
+        for (i[1] = 0; i[1] < N_SUB[1]; i[1]++)
+          //for (i[2] = 0; i[2] < N_SUB[2]; i[2]++)
+          {
+            typename OutputImage::Point pt;
+            for(d=0; d<ddim; d++)
+              pt[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d]+i[ddim-d-1];
+            //pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i[1];
+            //pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+i[0];
+            
+            outputImage->setValue(pt, data_out[ i[0]*N_SUB[0] + i[1]/**N_SUB[1] + i[2]*/ ]);
+          }
       
       H5Sclose(memspace);
       
@@ -298,7 +300,7 @@ namespace DGtal
       hsize_t offset_in[ddim];    // hyperslab offset in memory
       hsize_t count_in[ddim];     // size of the hyperslab in memory
       
-      int i, j;
+      int i[ddim];
       int N_SUB[ddim];
       typename Domain::Integer d;
       
@@ -326,14 +328,17 @@ namespace DGtal
         count_in[d] = N_SUB[d];
       status = H5Sselect_hyperslab(memspace, H5S_SELECT_SET, offset_in, NULL, count_in, NULL);
       
-      for (j = 0; j < N_SUB[0]; j++)
+      for (i[0] = 0; i[0] < N_SUB[0]; i[0]++)
       {
-        for (i = 0; i < N_SUB[1]; i++)
+        for (i[1] = 0; i[1] < N_SUB[1]; i[1]++)
         {
           typename OutputImage::Point pt;
-          pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i; pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+j;
+          for(d=0; d<ddim; d++)
+            pt[d]=offset[ddim-d-1]+myImagePtr->domain().lowerBound()[d]+i[ddim-d-1];
+          //pt[0]=offset[1]+myImagePtr->domain().lowerBound()[0]+i[1];
+          //pt[1]=offset[0]+myImagePtr->domain().lowerBound()[1]+i[0];
           
-          data_in[j * N_SUB[0] + i] = outputImage->operator()(pt);
+          data_in[i[0] * N_SUB[0] + i[1]] = outputImage->operator()(pt);
         }
       }
       

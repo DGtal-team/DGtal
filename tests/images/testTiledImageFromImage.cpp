@@ -192,7 +192,7 @@ bool test_range_constRange()
     for (VImage::Iterator it = image.begin(); it != image.end(); ++it)
         *it = 10;
 
-    trace.info() << "Original image: " << image << endl;
+    trace.info() << "ORIGINAL image: " << image << endl;
 
     typedef ImageFactoryFromImage<VImage> MyImageFactoryFromImage;
     typedef typename MyImageFactoryFromImage::OutputImage OutputImage;
