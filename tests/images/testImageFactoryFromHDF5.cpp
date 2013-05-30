@@ -206,7 +206,7 @@ bool test2D()
   OutputImage::ConstRange r1 = image1->constRange();
   cout << "image1: "; std::copy( r1.begin(), r1.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
   
-  Z2i::Domain domain1b(Z2i::Point(0,0), Z2i::Point(1,2));
+  Z2i::Domain domain1b(Z2i::Point(0,0), Z2i::Point(2,2));
   OutputImage *image1b = factImage.requestImage(domain1b);
   OutputImage::ConstRange r1b = image1b->constRange();
   cout << "image1b: "; std::copy( r1b.begin(), r1b.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
@@ -226,7 +226,7 @@ bool test2D()
   OutputImage::ConstRange r4 = image4->constRange();
   cout << "image4: "; std::copy( r4.begin(), r4.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
   
-  Z2i::Domain domain5(Z2i::Point(4,2), Z2i::Point(5,4));
+  Z2i::Domain domain5(Z2i::Point(3,2), Z2i::Point(5,4));
   OutputImage *image5 = factImage.requestImage(domain5);
   OutputImage::ConstRange r5 = image5->constRange();
   cout << "image5: "; std::copy( r5.begin(), r5.end(), std::ostream_iterator<int>(cout,", ") ); cout << endl;
@@ -288,12 +288,6 @@ bool test2D()
   
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   
-  /*trace.info() << "  AFTER WRITING: Point 2,2 on ORIGINAL image, value: " << image(Z2i::Point(2,2)) << endl;
-  nbok += (image(Z2i::Point(2,2)) == 22) ? 1 : 0;
-  nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
-  
   imageCache.update(domain3); // image3
   
   trace.info() << "WRITING from cache (not empty but wrong domain): " << imageCache << endl;
@@ -319,12 +313,6 @@ bool test2D()
   nb++;
   
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-  
- /* trace.info() << "  AFTER WRITING: Point 0,0 on ORIGINAL image, value: " << image(Z2i::Point(0,0)) << endl;
-  nbok += (image(Z2i::Point(0,0)) == 7) ? 1 : 0;
-  nb++;
-  
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
   
   trace.endBlock();
   
@@ -398,12 +386,6 @@ bool testTiledImage2D()
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    /*trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
-    nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
-    nb++;
-    
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
-    
     trace.endBlock();
     
     return nbok == nb;
@@ -475,12 +457,6 @@ bool testTiledImage2Dbis()
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
-    /*trace.info() << "  Point 16,1 on ORIGINAL image, value: " << image(Z2i::Point(16,1)) << endl;
-    nbok += (image(Z2i::Point(16,1)) == 128) ? 1 : 0;
-    nb++;
-    
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
     
     trace.endBlock();
     

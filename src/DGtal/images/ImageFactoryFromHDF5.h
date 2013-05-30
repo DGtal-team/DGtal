@@ -96,15 +96,6 @@ namespace DGtal
     ImageFactoryFromHDF5(Alias<ImageContainer> anImage, const std::string & aFilename, const std::string & aDataset):
       myImagePtr(anImage), myFilename(aFilename), myDataset(aDataset)
     {
-        /*typename ImageContainer::Point firstPoint;
-        typename ImageContainer::Point lastPoint;
-
-        firstPoint = ImageContainer::Point::zero;
-        lastPoint[0] = dims_out[1]-1;
-        lastPoint[1] = dims_out[0]-1;
-
-        typename ImageContainer::Domain domain(firstPoint,lastPoint);
-        myImagePtr->resize(domain.size()); // TODO problème car size OK mais toujours [[PointVector] {0, 0}]x[[PointVector] {0, 0}]*/
     }
 
     /**
@@ -198,7 +189,7 @@ namespace DGtal
       int _NX_SUB = (aDomain.upperBound()[1]-aDomain.lowerBound()[1])+1;
       int _NY_SUB = (aDomain.upperBound()[0]-aDomain.lowerBound()[0])+1;
       
-      Value *data_out = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // output buffer
+      Value *data_out = (Value*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // output buffer
       
       // Define hyperslab in the dataset.
       offset[0] = aDomain.lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
@@ -306,7 +297,7 @@ namespace DGtal
       int _NX_SUB = (outputImage->domain().upperBound()[1]-outputImage->domain().lowerBound()[1])+1;
       int _NY_SUB = (outputImage->domain().upperBound()[0]-outputImage->domain().lowerBound()[0])+1;
       
-      Value *data_in = (int*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // input buffer
+      Value *data_in = (Value*) malloc (_NX_SUB * _NY_SUB * sizeof(Value)); // input buffer
       
       // Define hyperslab in the dataset.
       offset[0] = outputImage->domain().lowerBound()[1]-myImagePtr->domain().lowerBound()[1];
