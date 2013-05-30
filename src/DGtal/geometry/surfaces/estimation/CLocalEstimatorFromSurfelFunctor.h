@@ -79,7 +79,7 @@ LocalEstimatorFromSurfelFunctorAdapter.
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Constructor from Embedder      | X(anEmbedder)  | anEmbedder of type @e SCellEmbedder   |               |              | construct an instance from an SCEll embedder  |                |            |
 | push a surfel      | x.pushSurfel(aSurfel)  | aSurfel of type @e Surfel   |       void        |              | push a surfel to the estimator  |                |            |
-| evaluate the estimator      | v = x.eval()  |  |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
+| evaluate the estimator      | v = x.eval(h)  | h of type  const double |  v of type @e Quantity  |              | evaluate to the estimator  |                |            |
 | reset       |  x.eval()  |  |  void  |              | reset the estimator  |                |            |
 
 ### Invariants
@@ -108,7 +108,7 @@ public:
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CLocalEstimatorFromSurfelFunctor )
   {
-    ConceptUtils::sameType( myQ, myX.eval( ) );
+    ConceptUtils::sameType( myQ, myX.eval( myH ) );
     myX.reset( );
     myX.pushSurfel( myA );
     
@@ -120,6 +120,7 @@ private:
   Surfel myA;
   Quantity myQ;
   SCellEmbedder myEmb;
+  double myH;
 
     // ------------------------- Internals ------------------------------------
 private:
