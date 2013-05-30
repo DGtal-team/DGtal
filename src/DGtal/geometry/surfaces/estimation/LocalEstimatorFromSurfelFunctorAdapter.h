@@ -61,18 +61,22 @@ namespace DGtal
    * \brief Aim: this class adapts any local functor on digital surface element to define
    * a local estimator.
    *
-   * When we evalute the adapted estimator at a surfel @a s, we first identify the set of 
-   * neighborhing around @a s using a DistanceBreadthFirstVisitor parametrized by a given metrc. Then,
+   * When we evaluate the adapted estimator at a surfel @a s, we first identify the set of 
+   * neighboring around @a s using a DistanceBreadthFirstVisitor parametrized by a given metric. Then,
    * the estimated quantity is computed applying a functor on the surfel set.
    *
    * More precisely, this adapter needs a model of CMetric to define the neighborhood and a model of CLocalEstimatorFromSurfelFunctor to
    * perform the local estimator computation.
    *
-   * Note that the visitor used in this class considers the distance function in the ambient space (not geodisic one for instance) on
-   * canical embedding of surfel elements (cf CanonicSCellEmbedder).
+   * During the @e init() method, we thus specify the gridstep @e h and the radius of the ball to consider to
+   * define the neighborhood. 
+   *
+   * Note that the visitor used in this class considers the distance
+   * function in the ambient space (not a geodesic one for instance) on
+   * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
    *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
-   *  @tparam TMetric any model of CMetric to be used in the neighborhood constructipon.
+   *  @tparam TMetric any model of CMetric to be used in the neighborhood construction.
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    */
   template <typename TDigitalSurface, typename TMetric, typename TFunctorOnSurfel>
@@ -145,12 +149,17 @@ namespace DGtal
   
     /**
      * @return the estimated quantity at *it
+     * @param [in] it the surfel iterator at which we evaluate the quantity.
      */
     Quantity eval(const SurfelConstIterator& it) const;
     
     /**
      * @return the estimated quantity
      * from itb till ite (exculded)
+     * @param [in] itb starting surfel iterator.
+     * @param [in] ited end surfel iterator.
+     * @param [in/out] result resulting output iterator
+     *
      */
     template <typename OutputIterator>
     OutputIterator eval(const SurfelConstIterator& itb,
