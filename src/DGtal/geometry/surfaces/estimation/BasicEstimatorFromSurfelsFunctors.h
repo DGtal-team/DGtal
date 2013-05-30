@@ -92,7 +92,7 @@ namespace DGtal
     /**
      * @return the estimated quantity.
      */
-    Quantity eval() {return myCpt; } const
+    Quantity eval(const double h) {return myCpt; } const
     
     /**
      * Reset the estimator.

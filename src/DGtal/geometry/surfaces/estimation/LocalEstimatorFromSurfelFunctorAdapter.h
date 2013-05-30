@@ -61,8 +61,15 @@ namespace DGtal
    * \brief Aim: this class adapts any local functor on digital surface element to define
    * a local estimator.
    *
-   * 
+   * When we evalute the adapted estimator at a surfel @a s, we first identify the set of 
+   * neighborhing around @a s using a DistanceBreadthFirstVisitor parametrized by a given metrc. Then,
+   * the estimated quantity is computed applying a functor on the surfel set.
    *
+   * More precisely, this adapter needs a model of CMetric to define the neighborhood and a model of CLocalEstimatorFromSurfelFunctor to
+   * perform the local estimator computation.
+   *
+   * Note that the visitor used in this class considers the distance function in the ambient space (not geodisic one for instance) on
+   * canical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
    *  @tparam TDigitalSurface any model of digital surface concept (CDigitalSurface)
    *  @tparam TMetric any model of CMetric to be used in the neighborhood constructipon.
