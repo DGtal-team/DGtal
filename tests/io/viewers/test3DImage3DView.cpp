@@ -73,12 +73,12 @@ bool testViewer3D()
 }
 
 struct hueFct{
- inline
+inline
  unsigned int operator() (unsigned int aVal) const
   {
     HueShadeColorMap<unsigned int>  hueShade(0,255);
-    Color col = hueShade((unsigned int)aVal);
-    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue()); 
+    DGtal::Color col = hueShade(aVal);
+    return  col.getRGB(); 
   }
 };
 ///////////////////////////////////////////////////////////////////////////////
