@@ -32,7 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PPMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "ConfigTest.h"
@@ -61,7 +62,7 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image image = PNMReader<Image>::importPGM( filename ); 
+  Image image = PGMReader<Image>::importPGM( filename ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
@@ -82,7 +83,7 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image imagePPM = PNMReader<Image>::importPPM( filenamePPM ); 
+  Image imagePPM = PPMReader<Image>::importPPM( filenamePPM ); 
   
   Z2i::DigitalSet set2dPPM (imagePPM.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2dPPM, imagePPM, 0, 0xFFFFFEu);
@@ -113,7 +114,7 @@ bool testPNM3DReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z3i::Domain, unsigned int>::Type Image;
-  Image image = PNMReader<Image>::importPGM3D( filename ); 
+  Image image = PGMReader<Image>::importPGM3D( filename ); 
   
   trace.info() << "Image 3D = "<<image<<std::endl;
   

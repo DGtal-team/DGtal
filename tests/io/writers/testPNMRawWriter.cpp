@@ -43,7 +43,7 @@
 
 #include "DGtal/io/writers/PGMWriter.h"
 #include "DGtal/io/writers/PPMWriter.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/writers/RawWriter.h"
 #include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -133,7 +133,7 @@ bool testRWIssue254()
 
   PGMWriter<Image>::exportPGM("export-gray-first.pgm",image);
   
-  Image imageRead = PNMReader<Image>::importPGM("export-gray-first.pgm");
+  Image imageRead = PGMReader<Image>::importPGM("export-gray-first.pgm");
 
   PGMWriter<Image>::exportPGM("export-gray-second.pgm",imageRead);
 
