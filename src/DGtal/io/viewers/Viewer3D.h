@@ -493,7 +493,7 @@ namespace DGtal
 	  for (unsigned int i=0; i<myBufferHeight; i++){
 	    for (unsigned int j=0; j<myBufferWidth; j++){
 	      if(i<myImageHeight && j<  myImageWidth){
-		DGtal::Color aCol(aGSImage.myTabImage[i*myImageWidth+j],255);
+		DGtal::Color aCol(aGSImage.myTabImage[i*myImageWidth+j]);
 		myTextureImageBufferRGB[pos]= aCol.red();
 		myTextureImageBufferRGB[pos+1]= aCol.green();
 		myTextureImageBufferRGB[pos+2]= aCol.blue();
