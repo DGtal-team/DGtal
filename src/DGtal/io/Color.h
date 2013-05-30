@@ -282,7 +282,10 @@ namespace DGtal
 
   }; // end of class Color
 
+  
 
+  
+  
   /**
    * Overloads 'operator<<' for displaying objects of class 'Color'.
    * @param out the output stream where the object is written.
