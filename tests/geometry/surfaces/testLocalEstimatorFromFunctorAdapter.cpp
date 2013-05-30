@@ -32,16 +32,18 @@
 #include "DGtal/base/Common.h"
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/graph/GraphVisitorRange.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/kernel/CanonicEmbedder.h"
-#include "DGtal/kernel/CanonicCellEmbedder.h"
+#include "DGtal/kernel/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
-#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromFunctorAdapter.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#include "DGtal/geometry/surfaces/estimation/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -113,34 +115,18 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.info() << nbsurfels << " surfels found." << std::endl;
   trace.endBlock();
   
-  trace.beginBlock("Running adapter");
+  trace.beginBlock("Creating  adapter");
+  typedef DummyEstimatorFromSurfels<Surfel, CanonicSCellEmbedder<KSpace> > Functor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<Surface, Z3i::L2Metric, Functor> Reporter;
   
-  //Types
-  typedef CanonicCellEmbedder<KSpace> VertexEmbedder;
-  typedef VertexEmbedder::Value RealPoint;
-  typedef RealPoint::Coordinate Scalar;
-  typedef ExactPredicateLpSeparableMetric<Space,2> Distance;
-  typedef std::binder1st< Distance > DistanceToPoint;
-  typedef Composer<VertexEmbedder, DistanceToPoint, Scalar> VertexFunctor;
-  typedef DistanceBreadthFirstVisitor< Surface, VertexFunctor > Visitor;
-
-  //Construction
-  VertexEmbedder embedder(K);
-  ConstIterator it = surface.begin();
-  Distance dt;
-  DistanceToPoint distanceToPoint = std::bind1st(dt, embedder(*it) );
-  VertexFunctor vfunctor(embedder,distanceToPoint);
-  Visitor visitor(surface, vfunctor, *it);
+  Functor estimator(CanonicSCellEmbedder<KSpace>(surface.space()));
+                    
+  Reporter reporter(surface, l2Metric, estimator);
   
-  while( ! visitor.finished())
-  {
-    Visitor::Node node = visitor.current();
-    trace.info() << "Get: "<< embedder( node.first )<< std::endl;
-    visitor.expand();
-  }
+  reporter.init(1, 5);
+  Functor::Quantity val = reporter.eval( surface.begin());
+  trace.info() <<  "Value = "<<val << std::endl;
   trace.endBlock();
-
-  
   trace.endBlock();
   
   nbok += true ? 1 : 0;
