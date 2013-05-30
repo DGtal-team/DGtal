@@ -75,7 +75,6 @@ struct ImplicitDigitalEllipse3 {
 };
 
 
-
 /**
  * Example of a test. To be completed.
  *
