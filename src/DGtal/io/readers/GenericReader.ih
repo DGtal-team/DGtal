@@ -29,17 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/readers/LongvolReader.h"
-#include "DGtal/io/readers/PPMReader.h"
-#include "DGtal/io/readers/PGMReader.h"
-#include "DGtal/io/readers/RawReader.h"
-#ifdef WITH_HDF5
-#include "DGtal/io/readers/HDF5Reader.h"
-#endif
-#ifdef WITH_MAGICK
-#include "DGtal/io/readers/MagickReader.h"
-#endif
 
 //////////////////////////////////////////////////////////////////////////////
 
