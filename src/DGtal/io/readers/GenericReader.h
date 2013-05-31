@@ -44,12 +44,17 @@
 #include <vector>
 #include "DGtal/images/CImage.h"
 #include "DGtal/base/Common.h"
+#include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/readers/LongvolReader.h"
 #include "DGtal/io/readers/PPMReader.h"
 #include "DGtal/io/readers/PGMReader.h"
-#include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/readers/RawReader.h"
-#include "DGtal/io/readers/LongvolReader.h"
+#ifdef WITH_HDF5
+#include "DGtal/io/readers/HDF5Reader.h"
+#endif
+#ifdef WITH_MAGICK
 #include "DGtal/io/readers/MagickReader.h"
+#endif
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 
 //////////////////////////////////////////////////////////////////////////////
