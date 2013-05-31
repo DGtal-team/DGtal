@@ -52,23 +52,23 @@ using namespace DGtal;
 #define H5FILE_NAME     "testImageFactoryFromHDF5.h5"
 
 #define DATASETNAME_2D  "IntArray2D"
-#define NX_2D           5               // dataset dimensions
-#define NY_2D           6
+#define NX_2D           6       // dataset dimensions
+#define NY_2D           5
 #define RANK_2D         2
 
 bool writeHDF5_2D()
 {
     hid_t       file, dataset;          // file and dataset handles
     hid_t       datatype, dataspace;    // handles
-    hsize_t     dimsf[RANK_2D];               // dataset dimensions
+    hsize_t     dimsf[RANK_2D];         // dataset dimensions
     herr_t      status;
-    int         data[NX_2D][NY_2D];     // data to write
+    int         data[NY_2D][NX_2D];     // data to write
     int         i, j;
 
     // Data  and output buffer initialization.
-    for(j = 0; j < NX_2D; j++)
-        for(i = 0; i < NY_2D; i++)
-            data[j][i] = i + j;
+    for(j = 0; j < NY_2D; j++)
+        for(i = 0; i < NX_2D; i++)
+            data[j][i] = j + i;
     /*
      * 0 1 2 3 4 5
      * 1 2 3 4 5 6
@@ -85,8 +85,8 @@ bool writeHDF5_2D()
     file = H5Fcreate(H5FILE_NAME, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
     // Describe the size of the array and create the data space for fixed size dataset.
-    dimsf[0] = NX_2D;
-    dimsf[1] = NY_2D;
+    dimsf[0] = NY_2D;
+    dimsf[1] = NX_2D;
     dataspace = H5Screate_simple(RANK_2D, dimsf, NULL);
 
     /*
@@ -115,26 +115,22 @@ bool writeHDF5_2D()
     return true;
 }
 
-#define H5FILE_NAME_TILED       "testImageFactoryFromHDF5_TILED.h5"
-
 #define DATASETNAME_2D_TILED    "IntArray2D_TILED"
-#define NX_2D_TILED             16      // dataset dimensions
-#define NY_2D_TILED             16
 #define RANK_2D_TILED           2
 
-bool writeHDF5_2D_TILED()
+bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TILED, int _NY_2D_TILED)
 {
-    hid_t       file, dataset;          // file and dataset handles
-    hid_t       datatype, dataspace;    // handles
-    hsize_t     dimsf[RANK_2D_TILED];               // dataset dimensions
+    hid_t       file, dataset;                          // file and dataset handles
+    hid_t       datatype, dataspace;                    // handles
+    hsize_t     dimsf[RANK_2D_TILED];                   // dataset dimensions
     herr_t      status;
-    int         data[NX_2D_TILED][NY_2D_TILED];     // data to write
+    int         data[_NY_2D_TILED][_NX_2D_TILED];       // data to write
     int         i, j;
 
     int ii=1;
     // Data  and output buffer initialization.
-    for(j = 0; j < NX_2D_TILED; j++)
-        for(i = 0; i < NY_2D_TILED; i++)
+    for(j = 0; j < _NY_2D_TILED; j++)
+        for(i = 0; i < _NX_2D_TILED; i++)
             data[j][i] = ii++;
 
     /*
@@ -142,11 +138,11 @@ bool writeHDF5_2D_TILED()
      * default file creation properties, and default file
      * access properties.
      */
-    file = H5Fcreate(H5FILE_NAME_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    file = H5Fcreate(_H5FILE_NAME_2D_TILED.c_str(), H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
     // Describe the size of the array and create the data space for fixed size dataset.
-    dimsf[0] = NX_2D_TILED;
-    dimsf[1] = NY_2D_TILED;
+    dimsf[0] = _NY_2D_TILED;
+    dimsf[1] = _NX_2D_TILED;
     dataspace = H5Screate_simple(RANK_2D_TILED, dimsf, NULL);
 
     /*
@@ -175,39 +171,96 @@ bool writeHDF5_2D_TILED()
     return true;
 }
 
+#define H5FILE_NAME_3D_TILED    "testImageFactoryFromHDF5_TILED_3D.h5"
+
 #define DATASETNAME_3D_TILED    "IntArray3D_TILED"
-#define NX_3D_TILED             4       // dataset dimensions
-#define NY_3D_TILED             4
-#define NZ_3D_TILED             4
+#define NX_3D_TILED             10      // dataset dimensions
+#define NY_3D_TILED             8
+#define NZ_3D_TILED             6
 #define RANK_3D_TILED           3
 
-bool writeHDF5_3D_TILED()
+bool writeHDF5_3D_TILED_for_human()
 {
-    hid_t       file, dataset;          // file and dataset handles
-    hid_t       datatype, dataspace;    // handles
-    hsize_t     dimsf[RANK_3D_TILED];               // dataset dimensions
+    hid_t       file, dataset;                                  // file and dataset handles
+    hid_t       datatype, dataspace;                            // handles
+    hsize_t     dimsf[RANK_3D_TILED];                           // dataset dimensions
     herr_t      status;
-    int         data[NX_3D_TILED][NY_3D_TILED][NZ_3D_TILED];    // data to write
-    int         i, j, h;
+    int         data[NY_3D_TILED][NX_3D_TILED][NZ_3D_TILED];    // data to write
+    int         i, j, k;
 
     int ii=1;
     // Data  and output buffer initialization.
-    for(j = 0; j < NX_3D_TILED; j++)
-      for(i = 0; i < NY_3D_TILED; i++)
-        for(h = 0; h < NZ_3D_TILED; h++)
-          data[j][i][h] = ii++;
+    for(k = 0; k < NZ_3D_TILED; k++)
+      for(j = 0; j < NY_3D_TILED; j++)
+        for(i = 0; i < NX_3D_TILED; i++)
+          data[j][i][k] = ii++;
 
     /*
      * Create a new file using H5F_ACC_TRUNC access,
      * default file creation properties, and default file
      * access properties.
      */
-    file = H5Fcreate(H5FILE_NAME_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    file = H5Fcreate(H5FILE_NAME_3D_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
     // Describe the size of the array and create the data space for fixed size dataset.
-    dimsf[0] = NX_3D_TILED;
-    dimsf[1] = NY_3D_TILED;
+    dimsf[0] = NY_3D_TILED;
+    dimsf[1] = NX_3D_TILED;
     dimsf[2] = NZ_3D_TILED;
+    dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
+
+    /*
+     * Define datatype for the data in the file.
+     * We will store little endian INT numbers.
+     */
+    datatype = H5Tcopy(H5T_NATIVE_INT);
+    status = H5Tset_order(datatype, H5T_ORDER_LE);
+
+    /*
+     * Create a new dataset within the file using defined dataspace and
+     * datatype and default dataset creation properties.
+     */
+    dataset = H5Dcreate2(file, DATASETNAME_3D_TILED, datatype, dataspace,
+                        H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+    // Write the data to the dataset using default transfer properties.
+    status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, data);
+
+    // Close/release resources.
+    H5Sclose(dataspace);
+    H5Tclose(datatype);
+    H5Dclose(dataset);
+    H5Fclose(file);
+
+    return true;
+}
+
+bool writeHDF5_3D_TILED()
+{
+    hid_t       file, dataset;                                  // file and dataset handles
+    hid_t       datatype, dataspace;                            // handles
+    hsize_t     dimsf[RANK_3D_TILED];                           // dataset dimensions
+    herr_t      status;
+    int         data[NZ_3D_TILED][NY_3D_TILED][NX_3D_TILED];    // data to write
+    int         i, j, k;
+
+    int ii=1;
+    // Data  and output buffer initialization.
+    for(k = 0; k < NZ_3D_TILED; k++)
+      for(j = 0; j < NY_3D_TILED; j++)
+        for(i = 0; i < NX_3D_TILED; i++)
+          data[k][j][i] = ii++;
+
+    /*
+     * Create a new file using H5F_ACC_TRUNC access,
+     * default file creation properties, and default file
+     * access properties.
+     */
+    file = H5Fcreate(H5FILE_NAME_3D_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+
+    // Describe the size of the array and create the data space for fixed size dataset.
+    dimsf[0] = NZ_3D_TILED;
+    dimsf[1] = NY_3D_TILED;
+    dimsf[2] = NX_3D_TILED;
     dataspace = H5Screate_simple(RANK_3D_TILED, dimsf, NULL);
 
     /*
@@ -374,12 +427,12 @@ bool test2D()
   return nbok == nb;
 }
 
-bool testTiledImage2D()
+bool testTiledImage2D_1()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
-    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D)");
+    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D) - 1");
     
     typedef ImageSelector<Z2i::Domain, int>::Type Image;
 
@@ -387,7 +440,7 @@ bool testTiledImage2D()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_TILED, DATASETNAME_2D_TILED);
+    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_1.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -446,12 +499,12 @@ bool testTiledImage2D()
     return nbok == nb;
 }
 
-bool testTiledImage2Dbis()
+bool testTiledImage2D_2()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
-    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D) bis");
+    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D) - 2");
     
     typedef ImageSelector<Z2i::Domain, int>::Type Image;
 
@@ -459,7 +512,7 @@ bool testTiledImage2Dbis()
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_TILED, DATASETNAME_2D_TILED);
+    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_2.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -518,20 +571,20 @@ bool testTiledImage2Dbis()
     return nbok == nb;
 }
 
-bool testTiledImage3D()
+bool testTiledImage2D_3()
 {
     unsigned int nbok = 0;
     unsigned int nb = 0;
 
-    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (3D)");
+    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (2D) - 3");
     
-    typedef ImageSelector<Z3i::Domain, int>::Type Image;
+    typedef ImageSelector<Z2i::Domain, int>::Type Image;
 
-    Image image(Z3i::Domain(Z3i::Point(1,1,1), Z3i::Point(4,4,4)));
+    Image image(Z2i::Domain(Z2i::Point(1,1), Z2i::Point(20,16)));
     trace.info() << "image: " << image << endl;
 
     typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
-    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_TILED, DATASETNAME_3D_TILED);
+    MyImageFactoryFromHDF5 factImage(image, "testImageFactoryFromHDF5_TILED_2D_3.h5", DATASETNAME_2D_TILED);
 
     typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
     
@@ -547,20 +600,14 @@ bool testTiledImage3D()
     typedef MyTiledImageFromImage::OutputImage OutputImage;
     /*VImage*/OutputImage::Value aValue;
     
-    trace.info() << "Read value for Point 1,1,1: " << tiledImageFromImage(Z3i::Point(1,1,1)) << endl;
-    nbok += (tiledImageFromImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0; 
+    trace.info() << "Read value for Point 4,2: " << tiledImageFromImage(Z2i::Point(4,2)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(4,2)) == 24) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    trace.info() << "Read value for Point 4,2,1: " << tiledImageFromImage(Z3i::Point(4,2,1)) << endl;
-    nbok += (tiledImageFromImage(Z3i::Point(4,2,1)) == 8) ? 1 : 0; 
-    nb++;
-    
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
-    
-    /*trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(10,6)) == 90) ? 1 : 0; 
+    trace.info() << "Read value for Point 10,6: " << tiledImageFromImage(Z2i::Point(10,6)) << endl;
+    nbok += (tiledImageFromImage(Z2i::Point(10,6)) == 110) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -573,7 +620,7 @@ bool testTiledImage3D()
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     trace.info() << "Read value for Point 2,3: " << tiledImageFromImage(Z2i::Point(2,3)) << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(2,3)) == 34) ? 1 : 0; 
+    nbok += (tiledImageFromImage(Z2i::Point(2,3)) == 42) ? 1 : 0; 
     nb++;
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
@@ -584,12 +631,90 @@ bool testTiledImage3D()
     
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
-    aValue = 128; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
+    aValue = 512; tiledImageFromImage.setValue(Z2i::Point(16,1), aValue);
     trace.info() << "Write value for Point 16,1: " << aValue << endl;
-    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 128) ? 1 : 0; 
+    nbok += (tiledImageFromImage(Z2i::Point(16,1)) == 512) ? 1 : 0; 
     nb++;
     
-    trace.info() << "(" << nbok << "/" << nb << ") " << endl;*/
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.endBlock();
+    
+    return nbok == nb;
+}
+
+bool testTiledImage3D()
+{
+    unsigned int nbok = 0;
+    unsigned int nb = 0;
+
+    trace.beginBlock("Testing TiledImageFromImage with ImageFactoryFromHDF5 (3D)");
+    
+    typedef ImageSelector<Z3i::Domain, int>::Type Image;
+
+    Image image(Z3i::Domain(Z3i::Point(1,1,1), Z3i::Point(10,8,6)));
+    trace.info() << "image: " << image << endl;
+
+    typedef ImageFactoryFromHDF5<Image> MyImageFactoryFromHDF5;
+    MyImageFactoryFromHDF5 factImage(image, H5FILE_NAME_3D_TILED, DATASETNAME_3D_TILED);
+
+    typedef MyImageFactoryFromHDF5::OutputImage OutputImage;
+    
+    typedef ImageCacheReadPolicyFIFO<OutputImage, MyImageFactoryFromHDF5> MyImageCacheReadPolicyFIFO;
+    typedef ImageCacheWritePolicyWT<OutputImage, MyImageFactoryFromHDF5> MyImageCacheWritePolicyWT;
+    MyImageCacheReadPolicyFIFO imageCacheReadPolicyFIFO(factImage, 2);
+    MyImageCacheWritePolicyWT imageCacheWritePolicyWT(factImage);
+    
+    typedef TiledImageFromImage<Image, MyImageFactoryFromHDF5, MyImageCacheReadPolicyFIFO, MyImageCacheWritePolicyWT> MyTiledImageFromImage;
+    BOOST_CONCEPT_ASSERT(( CImage< MyTiledImageFromImage > ));
+    MyTiledImageFromImage tiledImageFromImage(image, factImage, imageCacheReadPolicyFIFO, imageCacheWritePolicyWT, 2);
+    
+    typedef MyTiledImageFromImage::OutputImage OutputImage;
+    /*VImage*/OutputImage::Value aValue;
+    
+    trace.info() << "Read value for Point 1,1,1: " << tiledImageFromImage(Z3i::Point(1,1,1)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(1,1,1)) == 1) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 4,2,1: " << tiledImageFromImage(Z3i::Point(4,2,1)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(4,2,1)) == 14) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 10,6,3: " << tiledImageFromImage(Z3i::Point(10,6,3)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(10,6,3)) == 220) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aValue = 1; tiledImageFromImage.setValue(Z3i::Point(4,7,6), aValue);
+    trace.info() << "Write value for Point 4,7,6: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(4,7,6)) == 1) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 2,3,5: " << tiledImageFromImage(Z3i::Point(2,3,5)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(2,3,5)) == 342) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    trace.info() << "Read value for Point 9,7,4: " << tiledImageFromImage(Z3i::Point(9,7,4)) << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(9,7,4)) == 309) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+    
+    aValue = 128; tiledImageFromImage.setValue(Z3i::Point(9,7,4), aValue);
+    trace.info() << "Write value for Point 9,7,4: " << aValue << endl;
+    nbok += (tiledImageFromImage(Z3i::Point(9,7,4)) == 128) ? 1 : 0; 
+    nb++;
+    
+    trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     
     trace.endBlock();
     
@@ -607,12 +732,12 @@ int main( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = true \
-      && writeHDF5_2D() && test2D() \
-      && writeHDF5_2D_TILED() && testTiledImage2D() \
-      && writeHDF5_2D_TILED() && testTiledImage2Dbis() \
-      /* && writeHDF5_3D_TILED() && testTiledImage3D() \ */
-      ; // && ... other tests
+    bool res = true;
+    res = res && writeHDF5_2D() && test2D();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_1.h5", 16, 16) && testTiledImage2D_1();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_2.h5", 16, 16) && testTiledImage2D_2();
+    res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_3.h5", 20, 16) && testTiledImage2D_3();
+    //res = res && writeHDF5_3D_TILED() && testTiledImage3D();
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
