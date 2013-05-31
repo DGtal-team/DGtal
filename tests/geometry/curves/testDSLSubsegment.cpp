@@ -138,6 +138,8 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		      //std::cout << "(" << a << "," << b << "," << mu << ")\n" ; //(" << alpha << "," << beta << ")" << std::endl;
 		      //trace.info() << "Points " << A << " " << B << std::endl;
 		      nb++;
+		      
+		      // DSLSubsegment with Farey Fan
 		      timeBeginSubseg = clock();
 		      DSLSubseg D(a,b,mu,A,B);
 		      timeEndSubseg = clock();
@@ -166,7 +168,7 @@ bool testDSLSubsegment( unsigned int nbtries, Integer modb, Integer modx)
 		      
 		      timeBeginCH = clock();
 		      DSLSubseg DD(a,b,mu,A,B,1);
-		      //assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
+		      assert(D.aa == DD.aa && D.bb == DD.bb && D.Nu == DD.Nu);
 		      timeEndCH = clock();
 		      timeTotalCH += ((double)timeEndCH-(double)timeBeginCH)/(((double)CLOCKS_PER_SEC)/1000);
 		      
