@@ -2250,49 +2250,49 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector l, Integer m
   // std::cout << "infL = " << *infL << "   supL = " << supL << std::endl; 
   
   // from right to left
-  // if(rB !=0)
-  //   {
-  //     convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
+  if(rB !=0)
+    {
+      convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
       
-  //     Point B1 = B + Point(0,1);
-  
-  //     *infR = B1 - *infR;
-  //     supR = B1 - supR;
+      Point B1 = B + Point(0,1);
       
-  //     Point tmp;
-  //     tmp = *infR;
-  //     *infR = supR;
-  //     supR = tmp;
+      *infR = B1 - *infR;
+      supR = B1 - supR;
       
-      
-  //     *prevInfR = B1 - *prevInfR;
-  //     prevSupR = B1 - prevSupR;
-      
-  //     tmp = *prevInfR;
-  //     *prevInfR = prevSupR;
-  //     prevSupR = tmp;
-  //   }
-  // else
-  //   {
-  //     convexHullApproxTwoPoints(l,0,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
-      
-  //     *infR = B - *infR;
-  //     supR = B - supR;
-      
-  //     Point tmp;
-  //     tmp = *infR;
-  //     *infR = supR;
-  //     supR = tmp;
+      Point tmp;
+      tmp = *infR;
+      *infR = supR;
+      supR = tmp;
       
       
-  //     *prevInfR = B - *prevInfR;
-  //     prevSupR = B - prevSupR;
+      *prevInfR = B1 - *prevInfR;
+      prevSupR = B1 - prevSupR;
       
-  //     tmp = *prevInfR;
-  //     *prevInfR = prevSupR;
-  //     prevSupR = tmp;
+      tmp = *prevInfR;
+      *prevInfR = prevSupR;
+      prevSupR = tmp;
+    }
+  else
+    {
+      convexHullApproxTwoPoints(l,0,B[0]-A[0],infR,&supR,prevInfR,&prevSupR,1);
+      
+      *infR = B - *infR;
+      supR = B - supR;
+      
+      Point tmp;
+      tmp = *infR;
+      *infR = supR;
+      supR = tmp;
+      
+      
+      *prevInfR = B - *prevInfR;
+      prevSupR = B - prevSupR;
+      
+      tmp = *prevInfR;
+      *prevInfR = prevSupR;
+      prevSupR = tmp;
 
-  //   }
+    }
   
   
   // std::cout << "prevInfR = " << *prevInfR << "   prevSupR = " << prevSupR << std::endl;
@@ -2319,7 +2319,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
   Vector l(b,a);
   
   Point infL,supL,infR,supR,prevInfL,prevSupL,prevInfR,prevSupR;
-
+  
   lowerConvexHull(l,mu,A,B,&prevInfL,&infL,&infR,&prevInfR);
   
   // std::cout << "Final \n";
@@ -2328,83 +2328,20 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
   
 
   
-  // lowerConvexHull(l,l[0]-rB-1,Point(0,0),B-A,&prevSupR, &supR, &supL, &prevSupL);
-    
-  //  prevSupR = B+Point(0,1)-prevSupR;
-  //  supR = B+Point(0,1)-supR;
-  //  prevSupL = B+Point(0,1)-prevSupL;
-  //  supL = B+Point(0,1)-supL;
+  lowerConvexHull(l,l[0]-rB-1,Point(0,0),B-A,&prevSupR, &supR, &supL, &prevSupL);
   
+   prevSupR = B+Point(0,1)-prevSupR;
+   supR = B+Point(0,1)-supR;
+   prevSupL = B+Point(0,1)-prevSupL;
+   supL = B+Point(0,1)-supL;
+   
 
   // std::cout << "Final \n";
   
   // std::cout << "prevSupL = " << prevSupL << "   supL = " << supL << std::endl;
   // std::cout << "supR = " << supR << "   prevSupR = " << prevSupR << std::endl; 
   
-  
-  
-  // convexHullApproxTwoPoints(l,rA,B[0]-A[0],&infL,&supL,&prevInfL,&prevSupL,0); // computation of the left part of the convex hulls
-  
-  
-  // //std::cout << "inf1 = " << inf1[0] << " " << inf1[1] << "   sup1 = " << sup1[0] << " " << sup1[1] << std::endl; 
-  
-  // infL += A;
-  // supL += A;
-  
-  // prevInfL +=A;
-  // prevSupL +=A;
-
-  // std::cout << "prevInfL = " << prevInfL << "   prevSupL = " << prevSupL << std::endl; 
-  // std::cout << "infL = " << infL << "   supL = " << supL << std::endl; 
-  
-  // if(rB !=0)
-  //   {
-  //     convexHullApproxTwoPoints(l,l[0]-rB,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR,1); // computation of the right part of the convex hull
-      
-  //     Point B1 = B + Point(0,1);
-      
-  //     infR = B1 - infR;
-  //     supR = B1 - supR;
-      
-  //     Point tmp;
-  //     tmp = infR;
-  //     infR = supR;
-  //     supR = tmp;
-      
-      
-  //     prevInfR = B1 - prevInfR;
-  //     prevSupR = B1 - prevSupR;
-      
-  //     tmp = prevInfR;
-  //     prevInfR = prevSupR;
-  //     prevSupR = tmp;
-  //   }
-  // else
-  //   {
-  //     convexHullApproxTwoPoints(l,0,B[0]-A[0],&infR,&supR,&prevInfR,&prevSupR,1); // computation of the right part of the convex hull
-       
-  //     infR = B - infR;
-  //     supR = B - supR;
-      
-  //     Point tmp;
-  //     tmp = infR;
-  //     infR = supR;
-  //     supR = tmp;
-      
-      
-  //     prevInfR = B - prevInfR;
-  //     prevSupR = B - prevSupR;
-      
-  //     tmp = prevInfR;
-  //     prevInfR = prevSupR;
-  //     prevSupR = tmp;
-
-  //   }
-  
-  
-  // std::cout << "prevInfR = " << prevInfR << "   prevSupR = " << prevSupR << std::endl;
-  // std::cout << "infR = " << infR << "   supR = " << supR << std::endl; 
-  
+    
   DGtal::IntegerComputer<Integer> ic;
   
   aa=0, bb=0, Nu=0;
@@ -2429,16 +2366,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	sup[3] = prevSupR;
 
 	
-	// for(int i=0;i<4;i++)
-	//   std::cout << sup[i] << std::endl;
 	
-	
-	// //	filterUpperCH(l,mu,sup);
-	
-	// for(int i=0;i<4;i++)
-	//   std::cout << sup[i] << std::endl;
-		
-
 	Integer atmp, btmp;
 	for(int i=0;i<3;i++)
 	  {
