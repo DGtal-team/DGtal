@@ -171,7 +171,8 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
     return true;
 }
 
-#define H5FILE_NAME_3D_TILED    "testImageFactoryFromHDF5_TILED_3D.h5"
+#define H5FILE_NAME_3D_TILED_EASY_READING       "testImageFactoryFromHDF5_TILED_3D_for_easy_reading.h5"
+#define H5FILE_NAME_3D_TILED                    "testImageFactoryFromHDF5_TILED_3D.h5"
 
 #define DATASETNAME_3D_TILED    "IntArray3D_TILED"
 #define NX_3D_TILED             10      // dataset dimensions
@@ -179,7 +180,7 @@ bool writeHDF5_2D_TILED(const std::string & _H5FILE_NAME_2D_TILED, int _NX_2D_TI
 #define NZ_3D_TILED             6
 #define RANK_3D_TILED           3
 
-bool writeHDF5_3D_TILED_for_human()
+bool writeHDF5_3D_TILED_for_easy_reading()
 {
     hid_t       file, dataset;                                  // file and dataset handles
     hid_t       datatype, dataspace;                            // handles
@@ -200,7 +201,7 @@ bool writeHDF5_3D_TILED_for_human()
      * default file creation properties, and default file
      * access properties.
      */
-    file = H5Fcreate(H5FILE_NAME_3D_TILED, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+    file = H5Fcreate(H5FILE_NAME_3D_TILED_EASY_READING, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
     // Describe the size of the array and create the data space for fixed size dataset.
     dimsf[0] = NY_3D_TILED;
@@ -737,7 +738,9 @@ int main( int argc, char** argv )
     res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_1.h5", 16, 16) && testTiledImage2D_1();
     res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_2.h5", 16, 16) && testTiledImage2D_2();
     res = res && writeHDF5_2D_TILED("testImageFactoryFromHDF5_TILED_2D_3.h5", 20, 16) && testTiledImage2D_3();
-    //res = res && writeHDF5_3D_TILED() && testTiledImage3D();
+    res = res && writeHDF5_3D_TILED_for_easy_reading();
+    res = res && writeHDF5_3D_TILED();
+    //res = res && testTiledImage3D();
 
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
