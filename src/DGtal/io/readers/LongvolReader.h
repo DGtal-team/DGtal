@@ -95,7 +95,7 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;    
     typedef TFunctor Functor;
 
-    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;    
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
 
 
@@ -108,7 +108,7 @@ namespace DGtal
      * image values into the type of the image container value (by
      * default set to CastFunctor < TImageContainer::Value > .
      *
-     @return an instance of the ImageContainer.
+     *@return an instance of the ImageContainer.
      */
     static ImageContainer importLongvol(const std::string & filename, 
 					const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
