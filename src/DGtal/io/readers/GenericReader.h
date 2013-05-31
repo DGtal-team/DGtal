@@ -213,11 +213,6 @@ namespace DGtal
       if(extension=="ppm"){
 	return PPMReader<TContainer>::importPPM(filename, aFunctor);
       }
-#ifdef WITH_HDF5
-      else if (extension=="h5"){
-	return HDF5Reader::importHDF5(filename, datasetName, aFunctor); 
-      }
-#endif
       else if( extension=="gif" || extension=="jpg" || extension=="png" || extension=="jpeg" || extension=="bmp"){
 #ifdef WITH_MAGICK
     MagickReader<TContainer> reader;
@@ -262,7 +257,13 @@ namespace DGtal
       
       if(extension=="pgm"){
 	return PGMReader<TContainer>::importPGM(filename, aFunctor);
-      }else{
+      }
+#ifdef WITH_HDF5
+      else if (extension=="h5"){
+	return HDF5Reader::importHDF5(filename, datasetName, aFunctor); 
+      }
+#endif
+      else{
 	trace.error() << "Extension " << extension<< " not yet implemented in DGtal GenericReader." << std::endl;
 	throw dgtalio;
       }
