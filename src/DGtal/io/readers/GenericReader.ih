@@ -134,7 +134,6 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
 
 
 
-
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
