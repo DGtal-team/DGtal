@@ -480,7 +480,7 @@ namespace DGtal
    * possibility to translate it (optional).
    * 
    */
-  template<typename TImageType, typename TFunctor= CastFunctor<unsigned char> >
+  template<typename TImageType, typename TFunctor= CastFunctor<unsigned int> >
   struct UpdateImageData : public DrawWithDisplay3DModifier
   {
    

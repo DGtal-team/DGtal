@@ -338,7 +338,15 @@ namespace DGtal
       
       /** 
        *  Constructor that fills image parameters from std image (image buffer, dimensions, vertex coordinates, orientation) 
+       *
+       *  @tparam TImageType the type of the image given for the constructor (should follow the CConstImage concept). 
+       *  @tparam TFunctor the functor type (should follow the
+       *  CUnaryFunctor concept with image value type as input type
+       *  and unsigned int as output type).
+       *  
+       *
        *  @param image: the source image.
+       *  @param aFunctor a functor to transform input values to the output displayed values.
        *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
        *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
        *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
@@ -350,6 +358,7 @@ namespace DGtal
 		    double xBottomLeft=0.0, double yBottomLeft=0.0, double zBottomLeft=0.0,
 		    TextureMode aMode= Display3D::GrayScaleMode){
        	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+	BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;    
 	myDrawDomain=false;
 	myDirection=normalDir;
 	myImageWidth = (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1;
@@ -377,7 +386,14 @@ namespace DGtal
       /** 
        *  Update the  image parameters from std image (image buffer, vertex coordinates) 
        *  The new image should be with same dimension than the original.
+       *
+       *  @tparam TImageType the type of the image given for the constructor (should follow the CConstImage concept). 
+       *  @tparam TFunctor the functor type (should follow the
+       *  CUnaryFunctor concept with image value type as input type
+       *  and unsigned int as output type).
+       *
        *  @param image: the source image.
+       *  @param aFunctor a functor to transform input values to the output displayed values.
        *  @param xTranslation: the image translation in the  x direction (default 0).
        *  @param yTranslation: the image translation in the  y direction (default 0).
        *  @param zTranslation: the image translation in the  z direction (default 0).
@@ -386,6 +402,7 @@ namespace DGtal
       void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0, 
 				   double yTranslation=0.0, double zTranslation=0.0){
 	BOOST_CONCEPT_ASSERT(( CConstImage < TImageType > ));
+	BOOST_CONCEPT_ASSERT(( CUnaryFunctor<TFunctor, typename TImageType::Value, unsigned int> )) ;    
 	assert ( (image.domain().upperBound())[0]-(image.domain().lowerBound())[0]+1== myImageWidth && 
 		 (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1== myImageHeight);
 	
