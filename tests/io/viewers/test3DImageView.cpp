@@ -77,7 +77,7 @@ bool testViewer3D()
 
 struct hueFct{
  inline
- unsigned int operator() (unsigned int aVal) const
+ unsigned int operator() (unsigned char aVal) const
   {
     HueShadeColorMap<unsigned int>  hueShade(0,255);
     Color col = hueShade((unsigned int)aVal);
