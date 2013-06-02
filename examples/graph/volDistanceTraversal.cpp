@@ -18,7 +18,7 @@
 #include <QImageReader>
 #include <QtGui/qapplication.h>
 #include "DGtal/base/BasicFunctors.h"
-#include "DGtal/kernel/CanonicSCellEmbedder.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/topology/DigitalSurface.h"
