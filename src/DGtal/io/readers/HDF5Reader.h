@@ -41,7 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
 

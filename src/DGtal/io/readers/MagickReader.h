@@ -44,6 +44,7 @@
 #include <string>
 #include <cstdio>
 #include <Magick++.h>
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
