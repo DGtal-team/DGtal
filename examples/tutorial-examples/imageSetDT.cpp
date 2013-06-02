@@ -47,7 +47,7 @@
 #include "DGtal/images/imagesSetsUtils/IntervalForegroundPredicate.h"
 
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
 
@@ -68,7 +68,7 @@ int main()
 
   //! [ImageSetDT-image]
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PNMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PGMReader<Image>::importPGM(filename); 
   DGtal::trace.info() << "Imported image: "<<image<<std::endl;
   //! [ImageSetDT-image]
 

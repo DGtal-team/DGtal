@@ -17,31 +17,33 @@
 #pragma once
 
 /**
- * @file PNMReader.h
+ * @file PPMReader.h
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/04/29
  *
- * Header file for module PNMReader.cpp
+ * Header file for module PPMReader.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(PNMReader_RECURSES)
-#error Recursive header files inclusion detected in PNMReader.h
-#else // defined(PNMReader_RECURSES)
+#if defined(PPMReader_RECURSES)
+#error Recursive header files inclusion detected in PPMReader.h
+#else // defined(PPMReader_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define PNMReader_RECURSES
+#define PPMReader_RECURSES
 
-#if !defined PNMReader_h
+#if !defined PPMReader_h
 /** Prevents repeated inclusion of headers. */
-#define PNMReader_h
+#define PPMReader_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
+#include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 //////////////////////////////////////////////////////////////////////////////
 
 #ifdef _MSC_VER
@@ -52,9 +54,9 @@ namespace DGtal
 {
 
 /////////////////////////////////////////////////////////////////////////////
-// class PNMReader
+// class PPMReader
 /**
- * Description of class 'PNMReader' <p>
+ * Description of class 'PPMReader' <p>
  * \brief Aim: Import a 2D or 3D using the Netpbm formats (ASCII mode).
  * - PPM: RGB 
  *  - PGM: grayscale
@@ -62,16 +64,16 @@ namespace DGtal
  *  - PGM3D: 3D variant of PGM
  * 
  *
- *  Simple example: (extract from test file testPNMReader.cpp)
+ *  Simple example: (extract from test file testPPMReader.cpp)
  * 
  *  @code
  *  #include "DGtal/helpers/StdDefs.h"
- *  #include "DGtal/io/readers/PNMReader.h"
+ *  #include "DGtal/io/readers/PPMReader.h"
  *  #include "DGtal/kernel/images/ImageSelector.h"
  *  ...
  *  string filename = "test.pgm";
  *  typedef ImageSelector < Z2i::Domain, uint>::Type Image;
- *  Image image = PNMReader<Image>::importPGMImage( filename ); 
+ *  Image image = PPMReader<Image>::importPGMImage( filename ); 
  *   @endcode
  *  You can then for instance display a threshold part of the image:
  *  @code 
@@ -84,49 +86,52 @@ namespace DGtal
  *  board << image.domain() << set2d; // display domain and set   
  *  @endcode
  *
+ * @tparam TImageContainer the type of the image container
  *
+ * @tparam TFunctor the type of the functor to transform the source image color into  scalar value. This functor should follows the concept 
+ *  CUnaryFunctor<TFunctor,  DGtal::Color, TImageContainer::Value> 
+ *
+ *  
  */
- template <typename TImageContainer>
-  struct PNMReader
+  template <typename TImageContainer, 
+	    typename TFunctor=BasicColorToScalarFunctors::ColorRGBEncoder<typename TImageContainer::Value> >
+  struct PPMReader
   {
     // ----------------------- Standard services ------------------------------
   public:
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
+    typedef typename TImageContainer::Value Value;
+    typedef TFunctor Functor;
     
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
-    
+
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;    
+
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));
 
-    /** 
-     * Main method to import a Pgm (8bits) into an instance of the 
+   
+     /** 
+     * Main method to import a PPM (24bit, 8bits per channel) into an instance of the 
      * template parameter ImageContainer.
      * 
      * @param aFilename the file name to import.  
+     * @param aFunctor the functor that from a given color return it associated code (by default set to BasicColorToScalarFunctors::ColorRGBEncoder). 
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importPGM(const std::string & aFilename, 
-                                     bool topbotomOrder = true) throw(DGtal::IOException);
+    static  ImageContainer importPPM(const std::string & aFilename, 
+                                     const Functor & aFunctor =  BasicColorToScalarFunctors::ColorRGBEncoder<Value>(), 
+				     bool topbotomOrder = true) throw(DGtal::IOException);
 
 
-    /** 
-     * Main method to import a Pgm3D (8bits) into an instance of the 
-     * template parameter ImageContainer.
-     * 
-     * @param aFilename the file name to import.
-     * @return an instance of the ImageContainer.
-     */
-    static ImageContainer importPGM3D(const std::string & aFilename) throw(DGtal::IOException);
     
-    
-    
- }; // end of class  PNMReader
+ }; // end of class  PPMReader
 
 
 
@@ -135,13 +140,13 @@ namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
 // Includes inline functions.
-#include "DGtal/io/readers/PNMReader.ih"
+#include "DGtal/io/readers/PPMReader.ih"
 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined PNMReader_h
+#endif // !defined PPMReader_h
 
-#undef PNMReader_RECURSES
-#endif // else defined(PNMReader_RECURSES)
+#undef PPMReader_RECURSES
+#endif // else defined(PPMReader_RECURSES)

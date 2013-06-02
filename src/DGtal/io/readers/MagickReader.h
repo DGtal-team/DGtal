@@ -44,6 +44,7 @@
 #include <string>
 #include <cstdio>
 #include <Magick++.h>
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -58,9 +59,9 @@ namespace DGtal
    *
    *
    * @tparam TImageContainer the image container to use. 
-   *
+   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
    */
-  template <typename TImageContainer>
+  template <typename TImageContainer, typename TFunctor=  CastFunctor< typename TImageContainer::Value > >
   struct MagickReader
   {
     // ----------------------- Standard services ------------------------------
@@ -68,6 +69,8 @@ namespace DGtal
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
+    typedef typename TImageContainer::Value Value;    
+    typedef TFunctor Functor ;
 
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
 
@@ -76,10 +79,15 @@ namespace DGtal
      * template parameter ImageContainer.
      * 
      * @param filename the file name to import.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to CastFunctor < TImageContainer::Value > .
      * @param topbotomOrder if true, the point of coordinate (0,0) will be the bottom left corner image point (default) else the center of image coordinate will be the top left of the image (not usual).  
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importImage(const std::string & filename, bool topbotomOrder = true) throw(DGtal::IOException);
+    static ImageContainer importImage(const std::string & filename, 
+				      const Functor & aFunctor =  Functor(), 
+				      bool topbotomOrder = true) throw(DGtal::IOException);
     
   }; // end of class MagickReader
 

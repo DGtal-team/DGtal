@@ -32,7 +32,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PPMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "ConfigTest.h"
@@ -61,7 +62,7 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image image = PNMReader<Image>::importPGM( filename ); 
+  Image image = PGMReader<Image>::importPGM( filename ); 
   
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
@@ -69,10 +70,32 @@ bool testPNMReader()
   Board2D board;
   board << image.domain() << set2d; // display domain and set
   
-  board.saveEPS( "testPNMReader.eps");
+  board.saveEPS( "testPNMReaderPGM.eps");
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();  
+
+  trace.beginBlock ( "Testing ppm reader ..." );
+  nbok += true ? 1 : 0; 
+  nb++;
+  std::string filenamePPM = testPath + "samples/color64.ppm";
+
+  trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
+
+  typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
+  Image imagePPM = PPMReader<Image>::importPPM( filenamePPM ); 
+  
+  Z2i::DigitalSet set2dPPM (imagePPM.domain());
+  SetFromImage<Z2i::DigitalSet>::append<Image>(set2dPPM, imagePPM, 0, 0xFFFFFEu);
+   
+  Board2D boardPPM;
+  boardPPM << imagePPM.domain() << set2dPPM; // display domain and set
+  
+  boardPPM.saveEPS( "testPNMReaderPPM.eps");
+  trace.info() << "(" << nbok << "/" << nb << ") "
+         << "true == true" << std::endl;
+  trace.endBlock();  
+
   return nbok == nb;
 }
 /**
@@ -91,7 +114,7 @@ bool testPNM3DReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z3i::Domain, unsigned int>::Type Image;
-  Image image = PNMReader<Image>::importPGM3D( filename ); 
+  Image image = PGMReader<Image>::importPGM3D( filename ); 
   
   trace.info() << "Image 3D = "<<image<<std::endl;
   
