@@ -110,8 +110,7 @@ namespace DGtal
     };
 
     /** 
-     * Basic color to scalar functor which returns the mean of the three
-     * channel values.
+     * Basic color to scalar functor which returns the code of the RGB color (DGtal_uint32 casted into TValue) .
      * 
      */
     template<typename TValue>
