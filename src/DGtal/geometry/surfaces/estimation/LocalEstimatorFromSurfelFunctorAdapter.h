@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Alias.h"
 #include "DGtal/base/ConstAlias.h"
-#include "DGtal/kernel/CanonicSCellEmbedder.h"
+#include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
 #include "DGtal/geometry/volumes/distance/CMetric.h"
 #include "DGtal/base/BasicFunctors.h"
