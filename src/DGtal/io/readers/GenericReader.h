@@ -128,8 +128,7 @@ namespace DGtal
      * image, the default parameter x,y, z need to be updated
      * according to the dimension if the image.
      *
-     * @tparam TFunctor the type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, Value > ).
-     * @param aFunctor to transform input unsigned char of image value into the given image type. 
+     * @param filename the image filename to be imported.
      * @param x the size in the x direction. 
      * @param y the size in the y direction. 
      * @param z the size in the z direction. 
@@ -139,6 +138,18 @@ namespace DGtal
     static TContainer import(const std::string &filename,  unsigned int x=0, 
 			     unsigned int y=0, unsigned int z=0)  throw(DGtal::IOException);
     
+ 
+    
+     /**
+     * Import an image file by specifying a value functor
+     *  (used for gray scale image format: vol, longvol, pgm3D, raw). 
+     * 
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
+     * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param datasetName the name of the dataset contained in the
+     *  image.
+     *
+     **/
     template<typename TFunctor>
     static TContainer importWithValueFunctor(const std::string &filename,
 					     const TFunctor &aFunctor, 
@@ -179,6 +190,8 @@ namespace DGtal
      * Import a volume image file.  For the special format h5 (you need to set WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated
      * according to the dimension if the image.
+     *
+     * @param filename the image filename to be imported.
      * @param datasetName  the name of the dataset contained in the image. 
      *
      **/
@@ -193,9 +206,9 @@ namespace DGtal
      *  (you need to set WITH_HDF5 of cmake build), the default
      *  parameter datasetName needs to be updated according to the
      *  dimension if the image.  
-     *
-     * @tparam TFunctor the type of the functor (should 
-     * @param aFunctor an ColorRGBEncoder.
+     * 
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
+     * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
      * @param datasetName the name of the dataset contained in the
      *  image.
      *
@@ -231,15 +244,13 @@ namespace DGtal
 
 
     /**
-     * Import an image file by specifying a value functor
-     *  (used only for color image format ppm, ( gif, jpeg, ... if the
-     *  magick image lib is installed) .  For the special format h5
-     *  (you need to set WITH_HDF5 of cmake build), the default
-     *  parameter datasetName needs to be updated according to the
-     *  dimension if the image.  
+     * Import an image file by specifying a value functor used for
+     *  grayscale image.  For the special format h5 (you need to set
+     *  WITH_HDF5 of cmake build), the default parameter datasetName
+     *  needs to be updated according to the dimension if the image.
      *
-     * @tparam TFunctor the type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, Value > ).
-     *
+     *  
+     * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char, TContainer::Value > ). 
      * @param aFunctor to transform input unsigned char of image value into the given image type. 
      * @param datasetName the name of the dataset contained in the
      *  image.
