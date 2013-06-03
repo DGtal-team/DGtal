@@ -108,6 +108,28 @@ namespace DGtal
 	return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3); 
       }
     };
+
+    /** 
+     * Basic color to scalar functor which returns the code of the RGB color (DGtal_uint32 casted into TValue) .
+     * 
+     */
+    template<typename TValue>
+    struct ColorRGBEncoder
+    {
+      typedef TValue Value;
+      
+      inline
+      Value operator() (const Color &aCol) const
+      {
+	return static_cast<Value> (aCol.getRGB()); 
+      }
+    };
+    
+
+
+
+    
+
   } //namespace BasicColorToScalarFunctors  
 } // namespace DGtal
 
