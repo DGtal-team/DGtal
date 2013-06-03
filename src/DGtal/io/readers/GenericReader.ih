@@ -29,17 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/readers/LongvolReader.h"
-#include "DGtal/io/readers/PNMReader.h"
-#include "DGtal/io/readers/RawReader.h"
-#ifdef WITH_HDF5
-#include "DGtal/io/readers/HDF5Reader.h"
-#endif
-#ifdef WITH_MAGICK
-#include "DGtal/io/readers/MagickReader.h"
-#endif
-
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -83,7 +72,7 @@ DGtal::GenericReader<TContainer, 3>::import(const std::string &filename,
   }else  if(extension=="longvol"){
     return  LongvolReader<TContainer>::importLongvol( filename );
   }else  if(extension=="pgm3d"|| extension=="pgm3D" ||extension=="p3d"){
-    return PNMReader<TContainer>::importPGM3D(filename);
+    return PGMReader<TContainer>::importPGM3D(filename);
   } else if(extension=="raw"){
     ASSERT(x!=0 && y!=0 && z!=0); 
     typename TContainer::Point pt (x,y,z);
@@ -105,8 +94,11 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
 
   if(extension=="pgm"){
-    return PNMReader<TContainer>::importPGM(filename);
+    return PGMReader<TContainer>::importPGM(filename);
+  }else if(extension=="ppm"){
+    return PPMReader<TContainer>::importPPM(filename);
   }
+  
 #ifdef WITH_HDF5
   else if (extension=="h5"){
     return HDF5Reader::importHDF5(filename, datasetName); 
@@ -127,7 +119,6 @@ DGtal::GenericReader<TContainer, 2>::import(const std::string &filename, const s
     throw dgtalio;
   }
 }
-
 
 
 

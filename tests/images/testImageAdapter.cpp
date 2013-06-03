@@ -37,7 +37,7 @@
 
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/io/colormaps/GrayscaleColorMap.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/boards/Board2D.h"
 
 #include "ConfigTest.h"
@@ -290,7 +290,7 @@ bool testImageAdapter()
     typedef GrayscaleColorMap<unsigned char> Gray;
 
     string filename = testPath + "samples/church-small.pgm";
-    VImage image = PNMReader<VImage>::importPGM(filename);
+    VImage image = PGMReader<VImage>::importPGM(filename);
     trace.info() << "Imported image: " << image << endl;
 
     Board2D aBoard;
