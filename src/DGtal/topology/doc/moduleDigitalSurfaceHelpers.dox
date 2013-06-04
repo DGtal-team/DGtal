@@ -197,14 +197,14 @@ After processing a simple display of each resulting connecting component you can
 
 
 
-@image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND"
-@image latex KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignefKhalimskySpaceND" width=0.5\textwidth
+@image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignedKhalimskySpaceND"
+@image latex KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignedKhalimskySpaceND" width=0.5\textwidth
 
 
 
 Here since the last argument is set to true, the resulting
 SignedKhalimskySpaceND are signed in order to indicate the direction
-of exterior. You can also get the SignefKhalimskySpaceND with default
+of exterior. You can also get the SignedKhalimskySpaceND with default
 sign:
 
 
