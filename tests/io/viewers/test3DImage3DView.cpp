@@ -37,7 +37,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/readers/PNMReader.h"
 #include "DGtal/math/BasicMathFunctions.h"
 #include "ConfigTest.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
