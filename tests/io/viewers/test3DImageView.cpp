@@ -129,10 +129,9 @@ int main( int argc, char** argv )
    }else if(i%4==3){
      viewer << SetMode3D( image.className(), "InterGrid" );
    }
- viewer << image; 
- viewer << DGtal::UpdateImageData<imageNG>(i+3, image,  i*50, i*50, i*50);
+   viewer << image; 
+   viewer << DGtal::UpdateImageData<imageNG>(i+3, image,  i*50, i*50, i*50);
  }
-
 
 
  viewer << p1 << p2 << p3;
