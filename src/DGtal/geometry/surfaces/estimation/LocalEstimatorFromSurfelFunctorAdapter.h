@@ -138,7 +138,7 @@ namespace DGtal
 
     
     /**
-     * Initialisation.
+     * Initialisation of estimator parameters.
      * @param [in] h grid size (must be >0).
      * @param [in] radius radius of the ball kernel.
      * 
