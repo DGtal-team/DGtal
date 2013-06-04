@@ -124,13 +124,13 @@ bool testLocalEstimatorFromFunctorAdapter()
   
   reporter.init(1, 5);
   Functor::Quantity val = reporter.eval( surface.begin());
-  trace.info() <<  "Value wit radius 5= "<<val << std::endl;
+  trace.info() <<  "Value with radius 5= "<<val << std::endl;
   nbok += (val == 124) ? 1 : 0;
   nb++;
  
   reporter.init(1, 20);
   Functor::Quantity val2 = reporter.eval( surface.begin());
-  trace.info() <<  "Value wit radius 20= "<<val2 << std::endl;
+  trace.info() <<  "Value with radius 20= "<<val2 << std::endl;
   nbok += (val2 == 398) ? 1 : 0;
   nb++;
   
