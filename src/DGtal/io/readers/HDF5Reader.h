@@ -41,7 +41,7 @@
 // Inclusions
 #include <iostream>
 #include "DGtal/base/Common.h"
-
+#include "DGtal/base/CUnaryFunctor.h"
 #include "DGtal/images/CImage.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -54,8 +54,11 @@ namespace DGtal
  * Description of class 'HDF5Reader' <p>
  * \brief Aim: Import a HDF5 file with 2D image dataset(s) (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL).
  *
+ * @tparam TImageContainer the image container to use. 
+ * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>). 
+ *
  */
- template <typename TImageContainer>
+  template <typename TImageContainer, typename TFunctor= CastFunctor< typename TImageContainer::Value > >
   struct HDF5Reader
   {
     // ----------------------- Standard services ------------------------------
@@ -63,8 +66,11 @@ namespace DGtal
 
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Domain::Vector Vector;
+    typedef typename TImageContainer::Value Value;    
+    typedef TFunctor Functor;
     
     BOOST_CONCEPT_ASSERT(( CImage<TImageContainer> ));
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) );
 
@@ -74,14 +80,18 @@ namespace DGtal
      * 
      * @param aFilename the file name to import.
      * @param aFilename the dataset name to import.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to CastFunctor < TImageContainer::Value > .
      * @param topbotomOrder
      * if true, the point of coordinate (0,0) will be the bottom left
      * corner image point (default) else the center of image
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
+     *
      */
     static  ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
-                                     bool topbotomOrder = true) throw(DGtal::IOException);
+				      const Functor & aFunctor =  Functor(), bool topbotomOrder = true) throw(DGtal::IOException);
     
  }; // end of class  HDF5Reader
 

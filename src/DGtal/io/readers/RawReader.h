@@ -44,6 +44,7 @@
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/CUnaryFunctor.h"
 #include <boost/static_assert.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -78,19 +79,27 @@ namespace DGtal
    *
    * @tparam TImageContainer the image container to use. 
    *
+   * @tparam TFunctor the type of functor used in the import (by default set to CastFunctor< TImageContainer::Value>) .
+   *
    * @see testRawReader.cpp
    */
-  template <typename TImageContainer>
+  template <typename TImageContainer,
+	    typename TFunctor = CastFunctor< typename TImageContainer::Value > >
   struct RawReader
   {
     // ----------------------- Standard services ------------------------------
   public:
 
     typedef TImageContainer ImageContainer;
+    typedef typename TImageContainer::Value Value;    
     typedef typename TImageContainer::Domain::Vector Vector;
+    typedef TFunctor Functor;
 
+
+    BOOST_CONCEPT_ASSERT((  CUnaryFunctor<TFunctor, unsigned char, Value > )) ;        
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
        (ImageContainer::Domain::dimension == 3));
+
 
 
     /** 
@@ -99,10 +108,16 @@ namespace DGtal
      * 
      * @param filename the file name to import.
      * @param extent the size of the raw data set.
+     * @param aFunctor the functor used to import and cast the source
+     * image values into the type of the image container value (by
+     * default set to CastFunctor < TImageContainer::Value > .
+     *
+ 
      * @return an instance of the ImageContainer.
      */
     static ImageContainer importRaw8(const std::string & filename,
-             const Vector & extent) throw(DGtal::IOException);
+				     const Vector & extent,
+				     const Functor & aFunctor =  Functor()) throw(DGtal::IOException);
     
   }; // end of class RawReader
 

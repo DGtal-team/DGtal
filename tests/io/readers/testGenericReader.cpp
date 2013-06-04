@@ -87,10 +87,10 @@ bool testGenericReader()
   unsigned int size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
   unsigned int size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
   unsigned int size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
-  DGtal::trace.info()<<"Pgm3D image read: size[0]:" << size0Img1  ;
-  DGtal::trace.info()<<"size[1]:  " << size1Img1;
-  DGtal::trace.info()<<"size[2]:  " << size2Img1 << std::endl;;
-  nbok += (size0Img1==40 && size1Img1==40 && size2Img1==40) ? 1 : 0; 
+  DGtal::trace.info()<<"Pgm3D image read: size[0]:" << size0Img2  ;
+  DGtal::trace.info()<<"size[1]:  " << size1Img2;
+  DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
+  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
   nb++;
 
   std::string filenameImage3 = testPath + "samples/contourS.pgm";    

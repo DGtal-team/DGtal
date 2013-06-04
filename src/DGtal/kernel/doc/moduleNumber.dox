@@ -1,4 +1,3 @@
-
 /**
  * @file moduleNumber.dox
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
@@ -65,7 +64,7 @@ the following concepts:
 Concept name   | Short description | Model examples
 ---------------|-------------------|--------------
  CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
- CEuclideanRing | Refinement of CCommutativeRing with a "/" operator | DGtal:i:nt32_t, double, .....
+ CEuclideanRing | Refinement of CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
  CInteger | Refinement of both CEuclideanRing and CIntegralNumber | DGtal::int32_t, .....
  
 
