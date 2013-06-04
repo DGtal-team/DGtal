@@ -91,6 +91,7 @@ struct hueFct{
 int main( int argc, char** argv )
 {
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned char>  imageNG;
+  typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned int>  imageCol;
 
  QApplication application(argc,argv);
  Viewer3D viewer;
@@ -103,13 +104,18 @@ int main( int argc, char** argv )
  Point p3( 30, 30, 30 );
 
  std::string filename =  testPath + "samples/church-small.pgm";
+ std::string filename3 =  testPath + "samples/color64.ppm";
  
  imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename); 
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
-
+ imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3); 
+ 
  viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct >(image2, hueFct(), Display3D::RGBMode );
  viewer << image;
- viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  500, 500, 500 );
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  DefaultFunctor >(image3, DefaultFunctor(), Display3D::RGBMode );
+ viewer << DGtal::UpdateImagePosition(0, Display3D::xDirection,  50, 50, 50 );
+ viewer << DGtal::UpdateImagePosition(2, Display3D::yDirection,  0, 0, 0);
+ 
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
  viewer << DGtal::Update2DDomainPosition(0, Display3D::xDirection, 0, 0, 0);
@@ -124,7 +130,7 @@ int main( int argc, char** argv )
      viewer << SetMode3D( image.className(), "InterGrid" );
    }
  viewer << image; 
- viewer << DGtal::UpdateImageData<imageNG>(i+1, image,  i*50, i*50, i*50);
+ viewer << DGtal::UpdateImageData<imageNG>(i+3, image,  i*50, i*50, i*50);
  }
 
 
