@@ -36,7 +36,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/readers/PNMReader.h"
+#include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
@@ -104,7 +104,7 @@ int main( int argc, char** argv )
 
  std::string filename =  testPath + "samples/church-small.pgm";
  
- imageNG image = DGtal::PNMReader<imageNG>::importPGM(filename); 
+ imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename); 
  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename); 
 
  viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct >(image2, hueFct(), Display3D::RGBMode );

@@ -111,8 +111,8 @@ namespace DGtal
      * @param n: an DGtal::uint32_t integer.
      * @return the next higher DGtal::uint32_t integer power of two.     
      **/
-    template<> 
-    DGtal::uint32_t roundToUpperPowerOfTwo<DGtal::uint32_t>(const  DGtal::uint32_t &n){
+
+    DGtal::uint32_t roundToUpperPowerOfTwo(const  DGtal::uint32_t &n){
       return 1 << (1+DGtal::Bits::mostSignificantBit( n-1 ) );
     }
 
@@ -122,8 +122,8 @@ namespace DGtal
      * @param n: an DGtal::uint64_t integer.
      * @return the next higher DGtal::uint64_t integer power of two.     
      **/
-    template<> 
-    DGtal::uint64_t roundToUpperPowerOfTwo<DGtal::uint64_t>(const  DGtal::uint64_t &n){
+
+    DGtal::uint64_t roundToUpperPowerOfTwo(const  DGtal::uint64_t &n){
       return 1 << (1+DGtal::Bits::mostSignificantBit( n-1 ) );
     }    
     /** 
