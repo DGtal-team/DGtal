@@ -85,7 +85,6 @@ typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Funct
 DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval ( const SurfelConstIterator& it ) const
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
-  ASSERT(isValid());
     
   MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
   VertexFunctor vfunctor( myEmbedder, metricToPoint);
