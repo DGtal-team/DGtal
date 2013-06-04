@@ -53,7 +53,7 @@ namespace DGtal
 /**
    Description of class 'CanonicCellEmbedder' <p>
 
-   \brief Aim: A trivial embedder for unsigned cell, which
+   \brief Aim: A trivial embedder for signed and unsigned cell, which
    corresponds to the canonic injection of cell centroids into Rn.
 
    Model of CCellEmbedder.
@@ -130,7 +130,7 @@ namespace DGtal
     */
     RealPoint operator()( const Cell & cell ) const;
 
-    // ----------------------- Interface --------------------------------------
+   // ----------------------- Interface --------------------------------------
 public:
 
     /**
