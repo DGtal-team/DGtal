@@ -86,9 +86,7 @@ DGtal::LocalEstimatorFromSurfelFunctorAdapter<DigitalSurf,TMetric,Functor>::eval
 {
   ASSERT_MSG( isValid(), "Missing init() before evaluation" );
   ASSERT(isValid());
-  if (! isValid())
-    exit(1);
-  
+    
   MetricToPoint metricToPoint( *myMetric, myEmbedder( *it ));
   VertexFunctor vfunctor( myEmbedder, metricToPoint);
   Visitor visitor( *mySurface, vfunctor, *it);
