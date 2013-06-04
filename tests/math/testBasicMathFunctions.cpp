@@ -68,6 +68,7 @@ bool testBasicMathFunctions()
   trace.info() << "roundToUpperPowerOfTwo(200)= "<< BasicMathFunctions::roundToUpperPowerOfTwo(200) <<std::endl;
   nbok += (BasicMathFunctions::roundToUpperPowerOfTwo(200)==256) ? 1 : 0; 
   nb++;
+
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 

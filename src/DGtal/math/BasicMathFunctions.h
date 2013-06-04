@@ -102,30 +102,9 @@ namespace DGtal
      **/
     template<typename T> 
     T roundToUpperPowerOfTwo(const  T &n){
-      return (T) roundToUpperPowerOfTwo((unsigned int) n);
+      return (T)  1 << (1+DGtal::Bits::mostSignificantBit( (unsigned int) n-1 ) );;
     };
 
-    /**
-     * Compute the next higher integer power of two of the given argument n. 
-     * 
-     * @param n: an DGtal::uint32_t integer.
-     * @return the next higher DGtal::uint32_t integer power of two.     
-     **/
-
-    DGtal::uint32_t roundToUpperPowerOfTwo(const  DGtal::uint32_t &n){
-      return 1 << (1+DGtal::Bits::mostSignificantBit( n-1 ) );
-    }
-
-        /**
-     * Compute the next higher integer power of two of the given argument n. 
-     * 
-     * @param n: an DGtal::uint64_t integer.
-     * @return the next higher DGtal::uint64_t integer power of two.     
-     **/
-
-    DGtal::uint64_t roundToUpperPowerOfTwo(const  DGtal::uint64_t &n){
-      return 1 << (1+DGtal::Bits::mostSignificantBit( n-1 ) );
-    }    
     /** 
      * Return the absolute value of an instance of type T.
      *
