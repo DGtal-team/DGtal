@@ -60,7 +60,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/io/Display3D.h"
-
+#include "DGtal/math/BasicMathFunctions.h"
 
 
 //////////////////////////////////////////////////////////////////////////////
@@ -130,7 +130,6 @@ namespace DGtal
     bool myIsBackgroundDefault;
     bool myViewWire;
   
-  
     /**
      * Set the default color for future drawing.
      *
@@ -185,7 +184,9 @@ namespace DGtal
      *
      **/
     void sortPolygonFromCamera();
-    
+  
+
+  
 
     /**
      * Draws the drawable [object] in this board. It should satisfy
@@ -227,15 +228,7 @@ namespace DGtal
 
 
 
-    // ------------------------- Private Datas --------------------------------
-  private:
 
-
-    GLuint myListToAff;
-    unsigned int myNbListe;
-    qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
-    QPoint myPosSelector;
-  
   public:
 
     // ------------------------- Hidden services ------------------------------
@@ -382,12 +375,153 @@ namespace DGtal
 
 
 
+ 
+    
+    
+
     // ------------------------- Internals ------------------------------------
   private:
+    /**
+     * Used to display in OPENGL an image as a textured quad image.
+     *
+     **/
+    struct GLTextureImage {      
+      double x1, y1, z1;
+      double x2, y2, z2;
+      double x3, y3, z3;
+      double x4, y4, z4;
+      ImageDirection myDirection;
+      unsigned int myImageWidth;
+      unsigned int myImageHeight;
+      
+      unsigned int myBufferWidth;
+      unsigned int myBufferHeight;
+      GLuint  myTextureName;
+      Display3D::TextureMode myMode;
+      unsigned char *  myTextureImageBufferGS;
+      unsigned char *  myTextureImageBufferRGB;
+      double vectNormal[3];
+
+      // By definition in OpenGL the image size of texture should power of 2  
+      double myTextureFitX;
+      double myTextureFitY;
 
 
+      // Destructor
+      ~GLTextureImage(){
+	if(myMode==Display3D::GrayScaleMode){
+	  if(myTextureImageBufferGS!=0)
+	    delete [] myTextureImageBufferGS;
+	}	     
+	if(myMode==Display3D::RGBMode){
+	  if(myTextureImageBufferRGB!=0)
+	    delete [] myTextureImageBufferRGB;
+	}
+	
+      }
+    
+      //Copy constructor from a GLTextureImage
+      GLTextureImage(const GLTextureImage &aGLImg): myBufferHeight(aGLImg.myBufferHeight),
+						    myBufferWidth(aGLImg.myBufferWidth),
+						    myTextureName(aGLImg.myTextureName),
+						    myTextureFitX(aGLImg.myTextureFitX),
+						    myTextureFitY(aGLImg.myTextureFitY),
+						    myMode(aGLImg.myMode)
+								      
+      {
+	x1=aGLImg.x1; y1=aGLImg.y1; z1=aGLImg.z1;
+	x2=aGLImg.x2; y2=aGLImg.y2; z2=aGLImg.z2;
+	x3=aGLImg.x3; y3=aGLImg.y3; z3=aGLImg.z3;
+	x4=aGLImg.x4; y4=aGLImg.y4; z4=aGLImg.z4;
+	myImageWidth=aGLImg.myImageWidth; myImageHeight=aGLImg.myImageHeight;
+	myDirection = aGLImg.myDirection;
+	vectNormal[0]=aGLImg.vectNormal[0];
+	vectNormal[1]=aGLImg.vectNormal[1];
+	vectNormal[2]=aGLImg.vectNormal[2];
+	
+	if(myMode==Display3D::GrayScaleMode){
+	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
+	  for(unsigned int i=0; i<myBufferHeight*myBufferWidth;i++){
+	    myTextureImageBufferGS[i]=aGLImg.myTextureImageBufferGS[i];
+	  }
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
+	  for(unsigned int i=0; i<3*myBufferHeight*myBufferWidth;i+=3){
+	    myTextureImageBufferRGB[i]=aGLImg.myTextureImageBufferRGB[i];
+	    myTextureImageBufferRGB[i+1]=aGLImg.myTextureImageBufferRGB[i+1];
+	    myTextureImageBufferRGB[i+2]=aGLImg.myTextureImageBufferRGB[i+2];
+	  }
+	}
+	
+	
+	
+      }
+      
+      
+      //Copy constructor from a TextureImage
+      GLTextureImage(const TextureImage &aGSImage)
+      {
+	x1=aGSImage.x1; y1=aGSImage.y1; z1=aGSImage.z1;
+	x2=aGSImage.x2; y2=aGSImage.y2; z2=aGSImage.z2;
+	x3=aGSImage.x3; y3=aGSImage.y3; z3=aGSImage.z3;
+	x4=aGSImage.x4; y4=aGSImage.y4; z4=aGSImage.z4;
+	myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
+	myDirection = aGSImage.myDirection;
+	myMode= aGSImage.myMode;
+	vectNormal[0]= (myDirection == Display3D::xDirection)? 1.0: 0.0;
+	vectNormal[1]= (myDirection == Display3D::yDirection)? -1.0: 0.0;
+	vectNormal[2]= (myDirection == Display3D::zDirection)? 1.0: 0.0;	
+	myBufferWidth = BasicMathFunctions::roundToUpperPowerOfTwo(myImageWidth);
+	myBufferHeight = BasicMathFunctions::roundToUpperPowerOfTwo(myImageHeight); 
 
+	if(myMode==Display3D::GrayScaleMode){
+	  myTextureImageBufferGS = new unsigned char [myBufferHeight*myBufferWidth];
+	  unsigned int pos=0;
+	  for (unsigned int i=0; i<myBufferHeight; i++){
+	    for (unsigned int j=0; j<myBufferWidth; j++){
+	      if(i<myImageHeight && j<  myImageWidth){
+		myTextureImageBufferGS[pos]= aGSImage.myTabImage[i*myImageWidth+j];
+	      }else{
+		myTextureImageBufferGS[pos]=0;
+	      }
+	      pos++;
+	    }
+	  }
+	}else if(myMode==Display3D::RGBMode){
+	  myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
+	  unsigned int pos=0;
+	  for (unsigned int i=0; i<myBufferHeight; i++){
+	    for (unsigned int j=0; j<myBufferWidth; j++){
+	      if(i<myImageHeight && j<  myImageWidth){
+		DGtal::Color aCol(aGSImage.myTabImage[i*myImageWidth+j]);
+		myTextureImageBufferRGB[pos]= aCol.red();
+		myTextureImageBufferRGB[pos+1]= aCol.green();
+		myTextureImageBufferRGB[pos+2]= aCol.blue();
+	      }else{
+		myTextureImageBufferRGB[pos]=0;
+		myTextureImageBufferRGB[pos+1]=0;
+		myTextureImageBufferRGB[pos+2]=0;
+	      }
+	      pos+=3;
+	    }
+	  }
+	}
 
+	myTextureFitX = 1.0-((myBufferWidth-myImageWidth)/(double)myBufferWidth);
+	myTextureFitY = 1.0-((myBufferHeight-myImageHeight)/(double)myBufferHeight);
+      }
+
+    };
+
+    // ------------------------- Private Datas --------------------------------
+  private:
+
+    GLuint myListToAff;
+    unsigned int myNbListe;
+    qglviewer::Vec myOrig, myDir, myDirSelector, mySelectedPoint;
+    QPoint myPosSelector;
+    std::vector<GLTextureImage> myVectTextureImage;
+    bool myIsDoubleFaceRendering;
 
 
   }; // end of class Viewer3D
