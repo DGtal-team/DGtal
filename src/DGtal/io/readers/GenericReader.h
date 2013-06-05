@@ -146,8 +146,9 @@ namespace DGtal
      * 
      * @tparam TFunctor The type of the functor (should verify the concept CUnaryFunctor<TFunctor, unsigned char , TContainer::Value > ).
      * @param aFunctor an ColorRGBEncoder. The type of the functor (should verify the concept CUnaryFunctor<TFunctor, TContainer::Value, DGtal::Color > ).
-     * @param datasetName the name of the dataset contained in the
-     *  image.
+     * @param x x
+     * @param y y
+     * @param z z
      *
      **/
     template<typename TFunctor>

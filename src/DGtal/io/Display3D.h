@@ -262,10 +262,10 @@ namespace DGtal
        * Update the domain direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
        * from the botton left point.
-       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
-       *  @param xBottomLeft: the x coordinate of bottom left image point.
-       *  @param yBottomLeft: the x coordinate of bottom left image point.
-       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       * @param normalDir give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
+       *  @param xBottomLeft the x coordinate of bottom left image point.
+       *  @param yBottomLeft the x coordinate of bottom left image point.
+       *  @param zBottomLeft the x coordinate of bottom left image point.
        **/
       
       void updateDomainOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
@@ -273,9 +273,9 @@ namespace DGtal
      
       /** 
        *  Translate domain postion. 
-       *  @param xTranslation: the image translation in the  x direction (default 0).
-       *  @param yTranslation: the image translation in the  y direction (default 0).
-       *  @param zTranslation: the image translation in the  z direction (default 0).
+       *  @param xTranslation the image translation in the  x direction (default 0).
+       *  @param yTranslation the image translation in the  y direction (default 0).
+       *  @param zTranslation the image translation in the  z direction (default 0).
        **/
       void translateDomain(double xTranslation=0.0, double yTranslation=0.0, double zTranslation=0.0);
 
@@ -345,12 +345,12 @@ namespace DGtal
        *  and unsigned int as output type).
        *  
        *
-       *  @param image: the source image.
+       *  @param image the source image.
        *  @param aFunctor a functor to transform input values to the output displayed values.
-       *  @param normalDir: the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
-       *  @param xBottomLeft: the x coordinate of bottom left image point (default 0).
-       *  @param yBottomLeft: the x coordinate of bottom left image point (default 0).
-       *  @param zBottomLeft: the x coordinate of bottom left image point (default 0).
+       *  @param normalDir the direction of normal vector of the image plane (xDirection, yDirection or zDirection (default)) .
+       *  @param xBottomLeft the x coordinate of bottom left image point (default 0).
+       *  @param yBottomLeft the x coordinate of bottom left image point (default 0).
+       *  @param zBottomLeft the x coordinate of bottom left image point (default 0).
        **/
       template <typename TImageType, typename TFunctor>
       TextureImage( const TImageType & image, const TFunctor &aFunctor, 
@@ -365,7 +365,6 @@ namespace DGtal
 	myImageHeight = (image.domain().upperBound())[1]-(image.domain().lowerBound())[1]+1;
 	myTabImage = new  unsigned int [myImageWidth*myImageHeight];
 	updateImageOrientation(normalDir, xBottomLeft, yBottomLeft, zBottomLeft);
-	unsigned int pos=0;
 	myMode=aMode;
 	updateImageDataAndParam(image, aFunctor);
       };
@@ -374,10 +373,10 @@ namespace DGtal
        * Update the image direction from a specific normal direction
        * (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) and image position
        * from the botton left point.
-       * @param normalDir: give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection) 
-       *  @param xBottomLeft: the x coordinate of bottom left image point.
-       *  @param yBottomLeft: the x coordinate of bottom left image point.
-       *  @param zBottomLeft: the x coordinate of bottom left image point.
+       * @param normalDir give a predifined normal orientation can be (Display3D::xDirection, Display3D::yDirection or Display3D::zDirection)
+       *  @param xBottomLeft the x coordinate of bottom left image point.
+       *  @param yBottomLeft the x coordinate of bottom left image point.
+       *  @param zBottomLeft the x coordinate of bottom left image point.
        **/
       
       void updateImageOrientation( Display3D::ImageDirection normalDir, double xBottomLeft, double yBottomLeft, double zBottomLeft);
@@ -392,11 +391,11 @@ namespace DGtal
        *  CUnaryFunctor concept with image value type as input type
        *  and unsigned int as output type).
        *
-       *  @param image: the source image.
+       *  @param image the source image.
        *  @param aFunctor a functor to transform input values to the output displayed values.
-       *  @param xTranslation: the image translation in the  x direction (default 0).
-       *  @param yTranslation: the image translation in the  y direction (default 0).
-       *  @param zTranslation: the image translation in the  z direction (default 0).
+       *  @param xTranslation the image translation in the  x direction (default 0).
+       *  @param yTranslation the image translation in the  y direction (default 0).
+       *  @param zTranslation the image translation in the  z direction (default 0).
        **/
       template <typename TImageType, typename TFunctor>
       void updateImageDataAndParam(const TImageType & image, const TFunctor &aFunctor, double xTranslation=0.0, 
@@ -743,7 +742,7 @@ namespace DGtal
     
     /**
      * Add a TextureImage in the list of image to be displayed.
-     * @param image: a TextureImage including image data buffer and position, orientation.
+     * @param image a TextureImage including image data buffer and position, orientation.
      *
      **/
     void addTextureImage(const TextureImage &image);
@@ -752,11 +751,11 @@ namespace DGtal
     /**
      * Update the  image parameters from std image (image buffer, vertex coordinates) 
      * The new image should be with same dimension than the original.
-     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addTextureImage).
-     * @param image: the new image containing the new buffer (with same dimensions than the other image).
-     * @param xTranslation: the image translation in the  x direction (default 0).
-     * @param yTranslation: the image translation in the  y direction (default 0).
-     * @param zTranslation: the image translation in the  z direction (default 0).
+     * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
+     * @param image the new image containing the new buffer (with same dimensions than the other image).
+     * @param xTranslation the image translation in the  x direction (default 0).
+     * @param yTranslation the image translation in the  y direction (default 0).
+     * @param zTranslation the image translation in the  z direction (default 0).
      **/
     template <typename TImageType, typename TFunctor>
     void updateTextureImage(unsigned int imageIndex, const  TImageType & image, const  TFunctor & aFunctor, 
@@ -768,11 +767,10 @@ namespace DGtal
     /**
      * Update the  image parameters from std image (image buffer, vertex coordinates) 
      * The new image should be with same dimension than the original.
-     * @param imageIndex: corresponds to the chronoloigic index given by the fuction (addTextureImage).
-     * @param image: the new image containing the new buffer (with same dimensions than the other image).
-     * @param xTranslation: the image translation in the  x direction (default 0).
-     * @param yTranslation: the image translation in the  y direction (default 0).
-     * @param zTranslation: the image translation in the  z direction (default 0).
+     * @param imageIndex corresponds to the chronoloigic index given by the fuction (addTextureImage).
+     * @param xPosition the image translation in the  x direction (default 0).
+     * @param yPosition the image translation in the  y direction (default 0).
+     * @param zPosition the image translation in the  z direction (default 0).
      **/
 
     void updateOrientationTextureImage(unsigned int imageIndex, 
