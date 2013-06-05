@@ -157,8 +157,8 @@ namespace DGtal
      * @return the estimated quantity
      * from itb till ite (exculded)
      * @param [in] itb starting surfel iterator.
-     * @param [in] ited end surfel iterator.
-     * @param [in/out] result resulting output iterator
+     * @param [in] ite end surfel iterator.
+     * @param [in,out] result resulting output iterator
      *
      */
     template <typename OutputIterator>
