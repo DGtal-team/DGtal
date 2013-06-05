@@ -26,6 +26,11 @@
  * This file is part of the DGtal library.
  */
 
+
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/images/ImageHelper.h"
+
+
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 
@@ -105,38 +110,38 @@ void  DGtal::Display3DFactory::drawAsFaces( Display3D & display, const  DGtal::M
 {
 
   for(unsigned int i=0; i< aMesh.nbFaces(); i++){
-     typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
-     unsigned int aNum = aFace.size();
-     if(aNum==4){
-       TPoint  p1 = aMesh.getVertex(aFace.at(0));
-       TPoint  p2 = aMesh.getVertex(aFace.at(1));
-       TPoint  p3 = aMesh.getVertex(aFace.at(2));
-       TPoint  p4 = aMesh.getVertex(aFace.at(3));
+    typename Mesh<TPoint>::MeshFace aFace = aMesh.getFace(i);
+    unsigned int aNum = aFace.size();
+    if(aNum==4){
+      TPoint  p1 = aMesh.getVertex(aFace.at(0));
+      TPoint  p2 = aMesh.getVertex(aFace.at(1));
+      TPoint  p3 = aMesh.getVertex(aFace.at(2));
+      TPoint  p4 = aMesh.getVertex(aFace.at(3));
        
-       display.addQuad(p1[0], p1[1], p1[2], 
-		       p2[0], p2[1], p2[2], 
-		       p3[0], p3[1], p3[2], 
-		       p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
-     }else if(aNum==3){
-       TPoint  p1 = aMesh.getVertex(aFace.at(0));
-       TPoint  p2 = aMesh.getVertex(aFace.at(1));
-       TPoint  p3 = aMesh.getVertex(aFace.at(2));
-       display.addTriangle(p1[0], p1[1], p1[2], 
-			   p2[0], p2[1], p2[2], 
-			   p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
-     }else if(aNum>4){
-       std::vector<Display3D::pointD3D> vectPoly;
-       for(unsigned int j=0; j< aFace.size(); j++){
-	 Display3D::pointD3D pt;
-	 pt.x= aMesh.getVertex(aFace.at(j))[0];
-	 pt.y=aMesh.getVertex(aFace.at(j))[1];
-	 pt.z=aMesh.getVertex(aFace.at(j))[2];
-	 vectPoly.push_back(pt);	 
-       }
-       display.addPolygon(vectPoly, aMesh.getFaceColor(i));
-     }else{
-       trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< std::endl;
-     }
+      display.addQuad(p1[0], p1[1], p1[2], 
+		      p2[0], p2[1], p2[2], 
+		      p3[0], p3[1], p3[2], 
+		      p4[0], p4[1], p4[2], aMesh.getFaceColor(i));
+    }else if(aNum==3){
+      TPoint  p1 = aMesh.getVertex(aFace.at(0));
+      TPoint  p2 = aMesh.getVertex(aFace.at(1));
+      TPoint  p3 = aMesh.getVertex(aFace.at(2));
+      display.addTriangle(p1[0], p1[1], p1[2], 
+			  p2[0], p2[1], p2[2], 
+			  p3[0], p3[1], p3[2], aMesh.getFaceColor(i));
+    }else if(aNum>4){
+      std::vector<Display3D::pointD3D> vectPoly;
+      for(unsigned int j=0; j< aFace.size(); j++){
+	Display3D::pointD3D pt;
+	pt.x= aMesh.getVertex(aFace.at(j))[0];
+	pt.y=aMesh.getVertex(aFace.at(j))[1];
+	pt.z=aMesh.getVertex(aFace.at(j))[2];
+	vectPoly.push_back(pt);	 
+      }
+      display.addPolygon(vectPoly, aMesh.getFaceColor(i));
+    }else{
+      trace.warning()<< "Face not valid, only "<< aNum << "vertex... "<< std::endl;
+    }
      
      
 
@@ -326,9 +331,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   else if ( mode == "Points" )
     drawAsPoints( display, a );
   else if ( ( mode == "" ) )
-  {
-    drawAsPoints( display, a );
-   }
+    {
+      drawAsPoints( display, a );
+    }
 }
 // ArithmeticalDSS3d
 
@@ -364,14 +369,14 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 {
   typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
-   typedef typename std::set<Point>::const_iterator ConstIterator;
+  typedef typename std::set<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
   
   display.createNewVoxelList(true);
   for (  ConstIterator it = s.begin(); 
-   it != s.end();
-   ++it )
+	 it != s.end();
+	 ++it )
     {
       display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]), 
                        NumberTraits<Component>::castToInt64_t((*it)[1]),
@@ -391,7 +396,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
   ASSERT(Domain::Space::dimension == 3);
   
   for ( ConstIterator it = s.begin(); 
-  it != s.end();
+	it != s.end();
         ++it )
     {
       display.addPoint(NumberTraits<Component>::castToDouble((*it)[0]),
@@ -440,8 +445,8 @@ void DGtal::Display3DFactory::drawAsPavingTransparent( Display3D & display,
   
   display.createNewVoxelList(false);
   for (  ConstIterator it = v.begin(); 
-   it != v.end();
-   ++it )
+	 it != v.end();
+	 ++it )
     {
       display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
                        NumberTraits<Component>::castToInt64_t((*it)[1]),
@@ -456,14 +461,14 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
 {
   typedef typename Domain::Point Point;
   typedef typename Domain::Point::Component Component;
-   typedef typename std::vector<Point>::const_iterator ConstIterator;
+  typedef typename std::vector<Point>::const_iterator ConstIterator;
   
   ASSERT(Domain::Space::dimension == 3);
   
   display.createNewVoxelList(true);
   for (  ConstIterator it = v.begin(); 
-   it != v.end();
-   ++it )
+	 it != v.end();
+	 ++it )
     {
       display.addVoxel(NumberTraits<Component>::castToInt64_t((*it)[0]),
                        NumberTraits<Component>::castToInt64_t((*it)[1]),
@@ -483,7 +488,7 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
   ASSERT(Domain::Space::dimension == 3);
   
   for ( ConstIterator it = v.begin(); 
-  it != v.end();
+	it != v.end();
         ++it )
     {
       display.addPoint(NumberTraits<Component>::castToInt64_t((*it)[0]),
@@ -499,7 +504,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 {
   ASSERT(Domain::Space::dimension == 3);
   
- std::string mode = display.getMode( v.className() );
+  std::string mode = display.getMode( v.className() );
   ASSERT( (mode=="Paving" || mode=="PavingTransp" || mode=="Grid" || mode=="Both" || mode=="") );
 
   if ( mode == "Paving" || ( mode == "" ) )
@@ -523,15 +528,14 @@ inline
 void DGtal::Display3DFactory::drawAsBoundingBox( Display3D & display, 
                                                  const DGtal::HyperRectDomain<TSpace> & h )
 {
-  ASSERT(TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
+  ASSERT(TSpace::dimension == 2 || TSpace::dimension == 3 || "drawAsBoundingBox-NOT-YET-IMPLEMENTED-in-ND");
   
   typename TSpace::RealPoint upperBound ( h.myUpperBound);
   typename TSpace::RealPoint lowerBound ( h.myLowerBound);
 
   DGtal::Color colDef(250,250,250,10);
   double shiftSize=0.01;
-  if (TSpace::dimension == 3)
-    {
+  if (TSpace::dimension == 3){
       //Z upper face
       display.addQuad(upperBound[0]+(0.5+shiftSize), 
                       upperBound[1]+(0.5+shiftSize), 
@@ -629,9 +633,6 @@ void DGtal::Display3DFactory::drawAsGrid( Display3D & display,
 {
   typedef typename TSpace::Integer Integer;
 
-  //  typename TSpace::RealPoint upperBound ( h.myUpperBound);
-  // typename TSpace::RealPoint lowerBound ( h.myLowerBound);
-  
   ASSERT(TSpace::dimension == 3 || "drawAsGrid-NOT-YET-IMPLEMENTED-in-ND");
 
   if (TSpace::dimension == 3)
@@ -693,7 +694,6 @@ void DGtal::Display3DFactory::drawAsPavingPoints( Display3D & display,
   typedef typename TSpace::Integer Integer;
   
   ASSERT(TSpace::dimension == 3 || "drawAsPavingPoints-NOT-YET-IMPLEMENTED-in-ND");
-
   if (TSpace::dimension == 3)
   {
     // Face XY
@@ -723,19 +723,19 @@ void DGtal::Display3DFactory::drawAsPaving( Display3D & display,
   
   if (TSpace::dimension == 3)
     {
-    // Face XY
-    for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
-   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
-      for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
-     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
+      // Face XY
+      for (int64_t z = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[2]); 
+	   z <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[2]); z++){
+	for (int64_t x = NumberTraits<Integer>::castToInt64_t(h.myLowerBound[0]); 
+	     x <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[0]); x++){
       
-  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
-       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
-    display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
+	  for (int64_t y =  NumberTraits<Integer>::castToInt64_t(h.myLowerBound[1]);
+	       y <=  NumberTraits<Integer>::castToInt64_t(h.myUpperBound[1]); y++){
+	    display.addVoxel(x, y , z, DGtal::Color(255, 255 ,255, 15),0.51);
 
-  }
-      }
-    } 
+	  }
+	}
+      } 
     }
 }
 
@@ -745,18 +745,25 @@ void DGtal::Display3DFactory::draw( Display3D & display,
                                     const DGtal::HyperRectDomain<TSpace> & h )
 {
   std::string mode = display.getMode( h.className() );
-  ASSERT((mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
-    mode=="BoundingBox")||
-   ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
-   
-  if (  mode == "BoundingBox"  ){
+  ASSERT((TSpace::dimension==3)|| (TSpace::dimension==2));
+  ASSERT((TSpace::dimension!=3) || (mode=="" || mode=="Grid" || mode=="Paving"|| mode=="PavingPoints"|| mode=="PavingGrids" ||
+				    mode=="BoundingBox")||
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
+  ASSERT((TSpace::dimension!=2) || (mode=="" || mode=="BoundingBox" || mode=="InterGrid"|| mode=="Grid") ||
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::HyperRectDomain<TSpace> & h ): Unknown mode "+mode)=="");
+  
+  
+  if(TSpace::dimension == 2){
+    if (mode=="")
+      mode="BoundingBox";
+    display.addImage2DDomainD3D(h, mode);
+  }else if (  mode == "BoundingBox"  ){
     display.createNewLineList();
     drawAsBoundingBox( display, h );
-  }else if( ( mode == "" ) ||  (mode == "Grid")){
+  }else if(( mode == "" ) ||  (mode == "Grid")){
     display.createNewLineList();
     drawAsGrid( display, h );
-  }
-  else if ( mode == "Paving" ){
+  } else if ( mode == "Paving" ){
     display.createNewVoxelList(false);
     drawAsPaving( display, h );
 
@@ -770,6 +777,9 @@ void DGtal::Display3DFactory::draw( Display3D & display,
     drawAsGrid( display, h );
     drawAsPaving( display, h );
   }
+  
+
+  
 }
 // HyperRectDomain
 
@@ -784,7 +794,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   DGtal::Color fillColorSave = display.getFillColor();  
   std::string mode = display.getMode( k.className() );
   ASSERT((mode==""  ||  mode=="Highlighted" || mode=="Transparent"|| mode=="Basic"|| mode=="Illustration"||mode=="IllustrationCustomColor")||
-   ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
+	 ("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::KhalimskyCell<dim, TInteger> & k ): Unknown mode "+mode)=="");
   // used to display surfels located at a same position.
   double factorVolSurfel=1.0;
   bool basicMode=false;
@@ -896,7 +906,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       display.setFillColor(DGtal::Color(20, 200, 200, 255));
     }    
     display.addKSLinel(x-0.5, y-0.5, z-0.5, x+ (xodd? 0.5:-0.5 ),y+ (yodd? 0.5:-0.5 ), z+ (zodd? 0.5:-0.5 ), 
-          0.02, true, sk.myPositive);
+		       0.02, true, sk.myPositive);
     break;
   case 2:
     display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, 0.0,1.0, true, sk.myPositive,basicMode ); 
@@ -932,25 +942,25 @@ void DGtal::Display3DFactory::drawWithAdjacencies( Display3D & display,
   
   typedef typename TDigitalSet::Domain Domain;
   typedef
-      typename DigitalSetSelector < Domain,
-      SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
+    typename DigitalSetSelector < Domain,
+				  SMALL_DS + HIGH_ITER_DS >::Type SmallSet;
   typedef Object<TDigitalTopology, SmallSet> SmallObject;
   
   Point p;
   for (typename TDigitalSet::ConstIterator it = o.pointSet().begin();
-      it != o.pointSet().end();
-      ++it)
-  {
-    //Brute-force scan of the neighborhood.
-    SmallObject neig = o.properNeighborhood(*it);
-    for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
-        it2 != neig.pointSet().end();
-        ++it2)
+       it != o.pointSet().end();
+       ++it)
     {
-      p = (*it2) - (*it);
-      draw(display, p, (*it));
+      //Brute-force scan of the neighborhood.
+      SmallObject neig = o.properNeighborhood(*it);
+      for (typename SmallObject::DigitalSet::ConstIterator it2 = neig.pointSet().begin();
+	   it2 != neig.pointSet().end();
+	   ++it2)
+	{
+	  p = (*it2) - (*it);
+	  draw(display, p, (*it));
+	}
     }
-  }
 }
 
 template <typename TDigitalTopology, typename TDigitalSet>
@@ -970,8 +980,8 @@ void DGtal::Display3DFactory::draw( Display3D & display,
       draw( display, o.pointSet() );
       drawWithAdjacencies( display, o );
     }
-    else
-      ASSERT(false && (("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
+  else
+    ASSERT(false && (("DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Object<TDigitalTopology, TDigitalSet> & o ): Unknown mode " + mode) == ""));
 }
 // Object
 
@@ -1067,7 +1077,7 @@ void DGtal::Display3DFactory::draw( Display3D & display,
   for ( typename Range::ConstIterator it = r.begin(), itEnd = r.end(); 
         it != itEnd; ++it )
     {
-       draw( display, *it ); 
+      draw( display, *it ); 
     } 
 }
 // GridCurve
@@ -1076,17 +1086,17 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TSCell>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
+				    const DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> & object )
 {
-    typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef DGtal::ConstRangeAdapter<TIterator, DGtal::DefaultFunctor, TSCell> Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-	      draw( display, *it);
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      draw( display, *it);
+    }
 }
 // SCellsRange
 
@@ -1094,18 +1104,18 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> & object )
 {
-    typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef ConstRangeAdapter<TIterator, SCellToPoint<TKSpace>, typename TKSpace::Point> Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-	display << SetMode3D(it->className(),"Paving"); 
-	display << *it;
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      display << SetMode3D(it->className(),"Paving"); 
+      display << *it;
+    }
 }
 // PointsRange
 
@@ -1113,20 +1123,20 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
-           typename TKSpace::Space::RealPoint> & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, 
+				    typename TKSpace::Space::RealPoint> & object )
 {
-    typedef typename TKSpace::Space::RealPoint RPoint;
-    typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef typename TKSpace::Space::RealPoint RPoint;
+  typedef ConstRangeAdapter<TIterator, SCellToMidPoint<TKSpace>, RPoint > Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-	display << SetMode3D(it->className(),"Grid"); 
-	display << *it;
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      display << SetMode3D(it->className(),"Grid"); 
+      display << *it;
+    }
 }
 // MidPointsRange
 
@@ -1134,21 +1144,21 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
-           std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, 
+				    std::pair<typename TKSpace::Point, typename TKSpace::Vector> > & object )
 {
-    typedef typename TKSpace::Point Point; 
-    typedef typename TKSpace::Vector Vector; 
-    typedef std::pair<Point, Vector> Arrow;
-    typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef typename TKSpace::Point Point; 
+  typedef typename TKSpace::Vector Vector; 
+  typedef std::pair<Point, Vector> Arrow;
+  typedef ConstRangeAdapter<TIterator, SCellToArrow<TKSpace>, Arrow > Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      { //display the associated cell
-	      draw( display, *(it.base()) ); 
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    { //display the associated cell
+      draw( display, *(it.base()) ); 
+    }
 }
 // ArrowsRange
 
@@ -1156,19 +1166,19 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> & object )
 {
-    typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef ConstRangeAdapter<TIterator, SCellToInnerPoint<TKSpace>, typename TKSpace::Point> Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-	display << SetMode3D(it->className(),"Paving");
-  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
-	display << *it;
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      display << SetMode3D(it->className(),"Paving");
+      display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+      display << *it;
+    }
 }
 // InnerPointsRange
 
@@ -1176,19 +1186,19 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> & object )
 {
-    typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef ConstRangeAdapter<TIterator, SCellToOuterPoint<TKSpace>, typename TKSpace::Point> Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-	display << SetMode3D(it->className(),"Paving");
-  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
-	display << *it;
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      display << SetMode3D(it->className(),"Paving");
+      display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+      display << *it;
+    }
 }
 // OuterPointsRange
 
@@ -1196,28 +1206,253 @@ void DGtal::Display3DFactory::draw( Display3D & display,
 template <typename TIterator, typename TKSpace>
 inline
 void DGtal::Display3DFactory::draw( Display3D & display, 
-           const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
-           std::pair<typename TKSpace::Point, typename TKSpace::Point > > & object )
+				    const DGtal::ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, 
+				    std::pair<typename TKSpace::Point, typename TKSpace::Point > > & object )
 {
-    typedef std::pair<typename TKSpace::Point, typename TKSpace::Point > Pair; 
-    typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair> Range; 
-    typedef typename Range::ConstIterator ConstIterator; 
+  typedef std::pair<typename TKSpace::Point, typename TKSpace::Point > Pair; 
+  typedef ConstRangeAdapter<TIterator, SCellToIncidentPoints<TKSpace>, Pair> Range; 
+  typedef typename Range::ConstIterator ConstIterator; 
 
-    ConstIterator it ( object.begin() ); 
-    ConstIterator itEnd ( object.end() ); 
-    for( ; it != itEnd; ++it)
-      {
-  Pair pair( *it ); 
-	display << SetMode3D(pair.first.className(),"Paving");
-  display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
-	display << pair.first;
-  display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
-	display << pair.second;
-      }
+  ConstIterator it ( object.begin() ); 
+  ConstIterator itEnd ( object.end() ); 
+  for( ; it != itEnd; ++it)
+    {
+      Pair pair( *it ); 
+      display << SetMode3D(pair.first.className(),"Paving");
+      display << CustomColors3D(Color(0, 0, 255,0),Color(0, 0, 200, 100));
+      display << pair.first;
+      display << CustomColors3D(Color(0, 255, 0 ,0),Color(0, 200, 0, 100));
+      display << pair.second;
+    }
 }
 // IncidentPointsRange
 
-//
+
+
+
+
+
+
+// ImageContainerBySTLVector  (2D)
+template <typename TValue >
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue>  &anImage){  
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ImageContainerBySTLVector  (2D)
+
+
+// ImageContainerBySTLMap  (2D)
+template <typename TValue>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const ImageContainerBySTLMap<DGtal::Z2i::Domain, TValue>  &anImage){
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ImageContainerBySTLMap  (2D)
+
+
+// ImageAdapter  (2D)
+template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const  ImageAdapter< TImageContainer,DGtal::Z2i::Domain, TFunctorD, 
+			       TNewValue, TFunctorValue, TFunctorValueVm1>  &anImage){
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ImageAdapter  (2D)
+
+// ConstImageAdapter  (2D)
+template <typename TImageContainer,  typename TFunctorD, typename TNewValue, typename TFunctorValue>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,DGtal::Z2i::Domain, TFunctorD, 
+			       TNewValue, TFunctorValue>  &anImage){
+  drawImage2D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ConstImageAdapter  (2D)
+
+
+
+// ImageContainerBySTLVector  (3D)
+template <typename TValue  >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue>  &anImage3D){ 
+  drawImage3D(display, anImage3D, CastFunctor<unsigned int> ());
+} 
+// ImageContainerBySTLVector  (3D)
+
+
+
+// ImageContainerBySTLMap  (3D)
+template <typename TValue  >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,   const  ImageContainerBySTLMap<DGtal::Z3i::Domain, TValue>  &anImage3D){
+  drawImage3D(display, anImage3D, CastFunctor<unsigned int> ());
+}
+// ImageContainerBySTLMap  (3D)
+
+
+
+
+
+
+// ImageAdapter  (3D)
+template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue, typename TFunctorValueVm1>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const  ImageAdapter< TImageContainer,DGtal::Z3i::Domain, TFunctorD, 
+			       TNewValue, TFunctorValue, TFunctorValueVm1>  &anImage){
+  drawImage3D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ImageAdapter  (3D)
+
+// ConstImageAdapter  (3D)
+template <typename TImageContainer,  typename TFunctorD, typename TNewValue, typename TFunctorValue>
+void 
+DGtal::Display3DFactory::draw( Display3D & display, const  ConstImageAdapter< TImageContainer,DGtal::Z3i::Domain, TFunctorD, 
+			       TNewValue, TFunctorValue>  &anImage){
+  drawImage3D(display, anImage, CastFunctor<unsigned int> ());
+}
+// ConstImageAdapter  (3D)
+
+
+
+// AddTextureImage3DWithFunctor  
+template <typename TValue, typename TFunctor >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,   const  AddTextureImage3DWithFunctor<TValue, TFunctor>  &anAddGS3D){
+  drawImage3D(display, *anAddGS3D.my3DImage, anAddGS3D.myFunctor, anAddGS3D.myMode);
+}
+// AddTextureImage3DWithFunctor 
+
+
+
+// AddTextureImage2DWithFunctor  
+template <typename TValue, typename TFunctor >
+inline
+void DGtal::Display3DFactory::draw( Display3D & display,   const  AddTextureImage2DWithFunctor<TValue, TFunctor>  &anAddGS2D){
+  drawImage2D(display, *anAddGS2D.my2DImage, anAddGS2D.myFunctor, anAddGS2D.myMode);
+}
+// AddTextureImage2DWithFunctor 
+
+
+
+
+
+
+
+
+template < typename TImageType2D, typename TFunctor > 
+inline
+void
+DGtal::Display3DFactory::drawImage2D( Display3D & display, const TImageType2D &anImage, 
+				      const TFunctor &aFunctor, Display3D::TextureMode aTextureMode){
+    std::string mode = display.getMode( anImage.className() );
+    ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
+	    ("DGtal::Display3DFactory::draw( Display3D & display,const TImageType2D & anImage ): Unknown mode "+mode)=="");
+
+  if(mode==""){
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection, 0,0,0, aTextureMode);
+    display.addTextureImage(aGSImage);
+  }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid"){
+    DGtal::Display3D::TextureImage aGSImage(anImage, aFunctor, DGtal::Display3D::zDirection, 0,0,0, aTextureMode);
+    aGSImage.myDrawDomain = true;
+    display << SetMode3D( anImage.domain().className(), mode );
+    display << anImage.domain();
+    aGSImage.myIndexDomain = display.getCurrentDomainNumber()-1;        
+    display.addTextureImage(aGSImage);
+  }   
+}
+
+
+
+
+template < typename TImageType3D, typename TFunctor > 
+inline
+void
+DGtal::Display3DFactory::drawImage3D( Display3D & display, const TImageType3D &anImage3D, 
+				      const TFunctor &aFunctor, Display3D::TextureMode aTextureMode){
+  std::string mode = display.getMode( anImage3D.className() );
+    ASSERT( (mode=="BoundingBox" || mode=="InterGrid" ||  mode=="Grid"||  mode=="") || 	 
+	    ("DGtal::Display3DFactory::draw( Display3D & display,const TImageType3D & anImage ): Unknown mode "+mode)=="");
+
+ typedef  TImageType3D Image3D;
+
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorY; invFunctorY.initRemoveOneDim(1);
+  DGtal::Z2i::Domain domainY(invFunctorY(anImage3D.domain().lowerBound()),
+			     invFunctorY(anImage3D.domain().upperBound()));
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorZ; invFunctorZ.initRemoveOneDim(2);
+  DGtal::Z2i::Domain domainZ(invFunctorZ(anImage3D.domain().lowerBound()),
+			     invFunctorZ(anImage3D.domain().upperBound()));
+  DGtal::Projector<DGtal::Z2i::Space>  invFunctorX; invFunctorX.initRemoveOneDim(0);
+  DGtal::Z2i::Domain domainX(invFunctorX(anImage3D.domain().lowerBound()),
+			     invFunctorX(anImage3D.domain().upperBound()));
+
+
+
+  typedef DGtal::ConstImageAdapter<Image3D, DGtal::Z2i::Domain,  DGtal::Projector< Z3i::Space>,
+				   typename Image3D::Value,  DGtal::DefaultFunctor >  SliceImageAdapter;
+  DGtal::DefaultFunctor idV;
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorY((int)(anImage3D.domain().lowerBound()[1])); 
+  aSliceFunctorY.initAddOneDim(1);
+  SliceImageAdapter sliceImageY(anImage3D, domainY, aSliceFunctorY, idV);
+
+  display<< SetMode3D( sliceImageY.className(), mode );
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageY, aFunctor, aTextureMode );
+
+  display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
+					    anImage3D.domain().lowerBound()[0], 
+					    anImage3D.domain().lowerBound()[1]-0.5,
+					    anImage3D.domain().lowerBound()[2]);
+  
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorX((int)(anImage3D.domain().lowerBound()[0])); 
+  aSliceFunctorX.initAddOneDim(0);
+  SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageX, aFunctor, aTextureMode );
+  display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
+					    anImage3D.domain().lowerBound()[0] -0.5,
+					    anImage3D.domain().lowerBound()[1], 
+					    anImage3D.domain().lowerBound()[2]);
+  
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZ((int)(anImage3D.domain().lowerBound()[2])); 
+  aSliceFunctorZ.initAddOneDim(2);
+  SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZ, aFunctor, aTextureMode );
+  display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
+					    anImage3D.domain().lowerBound()[0], 
+					    anImage3D.domain().lowerBound()[1],
+					    anImage3D.domain().lowerBound()[2]-0.5);
+    
+
+  // other symetrics faces
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorYl((int)(anImage3D.domain().upperBound()[1]));
+  aSliceFunctorYl.initAddOneDim(1);
+  SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageYl, aFunctor , aTextureMode);
+  display << DGtal::UpdateLastImagePosition(Display3D::yDirection, 
+					    anImage3D.domain().lowerBound()[0],
+					    0.5+anImage3D.domain().upperBound()[1],
+					    anImage3D.domain().lowerBound()[2]);
+  
+  
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorXl((int)(anImage3D.domain().upperBound()[0]));
+  aSliceFunctorXl.initAddOneDim(0);
+  SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageXl, aFunctor, aTextureMode );
+  display << DGtal::UpdateLastImagePosition(Display3D::xDirection,
+					    0.5+anImage3D.domain().upperBound()[0], 
+					    anImage3D.domain().lowerBound()[1],
+					    anImage3D.domain().lowerBound()[2] );
+  
+  DGtal::Projector<DGtal::Z3i::Space> aSliceFunctorZl((int)(anImage3D.domain().upperBound()[2]));
+  aSliceFunctorZl.initAddOneDim(2);
+  SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
+  display << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter,  TFunctor >(sliceImageZl, aFunctor , aTextureMode);
+  display << DGtal::UpdateLastImagePosition(Display3D::zDirection,
+					    anImage3D.domain().lowerBound()[0],
+					    anImage3D.domain().lowerBound()[1],
+					    0.5+ anImage3D.domain().upperBound()[2] );
+  
+}
+
+
 
 
 inline
@@ -1308,7 +1543,53 @@ void  DGtal::Display3DFactory::draw( Display3D & display, const DGtal::Transform
   display.addKSSurfel(x, y, z,! xodd, !yodd, !zodd, factorVolSurfel, aTransformedKSSurfel.myShift, aTransformedKSSurfel.mySizeFactor, 
 		      true, aTransformedKSSurfel.mySurfel.myPositive,  basicMode );   
   display.setFillColor(fillColorSave);
+
 }
+
+
+
+template<typename TImageType, typename TFunctor>
+inline
+void 
+DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImageData<TImageType, TFunctor> & anUpdate ){
+  display.updateTextureImage(anUpdate.myIndex, *(anUpdate.myImage),  anUpdate.myFunctor, anUpdate.myTranslateX, 
+			     anUpdate.myTranslateY, anUpdate.myTranslateZ);
+  
+}
+
+
+void 
+inline
+DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateImagePosition & anUpdate ){
+  display.updateOrientationTextureImage(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+					  anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
+}
+
+void 
+inline
+DGtal::Display3DFactory::draw( Display3D & display,  const DGtal::UpdateLastImagePosition & anUpdate ){
+  unsigned int index = display.getCurrentGLImageNumber()-1;
+  display.updateOrientationTextureImage(index, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+					  anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
+}
+
+
+inline
+void
+DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Update2DDomainPosition &anUpdate){
+  display.updateAn2DDomainOrientation(anUpdate.myIndex, anUpdate.myPosXBottomLeft, anUpdate.myPosYBottomLeft, 
+				      anUpdate.myPosZBottomLeft, anUpdate.myNewDirection);
+}
+
+inline
+void
+DGtal::Display3DFactory::draw(Display3D &display, const DGtal::Translate2DDomain &anTranslation){
+  display.translateAn2DDomain(anTranslation.myIndex, anTranslation.myTranslateX, anTranslation.myTranslateY, 
+			      anTranslation.myTranslateZ);
+}
+
+
+
 
 
 //                                                                           //

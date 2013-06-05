@@ -63,6 +63,28 @@ bool testBasicMathFunctions()
 
 
   trace.endBlock();
+  trace.beginBlock ( "Testing roundToUpperPowerOfTwo ..." );
+
+  trace.info() << "roundToUpperPowerOfTwo(200)= "<< BasicMathFunctions::roundToUpperPowerOfTwo(200) <<std::endl;
+  nbok += (BasicMathFunctions::roundToUpperPowerOfTwo(200)==256) ? 1 : 0; 
+  nb++;
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+
+  trace.info() << "roundToUpperPowerOfTwo(1000)= "<< BasicMathFunctions::roundToUpperPowerOfTwo(1000) <<std::endl;
+  nbok += (BasicMathFunctions::roundToUpperPowerOfTwo(1000)==1024) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+
+  trace.info() << "power(5.0,4)= "<< BasicMathFunctions::power(5.0,4) <<std::endl;
+  nbok += (BasicMathFunctions::power(5,4)==625.0) ? 1 : 0; 
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
+
+
+  trace.endBlock();
   
   return nbok == nb;
 }
