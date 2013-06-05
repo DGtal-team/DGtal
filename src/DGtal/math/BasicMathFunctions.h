@@ -97,7 +97,7 @@ namespace DGtal
      * Compute the next higher power of two of the given argument n of type T. 
      * 
      * @tparam T the type of the element T
-     * @param n: an element of type T (casted to unsigned integer).
+     * @param n an element of type T (casted to unsigned integer).
      * @return the next higher power of two.
      **/
     template<typename T> 
